@@ -184,6 +184,7 @@ const DxtradeEnterPasswordModal = () => {
                     password={password}
                     passwordError={error?.error?.code === 'PasswordError'}
                     platform={dxtradePlatform}
+                    setPassword={setPassword}
                 />
             );
         }

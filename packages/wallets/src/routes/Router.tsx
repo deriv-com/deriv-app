@@ -38,7 +38,7 @@ export type TRoute = '/endpoint' | `?${string}` | `${typeof walletsPrefix}${TWal
 
 // wallets routes which have their states
 interface WalletsRouteState {
-    '/cashier/account-transfer': { toAccountLoginId: string };
+    '/cashier/account-transfer': { shouldSelectDefaultWallet: boolean; toAccountLoginId: string };
     '/cashier/transactions': { showPending: boolean; transactionType: 'deposit' | 'withdrawal' };
 }
 

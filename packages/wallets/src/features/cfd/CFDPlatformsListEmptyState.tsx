@@ -22,7 +22,11 @@ const CFDPlatformsListEmptyState = () => {
             </WalletText>
             <WalletButton
                 color='primary-light'
-                onClick={() => history.push('/appstore/traders-hub/cashier/account-transfer')}
+                onClick={() =>
+                    history.push('/appstore/traders-hub/cashier/account-transfer', {
+                        shouldSelectDefaultWallet: true,
+                    })
+                }
                 size='lg'
             >
                 Transfer

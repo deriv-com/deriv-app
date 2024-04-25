@@ -53,6 +53,22 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
         location.pathname === '/appstore/traders-hub/cashier/account-transfer'
             ? location.state?.toAccountLoginId
             : undefined;
+    const shouldDefaultUSDWallet =
+        location.pathname === '/appstore/traders-hub/cashier/account-transfer'
+            ? location.state?.shouldSelectDefaultWallet
+            : false;
+
+    const toDefaultAccount = useMemo(
+        () => toAccountList.walletAccounts.find(wallet => wallet.currency === 'USD'),
+        [toAccountList.walletAccounts]
+    );
+    // This sets a 'To transfer' to USD Wallet account to be selected by default when user transfers from a crypto wallet
+    if (!toAccount && toDefaultAccount && shouldDefaultUSDWallet) {
+        setValues(prev => ({
+            ...prev,
+            toAccount: toDefaultAccount,
+        }));
+    }
 
     useEffect(() => {
         const toAccount: TToAccount = Object.values(accounts)
@@ -129,7 +145,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                 ) : (
                     <div className='wallets-transfer-form-dropdown__select-account-cta'>
                         <WalletText size='sm' weight='bold'>
-                            Select a trading account or a Wallet
+                            Select a trading account{activeWallet?.demo_account === 0 ? ` or a Wallet` : ''}
                         </WalletText>
                     </div>
                 )}

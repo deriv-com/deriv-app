@@ -21,7 +21,7 @@ const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, is
     return (
         <div className={classNames('wallets-carousel-header', { 'wallets-carousel-header--hidden': hidden })}>
             <div className='wallets-carousel-header__content'>
-                <WalletCurrencyCard currency={currency} isCarouselHeader isDemo={isDemo} size='md' />
+                <WalletCurrencyCard currency={currency} isDemo={isDemo} size='md' />
                 <div className='wallets-carousel-header__details'>
                     <WalletText color='general' size='sm'>
                         {currency} Wallet

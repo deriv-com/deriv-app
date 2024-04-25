@@ -1,10 +1,10 @@
 import React from 'react';
 import { StandaloneCircleInfoRegularIcon } from '@deriv/quill-icons';
 import { Table, Text } from '@deriv-com/ui';
-import { CATEGORY, TAccountLimitValues } from '../../utils/accountLimitsUtils';
+import { TAccountLimitValues } from '../../types';
+import { CATEGORY } from '../../utils/accountLimitsUtils';
 
-const RenderRow = ({ row }: { row: TAccountLimitValues }) => {
-    const { category, hintInfo, isLessProminent, title, value } = row;
+const RenderRow = ({ category, hintInfo, isLessProminent, title, value }: TAccountLimitValues) => {
     return (
         <div className='grid grid-flow-col justify-between'>
             <div>
@@ -40,6 +40,6 @@ export const AccountLimitsTable = ({ accountLimitValues }: { accountLimitValues:
         loadMoreFunction={() => {
             //[TODO]: Add load more function
         }}
-        rowRender={rowData => <RenderRow row={rowData} />}
+        rowRender={<RenderRow />}
     />
 );

@@ -7,6 +7,8 @@ import { getAppId, LocalStore, useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
+import { GrowthBook } from '@growthbook/growthbook-react';
+import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 
 import BinaryBotIFrame from 'Modules/BinaryBotIFrame';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
@@ -22,6 +24,11 @@ import Routes from './Containers/Routes/routes.jsx';
 import Devtools from './Devtools';
 import initDatadog from '../Utils/Datadog';
 
+const gb = new GrowthBook({
+    apiHost: 'https://cdn.growthbook.io',
+    clientKey: process.env.GROWTHBOOK_CLIENT_KEY,
+});
+
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const { is_next_wallet_enabled } = useFeatureFlags();
     const { has_wallet } = useStoreWalletAccountsList();
@@ -30,6 +37,38 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());
     const { marketing_growthbook, tracking_datadog, tracking_rudderstack } = data;
+
+    const account_type = LocalStore?.get('active_loginid')
+        ?.match(/[a-zA-Z]+/g)
+        ?.join('');
+
+    const attributes = {
+        account_type: account_type === 'null' ? 'unlogged' : account_type,
+        app_id: String(getAppId()),
+        device_type: store?.ui?.is_mobile ? 'mobile' : 'desktop',
+        device_language: navigator?.language || 'en-EN',
+        user_language: getLanguage().toLowerCase(),
+        country: Cookies.get('clients_country') || Cookies?.getJSON('website_status'),
+    };
+
+    React.useEffect(() => {
+        const fetchIsPasskeySupported = async () => {
+            try {
+                await gb.setAttributes(attributes);
+                await gb.loadFeatures();
+                const is_passkeys_supported = await Promise.all([
+                    browserSupportsWebAuthn(),
+                    gb.isOn('web_passkeys'),
+                    gb.isOn('service_passkeys'),
+                ]);
+                store.client.setIsPasskeySupported(is_passkeys_supported.every(Boolean));
+            } catch (e) {
+                //error handling needed
+            }
+        };
+        fetchIsPasskeySupported();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     React.useEffect(() => {
         if (process.env.RUDDERSTACK_KEY && tracking_rudderstack) {
@@ -48,16 +87,9 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
                           utm_content: 'no content',
                       }
                     : Cookies.getJSON('utm_data');
-            const account_type = LocalStore?.get('active_loginid')
-                ?.match(/[a-zA-Z]+/g)
-                ?.join('');
+
             Analytics.setAttributes({
-                account_type: account_type === 'null' ? 'unlogged' : account_type,
-                app_id: String(getAppId()),
-                device_type: store?.ui?.is_mobile ? 'mobile' : 'desktop',
-                device_language: navigator?.language || 'en-EN',
-                user_language: getLanguage().toLowerCase(),
-                country: Cookies.get('clients_country') || Cookies?.getJSON('website_status'),
+                ...attributes,
                 utm_source: ppc_campaign_cookies?.utm_source,
                 utm_medium: ppc_campaign_cookies?.utm_medium,
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,

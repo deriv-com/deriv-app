@@ -91,6 +91,7 @@
         "workbox-webpack-plugin": "^6.0.2"
     },
     "dependencies": {
+        "@growthbook/growthbook-react": "^0.26.0",
         "@babel/polyfill": "^7.4.4",
         "@datadog/browser-rum": "^5.11.0",
         "@deriv-com/analytics": "1.4.13",

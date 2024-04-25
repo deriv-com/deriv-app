@@ -25,7 +25,7 @@ export const usePaymentMethodDetails = () => {
                     inputLabel: paymentMethodDetails.inputLabel,
                     isGenericPM: !paymentMethodDetails.inputLabel,
                     items: [request],
-                    paymentMethod,
+                    paymentMethod: request.payment_method as string,
                 };
             }
         });

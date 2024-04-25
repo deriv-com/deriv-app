@@ -22,7 +22,7 @@ describe('usePaymentMethodDetails', () => {
                     payment_method: 'UPI',
                 },
             ],
-            paymentMethod: 'upi',
+            paymentMethod: 'UPI',
         },
         skrill: {
             documentsRequired: 2,
@@ -35,7 +35,7 @@ describe('usePaymentMethodDetails', () => {
                     payment_method: 'SKRILL',
                 },
             ],
-            paymentMethod: 'skrill',
+            paymentMethod: 'SKRILL',
         },
         visa: {
             documentsRequired: 1,
@@ -49,7 +49,7 @@ describe('usePaymentMethodDetails', () => {
                     payment_method: 'VISA',
                 },
             ],
-            paymentMethod: 'visa',
+            paymentMethod: 'VISA',
         },
     };
 

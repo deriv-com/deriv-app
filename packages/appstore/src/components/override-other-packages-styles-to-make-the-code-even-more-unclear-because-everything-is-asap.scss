@@ -1,6 +1,6 @@
 .traders-hub {
     .dc-button-menu__toggle {
-        @include desktop {
+        @include desktop-screen {
             &:hover:not(.dc-button-menu__button--active) {
                 background-color: var(--state-normal) !important;
             }

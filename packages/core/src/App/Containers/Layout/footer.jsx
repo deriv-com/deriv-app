@@ -9,22 +9,24 @@ const Footer = () => {
     const { isDesktop, isTablet } = useDevice();
     const { pathname } = useLocation();
     const is_hidden_landscape_blocker = isDisabledLandscapeBlockerRoute(pathname);
+    const is_dtrader_route = pathname === routes.trade;
     const show_in_tablet_routes = [routes.trade, routes.contract];
 
     if (pathname === routes.onboarding) {
         return null;
-    } 
-        if (is_hidden_landscape_blocker) {
-            if (isDesktop) return <TradingHubFooter />;
-            if (isTablet && show_in_tablet_routes.includes(pathname)) return <TradingHubFooter />;
-            return null;
-        }
-        return (
-            <DesktopWrapper>
-                <TradingHubFooter />
-            </DesktopWrapper>
-        );
-    
+    }
+
+    if (is_hidden_landscape_blocker || is_dtrader_route) {
+        if (isDesktop) return <TradingHubFooter />;
+        if (isTablet && show_in_tablet_routes.includes(pathname)) return <TradingHubFooter />;
+        return null;
+    }
+
+    return (
+        <DesktopWrapper>
+            <TradingHubFooter />
+        </DesktopWrapper>
+    );
 };
 
 export default Footer;

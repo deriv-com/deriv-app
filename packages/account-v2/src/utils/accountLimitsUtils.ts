@@ -6,7 +6,7 @@ export const CATEGORY = {
     footer: 'footer',
     header: 'header',
     submarket: 'submarket',
-};
+} as const;
 
 export type TAccountLimitValues = {
     category?: string;

@@ -5,7 +5,7 @@ import { Text, ToggleSwitch } from '@deriv-com/ui';
 import './AdvertiserNameToggle.scss';
 
 type TAdvertiserNameToggle = {
-    advertiserInfo: TAdvertiserStats;
+    advertiserInfo: DeepPartial<TAdvertiserStats>;
     onToggle?: (shouldShowRealName: boolean) => void;
 };
 const AdvertiserNameToggle = memo(({ advertiserInfo, onToggle }: TAdvertiserNameToggle) => {
@@ -13,8 +13,8 @@ const AdvertiserNameToggle = memo(({ advertiserInfo, onToggle }: TAdvertiserName
     const { mutate: advertiserUpdate } = p2p.advertiser.useUpdate();
 
     useEffect(() => {
-        setShouldShowRealName(advertiserInfo?.show_name || false);
-    }, [advertiserInfo?.show_name]);
+        setShouldShowRealName(advertiserInfo?.should_show_name || false);
+    }, [advertiserInfo?.should_show_name]);
 
     const onToggleShowRealName = () => {
         advertiserUpdate({

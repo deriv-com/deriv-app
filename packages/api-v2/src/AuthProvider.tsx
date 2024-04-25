@@ -9,6 +9,7 @@ import { TSocketResponseData } from '../types';
 type AuthContextType = {
     loginIDKey?: string;
     data: TSocketResponseData<'authorize'> | null | undefined;
+    loginid: string | null;
     switchAccount: (loginid: string, forceRefresh?: boolean) => Promise<void>;
     isLoading: boolean;
     isSuccess: boolean;
@@ -208,8 +209,9 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             isFetching,
             isSuccess: isSuccess && !isLoading,
             error: isError,
+            loginid,
         };
-    }, [data, switchAccount, refetch, isLoading, isError, isFetching, isSuccess]);
+    }, [data, switchAccount, refetch, isLoading, isError, isFetching, isSuccess, loginid]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

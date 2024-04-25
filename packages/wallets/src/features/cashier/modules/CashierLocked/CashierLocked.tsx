@@ -1,7 +1,7 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
 import { useAccountStatus, useActiveWalletAccount, useAuthentication, useCashierValidation } from '@deriv/api-v2';
-import { WalletsActionScreen } from '../../../../components';
+import { Loader, WalletsActionScreen } from '../../../../components';
 import getCashierLockedDesc, { getSystemMaintenanceContent } from './CashierLockedContent';
 import './CashierLocked.scss';
 
@@ -14,7 +14,7 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: authentication } = useAuthentication();
     const { data: cashierValidation } = useCashierValidation();
-    const { data: status, isFetching: isFetchingAccountStatus } = useAccountStatus();
+    const { data: accountStatus } = useAccountStatus();
 
     const currency = activeWallet?.currency || 'USD';
     const isVirtual = activeWallet?.is_virtual;
@@ -36,9 +36,9 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
     const noResidence = cashierValidation?.no_residence;
 
     const isSystemMaintenance = cashierValidation?.system_maintenance && !isVirtual;
-    const isCashierLocked = !isFetchingAccountStatus && status?.is_cashier_locked && !isVirtual;
-    const isDepositLocked = status?.is_deposit_locked && module === 'deposit';
-    const isWithdrawalLocked = status?.is_withdrawal_locked && module === 'withdrawal';
+    const isCashierLocked = accountStatus?.is_cashier_locked && !isVirtual;
+    const isDepositLocked = accountStatus?.is_deposit_locked && module === 'deposit';
+    const isWithdrawalLocked = accountStatus?.is_withdrawal_locked && module === 'withdrawal';
 
     const systemMaintenanceContent = getSystemMaintenanceContent({
         currency,
@@ -64,6 +64,10 @@ const CashierLocked: React.FC<TCashierLockedProps> = ({ children, module }) => {
         poaNeedsVerification,
         poiNeedsVerification,
     });
+
+    if (!accountStatus) {
+        return <Loader />;
+    }
 
     if (isSystemMaintenance && systemMaintenanceContent) {
         return (

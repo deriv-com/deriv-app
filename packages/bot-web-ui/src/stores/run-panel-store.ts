@@ -1,4 +1,4 @@
-import { computed, makeObservable, observable, reaction, runInAction } from 'mobx';
+import { action, computed, makeObservable, observable, reaction, runInAction } from 'mobx';
 import { Buy, ProposalOpenContract } from '@deriv/api-types';
 import { ErrorTypes, MessageTypes, observer, unrecoverable_errors } from '@deriv/bot-skeleton';
 import { isSafari, mobileOSDetect, routes } from '@deriv/shared';
@@ -105,6 +105,7 @@ export default class RunPanelStore implements IRunPanelStore {
             is_stop_button_visible: computed,
             is_stop_button_disabled: computed,
             is_clear_stat_disabled: computed,
+            toggleDrawer: action,
         });
 
         this.root_store = root_store;

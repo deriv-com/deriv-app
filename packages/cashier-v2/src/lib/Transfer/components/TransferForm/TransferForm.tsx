@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { Button, InlineMessage, Text } from '@deriv-com/ui';
@@ -26,15 +26,12 @@ const TransferForm = () => {
         toAmount: '',
     };
 
-    const getDailyTransferCountLimit = useCallback(
-        (fromAccount: TTransferFormikContext['fromAccount']) => {
-            if (accountLimits?.daily_transfers && fromAccount?.account_type)
-                return fromAccount?.account_type === 'binary'
-                    ? (accountLimits?.daily_transfers.internal as TAccountLimits)?.available
-                    : (accountLimits?.daily_transfers[fromAccount?.account_type] as TAccountLimits).available;
-        },
-        [accountLimits?.daily_transfers]
-    );
+    const getDailyTransferCountLimit = (fromAccount: TTransferFormikContext['fromAccount']) => {
+        if (accountLimits?.daily_transfers && fromAccount?.account_type)
+            return fromAccount?.account_type === 'binary'
+                ? (accountLimits?.daily_transfers.internal as TAccountLimits)?.available
+                : (accountLimits?.daily_transfers[fromAccount?.account_type] as TAccountLimits).available;
+    };
 
     return (
         <Formik

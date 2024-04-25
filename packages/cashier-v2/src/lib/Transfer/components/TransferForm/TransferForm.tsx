@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Formik } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { Button, InlineMessage, Text } from '@deriv-com/ui';
@@ -6,6 +6,11 @@ import { useTransfer } from '../../provider';
 import { TTransferFormikContext } from '../../types';
 import { TransferAccountSelection, TransferCryptoFiatAmountConverter } from './components';
 import styles from './TransferForm.module.scss';
+
+type TAccountLimits = {
+    allowed: number;
+    available: number;
+};
 
 const TransferForm = () => {
     const history = useHistory();
@@ -21,6 +26,16 @@ const TransferForm = () => {
         toAmount: '',
     };
 
+    const getDailyTransferCountLimit = useCallback(
+        (fromAccount: TTransferFormikContext['fromAccount']) => {
+            if (accountLimits?.daily_transfers && fromAccount?.account_type)
+                return fromAccount?.account_type === 'binary'
+                    ? (accountLimits?.daily_transfers.internal as TAccountLimits)?.available
+                    : (accountLimits?.daily_transfers[fromAccount?.account_type] as TAccountLimits).available;
+        },
+        [accountLimits?.daily_transfers]
+    );
+
     return (
         <Formik
             initialValues={initialValues}
@@ -30,30 +45,23 @@ const TransferForm = () => {
             validationSchema={transferValidationSchema}
         >
             {({ errors, isSubmitting, values }) => {
-                const getDailyTransferCountLimit = () => {
-                    if (accountLimits?.daily_transfers && values.fromAccount?.account_type)
-                        return values.fromAccount?.account_type === 'binary'
-                            ? accountLimits?.daily_transfers.internal.available
-                            : accountLimits?.daily_transfers[values.fromAccount?.account_type].available;
-                };
-
                 const isTransferDisabled =
                     !!errors.fromAmount ||
                     !!errors.toAmount ||
                     !Number(values.fromAmount) ||
-                    !getDailyTransferCountLimit();
+                    !getDailyTransferCountLimit(values.fromAccount);
 
                 return (
                     <div className={styles.container}>
                         <Text className={styles.title} weight='bold'>
                             Transfer between your accounts in Deriv
                         </Text>
-                        {!getDailyTransferCountLimit() && (
+                        {!getDailyTransferCountLimit(values.fromAccount) && (
                             <InlineMessage type='filled' variant='warning'>
                                 You have reached the maximum daily transfers. Please try again tomorrow.
                             </InlineMessage>
                         )}
-                        <TransferAccountSelection fromAccountLimit={getDailyTransferCountLimit()} />
+                        <TransferAccountSelection fromAccountLimit={getDailyTransferCountLimit(values.fromAccount)} />
                         <TransferCryptoFiatAmountConverter />
                         <div className={styles['button-group']}>
                             <Button

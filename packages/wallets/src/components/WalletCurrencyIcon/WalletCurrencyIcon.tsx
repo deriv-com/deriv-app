@@ -21,10 +21,13 @@ import {
 import CurrencyDemoRoundedIcon from '../../public/images/demo-logo.svg';
 import { THooks } from '../../types';
 
-type TIconTypes = ComponentType<React.SVGAttributes<SVGElement>> | IconTypes;
+type TIconTypes = Record<
+    THooks.WalletAccountsList['wallet_currency_type'],
+    ComponentType<React.SVGAttributes<SVGElement>> | IconTypes
+>;
 
 // TODO: Replace DEMO currency icon with @deriv/quill-icons once available
-export const roundedIcons: Record<THooks.WalletAccountsList['wallet_currency_type'], TIconTypes> = {
+export const roundedIcons: TIconTypes = {
     AUD: CurrencyAudIcon,
     EUR: CurrencyEurIcon,
     GBP: CurrencyGbpIcon,
@@ -39,7 +42,7 @@ export const roundedIcons: Record<THooks.WalletAccountsList['wallet_currency_typ
     DEMO: CurrencyDemoRoundedIcon,
 };
 
-export const defaultIcons: Record<THooks.WalletAccountsList['wallet_currency_type'], TIconTypes> = {
+export const defaultIcons: TIconTypes = {
     BTC: PaymentMethodBitcoinBrandIcon,
     DEMO: PaymentMethodDerivDemoBrandDarkIcon,
     ETH: PaymentMethodEthereumBrandIcon,

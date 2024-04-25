@@ -163,9 +163,7 @@ const ReviewMessageForMT5 = ({
     } else if (jurisdiction_selected_shortcode === JURISDICTION.LABUAN) {
         return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
     } else if (jurisdiction_selected_shortcode === JURISDICTION.MALTA_INVEST) {
-        return (
-            <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
-        );
+        return <Localize i18n_default_text='Enable trading with your first transfer.' />;
     }
     return null;
 };
@@ -834,6 +832,13 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         if (category === CATEGORY.REAL) {
             return (
                 <React.Fragment>
+                    <Localize
+                        i18n_default_text='Your Deriv MT5 {{type}} account is ready. '
+                        values={{
+                            type: accountTypes(),
+                        }}
+                        components={[<br key={0} />]}
+                    />
                     {platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER ? (
                         <Localize
                             i18n_default_text='Congratulations, you have successfully created your <0/>{{category}} {{platform}} {{type}} account. To start trading, <1 />transfer funds <2 />from your Deriv account into this account.'
@@ -880,11 +885,9 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
         return (
             <Localize
-                i18n_default_text='Congratulations, you have successfully created your <0/>{{category}} {{platform}} {{type}} account. '
+                i18n_default_text='Your demo {{type}} account is ready.'
                 values={{
                     type: accountTypes(),
-                    platform: is_eu_user ? '' : getCFDPlatformLabel(platform),
-                    category: category_label,
                 }}
                 components={[<br key={0} />]}
             />

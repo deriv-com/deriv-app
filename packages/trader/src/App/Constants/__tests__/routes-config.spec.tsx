@@ -2,6 +2,7 @@ import React, { ComponentProps } from 'react';
 import { Router } from 'react-router';
 import { createMemoryHistory } from 'history';
 import { mockStore } from '@deriv/stores';
+import { routes as routesList } from '@deriv/shared';
 import { render, screen, waitFor } from '@testing-library/react';
 import BinaryRoutes from 'App/Components/Routes';
 import TraderProviders from '../../../trader-providers';
@@ -49,7 +50,7 @@ describe('Routes Config', () => {
 
     it('should return routes with contract route', async () => {
         const routes = getRoutesConfig();
-        expect(routes?.[0]?.path).toBe('/contract/:contract_id');
+        expect(routes?.[0]?.path).toBe(routesList.contract);
         expect(routes?.[0]?.getTitle?.()).toBe('Contract Details');
         expect(routes?.[0]?.is_authenticated).toBe(true);
         const history = createMemoryHistory();
@@ -62,11 +63,11 @@ describe('Routes Config', () => {
 
     it('should return routes with trade route', async () => {
         const routes = getRoutesConfig();
-        expect(routes?.[1]?.path).toBe('/dtrader');
+        expect(routes?.[1]?.path).toBe(routesList.trade);
         expect(routes?.[1]?.getTitle?.()).toBe('Trader');
         expect(routes?.[1]?.exact).toBe(true);
         const history = createMemoryHistory();
-        history.push('/dtrader');
+        history.push(routesList.trade);
         render(<MockBinaryRoutes store={mockStore({})} history={history} is_logged_in is_logging_in />);
         await waitFor(() => {
             expect(screen.getByText('Trader')).toBeInTheDocument();

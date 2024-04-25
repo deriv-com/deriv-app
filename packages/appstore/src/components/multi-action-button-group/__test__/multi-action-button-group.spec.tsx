@@ -69,6 +69,6 @@ describe('Test Cases for Multi Action Button Group:', () => {
                 <MultiActionButtonGroup {...mock_props} is_real />
             </Router>
         );
-        expect(screen.getByRole('link')).toHaveAttribute('href', '/dtrader');
+        expect(screen.getByRole('link')).toHaveAttribute('href', routes.trade);
     });
 });

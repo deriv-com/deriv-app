@@ -9,7 +9,15 @@ export const DemoMessage = ({ className }: { className?: string }) => {
     const hasRealAccount = authorizeData?.account_list?.some(account => account.is_virtual === 0);
     return (
         <IconWithMessage
-            actionButton={<Button>{hasRealAccount ? 'Switch to real account' : 'Add a real account'}</Button>}
+            actionButton={
+                <Button
+                    onClick={() => {
+                        // [TODO]: Add action for switching to real account
+                    }}
+                >
+                    {hasRealAccount ? 'Switch to real account' : 'Add a real account'}
+                </Button>
+            }
             className={className}
             icon={<DerivLightIcPoaLockIcon width={128} />}
             title='This feature is not available for demo accounts.'

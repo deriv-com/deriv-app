@@ -40,6 +40,6 @@ export const AccountLimitsTable = ({ accountLimitValues }: { accountLimitValues:
         loadMoreFunction={() => {
             //[TODO]: Add load more function
         }}
-        rowRender={<RenderRow />}
+        rowRender={RenderRow}
     />
 );

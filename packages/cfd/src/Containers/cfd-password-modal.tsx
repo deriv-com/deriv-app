@@ -827,10 +827,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 break;
         }
 
-        const jurisdiction_label =
-            jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
-        const mt5_platform_label = jurisdiction_selected_shortcode !== JURISDICTION.MALTA_INVEST ? 'Deriv MT5' : '';
-
         const accountTypes = () => {
             if (platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER) {
                 return '';
@@ -839,49 +835,59 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         };
 
         if (category === CATEGORY.REAL) {
-            let platformName = '';
-            switch (platform) {
-                case CFD_PLATFORMS.MT5:
-                    platformName = mt5_platform_label;
-                    break;
-                default:
-                    platformName = 'Deriv X';
-                    break;
-            }
-
             return (
                 <React.Fragment>
-                    <Localize
-                        i18n_default_text='Your Deriv MT5 {{type}} account is ready. '
-                        values={{
-                            type: accountTypes(),
-                        }}
-                        components={[<br key={0} />]}
-                    />
                     {platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER ? (
                         <Localize
-                            i18n_default_text='To start trading, <0 />transfer funds <1 />from your Deriv account into this account.'
+                            i18n_default_text='Congratulations, you have successfully created your <0/>{{category}} {{platform}} {{type}} account. To start trading, <1 />transfer funds <2 />from your Deriv account into this account.'
+                            values={{
+                                type: accountTypes(),
+                                platform: getCFDPlatformLabel(platform),
+                                category: category_label,
+                            }}
                             components={[
-                                platform === CFD_PLATFORMS.CTRADER && <br key={0} />,
-                                platform === CFD_PLATFORMS.DXTRADE && <br key={1} />,
+                                <br key={0} />,
+                                platform === CFD_PLATFORMS.CTRADER && <br key={1} />,
+                                platform === CFD_PLATFORMS.DXTRADE && <br key={2} />,
                             ]}
                         />
                     ) : (
-                        <ReviewMessageForMT5
-                            is_selected_mt5_verified={is_selected_mt5_verified}
-                            jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                            manual_status={manual_status}
-                        />
+                        <>
+                            <Localize
+                                i18n_default_text='Your Deriv MT5 {{type}} account is ready. '
+                                values={{
+                                    type: accountTypes(),
+                                }}
+                            />
+                            <ReviewMessageForMT5
+                                is_selected_mt5_verified={is_selected_mt5_verified}
+                                jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                                manual_status={manual_status}
+                            />
+                        </>
                     )}
                 </React.Fragment>
             );
         }
 
+        if (platform === CFD_PLATFORMS.MT5) {
+            return (
+                <Localize
+                    i18n_default_text='Your demo {{type}} account is ready.'
+                    values={{
+                        type: accountTypes(),
+                    }}
+                />
+            );
+        }
+
         return (
             <Localize
-                i18n_default_text='Your demo {{type}} account is ready.'
+                i18n_default_text='Congratulations, you have successfully created your <0/>{{category}} {{platform}} {{type}} account. '
                 values={{
                     type: accountTypes(),
+                    platform: is_eu_user ? '' : getCFDPlatformLabel(platform),
+                    category: category_label,
                 }}
                 components={[<br key={0} />]}
             />

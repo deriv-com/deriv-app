@@ -20,6 +20,41 @@ export type TPOIStatus = Exclude<
 export type TGetSettingsResponse = ReturnType<typeof useSettings>['data'];
 
 export type TCurrency = CurrencyConstants.Currency;
+export type TAuthStatusCodes = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+
+export type TPaymentMethod = keyof ReturnType<typeof getPaymentMethodsConfig>;
+
+export type TPaymentMethodIdentifier = typeof PAYMENT_METHOD_IDENTIFIER[keyof typeof PAYMENT_METHOD_IDENTIFIER];
+
+export type TPaymentMethodInfo = {
+    documentsRequired?: number;
+    identifier: TPaymentMethodIdentifier | 'none';
+    inputLabel: string | null;
+    isGenericPM: boolean;
+    items: Exclude<
+        Exclude<
+            Exclude<ReturnType<typeof useGetAccountStatus>['data'], undefined>['authentication'],
+            undefined
+        >['ownership'],
+        undefined
+    >['requests'];
+    paymentMethod: string;
+};
+
+export type TFile = File & { file: Blob };
+
+export type TPaymentMethodData = Record<TPaymentMethod, TPaymentMethodInfo>;
+
+export type TProofOfOwnershipData = {
+    documentsRequired: number;
+    files: TFile[];
+    id: number;
+    identifierType: TPaymentMethodIdentifier | 'none';
+    isGenericPM: boolean;
+    paymentMethodIdentifier: string;
+};
+
+export type TProofOfOwnershipFormValue = Record<TPaymentMethod, Record<number | string, TProofOfOwnershipData>>;
 export type TPOIService = typeof POI_SERVICE[keyof typeof POI_SERVICE];
 
 export type TIDVErrorStatusCode = typeof IDV_ERROR_CODES[keyof typeof IDV_ERROR_CODES]['code'];

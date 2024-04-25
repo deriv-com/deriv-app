@@ -832,13 +832,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         if (category === CATEGORY.REAL) {
             return (
                 <React.Fragment>
-                    <Localize
-                        i18n_default_text='Your Deriv MT5 {{type}} account is ready. '
-                        values={{
-                            type: accountTypes(),
-                        }}
-                        components={[<br key={0} />]}
-                    />
                     {platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER ? (
                         <Localize
                             i18n_default_text='Congratulations, you have successfully created your <0/>{{category}} {{platform}} {{type}} account. To start trading, <1 />transfer funds <2 />from your Deriv account into this account.'
@@ -854,7 +847,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                             ]}
                         />
                     ) : (
-                        <React.Fragment>
+                        <>
                             <Localize
                                 i18n_default_text='Your Deriv MT5 {{type}} account is ready. '
                                 values={{
@@ -866,7 +859,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                                 manual_status={manual_status}
                             />
-                        </React.Fragment>
+                        </>
                     )}
                 </React.Fragment>
             );
@@ -885,9 +878,11 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
         return (
             <Localize
-                i18n_default_text='Your demo {{type}} account is ready.'
+                i18n_default_text='Congratulations, you have successfully created your <0/>{{category}} {{platform}} {{type}} account. '
                 values={{
                     type: accountTypes(),
+                    platform: is_eu_user ? '' : getCFDPlatformLabel(platform),
+                    category: category_label,
                 }}
                 components={[<br key={0} />]}
             />

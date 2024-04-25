@@ -33,16 +33,10 @@ const TradersHub = observer(() => {
         is_mt5_allowed,
         has_active_real_account,
         website_status,
+        is_eu,
     } = client;
-    const {
-        selected_platform_type,
-        setTogglePlatformType,
-        is_tour_open,
-        content_flag,
-        is_eu_user,
-        no_CR_account,
-        no_MF_account,
-    } = traders_hub;
+    const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user, no_CR_account } =
+        traders_hub;
     const traders_hub_ref = React.useRef<HTMLDivElement>(null);
 
     const can_show_notify =
@@ -142,6 +136,8 @@ const TradersHub = observer(() => {
         defaultValue: false,
     });
 
+    const row_user = (content_flag !== ContentFlag.EU_REAL || content_flag !== ContentFlag.EU_DEMO) && !is_eu;
+
     return (
         <React.Fragment>
             <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop()}>
@@ -154,11 +150,11 @@ const TradersHub = observer(() => {
                     })}
                     ref={traders_hub_ref}
                 >
-                    {should_show_banner && ((no_CR_account && !is_eu_user) || (no_MF_account && is_eu_user)) ? (
+                    {should_show_banner && no_CR_account && row_user && is_landing_company_loaded && (
                         <Suspense fallback={<div />}>
                             <DerivRealAccountBanner />
                         </Suspense>
-                    ) : null}
+                    )}
 
                     <MainTitleBar />
                     <DesktopWrapper>{getOrderedPlatformSections(true)}</DesktopWrapper>

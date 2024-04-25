@@ -4,31 +4,18 @@ import { getUrlBase, Jurisdiction } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { Text, Button } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { useContentFlag } from '@deriv/hooks';
 
 const RealAccountCreationBanner = observer(() => {
     const {
         ui: { is_mobile },
     } = useStore();
 
-    const { client, traders_hub, ui } = useStore();
-    const { real_account_creation_unlock_date } = client;
-    const { setShouldShowCooldownModal, openRealAccountSignup } = ui;
-    const { is_real } = traders_hub;
-    const { is_eu_real, is_low_risk_cr_eu } = useContentFlag();
-    const eu_user = is_eu_real || is_low_risk_cr_eu;
+    const { ui } = useStore();
+    const { openRealAccountSignup } = ui;
     const device = is_mobile ? 'mobile' : 'desktop';
 
     const handleClick = () => {
-        if (is_real && eu_user) {
-            if (real_account_creation_unlock_date) {
-                setShouldShowCooldownModal(true);
-            } else {
-                openRealAccountSignup(Jurisdiction.MALTA_INVEST);
-            }
-        } else {
-            openRealAccountSignup(Jurisdiction.SVG);
-        }
+        openRealAccountSignup(Jurisdiction.SVG);
     };
 
     return (

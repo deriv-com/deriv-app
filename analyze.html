@@ -41,19 +41,8 @@
         <div id="main-content">
             <nav class="navbar navbar-expand-lg">
                 <a class="navbar-brand" href="#">Bundle Analyser</a>
-                <button
-                    class="navbar-toggler"
-                    type="button"
-                    data-toggle="collapse"
-                    data-target="#navbarNavDropdown"
-                    aria-controls="navbarNavDropdown"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
-                >
-                    <span class="navbar-toggler-icon"></span>
-                </button>
 
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <div class="navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
                             <a
@@ -61,12 +50,12 @@
                                 href="#"
                                 id="navbarDropdownMenuLink"
                                 role="button"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
+                                data-bs-toggle="dropdown"
                                 aria-expanded="false"
                             >
                                 Core
                             </a>
+
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="#" onclick="updateIframe('account-v2')">account-v2</a>
                                 <a class="dropdown-item" href="#" onclick="updateIframe('account')">account</a>
@@ -91,7 +80,7 @@
             </nav>
             <iframe id="frame" src="./packages/core/analyzed.html" style="width: 100%; border: none"></iframe>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script>
             async function updateIframe(packageName) {
                 const iframeSrc = './packages/' + packageName + '/analyzed.html';

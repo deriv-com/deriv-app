@@ -10,6 +10,7 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import { useDropzone } from 'react-dropzone';
+import { DerivLightIcCloudUploadIcon } from '@deriv/quill-icons';
 import CloseIcon from '../../public/images/close-icon.svg';
 import DropzoneFrame from '../../public/images/dropzone-frame.svg';
 import { IconButton, WalletButton, WalletText } from '../Base';
@@ -147,7 +148,8 @@ const Dropzone: React.FC<TProps> = ({
                                         onClick={removeFile}
                                         size='sm'
                                     />
-                                    <WalletText align='center' size='xs' weight='bold'>
+                                    <DerivLightIcCloudUploadIcon height={50} width={50} />
+                                    <WalletText align='center' size='sm'>
                                         {file.name.length > 30 ? `${file.name.slice(0, 30)}....pdf` : file.name}
                                     </WalletText>
                                 </div>

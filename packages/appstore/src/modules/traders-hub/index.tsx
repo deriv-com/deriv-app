@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { useContentFlag, useGrowthbookFeatureFlag } from '@deriv/hooks';

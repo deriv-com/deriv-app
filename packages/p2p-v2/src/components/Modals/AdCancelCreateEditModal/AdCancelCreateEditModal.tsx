@@ -36,6 +36,7 @@ const AdCancelCreateEditModal = ({ isModalOpen, onRequestClose }: TAdCancelCreat
             </Modal.Body>
             <Modal.Footer className='p2p-v2-ad-cancel-create-edit-modal__footer' hideBorder>
                 <Button
+                    className='border-2'
                     color='black'
                     onClick={() => history.push(MY_ADS_URL)}
                     size='lg'

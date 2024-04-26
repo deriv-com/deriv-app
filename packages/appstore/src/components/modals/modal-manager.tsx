@@ -13,11 +13,6 @@ const RealWalletsUpgrade = makeLazyLoader(
     () => <Loading />
 )();
 
-const MT5AccountTypeModal = makeLazyLoader(
-    () => moduleLoader(() => import(/* webpackChunkName: "modal_account-type-modal" */ './account-type-modal')),
-    () => <Loading />
-)();
-
 const FailedVerificationModal = makeLazyLoader(
     () =>
         moduleLoader(
@@ -334,7 +329,6 @@ const ModalManager = () => {
                     verification_code={trading_platform_dxtrade_password_reset || trading_platform_mt5_password_reset}
                 />
             )}
-            {is_account_type_modal_visible && <MT5AccountTypeModal />}
             {(is_mt5_migration_modal_open || !!mt5_migration_error) && <MT5MigrationModal />}
             {is_regulators_compare_modal_visible && <RegulatorsCompareModal />}
             {is_account_transfer_modal_open && (

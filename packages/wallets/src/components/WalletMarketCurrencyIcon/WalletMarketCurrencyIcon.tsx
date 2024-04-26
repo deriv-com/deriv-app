@@ -1,30 +1,33 @@
-import React, { ComponentType, SVGAttributes } from 'react';
-import CTraderIcon from '../../public/images/ctrader.svg';
-import DerivAppIcon from '../../public/images/deriv-apps.svg';
-import DerivXIcon from '../../public/images/derivx.svg';
-import DerivedMT5Icon from '../../public/images/mt5-derived.svg';
-import FinancialMT5Icon from '../../public/images/mt5-financial.svg';
-import SwapFreeMT5Icon from '../../public/images/mt5-swap-free.svg';
+import React from 'react';
+import {
+    AccountsDerivAccountLightIcon,
+    AccountsDerivCtraderIcon,
+    AccountsDerivXIcon,
+    AccountsDmt5DerivedIcon,
+    AccountsDmt5FinancialIcon,
+    AccountsDmt5SwfIcon,
+    IconTypes,
+} from '@deriv/quill-icons';
+import { MARKET_TYPE } from '../../features/cfd/constants';
 import { THooks, TPlatforms } from '../../types';
-import { WalletCardIcon } from '../WalletCardIcon';
-import { WalletGradientBackground } from '../WalletGradientBackground';
+import { WalletCurrencyCard } from '../WalletCurrencyCard';
 import './WalletMarketCurrencyIcon.scss';
 
-const marketTypeToIconMapper: Record<string, ComponentType<SVGAttributes<SVGElement>>> = {
-    all: SwapFreeMT5Icon,
-    financial: FinancialMT5Icon,
-    synthetic: DerivedMT5Icon,
+const mt5MarketTypeIcon: Record<string, IconTypes> = {
+    all: AccountsDmt5SwfIcon,
+    financial: AccountsDmt5FinancialIcon,
+    synthetic: AccountsDmt5DerivedIcon,
 };
 
-const marketTypeToPlatformIconMapper: Record<string, ComponentType<SVGAttributes<SVGElement>>> = {
-    ctrader: CTraderIcon,
-    dxtrade: DerivXIcon,
+const cfdPlatformIcon: Record<string, IconTypes> = {
+    ctrader: AccountsDerivCtraderIcon,
+    dxtrade: AccountsDerivXIcon,
 };
 
 type TWalletMarketCurrencyIconProps = {
     currency: Exclude<THooks.ActiveWalletAccount['currency'], undefined>;
     isDemo: THooks.ActiveWalletAccount['is_virtual'];
-    marketType?: THooks.SortedMT5Accounts['market_type'];
+    marketType?: keyof typeof mt5MarketTypeIcon;
     platform?: TPlatforms.All;
 };
 
@@ -34,27 +37,29 @@ const WalletMarketCurrencyIcon: React.FC<TWalletMarketCurrencyIconProps> = ({
     marketType,
     platform,
 }) => {
-    let MarketTypeIcon: ComponentType<SVGAttributes<SVGElement>>;
+    let MarketTypeIcon;
     if (marketType && platform) {
         MarketTypeIcon =
-            marketType === 'all' && Object.keys(marketTypeToPlatformIconMapper).includes(platform)
-                ? marketTypeToPlatformIconMapper[platform]
-                : marketTypeToIconMapper[marketType];
+            marketType === MARKET_TYPE.ALL && platform in cfdPlatformIcon
+                ? cfdPlatformIcon[platform]
+                : mt5MarketTypeIcon[marketType];
     } else {
-        MarketTypeIcon = DerivAppIcon;
+        MarketTypeIcon = AccountsDerivAccountLightIcon;
     }
 
     return (
         <div className='wallets-market-currency-icon'>
-            <MarketTypeIcon className='wallets-market-currency-icon__after' />
-            <div
-                className={`wallets-market-currency-icon__before wallets-market-currency-icon__before-${
-                    isDemo ? 'demo' : 'real'
-                }`}
-            >
-                <WalletGradientBackground currency={currency} hasShine isDemo={isDemo} type='card'>
-                    <WalletCardIcon device='desktop' size='lg' type={isDemo ? 'Demo' : currency} />
-                </WalletGradientBackground>
+            <div className='wallets-market-currency-icon__container'>
+                <MarketTypeIcon className='wallets-market-currency-icon__market-icon' height={24} width={24} />
+                <div
+                    className={`wallets-market-currency-icon__before wallets-market-currency-icon__before-${
+                        isDemo ? 'demo' : 'real'
+                    }`}
+                >
+                    <div className='wallets-market-currency-icon__currency-icon'>
+                        <WalletCurrencyCard currency={currency} isDemo={isDemo} size='xs' />
+                    </div>
+                </div>
             </div>
         </div>
     );

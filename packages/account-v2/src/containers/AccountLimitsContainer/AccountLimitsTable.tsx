@@ -24,7 +24,7 @@ const RenderRow = ({ category, hintInfo, isLessProminent, title, value }: TAccou
     const { isMobile } = useDevice();
     return (
         <div className='grid grid-flow-col justify-between'>
-            <div className='flex gap-8 sm:flex-col sm:gap-4'>
+            <div className='flex flex-col gap-4 md:flex-row md:gap-8'>
                 {title && (
                     <Text
                         className={category === CATEGORY.submarket ? 'px-16' : ''}

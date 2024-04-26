@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { routes } from '@deriv/shared';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import { getStatusContent, PASSKEY_STATUS_CODES } from '../../passkeys-configs';
 import PasskeysStatusContainer from '../passkeys-status-container';
 
@@ -22,15 +23,19 @@ describe('PasskeysStatusContainer', () => {
         jest.clearAllMocks();
     });
 
+    const mock_store = mockStore({});
+
     // TODO: add more checks for renaming and verifying flows
     it('renders correctly for each status code', () => {
         Object.values(PASSKEY_STATUS_CODES).forEach(status => {
             const { unmount, container } = render(
-                <PasskeysStatusContainer
-                    createPasskey={createPasskeyMock}
-                    passkey_status={status}
-                    setPasskeyStatus={setPasskeyStatusMock}
-                />
+                <StoreProvider store={mock_store}>
+                    <PasskeysStatusContainer
+                        createPasskey={createPasskeyMock}
+                        passkey_status={status}
+                        setPasskeyStatus={setPasskeyStatusMock}
+                    />
+                </StoreProvider>
             );
             if (status) {
                 const content = getStatusContent(status);

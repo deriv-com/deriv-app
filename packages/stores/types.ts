@@ -466,6 +466,7 @@ type TClientStore = {
     is_single_currency: boolean;
     is_social_signup: boolean;
     has_residence: boolean;
+    has_wallet: boolean;
     is_authorize: boolean;
     is_dxtrade_password_not_set: boolean;
     is_financial_account: boolean;

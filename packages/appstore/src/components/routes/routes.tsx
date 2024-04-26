@@ -4,11 +4,11 @@ import { useFeatureFlags /*useWalletsList*/ } from '@deriv/hooks';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
-import Onboarding from 'Modules/onboarding';
-import TradersHub from 'Modules/traders-hub';
 import { Switch, useHistory } from 'react-router-dom';
 import RouteWithSubroutes from './route-with-sub-routes.jsx';
 
+const Onboarding = React.lazy(() => import(/* webpackChunkName: "modules-onboarding" */ 'Modules/onboarding'));
+const TradersHub = React.lazy(() => import(/* webpackChunkName: "modules-traders-hub" */ 'Modules/traders-hub'));
 const TradersHubLoggedOut = React.lazy(
     () => import(/* webpackChunkName: "modules-traders-hub-logged-out" */ 'Modules/traders-hub-logged-out')
 );

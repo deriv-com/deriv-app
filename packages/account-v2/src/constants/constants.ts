@@ -28,3 +28,9 @@ export const POI_SUBMISSION_STATUS = {
     selecting: 'selecting',
     submitting: 'submitting',
 } as const;
+
+export const EXTERNAL_LINKS = {
+    astroPayURL: 'https://app.astropay.com/profile',
+    onlinenairaBankURL: 'https://onlinenaira.com/members/bank.htm',
+    onlinenairaProfileURL: 'https://onlinenaira.com/members/index.htm',
+} as const;

@@ -28,6 +28,7 @@ const AdFormController = ({
     return (
         <div className='p2p-v2-ad-form-controller'>
             <Button
+                className='border-2'
                 color='black'
                 onClick={() => (onCancel ? onCancel() : goToPreviousStep())}
                 size='lg'

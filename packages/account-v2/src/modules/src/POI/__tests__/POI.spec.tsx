@@ -2,6 +2,7 @@ import React from 'react';
 import { useKycAuthStatus, useResidenceList } from '@deriv/api-v2';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { AUTH_STATUS_CODES, POI_SERVICE } from '../../../../constants';
 import { usePOIInfo } from '../../../../hooks';
 import { ProofOfIdentity } from '../POI';
 
@@ -9,11 +10,11 @@ const mockKycAuthStatusResponse = {
     isLoading: false,
     kyc_auth_status: {
         address: {
-            status: 'none',
+            status: AUTH_STATUS_CODES.NONE,
         },
         identity: {
             service: '',
-            status: 'none',
+            status: AUTH_STATUS_CODES.NONE,
         },
     },
 };
@@ -60,11 +61,11 @@ describe('POI', () => {
             isLoading: false,
             kyc_auth_status: {
                 address: {
-                    status: 'none',
+                    status: AUTH_STATUS_CODES.NONE,
                 },
                 identity: {
-                    service: 'idv',
-                    status: 'verified',
+                    service: POI_SERVICE.idv,
+                    status: AUTH_STATUS_CODES.VERIFIED,
                 },
             },
         });
@@ -78,11 +79,11 @@ describe('POI', () => {
             isLoading: false,
             kyc_auth_status: {
                 address: {
-                    status: 'none',
+                    status: AUTH_STATUS_CODES.NONE,
                 },
                 identity: {
-                    service: 'onfido',
-                    status: 'pending',
+                    service: POI_SERVICE.onfido,
+                    status: AUTH_STATUS_CODES.PENDING,
                 },
             },
         });
@@ -93,16 +94,16 @@ describe('POI', () => {
         ).toBeInTheDocument();
     });
 
-    it('should render CountrySelector when component is mounted', async () => {
+    it('should render IDV when the country supporting IDV is selected', async () => {
         (useKycAuthStatus as jest.Mock).mockReturnValue({
             isLoading: false,
             kyc_auth_status: {
                 address: {
-                    status: 'none',
+                    status: AUTH_STATUS_CODES.NONE,
                 },
                 identity: {
-                    service: 'onfido',
-                    status: 'none',
+                    service: POI_SERVICE.onfido,
+                    status: AUTH_STATUS_CODES.NONE,
                 },
             },
         });
@@ -124,5 +125,26 @@ describe('POI', () => {
         });
 
         expect(screen.getByText('Identity verification')).toBeInTheDocument();
+    });
+
+    it('should render CountrySelector with an error messag when status is rejected with Error code is expired', () => {
+        (useKycAuthStatus as jest.Mock).mockReturnValueOnce({
+            isLoading: false,
+            kyc_auth_status: {
+                address: {
+                    status: AUTH_STATUS_CODES.NONE,
+                },
+                identity: {
+                    service: POI_SERVICE.idv,
+                    status: AUTH_STATUS_CODES.EXPIRED,
+                },
+            },
+        });
+        (useResidenceList as jest.Mock).mockReturnValueOnce({ data: [{ text: 'Country 1', value: 'country1' }] });
+
+        render(<ProofOfIdentity />);
+
+        expect(screen.getByText('In which country was your document issued?')).toBeInTheDocument();
+        expect(screen.getByText('Your identity document has expired.')).toBeInTheDocument();
     });
 });

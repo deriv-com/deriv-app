@@ -4,7 +4,7 @@ import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { THooks } from '../../types';
 import { WalletDropdown, WalletText } from '../Base';
-import { WalletCardIcon } from '../WalletCardIcon';
+import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import './WalletListCardDropdown.scss';
 
 const WalletListCardDropdown = () => {
@@ -39,11 +39,11 @@ const WalletListCardDropdown = () => {
                     list={wallets?.map(wallet => ({
                         listItem: (
                             <div className='wallets-list-card-dropdown__item'>
-                                <WalletCardIcon
-                                    device='desktop'
-                                    size='md'
-                                    type={wallet.wallet_currency_type}
-                                    variant='circular'
+                                <WalletCurrencyIcon
+                                    currency={
+                                        wallet.wallet_currency_type === 'Demo' ? 'DEMO' : wallet.currency ?? 'USD'
+                                    }
+                                    rounded
                                 />
                                 <div className='wallets-list-card-dropdown__item-content'>
                                     <WalletText size='2xs'>

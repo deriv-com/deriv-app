@@ -15,7 +15,7 @@ const useAPI = () => {
     const send = useCallback(
         async <T extends TSocketEndpointNames | TSocketPaginateableEndpointNames = TSocketEndpointNames>(
             name: T,
-            payload?: TSocketRequestPayload<T>
+            payload?: TSocketRequestPayload<T>['payload']
         ): Promise<TSocketResponseData<T>> => {
             const response = await derivAPI?.send({ [name]: 1, ...(payload || {}) });
 

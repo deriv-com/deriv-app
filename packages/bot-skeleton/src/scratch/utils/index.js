@@ -447,6 +447,10 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
         const block_canvas_rect = Blockly.derivWorkspace.svgBlockCanvas_?.getBoundingClientRect();
         if (window.innerHeight < 768) {
             scroll_x = (window.innerWidth + block_canvas_rect.width) / 2;
+            if (block_canvas_rect.width > 1000) {
+                // if the xml width is bigger than we adjust by 250
+                scroll_x = (window.innerWidth + block_canvas_rect.width) / 2 + 250;
+            }
         }
     }
     workspace.scrollbar.set(scroll_x, scroll_y);

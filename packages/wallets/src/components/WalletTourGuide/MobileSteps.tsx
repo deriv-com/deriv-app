@@ -22,7 +22,7 @@ const getMobileSteps = (
         placement: 'bottom',
         spotlightPadding: 0,
         styles: { spotlight: { borderRadius: '0.8rem' } },
-        target: `.wallets-carousel-content__container .wallets-card:nth-child(${walletNumber})`,
+        target: `.wallets-carousel-content__container .wallets-card__carousel-content-details:nth-child(${walletNumber})`,
         title: (
             <WalletText color='red' size='sm' weight='bold'>
                 Wallets

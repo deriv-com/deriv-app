@@ -159,9 +159,14 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     // load active wallet whenever its scrolled
     useEffect(() => {
         if (selectedLoginId) {
+            const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
+            const carouselIndex = walletsCarouselEmblaApi?.selectedScrollSnap();
+
             switchWalletAccount(selectedLoginId).then(() => {
-                const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
                 if (index !== -1) {
+                    //compare current carousel index with active wallet index and if they are different it means that
+                    //we start scrolling carousel and want to set isWalletSettled as false until the carousel settled
+                    if (Number(carouselIndex) >= 0 && index >= 0 && carouselIndex !== index) onWalletSettled?.(false);
                     walletsCarouselEmblaApi?.scrollTo(index);
                 }
             });

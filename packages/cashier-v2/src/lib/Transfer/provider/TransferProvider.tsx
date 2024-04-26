@@ -60,7 +60,7 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
     const { accounts: transferAccounts, activeAccount: transferActiveAccount } = useExtendedTransferAccounts(
         activeAccount,
         getConfig,
-        data?.accounts ?? accounts
+        accounts ?? data?.accounts
     );
 
     const [validationSchema, setValidationSchema] =

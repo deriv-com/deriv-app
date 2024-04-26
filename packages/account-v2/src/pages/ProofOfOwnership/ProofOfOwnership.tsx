@@ -20,8 +20,6 @@ export const ProofOfOwnership = () => {
         return <Loader isFullScreen />;
     }
 
-    console.log('paymentMethodData: ', paymentMethodData, ownershipStatus);
-
     if (Object.keys(paymentMethodData)?.length && status !== AUTH_STATUS_CODES.REJECTED) {
         return <POOForm paymentMethodData={paymentMethodData} />;
     }

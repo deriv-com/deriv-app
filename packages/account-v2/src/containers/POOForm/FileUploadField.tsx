@@ -1,10 +1,10 @@
-import React from 'react';
-import { Field, FieldProps, FormikErrors, useFormikContext } from 'formik';
-import { TFile, compressImageFiles } from 'src/utils';
-import { TPaymentMethod, TProofOfOwnershipFormValue } from 'src/types';
-import { Button, Input } from '@deriv-com/ui';
-import { StandaloneXmarkRegularIcon } from '@deriv/quill-icons';
+import React, { ChangeEvent, useRef, useState } from 'react';
 import clsx from 'clsx';
+import { Field, FieldProps, FormikErrors, useFormikContext } from 'formik';
+import { StandaloneXmarkRegularIcon } from '@deriv/quill-icons';
+import { Button, Input } from '@deriv-com/ui';
+import { TPaymentMethod, TProofOfOwnershipFormValue } from 'src/types';
+import { compressImageFiles, TFile } from 'src/utils';
 
 type TFileUploadFieldProps = {
     methodId: number | string;
@@ -14,8 +14,8 @@ type TFileUploadFieldProps = {
 
 export const FileUploaderField = ({ methodId, paymentMethod, subIndex }: TFileUploadFieldProps) => {
     const formik = useFormikContext<TProofOfOwnershipFormValue>();
-    const { values, setFieldValue, errors } = formik;
-    const [showBrowseButton, setShowBrowseButton] = React.useState(
+    const { errors, setFieldValue, values } = formik;
+    const [showBrowseButton, setShowBrowseButton] = useState(
         !values[paymentMethod]?.[methodId]?.files?.[subIndex as number]?.name
     );
 
@@ -24,12 +24,16 @@ export const FileUploaderField = ({ methodId, paymentMethod, subIndex }: TFileUp
     }
 
     // Create a reference to the hidden file input element
-    const hiddenInputFieldRef = React.useRef<HTMLInputElement>(null);
+    const hiddenInputFieldRef = useRef<HTMLInputElement>(null);
 
-    const handleChange = async (event: React.FormEvent<HTMLInputElement>) => {
+    const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
         event.nativeEvent.preventDefault();
         event.nativeEvent.stopPropagation();
         event.nativeEvent.stopImmediatePropagation();
+        // Check if files exist before proceeding
+        if (!event.target.files || event.target.files.length === 0) {
+            return;
+        }
         const fileToUpload = await compressImageFiles([event.target.files[0]]);
         const paymentFileData = [...(values[paymentMethod]?.[methodId]?.files ?? [])];
         paymentFileData[subIndex as number] = fileToUpload[0] as TFile;
@@ -92,45 +96,45 @@ export const FileUploaderField = ({ methodId, paymentMethod, subIndex }: TFileUp
 
     return (
         <Field name={paymentMethod}>
-            {({ field: { value }, form, meta: { error, touched } }: FieldProps<string>) => {
+            {({ field, form, meta }: FieldProps<string>) => {
                 const errorMessage = errors?.[paymentMethod]?.[methodId]?.files?.[subIndex as number];
                 return (
                     <div>
                         <input
-                            type='file'
                             accept='image/png, image/jpeg, image/jpg, application/pdf'
-                            ref={hiddenInputFieldRef}
-                            onChange={handleChange}
                             className='hidden-input'
                             name={paymentMethod}
+                            onChange={handleChange}
+                            ref={hiddenInputFieldRef}
+                            type='file'
                         />
                         <Input
-                            name='cardImgName'
-                            readOnly
+                            error={Boolean(errorMessage)}
                             label='Choose a photo'
                             maxLength={255}
                             message={
-                                Boolean(errorMessage)
+                                errorMessage
                                     ? errorMessage?.toString()
                                     : 'Accepted formats: pdf, jpeg, jpg, and png. Max file size: 8MB'
                             }
-                            value={values[paymentMethod]?.[methodId]?.files?.[subIndex as number]?.name ?? ''}
-                            type='text'
-                            error={Boolean(errorMessage)}
+                            name='cardImgName'
+                            readOnly
                             rightPlaceholder={
                                 <Button
                                     className={clsx({ hidden: showBrowseButton })}
+                                    color='white'
+                                    onClick={handleIconClick}
                                     size='md'
                                     type='button'
                                     variant='ghost'
-                                    color='white'
-                                    onClick={handleIconClick}
                                 >
                                     <StandaloneXmarkRegularIcon height={20} width={20} />
                                 </Button>
                             }
+                            type='text'
+                            value={values[paymentMethod]?.[methodId]?.files?.[subIndex as number]?.name ?? ''}
                         />
-                        <Button size='md' onClick={handleClick} type='button'>
+                        <Button onClick={handleClick} size='md' type='button'>
                             Browse
                         </Button>
                     </div>

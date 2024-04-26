@@ -132,7 +132,7 @@ export const readFiles = (
                     document_issuing_country: settings?.document_issuing_country,
                     documentFormat: getFormatFromMIME(f),
                     documentId: settings?.document_id,
-                    documentType: settings?.document_type ?? UPLOAD_FILE_TYPE.utility_bill,
+                    documentType: settings?.document_type ?? UPLOAD_FILE_TYPE.utilityBill,
                     expirationDate: settings?.expiration_date,
                     file_size: f.size,
                     filename: f.name,

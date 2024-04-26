@@ -5,9 +5,8 @@ import { StandaloneArrowUpFromBracketBoldIcon } from '@deriv/quill-icons';
 import { Button, Divider, Text, useDevice } from '@deriv-com/ui';
 import { FormDropDownField } from '../../components/FormFields';
 import { FormDocumentUploadField } from '../../components/FormFields/FormDocumentUploadField';
-// import { LeaveConfirm } from 'src/components/LeaveConfirm';x
 import { FormSubHeader } from '../../components/FormSubHeader';
-import { ProofOfIncomeUtils } from './ProofOfIncomeUtils';
+import { ProofOfIncomeUtils } from '../../utils/proofOfIncomeUtils';
 
 export const ProofOfIncomeForm = () => {
     const PoincDocumentsList = ProofOfIncomeUtils();

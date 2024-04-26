@@ -1,12 +1,4 @@
-// export const income_status_codes = {
-//     NONE: 'none',
-//     PENDING: 'pending',
-//     REJECTED: 'rejected',
-//     VERIFIED: 'verified',
-//     LOCKED: 'locked',
-// } as const;
-
-export const ProofOfIncomeUtils = () => {
+export const proofOfIncomeUtils = () => {
     return [
         { text: 'Tax return', value: 'tax_return' },
         { text: 'Employment contract', value: 'employment_contract' },

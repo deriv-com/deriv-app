@@ -1,6 +1,6 @@
-import { ProofOfIncomeForm } from 'src/containers/ProofOfIncome';
 import { ACCOUNT_V2_ROUTES } from '../constants/routes';
 import { PersonalDetailsForm } from '../containers/PersonalDetailsForm';
+import { ProofOfIncomeForm } from '../containers/ProofOfIncome';
 import { TradingAssessmentForm } from '../containers/TradingAssessmentForm';
 import { FinancialAssessmentForm } from '../modules/src/FinancialAssessment/FinancialAssessmentForm';
 import { POAFormContainer } from '../modules/src/POAForm/POAFormContainer';

@@ -26,11 +26,18 @@ const TransferForm = () => {
         toAmount: '',
     };
 
-    const getDailyTransferCountLimit = (fromAccount: TTransferFormikContext['fromAccount']) => {
-        if (accountLimits?.daily_transfers && fromAccount?.account_type)
-            return fromAccount?.account_type === 'binary'
-                ? (accountLimits?.daily_transfers.internal as TAccountLimits)?.available
-                : (accountLimits?.daily_transfers[fromAccount?.account_type] as TAccountLimits).available;
+    const getDailyTransferCountLimit = (
+        fromAccount: TTransferFormikContext['fromAccount'],
+        toAccount: TTransferFormikContext['toAccount']
+    ) => {
+        if (accountLimits?.daily_transfers) {
+            if (fromAccount?.account_type && fromAccount?.account_type !== 'binary') {
+                return (accountLimits?.daily_transfers[fromAccount?.account_type] as TAccountLimits).available;
+            } else if (toAccount?.account_type && toAccount?.account_type !== 'binary') {
+                return (accountLimits?.daily_transfers[toAccount?.account_type] as TAccountLimits).available;
+            }
+            return (accountLimits?.daily_transfers.internal as TAccountLimits)?.available;
+        }
     };
 
     return (
@@ -46,19 +53,21 @@ const TransferForm = () => {
                     !!errors.fromAmount ||
                     !!errors.toAmount ||
                     !Number(values.fromAmount) ||
-                    !getDailyTransferCountLimit(values.fromAccount);
+                    !getDailyTransferCountLimit(values.fromAccount, values.toAccount);
 
                 return (
                     <div className={styles.container}>
                         <Text className={styles.title} weight='bold'>
                             Transfer between your accounts in Deriv
                         </Text>
-                        {!getDailyTransferCountLimit(values.fromAccount) && (
+                        {!getDailyTransferCountLimit(values.fromAccount, values.toAccount) && (
                             <InlineMessage type='filled' variant='warning'>
                                 You have reached the maximum daily transfers. Please try again tomorrow.
                             </InlineMessage>
                         )}
-                        <TransferAccountSelection fromAccountLimit={getDailyTransferCountLimit(values.fromAccount)} />
+                        <TransferAccountSelection
+                            fromAccountLimit={getDailyTransferCountLimit(values.fromAccount, values.toAccount)}
+                        />
                         <TransferCryptoFiatAmountConverter />
                         <div className={styles['button-group']}>
                             <Button

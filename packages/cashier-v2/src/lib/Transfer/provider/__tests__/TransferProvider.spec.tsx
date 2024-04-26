@@ -84,6 +84,7 @@ const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
             accounts={mockAccounts}
             activeAccount={mockActiveAccount}
             getConfig={mockGetConfig}
+            refetchAccountLimits={jest.fn()}
         >
             {children}
         </TransferProvider>

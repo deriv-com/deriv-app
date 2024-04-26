@@ -31,7 +31,7 @@ const Transfer = ({ isImported }: { isImported: boolean }) => {
 const TransferModule: React.FC<TTransferModuleProps> = ({ accounts }) => {
     const { data: activeAccount } = useActiveAccount();
     const { getConfig, isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
-    const { data: accountLimits } = useAccountLimits();
+    const { data: accountLimits, refetch } = useAccountLimits();
 
     const isLoading = !activeAccount || !accountLimits || isCurrencyConfigLoading;
 
@@ -43,6 +43,7 @@ const TransferModule: React.FC<TTransferModuleProps> = ({ accounts }) => {
             accounts={accounts}
             activeAccount={activeAccount}
             getConfig={getConfig}
+            refetchAccountLimits={refetch}
         >
             <Transfer isImported={!accounts} />
         </TransferProvider>

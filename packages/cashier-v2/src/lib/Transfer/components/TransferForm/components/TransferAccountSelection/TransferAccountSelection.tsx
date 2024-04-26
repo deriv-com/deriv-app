@@ -11,7 +11,7 @@ type TProps = {
 
 const TransferAccountSelection: React.FC<TProps> = ({ fromAccountLimit }) => {
     const { setValues, values } = useFormikContext<TTransferFormikContext>();
-    const { accountLimits, accounts, setTransferValidationSchema } = useTransfer();
+    const { accountLimits, accounts, refetchAccountLimits, setTransferValidationSchema } = useTransfer();
 
     const { fromAccount, toAccount } = values;
     const filteredToAccounts = accounts?.filter(account => account.loginid !== fromAccount?.loginid);
@@ -19,8 +19,9 @@ const TransferAccountSelection: React.FC<TProps> = ({ fromAccountLimit }) => {
     useEffect(() => {
         if (fromAccount && toAccount) {
             setTransferValidationSchema(fromAccount, toAccount);
+            refetchAccountLimits();
         }
-    }, [fromAccount, toAccount, setTransferValidationSchema]);
+    }, [fromAccount, toAccount, setTransferValidationSchema, refetchAccountLimits]);
 
     const onSelectFromAccount = (account: TTransferableAccounts[number]) => {
         if (account.loginid === toAccount?.loginid)

@@ -11,6 +11,7 @@ export type TTransferContext = {
     accounts: TTransferableAccounts;
     activeAccount?: TTransferableAccounts[number];
     isTransferring: boolean;
+    refetchAccountLimits: THooks.AccountLimitsRefetch;
     requestForTransfer: (
         amount: string,
         fromAccount?: TTransferableAccounts[number],
@@ -43,6 +44,7 @@ type TTransferProviderProps = {
     accounts?: THooks.TransferAccounts;
     activeAccount: THooks.ActiveAccount;
     getConfig: THooks.GetCurrencyConfig;
+    refetchAccountLimits: THooks.AccountLimitsRefetch;
 };
 
 const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>> = ({
@@ -51,6 +53,7 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
     activeAccount,
     children,
     getConfig,
+    refetchAccountLimits,
 }) => {
     const { data, error: transferError, isLoading: isTransferring, mutate, mutateAsync } = useTransferBetweenAccounts();
 
@@ -119,6 +122,7 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
                 accounts: transferAccounts,
                 activeAccount: transferActiveAccount,
                 isTransferring,
+                refetchAccountLimits,
                 requestForTransfer,
                 setTransferReceipt,
                 setTransferValidationSchema,

@@ -7,7 +7,7 @@ type TErrorDialogProps = {
 };
 
 const ErrorDialog: React.FC<React.PropsWithChildren<TErrorDialogProps>> = ({ children, isOpen }) => {
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isDialogOpen, setIsDialogOpen] = useState(isOpen);
 
     useEffect(() => {
         setIsDialogOpen(isOpen);

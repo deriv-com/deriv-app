@@ -19,11 +19,13 @@ const Transfer = ({ isImported }: { isImported: boolean }) => {
         <>
             <TransferForm />
             {/* isImported checks if the module is used as an import from the cashier-v2 library */}
-            <ErrorDialog isOpen={!!transferError && !isImported}>
-                <Text as='p' size='sm'>
-                    {transferError?.error.message}
-                </Text>
-            </ErrorDialog>
+            {!isImported && (
+                <ErrorDialog isOpen={!!transferError}>
+                    <Text as='p' size='sm'>
+                        {transferError?.error.message}
+                    </Text>
+                </ErrorDialog>
+            )}
         </>
     );
 };

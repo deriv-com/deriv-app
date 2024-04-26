@@ -37,17 +37,18 @@ const TransferAccountSelection: React.FC<TProps> = ({ fromAccountLimit }) => {
         setValues(currentValues => ({ ...currentValues, toAccount: account }));
     };
 
+    const dailyTransferLimitMessage =
+        accountLimits?.daily_transfers && fromAccount?.account_type
+            ? `You have ${fromAccountLimit} transfers remaining for today.`
+            : '';
+
     return (
         <div className={styles.container}>
             <TransferDropdown accounts={accounts} label='From' onSelect={onSelectFromAccount} value={fromAccount} />
             <TransferDropdown
                 accounts={filteredToAccounts}
                 label='To'
-                message={
-                    accountLimits?.daily_transfers && fromAccount?.account_type
-                        ? `You have ${fromAccountLimit} transfers remaining for today.`
-                        : ''
-                }
+                message={dailyTransferLimitMessage}
                 onSelect={onSelectToAccount}
                 value={toAccount}
             />

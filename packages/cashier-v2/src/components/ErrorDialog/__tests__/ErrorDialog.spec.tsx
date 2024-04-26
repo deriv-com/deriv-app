@@ -8,7 +8,7 @@ describe('ErrorDialog', () => {
         render(<ErrorDialog isOpen={false} />);
         expect(screen.queryByText('Cashier Error')).not.toBeInTheDocument();
 
-        render(<ErrorDialog isOpen={true} />);
+        render(<ErrorDialog isOpen />);
         expect(screen.getByText('Cashier Error')).toBeInTheDocument();
     });
 

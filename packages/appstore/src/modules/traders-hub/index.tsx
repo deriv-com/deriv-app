@@ -52,11 +52,9 @@ const TradersHub = observer(() => {
     }, [is_tour_open]);
 
     const direct_to_real_account_creation = useGrowthbookFeatureFlag({
-        featureFlag: 'direct_real_account_creation_flow',
+        featureFlag: 'direct-real-account-creation-flow',
         defaultValue: false,
     });
-
-    console.log(direct_to_real_account_creation);
 
     React.useEffect(() => {
         if (is_eu_user) {

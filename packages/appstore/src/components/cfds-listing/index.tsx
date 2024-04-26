@@ -16,9 +16,8 @@ import AddOptionsAccount from 'Components/add-options-account';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import CompareAccount from 'Components/compare-account';
-import GetMoreAccounts from 'Components/get-more-accounts';
 import { getHasDivider } from 'Constants/utils';
-import { useCFDCanGetMoreMT5Accounts, useMT5SVGEligibleToMigrate } from '@deriv/hooks';
+import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import './cfds-listing.scss';
 
 const MigrationBanner = makeLazyLoader(
@@ -50,7 +49,6 @@ const CFDsListing = observer(() => {
         is_real,
         getExistingAccounts,
         getAccount,
-        toggleAccountTypeModalVisibility,
         selected_account_type,
         is_eu_user,
         is_demo_low_risk,
@@ -80,7 +78,6 @@ const CFDsListing = observer(() => {
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
-    const can_get_more_cfd_mt5_accounts = useCFDCanGetMoreMT5Accounts();
     const {
         poi_pending_for_bvi_labuan_vanuatu,
         poi_resubmit_for_bvi_labuan_vanuatu,
@@ -273,14 +270,6 @@ const CFDsListing = observer(() => {
                             />
                         );
                     })}
-                    {can_get_more_cfd_mt5_accounts && (
-                        <GetMoreAccounts
-                            onClick={toggleAccountTypeModalVisibility}
-                            icon='IcAppstoreGetMoreAccounts'
-                            title={localize('Get more')}
-                            description={localize('Get more Deriv MT5 account with different type and jurisdiction.')}
-                        />
-                    )}
                 </React.Fragment>
             ) : (
                 <PlatformLoader />

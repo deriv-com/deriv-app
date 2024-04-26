@@ -12,6 +12,7 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
     const {
         accountLimits,
         activeAccount,
+        cryptoConfig,
         fractionalDigits,
         getConvertedCryptoAmount,
         getConvertedFiatAmount,
@@ -27,7 +28,8 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
             fractionalDigits,
             isClientVerified,
             accountLimits?.remainder ?? 0,
-            e.target.value
+            e.target.value,
+            cryptoConfig?.minimum_withdrawal
         )
             ? getConvertedFiatAmount(e.target.value)
             : '';

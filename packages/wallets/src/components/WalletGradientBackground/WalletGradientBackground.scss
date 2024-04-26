@@ -27,6 +27,11 @@
         }
     }
 
+    &[class*='desktop-card'],
+    &[class*='mobile-card'] {
+        border-radius: 0.8rem;
+    }
+
     &--USD {
         &-desktop {
             &-card {
@@ -36,7 +41,6 @@
                         rgba(244, 67, 54, 0.24) 0%,
                         rgba(40, 57, 145, 0.48) 100%
                     );
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -45,7 +49,6 @@
                             rgba(40, 57, 145, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 0.8rem;
                 }
             }
             &-header {
@@ -78,7 +81,6 @@
                             rgba(40, 57, 145, 0.56) 100%
                         )
                         #ffffff;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -88,7 +90,6 @@
                             rgba(40, 57, 145, 0.56) 100%
                         )
                         #151717;
-                    border-radius: 0.8rem;
                 }
             }
             &-header {
@@ -121,7 +122,6 @@
                             rgba(255, 205, 0, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -130,7 +130,6 @@
                             rgba(255, 205, 0, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 0.8rem;
                 }
             }
 
@@ -165,7 +164,6 @@
                             rgba(255, 205, 0, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -174,7 +172,6 @@
                             rgba(255, 205, 0, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 0.8rem;
                 }
             }
 
@@ -210,7 +207,6 @@
                             rgba(248, 209, 46, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -219,7 +215,6 @@
                             rgba(248, 209, 46, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 0.8rem;
                 }
             }
 
@@ -254,7 +249,6 @@
                             rgba(248, 209, 46, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -263,7 +257,6 @@
                             rgba(248, 209, 46, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 0.8rem;
                 }
             }
 
@@ -300,7 +293,6 @@
                             rgba(244, 67, 54, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -310,7 +302,6 @@
                             rgba(244, 67, 54, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 0.8rem;
                 }
             }
 
@@ -345,7 +336,6 @@
                             rgba(244, 67, 54, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -355,7 +345,6 @@
                             rgba(244, 67, 54, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 0.8rem;
                 }
             }
 
@@ -391,7 +380,6 @@
                             rgba(247, 199, 27, 0.477) 99.99%
                         )
                         #ffffff;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -401,7 +389,6 @@
                             rgba(255, 100, 68, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 0.8rem;
                 }
             }
 
@@ -436,7 +423,6 @@
                             rgba(247, 199, 27, 0.477) 99.99%
                         )
                         #ffffff;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -446,7 +432,6 @@
                             rgba(255, 100, 68, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 0.8rem;
                 }
             }
 
@@ -482,7 +467,6 @@
                             rgba(130, 140, 173, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -491,7 +475,6 @@
                             rgba(130, 140, 173, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 0.8rem;
                 }
             }
 
@@ -526,7 +509,6 @@
                             rgba(130, 140, 173, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -535,7 +517,6 @@
                             rgba(130, 140, 173, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 0.8rem;
                 }
             }
 
@@ -569,7 +550,6 @@
                             rgba(193, 204, 207, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -579,7 +559,6 @@
                             rgba(193, 204, 207, 0.4) 100%
                         )
                         #151717;
-                    border-radius: 0.8rem;
                 }
             }
 
@@ -614,7 +593,6 @@
                             rgba(193, 204, 207, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -623,7 +601,6 @@
                             rgba(193, 204, 207, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 0.8rem;
                 }
             }
 
@@ -663,7 +640,6 @@
                             rgba(0, 147, 147, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -672,7 +648,6 @@
                             rgba(0, 147, 147, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 0.8rem;
                 }
             }
 
@@ -707,7 +682,6 @@
                             rgba(0, 147, 147, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -716,7 +690,6 @@
                             rgba(0, 147, 147, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 0.8rem;
                 }
             }
 
@@ -729,7 +702,6 @@
                             rgba(4, 217, 217, 0.4) 100%
                         )
                         #ffffff;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -739,7 +711,6 @@
                             rgba(4, 217, 217, 0.4) 100%
                         )
                         #151717;
-                    border-radius: 0.8rem;
                 }
             }
         }
@@ -755,7 +726,6 @@
                             rgba(34, 76, 225, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -764,7 +734,6 @@
                             rgba(34, 76, 225, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 0.8rem;
                 }
             }
 
@@ -799,7 +768,6 @@
                             rgba(34, 76, 225, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -808,7 +776,6 @@
                             rgba(34, 76, 225, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 0.8rem;
                 }
             }
 
@@ -844,7 +811,6 @@
                             rgba(255, 68, 79, 0.48) 100%
                         )
                         #212329;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -853,7 +819,6 @@
                             rgba(255, 68, 79, 0.48) 100%
                         )
                         #fbdddd;
-                    border-radius: 0.8rem;
                 }
             }
 
@@ -887,7 +852,6 @@
                             rgba(255, 68, 79, 0.68) 100%
                         )
                         #212329;
-                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -896,7 +860,6 @@
                             rgba(255, 68, 79, 0.48) 100%
                         )
                         #fbdddd;
-                    border-radius: 0.8rem;
                 }
             }
 

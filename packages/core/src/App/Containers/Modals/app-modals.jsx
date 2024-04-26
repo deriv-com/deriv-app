@@ -215,6 +215,7 @@ const AppModals = observer(() => {
         ComponentToLoad = <WalletsUpgradeLogoutModal />;
     }
 
+    // TODO: remove is_tour_open as it is valid
     if (should_show_effortless_login_modal && !is_tour_open && !is_from_derivgo) {
         ComponentToLoad = <EffortlessLoginModal />;
     }

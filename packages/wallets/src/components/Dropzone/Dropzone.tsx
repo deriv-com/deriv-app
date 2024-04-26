@@ -10,8 +10,7 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import { useDropzone } from 'react-dropzone';
-import { DerivLightIcCloudUploadIcon } from '@deriv/quill-icons';
-import CloseIcon from '../../public/images/close-icon.svg';
+import { DerivLightIcCloudUploadIcon, LegacyClose2pxIcon } from '@deriv/quill-icons';
 import DropzoneFrame from '../../public/images/dropzone-frame.svg';
 import { IconButton, WalletButton, WalletText } from '../Base';
 import './Dropzone.scss';
@@ -140,11 +139,10 @@ const Dropzone: React.FC<TProps> = ({
                         <React.Fragment key={file.name}>
                             {file.file.type.indexOf('pdf') !== -1 ? (
                                 <div className='wallets-dropzone__thumb wallets-dropzone__thumb--pdf'>
-                                    {/* TODO: Change implementation to use quill icons after version update */}
                                     <IconButton
                                         className='wallets-dropzone__remove-file'
                                         data-testid='dt_remove-button'
-                                        icon={<CloseIcon width={12} />}
+                                        icon={<LegacyClose2pxIcon iconSize='xs' width={12} />}
                                         onClick={removeFile}
                                         size='sm'
                                     />
@@ -160,12 +158,12 @@ const Dropzone: React.FC<TProps> = ({
                                     })}
                                     style={{ backgroundImage: `url(${file.preview})` }}
                                 >
-                                    {hasFrame && <DropzoneFrame />}
                                     {/* TODO: Change implementation to use quill icons after version update */}
+                                    {hasFrame && <DropzoneFrame />}
                                     <IconButton
                                         className='wallets-dropzone__remove-file'
                                         data-testid='dt_remove-button'
-                                        icon={<CloseIcon width={12} />}
+                                        icon={<LegacyClose2pxIcon iconSize='xs' width={12} />}
                                         onClick={removeFile}
                                         size='sm'
                                     />

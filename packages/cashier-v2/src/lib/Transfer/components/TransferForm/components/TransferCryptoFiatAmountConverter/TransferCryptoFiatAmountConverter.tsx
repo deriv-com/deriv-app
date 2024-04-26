@@ -2,10 +2,12 @@ import React from 'react';
 import { useFormikContext } from 'formik';
 import { CryptoFiatConverter } from '../../../../../../components';
 import { DeepNonNullable, TCurrency } from '../../../../../../types';
+import { useTransfer } from '../../../../provider';
 import { TTransferFormikContext } from '../../../../types';
 
 const TransferCryptoFiatAmountConverter = () => {
     const { values } = useFormikContext<DeepNonNullable<TTransferFormikContext>>();
+    const { exchangeRates } = useTransfer();
 
     const modifiedFromAccount = {
         balance: parseFloat(values.fromAccount.balance),
@@ -20,7 +22,13 @@ const TransferCryptoFiatAmountConverter = () => {
         fractionalDigits: values.toAccount.currencyConfig.fractional_digits,
     };
 
-    return <CryptoFiatConverter fromAccount={modifiedFromAccount} toAccount={modifiedToAccount} />;
+    return (
+        <CryptoFiatConverter
+            exchangeRates={exchangeRates}
+            fromAccount={modifiedFromAccount}
+            toAccount={modifiedToAccount}
+        />
+    );
 };
 
 export default TransferCryptoFiatAmountConverter;

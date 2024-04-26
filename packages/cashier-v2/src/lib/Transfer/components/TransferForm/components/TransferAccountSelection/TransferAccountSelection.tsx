@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
+import { TCurrency } from '../../../../../../types';
 import { useTransfer } from '../../../../provider';
 import { TTransferableAccounts, TTransferFormikContext } from '../../../../types';
 import { TransferDropdown } from './components';
@@ -11,7 +12,8 @@ type TProps = {
 
 const TransferAccountSelection: React.FC<TProps> = ({ fromAccountLimit }) => {
     const { setValues, values } = useFormikContext<TTransferFormikContext>();
-    const { accountLimits, accounts, refetchAccountLimits, setTransferValidationSchema } = useTransfer();
+    const { accountLimits, accounts, refetchAccountLimits, setTransferValidationSchema, subscribeToExchangeRate } =
+        useTransfer();
 
     const { fromAccount, toAccount } = values;
     const filteredToAccounts = accounts?.filter(account => account.loginid !== fromAccount?.loginid);
@@ -22,6 +24,17 @@ const TransferAccountSelection: React.FC<TProps> = ({ fromAccountLimit }) => {
             refetchAccountLimits();
         }
     }, [fromAccount, toAccount, setTransferValidationSchema, refetchAccountLimits]);
+
+    useEffect(() => {
+        if (fromAccount && toAccount && fromAccount.currency !== toAccount.currency) {
+            subscribeToExchangeRate(
+                fromAccount?.currency as TCurrency,
+                toAccount?.currency as TCurrency,
+                fromAccount.loginid
+            );
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [fromAccount, toAccount]);
 
     const onSelectFromAccount = (account: TTransferableAccounts[number]) => {
         if (account.loginid === toAccount?.loginid)

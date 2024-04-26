@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { useTransferBetweenAccounts } from '@deriv/api-v2';
+import { useExchangeRateSubscription, useTransferBetweenAccounts } from '@deriv/api-v2';
 import { getCryptoFiatConverterValidationSchema } from '../../../components';
 import type { THooks } from '../../../hooks/types';
 import type { TCurrency } from '../../../types';
@@ -10,6 +10,7 @@ export type TTransferContext = {
     accountLimits?: THooks.AccountLimits;
     accounts: TTransferableAccounts;
     activeAccount?: TTransferableAccounts[number];
+    exchangeRates?: THooks.ExchangeRatesSubscribable;
     isTransferring: boolean;
     refetchAccountLimits: THooks.AccountLimitsRefetch;
     requestForTransfer: (
@@ -21,6 +22,11 @@ export type TTransferContext = {
     setTransferValidationSchema: (
         fromAccount: TTransferableAccounts[number],
         toAccount: TTransferableAccounts[number]
+    ) => void;
+    subscribeToExchangeRate: (
+        baseCurrency: TCurrency,
+        targetCurrency: TCurrency,
+        loginid: TTransferableAccounts[number]['loginid']
     ) => void;
     transferError: THooks.TransferBetweenAccounts['error'];
     transferReceipt?: TTransferReceipt;
@@ -56,11 +62,12 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
     refetchAccountLimits,
 }) => {
     const { data, error: transferError, isLoading: isTransferring, mutate, mutateAsync } = useTransferBetweenAccounts();
+    const { data: exchangeRates, isSubscribed, subscribe, unsubscribe } = useExchangeRateSubscription();
 
     const { accounts: transferAccounts, activeAccount: transferActiveAccount } = useExtendedTransferAccounts(
         activeAccount,
         getConfig,
-        accounts ?? data?.accounts
+        data?.accounts ?? accounts
     );
 
     const [validationSchema, setValidationSchema] =
@@ -104,10 +111,12 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
                     amount: Number(amount),
                     currency: fromAccount.currency,
                 }).then(() => {
-                    setTransferReceipt({
-                        amount,
-                        fromAccount,
-                        toAccount,
+                    mutateAsync({ accounts: 'all' }).then(() => {
+                        setTransferReceipt({
+                            amount,
+                            fromAccount,
+                            toAccount,
+                        });
                     });
                 });
             }
@@ -115,17 +124,34 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
         [mutateAsync]
     );
 
+    const subscribeToExchangeRate = (
+        baseCurrency: TCurrency,
+        targetCurrency: TCurrency,
+        loginid: TTransferableAccounts[number]['loginid']
+    ) => {
+        if (isSubscribed) {
+            unsubscribe();
+        }
+        subscribe({
+            base_currency: baseCurrency,
+            loginid,
+            target_currency: targetCurrency,
+        });
+    };
+
     return (
         <TransferContext.Provider
             value={{
                 accountLimits,
                 accounts: transferAccounts,
                 activeAccount: transferActiveAccount,
+                exchangeRates,
                 isTransferring,
                 refetchAccountLimits,
                 requestForTransfer,
                 setTransferReceipt,
                 setTransferValidationSchema,
+                subscribeToExchangeRate,
                 transferError,
                 transferReceipt,
                 transferValidationSchema: validationSchema,

@@ -135,7 +135,7 @@ const Passkeys = observer(() => {
             )}
             <PasskeyModal
                 toggleModal={is_passkey_registration_started ? onCloseRegistration : undefined}
-                has_close_icon={!!modal_content.header}
+                has_close_icon={!error && !!modal_content.header}
                 header={modal_content.header}
                 className='passkeys-modal'
                 is_modal_open={is_modal_open}

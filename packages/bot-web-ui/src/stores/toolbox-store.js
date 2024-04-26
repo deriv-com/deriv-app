@@ -50,7 +50,7 @@ export default class ToolboxStore {
             () => this.is_toolbox_open,
             is_toolbox_open => {
                 if (is_toolbox_open) {
-                    // this.adjustWorkspace();
+                    //this.adjustWorkspace();
                     // Emit event to GTM
                     const { gtm } = this.core;
                     gtm.pushDataLayer({ event: 'dbot_toolbox_visible', value: true });
@@ -105,9 +105,7 @@ export default class ToolboxStore {
                         ? toolbox_width - block_canvas_rect.left + 20
                         : toolbox_width - block_canvas_rect.left + 36;
 
-                    if ((workspace.RTL && scroll_distance > toolbox_width - 56) || !workspace.RTL) {
-                        scrollWorkspace(workspace, scroll_distance, true, false);
-                    }
+                    scrollWorkspace(workspace, scroll_distance, true, false);
                 }
                 this.is_workspace_scroll_adjusted = false;
             }, 300);

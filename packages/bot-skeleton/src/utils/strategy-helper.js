@@ -25,6 +25,16 @@ export const extractBlocksFromXml = xml => {
     return blocksTypeAndFields;
 };
 
+/** Helper function to remove attritbe */
+export const removeAttributeFromXml = (xml, passed_attributes) => {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xml, 'text/xml');
+    const blocks = xmlDoc.getElementsByTagName('block');
+    Array.from(blocks).forEach(block => passed_attributes.forEach(attribute => block.removeAttribute(attribute)));
+    const xml_string = new XMLSerializer().serializeToString(xmlDoc);
+    return xml_string;
+};
+
 /** Helper function to sort block childs based on type or field name */
 export const sortBlockChild = blocksArray =>
     blocksArray.sort((a, b) => {

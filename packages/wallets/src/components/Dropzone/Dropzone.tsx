@@ -139,7 +139,6 @@ const Dropzone: React.FC<TProps> = ({
                         <React.Fragment key={file.name}>
                             {file.file.type.indexOf('pdf') !== -1 ? (
                                 <div className='wallets-dropzone__thumb wallets-dropzone__thumb--pdf'>
-                                    {/* TODO: Change implementation to use quill icons after version update */}
                                     <IconButton
                                         className='wallets-dropzone__remove-file'
                                         data-testid='dt_remove-button'
@@ -159,8 +158,8 @@ const Dropzone: React.FC<TProps> = ({
                                     })}
                                     style={{ backgroundImage: `url(${file.preview})` }}
                                 >
-                                    {hasFrame && <DropzoneFrame />}
                                     {/* TODO: Change implementation to use quill icons after version update */}
+                                    {hasFrame && <DropzoneFrame />}
                                     <IconButton
                                         className='wallets-dropzone__remove-file'
                                         data-testid='dt_remove-button'

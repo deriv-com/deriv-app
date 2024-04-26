@@ -1,7 +1,6 @@
 import React from 'react';
 import { cleanup, render, screen } from '@testing-library/react';
 import { useAccountLimits, useActiveAccount, useCurrencyConfig } from '@deriv/api-v2';
-import { ErrorDialog } from '../../../components';
 import { THooks } from '../../../hooks/types';
 import { useTransfer } from '../provider';
 import TransferModule from '../Transfer';

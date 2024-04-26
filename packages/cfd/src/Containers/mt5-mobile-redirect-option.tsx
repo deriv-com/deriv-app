@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
@@ -19,7 +19,7 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: TMT5MobileRedirectOption
             mobile_url = window.location.replace(getMobileAppInstallerURL({ mt5_trade_account }) as string);
         }, 1500);
 
-        if (!isSafariBrowser()) {
+        if (!isSafariBrowser() || (isSafariBrowser() && /iPhone OS 17/.test(navigator.userAgent))) {
             window.onblur = () => {
                 clearTimeout(timeout);
             };

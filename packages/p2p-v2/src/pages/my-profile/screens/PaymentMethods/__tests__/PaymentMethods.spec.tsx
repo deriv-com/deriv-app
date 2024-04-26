@@ -85,6 +85,11 @@ jest.mock('@/components', () => ({
     )),
 }));
 
+jest.mock('@/hooks', () => ({
+    ...jest.requireActual('@/hooks'),
+    useIsAdvertiser: jest.fn(() => true),
+}));
+
 jest.mock('../PaymentMethodsEmpty', () => ({
     PaymentMethodsEmpty: jest.fn(() => <div>PaymentMethodsEmpty</div>),
 }));

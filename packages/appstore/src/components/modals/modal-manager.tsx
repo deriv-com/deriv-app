@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import { ResetTradingPasswordModal } from '@deriv/account';
 import { useWalletMigration } from '@deriv/hooks';
 import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
-import MT5AccountTypeModal from './account-type-modal';
 import RegulatorsCompareModal from './regulators-compare-modal';
 import { useStores } from 'Stores';
 import CFDServerErrorDialog from '@deriv/cfd/src/Containers/cfd-server-error-dialog';
@@ -15,6 +14,7 @@ import CFDTopUpDemoModal from '@deriv/cfd/src/Containers/cfd-top-up-demo-modal';
 import MT5TradeModal from '@deriv/cfd/src/Containers/mt5-trade-modal';
 import CFDPasswordManagerModal from '@deriv/cfd/src/Containers/cfd-password-manager-modal';
 import MT5MigrationModal from '@deriv/cfd/src/Containers/mt5-migration-modal';
+import CTraderTransferModal from '@deriv/cfd/src/Containers/ctrader-transfer-modal';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import FailedVerificationModal from './failed-veriification-modal';
@@ -115,6 +115,7 @@ const ModalManager = () => {
             <CFDDbviOnBoarding />
             <CFDResetPasswordModal platform={platform} />
             <CFDServerErrorDialog />
+            <CTraderTransferModal />
             <CFDTopUpDemoModal platform={platform} />
             <MT5TradeModal
                 is_open={is_mt5_trade_modal_visible}
@@ -142,7 +143,6 @@ const ModalManager = () => {
                 is_loading={is_populating_mt5_account_list}
                 verification_code={trading_platform_dxtrade_password_reset || trading_platform_mt5_password_reset}
             />
-            <MT5AccountTypeModal />
             <MT5MigrationModal />
             <RegulatorsCompareModal />
             <AccountTransferModal

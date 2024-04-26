@@ -100,7 +100,7 @@ export const MarketTypeDetails = (isEU?: boolean): TMarketTypeDetails => ({
     },
     financial: {
         description: isEU
-            ? 'This MFSA-regulated account offers CFDs on derived and financial instruments.'
+            ? 'CFDs on derived and financial instruments.'
             : 'This account offers CFDs on financial instruments.',
         icon: <IconComponent icon={isEU ? 'CFDs' : 'Financial'} />,
         iconWithWidth: (width: number) => <IconComponent icon={isEU ? 'CFDs' : 'Financial'} width={width} />,

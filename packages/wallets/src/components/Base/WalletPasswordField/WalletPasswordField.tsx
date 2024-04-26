@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ValidationError } from 'yup';
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
 import { dictionary } from '@zxcvbn-ts/language-common';
@@ -45,7 +45,6 @@ export const validatePassword = (password: string, mt5Policy: boolean) => {
 const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     autoComplete,
     label,
-    message,
     mt5Policy = false,
     name = 'walletPasswordField',
     onChange,
@@ -56,6 +55,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
 }) => {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isTouched, setIsTouched] = useState(false);
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
 
     const { errorMessage, score } = useMemo(() => validatePassword(password, mt5Policy), [password, mt5Policy]);
     const passwordValidation = mt5Policy ? !validPasswordMT5(password) : !validPassword(password);
@@ -66,6 +66,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
             if (!isTouched) {
                 setIsTouched(true);
             }
+            setShowErrorMessage(false);
         },
         [isTouched, onChange]
     );
@@ -76,23 +77,19 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
         }
     }, [isTouched]);
 
-    function getMessage() {
-        if (isTouched) {
-            if (errorMessage) {
-                return errorMessage;
-            }
-            return message;
+    useEffect(() => {
+        if (passwordError) {
+            setShowErrorMessage(true);
         }
-    }
+    }, [passwordError]);
 
     return (
         <div className='wallets-password'>
             <WalletTextField
                 autoComplete={autoComplete}
-                errorMessage={isTouched && (passwordError ? passwordErrorMessage.PasswordError : errorMessage)}
-                isInvalid={(passwordValidation && isTouched) || passwordError}
+                errorMessage={isTouched && (showErrorMessage ? passwordErrorMessage.PasswordError : errorMessage)}
+                isInvalid={(passwordValidation && isTouched) || showErrorMessage}
                 label={label}
-                message={getMessage()}
                 messageVariant={errorMessage ? 'warning' : undefined}
                 name={name}
                 onBlur={handleBlur}

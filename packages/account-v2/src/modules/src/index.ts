@@ -4,5 +4,7 @@ export * from './FinancialAssessmentFields';
 export * from './IDVForm';
 export * from './IDVService';
 export * from './ManualUpload';
-export * from './Onfido';
+export * from './Onfido/OnfidoContainer';
+export * from './OnfidoService/OnfidoService';
 export * from './POAForm';
+export * from './POI/POI';

@@ -1,8 +1,10 @@
 .wallets-gradient {
     position: relative;
+    display: inline-block;
 
     &__content {
         position: relative;
+        display: flex;
     }
 
     &__shine {
@@ -648,96 +650,11 @@
             }
         }
     }
-    &--UST {
-        &-desktop {
-            &-card {
-                &-light {
-                    background: radial-gradient(
-                            100% 277.78% at 0% 100%,
-                            rgba(0, 147, 147, 0.24) 0%,
-                            rgba(0, 147, 147, 0.48) 100%
-                        )
-                        #ffffff;
-                    border-radius: 0.8rem;
-                }
-                &-dark {
-                    background: radial-gradient(
-                            100% 277.78% at 0% 100%,
-                            rgba(0, 147, 147, 0.24) 0%,
-                            rgba(0, 147, 147, 0.48) 100%
-                        )
-                        #151717;
-                    border-radius: 0.8rem;
-                }
-            }
 
-            &-header {
-                &-light {
-                    background: radial-gradient(
-                            100% 4130.74% at 0% 100%,
-                            rgba(0, 147, 147, 0.4) 0%,
-                            rgba(0, 147, 147, 0.16) 50.52%,
-                            rgba(4, 217, 217, 0.4) 100%
-                        )
-                        #ffffff;
-                }
-                &-dark {
-                    background: radial-gradient(
-                            100% 4130.74% at 0% 100%,
-                            rgba(0, 147, 147, 0.4) 0%,
-                            rgba(0, 147, 147, 0.16) 50.52%,
-                            rgba(4, 217, 217, 0.4) 100%
-                        )
-                        #151717;
-                }
-            }
-        }
-        &-mobile {
-            &-card {
-                &-light {
-                    background: radial-gradient(
-                            160% 190% at 0% 100%,
-                            rgba(0, 147, 147, 0.4) 0%,
-                            rgba(0, 147, 147, 0.5) 50.52%,
-                            rgba(0, 147, 147, 0.48) 100%
-                        )
-                        #ffffff;
-                    border-radius: 0.8rem;
-                }
-                &-dark {
-                    background: radial-gradient(
-                            100% 277.78% at 0% 100%,
-                            rgba(0, 147, 147, 0.24) 0%,
-                            rgba(0, 147, 147, 0.48) 100%
-                        )
-                        #151717;
-                    border-radius: 0.8rem;
-                }
-            }
-
-            &-header {
-                &-light {
-                    background: radial-gradient(
-                            100% 4130.74% at 0% 100%,
-                            rgba(0, 147, 147, 0.4) 0%,
-                            rgba(0, 147, 147, 0.16) 50.52%,
-                            rgba(4, 217, 217, 0.4) 100%
-                        )
-                        #ffffff;
-                }
-                &-dark {
-                    background: radial-gradient(
-                            100% 4130.74% at 0% 100%,
-                            rgba(0, 147, 147, 0.4) 0%,
-                            rgba(0, 147, 147, 0.16) 50.52%,
-                            rgba(4, 217, 217, 0.4) 100%
-                        )
-                        #151717;
-                }
-            }
-        }
-    }
-    &--USDT {
+    &--UST,
+    &--USDT,
+    &--EUSDT,
+    &--TUSDT {
         &-desktop {
             &-card {
                 &-light {
@@ -826,184 +743,7 @@
             }
         }
     }
-    &--tUSDT {
-        &-desktop {
-            &-card {
-                &-light {
-                    background: radial-gradient(
-                            100% 277.78% at 0% 100%,
-                            rgba(0, 147, 147, 0.24) 0%,
-                            rgba(0, 147, 147, 0.48) 100%
-                        )
-                        #ffffff;
-                    border-radius: 0.8rem;
-                }
-                &-dark {
-                    background: radial-gradient(
-                            100% 277.78% at 0% 100%,
-                            rgba(0, 147, 147, 0.24) 0%,
-                            rgba(0, 147, 147, 0.48) 100%
-                        )
-                        #151717;
-                    border-radius: 0.8rem;
-                }
-            }
 
-            &-header {
-                &-light {
-                    background: radial-gradient(
-                            100% 4130.74% at 0% 100%,
-                            rgba(0, 147, 147, 0.4) 0%,
-                            rgba(0, 147, 147, 0.16) 50.52%,
-                            rgba(4, 217, 217, 0.4) 100%
-                        )
-                        #ffffff;
-                }
-                &-dark {
-                    background: radial-gradient(
-                            100% 4130.74% at 0% 100%,
-                            rgba(0, 147, 147, 0.4) 0%,
-                            rgba(0, 147, 147, 0.16) 50.52%,
-                            rgba(4, 217, 217, 0.4) 100%
-                        )
-                        #151717;
-                }
-            }
-        }
-        &-mobile {
-            &-card {
-                &-light {
-                    background: radial-gradient(
-                            160% 190% at 0% 100%,
-                            rgba(0, 147, 147, 0.4) 0%,
-                            rgba(0, 147, 147, 0.5) 50.52%,
-                            rgba(0, 147, 147, 0.48) 100%
-                        )
-                        #ffffff;
-                    border-radius: 0.8rem;
-                }
-                &-dark {
-                    background: radial-gradient(
-                            100% 277.78% at 0% 100%,
-                            rgba(0, 147, 147, 0.24) 0%,
-                            rgba(0, 147, 147, 0.48) 100%
-                        )
-                        #151717;
-                    border-radius: 0.8rem;
-                }
-            }
-
-            &-header {
-                &-light {
-                    background: radial-gradient(
-                            100% 4130.74% at 0% 100%,
-                            rgba(0, 147, 147, 0.4) 0%,
-                            rgba(0, 147, 147, 0.16) 50.52%,
-                            rgba(4, 217, 217, 0.4) 100%
-                        )
-                        #ffffff;
-                }
-                &-dark {
-                    background: radial-gradient(
-                            100% 4130.74% at 0% 100%,
-                            rgba(0, 147, 147, 0.4) 0%,
-                            rgba(0, 147, 147, 0.16) 50.52%,
-                            rgba(4, 217, 217, 0.4) 100%
-                        )
-                        #151717;
-                }
-            }
-        }
-    }
-    &--eUSDT {
-        &-desktop {
-            &-card {
-                &-light {
-                    background: radial-gradient(
-                            100% 277.78% at 0% 100%,
-                            rgba(0, 147, 147, 0.24) 0%,
-                            rgba(0, 147, 147, 0.48) 100%
-                        )
-                        #ffffff;
-                    border-radius: 0.8rem;
-                }
-                &-dark {
-                    background: radial-gradient(
-                            100% 277.78% at 0% 100%,
-                            rgba(0, 147, 147, 0.24) 0%,
-                            rgba(0, 147, 147, 0.48) 100%
-                        )
-                        #151717;
-                    border-radius: 0.8rem;
-                }
-            }
-
-            &-header {
-                &-light {
-                    background: radial-gradient(
-                            100% 4130.74% at 0% 100%,
-                            rgba(0, 147, 147, 0.4) 0%,
-                            rgba(0, 147, 147, 0.16) 50.52%,
-                            rgba(4, 217, 217, 0.4) 100%
-                        )
-                        #ffffff;
-                }
-                &-dark {
-                    background: radial-gradient(
-                            100% 4130.74% at 0% 100%,
-                            rgba(0, 147, 147, 0.4) 0%,
-                            rgba(0, 147, 147, 0.16) 50.52%,
-                            rgba(4, 217, 217, 0.4) 100%
-                        )
-                        #151717;
-                }
-            }
-        }
-        &-mobile {
-            &-card {
-                &-light {
-                    background: radial-gradient(
-                            160% 190% at 0% 100%,
-                            rgba(0, 147, 147, 0.4) 0%,
-                            rgba(0, 147, 147, 0.5) 50.52%,
-                            rgba(0, 147, 147, 0.48) 100%
-                        )
-                        #ffffff;
-                    border-radius: 0.8rem;
-                }
-                &-dark {
-                    background: radial-gradient(
-                            100% 277.78% at 0% 100%,
-                            rgba(0, 147, 147, 0.24) 0%,
-                            rgba(0, 147, 147, 0.48) 100%
-                        )
-                        #151717;
-                    border-radius: 0.8rem;
-                }
-            }
-
-            &-header {
-                &-light {
-                    background: radial-gradient(
-                            100% 4130.74% at 0% 100%,
-                            rgba(0, 147, 147, 0.4) 0%,
-                            rgba(0, 147, 147, 0.16) 50.52%,
-                            rgba(4, 217, 217, 0.4) 100%
-                        )
-                        #ffffff;
-                }
-                &-dark {
-                    background: radial-gradient(
-                            100% 4130.74% at 0% 100%,
-                            rgba(0, 147, 147, 0.4) 0%,
-                            rgba(0, 147, 147, 0.16) 50.52%,
-                            rgba(4, 217, 217, 0.4) 100%
-                        )
-                        #151717;
-                }
-            }
-        }
-    }
     &--USDC {
         &-desktop {
             &-card {

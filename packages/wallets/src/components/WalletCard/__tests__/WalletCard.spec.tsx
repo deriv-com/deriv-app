@@ -148,7 +148,7 @@ describe('WalletCard', () => {
     it('should show the icon with the correct size', () => {
         mockProps = {
             ...mockProps,
-            iconSize: 'sm',
+            iconSize: 'xs',
         };
         render(
             <APIProvider>
@@ -157,7 +157,7 @@ describe('WalletCard', () => {
                 </WalletsAuthProvider>
             </APIProvider>
         );
-        const icon = screen.getByTestId('dt_wallet_card_icon');
+        const icon = screen.getByTestId('dt_wallet_currency_icon');
         expect(icon).toHaveAttribute('width', '16');
     });
 });

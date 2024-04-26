@@ -210,5 +210,6 @@ export default function mockWalletsAuthorize(context: Context) {
 
         context.response.authorize.account_list = ACCOUNTS_LIST;
         context.response.authorize.loginid = currentAccount?.id;
+        context.response.authorize.currency = currentAccount?.currency;
     }
 }

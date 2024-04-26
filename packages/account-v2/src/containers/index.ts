@@ -1,5 +1,6 @@
 export { AccountClosureForm } from './AccountClosureForm/AccountClosureForm';
 export { AccountClosureSteps } from './AccountClosureSteps/AccountClosureSteps';
+export { AccountLimitsSideNote } from './AccountLimitsContainer/AccountLimitsSideNote';
 export { LoginHistoryTable } from './LoginHistoryTable/LoginHistoryTable';
 export { LoginHistoryTableCard } from './LoginHistoryTable/LoginHistoryTableCard';
 export { MaskCardModal } from './MaskCardModal/MaskCardModal';

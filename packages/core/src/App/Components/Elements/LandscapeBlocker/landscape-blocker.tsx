@@ -7,7 +7,7 @@ const LandscapeBlocker = () => {
     const location = useLocation();
     const pathname = location?.pathname;
     const is_hidden_landscape_blocker = isDisabledLandscapeRoute(pathname);
-    const shouldShowDtraderTabletView = pathname === routes.root && isTabletOs;
+    const shouldShowDtraderTabletView = pathname === routes.trade && isTabletOs;
 
     if (is_hidden_landscape_blocker || shouldShowDtraderTabletView) return null;
 

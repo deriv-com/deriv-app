@@ -15,7 +15,7 @@ export const AccountLimits = () => {
 
     if (accountLimits.length) {
         return (
-            <div className='sm:flex sm:flex-col-reverse md:grid md:grid-cols-[auto,256px] gap-16'>
+            <div className='flex flex-col-reverse md:grid md:grid-cols-[auto,256px] gap-16'>
                 <AccountLimitsTable accountLimitValues={accountLimits} />
                 <AccountLimitsSideNote />
             </div>

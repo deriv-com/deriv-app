@@ -29,7 +29,7 @@ describe('ConfirmPhoneNumber', () => {
         expect(screen.getByRole('button', { name: /Resend code/ })).toBeInTheDocument();
     });
 
-    it('should disable button when Resend code is clicked', async () => {
+    it('should disable button when Resend code is clicked', () => {
         render(
             <StoreProvider store={store}>
                 <ConfirmYourEmail />

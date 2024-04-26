@@ -33,15 +33,8 @@ const MultiplierCardBody = ({
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const is_valid_to_sell = isValidToSell(contract_info);
     const total_profit = getTotalProfit(contract_info);
-    const {
-        CONTRACT_COST,
-        CONTRACT_VALUE,
-        DEAL_CANCEL_FEE,
-        STAKE,
-        STOP_LOSS,
-        TAKE_PROFIT,
-        TOTAL_PROFIT_LOSS,
-    } = getCardLabels();
+    const { CONTRACT_COST, CONTRACT_VALUE, DEAL_CANCEL_FEE, STAKE, STOP_LOSS, TAKE_PROFIT, TOTAL_PROFIT_LOSS } =
+        getCardLabels();
 
     return (
         <React.Fragment>

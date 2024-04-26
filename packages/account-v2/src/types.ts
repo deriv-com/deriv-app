@@ -1,4 +1,5 @@
 import { useGetAccountStatus, useKycAuthStatus, useSettings } from '@deriv/api-v2';
+import { CurrencyConstants } from '@deriv-com/utils';
 import {
     AUTH_STATUS_CODES,
     getPaymentMethodsConfig,
@@ -62,3 +63,13 @@ export type TProofOfOwnershipFormValue = Record<TPaymentMethod, Record<number | 
 export type TPOIService = typeof POI_SERVICE[keyof typeof POI_SERVICE];
 
 export type TIDVErrorStatusCode = typeof IDV_ERROR_CODES[keyof typeof IDV_ERROR_CODES]['code'];
+
+export type TAccountLimitValues = {
+    category?: string;
+    hintInfo?: string;
+    isLessProminent?: boolean;
+    title?: string;
+    value?: number | string;
+};
+
+export type TCurrency = CurrencyConstants.Currency;

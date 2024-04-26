@@ -34,7 +34,7 @@ jobs:
 
     - name: Cypress run
       # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action
-      uses: cypress-io/github-action@1b70233146622b69e789ccdd4f9452adc638d25a
+      uses: cypress-io/github-action@97d526c9027e1b1eedde4f37196aebe8834005ef
       with:
         # Records to Cypress Cloud 
         # https://docs.cypress.io/guides/cloud/projects#Set-up-a-project-to-record
@@ -48,7 +48,7 @@ jobs:
         # in GitHub repo → Settings → Secrets → Actions
         CYPRESS_RECORD_KEY: ${{ secrets.E2E_CYPRESS_RECORD_KEY }}
         # Creating a token https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
-        GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        # GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         # Set Base Url from client_payload.
         CYPRESS_BASE_URL: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
         # Send PR details to Cypress test run

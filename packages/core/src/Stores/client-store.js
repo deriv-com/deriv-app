@@ -418,6 +418,7 @@ export default class ClientStore extends BaseStore {
             unsubscribeFromExchangeRate: action.bound,
             unsubscribeFromAllExchangeRates: action.bound,
             setExchangeRates: action.bound,
+            getLandingCompany: action.bound,
         });
 
         reaction(
@@ -2846,5 +2847,15 @@ export default class ClientStore extends BaseStore {
             this.unsubscribeByKey('exchange_rates', key);
         });
         this.setExchangeRates({});
+    };
+
+    getLandingCompany = country => {
+        WS.cache
+            .landingCompany(country)
+            .then(this.responseLandingCompany)
+            .catch(error => {
+                // eslint-disable-next-line no-console
+                console.log(`Error: code = ${error?.error?.code}, message = ${error?.error?.message}`);
+            });
     };
 }

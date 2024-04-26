@@ -12,16 +12,24 @@ import './traders-hub-logged-out.scss';
 const TradersHubLoggedOut = observer(() => {
     const { traders_hub, client, ui } = useStore();
     const { is_desktop } = ui;
-    const { is_logged_in, is_mt5_allowed, clients_country } = client;
-    const { setTogglePlatformType } = traders_hub;
+    const { is_logged_in, is_mt5_allowed, clients_country, is_landing_company_loaded, getLandingCompany } = client;
+    const { setTogglePlatformType, selectRegion } = traders_hub;
 
     const is_eu_user = isEuCountry(clients_country);
 
     React.useEffect(() => {
-        if (is_eu_user) setTogglePlatformType('cfd');
-    }, [is_eu_user, setTogglePlatformType]);
+        if (clients_country) {
+            getLandingCompany(clients_country);
+            if (is_eu_user) {
+                setTogglePlatformType('cfd');
+                selectRegion('EU');
+            } else {
+                selectRegion('Non-EU');
+            }
+        }
+    }, [clients_country, getLandingCompany, setTogglePlatformType]);
 
-    if (!clients_country) return <Loading is_fullscreen />;
+    if (!clients_country || !is_landing_company_loaded) return <Loading is_fullscreen />;
 
     if (is_logged_in) return <Redirect to={routes.traders_hub} />;
 

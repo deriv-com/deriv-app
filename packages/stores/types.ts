@@ -622,6 +622,7 @@ type TClientStore = {
     subscribeToExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
     unsubscribeFromExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
     unsubscribeFromAllExchangeRates: () => void;
+    getLandingCompany: (country: string) => void;
 };
 
 type TCommonStoreError = {

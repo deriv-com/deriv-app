@@ -42,7 +42,6 @@ export default class TransactionsStore {
             updateResultsCompletedContract: action.bound,
             sortOutPositionsBeforeAction: action.bound,
             recoverPendingContractsById: action.bound,
-            toggleTransactionDetailsModal: action.bound,
         });
     }
     TRANSACTION_CACHE = 'transaction_cache';
@@ -94,9 +93,9 @@ export default class TransactionsStore {
         return statistics;
     }
 
-    toggleTransactionDetailsModal(is_open: boolean) {
+    toggleTransactionDetailsModal = (is_open: boolean) => {
         this.is_transaction_details_modal_open = is_open;
-    }
+    };
 
     onBotContractEvent(data: TContractInfo) {
         this.pushTransaction(data);

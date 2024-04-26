@@ -48,9 +48,9 @@ jest.mock('@deriv/deriv-charts', () => ({
 
 describe('TransactionDetailsMobile', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+    const mock_store = mockStore({});
 
     beforeAll(() => {
-        const mock_store = mockStore({});
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
 
         wrapper = ({ children }: { children: JSX.Element }) => (
@@ -87,11 +87,16 @@ describe('TransactionDetailsMobile', () => {
     });
 
     it('should render TransactionDetailsMobile with loader', () => {
+        mock_store.client.is_logged_in = true;
+        mock_store.client.loginid = 'cr1';
         if (mock_DBot_store) {
             mock_DBot_store.transactions.toggleTransactionDetailsModal(true);
             mock_DBot_store.transactions.onBotContractEvent({
                 ...mock_contract,
                 is_completed: false,
+                exit_tick: undefined,
+                entry_tick_time: undefined,
+                exit_tick_time: undefined,
             });
         }
         render(<TransactionDetailsMobile />, {

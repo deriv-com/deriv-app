@@ -16,6 +16,7 @@ const TransactionDetailsMobile = observer(() => {
         toggleTransactionDetailsModal,
         is_transaction_details_modal_open,
         transactions: transaction_list,
+        statistics,
     } = transactions;
 
     const { toggleStatisticsInfoModal }: Partial<TRunPanelStore> = run_panel;

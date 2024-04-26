@@ -49,7 +49,10 @@ export default class ToolboxStore {
         this.adjustWorkspace();
 
         this.toolbox_dom = window.Blockly.Xml.textToDom(toolbox_ref?.current);
-        this.toolbox_examples = [...this.toolbox_dom?.childNodes].find(el => el.tagName === 'examples');
+        const el = [...(this.toolbox_dom?.childNodes ?? [])].find(
+            el => el instanceof HTMLElement && el.tagName === 'examples'
+        );
+        if (el) this.toolbox_examples = el as HTMLElement;
         this.setWorkspaceOptions();
         this.disposeToolboxToggleReaction = reaction(
             () => this.is_toolbox_open,

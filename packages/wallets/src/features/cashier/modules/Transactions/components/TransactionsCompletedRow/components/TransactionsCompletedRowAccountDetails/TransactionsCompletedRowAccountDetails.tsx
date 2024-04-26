@@ -6,7 +6,7 @@ import {
     WalletText,
 } from '../../../../../../../../components';
 import { THooks, TWalletLandingCompanyName } from '../../../../../../../../types';
-import { getTradingAppIcon, getWalletIcon } from '../../../../../../helpers';
+import { getTradingAppIcon } from '../../../../../../helpers';
 import './TransactionsCompletedRowAccountDetails.scss';
 
 type TProps = {
@@ -43,7 +43,6 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
                     appIcon={getTradingAppIcon(accountType, landingCompanyName ?? 'svg', mt5Group)}
                     currency={currency}
                     isDemo={isDemo}
-                    walletIcon={getWalletIcon(currency, isDemo)}
                 />
             )}
             <div className='wallets-transactions-completed-row-account-details__type-and-wallet-name'>

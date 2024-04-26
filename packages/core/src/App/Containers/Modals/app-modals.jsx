@@ -84,7 +84,7 @@ const InformationSubmittedModal = React.lazy(() =>
 );
 
 const AppModals = observer(() => {
-    const { client, ui, traders_hub } = useStore();
+    const { client, ui, traders_hub, common } = useStore();
     const {
         is_authorize,
         is_logged_in,
@@ -96,6 +96,7 @@ const AppModals = observer(() => {
         should_show_effortless_login_modal,
     } = client;
     const { content_flag, is_tour_open } = traders_hub;
+    const { is_from_derivgo } = common;
     const {
         is_account_needed_modal_on,
         is_closing_create_real_account_modal,
@@ -210,11 +211,11 @@ const AppModals = observer(() => {
         ComponentToLoad = <WalletsUpgradeCompletedModal />;
     }
 
-    if (!has_wallet && is_migrated) {
+    if (!has_wallet && is_migrated && is_logged_in) {
         ComponentToLoad = <WalletsUpgradeLogoutModal />;
     }
 
-    if (should_show_effortless_login_modal && !is_tour_open) {
+    if (should_show_effortless_login_modal && !is_tour_open && !is_from_derivgo) {
         ComponentToLoad = <EffortlessLoginModal />;
     }
 

@@ -6,6 +6,7 @@ import {
     useActiveWalletAccount,
     useAuthentication,
     useCashierValidation,
+    useCryptoConfig,
     useCurrencyConfig,
 } from '@deriv/api-v2';
 import { Loader, WalletsActionScreen } from '../../../../components';
@@ -19,6 +20,7 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { data: accountLimits } = useAccountLimits();
     const { data: accountStatus } = useAccountStatus();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
+    const { data: cryptoConfig, isLoading: isCryptoConfigLoading } = useCryptoConfig();
 
     const currency = activeWallet?.currency || 'USD';
 
@@ -37,16 +39,15 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const isWithdrawalLocked = accountStatus?.is_withdrawal_locked;
 
     const remainder = accountLimits?.remainder;
-    const minimumWithdrawal = activeWallet?.currency_config?.is_crypto
-        ? activeWallet?.currency_config?.minimum_withdrawal
-        : 0.01;
+    const minimumWithdrawal = activeWallet?.currency_config?.is_crypto ? cryptoConfig?.minimum_withdrawal : 0.01;
     const withdrawalLimitReached = !!(
         typeof remainder !== 'undefined' &&
         typeof minimumWithdrawal !== 'undefined' &&
         +remainder < minimumWithdrawal
     );
+    const isLoading = isCurrencyConfigLoading || isCryptoConfigLoading || !accountStatus;
 
-    if (isCurrencyConfigLoading || !accountStatus) {
+    if (isLoading) {
         return <Loader />;
     }
 

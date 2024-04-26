@@ -24,7 +24,7 @@ import Routes from './Containers/Routes/routes.jsx';
 import Devtools from './Devtools';
 import initDatadog from '../Utils/Datadog';
 
-const gb = new GrowthBook({
+const growthbook = new GrowthBook({
     apiHost: 'https://cdn.growthbook.io',
     clientKey: process.env.GROWTHBOOK_CLIENT_KEY,
 });
@@ -54,12 +54,12 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     React.useEffect(() => {
         const fetchIsPasskeySupported = async () => {
             try {
-                await gb.setAttributes(attributes);
-                await gb.loadFeatures();
+                await growthbook.setAttributes(attributes);
+                await growthbook.loadFeatures();
                 const is_passkeys_supported = await Promise.all([
                     browserSupportsWebAuthn(),
-                    gb.isOn('web_passkeys'),
-                    gb.isOn('service_passkeys'),
+                    growthbook.isOn('web_passkeys'),
+                    growthbook.isOn('service_passkeys'),
                 ]);
                 store.client.setIsPasskeySupported(is_passkeys_supported.every(Boolean));
             } catch (e) {

@@ -2704,7 +2704,7 @@ export default class ClientStore extends BaseStore {
         this.real_account_signup_form_step = step;
     }
 
-    async setIsPasskeySupported(is_passkey_supported = false) {
+    setIsPasskeySupported(is_passkey_supported = false) {
         this.is_passkey_supported = is_passkey_supported;
     }
 

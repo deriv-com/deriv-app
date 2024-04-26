@@ -1,6 +1,5 @@
 import { getTotalProfit } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { getBuyPrice } from 'Utils/multiplier';
 
 export type TContract = {
     name: string;
@@ -213,7 +212,7 @@ export const getValidationRules = () => ({
                 'custom',
                 {
                     func: (value, options, contract_store) => {
-                        const stake = getBuyPrice(contract_store);
+                        const stake = contract_store?.contract_info?.buy_price;
                         return value < stake + 1;
                     },
                     message: localize('Invalid stop loss. Stop loss cannot be more than stake.'),

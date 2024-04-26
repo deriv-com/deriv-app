@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { WalletCardIcon, WalletGradientBackground, WalletText } from '../../../../components';
+import { WalletCurrencyIcon, WalletGradientBackground, WalletText } from '../../../../components';
 import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
 import useDevice from '../../../../hooks/useDevice';
 import CloseIcon from '../../../../public/images/close-icon.svg';
@@ -114,7 +114,14 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                                     'wallets-cashier-header__currency-icon--hide-currency-icon': hideWalletDetails,
                                 })}
                             >
-                                <WalletCardIcon size='xl' type={activeWallet?.wallet_currency_type} />
+                                <WalletCurrencyIcon
+                                    currency={
+                                        activeWallet?.wallet_currency_type === 'Demo'
+                                            ? 'DEMO'
+                                            : activeWallet?.wallet_currency_type
+                                    }
+                                    size='xl'
+                                />
                             </div>
                         )}
                         <CloseIcon

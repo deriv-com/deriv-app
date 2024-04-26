@@ -15,6 +15,7 @@ describe('MainTitleBar', () => {
         },
         client: {
             is_landing_company_loaded: false,
+            exchange_rates: {},
         },
         feature_flags: { data: { wallet: false } },
     });

@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
+import { useOnClickOutside } from 'usehooks-ts';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
-import { Text, useOnClickOutside } from '@deriv-com/ui';
+import { Text } from '@deriv-com/ui';
 import { TTransferableAccounts, TTransferFormikContext } from '../../../../../../types';
 import { TransferAccountTile, TransferDropdownList } from './components';
 import styles from './TransferDropdown.module.scss';

@@ -411,7 +411,7 @@ export default class LoadModalStore implements ILoadModalStore {
             return;
         }
         if (this.tab_name !== tabs_title.TAB_LOCAL && this.recent_workspace) {
-            clearInjectionDiv('store', ref);
+            clearInjectionDiv(ref);
             this.recent_workspace.dispose();
             this.recent_workspace = null;
         }

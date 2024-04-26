@@ -54,11 +54,10 @@ jest.mock('@deriv/components', () => ({
     Loading: () => <div>MockLoading</div>,
 }));
 
-jest.mock('ua-parser-js', () =>
-    jest.fn(() => ({
-        os: { name: 'test OS' },
-    }))
-);
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    getOSNameWithUAParser: () => 'test OS',
+}));
 
 describe('Passkeys', () => {
     let mock_store: ReturnType<typeof mockStore>, modal_root_el: HTMLElement;

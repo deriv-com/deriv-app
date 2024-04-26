@@ -1,22 +1,22 @@
 import React, { ChangeEvent, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { Field, FieldProps, FormikErrors, useFormikContext } from 'formik';
+import { Field, FormikErrors, useFormikContext } from 'formik';
 import { StandaloneXmarkRegularIcon } from '@deriv/quill-icons';
 import { Button, Input } from '@deriv-com/ui';
 import { TPaymentMethod, TProofOfOwnershipFormValue } from 'src/types';
 import { compressImageFiles, TFile } from 'src/utils';
 
 type TFileUploadFieldProps = {
-    methodId: number | string;
+    methodId: number;
     paymentMethod: TPaymentMethod;
-    subIndex: number | string;
+    subIndex: number;
 };
 
 export const FileUploaderField = ({ methodId, paymentMethod, subIndex }: TFileUploadFieldProps) => {
     const formik = useFormikContext<TProofOfOwnershipFormValue>();
     const { errors, setFieldValue, values } = formik;
     const [showBrowseButton, setShowBrowseButton] = useState(
-        !values[paymentMethod]?.[methodId]?.files?.[subIndex as number]?.name
+        !values[paymentMethod]?.[methodId]?.files?.[subIndex]?.name
     );
 
     if (!formik) {
@@ -36,7 +36,7 @@ export const FileUploaderField = ({ methodId, paymentMethod, subIndex }: TFileUp
         }
         const fileToUpload = await compressImageFiles([event.target.files[0]]);
         const paymentFileData = [...(values[paymentMethod]?.[methodId]?.files ?? [])];
-        paymentFileData[subIndex as number] = fileToUpload[0] as TFile;
+        paymentFileData[subIndex] = fileToUpload[0] as TFile;
         const selectedPaymentMethod = values?.[paymentMethod];
         if (!selectedPaymentMethod) {
             return;
@@ -60,7 +60,7 @@ export const FileUploaderField = ({ methodId, paymentMethod, subIndex }: TFileUp
         const paymentMethodError = errors?.[paymentMethod] ?? {};
         const paymentMethodFileError = (paymentMethodError?.[methodId]?.files as FormikErrors<TFile>[]) ?? {};
 
-        delete paymentMethodFileError?.[subIndex as number];
+        delete paymentMethodFileError?.[subIndex];
         paymentMethodError[methodId] = {
             ...(paymentMethodError[methodId] ?? {}),
             files: paymentMethodFileError,
@@ -97,7 +97,7 @@ export const FileUploaderField = ({ methodId, paymentMethod, subIndex }: TFileUp
     return (
         <Field name={paymentMethod}>
             {() => {
-                const errorMessage = errors?.[paymentMethod]?.[methodId]?.files?.[subIndex as number];
+                const errorMessage = errors?.[paymentMethod]?.[methodId]?.files?.[subIndex];
                 return (
                     <div className='flex gap-8'>
                         <input
@@ -133,7 +133,7 @@ export const FileUploaderField = ({ methodId, paymentMethod, subIndex }: TFileUp
                                 </Button>
                             }
                             type='text'
-                            value={values[paymentMethod]?.[methodId]?.files?.[subIndex as number]?.name ?? ''}
+                            value={values[paymentMethod]?.[methodId]?.files?.[subIndex]?.name ?? ''}
                         />
                         <Button onClick={handleClick} size='lg' type='button'>
                             Browse

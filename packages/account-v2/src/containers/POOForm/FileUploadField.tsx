@@ -96,13 +96,13 @@ export const FileUploaderField = ({ methodId, paymentMethod, subIndex }: TFileUp
 
     return (
         <Field name={paymentMethod}>
-            {({ field, form, meta }: FieldProps<string>) => {
+            {() => {
                 const errorMessage = errors?.[paymentMethod]?.[methodId]?.files?.[subIndex as number];
                 return (
-                    <div>
+                    <div className='flex gap-8'>
                         <input
                             accept='image/png, image/jpeg, image/jpg, application/pdf'
-                            className='hidden-input'
+                            className='hidden'
                             name={paymentMethod}
                             onChange={handleChange}
                             ref={hiddenInputFieldRef}
@@ -110,6 +110,7 @@ export const FileUploaderField = ({ methodId, paymentMethod, subIndex }: TFileUp
                         />
                         <Input
                             error={Boolean(errorMessage)}
+                            isFullWidth
                             label='Choose a photo'
                             maxLength={255}
                             message={
@@ -134,7 +135,7 @@ export const FileUploaderField = ({ methodId, paymentMethod, subIndex }: TFileUp
                             type='text'
                             value={values[paymentMethod]?.[methodId]?.files?.[subIndex as number]?.name ?? ''}
                         />
-                        <Button onClick={handleClick} size='md' type='button'>
+                        <Button onClick={handleClick} size='lg' type='button'>
                             Browse
                         </Button>
                     </div>

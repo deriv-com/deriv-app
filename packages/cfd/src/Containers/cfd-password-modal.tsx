@@ -849,7 +849,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                             ]}
                         />
                     ) : (
-                        <>
+                        <React.Fragment>
                             <Localize
                                 i18n_default_text='Your Deriv MT5 {{type}} account is ready. '
                                 values={{
@@ -861,7 +861,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                                 manual_status={manual_status}
                             />
-                        </>
+                        </React.Fragment>
                     )}
                 </React.Fragment>
             );

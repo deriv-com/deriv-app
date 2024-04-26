@@ -2,10 +2,10 @@ import React, { useCallback } from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
 import { useCancelCryptoTransaction } from '@deriv/api-v2';
+import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { WalletButton, WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../hooks/useDevice';
-import IcCrossLight from '../../../../../../public/images/ic-cross-light.svg';
 import { THooks } from '../../../../../../types';
 import { WalletActionModal } from '../../../../components/WalletActionModal';
 import './CryptoTransaction.scss';
@@ -74,7 +74,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
                             data-testid='dt-wallets-crypto-transactions-cancel-button'
                             onClick={onCancelTransactionButtonClick}
                         >
-                            <IcCrossLight />
+                            <LegacyClose1pxIcon iconSize='xs' />
                         </button>
                     )}
                 </div>

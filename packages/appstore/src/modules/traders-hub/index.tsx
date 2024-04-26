@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { useContentFlag, useGrowthbookFeatureFlag } from '@deriv/hooks';
@@ -54,6 +55,8 @@ const TradersHub = observer(() => {
         featureFlag: 'direct_real_account_creation_flow',
         defaultValue: false,
     });
+
+    console.log(direct_to_real_account_creation);
 
     React.useEffect(() => {
         if (is_eu_user) {

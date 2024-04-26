@@ -12,11 +12,9 @@ import {
     MobileWrapper,
     Modal,
     SelectNative,
-    Text,
     ThemedScrollbars,
 } from '@deriv/components';
 import { useStatesList } from '@deriv/hooks';
-import { getLocation } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import InlineNoteWithIcon from '../inline-note-with-icon';
@@ -143,7 +141,7 @@ const AddressDetails = observer(
                                     is_disabled={is_desktop}
                                 >
                                     <ScrollToFieldWithError />
-                                    {is_eu_user ? (
+                                    {is_eu_user && (
                                         <div className='details-form__banner-container'>
                                             <InlineNoteWithIcon
                                                 icon='IcAlertWarning'
@@ -153,21 +151,7 @@ const AddressDetails = observer(
                                                 title={localize('Why do we collect this?')}
                                             />
                                         </div>
-                                    ) : (
-                                        <Text
-                                            as='p'
-                                            align='left'
-                                            size='xxs'
-                                            line_height='l'
-                                            className='details-form__description'
-                                        >
-                                            <strong>
-                                                <Localize i18n_default_text='Only use an address for which you have proof of residence - ' />
-                                            </strong>
-                                            <Localize i18n_default_text='a recent utility bill (e.g. electricity, water, gas, landline, or internet), bank statement, or government-issued letter with your name and this address.' />
-                                        </Text>
                                     )}
-
                                     <ThemedScrollbars height={height} className='details-form__scrollbar'>
                                         <div
                                             className={classNames('details-form__elements', 'address-details-form', {

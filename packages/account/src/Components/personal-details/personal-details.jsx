@@ -2,16 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { Form, Formik } from 'formik';
 import { Analytics } from '@deriv-com/analytics';
-import {
-    AutoHeightWrapper,
-    Div100vhContainer,
-    FormSubmitButton,
-    Modal,
-    Text,
-    ThemedScrollbars,
-} from '@deriv/components';
+import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, ThemedScrollbars } from '@deriv/components';
 import { getIDVNotApplicableOption, isDesktop, isMobile, removeEmptyPropertiesFromObject } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import {
     isAdditionalDocumentValid,
@@ -23,7 +16,6 @@ import PoiNameDobExample from '../../Assets/ic-poi-name-dob-example.svg';
 import FormSubHeader from '../form-sub-header';
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
-import InlineNoteWithIcon from '../inline-note-with-icon';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
 
@@ -190,26 +182,6 @@ const PersonalDetails = observer(
                                     height_offset='100px'
                                     is_disabled={isDesktop()}
                                 >
-                                    {is_eu_user && (
-                                        <div className='details-form__banner-container'>
-                                            <InlineNoteWithIcon
-                                                icon='IcAlertWarning'
-                                                message={
-                                                    <Localize i18n_default_text='For verification purposes as required by regulation. It’s your responsibility to provide accurate and complete answers. You can update personal details at any time in your account settings.' />
-                                                }
-                                                title={localize('Why do we collect this?')}
-                                            />
-                                        </div>
-                                    )}
-                                    {!is_eu_user && !is_rendered_for_idv && (
-                                        <Text as='p' size='xxxs' align='center' className='details-form__description'>
-                                            <Localize
-                                                i18n_default_text={
-                                                    'Any information you provide is confidential and will be used for verification purposes only.'
-                                                }
-                                            />
-                                        </Text>
-                                    )}
                                     <ThemedScrollbars
                                         height={height}
                                         onScroll={closeToolTip}
@@ -252,12 +224,6 @@ const PersonalDetails = observer(
                                                 account_opening_reason_list={account_opening_reason_list}
                                                 should_close_tooltip={should_close_tooltip}
                                                 setShouldCloseTooltip={setShouldCloseTooltip}
-                                                inline_note_text={
-                                                    <Localize
-                                                        i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
-                                                        components={[<strong key={0} />]}
-                                                    />
-                                                }
                                                 no_confirmation_needed={no_confirmation_needed}
                                             />
                                         </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveAccount } from '@deriv/api-v2';
+import { useActiveAccount, useCryptoConfig } from '@deriv/api-v2';
 import { InlineMessage, Text } from '@deriv-com/ui';
 import styles from './DepositCryptoDisclaimers.module.scss';
 
@@ -17,7 +17,8 @@ const cryptoCurrencyToNetworkMapper: Record<string, string> = {
 const DepositCryptoDisclaimers = () => {
     const { data: activeAccount } = useActiveAccount();
     const { currency } = activeAccount ?? {};
-    const formattedMinimumDepositValue = activeAccount?.currency_config?.minimum_deposit?.toFixed(
+    const { data: cryptoConfig } = useCryptoConfig();
+    const formattedMinimumDepositValue = cryptoConfig?.minimum_deposit?.toFixed(
         activeAccount?.currency_config?.fractional_digits
     );
 
@@ -41,7 +42,7 @@ const DepositCryptoDisclaimers = () => {
                         To avoid loss of funds:
                     </Text>
                     <ul className={styles.points}>
-                        {activeAccount?.currency_config?.minimum_deposit && minimumDepositDisclaimer}
+                        {cryptoConfig?.minimum_deposit && minimumDepositDisclaimer}
                         <Text as='li' size='2xs'>
                             Do not send other cryptocurrencies to this address.
                         </Text>

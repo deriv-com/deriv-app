@@ -164,7 +164,6 @@
     }
 }
 
-// override styles for .dc-page-overlay if it's a wrapper for compare cfd accounts modal
 .dc-page-overlay:has(.dc-page-overlay__content .compare-cfd-account-container) {
     .dc-page-overlay {
         &-portal {

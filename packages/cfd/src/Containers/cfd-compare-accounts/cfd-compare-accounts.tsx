@@ -97,45 +97,48 @@ const CompareCFDs = observer(() => {
         </div>
     );
 
-    return isDesktop ? (
-        <div className='compare-cfd-account'>
-            <PageOverlay header={DesktopHeader} is_from_app={routes.traders_hub} />
-            <div
-                className={classNames('compare-cfd-account-container', {
-                    'compare-cfd-account-container__card-count': card_count < 4,
-                })}
-            >
-                <div className='card-list'>
-                    <CFDCompareAccountsCarousel>
-                        {all_cfd_available_accounts.map(item => (
-                            <CFDCompareAccountsCard
-                                trading_platforms={item}
-                                key={item.market_type + item.shortcode}
-                                is_eu_user={is_eu_user}
-                                is_demo={is_demo}
-                            />
-                        ))}
-                        {/* Renders cTrader data */}
-                        {all_cfd_available_accounts.length > 0 && has_ctrader_account_available && (
-                            <CFDCompareAccountsCard
-                                trading_platforms={ctrader_data}
-                                is_eu_user={is_eu_user}
-                                is_demo={is_demo}
-                            />
-                        )}
-                        {/* Renders Deriv X data */}
-                        {all_cfd_available_accounts.length > 0 && has_dxtrade_account_available && (
-                            <CFDCompareAccountsCard
-                                trading_platforms={dxtrade_data}
-                                is_eu_user={is_eu_user}
-                                is_demo={is_demo}
-                            />
-                        )}
-                    </CFDCompareAccountsCarousel>
+    if (isDesktop)
+        return (
+            <div className='compare-cfd-account'>
+                <PageOverlay header={DesktopHeader} is_from_app={routes.traders_hub} />
+                <div
+                    className={classNames('compare-cfd-account-container', {
+                        'compare-cfd-account-container__card-count': card_count < 4,
+                    })}
+                >
+                    <div className='card-list'>
+                        <CFDCompareAccountsCarousel>
+                            {all_cfd_available_accounts.map(item => (
+                                <CFDCompareAccountsCard
+                                    trading_platforms={item}
+                                    key={item.market_type + item.shortcode}
+                                    is_eu_user={is_eu_user}
+                                    is_demo={is_demo}
+                                />
+                            ))}
+                            {/* Renders cTrader data */}
+                            {all_cfd_available_accounts.length > 0 && has_ctrader_account_available && (
+                                <CFDCompareAccountsCard
+                                    trading_platforms={ctrader_data}
+                                    is_eu_user={is_eu_user}
+                                    is_demo={is_demo}
+                                />
+                            )}
+                            {/* Renders Deriv X data */}
+                            {all_cfd_available_accounts.length > 0 && has_dxtrade_account_available && (
+                                <CFDCompareAccountsCard
+                                    trading_platforms={dxtrade_data}
+                                    is_eu_user={is_eu_user}
+                                    is_demo={is_demo}
+                                />
+                            )}
+                        </CFDCompareAccountsCarousel>
+                    </div>
                 </div>
             </div>
-        </div>
-    ) : (
+        );
+
+    return (
         <PageOverlay
             header={CompareAccountsHeader}
             header_classname='compare-cfd-header-title'

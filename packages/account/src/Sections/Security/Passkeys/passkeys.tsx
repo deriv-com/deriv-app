@@ -7,8 +7,14 @@ import { observer, useStore } from '@deriv/stores';
 import PasskeysStatusContainer from './components/passkeys-status-container';
 import PasskeysList from './components/passkeys-list';
 import PasskeyModal from './components/passkey-modal';
-import { getModalContent, PASSKEY_STATUS_CODES, TPasskeysStatus } from './passkeys-configs';
+import {
+    getModalContent,
+    PASSKEY_STATUS_CODES,
+    passkeysMenuActionEventTrack,
+    TPasskeysStatus,
+} from './passkeys-configs';
 import './passkeys.scss';
+import { TServerError } from 'Types';
 
 const Passkeys = observer(() => {
     const { ui, client, common } = useStore();
@@ -37,14 +43,20 @@ const Passkeys = observer(() => {
     });
 
     React.useEffect(() => {
-        if (!passkeys_list?.length && !is_passkey_registered) {
+        if (is_passkeys_list_loading) return;
+        if (!passkeys_list?.length) {
             setPasskeyStatus(PASSKEY_STATUS_CODES.NO_PASSKEY);
-        } else if (is_passkey_registered) {
-            setPasskeyStatus(PASSKEY_STATUS_CODES.CREATED);
         } else {
             setPasskeyStatus(PASSKEY_STATUS_CODES.NONE);
         }
-    }, [is_passkey_registered, passkeys_list]);
+    }, [is_passkeys_list_loading]);
+
+    React.useEffect(() => {
+        if (is_passkey_registered) {
+            passkeysMenuActionEventTrack('create_passkey_finished');
+            setPasskeyStatus(PASSKEY_STATUS_CODES.CREATED);
+        }
+    }, [is_passkey_registered]);
 
     React.useEffect(() => {
         if (!!error || is_passkey_registration_started) {
@@ -82,6 +94,7 @@ const Passkeys = observer(() => {
         if (error) {
             onCloseModal(onCloseError);
         } else {
+            passkeysMenuActionEventTrack('create_passkey_reminder_passed');
             createPasskey();
             setIsModalOpen(false);
         }
@@ -91,19 +104,28 @@ const Passkeys = observer(() => {
         onCloseModal(cancelPasskeyRegistration);
     };
 
+    const startRegistration = () => {
+        const subform_name = passkey_status === PASSKEY_STATUS_CODES.LEARN_MORE ? 'passkey_info' : 'passkey_main';
+        passkeysMenuActionEventTrack('create_passkey_started', { subform_name });
+        startPasskeyRegistration();
+    };
+
     return (
         <div className='passkeys'>
             {passkey_status ? (
                 <PasskeysStatusContainer
-                    createPasskey={startPasskeyRegistration}
+                    createPasskey={startRegistration}
                     passkey_status={passkey_status}
                     setPasskeyStatus={setPasskeyStatus}
                 />
             ) : (
                 <PasskeysList
                     passkeys_list={passkeys_list || []}
-                    onPrimaryButtonClick={startPasskeyRegistration}
-                    onSecondaryButtonClick={() => setPasskeyStatus(PASSKEY_STATUS_CODES.LEARN_MORE)}
+                    onPrimaryButtonClick={startRegistration}
+                    onSecondaryButtonClick={() => {
+                        passkeysMenuActionEventTrack('info_open');
+                        setPasskeyStatus(PASSKEY_STATUS_CODES.LEARN_MORE);
+                    }}
                 />
             )}
             <PasskeyModal

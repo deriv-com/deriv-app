@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import { useRemoteConfig } from '@deriv/api';
+import { Analytics } from '@deriv-com/analytics';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
 import {
     useAccountTransferVisible,
@@ -13,7 +14,7 @@ import {
     useP2PSettings,
     useStoreWalletAccountsList,
 } from '@deriv/hooks';
-import { getStaticUrl, routes, useIsMounted, whatsapp_url } from '@deriv/shared';
+import { getOSNameWithUAParser, getStaticUrl, routes, useIsMounted, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
@@ -148,6 +149,14 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         expandSubMenu(false);
     }, [expandSubMenu, is_open, is_mobile_language_menu_open, setMobileLanguageMenuOpen]);
 
+    const passkeysMenuOpenActionEventTrack = React.useCallback(() => {
+        Analytics.trackEvent('ce_passkey_account_settings_form', {
+            action: 'open',
+            form_name: 'ce_passkey_account_settings_form',
+            operating_system: getOSNameWithUAParser(),
+        });
+    }, []);
+
     const getFilteredRoutesConfig = (all_routes_config, routes_to_filter) => {
         const subroutes_config = all_routes_config.flatMap(i => i.routes || []);
 
@@ -247,7 +256,12 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         is_disabled={disableRoute(subroute.path) || subroute.is_disabled}
                                         link_to={subroute.path}
                                         text={subroute.getTitle()}
-                                        onClickLink={toggleDrawer}
+                                        onClickLink={() => {
+                                            toggleDrawer();
+                                            if (subroute.path === routes.passkeys) {
+                                                passkeysMenuOpenActionEventTrack();
+                                            }
+                                        }}
                                         is_hidden={hideRoute(subroute.path)}
                                     />
                                 ))}

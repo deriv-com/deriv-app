@@ -299,6 +299,7 @@ export default class ClientStore extends BaseStore {
             is_logged_in: computed,
             has_restricted_mt5_account: computed,
             has_mt5_account_with_rejected_poa: computed,
+            has_wallet: computed,
             should_restrict_bvi_account_creation: computed,
             should_restrict_vanuatu_account_creation: computed,
             should_show_eu_content: computed,
@@ -510,6 +511,10 @@ export default class ClientStore extends BaseStore {
 
     get has_any_real_account() {
         return this.hasAnyRealAccount();
+    }
+
+    get has_wallet() {
+        return Object.values(this.accounts).some(account => account.account_category === 'wallet');
     }
 
     get first_switchable_real_loginid() {

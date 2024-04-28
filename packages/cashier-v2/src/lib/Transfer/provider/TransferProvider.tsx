@@ -104,6 +104,11 @@ const TransferProvider: React.FC<React.PropsWithChildren<TTransferProviderProps>
 
     const requestForTransfer = useCallback(
         (amount: string, fromAccount?: TTransferableAccounts[number], toAccount?: TTransferableAccounts[number]) => {
+            // These nested mutateAsync calls are done for mitigating the issue for getting
+            // the updated list of transferable accounts after performing a transfer as follows:
+            // 1. make a call to perform transfer
+            // 2. when the promise for (1) resolves, make another call to retrieve updated accounts
+            // 3. when the promise for (2) resolves, display the TransferReceipt
             if (Number(amount) && fromAccount && toAccount) {
                 mutateAsync({
                     account_from: fromAccount.loginid,

@@ -25,7 +25,7 @@ const WalletsAppLinkedWithWalletIcon = ({ appIcon, currency, isDemo = false, siz
             </div>
             {/* App Icon */}
             <div className='wallets-app-linked-with-wallet-icon__app-icon'>
-                <WalletResponsiveSvg icon={appIcon} />
+                <WalletResponsiveSvg icon={appIcon} size='xs' />
             </div>
         </div>
     );

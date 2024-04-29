@@ -1,6 +1,5 @@
 /* eslint-disable sort-keys */
 import React, { CSSProperties } from 'react';
-import classNames from 'classnames';
 import {
     AccountsDerivAccountDarkIcon,
     AccountsDerivAccountLightIcon,
@@ -15,17 +14,29 @@ import {
     PaymentMethodDerivP2pBrandIcon,
 } from '@deriv/quill-icons';
 
-const ICONS: Record<string, IconTypes> = {
-    IcWalletCTrader: AccountsDerivCtraderIcon,
-    IcWalletDerivP2P: PaymentMethodDerivP2pBrandIcon,
-    IcWalletDerivP2PDark: PaymentMethodDerivP2pBrandDarkIcon,
-    IcWalletDerivX: AccountsDerivXIcon,
+const MT5MarketIcons: Record<string, IconTypes> = {
     IcWalletMt5All: AccountsDmt5SwfIcon,
     IcWalletMt5CFDs: AccountsDmt5CfdsIcon,
     IcWalletMt5Derived: AccountsDmt5DerivedIcon,
     IcWalletMt5Financial: AccountsDmt5FinancialIcon,
+};
+
+const CFDPlatformIcons: Record<string, IconTypes> = {
+    IcWalletCTrader: AccountsDerivCtraderIcon,
+    IcWalletDerivX: AccountsDerivXIcon,
+};
+
+const PlatformIcons: Record<string, IconTypes> = {
+    IcWalletDerivP2P: PaymentMethodDerivP2pBrandIcon,
+    IcWalletDerivP2PDark: PaymentMethodDerivP2pBrandDarkIcon,
     IcWalletOptionsDark: AccountsDerivAccountDarkIcon,
     IcWalletOptionsLight: AccountsDerivAccountLightIcon,
+};
+
+const ICONS: Record<string, IconTypes> = {
+    ...MT5MarketIcons,
+    ...CFDPlatformIcons,
+    ...PlatformIcons,
 };
 
 const IconSizes = {
@@ -53,7 +64,7 @@ const WalletMarketIcon = ({ className = '', height, icon, size = 'md', width }: 
     }
 
     return (
-        <div className={classNames('wallets-responsive-svg', className)} data-testid='dt_wallet_icon'>
+        <div className={className} data-testid='dt_wallet_icon'>
             <IconSvg height={height ?? IconSize} width={width ?? IconSize} />
         </div>
     );

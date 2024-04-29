@@ -11,7 +11,12 @@ export const ProofOfIncomeForm = () => {
     const { isMobile } = useDevice();
     return (
         <div className='relative z-0 h-full w-full  grid gap-16 '>
-            <Formik>
+            <Formik
+                initialValues={{}}
+                onSubmit={() => {
+                    //TODO: Implement onSubmit
+                }}
+            >
                 <Form>
                     <div>
                         <div>
@@ -32,7 +37,7 @@ export const ProofOfIncomeForm = () => {
                                 <FormSubHeader>Document submission</FormSubHeader>
                             </div>
 
-                            <section className='flex flex-col items-start w-full px-16 py-16 space-y-20 md:border-solid lg:border-1 border-solid-grey-5  mb-24'>
+                            <section className='flex flex-col items-start w-full px-16 py-16 space-y-20 border-solid border-1 border-solid-grey-5  mb-24'>
                                 <Text size='sm' weight='bold'>
                                     The document must be recent and include your name and address:
                                 </Text>

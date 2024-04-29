@@ -144,6 +144,12 @@ const BuySellModal = () => {
                             error_modal_button_text: localize('Try again'),
                             error_message: localize('The advertiser changed the rate before you confirmed the order.'),
                             text_size: getTextSize('xxs', 'xs'),
+                            onClose: () => {
+                                showModal({
+                                    key: 'BuySellModal',
+                                    props: {},
+                                });
+                            },
                         },
                     });
                     buy_sell_store.setFormErrorCode('');

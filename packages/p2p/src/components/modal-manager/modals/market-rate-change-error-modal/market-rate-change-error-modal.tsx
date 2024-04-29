@@ -80,4 +80,3 @@ const MarketRateChangeErrorModal = ({ submitForm, values }: TMarketRateChangeErr
 };
 
 export default MarketRateChangeErrorModal;
-1;

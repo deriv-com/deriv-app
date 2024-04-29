@@ -112,6 +112,8 @@ const BuySellForm = props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [input_amount, calculated_rate]);
 
+    // This is to prevent the rate from changing when the MarketRateChangeErrorModal is shown on mobile and counterparty
+    // changes the rate. This is to ensure that the rate is not changed when the user is in the middle of placing an order.
     React.useEffect(() => {
         if (isMobile() && has_rate_changed && current_effective_rate !== effective_rate) {
             setChangedRate(effective_rate);

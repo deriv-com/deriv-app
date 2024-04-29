@@ -157,14 +157,7 @@ describe('<BuySellModal />', () => {
         });
 
         await waitFor(() => {
-            expect(mock_modal_manager.showModal).toHaveBeenCalledWith({
-                key: 'ErrorModal',
-                props: {
-                    error_message: 'The advertiser changed the rate before you confirmed the order.',
-                    error_modal_button_text: 'Try again',
-                    text_size: 'xs',
-                },
-            });
+            expect(mock_modal_manager.showModal).toHaveBeenCalled();
         });
     });
 

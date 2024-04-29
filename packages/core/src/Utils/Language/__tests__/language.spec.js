@@ -12,6 +12,7 @@ const languages = {
     KO: '한국어',
     PL: 'Polish',
     PT: 'Português',
+    SW: 'Kiswahili',
     RU: 'Русский',
     TR: 'Türkçe',
     VI: 'Tiếng Việt',

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import { useStores } from 'Stores';
 import { useSafeState } from '@deriv/components';
@@ -26,13 +25,6 @@ const mock_store = {
 const mock_modal_manager = {
     showModal: jest.fn(),
 };
-
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useLocation: jest.fn().mockReturnValue({
-        search: '',
-    }),
-}));
 
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
@@ -79,10 +71,6 @@ describe('<Orders/>', () => {
     });
 
     it('should call showModal and verifyEmailVerification when verification code and action_param is present', () => {
-        useLocation.mockReturnValue({
-            search: '?action=p2p_order_confirm',
-        });
-
         render(<Orders />);
 
         expect(mock_modal_manager.showModal).toHaveBeenCalledWith({ key: 'LoadingModal', props: {} });

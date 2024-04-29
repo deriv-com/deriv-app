@@ -1,5 +1,4 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 import { useSafeState } from '@deriv/components';
 import { reaction } from 'mobx';
 import { observer } from '@deriv/stores';
@@ -11,7 +10,6 @@ import OrderTable from './order-table/order-table.jsx';
 const Orders = observer(() => {
     const { order_store, general_store } = useStores();
     const { showModal } = useModalManagerContext();
-    const location = useLocation();
 
     // This is a bit hacky, but it allows us to force re-render this
     // component when the timer expired. This is created due to BE
@@ -39,12 +37,9 @@ const Orders = observer(() => {
         const disposeOrderVerificationReaction = reaction(
             () => order_store.verification_code,
             () => {
-                const url_params = new URLSearchParams(location.search);
-                const action_param = url_params.get('action');
-
-                if (order_store.verification_code && action_param) {
+                if (order_store.verification_code) {
                     showModal({ key: 'LoadingModal', props: {} });
-                    order_store.verifyEmailVerificationCode(action_param, order_store.verification_code);
+                    order_store.verifyEmailVerificationCode('p2p_order_confirm', order_store.verification_code);
                 }
             },
             { fireImmediately: true }

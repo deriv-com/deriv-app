@@ -79,6 +79,7 @@ module.exports = {
                         '^[a-z]',
                         // Packages starting with `@`
                         '^@',
+                        '^src',
                         // Imports starting with `../`
                         '^\\.\\.(?!/?$)',
                         '^\\.\\./?$',

@@ -18,9 +18,11 @@ packages/shared/utils
 packages/account/lib/
 packages/components/.out
 packages/components/src/components/icon/icons-manifest.js
+packages/components/stories/icon/icons.js
 packages/p2p/lib/
 packages/appstore/lib/
 packages/appstore/.out
+packages/account-v2/src/modules/scripts/webpack-entries.json
 packages/wallets/src/translations/messages.json
 .env
 nx-cloud.env
@@ -28,3 +30,6 @@ test-results/
 playwright-report/
 playwright/.cache/
 .nx
+packages/*/stats.json
+packages/*/report.json
+packages/*/analyzed.html

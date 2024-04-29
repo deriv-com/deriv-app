@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useActiveWalletAccount, useAuthorize, useCurrencyConfig } from '@deriv/api-v2';
 import { Loader } from '../../../../components';
-import {
-    CashierLocked,
-    WithdrawalCryptoModule,
-    WithdrawalFiatModule,
-    WithdrawalLocked,
-    WithdrawalVerificationModule,
-} from '../../modules';
+import { WithdrawalCryptoModule, WithdrawalFiatModule, WithdrawalVerificationModule } from '../../modules';
 
 const WalletWithdrawal = () => {
     const { isSuccess: isCurrencyConfigSuccess } = useCurrencyConfig();
@@ -41,33 +35,21 @@ const WalletWithdrawal = () => {
 
     if (verificationCode) {
         if (isCurrencyConfigSuccess && activeWallet?.currency) {
-            return (
-                <CashierLocked module='withdrawal'>
-                    <WithdrawalLocked>
-                        {isCrypto ? (
-                            <WithdrawalCryptoModule
-                                onClose={() => {
-                                    setVerificationCode('');
-                                }}
-                                verificationCode={verificationCode}
-                            />
-                        ) : (
-                            <WithdrawalFiatModule verificationCode={verificationCode} />
-                        )}
-                    </WithdrawalLocked>
-                </CashierLocked>
+            return isCrypto ? (
+                <WithdrawalCryptoModule
+                    onClose={() => {
+                        setVerificationCode('');
+                    }}
+                    verificationCode={verificationCode}
+                />
+            ) : (
+                <WithdrawalFiatModule verificationCode={verificationCode} />
             );
         }
         return <Loader />;
     }
 
-    return (
-        <CashierLocked module='withdrawal'>
-            <WithdrawalLocked>
-                <WithdrawalVerificationModule />
-            </WithdrawalLocked>
-        </CashierLocked>
-    );
+    return <WithdrawalVerificationModule />;
 };
 
 export default WalletWithdrawal;

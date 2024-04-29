@@ -20,14 +20,18 @@ jest.mock('../SupportProfessionalClient', () => ({
     SupportProfessionalClient: () => <div>Support Professional Client Container</div>,
 }));
 
-jest.mock('../../../modules/AddressFields', () => ({
-    ...jest.requireActual('../../../modules/AddressFields'),
+jest.mock('../../../modules/src/AddressFields', () => ({
+    ...jest.requireActual('../../../modules/src/AddressFields'),
     AddressFields: () => <div>Address Fields Container</div>,
 }));
 
 jest.mock('../../../hooks/usePersonalDetails', () => ({
     ...jest.requireActual('../../../hooks/usePersonalDetails'),
     usePersonalDetails: jest.fn(),
+}));
+
+jest.mock('src/components/LeaveConfirm', () => ({
+    LeaveConfirm: () => <div>LeaveConfirm</div>,
 }));
 
 beforeEach(() => {

@@ -21,7 +21,6 @@ import {
     isHighLow,
     isMobile,
     isMultiplierContract,
-    isTurbosContract,
     LocalStore,
     routes,
     unique,
@@ -201,16 +200,17 @@ export default class NotificationStore extends BaseStore {
         } = contract_info;
         const id = `${contract_id}_${status}`;
         if (this.trade_notifications.some(({ id: notification_id }) => notification_id === id)) return;
-        const contract_main_title = getTradeTypeName(contract_type, isHighLow({ shortcode }), false, true);
+        const contract_main_title = getTradeTypeName(contract_type, {
+            isHighLow: isHighLow({ shortcode }),
+            showMainTitle: true,
+        });
         this.trade_notifications.push({
             id,
             buy_price,
             contract_id,
-            contract_type: `${contract_main_title} ${getTradeTypeName(
-                contract_type,
-                isHighLow({ shortcode }),
-                isTurbosContract(contract_type)
-            )}`.trim(),
+            contract_type: `${contract_main_title} ${getTradeTypeName(contract_type, {
+                isHighLow: isHighLow({ shortcode }),
+            })}`.trim(),
             currency,
             profit: isMultiplierContract(contract_type) && !isNaN(profit) ? getTotalProfit(contract_info) : profit,
             status,
@@ -318,6 +318,7 @@ export default class NotificationStore extends BaseStore {
             website_status,
             has_enabled_two_fa,
             has_changed_two_fa,
+            has_wallet,
             is_poi_dob_mismatch,
             is_financial_assessment_needed,
             is_financial_information_incomplete,
@@ -434,7 +435,6 @@ export default class NotificationStore extends BaseStore {
                     ASK_TIN_INFORMATION,
                     ASK_UK_FUNDS_PROTECTION,
                 } = cashier_validation ? getCashierValidations(cashier_validation) : {};
-
                 const needs_poa =
                     is_10k_withdrawal_limit_reached &&
                     (needs_verification.includes('document') || document?.status !== 'verified');
@@ -511,7 +511,7 @@ export default class NotificationStore extends BaseStore {
                         this.addNotificationMessage(
                             this.client_notifications.required_fields(withdrawal_locked, deposit_locked)
                         );
-                    } else {
+                    } else if (!has_wallet) {
                         this.addNotificationMessage(this.client_notifications.cashier_locked);
                     }
                 } else {

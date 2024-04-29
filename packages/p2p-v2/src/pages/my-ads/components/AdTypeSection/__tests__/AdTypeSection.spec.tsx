@@ -1,5 +1,4 @@
 import React from 'react';
-import { MY_ADS_URL } from '@/constants';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AdTypeSection from '../AdTypeSection';
@@ -31,18 +30,14 @@ jest.mock('react-hook-form', () => ({
     }),
 }));
 
-const mockUseHistory = {
-    push: jest.fn(),
-};
-
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useHistory: () => mockUseHistory,
-}));
-
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn().mockReturnValue({ isMobile: false }),
+}));
+
+jest.mock('@/hooks', () => ({
+    ...jest.requireActual('@/hooks'),
+    useQueryString: jest.fn().mockReturnValue({ queryString: { advertId: '' } }),
 }));
 
 const mockProps = {
@@ -52,8 +47,14 @@ const mockProps = {
     goToNextStep: jest.fn(),
     goToPreviousStep: jest.fn(),
     localCurrency: 'usd',
+    onCancel: jest.fn(),
     rateType: 'float',
 };
+
+jest.mock('@/components', () => ({
+    ...jest.requireActual('@/components'),
+    FloatingRate: () => <div>FloatingRate</div>,
+}));
 
 describe('AdTypeSection', () => {
     it('should render the ad type section component', () => {
@@ -73,7 +74,7 @@ describe('AdTypeSection', () => {
         render(<AdTypeSection {...mockProps} />);
         const element = screen.getByRole('button', { name: 'Cancel' });
         userEvent.click(element);
-        expect(mockUseHistory.push).toHaveBeenCalledWith(MY_ADS_URL);
+        expect(mockProps.onCancel).toHaveBeenCalled();
     });
     it('should handle the trigger validation', () => {
         render(<AdTypeSection {...mockProps} />);

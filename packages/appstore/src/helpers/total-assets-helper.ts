@@ -2,7 +2,7 @@ import { useCFDAccounts, useExchangeRate, usePlatformAccounts } from '@deriv/hoo
 
 export const isRatesLoaded = (
     is_real: boolean,
-    total_assets_real_currency: string,
+    total_assets_real_currency: string | undefined,
     platform_real_accounts: ReturnType<typeof usePlatformAccounts>['real'],
     cfd_real_accounts: ReturnType<typeof useCFDAccounts>['real'],
     exchange_rates: ReturnType<typeof useExchangeRate>['exchange_rates']
@@ -24,11 +24,16 @@ export const isRatesLoaded = (
         }
     });
 
+    const exchange_rates_keys = Object.keys(exchange_rates?.[total_assets_real_currency ?? ''] ?? {});
+    const is_all_currencies_inside = currencies_need_exchange_rates.every(currency =>
+        exchange_rates_keys.includes(currency)
+    );
+
     return (
         currencies_need_exchange_rates.length === 0 ||
         (total_assets_real_currency &&
             exchange_rates?.[total_assets_real_currency] &&
             currencies_need_exchange_rates.length &&
-            currencies_need_exchange_rates.length === Object.keys(exchange_rates?.[total_assets_real_currency]).length)
+            is_all_currencies_inside)
     );
 };

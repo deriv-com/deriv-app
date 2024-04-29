@@ -1,12 +1,12 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { FadeWrapper, Loading } from '@deriv/components';
-import { matchRoute, routes as shared_routes } from '@deriv/shared';
+import { useStoreWalletAccountsList } from '@deriv/hooks';
+import { flatten, matchRoute, routes as shared_routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import PageOverlayWrapper from './page-overlay-wrapper';
 import { TRoute } from '../../Types';
 import 'Styles/account.scss';
-import { flatten } from 'Helpers/utils';
 
 type TAccountProps = RouteComponentProps & {
     routes: Array<TRoute>;
@@ -30,11 +30,15 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
         landing_company_shortcode,
         should_allow_authentication,
         should_allow_poinc_authentication,
+        is_passkey_supported,
     } = client;
-    const { toggleAccountSettings, is_account_settings_visible } = ui;
+    const { toggleAccountSettings, is_account_settings_visible, is_mobile, is_desktop } = ui;
+    const { has_wallet } = useStoreWalletAccountsList();
+
     // subroutes of a route is structured as an array of arrays
     const subroutes = flatten(routes.map(i => i.subroutes));
     const selected_content = subroutes.find(r => matchRoute(r, location.pathname));
+    const should_remove_passkeys_route = is_desktop || (is_mobile && !is_passkey_supported);
 
     React.useEffect(() => {
         toggleAccountSettings(true);
@@ -61,6 +65,14 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
 
                 if (route.path === shared_routes.proof_of_income) {
                     route.is_disabled = !should_allow_poinc_authentication;
+                }
+
+                if (route.path === shared_routes.passkeys) {
+                    route.is_hidden = should_remove_passkeys_route;
+                }
+
+                if (route.path === shared_routes.languages) {
+                    route.is_hidden = has_wallet;
                 }
             });
         }

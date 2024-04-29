@@ -1,62 +1,22 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import { Formik } from 'formik';
-import { useHistory } from 'react-router';
-import { Button, Loader, Text } from '@deriv-com/ui';
-import { getCryptoFiatConverterValidationSchema } from '../../../../components';
-import type { TCurrency } from '../../../../types';
+import { useHistory } from 'react-router-dom';
+import { Button, Text } from '@deriv-com/ui';
 import { useTransfer } from '../../provider';
 import { TTransferFormikContext } from '../../types';
-import { TransferCryptoFiatAmountConverter } from './components';
+import { TransferAccountSelection, TransferCryptoFiatAmountConverter } from './components';
 import styles from './TransferForm.module.scss';
 
 const TransferForm = () => {
     const history = useHistory();
-    const { accounts, activeAccount, isLoading } = useTransfer();
-    const [validationSchema, setValidationSchema] =
-        useState<ReturnType<typeof getCryptoFiatConverterValidationSchema>>();
+    const { accounts, activeAccount, transferValidationSchema } = useTransfer();
 
-    const getInitialToAccount = useMemo(() => {
-        if (!accounts || !activeAccount) return;
-
-        if (activeAccount.loginid !== accounts[0].loginid) return accounts[0];
-
-        return accounts[1];
-    }, [accounts, activeAccount]);
-
-    useEffect(() => {
-        if (accounts)
-            setValidationSchema(
-                getCryptoFiatConverterValidationSchema({
-                    fromAccount: {
-                        balance: parseFloat(activeAccount?.balance ?? ''),
-                        currency: activeAccount?.currency as TCurrency,
-                        fractionalDigits: activeAccount?.currencyConfig?.fractional_digits,
-                        limits: {
-                            max: 100,
-                            min: 1,
-                        },
-                    },
-                    toAccount: {
-                        currency: getInitialToAccount?.currency as TCurrency,
-                        fractionalDigits: getInitialToAccount?.currencyConfig?.fractional_digits,
-                    },
-                })
-            );
-    }, [
-        accounts,
-        activeAccount?.balance,
-        activeAccount?.currency,
-        activeAccount?.currencyConfig?.fractional_digits,
-        getInitialToAccount?.currency,
-        getInitialToAccount?.currencyConfig?.fractional_digits,
-    ]);
-
-    if (!accounts || !activeAccount || isLoading || !getInitialToAccount) return <Loader />;
+    const initialAccount = activeAccount !== accounts[0] ? accounts[0] : accounts[1];
 
     const initialValues: TTransferFormikContext = {
         fromAccount: activeAccount,
         fromAmount: '',
-        toAccount: getInitialToAccount,
+        toAccount: initialAccount,
         toAmount: '',
     };
 
@@ -66,7 +26,7 @@ const TransferForm = () => {
             onSubmit={() => {
                 return undefined;
             }}
-            validationSchema={validationSchema}
+            validationSchema={transferValidationSchema}
         >
             {() => {
                 return (
@@ -74,6 +34,7 @@ const TransferForm = () => {
                         <Text className={styles.title} weight='bold'>
                             Transfer between your accounts in Deriv
                         </Text>
+                        <TransferAccountSelection />
                         <TransferCryptoFiatAmountConverter />
                         <div className={styles['button-group']}>
                             <Button

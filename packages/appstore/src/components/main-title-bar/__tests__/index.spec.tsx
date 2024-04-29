@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore, ExchangeRatesProvider } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import MainTitleBar from '..';
 
 jest.mock('Components/wallets-banner', () => jest.fn(() => 'WalletsBanner'));
@@ -15,15 +15,14 @@ describe('MainTitleBar', () => {
         },
         client: {
             is_landing_company_loaded: false,
+            exchange_rates: {},
         },
         feature_flags: { data: { wallet: false } },
     });
 
     const render_container = (mock_store_override?: ReturnType<typeof mockStore>) => {
         const wrapper = ({ children }: React.PropsWithChildren) => (
-            <StoreProvider store={mock_store_override ?? mock_store}>
-                <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
-            </StoreProvider>
+            <StoreProvider store={mock_store_override ?? mock_store}>{children}</StoreProvider>
         );
 
         return render(<MainTitleBar />, {

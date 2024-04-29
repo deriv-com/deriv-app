@@ -9,31 +9,31 @@ import {
     AccountsDmt5DerivedIcon,
     AccountsDmt5FinancialIcon,
     AccountsDmt5SwfIcon,
-    IconTypes,
     PaymentMethodDerivP2pBrandDarkIcon,
     PaymentMethodDerivP2pBrandIcon,
 } from '@deriv/quill-icons';
+import { TIconTypes } from '../../types';
 
-const MT5MarketIcons: Record<string, IconTypes> = {
+const MT5MarketIcons: TIconTypes = {
     IcWalletMt5All: AccountsDmt5SwfIcon,
     IcWalletMt5CFDs: AccountsDmt5CfdsIcon,
     IcWalletMt5Derived: AccountsDmt5DerivedIcon,
     IcWalletMt5Financial: AccountsDmt5FinancialIcon,
 };
 
-const CFDPlatformIcons: Record<string, IconTypes> = {
+const CFDPlatformIcons: TIconTypes = {
     IcWalletCTrader: AccountsDerivCtraderIcon,
     IcWalletDerivX: AccountsDerivXIcon,
 };
 
-const PlatformIcons: Record<string, IconTypes> = {
+const PlatformIcons: TIconTypes = {
     IcWalletDerivP2P: PaymentMethodDerivP2pBrandIcon,
     IcWalletDerivP2PDark: PaymentMethodDerivP2pBrandDarkIcon,
     IcWalletOptionsDark: AccountsDerivAccountDarkIcon,
     IcWalletOptionsLight: AccountsDerivAccountLightIcon,
 };
 
-const ICONS: Record<string, IconTypes> = {
+const Icons: TIconTypes = {
     ...MT5MarketIcons,
     ...CFDPlatformIcons,
     ...PlatformIcons,
@@ -50,14 +50,14 @@ const IconSizes = {
 type TWalletIconProps = {
     className?: string;
     height?: CSSProperties['height'];
-    icon: keyof typeof ICONS;
+    icon: keyof typeof Icons;
     size?: keyof typeof IconSizes;
     width?: CSSProperties['width'];
 };
 
 const WalletMarketIcon = ({ className = '', height, icon, size = 'md', width }: TWalletIconProps) => {
     const IconSize = IconSizes[size];
-    const IconSvg = ICONS[icon];
+    const IconSvg = Icons[icon];
 
     if (!IconSvg) {
         return null;

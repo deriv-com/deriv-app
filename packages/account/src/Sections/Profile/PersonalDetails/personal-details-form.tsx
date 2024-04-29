@@ -396,6 +396,10 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                             name='phone'
                                             id={'phone'}
                                             label={localize('Phone number*')}
+                                            className={
+                                                account_settings.phone_number_verification.verified &&
+                                                'account-form__fieldset--phone'
+                                            }
                                             //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
                                             value={values.phone}
                                             onChange={handleChange}

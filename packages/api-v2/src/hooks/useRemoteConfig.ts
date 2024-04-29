@@ -1,6 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import initData from '../remote_config.json';
 
+/**
+ * This hook, unlike all other hooks, does not require APIProvider and AuthProvider to work,
+ * As this is just a simple fetch request to get the remote config (no connection to websocket, no state, just fetch)
+ * Imagine all requests and data handling to be as simple as this hook :):):)
+ * @returns
+ */
 const remoteConfigQuery = async function () {
     const isProductionOrStaging = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
     const REMOTE_CONFIG_URL = process.env.REMOTE_CONFIG_URL || '';

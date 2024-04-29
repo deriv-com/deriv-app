@@ -61,7 +61,7 @@ describe('displayMoney', () => {
 
     it('should work for en-US, USDt; keep precision', async () => {
         const preferred_language = 'en-US';
-        const display_money = displayMoney(1234.56789, 'USDt', { preferred_language, shouldKeepPrecision: true });
+        const display_money = displayMoney(1234.56789, 'USDt', { preferred_language, should_keep_precision: true });
 
         expect(display_money).toBe('1,234.56789 USDt');
     });

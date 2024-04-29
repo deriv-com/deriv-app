@@ -10,11 +10,12 @@ export const displayMoney = (
     options?: {
         fractional_digits?: number;
         preferred_language?: TPreferredLanguage;
-        shouldKeepPrecision?: boolean;
+        should_keep_precision?: boolean;
+        max_length?: number;
     }
 ) => {
     const intendedDecimalPlaces = options?.fractional_digits ?? 2;
-    const decimalPlaces = options?.shouldKeepPrecision
+    const decimalPlaces = options?.should_keep_precision
         ? Math.max(
               // whichever is bigger:
               intendedDecimalPlaces, // intended decimal places

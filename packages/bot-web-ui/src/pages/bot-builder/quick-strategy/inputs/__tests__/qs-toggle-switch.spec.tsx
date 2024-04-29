@@ -2,17 +2,32 @@ import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import QSCheckbox from '../qs-checkbox';
+import QSToggleSwitch from '../qs-toggle-switch';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
+jest.mock('formik', () => ({
+    ...jest.requireActual('formik'),
+    useFormikContext: () => ({
+        values: { max_stake: 10 },
+        setFieldValue: jest.fn(),
+    }),
+}));
 
 describe('<QSCheckbox />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+    const mockSetIsEnabledToggleSwitch = jest.fn();
+
+    const mocked_props = {
+        name: 'max-stake',
+        label: 'Max Stake',
+        isEnabledToggleSwitch: false,
+        setIsEnabledToggleSwitch: mockSetIsEnabledToggleSwitch,
+    };
 
     beforeEach(() => {
         const mock_store = mockStore({
@@ -24,6 +39,7 @@ describe('<QSCheckbox />', () => {
         const mock_onSubmit = jest.fn();
         const initial_value = {
             symbol: 'R_100',
+            max_stake: 10,
             boolean_max_stake: false,
             duration: 1,
         };
@@ -45,8 +61,8 @@ describe('<QSCheckbox />', () => {
         );
     });
 
-    it('should render QSCheckbox', () => {
-        const { container } = render(<QSCheckbox name='max-stake' label='Max Stake' />, {
+    it('should render QSToggleSwitch', () => {
+        const { container } = render(<QSToggleSwitch {...mocked_props} />, {
             wrapper,
         });
 
@@ -54,23 +70,30 @@ describe('<QSCheckbox />', () => {
     });
 
     it('should render description', () => {
-        render(<QSCheckbox name='max-stake' label='Max Stake' description='Max stake field mock description' />, {
+        render(<QSToggleSwitch {...mocked_props} description='Max stake field mock description' />, {
             wrapper,
         });
+
         userEvent.click(screen.getByTestId('dt_popover_wrapper'));
-        act(() => {
-            userEvent.hover(screen.getByText('Max Stake'));
-        });
+        userEvent.hover(screen.getByText('Max Stake'));
+
         expect(screen.getByText('Max stake field mock description')).toBeInTheDocument();
     });
 
     it('should change value', () => {
-        render(<QSCheckbox name='boolean_max_stake' label='Max Stake' />, {
+        const modified_mocked_props = {
+            ...mocked_props,
+            name: 'boolean_max_stake',
+        };
+        const { container } = render(<QSToggleSwitch {...modified_mocked_props} />, {
             wrapper,
         });
-        const checkbox = screen.getByTestId('qs-checkbox');
-        userEvent.click(checkbox);
-        expect(checkbox).toBeChecked();
+        // eslint-disable-next-line testing-library/no-node-access, testing-library/no-container
+        const label = container.querySelector('.dc-toggle-switch__label');
+        if (label) {
+            userEvent.click(label);
+        }
+        expect(mockSetIsEnabledToggleSwitch).toHaveBeenCalled();
         expect(screen.getByText('Max Stake')).toBeInTheDocument();
     });
 });

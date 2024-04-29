@@ -92,6 +92,8 @@ const WalletCurrencyIcon: React.FC<TWalletCurrencyIconsProps> = ({
     const IconSize = rounded || isFiat ? roundedIconWidth[size] : defaultIconWidth[size];
     const Icon = rounded || isFiat ? roundedIcons[currency] : defaultIcons[currency];
 
+    if (!Icon) return null;
+
     return (
         <Icon
             className={className}

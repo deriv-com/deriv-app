@@ -110,7 +110,7 @@ export const isSupportedImageFormat = (filename: string) => /\.(png|jpg|jpeg|gif
  */
 export const compressImageFile = (file: File) => {
     return new Promise<Blob>(resolve => {
-        if (isSupportedImageFormat(file.type)) {
+        if (isSupportedImageFormat(file.name)) {
             convertToBase64(file).then(img => {
                 compressImage(img).then(resolve);
             });

@@ -16,7 +16,7 @@ interface WalletButtonProps {
     isFullWidth?: boolean;
     isLoading?: boolean;
     onClick?: ComponentProps<'button'>['onClick'];
-    rounded?: Extract<TGenericSizes, 'md' | 'sm'>;
+    rounded?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     textSize?: ComponentProps<typeof WalletText>['size'];
     type?: ComponentProps<'button'>['type'];

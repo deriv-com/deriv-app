@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
-import { TStep } from 'types';
+import { TCountryListItem, TStep } from 'types';
 import { FormProgress, Wizard } from '@/components';
 import { LabelPairedXmarkLgBoldIcon } from '@deriv/quill-icons';
 import { Button, Text, useDevice } from '@deriv-com/ui';
+import { AdConditionsSection } from '../AdConditionsSection';
+import { AdPaymentDetailsSection } from '../AdPaymentDetailsSection';
 import { AdProgressBar } from '../AdProgressBar';
 import { AdTypeSection } from '../AdTypeSection';
 import './AdWizard.scss';
 
 type TAdWizardNav = {
+    countryList: TCountryListItem;
     currency: string;
     localCurrency?: string;
+    onCancel: () => void;
     rateType: string;
     steps: TStep[];
 };
 
-const AdWizard = ({ currency, localCurrency, rateType, steps }: TAdWizardNav) => {
+const AdWizard = ({ countryList, onCancel, steps, ...rest }: TAdWizardNav) => {
     const { isDesktop } = useDevice();
     const [currentStep, setCurrentStep] = useState(0);
 
@@ -42,9 +46,10 @@ const AdWizard = ({ currency, localCurrency, rateType, steps }: TAdWizardNav) =>
                                 )}
                             </div>
                             <Button
-                                className='p2p-v2-ad-wizard__button'
                                 color='white'
                                 icon={<LabelPairedXmarkLgBoldIcon />}
+                                onClick={onCancel}
+                                type='button'
                                 variant='contained'
                             />
                         </div>
@@ -53,7 +58,9 @@ const AdWizard = ({ currency, localCurrency, rateType, steps }: TAdWizardNav) =>
             }
             onStepChange={step => setCurrentStep(step.activeStep - 1)}
         >
-            <AdTypeSection currency={currency} localCurrency={localCurrency} rateType={rateType} />
+            <AdTypeSection onCancel={onCancel} {...rest} />
+            <AdPaymentDetailsSection {...rest} />
+            <AdConditionsSection countryList={countryList} {...rest} />
         </Wizard>
     );
 };

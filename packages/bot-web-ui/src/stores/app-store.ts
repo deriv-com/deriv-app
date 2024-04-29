@@ -264,6 +264,7 @@ export default class AppStore {
                                 });
                         });
                     }
+                    DBot.initializeInterpreter();
                 }
             }
         );
@@ -295,6 +296,9 @@ export default class AppStore {
         const { handleFileChange } = load_modal;
         const { setLoading } = blockly_store;
         const { setContractUpdateConfig } = summary_card;
+        const {
+            ui: { is_mobile },
+        } = this.core;
 
         this.dbot_store = {
             client,
@@ -307,6 +311,7 @@ export default class AppStore {
             setLoading,
             setContractUpdateConfig,
             handleFileChange,
+            is_mobile,
         };
 
         this.api_helpers_store = {

@@ -11,9 +11,9 @@ describe('WithdrawalLockedContent', () => {
         const result = getWithdrawalLimitReachedDesc({
             askFinancialRiskApproval: false,
             poaNeedsVerification: false,
-            poaStatus: 'none',
+            poaStatus: 'verified',
             poiNeedsVerification: false,
-            poiStatus: 'none',
+            poiStatus: 'verified',
         });
 
         expect(result).toBeFalsy();
@@ -31,6 +31,21 @@ describe('WithdrawalLockedContent', () => {
         expect(result).toBeFalsy();
     });
 
+    it('should render correct message when withdrawal limit is reached and both POI/POA has not been uploaded', () => {
+        const result = getWithdrawalLimitReachedDesc({
+            askFinancialRiskApproval: false,
+            poaNeedsVerification: true,
+            poaStatus: 'none',
+            poiNeedsVerification: true,
+            poiStatus: 'none',
+        });
+
+        if (result) render(result);
+        expect(screen.getByText(/You have reached the withdrawal limit. Please check your/)).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'proof of identity' })).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'address' })).toBeInTheDocument();
+    });
+
     it('should render correct message when withdrawal limit is reached and POI has not been uploaded', () => {
         const result = getWithdrawalLimitReachedDesc({
             askFinancialRiskApproval: false,
@@ -41,8 +56,9 @@ describe('WithdrawalLockedContent', () => {
         });
 
         if (result) render(result);
-        expect(screen.getByText(/You have reached the withdrawal limit. Please upload/)).toBeInTheDocument();
+        expect(screen.getByText(/You have reached the withdrawal limit. Please check your/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'proof of identity' })).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'address' })).toBeInTheDocument();
     });
 
     it('should render correct message when withdrawal limit is reached and POI has been uploaded but not yet verified', () => {
@@ -55,8 +71,9 @@ describe('WithdrawalLockedContent', () => {
         });
 
         if (result) render(result);
-        expect(screen.getByText(/You have reached the withdrawal limit. Please check/)).toBeInTheDocument();
+        expect(screen.getByText(/You have reached the withdrawal limit. Please check your/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'proof of identity' })).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'address' })).toBeInTheDocument();
     });
 
     it('should render correct message when withdrawal limit is reached and POA has not been uploaded', () => {
@@ -69,8 +86,9 @@ describe('WithdrawalLockedContent', () => {
         });
 
         if (result) render(result);
-        expect(screen.getByText(/You have reached the withdrawal limit. Please upload/)).toBeInTheDocument();
-        expect(screen.getByRole('link', { name: 'proof of address' })).toBeInTheDocument();
+        expect(screen.getByText(/You have reached the withdrawal limit. Please check your/)).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'proof of identity' })).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'address' })).toBeInTheDocument();
     });
 
     it('should render correct message when withdrawal limit is reached and POA has been uploaded but not yet verified', () => {
@@ -83,21 +101,22 @@ describe('WithdrawalLockedContent', () => {
         });
 
         if (result) render(result);
-        expect(screen.getByText(/You have reached the withdrawal limit. Please check/)).toBeInTheDocument();
-        expect(screen.getByRole('link', { name: 'proof of address' })).toBeInTheDocument();
+        expect(screen.getByText(/You have reached the withdrawal limit. Please check your/)).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'proof of identity' })).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'address' })).toBeInTheDocument();
     });
 
     it('should render correct message when withdrawal limit is reached and askFinancialRiskApproval status received', () => {
         const result = getWithdrawalLimitReachedDesc({
             askFinancialRiskApproval: true,
             poaNeedsVerification: false,
-            poaStatus: 'none',
+            poaStatus: 'verified',
             poiNeedsVerification: false,
-            poiStatus: 'none',
+            poiStatus: 'verified',
         });
 
         if (result) render(result);
-        expect(screen.getByText(/You have reached the withdrawal limit. Please complete/)).toBeInTheDocument();
+        expect(screen.getByText(/Please complete/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'financial assessment form' })).toBeInTheDocument();
     });
 

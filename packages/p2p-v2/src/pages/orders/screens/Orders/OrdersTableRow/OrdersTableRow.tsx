@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { useHistory } from 'react-router-dom';
 import { THooks } from 'types';
-import { BASE_URL, ORDERS_STATUS } from '@/constants';
+import { ORDERS_STATUS, ORDERS_URL } from '@/constants';
 import { useExtendedOrderDetails, useQueryString } from '@/hooks';
 import { OrderRatingButton, OrderStatusTag, OrderTimer } from '@/pages/orders/components';
 import { getDistanceToServerTime } from '@/utils';
@@ -43,10 +43,11 @@ const OrdersTableRow = ({ ...props }: THooks.Order.GetList[number]) => {
     const isBuyOrderForUser = orderDetails.isBuyOrderForUser;
     const transactionAmount = `${Number(priceDisplay).toFixed(2)} ${localCurrency}`;
     const offerAmount = `${amountDisplay} ${accountCurrency}`;
+    const showOrderDetails = () => history.push(`${ORDERS_URL}/${id}`);
 
     if (isMobile) {
         return (
-            <div className='flex flex-col'>
+            <div className='flex flex-col' onClick={showOrderDetails}>
                 <div className='flex justify-between'>
                     <Text size='sm' weight='bold'>
                         <OrderStatusTag
@@ -63,7 +64,11 @@ const OrdersTableRow = ({ ...props }: THooks.Order.GetList[number]) => {
                             <Button
                                 className='h-full p-0'
                                 color='white'
-                                onClick={() => history.push(`${BASE_URL}/orders?order=${id}`)}
+                                data-testid='dt_p2p_v2_orders_table_row_chat_button'
+                                onClick={event => {
+                                    event.stopPropagation();
+                                    history.push(`${ORDERS_URL}/${id}?showChat=true`);
+                                }}
                                 variant='contained'
                             >
                                 <ChatIcon />
@@ -86,8 +91,8 @@ const OrdersTableRow = ({ ...props }: THooks.Order.GetList[number]) => {
 
     return (
         <div
-            className={clsx('p2p-v2-orders-table-row cursor-pointer', { 'p2p-v2-orders-table-row--inactive': isPast })}
-            onClick={() => history.push(`${BASE_URL}/orders?order=${id}`)}
+            className={clsx('p2p-v2-orders-table-row', { 'p2p-v2-orders-table-row--inactive': isPast })}
+            onClick={showOrderDetails}
         >
             {isPast && <Text size='sm'>{purchaseTime}</Text>}
             <Text size='sm'>{isBuyOrderForUser ? 'Buy' : 'Sell'}</Text>

@@ -13,6 +13,10 @@
         border-radius: 0.8rem;
         border: 0.1rem dashed var(--system-light-5-active-background, #d6dadb);
 
+        @include mobile {
+            margin-top: 1.6rem;
+        }
+
         &-icon {
             width: 3.2rem;
             height: 3.2rem;

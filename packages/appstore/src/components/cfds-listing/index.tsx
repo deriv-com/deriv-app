@@ -1,18 +1,35 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
-import { Text, StaticUrl } from '@deriv/components';
-import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction, MT5_ACCOUNT_STATUS } from '@deriv/shared';
+import { Loading, Text, StaticUrl } from '@deriv/components';
+import {
+    isMobile,
+    formatMoney,
+    getAuthenticationStatusInfo,
+    Jurisdiction,
+    MT5_ACCOUNT_STATUS,
+    makeLazyLoader,
+    moduleLoader,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import AddOptionsAccount from 'Components/add-options-account';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import CompareAccount from 'Components/compare-account';
-import GetMoreAccounts from 'Components/get-more-accounts';
 import { getHasDivider } from 'Constants/utils';
+import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import './cfds-listing.scss';
-import { useCFDCanGetMoreMT5Accounts, useMT5SVGEligibleToMigrate } from '@deriv/hooks';
-import MigrationBanner from '@deriv/cfd/src/Containers/migration-banner/migration-banner';
+
+const MigrationBanner = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "cfd_migration-banner" */ '@deriv/cfd/src/Containers/migration-banner/migration-banner'
+                )
+        ),
+    () => <Loading />
+)();
 
 const CFDsListing = observer(() => {
     const {
@@ -32,7 +49,6 @@ const CFDsListing = observer(() => {
         is_real,
         getExistingAccounts,
         getAccount,
-        toggleAccountTypeModalVisibility,
         selected_account_type,
         is_eu_user,
         is_demo_low_risk,
@@ -47,12 +63,14 @@ const CFDsListing = observer(() => {
         financial_restricted_countries,
     } = traders_hub;
 
-    const { setAccountType } = cfd;
+    const { setAccountType, toggleCTraderTransferModal } = cfd;
     const {
-        is_landing_company_loaded,
-        real_account_creation_unlock_date,
         account_status,
+        ctrader_accounts_list,
+        is_landing_company_loaded,
         is_populating_mt5_account_list,
+        real_account_creation_unlock_date,
+        ctrader_total_balance,
     } = client;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal, setShouldShowCooldownModal, setIsMT5VerificationFailedModal } = ui;
@@ -60,7 +78,6 @@ const CFDsListing = observer(() => {
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
-    const can_get_more_cfd_mt5_accounts = useCFDCanGetMoreMT5Accounts();
     const {
         poi_pending_for_bvi_labuan_vanuatu,
         poi_resubmit_for_bvi_labuan_vanuatu,
@@ -253,14 +270,6 @@ const CFDsListing = observer(() => {
                             />
                         );
                     })}
-                    {can_get_more_cfd_mt5_accounts && (
-                        <GetMoreAccounts
-                            onClick={toggleAccountTypeModalVisibility}
-                            icon='IcAppstoreGetMoreAccounts'
-                            title={localize('Get more')}
-                            description={localize('Get more Deriv MT5 account with different type and jurisdiction.')}
-                        />
-                    )}
                 </React.Fragment>
             ) : (
                 <PlatformLoader />
@@ -289,7 +298,7 @@ const CFDsListing = observer(() => {
                                   sub_title={account.name}
                                   name={`${formatMoney(
                                       existing_account.currency,
-                                      existing_account.display_balance,
+                                      is_demo ? existing_account.display_balance : ctrader_total_balance,
                                       true
                                   )} ${existing_account.currency}`}
                                   description={existing_account.display_login}
@@ -298,8 +307,7 @@ const CFDsListing = observer(() => {
                                   onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                       const button_name = e?.currentTarget?.name;
                                       if (button_name === 'transfer-btn') {
-                                          toggleAccountTransferModal();
-                                          setSelectedAccount(existing_account);
+                                          toggleCTraderTransferModal();
                                       } else if (button_name === 'topup-btn') {
                                           showTopUpModal(existing_account);
                                           setAppstorePlatform(account.platform);

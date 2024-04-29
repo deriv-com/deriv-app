@@ -1,5 +1,8 @@
 export const P2P_ROUTE = '/cashier/p2p';
 
+export const P2P_URL = 'https://app.deriv.com/cashier/p2p';
+export const DERIV_GO_URL = 'https://app.deriv.com/redirect/derivgo';
+
 export const ACCOUNT_V2_DEFAULT_ROUTE = '/account-v2';
 
 export const ACCOUNT_V2_ROUTES = {
@@ -16,6 +19,7 @@ export const ACCOUNT_V2_ROUTES = {
     ProofOfIdentity: `${ACCOUNT_V2_DEFAULT_ROUTE}/proof_of_identity`,
     ProofOfIncome: `${ACCOUNT_V2_DEFAULT_ROUTE}/proof_of_income`,
     ProofOfOwnership: `${ACCOUNT_V2_DEFAULT_ROUTE}/proof_of_ownership`,
+    root: '/',
     SelfExclusion: `${ACCOUNT_V2_DEFAULT_ROUTE}/self_exclusion`,
     TradingAssessment: `${ACCOUNT_V2_DEFAULT_ROUTE}/trading_assessment`,
     TwoFactorAuthentication: `${ACCOUNT_V2_DEFAULT_ROUTE}/two_factor_authentication`,

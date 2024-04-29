@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import { useDropzone } from 'react-dropzone';
-import CloseIcon from '../../public/images/close-icon.svg';
+import { DerivLightIcCloudUploadIcon, LegacyClose2pxIcon } from '@deriv/quill-icons';
 import DropzoneFrame from '../../public/images/dropzone-frame.svg';
 import { IconButton, WalletButton, WalletText } from '../Base';
 import './Dropzone.scss';
@@ -137,21 +137,38 @@ const Dropzone: React.FC<TProps> = ({
                     )}
                     {!showHoverMessage && file && (
                         <React.Fragment key={file.name}>
-                            <div
-                                className={classNames('wallets-dropzone__thumb', {
-                                    'wallets-dropzone__thumb--has-frame': hasFrame,
-                                })}
-                                style={{ backgroundImage: `url(${file.preview})` }}
-                            >
-                                {hasFrame && <DropzoneFrame />}
-                                <IconButton
-                                    className='wallets-dropzone__remove-file'
-                                    data-testid='dt_remove-button'
-                                    icon={<CloseIcon width={12} />}
-                                    onClick={removeFile}
-                                    size='sm'
-                                />
-                            </div>
+                            {file.file.type.indexOf('pdf') !== -1 ? (
+                                <div className='wallets-dropzone__thumb wallets-dropzone__thumb--pdf'>
+                                    <IconButton
+                                        className='wallets-dropzone__remove-file'
+                                        data-testid='dt_remove-button'
+                                        icon={<LegacyClose2pxIcon iconSize='xs' width={12} />}
+                                        onClick={removeFile}
+                                        size='sm'
+                                    />
+                                    <DerivLightIcCloudUploadIcon height={50} width={50} />
+                                    <WalletText align='center' size='sm'>
+                                        {file.name.length > 30 ? `${file.name.slice(0, 30)}....pdf` : file.name}
+                                    </WalletText>
+                                </div>
+                            ) : (
+                                <div
+                                    className={classNames('wallets-dropzone__thumb', {
+                                        'wallets-dropzone__thumb--has-frame': hasFrame,
+                                    })}
+                                    style={{ backgroundImage: `url(${file.preview})` }}
+                                >
+                                    {/* TODO: Change implementation to use quill icons after version update */}
+                                    {hasFrame && <DropzoneFrame />}
+                                    <IconButton
+                                        className='wallets-dropzone__remove-file'
+                                        data-testid='dt_remove-button'
+                                        icon={<LegacyClose2pxIcon iconSize='xs' width={12} />}
+                                        onClick={removeFile}
+                                        size='sm'
+                                    />
+                                </div>
+                            )}
                             {description && (
                                 <WalletText align='center' color={descriptionColor}>
                                     {description}

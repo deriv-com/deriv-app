@@ -26,6 +26,9 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
     const statusRef = useRef(null);
     const isStatusHovered = useHover(statusRef);
 
+    const amountRef = useRef(null);
+    const isAmountHovered = useHover(amountRef);
+
     const { mutate } = useCancelCryptoTransaction();
 
     const cancelTransaction = useCallback(() => {
@@ -121,6 +124,13 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                 {isMobile && (
                     <React.Fragment>
                         <TransactionsPendingRowField
+                            hint={
+                                transaction.formatted_amount !== transaction.formatted_truncated_amount
+                                    ? {
+                                          text: transaction.formatted_amount,
+                                      }
+                                    : undefined
+                            }
                             name='Amount'
                             value={`${transaction.is_deposit ? '+' : '-'}${transaction.formatted_truncated_amount}`}
                             valueTextProps={{
@@ -150,16 +160,26 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     }}
                 />
                 {!isMobile && (
-                    <div className='wallets-transactions-pending-row__transaction-amount'>
-                        <WalletText
-                            align='right'
-                            color={transaction.is_deposit ? 'success' : 'red'}
-                            size='sm'
-                            weight='bold'
+                    <div className='wallets-transactions-pending-row__transaction-amount' ref={amountRef}>
+                        <Tooltip
+                            alignment='left'
+                            isVisible={
+                                !isMobile &&
+                                transaction.formatted_amount !== transaction.formatted_truncated_amount &&
+                                isAmountHovered
+                            }
+                            message={transaction.formatted_amount}
                         >
-                            {transaction.is_deposit ? '+' : '-'}
-                            {transaction.formatted_truncated_amount}
-                        </WalletText>
+                            <WalletText
+                                align='right'
+                                color={transaction.is_deposit ? 'success' : 'red'}
+                                size='sm'
+                                weight='bold'
+                            >
+                                {transaction.is_deposit ? '+' : '-'}
+                                {transaction.formatted_truncated_amount}
+                            </WalletText>
+                        </Tooltip>
                     </div>
                 )}
             </div>

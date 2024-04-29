@@ -21,9 +21,6 @@ type TTradeLinkProps = {
 const TradeLink = ({ app, platform, webtraderUrl = '' }: TTradeLinkProps) => {
     const content = AppToContentMapper[app];
 
-    // eslint-disable-next-line no-console
-    console.log('==>', content);
-
     const { data: ctraderToken } = useCtraderServiceToken();
     const { data: activeAccount } = useActiveTradingAccount();
 

@@ -5,7 +5,7 @@ import { Button, Divider, Text, useDevice } from '@deriv-com/ui';
 import { FormDropDownField } from '../../components/FormFields';
 import { FormDocumentUploadField } from '../../components/FormFields/FormDocumentUploadField';
 import { FormSubHeader } from '../../components/FormSubHeader';
-import { documentValidation, listItems, PoincDocumentsList } from '../../constants/proofofincomeConstants';
+import { documentValidation, listItems, maxSizePOIC, poincDocumentsList } from '../../constants/proofofincomeConstants';
 
 export const ProofOfIncomeForm = () => {
     const { isMobile } = useDevice();
@@ -22,7 +22,7 @@ export const ProofOfIncomeForm = () => {
                             <FormDropDownField
                                 className='flex items-start self-stretch h-full border border-[color:var(--border-normal)] border-solid justify-between'
                                 label='Select Document'
-                                list={PoincDocumentsList}
+                                list={poincDocumentsList}
                                 name='Select Document'
                             />
                         </div>
@@ -68,7 +68,7 @@ export const ProofOfIncomeForm = () => {
                                                 iconSize='lg'
                                             />
                                         }
-                                        maxSize={8388608}
+                                        maxSize={maxSizePOIC}
                                         name='document'
                                         title='Drag and drop a file or click to browse your files.'
                                         titleType='bold'

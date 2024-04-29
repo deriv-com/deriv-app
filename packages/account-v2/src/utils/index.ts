@@ -6,5 +6,4 @@ export * from './manualFormUtils';
 export * from './personalDetailsUtils';
 export * from './poiUtils';
 export * from './pooUtils';
-export * from './proofOfIncomeUtils';
 export * from './twoFactorAuthenticationUtils';

@@ -252,7 +252,7 @@ export const AppToIconMapper: Record<string, ComponentType<SVGAttributes<SVGElem
 };
 
 export const getWebtraderUrl = ({ details }: { details: THooks.MT5AccountsList }) => {
-    return `${details?.white_label_links.webtrader_url}?login=${details?.display_login}&server=${details?.server_info.environment}`;
+    return `${details?.white_label_links?.webtrader_url}?login=${details?.display_login}&server=${details?.server_info?.environment}`;
 };
 
 export const getDeeplinkUrl = ({ details }: { details: THooks.MT5AccountsList }) => {
@@ -265,5 +265,5 @@ export const getMobileAppInstallerUrl = ({ details }: { details: THooks.MT5Accou
     } else if (mobileOsDetect() === 'huawei') {
         return 'https://appgallery.huawei.com/#/app/C102015329';
     }
-    return details.white_label_links.android;
+    return details?.white_label_links?.android;
 };

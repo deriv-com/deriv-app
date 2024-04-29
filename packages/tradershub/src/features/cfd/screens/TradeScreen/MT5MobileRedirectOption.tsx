@@ -1,15 +1,17 @@
 import React from 'react';
 import { IconComponent } from '@/components';
+import { THooks } from '@/types';
 import { isSafariBrowser } from '@/utils';
 import { getDeeplinkUrl, getMobileAppInstallerUrl, getWebtraderUrl } from '@cfd/constants';
 import { Text } from '@deriv-com/ui';
 
-const MT5MobileRedirectOption = ({ details }) => {
+const MT5MobileRedirectOption = ({ details }: { details: THooks.MT5AccountsList }) => {
     const getMobileUrl = () => {
         window.location.replace(getDeeplinkUrl({ details }));
 
         const timeout = setTimeout(() => {
-            window.location.replace(getMobileAppInstallerUrl({ details }));
+            const url = getMobileAppInstallerUrl({ details });
+            if (url) window.location.replace(url);
         }, 1500);
 
         if (!isSafariBrowser() || (isSafariBrowser() && /Version\/17/.test(navigator.userAgent))) {

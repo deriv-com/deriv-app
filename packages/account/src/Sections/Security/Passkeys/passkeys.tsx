@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { Loading } from '@deriv/components';
 import { useGetPasskeysList, useRegisterPasskey } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
@@ -9,18 +9,20 @@ import PasskeysList from './components/passkeys-list';
 import PasskeyModal from './components/passkey-modal';
 import {
     getModalContent,
+    NOT_SUPPORTED_ERROR_NAME,
     PASSKEY_STATUS_CODES,
     passkeysMenuActionEventTrack,
     TPasskeysStatus,
 } from './passkeys-configs';
 import './passkeys.scss';
-import { TServerError } from 'Types';
+import { TServerError } from '../../../Types/common.type';
 
 const Passkeys = observer(() => {
     const { ui, client, common } = useStore();
     const { is_mobile } = ui;
     const { is_passkey_supported } = client;
     let timeout: ReturnType<typeof setTimeout>;
+    const history = useHistory();
 
     const [passkey_status, setPasskeyStatus] = React.useState<TPasskeysStatus>(PASSKEY_STATUS_CODES.NONE);
     const [is_modal_open, setIsModalOpen] = React.useState(false);
@@ -93,6 +95,9 @@ const Passkeys = observer(() => {
     const onModalButtonClick = () => {
         if (error) {
             onCloseModal(onCloseError);
+            if ((error as TServerError).name === NOT_SUPPORTED_ERROR_NAME) {
+                history.push(routes.traders_hub);
+            }
         } else {
             passkeysMenuActionEventTrack('create_passkey_reminder_passed');
             createPasskey();
@@ -130,7 +135,7 @@ const Passkeys = observer(() => {
             )}
             <PasskeyModal
                 toggleModal={is_passkey_registration_started ? onCloseRegistration : undefined}
-                has_close_icon={!!modal_content.header}
+                has_close_icon={!error && !!modal_content.header}
                 header={modal_content.header}
                 className='passkeys-modal'
                 is_modal_open={is_modal_open}

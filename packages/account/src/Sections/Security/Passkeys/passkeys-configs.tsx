@@ -113,7 +113,26 @@ type TGetModalContent = {
     is_passkey_registration_started: boolean;
 };
 
+export const NOT_SUPPORTED_ERROR_NAME = 'NotSupportedError';
+
 export const getModalContent = ({ error, is_passkey_registration_started }: TGetModalContent) => {
+    const isNotSupportedError = (error: TServerError) => error?.name === NOT_SUPPORTED_ERROR_NAME;
+
+    const error_message = isNotSupportedError(error as TServerError) ? (
+        <Localize i18n_default_text="This device doesn't support passkeys." />
+    ) : (
+        (error as TServerError)?.message
+    );
+    const button_text = (
+        <Localize i18n_default_text={isNotSupportedError(error as TServerError) ? 'OK' : 'Try again'} />
+    );
+
+    const error_message_header = (
+        <Text size='xs' weight='bold'>
+            <Localize i18n_default_text='Passkey setup failed' />
+        </Text>
+    );
+
     const reminder_tips = [
         <Localize i18n_default_text='Enable screen lock on your device.' key='tip_1' />,
         <Localize i18n_default_text='Enable bluetooth.' key='tip_2' />,
@@ -142,8 +161,9 @@ export const getModalContent = ({ error, is_passkey_registration_started }: TGet
     }
 
     return {
-        description: (error as TServerError)?.message ?? '',
-        button_text: error ? <Localize i18n_default_text='Try again' /> : undefined,
+        description: error_message ?? '',
+        button_text: error ? button_text : undefined,
+        header: error ? error_message_header : undefined,
     };
 };
 

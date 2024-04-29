@@ -16,7 +16,6 @@ import './appstore/ic-appstore-close-light.svg';
 import './appstore/ic-appstore-deriv-logo.svg';
 import './appstore/ic-appstore-ellipse.svg';
 import './appstore/ic-appstore-error.svg';
-import './appstore/ic-appstore-get-more-accounts.svg';
 import './appstore/ic-appstore-home-dark.svg';
 import './appstore/ic-appstore-home.svg';
 import './appstore/ic-appstore-information.svg';

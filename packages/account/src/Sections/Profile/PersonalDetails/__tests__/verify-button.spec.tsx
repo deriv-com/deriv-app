@@ -3,8 +3,16 @@ import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { VerifyButton } from '../verify-button';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { Router } from 'react-router';
+import { createBrowserHistory } from 'history';
+import { routes } from '@deriv/shared';
 
 describe('VerifyButton', () => {
+    const history = createBrowserHistory();
+    const renderWithRouter = (component: React.ReactElement) => {
+        return render(<Router history={history}>{component}</Router>);
+    };
+
     const mock_store = mockStore({
         client: {
             account_settings: {
@@ -14,8 +22,9 @@ describe('VerifyButton', () => {
             },
         },
     });
+
     it('should render Verify Button', () => {
-        render(
+        renderWithRouter(
             <StoreProvider store={mock_store}>
                 <VerifyButton />
             </StoreProvider>
@@ -23,9 +32,20 @@ describe('VerifyButton', () => {
         expect(screen.getByText('Verify')).toBeInTheDocument();
     });
 
+    it('should redirect user to phone-verification page when clicked on Verify Button', () => {
+        renderWithRouter(
+            <StoreProvider store={mock_store}>
+                <VerifyButton />
+            </StoreProvider>
+        );
+        const verifyButton = screen.getByText('Verify');
+        userEvent.click(verifyButton);
+        expect(history.location.pathname).toBe(routes.phone_verification);
+    });
+
     it('should render Verified text', () => {
         mock_store.client.account_settings.phone_number_verification.verified = true;
-        render(
+        renderWithRouter(
             <StoreProvider store={mock_store}>
                 <VerifyButton />
             </StoreProvider>
@@ -36,7 +56,7 @@ describe('VerifyButton', () => {
 
     it('should render popover text when popover is clicked', () => {
         mock_store.client.account_settings.phone_number_verification.verified = true;
-        render(
+        renderWithRouter(
             <StoreProvider store={mock_store}>
                 <VerifyButton />
             </StoreProvider>
@@ -54,7 +74,7 @@ describe('VerifyButton', () => {
             on_chat_ended: jest.fn(),
         };
 
-        render(
+        renderWithRouter(
             <StoreProvider store={mock_store}>
                 <VerifyButton />
             </StoreProvider>

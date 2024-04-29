@@ -40,6 +40,7 @@ const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, ve
     if (verificationDocs)
         return (
             <div className='wallets-jurisdiction-card-back'>
+                {/* TODO: Update with legacy icon after quill-icons version update */}
                 <BackArrowIcon
                     className='wallets-jurisdiction-card-back__icon'
                     onClick={e => {
@@ -47,12 +48,12 @@ const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, ve
                         setIsFlipped(false);
                     }}
                 />
-                <WalletText size='sm'>{verificationContents.shortDescription}</WalletText>
+                <WalletText size='xs'>{verificationContents.shortDescription}</WalletText>
                 {verificationDocs.map((verificationDocument: TJurisdictionCardItemVerificationItem, i) => {
                     return (
                         <div className='wallets-jurisdiction-card-back__row' key={`${verificationDocument}-${i}`}>
                             {verificationIconsMapper[verificationDocument]}
-                            <WalletText size='sm'>
+                            <WalletText size='xs'>
                                 {verificationContents.requiredVerificationDocs[verificationDocument]?.text}
                             </WalletText>
                         </div>
@@ -63,7 +64,7 @@ const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, ve
                     return (
                         <div className='wallets-jurisdiction-card-back__row' key={`${statusReference}-${i}`}>
                             {verificationStatusIconsMapper[statusReference.icon]}
-                            <WalletText size='sm'>{statusReference.text}</WalletText>
+                            <WalletText size='xs'>{statusReference.text}</WalletText>
                         </div>
                     );
                 })}

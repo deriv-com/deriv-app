@@ -14,19 +14,6 @@ import {
     PaymentMethodDerivP2pBrandDarkIcon,
     PaymentMethodDerivP2pBrandIcon,
 } from '@deriv/quill-icons';
-import './WalletResponsiveSvg.scss';
-
-// TODO: Remove all the commented out imports with the SVGs
-// import IcWalletCTrader from '../../public/images/ctrader.svg';
-// import IcWalletDerivX from '../../public/images/derivx.svg';
-// import IcWalletMt5CFDs from '../../public/images/mt5-cfds.svg';
-// import IcWalletMt5Derived from '../../public/images/mt5-derived.svg';
-// import IcWalletMt5Financial from '../../public/images/mt5-financial.svg';
-// import IcWalletMt5All from '../../public/images/mt5-swap-free.svg';
-// import IcWalletDerivP2PDark from '../../public/images/wallet/ic-wallet-deriv-p2p-dark.svg';
-// import IcWalletDerivP2PLight from '../../public/images/wallet/ic-wallet-deriv-p2p-light.svg';
-// import IcWalletOptionsDark from '../../public/images/wallet/ic-wallet-options-dark.svg';
-// import IcWalletOptionsLight from '../../public/images/wallet/ic-wallet-options-light.svg';
 
 const ICONS: Record<string, IconTypes> = {
     IcWalletCTrader: AccountsDerivCtraderIcon,

@@ -1,4 +1,5 @@
 import React from 'react';
+// TODO: Replace icons with quill-icons
 import DerivedMT5 from '../../../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../../../public/images/mt5-financial.svg';
 import SwapFreeMT5 from '../../../../public/images/mt5-swap-free.svg';

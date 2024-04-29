@@ -7,7 +7,6 @@ import { localize } from '@deriv/translations';
 import { clearInjectionDiv, tabs_title } from 'Constants/load-modal';
 import { TStrategy } from 'Types';
 import RootStore from './root-store';
-import { removeAttributeFromXml } from '@deriv/bot-skeleton/src/utils/strategy-helper';
 
 interface ILoadModalStore {
     active_index: number;
@@ -228,10 +227,8 @@ export default class LoadModalStore implements ILoadModalStore {
 
     loadStrategyToBuilder = async (strategy: TStrategy) => {
         if (strategy?.id) {
-            const xml_string = strategy.xml?.toString() ?? '';
-            if (!xml_string) removeAttributeFromXml(xml_string, ['x', 'y']);
             await load({
-                block_string: xml_string,
+                block_string: strategy.xml?.toString() ?? '',
                 strategy_id: strategy.id,
                 file_name: strategy.name,
                 workspace: window.Blockly?.derivWorkspace,
@@ -247,10 +244,8 @@ export default class LoadModalStore implements ILoadModalStore {
         if (this.recent_workspace) {
             (this.recent_workspace as any).RTL = isDbotRTL();
         }
-        const xml_string = this.selected_strategy?.xml?.toString() ?? '';
-        if (!xml_string) removeAttributeFromXml(xml_string, ['x', 'y']);
         await load({
-            block_string: xml_string,
+            block_string: this.selected_strategy?.xml?.toString() ?? '',
             drop_event: {},
             workspace: this.recent_workspace,
             file_name: this.selected_strategy?.name,
@@ -273,10 +268,8 @@ export default class LoadModalStore implements ILoadModalStore {
         }
 
         removeExistingWorkspace(this.selected_strategy.id);
-        const xml_string = this.selected_strategy?.xml?.toString() ?? '';
-        if (!xml_string) removeAttributeFromXml(xml_string, ['x', 'y']);
         await load({
-            block_string: xml_string,
+            block_string: this.selected_strategy?.xml?.toString() ?? '',
             strategy_id: this.selected_strategy.id,
             file_name: this.selected_strategy.name,
             workspace: window.Blockly.derivWorkspace,
@@ -351,10 +344,8 @@ export default class LoadModalStore implements ILoadModalStore {
     onDriveOpen = async () => {
         const { loadFile } = this.root_store.google_drive;
         const { xml_doc, file_name } = await loadFile();
-        const xml_string = xml_doc?.toString() ?? '';
-        if (!xml_string) removeAttributeFromXml(xml_string, ['x', 'y']);
         await load({
-            block_string: xml_string,
+            block_string: xml_doc?.toString() ?? '',
             file_name,
             workspace: window.Blockly.derivWorkspace,
             from: save_types.GOOGLE_DRIVE,
@@ -510,10 +501,8 @@ export default class LoadModalStore implements ILoadModalStore {
         const file_name = file?.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
         reader.onload = action(async e => {
-            const xml_string = e?.target?.result?.toString() ?? '';
-            if (!is_preview) removeAttributeFromXml(xml_string, ['x', 'y']);
             const load_options = {
-                block_string: xml_string,
+                block_string: e?.target?.result?.toString() ?? '',
                 drop_event,
                 from: save_types.LOCAL,
                 workspace: null as Blockly.WorkspaceSvg | null,

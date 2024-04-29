@@ -447,10 +447,9 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
         }
         // Added this adjustment for RTL to get in in display area for mobile view
         const block_canvas_rect = Blockly.derivWorkspace.svgBlockCanvas_?.getBoundingClientRect();
-        let additional_scroll = 0;
+        let additional_scroll = 20;
         if (window.innerHeight < 768) {
-            // Adjust by 250 if the XML width is bigger than 1000
-            if (block_canvas_rect.width > 1000) additional_scroll = 250;
+            if (block_canvas_rect.width > 1000) additional_scroll = 220;
             scroll_x = (window.innerWidth + block_canvas_rect.width) / 2 + additional_scroll;
         }
     }

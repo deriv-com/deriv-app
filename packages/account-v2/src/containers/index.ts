@@ -10,4 +10,5 @@ export { PersonalDetailsFormWithExample } from './PersonalDetailsFormWithExample
 export { POICountrySelector } from './POICountrySelector/POICountrySelector';
 export { POIFlowContainer } from './POIFlowContainer/POIFlowContainer';
 export { POOForm } from './POOForm/POOFom';
+export { ProofOfIncomeForm } from './ProofOfIncome/ProofOfIncomeForm';
 export { ErrorList, VerificationStatus } from './VerificationStatus';

@@ -4,23 +4,24 @@ import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import { Div100vhContainer, DesktopWrapper, MobileWrapper, Loading } from '@deriv/components';
 import { routes, isEuCountry } from '@deriv/shared';
-import TrustpilotWidget from 'Components/trustpilot-widget';
 import { GetOrderedPlatformSections } from './get-ordered-platform-sections';
 import { TabsOrTitle } from './tabs-or-title';
+import GetStartedTradingBanner from 'Components/get-started-trading-banner';
 import './traders-hub-logged-out.scss';
 
 const TradersHubLoggedOut = observer(() => {
     const { traders_hub, client, ui } = useStore();
     const { is_desktop } = ui;
     const { is_logged_in, is_mt5_allowed, clients_country, is_landing_company_loaded, getLandingCompany } = client;
-    const { setTogglePlatformType, selectRegion } = traders_hub;
+    const { setTogglePlatformType, selectRegion, is_eu_user } = traders_hub;
 
-    const is_eu_user = isEuCountry(clients_country);
+    // const is_eu_user = isEuCountry(clients_country);
+    // const is_eu_user = isEuCountry('id');
 
     React.useEffect(() => {
         if (clients_country) {
             getLandingCompany(clients_country);
-            if (is_eu_user) {
+            if (isEuCountry(clients_country)) {
                 setTogglePlatformType('cfd');
                 selectRegion('EU');
             } else {
@@ -42,8 +43,8 @@ const TradersHubLoggedOut = observer(() => {
                     'traders-hub-logged-out__eu-user-without-mt5': is_eu_user && !is_mt5_allowed,
                 })}
             >
+                <GetStartedTradingBanner />
                 <DesktopWrapper>
-                    <TrustpilotWidget />
                     <GetOrderedPlatformSections isDesktop />
                 </DesktopWrapper>
                 <MobileWrapper>

@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
-import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
-import CFDsListing from 'Components/cfds-listing';
+import OptionsAndMultipliersListingLoggedOut from './options-miltipliers-listing-logged-out';
+import CFDsListingLoggedOut from './cfds-listing-logged-out';
 
 const OrderedPlatformSections = ({
     is_cfd_visible = true,
@@ -19,8 +19,8 @@ const OrderedPlatformSections = ({
             'traders-hub__main-container-reversed': is_eu_user,
         })}
     >
-        {is_options_and_multipliers_visible && <OptionsAndMultipliersListing />}
-        {is_cfd_visible && <CFDsListing />}
+        {is_options_and_multipliers_visible && <OptionsAndMultipliersListingLoggedOut />}
+        {is_cfd_visible && <CFDsListingLoggedOut />}
     </div>
 );
 

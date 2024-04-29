@@ -1,6 +1,6 @@
 import React from 'react';
+import { DerivLightEmailVerificationIcon } from '@deriv/quill-icons';
 import { WalletButton, WalletsActionScreen, WalletText } from '../../../../../components';
-import EmailVerification from '../../../../../public/images/email-verification.svg';
 import './WithdrawalVerificationRequest.scss';
 
 type TProps = {
@@ -26,7 +26,7 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
                         className='wallets-withdrawal-verification-request__icon'
                         data-testid='dt_withdrawal_verification_request_icon'
                     >
-                        <EmailVerification />
+                        <DerivLightEmailVerificationIcon height={102} width={102} />
                     </div>
                 }
                 renderButtons={() => (

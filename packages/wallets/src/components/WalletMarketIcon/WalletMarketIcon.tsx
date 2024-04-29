@@ -44,7 +44,7 @@ type TWalletIconProps = {
     width?: CSSProperties['width'];
 };
 
-const WalletResponsiveSvg = ({ className = '', height, icon, size = 'md', width }: TWalletIconProps) => {
+const WalletMarketIcon = ({ className = '', height, icon, size = 'md', width }: TWalletIconProps) => {
     const IconSize = IconSizes[size];
     const IconSvg = ICONS[icon];
 
@@ -59,4 +59,4 @@ const WalletResponsiveSvg = ({ className = '', height, icon, size = 'md', width 
     );
 };
 
-export default WalletResponsiveSvg;
+export default WalletMarketIcon;

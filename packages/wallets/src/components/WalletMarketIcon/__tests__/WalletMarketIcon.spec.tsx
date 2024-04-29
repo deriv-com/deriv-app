@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import WalletResponsiveSvg from '../WalletResponsiveSvg';
+import WalletResponsiveSvg from '../WalletMarketIcon';
 
 describe('<WalletResponsiveSvg/>', () => {
     it('render container and svg properly', () => {

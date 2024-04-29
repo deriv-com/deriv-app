@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef, useState } from 'react';
+import React, { ChangeEvent, MouseEvent, SyntheticEvent, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { Field, FormikErrors, useFormikContext } from 'formik';
 import { StandaloneXmarkRegularIcon } from '@deriv/quill-icons';
@@ -14,7 +14,7 @@ type TFileUploadFieldProps = {
 
 export const FileUploaderField = ({ methodId, paymentMethod, subIndex }: TFileUploadFieldProps) => {
     const formik = useFormikContext<TProofOfOwnershipFormValue>();
-    const { errors, setFieldValue, values } = formik;
+    const { errors, setFieldError, setFieldValue, values } = formik;
     const [showBrowseButton, setShowBrowseButton] = useState(
         !values[paymentMethod]?.[methodId]?.files?.[subIndex]?.name
     );
@@ -26,10 +26,14 @@ export const FileUploaderField = ({ methodId, paymentMethod, subIndex }: TFileUp
     // Create a reference to the hidden file input element
     const hiddenInputFieldRef = useRef<HTMLInputElement>(null);
 
+    const preventEventBubble = (e: SyntheticEvent) => {
+        e.nativeEvent.preventDefault();
+        e.nativeEvent.stopPropagation();
+        e.nativeEvent.stopImmediatePropagation();
+    };
+
     const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
-        event.nativeEvent.preventDefault();
-        event.nativeEvent.stopPropagation();
-        event.nativeEvent.stopImmediatePropagation();
+        preventEventBubble(event);
         // Check if files exist before proceeding
         if (!event.target.files || event.target.files.length === 0) {
             return;
@@ -49,10 +53,8 @@ export const FileUploaderField = ({ methodId, paymentMethod, subIndex }: TFileUp
         setShowBrowseButton(!fileToUpload[0]);
     };
 
-    const handleClick = (e: React.MouseEvent) => {
-        e.nativeEvent.preventDefault();
-        e.nativeEvent.stopPropagation();
-        e.nativeEvent.stopImmediatePropagation();
+    const handleClick = (event: MouseEvent) => {
+        preventEventBubble(event);
         hiddenInputFieldRef?.current?.click();
     };
 
@@ -69,6 +71,8 @@ export const FileUploaderField = ({ methodId, paymentMethod, subIndex }: TFileUp
         if (Object.keys(paymentMethodError[methodId]?.files as object).length === 0) {
             delete paymentMethodError[methodId]?.paymentMethodIdentifier;
         }
+        // @ts-expect-error Error is an array
+        setFieldError(paymentMethod, { ...paymentMethodFileError });
     };
 
     const handleIconClick = async (e: React.MouseEvent) => {

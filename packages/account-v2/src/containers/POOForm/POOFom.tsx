@@ -5,7 +5,7 @@ import { Accordion, Button, Divider, Loader } from '@deriv-com/ui';
 import { Timeline } from 'src/components/Timeline';
 import { TPaymentMethod, TPaymentMethodData, TProofOfOwnershipFormValue } from 'src/types';
 import { generatePOOInitialValues } from 'src/utils';
-import { PaymentMethodField, PaymentMethodTitle } from '../PaymentMethods';
+import { PaymentMethodForm, PaymentMethodTitle } from '../PaymentMethods';
 
 type TPOOFormProps = {
     paymentMethodData: TPaymentMethodData;
@@ -46,7 +46,7 @@ export const POOForm = ({ paymentMethodData }: TPOOFormProps) => {
                                     title={<PaymentMethodTitle paymentMethod={paymentMethodData[type].paymentMethod} />}
                                     variant='bordered'
                                 >
-                                    <PaymentMethodField paymentMethodDetail={paymentMethodData[type]} />
+                                    <PaymentMethodForm paymentMethodDetail={paymentMethodData[type]} />
                                 </Accordion>
                             </Timeline.Item>
                         ))}

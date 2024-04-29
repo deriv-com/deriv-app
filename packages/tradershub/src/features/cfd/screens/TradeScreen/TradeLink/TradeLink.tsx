@@ -5,10 +5,10 @@ import { Button, Text } from '@deriv-com/ui';
 import { THooks, TPlatforms } from '../../../../../types';
 import {
     AppToContentMapper,
+    DesktopLinks,
     PlatformDetails,
     PlatformToLabelIconMapper,
     PlatformUrls,
-    DesktopLinks,
 } from '../../../constants';
 
 type TTradeLinkProps = {
@@ -20,6 +20,9 @@ type TTradeLinkProps = {
 
 const TradeLink = ({ app, platform, webtraderUrl = '' }: TTradeLinkProps) => {
     const content = AppToContentMapper[app];
+
+    // eslint-disable-next-line no-console
+    console.log('==>', content);
 
     const { data: ctraderToken } = useCtraderServiceToken();
     const { data: activeAccount } = useActiveTradingAccount();

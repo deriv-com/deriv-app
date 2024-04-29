@@ -22,6 +22,10 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(),
 }));
 
+global.window.LC_API = {
+    open_chat_window: jest.fn(),
+};
+
 describe('<CFDPersonalDetailsForm />', () => {
     beforeAll(() => (ReactDOM.createPortal = jest.fn(component => component)));
     afterAll(() => ReactDOM.createPortal.mockClear());
@@ -338,5 +342,22 @@ describe('<CFDPersonalDetailsForm />', () => {
         await waitFor(() => {
             expect(props.onSubmit).toHaveBeenCalledTimes(1);
         });
+    });
+
+    it('Should not show TIN field if tin_manually_approved is true in account_status', () => {
+        mock_store.client.account_status.status = ['tin_manually_approved'];
+        render(<CFDPersonalDetailsForm {...props} />, { wrapper });
+
+        expect(screen.queryByRole('textbox', { name: /tax identification number/i })).not.toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
+    });
+
+    it('Should show inline message live chat and open chat window when link is clicked', async () => {
+        render(<CFDPersonalDetailsForm {...props} />, { wrapper });
+
+        const linkElement = screen.getByText(/live chat/i);
+        expect(linkElement).toBeInTheDocument();
+        fireEvent.click(linkElement);
+        expect(window.LC_API.open_chat_window).toHaveBeenCalled();
     });
 });

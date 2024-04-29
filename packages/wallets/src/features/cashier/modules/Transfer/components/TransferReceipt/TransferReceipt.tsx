@@ -4,7 +4,7 @@ import { AppCard, WalletButton, WalletCard, WalletText } from '../../../../../..
 import useDevice from '../../../../../../hooks/useDevice';
 import Arrow from '../../../../../../public/images/ic-back-arrow.svg';
 import type { TWalletLandingCompanyName } from '../../../../../../types';
-import { getTradingAppIcon, getWalletIcon } from '../../../../helpers';
+import { getTradingAppIcon } from '../../../../helpers';
 import { useTransfer } from '../../provider';
 import './TransferReceipt.scss';
 
@@ -23,7 +23,6 @@ const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balan
         activeWallet?.landingCompanyName as TWalletLandingCompanyName,
         account?.mt5_group
     );
-    const walletIcon = getWalletIcon(activeWallet?.currency ?? '', Boolean(activeWallet?.demo_account));
 
     if (isTradingApp)
         return (
@@ -35,7 +34,6 @@ const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balan
                 cardSize='md'
                 device={isMobile ? 'mobile' : 'desktop'}
                 isDemoWallet={Boolean(activeWallet?.demo_account)}
-                walletIcon={walletIcon}
                 walletName={activeWallet?.accountName}
             />
         );

@@ -218,20 +218,17 @@ describe('<TransferProvider />', () => {
         mockUseTransferBetweenAccounts.mockReturnValue({
             data: 'transfer-between-accounts-data',
             mutate: jest.fn(),
-            mutateAsync: jest.fn(
-                ({ accounts, account_from, account_to, amount, currency }) =>
-                    new Promise(resolve =>
-                        resolve(
-                            accounts === 'all'
-                                ? {
-                                      mockAccounts,
-                                  }
-                                : {
-                                      fromAccount: mockAccounts[0],
-                                      toAccount: mockAccounts[1],
-                                  }
-                        )
-                    )
+            mutateAsync: jest.fn(({ accounts, account_from, account_to, amount, currency }) =>
+                Promise.resolve(
+                    accounts === 'all'
+                        ? {
+                              mockAccounts,
+                          }
+                        : {
+                              fromAccount: mockAccounts[0],
+                              toAccount: mockAccounts[1],
+                          }
+                )
             ),
         });
 
@@ -264,20 +261,17 @@ describe('<TransferProvider />', () => {
         mockUseTransferBetweenAccounts.mockReturnValue({
             data: 'transfer-between-accounts-data',
             mutate: jest.fn(),
-            mutateAsync: jest.fn(
-                ({ accounts, account_from, account_to, amount, currency }) =>
-                    new Promise(resolve =>
-                        resolve(
-                            accounts === 'all'
-                                ? {
-                                      mockAccounts,
-                                  }
-                                : {
-                                      fromAccount: mockAccounts[0],
-                                      toAccount: mockAccounts[1],
-                                  }
-                        )
-                    )
+            mutateAsync: jest.fn(({ accounts, account_from, account_to, amount, currency }) =>
+                Promise.resolve(
+                    accounts === 'all'
+                        ? {
+                              mockAccounts,
+                          }
+                        : {
+                              fromAccount: mockAccounts[0],
+                              toAccount: mockAccounts[1],
+                          }
+                )
             ),
         });
 

@@ -214,10 +214,10 @@ const BuySellForm = props => {
                                 {is_float && (
                                     <Tooltip
                                         alignment='top'
-                                        message={localize('Changing rates due to market fluctuations')}
+                                        message={localize('Floating exchange rate shifts with market fluctuations.')}
                                     >
                                         <Text as='p' className='buy-sell-form__field-rate--float' size='xxs'>
-                                            <Localize i18n_default_text='Float' />
+                                            <Localize i18n_default_text='Floating' />
                                         </Text>
                                     </Tooltip>
                                 )}

@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Button, Modal, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
@@ -34,7 +35,11 @@ const ErrorModal = ({
             toggleModal={onClose ?? hideModal}
             width={is_mobile ? '90rem' : '40rem'}
         >
-            <Modal.Body className='error-modal__body'>
+            <Modal.Body
+                className={classNames('error-modal__body', {
+                    'error-modal__body--has-title': error_modal_title,
+                })}
+            >
                 <Text size={text_size}>
                     <Localize i18n_default_text={error_message} />
                 </Text>

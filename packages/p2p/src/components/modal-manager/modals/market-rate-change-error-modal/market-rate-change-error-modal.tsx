@@ -19,12 +19,15 @@ const MarketRateChangeErrorModal = ({ submitForm, values }: TMarketRateChangeErr
     const { is_modal_open, hideModal } = useModalManagerContext();
     const { buy_sell_store } = useStores();
 
+    React.useEffect(() => {
+        buy_sell_store.form_props.setIsMarketRateErrorModalOpen(true);
+    }, []);
+
     return (
         <Modal
             className='market-rate-change-error-modal'
             has_close_icon={false}
             is_open={is_modal_open}
-            onExited={hideModal}
             small
             title={
                 <Text weight='bold'>
@@ -36,7 +39,7 @@ const MarketRateChangeErrorModal = ({ submitForm, values }: TMarketRateChangeErr
                 <div className='market-rate-change-error-modal__message'>
                     <Text as='p' size='xs' line_height='s'>
                         <Localize
-                            i18n_default_text='You have placed an order to buy <0>{{currency}} {{input_amount}}</0> for <1>{{local_currency}} {{received_amount}}</1>.'
+                            i18n_default_text='You are creating an order to buy <0>{{currency}} {{input_amount}}</0> for <1>{{local_currency}} {{received_amount}}</1>.'
                             components={[
                                 <Text key={0} size='xs' weight='bold' />,
                                 <Text key={1} size='xs' weight='bold' />,
@@ -45,7 +48,7 @@ const MarketRateChangeErrorModal = ({ submitForm, values }: TMarketRateChangeErr
                         />
                     </Text>
                     <Text as='p' size='xs' line_height='s'>
-                        <Localize i18n_default_text='Please be aware that the exchange rate may vary slightly due to market fluctuations. The final rate will be shown when you proceed with your order.' />
+                        <Localize i18n_default_text='The exchange rate may vary slightly due to market fluctuations. The final rate will be shown when you proceed with your order.' />
                     </Text>
                     <Text as='p' size='xxs' line_height='xs'>
                         <Localize i18n_default_text='If the rate changes significantly, we may not be able to create your order.' />
@@ -54,7 +57,15 @@ const MarketRateChangeErrorModal = ({ submitForm, values }: TMarketRateChangeErr
             </Modal.Body>
             <Modal.Footer>
                 <Button.Group>
-                    <Button onClick={hideModal} text={localize('Cancel')} secondary large />
+                    <Button
+                        onClick={() => {
+                            hideModal();
+                            buy_sell_store.form_props.setIsMarketRateErrorModalOpen(false);
+                        }}
+                        text={localize('Cancel')}
+                        secondary
+                        large
+                    />
                     <Button
                         className='market-rate-change-error-modal__continue'
                         onClick={submitForm}

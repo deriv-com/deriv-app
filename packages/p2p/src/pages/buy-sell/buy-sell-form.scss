@@ -62,20 +62,15 @@
 
             .dc-tooltip[data-tooltip]:before {
                 background: $color-black-7;
-                width: 24rem;
+                width: 17rem;
                 border-radius: 0.8rem;
                 left: 9rem;
                 text-align: center;
-
-                @include mobile {
-                    font-size: 10px;
-                    width: 19rem;
-                }
             }
 
             .dc-tooltip[data-tooltip]:after {
                 border-top-color: $color-black-7;
-                left: 9rem;
+                left: 10rem;
             }
 
             &--float {

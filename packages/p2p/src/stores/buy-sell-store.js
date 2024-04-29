@@ -1,6 +1,8 @@
+import React from 'react';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
+import { Text } from '@deriv/components';
 import { formatMoney, getDecimalPlaces } from '@deriv/shared';
-import { localize } from 'Components/i18next';
+import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { requestWS, subscribeWS } from 'Utils/websocket';
@@ -200,9 +202,13 @@ export default class BuySellStore extends BaseStore {
                     key: 'ErrorModal',
                     props: {
                         error_message:
-                            'We’re unable to create your order due to fluctuating market rates. Please try creating a new order.',
+                            'We’re unable to create your order because the market rate has moved too much. Please try creating a new order.',
                         error_modal_button_text: 'Create new order',
-                        error_modal_title: 'Order unsuccessful',
+                        error_modal_title: (
+                            <Text weight='bold'>
+                                <Localize i18n_default_text='Order unsuccessful' />
+                            </Text>
+                        ),
                         has_close_icon: false,
                         onClose: () => {
                             general_store.showModal({

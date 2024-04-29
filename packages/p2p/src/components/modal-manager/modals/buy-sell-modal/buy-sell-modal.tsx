@@ -33,6 +33,7 @@ const BuySellModal = () => {
     const [is_submit_disabled, setIsSubmitDisabled] = React.useState(false);
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
     const [has_rate_changed, setHasRateChanged] = React.useState(false);
+    const [is_market_rate_error_modal_open, setIsMarketRateErrorModalOpen] = React.useState(false);
 
     const show_low_balance_message = !is_buy_advert && is_account_balance_low;
 
@@ -136,7 +137,7 @@ const BuySellModal = () => {
                 const rate_has_changed = previous_advert?.rate !== new_advert.rate;
                 // check to see if user is not switching between different adverts, it should not trigger rate change modal
                 const is_the_same_advert = previous_advert?.id === new_advert.id;
-                if (rate_has_changed && is_the_same_advert) {
+                if (rate_has_changed && is_the_same_advert && !is_market_rate_error_modal_open) {
                     showModal({
                         key: 'ErrorModal',
                         props: {
@@ -145,7 +146,6 @@ const BuySellModal = () => {
                             text_size: getTextSize('xxs', 'xs'),
                         },
                     });
-                    setHasRateChanged(true);
                     buy_sell_store.setFormErrorCode('');
                     invalidate('p2p_advert_list');
                 }
@@ -157,7 +157,7 @@ const BuySellModal = () => {
             disposeHasRateChangedReaction();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [is_market_rate_error_modal_open]);
 
     return (
         <React.Fragment>
@@ -170,7 +170,7 @@ const BuySellModal = () => {
                     is_modal_open={is_modal_open}
                     page_header_className='buy-sell-modal__header'
                     renderPageHeaderElement={<BuySellModalTitle is_buy={is_buy_advert} onReturn={onReturn} />}
-                    pageHeaderReturnFn={onSubmit}
+                    pageHeaderReturnFn={onCancel}
                 >
                     <ThemedScrollbars refSetter={scroll_ref}>
                         <BuySellModalError
@@ -189,6 +189,7 @@ const BuySellModal = () => {
                                     setIsSubmitDisabled={setIsSubmitDisabled}
                                     setErrorMessage={setErrorMessage}
                                     setHasRateChanged={setHasRateChanged}
+                                    setIsMarketRateErrorModalOpen={setIsMarketRateErrorModalOpen}
                                 />
                                 <BuySellFormReceiveAmount />
                                 <BuySellModalFooter
@@ -236,6 +237,7 @@ const BuySellModal = () => {
                                     setIsSubmitDisabled={setIsSubmitDisabled}
                                     setErrorMessage={setErrorMessage}
                                     setHasRateChanged={setHasRateChanged}
+                                    setIsMarketRateErrorModalOpen={setIsMarketRateErrorModalOpen}
                                 />
                             )}
                         </Modal.Body>

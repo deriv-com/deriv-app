@@ -1,22 +1,22 @@
-import React from 'react';
-import { useScript } from '@deriv/hooks';
+import React, { useEffect, useState } from 'react';
+import { fetchTrustpilotData } from 'Helpers';
+import { TTrustpilotWidgetData } from 'Types';
 
 const TrustpilotWidget = () => {
-    useScript(`//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js`);
+    const [trustpilotData, setTrustpilotData] = useState<TTrustpilotWidgetData>();
 
-    return (
-        <div
-            className='trustpilot-widget'
-            data-locale='en-EN'
-            data-template-id='5406e65db0d04a09e042d5fc'
-            data-businessunit-id='5ed4c8a9f74f310001f51bf7'
-            data-style-height='28px'
-            data-style-width='100%'
-            data-theme='light'
-        >
-            <a href='https://www.trustpilot.com/review/deriv.com' target='_blank' rel='noopener noreferrer' />
-        </div>
-    );
+    useEffect(() => {
+        const getTrustpilotData = async () => {
+            const res = await fetchTrustpilotData();
+            setTrustpilotData(res);
+        };
+
+        getTrustpilotData();
+    }, []);
+
+    if (!trustpilotData) return null;
+
+    return <div>Custom widget</div>;
 };
 
 export default TrustpilotWidget;

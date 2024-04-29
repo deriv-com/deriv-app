@@ -407,7 +407,10 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                             onBlur={handleBlur}
                                             required
                                             error={errors.phone}
-                                            disabled={isFieldDisabled('phone')}
+                                            disabled={
+                                                isFieldDisabled('phone') ||
+                                                account_settings.phone_number_verification.verified
+                                            }
                                             data-testid='dt_phone'
                                         />
                                     </fieldset>

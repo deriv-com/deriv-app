@@ -13,17 +13,12 @@ describe('<WalletsAppLinkedWithWalletIcon/>', () => {
 
     it('renders both icons', () => {
         render(<WalletsAppLinkedWithWalletIcon appIcon='IcWalletOptionsLight' currency='LTC' size='large' />);
+        const mockAppIconSvgElement = screen.getByTestId('dt_wallet_icon');
 
-        const divElement = screen.getByTestId('wallets-app-linked-with-wallet-icon');
-
-        // eslint-disable-next-line testing-library/no-node-access
-        const mockAppIconSvgElement = divElement.querySelector(
-            '.wallets-app-linked-with-wallet-icon__app-icon file-mock-stub'
-        );
         // eslint-disable-next-line testing-library/no-node-access
         const mockWalletIconSvgElement = screen.getByTestId('dt_wallet_currency_icon');
 
-        expect(mockAppIconSvgElement).not.toBeNull();
+        expect(mockAppIconSvgElement).toBeInTheDocument();
         expect(mockWalletIconSvgElement).toBeInTheDocument();
     });
 

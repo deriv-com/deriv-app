@@ -1,5 +1,5 @@
 const getSettingsFromLocal = () => {
-    return JSON.parse(localStorage.getItem('dbot_settings') || '');
+    return JSON.parse(localStorage.getItem('dbot_settings'));
 };
 
 export const getSetting = (key: string) => {

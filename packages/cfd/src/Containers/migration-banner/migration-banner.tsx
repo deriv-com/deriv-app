@@ -13,6 +13,7 @@ import {
 } from '@deriv/shared';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import MigrationBannerImage from './migration-banner-image';
+import './migration-banner.scss';
 
 type TMigrationBannerProps = {
     is_trade_modal?: boolean;

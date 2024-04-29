@@ -57,16 +57,19 @@ type TWalletIconProps = {
 
 const WalletMarketIcon = ({ className = '', height, icon, size = 'md', width }: TWalletIconProps) => {
     const IconSize = IconSizes[size];
-    const IconSvg = Icons[icon];
+    const Icon = Icons[icon];
 
-    if (!IconSvg) {
+    if (!Icon) {
         return null;
     }
 
     return (
-        <div className={className} data-testid='dt_wallet_icon'>
-            <IconSvg height={height ?? IconSize} width={width ?? IconSize} />
-        </div>
+        <Icon
+            className={className}
+            data-testid='dt_wallet_icon'
+            height={height ?? IconSize}
+            width={width ?? IconSize}
+        />
     );
 };
 

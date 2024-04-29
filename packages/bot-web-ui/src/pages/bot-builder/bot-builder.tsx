@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { useRemoteConfig } from '@deriv/api';
+import { useRemoteConfig } from '@deriv/api-v2';
 import { useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';

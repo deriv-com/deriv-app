@@ -1,10 +1,10 @@
 import React, { RefObject, useCallback, useEffect, useMemo } from 'react';
 import { useFormikContext } from 'formik';
 import { useHistory } from 'react-router-dom';
+import { LegacyChevronDown2pxIcon } from '@deriv/quill-icons';
 import { WalletListCardBadge, WalletText } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../hooks/useDevice';
-import IcDropdown from '../../../../../../public/images/ic-dropdown.svg';
 import { useTransfer } from '../../provider';
 import { TInitialTransferFormValues, TToAccount } from '../../types';
 import { TransferFormAccountCard } from '../TransferFormAccountCard';
@@ -133,7 +133,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                 <div className='wallets-transfer-form-dropdown__header'>
                     <WalletText size='sm'>{label}</WalletText>
 
-                    {isMobile && <IcDropdown />}
+                    {isMobile && <LegacyChevronDown2pxIcon iconSize='xs' />}
                 </div>
 
                 {selectedAccount ? (
@@ -154,7 +154,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                             <WalletListCardBadge isDemo={Boolean(selectedAccount?.demo_account)} label={badgeLabel} />
                         </div>
                     )}
-                    <IcDropdown className='wallets-transfer-form-dropdown__icon-dropdown' />
+                    <LegacyChevronDown2pxIcon className='wallets-transfer-form-dropdown__icon-dropdown' iconSize='xs' />
                 </>
             )}
         </button>

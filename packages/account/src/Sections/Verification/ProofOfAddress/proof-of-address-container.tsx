@@ -100,7 +100,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
     const onSubmitDocument = (needs_poi: boolean) => {
         setAuthenticationStatus(authentication_status => ({
             ...authentication_status,
-            ...{ has_submitted_poa: true, needs_poi },
+            ...{ has_submitted_poa: true, needs_poi, poa_expiring_soon: false },
         }));
         if (is_verification_modal_visible) {
             onSubmit();
@@ -123,6 +123,15 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
 
     const should_show_redirect_btn = Object.keys(platforms).includes(from_platform?.ref ?? '');
 
+    const should_allow_resubmit =
+        resubmit_poa ||
+        allow_poa_resubmission ||
+        (has_restricted_mt5_account &&
+            document_status &&
+            ['expired', 'rejected', 'suspected'].includes(document_status)) ||
+        poa_address_mismatch ||
+        poa_expiring_soon;
+
     const redirect_button = should_show_redirect_btn && (
         <Button
             primary
@@ -140,7 +149,6 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
     );
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    if (poa_expiring_soon) return <ProofOfAddressForm onSubmit={onSubmitDocument} />;
     if (
         !allow_document_upload ||
         (!is_age_verified && !allow_poa_resubmission && document_status === 'none' && is_mx_mlt)
@@ -148,15 +156,8 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
         return <NotRequired />;
     if (has_submitted_poa && !poa_address_mismatch)
         return <Submitted needs_poi={needs_poi} redirect_button={redirect_button} />;
-    if (
-        resubmit_poa ||
-        allow_poa_resubmission ||
-        (has_restricted_mt5_account &&
-            document_status &&
-            ['expired', 'rejected', 'suspected'].includes(document_status)) ||
-        poa_address_mismatch
-    ) {
-        return <ProofOfAddressForm is_resubmit onSubmit={onSubmitDocument} />;
+    if (should_allow_resubmit) {
+        return <ProofOfAddressForm is_resubmit={!poa_expiring_soon} onSubmit={onSubmitDocument} />;
     }
 
     switch (document_status) {

@@ -11,7 +11,7 @@ export const displayMoney = (
         fractional_digits?: number;
         preferred_language?: TPreferredLanguage;
         should_keep_precision?: boolean;
-        max_length?: number;
+        max_digits?: number;
     }
 ) => {
     const intendedDecimalPlaces = options?.fractional_digits ?? 2;
@@ -28,5 +28,11 @@ export const displayMoney = (
         locale: options?.preferred_language ?? undefined,
     });
 
-    return `${formattedAmount} ${currency}`;
+    const digitsCount = formattedAmount.match(/\d/g)?.length ?? 0;
+    const truncatedFormattedAmount =
+        options?.max_digits && digitsCount > options.max_digits
+            ? `${formattedAmount.slice(0, options.max_digits)}...`
+            : formattedAmount;
+
+    return `${truncatedFormattedAmount} ${currency}`;
 };

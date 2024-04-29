@@ -122,7 +122,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     <React.Fragment>
                         <TransactionsPendingRowField
                             name='Amount'
-                            value={`${transaction.is_deposit ? '+' : '-'}${transaction.formatted_amount}`}
+                            value={`${transaction.is_deposit ? '+' : '-'}${transaction.formatted_truncated_amount}`}
                             valueTextProps={{
                                 color: transaction.is_deposit ? 'success' : 'red',
                             }}
@@ -158,7 +158,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                             weight='bold'
                         >
                             {transaction.is_deposit ? '+' : '-'}
-                            {transaction.formatted_amount}
+                            {transaction.formatted_truncated_amount}
                         </WalletText>
                     </div>
                 )}

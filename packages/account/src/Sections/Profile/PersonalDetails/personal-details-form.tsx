@@ -31,6 +31,7 @@ import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
+import { VerifyButton } from './verify-button';
 
 type TRestState = {
     show_form: boolean;
@@ -413,6 +414,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                             }
                                             data-testid='dt_phone'
                                         />
+                                        <VerifyButton />
                                     </fieldset>
                                 )}
                                 <React.Fragment>

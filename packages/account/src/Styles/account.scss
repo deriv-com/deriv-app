@@ -436,7 +436,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 display: flex;
                 padding-top: 0.6rem;
                 padding-inline-end: 1.2rem;
-                color: #4bb4b3;
+                color: var(--text-profit-success);
 
                 @include mobile {
                     padding-inline-end: 4rem;

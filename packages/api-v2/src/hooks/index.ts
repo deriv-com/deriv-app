@@ -5,7 +5,6 @@ export { default as useActiveAccount } from './useActiveAccount';
 export { default as useActiveLinkedToTradingAccount } from './useActiveLinkedToTradingAccount';
 export { default as useActiveTradingAccount } from './useActiveTradingAccount';
 export { default as useActiveWalletAccount } from './useActiveWalletAccount';
-export { default as useActiveWalletBalance } from './useActiveWalletBalance';
 export { default as useAllAccountsList } from './useAllAccountsList';
 export { default as useAllWalletAccounts } from './useAllWalletAccounts';
 export { default as useAuthentication } from './useAuthentication';
@@ -27,6 +26,7 @@ export { default as useOrderInfo } from './p2p/entity/order/p2p-order/useOrderIn
 export { default as useCountryConfig } from './useCountryConfig';
 export { default as useCreateNewRealAccount } from './useCreateNewRealAccount';
 export { default as useCreateWallet } from './useCreateWallet';
+export { default as useCryptoConfig } from './useCryptoConfig';
 export { default as useCryptoTransactions } from './useCryptoTransactions';
 export { default as useCryptoWithdrawal } from './useCryptoWithdrawal';
 export { default as useCtraderAccountsList } from './useCtraderAccountsList';

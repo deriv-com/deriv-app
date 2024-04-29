@@ -11,6 +11,7 @@ import {
     ProofOfIdentity,
     ProofOfAddress,
     ProofOfOwnership,
+    PhoneVerificationPage,
     ApiToken,
     TwoFactorAuthentication,
     SelfExclusion,
@@ -54,6 +55,11 @@ const initRoutesConfig = () => [
                 getTitle: () => localize('Profile'),
                 icon: 'IcUserOutline',
                 subroutes: [
+                    {
+                        path: routes.phone_verification,
+                        component: PhoneVerificationPage,
+                        is_hidden: true,
+                    },
                     {
                         path: routes.personal_details,
                         component: PersonalDetails,

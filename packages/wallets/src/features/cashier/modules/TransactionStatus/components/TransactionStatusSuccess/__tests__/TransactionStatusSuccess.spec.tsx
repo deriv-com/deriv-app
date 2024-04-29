@@ -21,6 +21,7 @@ const mockTransactions = [
         formatted_amount: '0.00010000 BTC',
         formatted_confirmations: '',
         formatted_transaction_hash: '',
+        formatted_truncated_amount: '0.00010000 BTC',
         id: '',
         is_deposit: false,
         is_valid_to_cancel: 1 as const,

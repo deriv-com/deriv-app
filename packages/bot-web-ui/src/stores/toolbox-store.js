@@ -98,11 +98,12 @@ export default class ToolboxStore {
 
             setTimeout(() => {
                 const toolbox_width = document.getElementById('gtm-toolbox')?.getBoundingClientRect().width || 0;
+                const toolbar_width = document.querySelector('.toolbar__group-btn')?.getBoundingClientRect().width || 0;
                 const block_canvas_rect = workspace.svgBlockCanvas_?.getBoundingClientRect(); // eslint-disable-line
 
                 if (Math.round(block_canvas_rect?.left) <= toolbox_width) {
                     const scroll_distance = this.core.ui.is_mobile
-                        ? toolbox_width - block_canvas_rect.left + 20
+                        ? toolbox_width + toolbar_width - block_canvas_rect.left + 20
                         : toolbox_width - block_canvas_rect.left + 36;
 
                     scrollWorkspace(workspace, scroll_distance, true, false);

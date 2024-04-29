@@ -10,7 +10,7 @@ type TTransferModuleProps = {
     accounts?: THooks.TransferAccounts;
 };
 
-const Transfer = ({ isImported }: { isImported: boolean }) => {
+const Transfer = ({ showErrorsDialog }: { showErrorsDialog: boolean }) => {
     const { setTransferReceipt, transferError, transferReceipt } = useTransfer();
 
     if (transferReceipt) return <TransferReceipt {...transferReceipt} resetTransferReceipt={setTransferReceipt} />;
@@ -18,8 +18,8 @@ const Transfer = ({ isImported }: { isImported: boolean }) => {
     return (
         <>
             <TransferForm />
-            {/* isImported checks if the module is used as an import from the cashier-v2 library */}
-            {!isImported && (
+            {/* showErrorsDialog checks if the module is used as an import from the cashier-v2 library */}
+            {!showErrorsDialog && (
                 <ErrorDialog isOpen={!!transferError}>
                     <Text as='p' size='sm'>
                         {transferError?.error.message}
@@ -47,7 +47,7 @@ const TransferModule: React.FC<TTransferModuleProps> = ({ accounts }) => {
             getConfig={getConfig}
             refetchAccountLimits={refetch}
         >
-            <Transfer isImported={!accounts} />
+            <Transfer showErrorsDialog={!accounts} />
         </TransferProvider>
     );
 };

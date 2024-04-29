@@ -72,9 +72,9 @@ export const isCustomJournalMessage = (
 };
 
 const parseArray = message => {
-    return message.map(item => {
+    return message.map((item, idx: number) => {
         return {
-            id: new Date().getTime() * Math.random(),
+            id: `${Date.now()}-${idx}`,
             value: item && Array.isArray(item) ? parseArray(item) : item,
         };
     });

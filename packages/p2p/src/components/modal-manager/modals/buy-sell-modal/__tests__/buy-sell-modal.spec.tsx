@@ -60,6 +60,9 @@ describe('<BuySellModal />', () => {
                 },
                 table_type: 'buy',
                 fetchAdvertiserAdverts: jest.fn(),
+                form_props: {
+                    submitForm: jest.fn(),
+                },
                 is_buy_advert: true,
                 setFormErrorCode: jest.fn(),
                 unsubscribeAdvertInfo: jest.fn(),
@@ -136,17 +139,17 @@ describe('<BuySellModal />', () => {
     });
 
     it('should call submitForm when pressing Confirm', () => {
-        const submitFormSpy = jest.spyOn(React, 'useRef');
+        mock_store.buy_sell_store.submitForm = jest.fn();
 
         render(<BuySellModal />, { wrapper });
 
         const confirm_button = screen.getByRole('button', { name: 'Confirm' });
         userEvent.click(confirm_button);
 
-        expect(submitFormSpy).toHaveBeenCalled();
+        expect(mock_store.buy_sell_store.submitForm).toHaveBeenCalled();
     });
 
-    it('should call showModal and setFormErrorCode when advert rate has changed', async () => {
+    it('should call showModal when the advertiser has changed the rate', async () => {
         render(<BuySellModal />, { wrapper });
 
         act(() => {
@@ -154,8 +157,14 @@ describe('<BuySellModal />', () => {
         });
 
         await waitFor(() => {
-            expect(mock_modal_manager.showModal).toHaveBeenCalledWith({ key: 'MarketRateChangeErrorModal', props: {} });
-            expect(mock_store.buy_sell_store.setFormErrorCode).toHaveBeenCalledWith('');
+            expect(mock_modal_manager.showModal).toHaveBeenCalledWith({
+                key: 'ErrorModal',
+                props: {
+                    error_message: 'The advertiser changed the rate before you confirmed the order.',
+                    error_modal_button_text: 'Try again',
+                    text_size: 'xs',
+                },
+            });
         });
     });
 

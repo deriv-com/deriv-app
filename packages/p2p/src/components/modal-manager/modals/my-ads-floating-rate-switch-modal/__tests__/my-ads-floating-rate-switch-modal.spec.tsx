@@ -103,7 +103,7 @@ describe('<MyAdsFloatingRateSwitchModal />', () => {
         expect(onSwitch).toHaveBeenCalled();
     });
     it("should handle onClick for clicking I'll do this later button", () => {
-        render(<MyAdsFloatingRateSwitchModal />);
+        render(<MyAdsFloatingRateSwitchModal />, { wrapper });
         const button = screen.getByRole('button', { name: "I'll do this later" });
         userEvent.click(button);
         expect(mock_store_values.my_ads_store.toggleMyAdsRateSwitchModal).toHaveBeenCalledWith('fixed', false);

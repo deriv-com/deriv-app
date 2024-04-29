@@ -1,7 +1,16 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores/index';
 import MarketRateChangeErrorModal from '../market-rate-change-error-modal';
+
+const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
+    buy_sell_store: {
+        form_props: {
+            setIsMarketRateErrorModalOpen: jest.fn(),
+        },
+    },
+};
 
 const mock_modal_manager: Partial<ReturnType<typeof useModalManagerContext>> = {
     hideModal: jest.fn(),
@@ -13,7 +22,22 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
     useModalManagerContext: jest.fn(() => mock_modal_manager),
 }));
 
+jest.mock('Stores', () => ({
+    ...jest.requireActual('Stores'),
+    useStores: jest.fn(() => mock_store),
+}));
+
 const el_modal = document.createElement('div');
+
+const mock_props = {
+    submitForm: jest.fn(),
+    values: {
+        currency: 'USD',
+        input_amount: 100,
+        local_currency: 'IDR',
+        received_amount: 100,
+    },
+};
 
 describe('<MarketRateChangeErrorModal />', () => {
     beforeAll(() => {
@@ -26,22 +50,32 @@ describe('<MarketRateChangeErrorModal />', () => {
     });
 
     it('should render MarketRateChangeErrorModal', () => {
-        render(<MarketRateChangeErrorModal />);
+        render(<MarketRateChangeErrorModal {...mock_props} />);
 
-        expect(screen.getByText('The advertiser changed the rate before you confirmed the order.')).toBeInTheDocument();
+        expect(screen.getByText('Attention: Rate fluctuation')).toBeInTheDocument();
+        expect(screen.queryByText(/You are creating an order to buy/)).toBeInTheDocument();
+        expect(screen.getByText('USD 100')).toBeInTheDocument();
+        expect(screen.getByText(/for/)).toBeInTheDocument();
+        expect(screen.getByText('IDR 100')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'The exchange rate may vary slightly due to market fluctuations. The final rate will be shown when you proceed with your order.'
+            )
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText('If the rate changes significantly, we may not be able to create your order.')
+        ).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Continue with order' })).toBeInTheDocument();
     });
 
-    it('should render message if message is passed as a prop', () => {
-        render(<MarketRateChangeErrorModal message='test message' />);
+    it('should call hideModal and setIsMarketRateErrorModalOpen when clicking Cancel', () => {
+        render(<MarketRateChangeErrorModal {...mock_props} />);
 
-        expect(screen.getByText('test message')).toBeInTheDocument();
-    });
+        const cancel_button = screen.getByRole('button', { name: 'Cancel' });
+        cancel_button.click();
 
-    it('should close the modal on clicking try again button', () => {
-        render(<MarketRateChangeErrorModal />);
-
-        const button = screen.getByRole('button', { name: 'Try again' });
-        button.click();
-        expect(mock_modal_manager.hideModal).toBeCalledTimes(1);
+        expect(mock_modal_manager.hideModal).toHaveBeenCalled();
+        expect(mock_store.buy_sell_store.form_props.setIsMarketRateErrorModalOpen).toHaveBeenCalledWith(false);
     });
 });

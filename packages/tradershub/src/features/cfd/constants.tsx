@@ -191,7 +191,7 @@ export const AppToContentMapper: TAppToContentMapper = {
     },
     mt5_windows: {
         icon: <WindowsIcon height={32} width={32} />,
-        link: '',
+        link: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
         text: 'Download',
         title: 'MetaTrader 5 Windows app',
     },

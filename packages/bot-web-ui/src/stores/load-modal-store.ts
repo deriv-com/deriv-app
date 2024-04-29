@@ -228,7 +228,7 @@ export default class LoadModalStore implements ILoadModalStore {
     loadStrategyToBuilder = async (strategy: TStrategy) => {
         if (strategy?.id) {
             await load({
-                block_string: strategy.xml?.toString() ?? '',
+                block_string: strategy.xml,
                 strategy_id: strategy.id,
                 file_name: strategy.name,
                 workspace: window.Blockly?.derivWorkspace,
@@ -245,7 +245,7 @@ export default class LoadModalStore implements ILoadModalStore {
             (this.recent_workspace as any).RTL = isDbotRTL();
         }
         await load({
-            block_string: this.selected_strategy?.xml?.toString() ?? '',
+            block_string: this.selected_strategy?.xml,
             drop_event: {},
             workspace: this.recent_workspace,
             file_name: this.selected_strategy?.name,
@@ -269,7 +269,7 @@ export default class LoadModalStore implements ILoadModalStore {
 
         removeExistingWorkspace(this.selected_strategy.id);
         await load({
-            block_string: this.selected_strategy?.xml?.toString() ?? '',
+            block_string: this.selected_strategy?.xml,
             strategy_id: this.selected_strategy.id,
             file_name: this.selected_strategy.name,
             workspace: window.Blockly.derivWorkspace,
@@ -345,7 +345,7 @@ export default class LoadModalStore implements ILoadModalStore {
         const { loadFile } = this.root_store.google_drive;
         const { xml_doc, file_name } = await loadFile();
         await load({
-            block_string: xml_doc?.toString() ?? '',
+            block_string: xml_doc,
             file_name,
             workspace: window.Blockly.derivWorkspace,
             from: save_types.GOOGLE_DRIVE,
@@ -502,7 +502,7 @@ export default class LoadModalStore implements ILoadModalStore {
         const reader = new FileReader();
         reader.onload = action(async e => {
             const load_options = {
-                block_string: e?.target?.result?.toString() ?? '',
+                block_string: e?.target?.result,
                 drop_event,
                 from: save_types.LOCAL,
                 workspace: null as Blockly.WorkspaceSvg | null,

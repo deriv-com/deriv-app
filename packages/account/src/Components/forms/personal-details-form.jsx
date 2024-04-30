@@ -7,7 +7,6 @@ import {
     Checkbox,
     DesktopWrapper,
     Dropdown,
-    InlineMessage,
     MobileWrapper,
     Popover,
     RadioGroup,
@@ -25,7 +24,6 @@ import InlineNoteWithIcon from '../inline-note-with-icon';
 
 const PersonalDetailsForm = props => {
     const {
-        inline_note_text,
         is_virtual,
         is_eu_user,
         is_svg,
@@ -122,11 +120,6 @@ const PersonalDetailsForm = props => {
                     'account-form__poi-confirm-example': is_rendered_for_idv,
                 })}
             >
-                {(is_svg_only || is_rendered_for_idv_or_onfido) && (
-                    <div className='account-form__poi-inline-message'>
-                        <InlineMessage message={inline_note_text} size='md' />
-                    </div>
-                )}
                 {is_qualified_for_poa && (
                     <InlineNoteWithIcon
                         icon='IcAlertWarning'

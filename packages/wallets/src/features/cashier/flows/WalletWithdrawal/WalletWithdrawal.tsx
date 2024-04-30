@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useActiveWalletAccount, useAuthorize, useCurrencyConfig } from '@deriv/api-v2';
 import { Loader } from '../../../../components';
 import { WithdrawalCryptoModule, WithdrawalFiatModule, WithdrawalVerificationModule } from '../../modules';
+import { WithdrawalNoBalance } from '../../screens';
 
 const WalletWithdrawal = () => {
     const { isSuccess: isCurrencyConfigSuccess } = useCurrencyConfig();
@@ -33,23 +34,26 @@ const WalletWithdrawal = () => {
 
     const isCrypto = activeWallet?.currency_config?.is_crypto;
 
-    if (verificationCode) {
-        if (isCurrencyConfigSuccess && activeWallet?.currency) {
-            return isCrypto ? (
-                <WithdrawalCryptoModule
-                    onClose={() => {
-                        setVerificationCode('');
-                    }}
-                    verificationCode={verificationCode}
-                />
-            ) : (
-                <WithdrawalFiatModule verificationCode={verificationCode} />
-            );
-        }
-        return <Loader />;
+    if (!activeWallet) return <Loader />;
+
+    if (isCurrencyConfigSuccess && activeWallet?.currency && verificationCode) {
+        return isCrypto ? (
+            <WithdrawalCryptoModule
+                onClose={() => {
+                    setVerificationCode('');
+                }}
+                verificationCode={verificationCode}
+            />
+        ) : (
+            <WithdrawalFiatModule verificationCode={verificationCode} />
+        );
     }
 
-    return <WithdrawalVerificationModule />;
+    return (
+        <WithdrawalNoBalance activeWallet={activeWallet}>
+            <WithdrawalVerificationModule />
+        </WithdrawalNoBalance>
+    );
 };
 
 export default WalletWithdrawal;

@@ -3,7 +3,7 @@ import { ProposalOpenContract, UpdateContractResponse } from '@deriv/api-types';
 import { getIndicativePrice, isEqualObject, isMultiplierContract, Validator } from '@deriv/shared';
 import { TStores } from '@deriv/stores/types';
 import { TContractInfo } from 'Components/summary/summary-card.types';
-import { getValidationRules } from 'Constants/contract';
+import { getValidationRules, TValidationRuleIndex, TValidationRules } from 'Constants/contract';
 import { contract_stages } from 'Constants/contract-stage';
 import { getContractUpdateConfig } from 'Utils/multiplier';
 import RootStore from './root-store';
@@ -18,12 +18,6 @@ type TMovements = {
     indicative?: number;
 };
 
-type TEventName =
-    | 'has_contract_update_take_profit'
-    | 'has_contract_update_stop_loss'
-    | 'contract_update_take_profit'
-    | 'contract_update_stop_loss';
-
 export default class SummaryCardStore {
     root_store: RootStore;
     core: TStores;
@@ -35,7 +29,7 @@ export default class SummaryCardStore {
     profit_movement = '';
 
     validation_errors = {};
-    validation_rules = getValidationRules();
+    validation_rules: TValidationRules = getValidationRules();
 
     // Multiplier contract update config
     contract_update_take_profit?: number | null = null;
@@ -121,19 +115,20 @@ export default class SummaryCardStore {
     }
 
     clearContractUpdateConfigValues() {
-        if (this.contract_info) {
-            Object.assign(this, getContractUpdateConfig(this.contract_info));
-        }
+        this.has_contract_update_take_profit = false;
+        this.has_contract_update_stop_loss = false;
+        this.contract_update_take_profit = null;
+        this.contract_update_stop_loss = null;
     }
 
     getLimitOrder() {
         const limit_order: TLimitOrder = {};
 
         // send positive take_profit to update or null to cancel
-        limit_order.take_profit = this.has_contract_update_take_profit ? +this.contract_update_take_profit : 0;
+        limit_order.take_profit = this.has_contract_update_take_profit ? +(this.contract_update_take_profit ?? 0) : 0;
 
         // send positive stop_loss to update or null to cancel
-        limit_order.stop_loss = this.has_contract_update_stop_loss ? +this.contract_update_stop_loss : 0;
+        limit_order.stop_loss = this.has_contract_update_stop_loss ? +(this.contract_update_stop_loss ?? 0) : 0;
 
         return limit_order;
     }
@@ -170,15 +165,13 @@ export default class SummaryCardStore {
         this.contract_info = contract;
     }
 
-    onChange({ name, value }: { name: TEventName; value: any }) {
-        if (name in this) {
-            this[name] = value;
-            this.validateProperty(name, this[name]);
-        }
+    onChange({ name, value }: { name: TValidationRuleIndex; value: string | boolean }) {
+        this[name] = value;
+        this.validateProperty(name, value);
     }
 
     populateContractUpdateConfig(response: UpdateContractResponse) {
-        const contract_update_config = getContractUpdateConfig(response);
+        const contract_update_config = getContractUpdateConfig(response?.contract_update);
 
         if (!isEqualObject(this.contract_update_config, contract_update_config)) {
             Object.assign(this, contract_update_config);
@@ -225,7 +218,7 @@ export default class SummaryCardStore {
      * @param [{String}] messages - An array of strings that contains validation error messages for the particular property.
      *
      */
-    setValidationErrorMessages(propertyName, messages) {
+    setValidationErrorMessages(propertyName: TValidationRuleIndex, messages: string) {
         const is_different = () =>
             !!this.validation_errors[propertyName]
                 .filter(x => !messages.includes(x))
@@ -242,7 +235,7 @@ export default class SummaryCardStore {
      * @param {object} value    - The value of the property, it can be undefined.
      *
      */
-    validateProperty(property, value) {
+    validateProperty(property: TValidationRuleIndex, value?: string) {
         const trigger = this.validation_rules[property].trigger;
         const inputs = { [property]: value !== undefined ? value : this[property] };
         const validation_rules = { [property]: this.validation_rules[property].rules || [] };

@@ -17,7 +17,7 @@ const JurisdictionCardBack = ({ setIsFlipped, verificationDocs }: TJurisdictionC
     const verificationContents = jurisdictionVerificationContents();
     if (!verificationDocs) return null;
     return (
-        <div className='absolute flex flex-col h-full backface-hidden [transform:rotateY(180deg)] gap-16 pt-[15px] px-16 pb-[150px]'>
+        <div className='absolute flex flex-col h-full backface-hidden [transform:rotateY(180deg)] gap-16 pt-[15px] px-16'>
             <div>
                 <LabelPairedArrowLeftLgRegularIcon
                     className='cursor-pointer'

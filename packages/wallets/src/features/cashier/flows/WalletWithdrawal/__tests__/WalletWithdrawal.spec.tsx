@@ -155,6 +155,7 @@ describe('WalletWithdrawal', () => {
     });
 
     it('should show loader if verification code is activeWallet data has not been received yet', () => {
+        // @ts-expect-error - since this is a mock, we only need partial properties of the hook
         mockUseActiveWalletAccount.mockReturnValue({});
 
         render(<WalletWithdrawal />, { wrapper });

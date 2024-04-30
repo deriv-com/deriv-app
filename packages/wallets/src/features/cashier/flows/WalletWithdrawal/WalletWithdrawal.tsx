@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useActiveWalletAccount, useAuthorize, useCurrencyConfig } from '@deriv/api-v2';
+import { useActiveWalletAccount, useAuthorize } from '@deriv/api-v2';
 import { Loader } from '../../../../components';
 import { WithdrawalCryptoModule, WithdrawalFiatModule, WithdrawalVerificationModule } from '../../modules';
 import { WithdrawalNoBalance } from '../../screens';
 
 const WalletWithdrawal = () => {
-    const { isSuccess: isCurrencyConfigSuccess } = useCurrencyConfig();
     const { switchAccount } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
     const [verificationCode, setVerificationCode] = useState('');
@@ -36,7 +35,7 @@ const WalletWithdrawal = () => {
 
     if (!activeWallet) return <Loader />;
 
-    if (isCurrencyConfigSuccess && activeWallet?.currency && verificationCode) {
+    if (activeWallet?.currency && verificationCode) {
         return isCrypto ? (
             <WithdrawalCryptoModule
                 onClose={() => {

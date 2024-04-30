@@ -3,7 +3,7 @@ import { ButtonGroup } from '@/components';
 import { useHandleSendEmail, useQueryParams } from '@/hooks';
 import { useCFDContext } from '@/providers';
 import { Button } from '@deriv-com/ui';
-import { CFDPlatforms, PlatformDetails } from '../../constants';
+import { CFDPlatforms } from '../../constants';
 import DxtradeCreateAccountButton from '../DxtradePasswordModal/DxtradeCreateAccountButton';
 import MT5CreateAccountButton from '../MT5PasswordModal/MT5CreateAccountButton';
 
@@ -27,12 +27,10 @@ const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
             <Button color='black' onClick={handleForgotPassword} variant='outlined'>
                 Forgot password?
             </Button>
-            {platform === PlatformDetails.dxtrade.platform && (
+            {platform === CFDPlatforms.DXTRADE && (
                 <DxtradeCreateAccountButton buttonText='Add account' password={password} />
             )}
-            {platform === PlatformDetails.mt5.platform && (
-                <MT5CreateAccountButton buttonText='Add account' password={password} />
-            )}
+            {platform === CFDPlatforms.MT5 && <MT5CreateAccountButton buttonText='Add account' password={password} />}
         </ButtonGroup>
     );
 };

@@ -7,8 +7,8 @@ const RegulationsSwitcherLoader = () => {
 
     return (
         <ContentLoader
-            backgroundColor={'var(--general-section-1)'}
-            foregroundColor={'var(--general-hover)'}
+            backgroundColor='var(--general-section-1)'
+            foregroundColor='var(--general-hover)'
             width={300}
             height={60}
         >

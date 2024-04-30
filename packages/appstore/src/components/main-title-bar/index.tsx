@@ -47,7 +47,7 @@ const MainTitleBar = () => {
                         <div className='main-title-bar-mobile--account-type-dropdown'>
                             <AccountTypeDropdown />
                         </div>
-                        {is_low_risk_cr_real_account && is_landing_company_loaded ? (
+                        {is_low_risk_cr_real_account && is_landing_company_loaded && (
                             <div className='main-title-bar-mobile--regulator'>
                                 {!is_switching ? (
                                     <>
@@ -77,7 +77,7 @@ const MainTitleBar = () => {
                                     </div>
                                 )}
                             </div>
-                        ) : null}
+                        )}
                     </div>
                     <AssetSummary />
                 </React.Fragment>

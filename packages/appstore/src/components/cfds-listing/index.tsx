@@ -166,7 +166,7 @@ const CFDsListing = observer(() => {
                         <Text size='sm' weight='bold' color='prominent'>
                             {localize('CFDs')}
                         </Text>
-                        <CompareAccount accounts_sub_text={accounts_sub_text} is_desktop={isDesktop} />
+                        <CompareAccount accounts_sub_text={accounts_sub_text} is_desktop />
                     </div>
                 )
             }

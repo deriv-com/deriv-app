@@ -130,8 +130,8 @@ const TradersHub = observer(() => {
 
     const mobileTabletContent = (
         <React.Fragment>
-            {is_mt5_allowed &&
-                (is_landing_company_loaded ? (
+            {is_mt5_allowed ? (
+                is_landing_company_loaded ? (
                     <ButtonToggle
                         buttons_arr={is_eu_user ? platform_toggle_options_eu : platform_toggle_options}
                         className='traders-hub__button-toggle'
@@ -143,8 +143,8 @@ const TradersHub = observer(() => {
                     />
                 ) : (
                     <ButtonToggleLoader />
-                ))}
-            {!is_mt5_allowed && (
+                )
+            ) : (
                 <div className='traders-hub--mt5-not-allowed'>
                     <Text size='s' weight='bold' color='prominent'>
                         <Localize i18n_default_text='Multipliers' />

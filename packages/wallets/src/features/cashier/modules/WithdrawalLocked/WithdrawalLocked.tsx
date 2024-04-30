@@ -6,6 +6,7 @@ import {
     useActiveWalletAccount,
     useAuthentication,
     useCashierValidation,
+    useCryptoConfig,
     useCurrencyConfig,
 } from '@deriv/api-v2';
 import { Loader, WalletsActionScreen } from '../../../../components';
@@ -17,8 +18,9 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { data: authentication } = useAuthentication();
     const { data: cashierValidation } = useCashierValidation();
     const { data: accountLimits } = useAccountLimits();
-    const { data: status } = useAccountStatus();
+    const { data: accountStatus } = useAccountStatus();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
+    const { data: cryptoConfig, isLoading: isCryptoConfigLoading } = useCryptoConfig();
 
     const currency = activeWallet?.currency || 'USD';
 
@@ -34,19 +36,18 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const noWithdrawalOrTradingStatus = cashierValidation?.no_withdrawal_or_trading_status;
     const withdrawalLockedStatus = cashierValidation?.withdrawal_locked_status;
 
-    const isWithdrawalLocked = status?.is_withdrawal_locked;
+    const isWithdrawalLocked = accountStatus?.is_withdrawal_locked;
 
     const remainder = accountLimits?.remainder;
-    const minimumWithdrawal = activeWallet?.currency_config?.is_crypto
-        ? activeWallet?.currency_config?.minimum_withdrawal
-        : 0.01;
+    const minimumWithdrawal = activeWallet?.currency_config?.is_crypto ? cryptoConfig?.minimum_withdrawal : 0.01;
     const withdrawalLimitReached = !!(
         typeof remainder !== 'undefined' &&
         typeof minimumWithdrawal !== 'undefined' &&
         +remainder < minimumWithdrawal
     );
+    const isLoading = isCurrencyConfigLoading || isCryptoConfigLoading || !accountStatus;
 
-    if (isCurrencyConfigLoading) {
+    if (isLoading) {
         return <Loader />;
     }
 
@@ -54,15 +55,13 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
         return (
             <div className='wallets-withdrawal-locked'>
                 <WalletsActionScreen
-                    description={
-                        getWithdrawalLimitReachedDesc({
-                            askFinancialRiskApproval,
-                            poaNeedsVerification,
-                            poaStatus,
-                            poiNeedsVerification,
-                            poiStatus,
-                        })?.description
-                    }
+                    description={getWithdrawalLimitReachedDesc({
+                        askFinancialRiskApproval,
+                        poaNeedsVerification,
+                        poaStatus,
+                        poiNeedsVerification,
+                        poiStatus,
+                    })}
                     title={
                         <Trans
                             defaults='Withdrawals from your {{currency}} Wallet are temporarily locked.'
@@ -78,15 +77,13 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
         return (
             <div className='wallets-withdrawal-locked'>
                 <WalletsActionScreen
-                    description={
-                        getWithdrawalLockedDesc({
-                            askAuthenticate,
-                            askFixDetails,
-                            financialAssessmentRequired,
-                            noWithdrawalOrTradingStatus,
-                            withdrawalLockedStatus,
-                        })?.description
-                    }
+                    description={getWithdrawalLockedDesc({
+                        askAuthenticate,
+                        askFixDetails,
+                        financialAssessmentRequired,
+                        noWithdrawalOrTradingStatus,
+                        withdrawalLockedStatus,
+                    })}
                     title={
                         <Trans
                             defaults='Withdrawals from your {{currency}} Wallet are temporarily locked.'

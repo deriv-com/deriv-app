@@ -1,8 +1,6 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen, waitFor } from '@testing-library/react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
@@ -206,6 +204,7 @@ describe('<QuickStrategy />', () => {
         const { container } = render(<QuickStrategy />, {
             wrapper,
         });
+
         await waitFor(() => {
             expect(container).toBeInTheDocument();
         });
@@ -215,12 +214,12 @@ describe('<QuickStrategy />', () => {
         render(<QuickStrategy />, {
             wrapper,
         });
+
         await waitFor(() => {
             userEvent.click(screen.getByTestId('qs-run-button'));
         });
-        await waitFor(() => {
-            expect(mock_DBot_store?.quick_strategy?.is_open).toBeFalsy();
-        });
+
+        expect(mock_DBot_store?.quick_strategy?.is_open).toBeFalsy();
     });
 
     it('It should close the form on close button click', async () => {
@@ -229,13 +228,14 @@ describe('<QuickStrategy />', () => {
         });
 
         const close_button = screen.getByTestId('dt_page_overlay_header_close');
+
+        expect(close_button).toBeInTheDocument();
+
         await waitFor(() => {
-            expect(close_button).toBeInTheDocument();
             userEvent.click(close_button);
         });
-        await waitFor(() => {
-            expect(mock_DBot_store.quick_strategy.is_open).toBeFalsy();
-        });
+
+        expect(mock_DBot_store.quick_strategy.is_open).toBeFalsy();
     });
 
     it('It should render desktop', () => {

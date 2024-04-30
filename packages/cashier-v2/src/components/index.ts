@@ -1,10 +1,13 @@
 export { Breadcrumb } from './Breadcrumb';
 export { CashierBreadcrumb } from './CashierBreadcrumb';
 export { Clipboard } from './Clipboard';
+export { CryptoFiatConverter, getCryptoFiatConverterValidationSchema } from './CryptoFiatConverter';
 export { CurrencyIcon } from './CurrencyIcon';
 export { DummyComponent } from './DummyComponent';
+export { ErrorDialog } from './ErrorDialog';
 export { ErrorScreen } from './ErrorScreen';
 export { ExpansionPanel } from './ExpansionPanel';
+export { IconMarquee } from './IconMarquee';
 export { NewsTicker } from './NewsTicker';
 export { PageContainer } from './PageContainer';
 export { PercentageSelector } from './PercentageSelector';

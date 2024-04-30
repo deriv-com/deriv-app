@@ -4,9 +4,10 @@ import { useDevice, useQueryString } from '@/hooks';
 import { p2p } from '@deriv/api-v2';
 import { Button, Loader } from '@deriv-com/ui';
 import './MyProfileAdDetails.scss';
+import { THooks } from 'types';
 
 type TMYProfileAdDetailsTextAreaProps = {
-    advertiserInfo: NonNullable<ReturnType<typeof p2p.advertiser.useGetInfo>>['data'];
+    advertiserInfo: THooks.Advertiser.GetInfo;
     setAdvertDescription: React.Dispatch<React.SetStateAction<string>>;
     setContactInfo: React.Dispatch<React.SetStateAction<string>>;
 };
@@ -67,6 +68,7 @@ const MyProfileAdDetails = () => {
     if (isMobile) {
         return (
             <FullPageMobileWrapper
+                className='p2p-v2-my-profile-ad-details__mobile-wrapper'
                 onBack={() =>
                     setQueryString({
                         tab: 'default',
@@ -97,7 +99,7 @@ const MyProfileAdDetails = () => {
                 setContactInfo={setContactInfo}
             />
             <div className='p2p-v2-my-profile-ad-details__border' />
-            <Button disabled={!hasUpdated} onClick={submitAdDetails} size='lg'>
+            <Button disabled={!hasUpdated} onClick={submitAdDetails} size='lg' textSize='sm'>
                 Save
             </Button>
         </div>

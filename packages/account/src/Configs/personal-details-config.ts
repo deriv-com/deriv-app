@@ -22,14 +22,12 @@ type TPersonalDetailsConfig = {
     };
     residence: string;
     account_status: GetAccountStatus;
-    is_high_risk_client_for_mt5?: boolean;
 };
 
 export const personal_details_config = ({
     residence_list,
     account_settings,
     real_account_signup_target,
-    is_high_risk_client_for_mt5,
 }: TPersonalDetailsConfig) => {
     if (!residence_list || !account_settings) {
         return {};
@@ -39,17 +37,17 @@ export const personal_details_config = ({
 
     const config = {
         account_opening_reason: {
-            supported_in: ['iom', 'malta', 'maltainvest'],
+            supported_in: ['maltainvest'],
             default_value: account_settings.account_opening_reason ?? '',
             rules: [['req', localize('Account opening reason is required.')]],
         },
         salutation: {
-            supported_in: ['iom', 'malta', 'maltainvest'],
+            supported_in: ['maltainvest'],
             default_value: account_settings.salutation ?? '',
             rules: [['req', localize('Salutation is required.')]],
         },
         first_name: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: ['svg', 'maltainvest'],
             default_value: account_settings.first_name ?? '',
             rules: [
                 ['req', localize('First name is required.')],
@@ -58,7 +56,7 @@ export const personal_details_config = ({
             ],
         },
         last_name: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: ['svg', 'maltainvest'],
             default_value: account_settings.last_name ?? '',
             rules: [
                 ['req', localize('Last name is required.')],
@@ -67,7 +65,7 @@ export const personal_details_config = ({
             ],
         },
         date_of_birth: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: ['svg', 'maltainvest'],
             default_value: account_settings.date_of_birth
                 ? toMoment(account_settings.date_of_birth).format('YYYY-MM-DD')
                 : '',
@@ -80,7 +78,7 @@ export const personal_details_config = ({
             ],
         },
         place_of_birth: {
-            supported_in: ['maltainvest', 'iom', 'malta'],
+            supported_in: ['maltainvest'],
             default_value:
                 (account_settings.place_of_birth &&
                     residence_list.find(item => item.value === account_settings.place_of_birth)?.text) ||
@@ -88,7 +86,7 @@ export const personal_details_config = ({
             rules: [['req', localize('Place of birth is required.')]],
         },
         citizen: {
-            supported_in: ['iom', 'malta', 'maltainvest'],
+            supported_in: ['maltainvest'],
             default_value:
                 (account_settings.citizen &&
                     residence_list.find(item => item.value === account_settings.citizen)?.text) ||
@@ -96,7 +94,7 @@ export const personal_details_config = ({
             rules: [['req', localize('Citizenship is required')]],
         },
         phone: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: ['svg', 'maltainvest'],
             default_value: account_settings.phone ?? '',
             rules: [
                 ['req', localize('Phone is required.')],
@@ -210,9 +208,7 @@ export const personal_details_config = ({
         },
     };
 
-    // Need to check if client is high risk (only have SVG i.e. China & Russia)
-    // No need to get additinal details when client is high risk
-    if (!is_high_risk_client_for_mt5 && real_account_signup_target !== 'maltainvest') {
+    if (real_account_signup_target !== 'maltainvest') {
         const properties_to_update: (keyof typeof config)[] = [
             'place_of_birth',
             'tax_residence',
@@ -240,7 +236,6 @@ const personalDetailsConfig = <T>(
         account_settings,
         account_status,
         residence,
-        is_high_risk_client_for_mt5,
     }: TPersonalDetailsConfig,
     PersonalDetails: T,
     is_appstore = false
@@ -251,7 +246,6 @@ const personalDetailsConfig = <T>(
         real_account_signup_target,
         residence,
         account_status,
-        is_high_risk_client_for_mt5,
     });
     const disabled_items = account_settings.immutable_fields;
     return {
@@ -313,10 +307,6 @@ const transformConfig = (
     config: TSchema,
     { real_account_signup_target, residence_list, account_settings, account_status, residence }: TPersonalDetailsConfig
 ) => {
-    // Remove required rule for malta and iom
-    if (['malta', 'iom'].includes(real_account_signup_target) && config.tax_residence) {
-        config?.tax_residence?.rules?.shift();
-    }
     // Remove IDV for non supporting SVG countries
     if (
         !shouldShowIdentityInformation({

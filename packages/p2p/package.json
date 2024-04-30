@@ -14,8 +14,9 @@
         "node": "18.x"
     },
     "scripts": {
+        "analyze": "webpack-bundle-analyzer --no-open -m static -r analyzed.html stats.json ./dist && webpack-bundle-analyzer -m json stats.json ./dist",
         "test:eslint": "eslint \"./src/**/*.?(js|ts|jsx|tsx)\"",
-        "build": "rimraf lib && NODE_OPTIONS='-r ts-node/register' webpack --progress",
+        "build": "rimraf lib && NODE_OPTIONS='-r ts-node/register' webpack --progress --profile --json > stats.json",
         "build:publish": "deriv-publisher prepublish && lerna exec --scope=@deriv/shared --scope=@deriv/components -- npm run build:travis -- && rimraf lib && cross-env NODE_ENV=production NPM_PUBLISHING_MODE=1 webpack --progress; deriv-publisher postpublish",
         "build:travis": "rimraf lib && webpack",
         "serve": "rimraf lib && cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch",
@@ -30,9 +31,9 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@deriv-com/utils": "latest",
+        "@deriv-com/utils": "^0.0.14",
         "@deriv/api": "^1.0.0",
-        "@deriv/api-types": "^1.0.118",
+        "@deriv/api-types": "^1.0.172",
         "@deriv/components": "^1.0.0",
         "@deriv/hooks": "^1.0.0",
         "@deriv/shared": "^1.0.0",

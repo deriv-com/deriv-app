@@ -7,19 +7,22 @@
         "node": "18.x"
     },
     "scripts": {
-        "build": "rimraf dist && NODE_OPTIONS='-r ts-node/register' webpack --progress --config \"./webpack.config.ts\"",
+        "analyze": "webpack-bundle-analyzer --no-open -m static -r analyzed.html stats.json ./dist && webpack-bundle-analyzer -m json stats.json ./dist",
+        "build": "rimraf dist && NODE_OPTIONS='-r ts-node/register' webpack --progress --config \"./webpack.config.ts\" --profile --json > stats.json",
         "serve": "rimraf dist && concurrently \"cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch --config ./webpack.config.ts\" \"tsc -w --noEmit --preserveWatchOutput\"",
         "start": "rimraf dist && npm run test && npm run serve"
     },
     "dependencies": {
-        "@deriv-com/ui": "1.11.2",
+        "@deriv-com/ui": "^1.14.1",
+        "@deriv-com/utils": "^0.0.14",
         "@deriv/api-v2": "^1.0.0",
         "@deriv/integration": "^1.0.0",
-        "@deriv/quill-icons": "^1.19.0",
+        "@deriv/quill-icons": "^1.22.4",
         "@deriv/utils": "^1.0.0",
         "clsx": "^2.0.0",
         "formik": "^2.1.4",
         "i18next": "^22.4.6",
+        "lodash.debounce": "^4.0.8",
         "qrcode.react": "^3.1.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",

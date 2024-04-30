@@ -1,13 +1,23 @@
 import { ACCOUNT_V2_ROUTES } from '../constants/routes';
-import { POICountrySelector } from '../containers/POICountrySelector';
-import { POAFormContainer } from '../modules/POAForm/POAFormContainer';
-import { AccountClosure } from '../pages';
-import { LoginHistory } from '../pages/LoginHistory';
-import { DummyRoute } from './components/DummyRoute';
+import { PersonalDetailsForm } from '../containers/PersonalDetailsForm';
+import { ProofOfIncomeForm } from '../containers/ProofOfIncome';
+import { TradingAssessmentForm } from '../containers/TradingAssessmentForm';
+import { FinancialAssessmentForm } from '../modules/src/FinancialAssessment/FinancialAssessmentForm';
+import { POAFormContainer } from '../modules/src/POAForm/POAFormContainer';
+import { ProofOfIdentity } from '../modules/src/POI/POI';
+import {
+    AccountClosure,
+    AccountLimits,
+    ConnectedApps,
+    LoginHistory,
+    ProofOfOwnership,
+    TwoFactorAuthentication,
+} from '../pages';
+import { DummyRoute } from './components/DummyRoute/DummyRoute';
 
 export const routes = [
     {
-        routeComponent: DummyRoute,
+        routeComponent: PersonalDetailsForm,
         routeName: 'Personal details',
         routePath: ACCOUNT_V2_ROUTES.PersonalDetails,
     },
@@ -17,17 +27,17 @@ export const routes = [
         routePath: ACCOUNT_V2_ROUTES.Languages,
     },
     {
-        routeComponent: DummyRoute,
+        routeComponent: TradingAssessmentForm,
         routeName: 'Trading assessment',
         routePath: ACCOUNT_V2_ROUTES.TradingAssessment,
     },
     {
-        routeComponent: DummyRoute,
+        routeComponent: FinancialAssessmentForm,
         routeName: 'Financial assessment',
         routePath: ACCOUNT_V2_ROUTES.FinancialAssessment,
     },
     {
-        routeComponent: POICountrySelector,
+        routeComponent: ProofOfIdentity,
         routeName: 'Proof of identity',
         routePath: ACCOUNT_V2_ROUTES.ProofOfIdentity,
     },
@@ -37,12 +47,12 @@ export const routes = [
         routePath: ACCOUNT_V2_ROUTES.ProofOfAddress,
     },
     {
-        routeComponent: DummyRoute,
+        routeComponent: ProofOfOwnership,
         routeName: 'Proof of ownership',
         routePath: ACCOUNT_V2_ROUTES.ProofOfOwnership,
     },
     {
-        routeComponent: DummyRoute,
+        routeComponent: ProofOfIncomeForm,
         routeName: 'Proof of income',
         routePath: ACCOUNT_V2_ROUTES.ProofOfIncome,
     },
@@ -57,7 +67,7 @@ export const routes = [
         routePath: ACCOUNT_V2_ROUTES.SelfExclusion,
     },
     {
-        routeComponent: DummyRoute,
+        routeComponent: AccountLimits,
         routeName: 'Account limits',
         routePath: ACCOUNT_V2_ROUTES.AccountLimits,
     },
@@ -72,12 +82,12 @@ export const routes = [
         routePath: ACCOUNT_V2_ROUTES.ApiToken,
     },
     {
-        routeComponent: DummyRoute,
+        routeComponent: ConnectedApps,
         routeName: 'Connected apps',
         routePath: ACCOUNT_V2_ROUTES.ConnectedApps,
     },
     {
-        routeComponent: DummyRoute,
+        routeComponent: TwoFactorAuthentication,
         routeName: 'Two-factor authentication',
         routePath: ACCOUNT_V2_ROUTES.TwoFactorAuthentication,
     },

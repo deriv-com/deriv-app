@@ -1,9 +1,8 @@
 import React from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { BrowserRouter } from 'react-router-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
@@ -29,6 +28,12 @@ const recent_strategies = [
     { ...strategy, name: 'd_alembert', id: '2' },
     { ...strategy, name: 'oscar_grind', id: '3' },
 ];
+
+const zoom_icons = ['zoom-in', 'zoom-out'];
+
+window.Blockly = {
+    derivWorkspace: { asyncClear: () => ({}) },
+};
 
 describe('LoadModal', () => {
     let modal_root_el: HTMLElement,
@@ -85,12 +90,63 @@ describe('LoadModal', () => {
         expect(screen.getByRole('button', { name: 'Open' })).toBeInTheDocument();
     });
 
+    it('should render load modal preview on file upload and on click of close should close the preview', () => {
+        mock_store.ui.is_mobile = false;
+        render(<LoadModal />, { wrapper });
+
+        mock_DBot_store?.load_modal.setActiveTabIndex(1);
+        mock_DBot_store?.load_modal.setLoadedLocalFile(new File([''], 'test-name', { type: 'text/xml' }));
+
+        const close_button = screen.getByTestId('dt_load-strategy__local-preview-close');
+        expect(close_button).toBeInTheDocument();
+
+        userEvent.click(close_button);
+
+        expect(close_button).not.toBeInTheDocument();
+    });
+
+    it('should upload file on the load modal preview when we drop a file on the dropzone', () => {
+        mock_store.ui.is_mobile = false;
+        render(<LoadModal />, { wrapper });
+
+        mock_DBot_store?.load_modal.setActiveTabIndex(1);
+        mock_DBot_store?.load_modal.setLoadedLocalFile(null);
+
+        const dropzoneArea = screen.getByTestId('dt__local-dropzone-area');
+        fireEvent.drop(dropzoneArea, {
+            dataTransfer: { files: [new File(['hello'], 'hello.xml', { type: 'text/xml' })] },
+        });
+
+        zoom_icons.forEach(icon => expect(screen.getByTestId(icon)).toBeInTheDocument());
+    });
+
+    it('should open and upload a file when we select a file from local on load modal preview', () => {
+        mock_store.ui.is_mobile = false;
+        render(<LoadModal />, { wrapper });
+
+        mock_DBot_store?.load_modal.setActiveTabIndex(1);
+        mock_DBot_store?.load_modal.setLoadedLocalFile(null);
+
+        //open file upload
+        const get_file_input = screen.getByTestId('dt_load-strategy__local-upload');
+        userEvent.click(get_file_input);
+
+        //simulate behaviour of file upload
+        const fileInput = screen.getByTestId('dt-load-strategy-file-input');
+        const file = new File(['file content'], 'file.xml', { type: 'application/xml' });
+        userEvent.upload(fileInput, file);
+
+        zoom_icons.forEach(icon => expect(screen.getByTestId(icon)).toBeInTheDocument());
+    });
+
     // [Important] Close Modal should be at the end
     it('should close preview if close is clicked', () => {
         mock_store.ui.is_mobile = true;
         render(<LoadModal />, { wrapper });
+
         const close_button = screen.getByTestId('dt_page_overlay_header_close');
         userEvent.click(close_button);
+
         expect(mock_DBot_store?.dashboard.is_preview_on_popup).toBeFalsy();
     });
 });

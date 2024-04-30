@@ -3,7 +3,7 @@ import ImportantIcon from '@/assets/svgs/ic-important.svg';
 import { useRegulationFlags } from '@/hooks';
 import { useCFDContext } from '@/providers';
 import { THooks, TPlatforms } from '@/types';
-import { AppToContentMapper, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
+import { DesktopLinks, MarketType, MarketTypeDetails, PlatformDetails } from '@cfd/constants';
 import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
 import { TradeDetailsItem } from './TradeDetailsItem';
@@ -114,6 +114,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                     )}
                     {platform === ctraderPlatform && (
                         <TradeDetailsItem
+                            className='rounded-t-sm'
                             value=' Use your Deriv account email and password to login into the cTrader platform.'
                             variant='info'
                         />
@@ -133,29 +134,31 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                 {platform === mt5Platform && (
                     <Fragment>
                         <TradeLink
-                            app='web'
+                            app={DesktopLinks.MT5_WEB}
                             platform={mt5Platform}
                             webtraderUrl={(details as THooks.MT5AccountsList)?.webtrader_url}
                         />
                         {isDesktop && (
                             <Fragment>
-                                <TradeLink app='windows' platform={mt5Platform} />
-                                <TradeLink app='macos' platform={mt5Platform} />
-                                <TradeLink app='linux' platform={mt5Platform} />
+                                <TradeLink app={DesktopLinks.MT5_WINDOWS} platform={mt5Platform} />
+                                <TradeLink app={DesktopLinks.MT5_MACOS} platform={mt5Platform} />
+                                <TradeLink app={DesktopLinks.MT5_LINUX} platform={mt5Platform} />
                             </Fragment>
                         )}
                     </Fragment>
                 )}
                 {platform === dxtradePlatform && (
-                    <TradeLink isDemo={activeAccount?.is_virtual} platform={dxtradePlatform} />
+                    <TradeLink
+                        app={DesktopLinks.DXTRADE_WEB}
+                        isDemo={activeAccount?.is_virtual}
+                        platform={dxtradePlatform}
+                    />
                 )}
-                {platform === ctraderPlatform && (
+                {platform === ctraderPlatform && isDesktop && (
                     <Fragment>
-                        <TradeLink platform={ctraderPlatform} />
-                        <TradeLink
-                            app={ctraderPlatform as keyof typeof AppToContentMapper}
-                            platform={ctraderPlatform}
-                        />
+                        <TradeLink app={DesktopLinks.CTRADER_WEB} platform={ctraderPlatform} />
+                        <TradeLink app={DesktopLinks.CTRADER_WINDOWS} platform={ctraderPlatform} />
+                        <TradeLink app={DesktopLinks.CTRADER_MAC} platform={ctraderPlatform} />
                     </Fragment>
                 )}
             </div>

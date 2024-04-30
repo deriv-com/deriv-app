@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useEmblaCarousel, { EmblaCarouselType, EmblaEventType } from 'embla-carousel-react';
+import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api-v2';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { ProgressBar } from '../Base';
@@ -25,6 +26,7 @@ const TRANSITION_FACTOR_SCALE = 1 - 25.6 / 28.8;
  */
 const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     const switchWalletAccount = useWalletAccountSwitcher();
+    const history = useHistory();
 
     const { data: walletAccountsList, isLoading: isWalletAccountsListLoading } = useMobileCarouselWalletsList();
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
@@ -114,10 +116,10 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
 
     // set login ID once wallet changes
     useEffect(() => {
-        if (activeWallet) {
+        if (activeWallet?.loginid) {
             setSelectedLoginId(activeWallet?.loginid);
         }
-    }, [activeWallet]);
+    }, [activeWallet?.loginid]);
 
     // bind to embla events
     useEffect(() => {
@@ -159,7 +161,9 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
         if (selectedLoginId) {
             switchWalletAccount(selectedLoginId).then(() => {
                 const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
-                walletsCarouselEmblaApi?.scrollTo(index);
+                if (index !== -1) {
+                    walletsCarouselEmblaApi?.scrollTo(index);
+                }
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -169,7 +173,9 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     useEffect(() => {
         if (walletsCarouselEmblaApi && isInitialDataLoaded) {
             const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
-            walletsCarouselEmblaApi?.scrollTo(index, true);
+            if (index !== -1) {
+                walletsCarouselEmblaApi?.scrollTo(index, true);
+            }
 
             walletsCarouselEmblaApi && setTransitionNodes(walletsCarouselEmblaApi);
             walletsCarouselEmblaApi && setTransitionFactor(walletsCarouselEmblaApi);
@@ -218,11 +224,16 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
                     <WalletCard
                         balance={account.display_balance}
                         currency={account.currency || 'USD'}
-                        iconSize='xl'
+                        iconSize='lg'
                         isCarouselContent
                         isDemo={account.is_virtual}
                         key={`wallet-card-${account.loginid}`}
                         landingCompanyName={account.landing_company_name}
+                        onClick={() =>
+                            account.is_virtual
+                                ? history.push('/wallets/cashier/reset-balance')
+                                : history.push('/wallets/cashier/deposit')
+                        }
                     />
                 ))}
             </div>

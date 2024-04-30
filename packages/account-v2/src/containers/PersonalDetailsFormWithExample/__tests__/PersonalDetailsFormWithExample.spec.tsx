@@ -2,20 +2,13 @@ import React from 'react';
 import { Formik } from 'formik';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { getNameDOBValidationSchema } from '../../../utils/personal-details-utils';
+import { getNameDOBValidationSchema } from '../../../utils';
 import { PersonalDetailsFormWithExample } from '../PersonalDetailsFormWithExample';
-
-jest.mock('../../../assets/proof-of-identity/personal-details-example.svg', () => {
-    return {
-        __esModule: true,
-        default: jest.fn(() => <div>MockedLazyComponent</div>),
-    };
-});
 
 const renderComponent = () => {
     return render(
         <Formik initialValues={{}} onSubmit={jest.fn()} validationSchema={getNameDOBValidationSchema()}>
-            <PersonalDetailsFormWithExample onConfirm={jest.fn()} />
+            <PersonalDetailsFormWithExample errorStatus={null} onConfirm={jest.fn()} />
         </Formik>
     );
 };

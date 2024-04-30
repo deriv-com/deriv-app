@@ -44,13 +44,13 @@
             &--trader {
                 grid-template-columns: 1.2fr 1fr;
 
-                &--accumulator,
-                &--turbos {
+                &--accumulator {
                     display: flex;
                     grid-gap: 1px;
-                    &-sold {
-                        padding-top: 1rem;
-                    }
+                }
+
+                &--sold {
+                    padding-top: 1rem;
                 }
             }
             &--mobile {
@@ -232,6 +232,7 @@
         }
     }
     &__symbol {
+        /*rtl:ignore*/
         margin-left: 0.4rem;
         &--smarttrader-contract {
             width: 7rem;
@@ -393,7 +394,7 @@
     }
     &-item {
         &__header {
-            max-width: calc(100% - 2.4rem);
+            max-width: calc(100% - 2rem);
             line-height: 1.4;
             @include mobile {
                 max-width: unset;
@@ -501,6 +502,7 @@
             grid-template-columns: 1fr 1fr;
 
             .dc-btn--cancel {
+                /*rtl:ignore*/
                 margin-left: 0.8rem;
                 max-width: 10.5rem;
             }
@@ -561,6 +563,12 @@
     }
     &__deal-cancel-fee {
         grid-area: deal-cancel-fee;
+        &__disabled {
+            color: var(--text-disabled-1);
+            .dc-contract-card-item__body {
+                color: inherit;
+            }
+        }
     }
     &__stake {
         grid-area: stake;
@@ -636,9 +644,11 @@
     &__type-label {
         width: 3.8em;
         line-height: 1.5;
+        /*rtl:ignore*/
         text-align: left;
 
-        &--smarttrader-contract {
+        &--smarttrader-contract,
+        &--multipliers {
             width: 7rem;
             @include mobile {
                 width: 9rem;

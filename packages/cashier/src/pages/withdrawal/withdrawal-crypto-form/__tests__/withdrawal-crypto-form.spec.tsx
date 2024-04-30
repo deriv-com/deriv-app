@@ -4,7 +4,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useCurrentAccountDetails } from '@deriv/hooks';
 import WithdrawalCryptoForm from '../withdrawal-crypto-form';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore, ExchangeRatesProvider } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -47,9 +47,7 @@ describe('<WithdrawalCryptoForm />', () => {
     const renderWithdrawalCryptoForm = () => {
         return render(
             <CashierProviders store={mockRootStore}>
-                <ExchangeRatesProvider>
-                    <WithdrawalCryptoForm />
-                </ExchangeRatesProvider>
+                <WithdrawalCryptoForm />
             </CashierProviders>
         );
     };

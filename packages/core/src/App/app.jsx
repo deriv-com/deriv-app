@@ -1,7 +1,6 @@
 import React from 'react';
 import WS from 'Services/ws-methods';
 import PropTypes from 'prop-types';
-import { withTranslation } from 'react-i18next';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Analytics } from '@deriv-com/analytics';
 import { BreakpointProvider } from '@deriv/quill-design';
@@ -16,8 +15,9 @@ import {
     setWebsocket,
     useOnLoadTranslation,
 } from '@deriv/shared';
-import { StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
+import { StoreProvider, P2PSettingsProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
+import { withTranslation, useTranslation } from 'react-i18next';
 import { CFD_TEXT } from '../Constants/cfd-text';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import AppContent from './AppContent';
@@ -33,9 +33,15 @@ const AppWithoutTranslation = ({ root_store }) => {
         root_store.modules.attachModule('cashier', new CashierStore(root_store, WS));
         root_store.modules.cashier.general_store.init();
     };
+    const { i18n } = useTranslation();
     const initCFDStore = () => {
         root_store.modules.attachModule('cfd', new CFDStore({ root_store, WS }));
     };
+
+    React.useEffect(() => {
+        const dir = i18n.dir(i18n.language.toLowerCase());
+        document.documentElement.dir = dir;
+    }, [i18n, i18n.language]);
 
     React.useEffect(() => {
         initCashierStore();
@@ -99,9 +105,9 @@ const AppWithoutTranslation = ({ root_store }) => {
                             <APIProvider>
                                 <POIProvider>
                                     <StoreProvider store={root_store}>
-                                        <ExchangeRatesProvider>
+                                        <P2PSettingsProvider>
                                             <AppContent passthrough={platform_passthrough} />
-                                        </ExchangeRatesProvider>
+                                        </P2PSettingsProvider>
                                     </StoreProvider>
                                 </POIProvider>
                             </APIProvider>

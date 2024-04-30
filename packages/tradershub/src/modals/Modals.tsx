@@ -9,11 +9,15 @@ import {
     TradeModal,
 } from '@/features/cfd/modals';
 import { ChangePassword } from '@/features/cfd/screens';
-import { RealAccountCreation } from '@/flows';
+import { RealAccountCreation, Signup } from '@/flows';
 import { AccountSelector } from './AccountSelector';
 import { AddOrManageAccount } from './AddOrManageAccount';
 import { DummyComponentModal } from './DummyComponentModal';
+import { DxtradeSuccessModal } from './DxtradeSuccessModal';
+import { MT5ChangePasswordModal } from './MT5ChangePasswordModal';
+import { MT5SuccessModal } from './MT5SuccessModal';
 import { RegulationModal } from './RegulationModal';
+import { SentEmailContentModal } from './SentEmailContentModal';
 
 /**
  * @description The place to import and export all modals
@@ -35,7 +39,12 @@ const Modals = () => {
             <MT5AccountTypeModal />
             <RegulationModal />
             <CTraderSuccessModal />
+            <MT5SuccessModal />
+            <DxtradeSuccessModal />
             <MT5PasswordModal />
+            <MT5ChangePasswordModal />
+            <SentEmailContentModal />
+            <Signup />
         </Fragment>
     );
 };

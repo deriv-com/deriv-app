@@ -58,7 +58,7 @@ const SwipeableWrapper = ({
     });
 
     return (
-        <div className='dc-swipeable'>
+        <div className='dc-swipeable' data-testid='dt_swipeable'>
             <div
                 {...swipe_handlers}
                 style={{

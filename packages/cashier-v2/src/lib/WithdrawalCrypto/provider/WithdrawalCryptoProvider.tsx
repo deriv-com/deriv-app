@@ -2,18 +2,20 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
     useAccountLimits,
     useActiveAccount,
+    useCryptoConfig,
     useCryptoWithdrawal,
     useCurrencyConfig,
     useExchangeRateSubscription,
     usePOA,
     usePOI,
 } from '@deriv/api-v2';
-import { THooks } from '../../../hooks/types';
+import type { THooks } from '../../../hooks/types';
 import { TWithdrawalReceipt } from '../types';
 
 export type TWithdrawalCryptoContext = {
     accountLimits: ReturnType<typeof useAccountLimits>['data'];
     activeAccount: ReturnType<typeof useActiveAccount>['data'];
+    cryptoConfig: ReturnType<typeof useCryptoConfig>['data'];
     exchangeRates: Partial<ReturnType<typeof useExchangeRateSubscription>>;
     fractionalDigits: {
         crypto?: number;
@@ -55,6 +57,7 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
 }) => {
     const { data: accountLimits } = useAccountLimits();
     const { data: activeAccount } = useActiveAccount();
+    const { data: cryptoConfig } = useCryptoConfig();
     const { data: poaStatus } = usePOA();
     const { data: poiStatus } = usePOI();
     const { isError: isWithdrawalError, isSuccess: isWithdrawalSuccess, mutateAsync } = useCryptoWithdrawal();
@@ -126,6 +129,7 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
     const value = {
         accountLimits,
         activeAccount,
+        cryptoConfig,
         exchangeRates: {
             data: exchangeRates,
             subscribe,

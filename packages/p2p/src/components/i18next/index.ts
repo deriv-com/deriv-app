@@ -17,6 +17,7 @@ import pl from 'Translations/pl.json';
 import pt from 'Translations/pt.json';
 import sw from 'Translations/sw.json';
 import ru from 'Translations/ru.json';
+import si from 'Translations/si.json';
 import th from 'Translations/th.json';
 import tr from 'Translations/tr.json';
 import vi from 'Translations/vi.json';
@@ -51,6 +52,7 @@ const i18n_config = {
         PT: { translations: { ...pt } },
         SW: { translations: { ...sw } },
         RU: { translations: { ...ru } },
+        SI: { translations: { ...si } },
         TH: { translations: { ...th } },
         TR: { translations: { ...tr } },
         VI: { translations: { ...vi } },

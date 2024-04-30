@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { twJoin, twMerge } from 'tailwind-merge';
+import { twJoin } from 'tailwind-merge';
 import { useOnClickOutside } from 'usehooks-ts';
 import { DemoRealSwitcherLoader } from '@/components';
 import { useAccountSwitcher, useRegulationFlags } from '@/hooks';
@@ -57,7 +57,7 @@ const DemoRealSwitcher = () => {
                 <div className='absolute z-10 flex flex-col items-center w-full top-28 rounded-xs bg-system-light-primary-background shadow-10'>
                     {accountTypes.map(account => (
                         <button
-                            className={twMerge(
+                            className={twJoin(
                                 'cursor-pointer hover:bg-system-light-hover-background rounded-xs w-full',
                                 account.value === value && 'bg-system-light-active-background'
                             )}

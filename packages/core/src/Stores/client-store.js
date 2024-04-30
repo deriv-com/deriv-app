@@ -28,6 +28,7 @@ import {
     setCurrencies,
     State,
     toMoment,
+    sortApiData,
     urlForLanguage,
     getAppId,
 } from '@deriv/shared';
@@ -49,8 +50,8 @@ import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_co
 const LANGUAGE_KEY = 'i18n_language';
 const storage_key = 'client.accounts';
 const store_name = 'client_store';
-const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
-const eu_excluded_regex = new RegExp('^mt$');
+const eu_shortcode_regex = /^maltainvest$/;
+const eu_excluded_regex = /^mt$/;
 
 export default class ClientStore extends BaseStore {
     loginid;
@@ -59,6 +60,7 @@ export default class ClientStore extends BaseStore {
     email;
     accounts = {};
     trading_platform_available_accounts = [];
+    ctrader_trading_platform_available_accounts = [];
     pre_switch_broadcast = false;
     switched = '';
     is_switching = false;
@@ -87,9 +89,7 @@ export default class ClientStore extends BaseStore {
 
     // All possible landing companies of user between all
     standpoint = {
-        iom: false,
         svg: false,
-        malta: false,
         maltainvest: false,
         gaming_company: false,
         financial_company: false,
@@ -176,6 +176,7 @@ export default class ClientStore extends BaseStore {
             email: observable,
             accounts: observable,
             trading_platform_available_accounts: observable,
+            ctrader_trading_platform_available_accounts: observable,
             pre_switch_broadcast: observable,
             switched: observable,
             is_switching: observable,
@@ -291,6 +292,7 @@ export default class ClientStore extends BaseStore {
             is_logged_in: computed,
             has_restricted_mt5_account: computed,
             has_mt5_account_with_rejected_poa: computed,
+            has_wallet: computed,
             should_restrict_bvi_account_creation: computed,
             should_restrict_vanuatu_account_creation: computed,
             should_show_eu_content: computed,
@@ -384,6 +386,7 @@ export default class ClientStore extends BaseStore {
             responseMt5LoginList: action.bound,
             responseDxtradeTradingServers: action.bound,
             responseTradingPlatformAvailableAccounts: action.bound,
+            responseCTraderTradingPlatformAvailableAccounts: action.bound,
             responseTradingPlatformAccountsList: action.bound,
             responseStatement: action.bound,
             getChangeableFields: action.bound,
@@ -391,6 +394,7 @@ export default class ClientStore extends BaseStore {
             is_high_risk: computed,
             is_low_risk: computed,
             has_residence: computed,
+            ctrader_total_balance: computed,
             fetchFinancialAssessment: action.bound,
             setFinancialAndTradingAssessment: action.bound,
             setTwoFAStatus: action.bound,
@@ -412,6 +416,7 @@ export default class ClientStore extends BaseStore {
             subscribeToExchangeRate: action.bound,
             unsubscribeFromExchangeRate: action.bound,
             unsubscribeFromAllExchangeRates: action.bound,
+            setExchangeRates: action.bound,
         });
 
         reaction(
@@ -482,6 +487,10 @@ export default class ClientStore extends BaseStore {
 
     get has_any_real_account() {
         return this.hasAnyRealAccount();
+    }
+
+    get has_wallet() {
+        return Object.values(this.accounts).some(account => account.account_category === 'wallet');
     }
 
     get first_switchable_real_loginid() {
@@ -868,7 +877,6 @@ export default class ClientStore extends BaseStore {
     get country_standpoint() {
         const result = {
             is_united_kingdom: this.is_uk,
-            is_isle_of_man: this.residence === 'im',
             is_france: this.residence === 'fr',
             is_belgium: this.residence === 'be',
             // Other EU countries: Germany, Spain, Italy, Luxembourg and Greece
@@ -1076,7 +1084,7 @@ export default class ClientStore extends BaseStore {
                         landing_company !== this.accounts[this.loginid].landing_company_shortcode &&
                         upgradeable_landing_companies.indexOf(landing_company) !== -1
                 );
-            can_upgrade_to = canUpgrade('svg', 'iom', 'malta', 'maltainvest');
+            can_upgrade_to = canUpgrade('svg', 'maltainvest');
             if (can_upgrade_to) {
                 type = can_upgrade_to === 'maltainvest' ? 'financial' : 'real';
             }
@@ -1640,6 +1648,9 @@ export default class ClientStore extends BaseStore {
             WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
 
             WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.MT5).then(this.responseTradingPlatformAvailableAccounts);
+            WS.tradingPlatformAvailableAccounts(CFD_PLATFORMS.CTRADER).then(
+                this.responseCTraderTradingPlatformAvailableAccounts
+            );
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER).then(this.responseTradingPlatformAccountsList);
             WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
@@ -2461,11 +2472,6 @@ export default class ClientStore extends BaseStore {
                     this.setMT5DisabledSignupTypes({
                         [account_type]: true,
                     });
-                    if (platform === CFD_PLATFORMS.CTRADER) {
-                        this.setCFDDisabledSignupTypes(platform, {
-                            [account_type]: true,
-                        });
-                    }
                     return {
                         account_type,
                         display_login,
@@ -2506,6 +2512,12 @@ export default class ClientStore extends BaseStore {
         }
     }
 
+    responseCTraderTradingPlatformAvailableAccounts(response) {
+        if (!response.error) {
+            this.ctrader_trading_platform_available_accounts = response.trading_platform_available_accounts;
+        }
+    }
+
     responseTradingPlatformAccountsList(response) {
         const { platform } = response.echo_req || {};
 
@@ -2513,11 +2525,11 @@ export default class ClientStore extends BaseStore {
         this[`${platform}_accounts_list_error`] = null;
 
         if (!response.error) {
-            this[`${platform}_accounts_list`] = response.trading_platform_accounts.map(account => {
+            this[`${platform}_accounts_list`] = sortApiData(response.trading_platform_accounts).map(account => {
                 const display_login = account.error ? account.error.details.account_id : account.account_id;
                 if (account.error) {
                     const { account_type, server } = account.error.details;
-                    if (platform === CFD_PLATFORMS.DXTRADE) {
+                    if (platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER) {
                         this.setCFDDisabledSignupTypes(platform, {
                             [account_type]: true,
                         });
@@ -2609,6 +2621,12 @@ export default class ClientStore extends BaseStore {
 
     get has_residence() {
         return !!this.accounts[this.loginid]?.residence;
+    }
+
+    get ctrader_total_balance() {
+        return this.ctrader_accounts_list
+            ?.filter(ctrader_account => ctrader_account.account_type === 'real')
+            .reduce((accumulator, ctrader_acc) => accumulator + (ctrader_acc?.balance ?? 0), 0);
     }
 
     get is_proof_of_ownership_enabled() {
@@ -2752,21 +2770,32 @@ export default class ClientStore extends BaseStore {
         const matchingSubscription = this.subscriptions?.[name]?.[key]?.sub;
         if (matchingSubscription) return { key, subscription: matchingSubscription };
 
-        const subscription = WS?.subscribe({
-            [name]: 1,
-            subscribe: 1,
-            ...(payload ?? {}),
-        });
+        try {
+            const subscription = await WS?.subscribe({
+                [name]: 1,
+                subscribe: 1,
+                ...(payload ?? {}),
+            });
 
-        this.addSubscription(name, key, subscription);
-        return { name, key, subscription };
+            this.addSubscription(name, key, subscription);
+            return { key, subscription };
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.warn(`Error: code = ${error?.error?.code}, message = ${error?.error?.message}`);
+            return {};
+        }
     };
 
     unsubscribeByKey = async (name, key) => {
         const matchingSubscription = this.subscriptions?.[name]?.[key]?.sub;
         if (matchingSubscription) {
-            await WS?.forget(this.subscriptions?.[name]?.[key]?.id);
-            delete this.subscriptions?.[name]?.[key];
+            try {
+                await WS?.forget(this.subscriptions?.[name]?.[key]?.id);
+                delete this.subscriptions?.[name]?.[key];
+            } catch (error) {
+                // eslint-disable-next-line no-console
+                console.warn(`Error: code = ${error?.error?.code}, message = ${error?.error?.message}`);
+            }
         }
     };
 
@@ -2779,21 +2808,27 @@ export default class ClientStore extends BaseStore {
             target_currency,
         });
 
-        subscription.subscribe(response => {
-            const rates = response.exchange_rates?.rates;
-            const subscription_id = String(response.subscription?.id);
+        subscription.subscribe(
+            response => {
+                const rates = response.exchange_rates?.rates;
+                const subscription_id = String(response.subscription?.id);
 
-            if (rates) {
-                this.addSubscription('exchange_rates', key, undefined, subscription_id);
+                if (rates) {
+                    this.addSubscription('exchange_rates', key, undefined, subscription_id);
 
-                const currentData = { ...this.exchange_rates };
-                if (currentData) {
-                    currentData[base_currency] = { ...currentData[base_currency], ...rates };
-                } else currentData = { [base_currency]: rates };
+                    const currentData = { ...this.exchange_rates };
+                    if (currentData) {
+                        currentData[base_currency] = { ...currentData[base_currency], ...rates };
+                    } else currentData = { [base_currency]: rates };
 
-                this.setExchangeRates(currentData);
+                    this.setExchangeRates(currentData);
+                }
+            },
+            error => {
+                // eslint-disable-next-line no-console
+                console.warn(`Error: code = ${error?.error?.code}, message = ${error?.error?.message}`);
             }
-        });
+        );
     };
 
     unsubscribeFromExchangeRate = async (base_currency, target_currency) => {

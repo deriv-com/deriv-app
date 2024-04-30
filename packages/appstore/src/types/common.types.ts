@@ -43,8 +43,6 @@ export type TOpenAccountTransferMeta = {
 export type TStandPoint = {
     financial_company: string;
     gaming_company: string;
-    iom: boolean;
-    malta: boolean;
     maltainvest: boolean;
     svg: boolean;
 };
@@ -85,6 +83,8 @@ export type TTradingPlatformAvailableAccount = {
     };
     shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
     sub_account_type: string;
+    max_count?: number;
+    available_count?: number;
 };
 
 export type TCFDAccountsProps = {

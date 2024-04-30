@@ -172,7 +172,7 @@ type TAppRoutingHistory = {
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: number;
-    landing_company_shortcode?: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
+    landing_company_shortcode?: 'svg' | 'costarica' | 'maltainvest';
     is_virtual: number;
     account_category?: 'wallet' | 'trading';
 };
@@ -222,7 +222,7 @@ type TRealAccount = {
 // balance is missing in @deriv/api-types
 type TActiveAccount = TAccount & {
     balance?: string | number;
-    landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
+    landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest';
     is_virtual: number;
     account_category?: 'wallet' | 'trading';
     linked_to?: { loginid: string; platform: string }[];
@@ -244,6 +244,8 @@ type TTradingPlatformAvailableAccount = {
     };
     shortcode?: DetailsOfEachMT5Loginid['landing_company_short'];
     sub_account_type: string;
+    max_count?: number;
+    available_count?: number;
 };
 
 type TAvailableCFDAccounts = {
@@ -368,8 +370,6 @@ type LoginURLParams<N extends number> = LoginParams & IncrementedProperties<N>;
 type TStandPoint = {
     financial_company: string;
     gaming_company: string;
-    iom: boolean;
-    malta: boolean;
     maltainvest: boolean;
     svg: boolean;
 };
@@ -398,7 +398,6 @@ type RealAccountSignupSettings = {
 type TCountryStandpoint = {
     is_belgium: boolean;
     is_france: boolean;
-    is_isle_of_man: boolean;
     is_other_eu: boolean;
     is_rest_of_eu: boolean;
     is_united_kingdom: boolean;
@@ -411,6 +410,7 @@ type TClientStore = {
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
+    ctrader_trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     account_limits: Partial<AccountLimitsResponse['get_limits']> & {
         is_loading?: boolean;
         api_initial_load_error?: string;
@@ -428,6 +428,7 @@ type TClientStore = {
     setCFDScore: (score: number) => void;
     country_standpoint: TCountryStandpoint;
     currency: string;
+    ctrader_total_balance: number;
     currencies_list: { text: string; value: string; has_tool_tip?: boolean }[];
     current_currency_type?: string;
     current_fiat_currency?: string;
@@ -461,6 +462,7 @@ type TClientStore = {
     is_single_currency: boolean;
     is_social_signup: boolean;
     has_residence: boolean;
+    has_wallet: boolean;
     is_authorize: boolean;
     is_dxtrade_password_not_set: boolean;
     is_financial_account: boolean;
@@ -1068,7 +1070,6 @@ type TTradersHubStore = {
     available_platforms: BrandConfig[];
     selected_region: TRegionAvailability;
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
-    toggleAccountTypeModalVisibility: () => void;
     active_modal_tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions';
     setWalletModalActiveTab: (tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions') => void;
     active_modal_wallet_id?: string;

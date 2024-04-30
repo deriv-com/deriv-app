@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { twMerge } from 'tailwind-merge';
+import { twJoin, twMerge } from 'tailwind-merge';
 import { useOnClickOutside } from 'usehooks-ts';
 import { DemoRealSwitcherLoader } from '@/components';
 import { useAccountSwitcher, useRegulationFlags } from '@/hooks';
@@ -26,27 +26,27 @@ const DemoRealSwitcher = () => {
     if (!isSuccess) return <DemoRealSwitcherLoader />;
 
     return (
-        <div className='relative inline-block w-auto ' ref={ref}>
+        <div className='relative inline-block w-auto' ref={ref}>
             <button
-                className={twMerge(
-                    'cursor-pointer w-auto py-2 px-6 border-1 border-solid rounded-xs',
+                className={twJoin(
+                    'cursor-pointer w-auto pl-4 py-1 border-1 border-solid rounded-xs',
                     value === 'demo' ? 'border-status-light-information' : 'border-status-light-success '
                 )}
                 onClick={toggleDropdown}
             >
                 <div className='flex items-center'>
                     <Text
-                        className={twMerge(
+                        className={twJoin(
                             value === 'demo' ? 'text-status-light-information' : 'text-status-light-success'
                         )}
-                        size='xs'
+                        size='sm'
                         weight='bold'
                     >
                         {label}
                     </Text>
                     <LabelPairedChevronDownSmRegularIcon
-                        className={twMerge(
-                            'transform transition duration-200 ease-in-out ml-8',
+                        className={twJoin(
+                            'transform transition duration-200 ease-in-out mx-11',
                             value === 'demo' ? 'fill-status-light-information' : 'fill-status-light-success',
                             isDropdownOpen && '-rotate-180'
                         )}
@@ -68,7 +68,7 @@ const DemoRealSwitcher = () => {
                                 align='center'
                                 as='p'
                                 className='py-6'
-                                size='sm'
+                                size='xs'
                                 weight={account.value === value ? 'bold' : 'normal'}
                             >
                                 {account.label}

@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    AppContainer,
     RegulationSwitcherDesktop,
     RegulationSwitcherMobile,
     TotalAssets,
@@ -26,14 +25,14 @@ const TradersHubRoute = () => {
     const isTotalAssetsVisible = hasActiveDerivAccount || isDemo;
 
     return (
-        <AppContainer className='flex p-16 lg:p-40 gap-24 align-middle flex-col'>
+        <div className='flex gap-24 align-middle flex-col'>
             <div className='flex justify-between flex-wrap items-center'>
                 <TradersHubHeader />
                 {isSwitcherVisible && (isDesktop ? <RegulationSwitcherDesktop /> : <RegulationSwitcherMobile />)}
                 {isTotalAssetsVisible && <TotalAssets />}
             </div>
             {!isDesktop ? <TradersHubMobileContent /> : <TradersHubDesktopContent />}
-        </AppContainer>
+        </div>
     );
 };
 

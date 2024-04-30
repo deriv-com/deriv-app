@@ -13,7 +13,9 @@ type TAppContainerProps = {
  */
 
 const AppContainer = ({ children, className }: TAppContainerProps) => (
-    <div className={twMerge('font-sans max-w-[600px] lg:max-w-[1280px] mx-auto', className)}>{children}</div>
+    <div className={twMerge('font-sans w-full p-20 lg:max-w-[1232px] lg:py-50 lg:px-0 mx-auto', className)}>
+        {children}
+    </div>
 );
 
 export default AppContainer;

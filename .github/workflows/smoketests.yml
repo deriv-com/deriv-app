@@ -52,7 +52,7 @@ jobs:
         # Set Base Url from client_payload.
         CYPRESS_BASE_URL: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
         # Send PR details to Cypress test run
-        COMMIT_INFO_MESSAGE: PR "${{ ${{github.event.issue.number}} }}" Changed By "${{ github.event.issue.user.login }}" in Labels "${{ github.event.issue.lables.name }}" (draft? "${{ github.event.issue.draft }} )"
+        COMMIT_INFO_MESSAGE: PR "${{ github.event.issue.number }}" Changed By "${{ github.event.issue.user.login }}" in Labels "${{ github.event.issue.lables.name }}" (draft? "${{ github.event.issue.draft }} )"
         # Set login env variables
         E2E_OAUTH_URL: ${{ secrets.E2E_OAUTH_URL }}
         E2E_CONFIG_APPID: ${{ secrets.E2E_CONFIG_APPID }}

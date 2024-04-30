@@ -37,9 +37,9 @@ const Orders = observer(() => {
         const disposeOrderVerificationReaction = reaction(
             () => order_store.verification_code,
             () => {
-                if (order_store.verification_code) {
+                if (order_store.action_param && order_store.verification_code) {
                     showModal({ key: 'LoadingModal', props: {} });
-                    order_store.verifyEmailVerificationCode('p2p_order_confirm', order_store.verification_code);
+                    order_store.verifyEmailVerificationCode(order_store.action_param, order_store.verification_code);
                 }
             },
             { fireImmediately: true }

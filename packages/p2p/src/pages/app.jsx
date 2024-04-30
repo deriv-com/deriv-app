@@ -32,6 +32,7 @@ const App = () => {
     const lang = getLanguage();
 
     const [order_id, setOrderId] = React.useState(null);
+    const [action_param, setActionParam] = React.useState();
     const [code_param, setCodeParam] = React.useState();
 
     useP2PCompletedOrdersNotification();
@@ -158,6 +159,8 @@ const App = () => {
 
         let passed_order_id;
 
+        setActionParam(url_params.get('action'));
+
         if (is_mobile) {
             setCodeParam(localStorage.getItem('verification_code.p2p_order_confirm'));
         } else if (!code_param) {
@@ -256,14 +259,15 @@ const App = () => {
     }, [balance]);
 
     React.useEffect(() => {
-        if (code_param) {
+        if (action_param && code_param) {
             // We need an extra state since we delete the code from the query params.
             // Do not remove.
             order_store.setVerificationCode(code_param);
+            order_store.setActionParam(action_param);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [code_param]);
+    }, [action_param, code_param]);
 
     if (is_logging_in || general_store.is_loading) {
         return <Loading className='p2p__loading' is_fullscreen={false} />;

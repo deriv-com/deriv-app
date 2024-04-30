@@ -10,6 +10,7 @@ const mock_store = {
         setActiveIndex: jest.fn(),
     },
     order_store: {
+        action_param: 'p2p_order_confirm',
         order_id: null,
         order_information: '',
         orders: [],

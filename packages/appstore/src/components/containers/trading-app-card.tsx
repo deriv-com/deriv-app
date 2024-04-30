@@ -100,7 +100,7 @@ const TradingAppCard = ({
             action: 'account_logo_push',
             form_name: 'traders_hub_default',
             account_mode: selected_account_type,
-            account_name: !is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name,
+            account_name: !is_real ? `${sub_title === undefined ? name : sub_title}` : name,
         });
         if (is_deriv_platform) {
             switch (name) {

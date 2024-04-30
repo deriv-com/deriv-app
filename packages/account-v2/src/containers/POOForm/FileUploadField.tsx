@@ -68,6 +68,7 @@ export const FileUploaderField = ({ methodId, paymentMethod, subIndex }: TFileUp
             files: paymentMethodFileError,
         };
 
+        // [TODO] - Need to check the logic for removing the paymentMethodIdentifier
         if (Object.keys(paymentMethodError[methodId]?.files as object).length === 0) {
             delete paymentMethodError[methodId]?.paymentMethodIdentifier;
         }

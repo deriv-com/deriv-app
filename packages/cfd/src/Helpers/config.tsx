@@ -1,7 +1,7 @@
 import React from 'react';
 import { QRCode } from 'react-qrcode';
 
-import { Icon, Text } from '@deriv/components';
+import { Icon, Text, Button } from '@deriv/components';
 import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
 import {
     getPlatformDXTradeDownloadLink,
@@ -10,6 +10,7 @@ import {
     getCTraderWebTerminalLink,
     platformsText,
     platformsIcons,
+    CTRADER_URL,
 } from './constants';
 import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
@@ -64,7 +65,7 @@ type TPlatformsDesktopDownload = {
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     ctrader_tokens: TCFDDashboardContainer['ctrader_tokens'];
     is_demo: string;
-    ctraderTokenCall: () => void;
+    ctraderTokenCall: (url: string) => void;
 };
 
 export const PlatformsDesktopDownload = ({
@@ -78,7 +79,6 @@ export const PlatformsDesktopDownload = ({
         switch (platform) {
             case CFD_PLATFORMS.CTRADER:
                 return getCTraderWebTerminalLink(
-                    is_demo ? CATEGORY.DEMO : CATEGORY.REAL,
                     ctrader_tokens && ctrader_tokens[is_demo ? CATEGORY.DEMO : CATEGORY.REAL]
                 );
             case CFD_PLATFORMS.DXTRADE:
@@ -95,10 +95,13 @@ export const PlatformsDesktopDownload = ({
         <React.Fragment>
             <a
                 className='cfd-trade-modal__platform-button'
-                href={PlatformsDesktopDownloadLinks()}
-                target='_blank'
-                rel='noopener noreferrer'
-                onClick={ctraderTokenCall}
+                onClick={() => {
+                    if (platform === CFD_PLATFORMS.CTRADER) {
+                        ctraderTokenCall(CTRADER_URL);
+                    } else {
+                        window.open(PlatformsDesktopDownloadLinks());
+                    }
+                }}
             >
                 {platform === CFD_PLATFORMS.CTRADER ? (
                     <Icon

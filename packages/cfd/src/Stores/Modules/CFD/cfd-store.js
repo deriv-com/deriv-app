@@ -813,15 +813,16 @@ export default class CFDStore extends BaseStore {
         });
     }
 
-    loadCTraderTokens() {
+    loadCTraderTokens(url) {
         ['demo', 'real'].forEach(account_type => {
             const has_existing_account = this.root_store.client.ctrader_accounts_list.some(
                 account => account.account_type === account_type
             );
-            if (!this.ctrader_tokens[account_type] && has_existing_account) {
-                WS.getServiceToken(CFD_PLATFORMS.CTRADER, account_type).then(response =>
-                    this.setCTraderToken(response, account_type)
-                );
+            if (has_existing_account) {
+                WS.getServiceToken(CFD_PLATFORMS.CTRADER, account_type).then(response => {
+                    this.setCTraderToken(response, account_type);
+                    return window.open(`${url}?token=${response.service_token.ctrader.token}`, '_blank');
+                });
             }
         });
     }

@@ -1,5 +1,5 @@
 import { ValidationConstants } from '@deriv-com/utils';
-import { PAYMENT_METHOD_IDENTIFIER } from 'src/constants';
+import { CARD_NUMBER, PAYMENT_METHOD_IDENTIFIER } from 'src/constants';
 import {
     TPaymentMethod,
     TPaymentMethodData,
@@ -41,8 +41,9 @@ export const generatePOOInitialValues = (paymentMethodData: TPaymentMethodData) 
 
 const maskCardNumber = (cardNumber: string) => {
     if (
-        cardNumber.length !== 16 ||
-        (cardNumber.length === 16 && ValidationConstants.patterns.invalidFormattedCardNumberCharacters.test(cardNumber))
+        cardNumber.length !== CARD_NUMBER.minLength ||
+        (cardNumber.length === CARD_NUMBER.minLength &&
+            ValidationConstants.patterns.invalidFormattedCardNumberCharacters.test(cardNumber))
     ) {
         return cardNumber;
     }

@@ -165,3 +165,10 @@ export const getPaymentMethodIcon = (): TPaymentMethodIcon => ({
         light: DerivLightWalletIcon,
     },
 });
+
+export const CARD_NUMBER = {
+    maxLength: 19,
+    minLength: 16,
+};
+
+export const MAX_FILE_SIZE = 8000; // 8MB

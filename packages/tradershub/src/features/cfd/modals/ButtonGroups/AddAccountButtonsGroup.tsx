@@ -17,7 +17,7 @@ const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
     const { openModal } = useQueryParams();
     const { handleSendEmail } = useHandleSendEmail();
 
-    const handleForgotPassword = async () => {
+    const handleForgotPassword = () => {
         handleSendEmail();
         openModal('SentEmailContentModal');
     };

@@ -14,9 +14,10 @@
         "node": "18.x"
     },
     "scripts": {
+        "analyze": "webpack-bundle-analyzer --no-open -m static -r analyzed.html stats.json ./dist && webpack-bundle-analyzer -m json stats.json ./dist",
         "start": "npm run test && npm run serve",
         "serve": "echo \"Serving...\" && NODE_OPTIONS='-r ts-node/register' webpack --progress --watch --config \"./build/webpack.config.js\"",
-        "build": "f () { NODE_OPTIONS='-r ts-node/register' webpack --config \"./build/webpack.config.js\" --env base=$1;}; f",
+        "build": "f () { NODE_OPTIONS='-r ts-node/register' webpack --config \"./build/webpack.config.js\" --env base=$1 --profile --json > stats.json;}; f",
         "build:travis": "rimraf dist && webpack --config \"./build/webpack.config.js\"  --mode=production",
         "test": "echo \"No test specified\"",
         "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
@@ -28,6 +29,7 @@
     },
     "dependencies": {
         "@binary-com/binary-document-uploader": "^2.4.8",
+        "@deriv-com/analytics": "1.4.13",
         "@deriv/api-types": "^1.0.172",
         "@deriv/api": "^1.0.0",
         "@deriv/components": "^1.0.0",
@@ -50,7 +52,6 @@
         "react-i18next": "^11.11.0",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0",
-        "ua-parser-js": "^1.0.37",
         "yup": "^0.32.11"
     },
     "devDependencies": {

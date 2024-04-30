@@ -29,28 +29,30 @@ type TIconTypes = Record<
 // TODO: Replace DEMO currency icon with @deriv/quill-icons once available
 export const roundedIcons: TIconTypes = {
     AUD: CurrencyAudIcon,
-    EUR: CurrencyEurIcon,
-    GBP: CurrencyGbpIcon,
-    USD: CurrencyUsdIcon,
     BTC: CurrencyBtcIcon,
+    DEMO: CurrencyDemoRoundedIcon,
     ETH: CurrencyEthIcon,
+    EUR: CurrencyEurIcon,
+    eUSDT: CurrencyUsdtIcon,
+    GBP: CurrencyGbpIcon,
     LTC: CurrencyLtcIcon,
+    tUSDT: CurrencyUsdtIcon,
+    USD: CurrencyUsdIcon,
     USDC: CurrencyUsdcIcon,
     USDT: CurrencyUsdtIcon,
-    eUSDT: CurrencyUsdtIcon,
-    tUSDT: CurrencyUsdtIcon,
-    DEMO: CurrencyDemoRoundedIcon,
+    UST: CurrencyUsdtIcon,
 };
 
 export const defaultIcons: TIconTypes = {
     BTC: PaymentMethodBitcoinBrandIcon,
     DEMO: PaymentMethodDerivDemoBrandDarkIcon,
     ETH: PaymentMethodEthereumBrandIcon,
+    eUSDT: PaymentMethodTetherUsdtBrandIcon,
     LTC: PaymentMethodLitecoinBrandIcon,
+    tUSDT: PaymentMethodTetherUsdtBrandIcon,
     USDC: PaymentMethodUsdCoinBrandIcon,
     USDT: PaymentMethodTetherUsdtBrandIcon,
-    eUSDT: PaymentMethodTetherUsdtBrandIcon,
-    tUSDT: PaymentMethodTetherUsdtBrandIcon,
+    UST: PaymentMethodTetherUsdtBrandIcon,
 };
 
 export const roundedIconWidth = {
@@ -72,23 +74,36 @@ export const defaultIconWidth = {
 export const fiatIcons = ['AUD', 'EUR', 'GBP', 'USD'] as const;
 
 type TWalletCurrencyIconsProps = {
+    className?: string;
     currency: THooks.WalletAccountsList['wallet_currency_type'];
     height?: CSSProperties['height'];
     rounded?: boolean;
     size?: keyof typeof defaultIconWidth | keyof typeof roundedIconWidth;
+    width?: CSSProperties['width'];
 };
 
 const WalletCurrencyIcon: React.FC<TWalletCurrencyIconsProps> = ({
+    className,
     currency,
     height,
     rounded = false,
     size = 'md',
+    width,
 }) => {
     const isFiat = fiatIcons.includes(currency as typeof fiatIcons[number]);
-    const width = rounded || isFiat ? roundedIconWidth[size] : defaultIconWidth[size];
+    const IconSize = rounded || isFiat ? roundedIconWidth[size] : defaultIconWidth[size];
     const Icon = rounded || isFiat ? roundedIcons[currency] : defaultIcons[currency];
 
-    return <Icon data-testid='dt_wallet_currency_icon' height={height ?? '100%'} width={width} />;
+    if (!Icon) return null;
+
+    return (
+        <Icon
+            className={className}
+            data-testid='dt_wallet_currency_icon'
+            height={height ?? '100%'}
+            width={width ?? IconSize}
+        />
+    );
 };
 
 export default WalletCurrencyIcon;

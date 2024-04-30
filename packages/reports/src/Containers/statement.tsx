@@ -15,7 +15,6 @@ import { Analytics } from '@deriv-com/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component';
-import AccountStatistics from '../Components/account-statistics';
 import FilterComponent from '../Components/filter-component';
 import { ReportsMeta } from '../Components/reports-meta';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
@@ -140,7 +139,7 @@ const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
 const Statement = observer(({ component_icon }: TStatement) => {
     const { client } = useStore();
     const { statement } = useReportsStore();
-    const { currency, standpoint, is_switching, is_virtual } = client;
+    const { currency, is_switching, is_virtual } = client;
     const {
         action_type,
         data,
@@ -154,7 +153,6 @@ const Statement = observer(({ component_icon }: TStatement) => {
         onMount,
         onUnmount,
     } = statement;
-    const is_mx_mlt = standpoint.iom || standpoint.malta;
     const prev_action_type = usePrevious(action_type);
     const prev_date_from = usePrevious(date_from);
     const prev_date_to = usePrevious(date_to);
@@ -249,12 +247,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
     // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='l'>I am Statement for DTrader 2.0.</Text>;
     return (
         <React.Fragment>
-            <ReportsMeta
-                className={is_mx_mlt ? undefined : 'reports__meta--statement'}
-                filter_component={<FilterComponent />}
-                is_statement
-                optional_component={!is_switching && is_mx_mlt && <AccountStatistics />}
-            />
+            <ReportsMeta className='reports__meta--statement' filter_component={<FilterComponent />} is_statement />
             {is_switching ? (
                 <PlaceholderComponent is_loading />
             ) : (

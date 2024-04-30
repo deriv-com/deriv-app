@@ -36,7 +36,7 @@ module.exports = {
         'shorthand-property-no-redundant-values': true,
         'string-no-newline': true,
         'time-min-milliseconds': 100,
-        'unit-allowed-list': ['fr', 'px', 'em', 'rem', '%', 'svh', 'vw', 'vh', 'deg', 'ms', 's', 'dpcm'],
+        'unit-allowed-list': ['fr', 'px', 'em', 'rem', '%', 'svh', 'svw', 'vw', 'vh', 'deg', 'ms', 's', 'dpcm'],
         'value-keyword-case': 'lower',
     },
     extends: [

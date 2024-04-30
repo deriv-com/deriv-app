@@ -49,8 +49,8 @@ import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_co
 const LANGUAGE_KEY = 'i18n_language';
 const storage_key = 'client.accounts';
 const store_name = 'client_store';
-const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
-const eu_excluded_regex = new RegExp('^mt$');
+const eu_shortcode_regex = /^maltainvest$/;
+const eu_excluded_regex = /^mt$/;
 
 export default class ClientStore extends BaseStore {
     loginid;
@@ -88,9 +88,7 @@ export default class ClientStore extends BaseStore {
 
     // All possible landing companies of user between all
     standpoint = {
-        iom: false,
         svg: false,
-        malta: false,
         maltainvest: false,
         gaming_company: false,
         financial_company: false,
@@ -887,7 +885,6 @@ export default class ClientStore extends BaseStore {
     get country_standpoint() {
         const result = {
             is_united_kingdom: this.is_uk,
-            is_isle_of_man: this.residence === 'im',
             is_france: this.residence === 'fr',
             is_belgium: this.residence === 'be',
             // Other EU countries: Germany, Spain, Italy, Luxembourg and Greece
@@ -1095,7 +1092,7 @@ export default class ClientStore extends BaseStore {
                         landing_company !== this.accounts[this.loginid].landing_company_shortcode &&
                         upgradeable_landing_companies.indexOf(landing_company) !== -1
                 );
-            can_upgrade_to = canUpgrade('svg', 'iom', 'malta', 'maltainvest');
+            can_upgrade_to = canUpgrade('svg', 'maltainvest');
             if (can_upgrade_to) {
                 type = can_upgrade_to === 'maltainvest' ? 'financial' : 'real';
             }

@@ -44,7 +44,7 @@ export const isMobileOs = () =>
 
 export const isTabletOs =
     /ipad|android 3.0|xoom|sch-i800|playbook|tablet|kindle/i.test(navigator.userAgent.toLowerCase()) ||
-    (/android/i.test(navigator.userAgent) && !/mobile/i.test(navigator.userAgent));
+    (/android/i.test(navigator.userAgent.toLowerCase()) && !/mobile/i.test(navigator.userAgent.toLowerCase()));
 
 export const OSDetect = () => {
     // For testing purposes or more compatibility, if we set 'config.os'

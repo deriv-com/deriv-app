@@ -49,7 +49,7 @@ const ToggleNotificationsDrawer = ({
                 alignment='bottom'
                 message={tooltip_message}
                 should_disable_pointer_events={should_disable_pointer_events}
-                zIndex={9999}
+                zIndex='9999'
             >
                 {notifications_toggler_el}
             </Popover>

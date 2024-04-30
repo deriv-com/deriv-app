@@ -2,7 +2,7 @@ import React from 'react';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TransferDropdown from '../TransferDropdown';
-import { TTransferableAccounts } from 'src/lib/Transfer/types';
+import { TTransferableAccounts } from '../../../../../../../types';
 
 const mockAccounts = [
     { account_type: 'mt5', loginid: 'CR1' },

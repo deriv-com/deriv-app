@@ -37,17 +37,17 @@ export const personal_details_config = ({
 
     const config = {
         account_opening_reason: {
-            supported_in: ['iom', 'malta', 'maltainvest'],
+            supported_in: ['maltainvest'],
             default_value: account_settings.account_opening_reason ?? '',
             rules: [['req', localize('Account opening reason is required.')]],
         },
         salutation: {
-            supported_in: ['iom', 'malta', 'maltainvest'],
+            supported_in: ['maltainvest'],
             default_value: account_settings.salutation ?? '',
             rules: [['req', localize('Salutation is required.')]],
         },
         first_name: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: ['svg', 'maltainvest'],
             default_value: account_settings.first_name ?? '',
             rules: [
                 ['req', localize('First name is required.')],
@@ -56,7 +56,7 @@ export const personal_details_config = ({
             ],
         },
         last_name: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: ['svg', 'maltainvest'],
             default_value: account_settings.last_name ?? '',
             rules: [
                 ['req', localize('Last name is required.')],
@@ -65,7 +65,7 @@ export const personal_details_config = ({
             ],
         },
         date_of_birth: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: ['svg', 'maltainvest'],
             default_value: account_settings.date_of_birth
                 ? toMoment(account_settings.date_of_birth).format('YYYY-MM-DD')
                 : '',
@@ -78,7 +78,7 @@ export const personal_details_config = ({
             ],
         },
         place_of_birth: {
-            supported_in: ['maltainvest', 'iom', 'malta'],
+            supported_in: ['maltainvest'],
             default_value:
                 (account_settings.place_of_birth &&
                     residence_list.find(item => item.value === account_settings.place_of_birth)?.text) ||
@@ -86,7 +86,7 @@ export const personal_details_config = ({
             rules: [['req', localize('Place of birth is required.')]],
         },
         citizen: {
-            supported_in: ['iom', 'malta', 'maltainvest'],
+            supported_in: ['maltainvest'],
             default_value:
                 (account_settings.citizen &&
                     residence_list.find(item => item.value === account_settings.citizen)?.text) ||
@@ -94,7 +94,7 @@ export const personal_details_config = ({
             rules: [['req', localize('Citizenship is required')]],
         },
         phone: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: ['svg', 'maltainvest'],
             default_value: account_settings.phone ?? '',
             rules: [
                 ['req', localize('Phone is required.')],
@@ -307,10 +307,6 @@ const transformConfig = (
     config: TSchema,
     { real_account_signup_target, residence_list, account_settings, account_status, residence }: TPersonalDetailsConfig
 ) => {
-    // Remove required rule for malta and iom
-    if (['malta', 'iom'].includes(real_account_signup_target) && config.tax_residence) {
-        config?.tax_residence?.rules?.shift();
-    }
     // Remove IDV for non supporting SVG countries
     if (
         !shouldShowIdentityInformation({

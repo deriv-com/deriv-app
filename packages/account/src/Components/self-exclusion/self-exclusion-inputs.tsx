@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { Button, DatePicker, Icon, Input, Text } from '@deriv/components';
-import { getBrandWebsiteName, epochToMoment, toMoment, PlatformContext, isMobile } from '@deriv/shared';
+import { Button, DatePicker, Input, Text } from '@deriv/components';
+import { epochToMoment, toMoment, PlatformContext, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import {
     Field,
@@ -189,7 +189,7 @@ const StakeLossAndLimitsInputs = () => {
 };
 
 const SessionAndLoginLimitsInputs = () => {
-    const { is_mlt, is_mx, is_tablet, session_duration_digits } = React.useContext(SelfExclusionContext);
+    const { is_tablet, session_duration_digits } = React.useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, setFieldValue, values }: TFormikContext =
         useFormikContext<TFormikContext>();
     const { is_appstore } = React.useContext(PlatformContext);
@@ -279,62 +279,6 @@ const SessionAndLoginLimitsInputs = () => {
                     </Field>
                 </div>
             </div>
-            {values.exclude_until && (is_mlt || is_mx) && (
-                <div className='da-self-exclusion__warning'>
-                    <Icon icon='IcAlertWarning' className='da-self-exclusion__warning-icon' />
-                    <div className='da-self-exclusion__warning-textbox'>
-                        <Text as='p' size='xxxs'>
-                            <Localize
-                                i18n_default_text='Self-exclusion on the website only applies to your {{brand_website_name}} account and does not include other companies or websites.'
-                                values={{ brand_website_name: getBrandWebsiteName() }}
-                            />
-                        </Text>
-                        <Text as='p' size='xxxs'>
-                            {is_mlt ? (
-                                <Localize
-                                    i18n_default_text='If you are a UK resident, to self-exclude from all online gambling companies licensed in Great Britain, go to <0>www.gamstop.co.uk</0>.'
-                                    components={[
-                                        <a
-                                            key={0}
-                                            className='da-self-exclusion__warning-link'
-                                            rel='noopener noreferrer'
-                                            target='_blank'
-                                            href='https://www.gamstop.co.uk'
-                                        />,
-                                    ]}
-                                />
-                            ) : (
-                                <Localize
-                                    i18n_default_text='To self-exclude from all online gambling companies licensed in Great Britain, go to <0>www.gamstop.co.uk</0>.'
-                                    components={[
-                                        <a
-                                            key={0}
-                                            className='da-self-exclusion__warning-link'
-                                            rel='noopener noreferrer'
-                                            target='_blank'
-                                            href='https://www.gamstop.co.uk'
-                                        />,
-                                    ]}
-                                />
-                            )}
-                        </Text>
-                        <Text as='p' size='xxxs'>
-                            <Localize
-                                i18n_default_text='For more information and assistance to counselling and support services, please visit <0>begambleaware.org</0>.'
-                                components={[
-                                    <a
-                                        key={0}
-                                        className='da-self-exclusion__warning-link'
-                                        rel='noopener noreferrer'
-                                        target='_blank'
-                                        href='https://www.begambleaware.org'
-                                    />,
-                                ]}
-                            />
-                        </Text>
-                    </div>
-                </div>
-            )}
         </React.Fragment>
     );
 };
@@ -399,12 +343,11 @@ const MaximumAccountBalanceAndOpenPositionsInputs = () => {
 };
 
 const MaximumDepositLimitInputs = () => {
-    const { currency, is_mlt, is_mf, is_mx, getMaxLength } = React.useContext(SelfExclusionContext);
+    const { currency, is_mf, getMaxLength } = React.useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, values }: TFormikContext = useFormikContext<TFormikContext>();
     const { is_appstore } = React.useContext(PlatformContext);
-    const should_render = is_mlt || is_mf || is_mx;
 
-    if (!should_render) {
+    if (!is_mf) {
         return null;
     }
 

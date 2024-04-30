@@ -20,8 +20,6 @@ let mock_context: TSelfExclusionContext = {
     is_app_settings: false,
     is_eu: false,
     is_mf: false,
-    is_mlt: false,
-    is_mx: false,
     is_tablet: false,
     session_duration_digits: false,
     handleSubmit: jest.fn(),
@@ -70,8 +68,6 @@ describe('<SelfExclusionInputs />', () => {
             is_app_settings: false,
             is_eu: false,
             is_mf: false,
-            is_mlt: false,
-            is_mx: false,
             is_tablet: false,
             session_duration_digits: false,
             handleSubmit: jest.fn(),
@@ -135,123 +131,6 @@ describe('<SelfExclusionInputs />', () => {
         expect(mockGoToConfirm).toHaveBeenCalledTimes(1);
     });
 
-    it('should render SelfExclusionInputs component with options mlt and should render "Next" button and trigger click', () => {
-        mock_context.is_mlt = true;
-
-        mockUseFormikContext.mockReturnValue({
-            values: {
-                exclude_until: 1,
-                max_balance: 9999,
-                max_deposit: 99,
-                max_losses: 13,
-                max_open_bets: 13,
-                max_turnover: 99,
-                max_7day_deposit: 777,
-                max_7day_losses: 50,
-                max_7day_turnover: 70,
-                max_30day_deposit: 999,
-                max_30day_losses: 999,
-                max_30day_turnover: 999,
-                session_duration_limit: 0,
-                timeout_until: 0,
-            },
-            dirty: true,
-            errors: {},
-            handleBlur: jest.fn(),
-            handleChange: jest.fn(),
-            isSubmitting: false,
-            isValid: true,
-            setFieldValue: jest.fn(),
-            ...common_mock_formik_context,
-        });
-
-        const mockGoToConfirm = mock_context.goToConfirm;
-
-        render(
-            <Formik initialValues={{}} onSubmit={common_mock_formik_context.handleSubmit()}>
-                <SelfExclusionContext.Provider value={mock_context}>
-                    <SelfExclusionInputs />
-                </SelfExclusionContext.Provider>
-            </Formik>
-        );
-
-        const currencies = screen.getAllByText(/test currency/);
-        expect(currencies.length).toBeGreaterThan(0);
-        expect(
-            screen.getByText(
-                /If you are a UK resident, to self-exclude from all online gambling companies licensed in Great Britain, go to/
-            )
-        ).toBeInTheDocument();
-        expect(
-            screen.getByText(
-                'Self-exclusion on the website only applies to your Deriv.com account and does not include other companies or websites.'
-            )
-        ).toBeInTheDocument();
-        expect(
-            screen.queryByText(/To self-exclude from all online gambling companies licensed in Great Britain, go to/)
-        ).not.toBeInTheDocument();
-        const btn = screen.getByRole('button');
-        expect(btn).toBeInTheDocument();
-        expect(btn).toHaveTextContent('Next');
-        fireEvent.click(btn);
-        expect(mockGoToConfirm).toHaveBeenCalledTimes(1);
-    });
-
-    it('should render SelfExclusionInputs component with options mx', () => {
-        mock_context.is_mx = true;
-
-        mockUseFormikContext.mockReturnValue({
-            values: {
-                exclude_until: 1,
-                max_balance: 9999,
-                max_deposit: 99,
-                max_losses: 13,
-                max_open_bets: 13,
-                max_turnover: 99,
-                max_7day_deposit: 777,
-                max_7day_losses: 50,
-                max_7day_turnover: 70,
-                max_30day_deposit: 999,
-                max_30day_losses: 999,
-                max_30day_turnover: 999,
-                session_duration_limit: 0,
-                timeout_until: 0,
-            },
-            dirty: true,
-            errors: {},
-            handleBlur: jest.fn(),
-            handleChange: jest.fn(),
-            isSubmitting: false,
-            isValid: true,
-            setFieldValue: jest.fn(),
-            ...common_mock_formik_context,
-        });
-
-        render(
-            <Formik initialValues={{}} onSubmit={common_mock_formik_context.handleSubmit()}>
-                <SelfExclusionContext.Provider value={mock_context}>
-                    <SelfExclusionInputs />
-                </SelfExclusionContext.Provider>
-            </Formik>
-        );
-
-        const currencies = screen.getAllByText(/test currency/);
-        expect(currencies.length).toBeGreaterThan(0);
-        expect(
-            screen.getByText(
-                'Self-exclusion on the website only applies to your Deriv.com account and does not include other companies or websites.'
-            )
-        ).toBeInTheDocument();
-        expect(
-            screen.getByText(/To self-exclude from all online gambling companies licensed in Great Britain, go to/)
-        ).toBeInTheDocument();
-        expect(
-            screen.queryByText(
-                /If you are a UK resident, to self-exclude from all online gambling companies licensed in Great Britain, go to/
-            )
-        ).not.toBeInTheDocument();
-    });
-
     it('Should trigger handleChange callback when the input field changes in StakeLossAndLimitsInputs', () => {
         const mockHandleChange = mockUseFormikContext().handleChange;
 
@@ -308,27 +187,6 @@ describe('<SelfExclusionInputs />', () => {
         fireEvent.change(el_input as Node, { target: { value: 900 } });
         expect(mockHandleChange).toHaveBeenCalledTimes(1);
         expect(el_input?.value).toBe('900');
-    });
-
-    it('Should trigger handleChange callback when the input field changes in MaximumDepositLimitInputs', () => {
-        const mockHandleChange = mockUseFormikContext().handleChange;
-        mock_context.is_mlt = true;
-
-        render(
-            <Formik initialValues={{}} onSubmit={common_mock_formik_context.handleSubmit()}>
-                <SelfExclusionContext.Provider value={mock_context}>
-                    <SelfExclusionInputs />
-                </SelfExclusionContext.Provider>
-            </Formik>
-        );
-
-        const el_input: HTMLTextAreaElement | undefined = screen
-            .getAllByRole<HTMLTextAreaElement>('textbox')
-            .find((e: HTMLTextAreaElement) => e.name === 'max_deposit');
-        expect(el_input).toBeInTheDocument();
-        fireEvent.change(el_input as Node, { target: { value: 700 } });
-        expect(mockHandleChange).toHaveBeenCalledTimes(1);
-        expect(el_input?.value).toBe('700');
     });
 
     it('Should trigger onChange callback when the date field changes in SessionAndLoginLimitsInputs', () => {

@@ -92,11 +92,5 @@ describe('AccountInfo component', () => {
 
         rerender(<AccountInfo account_type='gaming' country_standpoint={{ is_belgium: true }} />);
         expect(screen.getByText(/options/i)).toBeInTheDocument();
-
-        rerender(<AccountInfo account_type='gaming' country_standpoint={{ is_isle_of_man: false }} is_eu />);
-        expect(screen.getByText(/options/i)).toBeInTheDocument();
-
-        rerender(<AccountInfo account_type='gaming' country_standpoint={{ is_isle_of_man: false }} />);
-        expect(screen.getByText(/derived/i)).toBeInTheDocument();
     });
 });

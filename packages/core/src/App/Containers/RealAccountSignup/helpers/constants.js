@@ -20,36 +20,14 @@ export const EXPERIAN = {
 
 /**
  * Return account title for the given landing company
- * - Example:
- * getAccountTitle('malta') => 'Real Derived'
  *
  * @param {string} landing_company_shortcode
- * @param {object} options
  * @return {string} localized title
  */
-export const getAccountTitle = (landing_company_shortcode, { account_residence = '' } = {}, country_standpoint) => {
-    // TODO: [deriv-eu] merge if statement and switch together once more residence cases are found.
-    if (account_residence === 'im') {
-        return localize('Deriv account');
-    }
-
+export const getAccountTitle = landing_company_shortcode => {
     switch (landing_company_shortcode) {
         case 'svg':
             return localize('Options & Multipliers');
-        case 'iom':
-            if (country_standpoint.is_united_kingdom) {
-                return localize('Deriv Gaming');
-            }
-            return localize('Derived');
-        case 'malta':
-            if (
-                country_standpoint.is_united_kingdom ||
-                country_standpoint.is_rest_of_eu ||
-                country_standpoint.is_belgium
-            ) {
-                return localize('Options');
-            }
-            return localize('Derived');
         case 'maltainvest':
             return localize('Multipliers');
         default:
@@ -59,31 +37,14 @@ export const getAccountTitle = (landing_company_shortcode, { account_residence =
 
 /**
  * @param {string} landing_company_shortcode
- * @param {boolean} is_fully_authenticated
- * @param {boolean} is_age_verified
- * @param {boolean} is_isle_of_man_residence
  * @param {boolean} is_belgium_residence,
  *
  * @return {EXPERIAN.WARN|EXPERIAN.SUCCESS|EXPERIAN.DANGER}
  */
 export const getExperianResult = status => {
-    const {
-        landing_company_shortcode = '',
-        is_fully_authenticated = false,
-        is_age_verified = false,
-        is_isle_of_man_residence = false,
-        is_belgium_residence = false,
-    } = status;
-    const getIOMStatus = () => {
-        if (is_fully_authenticated) return EXPERIAN.SUCCESS;
-        if (is_age_verified) return EXPERIAN.WARN;
+    const { landing_company_shortcode = '', is_belgium_residence = false } = status;
 
-        return EXPERIAN.DANGER;
-    };
-
-    if (landing_company_shortcode === 'svg' || is_isle_of_man_residence || is_belgium_residence)
-        return EXPERIAN.SUCCESS;
-    if (landing_company_shortcode === 'iom') return getIOMStatus({ is_fully_authenticated, is_age_verified });
+    if (landing_company_shortcode === 'svg' || is_belgium_residence) return EXPERIAN.SUCCESS;
 
     return EXPERIAN.SUCCESS;
 };

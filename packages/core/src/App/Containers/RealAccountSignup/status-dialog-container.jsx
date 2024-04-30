@@ -22,10 +22,8 @@ const CloseIcon = ({ closeModal }) => (
 
 const StatusDialogContainer = observer(({ closeModal, currency, history, icon_size }) => {
     const { client } = useStore();
-    const { country_standpoint, landing_company_shortcode, is_fully_authenticated, is_age_verified } = client;
-    const is_isle_of_man_residence = client.residence === 'im'; // TODO: [deriv-eu] refactor this once more residence checks are required
+    const { landing_company_shortcode, is_fully_authenticated } = client;
     const is_belgium_residence = client.residence === 'be'; // TODO: [deriv-eu] refactor this once more residence checks are required
-    const switchToVirtual = () => client.switchAccount(client.virtual_account_loginid);
     const closeModalAndOpenCashier = () => {
         closeModal();
         history.push(routes.cashier_deposit);
@@ -50,9 +48,6 @@ const StatusDialogContainer = observer(({ closeModal, currency, history, icon_si
     const getStatus = () =>
         getExperianResult({
             landing_company_shortcode,
-            is_fully_authenticated,
-            is_age_verified,
-            is_isle_of_man_residence,
             is_belgium_residence,
         });
 
@@ -75,10 +70,8 @@ const StatusDialogContainer = observer(({ closeModal, currency, history, icon_si
                     'status-dialog__body--no-grow': isMobile(),
                 })}
             >
-                <DialogHeading status={getStatus()} landing_company_shortcode={landing_company_shortcode} />
+                <DialogHeading />
                 <DialogMessage
-                    country_standpoint={country_standpoint}
-                    currency={currency}
                     is_fully_authenticated={is_fully_authenticated}
                     landing_company_shortcode={landing_company_shortcode}
                     status={getStatus()}
@@ -92,7 +85,6 @@ const StatusDialogContainer = observer(({ closeModal, currency, history, icon_si
                 is_fully_authenticated={is_fully_authenticated}
                 landing_company_shortcode={landing_company_shortcode}
                 status={getStatus()}
-                switchToVirtual={switchToVirtual}
             />
         </Div100vhContainer>
     );

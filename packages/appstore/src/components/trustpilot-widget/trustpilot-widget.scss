@@ -1,0 +1,13 @@
+.trustpilot-widget {
+    &__content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2.4rem;
+        padding: 1.6rem 0;
+    }
+
+    a {
+        text-decoration: none;
+    }
+}

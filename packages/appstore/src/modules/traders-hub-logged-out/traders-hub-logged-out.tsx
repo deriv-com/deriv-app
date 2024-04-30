@@ -15,9 +15,6 @@ const TradersHubLoggedOut = observer(() => {
     const { is_logged_in, is_mt5_allowed, clients_country, is_landing_company_loaded, getLandingCompany } = client;
     const { setTogglePlatformType, selectRegion, is_eu_user } = traders_hub;
 
-    // const is_eu_user = isEuCountry(clients_country);
-    // const is_eu_user = isEuCountry('id');
-
     React.useEffect(() => {
         if (clients_country) {
             getLandingCompany(clients_country);

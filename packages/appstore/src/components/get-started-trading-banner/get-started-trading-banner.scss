@@ -1,178 +1,52 @@
 .get-started-trading-banner {
-    height: 38.2rem;
-    background-image: url('./../../public/images/traders-hub-logged-out-banner-bg-desktop.svg');
-    background-repeat: no-repeat;
-    background-position-y: 5.6rem;
+    border: 1px solid var(--general-section-5);
+    border-radius: $BORDER_RADIUS * 4;
 
-    @include mobile {
-        height: 18.2rem;
-        background-image: url('./../../public/images/traders-hub-logged-out-banner-bg-responsive.svg');
-        background-repeat: no-repeat;
-        background-position-y: 5.6rem;
-    }
-
-    // traders-hub-logged-out-banner-bg-desktop.svg
-
-    &__container {
-        position: relative;
-        height: 18rem;
+    &__content {
         display: flex;
-        padding: 2.4rem;
-        margin-block: 2.4rem;
-        overflow: hidden;
-        background: var(--system-light-7-secondary-background, #f2f3f4);
-        border: 1px solid var(--wallets-banner-border-color);
-        border-radius: $BORDER_RADIUS * 4;
+        justify-content: space-between;
+
+        border-radius: $BORDER_RADIUS * 4 $BORDER_RADIUS * 4 0 0;
+        background: var(--traders-hub-logged-out-banner-bg-color);
+        height: 18rem;
+        background-image: url('./../../public/images/traders-hub-logged-out-banner-bg-desktop.svg');
+        background-repeat: no-repeat;
 
         @include mobile {
-            height: 14.2rem;
-            padding: 1.6rem;
-            border-radius: $BORDER_RADIUS * 2;
+            height: 14.4rem;
+            background-image: url('./../../public/images/traders-hub-logged-out-banner-bg-responsive.svg');
+            background-repeat: no-repeat;
         }
     }
 
-    &__content {
-        height: 100%;
+    &__description {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-    }
+        align-self: center;
+        gap: 1.6rem;
+        margin-inline-start: 4.8rem;
 
-    &-upgrade {
-        &__content {
-            width: 55.7rem;
-            justify-content: center;
-            gap: 1.6rem;
-
-            @include mobile {
-                width: 20rem;
-            }
-        }
-
-        &__button {
-            padding-inline: 6.7rem;
-
-            @include mobile {
-                padding-inline: 1.6rem;
-                padding-block: 0.6rem;
-            }
-        }
-
-        &__image {
-            position: absolute;
-            top: 0;
-            right: 8rem;
-
-            @include mobile {
-                top: -2.6rem;
-                right: -5.35rem;
-            }
+        @include mobile {
+            margin-inline-start: 1.6rem;
         }
     }
 
-    &-upgrading {
-        &__content {
-            width: 48.6rem;
-            justify-content: space-between;
+    &__button {
+        padding: 1.2rem 1.6rem;
+        border-radius: $BORDER_RADIUS * 3;
 
-            @include mobile {
-                width: 20rem;
-            }
-        }
-
-        &__description {
-            @include mobile {
-                width: 15.1rem;
-            }
-        }
-
-        &__loading {
-            width: 4.8rem;
-            height: 4.8rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.6rem;
-
-            @include mobile {
-                width: 3.2rem;
-                height: 3.2rem;
-            }
-
-            span {
-                animation-name: loading;
-                animation-duration: 1.5s;
-                animation-iteration-count: infinite;
-                animation-timing-function: cubic-bezier(1, 0, 0, 1);
-            }
-
-            span:nth-child(2) {
-                animation-delay: 0.5s;
-            }
-
-            span:nth-child(3) {
-                animation-delay: 1s;
-            }
-        }
-
-        &__dot {
-            display: inline-block;
-            height: 0.8rem;
-            width: 0.8rem;
-            border-radius: 50%;
-            background-color: var(--wallets-banner-dot-color);
-
-            @include mobile {
-                height: 0.5rem;
-                width: 0.5rem;
-            }
-        }
-
-        &__image {
-            position: absolute;
-            top: 0;
-            right: 8rem;
-
-            @include mobile {
-                top: -2.6rem;
-                right: -5.35rem;
-            }
+        @include mobile {
+            padding: 0.5rem 1.2rem;
         }
     }
 
-    &-unsuccessful {
-        &__content {
-            width: 48.6rem;
-            justify-content: center;
-            gap: 0.8rem;
-            z-index: 1;
+    &__image {
+        margin-inline-end: 1.2rem;
 
-            @include mobile {
-                width: 17rem;
-            }
+        @include mobile {
+            margin-inline-end: 0;
+            align-self: flex-end;
         }
-
-        &__clickable-text {
-            cursor: pointer;
-        }
-
-        &__image {
-            position: absolute;
-            right: 7.5rem;
-            top: 0;
-
-            @include mobile {
-                right: -3rem;
-            }
-        }
-    }
-}
-
-@keyframes loading {
-    0% {
-        background-color: var(--wallets-banner-active-dot-color);
-    }
-    100% {
-        opacity: var(--wallets-banner-dot-color);
     }
 }

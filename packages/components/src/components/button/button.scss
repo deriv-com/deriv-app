@@ -180,6 +180,20 @@
             color: var(--text-colored-background);
         }
     }
+    &--black {
+        background: var(--button-get-started-bg);
+        &:hover:not([disabled]) {
+            opacity: 0.7;
+        }
+        &:active:not([disabled]) {
+            opacity: 0.7;
+        }
+
+        .dc-btn__text,
+        .dc-btn__icon {
+            color: var(--general-main-1);
+        }
+    }
     &__small {
         height: 2.4rem;
         min-width: 4.8rem;

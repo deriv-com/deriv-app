@@ -1,38 +1,45 @@
 import React from 'react';
-import { Localize, localize } from '@deriv/translations';
+import { getLanguage, Localize, localize } from '@deriv/translations';
 import { Button, Text, Icon } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
+import { redirectToLogin } from '@deriv/shared';
 import TrustpilotWidget from 'Components/trustpilot-widget';
 import './get-started-trading-banner.scss';
 
 const GetStartedTradingBanner = observer(() => {
-    const { ui } = useStore();
+    const { ui, traders_hub } = useStore();
     const { is_mobile } = ui;
+    const { is_eu_user } = traders_hub;
+
+    const desktopWidth = is_eu_user ? 326 : 445;
+    const desktopHeight = is_eu_user ? 174 : 176;
+    const responsiveWidth = 180;
+    const responsiveHeight = 116;
 
     return (
         <div className='get-started-trading-banner'>
-            <div className='wallets-banner__container wallets-banner-upgrade'>
-                <div className='wallets-banner__content wallets-banner-upgrade__content'>
-                    <div>
-                        <Text key={0} size={is_mobile ? 'xs' : 'm'}>
-                            <Localize i18n_default_text='Join over 2.5 million traders' />
-                        </Text>
-                    </div>
+            <div className='get-started-trading-banner__content'>
+                <div className='get-started-trading-banner__description'>
+                    <Text key={0} size={is_mobile ? 'xs' : 'xm'} color='prominent'>
+                        <Localize i18n_default_text='Join over 2.5 million traders' />
+                    </Text>
                     <Button
-                        className='wallets-banner-upgrade__button'
+                        className='get-started-trading-banner__button'
                         text={localize('Get Started')}
-                        primary
-                        large
-                        // onClick={() => {}}
+                        black
+                        onClick={() => redirectToLogin(false, getLanguage())}
                     />
                 </div>
-                {/* packages/components/src/components/icon/appstore/ic-appstore-logged-out-non-eu-coins-desktop.svg */}
                 <Icon
-                    icon={`IcAppstoreLoggedOutNonEuCoins${is_mobile ? 'Responsive' : 'Desktop'}`}
-                    width={is_mobile ? 220 : 448}
-                    height={is_mobile ? 220 : '100%'}
-                    className='wallets-banner-upgrade__image'
-                    // data_testid={`dt_wallets_upgrade_coins${is_mobile ? '' : '_horizontal'}`}
+                    icon={`IcAppstoreLoggedOut${is_eu_user ? 'Eu' : 'NonEu'}Coins${
+                        is_mobile ? 'Responsive' : 'Desktop'
+                    }`}
+                    width={is_mobile ? responsiveWidth : desktopWidth}
+                    height={is_mobile ? responsiveHeight : desktopHeight}
+                    className='get-started-trading-banner__image'
+                    data_testid={`dt_logged_out_${is_eu_user ? 'eu' : 'non_eu'}_coins_${
+                        is_mobile ? 'responsive' : 'desktop'
+                    }`}
                 />
             </div>
             <TrustpilotWidget />

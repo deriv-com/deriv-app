@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef } from 'react';
 import { useQuery, useInvalidateQuery, useMutation } from '@deriv/api';
 import useAuthorize from './useAuthorize';
 
@@ -13,17 +13,16 @@ const useWalletMigration = () => {
     });
 
     /** Fetch the wallet_migration API and refetch it regularly if the status is in_progress */
-    const [retryCount, setRetryCount] = useState(0);
+    const retryCount = useRef<number>(0);
     const { data } = useQuery('wallet_migration', {
         payload: { wallet_migration: 'state' },
         options: {
             refetchInterval: response => {
                 if (response?.wallet_migration?.state === 'in_progress') {
-                    const interval = 500 * Math.pow(2, retryCount);
-                    setRetryCount(prev => prev + 1);
+                    const interval = 500 * Math.pow(2, retryCount.current);
+                    retryCount.current++;
                     return interval;
                 }
-                setRetryCount(0);
                 return false;
             },
             enabled: isSuccess,

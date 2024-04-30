@@ -445,12 +445,14 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
         if (block_canvas_rect_top > toolbox_top) {
             scroll_y = delta_y;
         }
-        // Added this adjustment for RTL to get in in display area for mobile view
-        const block_canvas_rect = Blockly.derivWorkspace.svgBlockCanvas_?.getBoundingClientRect();
-        let additional_scroll = 20;
-        if (window.innerHeight < 768) {
-            if (block_canvas_rect.width > 1000) additional_scroll = 220;
-            scroll_x = (window.innerWidth + block_canvas_rect.width) / 2 + additional_scroll;
+        if (window.innerWidth < 768) {
+            workspace.scrollbar.set(0, scroll_y);
+            const calc_scroll =
+                Blockly.derivWorkspace.svgBlockCanvas_?.getBoundingClientRect().width -
+                Blockly.derivWorkspace.svgBlockCanvas_?.getBoundingClientRect().left +
+                60;
+            workspace.scrollbar.set(calc_scroll, scroll_y);
+            return;
         }
     }
     workspace.scrollbar.set(scroll_x, scroll_y);

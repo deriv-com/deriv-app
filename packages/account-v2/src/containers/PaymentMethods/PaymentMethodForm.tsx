@@ -12,18 +12,17 @@ export const PaymentMethodForm = ({ paymentMethodDetail }: TPaymentMethodFormPro
 
     return (
         <div className='flex flex-col gap-24'>
-            <PaymentMethodInstructions paymentMethod={paymentMethod as TPaymentMethod} />
+            <PaymentMethodInstructions paymentMethod={paymentMethod} />
             <fieldset className='flex flex-col gap-24'>
-                {paymentMethodDetail.items &&
-                    paymentMethodDetail.items.map(item => (
-                        <PaymentMethodField
-                            identifier={paymentMethodDetail.identifier as TPaymentMethodIdentifier}
-                            inputLabel={paymentMethodDetail.inputLabel as string}
-                            key={`${paymentMethod}-${item.id}`}
-                            paymentMethod={paymentMethod}
-                            paymentMethodDetailItem={item}
-                        />
-                    ))}
+                {paymentMethodDetail?.items?.map(item => (
+                    <PaymentMethodField
+                        identifier={paymentMethodDetail.identifier as TPaymentMethodIdentifier}
+                        inputLabel={paymentMethodDetail.inputLabel as string}
+                        key={`${paymentMethod}-${item.id}`}
+                        paymentMethod={paymentMethod}
+                        paymentMethodDetailItem={item}
+                    />
+                ))}
             </fieldset>
         </div>
     );

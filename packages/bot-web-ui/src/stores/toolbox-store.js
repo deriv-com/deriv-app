@@ -115,6 +115,8 @@ export default class ToolboxStore {
                 // Scroll the workspace if the toolbox is overlapping the workspace
                 if (Math.round(block_canvas_rect?.left) <= toolbox_width) {
                     scrollWorkspace(workspace, scroll_distance, true, false);
+                } else if (window.innerWidth < 768 && workspace.RTL) {
+                    scrollWorkspace(workspace, scroll_distance, true, false);
                 }
 
                 this.is_workspace_scroll_adjusted = false;

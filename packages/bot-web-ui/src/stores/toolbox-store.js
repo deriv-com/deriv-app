@@ -92,6 +92,7 @@ export default class ToolboxStore {
     }
     // eslint-disable-next-line class-methods-use-this
     adjustWorkspace() {
+        // NOTE: added this load modal open check to prevent scroll when load modal is open
         if (!this.is_workspace_scroll_adjusted && !this.root_store.load_modal.is_load_modal_open) {
             const workspace = Blockly.derivWorkspace;
             this.is_workspace_scroll_adjusted = true;
@@ -102,6 +103,7 @@ export default class ToolboxStore {
                 const block_canvas_rect = workspace.svgBlockCanvas_?.getBoundingClientRect(); // eslint-disable-line
                 const is_workspace_LTR = Math.round(block_canvas_rect?.left) <= toolbox_width && !workspace.RTL;
                 let canvas_direction = block_canvas_rect.left;
+                // Need to set the direction right if the workspace is RTL
                 if (!is_workspace_LTR) canvas_direction = block_canvas_rect.right;
 
                 const scroll_distance = this.core.ui.is_mobile

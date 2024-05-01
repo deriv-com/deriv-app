@@ -514,7 +514,7 @@ export default class OrderStore {
                             }, 750);
                         } else if (
                             code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES &&
-                            !order_store?.order_information.is_buy_order_for_user
+                            !order_store?.order_information?.is_buy_order_for_user
                         ) {
                             if (general_store.isCurrentModal('InvalidVerificationLinkModal')) {
                                 general_store.hideModal();

@@ -47,7 +47,7 @@ const WalletsAddMoreCarousel: React.FC = () => {
     return (
         <div className='wallets-add-more' ref={hoverRef}>
             <div className='wallets-add-more__header'>
-                <WalletText size='2xl' weight='bold'>
+                <WalletText size='xl' weight='bold'>
                     Add more Wallets
                 </WalletText>
             </div>

@@ -83,8 +83,8 @@ export const routes = {
     wallets_deposit: '/wallets/cashier/deposit',
     wallets_withdrawal: '/wallets/cashier/withdraw',
     wallets_transfer: 'wallets/cashier/transfer',
-    wallets_compare_accounts: '/wallets/compare-accounts',
     wallets_transactions: '/wallets/cashier/transaction',
+    wallets_compare_accounts: '/wallets/compare-accounts',
 
     // Traders Hub
     traders_hub_v2: '/traders-hub',

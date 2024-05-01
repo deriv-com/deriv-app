@@ -3,6 +3,7 @@ import { Text } from '@deriv-com/ui';
 import { LinkText } from 'src/components/LinkText/LinkText';
 import { EXTERNAL_LINKS } from 'src/constants';
 import { TPaymentMethod } from 'src/types';
+import { ExampleLink } from './ExampleLink';
 
 type TPaymentMethodInstructionsProps = { paymentMethod: TPaymentMethod };
 
@@ -53,7 +54,7 @@ export const PaymentMethodInstructions = ({ paymentMethod }: TPaymentMethodInstr
                 <Text as='p' size='sm'>
                     Upload a photo showing your name and the first six and last four digits of your card number. If the
                     card does not display your name, upload the bank statement showing your name and card number in the
-                    transaction history.
+                    transaction history. <ExampleLink />
                 </Text>
             );
         }

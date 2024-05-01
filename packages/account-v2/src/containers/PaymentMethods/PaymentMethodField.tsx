@@ -29,6 +29,7 @@ export const PaymentMethodField = ({
     const controlsToShow = [...Array(paymentMethodDetailItem.documents_required).keys()];
     const paymentID = paymentMethodDetailItem.id as number;
     const errorMessage = errors[paymentMethod]?.[paymentID]?.paymentMethodIdentifier ?? '';
+
     const handleBlur = (
         identifierType: TPaymentMethodIdentifier,
         paymentID: number,
@@ -45,7 +46,7 @@ export const PaymentMethodField = ({
             paymentMethodIdentifier,
         };
 
-        setFieldValue(paymentMethod, selectedPaymentMethod);
+        setFieldValue(paymentMethod, { ...selectedPaymentMethod });
     };
 
     return (
@@ -55,9 +56,7 @@ export const PaymentMethodField = ({
                 error={Boolean(errorMessage)}
                 label={inputLabel}
                 message={errorMessage}
-                onBlur={() =>
-                    handleBlur(identifier, paymentID, values[paymentMethod]?.[paymentID]?.paymentMethodIdentifier)
-                }
+                onBlur={e => handleBlur(identifier, paymentID, e.target.value.trim())}
                 onChange={e => handleIdentifierChange(e.target.value, paymentID)}
                 type='text'
                 value={values[paymentMethod]?.[paymentID]?.paymentMethodIdentifier}

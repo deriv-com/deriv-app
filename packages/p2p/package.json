@@ -31,7 +31,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@deriv-com/utils": "^0.0.14",
+        "@deriv-com/utils": "^0.0.20",
         "@deriv/api": "^1.0.0",
         "@deriv/api-types": "^1.0.172",
         "@deriv/components": "^1.0.0",

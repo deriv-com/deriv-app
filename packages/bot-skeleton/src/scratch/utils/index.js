@@ -450,7 +450,7 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
         when we try to calculate the scroll amount for RTL,
         we need to realign the scroll to(0, 0) for the workspace.
         Then, from the width of the canvas, we need to subtract the width of the block. 
-        To Make the block visibke in the view width
+        To Make the block visible in the view width
         */
 
         if (window.innerWidth < 768) {

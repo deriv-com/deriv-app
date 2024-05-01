@@ -16,7 +16,11 @@ const HintInfo = ({ description }: TPopoverProps) => (
 
 const PopoverMessage = ({ description }: TPopoverProps) => (
     <Tooltip message={<HintInfo description={description} />} position='right'>
-        <StandaloneCircleInfoRegularIcon className='fill-solid-grey-1' iconSize='sm' />
+        <StandaloneCircleInfoRegularIcon
+            className='fill-solid-grey-1'
+            data-testid='dt_account_limits_table_info_icon'
+            iconSize='sm'
+        />
     </Tooltip>
 );
 

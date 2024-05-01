@@ -101,18 +101,24 @@ export default class ToolboxStore {
                 const toolbox_width = document.getElementById('gtm-toolbox')?.getBoundingClientRect().width || 0;
                 const toolbar_width = document.querySelector('.toolbar__group-btn')?.getBoundingClientRect().width || 0;
                 const block_canvas_rect = workspace.svgBlockCanvas_?.getBoundingClientRect(); // eslint-disable-line
-                const is_workspace_LTR = Math.round(block_canvas_rect?.left) <= toolbox_width && !workspace.RTL;
-                let canvas_direction = block_canvas_rect.left;
-                // Need to set the direction right if the workspace is RTL
-                if (!is_workspace_LTR) canvas_direction = block_canvas_rect.right;
 
-                const scroll_distance = this.core.ui.is_mobile
-                    ? toolbox_width + toolbar_width - canvas_direction + 20
-                    : toolbox_width - block_canvas_rect.left + 36;
-                scrollWorkspace(workspace, scroll_distance, true, false);
+                // Need to set the direction right if the workspace is RTL
+                const is_workspace_LTR = !workspace.RTL;
+                let canvas_direction = block_canvas_rect.left;
+                if (!is_workspace_LTR && window.innerWidth < 768) canvas_direction = block_canvas_rect.right;
+
+                // Need to set the scroll distance based on the device
+                const scroll_distance_mobile = toolbox_width + toolbar_width - canvas_direction + 20;
+                const scroll_distance_desktop = toolbox_width - canvas_direction + 36;
+                const scroll_distance = this.core.ui.is_mobile ? scroll_distance_mobile : scroll_distance_desktop;
+
+                // Scroll the workspace if the toolbox is overlapping the workspace
+                if (Math.round(block_canvas_rect?.left) <= toolbox_width) {
+                    scrollWorkspace(workspace, scroll_distance, true, false);
+                }
 
                 this.is_workspace_scroll_adjusted = false;
-            }, 0);
+            }, 300);
         }
     }
 

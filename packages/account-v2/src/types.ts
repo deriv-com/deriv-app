@@ -73,3 +73,8 @@ export type TAccountLimitValues = {
 };
 
 export type TCurrency = CurrencyConstants.Currency;
+
+export type TProofOfOwnershipErrors = Record<
+    TPaymentMethod,
+    { files?: string[]; payment_method_identifier?: string }[]
+>;

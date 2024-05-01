@@ -92,7 +92,7 @@ export default class ToolboxStore {
     }
     // eslint-disable-next-line class-methods-use-this
     adjustWorkspace() {
-        if (!this.is_workspace_scroll_adjusted) {
+        if (!this.is_workspace_scroll_adjusted && !this.root_store.load_modal.is_load_modal_open) {
             const workspace = Blockly.derivWorkspace;
             this.is_workspace_scroll_adjusted = true;
 
@@ -100,16 +100,17 @@ export default class ToolboxStore {
                 const toolbox_width = document.getElementById('gtm-toolbox')?.getBoundingClientRect().width || 0;
                 const toolbar_width = document.querySelector('.toolbar__group-btn')?.getBoundingClientRect().width || 0;
                 const block_canvas_rect = workspace.svgBlockCanvas_?.getBoundingClientRect(); // eslint-disable-line
+                const is_workspace_LTR = Math.round(block_canvas_rect?.left) <= toolbox_width && !workspace.RTL;
+                let canvas_direction = block_canvas_rect.left;
+                if (!is_workspace_LTR) canvas_direction = block_canvas_rect.right;
 
-                if (Math.round(block_canvas_rect?.left) <= toolbox_width) {
-                    const scroll_distance = this.core.ui.is_mobile
-                        ? toolbox_width + toolbar_width - block_canvas_rect.left + 20
-                        : toolbox_width - block_canvas_rect.left + 36;
+                const scroll_distance = this.core.ui.is_mobile
+                    ? toolbox_width + toolbar_width - canvas_direction + 20
+                    : toolbox_width - block_canvas_rect.left + 36;
+                scrollWorkspace(workspace, scroll_distance, true, false);
 
-                    scrollWorkspace(workspace, scroll_distance, true, false);
-                }
                 this.is_workspace_scroll_adjusted = false;
-            }, 300);
+            }, 0);
         }
     }
 

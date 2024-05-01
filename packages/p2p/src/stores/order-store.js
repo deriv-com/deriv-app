@@ -532,10 +532,10 @@ export default class OrderStore {
                                 },
                             });
                         }
+                        this.setVerificationCode('');
+                        this.setActionParam(null);
                     }
                     localStorage.removeItem('verification_code.p2p_order_confirm');
-                    this.setVerificationCode('');
-                    this.setActionParam(null);
                 }
             });
         }

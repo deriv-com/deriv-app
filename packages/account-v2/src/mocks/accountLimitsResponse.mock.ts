@@ -6,7 +6,7 @@ export const mockAccountLimits = {
             {
                 level: 'market',
                 name: 'Commodities',
-                payout_limit: 5000, // Change the type from string to number
+                payout_limit: 5000,
                 profile_name: 'moderate_risk',
                 turnover_limit: 50000,
             },

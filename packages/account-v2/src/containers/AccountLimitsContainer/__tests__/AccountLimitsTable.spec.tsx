@@ -1,9 +1,9 @@
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mockFormattedAccountsLimits } from '../../../mocks/accountLimitsResponse.mock';
 import { AccountLimitsTable } from '../AccountLimitsTable';
-import { useDevice } from '@deriv-com/ui';
-import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),

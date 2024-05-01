@@ -3,7 +3,7 @@ import { Loader } from '@deriv-com/ui';
 import { AccountLimitsSideNote } from 'src/containers';
 import { AccountLimitsTable } from 'src/containers/AccountLimitsContainer/AccountLimitsTable';
 import { DemoMessage } from '../../components/DemoMessage';
-import { useAccountLimitsData } from '../../hooks/useAccountLimitsData';
+import { useAccountLimitsData } from '../../hooks';
 
 export const AccountLimits = () => {
     const { accountLimits, isLoading, isVirtual } = useAccountLimitsData();

@@ -1,10 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useAccountLimitsData } from '../../../hooks/useAccountLimitsData';
+import { useAccountLimitsData } from '../../../hooks';
 import { AccountLimits } from '../AccountLimits';
 
 jest.mock('../../../hooks/useAccountLimitsData', () => ({
-    ...jest.requireActual('../../../hooks/useAccountLimitsData'),
     useAccountLimitsData: jest.fn(),
 }));
 

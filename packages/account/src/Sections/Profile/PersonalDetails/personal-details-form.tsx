@@ -66,7 +66,6 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
         has_residence,
         current_landing_company,
         updateAccountStatus,
-        is_social_signup,
     } = client;
 
     const {
@@ -114,7 +113,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
             getSettings();
         }
         setIsLoading(false);
-    }, [account_settings, is_eu, is_social_signup]);
+    }, [account_settings, is_eu]);
 
     const onSubmit = async (values: GetSettings, { setStatus, setSubmitting }: FormikHelpers<GetSettings>) => {
         setStatus({ msg: '' });
@@ -215,12 +214,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
 
     const PersonalDetailSchema = getPersonalDetailsValidationSchema(is_eu);
 
-    const initialValues = getPersonalDetailsInitialValues(
-        account_settings,
-        residence_list,
-        states_list,
-        is_social_signup
-    );
+    const initialValues = getPersonalDetailsInitialValues(account_settings, residence_list, states_list);
 
     return (
         <Formik
@@ -355,39 +349,21 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                         )}
                                     </React.Fragment>
                                 )}
-                                <React.Fragment>
-                                    <fieldset className='account-form__fieldset'>
-                                        <Input
-                                            data-lpignore='true'
-                                            type='text'
-                                            name='residence'
-                                            id={'residence'}
-                                            label={localize('Country of residence*')}
-                                            //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
-                                            value={values.residence}
-                                            required
-                                            disabled={isFieldDisabled('residence')}
-                                            error={errors.residence}
-                                            onChange={handleChange}
-                                        />
-                                    </fieldset>
-                                    {is_social_signup && (
-                                        <fieldset className='account-form__fieldset'>
-                                            <Input
-                                                data-lpignore='true'
-                                                type='text'
-                                                name='email'
-                                                id={'email'}
-                                                label={localize('Email address*')}
-                                                value={values.email}
-                                                required
-                                                disabled={isFieldDisabled('email')}
-                                                error={errors.email}
-                                                onChange={handleChange}
-                                            />
-                                        </fieldset>
-                                    )}
-                                </React.Fragment>
+                                <fieldset className='account-form__fieldset'>
+                                    <Input
+                                        data-lpignore='true'
+                                        type='text'
+                                        name='residence'
+                                        id={'residence'}
+                                        label={localize('Country of residence*')}
+                                        //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
+                                        value={values.residence}
+                                        required
+                                        disabled={isFieldDisabled('residence')}
+                                        error={errors.residence}
+                                        onChange={handleChange}
+                                    />
+                                </fieldset>
                                 {!is_virtual && (
                                     <fieldset className='account-form__fieldset'>
                                         <Input

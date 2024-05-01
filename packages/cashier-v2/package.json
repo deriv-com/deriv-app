@@ -14,7 +14,7 @@
     },
     "dependencies": {
         "@deriv-com/ui": "^1.14.4",
-        "@deriv-com/utils": "^0.0.14",
+        "@deriv-com/utils": "^0.0.20",
         "@deriv/api-v2": "^1.0.0",
         "@deriv/integration": "^1.0.0",
         "@deriv/quill-icons": "^1.22.4",

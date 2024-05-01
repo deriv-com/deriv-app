@@ -34,6 +34,7 @@ export default class MyAdsStore extends BaseStore {
     selected_ad_id = '';
     should_show_add_payment_method = false;
     show_edit_ad_form = false;
+    table_height = 0;
     required_ad_type;
     error_code = '';
     payment_method_ids = [];
@@ -109,6 +110,7 @@ export default class MyAdsStore extends BaseStore {
             setShouldShowAddPaymentMethod: action.bound,
             setShowAdForm: action.bound,
             setShowEditAdForm: action.bound,
+            setTableHeight: action.bound,
             onToggleSwitchModal: action.bound,
             setRequiredAdType: action.bound,
             toggleMyAdsRateSwitchModal: action.bound,
@@ -566,6 +568,10 @@ export default class MyAdsStore extends BaseStore {
 
     setShowEditAdForm(show_edit_ad_form) {
         this.show_edit_ad_form = show_edit_ad_form;
+    }
+
+    setTableHeight(table_height) {
+        this.table_height = table_height;
     }
 
     onToggleSwitchModal(ad_id) {

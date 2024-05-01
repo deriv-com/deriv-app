@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
@@ -16,6 +16,7 @@ type TProps = {
     password: string;
     passwordError?: boolean;
     platform: TPlatforms.All;
+    setPassword: (value: string) => void;
 };
 
 const EnterPassword: React.FC<TProps> = ({
@@ -27,6 +28,7 @@ const EnterPassword: React.FC<TProps> = ({
     password,
     passwordError,
     platform,
+    setPassword,
 }) => {
     const { isDesktop } = useDevice();
     const { data } = useActiveWalletAccount();
@@ -35,6 +37,12 @@ const EnterPassword: React.FC<TProps> = ({
     const marketTypeTitle =
         platform === PlatformDetails.dxtrade.platform ? accountType : MarketTypeDetails[marketType].title;
     const passwordErrorHints = `Hint: You may have entered your Deriv password, which is different from your ${title} password.`;
+
+    useEffect(() => {
+        if (passwordError) {
+            setPassword('');
+        }
+    }, [passwordError, setPassword]);
 
     return (
         <div className='wallets-enter-password'>
@@ -54,8 +62,8 @@ const EnterPassword: React.FC<TProps> = ({
                         label={`${title} password`}
                         onChange={onPasswordChange}
                         password={password}
+                        passwordError={passwordError}
                         shouldDisablePasswordMeter
-                        showMessage={false}
                     />
                     {passwordError && <WalletText size='sm'>{passwordErrorHints}</WalletText>}
                 </div>
@@ -66,7 +74,7 @@ const EnterPassword: React.FC<TProps> = ({
                         Forgot password?
                     </WalletButton>
                     <WalletButton
-                        disabled={!password || isLoading || !validPassword(password)}
+                        disabled={isLoading || !validPassword(password)}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='md'

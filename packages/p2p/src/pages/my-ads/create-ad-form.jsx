@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Formik, Form } from 'formik';
-import { reaction } from 'mobx';
 import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
 import { useP2PCountryList, useP2PSettings } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
@@ -62,15 +61,7 @@ const CreateAdForm = () => {
         my_profile_store.getPaymentMethodsList();
         my_profile_store.getAdvertiserPaymentMethods();
 
-        const disposeApiErrorReaction = reaction(
-            () => my_ads_store.api_error_message,
-            () => {
-                if (my_ads_store.api_error_message) general_store.showModal({ key: 'AdCreateEditErrorModal' });
-            }
-        );
-
         return () => {
-            disposeApiErrorReaction();
             onCleanup();
         };
 

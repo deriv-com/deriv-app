@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, DesktopWrapper, Loading, MobileWrapper, Tabs, Icon } from '@deriv/components';
-import { ContentFlag, makeLazyLoader, moduleLoader } from '@deriv/shared';
+import { Text, DesktopWrapper, MobileWrapper, Tabs, Icon } from '@deriv/components';
+import { ContentFlag } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useWalletMigration } from '@deriv/hooks';
@@ -11,11 +11,6 @@ import AccountTypeDropdown from './account-type-dropdown';
 import AssetSummary from './asset-summary';
 import RegulatorSwitcher from './regulators-switcher';
 import './main-title-bar.scss';
-
-const WalletsBanner = makeLazyLoader(
-    () => moduleLoader(() => import(/* webpackChunkName: "Components_wallets-banner" */ 'Components/wallets-banner')),
-    () => <Loading />
-)();
 
 const MainTitleBar = () => {
     const { traders_hub, client } = useStore();

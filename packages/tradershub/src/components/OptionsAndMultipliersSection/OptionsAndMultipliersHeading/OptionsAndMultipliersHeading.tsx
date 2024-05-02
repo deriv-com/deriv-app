@@ -1,19 +1,19 @@
 import React from 'react';
 import { CurrencySwitcher, StaticLink, TitleDescriptionLoader } from '@/components';
 import { useRegulationFlags } from '@/hooks';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 
-const getDescription = (isEU: boolean) => {
+const getDescription = (isEU: boolean, isDesktop?: boolean) => {
     if (isEU) {
         return (
-            <Text className='space-y-0' size='sm'>
+            <Text className='space-y-0' size={isDesktop ? 'sm' : 'md'}>
                 Get the upside of CFDs without risking more than your initial stake with
                 <StaticLink staticUrl='/trade-types/multiplier/'>multipliers</StaticLink>.
             </Text>
         );
     }
     return (
-        <Text className='space-y-0' size='sm'>
+        <Text className='space-y-0' size={isDesktop ? 'sm' : 'md'}>
             Earn a range of payouts by correctly predicting market price movements with
             <StaticLink staticUrl='/trade-types/options/digital-options/up-and-down/'>options</StaticLink>, or get the
             upside of CFDs without risking more than your initial stake with
@@ -27,12 +27,13 @@ const getDescription = (isEU: boolean) => {
  * @returns {React.ElementType} The `OptionsAndMultipliersHeading` component.
  */
 const OptionsAndMultipliersHeading = () => {
+    const { isDesktop } = useDevice();
     const { isSuccess: isRegulationAccessible } = useRegulationFlags();
     const { isEU } = useRegulationFlags();
 
     const title = isEU ? 'Multipliers' : 'Options & multipliers';
 
-    const description = getDescription(isEU);
+    const description = getDescription(isEU, isDesktop);
 
     if (!isRegulationAccessible) return <TitleDescriptionLoader />;
 

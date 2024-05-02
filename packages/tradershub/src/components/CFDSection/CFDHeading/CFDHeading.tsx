@@ -41,11 +41,13 @@ const CFDHeading = () => {
                     <CompareAccountsButton />
                 </div>
             )}
-            <Text className='leading-18' size='sm'>
-                Trade with leverage and tight spreads for better returns on trades.
-                <StaticLink staticUrl='/trade-types/cfds/'>Learn more</StaticLink>
-            </Text>
-            {!isDesktop && <CompareAccountsButton className='mt-16' />}
+            <div className='flex flex-col items-start'>
+                <Text className='leading-18' size={isDesktop ? 'sm' : 'md'}>
+                    Trade with leverage and tight spreads for better returns on trades.
+                    <StaticLink staticUrl='/trade-types/cfds/'>Learn more</StaticLink>
+                </Text>
+                {!isDesktop && <CompareAccountsButton className='mt-16' />}
+            </div>
         </Fragment>
     );
 };

@@ -14,10 +14,12 @@ export interface AvailableAccount {
     link_to?: string;
 }
 
-export const getCFDAvailableAccount = () => [
+export const getCFDAvailableAccount = (is_for_authorized_user = true) => [
     {
         name: 'Derived',
-        description: localize('This account offers CFDs on derived instruments.'),
+        description: is_for_authorized_user
+            ? localize('This account offers CFDs on derived instruments.')
+            : localize('CFDs on derived instruments'),
         platform: CFD_PLATFORMS.MT5,
         market_type: 'synthetic',
         icon: 'Derived',

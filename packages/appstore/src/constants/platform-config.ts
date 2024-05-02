@@ -31,17 +31,17 @@ export interface MfPlatformConfig extends PlatformConfig {
     app_title: string;
 }
 
-export const getAppstorePlatforms = (is_for_authorized_used = true): PlatformConfig[] => [
+export const getAppstorePlatforms = (is_for_authorized_user = true): PlatformConfig[] => [
     {
         name: getPlatformSettingsAppstore('trader').name,
-        app_desc: is_for_authorized_used
+        app_desc: is_for_authorized_user
             ? localize('Options and multipliers trading platform.')
             : localize('The options and multipliers trading platform'),
         link_to: routes.trade,
     },
     {
         name: getPlatformSettingsAppstore('dbot').name,
-        app_desc: is_for_authorized_used
+        app_desc: is_for_authorized_user
             ? localize('Automate your trading, no coding needed.')
             : localize('The ultimate bot trading platform'),
         link_to: routes.bot,
@@ -49,7 +49,7 @@ export const getAppstorePlatforms = (is_for_authorized_used = true): PlatformCon
     },
     {
         name: getPlatformSettingsAppstore('smarttrader').name,
-        app_desc: is_for_authorized_used
+        app_desc: is_for_authorized_user
             ? localize('Our legacy options trading platform.')
             : localize('The legacy options trading platform'),
         link_to: getUrlSmartTrader(),
@@ -57,7 +57,7 @@ export const getAppstorePlatforms = (is_for_authorized_used = true): PlatformCon
     },
     {
         name: getPlatformSettingsAppstore('bbot').name,
-        app_desc: is_for_authorized_used
+        app_desc: is_for_authorized_user
             ? localize('Our legacy automated trading platform.')
             : localize('The legacy bot trading platform'),
         link_to: getUrlBinaryBot(),
@@ -65,7 +65,7 @@ export const getAppstorePlatforms = (is_for_authorized_used = true): PlatformCon
     },
     {
         name: getPlatformSettingsAppstore('go').name,
-        app_desc: is_for_authorized_used
+        app_desc: is_for_authorized_user
             ? localize('Trade on the go with our mobile app.')
             : localize('The mobile trading app for multipliers'),
         link_to: getStaticUrl('/deriv-go'),

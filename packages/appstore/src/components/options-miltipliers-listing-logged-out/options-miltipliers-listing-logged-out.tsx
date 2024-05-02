@@ -76,7 +76,7 @@ const OptionsAndMultipliersListingLoggedOut = observer(() => {
                         action_type='trade'
                         clickable_icon
                         is_deriv_platform
-                        market_type={'all'}
+                        market_type='all'
                         has_divider={!is_eu_user && getHasDivider(index, available_platforms.length, 3)}
                     />
                 ))

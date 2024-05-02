@@ -41,7 +41,6 @@ const mockWithdrawal = {
     formatted_amount: '',
     formatted_confirmations: 'Pending',
     formatted_transaction_hash: 'Pending',
-    formatted_truncated_amount: '',
     id: '0123',
     is_deposit: false,
     is_valid_to_cancel: 1 as const,

@@ -335,6 +335,7 @@ export default class NotificationStore extends BaseStore {
         const malta_account = landing_company_shortcode === 'maltainvest';
         const cr_account = landing_company_shortcode === 'svg';
         const is_website_up = website_status.site_status === 'up';
+        const { verified: phone_number_verified } = account_settings?.phone_number_verification;
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.trustpilot?.key
         );
@@ -383,6 +384,9 @@ export default class NotificationStore extends BaseStore {
                 this.removeNotificationByKey({ key: this.client_notifications.two_f_a?.key });
             }
 
+            if (!phone_number_verified) {
+                this.addNotificationMessage(this.client_notifications.phone_number_verification);
+            }
             if (malta_account && is_financial_information_incomplete) {
                 this.addNotificationMessage(this.client_notifications.need_fa);
             } else {
@@ -1077,6 +1081,16 @@ export default class NotificationStore extends BaseStore {
                 header: localize('Password updated.'),
                 message: <Localize i18n_default_text='Please log in with your updated password.' />,
                 type: 'info',
+            },
+            phone_number_verification: {
+                key: 'phone_number_verification',
+                header: localize('Verify your phone number'),
+                message: <Localize i18n_default_text='Keep your account safe. Verify your phone number now.' />,
+                type: 'warning',
+                action: {
+                    route: routes.personal_details,
+                    text: localize('Get started'),
+                },
             },
             poa_rejected_for_mt5: {
                 action: {

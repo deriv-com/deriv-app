@@ -6,10 +6,7 @@
     align-items: center;
     justify-content: center;
     gap: 2.4rem;
-
-    @include mobile {
-        background-color: var(--general-main-1, #ffffff);
-    }
+    background-color: var(--general-main-1, #ffffff);
 
     @include desktop {
         padding: 4rem;

@@ -3,6 +3,7 @@ import { DerivLightWaitingPoaIcon } from '@deriv/quill-icons';
 import { Button, Loader, Text } from '@deriv-com/ui';
 import { IconWithMessage } from 'src/components';
 import { AUTH_STATUS_CODES } from 'src/constants';
+import { POOForm } from 'src/containers';
 import { usePaymentMethodDetails } from 'src/hooks';
 import { TAuthStatusCodes } from 'src/types';
 
@@ -20,7 +21,7 @@ export const ProofOfOwnership = () => {
     }
 
     if (Object.keys(paymentMethodData)?.length && status !== AUTH_STATUS_CODES.REJECTED) {
-        return <div>ProofOfOwnership</div>;
+        return <POOForm paymentMethodData={paymentMethodData} />;
     }
 
     switch (status) {

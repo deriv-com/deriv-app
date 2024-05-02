@@ -8,8 +8,8 @@ import {
     getPlatformCTraderDownloadLink,
     getDXTradeWebTerminalLink,
     getCTraderWebTerminalLink,
-    platformsText,
     platformsIcons,
+    platformsText,
     CTRADER_URL,
 } from './constants';
 import { isMobile } from '@deriv/shared';
@@ -93,7 +93,7 @@ export const PlatformsDesktopDownload = ({
 
     return (
         <React.Fragment>
-            <a
+            <Button
                 className='cfd-trade-modal__platform-button'
                 onClick={() => {
                     if (platform === CFD_PLATFORMS.CTRADER) {
@@ -114,7 +114,8 @@ export const PlatformsDesktopDownload = ({
                     <Icon
                         className='cfd-trade-modal__platform-button-icon'
                         icon={`IcBrand${platformsIcons(platform)}Wordmark`}
-                        size={36}
+                        width={36}
+                        height={30}
                     />
                 )}
                 <div className='cfd-trade-modal__platform-button-text'>
@@ -122,7 +123,7 @@ export const PlatformsDesktopDownload = ({
                         <Localize i18n_default_text='Web terminal' />
                     </Text>
                 </div>
-            </a>
+            </Button>
         </React.Fragment>
     );
 };

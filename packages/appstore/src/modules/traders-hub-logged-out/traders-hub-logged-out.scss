@@ -1,6 +1,8 @@
 .traders-hub-logged-out {
-    // max-width: 123.2rem;
     max-width: 120rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
     margin: auto;
     padding: 4rem;
 
@@ -13,6 +15,7 @@
         display: flex;
         flex-direction: column;
         gap: 2.4rem;
+
         &-reversed {
             flex-direction: column-reverse;
         }

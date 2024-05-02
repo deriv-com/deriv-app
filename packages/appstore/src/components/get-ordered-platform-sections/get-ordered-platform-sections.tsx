@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
-import OptionsAndMultipliersListingLoggedOut from './options-miltipliers-listing-logged-out';
-import CFDsListingLoggedOut from './cfds-listing-logged-out';
+import OptionsAndMultipliersListingLoggedOut from 'Components/options-miltipliers-listing-logged-out';
+import CFDsListingLoggedOut from 'Components/cfds-listing-logged-out';
 
 const OrderedPlatformSections = ({
     is_cfd_visible = true,
@@ -15,8 +15,8 @@ const OrderedPlatformSections = ({
 }) => (
     <div
         data-testid='dt_traders_hub'
-        className={classNames('traders-hub__main-container', {
-            'traders-hub__main-container-reversed': is_eu_user,
+        className={classNames('traders-hub-logged-out__main-container', {
+            'traders-hub-logged-out__main-container-reversed': is_eu_user,
         })}
     >
         {is_options_and_multipliers_visible && <OptionsAndMultipliersListingLoggedOut />}
@@ -24,7 +24,7 @@ const OrderedPlatformSections = ({
     </div>
 );
 
-export const GetOrderedPlatformSections = observer(({ isDesktop = false }: { isDesktop?: boolean }) => {
+const GetOrderedPlatformSections = observer(({ isDesktop = false }: { isDesktop?: boolean }) => {
     const { traders_hub, client } = useStore();
     const { is_mt5_allowed } = client;
     const { selected_platform_type } = traders_hub;
@@ -41,3 +41,5 @@ export const GetOrderedPlatformSections = observer(({ isDesktop = false }: { isD
     }
     return <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />;
 });
+
+export default GetOrderedPlatformSections;

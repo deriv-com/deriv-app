@@ -2,15 +2,12 @@ import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { ButtonToggle, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { isEuCountry } from '@deriv/shared';
-import { getPlatformToggleOptions } from '../../helpers';
+import { getPlatformToggleOptions } from 'Helpers';
 
-export const TabsOrTitle = observer(() => {
+const TabsOrTitle = observer(() => {
     const { traders_hub, client } = useStore();
-    const { is_mt5_allowed, clients_country } = client;
-    const { selected_platform_type, setTogglePlatformType } = traders_hub;
-
-    const is_eu_user = isEuCountry(clients_country);
+    const { is_mt5_allowed } = client;
+    const { selected_platform_type, setTogglePlatformType, is_eu_user } = traders_hub;
 
     const platform_toggle_options = getPlatformToggleOptions(is_eu_user);
     const platform_toggle_options_eu = getPlatformToggleOptions(is_eu_user).reverse();
@@ -42,3 +39,5 @@ export const TabsOrTitle = observer(() => {
         </div>
     );
 });
+
+export default TabsOrTitle;

@@ -2,11 +2,12 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
-import { Div100vhContainer, DesktopWrapper, MobileWrapper, Loading } from '@deriv/components';
+import { Div100vhContainer, DesktopWrapper, MobileWrapper, Loading, Text } from '@deriv/components';
 import { routes, isEuCountry } from '@deriv/shared';
-import { GetOrderedPlatformSections } from './get-ordered-platform-sections';
-import { TabsOrTitle } from './tabs-or-title';
+import { Localize } from '@deriv/translations';
+import GetOrderedPlatformSections from 'Components/get-ordered-platform-sections';
 import GetStartedTradingBanner from 'Components/get-started-trading-banner';
+import TabsOrTitle from 'Components/tabs-or-title';
 import './traders-hub-logged-out.scss';
 
 const TradersHubLoggedOut = observer(() => {
@@ -18,7 +19,7 @@ const TradersHubLoggedOut = observer(() => {
     React.useEffect(() => {
         if (clients_country) {
             getLandingCompany(clients_country);
-            if (isEuCountry(clients_country)) {
+            if (!isEuCountry(clients_country)) {
                 setTogglePlatformType('cfd');
                 selectRegion('EU');
             } else {
@@ -34,13 +35,16 @@ const TradersHubLoggedOut = observer(() => {
     return (
         <Div100vhContainer className='traders-hub-logged-out__mobile' height_offset='50px' is_disabled={is_desktop}>
             <div
-                id='traders-hub-logged-out'
+                id='traders_hub_logged_out'
                 className={classNames('traders-hub-logged-out', {
                     'traders-hub-logged-out__eu-user': is_eu_user && is_mt5_allowed,
                     'traders-hub-logged-out__eu-user-without-mt5': is_eu_user && !is_mt5_allowed,
                 })}
             >
                 <GetStartedTradingBanner />
+                <Text size={is_desktop ? 'm' : 'xsm'} weight='bold' color='prominent'>
+                    <Localize i18n_default_text="Trader's Hub" />
+                </Text>
                 <DesktopWrapper>
                     <GetOrderedPlatformSections isDesktop />
                 </DesktopWrapper>

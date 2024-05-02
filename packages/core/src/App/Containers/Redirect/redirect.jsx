@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, useHistory } from 'react-router-dom';
+import { useStoreWalletAccountsList } from '@deriv/hooks';
 import { loginUrl, routes, redirectToLogin, SessionStore, PlatformContext } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
@@ -10,6 +11,7 @@ import { Analytics } from '@deriv-com/analytics';
 const Redirect = observer(() => {
     const history = useHistory();
     const { client, ui } = useStore();
+    const { has_wallet } = useStoreWalletAccountsList();
 
     const { currency, is_logged_in, is_logging_in, setNewEmail, setVerificationCode, verification_code } = client;
 
@@ -29,7 +31,6 @@ const Redirect = observer(() => {
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
     const ext_platform_url = url_params.get('ext_platform_url');
-    const is_next_wallet = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
     const { is_appstore } = React.useContext(PlatformContext);
 
     const redirectToExternalPlatform = url => {
@@ -95,7 +96,7 @@ const Redirect = observer(() => {
             if (redirect_to) {
                 let pathname = '';
                 let hash = '';
-                const main_screen_route = is_next_wallet ? routes.wallets : routes.traders_hub;
+                const main_screen_route = has_wallet ? routes.wallets : routes.traders_hub;
                 switch (redirect_to) {
                     case '1':
                         pathname = routes.traders_hub;
@@ -140,7 +141,7 @@ const Redirect = observer(() => {
             break;
         }
         case 'payment_deposit': {
-            if (is_next_wallet) {
+            if (has_wallet) {
                 history.push(routes.wallets_deposit);
             } else {
                 history.push(routes.cashier_deposit);
@@ -149,7 +150,7 @@ const Redirect = observer(() => {
             break;
         }
         case 'payment_withdraw': {
-            if (is_next_wallet) {
+            if (has_wallet) {
                 if (verification_code?.payment_withdraw) {
                     /*
                   1. pass verification_code through query param as we do not want to use localstorage/session storage
@@ -173,7 +174,7 @@ const Redirect = observer(() => {
             break;
         }
         case 'payment_transfer': {
-            if (is_next_wallet) {
+            if (has_wallet) {
                 history.push(routes.wallets_transfer);
             } else {
                 history.push(routes.cashier_acc_transfer);
@@ -182,7 +183,7 @@ const Redirect = observer(() => {
             break;
         }
         case 'payment_transactions': {
-            if (is_next_wallet) {
+            if (has_wallet) {
                 history.push(routes.wallets_transactions);
             } else {
                 history.push(routes.reports);
@@ -230,7 +231,7 @@ const Redirect = observer(() => {
         case 'trading_platform_investor_password_reset': {
             localStorage.setItem('cfd_reset_password_code', code_param);
             const is_demo = localStorage.getItem('cfd_reset_password_intent')?.includes('demo');
-            if (is_next_wallet) {
+            if (has_wallet) {
                 history.push({
                     pathname: routes.wallets,
                     search: url_query_string,

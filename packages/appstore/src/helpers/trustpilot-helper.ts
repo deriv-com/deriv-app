@@ -1,14 +1,13 @@
-import { GATSBY_TRUSTPILOT_API_KEY, GATSBY_TRUSTPILOT_APP_NAME } from 'Components/trustpilot-widget/keys';
 import { TTrustpilotWidgetData } from 'Types';
 
 export const fetchTrustpilotData = async () => {
     try {
-        const appName = GATSBY_TRUSTPILOT_APP_NAME;
-        const apiKey = GATSBY_TRUSTPILOT_API_KEY;
+        const appName = 'deriv.com';
+        const apiKey = process.env.TRUSTPILOT_API_KEY;
 
         if (!appName || !apiKey) {
             return {
-                error: 'Trustpilot app name or API key is missing',
+                error: 'Trustpilot app name or API1 key is missing',
             };
         }
 
@@ -26,7 +25,7 @@ export const fetchTrustpilotData = async () => {
         const trustpilotData: TTrustpilotWidgetData = {
             stars: result.score?.stars || 0,
             trustScore: result.score?.trustScore || 0,
-            numberOfReviews: result.numberOfReviews?.total.toLocaleString() || '',
+            numberOfReviews: result.numberOfReviews?.total || 0,
         };
 
         return trustpilotData;

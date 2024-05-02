@@ -246,5 +246,5 @@ export type TRealWalletsUpgradeSteps = {
 export type TTrustpilotWidgetData = {
     stars: number;
     trustScore: number;
-    numberOfReviews: string;
+    numberOfReviews: number;
 };

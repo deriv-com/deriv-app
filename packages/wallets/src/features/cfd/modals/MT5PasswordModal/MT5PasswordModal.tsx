@@ -131,7 +131,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const sendEmailVerification = useCallback(
         (platform: TPlatforms.All) => {
             show(
-                <ModalWrapper shouldFullscreen={isMobile}>
+                <ModalWrapper isFullscreen={isMobile}>
                     <SentEmailContent platform={platform} />
                 </ModalWrapper>
             );
@@ -163,7 +163,24 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const renderFooter = useCallback(() => {
         if (createMT5AccountSuccess) return <SuccessModalFooter isDemo={isDemo} />;
 
-        // if (hasMT5Account)
+        if (isMT5PasswordNotSet)
+            return (
+                <WalletButton
+                    disabled={
+                        !password ||
+                        createMT5AccountLoading ||
+                        tradingPlatformPasswordChangeLoading ||
+                        !validPasswordMT5(password)
+                    }
+                    isFullWidth
+                    isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
+                    onClick={onSubmit}
+                    size='lg'
+                >
+                    Create {mt5Title} password
+                </WalletButton>
+            );
+
         return (
             <MT5PasswordModalFooter
                 disabled={
@@ -177,28 +194,11 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                 onSecondaryClick={() => sendEmailVerification(platform)}
             />
         );
-
-        return (
-            <WalletButton
-                disabled={
-                    !password ||
-                    createMT5AccountLoading ||
-                    tradingPlatformPasswordChangeLoading ||
-                    !validPasswordMT5(password)
-                }
-                isFullWidth
-                isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
-                onClick={onSubmit}
-                size='lg'
-            >
-                Create {mt5Title} password
-            </WalletButton>
-        );
     }, [
         createMT5AccountLoading,
         createMT5AccountSuccess,
-        hasMT5Account,
         isDemo,
+        isMT5PasswordNotSet,
         mt5Title,
         onSubmit,
         password,

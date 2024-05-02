@@ -21,6 +21,7 @@ const OrderTimeSelection = () => {
                         <Button
                             color='white'
                             onClick={isMobile ? () => setIsModalOpen(true) : () => undefined}
+                            type='button'
                             variant='contained'
                         >
                             <LabelPairedCircleInfoCaptionRegularIcon

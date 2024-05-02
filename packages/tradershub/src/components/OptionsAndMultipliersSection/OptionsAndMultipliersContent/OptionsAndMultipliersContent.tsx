@@ -114,7 +114,7 @@ const OptionsAndMultipliersContent = () => {
         );
 
     return (
-        <div className='grid w-full grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-x-24 lg:gap-y-4'>
+        <div className='grid w-full grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-x-48 lg:gap-y-16'>
             {filteredContent.map(account => {
                 const { description, icon, isExternal, redirect, smallIcon, title } = account;
 

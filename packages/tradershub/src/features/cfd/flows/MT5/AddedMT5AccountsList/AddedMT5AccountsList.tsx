@@ -26,6 +26,7 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
 
     return (
         <TradingAccountCard
+            contentClassName='border-none'
             leading={() => <MT5AccountIcon account={account} />}
             trailing={() => (
                 <div className='flex flex-col gap-y-4'>

@@ -37,6 +37,7 @@ const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList
     return (
         <Fragment>
             <TradingAccountCard
+                contentClassName='border-none'
                 leading={() => <MT5AccountIcon account={account} />}
                 trailing={() => <TradingAccountCardLightButton onSubmit={trailingButtonClick} />}
             >

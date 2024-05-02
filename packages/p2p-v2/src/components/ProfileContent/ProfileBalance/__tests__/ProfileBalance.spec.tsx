@@ -16,14 +16,14 @@ const wrapper = ({ children }: { children: JSX.Element }) => (
 let mockAdvertiserStatsProp = {
     advertiserStats: {
         balance_available: 50000,
-        daily_buy_limit: 500,
-        daily_sell_limit: 500,
+        daily_buy_limit: '500',
+        daily_sell_limit: '500',
         dailyAvailableBuyLimit: 10,
         dailyAvailableSellLimit: 10,
         fullName: 'Jane Doe',
         isEligibleForLimitUpgrade: false,
         name: 'Jane',
-        show_name: 0,
+        should_show_name: false,
     },
 };
 const mockUseActiveAccount = {
@@ -58,8 +58,8 @@ describe('ProfileBalance', () => {
         mockAdvertiserStatsProp = {
             advertiserStats: {
                 ...mockAdvertiserStatsProp.advertiserStats,
-                daily_buy_limit: 500,
-                daily_sell_limit: 2000,
+                daily_buy_limit: '500',
+                daily_sell_limit: '2000',
                 dailyAvailableBuyLimit: 100,
                 dailyAvailableSellLimit: 600,
             },

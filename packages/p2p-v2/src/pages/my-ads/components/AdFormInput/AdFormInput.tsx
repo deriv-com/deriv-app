@@ -27,9 +27,9 @@ const AdFormInput = ({
             control={control}
             name={name}
             render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                <div className={clsx('mb-[3.5rem] w-full', { 'pointer-events-none': isDisabled })}>
+                <div className={clsx('mb-[1.6rem] w-full', { 'pointer-events-none': isDisabled })}>
                     <Input
-                        className={clsx({ 'text-[#999999]': isDisabled })}
+                        className={clsx('h-16 items-center', { 'text-[#999999]': isDisabled })}
                         disabled={isDisabled}
                         error={!!error?.message}
                         label={label}

@@ -9,7 +9,7 @@ describe('address-details-config', () => {
         };
         address_details_config = {
             address_state: {
-                supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+                supported_in: ['svg', 'maltainvest'],
                 default_value: account_settings.address_state,
                 rules: [
                     ['req', 'State is required'],

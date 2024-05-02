@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Calendar, { CalendarProps } from 'react-calendar';
 import { useOnClickOutside } from 'usehooks-ts';
-import CalendarIcon from '../../public/images/ic-calendar.svg';
+import { LegacyCalendar1pxIcon } from '@deriv/quill-icons';
 import unixToDateString from '../../utils/utils';
 import FlowTextField, { TFlowFieldProps } from '../FlowField/FlowTextField';
 import customFormatShortWeekday from './utils';
@@ -67,7 +67,7 @@ const DatePicker = ({
                         disabled={disabled}
                         onClick={toggleCalendar}
                     >
-                        <CalendarIcon />
+                        <LegacyCalendar1pxIcon iconSize='xs' />
                     </button>
                 )}
                 showMessage

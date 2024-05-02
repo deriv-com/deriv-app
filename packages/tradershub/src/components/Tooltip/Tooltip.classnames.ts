@@ -1,9 +1,9 @@
 import { cva, VariantProps } from 'class-variance-authority';
 
-export const TooltipClass = cva('z-1 absolute invisible flex flex-col group-hover:visible', {
+export const TooltipClass = cva('z-10 absolute invisible flex flex-col peer-hover:visible', {
     variants: {
         alignment: {
-            bottom: 'top-full transform -translate-x-1/2',
+            bottom: 'top-full right-0',
             left: 'right-full top-1/2 transform -translate-y-1/2',
             right: 'left-full top-1/2 transform -translate-y-1/2',
             top: 'bottom-full transform -translate-x-1/2',

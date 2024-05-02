@@ -1,0 +1,50 @@
+import React from 'react';
+import classNames from 'classnames';
+import { observer, useStore } from '@deriv/stores';
+import OptionsAndMultipliersListingLoggedOut from 'Components/options-miltipliers-listing-logged-out';
+import CFDsListingLoggedOut from 'Components/cfds-listing-logged-out';
+
+const GetOrderedPlatformSections = observer(
+    ({
+        is_cfd_visible = true,
+        is_options_and_multipliers_visible = true,
+    }: {
+        is_cfd_visible?: boolean;
+        is_options_and_multipliers_visible?: boolean;
+    }) => {
+        const { traders_hub } = useStore();
+        const { is_eu_user } = traders_hub;
+
+        return (
+            <div
+                data-testid='dt_traders_hub'
+                className={classNames('traders-hub-logged-out__main-container', {
+                    'traders-hub-logged-out__main-container-reversed': is_eu_user,
+                })}
+            >
+                {is_options_and_multipliers_visible && <OptionsAndMultipliersListingLoggedOut />}
+                {is_cfd_visible && <CFDsListingLoggedOut />}
+            </div>
+        );
+    }
+);
+
+const OrderedPlatformSections = observer(({ isDesktop = false }: { isDesktop?: boolean }) => {
+    const { traders_hub, client } = useStore();
+    const { is_mt5_allowed } = client;
+    const { selected_platform_type } = traders_hub;
+
+    if (is_mt5_allowed) {
+        return isDesktop ? (
+            <GetOrderedPlatformSections />
+        ) : (
+            <GetOrderedPlatformSections
+                is_cfd_visible={selected_platform_type === 'cfd'}
+                is_options_and_multipliers_visible={selected_platform_type === 'options'}
+            />
+        );
+    }
+    return <GetOrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible />;
+});
+
+export default OrderedPlatformSections;

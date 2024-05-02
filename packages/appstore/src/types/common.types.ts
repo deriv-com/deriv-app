@@ -247,4 +247,5 @@ export type TTrustpilotWidgetData = {
     stars: number;
     trustScore: number;
     numberOfReviews: number;
+    error?: string;
 };

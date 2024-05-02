@@ -15,7 +15,7 @@ const TrustpilotWidget = observer(() => {
     useEffect(() => {
         const getTrustpilotData = async () => {
             const res = await fetchTrustpilotData();
-            if (!('error' in res)) setTrustpilotData(res);
+            setTrustpilotData(res);
         };
 
         getTrustpilotData();

@@ -5,7 +5,7 @@ import { observer, useStore } from '@deriv/stores';
 import { Div100vhContainer, DesktopWrapper, MobileWrapper, Loading, Text } from '@deriv/components';
 import { routes, isEuCountry } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import GetOrderedPlatformSections from 'Components/get-ordered-platform-sections';
+import OrderedPlatformSections from 'Components/ordered-platform-sections';
 import GetStartedTradingBanner from 'Components/get-started-trading-banner';
 import TabsOrTitle from 'Components/tabs-or-title';
 import './traders-hub-logged-out.scss';
@@ -19,7 +19,7 @@ const TradersHubLoggedOut = observer(() => {
     React.useEffect(() => {
         if (clients_country) {
             getLandingCompany(clients_country);
-            if (!isEuCountry(clients_country)) {
+            if (isEuCountry(clients_country)) {
                 setTogglePlatformType('cfd');
                 selectRegion('EU');
             } else {
@@ -46,11 +46,11 @@ const TradersHubLoggedOut = observer(() => {
                     <Localize i18n_default_text="Trader's Hub" />
                 </Text>
                 <DesktopWrapper>
-                    <GetOrderedPlatformSections isDesktop />
+                    <OrderedPlatformSections isDesktop />
                 </DesktopWrapper>
                 <MobileWrapper>
                     <TabsOrTitle />
-                    <GetOrderedPlatformSections />
+                    <OrderedPlatformSections />
                 </MobileWrapper>
             </div>
         </Div100vhContainer>

@@ -1,12 +1,19 @@
 import { TTrustpilotWidgetData } from 'Types';
 
 export const fetchTrustpilotData = async () => {
+    const defaultData = {
+        stars: 4.5,
+        trustScore: 4.5,
+        numberOfReviews: 47692,
+    };
+
     try {
         const appName = 'deriv.com';
         const apiKey = process.env.TRUSTPILOT_API_KEY;
 
         if (!appName || !apiKey) {
             return {
+                ...defaultData,
                 error: 'Trustpilot app name or API1 key is missing',
             };
         }
@@ -16,6 +23,7 @@ export const fetchTrustpilotData = async () => {
 
         if (!response.ok) {
             return {
+                ...defaultData,
                 error: `Network response was not ok: ${response.statusText}`,
             };
         }
@@ -23,13 +31,18 @@ export const fetchTrustpilotData = async () => {
         const result = await response.json();
 
         const trustpilotData: TTrustpilotWidgetData = {
-            stars: result.score?.stars || 0,
-            trustScore: result.score?.trustScore || 0,
-            numberOfReviews: result.numberOfReviews?.total || 0,
+            stars: result.score?.stars || defaultData.stars,
+            trustScore: result.score?.trustScore || defaultData.trustScore,
+            numberOfReviews: result.numberOfReviews?.total || defaultData.numberOfReviews,
         };
 
         return trustpilotData;
     } catch (error) {
-        return { error: `Something wrong: error = ${error}` };
+        const trustpilotData: TTrustpilotWidgetData = {
+            ...defaultData,
+            error: `Something wrong: error = ${error}`,
+        };
+
+        return trustpilotData;
     }
 };

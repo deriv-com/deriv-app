@@ -1,0 +1,11 @@
+@import '../FileDropzone.scss';
+
+.p2p-v2-preview-single {
+    &__filename {
+        width: 100%;
+    }
+
+    &__message {
+        @include file-dropzone-message;
+    }
+}

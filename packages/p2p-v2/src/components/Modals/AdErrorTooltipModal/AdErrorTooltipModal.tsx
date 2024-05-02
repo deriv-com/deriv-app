@@ -1,9 +1,7 @@
-import React, { ReactNode, useEffect } from 'react';
-import Modal from 'react-modal';
+import React, { ReactNode } from 'react';
 import { ADVERT_TYPE, ERROR_CODES } from '@/constants';
 import { AdRateError } from '@/pages/my-ads/components';
-import { Button, Text } from '@deriv-com/ui';
-import { customStyles } from '../helpers';
+import { Button, Modal, Text, useDevice } from '@deriv-com/ui';
 import './AdErrorTooltipModal.scss';
 
 type TAdErrorTooltipModal = {
@@ -55,10 +53,8 @@ const AdErrorTooltipModal = ({
     remainingAmount,
     visibilityStatus = [],
 }: TAdErrorTooltipModal) => {
-    useEffect(() => {
-        Modal.setAppElement('#v2_modal_root');
-    }, []);
-
+    const { isMobile } = useDevice();
+    const textSize = isMobile ? 'md' : 'sm';
     const getMultipleErrorMessages = (errorStatuses: string[]) =>
         errorStatuses.map((status, index) => (
             <div className='my-5' key={status}>
@@ -77,33 +73,35 @@ const AdErrorTooltipModal = ({
 
     return (
         <Modal
-            className='p2p-v2-ad-error-tooltip-modal p2p-v2-modal-styles'
+            ariaHideApp={false}
+            className='p2p-v2-ad-error-tooltip-modal'
             isOpen={isModalOpen}
-            onRequestClose={onRequestClose}
-            style={customStyles}
+            shouldCloseOnOverlayClick={false}
         >
-            <div className='p2p-v2-ad-error-tooltip-modal__content'>
-                <Text size='sm'>
-                    {visibilityStatus.length === 1 ? (
-                        getAdErrorMessage(
-                            visibilityStatus[0],
-                            accountCurrency,
-                            remainingAmount,
-                            balanceAvailable,
-                            advertType,
-                            dailyBuyLimit,
-                            dailySellLimit
-                        )
-                    ) : (
-                        <>
-                            Your ad isn’t listed on Buy/Sell due to the following reason(s):
-                            {getMultipleErrorMessages(visibilityStatus)}
-                        </>
-                    )}
-                </Text>
-            </div>
+            <Modal.Body>
+                <div className='p2p-v2-ad-error-tooltip-modal__content'>
+                    <Text size={textSize}>
+                        {visibilityStatus.length === 1 ? (
+                            getAdErrorMessage(
+                                visibilityStatus[0],
+                                accountCurrency,
+                                remainingAmount,
+                                balanceAvailable,
+                                advertType,
+                                dailyBuyLimit,
+                                dailySellLimit
+                            )
+                        ) : (
+                            <>
+                                Your ad isn’t listed on Buy/Sell due to the following reason(s):
+                                {getMultipleErrorMessages(visibilityStatus)}
+                            </>
+                        )}
+                    </Text>
+                </div>
+            </Modal.Body>
             <div className='flex justify-end gap-[1rem]'>
-                <Button onClick={onRequestClose} size='lg' textSize='sm'>
+                <Button onClick={onRequestClose} size='lg' textSize={textSize}>
                     OK
                 </Button>
             </div>

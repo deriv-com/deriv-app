@@ -48,7 +48,6 @@ export default class GeneralStore extends BaseStore {
     is_restricted = false;
     nickname = null;
     nickname_error = '';
-    order_payment_period = null;
     order_table_type = order_list.ACTIVE;
     orders = [];
     parameters = null;
@@ -56,7 +55,6 @@ export default class GeneralStore extends BaseStore {
     p2p_poa_required = false;
     poa_status = null;
     poi_status = null;
-    review_period;
     saved_form_state = null;
     should_show_real_name = false;
     should_show_poa = false;
@@ -115,14 +113,12 @@ export default class GeneralStore extends BaseStore {
             is_restricted: observable,
             nickname: observable,
             nickname_error: observable,
-            order_payment_period: observable,
             order_table_type: observable,
             orders: observable,
             parameters: observable,
             p2p_poa_required: observable,
             poa_status: observable,
             poi_status: observable,
-            review_period: observable,
             saved_form_state: observable,
             should_show_real_name: observable,
             should_show_poa: observable,
@@ -137,7 +133,6 @@ export default class GeneralStore extends BaseStore {
             blockUnblockUser: action.bound,
             createAdvertiser: action.bound,
             setCounterpartyAdvertiserId: action.bound,
-            getWebsiteStatus: action.bound,
             handleNotifications: action.bound,
             setP2POrderTab: action.bound,
             showCompletedOrderNotification: action.bound,
@@ -171,15 +166,11 @@ export default class GeneralStore extends BaseStore {
             setIsRestricted: action.bound,
             setNickname: action.bound,
             setNicknameError: action.bound,
-            setOrderPaymentPeriod: action.bound,
             setOrderTableType: action.bound,
-            setP2PConfig: action.bound,
             setP2pPoaRequired: action.bound,
-            setP2PSettings: action.bound,
             setParameters: action.bound,
             setPoaStatus: action.bound,
             setPoiStatus: action.bound,
-            setReviewPeriod: action.bound,
             setBlockUnblockUserError: action.bound,
             setIsAdvertiserBlocked: action.bound,
             setIsBlockUnblockUserLoading: action.bound,
@@ -303,6 +294,9 @@ export default class GeneralStore extends BaseStore {
         });
     }
 
+    /**
+     * @deprecated Please use 'LocalStorageUtils.getValue' from '@deriv-com/utils' instead of this.
+     */
     getLocalStorageSettings = () => {
         return JSON.parse(localStorage.getItem('p2p_settings') || '{}');
     };
@@ -315,20 +309,6 @@ export default class GeneralStore extends BaseStore {
         }
 
         return local_storage_settings;
-    }
-
-    getWebsiteStatus() {
-        requestWS({ website_status: 1 }).then(response => {
-            if (response && !response.error) {
-                const { buy_sell_store } = this.root_store;
-                const { p2p_config } = response.website_status;
-                const { feature_level, local_currencies, review_period } = p2p_config || {};
-
-                this.setFeatureLevel(feature_level);
-                buy_sell_store.setLocalCurrencies(local_currencies);
-                this.setReviewPeriod(review_period);
-            }
-        });
     }
 
     handleNotifications(old_orders, new_orders) {
@@ -472,7 +452,7 @@ export default class GeneralStore extends BaseStore {
         );
 
         requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
-            const { authentication, p2p_poa_required, p2p_status, status } = get_account_status;
+            const { authentication = {}, p2p_poa_required, p2p_status, status } = get_account_status || {};
             const { document, identity } = authentication;
             this.setIsP2PUser(p2p_status !== 'none' && p2p_status !== 'perm_ban');
 
@@ -523,11 +503,8 @@ export default class GeneralStore extends BaseStore {
                 this.setIsP2pBlockedForPa(true);
             }
 
-            this.setIsLoading(false);
-
             const { sendbird_store } = this.root_store;
 
-            this.setP2PConfig();
             this.ws_subscriptions = {
                 advertiser_subscription: subscribeWS(
                     {
@@ -536,12 +513,7 @@ export default class GeneralStore extends BaseStore {
                     },
                     [this.updateAdvertiserInfo, response => sendbird_store.handleP2pAdvertiserInfo(response)]
                 ),
-                p2p_settings_subscription: subscribeWS({ p2p_settings: 1 }, [this.setP2PSettings]),
             };
-
-            if (this.ws_subscriptions) {
-                this.setIsLoading(false);
-            }
         });
     }
 
@@ -704,40 +676,6 @@ export default class GeneralStore extends BaseStore {
         this.order_table_type = order_table_type;
     }
 
-    setP2PConfig() {
-        const { floating_rate_store, my_ads_store } = this.root_store;
-        requestWS({ website_status: 1 }).then(response => {
-            if (!!response && response.error) {
-                floating_rate_store.setApiErrorMessage(response.error.message);
-            } else {
-                const {
-                    float_rate_adverts,
-                    float_rate_offset_limit,
-                    fixed_rate_adverts_end_date,
-                    maximum_order_amount,
-                } = response.website_status.p2p_config;
-                my_ads_store.setMaximumOrderAmount(maximum_order_amount);
-                floating_rate_store.setFloatingRateAdvertStatus(float_rate_adverts);
-                floating_rate_store.setFloatRateOffsetLimit(float_rate_offset_limit);
-                floating_rate_store.setFixedRateAdvertsEndDate(fixed_rate_adverts_end_date || null);
-                floating_rate_store.setApiErrorMessage(null);
-            }
-        });
-    }
-
-    setOrderPaymentPeriod(order_payment_period) {
-        this.order_payment_period = (order_payment_period * 60).toString();
-    }
-
-    setP2PSettings(response) {
-        if (response?.error) {
-            this.ws_subscriptions.p2p_settings_subscription.unsubscribe();
-        } else {
-            const { p2p_settings } = response;
-            this.setOrderPaymentPeriod(p2p_settings.order_payment_period);
-        }
-    }
-
     setParameters(parameters) {
         this.parameters = parameters;
     }
@@ -756,10 +694,6 @@ export default class GeneralStore extends BaseStore {
 
     setPoiStatus(poi_status) {
         this.poi_status = poi_status;
-    }
-
-    setReviewPeriod(review_period) {
-        this.review_period = review_period;
     }
 
     setShouldShowRealName(should_show_real_name) {
@@ -834,10 +768,10 @@ export default class GeneralStore extends BaseStore {
                 this.setIsAdvertiser(false);
             } else if (response.error.code === api_error_codes.PERMISSION_DENIED) {
                 this.setIsBlocked(true);
-                this.setIsLoading(false);
-                return;
             }
         }
+
+        this.setIsLoading(false);
 
         if (!this.is_p2p_user) {
             requestWS({ get_account_status: 1 }).then(account_response => {

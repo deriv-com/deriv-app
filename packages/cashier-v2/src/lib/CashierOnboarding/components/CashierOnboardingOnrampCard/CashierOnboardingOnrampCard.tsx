@@ -1,9 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveAccount } from '@deriv/api';
+import { useActiveAccount } from '@deriv/api-v2';
+import { IconMarquee } from '../../../../components';
 import { onboardingOnrampIcons } from '../../constants/icons';
 import { CashierOnboardingCard } from '../CashierOnboardingCard';
-import { CashierOnboardingIconMarquee } from '../CashierOnboardingIconMarquee';
 
 const CashierOnboardingOnrampCard: React.FC = () => {
     const { data: activeAccount } = useActiveAccount();
@@ -19,7 +19,7 @@ const CashierOnboardingOnrampCard: React.FC = () => {
                     : 'Buy cryptocurrencies via fiat onramp'
             }
         >
-            <CashierOnboardingIconMarquee icons={onboardingOnrampIcons.light} />
+            <IconMarquee iconHeight={45} iconWidth={72} icons={onboardingOnrampIcons.light} />
         </CashierOnboardingCard>
     );
 };

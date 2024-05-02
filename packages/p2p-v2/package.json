@@ -7,15 +7,17 @@
         "node": "18.x"
     },
     "scripts": {
-        "build": "rimraf dist && NODE_OPTIONS='-r ts-node/register' webpack --progress --config \"./webpack.config.js\"",
+        "analyze": "webpack-bundle-analyzer --no-open -m static -r analyzed.html stats.json ./dist && webpack-bundle-analyzer -m json stats.json ./dist",
+        "build": "rimraf dist && NODE_OPTIONS='-r ts-node/register' webpack --progress --config \"./webpack.config.js\" --profile --json > stats.json",
         "serve": "rimraf dist && concurrently \"cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch --config ./webpack.config.js\" \"tsc -w --noEmit --preserveWatchOutput\"",
         "start": "rimraf dist && npm run test && npm run serve"
     },
     "dependencies": {
-        "@deriv-com/ui": "1.8.8",
-        "@deriv/api": "^1.0.0",
+        "@deriv-com/ui": "^1.14.5",
+        "@deriv-com/utils": "^0.0.20",
+        "@deriv/api-v2": "^1.0.0",
         "@deriv/integration": "^1.0.0",
-        "@deriv/quill-icons": "^1.18.3",
+        "@deriv/quill-icons": "^1.22.4",
         "@deriv/react-joyride": "^2.6.2",
         "@sendbird/chat": "^4.9.7",
         "@tanstack/react-table": "^8.10.3",
@@ -33,6 +35,8 @@
         "react-router-dom": "^5.2.0",
         "react-share": "^5.1.0",
         "react-simple-star-rating": "4.0.4",
+        "serialize-query-params": "^2.0.2",
+        "use-query-params": "^2.2.1",
         "usehooks-ts": "^2.7.0"
     },
     "devDependencies": {

@@ -1,6 +1,7 @@
-import { useMemo } from 'react';
-import { daysSince } from '@/utils';
-import { p2p, useAuthentication, useSettings } from '@deriv/api';
+import { useEffect, useMemo } from 'react';
+import { useAdvertiserInfoState } from '@/providers/AdvertiserInfoStateProvider';
+import { daysSince, isEmptyObject } from '@/utils';
+import { p2p, useAuthentication, useAuthorize, useSettings } from '@deriv/api-v2';
 
 /**
  * Formats the advertiser duration into the following format:
@@ -20,14 +21,28 @@ const toAdvertiserMinutes = (duration?: number | null) => {
  * @param advertiserId - ID of the advertiser stats to reveal. If not provided, by default it will return the user's own stats.
  */
 const useAdvertiserStats = (advertiserId?: string) => {
-    const { data, isSuccess, ...rest } = p2p.advertiser.useGetInfo(advertiserId);
+    const { isSuccess } = useAuthorize();
+    const { data, subscribe, unsubscribe } = p2p.advertiser.useGetInfo(advertiserId);
     const { data: settings, isSuccess: isSuccessSettings } = useSettings();
     const { data: authenticationStatus, isSuccess: isSuccessAuthenticationStatus } = useAuthentication();
+    const { error, isIdle, isLoading, isSubscribed } = useAdvertiserInfoState();
+
+    useEffect(() => {
+        if (isSuccess && advertiserId) {
+            subscribe({ id: advertiserId });
+        }
+
+        return () => {
+            localStorage.removeItem(`p2p_v2_p2p_advertiser_info_${advertiserId}`);
+            unsubscribe();
+        };
+    }, [advertiserId, isSuccess, subscribe, unsubscribe]);
 
     const transformedData = useMemo(() => {
-        if (!isSuccess && !isSuccessSettings && !isSuccessAuthenticationStatus) return;
+        if (!isSubscribed && isEmptyObject(data) && !isSuccessSettings && !isSuccessAuthenticationStatus)
+            return undefined;
 
-        const isAdvertiser = data?.is_approved;
+        const isAdvertiser = data.is_approved_boolean;
 
         return {
             ...data,
@@ -60,7 +75,7 @@ const useAdvertiserStats = (advertiserId?: string) => {
 
             /** Checks if the advertiser has completed proof of address verification */
             isAddressVerified: isAdvertiser
-                ? data?.full_verification
+                ? data.has_full_verification
                 : authenticationStatus?.document?.status === 'verified',
 
             /** Checks if the user is already an advertiser */
@@ -71,7 +86,7 @@ const useAdvertiserStats = (advertiserId?: string) => {
 
             /** Checks if the advertiser has completed proof of identity verification */
             isIdentityVerified: isAdvertiser
-                ? data?.full_verification
+                ? data.has_basic_verification
                 : authenticationStatus?.identity?.status === 'verified',
 
             /** The percentage of completed orders out of total orders as a seller within the past 30 days. */
@@ -95,12 +110,23 @@ const useAdvertiserStats = (advertiserId?: string) => {
             /** The total trade volume since registration */
             tradeVolumeLifetime: Number(data?.total_turnover) || 0,
         };
-    }, [data, settings, isSuccess, isSuccessSettings, isSuccessAuthenticationStatus, authenticationStatus]);
+    }, [
+        isSubscribed,
+        data,
+        isSuccessSettings,
+        isSuccessAuthenticationStatus,
+        settings?.first_name,
+        settings?.last_name,
+        authenticationStatus?.document?.status,
+        authenticationStatus?.identity?.status,
+    ]);
 
     return {
         data: transformedData,
-        isSuccess,
-        ...rest,
+        error,
+        isIdle,
+        isLoading,
+        isSubscribed,
     };
 };
 

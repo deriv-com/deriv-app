@@ -54,7 +54,7 @@ const Dropzone: React.FC<TProps> = ({
     icon,
     maxSize,
     onFileChange,
-    title = false,
+    title = '',
     titleType = 'normal',
 }) => {
     const [file, setFile] = useState<TFile | null>(
@@ -103,20 +103,20 @@ const Dropzone: React.FC<TProps> = ({
         <div {...getRootProps()} className={className} ref={rootRef as RefObject<HTMLDivElement>}>
             <input
                 {...(getInputProps() as DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>)}
-                data-testid='dt_dropzone-input'
+                data-testid='dt_dropzone_input'
             />
             <div
                 className={classNames(
-                    'wallets-dropzone',
-                    { 'wallets-dropzone--hover': showHoverMessage },
-                    { 'wallets-dropzone--active': file }
+                    'account-dropzone',
+                    { 'account-dropzone--hover': showHoverMessage },
+                    { 'account-dropzone--active': file }
                 )}
             >
-                <div className='w-full h-full flex flex-col items-center justify-center gap-400'>
+                <div className='flex flex-col items-center justify-center w-full h-full'>
                     {showHoverMessage && <Text size='sm'>{hoverMessage}</Text>}
-                    {!file && (
-                        <div className='flex flex-col items-center gap-700'>
-                            <div className='flex-shrink-0'>{icon}</div>
+                    {!file ? (
+                        <div className='flex flex-col items-center'>
+                            <div className='flex-shrink-0 mb-24'>{icon}</div>
                             {title && (
                                 <Text align='center' color='primary' size='xs' weight={titleType}>
                                     {title}
@@ -126,8 +126,8 @@ const Dropzone: React.FC<TProps> = ({
                                 {description}
                             </Text>
                             {buttonText && (
-                                <div className='flex flex-col items-center gap-1600'>
-                                    <Button onClick={open} type='button' variant='outlined'>
+                                <div className='flex flex-col items-center gap-1600 mt-32'>
+                                    <Button color='black' onClick={open} type='button' variant='outlined'>
                                         {buttonText}
                                     </Button>
                                 </div>
@@ -138,21 +138,20 @@ const Dropzone: React.FC<TProps> = ({
                                 </Text>
                             )}
                         </div>
-                    )}
-                    {file && (
+                    ) : (
                         <React.Fragment key={file.name}>
                             <div
-                                className={classNames('wallets-dropzone__thumb', {
-                                    'wallets-dropzone__thumb--has-frame': hasFrame,
+                                className={classNames('account-dropzone__thumb', {
+                                    'account-dropzone__thumb--has-frame': hasFrame,
                                 })}
-                                data-testid='dt_remove-button'
+                                data-testid='dt_remove_button'
                                 style={{ backgroundImage: `url(${file.preview})` }}
                             >
                                 {hasFrame && <DropzoneFrame />}
                                 <IconButton
                                     className='absolute top-400 right-400 rounded-pill'
                                     color='black'
-                                    data-testid='dt_remove-button-icon'
+                                    data-testid='dt_remove_button_icon'
                                     icon={<StandaloneXmarkBoldIcon className='fill-solid-slate-50' iconSize='sm' />}
                                     isRound
                                     onClick={removeFile}

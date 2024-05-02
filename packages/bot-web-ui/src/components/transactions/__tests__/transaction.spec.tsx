@@ -1,8 +1,6 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
@@ -66,7 +64,7 @@ describe('Transaction', () => {
             wrapper,
         });
 
-        const transaction_item = screen.getByTestId('dt-transactions-item');
+        const transaction_item = screen.getByTestId('dt_transactions_item');
         userEvent.click(transaction_item);
         expect(screen.getByText('Reference IDs')).toBeInTheDocument();
         expect(screen.getByText('12345 (Buy)')).toBeInTheDocument();
@@ -88,7 +86,7 @@ describe('Transaction', () => {
             wrapper,
         });
 
-        const transaction_item = screen.getByTestId('dt-transactions-item');
+        const transaction_item = screen.getByTestId('dt_transactions_item');
         userEvent.click(transaction_item);
         expect(screen.getByText('2 (High)')).toBeInTheDocument();
         expect(screen.getByText('1 (Low)')).toBeInTheDocument();

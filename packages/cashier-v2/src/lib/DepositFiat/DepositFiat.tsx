@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useAuthorize, useCashierFiatAddress } from '@deriv/api';
+import { useAuthorize, useCashierFiatAddress } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { ErrorScreen } from '../../components';
 import { isServerError } from '../../utils';

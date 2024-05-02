@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAdvertiserStats } from '@/hooks';
 import { numberToCurrencyText } from '@/utils';
-import { useActiveAccount } from '@deriv/api';
+import { useActiveAccount } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import MyProfileStatsItem from './MyProfileStatsItem';
 import './MyProfileStats.scss';
@@ -16,7 +16,7 @@ const MyProfileStats = ({ advertiserId }: TMyProfileStatsProps) => {
     const { data, isLoading } = useAdvertiserStats(advertiserId);
     const { data: activeAccount } = useActiveAccount();
 
-    if (isLoading || !data) return <Loader />;
+    if (isLoading || !data) return <Loader className='relative mt-16' />;
 
     const {
         averagePayTime,

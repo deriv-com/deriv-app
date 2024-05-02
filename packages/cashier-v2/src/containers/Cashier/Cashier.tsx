@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch, useHistory } from 'react-router-dom';
-import { useAuthorize } from '@deriv/api';
+import { useAuthorize } from '@deriv/api-v2';
 import { Loader, PageLayout, VerticalTab, VerticalTabItems } from '@deriv-com/ui';
 import type { TRouteTypes } from '../../types';
 import styles from './Cashier.module.scss';
@@ -35,7 +35,7 @@ const Cashier: React.FC<TRouteTypes.TRouteComponent> = ({ routes }) => {
                         const { path, title } = route;
                         return (
                             <Route exact key={path} path={path}>
-                                <route.component path={path} title={title} />
+                                <route.component path={path} routes={routes} title={title} />
                             </Route>
                         );
                     })}

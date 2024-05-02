@@ -1,8 +1,7 @@
 import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
-
 import { CFD_PLATFORMS } from '../platform';
-import { Jurisdiction, JURISDICTION_MARKET_TYPES } from '../constants/jurisdictions-config';
+import { AUTH_STATUS_CODES, Jurisdiction, JURISDICTION_MARKET_TYPES } from '../constants';
 
 let CFD_text_translated: { [key: string]: () => void };
 
@@ -504,6 +503,8 @@ type TGetMT5AccountTitle = {
     account_type: typeof JURISDICTION_MARKET_TYPES[keyof typeof JURISDICTION_MARKET_TYPES];
     jurisdiction: typeof Jurisdiction[keyof typeof Jurisdiction];
 };
+
+//returns the title for the MT5 account - e.g.  MT5 Financial Vanuatu
 export const getMT5AccountTitle = ({ account_type, jurisdiction }: TGetMT5AccountTitle) => {
     return `${getCFDPlatformNames(CFD_PLATFORMS.MT5)} ${getFormattedJurisdictionMarketTypes(
         account_type
@@ -511,15 +512,10 @@ export const getMT5AccountTitle = ({ account_type, jurisdiction }: TGetMT5Accoun
 };
 
 export const isPOARequiredForMT5 = (account_status: GetAccountStatus, jurisdiction_shortcode: string) => {
-    const { authentication } = account_status;
-
-    if (authentication?.attempts?.latest?.service === 'idv') {
-        if (authentication?.document?.status === 'pending') {
-            return false;
-        }
-        // @ts-expect-error as the prop authenticated_with_idv is not yet present in GetAccountStatus
-        return !authentication?.document?.authenticated_with_idv[jurisdiction_shortcode];
+    const { document } = account_status?.authentication || {};
+    if (document?.status === AUTH_STATUS_CODES.PENDING) {
+        return false;
     }
-
-    return !['pending', 'verified'].includes(authentication?.document?.status ?? '');
+    // @ts-expect-error as the prop verified_jurisdiction is not yet present in GetAccountStatu
+    return !document?.verified_jurisdiction[jurisdiction_shortcode];
 };

@@ -1,16 +1,14 @@
 .wallets-carousel-content {
-    background-color: #f2f3f4;
+    background-color: var(--general-main-1, #ffffff);
     width: 100vw;
-    padding: 2rem;
+    padding: 0.8rem 3.6rem;
     overflow: hidden;
-    gap: 1.6rem;
 
     &__container {
-        height: max-content;
+        height: 17.6rem;
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        gap: 2.4rem;
 
         & > .wallets-card__details {
             width: 45vw;

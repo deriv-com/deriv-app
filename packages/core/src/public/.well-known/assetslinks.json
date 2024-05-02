@@ -1,71 +1,115 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target" : {
-    "namespace": "android_app",
-    "package_name": "com.deriv.app",
-    "sha256_cert_fingerprints": [
-      "9B:BD:04:CB:27:B5:FE:59:30:0E:3C:5C:F6:AC:79:52:F3:36:04:7A:FD:A4:59:82:CC:C8:90:3C:74:0E:22:0C",
-      "60:89:73:84:71:F6:55:AA:2A:0E:23:94:60:84:75:12:A7:86:E1:AE:85:E2:5C:8C:3C:89:5B:51:EA:DB:75:D0"
-    ]
-  }
-}, {
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target" : {
-    "namespace": "android_app",
-    "package_name": "com.deriv.app.dev",
-    "sha256_cert_fingerprints": [
-      "9B:BD:04:CB:27:B5:FE:59:30:0E:3C:5C:F6:AC:79:52:F3:36:04:7A:FD:A4:59:82:CC:C8:90:3C:74:0E:22:0C",
-      "60:89:73:84:71:F6:55:AA:2A:0E:23:94:60:84:75:12:A7:86:E1:AE:85:E2:5C:8C:3C:89:5B:51:EA:DB:75:D0"
-    ]
-  }
-}, {
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target" : {
-    "namespace": "android_app",
-    "package_name": "com.deriv.app.staging",
-    "sha256_cert_fingerprints": [
-      "9B:BD:04:CB:27:B5:FE:59:30:0E:3C:5C:F6:AC:79:52:F3:36:04:7A:FD:A4:59:82:CC:C8:90:3C:74:0E:22:0C",
-      "60:89:73:84:71:F6:55:AA:2A:0E:23:94:60:84:75:12:A7:86:E1:AE:85:E2:5C:8C:3C:89:5B:51:EA:DB:75:D0"
-    ]
-  }
-}, {
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target" : {
-    "namespace": "android_app",
-    "package_name": "com.deriv.dp2p",
-    "sha256_cert_fingerprints": [
-      "58:A3:D1:77:A0:5A:BE:73:76:B8:90:29:1B:D3:BD:E9:DF:ab:FF:3B:52:B4:15:6E:FA:A9:68:91:3F:6D:DE:78",
-      "E7:45:0A:69:4F:0D:84:43:A8:E1:E0:3D:9D:00:E2:E5:8F:84:9F:81:B1:8F:94:A6:F9:0E:6A:D9:F6:52:13:EB"
-    ]
-  }
-}, {
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.deriv.app",
+      "sha256_cert_fingerprints": [
+        "9B:BD:04:CB:27:B5:FE:59:30:0E:3C:5C:F6:AC:79:52:F3:36:04:7A:FD:A4:59:82:CC:C8:90:3C:74:0E:22:0C",
+        "60:89:73:84:71:F6:55:AA:2A:0E:23:94:60:84:75:12:A7:86:E1:AE:85:E2:5C:8C:3C:89:5B:51:EA:DB:75:D0",
+        "1E:FD:D1:99:FE:B1:CA:45:F9:7D:AC:65:53:E3:2C:B1:62:3F:EF:BD:3A:DD:60:0D:8E:D2:CE:4A:39:E5:9F:DC"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.deriv.app.dev",
+      "sha256_cert_fingerprints": [
+        "9B:BD:04:CB:27:B5:FE:59:30:0E:3C:5C:F6:AC:79:52:F3:36:04:7A:FD:A4:59:82:CC:C8:90:3C:74:0E:22:0C",
+        "60:89:73:84:71:F6:55:AA:2A:0E:23:94:60:84:75:12:A7:86:E1:AE:85:E2:5C:8C:3C:89:5B:51:EA:DB:75:D0",
+        "1E:FD:D1:99:FE:B1:CA:45:F9:7D:AC:65:53:E3:2C:B1:62:3F:EF:BD:3A:DD:60:0D:8E:D2:CE:4A:39:E5:9F:DC"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.deriv.app.staging",
+      "sha256_cert_fingerprints": [
+        "9B:BD:04:CB:27:B5:FE:59:30:0E:3C:5C:F6:AC:79:52:F3:36:04:7A:FD:A4:59:82:CC:C8:90:3C:74:0E:22:0C",
+        "60:89:73:84:71:F6:55:AA:2A:0E:23:94:60:84:75:12:A7:86:E1:AE:85:E2:5C:8C:3C:89:5B:51:EA:DB:75:D0",
+        "1E:FD:D1:99:FE:B1:CA:45:F9:7D:AC:65:53:E3:2C:B1:62:3F:EF:BD:3A:DD:60:0D:8E:D2:CE:4A:39:E5:9F:DC"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.deriv.dp2p",
+      "sha256_cert_fingerprints": [
+        "58:A3:D1:77:A0:5A:BE:73:76:B8:90:29:1B:D3:BD:E9:DF:ab:FF:3B:52:B4:15:6E:FA:A9:68:91:3F:6D:DE:78",
+        "E7:45:0A:69:4F:0D:84:43:A8:E1:E0:3D:9D:00:E2:E5:8F:84:9F:81:B1:8F:94:A6:F9:0E:6A:D9:F6:52:13:EB"
+      ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
       "namespace": "android_app",
       "package_name": "com.deriv.blanc",
       "sha256_cert_fingerprints": [
-          "25:F5:1D:C4:37:2C:14:59:9E:91:0A:FA:F8:8B:28:F9:D3:E9:E8:E2:81:CD:B5:58:AF:0E:2D:C2:E4:CF:F9:EB",
-          "C7:0D:02:85:4B:B8:49:DE:CA:72:3E:E1:A3:0B:8A:47:31:0F:79:5C:34:1B:84:CE:92:73:29:73:DB:66:85:8D"
+        "25:F5:1D:C4:37:2C:14:59:9E:91:0A:FA:F8:8B:28:F9:D3:E9:E8:E2:81:cd:B5:58:AF:0E:2D:C2:E4:CF:F9:EB",
+        "C7:0D:02:85:4B:B8:49:de:CA:72:3E:E1:A3:0B:8A:47:31:0F:79:5C:34:1B:84:CE:92:73:29:73:DB:66:85:8D"
       ]
-  }
-}, {
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
       "namespace": "android_app",
       "package_name": "com.deriv.blanc.dev",
       "sha256_cert_fingerprints": [
-          "25:F5:1D:C4:37:2C:14:59:9E:91:0A:FA:F8:8B:28:F9:D3:E9:E8:E2:81:CD:B5:58:AF:0E:2D:C2:E4:CF:F9:EB",
-          "C7:0D:02:85:4B:B8:49:DE:CA:72:3E:E1:A3:0B:8A:47:31:0F:79:5C:34:1B:84:CE:92:73:29:73:DB:66:85:8D"
+        "25:F5:1D:C4:37:2C:14:59:9E:91:0A:FA:F8:8B:28:F9:D3:E9:E8:E2:81:cd:B5:58:AF:0E:2D:C2:E4:CF:F9:EB",
+        "C7:0D:02:85:4B:B8:49:de:CA:72:3E:E1:A3:0B:8A:47:31:0F:79:5C:34:1B:84:CE:92:73:29:73:DB:66:85:8D"
       ]
-  }
-}, {
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
       "namespace": "android_app",
       "package_name": "com.deriv.blanc.stg",
       "sha256_cert_fingerprints": [
-          "25:F5:1D:C4:37:2C:14:59:9E:91:0A:FA:F8:8B:28:F9:D3:E9:E8:E2:81:CD:B5:58:AF:0E:2D:C2:E4:CF:F9:EB",
-          "C7:0D:02:85:4B:B8:49:DE:CA:72:3E:E1:A3:0B:8A:47:31:0F:79:5C:34:1B:84:CE:92:73:29:73:DB:66:85:8D"
+        "25:F5:1D:C4:37:2C:14:59:9E:91:0A:FA:F8:8B:28:F9:D3:E9:E8:E2:81:cd:B5:58:AF:0E:2D:C2:E4:CF:F9:EB",
+        "C7:0D:02:85:4B:B8:49:de:CA:72:3E:E1:A3:0B:8A:47:31:0F:79:5C:34:1B:84:CE:92:73:29:73:DB:66:85:8D"
       ]
+    }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.example.passkeys_poc",
+      "sha256_cert_fingerprints": [
+        "71:52:29:88:59:88:47:10:1A:F6:82:F9:B6:5B:BE:E9:D4:3F:7F:B7:FB:33:E1:9D:D7:5C:22:5E:33:17:2D:4F"
+      ]
+    }
   }
-}]
+]

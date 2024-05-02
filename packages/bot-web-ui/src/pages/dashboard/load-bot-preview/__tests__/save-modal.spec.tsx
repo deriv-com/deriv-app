@@ -1,15 +1,14 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
+import DashboardStore from 'Stores/dashboard-store';
+import GoogleDriveStore from 'Stores/google-drive-store';
+import LoadModalStore from 'Stores/load-modal-store';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import SaveModal from '../save-modal';
-import DashboardStore from 'Stores/dashboard-store';
-import LoadModalStore from 'Stores/load-modal-store';
-import GoogleDriveStore from 'Stores/google-drive-store';
-import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -113,7 +112,7 @@ describe('RecentComponent', () => {
 
         userEvent.click(screen.getByRole('radio', { name: /Google Drive/i }));
         await waitFor(async () => {
-            userEvent.click(screen.getByRole('button', { name: /Continue/i }));
+            userEvent.click(screen.getByRole('button', { name: /Save/i }));
         });
 
         expect(mock_DBot_store?.save_modal.onConfirmSave).toHaveBeenCalledWith(
@@ -128,7 +127,7 @@ describe('RecentComponent', () => {
 
         userEvent.click(screen.getByRole('radio', { name: /Local/i }));
         await waitFor(async () => {
-            userEvent.click(screen.getByRole('button', { name: /Continue/i }));
+            userEvent.click(screen.getByRole('button', { name: /Save/i }));
         });
 
         expect(mock_DBot_store?.save_modal.onConfirmSave).toHaveBeenCalledWith(

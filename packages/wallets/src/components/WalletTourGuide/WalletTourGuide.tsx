@@ -4,6 +4,7 @@ import { useActiveWalletAccount, useAllWalletAccounts, useAuthorize, useWalletAc
 import Joyride, { ACTIONS, CallBackProps } from '@deriv/react-joyride';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
+import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import {
     getFiatWalletLoginId,
     getWalletIndexForTarget,
@@ -19,7 +20,8 @@ const WalletTourGuide = () => {
     const [addMoreWalletsTransformValue, setAddMoreWalletsTransformValue] = useState('');
     const { isMobile } = useDevice();
 
-    const { isFetching, isLoading, isSuccess, switchAccount } = useAuthorize();
+    const switchWalletAccount = useWalletAccountSwitcher();
+    const { isFetching, isLoading, isSuccess } = useAuthorize();
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: availableWallets } = useAllWalletAccounts();
@@ -58,7 +60,7 @@ const WalletTourGuide = () => {
     useEffect(() => {
         const switchToFiatWallet = () => {
             if (fiatWalletLoginId && fiatWalletLoginId !== activeWalletLoginId) {
-                switchAccount(fiatWalletLoginId);
+                switchWalletAccount(fiatWalletLoginId);
             }
         };
 
@@ -66,7 +68,7 @@ const WalletTourGuide = () => {
         if (needToStart) {
             switchToFiatWallet();
         }
-    }, [activeWalletLoginId, fiatWalletLoginId, switchAccount, walletsOnboarding]);
+    }, [activeWalletLoginId, fiatWalletLoginId, switchWalletAccount, walletsOnboarding]);
 
     useEffect(() => {
         if (!addMoreWalletRef.current) {

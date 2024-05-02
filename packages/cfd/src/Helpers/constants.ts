@@ -1,10 +1,15 @@
-import { OSDetect, getPlatformFromUrl, mobileOSDetect } from '@deriv/shared';
+import {
+    OSDetect,
+    getPlatformFromUrl,
+    getErrorMessages,
+    validLength,
+    validPassword,
+    validMT5Password,
+    mobileOSDetect,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
+import { TCFDsPlatformType, TDetailsOfEachMT5Loginid, TMobilePlatforms } from 'Components/props.types';
 import { CFD_PLATFORMS, MOBILE_PLATFORMS, DESKTOP_PLATFORMS, CATEGORY } from './cfd-config';
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-
-type MT5TradeAccount = DetailsOfEachMT5Loginid & { display_login?: string };
 
 const platformsText = (platform: TCFDsPlatformType) => {
     switch (platform) {
@@ -35,17 +40,26 @@ const getTitle = (market_type: string, is_eu_user: boolean) => {
 
 const { is_staging, is_test_link } = getPlatformFromUrl();
 
-const DEEP_LINK = ({ mt5_trade_account }: { mt5_trade_account: MT5TradeAccount }) =>
+const DEEP_LINK = ({ mt5_trade_account }: { mt5_trade_account: TDetailsOfEachMT5Loginid }) =>
     `metatrader5://account?login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`;
 
-const WEBTRADER_URL = ({ mt5_trade_account }: { mt5_trade_account: MT5TradeAccount }) =>
-    `${mt5_trade_account.webtrader_url}&login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`;
+const STRATEGY_PROVIDER_NOTES = [
+    'When setting up a strategy, you have the option to impose fees.',
+    'For strategies where you impose fees, you must assign one of your existing accounts to process these fees. The same ‘Account For Fees’ can support multiple fee-based strategies.',
+    'Free strategies do not require an ‘Account For Fees’.',
+    'An account designated as a strategy provider is irreversible unless it remains inactive for 30 days.',
+    'An account cannot simultaneously be a strategy provider and serve as an ‘Account For Fees’.',
+];
+
+const WEBTRADER_URL = ({ mt5_trade_account }: { mt5_trade_account: TDetailsOfEachMT5Loginid }) =>
+    `${mt5_trade_account.white_label_links?.webtrader_url}?login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`;
 
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
-const CTRADER_DESKTOP_DOWNLOAD = 'https://getctrader.com/deriv/ctrader-deriv-setup.exe';
 const CTRADER_DOWNLOAD_LINK = 'https://ctrader.com/download/';
+const CTRADER_DESKTOP_MAC_DOWNLOAD = 'https://getctradermac.com/deriv/ctrader-deriv-setup.dmg';
+const CTRADER_DESKTOP_WINDOWS_DOWNLOAD = 'https://getctrader.com/deriv/ctrader-deriv-setup.exe';
 
 const CTRADER_UAT_URL = 'https://ct-uat.deriv.com/';
 const CTRADER_PRODUCTION_URL = 'https://ct.deriv.com/';
@@ -54,7 +68,7 @@ const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503'
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
 const DXTRADE_HUAWEI_APP_URL = 'https://appgallery.huawei.com/app/C104633219';
 
-const CTRADER_IOS_APP_URL = 'https://apps.apple.com/cy/app/ctrader/id767428811';
+const CTRADER_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-ctrader/id6466996509';
 const CTRADER_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.ct';
 
 const CTRADER_URL = is_staging || is_test_link ? CTRADER_UAT_URL : CTRADER_PRODUCTION_URL;
@@ -119,28 +133,46 @@ const getCTraderWebTerminalLink = (category?: string, token?: string) => {
     return `${CTRADER_URL}${token && `?token=${token}`}`;
 };
 
-const getMobileAppInstallerURL = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => {
+const validatePassword = (password: string): string | undefined => {
+    if (
+        !validLength(password, {
+            min: 8,
+            max: 16,
+        })
+    ) {
+        return localize('You should enter {{min_number}}-{{max_number}} characters.', {
+            min_number: 8,
+            max_number: 16,
+        });
+    } else if (!validPassword(password)) {
+        return getErrorMessages().password();
+    } else if (!validMT5Password(password)) {
+        return localize('Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.');
+    }
+};
+
+const getMobileAppInstallerURL = ({ mt5_trade_account }: { mt5_trade_account: TDetailsOfEachMT5Loginid }) => {
     if (mobileOSDetect() === 'iOS') {
-        return mt5_trade_account?.white_label?.download_links?.ios;
+        return mt5_trade_account?.white_label_links?.ios;
     } else if (mobileOSDetect() === 'huawei') {
         return getPlatformMt5DownloadLink('huawei');
     }
-    return mt5_trade_account?.white_label?.download_links?.android;
+    return mt5_trade_account?.white_label_links?.android;
 };
 
-const getDesktopDownloadOptions = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => {
+const getDesktopDownloadOptions = ({ mt5_trade_account }: { mt5_trade_account: TDetailsOfEachMT5Loginid }) => {
     const downloadOptions = [
         {
             icon: 'IcRebrandingMt5Logo',
             text: 'MetaTrader 5 web',
             button_text: 'Open',
-            href: mt5_trade_account?.webtrader_url,
+            href: WEBTRADER_URL({ mt5_trade_account }),
         },
         {
             icon: 'IcWindowsLogo',
             text: localize('MetaTrader 5 Windows app'),
             button_text: 'Download',
-            href: mt5_trade_account?.white_label?.download_links?.windows,
+            href: mt5_trade_account?.white_label_links?.windows,
         },
         {
             icon: 'IcMacosLogo',
@@ -159,13 +191,13 @@ const getDesktopDownloadOptions = ({ mt5_trade_account }: { mt5_trade_account: D
     return downloadOptions;
 };
 
-const getMobileDownloadOptions = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => [
+const getMobileDownloadOptions = ({ mt5_trade_account }: { mt5_trade_account: TDetailsOfEachMT5Loginid }) => [
     {
-        href: mt5_trade_account?.white_label?.download_links?.ios,
+        href: mt5_trade_account?.white_label_links?.ios,
         icon: 'IcInstallationApple',
     },
     {
-        href: mt5_trade_account?.white_label?.download_links?.android,
+        href: mt5_trade_account?.white_label_links?.android,
         icon: 'IcInstallationGoogle',
     },
     {
@@ -181,15 +213,18 @@ export {
     CTRADER_URL,
     CTRADER_DOWNLOAD_LINK,
     platformsText,
+    STRATEGY_PROVIDER_NOTES,
     getPlatformDXTradeDownloadLink,
     getPlatformCTraderDownloadLink,
     getPlatformMt5DownloadLink,
-    CTRADER_DESKTOP_DOWNLOAD,
+    CTRADER_DESKTOP_MAC_DOWNLOAD,
+    CTRADER_DESKTOP_WINDOWS_DOWNLOAD,
     getDXTradeWebTerminalLink,
     getCTraderWebTerminalLink,
     platformsIcons,
     getTitle,
     getTopUpConfig,
+    validatePassword,
     getMobileAppInstallerURL,
     WEBTRADER_URL,
     getDesktopDownloadOptions,

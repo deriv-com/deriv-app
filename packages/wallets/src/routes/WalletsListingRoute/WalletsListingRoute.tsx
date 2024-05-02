@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo } from 'react';
-import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api-v2';
 import {
     DesktopWalletsList,
     WalletsAddMoreCarousel,
@@ -17,13 +16,8 @@ import './WalletsListingRoute.scss';
 
 const WalletsListingRoute: React.FC = () => {
     const { isMobile } = useDevice();
-    const { data: walletAccounts } = useWalletAccountsList();
-    const { switchAccount } = useAuthorize();
-    const { data: activeWallet } = useActiveWalletAccount();
     const { show } = useModal();
     const resetTradingPlatformActionParams = getActionFromUrl();
-
-    const firstLoginid = walletAccounts?.[0]?.loginid;
 
     const platformMapping: Record<string, Exclude<TPlatforms.All, 'ctrader'>> = useMemo(
         () => ({
@@ -46,17 +40,12 @@ const WalletsListingRoute: React.FC = () => {
                         actionParams={resetTradingPlatformActionParams ?? ''}
                         platform={platformKey}
                         verificationCode={verificationCode}
-                    />
+                    />,
+                    { defaultRootId: 'wallets_modal_root' }
                 );
             }
         }
     }, [platformMapping, resetTradingPlatformActionParams, show]);
-
-    useEffect(() => {
-        if (!activeWallet && firstLoginid) {
-            switchAccount(firstLoginid);
-        }
-    }, [activeWallet, firstLoginid, switchAccount]);
 
     return (
         <div className='wallets-listing-route'>

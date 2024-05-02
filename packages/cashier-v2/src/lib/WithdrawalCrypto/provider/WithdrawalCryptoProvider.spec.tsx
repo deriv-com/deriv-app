@@ -2,19 +2,21 @@ import React from 'react';
 import {
     useAccountLimits,
     useActiveAccount,
+    useCryptoConfig,
     useCryptoWithdrawal,
     useCurrencyConfig,
     useExchangeRateSubscription,
     usePOA,
     usePOI,
-} from '@deriv/api';
-import { act, cleanup, renderHook } from '@testing-library/react-hooks';
+} from '@deriv/api-v2';
+import { cleanup, renderHook } from '@testing-library/react-hooks';
 import WithdrawalCryptoProvider, { useWithdrawalCryptoContext } from './WithdrawalCryptoProvider';
 import { waitFor } from '@testing-library/react';
 
-jest.mock('@deriv/api', () => ({
+jest.mock('@deriv/api-v2', () => ({
     useAccountLimits: jest.fn(),
     useActiveAccount: jest.fn(),
+    useCryptoConfig: jest.fn(),
     useCryptoWithdrawal: jest.fn(),
     useCurrencyConfig: jest.fn(),
     useExchangeRateSubscription: jest.fn(),
@@ -24,6 +26,7 @@ jest.mock('@deriv/api', () => ({
 
 const mockUseAccountLimits = useAccountLimits as jest.Mock;
 const mockUseActiveAccount = useActiveAccount as jest.Mock;
+const mockUseCryptoConfig = useCryptoConfig as jest.Mock;
 const mockUseCryptoWithdrawal = useCryptoWithdrawal as jest.Mock;
 const mockUseCurrencyConfig = useCurrencyConfig as jest.Mock;
 const mockUseExchangeRate = useExchangeRateSubscription as jest.Mock;
@@ -42,6 +45,7 @@ describe('useWithdrawalCryptoContext', () => {
                 },
             },
         });
+        mockUseCryptoConfig.mockReturnValue({});
         mockUseCryptoWithdrawal.mockReturnValue({
             mutateAsync: jest.fn().mockResolvedValue({}),
         });
@@ -76,7 +80,9 @@ describe('useWithdrawalCryptoContext', () => {
     afterEach(cleanup);
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-        <WithdrawalCryptoProvider verificationCode='Abcd1234'>{children}</WithdrawalCryptoProvider>
+        <WithdrawalCryptoProvider setVerificationCode={jest.fn} verificationCode='Abcd1234'>
+            {children}
+        </WithdrawalCryptoProvider>
     );
 
     it('should check whether the client is verified', () => {

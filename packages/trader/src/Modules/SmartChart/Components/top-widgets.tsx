@@ -44,12 +44,7 @@ const TopWidgets = ({
 
     const portal = ReactDOM.createPortal(
         <div className={`smartcharts-${theme}`}>
-            <div
-                className='top-widgets-portal'
-                style={{
-                    width: `100%`,
-                }}
-            >
+            <div className='top-widgets-portal'>
                 {ChartTitleLocal}
                 {!is_digits_widget_active && <RecentTradeInfo />}
             </div>

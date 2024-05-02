@@ -2,7 +2,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useOnClickOutside } from 'usehooks-ts';
 import { FullPageMobileWrapper } from '@/components';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { Text, useDevice } from '@deriv-com/ui';
 import { CurrencySelector } from './CurrencySelector';

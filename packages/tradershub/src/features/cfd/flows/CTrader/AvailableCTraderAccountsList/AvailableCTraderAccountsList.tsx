@@ -6,19 +6,20 @@ import {
     TradingAccountCardContent,
     TradingAccountCardLightButton,
 } from '@/components';
-import { getStaticUrl } from '@/helpers';
 import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
-import { useRegulationFlags } from '@/hooks';
+import { useQueryParams, useRegulationFlags } from '@/hooks';
+import { useUIContext } from '@/providers';
 import { PlatformDetails } from '@cfd/constants';
-import { CTraderSuccessModal } from '@cfd/modals';
-import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api';
-import { Provider } from '@deriv/library';
+import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api-v2';
+import { URLUtils } from '@deriv-com/utils';
+
+const { getDerivStaticURL } = URLUtils;
 
 const LeadingIcon = () => (
     <IconComponent
         icon='CTrader'
         onClick={() => {
-            window.open(getStaticUrl('/deriv-ctrader'));
+            window.open(getDerivStaticURL('/deriv-ctrader'));
         }}
     />
 );
@@ -27,7 +28,8 @@ const AvailableCTraderAccountsList = () => {
     const { mutate, status } = useCreateOtherCFDAccount();
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const { hasActiveDerivAccount } = useRegulationFlags();
-    const { show } = Provider.useModal();
+    const { setUIState } = useUIContext();
+    const { openModal } = useQueryParams();
 
     const accountType = activeTradingAccount?.is_virtual ? 'demo' : 'real';
     const title = getCfdsAccountTitle(PlatformDetails.ctrader.title, activeTradingAccount?.is_virtual);
@@ -50,9 +52,10 @@ const AvailableCTraderAccountsList = () => {
 
     useEffect(() => {
         if (status === 'success') {
-            show(<CTraderSuccessModal isDemo={accountType === 'demo'} />);
+            setUIState({ accountType });
+            openModal('CTraderSuccessModal');
         }
-    }, [accountType, show, status]);
+    }, [accountType, openModal, setUIState, status]);
 
     return (
         <Fragment>

@@ -1,8 +1,9 @@
-import React, { useReducer } from 'react';
+import React, { useCallback, useReducer } from 'react';
 import { TSelectedPaymentMethod } from 'types';
 import { PaymentMethodForm } from '@/components';
+import { useIsAdvertiser } from '@/hooks';
 import { advertiserPaymentMethodsReducer } from '@/reducers';
-import { p2p } from '@deriv/api';
+import { p2p } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { PaymentMethodsEmpty } from './PaymentMethodsEmpty';
 import { PaymentMethodsList } from './PaymentMethodsList';
@@ -13,7 +14,8 @@ import { PaymentMethodsList } from './PaymentMethodsList';
  * @example <PaymentMethods />
  * **/
 const PaymentMethods = () => {
-    const { data: p2pAdvertiserPaymentMethods, isLoading } = p2p.advertiserPaymentMethods.useGet();
+    const isAdvertiser = useIsAdvertiser();
+    const { data: p2pAdvertiserPaymentMethods, isLoading } = p2p.advertiserPaymentMethods.useGet(isAdvertiser);
     const [formState, dispatch] = useReducer(advertiserPaymentMethodsReducer, {});
 
     const handleAddPaymentMethod = (selectedPaymentMethod?: TSelectedPaymentMethod) => {
@@ -40,9 +42,10 @@ const PaymentMethods = () => {
             type: 'DELETE',
         });
     };
-    const handleResetFormState = () => {
+
+    const handleResetFormState = useCallback(() => {
         dispatch({ type: 'RESET' });
-    };
+    }, []);
 
     if (isLoading) {
         return <Loader className='m-auto' isFullScreen={false} />;

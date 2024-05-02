@@ -141,11 +141,18 @@ const Redirect = observer(() => {
         }
         case 'payment_withdraw': {
             if (is_next_wallet) {
-                // passes verification_code through query param as we do not want to use localstorage/session storage
-                // though can't use "verification_code" as name param
-                // as there is general logic within client-store
-                // which removes anything which resembles code=XYZ
-                history.push(`${routes.wallets_withdrawal}?verification=${verification_code?.payment_withdraw}`);
+                /*
+                  1. pass verification_code through query param as we do not want to use localstorage/session storage
+                     though can't use "verification_code" as name param
+                     as there is general logic within client-store
+                     which removes anything which resembles code=XYZ
+                  2. pass loginid as a query param so that the withdrawal component knows what account is being withdrawn from
+                */
+                history.push(
+                    `${routes.wallets_withdrawal}?verification=${verification_code.payment_withdraw}${
+                        client.loginid ? `&loginid=${client.loginid}` : ''
+                    }`
+                );
             } else {
                 history.push(routes.cashier_withdrawal);
             }

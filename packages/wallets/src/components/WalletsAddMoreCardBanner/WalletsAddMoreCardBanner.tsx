@@ -1,27 +1,24 @@
 import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useCreateWallet, useDerivAccountsList } from '@deriv/api-v2';
+import { useCreateWallet } from '@deriv/api-v2';
+import { LabelPairedCheckMdFillIcon, LabelPairedPlusMdFillIcon } from '@deriv/quill-icons';
 import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
-import CheckIcon from '../../public/images/check.svg';
-import PlusIcon from '../../public/images/plus.svg';
-import { THooks } from '../../types';
+import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
+import { TWalletCarouselItem } from '../../types';
 import { WalletButton } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletAddedSuccess } from '../WalletAddedSuccess';
-import WalletAddMoreCurrencyIcon from '../WalletAddMoreCurrencyIcon';
+import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import { WalletError } from '../WalletError';
-import WalletListCardBadge from '../WalletListCardBadge/WalletListCardBadge';
 
-type TProps = THooks.AllWalletAccounts;
-
-const WalletsAddMoreCardBanner: React.FC<TProps> = ({
+const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
     currency,
     is_added: isAdded,
     is_crypto: isCrypto,
-    landing_company_name: landingCompanyName,
-}: TProps) => {
-    const { switchAccount } = useDerivAccountsList();
+}) => {
+    const switchWalletAccount = useWalletAccountSwitcher();
+
     const { data, error, isSuccess: isMutateSuccess, mutate, status } = useCreateWallet();
     const { isMobile } = useDevice();
     const history = useHistory();
@@ -43,9 +40,9 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
     useEffect(() => {
         if (data && isMutateSuccess) {
             addWalletAccountToLocalStorage(data);
-            switchAccount(data?.client_id);
+            switchWalletAccount(data?.client_id);
         }
-    }, [addWalletAccountToLocalStorage, data, isMutateSuccess, switchAccount]);
+    }, [addWalletAccountToLocalStorage, data, isMutateSuccess, switchWalletAccount]);
 
     useEffect(
         () => {
@@ -83,19 +80,17 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
     return (
         <div className='wallets-add-more__banner'>
             <div className='wallets-add-more__banner-header'>
-                <span className='wallets-add-more__banner-logo'>
-                    <WalletAddMoreCurrencyIcon currency={currency ? currency.toLowerCase() : ''} />
-                </span>
-                <WalletListCardBadge label={landingCompanyName} />
+                <WalletCurrencyIcon currency={currency ?? 'USD'} size={isMobile ? 'xs' : 'sm'} />
             </div>
             <WalletButton
                 color='white'
                 disabled={isAdded}
                 icon={
+                    // TODO: Replace hex colors with values from Deriv UI
                     isAdded ? (
-                        <CheckIcon className='wallets-add-more__banner-button-icon' width={16} />
+                        <LabelPairedCheckMdFillIcon fill='#333333' />
                     ) : (
-                        <PlusIcon className='wallets-add-more__banner-button-icon' width={16} />
+                        <LabelPairedPlusMdFillIcon fill='#333333' />
                     )
                 }
                 onClick={e => {

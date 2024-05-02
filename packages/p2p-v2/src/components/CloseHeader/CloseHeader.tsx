@@ -9,7 +9,7 @@ const CloseHeader = () => {
 
     return (
         <div className='p2p-v2-close-header'>
-            <Text size={isMobile ? 'md' : 'xl'} weight='bold'>
+            <Text size={isMobile ? 'lg' : 'xl'} weight='bold'>
                 {isMobile ? 'Deriv P2P' : 'Cashier'}
             </Text>
             <LabelPairedXmarkLgBoldIcon

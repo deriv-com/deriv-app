@@ -1,4 +1,15 @@
 .mt5-migration-modal {
+    &__container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+        margin: 1.6rem 2.4rem;
+
+        @include mobile {
+            margin: 1.6rem;
+            justify-content: flex-start;
+        }
+    }
     &__error {
         margin: 3.2rem 2.4rem 0;
         background-color: var(--button-primary-light-default);
@@ -10,23 +21,22 @@
         }
         @include mobile {
             margin: 1.6rem;
+            &-dialog {
+                padding: 1.6rem;
+                .dc-dialog__dialog {
+                    padding: 1.6rem;
+                }
+            }
         }
     }
     &__mobile-header {
+        display: flex;
+        align-items: center;
         margin: 1.6rem;
         text-align: unset;
     }
-    &__message {
-        padding: 0 3.2rem 3.2rem;
-    }
-    &__description {
-        margin: 3.2rem 2.4rem 0;
-        @include mobile {
-            margin: 1.6rem;
-        }
-    }
+
     &__migration_content {
-        margin: 3.2rem 15rem;
         display: grid;
         grid-template-columns: 1fr;
         grid-gap: 1.6rem;
@@ -73,42 +83,43 @@
     &__migration_infobox {
         display: flex;
         justify-content: center;
-        padding-bottom: 2rem;
+        .dc-hint-box {
+            align-items: flex-start;
+        }
     }
-    &__existing-accounts {
-        margin: 3.2rem 2.4rem;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-gap: 1.6rem;
-
-        @include mobile {
+    &__password {
+        &-header-container {
             display: flex;
             flex-direction: column;
+            gap: 0.8rem;
+        }
+        &-input-container {
+            width: 100%;
+        }
+        &-forgot-container {
+            display: flex;
+            width: 100%;
             justify-content: center;
-            align-items: center;
+            @include mobile {
+                justify-content: flex-end;
+            }
         }
 
-        &-card {
-            height: 29.6rem;
-            width: 26.2rem;
-            background-color: var(--general-section-1);
-            border-radius: $BORDER-RADIUS * 2;
-            &-content {
-                margin: 1.6rem;
+        &-hint {
+            &-items {
                 display: flex;
                 flex-direction: column;
-                gap: 1.6rem;
-                &__message {
-                    display: grid;
-                    grid-template-columns: 0.2fr auto;
-                    grid-gap: 0.4rem;
+                padding: 1.2rem 2.4rem;
+                list-style-type: disc;
+                gap: 1.2rem;
+                &:first-child {
+                    margin-bottom: 0.8rem;
                 }
             }
-            @include mobile {
-                width: 32.8rem;
-                height: auto;
-            }
         }
+    }
+    &__loading {
+        height: 24rem;
     }
 }
 
@@ -116,19 +127,27 @@
     .dc-modal-header {
         border-bottom: 0.2rem solid var(--general-section-1);
     }
+    .dc-modal-footer {
+        padding: 2.4rem;
+    }
 }
 
 .mt5-migration-modal__mobile-container {
+    width: 100%;
     overflow-x: hidden;
     overflow-y: auto;
     .dc-modal-footer {
         position: fixed;
         bottom: 4rem;
         width: 100%;
+        background: var(--general-main-1);
 
         .dc-btn {
             width: 100%;
         }
+    }
+    .dc-form-submit-button--absolute {
+        position: absolute;
     }
 }
 

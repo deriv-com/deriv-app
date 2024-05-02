@@ -1,10 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Analytics } from '@deriv-com/analytics'; //BotTAction will add ones that PR gets merged
+import { useRemoteConfig } from '@deriv/api';
+import { useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
-import BotSnackbar from 'Components/bot-snackbar';
-import { DBOT_TABS } from 'Constants/bot-contents';
+import { localize } from '@deriv/translations';
+import { botNotification } from 'Components/bot-notification/bot-notification';
+import { notification_message } from 'Components/bot-notification/bot-notification-utils';
+import initDatadogLogs from 'Utils/datadog-logs';
+import { TBlocklyEvents } from 'Types';
 import LoadModal from '../../components/load-modal';
 import { useDBotStore } from '../../stores/useDBotStore';
 import SaveModal from '../dashboard/load-bot-preview/save-modal';
@@ -14,33 +17,25 @@ import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {
     const { ui } = useStore();
-    const { dashboard, app, run_panel, toolbar, quick_strategy } = useDBotStore();
+    const { dashboard, app, run_panel, toolbar, quick_strategy, blockly_store } = useDBotStore();
     const { active_tab, active_tour, is_preview_on_popup } = dashboard;
     const { is_open } = quick_strategy;
     const { is_running } = run_panel;
+    const { is_loading } = blockly_store;
     const is_blockly_listener_registered = React.useRef(false);
-    const [show_snackbar, setShowSnackbar] = React.useState(false);
+    const is_blockly_delete_listener_registered = React.useRef(false);
     const { is_mobile } = ui;
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
+    const isMounted = useIsMounted();
+    const { data: remote_config_data } = useRemoteConfig(isMounted());
+    let end_drag_id: null | string = null;
+    let selection_id: null | string = null;
 
     React.useEffect(() => {
-        const is_bot_builder = active_tab === DBOT_TABS.BOT_BUILDER;
-        if (is_bot_builder) {
-            Analytics.trackEvent('ce_bot_builder_form', {
-                action: 'open',
-                form_source: 'ce_bot_builder_form',
-            });
-        }
-        return () => {
-            if (is_bot_builder) {
-                Analytics.trackEvent('ce_bot_builder_form', {
-                    action: 'close',
-                    form_source: 'ce_bot_builder_form',
-                });
-            }
-        };
-    }, [active_tab]);
+        initDatadogLogs(remote_config_data.tracking_datadog);
+        window.is_datadog_logging_enabled = remote_config_data.tracking_datadog; // This will be used in the middleware inside of bot-skeleton to check if datadog is enabled before logging
+    }, [remote_config_data.tracking_datadog]);
 
     React.useEffect(() => {
         onMount();
@@ -53,7 +48,6 @@ const BotBuilder = observer(() => {
             is_blockly_listener_registered.current = true;
             workspace.addChangeListener(handleBlockChangeOnBotRun);
         } else {
-            setShowSnackbar(false);
             removeBlockChangeListener();
         }
 
@@ -66,12 +60,11 @@ const BotBuilder = observer(() => {
     }, [is_running]);
 
     const handleBlockChangeOnBotRun = (e: Event) => {
-        const { is_reset_button_clicked, setResetButtonState } = toolbar;
+        const { is_reset_button_clicked } = toolbar;
         if (e.type !== 'ui' && !is_reset_button_clicked) {
-            setShowSnackbar(true);
+            botNotification(notification_message.workspace_change);
             removeBlockChangeListener();
         } else if (is_reset_button_clicked) {
-            setResetButtonState(false);
             removeBlockChangeListener();
         }
     };
@@ -81,13 +74,41 @@ const BotBuilder = observer(() => {
         window.Blockly?.derivWorkspace?.removeChangeListener(handleBlockChangeOnBotRun);
     };
 
+    React.useEffect(() => {
+        const workspace = window.Blockly?.derivWorkspace;
+        if (workspace && !is_blockly_delete_listener_registered.current) {
+            is_blockly_delete_listener_registered.current = true;
+            workspace.addChangeListener(handleBlockDelete);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_loading]);
+
+    const handleBlockDelete = (e: TBlocklyEvents) => {
+        if (e.type === 'ui' && e.element === 'selected' && !e.group?.includes('dbot-')) {
+            selection_id = e.oldValue;
+        }
+        if (e.type === 'endDrag' && !e.group?.includes('dbot-')) {
+            end_drag_id = e.group;
+        }
+        if (e.type === 'delete' && (end_drag_id === e.group || selection_id === e.blockId)) {
+            handleBlockDeleteNotification();
+            end_drag_id = null;
+        }
+    };
+
+    const handleBlockDeleteNotification = () => {
+        botNotification(notification_message.block_delete, {
+            label: localize('Undo'),
+            onClick: closeToast => {
+                window.Blockly.derivWorkspace.undo();
+                closeToast?.();
+            },
+        });
+    };
+
     return (
         <>
-            <BotSnackbar
-                is_open={show_snackbar}
-                message={<Localize i18n_default_text='Changes you make will not affect your running bot.' />}
-                handleClose={() => setShowSnackbar(false)}
-            />
             <div
                 className={classNames('bot-builder', {
                     'bot-builder--active': active_tab === 1 && !is_preview_on_popup,

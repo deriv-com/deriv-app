@@ -5,27 +5,23 @@ import { Clipboard, CurrencyIcon, ReceiptScreen } from '../../../../components';
 import { useWithdrawalCryptoContext } from '../../provider';
 import styles from './WithdrawalCryptoReceipt.module.scss';
 
-const ActionButtons = () => {
-    return (
-        <div className={styles.actions}>
-            <Button color='white' size='lg' textSize='sm' variant='outlined'>
-                View transaction history
-            </Button>
-            <Button size='lg' textSize='sm'>
-                Make a new withdrawal
-            </Button>
-        </div>
-    );
-};
-
 const WithdrawalCryptoReceipt: React.FC = () => {
     const { isMobile } = useDevice();
-    const { withdrawalReceipt } = useWithdrawalCryptoContext();
+    const { resetWithdrawalVerification, withdrawalReceipt } = useWithdrawalCryptoContext();
     const { address, amount, fromAccount } = withdrawalReceipt;
 
     return (
         <ReceiptScreen
-            actionButtons={<ActionButtons />}
+            actionButtons={
+                <div className={styles.actions}>
+                    <Button size='lg' textSize='sm' variant='outlined'>
+                        View transaction history
+                    </Button>
+                    <Button onClick={resetWithdrawalVerification} size='lg' textSize='sm'>
+                        Make a new withdrawal
+                    </Button>
+                </div>
+            }
             amount={`${amount} ${fromAccount?.currency}`}
             fromElement={
                 <>
@@ -35,7 +31,11 @@ const WithdrawalCryptoReceipt: React.FC = () => {
                         )}
                         <Text weight='bold'>{fromAccount?.currency}</Text>
                     </div>
-                    <div className={styles['account-id']}>{fromAccount?.currency}</div>
+                    <div className={styles['account-id']}>
+                        <Text color='less-prominent' size={isMobile ? 'md' : 'sm'}>
+                            {fromAccount?.loginid}
+                        </Text>
+                    </div>
                 </>
             }
             status='In review'

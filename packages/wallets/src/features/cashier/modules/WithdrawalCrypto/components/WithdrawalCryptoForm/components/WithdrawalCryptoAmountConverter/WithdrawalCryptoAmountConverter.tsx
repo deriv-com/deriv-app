@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
+import { LegacyArrowRight2pxIcon } from '@deriv/quill-icons';
 import { WalletTextField } from '../../../../../../../../components';
-import ArrowBold from '../../../../../../../../public/images/ic-back-arrow.svg';
 import { useWithdrawalCryptoContext } from '../../../../provider';
 import type { TWithdrawalForm } from '../../../../types';
 import { validateCryptoInput, validateFiatInput } from '../../../../utils';
@@ -12,6 +12,7 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
     const {
         accountLimits,
         activeWallet,
+        cryptoConfig,
         fractionalDigits,
         getConvertedCryptoAmount,
         getConvertedFiatAmount,
@@ -27,7 +28,8 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
             fractionalDigits,
             isClientVerified,
             accountLimits?.remainder ?? 0,
-            e.target.value
+            e.target.value,
+            cryptoConfig?.minimum_withdrawal
         )
             ? getConvertedFiatAmount(e.target.value)
             : '';
@@ -61,13 +63,15 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
                         fractionalDigits,
                         isClientVerified,
                         accountLimits?.remainder ?? 0,
-                        value
+                        value,
+                        cryptoConfig?.minimum_withdrawal
                     )
                 }
             >
                 {({ field }: FieldProps<string>) => (
                     <WalletTextField
                         {...field}
+                        data-testid='dt_withdrawal_crypto_amount_input'
                         errorMessage={errors.cryptoAmount}
                         isInvalid={Boolean(errors.cryptoAmount)}
                         label={`Amount (${activeWallet?.currency})`}
@@ -81,13 +85,15 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
                 className={classNames('wallets-withdrawal-crypto-amount-converter__arrow', {
                     'wallets-withdrawal-crypto-amount-converter__arrow--rtl': !isCryptoInputActive,
                 })}
+                data-testid='dt_withdrawal_crypto_amount_converter_arrow'
             >
-                <ArrowBold />
+                <LegacyArrowRight2pxIcon iconSize='xs' />
             </div>
             <Field name='fiatAmount' validate={(value: string) => validateFiatInput(fractionalDigits, value)}>
                 {({ field }: FieldProps<string>) => (
                     <WalletTextField
                         {...field}
+                        data-testid='dt_withdrawal_fiat_amount_input'
                         errorMessage={errors.fiatAmount}
                         isInvalid={Boolean(errors.fiatAmount)}
                         label='Amount (USD)'

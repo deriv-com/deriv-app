@@ -1,10 +1,14 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MyProfileStats from '../MyProfileStats';
 
-const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <APIProvider>
+        <AuthProvider>{children}</AuthProvider>
+    </APIProvider>
+);
 
 let mockUseAdvertiserStats = {
     data: {
@@ -29,12 +33,18 @@ const mockUseActiveAccount = {
     isLoading: false,
 };
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: () => ({ isMobile: false }),
+}));
+
 jest.mock('@/hooks', () => ({
     ...jest.requireActual('@/hooks'),
     useAdvertiserStats: jest.fn(() => mockUseAdvertiserStats),
 }));
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
     useActiveAccount: jest.fn(() => mockUseActiveAccount),
 }));
 

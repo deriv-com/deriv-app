@@ -1,6 +1,6 @@
 import React from 'react';
+import { DerivLightEmailVerificationIcon } from '@deriv/quill-icons';
 import { WalletButton, WalletsActionScreen, WalletText } from '../../../../../components';
-import EmailVerification from '../../../../../public/images/email-verification.svg';
 import './WithdrawalVerificationRequest.scss';
 
 type TProps = {
@@ -14,11 +14,10 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
                 description={
                     <div className='wallets-withdrawal-verification-request__description'>
                         <WalletText align='center'>
-                            Click the button below and we&apos;ll send you an email with a link. Click that link to
-                            verify your withdrawal request.
+                            Hit the button below, and we&apos;ll email you a verification link.
                         </WalletText>
                         <WalletText align='center'>
-                            This is to protect your account from unauthorised withdrawals.
+                            This is to confirm that it&apos;s you making the withdrawal request.
                         </WalletText>
                     </div>
                 }
@@ -27,7 +26,7 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
                         className='wallets-withdrawal-verification-request__icon'
                         data-testid='dt_withdrawal_verification_request_icon'
                     >
-                        <EmailVerification />
+                        <DerivLightEmailVerificationIcon height={102} width={102} />
                     </div>
                 }
                 renderButtons={() => (
@@ -35,7 +34,7 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
                         Send email
                     </WalletButton>
                 )}
-                title='Please help us verify your withdrawal request.'
+                title='Confirm your identity to make a withdrawal.'
             />
         </div>
     );

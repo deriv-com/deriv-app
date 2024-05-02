@@ -6,13 +6,14 @@ import { Localize } from '@deriv/translations';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { useStoreWalletAccountsList, useStoreLinkedWalletsAccounts } from '@deriv/hooks';
+import { TStores } from '@deriv/stores/types';
 import { AccountSwitcherWallet, AccountSwitcherWalletMobile } from 'App/Containers/AccountSwitcherWallet';
 import { AccountsInfoLoader } from '../Components/Preloader';
 import AccountInfoWrapper from '../account-info-wrapper';
 import WalletBadge from './wallet-badge';
 
 type TAccountInfoWallets = {
-    toggleDialog: (value?: boolean) => void;
+    toggleDialog: () => void;
     is_dialog_on: boolean;
 };
 
@@ -21,18 +22,16 @@ type TDropdownArrow = {
 };
 
 type TBalanceLabel = {
-    balance: number;
-    currency: string;
+    balance: TStores['client']['accounts'][string]['balance'];
+    currency: TStores['client']['accounts'][string]['currency'];
     is_virtual: boolean;
     display_code: string;
 };
 
-type TMobileInfoIcon = {
-    wallet_account: Exclude<ReturnType<typeof useStoreWalletAccountsList>['data'], undefined>[number];
-};
-
-type TDesktopInfoIcons = {
-    wallet_account: Exclude<ReturnType<typeof useStoreWalletAccountsList>['data'], undefined>[number];
+type TInfoIcons = {
+    gradients: Exclude<ReturnType<typeof useStoreWalletAccountsList>['data'], undefined>[number]['gradients'];
+    icons: Exclude<ReturnType<typeof useStoreWalletAccountsList>['data'], undefined>[number]['icons'];
+    icon_type: Exclude<ReturnType<typeof useStoreWalletAccountsList>['data'], undefined>[number]['icon_type'];
 };
 
 const DropdownArrow = ({ is_disabled = false }: TDropdownArrow) =>
@@ -61,7 +60,7 @@ const BalanceLabel = ({ balance, currency, is_virtual, display_code }: Partial<T
         </div>
     ) : null;
 
-const MobileInfoIcon = observer(({ wallet_account }: TMobileInfoIcon) => {
+const MobileInfoIcon = observer(({ gradients, icons, icon_type }: TInfoIcons) => {
     const {
         ui: { is_dark_mode_on },
     } = useStore();
@@ -73,17 +72,17 @@ const MobileInfoIcon = observer(({ wallet_account }: TMobileInfoIcon) => {
         <div className='acc-info__wallets-container'>
             <AppLinkedWithWalletIcon
                 app_icon={app_icon}
-                gradient_class={wallet_account?.gradients?.card[theme] ?? ''}
+                gradient_class={gradients?.card[theme] ?? ''}
                 size='small'
-                type={wallet_account?.icon_type}
-                wallet_icon={wallet_account?.icons?.[theme] ?? ''}
+                type={icon_type}
+                wallet_icon={icons?.[theme] ?? ''}
                 hide_watermark
             />
         </div>
     );
 });
 
-const DesktopInfoIcons = observer(({ wallet_account }: TDesktopInfoIcons) => {
+const DesktopInfoIcons = observer(({ gradients, icons, icon_type }: TInfoIcons) => {
     const { ui } = useStore();
     const { is_dark_mode_on } = ui;
     const theme = is_dark_mode_on ? 'dark' : 'light';
@@ -96,9 +95,9 @@ const DesktopInfoIcons = observer(({ wallet_account }: TDesktopInfoIcons) => {
                 data_testid='dt_ic_wallet_options'
             />
             <WalletIcon
-                icon={wallet_account?.icons?.[theme] ?? ''}
-                type={wallet_account?.icon_type}
-                gradient_class={wallet_account?.gradients?.card[theme]}
+                icon={icons?.[theme] ?? ''}
+                type={icon_type}
+                gradient_class={gradients?.card[theme]}
                 size={'small'}
                 has_bg
                 hide_watermark
@@ -115,7 +114,10 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
     const linked_wallets_accounts = useStoreLinkedWalletsAccounts();
 
     const active_account = accounts?.[loginid ?? ''];
-    const active_wallet = wallet_list?.find(wallet => wallet.loginid === loginid);
+    const wallet_loginid = localStorage.getItem('active_wallet_loginid');
+    const active_wallet =
+        wallet_list?.find(wallet => wallet.loginid === wallet_loginid) ??
+        wallet_list?.find(wallet => wallet.loginid === loginid);
 
     let linked_dtrade_trading_account_loginid = loginid;
 
@@ -151,28 +153,22 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                         'acc-info--show': is_dialog_on,
                         'acc-info--is-disabled': active_account?.is_disabled,
                     })}
-                    onClick={
-                        active_account?.is_disabled
-                            ? undefined
-                            : () => {
-                                  toggleDialog();
-                              }
-                    }
+                    onClick={active_account?.is_disabled ? undefined : () => toggleDialog()}
                     // SonarLint offers to add handler for onKeyDown event if we have onClick event handler
-                    onKeyDown={
-                        active_account?.is_disabled
-                            ? undefined
-                            : event => {
-                                  if (event.key === 'Enter') {
-                                      toggleDialog();
-                                  }
-                              }
-                    }
+                    onKeyDown={active_account?.is_disabled ? undefined : () => toggleDialog()}
                 >
                     {is_mobile ? (
-                        <MobileInfoIcon wallet_account={linked_wallet} />
+                        <MobileInfoIcon
+                            gradients={linked_wallet.gradients}
+                            icons={linked_wallet.icons}
+                            icon_type={linked_wallet.icon_type}
+                        />
                     ) : (
-                        <DesktopInfoIcons wallet_account={linked_wallet} />
+                        <DesktopInfoIcons
+                            gradients={linked_wallet.gradients}
+                            icons={linked_wallet.icons}
+                            icon_type={linked_wallet.icon_type}
+                        />
                     )}
                     <BalanceLabel
                         balance={active_account?.balance}
@@ -190,7 +186,7 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                 </div>
             </AccountInfoWrapper>
             {is_mobile ? (
-                <AccountSwitcherWalletMobile is_visible={is_dialog_on} toggle={toggleDialog} />
+                <AccountSwitcherWalletMobile is_visible={is_dialog_on} toggle={toggleDialog} loginid={loginid} />
             ) : (
                 <CSSTransition
                     in={is_dialog_on}

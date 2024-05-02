@@ -1,6 +1,8 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { setColors } from '@deriv/bot-skeleton';
 import { TStores } from '@deriv/stores/types';
+import { botNotification } from 'Components/bot-notification/bot-notification';
+import { notification_message, NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { clearInjectionDiv } from 'Constants/load-modal';
 import * as strategy_description from '../constants/quick-strategies';
 import { TDescriptionItem } from '../pages/bot-builder/quick-strategy/types';
@@ -20,10 +22,17 @@ import {
     TUserGuideContent,
 } from '../pages/tutorials/tutorials.types';
 import RootStore from './root-store';
+import DOMPurify from 'dompurify';
+
+type TDialogOptions = {
+    title?: string;
+    url?: string;
+    type?: string;
+};
 
 export interface IDashboardStore {
     active_tab: number;
-    dialog_options: { [key: string]: string };
+    dialog_options: TDialogOptions;
     faq_search_value: string | null;
     has_mobile_preview_loaded: boolean;
     is_web_socket_intialised: boolean;
@@ -41,7 +50,7 @@ export interface IDashboardStore {
     setInfoPanelVisibility: (visibility: boolean) => void;
     setIsFileSupported: (is_file_supported: boolean) => void;
     setWebSocketState: (is_web_socket_intialised: boolean) => void;
-    setOpenSettings: (toast_message: string, show_toast: boolean) => void;
+    setOpenSettings: (toast_message: NOTIFICATION_TYPE) => void;
     setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
     setStrategySaveType: (param: string) => void;
     setFaqTitle: (param: string) => void;
@@ -116,7 +125,6 @@ export default class DashboardStore implements IDashboardStore {
         });
         this.root_store = root_store;
         this.core = core;
-        const removeHTMLTagsFromString = (param = '') => param.replace(/<.*?>/g, '');
 
         const getUserGuideContent = [...user_guide_content].map(
             item => `${item.search_id}# ${item.content.toLowerCase()}`
@@ -127,7 +135,9 @@ export default class DashboardStore implements IDashboardStore {
         const getFaqContent = faq_content.map(item => {
             return `${item.search_id}# ${item.title.toLowerCase()} ${item.description
                 .map(inner_item => {
-                    const itemWithoutHTML = removeHTMLTagsFromString(inner_item.content);
+                    const itemWithoutHTML = DOMPurify.sanitize(inner_item.content, {
+                        ALLOWED_TAGS: [], //kept empty to remove all tags
+                    });
                     return itemWithoutHTML?.toLowerCase();
                 })
                 .join(' ')}`;
@@ -203,7 +213,7 @@ export default class DashboardStore implements IDashboardStore {
     active_tab = 0;
     active_tab_tutorials = 0;
     active_tour_step_number = 0;
-    dialog_options = {};
+    dialog_options: TDialogOptions = {};
     faq_search_value = '';
     getFileArray = [];
     has_file_loaded = false;
@@ -295,9 +305,9 @@ export default class DashboardStore implements IDashboardStore {
         this.is_web_socket_intialised = is_web_socket_intialised;
     };
 
-    setOpenSettings = (toast_message: string, show_toast = true) => {
+    setOpenSettings = (toast_message: NOTIFICATION_TYPE) => {
         this.toast_message = toast_message;
-        this.show_toast = show_toast;
+        botNotification(notification_message[toast_message]);
     };
 
     setChartModalVisibility = () => {
@@ -365,8 +375,8 @@ export default class DashboardStore implements IDashboardStore {
         this.faq_search_value = faq_search_value;
     };
 
-    showVideoDialog = (param: { [key: string]: string }): void => {
-        const { url, type } = param;
+    showVideoDialog = (dialog_option: TDialogOptions): void => {
+        const { url, type = '' } = dialog_option;
         const dialog_type = ['google', 'url'];
         if (dialog_type.includes(type)) {
             if (type === 'url') {

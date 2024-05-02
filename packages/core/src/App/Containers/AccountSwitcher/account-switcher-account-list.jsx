@@ -119,17 +119,7 @@ const CurrencyDisplay = ({ country_standpoint, currency, loginid, is_virtual }) 
     const account_type = loginid.replace(/\d/g, '');
 
     if (user_is_from_this_country_list) {
-        if (account_type === 'MLT') {
-            return <Localize i18n_default_text='Options' />;
-        } else if (account_type === 'MX') {
-            if (country_standpoint.is_united_kingdom) {
-                return <Localize i18n_default_text='Gaming' />;
-            }
-            if (country_standpoint.is_isle_of_man) {
-                return getCurrencyName(currency);
-            }
-            return <Localize i18n_default_text='Synthetic' />;
-        } else if (account_type === 'MF') {
+        if (account_type === 'MF') {
             return <Localize i18n_default_text='Multipliers' />;
         }
     }
@@ -186,7 +176,7 @@ const AccountDisplay = ({
             </div>
         );
 
-    const { is_pathname_bot } = isBot();
+    const is_bot = isBot();
     return (
         <div>
             {/* TODO: Remove below condition once deriv x changes are completed */}
@@ -199,7 +189,7 @@ const AccountDisplay = ({
                         color={is_dark_mode_on ? 'general' : 'colored-background'}
                         size='xxs'
                         className={classNames('badge-server', {
-                            'badge-server-bot': is_pathname_bot,
+                            'badge-server-bot': is_bot,
                         })}
                     >
                         {getServerName(server)}

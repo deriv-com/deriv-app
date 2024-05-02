@@ -12,6 +12,8 @@ type TPageOverlay = {
     onClickClose?: (event: MouseEvent) => void;
     portal_id?: string;
     header_classname?: string;
+    has_return_icon?: boolean;
+    onReturn?: () => void;
 };
 
 const PageOverlay = ({
@@ -23,6 +25,8 @@ const PageOverlay = ({
     onClickClose,
     portal_id,
     header_classname,
+    has_return_icon,
+    onReturn,
 }: React.PropsWithChildren<TPageOverlay>) => {
     const page_overlay_ref = React.useRef<HTMLDivElement>(null);
 
@@ -37,7 +41,12 @@ const PageOverlay = ({
             {header && (
                 <div className={classNames('dc-page-overlay__header', { 'dc-page-app__header ': is_from_app })}>
                     <div className='dc-page-overlay__header-wrapper'>
-                        <div className={classNames('dc-page-overlay__header-title', header_classname)}>{header}</div>
+                        <div className={classNames('dc-page-overlay__header-title', header_classname)}>
+                            {has_return_icon && (
+                                <Icon icon='IcArrowLeftBold' onClick={onReturn} className='dc-modal-header__icon' />
+                            )}
+                            {header}
+                        </div>
                         {!is_from_app && (
                             <div
                                 data-testid='dt_page_overlay_header_close'

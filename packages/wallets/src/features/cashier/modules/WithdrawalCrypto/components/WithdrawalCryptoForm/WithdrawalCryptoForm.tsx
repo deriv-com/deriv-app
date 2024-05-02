@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, FieldProps, Formik } from 'formik';
 import { WalletButton, WalletTextField } from '../../../../../../components';
-import { useWithdrawalCryptoContext } from '../../provider/WithdrawalCryptoProvider';
+import { useWithdrawalCryptoContext } from '../../provider';
 import { validateCryptoAddress } from '../../utils';
 import { WithdrawalCryptoAmountConverter } from './components/WithdrawalCryptoAmountConverter';
 import { WithdrawalCryptoPercentageSelector } from './components/WithdrawalCryptoPercentageSelector';
@@ -32,6 +32,7 @@ const WithdrawalCryptoForm: React.FC = () => {
                                 {({ field }: FieldProps<string>) => (
                                     <WalletTextField
                                         {...field}
+                                        data-testid='dt_withdrawal_crypto_address_input'
                                         errorMessage={errors.cryptoAddress}
                                         isInvalid={Boolean(errors?.cryptoAddress)}
                                         label={`Your ${activeWallet?.currency_config?.name} cryptocurrency wallet address`}

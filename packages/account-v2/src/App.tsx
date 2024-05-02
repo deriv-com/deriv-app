@@ -1,29 +1,25 @@
-// TODO - Remove this once the IDV form is moved out
-/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
-import { Formik } from 'formik';
-import { APIProvider } from '@deriv/api';
-import { BreakpointProvider } from '@deriv/quill-design';
-import { DOCUMENT_LIST, INITIAL_VALUES, SELECTED_COUNTRY } from './mocks/idv-form.mock';
-import RouteLinks from './router/components/route-links/route-links';
-import { getIDVFormValidationSchema } from './utils/idv-form-utils';
-import { IDVForm } from './modules';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
+import { Modal } from '@deriv-com/ui';
+import { AppOverlay } from './components/AppOverlay';
+import { RouteLinks } from './router/components/RouteLinks';
+import { ACCOUNT_MODAL_REF } from './constants';
 import './index.scss';
 
 const App: React.FC = () => {
-    const validationSchema = getIDVFormValidationSchema(DOCUMENT_LIST);
+    if (document.getElementById(ACCOUNT_MODAL_REF.replace('#', ''))) {
+        // Set the Modal REF only if the element exists
+        Modal.setAppElement(ACCOUNT_MODAL_REF);
+    }
 
     return (
         <APIProvider standalone>
-            <BreakpointProvider>
-                <div className=' text-solid-slate-500 text-heading-h1'>Account V2</div>
-                {/* [TODO]: Remove the mocked values */}
-                <Formik initialValues={INITIAL_VALUES} onSubmit={() => {}} validationSchema={validationSchema}>
-                    <IDVForm selectedCountry={SELECTED_COUNTRY} />
-                </Formik>
-                <RouteLinks />
-            </BreakpointProvider>
+            <AuthProvider>
+                <AppOverlay title='Settings'>
+                    <RouteLinks />
+                </AppOverlay>
+            </AuthProvider>
         </APIProvider>
     );
 };

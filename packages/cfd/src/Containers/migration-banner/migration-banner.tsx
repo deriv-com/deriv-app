@@ -13,6 +13,7 @@ import {
 } from '@deriv/shared';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import MigrationBannerImage from './migration-banner-image';
+import './migration-banner.scss';
 
 type TMigrationBannerProps = {
     is_trade_modal?: boolean;
@@ -28,7 +29,7 @@ const MigrationBanner = observer(({ is_trade_modal = false }: TMigrationBannerPr
         Analytics.trackEvent('ce_upgrade_mt5_banner', {
             action: 'push_cta_upgrade',
         });
-        toggleMT5MigrationModal();
+        toggleMT5MigrationModal(true);
     };
     const is_desktop_trade_modal = is_trade_modal && !is_mobile;
     return (
@@ -42,7 +43,7 @@ const MigrationBanner = observer(({ is_trade_modal = false }: TMigrationBannerPr
                     'mt5-migration-banner__description--trade-modal': is_desktop_trade_modal,
                 })}
             >
-                <div className='mt5-migration-banne__description-text'>
+                <div className='mt5-migration-banner__description-text'>
                     {has_derived_and_financial_mt5 ? (
                         <Text size='xs'>
                             <Localize

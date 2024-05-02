@@ -2,7 +2,7 @@ import React from 'react';
 import { twMerge } from 'tailwind-merge';
 import { TotalAssetsLoader } from '@/components';
 import { useTotalAssets } from '@/hooks';
-import { useActiveTradingAccount } from '@deriv/api';
+import { useActiveTradingAccount } from '@deriv/api-v2';
 import { Text } from '@deriv-com/ui';
 
 const TotalAssets = () => {
@@ -12,7 +12,7 @@ const TotalAssets = () => {
     if (!isSuccess) return <TotalAssetsLoader />;
 
     return (
-        <div className='relative inline-block w-auto text-center lg:text-right'>
+        <div className='relative lg:inline-block text-center lg:text-right w-full lg:w-auto flex justify-center mt-24 lg:mt-0'>
             <div className='d-none lg:block'>
                 <Text size='sm'>Total assets</Text>
             </div>

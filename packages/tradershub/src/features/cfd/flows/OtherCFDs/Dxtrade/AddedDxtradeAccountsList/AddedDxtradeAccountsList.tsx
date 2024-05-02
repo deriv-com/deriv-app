@@ -1,18 +1,20 @@
 import React, { Fragment } from 'react';
+import { IconComponent, TradingAccountCard } from '@/components';
 import { getCfdsAccountTitle } from '@/helpers/cfdsAccountHelpers';
-import { useActiveTradingAccount, useDxtradeAccountsList } from '@deriv/api';
-import { Provider } from '@deriv/library';
+import { useQueryParams } from '@/hooks';
+import { useCFDContext } from '@/providers';
+import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
+import { useActiveTradingAccount, useDxtradeAccountsList } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
-import { IconComponent, TradingAccountCard } from '../../../../../../components';
-import { getStaticUrl } from '../../../../../../helpers/urls';
-import { CFDPlatforms, PlatformDetails } from '../../../../constants';
-import { TopUpModal, TradeModal } from '../../../../modals';
+import { URLUtils } from '@deriv-com/utils';
+
+const { getDerivStaticURL } = URLUtils;
 
 const LeadingIcon = () => (
     <IconComponent
         icon='DerivX'
         onClick={() => {
-            window.open(getStaticUrl('/derivx'));
+            window.open(getDerivStaticURL('/derivx'));
         }}
     />
 );
@@ -20,7 +22,8 @@ const LeadingIcon = () => (
 const AddedDxtradeAccountsList = () => {
     const { data: dxTradeAccounts } = useDxtradeAccountsList();
     const { data: activeTrading } = useActiveTradingAccount();
-    const { show } = Provider.useModal();
+    const { openModal } = useQueryParams();
+    const { setCfdState } = useCFDContext();
     const account = dxTradeAccounts?.find(account => account.is_virtual === activeTrading?.is_virtual);
     const isVirtual = account?.is_virtual;
     const title = getCfdsAccountTitle(PlatformDetails.dxtrade.title, isVirtual);
@@ -29,8 +32,15 @@ const AddedDxtradeAccountsList = () => {
         <div className='flex flex-col gap-y-4'>
             <Button
                 // open transfer modal
+                color='black'
                 onClick={() => {
-                    if (isVirtual) show(<TopUpModal account={account} platform={CFDPlatforms.DXTRADE} />);
+                    if (isVirtual) {
+                        setCfdState({
+                            account,
+                            platform: CFDPlatforms.DXTRADE,
+                        });
+                        openModal('TopUpModal');
+                    }
                     // else transferModal;
                 }}
                 variant='outlined'
@@ -38,16 +48,14 @@ const AddedDxtradeAccountsList = () => {
                 {isVirtual ? 'Top up' : 'Transfer'}
             </Button>
             <Button
-                onClick={() =>
-                    account &&
-                    show(
-                        <TradeModal
-                            account={account}
-                            marketType={account?.market_type}
-                            platform={CFDPlatforms.DXTRADE}
-                        />
-                    )
-                }
+                onClick={() => {
+                    setCfdState({
+                        account,
+                        marketType: account?.market_type,
+                        platform: CFDPlatforms.DXTRADE,
+                    });
+                    openModal('TradeModal');
+                }}
             >
                 Open
             </Button>

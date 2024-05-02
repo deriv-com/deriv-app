@@ -5,7 +5,6 @@ import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendQsParameterChangeEvent } from '../analytics/rudderstack-quick-strategy';
 import { TApiHelpersInstance, TDurationUnitItem, TFormData } from '../types';
 
 type TDurationUnit = {
@@ -35,16 +34,12 @@ const DurationUnit: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) => {
                 const has_selected = duration_units?.some(duration => duration.value === selected);
                 if (!has_selected) {
                     setFieldValue?.('durationtype', durations?.[0]?.unit);
-                    setFieldValue?.('duration', durations?.[0]?.min).then(() => {
-                        validateForm();
-                    });
+                    setFieldValue?.('duration', durations?.[0]?.min);
                     setValue('durationtype', durations?.[0]?.unit ?? '');
                     setCurrentDurationMinMax(durations?.[0]?.min, durations?.[0]?.max);
                 } else {
                     const duration = duration_units?.find((duration: TDurationUnitItem) => duration.value === selected);
-                    setFieldValue?.('duration', duration?.min).then(() => {
-                        validateForm();
-                    });
+                    setFieldValue?.('duration', duration?.min);
                     setValue('duration', duration?.min ?? 0);
                     setCurrentDurationMinMax(duration?.min, duration?.max);
                 }
@@ -83,11 +78,6 @@ const DurationUnit: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) => {
                                         validateForm();
                                     });
                                     setValue('duration', min);
-                                    rudderStackSendQsParameterChangeEvent({
-                                        parameter_type: 'durationtype',
-                                        parameter_value: value,
-                                        parameter_field_type: 'dropdown',
-                                    });
                                 }
                             }}
                         />

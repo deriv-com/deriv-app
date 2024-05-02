@@ -1,4 +1,5 @@
 import React from 'react';
+import useSubscription from '../../../../../useSubscription';
 import useInfiniteQuery from '../../../../../useInfiniteQuery';
 import useAuthorize from '../../../../useAuthorize';
 
@@ -8,30 +9,53 @@ const useOrderList = (
     config?: NonNullable<Parameters<typeof useInfiniteQuery<'p2p_order_list'>>[1]>['options']
 ) => {
     const { isSuccess } = useAuthorize();
-    const { data, fetchNextPage, ...rest } = useInfiniteQuery('p2p_order_list', {
+    const { data: subscriptionData, subscribe, unsubscribe } = useSubscription('p2p_order_list');
+
+    // Subscribe to the p2p_order_list endpoint to keep track of the order list updates
+    React.useEffect(() => {
+        if (isSuccess) subscribe();
+
+        return () => {
+            unsubscribe();
+        };
+    }, [isSuccess]);
+
+    // Fetch the order list data which handles pagination
+    const {
+        data: queryData,
+        fetchNextPage,
+        refetch,
+        ...rest
+    } = useInfiniteQuery('p2p_order_list', {
         payload: { ...payload, offset: payload?.offset, limit: payload?.limit },
         options: {
             getNextPageParam: (lastPage, pages) => {
-                if (!lastPage?.p2p_order_list?.list) return;
-
+                if (lastPage?.p2p_order_list?.list?.length === 0) return;
                 return pages.length;
             },
-            enabled: isSuccess && (config?.enabled === undefined || config.enabled),
+            enabled: subscriptionData && (config?.enabled === undefined || config.enabled),
         },
     });
 
-    // Flatten the data array
-    const flatten_data = React.useMemo(() => {
-        if (!data?.pages?.length) return;
+    // Refetch the data when the subscription data changes
+    React.useEffect(() => {
+        if (subscriptionData) {
+            refetch();
+        }
+    }, [subscriptionData, refetch]);
 
-        return data?.pages?.flatMap(page => page?.p2p_order_list?.list);
-    }, [data?.pages]);
+    // Flatten the data array
+    const flattened_data = React.useMemo(() => {
+        if (!queryData?.pages?.length) return;
+
+        return queryData?.pages?.flatMap(page => page?.p2p_order_list?.list);
+    }, [queryData?.pages]);
 
     // Additional p2p_order_list data
     const modified_data = React.useMemo(() => {
-        if (!flatten_data?.length) return undefined;
+        if (!flattened_data) return undefined;
 
-        return flatten_data.map(advert => ({
+        return flattened_data.map(advert => ({
             ...advert,
             /** Details of the advert for this order. */
             advert_details: {
@@ -75,7 +99,7 @@ const useOrderList = (
             /** Indicates that the seller in the process of confirming the order. */
             is_verification_pending: Boolean(advert?.verification_pending),
         }));
-    }, [flatten_data]);
+    }, [flattened_data]);
 
     return {
         /** The 'p2p_order_list' response. */

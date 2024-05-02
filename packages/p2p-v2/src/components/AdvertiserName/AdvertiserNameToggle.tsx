@@ -1,20 +1,20 @@
 import React, { memo, useEffect, useState } from 'react';
-import { useAdvertiserStats } from '@/hooks';
-import { p2p } from '@deriv/api';
+import { TAdvertiserStats } from 'types';
+import { p2p } from '@deriv/api-v2';
 import { Text, ToggleSwitch } from '@deriv-com/ui';
 import './AdvertiserNameToggle.scss';
 
 type TAdvertiserNameToggle = {
+    advertiserInfo: DeepPartial<TAdvertiserStats>;
     onToggle?: (shouldShowRealName: boolean) => void;
 };
-const AdvertiserNameToggle = memo(({ onToggle }: TAdvertiserNameToggle) => {
-    const { data: advertiserInfo } = useAdvertiserStats();
+const AdvertiserNameToggle = memo(({ advertiserInfo, onToggle }: TAdvertiserNameToggle) => {
     const [shouldShowRealName, setShouldShowRealName] = useState(false);
     const { mutate: advertiserUpdate } = p2p.advertiser.useUpdate();
 
     useEffect(() => {
-        setShouldShowRealName(advertiserInfo?.show_name || false);
-    }, [advertiserInfo?.show_name]);
+        setShouldShowRealName(advertiserInfo?.should_show_name || false);
+    }, [advertiserInfo?.should_show_name]);
 
     const onToggleShowRealName = () => {
         advertiserUpdate({

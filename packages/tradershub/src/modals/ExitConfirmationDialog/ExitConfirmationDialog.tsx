@@ -1,14 +1,17 @@
 import React from 'react';
 import ReactModal from 'react-modal';
 import { CUSTOM_STYLES } from '@/helpers';
+import { useQueryParams } from '@/hooks';
 import { useRealAccountCreationContext } from '@/providers';
 import { Button, Text } from '@deriv-com/ui';
 
 const ExitConfirmationDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
     const { reset } = useRealAccountCreationContext();
+    const { closeModal } = useQueryParams();
 
     const handleClose = () => {
         onClose();
+        closeModal();
         reset();
     };
 
@@ -22,7 +25,7 @@ const ExitConfirmationDialog = ({ isOpen, onClose }: { isOpen: boolean; onClose:
                     If you hit Yes, the info you entered will be lost.
                 </Text>
                 <div className='flex justify-end gap-8'>
-                    <Button onClick={handleClose} variant='outlined'>
+                    <Button color='black' onClick={handleClose} variant='outlined'>
                         Yes
                     </Button>
                     <Button onClick={onClose}>No</Button>

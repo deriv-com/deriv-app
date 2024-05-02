@@ -5,6 +5,7 @@ import { useWithdrawalCryptoContext, WithdrawalCryptoProvider } from './provider
 import styles from './WithdrawalCrypto.module.scss';
 
 type TWithdrawalCryptoProps = {
+    setVerificationCode: React.Dispatch<React.SetStateAction<string>>;
     verificationCode: string;
 };
 
@@ -27,9 +28,9 @@ const WithdrawalCrypto: React.FC = () => {
     );
 };
 
-const WithdrawalCryptoModule: React.FC<TWithdrawalCryptoProps> = ({ verificationCode }) => {
+const WithdrawalCryptoModule: React.FC<TWithdrawalCryptoProps> = ({ setVerificationCode, verificationCode }) => {
     return (
-        <WithdrawalCryptoProvider verificationCode={verificationCode}>
+        <WithdrawalCryptoProvider setVerificationCode={setVerificationCode} verificationCode={verificationCode}>
             <WithdrawalCrypto />
         </WithdrawalCryptoProvider>
     );

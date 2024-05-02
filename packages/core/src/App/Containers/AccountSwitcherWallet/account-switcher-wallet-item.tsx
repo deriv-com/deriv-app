@@ -23,10 +23,9 @@ export const AccountSwitcherWalletItem = observer(
             gradients,
             icons,
             is_virtual,
-            landing_company_name,
-            linked_to,
-            icon_type,
             loginid,
+            landing_company_name,
+            icon_type,
         } = account;
 
         const {
@@ -36,19 +35,19 @@ export const AccountSwitcherWalletItem = observer(
 
         const theme = is_dark_mode_on ? 'dark' : 'light';
         const app_icon = is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight';
-        const is_active = loginid === active_loginid;
-        const is_selected = is_active || linked_to?.some(account => account.loginid === active_loginid);
+        const is_dtrade_active = dtrade_loginid === active_loginid;
 
         const onAccountSwitch = async () => {
             closeAccountsDialog();
-            if (is_selected) return;
+            if (is_dtrade_active) return;
             await switchAccount(dtrade_loginid);
+            localStorage.setItem('active_wallet_loginid', loginid);
         };
 
         return (
             <div
                 className={classNames('acc-switcher-wallet-item__container', {
-                    'acc-switcher-wallet-item__container--active': is_selected,
+                    'acc-switcher-wallet-item__container--active': is_dtrade_active,
                 })}
                 data-testid='account-switcher-wallet-item'
                 onClick={onAccountSwitch}
@@ -71,7 +70,7 @@ export const AccountSwitcherWalletItem = observer(
                 </div>
                 <div className='acc-switcher-wallet-item__content'>
                     <Text size='xxxs'>
-                        <Localize i18n_default_text='Deriv Apps' />
+                        <Localize i18n_default_text='Options' />
                     </Text>
                     <Text size='xxxs'>
                         {is_virtual ? (

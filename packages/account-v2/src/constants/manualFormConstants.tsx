@@ -6,21 +6,40 @@ import NIMCSlipFront from '../assets/manual-upload/nimc-slip-front.svg';
 import PassportPlaceholder from '../assets/manual-upload/passport-placeholder.svg';
 import ProofOfAgeIcon from '../assets/manual-upload/proof-of-age.svg';
 
-export type TManualDocumentTypes = typeof MANUAL_DOCUMENT_TYPES[keyof typeof MANUAL_DOCUMENT_TYPES];
+export type TManualDocumentTypes = Exclude<
+    typeof MANUAL_DOCUMENT_TYPES[keyof typeof MANUAL_DOCUMENT_TYPES],
+    'birth_certificate'
+>;
 
 export const MANUAL_DOCUMENT_TYPES = Object.freeze({
-    DRIVING_LICENCE: 'driving_licence',
-    NATIONAL_IDENTITY_CARD: 'national_identity_card',
-    NIMC_SLIP: 'nimc_slip',
-    PASSPORT: 'passport',
+    birthCertificate: 'birth_certificate',
+    drivingLicence: 'driving_licence',
+    nationalIdentityCard: 'national_identity_card',
+    nimcSlip: 'nimc_slip',
+    passport: 'passport',
+    selfieWithID: 'selfie_with_id',
 });
 
-export const MANUAL_DOCUMENT_SELFIE = 'selfie_with_id';
+export const UPLOAD_FILE_TYPE = Object.freeze({
+    amlglobalcheck: 'amlglobalcheck',
+    bankstatement: 'bankstatement',
+    docverification: 'docverification',
+    driverslicense: 'driverslicense',
+    driving_licence: 'driving_licence',
+    national_identity_card: 'national_identity_card',
+    other: 'other',
+    passport: 'passport',
+    powerOfAttorney: 'power_of_attorney',
+    proofaddress: 'proofaddress',
+    proofid: 'proofid',
+    proofOfOwnership: 'proof_of_ownership',
+    utilityBill: 'utility_bill',
+});
 
-const MANUAL_FORM_PAGE_TYPES = Object.freeze({
-    BACK: 'back',
-    FRONT: 'front',
-    PHOTO: 'photo',
+export const MANUAL_FORM_PAGE_TYPES = Object.freeze({
+    back: 'back',
+    front: 'front',
+    photo: 'photo',
 });
 
 const documentExpiry = {
@@ -28,8 +47,32 @@ const documentExpiry = {
     label: 'Expiry date',
 };
 
-export const MANUAL_DOCUMENT_TYPES_DATA = Object.freeze({
-    [MANUAL_DOCUMENT_TYPES.DRIVING_LICENCE]: {
+type TManualDocumentConfig = {
+    [key in TManualDocumentTypes]: {
+        fields: {
+            documentExpiry?: {
+                errorMessage: string;
+                label: string;
+            };
+            documentNumber?: {
+                errorMessage: string;
+                label: string;
+            };
+        };
+        inputSectionHeader: string;
+        uploadSectionHeader: string;
+        uploads: {
+            documentType: typeof MANUAL_DOCUMENT_TYPES[keyof typeof MANUAL_DOCUMENT_TYPES];
+            error?: string;
+            icon?: JSX.Element;
+            pageType: typeof MANUAL_FORM_PAGE_TYPES[keyof typeof MANUAL_FORM_PAGE_TYPES];
+            text?: string;
+        }[];
+    };
+};
+
+export const MANUAL_DOCUMENT_TYPES_DATA: TManualDocumentConfig = Object.freeze({
+    [MANUAL_DOCUMENT_TYPES.drivingLicence]: {
         fields: {
             documentExpiry,
             documentNumber: {
@@ -40,21 +83,23 @@ export const MANUAL_DOCUMENT_TYPES_DATA = Object.freeze({
         inputSectionHeader: 'First, enter your Driving licence number and the expiry date.',
         uploads: [
             {
+                documentType: MANUAL_DOCUMENT_TYPES.drivingLicence,
                 error: 'Front side of driving licence is required.',
                 icon: <DrivingLicenseCardFront />,
-                pageType: MANUAL_FORM_PAGE_TYPES.FRONT,
+                pageType: MANUAL_FORM_PAGE_TYPES.front,
                 text: 'Upload the front of your driving licence.',
             },
             {
+                documentType: MANUAL_DOCUMENT_TYPES.drivingLicence,
                 error: 'Back side of driving licence is required.',
                 icon: <IdentityCardBack />,
-                pageType: MANUAL_FORM_PAGE_TYPES.BACK,
+                pageType: MANUAL_FORM_PAGE_TYPES.back,
                 text: 'Upload the back of your driving licence.',
             },
         ],
         uploadSectionHeader: 'Next, upload the front and back of your driving licence.',
     },
-    [MANUAL_DOCUMENT_TYPES.NATIONAL_IDENTITY_CARD]: {
+    [MANUAL_DOCUMENT_TYPES.nationalIdentityCard]: {
         fields: {
             documentExpiry,
             documentNumber: {
@@ -65,21 +110,23 @@ export const MANUAL_DOCUMENT_TYPES_DATA = Object.freeze({
         inputSectionHeader: 'First, enter your Identity card number and the expiry date.',
         uploads: [
             {
+                documentType: MANUAL_DOCUMENT_TYPES.nationalIdentityCard,
                 error: 'Front side of identity card is required.',
                 icon: <IdentityCardFront />,
-                pageType: MANUAL_FORM_PAGE_TYPES.FRONT,
+                pageType: MANUAL_FORM_PAGE_TYPES.front,
                 text: 'Upload the front of your identity card.',
             },
             {
+                documentType: MANUAL_DOCUMENT_TYPES.nationalIdentityCard,
                 error: 'Back side of identity card is required.',
                 icon: <IdentityCardBack />,
-                pageType: MANUAL_FORM_PAGE_TYPES.BACK,
+                pageType: MANUAL_FORM_PAGE_TYPES.back,
                 text: 'Upload the back of your identity card.',
             },
         ],
         uploadSectionHeader: 'Next, upload the front and back of your identity card.',
     },
-    [MANUAL_DOCUMENT_TYPES.NIMC_SLIP]: {
+    [MANUAL_DOCUMENT_TYPES.nimcSlip]: {
         fields: {
             documentExpiry,
             documentNumber: {
@@ -90,21 +137,23 @@ export const MANUAL_DOCUMENT_TYPES_DATA = Object.freeze({
         inputSectionHeader: 'First, enter your NIMC slip number.',
         uploads: [
             {
+                documentType: MANUAL_DOCUMENT_TYPES.nimcSlip,
                 error: 'Front side of NIMC slip is required.',
                 icon: <NIMCSlipFront />,
-                pageType: MANUAL_FORM_PAGE_TYPES.FRONT,
+                pageType: MANUAL_FORM_PAGE_TYPES.front,
                 text: 'Upload your NIMC slip.',
             },
             {
+                documentType: MANUAL_DOCUMENT_TYPES.birthCertificate,
                 error: 'Back side of NIMC slip is required.',
                 icon: <ProofOfAgeIcon />,
-                pageType: MANUAL_FORM_PAGE_TYPES.PHOTO,
+                pageType: MANUAL_FORM_PAGE_TYPES.photo,
                 text: 'Upload your proof of age: birth certificate or age declaration document.',
             },
         ],
         uploadSectionHeader: 'Next, upload the page of your NIMC slip that contains your photo.',
     },
-    [MANUAL_DOCUMENT_TYPES.PASSPORT]: {
+    [MANUAL_DOCUMENT_TYPES.passport]: {
         fields: {
             documentExpiry,
             documentNumber: {
@@ -115,12 +164,24 @@ export const MANUAL_DOCUMENT_TYPES_DATA = Object.freeze({
         inputSectionHeader: 'First, enter your Passport number and the expiry date.',
         uploads: [
             {
+                documentType: MANUAL_DOCUMENT_TYPES.passport,
                 error: 'Front side of passport is required.',
                 icon: <PassportPlaceholder />,
-                pageType: MANUAL_FORM_PAGE_TYPES.FRONT,
+                pageType: MANUAL_FORM_PAGE_TYPES.front,
                 text: 'Upload the page of your passport that contains your photo.',
             },
         ],
         uploadSectionHeader: 'Next, upload the page of your passport that contains your photo.',
+    },
+    [MANUAL_DOCUMENT_TYPES.selfieWithID]: {
+        fields: {},
+        inputSectionHeader: '',
+        uploads: [
+            {
+                documentType: MANUAL_DOCUMENT_TYPES.selfieWithID,
+                pageType: MANUAL_FORM_PAGE_TYPES.photo,
+            },
+        ],
+        uploadSectionHeader: 'Upload your selfie',
     },
 });

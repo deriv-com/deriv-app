@@ -1,13 +1,13 @@
 import React from 'react';
+import { DerivLightDmt5PasswordIcon, DerivLightIcDxtradePasswordIcon } from '@deriv/quill-icons';
 import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../types';
-import { validPassword } from '../../../../utils/password';
-import { PlatformDetails } from '../../constants';
+import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
+import { CFD_PLATFORMS, PlatformDetails } from '../../constants';
 import './CreatePassword.scss';
 
 type TProps = {
-    icon: React.ReactNode;
     isLoading?: boolean;
     onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onPrimaryClick: () => void;
@@ -15,20 +15,20 @@ type TProps = {
     platform: TPlatforms.All;
 };
 
-const CreatePassword: React.FC<TProps> = ({
-    icon,
-    isLoading,
-    onPasswordChange,
-    onPrimaryClick,
-    password,
-    platform,
-}) => {
-    const { isMobile } = useDevice();
+const CreatePasswordIcon = {
+    dxtrade: <DerivLightIcDxtradePasswordIcon height={120} width={120} />,
+    mt5: <DerivLightDmt5PasswordIcon height={120} width={120} />,
+} as const;
 
-    const title = PlatformDetails[platform].title;
+const CreatePassword: React.FC<TProps> = ({ isLoading, onPasswordChange, onPrimaryClick, password, platform }) => {
+    const { isDesktop } = useDevice();
+    const { title } = PlatformDetails[platform as keyof typeof PlatformDetails];
+    const isMT5 = platform === CFD_PLATFORMS.MT5;
+    const disableButton = isMT5 ? !validPasswordMT5(password) : !validPassword(password);
+
     return (
         <div className='wallets-create-password'>
-            {icon}
+            {CreatePasswordIcon[platform as keyof typeof CreatePasswordIcon]}
             <div className='wallets-create-password__text'>
                 <WalletText align='center' lineHeight='xl' weight='bold'>
                     Create a {title} password
@@ -37,14 +37,18 @@ const CreatePassword: React.FC<TProps> = ({
                     You can use this password for all your {title} accounts.
                 </WalletText>
             </div>
-
-            <WalletPasswordFieldLazy label={`${title} password`} onChange={onPasswordChange} password={password} />
-            {!isMobile && (
+            <WalletPasswordFieldLazy
+                label={`${title} password`}
+                mt5Policy={isMT5}
+                onChange={onPasswordChange}
+                password={password}
+            />
+            {isDesktop && (
                 <WalletButton
-                    disabled={!password || isLoading || !validPassword(password)}
+                    disabled={!password || isLoading || disableButton}
                     isLoading={isLoading}
                     onClick={onPrimaryClick}
-                    size='lg'
+                    size='md'
                 >
                     {`Create ${title} password`}
                 </WalletButton>

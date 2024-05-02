@@ -1,34 +1,29 @@
 import { useCallback } from 'react';
-import { useFetch, useInvalidateQuery, useRequest } from '@deriv/api';
-import { useStore } from '@deriv/stores';
+import { useQuery, useInvalidateQuery, useMutation } from '@deriv/api';
+import useAuthorize from './useAuthorize';
 
-/** A custom hook to get the status of wallet_migration API and to start/reset the migration process
- * @deprecated This hook is deprecated. Please use the hook from @deriv/api instead.
- */
+/** A custom hook to get the status of wallet_migration API and to start/reset the migration process */
 const useWalletMigration = () => {
-    // TODO: delete it later, it's a temporary solution
-    // because we have to check for authorize from client store before doing API call
-    // This hook will be refactored later for subscribe when BE is ready
-    const { client } = useStore();
-    const { is_authorize } = client;
-
+    const { isSuccess } = useAuthorize();
     const invalidate = useInvalidateQuery();
 
     /** Make a request to wallet_migration API and onSuccess it will invalidate the cached data  */
-    const { mutate } = useRequest('wallet_migration', { onSuccess: () => invalidate('wallet_migration') });
+    const { mutate, isLoading: is_migrating } = useMutation('wallet_migration', {
+        onSuccess: () => invalidate('wallet_migration'),
+    });
 
     /** Fetch the wallet_migration API and refetch it every second if the status is in_progress */
-    const { data } = useFetch('wallet_migration', {
+    const { data } = useQuery('wallet_migration', {
         payload: { wallet_migration: 'state' },
         options: {
             refetchInterval: response => (response?.wallet_migration?.state === 'in_progress' ? 500 : false),
-            enabled: is_authorize,
+            enabled: isSuccess,
         },
     });
 
-    const start_migration = useCallback(() => mutate({ payload: { wallet_migration: 'start' } }), [mutate]);
+    const startMigration = useCallback(() => mutate({ payload: { wallet_migration: 'start' } }), [mutate]);
 
-    const reset_migration = useCallback(() => mutate({ payload: { wallet_migration: 'reset' } }), [mutate]);
+    const resetMigration = useCallback(() => mutate({ payload: { wallet_migration: 'reset' } }), [mutate]);
 
     const state = data?.wallet_migration?.state;
 
@@ -45,10 +40,12 @@ const useWalletMigration = () => {
         is_migrated: state === 'migrated',
         /** A boolean to check if the status is failed */
         is_failed: state === 'failed',
+        /** A boolean to check if migration is happening */
+        is_migrating,
         /** Sends a request to wallet_migration API to start the migration process */
-        start_migration,
+        startMigration,
         /** Sends a request to wallet_migration API to reset the migration process */
-        reset_migration,
+        resetMigration,
     };
 };
 

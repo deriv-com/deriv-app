@@ -8,7 +8,8 @@ import { WithdrawalCryptoPercentageSelector } from './components/WithdrawalCrypt
 import styles from './WithdrawalCryptoForm.module.scss';
 
 const WithdrawalCryptoForm: React.FC = () => {
-    const { activeAccount, fractionalDigits, requestCryptoWithdrawal } = useWithdrawalCryptoContext();
+    const { activeAccount, fractionalDigits, isWithdrawalError, requestCryptoWithdrawal } =
+        useWithdrawalCryptoContext();
 
     return (
         <Formik
@@ -25,7 +26,8 @@ const WithdrawalCryptoForm: React.FC = () => {
             }
         >
             {({ errors, handleSubmit, isSubmitting, values }) => {
-                const isSubmitButtonDisabled = Object.keys(errors).length !== 0 || !values.cryptoAmount || isSubmitting;
+                const isSubmitButtonDisabled =
+                    Object.keys(errors).length !== 0 || !values.cryptoAmount || (isSubmitting && !isWithdrawalError);
 
                 return (
                     <form autoComplete='off' className={styles.container} onSubmit={handleSubmit}>
@@ -46,7 +48,12 @@ const WithdrawalCryptoForm: React.FC = () => {
                         <WithdrawalCryptoPercentageSelector />
                         <WithdrawalCryptoAmountConverter />
                         <div className={styles.submit}>
-                            <Button disabled={isSubmitButtonDisabled} isLoading={isSubmitting} size='lg' type='submit'>
+                            <Button
+                                disabled={isSubmitButtonDisabled}
+                                isLoading={isSubmitting && !isWithdrawalError}
+                                size='lg'
+                                type='submit'
+                            >
                                 Withdraw
                             </Button>
                         </div>

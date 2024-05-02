@@ -3,11 +3,10 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
-import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text } from '@deriv/components';
-import { ContentFlag, WS, routes } from '@deriv/shared';
+import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text, UILoader } from '@deriv/components';
+import { ContentFlag, WS, moduleLoader, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import AccountWizard from './account-wizard.jsx';
 import AddCurrency from './add-currency.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import ChooseCurrency from './choose-currency.jsx';
@@ -17,9 +16,13 @@ import SetCurrency from './set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
 import { Analytics } from '@deriv-com/analytics';
-
+import 'Sass/details-form.scss';
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
+
+const AccountWizard = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "account-wizard-modal" */ './account-wizard.jsx'))
+);
 
 const modal_pages_indices = {
     account_wizard: 0,
@@ -36,9 +39,8 @@ const modal_pages_indices = {
 };
 let active_modal_index_no = 0;
 
-const WizardHeading = ({ country_standpoint, currency, is_isle_of_man_residence, real_account_signup_target }) => {
+const WizardHeading = ({ country_standpoint, currency, real_account_signup_target }) => {
     const maltainvest_signup = real_account_signup_target === 'maltainvest';
-    const iom_signup = real_account_signup_target === 'iom';
     const deposit_cash_signup = real_account_signup_target === 'deposit_cash';
 
     if ((!maltainvest_signup && !currency) || active_modal_index_no === modal_pages_indices.set_currency) {
@@ -49,37 +51,12 @@ const WizardHeading = ({ country_standpoint, currency, is_isle_of_man_residence,
         return <Localize i18n_default_text='Add a Deriv Gaming account' />;
     }
 
-    if (iom_signup && is_isle_of_man_residence) {
-        return <Localize i18n_default_text='Add a Deriv account' />;
-    }
-
     switch (real_account_signup_target) {
-        case 'malta':
-            if (
-                country_standpoint.is_united_kingdom ||
-                country_standpoint.is_rest_of_eu ||
-                country_standpoint.is_belgium
-            ) {
-                return <Localize i18n_default_text='Add a real Deriv Options account' />;
-            }
-            return <Localize i18n_default_text='Add a Derived account' />;
-        case 'iom':
-            if (country_standpoint.is_united_kingdom) {
-                return <Localize i18n_default_text='Add a real Deriv Gaming account' />;
-            }
-            return <Localize i18n_default_text='Add a Derived account' />;
         case 'maltainvest':
-            if (
-                country_standpoint.is_united_kingdom ||
-                country_standpoint.is_france ||
-                country_standpoint.is_other_eu ||
-                country_standpoint.is_rest_of_eu
-            ) {
+            if (country_standpoint.is_france || country_standpoint.is_other_eu || country_standpoint.is_rest_of_eu) {
                 return <Localize i18n_default_text='Setup your account' />;
             }
             return <Localize i18n_default_text='Add a Deriv Financial account' />;
-        case 'samoa':
-            return <Localize i18n_default_text='Terms of use' />;
         default:
             return <Localize i18n_default_text='Add a Deriv account' />;
     }
@@ -119,7 +96,6 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
     const setIsDeposit = modules.cashier.general_store.setIsDeposit;
     const should_show_all_available_currencies = modules.cashier.general_store.should_show_all_available_currencies;
     const is_belgium_residence = client.residence === 'be'; // TODO: [deriv-eu] refactor this once more residence checks are required
-    const is_isle_of_man_residence = client.residence === 'im'; // TODO: [deriv-eu] refactor this once more residence checks are required
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
@@ -130,18 +106,20 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         {
             action: 'signup',
             body: local_props => (
-                <AccountWizard
-                    setIsRiskWarningVisible={setIsRiskWarningVisible}
-                    onFinishSuccess={showStatusDialog}
-                    onOpenDepositModal={closeModalthenOpenDepositModal}
-                    onOpenWelcomeModal={closeModalthenOpenWelcomeModal}
-                    is_loading={local_props.is_loading}
-                    setLoading={setLoading}
-                    onError={showErrorModal}
-                    onClose={closeModal}
-                    realAccountSignup={realAccountSignup}
-                    setRealAccountFormData={setRealAccountFormData}
-                />
+                <React.Suspense fallback={<UILoader />}>
+                    <AccountWizard
+                        setIsRiskWarningVisible={setIsRiskWarningVisible}
+                        onFinishSuccess={showStatusDialog}
+                        onOpenDepositModal={closeModalthenOpenDepositModal}
+                        onOpenWelcomeModal={closeModalthenOpenWelcomeModal}
+                        is_loading={local_props.is_loading}
+                        setLoading={setLoading}
+                        onError={showErrorModal}
+                        onClose={closeModal}
+                        realAccountSignup={realAccountSignup}
+                        setRealAccountFormData={setRealAccountFormData}
+                    />
+                </React.Suspense>
             ),
             title: WizardHeading,
         },
@@ -658,7 +636,6 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                                             has_fiat={has_fiat}
                                             is_belgium_residence={is_belgium_residence}
                                             is_eu={show_eu_related_content}
-                                            is_isle_of_man_residence={is_isle_of_man_residence}
                                             real_account_signup_target={real_account_signup_target}
                                             should_show_all_available_currencies={should_show_all_available_currencies}
                                         />
@@ -695,7 +672,6 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                                             country_standpoint={country_standpoint}
                                             currency={currency}
                                             is_belgium_residence={is_belgium_residence}
-                                            is_isle_of_man_residence={is_isle_of_man_residence}
                                             real_account_signup_target={real_account_signup_target}
                                             should_show_all_available_currencies={should_show_all_available_currencies}
                                         />

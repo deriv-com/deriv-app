@@ -1,0 +1,81 @@
+.p2p-v2-chat-messages {
+    background-color: #ffffff;
+    margin-top: auto;
+    margin-right: 0.8rem;
+    height: calc(70vh - 16rem);
+    overflow-y: auto;
+
+    @include mobile {
+        height: 100%;
+    }
+    &__date {
+        margin-top: 1.6rem;
+        text-align: center;
+    }
+    &__item {
+        display: flex;
+        flex-direction: column;
+        margin: 1.6rem 1.2rem 1.6rem 2.4rem;
+
+        &__file {
+            color: inherit;
+        }
+        &__image {
+            width: 50%;
+
+            > img {
+                border: 1px solid #d6dadb;
+                border-radius: 4px;
+                width: 100%;
+                height: auto;
+
+                &:hover {
+                    border: 1px solid #999999;
+                }
+            }
+        }
+        &__pdf {
+            background-color: #ffffff;
+            border-radius: 0.8rem;
+            padding: 1rem 0.8rem 1rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.4rem;
+            a {
+                color: #999999;
+                text-decoration: none;
+            }
+        }
+        &__timestamp {
+            align-items: center;
+            display: flex;
+            margin-top: 0.4rem;
+        }
+
+        &__incoming {
+            align-items: flex-start;
+
+            .p2p-v2-chat-message-text {
+                background-color: #d6dadb;
+                border-bottom-left-radius: 0;
+            }
+        }
+        &__outgoing {
+            align-items: flex-end;
+
+            .p2p-v2-chat-message-text {
+                background-color: #85acb0;
+                border-bottom-right-radius: 0;
+            }
+        }
+
+        &__admin {
+            align-items: center;
+            background: transparentize(#ffad3a, 0.84);
+            border: 1px solid #ffad3a;
+            padding: 0.8rem 0;
+            border-radius: 0.8rem;
+        }
+    }
+}

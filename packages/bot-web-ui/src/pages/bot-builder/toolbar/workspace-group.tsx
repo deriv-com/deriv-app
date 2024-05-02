@@ -5,32 +5,15 @@ import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import ToolbarIcon from './toolbar-icon';
 
-type TWorkspaceGroup = {
-    has_redo_stack: boolean;
-    has_undo_stack: boolean;
-    onResetClick: () => void;
-    onSortClick: () => void;
-    onUndoClick: (param?: boolean) => void;
-    onZoomInOutClick: (param?: boolean) => void;
-    toggleLoadModal: () => void;
-    toggleSaveModal: () => void;
-};
+const WorkspaceGroup = observer(() => {
+    const { dashboard, toolbar, load_modal, save_modal } = useDBotStore();
+    const { setPreviewOnPopup, setChartModalVisibility, setTradingViewModalVisibility } = dashboard;
+    const { has_redo_stack, has_undo_stack, onResetClick, onSortClick, onUndoClick, onZoomInOutClick } = toolbar;
+    const { toggleSaveModal } = save_modal;
+    const { toggleLoadModal } = load_modal;
 
-const WorkspaceGroup = observer(
-    ({
-        has_redo_stack,
-        has_undo_stack,
-        onResetClick,
-        onSortClick,
-        onUndoClick,
-        onZoomInOutClick,
-        toggleLoadModal,
-        toggleSaveModal,
-    }: TWorkspaceGroup) => {
-        const { dashboard } = useDBotStore();
-        const { setPreviewOnPopup, setChartModalVisibility, setTradingViewModalVisibility } = dashboard;
-
-        return (
+    return (
+        <div className='toolbar__wrapper'>
             <div className='toolbar__group toolbar__group-btn' data-testid='dt_toolbar_group_btn'>
                 <ToolbarIcon
                     popover_message={localize('Reset')}
@@ -113,8 +96,8 @@ const WorkspaceGroup = observer(
                     action={() => onZoomInOutClick(/* in */ false)}
                 />
             </div>
-        );
-    }
-);
+        </div>
+    );
+});
 
 export default WorkspaceGroup;

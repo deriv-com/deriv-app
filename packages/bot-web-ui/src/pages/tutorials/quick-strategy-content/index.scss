@@ -13,7 +13,7 @@
         }
 
         gap: 2.4rem;
-        margin-right: 12rem;
+        margin-inline-end: 12rem;
     }
 
     &__placeholder {
@@ -21,7 +21,7 @@
         grid-template-columns: 10fr 1fr;
         align-items: center;
         padding: 1.6rem;
-        border: 2px solid var(--system-light-5-active-background, #d6dadb);
+        border: 2px solid var(--border-normal);
         border-radius: 8px;
         cursor: pointer;
 
@@ -36,8 +36,8 @@
 
             ul {
                 list-style: disc;
-                margin-left: 1.6rem;
-                color: var(--text-prominent);
+                margin-inline-start: 1.6rem;
+                color: var(--text-general);
             }
 
             li:not(:last-child) {
@@ -47,21 +47,23 @@
             &__text {
                 position: relative;
                 top: 0.15rem;
-                margin-left: 0.3rem;
+                margin-inline-start: 0.3rem;
+                color: var(--text-general);
             }
         }
 
         &__icon {
-            margin-left: 2rem;
+            margin-inline-start: 2rem;
         }
     }
 
     &__breadcrumb {
         display: flex;
+        margin-bottom: 1.6rem;
 
         &__clickable {
             cursor: pointer;
-            margin-right: 0.5rem;
+            margin-inline-end: 0.5rem;
         }
     }
 

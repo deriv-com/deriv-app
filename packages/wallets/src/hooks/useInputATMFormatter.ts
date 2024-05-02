@@ -8,14 +8,19 @@ type TOptions = {
     maxDigits?: number;
 };
 
-const separatorRegex = /[,.]/g; // locale-agnostic
+// function-wrapped because of SonarCloud warnings. More context for why: https://stackoverflow.com/questions/1520800/why-does-a-regexp-with-global-flag-give-wrong-results
+const getSeparatorRegex = () => /[,.]/g; // locale-agnostic
 
 const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initial?: number, options?: TOptions) => {
     const input = inputRef.current;
 
+    // helper values for pasting
     const isPasting = useRef(false);
+    const isRewriting = useRef(false);
+    const clipboardContent = useRef('');
+
     const { onChange: onChangeDecimal, value } = useInputDecimalFormatter(undefined, options);
-    const { fractionDigits = 2, locale, maxDigits = 14 } = options || {};
+    const { fractionDigits = 2, locale, maxDigits = 14 } = options ?? {};
 
     const formattedValue = useMemo(
         () => `${Number(value).toLocaleString(locale, { minimumFractionDigits: fractionDigits })}`,
@@ -30,15 +35,10 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
 
     // keep the caret from jumping
     const [caretNeedsRepositioning, setCaretNeedsRepositioning] = useState<boolean>(false);
-    const [caret, setCaret] = useState<number>();
+    const [caret, setCaret] = useState<number>(); // counting from right
     useEffect(() => {
         if (caret && caretNeedsRepositioning && input) {
-            const indexBeforeCaret = formattedValue.length - 1 - caret;
-
-            // if before a comma or period, prefer positioning the caret to the left of it
-            const newCaretPosition = separatorRegex.test(formattedValue[indexBeforeCaret])
-                ? indexBeforeCaret
-                : indexBeforeCaret + 1;
+            const newCaretPosition = formattedValue.length - caret;
 
             input.setSelectionRange(newCaretPosition, newCaretPosition);
             setCaretNeedsRepositioning(false);
@@ -50,89 +50,92 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
             if (!input) return true;
 
             // drop the changes if the number of digits is not decreasing and it has exceeded maxDigits
-            const inputDigitsCount = input.value.replace(separatorRegex, '').replace(/^0+/, '').length;
-            const changeDigitsCount = newValue.replace(separatorRegex, '').replace(/^0+/, '').length ?? 0;
+            const inputDigitsCount = input.value.replace(getSeparatorRegex(), '').replace(/^0+/, '').length;
+            const changeDigitsCount = newValue.replace(getSeparatorRegex(), '').replace(/^0+/, '').length ?? 0;
             return maxDigits && changeDigitsCount >= inputDigitsCount && changeDigitsCount > maxDigits;
         },
         [input, maxDigits]
     );
 
-    const handleNewValue = useCallback(
-        (newValue: string) => {
-            if (!input) return;
+    const handleNewValue = useCallback(() => {
+        if (!input) return;
 
-            const newCaretPosition = input.value.length - (input.selectionStart ?? 0);
-            setCaret(newCaretPosition);
-            setCaretNeedsRepositioning(true);
+        // ignore non-digit changes
+        const hasNoChangeInDigits =
+            input.value.length + 1 === prevFormattedValue.length &&
+            input.value.replaceAll(getSeparatorRegex(), '') === prevFormattedValue.replaceAll(getSeparatorRegex(), '');
+        if (hasNoChangeInDigits) return;
 
-            const hasNoChangeInDigits =
-                input.value.length + 1 === prevFormattedValue.length &&
-                input.value.replaceAll(separatorRegex, '') === prevFormattedValue.replaceAll(separatorRegex, '');
-            if (hasNoChangeInDigits) return;
+        // if newValue has no separator, an integer val is being handled (and edited by the user).
+        // This would require setting the caret to the end of the integer part of the input val
+        const hasSeparator = getSeparatorRegex().test(input.value);
+        const integerEditingCaretOffset = !!input.value && !hasSeparator ? fractionDigits + 1 : 0;
 
-            const unformatted = unFormatLocaleString(newValue, locale);
-            const shifted = (Number(unformatted) * 10).toFixed(fractionDigits);
-            const unShifted = (Number(unformatted) / 10).toFixed(fractionDigits);
-            const unformattedFraction = unformatted.split('.')?.[1]?.length || fractionDigits;
+        let newCaretPosition = input.value.length - (input.selectionStart ?? 0) + integerEditingCaretOffset;
 
-            // If the user is pasting, we don't need to shift the decimal point,
-            // We just need to format the value.
-            if (isPasting.current) {
-                isPasting.current = false;
-                return onChangeDecimal({ target: { value: unformatted } });
-            }
+        const caretInFractions = hasSeparator && newCaretPosition <= fractionDigits;
+        if (caretInFractions && newCaretPosition > 0 && input.value[input.value.length - newCaretPosition] === '0') {
+            input.value =
+                input.value.slice(0, input.value.length - newCaretPosition) +
+                input.value.slice(input.value.length - newCaretPosition + 1);
+            newCaretPosition--;
+        }
 
-            // The new value has one more decimal places than the fraction digits,
-            // so we need to shift the decimal point to the left.
-            if (unformattedFraction - 1 === fractionDigits) {
-                return onChangeDecimal({ target: { value: shifted } });
-            }
+        setCaret(newCaretPosition);
+        setCaretNeedsRepositioning(true);
 
-            // The new value has one less decimal places than the fraction digits,
-            // so we need to shift the decimal point to the right.
-            if (unformattedFraction + 1 === fractionDigits) {
-                return onChangeDecimal({ target: { value: unShifted } });
-            }
+        const unformatted = unFormatLocaleString(input.value, locale);
+        const shifted = (Number(unformatted) * 10).toFixed(fractionDigits);
+        const unShifted = (Number(unformatted) / 10).toFixed(fractionDigits);
+        const unformattedFraction = unformatted.split('.')?.[1]?.length || fractionDigits;
 
-            // The new value has the same number of decimal places as the fraction digits,
-            // so we don't need to shift the decimal point.
-            if (unformattedFraction === fractionDigits) {
-                return onChangeDecimal({ target: { value: unformatted } });
-            }
+        // The new value has one more decimal places than the fraction digits,
+        // so we need to shift the decimal point to the left.
+        if (unformattedFraction - 1 === fractionDigits) {
+            return onChangeDecimal({ target: { value: shifted } });
+        }
 
-            // The new value has more decimal places than the fraction digits,
-            // so we chop the extra decimal points.
-            if (unformattedFraction - 1 > fractionDigits) {
-                return onChangeDecimal({ target: { value: unformatted } });
-            }
+        // The new value has one less decimal places than the fraction digits,
+        // so we need to shift the decimal point to the right.
+        if (unformattedFraction + 1 === fractionDigits) {
+            return onChangeDecimal({ target: { value: unShifted } });
+        }
 
-            // The new value has less decimal places than the fraction digits,
-            // so we add the missing extra decimal point.
-            if (unformattedFraction + 1 < fractionDigits) {
-                return onChangeDecimal({ target: { value: unformatted } });
-            }
-
+        // The new value has the same number of decimal places as the fraction digits,
+        // so we don't need to shift the decimal point.
+        if (unformattedFraction === fractionDigits) {
             return onChangeDecimal({ target: { value: unformatted } });
-        },
-        [input, maxDigits, prevFormattedValue, locale, fractionDigits, onChangeDecimal]
-    );
+        }
+
+        // The new value has more decimal places than the fraction digits,
+        // so we chop the extra decimal points.
+        if (unformattedFraction - 1 > fractionDigits) {
+            return onChangeDecimal({ target: { value: unformatted } });
+        }
+
+        // The new value has less decimal places than the fraction digits,
+        // so we add the missing extra decimal point.
+        if (unformattedFraction + 1 < fractionDigits) {
+            return onChangeDecimal({ target: { value: unformatted } });
+        }
+
+        return onChangeDecimal({ target: { value: unformatted } });
+    }, [input, prevFormattedValue, locale, fractionDigits, onChangeDecimal]);
 
     const onChange = useCallback(
         (e: DeepPartial<React.ChangeEvent<HTMLInputElement>> | React.ChangeEvent<HTMLInputElement>) => {
             const newValue = e.target?.value;
             if (typeof newValue === 'undefined') return;
-            if (checkExceedsMaxDigits(newValue)) return;
-            handleNewValue(newValue);
-        },
-        [handleNewValue]
-    );
 
-    const onPaste: React.ClipboardEventHandler<HTMLInputElement> = useCallback(
-        e => {
-            isPasting.current = e.type === 'paste';
-            if (Number(unFormatLocaleString(formattedValue, locale)) === 0) {
-                const pasted = (e.clipboardData || window.clipboardData).getData('Text');
-                const pastedValue = Number(unFormatLocaleString(pasted, locale));
+            if (isPasting.current) {
+                isPasting.current = false;
+                if (!isRewriting.current) return;
+
+                const pastedValueUnformatted = unFormatLocaleString(clipboardContent.current, locale);
+                const pastedValue =
+                    fractionDigits > 2 && !getSeparatorRegex().test(pastedValueUnformatted) // allow pasting integer values as fractions in case of crypto
+                        ? Number(pastedValueUnformatted) / Math.pow(10, fractionDigits)
+                        : Number(pastedValueUnformatted);
                 const pastedValueFormatted = `${pastedValue.toLocaleString(locale, {
                     minimumFractionDigits: fractionDigits,
                 })}`;
@@ -142,22 +145,41 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
                     pastedValue >= 0 &&
                     !checkExceedsMaxDigits(pastedValueFormatted)
                 )
-                    onChange({
-                        target: {
-                            value: pastedValueFormatted,
-                        },
-                    });
+                    return onChangeDecimal({ target: { value: unFormatLocaleString(pastedValueFormatted, locale) } });
+            } else {
+                if (checkExceedsMaxDigits(newValue)) return;
+                handleNewValue();
             }
         },
-        [formattedValue, fractionDigits, locale, onChange]
+        [checkExceedsMaxDigits, fractionDigits, handleNewValue, locale, onChangeDecimal]
+    );
+
+    const onPaste: React.ClipboardEventHandler<HTMLInputElement> = useCallback(
+        e => {
+            isPasting.current = e.type === 'paste';
+            const pastedText = (e.clipboardData || window.clipboardData).getData('Text');
+            isRewriting.current =
+                Number(unFormatLocaleString(formattedValue, locale)) === 0 || pastedText === e.currentTarget.value;
+
+            if (isPasting.current && isRewriting.current) {
+                clipboardContent.current = pastedText;
+            }
+        },
+        [formattedValue, locale]
     );
 
     useEffect(() => {
         if (typeof initial === 'number') {
-            isPasting.current = true;
-            handleNewValue(`${Number(initial).toLocaleString(locale, { minimumFractionDigits: fractionDigits })}`);
+            return onChangeDecimal({
+                target: {
+                    value: unFormatLocaleString(
+                        `${Number(initial).toLocaleString(locale, { minimumFractionDigits: fractionDigits })}`,
+                        locale
+                    ),
+                },
+            });
         }
-    }, [fractionDigits, initial, locale, onChange]);
+    }, [fractionDigits, initial, locale, onChangeDecimal]);
 
     return { onChange, onPaste, value: formattedValue };
 };

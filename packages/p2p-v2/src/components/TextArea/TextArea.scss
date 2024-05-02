@@ -27,6 +27,11 @@
             transform: translate(0, -1.4rem) scale(0.75);
             background-color: #ffffff;
         }
+        &:not(:focus)[data-has-value='true'] + label {
+            & span {
+                color: #333;
+            }
+        }
         &:has(~ label)::placeholder {
             color: transparent;
         }

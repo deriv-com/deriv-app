@@ -1,8 +1,4 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-// import { tabs_title } from '../constants/bot-contents';
-import { ServerTime } from '@deriv/bot-skeleton';
-import { LocalStore } from '@deriv/shared';
-import RootStore from './root-store';
 import {
     ActiveSymbolsRequest,
     ServerTimeRequest,
@@ -10,8 +6,11 @@ import {
     TicksStreamRequest,
     TradingTimesRequest,
 } from '@deriv/api-types';
+import { ServerTime } from '@deriv/bot-skeleton';
+import { LocalStore } from '@deriv/shared';
+import RootStore from './root-store';
 
-const g_subscribers_map: Partial<Record<string, ReturnType<typeof WS.subscribeTicksHistory>>> = {};
+export const g_subscribers_map: Partial<Record<string, ReturnType<typeof WS.subscribeTicksHistory>>> = {};
 let WS: RootStore['ws'];
 
 export default class ChartStore {

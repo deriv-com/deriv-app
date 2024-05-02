@@ -28,7 +28,8 @@ export const dateOfBirthValidator = Yup.date().required('Please enter your date 
 
 export const expiryDateValidator = Yup.date()
     .min(new Date(), 'Expiry date cannot be today date or in the past')
-    .required('Expiry date is required');
+    .required('Expiry date is required')
+    .typeError('Expiry date is required');
 
 export const firstNameValidator = Yup.string()
     .required('This field is required')

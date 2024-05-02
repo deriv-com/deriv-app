@@ -7,6 +7,7 @@ import { useFlow } from '../FlowProvider';
 export interface TFlowFieldProps extends WalletTextFieldProps {
     isInvalid?: WalletTextFieldProps['isInvalid'];
     name: string;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     validationSchema?: Yup.AnySchema;
 }
 
@@ -57,7 +58,10 @@ const FlowTextField = forwardRef(
                             errorMessage={hasTouched && (form.errors[name] || errorMessage)}
                             isInvalid={(hasTouched && isInvalid) || (hasTouched && Boolean(form.errors[name]))}
                             name={field.name}
-                            onChange={field.onChange}
+                            onChange={e => {
+                                rest?.onChange?.(e);
+                                field.onChange(e);
+                            }}
                             onFocus={e => {
                                 setHasTouched(true);
                                 field.onBlur(e);

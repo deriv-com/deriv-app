@@ -4,6 +4,7 @@ import { useOnClickOutside } from 'usehooks-ts';
 import { LegacyCalendar1pxIcon } from '@deriv/quill-icons';
 import unixToDateString from '../../utils/utils';
 import FlowTextField, { TFlowFieldProps } from '../FlowField/FlowTextField';
+import { useFlow } from '../FlowProvider';
 import customFormatShortWeekday from './utils';
 import 'react-calendar/dist/Calendar.css';
 import './DatePicker.scss';
@@ -30,6 +31,7 @@ const DatePicker = ({
     const [selectedDate, setSelectedDate] = useState<Date | null>(defaultValue ? new Date(defaultValue) : null);
     const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
     const datePickerRef = useRef<HTMLDivElement>(null);
+    const { formValues } = useFlow();
 
     const toggleCalendar = () => {
         setIsCalendarOpen(prevState => !prevState);
@@ -52,6 +54,10 @@ const DatePicker = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedDate]);
 
+    useEffect(() => {
+        return () => setIsCalendarOpen(false);
+    }, []);
+
     return (
         <div className='wallets-datepicker' ref={datePickerRef}>
             <FlowTextField
@@ -59,6 +65,7 @@ const DatePicker = ({
                 label={label}
                 message={message}
                 name={name}
+                onChange={e => setSelectedDate(e.target.value as unknown as Date)}
                 onClick={toggleCalendar}
                 renderRightIcon={() => (
                     <button
@@ -73,7 +80,7 @@ const DatePicker = ({
                 showMessage
                 type='date'
                 validationSchema={validationSchema}
-                value={selectedDate !== null ? unixToDateString(selectedDate) : ''}
+                value={selectedDate !== null ? unixToDateString(selectedDate) : formValues?.[name]}
             />
             {isCalendarOpen && (
                 <div
@@ -85,7 +92,7 @@ const DatePicker = ({
                         maxDate={maxDate}
                         minDate={minDate}
                         onChange={handleDateChange}
-                        value={selectedDate !== null ? selectedDate : ''}
+                        value={selectedDate !== null ? selectedDate : formValues?.[name]}
                     />
                 </div>
             )}

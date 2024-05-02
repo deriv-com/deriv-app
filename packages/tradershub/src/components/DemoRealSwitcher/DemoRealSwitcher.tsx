@@ -4,9 +4,10 @@ import { useOnClickOutside } from 'usehooks-ts';
 import { DemoRealSwitcherLoader } from '@/components';
 import { useAccountSwitcher, useRegulationFlags } from '@/hooks';
 import { LabelPairedChevronDownSmRegularIcon } from '@deriv/quill-icons';
-import { Text } from '@deriv-com/ui';
+import { Text, useDevice } from '@deriv-com/ui';
 
 const DemoRealSwitcher = () => {
+    const { isDesktop } = useDevice();
     const { selectedAccount, setSelectedAccount, accountTypes } = useAccountSwitcher();
     const { isSuccess } = useRegulationFlags();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -39,7 +40,7 @@ const DemoRealSwitcher = () => {
                         className={twJoin(
                             value === 'demo' ? 'text-status-light-information' : 'text-status-light-success'
                         )}
-                        size='sm'
+                        size={isDesktop ? 'sm' : 'md'}
                         weight='bold'
                     >
                         {label}

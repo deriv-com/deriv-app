@@ -13,7 +13,7 @@ export const VerifyButton = observer(() => {
     const { is_mobile } = ui;
     const { account_settings } = client;
     const { phone_number_verification } = account_settings;
-    const { verified } = phone_number_verification;
+    const { verified: phone_number_verified } = phone_number_verification;
     const history = useHistory();
 
     const redirectToPhoneVerification = () => {
@@ -22,7 +22,7 @@ export const VerifyButton = observer(() => {
 
     return (
         <div className='account-form__phone-verification-btn'>
-            {verified ? (
+            {phone_number_verified ? (
                 <div className='account-form__phone-verification-btn--verified'>
                     <LegacyWonIcon iconSize='xs' />
                     <CaptionText bold color='#4bb4b3'>

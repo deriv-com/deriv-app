@@ -398,7 +398,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                             id={'phone'}
                                             label={localize('Phone number*')}
                                             className={
-                                                account_settings.phone_number_verification.verified
+                                                account_settings?.phone_number_verification?.verified
                                                     ? 'account-form__fieldset--phone'
                                                     : ''
                                             }
@@ -410,7 +410,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                             error={errors.phone}
                                             disabled={
                                                 isFieldDisabled('phone') ||
-                                                account_settings.phone_number_verification.verified
+                                                account_settings?.phone_number_verification?.verified
                                             }
                                             data-testid='dt_phone'
                                         />

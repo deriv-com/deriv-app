@@ -448,10 +448,10 @@ $MIN_HEIGHT_FLOATING: calc(
 
                 .phone-verification__popover {
                     position: absolute;
-                    right: -3rem;
+                    inset-inline-end: -3rem;
 
                     @include mobile {
-                        right: 0rem;
+                        inset-inline-end: 0rem;
                     }
                 }
             }

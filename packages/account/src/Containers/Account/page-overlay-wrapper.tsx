@@ -1,8 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { Analytics } from '@deriv-com/analytics';
 import { PageOverlay, VerticalTab } from '@deriv/components';
 import { useFeatureFlags } from '@deriv/hooks';
-import { getSelectedRoute, getStaticUrl, routes as shared_routes } from '@deriv/shared';
+import { getOSNameWithUAParser, getSelectedRoute, getStaticUrl, routes as shared_routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import TradingHubLogout from './tradinghub-logout';
@@ -28,16 +29,27 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const { is_from_derivgo } = common;
     const { is_next_wallet_enabled } = useFeatureFlags();
 
+    const passkeysMenuCloseActionEventTrack = React.useCallback(() => {
+        Analytics.trackEvent('ce_passkey_account_settings_form', {
+            action: 'close',
+            form_name: 'ce_passkey_account_settings_form',
+            operating_system: getOSNameWithUAParser(),
+        });
+    }, []);
+
     const list_groups = routes.map(route_group => ({
         icon: route_group.icon,
         label: route_group?.getTitle(),
         subitems: route_group?.subroutes?.length ? route_group.subroutes.map(sub => subroutes.indexOf(sub)) : [],
     }));
 
-    const onClickClose = React.useCallback(
-        () => (is_next_wallet_enabled ? history.push(shared_routes.wallets) : history.push(shared_routes.traders_hub)),
-        [history, is_next_wallet_enabled]
-    );
+    const onClickClose = React.useCallback(() => {
+        if (location.pathname === shared_routes.passkeys) {
+            passkeysMenuCloseActionEventTrack();
+        }
+
+        is_next_wallet_enabled ? history.push(shared_routes.wallets) : history.push(shared_routes.traders_hub);
+    }, [history, is_next_wallet_enabled]);
 
     const selected_route = getSelectedRoute({ routes: subroutes as Array<TRoute>, pathname: location.pathname });
 

@@ -55,7 +55,7 @@ const getBaseSchema = () =>
                 localize('Only letters, space, hyphen, period, and apostrophe are allowed.')
             ),
         address_postcode: Yup.string()
-            .max(20, localize('Please enter a Postal/ZIP code under 20 chatacters.'))
+            .max(20, localize('Please enter a Postal/ZIP code under 20 characters.'))
             .matches(/^[A-Za-z0-9][A-Za-z0-9\s-]*$/, localize('Only letters, numbers, space, and hyphen are allowed.')),
     });
 

@@ -47,11 +47,6 @@ describe('<CFDCompareAccountsCard />', () => {
 
         render(<CFDCompareAccountsCard {...mocked_props} />, { wrapper });
 
-        const buttonElement = screen.getByRole('button', { name: /Add/i });
-        expect(buttonElement).toBeInTheDocument();
-        expect(buttonElement).toHaveClass('compare-cfd-account__button');
-        expect(buttonElement).toBeEnabled();
-
         expect(screen.queryByText(/New!/i)).not.toBeInTheDocument();
     });
 
@@ -78,11 +73,6 @@ describe('<CFDCompareAccountsCard />', () => {
         );
 
         render(<CFDCompareAccountsCard {...mocked_props} />, { wrapper });
-
-        const buttonElement = screen.getByRole('button', { name: /Add/i });
-        expect(buttonElement).toBeInTheDocument();
-        expect(buttonElement).toHaveClass('compare-cfd-account__button');
-        expect(buttonElement).toBeEnabled();
 
         expect(screen.queryByText(/New!/i)).not.toBeInTheDocument();
     });

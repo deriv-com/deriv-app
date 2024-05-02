@@ -2,11 +2,12 @@ import React from 'react';
 import Cookies from 'js-cookie';
 import { useRemoteConfig } from '@deriv/api';
 import { DesktopWrapper } from '@deriv/components';
-import { useFeatureFlags } from '@deriv/hooks';
+import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
 import { getAppId, LocalStore, useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
+import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 
 import BinaryBotIFrame from 'Modules/BinaryBotIFrame';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
@@ -24,11 +25,17 @@ import initDatadog from '../Utils/Datadog';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const { is_next_wallet_enabled } = useFeatureFlags();
+    const { has_wallet } = useStoreWalletAccountsList();
     const store = useStore();
 
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());
-    const { marketing_growthbook, tracking_datadog, tracking_rudderstack } = data;
+    const { marketing_growthbook, tracking_datadog, tracking_rudderstack, passkeys } = data;
+    const is_passkeys_supported = browserSupportsWebAuthn();
+
+    const account_type = LocalStore?.get('active_loginid')
+        ?.match(/[a-zA-Z]+/g)
+        ?.join('');
 
     React.useEffect(() => {
         if (process.env.RUDDERSTACK_KEY && tracking_rudderstack) {
@@ -47,9 +54,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
                           utm_content: 'no content',
                       }
                     : Cookies.getJSON('utm_data');
-            const account_type = LocalStore?.get('active_loginid')
-                ?.match(/[a-zA-Z]+/g)
-                ?.join('');
+
             Analytics.setAttributes({
                 account_type: account_type === 'null' ? 'unlogged' : account_type,
                 app_id: String(getAppId()),
@@ -67,8 +72,24 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     }, [data.marketing_growthbook, tracking_rudderstack]);
 
     React.useEffect(() => {
+        store.client.setIsPasskeySupported(is_passkeys_supported && passkeys);
+    }, [passkeys, is_passkeys_supported, store.client]);
+
+    React.useEffect(() => {
         initDatadog(tracking_datadog);
     }, [tracking_datadog]);
+
+    // intentionally switch the user with wallets to light mode and EN language
+    React.useLayoutEffect(() => {
+        if (has_wallet) {
+            if (store.ui.is_dark_mode_on) {
+                store.ui.setDarkMode(false);
+            }
+            if (store.common.current_language !== 'EN') {
+                store.common.changeSelectedLanguage('EN');
+            }
+        }
+    }, [has_wallet, store.common, store.ui]);
 
     return (
         <PlatformContainer>

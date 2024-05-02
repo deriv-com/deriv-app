@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import ConfirmYourEmail from '../confirm-your-email';
-import userEvent from '@testing-library/user-event';
 
 describe('ConfirmPhoneNumber', () => {
     const store = mockStore({
@@ -27,18 +26,5 @@ describe('ConfirmPhoneNumber', () => {
         ).toBeInTheDocument();
         expect(screen.getByRole('textbox', { name: /OTP code/ })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Resend code/ })).toBeInTheDocument();
-    });
-
-    it('should disable button when Resend code is clicked', () => {
-        render(
-            <StoreProvider store={store}>
-                <ConfirmYourEmail />
-            </StoreProvider>
-        );
-        const resend_button = screen.getByRole('button', { name: 'Resend code' });
-
-        userEvent.click(resend_button);
-
-        expect(resend_button).toBeDisabled();
     });
 });

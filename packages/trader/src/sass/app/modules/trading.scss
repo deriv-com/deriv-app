@@ -1063,4 +1063,12 @@
     &[dir='rtl'] body {
         transform: rotate(90deg);
     }
+
+    .positions-modal {
+        height: 84svw !important;
+    }
+
+    .portfolio-empty {
+        height: calc(100svw - 250px);
+    }
 }

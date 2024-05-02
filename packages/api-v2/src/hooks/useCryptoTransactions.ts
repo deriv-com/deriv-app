@@ -152,7 +152,6 @@ const useCryptoTransactions = () => {
             formatted_amount: displayMoney(transaction.amount || 0, display_code, {
                 fractional_digits,
                 preferred_language,
-                should_keep_precision: true,
             }),
             /** Formatted transaction hash */
             formatted_transaction_hash: transaction.transaction_hash

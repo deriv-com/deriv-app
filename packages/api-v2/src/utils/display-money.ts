@@ -10,20 +10,10 @@ export const displayMoney = (
     options?: {
         fractional_digits?: number;
         preferred_language?: TPreferredLanguage;
-        should_keep_precision?: boolean;
     }
 ) => {
-    const intendedDecimalPlaces = options?.fractional_digits ?? 2;
-    const decimalPlaces = options?.should_keep_precision
-        ? Math.max(
-              // whichever is bigger:
-              intendedDecimalPlaces, // intended decimal places
-              [...amount.toString()].reverse().indexOf('.') // amount value's decimal places
-          )
-        : intendedDecimalPlaces;
-
     const formattedAmount = FormatUtils.formatMoney(amount, {
-        decimalPlaces,
+        decimalPlaces: options?.fractional_digits ?? 2,
         locale: options?.preferred_language ?? undefined,
     });
 

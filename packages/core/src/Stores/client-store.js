@@ -1520,7 +1520,7 @@ export default class ClientStore extends BaseStore {
      * We initially fetch things from local storage, and then do everything inside the store.
      */
     async init(login_new_user) {
-        // delete walletsOnbaording key after page refresh
+        // delete walletsOnboarding key after page refresh
         /** will be removed later when header for the wallets is created) */
         localStorage.removeItem('walletsOnboarding');
 

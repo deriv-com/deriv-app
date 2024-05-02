@@ -1061,4 +1061,8 @@
         height: 100svw;
         width: 100svh;
     }
+
+    &[dir='rtl'] body {
+        transform: rotate(90deg);
+    }
 }

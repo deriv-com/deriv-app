@@ -38,16 +38,4 @@
             gap: 1.6rem;
         }
     }
-
-    &__input-group {
-        display: flex;
-        gap: 2.4rem;
-        padding-bottom: 2rem;
-        width: 100%;
-
-        @include mobile {
-            flex-direction: column;
-            gap: 1.6rem;
-        }
-    }
 }

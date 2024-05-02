@@ -5,6 +5,7 @@ import IdentityCardBack from '../../../../../../public/images/accounts/document-
 import IdentityCardFront from '../../../../../../public/images/accounts/identity-card-front.svg';
 import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
 import { DocumentRuleHints } from '../DocumentRuleHints';
+import '../common.scss';
 import './IdentityCardDocumentUpload.scss';
 
 const IdentityCardDocumentUpload = () => {
@@ -17,7 +18,7 @@ const IdentityCardDocumentUpload = () => {
     return (
         <div className='wallets-identity-card-document-upload' data-testid='dt_identity-card-document-upload'>
             <WalletText>First, enter your Identity card number and the expiry date.</WalletText>
-            <div className='wallets-identity-card-document-upload__input-group'>
+            <div className='wallets-input-group'>
                 <FlowTextField
                     defaultValue={formValues.identityCardNumber ?? ''}
                     label='Identity card number*'

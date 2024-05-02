@@ -5,6 +5,7 @@ import { Divider, WalletText } from '../../../../../../components/Base';
 import PassportPlaceholder from '../../../../../../public/images/accounts/passport-placeholder.svg';
 import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
 import { DocumentRuleHints } from '../DocumentRuleHints';
+import '../common.scss';
 import './PassportDocumentUpload.scss';
 
 const PassportDocumentUpload = () => {
@@ -17,7 +18,7 @@ const PassportDocumentUpload = () => {
     return (
         <div className='wallets-passport-document-upload' data-testid='dt_passport-document-upload'>
             <WalletText>First, enter your Passport number and the expiry date.</WalletText>
-            <div className='wallets-passport-document-upload__input-group'>
+            <div className='wallets-input-group'>
                 <FlowTextField
                     defaultValue={formValues.passportNumber ?? ''}
                     label='Passport number*'
@@ -30,7 +31,6 @@ const PassportDocumentUpload = () => {
                     minDate={moment().add(2, 'days').toDate()}
                     name='passportExpiryDate'
                     onDateChange={handleDateChange}
-                    placeholder='DD/MM/YYYY'
                     validationSchema={expiryDateValidator}
                 />
             </div>

@@ -1,0 +1,12 @@
+.wallets-input-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.4rem;
+    padding-bottom: 2rem;
+    width: 100%;
+
+    @include mobile {
+        grid-template-columns: unset;
+        gap: 1.6rem;
+    }
+}

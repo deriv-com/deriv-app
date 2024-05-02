@@ -5,6 +5,7 @@ import DrivingLicenseCardBack from '../../../../../../public/images/accounts/doc
 import DrivingLicenseCardFront from '../../../../../../public/images/accounts/driving-license-front.svg';
 import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
 import { DocumentRuleHints } from '../DocumentRuleHints';
+import '../common.scss';
 import './DrivingLicenseDocumentUpload.scss';
 
 const DrivingLicenseDocumentUpload = () => {
@@ -17,7 +18,7 @@ const DrivingLicenseDocumentUpload = () => {
     return (
         <div className='wallets-driving-license-document-upload' data-testid='dt_driving-license-document-upload'>
             <WalletText>First, enter your Driving licence number and the expiry date.</WalletText>
-            <div className='wallets-driving-license-document-upload__input-group'>
+            <div className='wallets-input-group'>
                 <FlowTextField
                     defaultValue={formValues.drivingLicenceNumber ?? ''}
                     label='Driving licence number*'

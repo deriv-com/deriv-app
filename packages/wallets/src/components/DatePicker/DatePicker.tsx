@@ -30,6 +30,7 @@ const DatePicker = ({
     const [selectedDate, setSelectedDate] = useState<Date | null>(defaultValue ? new Date(defaultValue) : null);
     const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
     const datePickerRef = useRef<HTMLDivElement>(null);
+    const inputeDateRef = useRef<HTMLInputElement>(null);
 
     const toggleCalendar = () => {
         setIsCalendarOpen(prevState => !prevState);
@@ -52,6 +53,10 @@ const DatePicker = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedDate]);
 
+    useEffect(() => {
+        return () => setIsCalendarOpen(false);
+    }, []);
+
     return (
         <div className='wallets-datepicker' ref={datePickerRef}>
             <FlowTextField
@@ -60,6 +65,8 @@ const DatePicker = ({
                 message={message}
                 name={name}
                 onClick={toggleCalendar}
+                onKeyDown={e => e.preventDefault()}
+                ref={inputeDateRef}
                 renderRightIcon={() => (
                     <button
                         className='wallets-datepicker__button'
@@ -71,9 +78,8 @@ const DatePicker = ({
                     </button>
                 )}
                 showMessage
-                type='date'
                 validationSchema={validationSchema}
-                value={selectedDate !== null ? unixToDateString(selectedDate) : ''}
+                value={selectedDate !== null ? unixToDateString(selectedDate) : undefined}
             />
             {isCalendarOpen && (
                 <div
@@ -82,10 +88,11 @@ const DatePicker = ({
                 >
                     <Calendar
                         formatShortWeekday={customFormatShortWeekday}
+                        inputRef={inputeDateRef}
                         maxDate={maxDate}
                         minDate={minDate}
                         onChange={handleDateChange}
-                        value={selectedDate !== null ? selectedDate : ''}
+                        value={selectedDate !== null ? selectedDate : undefined}
                     />
                 </div>
             )}

@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import ConfirmYourEmail from '../confirm-your-email';

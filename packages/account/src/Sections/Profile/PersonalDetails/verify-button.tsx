@@ -8,7 +8,7 @@ import { Popover, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
 export const VerifyButton = observer(() => {
-    const [open_popover, set_open_popover] = React.useState(false);
+    const [open_popover, setOpenPopover] = React.useState(false);
     const { client, ui } = useStore();
     const { is_mobile } = ui;
     const { account_settings } = client;
@@ -35,7 +35,7 @@ export const VerifyButton = observer(() => {
                         icon='info'
                         is_open={open_popover}
                         disable_message_icon
-                        onClick={() => set_open_popover(prev => !prev)}
+                        onClick={() => setOpenPopover(prev => !prev)}
                         message={
                             <Text size='xxs'>
                                 <Localize

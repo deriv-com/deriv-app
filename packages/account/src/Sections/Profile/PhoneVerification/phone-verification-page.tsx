@@ -9,7 +9,7 @@ import { routes } from '@deriv/shared';
 import ConfirmYourEmail from './confirm-your-email';
 
 const PhoneVerificationPage = () => {
-    const [show_email_verification, should_show_email_verification] = React.useState(true);
+    const [show_email_verification, shouldShowEmailVerification] = React.useState(true);
     const history = useHistory();
     const handleBackButton = () => {
         history.push(routes.personal_details);

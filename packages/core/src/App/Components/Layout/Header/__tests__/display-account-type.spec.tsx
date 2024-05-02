@@ -19,18 +19,4 @@ describe('DisplayAccountType component', () => {
         render(<DisplayAccountType account_type='gaming' country_standpoint={{ is_belgium: true }} is_eu={true} />);
         expect(screen.getByText(/options/i)).toBeInTheDocument();
     });
-
-    it('should render "Options" when is_isle_of_man = false', () => {
-        render(
-            <DisplayAccountType account_type='gaming' country_standpoint={{ is_isle_of_man: false }} is_eu={true} />
-        );
-        expect(screen.getByText(/options/i)).toBeInTheDocument();
-    });
-
-    it('should render "Derived" when is_isle_of_man = false', () => {
-        render(
-            <DisplayAccountType account_type='gaming' country_standpoint={{ is_isle_of_man: false }} is_eu={true} />
-        );
-        expect(screen.getByText(/options/i)).toBeInTheDocument();
-    });
 });

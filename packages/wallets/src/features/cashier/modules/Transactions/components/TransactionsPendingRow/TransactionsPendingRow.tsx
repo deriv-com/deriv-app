@@ -3,11 +3,11 @@ import classNames from 'classnames';
 import moment from 'moment';
 import { useHover } from 'usehooks-ts';
 import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api-v2';
+import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { Tooltip, WalletButton, WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
 import useDevice from '../../../../../../hooks/useDevice';
-import IcCrossLight from '../../../../../../public/images/ic-cross-light.svg';
 import { THooks } from '../../../../../../types';
 import { WalletActionModal } from '../../../../components/WalletActionModal';
 import { TransactionsPendingRowField } from './components/TransactionsPendingRowField';
@@ -193,7 +193,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                         className='wallets-transactions-pending-row__transaction-cancel-button'
                         onClick={onCancelButtonClick}
                     >
-                        <IcCrossLight />
+                        <LegacyClose1pxIcon iconSize='xs' />
                     </button>
                 )}
             </div>

@@ -69,7 +69,7 @@ export const getMFAppstorePlatforms = (): MfPlatformConfig[] => [
         app_icon: getPlatformSettingsAppstore('trader').icon,
         app_title: getPlatformSettingsAppstore('trader').name,
         name: getPlatformSettingsAppstore('trader').name,
-        app_desc: localize('The multipliers trading platform .'),
+        app_desc: localize('The multipliers trading platform.'),
         link_to: routes.trade,
     },
 ];

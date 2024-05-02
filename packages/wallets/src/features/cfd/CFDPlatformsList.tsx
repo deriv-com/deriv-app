@@ -34,7 +34,7 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                                         target='_blank'
                                     />,
                                 ]}
-                                defaults='Trade bigger positions with less capital across diverse financial and derived instruments. <0>Learn more</0>'
+                                defaults='Trade bigger positions with less capital. <0>Learn more</0>'
                             />
                         </WalletText>
                         <WalletButton

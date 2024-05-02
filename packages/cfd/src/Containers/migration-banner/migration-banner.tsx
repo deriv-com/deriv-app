@@ -43,7 +43,7 @@ const MigrationBanner = observer(({ is_trade_modal = false }: TMigrationBannerPr
                     'mt5-migration-banner__description--trade-modal': is_desktop_trade_modal,
                 })}
             >
-                <div className='mt5-migration-banne__description-text'>
+                <div className='mt5-migration-banner__description-text'>
                     {has_derived_and_financial_mt5 ? (
                         <Text size='xs'>
                             <Localize

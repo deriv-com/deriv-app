@@ -27,4 +27,14 @@
             grid-gap: 0.8rem;
         }
     }
+
+    &__reasons {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+
+        & svg {
+            flex-shrink: 0;
+        }
+    }
 }

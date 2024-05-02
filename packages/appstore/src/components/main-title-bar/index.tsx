@@ -35,7 +35,6 @@ const MainTitleBar = () => {
 
     return (
         <React.Fragment>
-            <WalletsBanner />
             <BookBanner />
             {show_wallets_banner && <WalletsBanner />}
             <DesktopWrapper>

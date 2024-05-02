@@ -63,7 +63,10 @@ const OptionsAndMultipliersListing = observer(() => {
                     </Text>
                 ) : (
                     <Text size='xs' line_height='s'>
-                        <Localize i18n_default_text='Trade bigger positions with less capital across diverse financial and derived instruments.' />
+                        <Localize
+                            i18n_default_text='Multipliers let you trade with leverage and limit your risk to your stake. <0>Learn more</0>'
+                            components={[<StaticUrl key={0} className='options' href='trade-types/multiplier/' />]}
+                        />
                     </Text>
                 )
             }

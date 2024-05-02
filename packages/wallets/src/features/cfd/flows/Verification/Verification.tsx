@@ -87,10 +87,12 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const selectedMarketType = getModalState('marketType') ?? 'all';
     const platform = getModalState('platform') ?? PlatformDetails.mt5.platform;
 
-    const shouldSubmitPOA = useMemo(
-        () => !poaStatus?.has_attempted_poa || (!poaStatus?.is_pending && !poaStatus.is_verified),
-        [poaStatus]
-    );
+    const shouldSubmitPOA = useMemo(() => {
+        if (poaStatus?.is_pending) return false;
+        // @ts-expect-error as the prop verified_jurisdiction is not yet present in GetAccountStatusResponse type
+        return selectedJurisdiction ? !poaStatus?.verified_jurisdiction?.[selectedJurisdiction] : false;
+    }, [selectedJurisdiction, poaStatus]);
+
     const shouldFillPersonalDetails = useMemo(
         () => !settings?.has_submitted_personal_details,
         [settings?.has_submitted_personal_details]

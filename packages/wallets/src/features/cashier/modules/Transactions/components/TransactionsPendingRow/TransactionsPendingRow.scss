@@ -131,7 +131,8 @@
         }
 
         &-cancel-button {
-            margin-left: 1rem;
+            display: flex;
+            margin-left: 0.8rem;
             padding: 0;
             border: none;
             cursor: pointer;

@@ -68,7 +68,6 @@ const mockWallet = {
         is_USDK: false,
         is_USDT: false,
         is_withdrawal_suspended: 0 as const,
-        minimum_withdrawal: 0.1,
         name: '',
         stake_default: 0.1,
         transfer_between_accounts: {

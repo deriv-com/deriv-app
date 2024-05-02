@@ -1,7 +1,6 @@
 import Cookies from 'js-cookie';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import moment from 'moment';
-import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 
 import {
     CFD_PLATFORMS,
@@ -443,6 +442,15 @@ export default class ClientStore extends BaseStore {
 
                 this.setPreferredLanguage(language);
                 LocalStore.set(LANGUAGE_KEY, language);
+            }
+        );
+
+        reaction(
+            () => [this.is_logged_in, this.is_passkey_supported],
+            () => {
+                if (this.is_logged_in && this.is_passkey_supported) {
+                    this.fetchShouldShowEffortlessLoginModal();
+                }
             }
         );
 
@@ -1668,8 +1676,6 @@ export default class ClientStore extends BaseStore {
 
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
-            await this.setIsPasskeySupported();
-            await this.fetchShouldShowEffortlessLoginModal();
             if (this.account_settings && !this.account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
@@ -2700,17 +2706,8 @@ export default class ClientStore extends BaseStore {
         this.real_account_signup_form_step = step;
     }
 
-    async setIsPasskeySupported() {
-        try {
-            // TODO: replace later "Analytics?.isFeatureOn()" to "Analytics?.getFeatureValue()"
-            const is_passkeys_enabled = Analytics?.isFeatureOn('web_passkeys');
-            const is_passkeys_enabled_on_be = Analytics?.isFeatureOn('service_passkeys');
-            // "browserSupportsWebAuthn" does not consider, if platform authenticator is available (unlike "platformAuthenticatorIsAvailable()")
-            const is_supported_by_browser = await browserSupportsWebAuthn();
-            this.is_passkey_supported = is_passkeys_enabled && is_supported_by_browser && is_passkeys_enabled_on_be;
-        } catch (e) {
-            //error handling needed
-        }
+    setIsPasskeySupported(is_passkey_supported = false) {
+        this.is_passkey_supported = is_passkey_supported;
     }
 
     setShouldShowEffortlessLoginModal(should_show_effortless_login_modal = true) {
@@ -2725,7 +2722,7 @@ export default class ClientStore extends BaseStore {
                     localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
                 }
 
-                const data = await WS.send({ passkeys_list: 1 });
+                const data = await WS.authorized.send({ passkeys_list: 1 });
 
                 if (data?.passkeys_list) {
                     const should_show_effortless_login_modal =

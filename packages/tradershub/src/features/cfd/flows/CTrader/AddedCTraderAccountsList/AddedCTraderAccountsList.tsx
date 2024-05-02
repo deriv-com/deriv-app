@@ -73,9 +73,7 @@ const AddedCTraderAccountsList = () => {
                             <Text size='sm' weight='bold'>
                                 {account?.formatted_balance}
                             </Text>
-                            <Text color='primary' size='sm'>
-                                {account.login}
-                            </Text>
+                            <Text size='xs'>{account.login}</Text>
                         </Fragment>
                     )}
                 </div>

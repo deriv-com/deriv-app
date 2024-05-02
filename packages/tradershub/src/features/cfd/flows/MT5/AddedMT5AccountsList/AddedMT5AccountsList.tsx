@@ -79,7 +79,7 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
                             {account.display_balance}
                         </Text>
                     )}
-                    <Text size='sm'>{account.display_login}</Text>
+                    <Text size='xs'>{account.display_login}</Text>
                 </div>
             </div>
         </TradingAccountCard>

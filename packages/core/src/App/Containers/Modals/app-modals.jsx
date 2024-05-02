@@ -144,7 +144,10 @@ const AppModals = observer(() => {
             });
         }
     }, [is_logged_in, is_authorize]);
-    if (temp_session_signup_params && window.location.href.includes(routes.onboarding)) {
+
+    const is_onboarding = window.location.href.includes(routes.onboarding);
+
+    if (temp_session_signup_params && is_onboarding) {
         toggleAccountSignupModal(true);
     } else {
         SessionStore.remove('signup_query_param');
@@ -215,7 +218,7 @@ const AppModals = observer(() => {
         ComponentToLoad = <WalletsUpgradeLogoutModal />;
     }
 
-    if (should_show_effortless_login_modal && !is_tour_open && !is_from_derivgo) {
+    if (should_show_effortless_login_modal && !is_tour_open && !is_from_derivgo && !is_onboarding) {
         ComponentToLoad = <EffortlessLoginModal />;
     }
 

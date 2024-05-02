@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { useStoreWalletAccountsList, useWalletMigration } from '@deriv/hooks';
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
 
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
@@ -15,6 +16,8 @@ import MT5Notification from './mt5-notification';
 import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
+import WalletsUpgradeLogoutModal from './wallets-upgrade-logout-modal';
+import WalletsUpgradeCompletedModal from './wallets-upgrade-completed-modal';
 import EffortlessLoginModal from '../EffortlessLoginModal';
 
 const TradingAssessmentExistingUser = React.lazy(() =>
@@ -81,7 +84,7 @@ const InformationSubmittedModal = React.lazy(() =>
 );
 
 const AppModals = observer(() => {
-    const { client, ui, traders_hub } = useStore();
+    const { client, ui, traders_hub, common } = useStore();
     const {
         is_authorize,
         is_logged_in,
@@ -93,6 +96,7 @@ const AppModals = observer(() => {
         should_show_effortless_login_modal,
     } = client;
     const { content_flag, is_tour_open } = traders_hub;
+    const { is_from_derivgo } = common;
     const {
         is_account_needed_modal_on,
         is_closing_create_real_account_modal,
@@ -124,6 +128,14 @@ const AppModals = observer(() => {
         is_logged_in && mt5_login_list.length > 0
             ? mt5_login_list.find(login => login)?.white_label?.notification ?? true
             : false;
+
+    const { is_migrated } = useWalletMigration();
+
+    const { has_wallet } = useStoreWalletAccountsList();
+
+    const should_show_wallets_upgrade_completed_modal = localStorage.getItem(
+        'should_show_wallets_upgrade_completed_modal'
+    );
 
     React.useEffect(() => {
         if (is_logged_in && is_authorize) {
@@ -195,7 +207,15 @@ const AppModals = observer(() => {
         ComponentToLoad = <UrlUnavailableModal />;
     }
 
-    if (should_show_effortless_login_modal && !is_tour_open) {
+    if (has_wallet && should_show_wallets_upgrade_completed_modal) {
+        ComponentToLoad = <WalletsUpgradeCompletedModal />;
+    }
+
+    if (!has_wallet && is_migrated && is_logged_in) {
+        ComponentToLoad = <WalletsUpgradeLogoutModal />;
+    }
+
+    if (should_show_effortless_login_modal && !is_tour_open && !is_from_derivgo) {
         ComponentToLoad = <EffortlessLoginModal />;
     }
 

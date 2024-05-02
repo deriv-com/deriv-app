@@ -5,17 +5,20 @@
     flex-direction: column;
     gap: 1.6rem;
     width: 100%;
-    padding-block: 2rem;
+    padding-block: 0.8rem;
 
     &__actions {
         display: flex;
-        justify-content: space-evenly;
+        padding-left: 2.4rem;
+        padding-right: 2.4rem;
+        gap: 3.2rem;
+        justify-content: center;
         padding-inline: 2.4rem;
 
         &-button {
             width: 4.2rem;
             height: 4.2rem;
-            border-radius: 100%;
+            border-radius: 1.2rem;
         }
     }
 

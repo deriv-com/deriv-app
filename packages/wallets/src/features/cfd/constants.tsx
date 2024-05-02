@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    AccountsDerivCtraderIcon,
     AccountsDerivXIcon,
     AccountsDmt5DerivedIcon,
     AccountsDmt5FinancialIcon,
@@ -9,7 +10,6 @@ import {
     LabelPairedMacosXlIcon,
     LabelPairedWindowsXlIcon,
     PartnersProductDerivCtraderBrandDarkWordmarkHorizontalIcon,
-    PartnersProductDerivCtraderBrandLightLogoHorizontalIcon,
     PartnersProductDerivMt5BrandLightLogoHorizontalIcon,
 } from '@deriv/quill-icons';
 import i18n from '../../translations/i18n';
@@ -20,37 +20,36 @@ export const MarketTypeDetails = {
         description: i18n.t(
             'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs'
         ),
-
-        icon: <AccountsDmt5SwfIcon iconSize='lg' />,
+        icon: <AccountsDmt5SwfIcon height={48} width={48} />,
         title: i18n.t('Swap-Free'),
     },
     financial: {
         description: 'This account offers CFDs on financial instruments.',
-        icon: <AccountsDmt5FinancialIcon iconSize='lg' />,
+        icon: <AccountsDmt5FinancialIcon height={48} width={48} />,
         title: i18n.t('Financial'),
     },
     synthetic: {
         description: i18n.t('This account offers CFDs on derived instruments.'),
-        icon: <AccountsDmt5DerivedIcon iconSize='lg' />,
+        icon: <AccountsDmt5DerivedIcon height={48} width={48} />,
         title: i18n.t('Derived'),
     },
 } as const;
 
 export const PlatformDetails = {
     ctrader: {
-        icon: <PartnersProductDerivCtraderBrandLightLogoHorizontalIcon height={48} width={48} />,
+        icon: <AccountsDerivCtraderIcon height={48} width={48} />,
         link: 'https://onelink.to/hyqpv7',
         platform: i18n.t('ctrader') as TPlatforms.OtherAccounts,
         title: i18n.t('Deriv cTrader'),
     },
     dxtrade: {
-        icon: <AccountsDerivXIcon iconSize='lg' />,
+        icon: <AccountsDerivXIcon height={48} width={48} />,
         link: 'https://onelink.to/grmtyx',
         platform: i18n.t('dxtrade') as TPlatforms.OtherAccounts,
         title: i18n.t('Deriv X'),
     },
     mt5: {
-        icon: <AccountsDmt5DerivedIcon iconSize='lg' />,
+        icon: <AccountsDmt5DerivedIcon height={48} width={48} />,
         link: 'https://onelink.to/grmtyx',
         platform: i18n.t('mt5') as TPlatforms.MT5,
         title: i18n.t('Deriv MT5'),

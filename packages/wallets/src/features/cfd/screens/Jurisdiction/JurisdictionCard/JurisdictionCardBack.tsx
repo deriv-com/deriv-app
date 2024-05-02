@@ -1,6 +1,6 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
+import { LegacyArrowRight2pxIcon } from '@deriv/quill-icons';
 import { WalletText } from '../../../../../components/Base/WalletText';
-import BackArrowIcon from '../../../../../public/images/ic-back-arrow.svg';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
 import DocumentIcon from '../../../../../public/images/ic-id-number.svg';
 import NameAndAddressIcon from '../../../../../public/images/ic-name-and-address.svg';
@@ -40,19 +40,20 @@ const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, ve
     if (verificationDocs)
         return (
             <div className='wallets-jurisdiction-card-back'>
-                <BackArrowIcon
+                <LegacyArrowRight2pxIcon
                     className='wallets-jurisdiction-card-back__icon'
+                    iconSize='xs'
                     onClick={e => {
                         e.stopPropagation();
                         setIsFlipped(false);
                     }}
                 />
-                <WalletText size='sm'>{verificationContents.shortDescription}</WalletText>
+                <WalletText size='xs'>{verificationContents.shortDescription}</WalletText>
                 {verificationDocs.map((verificationDocument: TJurisdictionCardItemVerificationItem, i) => {
                     return (
                         <div className='wallets-jurisdiction-card-back__row' key={`${verificationDocument}-${i}`}>
                             {verificationIconsMapper[verificationDocument]}
-                            <WalletText size='sm'>
+                            <WalletText size='xs'>
                                 {verificationContents.requiredVerificationDocs[verificationDocument]?.text}
                             </WalletText>
                         </div>
@@ -63,7 +64,7 @@ const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, ve
                     return (
                         <div className='wallets-jurisdiction-card-back__row' key={`${statusReference}-${i}`}>
                             {verificationStatusIconsMapper[statusReference.icon]}
-                            <WalletText size='sm'>{statusReference.text}</WalletText>
+                            <WalletText size='xs'>{statusReference.text}</WalletText>
                         </div>
                     );
                 })}

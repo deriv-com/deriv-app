@@ -1,56 +1,5 @@
 import { TMarketTypes, TMT5LandingCompanyName, TWalletLandingCompanyName } from '../../../types';
 
-export const walletIconMapper = {
-    AUD: {
-        dark: 'IcWalletCurrencyAud',
-        light: 'IcWalletCurrencyAud',
-    },
-    BTC: {
-        dark: 'IcWalletBitcoinDark',
-        light: 'IcWalletBitcoinLight',
-    },
-    Demo: {
-        dark: 'IcWalletDerivDemoDark',
-        light: 'IcWalletDerivDemoLight',
-    },
-    ETH: {
-        dark: 'IcWalletEthereumDark',
-        light: 'IcWalletEthereumLight',
-    },
-    EUR: {
-        dark: 'IcWalletCurrencyEur',
-        light: 'IcWalletCurrencyEur',
-    },
-    eUST: {
-        dark: 'IcWalletTetherDark',
-        light: 'IcWalletTetherLight',
-    },
-    GBP: {
-        dark: 'IcWalletCurrencyGbp',
-        light: 'IcWalletCurrencyGbp',
-    },
-    LTC: {
-        dark: 'IcWalletLiteCoinDark',
-        light: 'IcWalletLiteCoinLight',
-    },
-    tUST: {
-        dark: 'IcWalletTetherDark',
-        light: 'IcWalletTetherLight',
-    },
-    USD: {
-        dark: 'IcWalletCurrencyUsd',
-        light: 'IcWalletCurrencyUsd',
-    },
-    USDC: {
-        dark: 'IcWalletUsdCoinDark',
-        light: 'IcWalletUsdCoinLight',
-    },
-    UST: {
-        dark: 'IcWalletTetherDark',
-        light: 'IcWalletTetherLight',
-    },
-} as const;
-
 type TDefinedMT5LandingCompanyName = Exclude<TMT5LandingCompanyName, 'malta' | 'seychelles' | undefined>;
 
 interface TDefinedMT5LandingCompanyDetails {

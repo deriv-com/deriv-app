@@ -1,7 +1,9 @@
 import React from 'react';
+import { TSocketError } from '@deriv/api/types';
+import { Analytics } from '@deriv-com/analytics';
 import { Text } from '@deriv/components';
+import { getOSNameWithUAParser } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { mobileOSDetect } from '@deriv/shared';
 import { DescriptionContainer } from './components/description-container';
 import { TipsBlock } from './components/tips-block';
 import { TServerError } from '../../../Types/common.type';
@@ -22,10 +24,11 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
     const learn_more_button_text = <Localize i18n_default_text='Learn more' />;
     const create_passkey_button_text = <Localize i18n_default_text='Create passkey' />;
     const continue_button_text = <Localize i18n_default_text='Continue' />;
+    const continue_trading_button_text = <Localize i18n_default_text='Continue trading' />;
+    const add_more_passkeys_button_text = <Localize i18n_default_text='Add more passkeys' />;
 
     const getPasskeysRemovedDescription = () => {
-        const os_type = mobileOSDetect();
-
+        const os_type = getOSNameWithUAParser();
         switch (os_type) {
             case 'Android':
                 return (
@@ -63,12 +66,7 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
                 <TipsBlock />
             </React.Fragment>
         ),
-        no_passkey: (
-            <Localize
-                i18n_default_text='Enhanced security is just a tap away.<0/>Hit <1>Learn more</1> to explore passkeys or <1>Create passkey</1> to get started.'
-                components={[<br key={0} />, <strong key={1} />]}
-            />
-        ),
+        no_passkey: <Localize i18n_default_text='Enhanced security is just a tap away.' />,
         removed: getPasskeysRemovedDescription(),
         renaming: '',
         verifying: (
@@ -83,16 +81,16 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
         renaming: 'IcEditPasskey',
         verifying: 'IcVerifyPasskey',
     };
-    const button_texts = {
-        created: continue_button_text,
+    const primary_button_texts = {
+        created: continue_trading_button_text,
         learn_more: create_passkey_button_text,
         no_passkey: create_passkey_button_text,
         removed: continue_button_text,
         renaming: <Localize i18n_default_text='Save changes' />,
         verifying: <Localize i18n_default_text='Send email' />,
     };
-    const back_button_texts = {
-        created: undefined,
+    const secondary_button_texts = {
+        created: add_more_passkeys_button_text,
         learn_more: undefined,
         no_passkey: learn_more_button_text,
         removed: undefined,
@@ -104,18 +102,54 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
         title: titles[status],
         description: descriptions[status],
         icon: icons[status],
-        primary_button_text: button_texts[status],
-        secondary_button_text: back_button_texts[status],
+        primary_button_text: primary_button_texts[status],
+        secondary_button_text: secondary_button_texts[status],
     };
 };
 
-type TGetModalContent = { error: TServerError | null; is_passkey_registration_started: boolean };
+// TODO: fix types for TServerError and TSocketError
+type TGetModalContent = {
+    error: TServerError | null | TSocketError<'passkeys_list' | 'passkeys_register' | 'passkeys_register_options'>;
+    is_passkey_registration_started: boolean;
+};
+
+export const NOT_SUPPORTED_ERROR_NAME = 'NotSupportedError';
 
 export const getModalContent = ({ error, is_passkey_registration_started }: TGetModalContent) => {
+    const isNotSupportedError = (error: TServerError) => error?.name === NOT_SUPPORTED_ERROR_NAME;
+
+    const error_message = isNotSupportedError(error as TServerError) ? (
+        <Localize i18n_default_text="This device doesn't support passkeys." />
+    ) : (
+        (error as TServerError)?.message
+    );
+    const button_text = (
+        <Localize i18n_default_text={isNotSupportedError(error as TServerError) ? 'OK' : 'Try again'} />
+    );
+
+    const error_message_header = (
+        <Text size='xs' weight='bold'>
+            <Localize i18n_default_text='Passkey setup failed' />
+        </Text>
+    );
+
+    const reminder_tips = [
+        <Localize i18n_default_text='Enable screen lock on your device.' key='tip_1' />,
+        <Localize i18n_default_text='Enable bluetooth.' key='tip_2' />,
+        <Localize i18n_default_text='Sign in to your Google or iCloud account.' key='tip_3' />,
+    ];
     if (is_passkey_registration_started) {
         return {
             description: (
-                <Localize i18n_default_text='Make sure the screen lock and Bluetooth on your device are active and you are signed in to your Google or iCloud account.' />
+                <ul>
+                    {reminder_tips.map(tip => (
+                        <li key={tip.key}>
+                            <Text size='xxs' line_height='l'>
+                                {tip}
+                            </Text>
+                        </li>
+                    ))}
+                </ul>
             ),
             button_text: <Localize i18n_default_text='Continue' />,
             header: (
@@ -127,7 +161,20 @@ export const getModalContent = ({ error, is_passkey_registration_started }: TGet
     }
 
     return {
-        description: error?.message ?? '',
-        button_text: error ? <Localize i18n_default_text='Try again' /> : undefined,
+        description: error_message ?? '',
+        button_text: error ? button_text : undefined,
+        header: error ? error_message_header : undefined,
     };
+};
+
+export const passkeysMenuActionEventTrack = (
+    action: string,
+    additional_data: { error_message?: string; subform_name?: string } = {}
+) => {
+    Analytics.trackEvent('ce_passkey_account_settings_form', {
+        action,
+        form_name: 'ce_passkey_account_settings_form',
+        operating_system: getOSNameWithUAParser(),
+        ...additional_data,
+    });
 };

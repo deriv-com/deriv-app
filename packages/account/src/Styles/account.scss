@@ -291,6 +291,12 @@ $MIN_HEIGHT_FLOATING: calc(
             position: relative;
             max-width: 400px;
 
+            &--phone {
+                @include mobile {
+                    padding-inline-end: 2.5rem;
+                }
+            }
+
             .cfd-personal-details-modal__form & {
                 margin: unset;
                 max-width: unset;
@@ -410,6 +416,42 @@ $MIN_HEIGHT_FLOATING: calc(
                 .date-of-birth-datepicker {
                     .datepicker-native__input {
                         height: 3.8rem;
+                    }
+                }
+            }
+        }
+        &__phone-verification-btn {
+            position: absolute;
+            inset-inline-end: 0;
+            top: 0.4rem;
+
+            &--not-verified {
+                display: flex;
+                padding-top: 0.6rem;
+                padding-inline-end: 1.2rem;
+                cursor: pointer;
+            }
+
+            &--verified {
+                display: flex;
+                padding-top: 0.6rem;
+                padding-inline-end: 1.2rem;
+                color: var(--text-profit-success);
+
+                @include mobile {
+                    padding-inline-end: 4rem;
+                }
+
+                > :first-child {
+                    padding-inline-end: 0.4rem;
+                }
+
+                .phone-verification__popover {
+                    position: absolute;
+                    inset-inline-end: -3rem;
+
+                    @include mobile {
+                        inset-inline-end: 0rem;
                     }
                 }
             }

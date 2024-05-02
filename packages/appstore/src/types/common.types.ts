@@ -43,8 +43,6 @@ export type TOpenAccountTransferMeta = {
 export type TStandPoint = {
     financial_company: string;
     gaming_company: string;
-    iom: boolean;
-    malta: boolean;
     maltainvest: boolean;
     svg: boolean;
 };

@@ -3,7 +3,7 @@ import { isEmptyObject, State } from '@deriv/shared';
 export const hasMissingRequiredField = (account_settings, client, isAccountOfType) => {
     if (!account_settings || isEmptyObject(account_settings)) return false;
 
-    const { is_svg, landing_company_shortcode } = client;
+    const { is_svg } = client;
 
     // TODO: [deriv-eu] refactor into its own function once more exceptions are added.
     let required_fields;
@@ -30,7 +30,6 @@ export const hasMissingRequiredField = (account_settings, client, isAccountOfTyp
     function getRequiredFields() {
         if (!isAccountOfType('financial')) return [];
 
-        const { residence } = client;
         const required_settings_fields = [
             'account_opening_reason',
             'address_line_1',
@@ -39,9 +38,6 @@ export const hasMissingRequiredField = (account_settings, client, isAccountOfTyp
             'tax_identification_number',
             'tax_residence',
         ];
-
-        const address_postcode_is_required = residence === 'gb' || landing_company_shortcode === 'iom';
-        if (address_postcode_is_required) required_settings_fields.push('address_postcode');
 
         return [...required_settings_fields];
     }

@@ -10,7 +10,6 @@ import { MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { BinaryLink } from 'App/Components/Routes';
-import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-rebranding-logo.svg';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import AccountInfo from 'App/Components/Layout/Header/account-info';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
@@ -19,6 +18,7 @@ import DefaultMobileLinks from './default-mobile-links';
 import ShowNotifications from './show-notifications';
 import TradersHubOnboarding from './traders-hub-onboarding';
 import TradersHubHomeButton from './traders-hub-home-button';
+import DerivShortLogo from './deriv-short-logo';
 
 type TPlatformConfig = typeof platform_config;
 type TPlatforms = typeof platforms;
@@ -100,9 +100,7 @@ const TradersHubHeader = observer(() => {
                         'traders-hub-header__logo-wrapper--cashier': cashier_routes,
                     })}
                 >
-                    <StaticUrl href='/'>
-                        <DerivBrandLogo className='traders-hub-header__logo' />
-                    </StaticUrl>
+                    <DerivShortLogo />
                 </div>
                 {!is_mobile && (
                     <React.Fragment>

@@ -11,6 +11,7 @@ import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.js
 import platform_config from 'App/Constants/platform-config';
 import { useHistory } from 'react-router-dom';
 import HeaderAccountActions from './header-account-actions';
+import DerivShortLogo from './deriv-short-logo';
 
 const DefaultHeader = observer(() => {
     const { client, common, notifications, traders_hub, ui } = useStore();
@@ -78,23 +79,26 @@ const DefaultHeader = observer(() => {
         >
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
-                    {!is_mobile && (
-                        <PlatformSwitcher
-                            app_routing_history={app_routing_history}
-                            is_landing_company_loaded={is_landing_company_loaded}
-                            is_logged_in={is_logged_in}
-                            is_logging_in={is_logging_in}
-                            platform_config={filterPlatformsForClients(platform_config)}
-                            setTogglePlatformType={setTogglePlatformType}
-                            current_language={current_language}
-                        />
-                    )}
-                    {is_mobile && (
+                    {is_mobile ? (
                         <React.Fragment>
                             <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
                             {header_extension && is_logged_in && (
                                 <div className='header__menu-left-extensions'>{header_extension}</div>
                             )}
+                            <DerivShortLogo />
+                        </React.Fragment>
+                    ) : (
+                        <React.Fragment>
+                            <DerivShortLogo />
+                            <PlatformSwitcher
+                                app_routing_history={app_routing_history}
+                                is_landing_company_loaded={is_landing_company_loaded}
+                                is_logged_in={is_logged_in}
+                                is_logging_in={is_logging_in}
+                                platform_config={filterPlatformsForClients(platform_config)}
+                                setTogglePlatformType={setTogglePlatformType}
+                                current_language={current_language}
+                            />
                         </React.Fragment>
                     )}
                     <MenuLinks />

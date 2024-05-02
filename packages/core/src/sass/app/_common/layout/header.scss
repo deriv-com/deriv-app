@@ -381,4 +381,15 @@
             height: #{$MOBILE_HEADER_HEIGHT - 1px};
         }
     }
+
+    &__divider {
+        width: 0.1rem;
+        height: 3rem;
+        margin-left: 0.8rem;
+        background: var(--general-section-2);
+
+        @include mobile {
+            height: 2.4rem;
+        }
+    }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import ErrorIcon from '../../public/images/error-icon.svg';
+import { LegacyWarningIcon } from '@deriv/quill-icons';
 import { WalletButton } from '../Base';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 
@@ -13,7 +13,7 @@ const ErrorState: React.FC<TProps> = ({
     return (
         <WalletsActionScreen
             description={message}
-            icon={<ErrorIcon data-testid='dt_error_icon' />}
+            icon={<LegacyWarningIcon data-testid='dt_error_icon' fill='#FF444F' iconSize='2xl' />}
             renderButtons={() => (
                 <WalletButton onClick={() => window.location.reload()} size='lg' variant='ghost'>
                     Try again

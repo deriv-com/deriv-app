@@ -146,7 +146,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                             <TradeLink app={DesktopLinks.MT5_LINUX} platform={mt5Platform} />
                         </Fragment>
                     ) : (
-                        <MT5MobileRedirectOption details={details} />
+                        <MT5MobileRedirectOption details={details as THooks.MT5AccountsList} />
                     ))}
 
                 {platform === dxtradePlatform && (

@@ -1,39 +1,15 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import PhoneVerificationCard from './phone-verification-card';
-import { Button, CaptionText, Text } from '@deriv-com/quill-ui';
+import { Text } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { Input } from '@deriv/components';
+import ResendCodeTimer from './resend-code-timer';
 
 const ConfirmYourEmail = observer(() => {
-    const [timer, setTimer] = React.useState(60);
-    const [startTimer, setStartTimer] = React.useState(false);
-
     const { client } = useStore();
     const { account_settings } = client;
     const { email } = account_settings;
-
-    const resendCodeText = useRef('Resend code');
-
-    React.useEffect(() => {
-        let countdown: NodeJS.Timeout;
-        if (startTimer && timer > 0) {
-            countdown = setInterval(() => {
-                setTimer(prevTime => prevTime - 1);
-                resendCodeText.current = `Resend code in ${timer - 1}s`;
-            }, 1000);
-        } else {
-            setStartTimer(false);
-            resendCodeText.current = 'Resend code';
-        }
-
-        return () => clearInterval(countdown);
-    }, [timer, startTimer]);
-
-    const resendCode = () => {
-        setTimer(60);
-        setStartTimer(true);
-    };
 
     return (
         <PhoneVerificationCard is_small_card>
@@ -54,11 +30,7 @@ const ConfirmYourEmail = observer(() => {
             </div>
             <div className='phone-verification__card--email-verification-otp-container'>
                 <Input id='otp_code' type='text' name='otp_code' label={localize('OTP code')} data-lpignore='true' />
-                <Button variant='tertiary' onClick={resendCode} disabled={startTimer} color='black'>
-                    <CaptionText bold underlined>
-                        <Localize i18n_default_text='{{resendCode}}' values={{ resendCode: resendCodeText.current }} />
-                    </CaptionText>
-                </Button>
+                <ResendCodeTimer />
             </div>
         </PhoneVerificationCard>
     );

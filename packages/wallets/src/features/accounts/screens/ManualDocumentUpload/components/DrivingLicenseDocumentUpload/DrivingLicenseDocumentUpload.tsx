@@ -5,8 +5,7 @@ import DrivingLicenseCardBack from '../../../../../../public/images/accounts/doc
 import DrivingLicenseCardFront from '../../../../../../public/images/accounts/driving-license-front.svg';
 import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
 import { DocumentRuleHints } from '../DocumentRuleHints';
-import '../common.scss';
-import './DrivingLicenseDocumentUpload.scss';
+import '../wallets-manual-upload.scss';
 
 const DrivingLicenseDocumentUpload = () => {
     const { formValues, setFormValues } = useFlow();
@@ -16,9 +15,9 @@ const DrivingLicenseDocumentUpload = () => {
     };
 
     return (
-        <div className='wallets-driving-license-document-upload' data-testid='dt_driving-license-document-upload'>
+        <div className='wallets-manual-upload' data-testid='dt_driving-license-document-upload'>
             <WalletText>First, enter your Driving licence number and the expiry date.</WalletText>
-            <div className='wallets-input-group'>
+            <div className='wallets-manual-upload__input-group'>
                 <FlowTextField
                     defaultValue={formValues.drivingLicenceNumber ?? ''}
                     label='Driving licence number*'
@@ -36,31 +35,27 @@ const DrivingLicenseDocumentUpload = () => {
                 />
             </div>
             <Divider />
-            <div className='wallets-driving-license-document-upload__document-section'>
+            <div className='wallets-manual-upload__document-upload'>
                 <WalletText>Next, upload the front and back of your driving licence.</WalletText>
-                <div className='wallets-driving-license-document-upload__dropzones'>
-                    <div className='wallets-driving-license-document-upload__dropzones--left'>
-                        <Dropzone
-                            buttonText='Drop file or click here to upload'
-                            defaultFile={formValues.drivingLicenseCardFront}
-                            description='Upload the front of your driving licence.'
-                            fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
-                            icon={<DrivingLicenseCardFront />}
-                            maxSize={8388608}
-                            onFileChange={(file: File) => setFormValues('drivingLicenseCardFront', file)}
-                        />
-                    </div>
-                    <div className='wallets-driving-license-document-upload__dropzones--right'>
-                        <Dropzone
-                            buttonText='Drop file or click here to upload'
-                            defaultFile={formValues.drivingLicenseCardBack}
-                            description='Upload the back of your driving licence.'
-                            fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
-                            icon={<DrivingLicenseCardBack />}
-                            maxSize={8388608}
-                            onFileChange={(file: File) => setFormValues('drivingLicenseCardBack', file)}
-                        />
-                    </div>
+                <div className='wallets-manual-upload__dropzone'>
+                    <Dropzone
+                        buttonText='Drop file or click here to upload'
+                        defaultFile={formValues.drivingLicenseCardFront}
+                        description='Upload the front of your driving licence.'
+                        fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
+                        icon={<DrivingLicenseCardFront />}
+                        maxSize={8388608}
+                        onFileChange={(file: File) => setFormValues('drivingLicenseCardFront', file)}
+                    />
+                    <Dropzone
+                        buttonText='Drop file or click here to upload'
+                        defaultFile={formValues.drivingLicenseCardBack}
+                        description='Upload the back of your driving licence.'
+                        fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
+                        icon={<DrivingLicenseCardBack />}
+                        maxSize={8388608}
+                        onFileChange={(file: File) => setFormValues('drivingLicenseCardBack', file)}
+                    />
                 </div>
                 <DocumentRuleHints docType='drivingLicense' />
             </div>

@@ -5,8 +5,7 @@ import IdentityCardBack from '../../../../../../public/images/accounts/document-
 import IdentityCardFront from '../../../../../../public/images/accounts/identity-card-front.svg';
 import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
 import { DocumentRuleHints } from '../DocumentRuleHints';
-import '../common.scss';
-import './IdentityCardDocumentUpload.scss';
+import '../wallets-manual-upload.scss';
 
 const IdentityCardDocumentUpload = () => {
     const { formValues, setFormValues } = useFlow();
@@ -16,9 +15,9 @@ const IdentityCardDocumentUpload = () => {
     };
 
     return (
-        <div className='wallets-identity-card-document-upload' data-testid='dt_identity-card-document-upload'>
+        <div className='wallets-manual-upload' data-testid='dt_identity-card-document-upload'>
             <WalletText>First, enter your Identity card number and the expiry date.</WalletText>
-            <div className='wallets-input-group'>
+            <div className='wallets-manual-upload__input-group'>
                 <FlowTextField
                     defaultValue={formValues.identityCardNumber ?? ''}
                     label='Identity card number*'
@@ -36,31 +35,27 @@ const IdentityCardDocumentUpload = () => {
                 />
             </div>
             <Divider />
-            <div className='wallets-identity-card-document-upload__document-section'>
+            <div className='wallets-manual-upload__document-upload'>
                 <WalletText>Next, upload the front and back of your identity card.</WalletText>
-                <div className='wallets-identity-card-document-upload__dropzones'>
-                    <div className='wallets-identity-card-document-upload__dropzones--left'>
-                        <Dropzone
-                            buttonText='Drop file or click here to upload'
-                            defaultFile={formValues.identityCardFront}
-                            description='Upload the front of your identity card.'
-                            fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
-                            icon={<IdentityCardFront />}
-                            maxSize={8388608}
-                            onFileChange={(file: File) => setFormValues('identityCardFront', file)}
-                        />
-                    </div>
-                    <div className='wallets-identity-card-document-upload__dropzones--right'>
-                        <Dropzone
-                            buttonText='Drop file or click here to upload'
-                            defaultFile={formValues.identityCardBack}
-                            description='Upload the back of your identity card.'
-                            fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
-                            icon={<IdentityCardBack />}
-                            maxSize={8388608}
-                            onFileChange={(file: File) => setFormValues('identityCardBack', file)}
-                        />
-                    </div>
+                <div className='wallets-manual-upload__dropzone'>
+                    <Dropzone
+                        buttonText='Drop file or click here to upload'
+                        defaultFile={formValues.identityCardFront}
+                        description='Upload the front of your identity card.'
+                        fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
+                        icon={<IdentityCardFront />}
+                        maxSize={8388608}
+                        onFileChange={(file: File) => setFormValues('identityCardFront', file)}
+                    />
+                    <Dropzone
+                        buttonText='Drop file or click here to upload'
+                        defaultFile={formValues.identityCardBack}
+                        description='Upload the back of your identity card.'
+                        fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
+                        icon={<IdentityCardBack />}
+                        maxSize={8388608}
+                        onFileChange={(file: File) => setFormValues('identityCardBack', file)}
+                    />
                 </div>
                 <DocumentRuleHints docType='identityCard' />
             </div>

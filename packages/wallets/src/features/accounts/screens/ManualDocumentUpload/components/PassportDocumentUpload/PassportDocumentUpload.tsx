@@ -5,8 +5,7 @@ import { Divider, WalletText } from '../../../../../../components/Base';
 import PassportPlaceholder from '../../../../../../public/images/accounts/passport-placeholder.svg';
 import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
 import { DocumentRuleHints } from '../DocumentRuleHints';
-import '../common.scss';
-import './PassportDocumentUpload.scss';
+import '../wallets-manual-upload.scss';
 
 const PassportDocumentUpload = () => {
     const { formValues, setFormValues } = useFlow();
@@ -16,9 +15,9 @@ const PassportDocumentUpload = () => {
     };
 
     return (
-        <div className='wallets-passport-document-upload' data-testid='dt_passport-document-upload'>
+        <div className='wallets-manual-upload' data-testid='dt_passport-document-upload'>
             <WalletText>First, enter your Passport number and the expiry date.</WalletText>
-            <div className='wallets-input-group'>
+            <div className='wallets-manual-upload__input-group'>
                 <FlowTextField
                     defaultValue={formValues.passportNumber ?? ''}
                     label='Passport number*'
@@ -35,7 +34,7 @@ const PassportDocumentUpload = () => {
                 />
             </div>
             <Divider />
-            <div className='wallets-passport-document-upload__document-section'>
+            <div className='wallets-manual-upload__document-upload'>
                 <WalletText>Next, upload the page of your passport that contains your photo.</WalletText>
                 <Dropzone
                     buttonText='Drop file or click here to upload'

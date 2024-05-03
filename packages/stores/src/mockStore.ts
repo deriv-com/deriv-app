@@ -235,7 +235,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             residence_list: [],
             should_restrict_bvi_account_creation: false,
             should_restrict_vanuatu_account_creation: false,
-            should_show_eu_content: false,
             fetchAccountSettings: jest.fn(),
             setAccountSettings: jest.fn(),
             upgradeable_landing_companies: [],

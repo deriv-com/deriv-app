@@ -3,19 +3,20 @@ import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, Text } from '@deriv/components';
 import { getDeeplinkUrl, getMobileAppInstallerUrl, getWebtraderUrl } from '../Helpers/constants';
 import './mt5-mobile-redirect-option.scss';
-import { isSafariBrowser } from '@deriv/shared';
+import { isSafariBrowser, mobileOSDetectAsync } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
 const MT5MobileRedirectOption = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => {
-    const getMobileUrl = () => {
+    const mobileURLSet = async () => {
         window.location.replace(getDeeplinkUrl({ mt5_trade_account }));
+        const mobileAppURL = await getMobileAppInstallerUrl({ mt5_trade_account });
+        const os = await mobileOSDetectAsync();
 
-        const timeout = setTimeout(async () => {
-            const url = await getMobileAppInstallerUrl({ mt5_trade_account });
-            if (url) window.location.replace(url);
+        const timeout = setTimeout(() => {
+            mobileAppURL && window.location.replace(mobileAppURL);
         }, 1500);
 
-        if (!isSafariBrowser() || (isSafariBrowser() && /Version\/17/.test(navigator.userAgent))) {
+        if (!isSafariBrowser() || (os === 'iOS' && /Version\/17/.test(navigator.userAgent))) {
             window.onblur = () => {
                 clearTimeout(timeout);
             };
@@ -38,7 +39,7 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: { mt5_trade_account: Det
                     <Icon icon='IcChevronRight' size={16} />
                 </div>
             </a>
-            <button className='mt5-download-container--option blue' onClick={getMobileUrl}>
+            <button className='mt5-download-container--option blue' onClick={mobileURLSet}>
                 <div className='full-row'>
                     <Icon icon='IcMobileOutline' size={16} />
                     <Text align='left' size='xxs' weight='bold' className='title'>

@@ -90,6 +90,7 @@ const DefaultHeader = observer(() => {
                     ) : (
                         <React.Fragment>
                             <DerivShortLogo />
+                            <div className='header__divider' />
                             <PlatformSwitcher
                                 app_routing_history={app_routing_history}
                                 is_landing_company_loaded={is_landing_company_loaded}

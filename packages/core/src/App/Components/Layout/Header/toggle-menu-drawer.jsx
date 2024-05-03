@@ -341,6 +341,14 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 })}
                             >
                                 <div className='header__menu-mobile-platform-switcher' id='mobile_platform_switcher' />
+                                <MobileDrawer.Item>
+                                    <MenuLink
+                                        link_to={getStaticUrl('/')}
+                                        icon='IcDerivShortLogo'
+                                        text='Deriv.com'
+                                        onClickLink={toggleDrawer}
+                                    />
+                                </MobileDrawer.Item>
                                 {is_logged_in && (
                                     <MobileDrawer.Item>
                                         <MenuLink
@@ -385,7 +393,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         </div>
                                     </MobileDrawer.Item>
                                 )}
-
                                 {HelpCentreRoute()}
                                 {is_logged_in && (
                                     <React.Fragment>

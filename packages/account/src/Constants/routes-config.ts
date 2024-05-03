@@ -58,6 +58,7 @@ const initRoutesConfig = () => [
                     {
                         path: routes.phone_verification,
                         component: PhoneVerificationPage,
+                        getTitle: () => localize('Personal details'),
                         is_hidden: true,
                     },
                     {

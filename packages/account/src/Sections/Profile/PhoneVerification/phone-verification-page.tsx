@@ -24,6 +24,7 @@ const PhoneVerificationPage = () => {
                 <LabelPairedArrowLeftCaptionFillIcon
                     width={24}
                     height={24}
+                    data-testid='dt-phone-verification-back-btn'
                     className='phone-verification__redirect_button--icon'
                     onClick={handleBackButton}
                 />

@@ -8,6 +8,7 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { BrandConfig } from 'Constants/platform-config';
 import { getHasDivider } from 'Constants/utils';
+import './options-miltipliers-listing-logged-out.scss';
 
 const OptionsTitleLoggedOut = observer(() => {
     const { traders_hub, ui } = useStore();
@@ -38,15 +39,21 @@ const Description = observer(() => {
             />
         </Text>
     ) : (
-        <Text size='xs'>
-            <Localize
-                i18n_default_text='<0>Options</0> allow you to predict the market direction and earn potential payouts based on the outcome. <1>Multipliers</1> let you trade with leverage and limit your risk to your stake.'
-                components={[
-                    <StaticUrl key={0} className='options' href='trade-types/options/digital-options/up-and-down/' />,
-                    <StaticUrl key={1} className='options' href='trade-types/multiplier/' />,
-                ]}
-            />
-        </Text>
+        <div className='options-miltipliers-listing-logged-out__description'>
+            <Text size='xs'>
+                <Localize
+                    i18n_default_text='<0>Options</0> allow you to predict the market direction and earn potential payouts based on the outcome. <1>Multipliers</1> let you trade with leverage and limit your risk to your stake.'
+                    components={[
+                        <StaticUrl
+                            key={0}
+                            className='options'
+                            href='trade-types/options/digital-options/up-and-down/'
+                        />,
+                        <StaticUrl key={1} className='options' href='trade-types/multiplier/' />,
+                    ]}
+                />
+            </Text>
+        </div>
     );
 });
 

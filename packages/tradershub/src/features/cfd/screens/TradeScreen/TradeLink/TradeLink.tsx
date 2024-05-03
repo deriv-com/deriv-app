@@ -1,15 +1,15 @@
 import React, { Fragment } from 'react';
 import { getPlatformFromUrl } from '@/helpers';
-import { useActiveTradingAccount, useCtraderServiceToken } from '@deriv/api-v2';
-import { Button, Text } from '@deriv-com/ui';
-import { THooks, TPlatforms } from '../../../../../types';
 import {
     AppToContentMapper,
+    DesktopLinks,
     PlatformDetails,
     PlatformToLabelIconMapper,
     PlatformUrls,
-    DesktopLinks,
-} from '../../../constants';
+} from '@cfd/constants';
+import { useActiveTradingAccount, useCtraderServiceToken } from '@deriv/api-v2';
+import { Button, Text } from '@deriv-com/ui';
+import { THooks, TPlatforms } from '../../../../../types';
 
 type TTradeLinkProps = {
     app: keyof typeof AppToContentMapper;

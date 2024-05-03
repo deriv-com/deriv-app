@@ -1,3 +1,5 @@
+import UAParser from 'ua-parser-js';
+
 declare global {
     interface Window {
         opera?: string;
@@ -257,3 +259,5 @@ export const mobileOSDetectAsync = async () => {
 
     return 'unknown';
 };
+
+export const getOSNameWithUAParser = () => UAParser().os.name;

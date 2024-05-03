@@ -4,6 +4,7 @@ import { useCountdown } from 'usehooks-ts';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
 import {
     DerivLightIcEmailSentIcon,
+    DerivLightIcEmailSentPasskeyIcon,
     DerivLightIcFirewallEmailPasskeyIcon,
     DerivLightIcSpamEmailPasskeyIcon,
     DerivLightIcTypoEmailPasskeyIcon,
@@ -11,7 +12,6 @@ import {
 } from '@deriv/quill-icons';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
-import ChangePasswordIcon from '../../public/images/change-password-email.svg';
 import { TPlatforms } from '../../types';
 import { platformPasswordResetRedirectLink } from '../../utils/cfd';
 import { WalletButton, WalletText } from '../Base';
@@ -76,7 +76,8 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
         intervalMs: 1000,
     });
 
-    const EmailSentIcon = isChangePassword || isInvestorPassword ? DerivLightIcEmailSentIcon : ChangePasswordIcon;
+    const EmailSentIcon =
+        isChangePassword || isInvestorPassword ? DerivLightIcEmailSentIcon : DerivLightIcEmailSentPasskeyIcon;
 
     const resendEmail = () => {
         if (data?.email) {

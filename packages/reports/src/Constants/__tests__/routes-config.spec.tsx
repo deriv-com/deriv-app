@@ -8,18 +8,24 @@ import BinaryRoutes from '../../Components/Routes';
 import ReportsProviders from '../../reports-providers';
 import getRoutesConfig from '../routes-config';
 
+const mockedError404 = 'Error 404';
+const mockedOpenPositions = 'Open positions';
+const mockedStatement = 'Statement';
+const mockedTradeTable = 'Trade table';
+const reportsPageTitle = 'Reports';
+
 jest.mock('Modules/Page404', () => ({
     __esModule: true,
-    default: () => <div>Error 404</div>,
+    default: () => <div>{mockedError404}</div>,
 }));
 
 jest.mock('../../Containers', () => ({
     __esModule: true,
     default: {
         ...jest.requireActual('../../Containers').default,
-        OpenPositions: () => <div>Open positions</div>,
-        ProfitTable: () => <div>Trade table</div>,
-        Statement: () => <div>Statement</div>,
+        OpenPositions: () => <div>{mockedOpenPositions}</div>,
+        ProfitTable: () => <div>{mockedTradeTable}</div>,
+        Statement: () => <div>{mockedStatement}</div>,
     },
 }));
 
@@ -40,49 +46,49 @@ describe('Routes Config', () => {
     it('should return routes with Reports / Open positions route', async () => {
         const routesConfig = getRoutesConfig();
         expect(routesConfig?.[0]?.path).toBe(routes.reports);
-        expect(routesConfig?.[0]?.getTitle?.()).toBe('Reports');
+        expect(routesConfig?.[0]?.getTitle?.()).toBe(reportsPageTitle);
         expect(routesConfig?.[0]?.is_authenticated).toBe(true);
-        expect(routesConfig?.[0].routes[0].path).toBe(routes.positions);
+        expect(routesConfig?.[0].routes?.[0].path).toBe(routes.positions);
         const history = createMemoryHistory();
         history.push(routes.positions);
         render(<MockBinaryRoutes history={history} />);
         await waitFor(() => {
-            expect(screen.getByText('Reports')).toBeInTheDocument();
-            expect(screen.getByText('Open positions')).toBeInTheDocument();
+            expect(screen.getByText(reportsPageTitle)).toBeInTheDocument();
+            expect(screen.getByText(mockedOpenPositions)).toBeInTheDocument();
         });
     });
     it('should return routes with Reports / Trade table route', async () => {
         const routesConfig = getRoutesConfig();
-        expect(routesConfig?.[0].routes[1].path).toBe(routes.profit);
-        expect(routesConfig?.[0].routes[1].getTitle()).toBe('Trade table');
+        expect(routesConfig?.[0].routes?.[1].path).toBe(routes.profit);
+        expect(routesConfig?.[0].routes?.[1].getTitle()).toBe(mockedTradeTable);
         const history = createMemoryHistory();
         history.push(routes.profit);
         render(<MockBinaryRoutes history={history} />);
         await waitFor(() => {
-            expect(screen.getByText('Reports')).toBeInTheDocument();
-            expect(screen.getByText('Trade table')).toBeInTheDocument();
+            expect(screen.getByText(reportsPageTitle)).toBeInTheDocument();
+            expect(screen.getByText(mockedTradeTable)).toBeInTheDocument();
         });
     });
     it('should return routes with Reports / Statement route', async () => {
         const routesConfig = getRoutesConfig();
-        expect(routesConfig?.[0].routes[2].path).toBe(routes.statement);
-        expect(routesConfig?.[0].routes[2].getTitle()).toBe('Statement');
+        expect(routesConfig?.[0].routes?.[2].path).toBe(routes.statement);
+        expect(routesConfig?.[0].routes?.[2].getTitle()).toBe(mockedStatement);
         const history = createMemoryHistory();
         history.push(routes.statement);
         render(<MockBinaryRoutes history={history} />);
         await waitFor(() => {
-            expect(screen.getByText('Reports')).toBeInTheDocument();
-            expect(screen.getByText('Statement')).toBeInTheDocument();
+            expect(screen.getByText(reportsPageTitle)).toBeInTheDocument();
+            expect(screen.getByText(mockedStatement)).toBeInTheDocument();
         });
     });
     it('should return routes with route for Page 404 which loads when the path does not exist', async () => {
         const routesConfig = getRoutesConfig();
-        expect(routesConfig?.[1]?.getTitle?.()).toBe('Error 404');
+        expect(routesConfig?.[1]?.getTitle?.()).toBe(mockedError404);
         const history = createMemoryHistory();
         history.push('/non-existent-path');
         render(<MockBinaryRoutes history={history} />);
         await waitFor(() => {
-            expect(screen.getByText('Error 404')).toBeInTheDocument();
+            expect(screen.getByText(mockedError404)).toBeInTheDocument();
         });
     });
 });

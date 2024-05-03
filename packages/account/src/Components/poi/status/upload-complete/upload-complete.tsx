@@ -6,7 +6,6 @@ import PoaButton from '../../../poa/poa-button';
 import { ContinueTradingButton } from '../../../poa/continue-trading-button/continue-trading-button';
 import IconMessageContent from '../../../icon-message-content/icon-message-content';
 import { TPOIStatus } from 'Types';
-import classNames from 'classnames';
 
 export const UploadComplete = ({
     needs_poa,

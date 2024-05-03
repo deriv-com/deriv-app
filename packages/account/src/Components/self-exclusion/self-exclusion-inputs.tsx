@@ -444,7 +444,7 @@ const SelfExclusionInputs = () => {
         },
         // Legacy Deriv.app, i.e. non-DWallet user accessing app.deriv.com/account/self-exclusion.
         deriv_app: {
-            condition: !!(true && !is_app_settings),
+            condition: !is_app_settings,
             components: [
                 StakeLossAndLimitsInputs,
                 SessionAndLoginLimitsInputs,

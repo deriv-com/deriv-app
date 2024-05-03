@@ -446,9 +446,9 @@ export default class ClientStore extends BaseStore {
         );
 
         reaction(
-            () => [this.is_logged_in, this.is_passkey_supported],
+            () => [this.is_logged_in, this.is_passkey_supported, this.is_authorize],
             () => {
-                if (this.is_logged_in && this.is_passkey_supported) {
+                if (this.is_logged_in && this.is_passkey_supported && this.is_authorize) {
                     this.fetchShouldShowEffortlessLoginModal();
                 }
             }

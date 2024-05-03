@@ -4,7 +4,7 @@ export const fetchTrustpilotData = async () => {
     const defaultData = {
         stars: 4.5,
         trustScore: 4.5,
-        numberOfReviews: 47692,
+        numberOfReviews: Number(47748).toLocaleString(),
     };
 
     try {
@@ -14,7 +14,7 @@ export const fetchTrustpilotData = async () => {
         if (!appName || !apiKey) {
             return {
                 ...defaultData,
-                error: 'Trustpilot app name or API1 key is missing',
+                error: 'Trustpilot app name or API key is missing',
             };
         }
 
@@ -33,7 +33,7 @@ export const fetchTrustpilotData = async () => {
         const trustpilotData: TTrustpilotWidgetData = {
             stars: result.score?.stars || defaultData.stars,
             trustScore: result.score?.trustScore || defaultData.trustScore,
-            numberOfReviews: result.numberOfReviews?.total || defaultData.numberOfReviews,
+            numberOfReviews: result.numberOfReviews?.total?.toLocaleString() || defaultData.numberOfReviews,
         };
 
         return trustpilotData;

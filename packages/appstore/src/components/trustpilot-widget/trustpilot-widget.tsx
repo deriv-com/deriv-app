@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon, Text } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';

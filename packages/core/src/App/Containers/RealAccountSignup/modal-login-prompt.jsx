@@ -14,11 +14,7 @@ const ModalLoginPrompt = () => {
 
             <div>
                 <Button secondary text={localize('Log In')} onClick={() => redirectToLogin(false, getLanguage())} />
-                <Button
-                    primary
-                    text={localize('Sign Up')}
-                    onClick={() => redirectToSignUp({ is_deriv_crypto: false })}
-                />
+                <Button primary text={localize('Sign Up')} onClick={() => redirectToSignUp()} />
             </div>
         </div>
     );

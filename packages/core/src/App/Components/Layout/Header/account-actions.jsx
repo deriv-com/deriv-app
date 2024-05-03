@@ -129,7 +129,7 @@ const AccountActions = React.memo(
         return (
             <React.Fragment>
                 <LoginButton className='acc-info__button' />
-                <SignupButton className='acc-info__button' is_appstore={false} />
+                <SignupButton className='acc-info__button' />
             </React.Fragment>
         );
     }

@@ -1,7 +1,6 @@
 import Cookies from 'js-cookie';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import moment from 'moment';
-import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 
 import {
     CFD_PLATFORMS,
@@ -50,8 +49,8 @@ import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_co
 const LANGUAGE_KEY = 'i18n_language';
 const storage_key = 'client.accounts';
 const store_name = 'client_store';
-const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
-const eu_excluded_regex = new RegExp('^mt$');
+const eu_shortcode_regex = /^maltainvest$/;
+const eu_excluded_regex = /^mt$/;
 
 export default class ClientStore extends BaseStore {
     loginid;
@@ -89,9 +88,7 @@ export default class ClientStore extends BaseStore {
 
     // All possible landing companies of user between all
     standpoint = {
-        iom: false,
         svg: false,
-        malta: false,
         maltainvest: false,
         gaming_company: false,
         financial_company: false,
@@ -454,6 +451,15 @@ export default class ClientStore extends BaseStore {
 
                 this.setPreferredLanguage(language);
                 LocalStore.set(LANGUAGE_KEY, language);
+            }
+        );
+
+        reaction(
+            () => [this.is_logged_in, this.is_passkey_supported],
+            () => {
+                if (this.is_logged_in && this.is_passkey_supported) {
+                    this.fetchShouldShowEffortlessLoginModal();
+                }
             }
         );
 
@@ -901,7 +907,6 @@ export default class ClientStore extends BaseStore {
     get country_standpoint() {
         const result = {
             is_united_kingdom: this.is_uk,
-            is_isle_of_man: this.residence === 'im',
             is_france: this.residence === 'fr',
             is_belgium: this.residence === 'be',
             // Other EU countries: Germany, Spain, Italy, Luxembourg and Greece
@@ -1109,7 +1114,7 @@ export default class ClientStore extends BaseStore {
                         landing_company !== this.accounts[this.loginid].landing_company_shortcode &&
                         upgradeable_landing_companies.indexOf(landing_company) !== -1
                 );
-            can_upgrade_to = canUpgrade('svg', 'iom', 'malta', 'maltainvest');
+            can_upgrade_to = canUpgrade('svg', 'maltainvest');
             if (can_upgrade_to) {
                 type = can_upgrade_to === 'maltainvest' ? 'financial' : 'real';
             }
@@ -1696,8 +1701,6 @@ export default class ClientStore extends BaseStore {
 
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
-            await this.setIsPasskeySupported();
-            await this.fetchShouldShowEffortlessLoginModal();
             if (this.account_settings && !this.account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
@@ -2761,17 +2764,8 @@ export default class ClientStore extends BaseStore {
         }
     }
 
-    async setIsPasskeySupported() {
-        try {
-            // TODO: replace later "Analytics?.isFeatureOn()" to "Analytics?.getFeatureValue()"
-            const is_passkeys_enabled = Analytics?.isFeatureOn('web_passkeys');
-            const is_passkeys_enabled_on_be = Analytics?.isFeatureOn('service_passkeys');
-            // "browserSupportsWebAuthn" does not consider, if platform authenticator is available (unlike "platformAuthenticatorIsAvailable()")
-            const is_supported_by_browser = await browserSupportsWebAuthn();
-            this.is_passkey_supported = is_passkeys_enabled && is_supported_by_browser && is_passkeys_enabled_on_be;
-        } catch (e) {
-            //error handling needed
-        }
+    setIsPasskeySupported(is_passkey_supported = false) {
+        this.is_passkey_supported = is_passkey_supported;
     }
 
     setShouldShowEffortlessLoginModal(should_show_effortless_login_modal = true) {
@@ -2786,7 +2780,7 @@ export default class ClientStore extends BaseStore {
                     localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
                 }
 
-                const data = await WS.send({ passkeys_list: 1 });
+                const data = await WS.authorized.send({ passkeys_list: 1 });
 
                 if (data?.passkeys_list) {
                     const should_show_effortless_login_modal =
@@ -2842,7 +2836,7 @@ export default class ClientStore extends BaseStore {
             return { key, subscription };
         } catch (error) {
             // eslint-disable-next-line no-console
-            console.warn(`Error: code = ${error?.error?.code}, message = ${error?.error?.message}`);
+            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
             return {};
         }
     };
@@ -2855,7 +2849,7 @@ export default class ClientStore extends BaseStore {
                 delete this.subscriptions?.[name]?.[key];
             } catch (error) {
                 // eslint-disable-next-line no-console
-                console.warn(`Error: code = ${error?.error?.code}, message = ${error?.error?.message}`);
+                console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
             }
         }
     };
@@ -2887,7 +2881,7 @@ export default class ClientStore extends BaseStore {
             },
             error => {
                 // eslint-disable-next-line no-console
-                console.warn(`Error: code = ${error?.error?.code}, message = ${error?.error?.message}`);
+                console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
             }
         );
     };

@@ -42,7 +42,7 @@ const WalletListHeader: React.FC = () => {
                         <input
                             checked={activeWallet?.loginid !== demoAccount}
                             className='wallets-list-header__switcher-input'
-                            name='wallets-list-header__switcher'
+                            id='wallets-list-header__switcher'
                             onChange={handleToggle}
                             type='checkbox'
                         />

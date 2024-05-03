@@ -29,14 +29,17 @@ const TransactionStatus: React.FC<TTransactionStatus> = ({ transactionType }) =>
         refetch,
     } = useActiveWalletAccount();
 
-    useEffect(() => {
-        subscribe({ payload: { transaction_type: transactionType } });
-        return () => unsubscribe();
-    }, [subscribe, transactionType, unsubscribe]);
-
     const isLoading = isTransactionsLoading || isActiveWalletAccountLoading;
     const isError = !!activeWalletAccountError || !!recentTransactionsError;
     const isTransactionStatusSuccessVisible = !isLoading && !isError && wallet;
+
+    useEffect(() => {
+        if (isLoading) {
+            return;
+        }
+        subscribe({ payload: { transaction_type: transactionType } });
+        return () => unsubscribe();
+    }, [subscribe, transactionType, unsubscribe, isLoading]);
 
     const refresh = useCallback(() => {
         unsubscribe();

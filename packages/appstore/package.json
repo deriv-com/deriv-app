@@ -8,7 +8,7 @@
         "node": "18.x"
     },
     "scripts": {
-        "analyze:stats": "NODE_OPTIONS='-r ts-node/register' webpack --profile --json=stats.json",
+        "analyze:stats": "NODE_OPTIONS='-r ts-node/register' webpack --progress --profile --json=stats.json",
         "analyze:build": "webpack-bundle-analyzer --no-open -m static -r analyzed.html stats.json ./dist && webpack-bundle-analyzer -m json stats.json ./dist",
         "build": "rimraf dist && NODE_OPTIONS='-r ts-node/register' webpack --progress",
         "build:travis": "rimraf dist && webpack",

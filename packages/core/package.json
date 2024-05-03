@@ -5,7 +5,7 @@
     "main": "index.js",
     "private": true,
     "scripts": {
-        "analyze:stats": "f () { webpack --config \"./build/webpack.config.js\" --env base=$1 --env IS_CRYPTO_APP=${IS_CRYPTO_APP:-false} --profile --json=stats.json;}; f",
+        "analyze:stats": "f () { webpack --progress --config \"./build/webpack.config.js\" --env base=$1 --env IS_CRYPTO_APP=${IS_CRYPTO_APP:-false} --profile --json=stats.json;}; f",
         "analyze:build": "webpack-bundle-analyzer --no-open -m static -r analyzed.html stats.json ./dist && webpack-bundle-analyzer -m json stats.json ./dist",
         "start": "npm run test && npm run serve",
         "serve": "f() { echo \"Serving...\" && ./node_modules/.bin/webpack serve --config \"./build/webpack.config.js\" --env open $1;}; f",

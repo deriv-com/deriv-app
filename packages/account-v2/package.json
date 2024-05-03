@@ -6,7 +6,7 @@
         "node": "18.x"
     },
     "scripts": {
-        "analyze:stats": "NODE_OPTIONS='-r ts-node/register' webpack --config \"./webpack.config.ts\" --profile --json=stats.json",
+        "analyze:stats": "NODE_OPTIONS='-r ts-node/register' webpack --progress --config \"./webpack.config.ts\" --profile --json=stats.json",
         "analyze:build": "webpack-bundle-analyzer --no-open -m static -r analyzed.html stats.json ./dist && webpack-bundle-analyzer -m json stats.json ./dist",
         "build": "rimraf dist && NODE_OPTIONS='-r ts-node/register' webpack --progress --config \"./webpack.config.ts\"",
         "serve": "rimraf dist && concurrently \"cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch --config ./webpack.config.ts\" \"tsc -w --noEmit --preserveWatchOutput\"",

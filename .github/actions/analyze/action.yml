@@ -1,5 +1,5 @@
-name: build
-description: Build all packages
+name: analyze
+description: Analyze all packages
 inputs:
   REF_NAME:
     description: 'Git ref name'
@@ -58,7 +58,7 @@ inputs:
 runs:
   using: composite
   steps:
-  - name: Build all packages
+  - name: Analyze all packages
     env:
       NODE_ENV: ${{ inputs.NODE_ENV }}
       CROWDIN_WALLETS_API_KEY: ${{ inputs.CROWDIN_WALLETS_API_KEY }}
@@ -77,5 +77,18 @@ runs:
       GROWTHBOOK_DECRYPTION_KEY: ${{ inputs.GROWTHBOOK_DECRYPTION_KEY }}
       REF_NAME: ${{ inputs.REF_NAME }}
       REMOTE_CONFIG_URL: ${{ inputs.REMOTE_CONFIG_URL }}
-    run: npm run build:all
+      NODE_OPTIONS: "--max_old_space_size=4096"
+    run: npm run build:all && npm run analyze:stats
     shell: bash
+
+  - name: Zip all stats.json files
+    run: |
+      zip -r stats.zip packages/*/stats.json
+    shell: bash
+
+  - name: Upload stats.zip
+    uses: actions/upload-artifact@v4
+    with:
+      name: stats-${{ github.sha }}
+      path: stats.zip
+      retention-days: 1

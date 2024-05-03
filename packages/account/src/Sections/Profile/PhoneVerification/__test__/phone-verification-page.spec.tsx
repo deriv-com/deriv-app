@@ -1,7 +1,7 @@
-import { render, screen } from '@testing-library/react';
 import React from 'react';
-import PhoneVerificationPage from '../phone-verification-page';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import PhoneVerificationPage from '../phone-verification-page';
 
 jest.mock('../confirm-your-email.tsx', () => jest.fn(() => <div>Confirm Your Email</div>));
 jest.mock('../confirm-phone-number.tsx', () => jest.fn(() => <div>Confirm Phone Number</div>));

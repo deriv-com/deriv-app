@@ -9,16 +9,16 @@ import CancelPhoneVerificationModal from './cancel-phone-verification-modal';
 
 const PhoneVerificationPage = () => {
     const [show_email_verification, shouldShowEmailVerification] = React.useState(true);
-    const [show_cancel_verification_modal, setShowCancelVerificationModal] = React.useState(false);
+    const [should_show_cancel_verification_modal, setShouldShowCancelVerificationModal] = React.useState(false);
     const handleBackButton = () => {
-        setShowCancelVerificationModal(true);
+        setShouldShowCancelVerificationModal(true);
     };
 
     return (
         <div>
             <CancelPhoneVerificationModal
-                show_cancel_verification_modal={show_cancel_verification_modal}
-                setShowCancelVerificationModal={setShowCancelVerificationModal}
+                should_show_cancel_verification_modal={should_show_cancel_verification_modal}
+                setShouldShowCancelVerificationModal={setShouldShowCancelVerificationModal}
             />
             <div className='phone-verification__redirect_button'>
                 <LabelPairedArrowLeftCaptionFillIcon

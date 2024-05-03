@@ -3,11 +3,13 @@ import { useSafeState } from '@deriv/components';
 import { reaction } from 'mobx';
 import { observer } from '@deriv/stores';
 import OrderDetails from 'Components/order-details/order-details.jsx';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
 import OrderTable from './order-table/order-table.jsx';
 
 const Orders = observer(() => {
     const { order_store, general_store } = useStores();
+    const { showModal } = useModalManagerContext();
 
     // This is a bit hacky, but it allows us to force re-render this
     // component when the timer expired. This is created due to BE
@@ -32,9 +34,21 @@ const Orders = observer(() => {
             { fireImmediately: true }
         );
 
+        const disposeOrderVerificationReaction = reaction(
+            () => order_store.verification_code,
+            () => {
+                if (order_store.action_param && order_store.verification_code) {
+                    showModal({ key: 'LoadingModal', props: {} });
+                    order_store.verifyEmailVerificationCode(order_store.action_param, order_store.verification_code);
+                }
+            },
+            { fireImmediately: true }
+        );
+
         return () => {
             disposeOrderIdReaction();
             disposeOrdersUpdateReaction();
+            disposeOrderVerificationReaction();
             order_store.onUnmount();
         };
 

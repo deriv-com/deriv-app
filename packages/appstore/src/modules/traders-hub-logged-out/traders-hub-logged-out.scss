@@ -11,16 +11,6 @@
         width: 100%;
     }
 
-    &__main-container {
-        display: flex;
-        flex-direction: column;
-        gap: 2.4rem;
-
-        &-reversed {
-            flex-direction: column-reverse;
-        }
-    }
-
     &__eu-user {
         @include mobile {
             min-height: 650px;
@@ -33,21 +23,11 @@
         }
     }
 
-    &__button-toggle {
-        margin-top: 3rem;
-        border-radius: $BORDER_RADIUS;
-        padding: 0.4rem;
-        background-color: var(--general-section-1);
-    }
-
     &__mobile {
         overflow: scroll !important;
 
         &::-webkit-scrollbar {
             display: none;
         }
-    }
-    &__mt5-not-allowed {
-        margin-top: 2rem;
     }
 }

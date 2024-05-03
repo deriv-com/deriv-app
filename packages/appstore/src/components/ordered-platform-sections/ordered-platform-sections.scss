@@ -1,0 +1,9 @@
+.ordered-platform-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+
+    &__reversed {
+        flex-direction: column-reverse;
+    }
+}

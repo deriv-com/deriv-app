@@ -3,6 +3,7 @@ import { observer, useStore } from '@deriv/stores';
 import { ButtonToggle, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getPlatformToggleOptions } from 'Helpers';
+import './tabs-or-title.scss';
 
 const TabsOrTitle = observer(() => {
     const { traders_hub, client } = useStore();
@@ -24,7 +25,7 @@ const TabsOrTitle = observer(() => {
     return is_mt5_allowed ? (
         <ButtonToggle
             buttons_arr={is_eu_user ? platform_toggle_options_eu : platform_toggle_options}
-            className='traders-hub-logged-out__button-toggle'
+            className='tabs-or-title__button-toggle'
             has_rounded_button
             is_traders_hub
             name='platform_type'
@@ -32,7 +33,7 @@ const TabsOrTitle = observer(() => {
             value={selected_platform_type}
         />
     ) : (
-        <div className='traders-hub-logged-out__mt5-not-allowed'>
+        <div className='tabs-or-title__mt5-not-allowed'>
             <Text size='s' weight='bold' color='prominent'>
                 <Localize i18n_default_text='Multipliers' />
             </Text>

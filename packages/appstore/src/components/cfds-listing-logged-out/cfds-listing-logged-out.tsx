@@ -28,7 +28,7 @@ const CFDsListingLoggedOut = observer(() => {
         <ListingContainer
             title={
                 !is_mobile && (
-                    <div className='cfd-accounts__title'>
+                    <div className='cfds-listing-logged-out__cfd-accounts-title'>
                         <Text size='sm' weight='bold' color='prominent'>
                             {localize('CFDs')}
                         </Text>
@@ -44,7 +44,7 @@ const CFDsListingLoggedOut = observer(() => {
                 </Text>
             }
         >
-            <div className='cfd-full-row'>
+            <div className='cfds-listing-logged-out__cfd-full-row'>
                 <Text line_height='m' weight='bold' color='prominent'>
                     {localize('Deriv MT5')}
                 </Text>
@@ -76,12 +76,12 @@ const CFDsListingLoggedOut = observer(() => {
                 <PlatformLoader />
             )}
             {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
-                <div className='cfd-full-row'>
-                    <hr className='divider' />
+                <div className='cfds-listing-logged-out__cfd-full-row'>
+                    <hr className='cfds-listing-logged-out__divider' />
                 </div>
             )}
             {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
-                <div className='cfd-full-row'>
+                <div className='cfds-listing-logged-out__cfd-full-row'>
                     <Text weight='bold'>{localize('Deriv cTrader')}</Text>
                 </div>
             )}
@@ -105,11 +105,11 @@ const CFDsListingLoggedOut = observer(() => {
             )}
             {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                 <React.Fragment>
-                    <div className='cfd-full-row'>
-                        <hr className='divider' />
+                    <div className='cfds-listing-logged-out__cfd-full-row'>
+                        <hr className='cfds-listing-logged-out__divider' />
                     </div>
 
-                    <div className='cfd-full-row'>
+                    <div className='cfds-listing-logged-out__cfd-full-row'>
                         <Text line_height='m' weight='bold' color='prominent'>
                             {localize('Deriv X')}
                         </Text>

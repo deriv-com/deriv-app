@@ -6,6 +6,7 @@ import { Divider, WalletText } from '../../../../components/Base';
 import { THooks } from '../../../../types';
 import { TransactionStatusError } from './components/TransactionStatusError';
 import { TransactionStatusSuccess } from './components/TransactionStatusSuccess';
+
 import './TransactionStatus.scss';
 
 type TTransactionStatus = {

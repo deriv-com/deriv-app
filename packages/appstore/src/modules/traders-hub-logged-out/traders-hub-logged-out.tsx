@@ -19,7 +19,7 @@ const TradersHubLoggedOut = observer(() => {
     React.useEffect(() => {
         if (clients_country) {
             getLandingCompany(clients_country);
-            if (!isEuCountry(clients_country)) {
+            if (isEuCountry(clients_country)) {
                 setTogglePlatformType('cfd');
                 selectRegion('EU');
             } else {

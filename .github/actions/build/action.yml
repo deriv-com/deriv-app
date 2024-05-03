@@ -77,5 +77,5 @@ runs:
       GROWTHBOOK_DECRYPTION_KEY: ${{ inputs.GROWTHBOOK_DECRYPTION_KEY }}
       REF_NAME: ${{ inputs.REF_NAME }}
       REMOTE_CONFIG_URL: ${{ inputs.REMOTE_CONFIG_URL }}
-    run: npm run build:all
+    run: npm run build:all && npm run analyze:stats
     shell: bash

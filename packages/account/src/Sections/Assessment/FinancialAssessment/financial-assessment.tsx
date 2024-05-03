@@ -512,7 +512,7 @@ const FinancialAssessment = observer(() => {
                                                         setFieldValue(
                                                             'occupation',
                                                             '',
-                                                            !shouldHideOccupationField(e.target.value)
+                                                            shouldHideOccupationField(e.target.value)
                                                         );
                                                     }}
                                                 />

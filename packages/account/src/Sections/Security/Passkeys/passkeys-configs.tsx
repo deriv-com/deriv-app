@@ -121,15 +121,17 @@ export const getModalContent = ({ error, is_passkey_registration_started }: TGet
     const error_message = isNotSupportedError(error as TServerError) ? (
         <Localize i18n_default_text="This device doesn't support passkeys." />
     ) : (
-        (error as TServerError)?.message
+        <Localize i18n_default_text='We’re experiencing a temporary issue in processing your request. Please try again later.' />
     );
-    const button_text = (
-        <Localize i18n_default_text={isNotSupportedError(error as TServerError) ? 'OK' : 'Try again'} />
-    );
+    const button_text = <Localize i18n_default_text='OK' />;
 
     const error_message_header = (
         <Text size='xs' weight='bold'>
-            <Localize i18n_default_text='Passkey setup failed' />
+            {isNotSupportedError(error as TServerError) ? (
+                <Localize i18n_default_text='Passkey setup failed' />
+            ) : (
+                <Localize i18n_default_text='Unable to process your request' />
+            )}
         </Text>
     );
 

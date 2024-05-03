@@ -216,7 +216,11 @@ const CTraderDerivXTradeModal = ({
                             weight='bold'
                         >
                             <Money
-                                amount={is_real ? ctrader_total_balance : ctrader_derivx_trade_account.display_balance}
+                                amount={
+                                    is_real && platform === CFD_PLATFORMS.CTRADER
+                                        ? ctrader_total_balance
+                                        : ctrader_derivx_trade_account.display_balance
+                                }
                                 currency={ctrader_derivx_trade_account.currency}
                                 has_sign={
                                     !!ctrader_derivx_trade_account.balance && ctrader_derivx_trade_account.balance < 0

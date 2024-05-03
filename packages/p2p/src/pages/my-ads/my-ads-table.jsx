@@ -5,7 +5,6 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import ToggleAds from 'Pages/my-ads/toggle-ads.jsx';
-import TableError from 'Components/section-error';
 import { useStores } from 'Stores';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
 import NoAds from 'Pages/buy-sell/no-ads';
@@ -21,7 +20,7 @@ const getHeaders = offered_currency => [
     { text: '' }, // empty header for delete and archive icons
 ];
 
-const MyAdsTable = () => {
+const MyAdsTable = ({ table_ref }) => {
     const { general_store, my_ads_store } = useStores();
     const {
         client: { currency },
@@ -34,16 +33,13 @@ const MyAdsTable = () => {
 
         return () => {
             my_ads_store.setApiErrorCode(null);
+            my_ads_store.setTableHeight(0);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (my_ads_store.is_table_loading) {
         return <Loading is_fullscreen={false} />;
-    }
-
-    if (my_ads_store.api_error_message) {
-        return <TableError message={my_ads_store.api_error_message} className='section-error__table' size='xs' />;
     }
 
     if (my_ads_store.adverts.length) {
@@ -83,7 +79,7 @@ const MyAdsTable = () => {
                             items={my_ads_store.adverts}
                             keyMapperFn={item => item.id}
                             loadMoreRowsFn={my_ads_store.loadMoreAds}
-                            rowRenderer={row_props => <MyAdsRowRenderer {...row_props} />}
+                            rowRenderer={row_props => <MyAdsRowRenderer {...row_props} table_ref={table_ref} />}
                         />
                     </Table.Body>
                 </Table>

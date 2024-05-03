@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormikValues } from 'formik';
 import classNames from 'classnames';
-import { formatMoney, isDesktop, isMobile, useIsMounted, PlatformContext } from '@deriv/shared';
+import { formatMoney, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
@@ -49,7 +49,6 @@ const AccountLimits = observer(
         const isMounted = useIsMounted();
         const [is_loading, setLoading] = React.useState(true);
         const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
-        const { is_appstore } = React.useContext(PlatformContext);
 
         const handleGetLimitsResponse = () => {
             if (isMounted()) setLoading(false);
@@ -84,13 +83,8 @@ const AccountLimits = observer(
 
         if (is_virtual) {
             return (
-                <div
-                    data-testid='dt_account_demo_message_wrapper'
-                    className={classNames('account__demo-message-wrapper', {
-                        'account__demo-message-wrapper-dashboard': is_appstore,
-                    })}
-                >
-                    <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />
+                <div data-testid='dt_account_demo_message_wrapper' className={'account__demo-message-wrapper'}>
+                    <DemoMessage />
                 </div>
             );
         }

@@ -1,21 +1,18 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { getStaticUrl, PlatformContext } from '@deriv/shared';
+import { getStaticUrl } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { Button, Icon, Popup, Text } from '@deriv/components';
 import SelfExclusionContext from './self-exclusion-context';
 
-type TSelfExclusionArticleItems = Record<
-    'is_eu' | 'is_uk' | 'is_deriv_crypto' | 'is_app_settings',
-    boolean | undefined
->;
+type TSelfExclusionArticleItems = Record<'is_eu' | 'is_uk' | 'is_app_settings', boolean | undefined>;
 
 type TSelfExclusionArticleContent = {
     is_in_overlay: boolean;
 };
 
-export const selfExclusionArticleItems = ({ is_eu, is_deriv_crypto, is_app_settings }: TSelfExclusionArticleItems) => {
+export const selfExclusionArticleItems = ({ is_eu, is_app_settings }: TSelfExclusionArticleItems) => {
     const getEuItems = () => {
         const eu_items = [
             {
@@ -28,7 +25,7 @@ export const selfExclusionArticleItems = ({ is_eu, is_deriv_crypto, is_app_setti
                                 className='link'
                                 rel='noopener noreferrer'
                                 target='_blank'
-                                href={getStaticUrl('/responsible', { is_deriv_crypto })}
+                                href={getStaticUrl('/responsible')}
                             />,
                         ]}
                     />
@@ -60,7 +57,7 @@ export const selfExclusionArticleItems = ({ is_eu, is_deriv_crypto, is_app_setti
                                 className='link'
                                 rel='noopener noreferrer'
                                 target='_blank'
-                                href={getStaticUrl('/contact_us', { is_deriv_crypto })}
+                                href={getStaticUrl('/contact_us')}
                             />,
                         ]}
                     />
@@ -82,7 +79,7 @@ export const selfExclusionArticleItems = ({ is_eu, is_deriv_crypto, is_app_setti
                             className='link'
                             rel='noopener noreferrer'
                             target='_blank'
-                            href={getStaticUrl('/responsible', { is_deriv_crypto })}
+                            href={getStaticUrl('/responsible')}
                         />,
                     ]}
                 />
@@ -113,7 +110,7 @@ export const selfExclusionArticleItems = ({ is_eu, is_deriv_crypto, is_app_setti
                                       className='link'
                                       rel='noopener noreferrer'
                                       target='_blank'
-                                      href={getStaticUrl('/contact_us', { is_deriv_crypto })}
+                                      href={getStaticUrl('/contact_us')}
                                   />,
                               ]}
                           />
@@ -132,9 +129,8 @@ export const selfExclusionArticleItems = ({ is_eu, is_deriv_crypto, is_app_setti
 
 const SelfExclusionArticleContent = ({ is_in_overlay }: Partial<TSelfExclusionArticleContent>) => {
     const { is_app_settings, toggleArticle, overlay_ref, is_eu, is_uk } = React.useContext(SelfExclusionContext);
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
 
-    const keyed_article_items = selfExclusionArticleItems({ is_eu, is_uk, is_deriv_crypto, is_app_settings });
+    const keyed_article_items = selfExclusionArticleItems({ is_eu, is_uk, is_app_settings });
     if (is_in_overlay) {
         return (
             <Popup.Overlay

@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types';
 import React from 'react';
 import { Button, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
-import { routes, formatMoney, PlatformContext, moduleLoader } from '@deriv/shared';
+import { routes, formatMoney, moduleLoader } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
@@ -38,8 +38,6 @@ const AccountActions = React.memo(
         toggleAccountsDialog,
         toggleNotifications,
     }) => {
-        const { is_appstore } = React.useContext(PlatformContext);
-
         if (is_logged_in) {
             return (
                 <React.Fragment>
@@ -131,7 +129,7 @@ const AccountActions = React.memo(
         return (
             <React.Fragment>
                 <LoginButton className='acc-info__button' />
-                <SignupButton className='acc-info__button' is_appstore={is_appstore} />
+                <SignupButton className='acc-info__button' is_appstore={false} />
             </React.Fragment>
         );
     }

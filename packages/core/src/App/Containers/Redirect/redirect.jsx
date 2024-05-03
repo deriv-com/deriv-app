@@ -1,7 +1,6 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, useHistory } from 'react-router-dom';
-import { loginUrl, routes, redirectToLogin, SessionStore, PlatformContext } from '@deriv/shared';
+import { loginUrl, routes, redirectToLogin, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
@@ -30,7 +29,6 @@ const Redirect = observer(() => {
     const code_param = url_params.get('code') || verification_code[action_param];
     const ext_platform_url = url_params.get('ext_platform_url');
     const is_next_wallet = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
-    const { is_appstore } = React.useContext(PlatformContext);
 
     const redirectToExternalPlatform = url => {
         history.push(`${routes.root}?ext_platform_url=${url}`);
@@ -41,13 +39,11 @@ const Redirect = observer(() => {
 
     switch (action_param) {
         case 'signup': {
-            if (!is_appstore) {
-                Analytics.trackEvent('ce_virtual_signup_form', {
-                    action: 'email_confirmed',
-                    form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
-                    email: url_params.get('email'),
-                });
-            }
+            Analytics.trackEvent('ce_virtual_signup_form', {
+                action: 'email_confirmed',
+                form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                email: url_params.get('email'),
+            });
             SessionStore.set('signup_query_param', url_query_string);
             history.push({
                 pathname: routes.onboarding,

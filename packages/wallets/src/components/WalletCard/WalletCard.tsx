@@ -64,7 +64,7 @@ const WalletCard: React.FC<TProps> = ({
                         </div>
                         <div className='wallets-card__details-bottom'>
                             <WalletText color={isDemo ? 'white' : 'general'} size={isCarouselContent ? 'md' : '2xs'}>
-                                {currency} {isDemo ? 'Demo' : ''} Wallet
+                                {currency} {isDemo && isCarouselContent ? 'Demo' : ''} Wallet
                             </WalletText>
                             {isLoading ? (
                                 <div

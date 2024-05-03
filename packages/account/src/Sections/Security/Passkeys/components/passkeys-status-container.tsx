@@ -1,8 +1,15 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
-import { getStatusContent, PASSKEY_STATUS_CODES, TPasskeysStatus } from 'Sections/Security/Passkeys/passkeys-configs';
+import { routes } from '@deriv/shared';
+import {
+    getStatusContent,
+    PASSKEY_STATUS_CODES,
+    passkeysMenuActionEventTrack,
+    TPasskeysStatus,
+} from '../passkeys-configs';
 import PasskeysFooterButtons from './passkeys-footer-buttons';
 import PasskeysStatus from './passkeys-status';
+import { useHistory } from 'react-router-dom';
 
 type TPasskeysStatusContainer = {
     createPasskey: () => void;
@@ -11,14 +18,21 @@ type TPasskeysStatusContainer = {
 };
 
 const PasskeysStatusContainer = ({ createPasskey, passkey_status, setPasskeyStatus }: TPasskeysStatusContainer) => {
+    const history = useHistory();
     const prev_passkey_status = React.useRef<TPasskeysStatus>(PASSKEY_STATUS_CODES.NONE);
 
     if (passkey_status === PASSKEY_STATUS_CODES.NONE) return null;
 
     const onPrimaryButtonClick = () => {
-        if (passkey_status === PASSKEY_STATUS_CODES.CREATED || passkey_status === PASSKEY_STATUS_CODES.REMOVED) {
+        if (passkey_status === PASSKEY_STATUS_CODES.REMOVED) {
+            passkeysMenuActionEventTrack('create_passkey_continue');
             // set status to 'NONE'  means 'continue' button is clicked
             setPasskeyStatus(PASSKEY_STATUS_CODES.NONE);
+            return;
+        }
+        if (passkey_status === PASSKEY_STATUS_CODES.CREATED) {
+            passkeysMenuActionEventTrack('create_passkey_continue_trading');
+            history.push(routes.traders_hub);
             return;
         }
         // if (passkey_status === PASSKEY_STATUS_CODES.RENAMING) {
@@ -34,7 +48,14 @@ const PasskeysStatusContainer = ({ createPasskey, passkey_status, setPasskeyStat
 
     const onSecondaryButtonClick = () => {
         if (passkey_status === PASSKEY_STATUS_CODES.LEARN_MORE) {
+            passkeysMenuActionEventTrack('info_back');
             setPasskeyStatus(prev_passkey_status.current);
+            return;
+        }
+
+        if (passkey_status === PASSKEY_STATUS_CODES.CREATED) {
+            passkeysMenuActionEventTrack('add_more_passkeys');
+            setPasskeyStatus(PASSKEY_STATUS_CODES.NONE);
             return;
         }
         // if (passkey_status === PASSKEY_STATUS_CODES.RENAMING) {
@@ -42,6 +63,7 @@ const PasskeysStatusContainer = ({ createPasskey, passkey_status, setPasskeyStat
         //     return;
         // }
         prev_passkey_status.current = passkey_status;
+        passkeysMenuActionEventTrack('info_open');
         setPasskeyStatus(PASSKEY_STATUS_CODES.LEARN_MORE);
     };
 

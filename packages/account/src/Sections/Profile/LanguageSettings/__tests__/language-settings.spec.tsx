@@ -1,9 +1,19 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { isMobile, routes } from '@deriv/shared';
+import { useStoreWalletAccountsList } from '@deriv/hooks';
+import { routes } from '@deriv/shared';
 import LanguageSettings from '../language-settings';
 import { mockStore, StoreProvider } from '@deriv/stores';
+
+const mockedUseStoreWalletAccountsList = useStoreWalletAccountsList as jest.MockedFunction<
+    typeof useStoreWalletAccountsList
+>;
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useStoreWalletAccountsList: jest.fn(() => ({ has_wallet: false })),
+}));
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -31,10 +41,17 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('LanguageSettings', () => {
-    const mockRootStore = mockStore({
-        common: {
-            current_language: 'lang_1',
-        },
+    let mockRootStore: ReturnType<typeof mockStore>;
+
+    beforeEach(() => {
+        mockRootStore = mockStore({
+            common: {
+                current_language: 'lang_1',
+            },
+            ui: {
+                is_mobile: false,
+            },
+        });
     });
 
     const renderLanguageSettings = () => {
@@ -68,8 +85,22 @@ describe('LanguageSettings', () => {
         expect(mockRootStore.common.changeSelectedLanguage).toHaveBeenCalled();
     });
 
-    it('should redirect for mobile', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
+    it('should redirect in mobile view when the user tries to reach `/account/languages` route', () => {
+        mockRootStore.ui.is_mobile = true;
+        Object.defineProperty(window, 'location', {
+            configurable: true,
+            value: { pathname: routes.languages },
+        });
+
+        renderLanguageSettings();
+
+        expect(screen.queryByText('Select Language')).not.toBeInTheDocument();
+        expect(screen.getByText('Redirect')).toBeInTheDocument();
+    });
+
+    it('should redirect when the user tries to reach `/account/languages` route having wallet accounts', () => {
+        //@ts-expect-error since this is a mock, we only need partial properties of useStoreWalletAccountsList data
+        mockedUseStoreWalletAccountsList.mockReturnValueOnce({ has_wallet: true });
         Object.defineProperty(window, 'location', {
             configurable: true,
             value: { pathname: routes.languages },

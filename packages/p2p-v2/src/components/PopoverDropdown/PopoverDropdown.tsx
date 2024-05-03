@@ -43,7 +43,11 @@ const PopoverDropdown = ({ dropdownList, onClick, tooltipMessage }: TPopoverDrop
                             }}
                             variant='ghost'
                         >
-                            <Text key={item.value} size={isMobile ? 'md' : 'sm'}>
+                            <Text
+                                className='p2p-v2-popover-dropdown__list-item__label'
+                                key={item.value}
+                                size={isMobile ? 'md' : 'sm'}
+                            >
                                 {item.label}
                             </Text>
                         </Button>

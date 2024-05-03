@@ -7,7 +7,7 @@ const SentEmailContentModal = () => {
     const { isModalOpen, closeModal } = useQueryParams();
     return (
         <Modal isOpen={isModalOpen('SentEmailContentModal')} onRequestClose={closeModal}>
-            <Modal.Header>
+            <Modal.Header onRequestClose={closeModal}>
                 <Text weight='bold'>We&apos;ve sent you an email</Text>
             </Modal.Header>
             <Modal.Body>

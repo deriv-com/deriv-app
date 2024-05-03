@@ -10,11 +10,13 @@ import { observer, useStore } from '@deriv/stores';
 // when binary link is imported into components present in routes config
 // or into their descendants
 const BinaryLink = observer(({ active_class, to, children, href, ...props }) => {
-    const { common } = useStore();
+    const { common, client } = useStore();
     const { has_error, error } = common;
     const setError = error.setError;
     const path = normalizePath(to);
-    const route = findRouteByPath(path, getRoutesConfig({ is_appstore: false }));
+    const { is_eu } = client;
+    const is_eu_country = is_eu;
+    const route = findRouteByPath(path, getRoutesConfig({ is_eu_country }));
 
     if (!route && to) {
         throw new Error(`Route not found: ${to}`);

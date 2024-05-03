@@ -231,7 +231,6 @@ const AccountLimits = observer(
 
                                 {!is_app_settings && (
                                     <WithdrawalLimitsTable
-                                        is_appstore={is_appstore}
                                         num_of_days_limit={num_of_days_limit}
                                         remainder={remainder}
                                         withdrawal_since_inception_monetary={withdrawal_since_inception_monetary}

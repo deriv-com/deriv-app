@@ -22,7 +22,7 @@ const BinaryRoutes = observer(props => {
         <React.Suspense fallback={<Loading />}>
             <Prompt when={prompt_when} message={promptFn} />
             <Switch>
-                {getRoutesConfig({ is_appstore: false, is_eu_country }).map((route, idx) => (
+                {getRoutesConfig({ is_eu_country }).map((route, idx) => (
                     <RouteWithSubRoutes key={idx} {...route} {...props} />
                 ))}
             </Switch>

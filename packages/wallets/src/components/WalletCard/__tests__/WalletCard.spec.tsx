@@ -95,7 +95,7 @@ describe('WalletCard', () => {
         render(
             <APIProvider>
                 <WalletsAuthProvider>
-                    <WalletCard {...mockProps} />
+                    <WalletCard isCarouselContent {...mockProps} />
                 </WalletsAuthProvider>
             </APIProvider>
         );

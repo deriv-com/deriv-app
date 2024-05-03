@@ -16,7 +16,7 @@ describe('ConfirmPhoneNumber', () => {
 
     it('should display cancel phone verification modal when back button is clicked', () => {
         render(<PhoneVerificationPage />);
-        const backButton = screen.getByTestId('dt-phone-verification-back-btn');
+        const backButton = screen.getByTestId('dt_phone_verification_back_btn');
         userEvent.click(backButton);
         expect(screen.getByText(/Cancel Phone Verification Modal/)).toBeInTheDocument();
     });

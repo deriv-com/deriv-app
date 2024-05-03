@@ -46,9 +46,12 @@ const WarningMessageModal = observer(
                 has_close_icon={false}
             >
                 <div className='close-real-acc-modal'>
+                    <Text line_height='x' weight='bold' className='close-real-acc-modal__warning-message'>
+                        {localize('Take me to Demo account')}
+                    </Text>
                     <div className='close-real-acc-modal__content-wrapper'>
                         <Text size='xs' as='p' align='left' className='close-real-acc-modal__content'>
-                            {localize('Take me to Demo account?')}
+                            {localize('I will setup my real account later.')}
                         </Text>
                     </div>
                     <FormSubmitButton

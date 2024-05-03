@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Div100vhContainer, SwipeableWrapper } from '@deriv/components';
 import { TickSpotData } from '@deriv/api-types';
-import { TRADE_TYPES } from '@deriv/shared';
+import { TRADE_TYPES, isTabletOs } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import ChartLoader from 'App/Components/Elements/chart-loader';
@@ -11,7 +11,7 @@ import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-over
 import { ChartTopWidgets, DigitsWidget } from './chart-widgets';
 import FormLayout from '../Components/Form/form-layout';
 import TradeChart from './trade-chart';
-import { useDevice } from '@deriv-com/ui';
+import { Loader, useDevice } from '@deriv-com/ui';
 
 export type TBottomWidgetsParams = {
     digits: number[];
@@ -69,7 +69,7 @@ const Trade = observer(() => {
     } = ui;
     const { is_eu } = client;
     const { network_status } = common;
-    const { isDesktop, isMobile } = useDevice();
+    const { isDesktop, isMobile, isTabletPortrait } = useDevice();
 
     const [digits, setDigits] = React.useState<number[]>([]);
     const [tick, setTick] = React.useState<null | TickSpotData>(null);
@@ -78,6 +78,8 @@ const Trade = observer(() => {
     const [category, setCategory] = React.useState<string>();
     const [subcategory, setSubcategory] = React.useState<string>();
     const [swipe_index, setSwipeIndex] = React.useState<number | undefined>(0);
+    const [shouldShowPortraitLoader, setShouldShowPortraitLoader] = React.useState(false);
+    const rotateTimeout = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const should_elevate_navigation =
         is_trade_params_expanded &&
@@ -91,6 +93,26 @@ const Trade = observer(() => {
         }
         return null;
     }, [try_synthetic_indices, try_open_markets, category, subcategory]);
+
+    React.useEffect(() => {
+        const html = document.querySelector('html');
+        if (isTabletPortrait && isTabletOs) {
+            setShouldShowPortraitLoader(true);
+            if (!is_chart_loading && !should_show_active_symbols_loading) {
+                rotateTimeout.current = setTimeout(() => {
+                    html?.classList.add('tablet-landscape');
+                    setShouldShowPortraitLoader(false);
+                }, 500);
+            }
+        }
+
+        return () => {
+            html?.classList.remove('tablet-landscape');
+            if (rotateTimeout.current) {
+                clearTimeout(rotateTimeout.current);
+            }
+        };
+    }, [isTabletPortrait, is_chart_loading, should_show_active_symbols_loading]);
 
     React.useEffect(() => {
         onMount();
@@ -205,29 +227,36 @@ const Trade = observer(() => {
                                 'vanilla-trade-chart': is_vanilla,
                             })}
                         >
-                            <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
+                            <ChartLoader
+                                is_visible={
+                                    is_chart_loading || should_show_active_symbols_loading || shouldShowPortraitLoader
+                                }
+                            />
                             <TradeChart topWidgets={topWidgets} is_accumulator={is_accumulator} />
                         </div>
                     )}
                 </React.Suspense>
             </Div100vhContainer>
-            <div className={form_wrapper_class}>
-                {is_market_closed && !is_market_unavailable_visible && (
-                    <MarketIsClosedOverlay
-                        is_eu={is_eu}
-                        is_synthetics_trading_market_available={is_synthetics_trading_market_available}
-                        onClick={onTryOtherMarkets}
-                        onMarketOpen={prepareTradeStore}
-                        symbol={symbol}
+            {!shouldShowPortraitLoader && (
+                <div className={form_wrapper_class}>
+                    {is_market_closed && !is_market_unavailable_visible && (
+                        <MarketIsClosedOverlay
+                            is_eu={is_eu}
+                            is_synthetics_trading_market_available={is_synthetics_trading_market_available}
+                            onClick={onTryOtherMarkets}
+                            onMarketOpen={prepareTradeStore}
+                            symbol={symbol}
+                        />
+                    )}
+                    <FormLayout
+                        is_market_closed={is_market_closed}
+                        is_trade_enabled={
+                            is_trade_enabled && form_components.length > 0 && network_status.class === 'online'
+                        }
                     />
-                )}
-                <FormLayout
-                    is_market_closed={is_market_closed}
-                    is_trade_enabled={
-                        is_trade_enabled && form_components.length > 0 && network_status.class === 'online'
-                    }
-                />
-            </div>
+                </div>
+            )}
+            {shouldShowPortraitLoader && <Loader isFullScreen />}
         </div>
     );
 });

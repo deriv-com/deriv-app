@@ -9,9 +9,7 @@ import type { TWebSocket } from 'Types';
 import initStore from './init-store';
 import 'Sass/app.scss';
 import type { TCoreStores } from '@deriv/stores/types';
-import { useDevice } from '@deriv-com/ui';
 import TraderProviders from '../trader-providers';
-import { isTabletOs } from '@deriv/shared';
 
 type Apptypes = {
     passthrough: {
@@ -27,22 +25,10 @@ const TradeModals = Loadable({
 
 const App = ({ passthrough }: Apptypes) => {
     const root_store = initStore(passthrough.root_store, passthrough.WS);
-    const { isTabletPortrait } = useDevice();
 
     React.useEffect(() => {
         return () => root_store.ui.setPromptHandler(false);
     }, [root_store]);
-
-    React.useEffect(() => {
-        const html = document.querySelector('html');
-        if (isTabletPortrait && isTabletOs) {
-            html?.classList.add('tablet-landscape');
-        }
-
-        return () => {
-            html?.classList.remove('tablet-landscape');
-        };
-    }, [isTabletPortrait]);
 
     return (
         <TraderProviders store={root_store}>

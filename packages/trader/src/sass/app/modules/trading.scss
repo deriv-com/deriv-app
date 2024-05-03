@@ -1058,6 +1058,7 @@
         transform: rotate(-90deg);
         height: 100svw;
         width: 100svh;
+        transition: transform 0.5s;
     }
 
     &[dir='rtl'] body {
@@ -1070,5 +1071,9 @@
 
     .portfolio-empty {
         height: calc(100svw - 250px);
+    }
+
+    .chart-container__wrapper {
+        height: calc(100svw - 48px);
     }
 }

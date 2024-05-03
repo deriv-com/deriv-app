@@ -61,7 +61,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
                 device_type: store?.ui?.is_mobile ? 'mobile' : 'desktop',
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
-                country: Cookies.get('clients_country') || Cookies?.getJSON('website_status'),
+                country: Cookies.get('clients_country') || Cookies?.getJSON('website_status')?.clients_country,
                 utm_source: ppc_campaign_cookies?.utm_source,
                 utm_medium: ppc_campaign_cookies?.utm_medium,
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,

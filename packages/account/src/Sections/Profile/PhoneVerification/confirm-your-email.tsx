@@ -30,7 +30,7 @@ const ConfirmYourEmail = observer(() => {
             </div>
             <div className='phone-verification__card--email-verification-otp-container'>
                 <Input id='otp_code' type='text' name='otp_code' label={localize('OTP code')} data-lpignore='true' />
-                <ResendCodeTimer verification_location={'email'} />
+                <ResendCodeTimer resend_code_text={'Resend code'} />
             </div>
         </PhoneVerificationCard>
     );

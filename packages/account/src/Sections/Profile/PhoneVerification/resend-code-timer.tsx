@@ -3,13 +3,12 @@ import { Button, CaptionText } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 
 type TResendCodeTimer = {
-    verification_location: string;
+    resend_code_text: string;
 };
-const ResendCodeTimer = ({ verification_location }: TResendCodeTimer) => {
+const ResendCodeTimer = ({ resend_code_text }: TResendCodeTimer) => {
     // TODO: Use dynamic value for setting initial value for counter once mockApi for timestamp is finalised
     const [timer, setTimer] = React.useState(60);
     const [start_timer, setStartTimer] = React.useState(false);
-    const resend_code_text = verification_location === 'email' ? 'Resend code' : 'Didn’t get the code?';
     const request_code = useRef(resend_code_text);
 
     React.useEffect(() => {
@@ -19,13 +18,13 @@ const ResendCodeTimer = ({ verification_location }: TResendCodeTimer) => {
                 setTimer(prevTime => prevTime - 1);
                 // TODO: change seconds to mins based on interval calculated using timestamp from mock api
                 request_code.current =
-                    verification_location === 'email'
+                    resend_code_text === 'Resend code'
                         ? `Resend code in ${timer - 1}s`
-                        : `Didn’t get the code?(${timer - 1})`;
+                        : `Didn’t get the code?(${timer - 1}s)`;
             }, 1000);
         } else {
             setStartTimer(false);
-            request_code.current = 'Resend code';
+            request_code.current = resend_code_text;
         }
 
         return () => clearInterval(countdown);

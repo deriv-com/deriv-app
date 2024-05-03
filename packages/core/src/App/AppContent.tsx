@@ -70,6 +70,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data.marketing_growthbook, tracking_rudderstack]);
+
     React.useEffect(() => {
         store.client.setIsPasskeySupported(is_passkeys_supported && passkeys);
     }, [passkeys, is_passkeys_supported, store.client]);

@@ -38,9 +38,11 @@ const WalletListHeader: React.FC = () => {
                             <Trans defaults='Real' />
                         </WalletText>
                     </div>
-                    <label className='wallets-list-header__switcher'>
+                    <label className='wallets-list-header__switcher' htmlFor='wallets-list-header__switcher'>
                         <input
                             checked={activeWallet?.loginid !== demoAccount}
+                            className='wallets-list-header__switcher-input'
+                            name='wallets-list-header__switcher'
                             onChange={handleToggle}
                             type='checkbox'
                         />

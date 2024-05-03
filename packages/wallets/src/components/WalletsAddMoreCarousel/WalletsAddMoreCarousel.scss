@@ -7,7 +7,6 @@
 
     @include mobile {
         padding-top: 0;
-        gap: 0.8rem;
     }
 
     &__header {
@@ -21,6 +20,7 @@
     &__carousel {
         overflow: hidden;
         background-color: #fff;
+        padding-bottom: 3.2rem;
         border-radius: 0.8rem;
         position: relative;
         height: 100%;

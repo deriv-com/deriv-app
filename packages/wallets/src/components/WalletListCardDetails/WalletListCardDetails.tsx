@@ -8,12 +8,12 @@ import WalletListCardDropdown from '../WalletListCardDropdown/WalletListCardDrop
 import './WalletListCardDetails.scss';
 
 const WalletListCardDetails: React.FC = () => {
-    const { data: activeWallet } = useActiveWalletAccount();
+    const { data: activeWallet, isLoading } = useActiveWalletAccount();
     const isDemo = activeWallet?.is_virtual;
 
     return (
         <div className='wallets-list-details__container'>
-            {isDemo ? (
+            {isDemo && !isLoading ? (
                 <WalletText>
                     <Trans defaults='USD Demo Wallet' />
                 </WalletText>

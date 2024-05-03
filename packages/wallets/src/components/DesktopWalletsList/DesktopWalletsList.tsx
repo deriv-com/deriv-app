@@ -17,14 +17,12 @@ const DesktopWalletsList: React.FC = () => {
         <div className='wallets-desktop-wallets-list'>
             {isLoading && <WalletsCardLoader />}
             {!isLoading && (
-                <React.Fragment>
-                    <WalletsContainer
-                        key={activeWallet && `wallets-card-${activeWallet?.loginid}`}
-                        renderHeader={() => <WalletListCard />}
-                    >
-                        <AccountsList />
-                    </WalletsContainer>
-                </React.Fragment>
+                <WalletsContainer
+                    key={activeWallet && `wallets-card-${activeWallet?.loginid}`}
+                    renderHeader={() => <WalletListCard />}
+                >
+                    <AccountsList />
+                </WalletsContainer>
             )}
         </div>
     );

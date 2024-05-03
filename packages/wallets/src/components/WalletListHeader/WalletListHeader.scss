@@ -1,12 +1,14 @@
+@import '../../components/SkeletonLoader/SkeletonLoader.scss';
+
 .wallets-list-header {
     display: flex;
     max-width: 123.2rem;
     height: max-content;
     width: 100%;
-    padding: 1.6rem 0 2.4rem;
+    padding: 1.6rem 0 0;
 
     @include mobile {
-        padding: 0.8rem 1.4rem;
+        padding: 0.8rem 1.4rem 0;
     }
 
     &__label {
@@ -25,10 +27,10 @@
         width: 12rem;
         height: 4rem;
         margin-left: 1.6rem;
-        background-color: #0000000a;
+        background-color: var(--header-footer-bg-color, #0000000a);
         border-radius: 0.8rem;
 
-        & > input {
+        &-input {
             width: 0;
             height: 0;
         }
@@ -67,7 +69,7 @@
     }
 }
 
-.wallets-list-header__switcher input:checked + .wallets-list-header__slider:before {
+.wallets-list-header__switcher-input:checked + .wallets-list-header__slider:before {
     -webkit-transform: translateX(6rem);
     -ms-transform: translateX(6rem);
     transform: translateX(6rem);

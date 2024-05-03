@@ -10,6 +10,8 @@ import {
 import { localize } from '@deriv/translations';
 import { TCFDsPlatformType, TDetailsOfEachMT5Loginid, TMobilePlatforms } from 'Components/props.types';
 import { CFD_PLATFORMS, MOBILE_PLATFORMS, DESKTOP_PLATFORMS, CATEGORY } from './cfd-config';
+import { white_label_links } from './url-config';
+import { mobileOsDetect } from './mobileOsDetect';
 
 const platformsText = (platform: TCFDsPlatformType) => {
     switch (platform) {
@@ -40,9 +42,6 @@ const getTitle = (market_type: string, is_eu_user: boolean) => {
 
 const { is_staging, is_test_link } = getPlatformFromUrl();
 
-const DEEP_LINK = ({ mt5_trade_account }: { mt5_trade_account: TDetailsOfEachMT5Loginid }) =>
-    `metatrader5://account?login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`;
-
 const STRATEGY_PROVIDER_NOTES = [
     'When setting up a strategy, you have the option to impose fees.',
     'For strategies where you impose fees, you must assign one of your existing accounts to process these fees. The same ‘Account For Fees’ can support multiple fee-based strategies.',
@@ -50,9 +49,6 @@ const STRATEGY_PROVIDER_NOTES = [
     'An account designated as a strategy provider is irreversible unless it remains inactive for 30 days.',
     'An account cannot simultaneously be a strategy provider and serve as an ‘Account For Fees’.',
 ];
-
-const WEBTRADER_URL = ({ mt5_trade_account }: { mt5_trade_account: TDetailsOfEachMT5Loginid }) =>
-    `${mt5_trade_account.white_label_links?.webtrader_url}?login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`;
 
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
@@ -166,7 +162,7 @@ const getDesktopDownloadOptions = ({ mt5_trade_account }: { mt5_trade_account: T
             icon: 'IcRebrandingMt5Logo',
             text: 'MetaTrader 5 web',
             button_text: 'Open',
-            href: WEBTRADER_URL({ mt5_trade_account }),
+            href: getWebtraderUrl({ mt5_trade_account }),
         },
         {
             icon: 'IcWindowsLogo',
@@ -206,8 +202,29 @@ const getMobileDownloadOptions = ({ mt5_trade_account }: { mt5_trade_account: TD
     },
 ];
 
+export const getWebtraderUrl = ({ mt5_trade_account }: { mt5_trade_account: TDetailsOfEachMT5Loginid }) => {
+    return `${mt5_trade_account?.white_label_links?.webtrader_url}?login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`;
+};
+
+export const getDeeplinkUrl = ({ mt5_trade_account }: { mt5_trade_account: TDetailsOfEachMT5Loginid }) => {
+    return `metatrader5://account?login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`;
+};
+
+export const getMobileAppInstallerUrl = async ({
+    mt5_trade_account,
+}: {
+    mt5_trade_account: TDetailsOfEachMT5Loginid;
+}) => {
+    const os = await mobileOsDetect();
+    if (os === 'iOS') {
+        return mt5_trade_account?.white_label_links?.ios;
+    } else if (os === 'huawei') {
+        return white_label_links?.huawei;
+    }
+    return mt5_trade_account?.white_label_links?.android;
+};
+
 export {
-    DEEP_LINK,
     REAL_DXTRADE_URL,
     DEMO_DXTRADE_URL,
     CTRADER_URL,
@@ -226,7 +243,6 @@ export {
     getTopUpConfig,
     validatePassword,
     getMobileAppInstallerURL,
-    WEBTRADER_URL,
     getDesktopDownloadOptions,
     getMobileDownloadOptions,
 };

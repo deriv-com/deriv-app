@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { isSafariBrowser, mobileOSDetect } from '@deriv/shared';
 import MT5MobileRedirectOption from '../mt5-mobile-redirect-option';
-import { DEEP_LINK, getMobileAppInstallerURL, getPlatformMt5DownloadLink } from '../../../src/Helpers/constants';
+import { getDeeplinkUrl, getMobileAppInstallerURL, getPlatformMt5DownloadLink } from '../../../src/Helpers/constants';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -96,7 +96,7 @@ describe('<MT5MobileRedirectOption/>', () => {
 
     it('should open MT5 app when user click "Trade with MT5 Mobile App" and has the app installed', () => {
         renderComponent({ props: mock_props });
-        const expectedUrl = DEEP_LINK({ mt5_trade_account: mock_props.mt5_trade_account });
+        const expectedUrl = getDeeplinkUrl({ mt5_trade_account: mock_props.mt5_trade_account });
         expect(expectedUrl).toBe(
             `metatrader5://account?login=${mock_props.mt5_trade_account?.display_login}&server=${mock_props.mt5_trade_account?.server_info?.environment}`
         );

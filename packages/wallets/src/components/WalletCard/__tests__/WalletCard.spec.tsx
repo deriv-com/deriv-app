@@ -99,6 +99,7 @@ describe('WalletCard', () => {
                 </WalletsAuthProvider>
             </APIProvider>
         );
+        expect(screen.getByText('USD Demo Wallet')).toBeInTheDocument();
         const gradient = screen.getByTestId('dt_wallet_gradient_background');
         expect(gradient).toHaveClass('wallets-gradient--demo-mobile-card-light');
     });

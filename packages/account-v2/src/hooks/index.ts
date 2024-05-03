@@ -1,4 +1,4 @@
-export { useAccountLimitsData } from './useAccountLimits';
+export { useAccountLimitsData } from './useAccountLimitsData';
 export { useManualForm } from './useManualForm';
 export { usePaymentMethodDetails } from './usePaymentMethodDetails';
 export { usePOAInfo } from './usePOAInfo';

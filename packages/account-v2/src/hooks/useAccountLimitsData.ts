@@ -5,19 +5,19 @@ import { getAccountLimitValues } from '../utils/accountLimitsUtils';
 
 export const useAccountLimitsData = () => {
     const { data: accountLimits, isLoading: isAccountLimitsLoading } = useAccountLimits();
-    const { data: activeAccount, isLoading: isActiveAccountLoading } = useActiveAccount();
     const { data: accountStatus, isLoading: isAccountStatusLoading } = useAccountStatus();
+    const { data: activeAccount, isLoading: isActiveAccountLoading } = useActiveAccount();
+    const { is_authenticated: isAuthenticated } = accountStatus || {};
 
     const currency = (activeAccount?.currency as TCurrency) ?? 'USD';
     const isVirtual = activeAccount?.is_virtual;
-    const { is_authenticated: isAuthenticated } = accountStatus || {};
 
     const isDataLoading = isAccountLimitsLoading || isActiveAccountLoading || isAccountStatusLoading;
 
     const formattedAccountLimits = useMemo(() => {
-        if (!accountLimits) return [];
+        if (!accountLimits || isDataLoading) return [];
         return getAccountLimitValues(accountLimits, currency, isAuthenticated);
-    }, [accountLimits, currency, isAuthenticated]);
+    }, [accountLimits, currency, isAuthenticated, isDataLoading]);
 
     return {
         accountLimits: formattedAccountLimits,

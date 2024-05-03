@@ -2,10 +2,10 @@ import React, { ComponentProps, HTMLAttributes, PropsWithChildren, ReactElement 
 import { twMerge } from 'tailwind-merge';
 import { Text } from '@deriv-com/ui';
 
-type TTimelineItemProps = HTMLAttributes<HTMLDivElement> & { itemTitle: React.ReactNode };
+type TTimelineItemProps = HTMLAttributes<HTMLDivElement> & { itemTitle?: React.ReactNode };
 
 type TTimelineProps = HTMLAttributes<HTMLOListElement> & {
-    children: ReactElement<TTimelineItemProps>[];
+    children: ReactElement<TTimelineItemProps> | ReactElement<TTimelineItemProps>[];
     lineHeight?: ComponentProps<typeof Text>['lineHeight'];
 };
 
@@ -22,6 +22,7 @@ const Marker = ({ label }: { label: number }) => {
         </div>
     );
 };
+
 /**
  * @deprecated TODO: Replace this component with the one from @deriv-com/ui is implemented.
  */
@@ -37,10 +38,18 @@ export const Timeline = ({ children, className, lineHeight }: TTimelineProps) =>
                     >
                         <Marker label={idx + 1} />
                         <div className='ml-20 w-full'>
-                            <Text as='h2' className='max-w-[500px]' color='prominent' lineHeight={lineHeight} size='xs'>
-                                {child.props.itemTitle}
-                            </Text>
-                            <div className='my-16 mx-0 text-system-light-prominent-text last-of-type:mb-0'>{child}</div>
+                            {child.props.itemTitle && (
+                                <Text
+                                    as='h2'
+                                    className='max-w-[500px]'
+                                    color='prominent'
+                                    lineHeight={lineHeight}
+                                    size='xs'
+                                >
+                                    {child.props.itemTitle}
+                                </Text>
+                            )}
+                            <div className='mx-0 text-system-light-prominent-text'>{child}</div>
                         </div>
                     </li>
                 );

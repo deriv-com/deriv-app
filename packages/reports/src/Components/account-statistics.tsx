@@ -17,7 +17,7 @@ const AccountStatistics = observer(() => {
             <div className='statement__account-statistics-item'>
                 <div className='statement__account-statistics--is-rectangle'>
                     <Text color='less-prominent' className='statement__account-statistics-title'>
-                        {localize('Total deposits')} {!isDesktop ? `(${currency})` : ''}
+                        {localize('Total deposits')} {!isDesktop && `(${currency})`}
                     </Text>
                     <Text
                         color='prominent'
@@ -32,7 +32,7 @@ const AccountStatistics = observer(() => {
             <div className='statement__account-statistics-item statement__account-statistics-total-withdrawal'>
                 <div className='statement__account-statistics--is-rectangle'>
                     <Text color='less-prominent' className='statement__account-statistics-title'>
-                        {localize('Total withdrawals')} {!isDesktop ? `(${currency})` : ''}
+                        {localize('Total withdrawals')} {!isDesktop && `(${currency})`}
                     </Text>
                     <Text
                         color='prominent'
@@ -47,7 +47,7 @@ const AccountStatistics = observer(() => {
             <div className='statement__account-statistics-item'>
                 <div className='statement__account-statistics--is-rectangle'>
                     <Text color='less-prominent' className='statement__account-statistics-title'>
-                        {localize('Net deposits')} {!isDesktop ? `(${currency})` : ''}
+                        {localize('Net deposits')} {!isDesktop && `(${currency})`}
                     </Text>
                     <Text
                         color='prominent'

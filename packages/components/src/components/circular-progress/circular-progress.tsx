@@ -25,7 +25,7 @@ const CircularProgress = ({
 }: TCircularProgressProps) => {
     const normalizedRadius = radius - stroke / 2;
     const circumference = normalizedRadius * 2 * Math.PI;
-    const strokeDashoffset = circumference - (progress / 100) * circumference ?? 0;
+    const strokeDashoffset = circumference - (progress / 100) * circumference;
     return (
         <div className={classNames('dc-circular-progress', className)}>
             <Icon icon={icon} className='dc-circular-progress__icon' />

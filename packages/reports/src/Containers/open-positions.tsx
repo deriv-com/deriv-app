@@ -267,40 +267,6 @@ export const OpenPositionsTable = ({
         });
     }, []);
 
-    if (isDesktop) {
-        return (
-            <React.Fragment>
-                {is_loading ? (
-                    <PlaceholderComponent
-                        is_loading={is_loading}
-                        empty_message_component={EmptyTradeHistoryMessage}
-                        component_icon={component_icon}
-                        localized_message={localize('You have no open positions yet.')}
-                    />
-                ) : (
-                    currency && (
-                        <div className='reports__content'>
-                            <EmptyPlaceholderWrapper component_icon={component_icon} is_empty={is_empty}>
-                                <DataTable
-                                    className={className}
-                                    columns={columns}
-                                    preloaderCheck={preloaderCheck}
-                                    footer={totals}
-                                    data_source={active_positions}
-                                    getRowAction={getRowAction}
-                                    getRowSize={() => row_size}
-                                    content_loader={ReportsTableRowLoader}
-                                >
-                                    <PlaceholderComponent is_loading={is_loading} />
-                                </DataTable>
-                            </EmptyPlaceholderWrapper>
-                        </div>
-                    )
-                )}
-            </React.Fragment>
-        );
-    }
-
     return (
         <React.Fragment>
             {is_loading ? (
@@ -314,17 +280,32 @@ export const OpenPositionsTable = ({
                 currency && (
                     <div className='reports__content'>
                         <EmptyPlaceholderWrapper component_icon={component_icon} is_empty={is_empty}>
-                            <DataList
-                                className={className}
-                                data_source={active_positions}
-                                footer={totals}
-                                rowRenderer={mobileRowRenderer}
-                                getRowAction={getRowAction}
-                                row_gap={8}
-                                keyMapper={item => item?.id}
-                            >
-                                <PlaceholderComponent is_loading={is_loading} />
-                            </DataList>
+                            {isDesktop ? (
+                                <DataTable
+                                    className={className}
+                                    columns={columns}
+                                    preloaderCheck={preloaderCheck}
+                                    footer={totals}
+                                    data_source={active_positions}
+                                    getRowAction={getRowAction}
+                                    getRowSize={() => row_size}
+                                    content_loader={ReportsTableRowLoader}
+                                >
+                                    <PlaceholderComponent is_loading={is_loading} />
+                                </DataTable>
+                            ) : (
+                                <DataList
+                                    className={className}
+                                    data_source={active_positions}
+                                    footer={totals}
+                                    rowRenderer={mobileRowRenderer}
+                                    getRowAction={getRowAction}
+                                    row_gap={8}
+                                    keyMapper={item => item?.id}
+                                >
+                                    <PlaceholderComponent is_loading={is_loading} />
+                                </DataList>
+                            )}
                         </EmptyPlaceholderWrapper>
                     </div>
                 )

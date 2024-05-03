@@ -38,6 +38,7 @@ export default class ToolboxStore {
     sub_category_index = [];
     toolbox_dom = null;
     toolbox_examples = null;
+    is_workspace_scroll_adjusted = false;
 
     onMount(toolbox_ref) {
         this.adjustWorkspace();
@@ -49,7 +50,7 @@ export default class ToolboxStore {
             () => this.is_toolbox_open,
             is_toolbox_open => {
                 if (is_toolbox_open) {
-                    this.adjustWorkspace();
+                    //this.adjustWorkspace();
                     // Emit event to GTM
                     const { gtm } = this.core;
                     gtm.pushDataLayer({ event: 'dbot_toolbox_visible', value: true });
@@ -91,18 +92,36 @@ export default class ToolboxStore {
     }
     // eslint-disable-next-line class-methods-use-this
     adjustWorkspace() {
-        setTimeout(() => {
+        // NOTE: added this load modal open check to prevent scroll when load modal is open
+        if (!this.is_workspace_scroll_adjusted && !this.root_store.load_modal.is_load_modal_open) {
             const workspace = Blockly.derivWorkspace;
-            const toolbox_width = document.getElementById('gtm-toolbox')?.getBoundingClientRect().width || 0;
-            const block_canvas_rect = workspace.svgBlockCanvas_?.getBoundingClientRect(); // eslint-disable-line
+            this.is_workspace_scroll_adjusted = true;
 
-            if (Math.round(block_canvas_rect?.left) <= toolbox_width) {
-                const scroll_distance = this.core.ui.is_mobile
-                    ? toolbox_width - block_canvas_rect.left + 50
-                    : toolbox_width - block_canvas_rect.left + 36;
-                scrollWorkspace(workspace, scroll_distance, true, false);
-            }
-        }, 300);
+            setTimeout(() => {
+                const toolbox_width = document.getElementById('gtm-toolbox')?.getBoundingClientRect().width || 0;
+                const toolbar_width = document.querySelector('.toolbar__group-btn')?.getBoundingClientRect().width || 0;
+                const block_canvas_rect = workspace.svgBlockCanvas_?.getBoundingClientRect(); // eslint-disable-line
+
+                // Need to set the direction right if the workspace is RTL
+                const is_workspace_LTR = !workspace.RTL;
+                let canvas_direction = block_canvas_rect.left;
+                if (!is_workspace_LTR && window.innerWidth < 768) canvas_direction = block_canvas_rect.right;
+
+                // Need to set the scroll distance based on the device
+                const scroll_distance_mobile = toolbox_width + toolbar_width - canvas_direction + 20;
+                const scroll_distance_desktop = toolbox_width - canvas_direction + 36;
+                const scroll_distance = this.core.ui.is_mobile ? scroll_distance_mobile : scroll_distance_desktop;
+
+                // Scroll the workspace if the toolbox is overlapping the workspace
+                if (Math.round(block_canvas_rect?.left) <= toolbox_width) {
+                    scrollWorkspace(workspace, scroll_distance, true, false);
+                } else if (window.innerWidth < 768 && workspace.RTL) {
+                    scrollWorkspace(workspace, scroll_distance, true, false);
+                }
+
+                this.is_workspace_scroll_adjusted = false;
+            }, 300);
+        }
     }
 
     toggleDrawer() {

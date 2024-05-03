@@ -2740,8 +2740,13 @@ export default class ClientStore extends BaseStore {
     }
 
     async getWalletMigrationState() {
-        const response = await WS.authorized.getWalletMigrationState();
-        if (response?.wallet_migration?.state) this.setWalletMigrationState(response?.wallet_migration?.state);
+        try {
+            const response = await WS.authorized.getWalletMigrationState();
+            if (response?.wallet_migration?.state) this.setWalletMigrationState(response?.wallet_migration?.state);
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
+        }
     }
 
     async startWalletMigration() {
@@ -2749,6 +2754,9 @@ export default class ClientStore extends BaseStore {
         try {
             await WS.authorized.startWalletMigration();
             this.getWalletMigrationState();
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
         } finally {
             this.setIsWalletMigrationRequestIsInProgress(false);
         }
@@ -2759,6 +2767,9 @@ export default class ClientStore extends BaseStore {
         try {
             await WS.authorized.resetWalletMigration();
             this.getWalletMigrationState();
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
         } finally {
             this.setIsWalletMigrationRequestIsInProgress(false);
         }

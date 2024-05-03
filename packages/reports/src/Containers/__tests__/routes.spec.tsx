@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { mockStore } from '@deriv/stores';
 import { Router } from 'react-router-dom';
@@ -35,11 +35,9 @@ describe('Routes', () => {
         renderMockedRoutes();
         expect(screen.getByText(mockedBinaryRoutes)).toBeInTheDocument();
     });
-    it('should render ErrorComponent', async () => {
+    it('should render ErrorComponent', () => {
         renderMockedRoutes(mockStore({ common: { has_error: true } }));
         expect(screen.queryByText(mockedBinaryRoutes)).not.toBeInTheDocument();
-        await waitFor(() => {
-            expect(screen.getByText(mockedErrorComponent)).toBeInTheDocument();
-        });
+        expect(screen.getByText(mockedErrorComponent)).toBeInTheDocument();
     });
 });

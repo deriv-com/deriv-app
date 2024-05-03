@@ -1,10 +1,10 @@
 import React, { ChangeEvent, MouseEvent, SyntheticEvent, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { Field, FormikErrors, useFormikContext } from 'formik';
-import { StandaloneXmarkRegularIcon } from '@deriv/quill-icons';
+import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { Button, Input } from '@deriv-com/ui';
-import { TPaymentMethod, TProofOfOwnershipFormValue } from 'src/types';
-import { compressImageFiles, TFile } from 'src/utils';
+import { ImageUtils } from '@deriv-com/utils';
+import { TFile, TPaymentMethod, TProofOfOwnershipFormValue } from 'src/types';
 
 type TFileUploadFieldProps = {
     methodId: number;
@@ -38,9 +38,9 @@ export const FileUploaderField = ({ methodId, paymentMethod, subIndex }: TFileUp
         if (!event.target.files || event.target.files.length === 0) {
             return;
         }
-        const fileToUpload = await compressImageFiles([event.target.files[0]]);
+        const fileToUpload = await ImageUtils.compressImageFile(event.target.files[0]);
         const paymentFileData = [...(values[paymentMethod]?.[methodId]?.files ?? [])];
-        paymentFileData[subIndex] = fileToUpload[0] as TFile;
+        paymentFileData[subIndex] = fileToUpload as TFile;
         const selectedPaymentMethod = values?.[paymentMethod];
         if (!selectedPaymentMethod) {
             return;
@@ -50,7 +50,7 @@ export const FileUploaderField = ({ methodId, paymentMethod, subIndex }: TFileUp
             files: paymentFileData ?? [],
         };
         await setFieldValue(paymentMethod, { ...selectedPaymentMethod });
-        setShowBrowseButton(!fileToUpload[0]);
+        setShowBrowseButton(!fileToUpload);
     };
 
     const handleClick = (event: MouseEvent) => {
@@ -124,18 +124,16 @@ export const FileUploaderField = ({ methodId, paymentMethod, subIndex }: TFileUp
                                     : 'Accepted formats: pdf, jpeg, jpg, and png. Max file size: 8MB'
                             }
                             name='cardImgName'
+                            onClick={handleClick}
                             readOnly
                             rightPlaceholder={
-                                <Button
+                                <button
                                     className={clsx({ hidden: showBrowseButton })}
-                                    color='white'
                                     onClick={handleIconClick}
-                                    size='md'
                                     type='button'
-                                    variant='ghost'
                                 >
-                                    <StandaloneXmarkRegularIcon height={20} width={20} />
-                                </Button>
+                                    <StandaloneXmarkBoldIcon height={20} width={20} />
+                                </button>
                             }
                             type='text'
                             value={values[paymentMethod]?.[methodId]?.files?.[subIndex]?.name ?? ''}

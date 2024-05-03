@@ -4,23 +4,27 @@ import { LabelPairedArrowLeftCaptionFillIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import ConfirmPhoneNumber from './confirm-phone-number';
-import { useHistory } from 'react-router';
-import { routes } from '@deriv/shared';
 import ConfirmYourEmail from './confirm-your-email';
+import CancelPhoneVerificationModal from './cancel-phone-verification-modal';
 
 const PhoneVerificationPage = () => {
     const [show_email_verification, shouldShowEmailVerification] = React.useState(true);
-    const history = useHistory();
+    const [should_show_cancel_verification_modal, setShouldShowCancelVerificationModal] = React.useState(false);
     const handleBackButton = () => {
-        history.push(routes.personal_details);
+        setShouldShowCancelVerificationModal(true);
     };
 
     return (
         <div>
+            <CancelPhoneVerificationModal
+                should_show_cancel_verification_modal={should_show_cancel_verification_modal}
+                setShouldShowCancelVerificationModal={setShouldShowCancelVerificationModal}
+            />
             <div className='phone-verification__redirect_button'>
                 <LabelPairedArrowLeftCaptionFillIcon
                     width={24}
                     height={24}
+                    data-testid='dt_phone_verification_back_btn'
                     className='phone-verification__redirect_button--icon'
                     onClick={handleBackButton}
                 />

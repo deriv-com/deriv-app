@@ -1,4 +1,19 @@
 .phone-verification {
+    &__cancel-modal {
+        &--contents {
+            display: flex;
+            flex-direction: column;
+            gap: 3.2rem;
+        }
+        &--buttons {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 0.8rem;
+            padding: 0 1.6rem 1.6rem;
+        }
+    }
+
     &__redirect_button {
         display: flex;
         align-items: center;
@@ -57,7 +72,7 @@
                 margin-top: 2.4rem;
                 display: flex;
                 flex-direction: column;
-                align-items: center;
+                text-align: center;
             }
 
             &-otp-container {

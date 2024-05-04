@@ -2721,6 +2721,7 @@ export default class ClientStore extends BaseStore {
                 if (show_effortless_login_modal) {
                     localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
                 }
+
                 const data = await WS.authorized.send({ passkeys_list: 1 });
 
                 if (data?.passkeys_list) {

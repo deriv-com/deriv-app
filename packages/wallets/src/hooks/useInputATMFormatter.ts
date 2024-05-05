@@ -74,11 +74,16 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
         let newCaretPosition = input.value.length - (input.selectionStart ?? 0) + integerEditingCaretOffset;
 
         const caretInFractions = hasSeparator && newCaretPosition <= fractionDigits;
-        if (caretInFractions && newCaretPosition > 0 && input.value[input.value.length - newCaretPosition] === '0') {
-            input.value =
-                input.value.slice(0, input.value.length - newCaretPosition) +
-                input.value.slice(input.value.length - newCaretPosition + 1);
-            newCaretPosition--;
+        const decimalPlacesCount = unFormatLocaleString(input.value, locale).split('.')?.[1]?.length;
+        if (caretInFractions) {
+            if (newCaretPosition > 0 && input.value[input.value.length - newCaretPosition] === '0') {
+                input.value =
+                    input.value.slice(0, input.value.length - newCaretPosition) +
+                    input.value.slice(input.value.length - newCaretPosition + 1);
+                newCaretPosition--;
+            } else if (decimalPlacesCount < fractionDigits - 1) {
+                newCaretPosition = fractionDigits - decimalPlacesCount;
+            }
         }
 
         setCaret(newCaretPosition);

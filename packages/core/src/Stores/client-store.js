@@ -446,9 +446,9 @@ export default class ClientStore extends BaseStore {
         );
 
         reaction(
-            () => [this.is_logged_in, this.is_logging_in, this.is_passkey_supported],
+            () => [this.is_logged_in, this.is_authorize, this.is_passkey_supported],
             () => {
-                if (this.is_logged_in && !this.is_logging_in && this.is_passkey_supported) {
+                if (this.is_logged_in && this.is_authorize && this.is_passkey_supported) {
                     this.fetchShouldShowEffortlessLoginModal();
                 }
             }
@@ -1497,7 +1497,7 @@ export default class ClientStore extends BaseStore {
      * @param {string} loginid
      */
     async switchAccount(loginid) {
-        if (!loginid) return;
+        if (!loginid || this.is_logging_in) return;
 
         this.setPreSwitchAccount(true);
         this.setIsLoggingIn(true);

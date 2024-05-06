@@ -14,6 +14,7 @@ const WalletListHeader: React.FC = () => {
 
     const demoAccount = wallets?.find(wallet => wallet.is_virtual)?.loginid;
     const firstRealAccount = wallets?.find(wallet => !wallet.is_virtual)?.loginid;
+    const shouldShowSwitcher = !isMobile && demoAccount && firstRealAccount;
     const isDemo = activeWallet?.is_virtual;
     const [isChecked, setIsChecked] = useState(!isDemo);
 
@@ -35,7 +36,7 @@ const WalletListHeader: React.FC = () => {
             <WalletText size='xl' weight='bold'>
                 Trader&apos;s Hub
             </WalletText>
-            {!isMobile && demoAccount && firstRealAccount && (
+            {shouldShowSwitcher && (
                 <div>
                     <div className='wallets-list-header__label'>
                         <WalletText size='sm'>

@@ -63,7 +63,7 @@ const AssetSummary = observer(() => {
     }
 
     // measure performance metrics
-    setPerformanceValue('login_time');
+    is_landing_company_loaded && setPerformanceValue('login_time');
     setPerformanceValue('redirect_from_deriv_com_time');
     setPerformanceValue('switch_currency_accounts_time');
     setPerformanceValue('switch_from_demo_to_real_time');

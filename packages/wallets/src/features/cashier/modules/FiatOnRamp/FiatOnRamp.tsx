@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { LegacyArrowRight2pxIcon } from '@deriv/quill-icons';
 import { WalletButton, WalletText } from '../../../../components';
-import BackArrow from '../../../../public/images/ic-back-arrow.svg';
 import { FiatOnRampDisclaimer, FiatOnRampProviderCard } from './components';
 import { fiatOnRampProvider } from './constants';
 import './FiatOnRamp.scss';
@@ -21,7 +21,7 @@ const FiatOnRamp = () => {
                     <div className='wallets-fiat-onramp__actions'>
                         <WalletButton
                             color='white'
-                            icon={<BackArrow />}
+                            icon={<LegacyArrowRight2pxIcon iconSize='xs' />}
                             onClick={() => history.push('/wallets/cashier/deposit')}
                         >
                             Back

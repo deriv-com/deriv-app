@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import PasswordHide from '../../../public/images/ic-password-hide.svg';
-import PasswordShow from '../../../public/images/ic-password-show.svg';
+import { LegacyVisibility1pxIcon, LegacyVisibilityOff1pxIcon } from '@deriv/quill-icons';
 import { IconButton } from '../IconButton';
 import './PasswordViewerIcon.scss';
 
@@ -17,7 +16,7 @@ const PasswordViewerIcon: React.FC<PasswordViewerIconProps> = ({ isIconDisabled,
             'wallets-password-viewer-icon--disabled': isIconDisabled,
         })}
         color='transparent'
-        icon={viewPassword ? <PasswordShow /> : <PasswordHide />}
+        icon={viewPassword ? <LegacyVisibility1pxIcon iconSize='xs' /> : <LegacyVisibilityOff1pxIcon iconSize='xs' />}
         isRound
         onClick={() => !isIconDisabled && setViewPassword(!viewPassword)}
         size='sm'

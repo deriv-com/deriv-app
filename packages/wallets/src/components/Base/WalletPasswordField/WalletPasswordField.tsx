@@ -5,6 +5,7 @@ import { dictionary } from '@zxcvbn-ts/language-common';
 import { passwordErrorMessage, warningMessages } from '../../../constants/password';
 import {
     calculateScore,
+    calculateScoreMT5,
     cfdSchema,
     mt5Schema,
     passwordKeys,
@@ -19,7 +20,7 @@ import PasswordViewerIcon from './PasswordViewerIcon';
 import './WalletPasswordField.scss';
 
 export const validatePassword = (password: string, mt5Policy: boolean) => {
-    const score = calculateScore(password);
+    const score = mt5Policy ? calculateScoreMT5(password) : calculateScore(password);
     let errorMessage = '';
 
     const options = { dictionary: { ...dictionary } };

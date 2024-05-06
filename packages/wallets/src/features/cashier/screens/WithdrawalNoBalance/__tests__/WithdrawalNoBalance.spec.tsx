@@ -13,10 +13,12 @@ jest.mock('@deriv/quill-icons', () => ({
 
 jest.mock('../../../../../components', () => ({
     ...jest.requireActual('../../../../../components'),
-    WalletsActionScreen: jest.fn(({ description, descriptionSize, icon, renderButtons, title, titleSize }) => (
+    WalletsActionScreen: jest.fn(({ description, descriptionSize, icon, renderButtons, title }) => (
         <div>
             <div>{icon}</div>
-            WalletsActionScreen-{description}/{descriptionSize}/{title}/{titleSize}
+            <span>
+                WalletsActionScreen-{title}/{description}/{descriptionSize}
+            </span>
             <div>{renderButtons()}</div>
         </div>
     )),
@@ -38,12 +40,12 @@ describe('WithdrawalNoBalance', () => {
 
         expect(
             screen.getByText(
-                'WalletsActionScreen-Please make a deposit to use this feature./md/You have no funds in your USD account/xl'
+                `WalletsActionScreen-No funds in USD Wallet/You don't have funds in your USD Wallet to complete a withdrawal./md`
             )
         ).toBeInTheDocument();
 
         expect(screen.getByText('DerivLightCashierNoBalanceIcon-128px/128px')).toBeInTheDocument();
-        expect(within(screen.getByRole('button')).getByText('Deposit now')).toBeInTheDocument();
+        expect(within(screen.getByRole('button')).getByText('Add funds')).toBeInTheDocument();
     });
 
     it('should test whether children are render if wallet balance > 0', () => {

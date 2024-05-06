@@ -29,6 +29,9 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
         contact_info,
         description,
         amount_display,
+        eligible_countries,
+        min_completion_rate,
+        min_join_days,
         order_expiry_period,
         payment_method_details,
         payment_method_names,
@@ -68,6 +71,10 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
         return rate_display;
     };
 
+    const eligible_countries_display =
+        eligible_countries?.length === 1 ? eligible_countries[0] : eligible_countries?.length;
+    const has_counterparty_conditions = min_join_days > 0 || min_completion_rate > 0 || eligible_countries?.length > 0;
+
     React.useEffect(() => {
         if (type === buy_sell.SELL) {
             if (payment_method_details) {
@@ -81,9 +88,15 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
             });
         }
 
+        my_ads_store.setMinJoinDays(min_join_days);
+        my_ads_store.setMinCompletionRate(min_completion_rate);
+
         return () => {
             my_ads_store.payment_method_names = [];
             my_ads_store.payment_method_ids = [];
+            my_ads_store.setMinJoinDays(0);
+            my_ads_store.setMinCompletionRate(0);
+            my_ads_store.setP2pAdvertInformation({});
         };
     }, []);
 
@@ -95,8 +108,11 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                         contact_info,
                         default_advert_description: description,
                         float_rate_offset_limit: float_rate_offset_limit_string,
+                        eligible_countries,
                         max_transaction: '',
                         min_transaction: '',
+                        min_completion_rate,
+                        min_join_days,
                         offer_amount: amount_display,
                         order_completion_time: order_expiry_period > 3600 ? '3600' : order_expiry_period.toString(),
                         payment_method_names,
@@ -260,6 +276,42 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                                 <Text as='div' color='prominent' className='copy-advert-form__field' size='xs'>
                                     {payment_method_names.join(', ')}
                                 </Text>
+                                {has_counterparty_conditions && (
+                                    <>
+                                        <Text color='less-prominent' size='xxs'>
+                                            <Localize i18n_default_text='Counterparty conditions' />
+                                        </Text>
+                                        <Text as='ul' className='copy-advert-form__list' color='prominent' size='xs'>
+                                            {min_join_days > 0 && (
+                                                <li>
+                                                    <Localize
+                                                        i18n_default_text='Joined more than <0>{{min_join_days}} days</0>'
+                                                        components={[<strong key={0} />]}
+                                                        values={{ min_join_days }}
+                                                    />
+                                                </li>
+                                            )}
+                                            {min_completion_rate > 0 && (
+                                                <li>
+                                                    <Localize
+                                                        i18n_default_text='Completion rate of more than <0>{{min_completion_rate}}%</0>'
+                                                        components={[<strong key={0} />]}
+                                                        values={{ min_completion_rate }}
+                                                    />
+                                                </li>
+                                            )}
+                                            {eligible_countries?.length > 0 && (
+                                                <li>
+                                                    <Localize
+                                                        i18n_default_text='Preferred countries <0>({{eligible_countries_display}})</0>'
+                                                        components={[<strong key={0} />]}
+                                                        values={{ eligible_countries_display }}
+                                                    />
+                                                </li>
+                                            )}
+                                        </Text>
+                                    </>
+                                )}
                             </ThemedScrollbars>
                             <div className='copy-advert-form__container'>
                                 <Button type='button' has_effect onClick={() => onClickCancel(values)} secondary large>

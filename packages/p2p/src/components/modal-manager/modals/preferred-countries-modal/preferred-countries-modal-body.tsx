@@ -31,10 +31,7 @@ const PreferredCountriesModalBody = ({
 
     const onClearSearch = () => {
         setSearchValue('');
-        setSearchResults([
-            ...country_list.filter(item => selected_countries.includes(item.value)),
-            ...country_list.filter(item => !selected_countries.includes(item.value)),
-        ]);
+        setSearchResults(country_list);
     };
 
     const onSearch = e => {
@@ -54,6 +51,7 @@ const PreferredCountriesModalBody = ({
                 className='preferred-countries-modal__search-field'
                 data-lpignore='true'
                 leading_icon={<Icon className='preferred-countries-modal__search-field--icon' icon='IcSearch' />}
+                maxLength={50}
                 onChange={onSearch}
                 placeholder={localize('Search countries')}
                 trailing_icon={

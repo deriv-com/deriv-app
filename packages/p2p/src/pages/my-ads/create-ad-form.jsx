@@ -50,6 +50,8 @@ const CreateAdForm = () => {
         buy_sell_store.setCreateSellAdFromNoAds(false);
         my_ads_store.payment_method_ids = [];
         my_ads_store.payment_method_names = [];
+        my_ads_store.setMinJoinDays(0);
+        my_ads_store.setMinCompletionRate(0);
     };
 
     const onSubmit = (values, { setSubmitting }) => {

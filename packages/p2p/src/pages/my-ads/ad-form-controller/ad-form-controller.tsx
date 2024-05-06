@@ -9,6 +9,7 @@ type TAdFormControllerProps = {
     goToNextStep: () => void;
     goToPreviousStep: () => void;
     is_next_btn_disabled: boolean;
+    is_save_btn_disabled: boolean;
     onCancel?: () => void;
 };
 
@@ -19,6 +20,7 @@ const AdFormController = ({
     goToNextStep,
     goToPreviousStep,
     is_next_btn_disabled,
+    is_save_btn_disabled,
     onCancel,
 }: TAdFormControllerProps) => {
     const post_btn_text =
@@ -56,7 +58,7 @@ const AdFormController = ({
                     <Localize i18n_default_text='Next' />
                 </Button>
             ) : (
-                <Button primary large>
+                <Button disabled={is_save_btn_disabled} primary large>
                     {post_btn_text}
                 </Button>
             )}

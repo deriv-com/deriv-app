@@ -24,11 +24,29 @@ const PreferredCountriesSelector = ({ country_list }: TPreferredCountriesSelecto
     const getSelectedCountriesText = () => {
         const eligible_countries = values.eligible_countries;
         if (eligible_countries?.length === countries.length) {
-            return localize('All countries');
+            return null;
         }
 
         return eligible_countries?.map((value: string) => country_list[value]?.country_name).join(', ');
     };
+
+    const onClick = () => {
+        showModal({
+            key: 'PreferredCountriesModal',
+            props: {
+                country_list: countries,
+                eligible_countries: values.eligible_countries,
+                onApply: value => {
+                    setFieldValue('eligible_countries', [...value]);
+                    getSelectedCountriesText();
+                },
+            },
+        });
+    };
+
+    React.useEffect(() => {
+        if (!values.eligible_countries) setFieldValue('eligible_countries', Object.keys(country_list));
+    }, [country_list]);
 
     return (
         <Field>
@@ -37,21 +55,12 @@ const PreferredCountriesSelector = ({ country_list }: TPreferredCountriesSelecto
                     {...field}
                     className='preferred-countries-selector'
                     field_className='preferred-countries-selector__input'
-                    onClick={() => {
-                        showModal({
-                            key: 'PreferredCountriesModal',
-                            props: {
-                                country_list: countries,
-                                eligible_countries: values.eligible_countries,
-                                onApply: value => {
-                                    setFieldValue('eligible_countries', [...value]);
-                                    getSelectedCountriesText();
-                                },
-                            },
-                        });
-                    }}
+                    onClick={onClick}
+                    placeholder={localize('All countries')}
                     readOnly
-                    trailing_icon={<Icon icon='IcChevronRight' />}
+                    trailing_icon={
+                        <Icon className='preferred-countries-selector__icon' icon='IcChevronRight' onClick={onClick} />
+                    }
                     type='text'
                     value={getSelectedCountriesText()}
                 />

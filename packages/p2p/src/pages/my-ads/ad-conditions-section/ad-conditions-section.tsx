@@ -13,10 +13,20 @@ import CreateAdSummary from '../create-ad-summary.jsx';
 type TAdConditionsSection = {
     action: string;
     country_list: TCountryListProps;
+    goToFirstStep: () => void;
+    is_form_dirty: boolean;
 };
-const AdConditionsSection = ({ action, country_list, ...props }: TAdConditionsSection) => {
+const AdConditionsSection = ({
+    action,
+    country_list,
+    is_form_dirty,
+    goToFirstStep,
+    ...props
+}: TAdConditionsSection) => {
+    const [has_min_join_days_changed, setHasMinJoinDaysChange] = React.useState(false);
+    const [has_min_completion_rate_changed, setHasMinCompletionRateChanged] = React.useState(false);
     const { showModal } = useModalManagerContext();
-    const { errors, isSubmitting, isValid, values } = useFormikContext<FormikValues>();
+    const { dirty, errors, values } = useFormikContext<FormikValues>();
     const { my_ads_store } = useStores();
     const { min_completion_rate, min_join_days } = my_ads_store.p2p_advert_information;
     const joining_days = [
@@ -31,10 +41,26 @@ const AdConditionsSection = ({ action, country_list, ...props }: TAdConditionsSe
     ];
     const setJoiningDays = (value: number) => {
         my_ads_store.setMinJoinDays(value);
+        setHasMinJoinDaysChange(value !== min_join_days);
     };
     const setMinCompletionRate = (value: number) => {
         my_ads_store.setMinCompletionRate(value);
+        setHasMinCompletionRateChanged(value !== min_completion_rate);
     };
+
+    React.useEffect(() => {
+        if (my_ads_store.error_code) {
+            showModal({
+                key: 'AdCreateEditErrorModal',
+                props: {
+                    onUpdateAd: () => {
+                        goToFirstStep();
+                        my_ads_store.setApiErrorCode(null);
+                    },
+                },
+            });
+        }
+    }, [my_ads_store.error_code]);
 
     return (
         <>
@@ -53,14 +79,25 @@ const AdConditionsSection = ({ action, country_list, ...props }: TAdConditionsSe
                 label={localize('Joined more than')}
                 onSelect={setJoiningDays}
                 options={joining_days}
-                tooltip_info="We'll only show your ad to people who've been using Deriv P2P for longer than the time you choose."
+                tooltip_info={
+                    <Localize i18n_default_text="We'll only show your ad to people who've been using Deriv P2P for longer than the time you choose." />
+                }
                 value={min_join_days}
             />
             <BlockSelector
                 label={localize('Completion rate of more than')}
                 onSelect={setMinCompletionRate}
                 options={completion_rates}
-                tooltip_info="We'll only show your ad to people with a completion rate higher than your selection. The completion rate is the percentage of successful orders."
+                tooltip_info={
+                    <>
+                        <Text size='xs'>
+                            <Localize i18n_default_text="We'll only show your ad to people with a completion rate higher than your selection." />
+                        </Text>
+                        <Text as='div' line_height='xxl' size='xs'>
+                            <Localize i18n_default_text='The completion rate is the percentage of successful orders.' />
+                        </Text>
+                    </>
+                }
                 value={min_completion_rate}
             />
             <div className='ad-conditions-section__countries-label'>
@@ -84,7 +121,13 @@ const AdConditionsSection = ({ action, country_list, ...props }: TAdConditionsSe
                 />
             </div>
             <PreferredCountriesSelector country_list={country_list} />
-            <AdFormController {...props} action={action} isSubmitting={isSubmitting} isValid={isValid} />
+            <AdFormController
+                {...props}
+                action={action}
+                is_save_btn_disabled={
+                    !dirty && !is_form_dirty && !has_min_join_days_changed && !has_min_completion_rate_changed
+                }
+            />
         </>
     );
 };

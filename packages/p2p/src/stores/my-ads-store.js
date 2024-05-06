@@ -185,8 +185,8 @@ export default class MyAdsStore extends BaseStore {
             order_expiry_period: values.order_completion_time,
             rate_type: values.rate_type_string,
             rate: Number(values.rate_type),
-            min_completion_rate: Number(this.min_completion_rate),
-            min_join_days: Number(this.min_join_days),
+            ...(this.min_completion_rate ? { min_completion_rate: Number(this.min_completion_rate) } : {}),
+            ...(this.min_join_days ? { min_join_days: Number(this.min_join_days) } : {}),
             ...(this.payment_method_names.length > 0 && !is_sell_ad
                 ? { payment_method_names: this.payment_method_names }
                 : {}),
@@ -209,7 +209,6 @@ export default class MyAdsStore extends BaseStore {
                 if (response.error) {
                     this.setApiErrorCode(response.error.code);
                     this.setApiErrorMessage(response.error.message);
-                    this.root_store.general_store.showModal({ key: 'AdCreateEditErrorModal' });
                     setSubmitting(false);
                 } else if (should_not_show_auto_archive_message !== 'true') {
                     this.setAdvertDetails(response.p2p_advert_create);

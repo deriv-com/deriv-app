@@ -34,6 +34,11 @@
         }
     }
 
+    &__list {
+        list-style: disc;
+        margin-left: 1.5rem;
+    }
+
     &__dropdown {
         &-display {
             border: 0;

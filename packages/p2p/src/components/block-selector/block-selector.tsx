@@ -13,7 +13,7 @@ type TBlockSelectorProps = {
     label: string;
     onSelect: (value: number) => void;
     options: TBlockSelectorOptionProps[];
-    tooltip_info: string;
+    tooltip_info: React.ReactNode;
     value: number;
 };
 
@@ -53,7 +53,8 @@ const BlockSelector = ({ label, onSelect, options, tooltip_info, value }: TBlock
                         showModal({
                             key: 'ErrorModal',
                             props: {
-                                error_message: localize(tooltip_info),
+                                has_close_icon: false,
+                                error_message: tooltip_info,
                                 error_modal_title: localize(label),
                             },
                         });

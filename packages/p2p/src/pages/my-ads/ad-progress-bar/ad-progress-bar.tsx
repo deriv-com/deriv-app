@@ -43,6 +43,7 @@ const AdProgressBar = ({ current_step, steps }: TAdProgressBar) => {
                 textAnchor='middle'
                 fontSize='var(--text-size-xs)'
                 fontWeight='var(--text-weight-bold)'
+                fill='var(--text-prominent)'
             >
                 {current_step + 1} / {steps.length}
             </text>

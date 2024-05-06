@@ -49,7 +49,7 @@ const EditAdForm = () => {
     const is_buy_advert = type === buy_sell.BUY;
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const { useRegisterModalProps } = useModalManagerContext();
-    const { p2p_country_list } = useP2PCountryList();
+    const { p2p_country_list = {} } = useP2PCountryList();
     const { p2p_settings } = useP2PSettings();
 
     // when editing payment methods in creating an ad, once user declines to save their payment method, flow is to close all add payment method modals
@@ -101,6 +101,9 @@ const EditAdForm = () => {
             my_ads_store.setShowEditAdForm(false);
             my_ads_store.payment_method_ids = [];
             my_ads_store.payment_method_names = [];
+            my_ads_store.setMinJoinDays(0);
+            my_ads_store.setMinCompletionRate(0);
+            my_ads_store.setP2pAdvertInformation({});
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

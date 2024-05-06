@@ -45,13 +45,12 @@ const PreferredCountriesModal = ({ country_list, eligible_countries, onApply }: 
                     {!search_value && (
                         <Modal.Footer className='preferred-countries-modal__footer' has_separator>
                             <PreferredCountriesModalFooter
-                                is_disabled={
-                                    selected_countries?.length === 0 || selected_countries === eligible_countries
-                                }
+                                eligible_countries={eligible_countries}
                                 onClear={() => {
                                     setSelectedCountries(eligible_countries);
                                 }}
                                 onApply={onApplySelectedCountries}
+                                selected_countries={selected_countries}
                             />
                         </Modal.Footer>
                     )}
@@ -72,11 +71,12 @@ const PreferredCountriesModal = ({ country_list, eligible_countries, onApply }: 
                     }
                     renderPageFooterChildren={() => (
                         <PreferredCountriesModalFooter
-                            is_disabled={selected_countries?.length === 0 || selected_countries === eligible_countries}
+                            eligible_countries={eligible_countries}
                             onClear={() => {
                                 setSelectedCountries(eligible_countries);
                             }}
                             onApply={onApplySelectedCountries}
+                            selected_countries={selected_countries}
                         />
                     )}
                 >

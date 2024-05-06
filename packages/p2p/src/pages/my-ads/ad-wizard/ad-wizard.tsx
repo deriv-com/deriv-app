@@ -79,7 +79,7 @@ const AdWizard = ({
                 rate_type={rate_type}
             />
             <AdPaymentDetailsSection setIsFormDirty={setIsFormDirty} />
-            <AdConditionsSection action={action} country_list={country_list} />
+            <AdConditionsSection action={action} country_list={country_list} is_form_dirty={is_form_dirty} />
         </Wizard>
     );
 };

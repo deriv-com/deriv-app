@@ -5,7 +5,7 @@ import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 type TErrorModalProps = {
-    error_message: string;
+    error_message: string | React.ReactNode;
     error_modal_button_text?: string;
     error_modal_title?: string;
     has_close_icon?: boolean;
@@ -33,9 +33,7 @@ const ErrorModal = ({
             width={is_mobile ? '90rem' : '40rem'}
         >
             <Modal.Body className='error-modal__body'>
-                <Text size='xs'>
-                    <Localize i18n_default_text={error_message} />
-                </Text>
+                <Text size='xs'>{error_message}</Text>
             </Modal.Body>
             <Modal.Footer>
                 <Button large primary onClick={onClose ?? hideModal}>

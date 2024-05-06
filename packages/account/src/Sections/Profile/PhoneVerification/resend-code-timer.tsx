@@ -12,7 +12,7 @@ const ResendCodeTimer = ({ resend_code_text }: TResendCodeTimer) => {
     const request_code = useRef(resend_code_text);
 
     React.useEffect(() => {
-        let countdown: NodeJS.Timeout;
+        let countdown: ReturnType<typeof setInterval>;
         if (start_timer && timer > 0) {
             countdown = setInterval(() => {
                 setTimer(prevTime => prevTime - 1);

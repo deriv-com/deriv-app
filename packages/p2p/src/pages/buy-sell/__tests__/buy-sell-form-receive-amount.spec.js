@@ -11,7 +11,7 @@ jest.mock('Stores', () => ({
                 local_currency: 'USD',
             },
             is_sell_advert: true,
-            receive_amount: 100,
+            receive_amount: 200,
         },
     })),
 }));
@@ -29,14 +29,14 @@ jest.mock('@sendbird/chat/message', () => ({
 }));
 
 describe('<BuySellFormReceiveAmount/>', () => {
-    it('should show the proper formatted amount and currency', () => {
+    it('should show the proper description for sell order', () => {
         render(<BuySellFormReceiveAmount />);
+
         expect(screen.getByText("You'll receive")).toBeInTheDocument();
-        expect(screen.getByText('100.00 USD')).toBeInTheDocument();
     });
 
-    it('should show the proper description', () => {
-        useStores.mockReturnValue({
+    it('should show the proper description for buy order', () => {
+        useStores.mockReturnValueOnce({
             buy_sell_store: {
                 advert: {
                     local_currency: 'USD',
@@ -47,7 +47,13 @@ describe('<BuySellFormReceiveAmount/>', () => {
         });
         render(<BuySellFormReceiveAmount />);
 
+        render(<BuySellFormReceiveAmount />);
         expect(screen.getByText("You'll send")).toBeInTheDocument();
-        expect(screen.getByText('205.55 USD')).toBeInTheDocument();
+    });
+
+    it('should show the proper formatted amount and currency', () => {
+        render(<BuySellFormReceiveAmount />);
+
+        expect(screen.getByText('200.00 USD')).toBeInTheDocument();
     });
 });

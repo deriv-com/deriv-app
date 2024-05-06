@@ -1,7 +1,7 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
-import WalletListCardDetails from '../WalletListCardDetails/WalletListCardDetails';
+import { WalletCurrencyCard } from '../WalletCurrencyCard';
+import { WalletListCardDetails } from '../WalletListCardDetails';
 import './WalletListCard.scss';
 
 const WalletListCard = () => {
@@ -14,9 +14,7 @@ const WalletListCard = () => {
         <div className='wallets-list-header__card_container'>
             <div className='wallets-list-header__content'>
                 <div className='wallets-list-header__details-container'>
-                    <div className='wallets-list-header__details-container-icon'>
-                        <WalletCurrencyIcon currency={isDemo ? 'DEMO' : currency} rounded size='xl' />
-                    </div>
+                    <WalletCurrencyCard currency={isDemo ? 'Demo' : currency} isDemo={isDemo} size='lg' />
                     <WalletListCardDetails />
                 </div>
             </div>

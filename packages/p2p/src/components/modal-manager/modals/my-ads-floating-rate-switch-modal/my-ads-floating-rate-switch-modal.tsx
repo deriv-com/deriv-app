@@ -41,7 +41,7 @@ const MyAdsFloatingRateSwitchModal = ({ onSwitch }: TMyAdsFloatingRateSwitchModa
                         onClick={() => toggleMyAdsRateSwitchModal(selected_ad_type, p2p_settings?.reached_target_date)}
                         large
                     >
-                        {p2p_settings?.reached_target_date ? (
+                        {p2p_settings?.reached_target_date || !p2p_settings?.fixed_rate_adverts_end_date ? (
                             <Localize i18n_default_text='Cancel' />
                         ) : (
                             <Localize i18n_default_text="I'll do this later" />

@@ -26,6 +26,7 @@ const mock_store_values: DeepPartial<ReturnType<typeof useStores>> = {
 
 const mock_p2p_settings = {
     p2p_settings: {
+        fixed_rate_adverts_end_date: undefined,
         reached_target_date: false,
         rate_type: 'float',
     },
@@ -103,6 +104,13 @@ describe('<MyAdsFloatingRateSwitchModal />', () => {
         expect(onSwitch).toHaveBeenCalled();
     });
     it("should handle onClick for clicking I'll do this later button", () => {
+        (useP2PSettings as jest.Mock).mockReturnValueOnce({
+            ...mock_p2p_settings,
+            p2p_settings: {
+                ...mock_p2p_settings.p2p_settings,
+                fixed_rate_adverts_end_date: '2024-12-31',
+            },
+        });
         render(<MyAdsFloatingRateSwitchModal />, { wrapper });
         const button = screen.getByRole('button', { name: "I'll do this later" });
         userEvent.click(button);

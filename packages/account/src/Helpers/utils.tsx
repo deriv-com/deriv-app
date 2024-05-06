@@ -127,7 +127,7 @@ export const makeSettingsRequest = (values: FormikValues, changeable_fields: str
         request.last_name = request.last_name.trim();
     }
     if (request.date_of_birth) {
-        request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
+        request.date_of_birth = toMoment(request.date_of_birth).locale('en').format('YYYY-MM-DD');
     }
 
     return request;

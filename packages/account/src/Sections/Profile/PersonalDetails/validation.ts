@@ -127,7 +127,7 @@ export const makeSettingsRequest = (
     }
     if (request.date_of_birth) {
         // @ts-expect-error need to fix the type for date_of_birth in GetSettings because it should be string not number
-        request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
+        request.date_of_birth = toMoment(request.date_of_birth).locale('en').format('YYYY-MM-DD');
     }
 
     if (request.tax_residence) {

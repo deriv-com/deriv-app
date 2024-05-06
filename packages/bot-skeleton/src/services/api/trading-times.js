@@ -1,3 +1,4 @@
+import { toMoment } from '@deriv/shared';
 import PendingPromise from '../../utils/pending-promise';
 
 export default class TradingTimes {
@@ -71,7 +72,7 @@ export default class TradingTimes {
 
     async updateTradingTimes() {
         const last_update_date = this.last_update_moment.format('YYYY-MM-DD');
-        const response = await this.ws.tradingTimes(last_update_date);
+        const response = await this.ws.tradingTimes(toMoment(last_update_date).locale('en').format('YYYY-MM-DD'));
 
         if (response.error) {
             return;

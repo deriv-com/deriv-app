@@ -24,7 +24,7 @@ type TWhenMarketOpens = {
 const days_to_check_before_exit = 7;
 
 const getTradingTimes = async (target_time: TradingTimesRequest['trading_times']) => {
-    const data = await WS.tradingTimes(target_time);
+    const data = await WS.tradingTimes(toMoment(target_time).locale('en').format('YYYY-MM-DD'));
     if (data.error) {
         return { api_initial_load_error: data.error.message };
     }

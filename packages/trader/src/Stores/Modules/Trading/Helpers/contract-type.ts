@@ -416,11 +416,12 @@ export const ContractType = (() => {
     });
 
     const getTradingEvents = async (date: string, underlying: string | null = null) => {
+        const numeric_date = toMoment(date).locale('en').format('YYYY-MM-DD');
         if (!date) {
             return [];
         }
-        if (!(date in trading_events)) {
-            const trading_times_response: TradingTimesResponse = await WS.tradingTimes(date);
+        if (!(numeric_date in trading_events)) {
+            const trading_times_response: TradingTimesResponse = await WS.tradingTimes(numeric_date);
             const trading_times_data = trading_times_response.trading_times as TradingTimes;
             if (getPropertyValue(trading_times_response, ['trading_times', 'markets'])) {
                 for (let i = 0; i < trading_times_data.markets.length; i++) {
@@ -445,19 +446,20 @@ export const ContractType = (() => {
             }
         }
 
-        return trading_events[date][underlying as string];
+        return trading_events[numeric_date][underlying as string];
     };
 
     const getTradingTimes = async (
         date: string | null,
         underlying: string | null = null
     ): Promise<Record<string, never> | TTimes | Record<string, TTimes>> => {
+        const numeric_date = toMoment(date).locale('en').format('YYYY-MM-DD');
         if (!date) {
             return {};
         }
 
-        if (!(date in trading_times)) {
-            const trading_times_response: TradingTimesResponse = await WS.tradingTimes(date);
+        if (!(numeric_date in trading_times)) {
+            const trading_times_response: TradingTimesResponse = await WS.tradingTimes(numeric_date);
             const trading_times_data = trading_times_response.trading_times as TradingTimes;
             if (getPropertyValue(trading_times_response, ['trading_times', 'markets'])) {
                 for (let i = 0; i < trading_times_data.markets.length; i++) {
@@ -485,7 +487,7 @@ export const ContractType = (() => {
             }
         }
 
-        return underlying ? trading_times[date][underlying] : trading_times[date];
+        return underlying ? trading_times[numeric_date][underlying] : trading_times[numeric_date];
     };
 
     const getExpiryType = (

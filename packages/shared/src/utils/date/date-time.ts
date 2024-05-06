@@ -13,11 +13,10 @@ type TExtendedMoment = typeof moment & {
 
 // Localize moment instance with specific object
 export const initMoment = (lang: string) => {
-    const ignored_language = ['EN', 'AR', 'BN', 'SI'];
-    if (!lang || ignored_language.includes(lang)) return moment;
-    return import(`moment/locale/${lang.toLowerCase().replace('_', '-')}`)
-        .then(() => moment.locale(lang.toLocaleLowerCase().replace('_', '-')))
-        .catch(() => moment);
+    if (!lang) return moment;
+    let new_lang = lang.toLowerCase().replace('_', '-');
+    if (lang === 'EN') new_lang = 'en-gb';
+    return import(`moment/locale/${new_lang}`).then(() => moment.locale(new_lang)).catch(() => moment);
 };
 
 /**
@@ -38,7 +37,6 @@ export const toMoment = (value?: moment.MomentInput): moment.Moment => {
     if (value instanceof moment && (value as moment.Moment).isValid() && (value as moment.Moment).isUTC())
         return value as moment.Moment; // returns if already a moment object
     if (typeof value === 'number') return epochToMoment(value); // returns epochToMoment() if not a date
-
     if (/invalid/i.test(moment(value).toString())) {
         const today_moment = moment();
         const days_in_month = today_moment.utc().daysInMonth();

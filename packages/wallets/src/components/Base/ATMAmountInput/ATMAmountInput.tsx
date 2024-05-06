@@ -36,6 +36,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
     const [isFocused, setIsFocused] = useState<boolean>(false);
 
     const {
+        keyboardHandlers,
         onChange: formatOnChange,
         onPaste: formatOnPaste,
         value: formattedValue,
@@ -80,6 +81,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
                         onBlur={onBlurHandler}
                         onChange={formatOnChange}
                         onFocus={onFocusHandler}
+                        {...keyboardHandlers}
                         onPaste={formatOnPaste}
                         ref={inputRef}
                         type='tel'

@@ -17,16 +17,15 @@ const WithdrawalNoBalance: React.FC<React.PropsWithChildren<TWithdrawalNoBalance
     if (activeWallet.balance <= 0)
         return (
             <WalletsActionScreen
-                description={`Please make a deposit to use this feature.`}
+                description={`You don't have funds in your ${activeWallet.currency} Wallet to complete a withdrawal.`}
                 descriptionSize='md'
                 icon={<DerivLightCashierNoBalanceIcon height='128px' width='128px' />}
                 renderButtons={() => (
                     <WalletButton onClick={() => history.push('/wallets/cashier/deposit')} size='lg'>
-                        Deposit now
+                        Add funds
                     </WalletButton>
                 )}
-                title={`You have no funds in your ${activeWallet.currency} account`}
-                titleSize='xl'
+                title={`No funds in ${activeWallet.currency} Wallet`}
             />
         );
 

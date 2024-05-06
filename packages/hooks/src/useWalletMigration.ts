@@ -25,6 +25,7 @@ const useWalletMigration = () => {
                 }
                 return false;
             },
+            refetchOnReconnect: 'always',
             enabled: isSuccess,
         },
     });

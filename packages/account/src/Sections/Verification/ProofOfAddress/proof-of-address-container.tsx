@@ -9,7 +9,6 @@ import ProofOfAddressForm from './proof-of-address-form';
 import Unverified from '../../../Components/poa/status/unverified';
 import Verified from '../../../Components/poa/status/verified';
 import { useKycAuthStatus } from '../../../hooks';
-import { useInvalidateQuery } from '@deriv/api';
 
 type TProofOfAddressContainer = {
     onSubmit?: () => void;
@@ -18,9 +17,7 @@ type TProofOfAddressContainer = {
 const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer) => {
     const [resubmit_poa, setResubmitPOA] = useState(false);
 
-    const { kyc_auth_status, isLoading, isSuccess } = useKycAuthStatus();
-
-    const invalidate = useInvalidateQuery();
+    const { kyc_auth_status, isLoading, isSuccess, reFetchKycAuthStatus } = useKycAuthStatus();
 
     const { common, ui, notifications } = useStore();
 
@@ -44,9 +41,9 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
     const poa_status = resubmit_poa ? AUTH_STATUS_CODES.NONE : status;
 
     const onSubmitDocument = () => {
-        invalidate('kyc_auth_status');
+        reFetchKycAuthStatus();
         if (is_verification_modal_visible) {
-            onSubmit();
+            onSubmit?.();
         }
     };
 

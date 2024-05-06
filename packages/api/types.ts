@@ -261,6 +261,10 @@ type KycAuthStatus = {
              * Reason(s) for the rejected POI attempt.
              */
             rejected_reasons?: string[];
+            /**
+             * Indicate if the verification report was returned by the provider (IDV only).
+             */
+            report_available?: 0 | 1;
         };
         /**
          * Service used for the current POI status.

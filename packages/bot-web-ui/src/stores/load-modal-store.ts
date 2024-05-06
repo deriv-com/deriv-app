@@ -245,7 +245,6 @@ export default class LoadModalStore implements ILoadModalStore {
         if (this.recent_workspace) {
             (this.recent_workspace as any).RTL = isDbotRTL();
         }
-
         await load({
             block_string: this.selected_strategy?.xml,
             drop_event: {},
@@ -271,7 +270,7 @@ export default class LoadModalStore implements ILoadModalStore {
 
         removeExistingWorkspace(this.selected_strategy.id);
         await load({
-            block_string: this.selected_strategy.xml,
+            block_string: this.selected_strategy?.xml,
             strategy_id: this.selected_strategy.id,
             file_name: this.selected_strategy.name,
             workspace: window.Blockly.derivWorkspace,
@@ -294,7 +293,6 @@ export default class LoadModalStore implements ILoadModalStore {
         if (this.loaded_local_file) {
             this.readFile(false, {} as DragEvent, this.loaded_local_file);
         }
-        this.is_open_button_loading = false;
     };
 
     onActiveIndexChange = (): void => {
@@ -533,6 +531,7 @@ export default class LoadModalStore implements ILoadModalStore {
                 load_options.file_name = file_name;
             }
             await load(load_options);
+            this.is_open_button_loading = false;
         });
         reader.readAsText(file);
     };

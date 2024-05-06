@@ -17,6 +17,9 @@ jest.mock('@deriv/shared', () => ({
     })),
     toMoment: jest.fn(() => ({
         format: jest.fn(() => '2003-08-02'),
+        locale: jest.fn(() => ({
+            format: jest.fn(() => '2003-08-02'),
+        })),
         subtract: jest.fn(),
     })),
     WS: {

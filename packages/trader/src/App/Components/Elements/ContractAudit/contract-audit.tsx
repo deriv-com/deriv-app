@@ -18,6 +18,7 @@ type TContractAudit = Partial<
     duration_unit: string;
     exit_spot: string | undefined;
     is_dark_theme: boolean;
+    is_history_tab_active: boolean;
     is_open: boolean;
     toggleHistoryTab: (state_change?: boolean) => void;
 };
@@ -29,12 +30,16 @@ type TResponse = {
 const ContractAudit = ({
     contract_update_history,
     is_accumulator,
+    is_history_tab_active,
     is_multiplier,
     is_turbos,
     toggleHistoryTab,
     ...props
 }: TContractAudit) => {
-    const { contract_id, currency } = props.contract_info;
+    const { contract_id, currency, limit_order } = props.contract_info;
+    const limit_order_param_key = Object.keys(limit_order ?? {})[0];
+    const limit_order_param_display_name =
+        limit_order?.[limit_order_param_key as keyof typeof limit_order]?.display_name ?? '';
     const [update_history, setUpdateHistory] = React.useState<TContractUpdateHistory>([]);
 
     const getSortedUpdateHistory = (history: TContractUpdateHistory) =>
@@ -44,6 +49,14 @@ const ContractAudit = ({
         if (!!contract_update_history.length && contract_update_history.length > update_history.length)
             setUpdateHistory(getSortedUpdateHistory(contract_update_history));
     }, [contract_update_history, update_history]);
+
+    React.useEffect(() => {
+        if (is_history_tab_active) {
+            WS.contractUpdateHistory(contract_id).then((response: TResponse) => {
+                setUpdateHistory(getSortedUpdateHistory(response.contract_update_history));
+            });
+        }
+    }, [contract_id, limit_order_param_display_name, is_history_tab_active]);
 
     const onTabItemClick = (tab_index: number) => {
         toggleHistoryTab(!!tab_index);

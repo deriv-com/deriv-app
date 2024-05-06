@@ -350,6 +350,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_account_settings_visible: false,
             is_account_switcher_disabled: false,
             is_advanced_duration: false,
+            is_history_tab_active: false,
             is_loading: false,
             is_cashier_visible: false,
             is_wallet_modal_visible: false,

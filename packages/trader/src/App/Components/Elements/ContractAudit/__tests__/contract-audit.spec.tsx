@@ -11,6 +11,7 @@ const mocked_default_props: React.ComponentProps<typeof ContractAudit> = {
     contract_update_history: [{ order_date: 1700482235 }, { order_date: 1700482236 }],
     is_multiplier: true,
     is_accumulator: false,
+    is_history_tab_active: false,
     is_turbos: false,
     is_vanilla: false,
     toggleHistoryTab: jest.fn(),

@@ -12,7 +12,7 @@ import { useKycAuthStatus } from '../../../hooks';
 import { useInvalidateQuery } from '@deriv/api';
 
 type TProofOfAddressContainer = {
-    onSubmit: () => void;
+    onSubmit?: () => void;
 };
 
 const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer) => {

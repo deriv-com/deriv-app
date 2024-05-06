@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react';
+import { LegacyWarningIcon } from '@deriv/quill-icons';
 import useDevice from '../../hooks/useDevice';
-import ErrorIcon from '../../public/images/error-icon.svg';
 import { ModalStepWrapper } from '../Base';
 import WalletButton from '../Base/WalletButton/WalletButton';
 import { WalletsActionScreen } from '../WalletsActionScreen';
@@ -28,7 +28,7 @@ const WalletError: React.FC<TProps> = ({
             <div className='wallets-error'>
                 <WalletsActionScreen
                     description={errorMessage}
-                    icon={<ErrorIcon />}
+                    icon={<LegacyWarningIcon fill='#FF444F' iconSize='2xl' />}
                     renderButtons={() => (
                         <WalletButton isFullWidth={isMobile} onClick={onClick} size='lg' variant={buttonVariant}>
                             {buttonText}

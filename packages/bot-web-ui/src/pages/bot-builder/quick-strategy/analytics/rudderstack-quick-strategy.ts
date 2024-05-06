@@ -69,10 +69,11 @@ export const rudderStackSendQsSelectedTabEvent = ({ quick_strategy_tab }: TEvent
     });
 };
 
-export const rudderStackSendQsStrategyChangeEvent = ({ selected_strategy }: TSelectedStrategy) => {
+export const rudderStackSendSelectQsStrategyGuideEvent = ({ selected_strategy }: TSelectedStrategy) => {
     Analytics.trackEvent('ce_bot_form', {
-        action: ACTION.CHOOSE_STRATEGY_TYPE,
+        action: ACTION.SELECT_QUICK_STRATEGY_GUIDE,
         form_name,
+        subform_name: 'quick_strategy',
         strategy_name: getRsStrategyType(selected_strategy),
     });
 };

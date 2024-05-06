@@ -8,7 +8,7 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import {
     rudderStackSendQsRunStrategyEvent,
     rudderStackSendQsSelectedTabEvent,
-    rudderStackSendQsStrategyChangeEvent,
+    rudderStackSendSelectQsStrategyGuideEvent,
 } from '../analytics/rudderstack-quick-strategy';
 import { getQsActiveTabString } from '../analytics/utils';
 import { STRATEGIES } from '../config';
@@ -38,7 +38,7 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children, ac
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
         setActiveTab('TRADE_PARAMETERS');
-        rudderStackSendQsStrategyChangeEvent({
+        rudderStackSendSelectQsStrategyGuideEvent({
             selected_strategy,
         });
     };

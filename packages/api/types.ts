@@ -239,7 +239,7 @@ type KycAuthStatus = {
         /**
          * Current POA status.
          */
-        status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected';
+        status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired';
     };
     /**
      * POI authentication status details.

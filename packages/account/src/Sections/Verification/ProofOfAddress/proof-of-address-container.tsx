@@ -78,7 +78,6 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
         case AUTH_STATUS_CODES.EXPIRED:
             return <Expired onClick={() => setResubmitPOA(true)} />;
         case AUTH_STATUS_CODES.REJECTED:
-        case AUTH_STATUS_CODES.SUSPECTED:
             return <Unverified onClick={() => setResubmitPOA(true)} />;
         default:
             return <ProofOfAddressForm is_resubmit={resubmit_poa} onSubmit={onSubmitDocument} />;

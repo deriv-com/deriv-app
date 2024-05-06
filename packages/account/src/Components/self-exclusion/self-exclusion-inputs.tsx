@@ -427,15 +427,6 @@ const SelfExclusionInputs = () => {
     const { footer_ref, goToConfirm, is_app_settings } = React.useContext(SelfExclusionContext);
     const { dirty, isSubmitting, isValid, values }: TFormikContext = useFormikContext<TFormikContext>();
     const versions: Record<string, { condition: boolean; components: Array<React.FunctionComponent> }> = {
-        // Global settings for account for DWallet.
-        dwallet: {
-            condition: false,
-            components: [
-                SessionAndLoginLimitsInputs,
-                MaximumAccountBalanceAndOpenPositionsInputs,
-                MaximumDepositLimitInputs,
-            ],
-        },
         // App-specific settings, i.e. user accessing app settings from App Store or
         // through DWallet App header.
         app_settings: {

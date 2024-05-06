@@ -37,15 +37,7 @@ const AccountLimits = observer(
         should_show_article = true,
     }: TAccountLimits) => {
         const { client } = useStore();
-        const {
-            account_limits,
-            account_status,
-            currency,
-            getLimits,
-            is_fully_authenticated,
-            is_virtual,
-            is_switching,
-        } = client;
+        const { account_limits, account_status, currency, getLimits, is_virtual, is_switching } = client;
         const isMounted = useIsMounted();
         const [is_loading, setLoading] = React.useState(true);
         const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
@@ -83,7 +75,7 @@ const AccountLimits = observer(
 
         if (is_virtual) {
             return (
-                <div data-testid='dt_account_demo_message_wrapper' className={'account__demo-message-wrapper'}>
+                <div data-testid='dt_account_demo_message_wrapper' className='account__demo-message-wrapper'>
                     <DemoMessage />
                 </div>
             );

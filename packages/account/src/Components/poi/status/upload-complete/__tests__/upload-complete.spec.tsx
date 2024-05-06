@@ -24,12 +24,6 @@ describe('<UploadComplete />', () => {
 
     const renderWithRouter = component => render(<BrowserRouter>{component}</BrowserRouter>);
 
-    it('should display Icon if is_appstore is false', () => {
-        renderWithRouter(<UploadComplete />);
-
-        expect(screen.getByTestId(/dt_mocked_icon/)).toBeInTheDocument();
-    });
-
     it('should render <UploadComplete /> component for manual upload', () => {
         renderWithRouter(<UploadComplete is_manual_upload />);
 

@@ -137,7 +137,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                             onClick={() => {
                                                 if (data.timeout)
                                                     linear_progress_container_ref.current.removeTimeoutSession();
-                                                data.action.onClick({ is_appstore: false });
+                                                data.action.onClick();
                                             }}
                                             text={data.action.text}
                                             secondary

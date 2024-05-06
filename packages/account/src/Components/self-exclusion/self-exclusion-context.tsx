@@ -10,7 +10,6 @@ export type TSelfExclusionContext = {
     getMaxLength?: (value: string) => void;
     goToConfirm?: (value: FormikValues) => void;
     handleSubmit: (values: FormikValues, setSubmitting: FormikHelpers<FormikValues>) => void;
-    is_appstore?: boolean;
     is_app_settings?: boolean;
     is_eu?: boolean;
     is_uk?: boolean;

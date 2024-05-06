@@ -362,7 +362,7 @@ describe('<AccountLimits/>', () => {
         ).toBeInTheDocument();
     });
 
-    it('withdrawal_limits_table should show `Total withdrawal allowed` when is_fully_authenticated is false and is_appstore is true', () => {
+    it('withdrawal_limits_table should show `Total withdrawal allowed` when is_fully_authenticated is false', () => {
         store = mockStore({
             client: {
                 ...mock.client,
@@ -377,7 +377,7 @@ describe('<AccountLimits/>', () => {
         expect(screen.getByText(/total withdrawal allowed/i)).toBeInTheDocument();
     });
 
-    it('should show limit_notice message when is_appstore is false and is_fully_authenticated is false in mobile mode', () => {
+    it('should show limit_notice message when is_fully_authenticated is false in mobile mode', () => {
         store = mockStore({
             client: {
                 ...mock.client,
@@ -396,7 +396,7 @@ describe('<AccountLimits/>', () => {
         expect(screen.getByText(/stated limits are subject to change without prior notice\./i)).toBeInTheDocument();
     });
 
-    it('should not  show limit_notice message when is_appstore is false and is_fully_authenticated is false', () => {
+    it('should not  show limit_notice message when is_fully_authenticated is false', () => {
         store = mockStore({
             client: {
                 ...mock.client,

@@ -39,7 +39,7 @@ describe('<MissingPersonalDetails />', () => {
         expect(btn.hasAttribute('/account/personal-details?from=proof_of_identity#address_postcode'));
     });
 
-    it('should show missing msg with proper icon if has_invalid_postal_code is false and is_appstore is true', () => {
+    it('should show missing msg with proper icon if has_invalid_postal_code is false', () => {
         renderWithRouter(<MissingPersonalDetails from='proof_of_identity' />);
 
         expect(screen.getByText(/your personal details are missing/i)).toBeInTheDocument();
@@ -54,7 +54,7 @@ describe('<MissingPersonalDetails />', () => {
         expect(btn.hasAttribute('/account/personal-details?from=proof_of_identity'));
     });
 
-    it('should show missing msg with proper icon if has_invalid_postal_code is false and is_appstore is false', () => {
+    it('should show missing msg with proper icon if has_invalid_postal_code is false', () => {
         render(
             <BrowserRouter>
                 <MissingPersonalDetails />

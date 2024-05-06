@@ -4,7 +4,6 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
 import { DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
 import {
-    isUserSold,
     isMobile,
     isEmptyObject,
     getDurationPeriod,
@@ -68,11 +67,6 @@ const ContractDrawer = observer(
         const contract_drawer_card_ref = React.useRef<HTMLDivElement>(null);
         const [should_show_contract_audit, setShouldShowContractAudit] = React.useState(false);
 
-        const exit_spot =
-            isUserSold(contract_info) && !is_accumulator && !is_multiplier && !is_turbos
-                ? '-'
-                : exit_tick_display_value;
-
         const contract_audit = (
             <ContractAudit
                 contract_end_time={getEndTime(contract_info)}
@@ -80,7 +74,7 @@ const ContractDrawer = observer(
                 contract_update_history={contract_update_history}
                 duration_unit={getDurationUnitText(getDurationPeriod(contract_info)) ?? ''}
                 duration={getDurationTime(contract_info)}
-                exit_spot={exit_spot}
+                exit_spot={exit_tick_display_value}
                 is_accumulator={is_accumulator}
                 is_dark_theme={is_dark_theme}
                 is_multiplier={is_multiplier}

@@ -8,11 +8,13 @@ import { transaction_elements } from '../constants/transactions';
 import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';
 import RootStore from './root-store';
 
+type TTransaction = {
+    type: string;
+    data?: string | TContractInfo;
+};
+
 type TElement = {
-    [key: string]: {
-        type: string;
-        data?: string | TContractInfo;
-    }[];
+    [key: string]: TTransaction[];
 };
 
 export default class TransactionsStore {
@@ -53,7 +55,7 @@ export default class TransactionsStore {
     is_called_proposal_open_contract = false;
     is_transaction_details_modal_open = false;
 
-    get transactions() {
+    get transactions(): TTransaction[] {
         if (this.core?.client?.loginid) return this.elements[this.core?.client?.loginid] ?? [];
         return [];
     }

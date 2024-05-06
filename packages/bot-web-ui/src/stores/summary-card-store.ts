@@ -32,8 +32,8 @@ export default class SummaryCardStore {
     validation_rules: TValidationRules = getValidationRules();
 
     // Multiplier contract update config
-    contract_update_take_profit?: number | null = null;
-    contract_update_stop_loss?: number | null = null;
+    contract_update_take_profit?: number | string | null = null;
+    contract_update_stop_loss?: number | string | null = null;
     has_contract_update_take_profit = false;
     has_contract_update_stop_loss = false;
     contract_update_config = {};
@@ -115,10 +115,19 @@ export default class SummaryCardStore {
     }
 
     clearContractUpdateConfigValues() {
-        this.has_contract_update_take_profit = false;
-        this.has_contract_update_stop_loss = false;
-        this.contract_update_take_profit = null;
-        this.contract_update_stop_loss = null;
+        if (this.contract_info) {
+            const {
+                contract_update_stop_loss,
+                contract_update_take_profit,
+                has_contract_update_stop_loss,
+                has_contract_update_take_profit,
+            } = getContractUpdateConfig(this.contract_info.limit_order);
+
+            this.contract_update_stop_loss = contract_update_stop_loss;
+            this.contract_update_take_profit = contract_update_take_profit;
+            this.has_contract_update_stop_loss = has_contract_update_stop_loss;
+            this.has_contract_update_take_profit = has_contract_update_take_profit;
+        }
     }
 
     getLimitOrder() {

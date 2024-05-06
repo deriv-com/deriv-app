@@ -105,6 +105,7 @@ export default class LoadModalStore implements ILoadModalStore {
             resetBotBuilderStrategy: action.bound,
             setDashboardStrategies: action.bound,
             updateListStrategies: action.bound,
+            onToggleDeleteDialog: action,
         });
 
         this.root_store = root_store;

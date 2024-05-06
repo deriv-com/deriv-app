@@ -220,7 +220,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             switched: false,
             switch_broadcast: false,
             switchEndSignal: jest.fn(),
-            is_uk: false,
             isEligibleForMoreRealMt5: jest.fn(),
             isEligibleForMoreDemoMt5Svg: jest.fn(),
             updateMT5Status: jest.fn(),

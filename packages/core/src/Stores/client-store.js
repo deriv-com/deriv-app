@@ -297,7 +297,6 @@ export default class ClientStore extends BaseStore {
             should_show_eu_error: computed,
             is_virtual: computed,
             is_eu: computed,
-            is_uk: computed,
             is_brazil: computed,
             can_upgrade: computed,
             can_upgrade_to: computed,
@@ -874,10 +873,6 @@ export default class ClientStore extends BaseStore {
 
     get is_brazil() {
         return this.clients_country === 'br';
-    }
-
-    get is_uk() {
-        return this.residence === 'gb';
     }
 
     get can_upgrade() {

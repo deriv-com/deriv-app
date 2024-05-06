@@ -69,24 +69,16 @@ const isPasswordValidMT5 = (password: string) => {
 };
 
 const isPasswordModerateMT5 = (password: string) => {
-    const hasMoreThanOneSymbol = (password.match(/\W/g) ?? []).length > 1;
     return (
         isPasswordValidMT5(password) &&
-        hasMoreThanOneSymbol &&
         password.length >= passwordValues.minLength &&
-        password.length < passwordValues.maxLengthMT5 &&
+        password.length < 13 &&
         passwordRegex.isMT5LengthValid
     );
 };
 
 const isPasswordStrongMT5 = (password: string) => {
-    const hasMoreThanOneSymbol = (password.match(/\W/g) ?? []).length > 1;
-    return (
-        isPasswordValidMT5(password) &&
-        hasMoreThanOneSymbol &&
-        password.length >= passwordValues.maxLengthMT5 &&
-        passwordRegex.isMT5LengthValid
-    );
+    return isPasswordValidMT5(password) && password.length >= 13 && passwordRegex.isMT5LengthValid;
 };
 
 export const calculateScoreMT5 = (password: string) => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import useDevice from '../../hooks/useDevice';
@@ -14,8 +14,11 @@ const WalletListHeader: React.FC = () => {
 
     const demoAccount = wallets?.find(wallet => wallet.is_virtual)?.loginid;
     const firstRealAccount = wallets?.find(wallet => !wallet.is_virtual)?.loginid;
+    const isDemo = activeWallet?.is_virtual;
+    const [isChecked, setIsChecked] = useState(!isDemo);
 
     const handleToggle = () => {
+        setIsChecked(prev => !prev);
         if (firstRealAccount && activeWallet?.loginid === demoAccount) {
             switchWalletAccount(firstRealAccount);
         } else if (demoAccount) {
@@ -23,12 +26,16 @@ const WalletListHeader: React.FC = () => {
         }
     };
 
+    useEffect(() => {
+        setIsChecked(!isDemo);
+    }, [isDemo]);
+
     return (
         <div className='wallets-list-header'>
             <WalletText size='xl' weight='bold'>
                 Trader&apos;s Hub
             </WalletText>
-            {!isMobile && (
+            {!isMobile && demoAccount && firstRealAccount && (
                 <div>
                     <div className='wallets-list-header__label'>
                         <WalletText size='sm'>
@@ -40,7 +47,7 @@ const WalletListHeader: React.FC = () => {
                     </div>
                     <label className='wallets-list-header__switcher' htmlFor='wallets-list-header__switcher'>
                         <input
-                            checked={activeWallet?.loginid !== demoAccount}
+                            checked={isChecked}
                             className='wallets-list-header__switcher-input'
                             id='wallets-list-header__switcher'
                             onChange={handleToggle}

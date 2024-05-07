@@ -41,7 +41,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
 
     const displayBalance = useMemo(() => {
         const account = mt5Accounts?.find(account => account.market_type === marketType);
-        return account?.display_balance ?? '0.00';
+        return account?.display_balance;
     }, [mt5Accounts, marketType]);
 
     const renderAccountSuccessButton = useCallback(

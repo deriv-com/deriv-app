@@ -6,10 +6,15 @@ import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { help_content_config } from 'Utils/help-content/help-content.config';
 import { useDBotStore } from 'Stores/useDBotStore';
-import FlyoutBlockGroup from './flyout-block-group.jsx';
+import FlyoutBlockGroup from './flyout-block-group';
 import HelpBase from './help-contents';
 
-const SearchResult = ({ search_term, total_result }) => (
+type TSearchResult = {
+    search_term: string;
+    total_result: number;
+};
+
+const SearchResult = ({ search_term, total_result }: TSearchResult) => (
     <div className='flyout__search-header'>
         <Text weight='bold' className='flyout__search-header-text'>
             {localize('Results for "{{ search_term }}"', {
@@ -23,7 +28,18 @@ const SearchResult = ({ search_term, total_result }) => (
     </div>
 );
 
-const FlyoutContent = props => {
+type TFlyoutContent = {
+    flyout_content: Element[];
+    active_helper: string;
+    setHelpContent: (node: Element) => void;
+    initFlyoutHelp: (node: Element, block_type: string) => void;
+    is_empty: boolean;
+    is_search_flyout: boolean;
+    selected_category: Element;
+    first_get_variable_block_index: number;
+};
+
+const FlyoutContent = (props: TFlyoutContent) => {
     const flyout_ref = React.useRef();
     const {
         flyout_content,
@@ -71,11 +87,11 @@ const FlyoutContent = props => {
 
                         switch (tag_name) {
                             case Blockly.Xml.NODE_BLOCK: {
-                                const block_type = node.getAttribute('type');
+                                const block_type = (node.getAttribute('type') || '') as string;
 
                                 return (
                                     <FlyoutBlockGroup
-                                        key={`${node.getAttribute('type')}${Blockly.utils.genUid()}`}
+                                        key={`${node.getAttribute('type')}${window.Blockly.utils.genUid()}`}
                                         id={`flyout__item-workspace--${index}`}
                                         block_node={node}
                                         should_hide_display_name={
@@ -117,7 +133,7 @@ const FlyoutContent = props => {
                             }
                             case Blockly.Xml.NODE_BUTTON: {
                                 const callback_key = node.getAttribute('callbackKey');
-                                const callback_id = node.getAttribute('id');
+                                const callback_id = node.getAttribute('id') as string;
 
                                 return (
                                     <button
@@ -130,9 +146,9 @@ const FlyoutContent = props => {
                                             `${node.getAttribute('className')}`
                                         )}
                                         onClick={button => {
-                                            const workspace = Blockly.derivWorkspace;
+                                            const workspace = window.Blockly.derivWorkspace;
                                             const button_cb = workspace.getButtonCallback(callback_key);
-                                            const callback = button_cb || (() => {});
+                                            const callback = button_cb;
 
                                             // Workaround for not having a flyout workspace.
                                             // eslint-disable-next-line no-underscore-dangle
@@ -142,7 +158,7 @@ const FlyoutContent = props => {
                                                 return button.targetWorkspace_;
                                             };
 
-                                            callback(button);
+                                            callback?.(button);
                                         }}
                                     >
                                         {node.getAttribute('text')}

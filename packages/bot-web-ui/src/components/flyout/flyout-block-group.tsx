@@ -1,13 +1,19 @@
 import React from 'react';
 import classNames from 'classnames';
-import { PropTypes } from 'prop-types';
 import { Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import FlyoutBlock from './flyout-block';
 
-const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active, should_hide_display_name }) => {
-    const block_type = block_node.getAttribute('type');
-    const block_meta = Blockly.Blocks[block_type].meta();
+type TFlyoutBlockGroup = {
+    onInfoClick: () => void;
+    block_node: Element;
+    is_active: boolean;
+    should_hide_display_name: boolean;
+};
+
+const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active, should_hide_display_name }: TFlyoutBlockGroup) => {
+    const block_type = (block_node.getAttribute('type') || '') as string;
+    const block_meta = window.Blockly.Blocks[block_type].meta();
     const is_variables_get = block_type === 'variables_get';
     const is_variables_set = block_type === 'variables_set';
     const { display_name, description } = block_meta;
@@ -20,7 +26,7 @@ const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active, should_hide_disp
                 className='flyout__button-add flyout__button-add--hide'
                 has_effect
                 is_plus
-                onClick={() => Blockly.derivWorkspace.addBlockNode(block_node)}
+                onClick={() => window.Blockly.derivWorkspace.addBlockNode(block_node)}
                 type='button'
             />
         </div>
@@ -63,11 +69,6 @@ const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active, should_hide_disp
             </div>
         </>
     );
-};
-
-FlyoutBlockGroup.propTypes = {
-    block_nodes: PropTypes.array,
-    onInfoClick: PropTypes.func,
 };
 
 export default FlyoutBlockGroup;

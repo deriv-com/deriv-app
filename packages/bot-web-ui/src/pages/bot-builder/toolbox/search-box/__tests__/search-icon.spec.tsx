@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import SearchIcon from '../search-box/search-icon';
+import SearchIcon from '../search-icon';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');

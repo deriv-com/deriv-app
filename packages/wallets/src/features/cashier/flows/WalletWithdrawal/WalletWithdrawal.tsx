@@ -35,6 +35,8 @@ const WalletWithdrawal = () => {
 
     if (!activeWallet) return <Loader />;
 
+    if (activeWallet.balance <= 0) return <WithdrawalNoBalance activeWallet={activeWallet} />;
+
     if (activeWallet?.currency && verificationCode) {
         return isCrypto ? (
             <WithdrawalCryptoModule
@@ -48,11 +50,7 @@ const WalletWithdrawal = () => {
         );
     }
 
-    return (
-        <WithdrawalNoBalance activeWallet={activeWallet}>
-            <WithdrawalVerificationModule />
-        </WithdrawalNoBalance>
-    );
+    return <WithdrawalVerificationModule />;
 };
 
 export default WalletWithdrawal;

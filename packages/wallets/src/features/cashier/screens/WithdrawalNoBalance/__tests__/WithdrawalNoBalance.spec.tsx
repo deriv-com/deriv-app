@@ -33,9 +33,7 @@ describe('WithdrawalNoBalance', () => {
     it('should test whether WalletsActionScreen is rendered with correct props', () => {
         render(
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-            <WithdrawalNoBalance activeWallet={mockActiveWallet}>
-                <div>Fake Children</div>
-            </WithdrawalNoBalance>
+            <WithdrawalNoBalance activeWallet={mockActiveWallet} />
         );
 
         expect(
@@ -46,16 +44,5 @@ describe('WithdrawalNoBalance', () => {
 
         expect(screen.getByText('DerivLightCashierNoBalanceIcon-128px/128px')).toBeInTheDocument();
         expect(within(screen.getByRole('button')).getByText('Add funds')).toBeInTheDocument();
-    });
-
-    it('should test whether children are render if wallet balance > 0', () => {
-        render(
-            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-            <WithdrawalNoBalance activeWallet={{ ...mockActiveWallet, balance: 1 }}>
-                <div>Fake Children</div>
-            </WithdrawalNoBalance>
-        );
-
-        expect(screen.getByText('Fake Children')).toBeInTheDocument();
     });
 });

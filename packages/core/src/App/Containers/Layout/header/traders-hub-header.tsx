@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Icon, Popover, StaticUrl } from '@deriv/components';
+import { Icon, Popover } from '@deriv/components';
 import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
 import { routes, platforms, formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';

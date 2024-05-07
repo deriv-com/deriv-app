@@ -21,13 +21,6 @@ jest.mock('../../../../hooks', () => ({
     useKycAuthStatus: jest.fn(() => mock_kyc_auth_status_response),
 }));
 
-// jest.mock('@deriv/hooks', () => ({
-//     ...jest.requireActual('@deriv/hooks'),
-//     useFileUploader: jest.fn(() => ({
-//         upload: jest.fn(),
-//     })),
-// }));
-
 describe('ProofOfAddress', () => {
     const store = mockStore({});
 

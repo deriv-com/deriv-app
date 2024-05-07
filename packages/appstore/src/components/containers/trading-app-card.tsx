@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { Text, StatusBadge } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import {
     BrandConfig,
@@ -57,7 +58,7 @@ const TradingAppCard = ({
         client,
     } = useStore();
     const { setIsVerificationModalVisible } = ui;
-    const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
+    const { is_eu_user, is_demo_low_risk, content_flag, is_real, selected_account_type } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;
     const { account_status: { authentication } = {}, is_logged_in } = client;
@@ -97,6 +98,12 @@ const TradingAppCard = ({
     };
 
     const openStaticPage = () => {
+        Analytics.trackEvent('ce_tradershub_dashboard_form', {
+            action: 'account_logo_push',
+            form_name: 'traders_hub_default',
+            account_mode: selected_account_type,
+            account_name: !is_real ? `${sub_title === undefined ? name : sub_title}` : name,
+        });
         if (is_deriv_platform) {
             switch (name) {
                 case DERIV_PLATFORM_NAMES.TRADER:

@@ -1,0 +1,77 @@
+@import '../../components/SkeletonLoader/SkeletonLoader.scss';
+
+.wallets-list-header {
+    display: flex;
+    max-width: 123.2rem;
+    height: max-content;
+    width: 100%;
+    padding: 1.6rem 0 0;
+
+    @include mobile {
+        padding: 0.8rem 1.4rem 0;
+    }
+
+    &__label {
+        display: flex;
+        position: absolute;
+        margin-left: 3rem;
+        margin-top: 1rem;
+        gap: 2.4rem;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    &__switcher {
+        position: relative;
+        display: flex;
+        width: 12rem;
+        height: 4rem;
+        margin-left: 1.6rem;
+        background-color: var(--header-footer-bg-color, #0000000a);
+        border-radius: 0.8rem;
+
+        &-input {
+            width: 0;
+            height: 0;
+        }
+
+        &:hover {
+            cursor: pointer;
+
+            &:before {
+                position: absolute;
+                content: '';
+                height: 3.2rem;
+                width: 11.2rem;
+                background-color: var(--button-toggle-secondary, #d6dadb);
+                opacity: unset;
+                border-radius: 0.4rem;
+                margin: 0.4rem;
+            }
+        }
+    }
+
+    &__slider {
+        position: absolute;
+        inset: 0;
+        transition: 0.2s;
+
+        &:before {
+            position: absolute;
+            content: '';
+            height: 3.2rem;
+            width: 5.6rem;
+            background-color: var(--system-dark-1-prominent-text, #fff);
+            transition: 0.2s;
+            border-radius: 0.4rem;
+            margin: 0.4rem;
+        }
+    }
+}
+
+.wallets-list-header__switcher-input:checked + .wallets-list-header__slider:before {
+    -webkit-transform: translateX(6rem);
+    -ms-transform: translateX(6rem);
+    transform: translateX(6rem);
+    margin-left: 0;
+}

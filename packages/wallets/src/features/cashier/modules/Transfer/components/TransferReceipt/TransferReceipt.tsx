@@ -12,9 +12,10 @@ type TReceiptCardProps = {
     account: NonNullable<ReturnType<typeof useTransfer>['receipt']>['fromAccount'];
     activeWallet: ReturnType<typeof useTransfer>['activeWallet'];
     balance: string;
+    testId?: string;
 };
 
-const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balance }) => {
+const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balance, testId }) => {
     const { isMobile } = useDevice();
     const isTradingApp = account?.account_category === 'trading';
     const isWallet = account?.account_category === 'wallet';
@@ -34,6 +35,7 @@ const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balan
                 cardSize='md'
                 device={isMobile ? 'mobile' : 'desktop'}
                 isDemoWallet={Boolean(activeWallet?.demo_account)}
+                testId={testId}
                 walletName={activeWallet?.accountName}
             />
         );
@@ -46,6 +48,7 @@ const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balan
                 iconSize='md'
                 isDemo={Boolean(account?.demo_account)}
                 landingCompanyName={account?.landingCompanyName}
+                testId={testId}
             />
         );
 
@@ -79,6 +82,7 @@ const TransferReceipt = () => {
                     account={fromAccount}
                     activeWallet={activeWallet}
                     balance={`-${displayTransferredFromAmount}`}
+                    testId='dt_wallets_transfer_receipt_from_card'
                 />
                 <div className='wallets-transfer-receipt__arrow-icon'>
                     <LegacyArrowRight2pxIcon iconSize='xs' />
@@ -87,6 +91,7 @@ const TransferReceipt = () => {
                     account={toAccount}
                     activeWallet={activeWallet}
                     balance={`+${displayTransferredToAmount}`}
+                    testId='dt_wallets_transfer_receipt_to_card'
                 />
             </div>
             <div

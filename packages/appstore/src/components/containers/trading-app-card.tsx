@@ -60,7 +60,7 @@ const TradingAppCard = ({
         client,
     } = useStore();
     const { setIsVerificationModalVisible } = ui;
-    const { is_eu_user, is_demo_low_risk, content_flag, is_real, selected_account_type } = traders_hub;
+    const { is_eu_user, is_real, selected_account_type } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;
     const { account_status: { authentication } = {} } = client;
@@ -68,8 +68,6 @@ const TradingAppCard = ({
     const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
     const demo_label = localize('Demo');
     const is_real_account = wallet_account ? !wallet_account.is_virtual : is_real;
-
-    const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
     const accounts = JSON.parse(LocalStore.get('client.accounts') ?? '{}');
     const loginid = LocalStore.get('active_loginid');

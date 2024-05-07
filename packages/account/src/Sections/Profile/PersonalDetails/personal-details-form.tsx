@@ -119,7 +119,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
         setStatus({ msg: '' });
         const request = makeSettingsRequest({ ...values }, residence_list, states_list, is_virtual);
         setIsBtnLoading(true);
-        const data = await WS.authorized.storage.setSettings(request);
+        const data = await WS.authorized.setSettings(request);
 
         if (data.error) {
             setStatus({ msg: data.error.message });

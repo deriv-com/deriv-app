@@ -36,7 +36,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
         identity: { status: poi_status },
     } = kyc_auth_status;
 
-    const needs_poi = !(poi_status === AUTH_STATUS_CODES.NONE || poi_status === AUTH_STATUS_CODES.PENDING);
+    const needs_poi = !(poi_status === AUTH_STATUS_CODES.VERIFIED || poi_status === AUTH_STATUS_CODES.PENDING);
 
     const poa_status = resubmit_poa ? AUTH_STATUS_CODES.NONE : status;
 

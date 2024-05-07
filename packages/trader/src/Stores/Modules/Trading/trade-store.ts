@@ -34,8 +34,8 @@ import {
     CONTRACT_TYPES,
     getContractTypesConfig,
     setTradeURLParams,
+    getNumericDateString,
     getTradeURLParams,
-    toMoment,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -72,7 +72,6 @@ import {
     TradingTimesRequest,
 } from '@deriv/api-types';
 import { STATE_TYPES, TPayload, getChartAnalyticsData } from './Helpers/chart';
-import moment from 'moment';
 
 type TBarriers = Array<
     ChartBarrierStore & {
@@ -1736,7 +1735,7 @@ export default class TradeStore extends BaseStore {
             return WS.activeSymbols('brief');
         }
         if ('trading_times' in req) {
-            return WS.tradingTimes(toMoment(req.trading_times).locale('en').format('YYYY-MM-DD'));
+            return WS.tradingTimes(getNumericDateString(req.trading_times));
         }
         return WS.storage.send(req);
     };

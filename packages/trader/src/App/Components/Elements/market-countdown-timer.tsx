@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Text } from '@deriv/components';
-import { useIsMounted, WS, convertTimeFormat, isMarketClosed, toMoment } from '@deriv/shared';
+import { useIsMounted, WS, convertTimeFormat, isMarketClosed, getNumericDateString, toMoment } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -24,7 +24,7 @@ type TWhenMarketOpens = {
 const days_to_check_before_exit = 7;
 
 const getTradingTimes = async (target_time: TradingTimesRequest['trading_times']) => {
-    const data = await WS.tradingTimes(toMoment(target_time).locale('en').format('YYYY-MM-DD'));
+    const data = await WS.tradingTimes(getNumericDateString(target_time));
     if (data.error) {
         return { api_initial_load_error: data.error.message };
     }

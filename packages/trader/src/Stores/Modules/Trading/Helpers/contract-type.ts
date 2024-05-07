@@ -6,6 +6,7 @@ import {
     isTimeValid,
     minDate,
     toMoment,
+    getNumericDateString,
     getUnitMap,
     buildBarriersConfig,
     buildDurationConfig,
@@ -416,7 +417,7 @@ export const ContractType = (() => {
     });
 
     const getTradingEvents = async (date: string, underlying: string | null = null) => {
-        const numeric_date = toMoment(date).locale('en').format('YYYY-MM-DD');
+        const numeric_date = getNumericDateString(date);
         if (!date) {
             return [];
         }
@@ -453,7 +454,7 @@ export const ContractType = (() => {
         date: string | null,
         underlying: string | null = null
     ): Promise<Record<string, never> | TTimes | Record<string, TTimes>> => {
-        const numeric_date = toMoment(date).locale('en').format('YYYY-MM-DD');
+        const numeric_date = getNumericDateString(date);
         if (!date) {
             return {};
         }
@@ -534,9 +535,9 @@ export const ContractType = (() => {
                     moment_expiry.isBefore(moment_start, 'day') ||
                     (start_date && moment_expiry.isAfter(moment_start.clone().add(1, 'day')));
                 proper_expiry_date = (is_invalid ? moment_start : moment_expiry).format('YYYY-MM-DD');
+                // console.log('moment_expiry Invalid date', moment_expiry);
             }
         }
-
         return { expiry_date: proper_expiry_date };
     };
 

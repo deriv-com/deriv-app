@@ -4,7 +4,7 @@ import countries from 'i18n-iso-countries';
 import { ResidenceList, GetAccountStatus } from '@deriv/api-types';
 import {
     filterObjProperties,
-    toMoment,
+    getNumericDateString,
     validLength,
     validName,
     getIDVNotApplicableOption,
@@ -127,7 +127,7 @@ export const makeSettingsRequest = (values: FormikValues, changeable_fields: str
         request.last_name = request.last_name.trim();
     }
     if (request.date_of_birth) {
-        request.date_of_birth = toMoment(request.date_of_birth).locale('en').format('YYYY-MM-DD');
+        request.date_of_birth = getNumericDateString(request.date_of_birth);
     }
 
     return request;

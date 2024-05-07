@@ -1,5 +1,11 @@
 import moment from 'moment';
 import * as DateTime from '../date-time';
+import { getLanguage } from '@deriv/translations';
+
+jest.mock('@deriv/translations', () => ({
+    ...jest.requireActual('@deriv/translations'),
+    getLanguage: jest.fn(() => 'EN'),
+}));
 
 describe('toMoment', () => {
     it('return utc epoch value date based on client epoch value passed', () => {
@@ -128,5 +134,16 @@ describe('getTimeSince', () => {
     });
     it('should return an empty string when called with 0', () => {
         expect(DateTime.getTimeSince(0)).toEqual('');
+    });
+});
+
+describe('getNumericDateString', () => {
+    afterAll(() => jest.resetAllMocks());
+    it('should return correct numeric date string', () => {
+        (getLanguage as jest.Mock).mockReturnValue('BN');
+        expect(DateTime.getNumericDateString('২০২৪-০৫-০৭')).toEqual('2024-05-07');
+    });
+    it('should return an empty string when called with null', () => {
+        expect(DateTime.getNumericDateString(null)).toEqual('');
     });
 });

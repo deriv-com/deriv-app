@@ -305,3 +305,15 @@ export const getTimeSince = (timestamp: number) => {
     }
     return localize('{{days_passed}}d ago', { days_passed: Math.floor(seconds_passed / (3600 * 24)) });
 };
+
+/**
+ *  Get a non-localized numeric date in YYYY-MM-DD format accepted by API.
+ * Localized dates in some languages like Bangla are not numeric '২০২৪-০৫-০৭' and not accepted by API.
+ * @param  {String|null} date string | null
+ * @return {String} numeric date in YYYY-MM-DD format, e.g. '2024-05-07', for all languages.
+ */
+export const getNumericDateString = (date: string | null) => {
+    if (!date) return '';
+    const moment_copy = moment(date, 'YYYY-MM-DD', getLanguage().toLowerCase()).clone();
+    return moment_copy.locale('en').format('YYYY-MM-DD');
+};

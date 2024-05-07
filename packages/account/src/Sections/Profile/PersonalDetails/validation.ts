@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import * as Yup from 'yup';
-import { address_permitted_special_characters_message, getLocation, toMoment } from '@deriv/shared';
+import { address_permitted_special_characters_message, getLocation, getNumericDateString } from '@deriv/shared';
 import { GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
 
 const getBaseSchema = () =>
@@ -127,7 +127,7 @@ export const makeSettingsRequest = (
     }
     if (request.date_of_birth) {
         // @ts-expect-error need to fix the type for date_of_birth in GetSettings because it should be string not number
-        request.date_of_birth = toMoment(request.date_of_birth).locale('en').format('YYYY-MM-DD');
+        request.date_of_birth = getNumericDateString(request.date_of_birth);
     }
 
     if (request.tax_residence) {

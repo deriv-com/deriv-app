@@ -1065,15 +1065,20 @@
         transform: rotate(90deg);
     }
 
+    .chart-container__wrapper {
+        height: calc(100svw - 48px);
+    }
+
+    .modal-root {
+        width: 100vh;
+        height: 100vw;
+    }
+
     .positions-modal {
         height: 84svw !important;
     }
 
     .portfolio-empty {
         height: calc(100svw - 250px);
-    }
-
-    .chart-container__wrapper {
-        height: calc(100svw - 48px);
     }
 }

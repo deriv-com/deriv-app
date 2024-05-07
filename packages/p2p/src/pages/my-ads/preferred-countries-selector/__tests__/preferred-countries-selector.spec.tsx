@@ -101,7 +101,7 @@ describe('<PreferredCountriesSelector/>', () => {
         );
 
         const selector = screen.getByRole('textbox');
-        expect(selector).toHaveValue('All countries');
+        expect(selector).toHaveValue('');
     });
     it('should render the eligible countries', () => {
         render(

@@ -15,6 +15,8 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     my_ads_store: {
         payment_method_ids: [],
         payment_method_names: [],
+        setMinCompletionRate: jest.fn(),
+        setMinJoinDays: jest.fn(),
         setShowEditAdForm: jest.fn(),
     },
 };

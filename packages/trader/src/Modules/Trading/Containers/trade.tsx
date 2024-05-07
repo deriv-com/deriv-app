@@ -101,7 +101,9 @@ const Trade = observer(() => {
             if (!is_chart_loading && !should_show_active_symbols_loading) {
                 rotateTimeout.current = setTimeout(() => {
                     html?.classList.add('tablet-landscape');
-                    setShouldShowPortraitLoader(false);
+                    setTimeout(() => {
+                        setShouldShowPortraitLoader(false);
+                    }, 600);
                 }, 500);
             }
         }

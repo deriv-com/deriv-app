@@ -1,13 +1,17 @@
-import React from 'react';
-import { useActiveWalletAccount, useBalance } from '@deriv/api-v2';
+import React, { useEffect } from 'react';
+import { useActiveWalletAccount, useBalanceSubscription } from '@deriv/api-v2';
+import { displayMoney } from '@deriv/api-v2/src/utils';
 import { WalletText } from '../Base';
 import './WalletListCardBalance.scss';
 
 const WalletListCardBalance = () => {
-    const { isLoading } = useBalance();
+    const { data: balanceData, isLoading, subscribe, unsubscribe } = useBalanceSubscription();
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
 
-    const balance = activeWallet?.display_balance;
+    useEffect(() => {
+        subscribe({ loginid: activeWallet?.loginid });
+        return () => unsubscribe();
+    }, [activeWallet?.loginid, subscribe, unsubscribe]);
 
     return (
         <div className='wallets-balance__container'>
@@ -18,7 +22,9 @@ const WalletListCardBalance = () => {
                 />
             ) : (
                 <WalletText align='right' size='xl' weight='bold'>
-                    {balance}
+                    {displayMoney?.(balanceData?.balance ?? 0, activeWallet?.currency ?? '', {
+                        fractional_digits: activeWallet?.currency_config?.fractional_digits,
+                    })}
                 </WalletText>
             )}
         </div>

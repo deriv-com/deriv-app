@@ -1,14 +1,14 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text, Icon, Counter } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
 import { BinaryLink } from '../../Routes';
 import { observer, useStore } from '@deriv/stores';
 import { routes, startPerformanceEventTimer } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { useP2PNotificationCount, useIsRealAccountNeededForCashier, useFeatureFlags } from '@deriv/hooks';
-import { useDevice } from '@deriv-com/ui';
-import './menu-links.scss';
 import { useHistory } from 'react-router';
+import './menu-links.scss';
 
 const MenuItems = ({ id, text, icon, link_to, handleClickCashier }) => {
     return (
@@ -90,11 +90,11 @@ const CashierTab = observer(() => {
 });
 
 const MenuLinks = observer(({ is_traders_hub_routes = false }) => {
+    const { isDesktop } = useDevice();
     const { i18n } = useTranslation();
     const { client } = useStore();
     const { is_logged_in } = client;
     const { is_next_wallet_enabled } = useFeatureFlags();
-    const { isDesktop } = useDevice();
 
     if (!is_logged_in) return <></>;
 

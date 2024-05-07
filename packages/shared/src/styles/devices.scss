@@ -62,7 +62,7 @@ $desktop-width: 1024px;
 }
 
 /** Need to add new breakpoints for mixins */
-$max-mobile-width: 599px;
+$max-mobile-width: 600px;
 $min-desktop-width: 1280px;
 
 @mixin mobile-screen {

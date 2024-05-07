@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import Icon from '../icon/icon';
 import Button from '../button/button';
 import Text from '../text';
@@ -68,7 +67,7 @@ const SendEmailTemplate = ({
     };
 
     return (
-        <div className={classNames('send-email-template')}>
+        <div className='send-email-template'>
             <div className='send-email-template__sent'>
                 <Icon icon='IcEmailSent' className='send-email-template__icon' size={128} />
                 <Text as='h1' align='center' className='send-email-template__title' color='prominent' weight='bold'>

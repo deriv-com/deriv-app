@@ -93,16 +93,7 @@ const ConfirmationModal = ({ is_visible, toggleModal, onSubmit }: TConfirmationM
             <Button large onClick={() => toggleModal(false)} secondary>
                 <Localize i18n_default_text='Decline' />
             </Button>
-            <Button
-                large
-                onClick={() => {
-                    onSubmit();
-                    toggleModal(false);
-                }}
-                primary
-            >
-                <Localize i18n_default_text='Accept' />
-            </Button>
+            
         </Modal.Footer>
     </Modal>
 );

@@ -818,10 +818,12 @@ export default class CFDStore extends BaseStore {
             account => account.account_type === account_type
         );
         if (has_existing_account) {
-            WS.getServiceToken(CFD_PLATFORMS.CTRADER, account_type).then(response => {
-                this.setCTraderToken(response, account_type);
-                return window.open(`${url}?token=${response.service_token.ctrader.token}`, '_blank');
-            });
+            WS.getServiceToken(CFD_PLATFORMS.CTRADER, account_type)
+                .then(response => {
+                    this.setCTraderToken(response, account_type);
+                    return window.open(`${url}?token=${response.service_token.ctrader.token}`, '_blank');
+                })
+                .catch(() => window.open(`${url}`, '_blank'));
         }
     }
 

@@ -3,6 +3,7 @@ import useEmblaCarousel, { EmblaCarouselType, EmblaEventType } from 'embla-carou
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api-v2';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
+import { THooks } from '../../types';
 import { ProgressBar } from '../Base';
 import { WalletsCarouselLoader } from '../SkeletonLoader';
 import { WalletCard } from '../WalletCard';
@@ -109,6 +110,18 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
         containScroll: false,
         skipSnaps: true,
     });
+
+    const handleCardClick = useCallback(
+        (account: THooks.ActiveWalletAccount, index: number) => {
+            walletsCarouselEmblaApi?.scrollTo(index);
+            walletAccountsList && setSelectedLoginId(walletAccountsList[index].loginid);
+            account.is_active &&
+                (account.is_virtual
+                    ? history.push('/appstore/traders-hub/cashier/reset-balance')
+                    : history.push('/appstore/traders-hub/cashier/deposit'));
+        },
+        [walletsCarouselEmblaApi, walletAccountsList, history]
+    );
 
     useEffect(() => {
         walletsAccountsListRef.current = walletAccountsList;
@@ -220,7 +233,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     return (
         <div className='wallets-carousel-content' ref={walletsCarouselEmblaRef}>
             <div className='wallets-carousel-content__container'>
-                {walletAccountsList?.map(account => (
+                {walletAccountsList?.map((account, index) => (
                     <WalletCard
                         balance={account.display_balance}
                         currency={account.currency || 'USD'}
@@ -229,11 +242,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
                         isDemo={account.is_virtual}
                         key={`wallet-card-${account.loginid}`}
                         landingCompanyName={account.landing_company_name}
-                        onClick={() =>
-                            account.is_virtual
-                                ? history.push('/appstore/traders-hub/cashier/reset-balance')
-                                : history.push('/appstore/traders-hub/cashier/deposit')
-                        }
+                        onClick={() => handleCardClick(account, index)}
                     />
                 ))}
             </div>

@@ -2,15 +2,18 @@ import { useQuery } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 import { useEffect } from 'react';
 import { Analytics } from '@deriv-com/analytics';
-import { mobileOSDetect } from '@deriv/shared';
+import { getOSNameWithUAParser } from '@deriv/shared';
+import useAuthorize from './useAuthorize';
 
 const useGetPasskeysList = () => {
     const { client } = useStore();
-    const { is_passkey_supported, is_logged_in } = client;
+    const { isSuccess } = useAuthorize();
+    const { is_passkey_supported } = client;
 
     const { data, error, isLoading, refetch, ...rest } = useQuery('passkeys_list', {
         options: {
-            enabled: is_passkey_supported && is_logged_in,
+            enabled: is_passkey_supported && isSuccess,
+            retry: 0,
         },
     });
 
@@ -22,7 +25,7 @@ const useGetPasskeysList = () => {
             Analytics.trackEvent('ce_passkey_account_settings_form', {
                 action: 'error',
                 form_name: 'ce_passkey_account_settings_form',
-                operating_system: mobileOSDetect(),
+                operating_system: getOSNameWithUAParser(),
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 error_message: error?.message,

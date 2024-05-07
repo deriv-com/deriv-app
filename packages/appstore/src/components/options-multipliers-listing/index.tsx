@@ -9,11 +9,20 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { BrandConfig } from 'Constants/platform-config';
 import { getHasDivider } from 'Constants/utils';
+import { Analytics } from '@deriv-com/analytics';
 
 const OptionsAndMultipliersListing = observer(() => {
     const { traders_hub, client, ui } = useStore();
-    const { available_platforms, is_eu_user, is_real, no_MF_account, no_CR_account, is_demo, content_flag } =
-        traders_hub;
+    const {
+        available_platforms,
+        is_eu_user,
+        is_real,
+        no_MF_account,
+        no_CR_account,
+        is_demo,
+        content_flag,
+        selected_account_type,
+    } = traders_hub;
     const { is_landing_company_loaded, is_eu, has_maltainvest_account, real_account_creation_unlock_date } = client;
 
     const { setShouldShowCooldownModal, openRealAccountSignup, is_mobile } = ui;
@@ -110,6 +119,16 @@ const OptionsAndMultipliersListing = observer(() => {
                                 : 'none'
                         }
                         is_deriv_platform
+                        onAction={() => {
+                            Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                action: 'account_open',
+                                form_name: 'traders_hub_default',
+                                account_mode: selected_account_type,
+                                account_name: is_demo
+                                    ? `${available_platform.name} ${localize('Demo')}`
+                                    : available_platform.name,
+                            });
+                        }}
                         has_divider={(!is_eu_user || is_demo) && getHasDivider(index, available_platforms.length, 3)}
                     />
                 ))

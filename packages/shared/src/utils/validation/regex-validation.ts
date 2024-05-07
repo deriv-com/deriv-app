@@ -5,6 +5,5 @@ export const regex_checks = {
         address_line_2: /^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{0,70}$/u,
         address_postcode: /^(?! )[a-zA-Z0-9\s-]{0,20}$/,
         address_state: /^[\w\s\W'.;,-]{0,99}$/,
-        non_jersey_postcode: /^(?!\s*je.*)[a-zA-Z0-9\s-]*/i,
     },
 };

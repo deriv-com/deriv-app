@@ -204,6 +204,10 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function (x = 0, y = 0, blocks_to_clean
     const filtered_top_blocks = top_blocks.filter(block => !block.isMainBlock());
 
     filtered_top_blocks.forEach(block => {
+        if (this.RTL && block.comment) {
+            block.RTL = true;
+            block.comment.needsAutoPositioning_ = true;
+        }
         const xy = block.getRelativeToSurfaceXY();
         const cursor_x = is_import ? x : -xy.x;
         const cursor_y = original_cursor_y - (is_import ? 0 : xy.y);

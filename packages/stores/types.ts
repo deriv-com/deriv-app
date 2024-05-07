@@ -143,7 +143,7 @@ type BrandConfig = {
     is_deriv_platform?: boolean;
 };
 
-type TPortfolioPosition = {
+export type TPortfolioPosition = {
     contract_info: ProposalOpenContract &
         Portfolio1 & {
             contract_update?: ContractUpdate;

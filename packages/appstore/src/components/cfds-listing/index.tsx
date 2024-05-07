@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { Loading, Text, StaticUrl } from '@deriv/components';
 import {
@@ -172,7 +172,7 @@ const CFDsListing = observer(() => {
         return null;
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (is_landing_company_loaded && !is_populating_mt5_account_list) {
             setPerformanceValue('login_time');
             setPerformanceValue('redirect_from_deriv_com_time');

@@ -105,4 +105,4 @@ export const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [
 ];
 
 export const isDisabledLandscapeBlockerRoute = (path: string) =>
-    DISABLE_LANDSCAPE_BLOCKER_ROUTES.some(route => path === route);
+    DISABLE_LANDSCAPE_BLOCKER_ROUTES.some(route => path.startsWith(route));

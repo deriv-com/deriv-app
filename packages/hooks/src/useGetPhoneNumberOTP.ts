@@ -16,6 +16,7 @@ const useGetPhoneNumberOTP = () => {
         data: data?.phone_number_challenge,
         requestOnWhatsApp,
         requestOnSMS,
+        mutate,
         ...rest,
     };
 };

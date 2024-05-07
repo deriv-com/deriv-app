@@ -65,7 +65,7 @@ type TPlatformsDesktopDownload = {
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     ctrader_tokens: TCFDDashboardContainer['ctrader_tokens'];
     is_demo: string;
-    ctraderTokenCall: (url: string, account_type: string) => void;
+    ctraderTokenCall: (url: string, account_type: 'real' | 'demo') => void;
 };
 
 export const PlatformsDesktopDownload = ({

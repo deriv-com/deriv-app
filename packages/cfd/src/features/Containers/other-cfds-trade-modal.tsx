@@ -24,7 +24,7 @@ type TOtherCFDsTradeModalProps = {
     toggleModal: () => void;
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     ctrader_tokens: TCFDDashboardContainer['ctrader_tokens'];
-    ctraderTokenCall: (url: string, account_type: string) => void;
+    ctraderTokenCall: (url: string, account_type: 'real' | 'demo') => void;
     is_demo: string;
     platform: TCFDsPlatformType;
     is_mobile?: boolean;

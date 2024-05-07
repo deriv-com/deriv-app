@@ -5,6 +5,11 @@ import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import CompareCFDs from '../cfd-compare-accounts';
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true, isTablet: false, isMobile: false })),
+}));
+
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: jest.fn(),

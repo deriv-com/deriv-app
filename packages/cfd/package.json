@@ -83,6 +83,7 @@
     },
     "dependencies": {
         "@deriv-com/analytics": "1.4.13",
+        "@deriv-com/ui": "^1.14.2",
         "@deriv-com/utils": "^0.0.14",
         "@deriv/account": "^1.0.0",
         "@deriv/api": "^1.0.0",

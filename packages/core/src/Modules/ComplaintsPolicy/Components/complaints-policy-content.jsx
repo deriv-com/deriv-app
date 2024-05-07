@@ -6,37 +6,17 @@ import { observer, useStore } from '@deriv/stores';
 
 const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
     // * mt5_login_list returns these:
-    // landing_company_short: "svg" | "malta" | "maltainvest" |  "vanuatu"  | "labuan" | "bvi"
+    // landing_company_short: "svg" | "maltainvest" |  "vanuatu"  | "labuan" | "bvi"
     const has_vanuatu = mt5_login_list.some(item => item.landing_company_short === 'vanuatu');
     const has_labuan = mt5_login_list.some(item => item.landing_company_short === 'labuan');
 
     switch (landing_company_shortcode) {
-        case 'iom':
-            return (
-                <Localize
-                    i18n_default_text='This complaints policy, which may change from time to time, applies to your account registered with {{legal_entity_name}}, having its registered office address at First Floor, Millennium House, Victoria Road, Douglas, Isle of Man, IM2 4RW, licensed and regulated respectively by (1) the Gambling Supervision Commission in the Isle of Man (current <0>licence</0> issued on 31 August 2017) and (2) the Gambling Commission in the UK (<1>licence no. 39172</1>).'
-                    components={[<strong key={0} />, <strong key={1} />]}
-                    values={{
-                        legal_entity_name: getLegalEntityName('mx'),
-                    }}
-                />
-            );
         case 'maltainvest':
             return localize(
                 'This policy, which may change from time to time, applies to your account registered with {{legal_entity_name}}.',
                 {
                     legal_entity_name: getLegalEntityName('maltainvest'),
                 }
-            );
-        case 'malta':
-            return (
-                <Localize
-                    i18n_default_text='This complaints policy, which may change from time to time, applies to your account(s) registered with {{legal_entity_name}}, having its registered office address at W Business Centre, Level 3, Triq Dun Karm, Birkirkara, BKR 9033, Malta, licensed and regulated by the Malta Gaming Authority in Malta for gambling products only, <0>licence no. MGA/B2C/102/2000</0>, and for clients residing in the UK by the UK Gambling Commission (account number 39495).'
-                    components={[<strong key={0} />]}
-                    values={{
-                        legal_entity_name: getLegalEntityName('malta'),
-                    }}
-                />
             );
         default:
             if (has_vanuatu && has_labuan) {
@@ -123,178 +103,78 @@ const getGeneralQueriesText = landing_company_shortcode => {
 const getYourDecisionText = (is_uk, landing_company_shortcode) => {
     const texts = [];
 
-    switch (landing_company_shortcode) {
-        case 'iom':
-        case 'malta': {
-            if (landing_company_shortcode === 'iom') {
-                texts.push(
-                    <Localize
-                        key={0}
-                        i18n_default_text='If you are not satisfied with the outcome, you can escalate your complaint to the <0>Independent Betting Adjudication Service (IBAS)</0> by filling the IBAS adjudication form. Please note that IBAS only deals with disputes that result from transactions.'
-                        components={[
-                            <a
-                                key={0}
-                                className='link link--orange'
-                                rel='noopener noreferrer'
-                                target='_blank'
-                                href='https://www.ibas-uk.com/'
-                            />,
-                        ]}
-                    />
-                );
-                texts.push(
-                    <Localize
-                        key={texts.length}
-                        i18n_default_text='<0/><1/>If your complaint relates to our data processing practices, you can submit a formal complaint to your local supervisory authority.'
-                        components={[<br key={0} />, <br key={1} />]}
-                    />
-                );
-            } else {
-                texts.push(
-                    <Localize
-                        key={texts.length}
-                        i18n_default_text="You can send your complaint to the <0>European Commission's Online Dispute Resolution (ODR)</0> platform. This is not applicable to UK clients."
-                        components={[
-                            <a
-                                key={0}
-                                className='link link--orange'
-                                rel='noopener noreferrer'
-                                target='_blank'
-                                href='https://ec.europa.eu/odr/'
-                            />,
-                        ]}
-                    />
-                );
-
-                texts.push(
-                    <Localize
-                        key={texts.length}
-                        i18n_default_text='<0/><1/>You can also refer your dispute to the Malta Gaming Authority via the <2>Player Support Unit</2>.'
-                        components={[
-                            <br key={0} />,
-                            <br key={1} />,
-                            <a
-                                key={2}
-                                className='link link--orange'
-                                rel='noopener noreferrer'
-                                target='_blank'
-                                href='https://www.mga.org.mt/support/online-gaming-support/'
-                            />,
-                        ]}
-                    />
-                );
-
-                texts.push(
-                    <Localize
-                        key={texts.length}
-                        i18n_default_text='<0/><1/>If your complaint relates to our data processing practices, you can submit a formal complaint to the <2>Information and Data Protection Commissioner</2> (Malta) on their website or make a complaint to any supervisory authority within the European Union.'
-                        components={[
-                            <br key={0} />,
-                            <br key={1} />,
-                            <a
-                                key={2}
-                                className='link link--orange'
-                                rel='noopener noreferrer'
-                                target='_blank'
-                                href='https://idpc.org.mt/en/Pages/Home.aspx'
-                            />,
-                        ]}
-                    />
-                );
-            }
-            break;
-        }
-        default: {
-            texts.push(
-                <Localize
-                    key={0}
-                    i18n_default_text='If you are not satisfied with the outcome, you can escalate your complaint to the <0>Financial Commission</0>.'
-                    components={[
-                        <a
-                            key={0}
-                            className='link link--orange'
-                            rel='noopener noreferrer'
-                            target='_blank'
-                            href='https://financialcommission.org/resolving-a-dispute/how-to-file-a-complaintdispute/'
-                        />,
-                    ]}
-                />
-            );
-            if (landing_company_shortcode === 'maltainvest') {
-                texts.push(
-                    <Localize
-                        key={texts.length}
-                        i18n_default_text='<0/><1/>You may also raise your unresolved dispute to the <2>Office of the Arbiter for Financial Services</2>.'
-                        components={[
-                            <br key={0} />,
-                            <br key={1} />,
-                            <a
-                                key={2}
-                                className='link link--orange'
-                                rel='noopener noreferrer'
-                                target='_blank'
-                                href='https://www.financialarbiter.org.mt/'
-                            />,
-                        ]}
-                    />
-                );
-
-                if (is_uk) {
-                    texts.push(
-                        <Localize
-                            key={texts.length}
-                            i18n_default_text='<0/><1/>If you reside in the UK and you are unhappy with our response you may escalate your complaint to the <2>Financial Ombudsman Service</2>.'
-                            components={[
-                                <br key={0} />,
-                                <br key={1} />,
-                                <a
-                                    key={2}
-                                    className='link link--orange'
-                                    rel='noopener noreferrer'
-                                    target='_blank'
-                                    href='https://www.financial-ombudsman.org.uk/'
-                                />,
-                            ]}
-                        />
-                    );
-                }
-            }
-            break;
-        }
-    }
-
-    return texts;
-};
-
-const getSubmissionOfAComplaintText = landing_company_shortcode => (
-    <React.Fragment>
+    texts.push(
         <Localize
-            i18n_default_text='To file a complaint about our service, send an email to <0>complaints@deriv.com</0> and state your complaint in detail. Please submit any relevant screenshots of your trading or system for our better understanding.'
+            key={0}
+            i18n_default_text='If you are not satisfied with the outcome, you can escalate your complaint to the <0>Financial Commission</0>.'
             components={[
                 <a
                     key={0}
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href='mailto:complaints@deriv.com'
+                    href='https://financialcommission.org/resolving-a-dispute/how-to-file-a-complaintdispute/'
                 />,
             ]}
         />
-        {landing_company_shortcode === 'malta' && (
+    );
+
+    if (landing_company_shortcode === 'maltainvest') {
+        texts.push(
             <Localize
-                i18n_default_text=' You may also call <0>+447723580049</0> to place your complaint.'
+                key={texts.length}
+                i18n_default_text='<0/><1/>You may also raise your unresolved dispute to the <2>Office of the Arbiter for Financial Services</2>.'
                 components={[
+                    <br key={0} />,
+                    <br key={1} />,
                     <a
-                        key={0}
+                        key={2}
                         className='link link--orange'
                         rel='noopener noreferrer'
                         target='_blank'
-                        href='tel:+447723580049'
+                        href='https://www.financialarbiter.org.mt/'
                     />,
                 ]}
             />
-        )}
-    </React.Fragment>
+        );
+
+        if (is_uk) {
+            texts.push(
+                <Localize
+                    key={texts.length}
+                    i18n_default_text='<0/><1/>If you reside in the UK and you are unhappy with our response you may escalate your complaint to the <2>Financial Ombudsman Service</2>.'
+                    components={[
+                        <br key={0} />,
+                        <br key={1} />,
+                        <a
+                            key={2}
+                            className='link link--orange'
+                            rel='noopener noreferrer'
+                            target='_blank'
+                            href='https://www.financial-ombudsman.org.uk/'
+                        />,
+                    ]}
+                />
+            );
+        }
+    }
+
+    return texts;
+};
+
+const getSubmissionOfAComplaintText = () => (
+    <Localize
+        i18n_default_text='To file a complaint about our service, send an email to <0>complaints@deriv.com</0> and state your complaint in detail. Please submit any relevant screenshots of your trading or system for our better understanding.'
+        components={[
+            <a
+                key={0}
+                className='link link--orange'
+                rel='noopener noreferrer'
+                target='_blank'
+                href='mailto:complaints@deriv.com'
+            />,
+        ]}
+    />
 );
 
 const Content = observer(({ landing_company_shortcode }) => {
@@ -330,7 +210,7 @@ const Content = observer(({ landing_company_shortcode }) => {
                 sub_content: [
                     {
                         title: localize('3.1. Submission of a complaint'),
-                        text: getSubmissionOfAComplaintText(landing_company_shortcode),
+                        text: getSubmissionOfAComplaintText(),
                     },
                     {
                         title: localize('3.2. Handling your complaint'),
@@ -340,14 +220,9 @@ const Content = observer(({ landing_company_shortcode }) => {
                     },
                     {
                         title: localize('3.3. Resolving your complaint'),
-                        text:
-                            landing_company_shortcode === 'malta'
-                                ? localize(
-                                      'We shall try to resolve your complaint within 10 business days. We will inform you of the outcome together with an explanation of our position and propose any remedial measures we intend to take.'
-                                  )
-                                : localize(
-                                      'We shall try to resolve your complaint within 15 business days. We will inform you of the outcome together with an explanation of our position and propose any remedial measures we intend to take.'
-                                  ),
+                        text: localize(
+                            'We shall try to resolve your complaint within 15 business days. We will inform you of the outcome together with an explanation of our position and propose any remedial measures we intend to take.'
+                        ),
                     },
                     {
                         title: localize('3.4. Your decision'),

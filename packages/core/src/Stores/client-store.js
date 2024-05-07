@@ -1,7 +1,6 @@
 import Cookies from 'js-cookie';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import moment from 'moment';
-import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 
 import {
     CFD_PLATFORMS,
@@ -42,7 +41,6 @@ import { getAccountTitle, getAvailableAccount, getClientAccountType } from './He
 import { setDeviceDataCookie } from './Helpers/device';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 import BaseStore from './base-store';
-
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
@@ -50,8 +48,8 @@ import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_co
 const LANGUAGE_KEY = 'i18n_language';
 const storage_key = 'client.accounts';
 const store_name = 'client_store';
-const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
-const eu_excluded_regex = new RegExp('^mt$');
+const eu_shortcode_regex = /^maltainvest$/;
+const eu_excluded_regex = /^mt$/;
 
 export default class ClientStore extends BaseStore {
     loginid;
@@ -89,9 +87,7 @@ export default class ClientStore extends BaseStore {
 
     // All possible landing companies of user between all
     standpoint = {
-        iom: false,
         svg: false,
-        malta: false,
         maltainvest: false,
         gaming_company: false,
         financial_company: false,
@@ -294,6 +290,7 @@ export default class ClientStore extends BaseStore {
             is_logged_in: computed,
             has_restricted_mt5_account: computed,
             has_mt5_account_with_rejected_poa: computed,
+            has_wallet: computed,
             should_restrict_bvi_account_creation: computed,
             should_restrict_vanuatu_account_creation: computed,
             should_show_eu_content: computed,
@@ -417,6 +414,7 @@ export default class ClientStore extends BaseStore {
             subscribeToExchangeRate: action.bound,
             unsubscribeFromExchangeRate: action.bound,
             unsubscribeFromAllExchangeRates: action.bound,
+            setExchangeRates: action.bound,
         });
 
         reaction(
@@ -443,6 +441,15 @@ export default class ClientStore extends BaseStore {
 
                 this.setPreferredLanguage(language);
                 LocalStore.set(LANGUAGE_KEY, language);
+            }
+        );
+
+        reaction(
+            () => [this.is_logged_in, this.is_authorize, this.is_passkey_supported],
+            () => {
+                if (this.is_logged_in && this.is_authorize && this.is_passkey_supported) {
+                    this.fetchShouldShowEffortlessLoginModal();
+                }
             }
         );
 
@@ -487,6 +494,10 @@ export default class ClientStore extends BaseStore {
 
     get has_any_real_account() {
         return this.hasAnyRealAccount();
+    }
+
+    get has_wallet() {
+        return Object.values(this.accounts).some(account => account.account_category === 'wallet');
     }
 
     get first_switchable_real_loginid() {
@@ -873,7 +884,6 @@ export default class ClientStore extends BaseStore {
     get country_standpoint() {
         const result = {
             is_united_kingdom: this.is_uk,
-            is_isle_of_man: this.residence === 'im',
             is_france: this.residence === 'fr',
             is_belgium: this.residence === 'be',
             // Other EU countries: Germany, Spain, Italy, Luxembourg and Greece
@@ -1081,7 +1091,7 @@ export default class ClientStore extends BaseStore {
                         landing_company !== this.accounts[this.loginid].landing_company_shortcode &&
                         upgradeable_landing_companies.indexOf(landing_company) !== -1
                 );
-            can_upgrade_to = canUpgrade('svg', 'iom', 'malta', 'maltainvest');
+            can_upgrade_to = canUpgrade('svg', 'maltainvest');
             if (can_upgrade_to) {
                 type = can_upgrade_to === 'maltainvest' ? 'financial' : 'real';
             }
@@ -1486,7 +1496,7 @@ export default class ClientStore extends BaseStore {
      * @param {string} loginid
      */
     async switchAccount(loginid) {
-        if (!loginid) return;
+        if (!loginid || this.is_logging_in) return;
 
         this.setPreSwitchAccount(true);
         this.setIsLoggingIn(true);
@@ -1501,6 +1511,11 @@ export default class ClientStore extends BaseStore {
     }
 
     async resetVirtualBalance() {
+        Analytics.trackEvent('ce_tradershub_dashboard_form', {
+            action: 'reset_balance',
+            form_name: 'traders_hub_default',
+            account_mode: 'demo',
+        });
         this.root_store.notifications.removeNotificationByKey({ key: 'reset_virtual_balance' });
         this.root_store.notifications.removeNotificationMessage({
             key: 'reset_virtual_balance',
@@ -1665,8 +1680,6 @@ export default class ClientStore extends BaseStore {
 
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
-            await this.setIsPasskeySupported();
-            await this.fetchShouldShowEffortlessLoginModal();
             if (this.account_settings && !this.account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
@@ -2697,17 +2710,8 @@ export default class ClientStore extends BaseStore {
         this.real_account_signup_form_step = step;
     }
 
-    async setIsPasskeySupported() {
-        try {
-            // TODO: replace later "Analytics?.isFeatureOn()" to "Analytics?.getFeatureValue()"
-            const is_passkeys_enabled = Analytics?.isFeatureOn('web_passkeys');
-            const is_passkeys_enabled_on_be = Analytics?.isFeatureOn('service_passkeys');
-            // "browserSupportsWebAuthn" does not consider, if platform authenticator is available (unlike "platformAuthenticatorIsAvailable()")
-            const is_supported_by_browser = await browserSupportsWebAuthn();
-            this.is_passkey_supported = is_passkeys_enabled && is_supported_by_browser && is_passkeys_enabled_on_be;
-        } catch (e) {
-            //error handling needed
-        }
+    setIsPasskeySupported(is_passkey_supported = false) {
+        this.is_passkey_supported = is_passkey_supported;
     }
 
     setShouldShowEffortlessLoginModal(should_show_effortless_login_modal = true) {
@@ -2722,7 +2726,7 @@ export default class ClientStore extends BaseStore {
                     localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
                 }
 
-                const data = await WS.send({ passkeys_list: 1 });
+                const data = await WS.authorized.send({ passkeys_list: 1 });
 
                 if (data?.passkeys_list) {
                     const should_show_effortless_login_modal =
@@ -2767,21 +2771,32 @@ export default class ClientStore extends BaseStore {
         const matchingSubscription = this.subscriptions?.[name]?.[key]?.sub;
         if (matchingSubscription) return { key, subscription: matchingSubscription };
 
-        const subscription = WS?.subscribe({
-            [name]: 1,
-            subscribe: 1,
-            ...(payload ?? {}),
-        });
+        try {
+            const subscription = await WS?.subscribe({
+                [name]: 1,
+                subscribe: 1,
+                ...(payload ?? {}),
+            });
 
-        this.addSubscription(name, key, subscription);
-        return { name, key, subscription };
+            this.addSubscription(name, key, subscription);
+            return { key, subscription };
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
+            return {};
+        }
     };
 
     unsubscribeByKey = async (name, key) => {
         const matchingSubscription = this.subscriptions?.[name]?.[key]?.sub;
         if (matchingSubscription) {
-            await WS?.forget(this.subscriptions?.[name]?.[key]?.id);
-            delete this.subscriptions?.[name]?.[key];
+            try {
+                await WS?.forget(this.subscriptions?.[name]?.[key]?.id);
+                delete this.subscriptions?.[name]?.[key];
+            } catch (error) {
+                // eslint-disable-next-line no-console
+                console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
+            }
         }
     };
 
@@ -2794,21 +2809,27 @@ export default class ClientStore extends BaseStore {
             target_currency,
         });
 
-        subscription.subscribe(response => {
-            const rates = response.exchange_rates?.rates;
-            const subscription_id = String(response.subscription?.id);
+        subscription.subscribe(
+            response => {
+                const rates = response.exchange_rates?.rates;
+                const subscription_id = String(response.subscription?.id);
 
-            if (rates) {
-                this.addSubscription('exchange_rates', key, undefined, subscription_id);
+                if (rates) {
+                    this.addSubscription('exchange_rates', key, undefined, subscription_id);
 
-                const currentData = { ...this.exchange_rates };
-                if (currentData) {
-                    currentData[base_currency] = { ...currentData[base_currency], ...rates };
-                } else currentData = { [base_currency]: rates };
+                    const currentData = { ...this.exchange_rates };
+                    if (currentData) {
+                        currentData[base_currency] = { ...currentData[base_currency], ...rates };
+                    } else currentData = { [base_currency]: rates };
 
-                this.setExchangeRates(currentData);
+                    this.setExchangeRates(currentData);
+                }
+            },
+            error => {
+                // eslint-disable-next-line no-console
+                console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
             }
-        });
+        );
     };
 
     unsubscribeFromExchangeRate = async (base_currency, target_currency) => {

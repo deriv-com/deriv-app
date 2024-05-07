@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useActiveWalletAccount, useCFDAccountsList, useCFDCompareAccounts } from '@deriv/api-v2';
 import { CompareAccountsCarousel } from '../../components';
-import CFDCompareAccountsCard from './CompareAccountsCard';
+import CompareAccountsCard from './CompareAccountsCard';
 import { isCTraderAccountAdded, isDxtradeAccountAdded } from './compareAccountsConfig';
 import CompareAccountsHeader from './CompareAccountsHeader';
 import './CompareAccountsScreen.scss';
@@ -33,7 +33,7 @@ const CompareAccountsScreen = () => {
             <div className='wallets-compare-accounts__card-list'>
                 <CompareAccountsCarousel>
                     {mt5Accounts?.map(item => (
-                        <CFDCompareAccountsCard
+                        <CompareAccountsCard
                             isAccountAdded={item?.is_added}
                             isDemo={isDemo}
                             isEuRegion={isEuRegion}
@@ -46,7 +46,7 @@ const CompareAccountsScreen = () => {
                     ))}
                     {/* Renders cTrader data */}
                     {mt5Accounts?.length && hasCTraderAccountAvailable && ctraderAccount && (
-                        <CFDCompareAccountsCard
+                        <CompareAccountsCard
                             isAccountAdded={isCtraderAdded}
                             isDemo={isDemo}
                             isEuRegion={isEuRegion}
@@ -58,7 +58,7 @@ const CompareAccountsScreen = () => {
                     )}
                     {/* Renders Deriv X data */}
                     {mt5Accounts?.length && hasDxtradeAccountAvailable && dxtradeAccount && (
-                        <CFDCompareAccountsCard
+                        <CompareAccountsCard
                             isAccountAdded={isDxtradeAdded}
                             isDemo={isDemo}
                             isEuRegion={isEuRegion}

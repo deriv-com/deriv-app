@@ -1,21 +1,23 @@
 import React from 'react';
-import { MobileWrapper, Money, Text } from '@deriv/components';
+import { Money, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useReportsStore } from 'Stores/useReportsStores';
+import { useDevice } from '@deriv-com/ui';
 
 const AccountStatistics = observer(() => {
     const { client } = useStore();
     const { statement } = useReportsStore();
     const { currency } = client;
     const { account_statistics } = statement;
+    const { isDesktop } = useDevice();
 
     return (
         <div className='statement__account-statistics'>
             <div className='statement__account-statistics-item'>
                 <div className='statement__account-statistics--is-rectangle'>
                     <Text color='less-prominent' className='statement__account-statistics-title'>
-                        {localize('Total deposits')} <MobileWrapper> ({currency}) </MobileWrapper>
+                        {localize('Total deposits')} {!isDesktop && `(${currency})`}
                     </Text>
                     <Text
                         color='prominent'
@@ -30,7 +32,7 @@ const AccountStatistics = observer(() => {
             <div className='statement__account-statistics-item statement__account-statistics-total-withdrawal'>
                 <div className='statement__account-statistics--is-rectangle'>
                     <Text color='less-prominent' className='statement__account-statistics-title'>
-                        {localize('Total withdrawals')} <MobileWrapper> ({currency}) </MobileWrapper>
+                        {localize('Total withdrawals')} {!isDesktop && `(${currency})`}
                     </Text>
                     <Text
                         color='prominent'
@@ -45,7 +47,7 @@ const AccountStatistics = observer(() => {
             <div className='statement__account-statistics-item'>
                 <div className='statement__account-statistics--is-rectangle'>
                     <Text color='less-prominent' className='statement__account-statistics-title'>
-                        {localize('Net deposits')} <MobileWrapper> ({currency}) </MobileWrapper>
+                        {localize('Net deposits')} {!isDesktop && `(${currency})`}
                     </Text>
                     <Text
                         color='prominent'

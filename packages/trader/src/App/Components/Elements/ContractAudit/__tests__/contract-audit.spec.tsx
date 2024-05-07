@@ -14,6 +14,7 @@ const mocked_default_props: React.ComponentProps<typeof ContractAudit> = {
     is_history_tab_active: false,
     is_turbos: false,
     is_vanilla: false,
+    current_lang_to_request_history: 'EN',
     toggleHistoryTab: jest.fn(),
     contract_end_time: 1700482235,
     duration: 3,

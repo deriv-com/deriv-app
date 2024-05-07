@@ -20,6 +20,7 @@ type TContractAudit = Partial<
     is_dark_theme: boolean;
     is_history_tab_active: boolean;
     is_open: boolean;
+    current_lang_to_request_history: boolean | string;
     toggleHistoryTab: (state_change?: boolean) => void;
 };
 
@@ -33,17 +34,22 @@ const ContractAudit = ({
     is_history_tab_active,
     is_multiplier,
     is_turbos,
+    current_lang_to_request_history,
     toggleHistoryTab,
     ...props
 }: TContractAudit) => {
-    const { contract_id, currency, limit_order } = props.contract_info;
-    const limit_order_param_key = Object.keys(limit_order ?? {})[0];
-    const limit_order_param_display_name =
-        limit_order?.[limit_order_param_key as keyof typeof limit_order]?.display_name ?? '';
+    const { contract_id, currency } = props.contract_info;
     const [update_history, setUpdateHistory] = React.useState<TContractUpdateHistory>([]);
 
     const getSortedUpdateHistory = (history: TContractUpdateHistory) =>
         history.sort((a, b) => Number(b?.order_date) - Number(a?.order_date));
+
+    const requestUpdatedHistory = React.useCallback((id?: number) => {
+        if (!id) return;
+        WS.contractUpdateHistory(id).then((response: TResponse) => {
+            setUpdateHistory(getSortedUpdateHistory(response.contract_update_history));
+        });
+    }, []);
 
     React.useEffect(() => {
         if (!!contract_update_history.length && contract_update_history.length > update_history.length)
@@ -51,20 +57,12 @@ const ContractAudit = ({
     }, [contract_update_history, update_history]);
 
     React.useEffect(() => {
-        if (is_history_tab_active) {
-            WS.contractUpdateHistory(contract_id).then((response: TResponse) => {
-                setUpdateHistory(getSortedUpdateHistory(response.contract_update_history));
-            });
-        }
-    }, [contract_id, limit_order_param_display_name, is_history_tab_active]);
+        if (is_history_tab_active && current_lang_to_request_history) requestUpdatedHistory(contract_id);
+    }, [contract_id, is_history_tab_active, current_lang_to_request_history, requestUpdatedHistory]);
 
     const onTabItemClick = (tab_index: number) => {
         toggleHistoryTab(!!tab_index);
-        if (tab_index) {
-            WS.contractUpdateHistory(contract_id).then((response: TResponse) => {
-                setUpdateHistory(getSortedUpdateHistory(response.contract_update_history));
-            });
-        }
+        if (tab_index) requestUpdatedHistory(contract_id);
     };
 
     if (!is_multiplier && !is_accumulator && !is_turbos) {

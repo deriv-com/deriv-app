@@ -1,12 +1,12 @@
 import { Analytics, TEvents } from '@deriv-com/analytics';
 import { ACTION, form_name, type TFormStrategy, type TSelectedStrategy } from './constants';
-import { getRsStrategyType, getTradeParameterData } from './utils';
+import { getRsStrategyType, getSubpageName, getTradeParameterData } from './utils';
 
 export const rudderStackSendQsOpenEventFromDashboard = () => {
     Analytics.trackEvent('ce_bot_form', {
         action: ACTION.OPEN,
         form_name,
-        subpage_name: 'bot_builder',
+        subpage_name: getSubpageName(),
         subform_name: 'quick_strategy',
         subform_source: 'dashboard',
     });
@@ -16,7 +16,7 @@ export const rudderStackSendQsOpenEventFromBotBuilder = () => {
     Analytics.trackEvent('ce_bot_form', {
         action: ACTION.OPEN,
         form_name,
-        subpage_name: 'bot_builder',
+        subpage_name: getSubpageName(),
         subform_name: 'quick_strategy',
         subform_source: 'bot_builder',
     });
@@ -29,7 +29,7 @@ export const rudderStackSendQsCloseEvent = ({
     Analytics.trackEvent('ce_bot_form', {
         action: ACTION.CLOSE,
         form_name,
-        subpage_name: 'bot_builder',
+        subpage_name: getSubpageName(),
         subform_name: 'quick_strategy',
         quick_strategy_tab,
         strategy_name: getRsStrategyType(selected_strategy),
@@ -75,5 +75,13 @@ export const rudderStackSendSelectQsStrategyGuideEvent = ({ selected_strategy }:
         form_name,
         subform_name: 'quick_strategy',
         strategy_name: getRsStrategyType(selected_strategy),
+    });
+};
+
+export const rudderStackSendRunBotEvent = () => {
+    Analytics.trackEvent('ce_bot_form', {
+        action: ACTION.SELECT_QUICK_STRATEGY_GUIDE,
+        form_name,
+        subpage_name: getSubpageName(),
     });
 };

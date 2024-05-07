@@ -1,6 +1,13 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 
-import { CFD_PLATFORMS, ContentFlag, formatMoney, getAppstorePlatforms, getCFDAvailableAccount } from '@deriv/shared';
+import {
+    CFD_PLATFORMS,
+    ContentFlag,
+    LocalStore,
+    formatMoney,
+    getAppstorePlatforms,
+    getCFDAvailableAccount,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import BaseStore from './base-store';
 import { isEuCountry } from '_common/utility';
@@ -315,7 +322,16 @@ export default class TradersHubStore extends BaseStore {
 
     getAvailablePlatforms() {
         const appstore_platforms = getAppstorePlatforms();
-        if ((this.financial_restricted_countries || this.is_eu_user) && !this.is_demo_low_risk) {
+
+        const accounts = JSON.parse(LocalStore.get('client.accounts'));
+        const loginid = LocalStore.get('active_loginid');
+
+        if (!accounts || !loginid) return (this.available_platforms = appstore_platforms);
+
+        if (
+            isEuCountry(accounts[loginid]?.residence ?? '') ||
+            ((this.financial_restricted_countries || this.is_eu_user) && !this.is_demo_low_risk)
+        ) {
             this.available_platforms = appstore_platforms.filter(platform =>
                 ['EU', 'All'].some(region => region === platform.availability)
             );

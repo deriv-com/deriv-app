@@ -65,7 +65,7 @@ type TPlatformsDesktopDownload = {
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     ctrader_tokens: TCFDDashboardContainer['ctrader_tokens'];
     is_demo: string;
-    ctraderTokenCall: (url: string) => void;
+    ctraderTokenCall: (url: string, account_type: string) => void;
 };
 
 export const PlatformsDesktopDownload = ({
@@ -97,7 +97,7 @@ export const PlatformsDesktopDownload = ({
                 className='cfd-trade-modal__platform-button'
                 onClick={() => {
                     if (platform === CFD_PLATFORMS.CTRADER) {
-                        ctraderTokenCall(CTRADER_URL);
+                        ctraderTokenCall(CTRADER_URL, is_demo ? 'demo' : 'real');
                     } else {
                         window.open(PlatformsDesktopDownloadLinks());
                     }

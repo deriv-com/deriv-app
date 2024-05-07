@@ -84,7 +84,7 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
         jest.clearAllMocks();
     });
 
-    const authenticated_with_idv = {
+    const verified_jurisdiction = {
         bvi: 1,
         labuan: 1,
         maltainvest: 0,
@@ -138,7 +138,7 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
             account_status: {
                 authentication: {
                     document: {
-                        authenticated_with_idv,
+                        verified_jurisdiction,
                         status: 'none',
                     },
                     attempts: {
@@ -256,7 +256,7 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
     });
 
     it('should check for POA status when Jurisdiction is Labuan and resubmit status is set to true', () => {
-        const authenticated_with_idv = {
+        const verified_jurisdiction = {
             bvi: 1,
             labuan: 0,
             maltainvest: 0,
@@ -271,7 +271,7 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
                 account_status: {
                     authentication: {
                         document: {
-                            authenticated_with_idv,
+                            verified_jurisdiction,
                             status: 'none',
                         },
                         attempts: {

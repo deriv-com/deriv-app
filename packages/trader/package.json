@@ -88,11 +88,11 @@
     "dependencies": {
         "@cloudflare/stream-react": "^1.9.1",
         "@deriv-com/analytics": "1.4.13",
-        "@deriv-com/utils": "^0.0.14",
+        "@deriv-com/utils": "^0.0.20",
         "@deriv/api-types": "^1.0.172",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.15",
-        "@deriv/deriv-charts": "^2.1.13",
+        "@deriv/deriv-charts": "^2.1.14",
         "@deriv/hooks": "^1.0.0",
         "@deriv/reports": "^1.0.0",
         "@deriv/shared": "^1.0.0",

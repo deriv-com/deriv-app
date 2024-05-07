@@ -560,15 +560,10 @@ export default class TradersHubStore extends BaseStore {
     }
 
     async openDemoCFDAccount(account_type, platform) {
-        const { client, modules, ui } = this.root_store;
-        const { standpoint, createCFDAccount, enableCFDPasswordModal, has_maltainvest_account } = modules.cfd;
+        const { modules } = this.root_store;
+        const { createCFDAccount, enableCFDPasswordModal } = modules.cfd;
 
-        const { openAccountNeededModal } = ui;
-        const { is_eu } = client;
-
-        if (is_eu && !has_maltainvest_account && standpoint?.iom) {
-            openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
-        } else if (platform !== CFD_PLATFORMS.CTRADER) {
+        if (platform !== CFD_PLATFORMS.CTRADER) {
             enableCFDPasswordModal();
         } else {
             await createCFDAccount({ ...account_type, platform });

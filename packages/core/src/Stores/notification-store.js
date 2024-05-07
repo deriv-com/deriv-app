@@ -335,11 +335,9 @@ export default class NotificationStore extends BaseStore {
         const malta_account = landing_company_shortcode === 'maltainvest';
         const cr_account = landing_company_shortcode === 'svg';
         const is_website_up = website_status.site_status === 'up';
+        const { verified: is_phone_number_verified } = account_settings?.phone_number_verification;
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.trustpilot?.key
-        );
-        const has_flutter_chart_notification = LocalStore.getObject('notification_messages')[loginid]?.includes(
-            this.client_notifications.flutter_chart?.key
         );
 
         let has_missing_required_field;
@@ -371,9 +369,7 @@ export default class NotificationStore extends BaseStore {
             } = getStatusValidations(status || []);
 
             this.handlePOAAddressMismatchNotifications();
-            if (!has_flutter_chart_notification) {
-                this.addNotificationMessage(this.client_notifications.flutter_chart);
-            }
+
             if (status?.includes('mt5_additional_kyc_required'))
                 this.addNotificationMessage(this.client_notifications.additional_kyc_info);
 
@@ -383,6 +379,9 @@ export default class NotificationStore extends BaseStore {
                 this.removeNotificationByKey({ key: this.client_notifications.two_f_a?.key });
             }
 
+            if (!is_phone_number_verified) {
+                this.addNotificationMessage(this.client_notifications.phone_number_verification);
+            }
             if (malta_account && is_financial_information_incomplete) {
                 this.addNotificationMessage(this.client_notifications.need_fa);
             } else {
@@ -930,18 +929,6 @@ export default class NotificationStore extends BaseStore {
                 img_alt: 'Deriv P2P',
                 type: 'news',
             },
-            flutter_chart: {
-                key: 'flutter_chart',
-                header: localize('Trade Smarter with Deriv Trader Chart v2.0:'),
-                message: localize('Get real-time data, advanced charting tools, and customisable views.'),
-                action: {
-                    onClick: () => {
-                        window.open('https://blog.deriv.com/posts/new-charts-on-the-deriv-trader-app/', '_blank');
-                    },
-                    text: localize('Learn more'),
-                },
-                type: 'announce',
-            },
             identity: {
                 key: 'identity',
                 header: localize('Let’s verify your ID'),
@@ -1077,6 +1064,16 @@ export default class NotificationStore extends BaseStore {
                 header: localize('Password updated.'),
                 message: <Localize i18n_default_text='Please log in with your updated password.' />,
                 type: 'info',
+            },
+            phone_number_verification: {
+                key: 'phone_number_verification',
+                header: localize('Verify your phone number'),
+                message: <Localize i18n_default_text='Keep your account safe. Verify your phone number now.' />,
+                type: 'warning',
+                action: {
+                    route: routes.phone_verification,
+                    text: localize('Get started'),
+                },
             },
             poa_rejected_for_mt5: {
                 action: {

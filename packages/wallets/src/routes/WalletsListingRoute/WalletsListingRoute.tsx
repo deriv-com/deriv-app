@@ -1,5 +1,11 @@
 import React from 'react';
-import { DesktopWalletsList, WalletsAddMoreCarousel, WalletsCarousel, WalletTourGuide } from '../../components';
+import {
+    DesktopWalletsList,
+    WalletListHeader,
+    WalletsAddMoreCarousel,
+    WalletsCarousel,
+    WalletTourGuide,
+} from '../../components';
 import ResetMT5PasswordHandler from '../../features/cfd/ResetMT5PasswordHandler';
 import useDevice from '../../hooks/useDevice';
 import './WalletsListingRoute.scss';
@@ -9,6 +15,7 @@ const WalletsListingRoute: React.FC = () => {
 
     return (
         <div className='wallets-listing-route'>
+            <WalletListHeader />
             {isMobile ? <WalletsCarousel /> : <DesktopWalletsList />}
             <WalletsAddMoreCarousel />
             {!isMobile && <WalletTourGuide />}

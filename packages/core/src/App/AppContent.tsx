@@ -2,7 +2,6 @@ import React from 'react';
 import Cookies from 'js-cookie';
 import { useRemoteConfig } from '@deriv/api';
 import { useFeatureFlags } from '@deriv/hooks';
-import { useDevice } from '@deriv-com/ui';
 import { getAppId, LocalStore, useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
@@ -20,12 +19,13 @@ import AppModals from './Containers/Modals';
 import PlatformContainer from './Containers/PlatformContainer/PlatformContainer.jsx';
 import Routes from './Containers/Routes/routes.jsx';
 import Devtools from './Devtools';
+import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 import initDatadog from '../Utils/Datadog';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const { is_next_wallet_enabled } = useFeatureFlags();
     const store = useStore();
-    const { isDesktop } = useDevice();
+
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());
     const { marketing_growthbook, tracking_datadog, tracking_rudderstack } = data;
@@ -72,6 +72,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
 
     return (
         <PlatformContainer>
+            <LandscapeBlocker />
             <Header />
             <ErrorBoundary root_store={store}>
                 <AppContents>
@@ -79,7 +80,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
                     <Routes passthrough={passthrough} />
                 </AppContents>
             </ErrorBoundary>
-            {isDesktop && <Footer />}
+            <Footer />
             <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>

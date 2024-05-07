@@ -5,6 +5,14 @@ import MainTitleBar from '..';
 
 jest.mock('Components/wallets-banner', () => jest.fn(() => 'WalletsBanner'));
 
+jest.mock('@deriv-com/ui', () => ({
+    useDevice: jest.fn(() => ({
+        isDesktop: true,
+        isMobile: false,
+        isTablet: false,
+    })),
+}));
+
 describe('MainTitleBar', () => {
     const mock_store = mockStore({
         modules: {

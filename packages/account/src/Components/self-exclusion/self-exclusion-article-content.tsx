@@ -3,7 +3,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { getStaticUrl } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { Button, Icon, Popup, Text } from '@deriv/components';
+import { Button, Icon, OpenLiveChatLink, Popup, Text } from '@deriv/components';
 import SelfExclusionContext from './self-exclusion-context';
 
 type TSelfExclusionArticleItems = Record<'is_eu' | 'is_uk' | 'is_app_settings', boolean | undefined>;
@@ -104,15 +104,7 @@ export const selfExclusionArticleItems = ({ is_eu, is_app_settings }: TSelfExclu
                       component: (
                           <Localize
                               i18n_default_text='If you want to adjust your self-exclusion limits, <0>contact us via live chat.</0>'
-                              components={[
-                                  <a
-                                      key={0}
-                                      className='link'
-                                      rel='noopener noreferrer'
-                                      target='_blank'
-                                      href={getStaticUrl('/contact_us')}
-                                  />,
-                              ]}
+                              components={[<OpenLiveChatLink key={0} text_size='xxs' />]}
                           />
                       ),
                   },

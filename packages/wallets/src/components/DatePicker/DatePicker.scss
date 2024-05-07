@@ -26,6 +26,7 @@ abbr[title] {
         display: inline-block;
         width: 28rem;
         transform: translateY(4rem);
+        z-index: 1;
 
         @include mobile {
             align-self: center;

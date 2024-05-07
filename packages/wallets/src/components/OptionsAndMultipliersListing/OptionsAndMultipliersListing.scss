@@ -6,6 +6,8 @@
 
     @include mobile {
         padding-top: unset;
+        margin-bottom: 0.8rem;
+        border-bottom: 1px solid var(--system-light-6-hover-background, #e6e9e9);
     }
 
     &__header {

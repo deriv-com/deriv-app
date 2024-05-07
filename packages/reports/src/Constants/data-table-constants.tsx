@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React from 'react';
 import { ArrowIndicator, Label, Money, ContractCard, ContractCardSell, Popover } from '@deriv/components';
 import {
-    isMobile,
     getCurrencyDisplayCode,
     getTotalProfit,
     shouldShowCancellation,
@@ -41,7 +40,9 @@ const getModeFromValue = (key: TKeys) => map[key] || map.default;
 type TAccumulatorOpenPositionstemplateProps = Omit<
     TMultiplierOpenPositionstemplateProps,
     'onClickCancel' | 'server_time'
->;
+> & {
+    isDesktop: boolean;
+};
 
 type TMultiplierOpenPositionstemplateProps = Pick<
     TPortfolioStore,
@@ -49,13 +50,14 @@ type TMultiplierOpenPositionstemplateProps = Pick<
 > & {
     currency: string;
     server_time: moment.Moment;
+    isDesktop: boolean;
 };
 
 /* eslint-disable react/display-name, react/prop-types */
-export const getStatementTableColumnsTemplate = (currency: string) => [
+export const getStatementTableColumnsTemplate = (currency: string, isDesktop: boolean) => [
     {
         key: 'icon',
-        title: isMobile() ? '' : localize('Type'),
+        title: isDesktop ? localize('Type') : '',
         col_index: 'icon',
         renderCellContent: ({ passthrough, row_obj }: TCellContentProps) => {
             const icon = passthrough.isTopUp(row_obj) ? 'icCashierTopUp' : null;
@@ -115,10 +117,10 @@ export const getStatementTableColumnsTemplate = (currency: string) => [
         ),
     },
 ];
-export const getProfitTableColumnsTemplate = (currency: string, items_count: number) => [
+export const getProfitTableColumnsTemplate = (currency: string, items_count: number, isDesktop: boolean) => [
     {
         key: 'icon',
-        title: isMobile() ? '' : localize('Type'),
+        title: isDesktop ? localize('Type') : '',
         col_index: 'action_type',
         renderCellContent: ({ row_obj, is_footer }: TCellContentProps) => {
             if (is_footer) {
@@ -182,10 +184,10 @@ export const getProfitTableColumnsTemplate = (currency: string, items_count: num
         ),
     },
 ];
-export const getOpenPositionsColumnsTemplate = (currency: string) => [
+export const getOpenPositionsColumnsTemplate = (currency: string, isDesktop: boolean) => [
     {
         key: 'icon',
-        title: isMobile() ? '' : localize('Type'),
+        title: isDesktop ? localize('Type') : '',
         col_index: 'type',
         renderCellContent: ({ row_obj, is_footer, is_vanilla, is_turbos }: TCellContentProps) => {
             if (is_footer) return localize('Total');
@@ -279,9 +281,10 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
     onClickSell,
     getPositionById,
     server_time,
+    isDesktop,
 }: TMultiplierOpenPositionstemplateProps) => [
     {
-        title: isMobile() ? '' : localize('Type'),
+        title: isDesktop ? localize('Type') : '',
         col_index: 'type',
         renderCellContent: ({ row_obj, is_footer }: TCellContentProps) => {
             if (is_footer) return localize('Total');
@@ -388,10 +391,10 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
         },
     },
     {
-        title: isMobile() ? (
-            <Localize i18n_default_text='Total profit/loss' />
-        ) : (
+        title: isDesktop ? (
             <Localize i18n_default_text='Total<0 />profit/loss' components={[<br key={0} />]} />
+        ) : (
+            <Localize i18n_default_text='Total profit/loss' />
         ),
         col_index: 'profit',
         renderCellContent: ({ row_obj }: TCellContentProps) => {
@@ -443,9 +446,10 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
     currency,
     onClickSell,
     getPositionById,
+    isDesktop,
 }: TAccumulatorOpenPositionstemplateProps) => [
     {
-        title: isMobile() ? '' : localize('Type'),
+        title: isDesktop ? localize('Type') : '',
         col_index: 'type',
         renderCellContent: ({ row_obj, is_footer }: TCellContentProps) => {
             if (is_footer) return localize('Total');
@@ -477,7 +481,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
     },
     {
         title: localize('Stake'),
-        col_index: isMobile() ? 'purchase' : 'buy_price',
+        col_index: isDesktop ? 'buy_price' : 'purchase',
         renderCellContent: ({ row_obj }: TCellContentProps) => {
             if (row_obj.contract_info) {
                 return <Money amount={row_obj.contract_info.buy_price} currency={currency} />;

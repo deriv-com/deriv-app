@@ -22,6 +22,8 @@ import {
     getUrlSmartTrader,
     getUrlBinaryBot,
     MT5_ACCOUNT_STATUS,
+    LocalStore,
+    isEuCountry,
 } from '@deriv/shared';
 import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
 import './trading-app-card.scss';
@@ -69,8 +71,10 @@ const TradingAppCard = ({
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
-    const app_platform =
-        !is_eu_user || low_risk_cr_non_eu || is_demo_low_risk ? getAppstorePlatforms() : getMFAppstorePlatforms();
+    const accounts = JSON.parse(LocalStore.get('client.accounts') ?? '{}');
+    const loginid = LocalStore.get('active_loginid');
+
+    const app_platform = !isEuCountry(accounts[loginid]?.residence) ? getAppstorePlatforms() : getMFAppstorePlatforms();
 
     const { app_desc, link_to, is_external, new_tab } = app_platform.find(config => config.name === name) || {
         app_desc: description,

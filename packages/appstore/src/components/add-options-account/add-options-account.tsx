@@ -4,10 +4,11 @@ import { Localize, localize } from '@deriv/translations';
 import './add-options-account.scss';
 import { useStore, observer } from '@deriv/stores';
 import { isMobile, ContentFlag } from '@deriv/shared';
+import { Analytics } from '@deriv-com/analytics';
 
 const AddOptions = observer(() => {
     const { client, traders_hub, ui } = useStore();
-    const { is_real, content_flag } = traders_hub;
+    const { is_real, content_flag, selected_account_type } = traders_hub;
     const { setShouldShowCooldownModal, openRealAccountSignup } = ui;
     const { real_account_creation_unlock_date } = client;
 
@@ -29,6 +30,12 @@ const AddOptions = observer(() => {
                     type='submit'
                     has_effect
                     onClick={() => {
+                        Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                            action: 'account_get',
+                            form_name: 'traders_hub_default',
+                            account_mode: selected_account_type,
+                            account_name: 'cfd_banner',
+                        });
                         if (is_real && eu_user) {
                             if (real_account_creation_unlock_date) {
                                 setShouldShowCooldownModal(true);

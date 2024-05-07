@@ -186,7 +186,7 @@ const Redirect = observer(() => {
             if (has_wallet) {
                 history.push(routes.wallets_transactions);
             } else {
-                history.push(routes.reports);
+                history.push(routes.statement);
             }
             redirected_to_route = true;
             break;

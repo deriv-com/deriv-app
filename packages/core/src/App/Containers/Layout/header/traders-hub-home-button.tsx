@@ -40,7 +40,8 @@ const TradersHubHomeButton = observer(() => {
                 'traders-hub-header__tradershub--active':
                     pathname === routes.traders_hub ||
                     pathname === routes.traders_hub_v2 ||
-                    pathname === routes.wallets,
+                    pathname === routes.wallets ||
+                    pathname === routes.root,
             })}
             onClick={() => history.push(redirectRoutes())}
         >

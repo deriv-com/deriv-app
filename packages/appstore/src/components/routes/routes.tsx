@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Loading } from '@deriv/components';
 import { useFeatureFlags /*useWalletsList*/ } from '@deriv/hooks';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { Switch, useHistory } from 'react-router-dom';
@@ -14,11 +14,16 @@ const TradersHubLoggedOut = React.lazy(
 );
 
 const Routes: React.FC = observer(() => {
+    const { client } = useStore();
+    const { is_logged_in } = client;
     //TODO: Uncomment once useWalletList hook is optimized for production release.
     const { /*is_wallet_enabled,*/ is_next_wallet_enabled } = useFeatureFlags();
     const history = useHistory();
     // const { has_wallet, isLoading } = useWalletsList();
     // const should_show_wallets = is_wallet_enabled && has_wallet;
+
+    const title_TH = localize("Trader's Hub");
+    const title_TH_logged_out = localize('Deriv App');
 
     React.useLayoutEffect(() => {
         if (is_next_wallet_enabled) history.push(routes.wallets);
@@ -27,11 +32,7 @@ const Routes: React.FC = observer(() => {
     return (
         <React.Suspense fallback={<Loading />}>
             <Switch>
-                <RouteWithSubroutes
-                    path={routes.traders_hub}
-                    component={TradersHub}
-                    getTitle={() => localize("Trader's Hub")}
-                />
+                <RouteWithSubroutes path={routes.traders_hub} component={TradersHub} getTitle={() => title_TH} />
                 <RouteWithSubroutes
                     path={routes.onboarding}
                     component={Onboarding}
@@ -39,8 +40,8 @@ const Routes: React.FC = observer(() => {
                 />
                 <RouteWithSubroutes
                     path={routes.root}
-                    component={TradersHubLoggedOut}
-                    getTitle={() => localize('Deriv App')}
+                    component={is_logged_in ? TradersHub : TradersHubLoggedOut}
+                    getTitle={() => (is_logged_in ? title_TH : title_TH_logged_out)}
                 />
             </Switch>
         </React.Suspense>

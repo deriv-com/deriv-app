@@ -4,6 +4,7 @@ import { observer, useStore } from '@deriv/stores';
 import Routes from 'Components/routes/routes';
 import classNames from 'classnames';
 import './app.scss';
+import './temporary-overrides.scss';
 
 const AppContent: React.FC = observer(() => {
     const { ui } = useStore();

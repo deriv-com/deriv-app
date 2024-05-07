@@ -36,9 +36,7 @@ describe('WalletListCardBalance', () => {
     });
 
     it('should subscribe to the balance call with for the correct account when the component mounts', () => {
-        const mockSubscribe = jest.fn(payload => {
-            payload;
-        });
+        const mockSubscribe = jest.fn();
 
         (useBalanceSubscription as jest.Mock).mockReturnValue({
             isLoading: false,

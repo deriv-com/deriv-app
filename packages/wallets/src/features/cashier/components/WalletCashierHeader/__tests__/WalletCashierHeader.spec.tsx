@@ -53,9 +53,7 @@ describe('<WalletCashierHeader/>', () => {
     });
 
     it('should test if the balance call is subscribed with the correct account when the header mounts', () => {
-        const mockSubscribe = jest.fn(payload => {
-            payload;
-        });
+        const mockSubscribe = jest.fn();
 
         (useBalanceSubscription as jest.Mock).mockReturnValue({
             data: {
@@ -71,9 +69,7 @@ describe('<WalletCashierHeader/>', () => {
     });
 
     it('should test if the balance call is unsubscribed when the header mounts', async () => {
-        const mockUnsubscribe = jest.fn(payload => {
-            payload;
-        });
+        const mockUnsubscribe = jest.fn();
 
         (useBalanceSubscription as jest.Mock).mockReturnValue({
             data: {

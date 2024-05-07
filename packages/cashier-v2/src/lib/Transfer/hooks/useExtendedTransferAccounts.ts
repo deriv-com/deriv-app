@@ -1,22 +1,62 @@
 import { useMemo } from 'react';
-import { useActiveAccount, useCurrencyConfig } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { THooks } from '../../../hooks/types';
 
 type TModifiedAccounts = ReturnType<typeof getModifiedAccounts>;
 
-const getModifiedAccounts = (
-    accounts: THooks.TransferAccounts,
-    getConfig: ReturnType<typeof useCurrencyConfig>['getConfig']
+type TLimits = {
+    max: number;
+    min: number;
+};
+
+const getTransferMinMaxLimits = (
+    account: THooks.TransferAccounts[number],
+    transferLimits?: THooks.CurrencyConfig['transfer_between_accounts']
 ) => {
+    if (!transferLimits) return {};
+
+    const {
+        limits,
+        limits_ctrader: limitsCTrader,
+        limits_dxtrade: limitsDXTrade,
+        limits_mt5: limitsMT5,
+    } = transferLimits;
+
+    switch (account.account_type) {
+        case 'ctrader':
+            return {
+                max: limitsCTrader?.max,
+                min: limitsCTrader?.min,
+            } as TLimits;
+        case 'dxtrade':
+            return {
+                max: limitsDXTrade?.max,
+                min: limitsDXTrade?.min,
+            } as TLimits;
+        case 'mt5':
+            return {
+                max: limitsMT5?.max,
+                min: limitsMT5?.min,
+            } as TLimits;
+        default:
+            return {
+                max: limits?.max,
+                min: limits?.min,
+            } as TLimits;
+    }
+};
+
+const getModifiedAccounts = (accounts: THooks.TransferAccounts, getConfig: THooks.GetCurrencyConfig) => {
     return accounts.map(account => {
-        const currencyConfig = account?.currency ? getConfig(account.currency) : undefined;
+        const currencyConfig = getConfig(account.currency ?? 'USD');
+
         return {
             ...account,
             currencyConfig,
             displayBalance: displayMoney(Number(account.balance), account.currency ?? '', {
                 fractional_digits: currencyConfig?.fractional_digits,
             }),
+            limits: getTransferMinMaxLimits(account, currencyConfig?.transfer_between_accounts),
         };
     });
 };
@@ -49,15 +89,15 @@ const sortedCryptoDerivAccounts = (accounts: TModifiedAccounts) => {
     - sorts the mt5 accounts based on group type
     - sorts the crypto accounts alphabetically
 */
-const useExtendedTransferAccounts = (accounts: THooks.TransferAccounts) => {
-    const { data: activeAccount, isLoading: isActiveAccountLoading } = useActiveAccount();
-    const { getConfig, isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
-    const isLoading = !accounts || isActiveAccountLoading || isCurrencyConfigLoading;
-
+const useExtendedTransferAccounts = (
+    activeAccount: THooks.ActiveAccount,
+    getConfig: THooks.GetCurrencyConfig,
+    accounts: THooks.TransferAccounts = []
+) => {
     const modifiedAccounts = getModifiedAccounts(accounts, getConfig);
 
-    const extendedTransferableAccounts = useMemo(() => {
+    const sortedTransferableAccounts = useMemo(() => {
         return [
             ...sortedMT5Accounts(modifiedAccounts),
             ...derivCTrader(modifiedAccounts),
@@ -67,16 +107,11 @@ const useExtendedTransferAccounts = (accounts: THooks.TransferAccounts) => {
         ];
     }, [modifiedAccounts]);
 
-    const transferableActiveAccount = useMemo(() => {
-        if (!extendedTransferableAccounts) return undefined;
-
-        return extendedTransferableAccounts.find(account => account.loginid === activeAccount?.loginid);
-    }, [activeAccount, extendedTransferableAccounts]);
+    const transferableActiveAccount = modifiedAccounts.find(account => account.loginid === activeAccount.loginid);
 
     return {
-        accounts: extendedTransferableAccounts,
+        accounts: sortedTransferableAccounts,
         activeAccount: transferableActiveAccount,
-        isLoading: isLoading || !extendedTransferableAccounts || !transferableActiveAccount,
     };
 };
 

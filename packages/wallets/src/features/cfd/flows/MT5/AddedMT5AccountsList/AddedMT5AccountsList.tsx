@@ -5,6 +5,7 @@ import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { InlineMessage, WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
+import useDevice from '../../../../../hooks/useDevice';
 import { THooks } from '../../../../../types';
 import { MarketTypeDetails, PlatformDetails } from '../../../constants';
 import { MT5TradeModal, VerificationFailedModal } from '../../../modals';
@@ -22,6 +23,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         [account.landing_company_short, account.status, getVerificationStatus]
     );
     const { title } = MarketTypeDetails[account.market_type ?? 'all'];
+    const { isMobile } = useDevice();
     const { show } = useModal();
     const { t } = useTranslation();
 
@@ -55,7 +57,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     <WalletText size='sm'>{title}</WalletText>
                     {!activeWallet?.is_virtual && (
                         <div className='wallets-added-mt5__details-title-landing-company'>
-                            <WalletText size='2xs' weight='bold'>
+                            <WalletText color='black' size={isMobile ? 'sm' : 'xs'}>
                                 {account.landing_company_short?.toUpperCase()}
                             </WalletText>
                         </div>
@@ -67,7 +69,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     </WalletText>
                 )}
 
-                <WalletText as='p' color='primary' size='xs' weight='bold'>
+                <WalletText as='p' size='xs'>
                     {account.display_login}
                 </WalletText>
                 {jurisdictionStatus.is_pending && (

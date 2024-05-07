@@ -1,34 +1,55 @@
-import React, { useCallback, useEffect } from 'react';
-import { useTransferBetweenAccounts } from '@deriv/api-v2';
-import { Loader } from '@deriv-com/ui';
-import TransferProvider from './provider/TransferProvider';
-import { TransferForm } from './components';
+import React from 'react';
+import { useAccountLimits, useActiveAccount, useCurrencyConfig } from '@deriv/api-v2';
+import { Loader, Text } from '@deriv-com/ui';
+import { ErrorDialog } from '../../components';
+import { THooks } from '../../hooks/types';
+import { TransferForm, TransferReceipt } from './components';
+import { TransferProvider, useTransfer } from './provider';
 
-const Transfer = () => {
+type TTransferModuleProps = {
+    accounts?: THooks.TransferAccounts;
+};
+
+const Transfer = ({ showErrorsDialog }: { showErrorsDialog: boolean }) => {
+    const { setTransferReceipt, transferError, transferReceipt } = useTransfer();
+
+    if (transferReceipt) return <TransferReceipt {...transferReceipt} resetTransferReceipt={setTransferReceipt} />;
+
     return (
-        <div>
+        <>
             <TransferForm />
-        </div>
+            {/* showErrorsDialog checks if the module is used as an import from the cashier-v2 library */}
+            {!showErrorsDialog && (
+                <ErrorDialog isOpen={!!transferError}>
+                    <Text as='p' size='sm'>
+                        {transferError?.error.message}
+                    </Text>
+                </ErrorDialog>
+            )}
+        </>
     );
 };
 
-const TransferModule = () => {
-    const { data: transferAccounts, isSuccess, mutate } = useTransferBetweenAccounts();
-    const requestForAccounts = useCallback(() => mutate({ accounts: 'all' }), [mutate]);
+const TransferModule: React.FC<TTransferModuleProps> = ({ accounts }) => {
+    const { data: activeAccount } = useActiveAccount();
+    const { getConfig, isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
+    const { data: accountLimits, refetch } = useAccountLimits();
 
-    useEffect(() => {
-        requestForAccounts();
-    }, [requestForAccounts]);
+    const isLoading = !activeAccount || !accountLimits || isCurrencyConfigLoading;
 
-    if (isSuccess && transferAccounts?.accounts) {
-        return (
-            <TransferProvider accounts={transferAccounts?.accounts}>
-                <Transfer />
-            </TransferProvider>
-        );
-    }
+    if (isLoading) return <Loader />;
 
-    return <Loader />;
+    return (
+        <TransferProvider
+            accountLimits={accountLimits}
+            accounts={accounts}
+            activeAccount={activeAccount}
+            getConfig={getConfig}
+            refetchAccountLimits={refetch}
+        >
+            <Transfer showErrorsDialog={!accounts} />
+        </TransferProvider>
+    );
 };
 
 export default TransferModule;

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import {
     DesktopWalletsList,
+    WalletListHeader,
     WalletsAddMoreCarousel,
     WalletsCarousel,
     WalletsResetMT5Password,
@@ -40,7 +41,8 @@ const WalletsListingRoute: React.FC = () => {
                         actionParams={resetTradingPlatformActionParams ?? ''}
                         platform={platformKey}
                         verificationCode={verificationCode}
-                    />
+                    />,
+                    { defaultRootId: 'wallets_modal_root' }
                 );
             }
         }
@@ -48,6 +50,7 @@ const WalletsListingRoute: React.FC = () => {
 
     return (
         <div className='wallets-listing-route'>
+            <WalletListHeader />
             {isMobile ? <WalletsCarousel /> : <DesktopWalletsList />}
             <WalletsAddMoreCarousel />
             {!isMobile && <WalletTourGuide />}

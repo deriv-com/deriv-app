@@ -6,6 +6,8 @@
 
     @include mobile {
         padding-top: unset;
+        margin-bottom: 0.8rem;
+        border-bottom: 1px solid var(--system-light-6-hover-background, #e6e9e9);
     }
 
     &__header {
@@ -41,7 +43,7 @@
 
     &__content {
         display: grid;
-        gap: 1.6rem 4.8rem;
+        gap: 1.6rem;
         grid-template-columns: repeat(3, 1fr);
         user-select: none;
 
@@ -66,5 +68,9 @@
             display: flex;
             flex-direction: column;
         }
+    }
+
+    &__icon {
+        width: fit-content;
     }
 }

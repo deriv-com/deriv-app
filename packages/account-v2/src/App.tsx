@@ -1,17 +1,21 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
 import { APIProvider, AuthProvider } from '@deriv/api-v2';
+import { Modal } from '@deriv-com/ui';
 import { AppOverlay } from './components/AppOverlay';
 import { RouteLinks } from './router/components/RouteLinks';
 import { ACCOUNT_MODAL_REF } from './constants';
 import './index.scss';
 
 const App: React.FC = () => {
+    if (document.getElementById(ACCOUNT_MODAL_REF.replace('#', ''))) {
+        // Set the Modal REF only if the element exists
+        Modal.setAppElement(ACCOUNT_MODAL_REF);
+    }
+
     return (
         <APIProvider standalone>
             <AuthProvider>
-                {/* This will be the used to bind modal in Accounts-v2 package*/}
-                <div id={ACCOUNT_MODAL_REF.replace('#', '')} />
                 <AppOverlay title='Settings'>
                     <RouteLinks />
                 </AppOverlay>

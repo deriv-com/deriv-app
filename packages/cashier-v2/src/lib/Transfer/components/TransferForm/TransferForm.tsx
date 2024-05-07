@@ -1,63 +1,43 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import { Formik } from 'formik';
-import { useHistory } from 'react-router';
-import { Button, Loader, Text } from '@deriv-com/ui';
-import { getCryptoFiatConverterValidationSchema } from '../../../../components';
-import type { TCurrency } from '../../../../types';
+import { useHistory } from 'react-router-dom';
+import { Button, InlineMessage, Text } from '@deriv-com/ui';
 import { useTransfer } from '../../provider';
 import { TTransferFormikContext } from '../../types';
-import { TransferCryptoFiatAmountConverter } from './components';
+import { TransferAccountSelection, TransferCryptoFiatAmountConverter } from './components';
 import styles from './TransferForm.module.scss';
+
+type TAccountLimits = {
+    allowed: number;
+    available: number;
+};
 
 const TransferForm = () => {
     const history = useHistory();
-    const { accounts, activeAccount, isLoading } = useTransfer();
-    const [validationSchema, setValidationSchema] =
-        useState<ReturnType<typeof getCryptoFiatConverterValidationSchema>>();
+    const { accountLimits, accounts, activeAccount, isTransferring, requestForTransfer, transferValidationSchema } =
+        useTransfer();
 
-    const getInitialToAccount = useMemo(() => {
-        if (!accounts || !activeAccount) return;
-
-        if (activeAccount.loginid !== accounts[0].loginid) return accounts[0];
-
-        return accounts[1];
-    }, [accounts, activeAccount]);
-
-    useEffect(() => {
-        if (accounts)
-            setValidationSchema(
-                getCryptoFiatConverterValidationSchema({
-                    fromAccount: {
-                        balance: parseFloat(activeAccount?.balance ?? ''),
-                        currency: activeAccount?.currency as TCurrency,
-                        fractionalDigits: activeAccount?.currencyConfig?.fractional_digits,
-                        limits: {
-                            max: 100,
-                            min: 1,
-                        },
-                    },
-                    toAccount: {
-                        currency: getInitialToAccount?.currency as TCurrency,
-                        fractionalDigits: getInitialToAccount?.currencyConfig?.fractional_digits,
-                    },
-                })
-            );
-    }, [
-        accounts,
-        activeAccount?.balance,
-        activeAccount?.currency,
-        activeAccount?.currencyConfig?.fractional_digits,
-        getInitialToAccount?.currency,
-        getInitialToAccount?.currencyConfig?.fractional_digits,
-    ]);
-
-    if (!accounts || !activeAccount || isLoading || !getInitialToAccount) return <Loader />;
+    const initialAccount = activeAccount !== accounts[0] ? accounts[0] : accounts[1];
 
     const initialValues: TTransferFormikContext = {
         fromAccount: activeAccount,
         fromAmount: '',
-        toAccount: getInitialToAccount,
+        toAccount: initialAccount,
         toAmount: '',
+    };
+
+    const getDailyTransferCountLimit = (
+        fromAccount: TTransferFormikContext['fromAccount'],
+        toAccount: TTransferFormikContext['toAccount']
+    ) => {
+        if (accountLimits?.daily_transfers) {
+            if (fromAccount?.account_type && fromAccount?.account_type !== 'binary') {
+                return (accountLimits?.daily_transfers[fromAccount?.account_type] as TAccountLimits).available;
+            } else if (toAccount?.account_type && toAccount?.account_type !== 'binary') {
+                return (accountLimits?.daily_transfers[toAccount?.account_type] as TAccountLimits).available;
+            }
+            return (accountLimits?.daily_transfers.internal as TAccountLimits)?.available;
+        }
     };
 
     return (
@@ -66,14 +46,28 @@ const TransferForm = () => {
             onSubmit={() => {
                 return undefined;
             }}
-            validationSchema={validationSchema}
+            validationSchema={transferValidationSchema}
         >
-            {() => {
+            {({ errors, isSubmitting, values }) => {
+                const isTransferDisabled =
+                    !!errors.fromAmount ||
+                    !!errors.toAmount ||
+                    !Number(values.fromAmount) ||
+                    !getDailyTransferCountLimit(values.fromAccount, values.toAccount);
+
                 return (
                     <div className={styles.container}>
                         <Text className={styles.title} weight='bold'>
                             Transfer between your accounts in Deriv
                         </Text>
+                        {!getDailyTransferCountLimit(values.fromAccount, values.toAccount) && (
+                            <InlineMessage type='filled' variant='warning'>
+                                You have reached the maximum daily transfers. Please try again tomorrow.
+                            </InlineMessage>
+                        )}
+                        <TransferAccountSelection
+                            fromAccountLimit={getDailyTransferCountLimit(values.fromAccount, values.toAccount)}
+                        />
                         <TransferCryptoFiatAmountConverter />
                         <div className={styles['button-group']}>
                             <Button
@@ -85,7 +79,23 @@ const TransferForm = () => {
                             >
                                 Deposit
                             </Button>
-                            <Button size='lg'>Transfer</Button>
+                            <Button
+                                disabled={isTransferDisabled}
+                                isLoading={isSubmitting || isTransferring}
+                                onClick={() => {
+                                    requestForTransfer(
+                                        Number(values.fromAmount).toFixed(
+                                            values.fromAccount?.currencyConfig?.fractional_digits
+                                        ),
+                                        values.fromAccount,
+                                        values.toAccount
+                                    );
+                                }}
+                                role='submit'
+                                size='lg'
+                            >
+                                Transfer
+                            </Button>
                         </div>
                     </div>
                 );

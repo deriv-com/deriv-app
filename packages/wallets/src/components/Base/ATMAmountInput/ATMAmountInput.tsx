@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import classnames from 'classnames';
 import unFormatLocaleString from '@deriv/utils/src/unFormatLocaleString';
 import useInputATMFormatter from '../../../hooks/useInputATMFormatter';
 import { WalletText } from '../..';
@@ -8,6 +9,7 @@ type TProps = {
     currency?: string;
     disabled?: boolean;
     fractionDigits?: number;
+    isError?: boolean;
     label: string;
     locale?: Intl.LocalesArgument;
     maxDigits?: number;
@@ -21,6 +23,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
     currency,
     disabled,
     fractionDigits = 0,
+    isError,
     label,
     locale,
     maxDigits,
@@ -62,13 +65,17 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
             <div className='wallets-atm-amount-input__input-container'>
                 <WalletText size='lg' weight='bold'>
                     <input
-                        className='wallets-atm-amount-input__input'
+                        className={classnames('wallets-atm-amount-input__input', {
+                            'wallets-atm-amount-input__input--error': isError,
+                        })}
                         disabled={disabled || isFocused}
                         readOnly
                         value={`${formattedValue} ${currency ?? ''}`}
                     />
                     <input
-                        className='wallets-atm-amount-input__input'
+                        className={classnames('wallets-atm-amount-input__input', {
+                            'wallets-atm-amount-input__input--error': isError,
+                        })}
                         disabled={disabled}
                         onBlur={onBlurHandler}
                         onChange={formatOnChange}

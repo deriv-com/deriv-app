@@ -43,6 +43,14 @@ const { is_staging, is_test_link } = getPlatformFromUrl();
 const DEEP_LINK = ({ mt5_trade_account }: { mt5_trade_account: TDetailsOfEachMT5Loginid }) =>
     `metatrader5://account?login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`;
 
+const STRATEGY_PROVIDER_NOTES = [
+    'When setting up a strategy, you have the option to impose fees.',
+    'For strategies where you impose fees, you must assign one of your existing accounts to process these fees. The same ‘Account For Fees’ can support multiple fee-based strategies.',
+    'Free strategies do not require an ‘Account For Fees’.',
+    'An account designated as a strategy provider is irreversible unless it remains inactive for 30 days.',
+    'An account cannot simultaneously be a strategy provider and serve as an ‘Account For Fees’.',
+];
+
 const WEBTRADER_URL = ({ mt5_trade_account }: { mt5_trade_account: TDetailsOfEachMT5Loginid }) =>
     `${mt5_trade_account.white_label_links?.webtrader_url}?login=${mt5_trade_account?.display_login}&server=${mt5_trade_account?.server_info?.environment}`;
 
@@ -207,6 +215,7 @@ export {
     CTRADER_URL,
     CTRADER_DOWNLOAD_LINK,
     platformsText,
+    STRATEGY_PROVIDER_NOTES,
     getPlatformDXTradeDownloadLink,
     getPlatformCTraderDownloadLink,
     getPlatformMt5DownloadLink,

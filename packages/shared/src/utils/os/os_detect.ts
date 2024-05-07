@@ -1,3 +1,5 @@
+import UAParser from 'ua-parser-js';
+
 declare global {
     interface Window {
         opera?: string;
@@ -105,6 +107,7 @@ export const mobileOSDetect = () => {
 
     return 'unknown';
 };
+
 
 // Simple regular expression to match potential Huawei device codes
 const huaweiDevicesRegex = /\b([A-Z]{3}-)\b/gi;
@@ -257,3 +260,6 @@ export const mobileOSDetectAsync = async () => {
 
     return 'unknown';
 };
+
+export const getOSNameWithUAParser = () => UAParser().os.name;
+

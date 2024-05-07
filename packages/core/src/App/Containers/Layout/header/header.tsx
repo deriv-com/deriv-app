@@ -62,7 +62,7 @@ const Header = observer(() => {
     const client_accounts = useReadLocalStorage('client.accounts');
     const { is_next_wallet_enabled } = useFeatureFlags();
     const { has_wallet } = useStoreWalletAccountsList();
-    const should_show_wallets = is_next_wallet_enabled && has_wallet;
+    const should_show_wallets = has_wallet || is_next_wallet_enabled;
 
     React.useEffect(() => {
         if (should_show_wallets && is_logged_in) {
@@ -89,7 +89,7 @@ const Header = observer(() => {
     } else if (pathname === routes.onboarding) {
         return null;
     }
-    return is_next_wallet_enabled ? <DefaultHeaderWallets /> : <DefaultHeader />;
+    return has_wallet || is_next_wallet_enabled ? <DefaultHeaderWallets /> : <DefaultHeader />;
 });
 
 export default Header;

@@ -90,7 +90,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     } = useP2PSettings();
 
     let TradersHubIcon;
-    if (is_next_wallet_enabled) {
+    if (has_wallet || is_next_wallet_enabled) {
         TradersHubIcon = 'IcAppstoreTradersHubHomeUpdated';
     } else if (is_dark_mode) {
         TradersHubIcon = 'IcAppstoreHomeDark';
@@ -113,7 +113,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
             if (location === routes.traders_hub || is_trading_hub_category) {
                 primary_routes = [routes.account, routes.cashier];
-            } else if (location === routes.wallets || is_next_wallet_enabled) {
+            } else if (has_wallet || location === routes.wallets || is_next_wallet_enabled) {
                 primary_routes = [routes.reports, routes.account];
             } else {
                 primary_routes = [routes.reports, routes.account, routes.cashier];
@@ -129,6 +129,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     }, [
         account_status,
         should_allow_authentication,
+        has_wallet,
         is_trading_hub_category,
         is_next_wallet_enabled,
         is_mobile,
@@ -344,7 +345,11 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 {is_logged_in && (
                                     <MobileDrawer.Item>
                                         <MenuLink
-                                            link_to={is_next_wallet_enabled ? routes.wallets : routes.traders_hub}
+                                            link_to={
+                                                has_wallet || is_next_wallet_enabled
+                                                    ? routes.wallets
+                                                    : routes.traders_hub
+                                            }
                                             icon={TradersHubIcon}
                                             text={localize("Trader's Hub")}
                                             onClickLink={toggleDrawer}

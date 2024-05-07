@@ -10,6 +10,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useFeatureFlags: jest.fn(() => ({ is_next_wallet_enabled: false })),
+    useStoreWalletAccountsList: jest.fn(() => ({ has_wallet: false })),
 }));
 
 jest.mock('@deriv/components', () => ({

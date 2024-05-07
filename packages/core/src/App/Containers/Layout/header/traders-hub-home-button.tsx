@@ -5,7 +5,7 @@ import { Icon, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { useFeatureFlags } from '@deriv/hooks';
+import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
 
 const TradersHubHomeButton = observer(() => {
     const { ui } = useStore();
@@ -14,9 +14,10 @@ const TradersHubHomeButton = observer(() => {
     const location = useLocation();
     const { pathname } = location;
     const { is_next_tradershub_enabled, is_next_wallet_enabled } = useFeatureFlags();
+    const { has_wallet } = useStoreWalletAccountsList();
 
     let TradersHubIcon;
-    if (is_next_wallet_enabled) {
+    if (has_wallet || is_next_wallet_enabled) {
         TradersHubIcon = 'IcAppstoreTradersHubHomeUpdated';
     } else if (is_dark_mode_on) {
         TradersHubIcon = 'IcAppstoreHomeDark';
@@ -25,7 +26,7 @@ const TradersHubHomeButton = observer(() => {
     }
 
     const redirectRoutes = () => {
-        if (is_next_wallet_enabled) {
+        if (has_wallet || is_next_wallet_enabled) {
             return routes.wallets;
         } else if (is_next_tradershub_enabled) {
             return routes.traders_hub_v2;

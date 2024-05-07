@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Analytics } from '@deriv-com/analytics';
 import { PageOverlay, VerticalTab } from '@deriv/components';
-import { useFeatureFlags } from '@deriv/hooks';
+import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
 import { getOSNameWithUAParser, getSelectedRoute, getStaticUrl, routes as shared_routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
@@ -27,6 +27,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const { is_mobile } = ui;
     const { logout } = client;
     const { is_from_derivgo } = common;
+    const { has_wallet } = useStoreWalletAccountsList();
     const { is_next_wallet_enabled } = useFeatureFlags();
 
     const passkeysMenuCloseActionEventTrack = React.useCallback(() => {
@@ -48,8 +49,10 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
             passkeysMenuCloseActionEventTrack();
         }
 
-        is_next_wallet_enabled ? history.push(shared_routes.wallets) : history.push(shared_routes.traders_hub);
-    }, [history, is_next_wallet_enabled]);
+        has_wallet || is_next_wallet_enabled
+            ? history.push(shared_routes.wallets)
+            : history.push(shared_routes.traders_hub);
+    }, [history, has_wallet, is_next_wallet_enabled]);
 
     const selected_route = getSelectedRoute({ routes: subroutes as Array<TRoute>, pathname: location.pathname });
 

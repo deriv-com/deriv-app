@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon, Popover } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { useFeatureFlags } from '@deriv/hooks';
+import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
 import { useLocalStorage } from 'usehooks-ts';
 
 const TradersHubOnboarding = observer(() => {
@@ -10,18 +10,20 @@ const TradersHubOnboarding = observer(() => {
     const { setIsFirstTimeVisit, toggleIsTourOpen, is_tour_open } = traders_hub;
     const { is_dark_mode_on, is_mobile } = ui;
     const { is_next_wallet_enabled } = useFeatureFlags();
+    const { has_wallet } = useStoreWalletAccountsList();
     const [, setWalletsOnboarding] = useLocalStorage('walletsOnboarding', '');
 
-    const onClickHandler = is_next_wallet_enabled
-        ? () => {
-              setWalletsOnboarding('started');
-          }
-        : () => {
-              if (!is_tour_open) {
-                  toggleIsTourOpen(true);
+    const onClickHandler =
+        has_wallet || is_next_wallet_enabled
+            ? () => {
+                  setWalletsOnboarding('started');
               }
-              setIsFirstTimeVisit(false);
-          };
+            : () => {
+                  if (!is_tour_open) {
+                      toggleIsTourOpen(true);
+                  }
+                  setIsFirstTimeVisit(false);
+              };
 
     return (
         <div data-testid='dt_traders_hub_onboarding'>

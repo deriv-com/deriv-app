@@ -15,9 +15,8 @@ jest.mock('../traders-hub-onboarding', () =>
 );
 
 jest.mock('@deriv/hooks', () => ({
-    useFeatureFlags: () => ({
-        is_next_wallet_enabled: false,
-    }),
+    useFeatureFlags: jest.fn(() => ({ is_next_wallet_enabled: false })),
+    useStoreWalletAccountsList: jest.fn(() => ({ has_wallet: false })),
 }));
 
 describe('DefaultMobileLinks', () => {

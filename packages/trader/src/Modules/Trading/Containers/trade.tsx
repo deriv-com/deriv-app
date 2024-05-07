@@ -80,6 +80,7 @@ const Trade = observer(() => {
     const [swipe_index, setSwipeIndex] = React.useState<number | undefined>(0);
     const [shouldShowPortraitLoader, setShouldShowPortraitLoader] = React.useState(false);
     const rotateTimeout = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+    const portraitLoaderTimeout = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const should_elevate_navigation =
         is_trade_params_expanded &&
@@ -101,7 +102,7 @@ const Trade = observer(() => {
             if (!is_chart_loading && !should_show_active_symbols_loading) {
                 rotateTimeout.current = setTimeout(() => {
                     html?.classList.add('tablet-landscape');
-                    setTimeout(() => {
+                    portraitLoaderTimeout.current = setTimeout(() => {
                         setShouldShowPortraitLoader(false);
                     }, 600);
                 }, 500);
@@ -112,6 +113,9 @@ const Trade = observer(() => {
             html?.classList.remove('tablet-landscape');
             if (rotateTimeout.current) {
                 clearTimeout(rotateTimeout.current);
+            }
+            if (portraitLoaderTimeout.current) {
+                clearTimeout(portraitLoaderTimeout.current);
             }
         };
     }, [isTabletPortrait, is_chart_loading, should_show_active_symbols_loading]);

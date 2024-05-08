@@ -139,7 +139,10 @@ const Redirect = observer(() => {
                 }
             }
 
-            setResetTradingPasswordModalOpen(true);
+            // The if statement is needed because the modal from core is triggered by the stores.
+            // Whereas the one in wallet is triggered by the hooks.
+            // This is to prevent the modal from being triggered twice.
+            if (!routes.wallets) setResetTradingPasswordModalOpen(true);
             break;
         }
         case 'payment_withdraw': {

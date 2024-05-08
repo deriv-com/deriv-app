@@ -43,7 +43,13 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
 
     useEffect(() => {
         if (formError) {
-            formikRef.current?.setErrors({ currentPassword: formError.error?.message });
+            // eslint-disable-next-line no-console
+            console.log('==>', formError.error);
+            if (formError.error.code === 'PasswordError') {
+                formikRef.current?.setErrors({ currentPassword: formError.error?.message });
+            } else {
+                formikRef.current?.setErrors({ newPassword: formError.error?.message });
+            }
         }
     }, [formError]);
 
@@ -107,6 +113,8 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
                                         name='newPassword'
                                         onChange={handleChange}
                                         password={values.newPassword}
+                                        passwordError={!!errors?.newPassword}
+                                        serverErrorMessage={errors?.newPassword}
                                     />
                                 </div>
                                 <ul className='wallets-mt5-reset__requirements'>

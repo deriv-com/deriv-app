@@ -12,7 +12,6 @@ import {
     useOnrampVisible,
     usePaymentAgentTransferVisible,
     useP2PSettings,
-    useStoreWalletAccountsList,
 } from '@deriv/hooks';
 import { getOSNameWithUAParser, getStaticUrl, routes, useIsMounted, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -40,6 +39,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     } = ui;
     const {
         account_status,
+        has_wallet,
         is_logged_in,
         is_logging_in,
         is_virtual,
@@ -63,7 +63,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const { is_p2p_enabled } = useIsP2PEnabled();
     const { is_next_wallet_enabled } = useFeatureFlags();
-    const { has_wallet } = useStoreWalletAccountsList();
 
     const { pathname: route } = useLocation();
 

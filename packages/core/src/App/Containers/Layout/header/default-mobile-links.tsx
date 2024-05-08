@@ -1,14 +1,15 @@
 import React from 'react';
 
 import { Button, Icon } from '@deriv/components';
+import { useFeatureFlags } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 
 import { BinaryLink } from 'App/Components/Routes';
 
 import ShowNotifications from './show-notifications';
 import TradersHubOnboarding from './traders-hub-onboarding';
-import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
 
 type TDefaultMobileLinks = {
     handleClickCashier: () => void;
@@ -16,7 +17,9 @@ type TDefaultMobileLinks = {
 
 const DefaultMobileLinks = React.memo(({ handleClickCashier }: TDefaultMobileLinks) => {
     const { is_next_wallet_enabled } = useFeatureFlags();
-    const { has_wallet } = useStoreWalletAccountsList();
+    const { client } = useStore();
+    const { has_wallet } = client;
+
     return (
         <React.Fragment>
             <div className='traders-hub-header__menu-right--items--onboarding'>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
+import { useReadLocalStorage } from 'usehooks-ts';
+import { useFeatureFlags } from '@deriv/hooks';
 import { makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useReadLocalStorage } from 'usehooks-ts';
 
 const HeaderFallback = () => <div className='header' />;
 
@@ -40,7 +40,7 @@ const TradersHubHeaderWallets = makeLazyLoader(
 
 const Header = observer(() => {
     const { client } = useStore();
-    const { accounts, is_logged_in, setAccounts, loginid, switchAccount } = client;
+    const { accounts, has_wallet, is_logged_in, setAccounts, loginid, switchAccount } = client;
     const { pathname } = useLocation();
 
     const is_wallets_cashier_route = pathname.includes(routes.wallets_cashier);
@@ -61,7 +61,6 @@ const Header = observer(() => {
 
     const client_accounts = useReadLocalStorage('client.accounts');
     const { is_next_wallet_enabled } = useFeatureFlags();
-    const { has_wallet } = useStoreWalletAccountsList();
     const should_show_wallets = has_wallet || is_next_wallet_enabled;
 
     React.useEffect(() => {

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, useHistory } from 'react-router-dom';
-import { useStoreWalletAccountsList } from '@deriv/hooks';
 import { loginUrl, routes, redirectToLogin, SessionStore, PlatformContext } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
@@ -11,9 +10,9 @@ import { Analytics } from '@deriv-com/analytics';
 const Redirect = observer(() => {
     const history = useHistory();
     const { client, ui } = useStore();
-    const { has_wallet } = useStoreWalletAccountsList();
 
-    const { currency, is_logged_in, is_logging_in, setNewEmail, setVerificationCode, verification_code } = client;
+    const { currency, has_wallet, is_logged_in, is_logging_in, setNewEmail, setVerificationCode, verification_code } =
+        client;
 
     const {
         openRealAccountSignup,

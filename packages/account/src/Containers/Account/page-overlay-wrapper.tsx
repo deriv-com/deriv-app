@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Analytics } from '@deriv-com/analytics';
 import { PageOverlay, VerticalTab } from '@deriv/components';
-import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
+import { useFeatureFlags } from '@deriv/hooks';
 import { getOSNameWithUAParser, getSelectedRoute, getStaticUrl, routes as shared_routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
@@ -25,9 +25,8 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const history = useHistory();
     const { client, common, ui } = useStore();
     const { is_mobile } = ui;
-    const { logout } = client;
+    const { has_wallet, logout } = client;
     const { is_from_derivgo } = common;
-    const { has_wallet } = useStoreWalletAccountsList();
     const { is_next_wallet_enabled } = useFeatureFlags();
 
     const passkeysMenuCloseActionEventTrack = React.useCallback(() => {

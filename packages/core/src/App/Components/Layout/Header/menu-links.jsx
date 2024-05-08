@@ -5,12 +5,7 @@ import { BinaryLink } from '../../Routes';
 import { observer, useStore } from '@deriv/stores';
 import { routes, startPerformanceEventTimer } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import {
-    useP2PNotificationCount,
-    useIsRealAccountNeededForCashier,
-    useFeatureFlags,
-    useStoreWalletAccountsList,
-} from '@deriv/hooks';
+import { useP2PNotificationCount, useIsRealAccountNeededForCashier, useFeatureFlags } from '@deriv/hooks';
 import './menu-links.scss';
 import { useHistory } from 'react-router';
 
@@ -96,10 +91,9 @@ const CashierTab = observer(() => {
 const MenuLinks = observer(({ is_traders_hub_routes = false }) => {
     const { i18n } = useTranslation();
     const { client, ui } = useStore();
-    const { is_logged_in } = client;
+    const { has_wallet, is_logged_in } = client;
     const { is_mobile } = ui;
     const { is_next_wallet_enabled } = useFeatureFlags();
-    const { has_wallet } = useStoreWalletAccountsList();
 
     if (!is_logged_in) return <></>;
 

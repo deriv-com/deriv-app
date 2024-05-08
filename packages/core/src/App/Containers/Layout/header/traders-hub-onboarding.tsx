@@ -1,16 +1,16 @@
 import React from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 import { Icon, Popover } from '@deriv/components';
+import { useFeatureFlags } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
-import { useLocalStorage } from 'usehooks-ts';
 
 const TradersHubOnboarding = observer(() => {
-    const { traders_hub, ui } = useStore();
+    const { client, traders_hub, ui } = useStore();
+    const { has_wallet } = client;
     const { setIsFirstTimeVisit, toggleIsTourOpen, is_tour_open } = traders_hub;
     const { is_dark_mode_on, is_mobile } = ui;
     const { is_next_wallet_enabled } = useFeatureFlags();
-    const { has_wallet } = useStoreWalletAccountsList();
     const [, setWalletsOnboarding] = useLocalStorage('walletsOnboarding', '');
 
     const onClickHandler =

@@ -2,19 +2,19 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
+import { useFeatureFlags } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
 
 const TradersHubHomeButton = observer(() => {
-    const { ui } = useStore();
+    const { client, ui } = useStore();
+    const { has_wallet } = client;
     const { is_dark_mode_on } = ui;
     const history = useHistory();
     const location = useLocation();
     const { pathname } = location;
     const { is_next_tradershub_enabled, is_next_wallet_enabled } = useFeatureFlags();
-    const { has_wallet } = useStoreWalletAccountsList();
 
     let TradersHubIcon;
     if (has_wallet || is_next_wallet_enabled) {

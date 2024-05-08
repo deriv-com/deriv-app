@@ -4,11 +4,11 @@ import { LabelPairedArrowLeftCaptionFillIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import ConfirmPhoneNumber from './confirm-phone-number';
-import ConfirmYourEmail from './confirm-your-email';
+import OTPVerification from './otp-verification';
 import CancelPhoneVerificationModal from './cancel-phone-verification-modal';
 
 const PhoneVerificationPage = () => {
-    const [show_email_verification, shouldShowEmailVerification] = React.useState(true);
+    const [otp_verification, setOtpVerification] = React.useState({ show: true, phone_verification_type: '' });
     const [should_show_cancel_verification_modal, setShouldShowCancelVerificationModal] = React.useState(false);
     const handleBackButton = () => {
         setShouldShowCancelVerificationModal(true);
@@ -32,7 +32,11 @@ const PhoneVerificationPage = () => {
                     <Localize i18n_default_text='Phone number verification' />
                 </Text>
             </div>
-            {show_email_verification ? <ConfirmYourEmail /> : <ConfirmPhoneNumber />}
+            {otp_verification.show ? (
+                <OTPVerification phone_verification_type={otp_verification.phone_verification_type} />
+            ) : (
+                <ConfirmPhoneNumber setOtpVerification={setOtpVerification} />
+            )}
         </div>
     );
 };

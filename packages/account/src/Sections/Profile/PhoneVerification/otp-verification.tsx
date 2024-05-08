@@ -5,13 +5,18 @@ import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { Input } from '@deriv/components';
 
-const ConfirmYourEmail = observer(() => {
+type TOTPVerification = {
+    phone_verification_type: string;
+};
+
+const OTPVerification = observer(({ phone_verification_type }: TOTPVerification) => {
     const [timer, setTimer] = React.useState(60);
     const [startTimer, setStartTimer] = React.useState(false);
 
     const { client } = useStore();
     const { account_settings } = client;
-    const { email } = account_settings;
+    const { email, phone_number_verification, phone } = account_settings;
+    const is_email_verified = phone_number_verification?.verified;
 
     const resendCodeText = useRef('Resend code');
 
@@ -38,19 +43,32 @@ const ConfirmYourEmail = observer(() => {
     return (
         <PhoneVerificationCard is_small_card>
             <Text bold>
-                <Localize i18n_default_text="Confirm it's you" />
+                {is_email_verified ? (
+                    <Localize i18n_default_text='Verify your number' />
+                ) : (
+                    <Localize i18n_default_text="Confirm it's you" />
+                )}
             </Text>
             <div className='phone-verification__card--email-verification-content'>
                 <Text size='sm'>
-                    <Localize
-                        i18n_default_text="We've sent a verification code to <0>{{users_email}}</0>."
-                        values={{ users_email: email }}
-                        components={[<strong key={0} />]}
-                    />
+                    {is_email_verified ? (
+                        <Localize
+                            i18n_default_text='Enter the 6-digit code sent to you via {{phone_verification_type}} at {{users_phone_number}}:'
+                            values={{ phone_verification_type, users_phone_number: phone }}
+                        />
+                    ) : (
+                        <Localize
+                            i18n_default_text="We've sent a verification code to <0>{{users_email}}</0>."
+                            values={{ users_email: email }}
+                            components={[<strong key={0} />]}
+                        />
+                    )}
                 </Text>
-                <Text size='sm'>
-                    <Localize i18n_default_text='Enter the code or click the link in the email to verify that the account belongs to you.' />
-                </Text>
+                {!is_email_verified && (
+                    <Text size='sm'>
+                        <Localize i18n_default_text='Enter the code or click the link in the email to verify that the account belongs to you.' />
+                    </Text>
+                )}
             </div>
             <div className='phone-verification__card--email-verification-otp-container'>
                 <Input id='otp_code' type='text' name='otp_code' label={localize('OTP code')} data-lpignore='true' />
@@ -64,4 +82,4 @@ const ConfirmYourEmail = observer(() => {
     );
 });
 
-export default ConfirmYourEmail;
+export default OTPVerification;

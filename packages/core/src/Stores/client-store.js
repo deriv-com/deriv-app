@@ -621,10 +621,6 @@ export default class ClientStore extends BaseStore {
         return this.dxtrade_accounts_list.some(account => account.account_type === 'real');
     }
 
-    get has_real_ctrader_login() {
-        return this.ctrader_accounts_list.some(account => account.account_type === 'real');
-    }
-
     hasAccountErrorInCFDList = (platform, account_type) => {
         if (!this.is_logged_in) return false;
         let list;
@@ -1467,12 +1463,6 @@ export default class ClientStore extends BaseStore {
     isAccountOfTypeDisabled = type => {
         const filtered_list = this.account_list.filter(acc => getClientAccountType(acc.loginid) === type);
         return filtered_list.length > 0 && filtered_list.every(acc => acc.is_disabled);
-    };
-
-    shouldCompleteTax = () => {
-        if (!this.isAccountOfType('financial')) return false;
-
-        return !/crs_tin_information/.test((this.account_status || {})?.status);
     };
 
     updateAccountList(account_list) {

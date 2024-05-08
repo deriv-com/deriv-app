@@ -172,7 +172,7 @@ const ApiToken = ({ is_app_settings, setIsOverlayShown }: TApiToken) => {
         }, 500);
     };
 
-    const { api_tokens, is_loading, is_success, error_message, is_overlay_shown } = state;
+    const { api_tokens, is_loading, is_success, error_message } = state;
 
     if (is_loading || is_switching) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;

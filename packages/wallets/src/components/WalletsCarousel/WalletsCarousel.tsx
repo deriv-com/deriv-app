@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { AccountsList } from '../AccountsList';
-import { WalletText } from '../Base';
 import { WalletsCarouselContent } from '../WalletsCarouselContent';
 import { WalletsCarouselHeader } from '../WalletsCarouselHeader';
 import './WalletsCarousel.scss';
 
 const WalletsCarousel: React.FC = () => {
     const [isWalletSettled, setIsWalletSettled] = useState(true);
-    const [hideWalletsCarouselHeader, setHideWalletsCarouselHeader] = useState(false);
+    const [hideWalletsCarouselHeader, setHideWalletsCarouselHeader] = useState(true);
     const contentRef = useRef(null);
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
 
@@ -38,7 +37,7 @@ const WalletsCarousel: React.FC = () => {
     }, []);
 
     return (
-        <React.Fragment>
+        <div className='wallets-carousel'>
             {!isActiveWalletLoading && (
                 <WalletsCarouselHeader
                     balance={activeWallet?.display_balance}
@@ -47,18 +46,11 @@ const WalletsCarousel: React.FC = () => {
                     isDemo={activeWallet?.is_virtual}
                 />
             )}
-            <div className='wallets-carousel'>
-                <div className='wallets-carousel__header'>
-                    <WalletText size='xl' weight='bold'>
-                        Trader&apos;s Hub
-                    </WalletText>
-                </div>
-                <div ref={contentRef}>
-                    <WalletsCarouselContent onWalletSettled={setIsWalletSettled} />
-                </div>
-                <AccountsList isWalletSettled={isWalletSettled} />
+            <div ref={contentRef}>
+                <WalletsCarouselContent onWalletSettled={setIsWalletSettled} />
             </div>
-        </React.Fragment>
+            <AccountsList isWalletSettled={isWalletSettled} />
+        </div>
     );
 };
 

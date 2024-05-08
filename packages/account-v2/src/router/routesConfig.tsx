@@ -1,10 +1,18 @@
 import { ACCOUNT_V2_ROUTES } from '../constants/routes';
 import { PersonalDetailsForm } from '../containers/PersonalDetailsForm';
+import { ProofOfIncomeForm } from '../containers/ProofOfIncome';
 import { TradingAssessmentForm } from '../containers/TradingAssessmentForm';
 import { FinancialAssessmentForm } from '../modules/src/FinancialAssessment/FinancialAssessmentForm';
 import { POAFormContainer } from '../modules/src/POAForm/POAFormContainer';
 import { ProofOfIdentity } from '../modules/src/POI/POI';
-import { AccountClosure, ConnectedApps, LoginHistory, ProofOfOwnership, TwoFactorAuthentication } from '../pages';
+import {
+    AccountClosure,
+    AccountLimits,
+    ConnectedApps,
+    LoginHistory,
+    ProofOfOwnership,
+    TwoFactorAuthentication,
+} from '../pages';
 import { DummyRoute } from './components/DummyRoute/DummyRoute';
 
 export const routes = [
@@ -44,7 +52,7 @@ export const routes = [
         routePath: ACCOUNT_V2_ROUTES.ProofOfOwnership,
     },
     {
-        routeComponent: DummyRoute,
+        routeComponent: ProofOfIncomeForm,
         routeName: 'Proof of income',
         routePath: ACCOUNT_V2_ROUTES.ProofOfIncome,
     },
@@ -59,7 +67,7 @@ export const routes = [
         routePath: ACCOUNT_V2_ROUTES.SelfExclusion,
     },
     {
-        routeComponent: DummyRoute,
+        routeComponent: AccountLimits,
         routeName: 'Account limits',
         routePath: ACCOUNT_V2_ROUTES.AccountLimits,
     },

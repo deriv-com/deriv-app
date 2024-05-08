@@ -1,9 +1,9 @@
 import React, { Fragment, useState } from 'react';
 import { Trans } from 'react-i18next';
+import { LegacyArrowRight2pxIcon } from '@deriv/quill-icons';
 import { SentEmailContent } from '../../../../components';
 import { Tab, Tabs, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
-import IcBackArrow from '../../../../public/images/ic-back-arrow.svg';
 import { PlatformDetails } from '../../constants';
 import MT5ChangeInvestorPasswordScreens from './InvestorPassword/MT5ChangeInvestorPasswordScreens';
 import TradingPlatformChangePasswordScreens from './TradingPlatformChangePasswordScreens';
@@ -31,7 +31,7 @@ const MT5ChangePasswordScreens = () => {
                     }
                 }}
             >
-                <IcBackArrow />
+                <LegacyArrowRight2pxIcon iconSize='xs' />
                 <WalletText weight='bold'>
                     <Trans defaults='Back' />
                 </WalletText>

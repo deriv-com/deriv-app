@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 import DerivXPasswordIcon from '@/assets/svgs/ic-derivx-password-updated.svg';
 import MT5PasswordIcon from '@/assets/svgs/ic-mt5-password.svg';
 import { ActionScreen, SentEmailContent } from '@/components';
-import { useQueryParams } from '@/hooks';
+import { useHandleSendEmail, useQueryParams } from '@/hooks';
 import { useCFDContext } from '@/providers';
 import { TPlatforms } from '@/types';
-import { platformPasswordResetRedirectLink } from '@/utils';
 import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
-import { useActiveTradingAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
 
 type TradingPlatformChangePasswordScreensProps = {
@@ -20,26 +18,12 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
     const handleClick = (nextScreen: TChangePasswordScreenIndex) => setActiveScreen(nextScreen);
 
     const { closeModal } = useQueryParams();
-    const { data } = useSettings();
-    const { mutate } = useVerifyEmail();
-    const { data: activeTrading } = useActiveTradingAccount();
     const { setCfdState } = useCFDContext();
+    const { handleSendEmail } = useHandleSendEmail();
 
     const { title } = PlatformDetails[platform];
 
     const isDerivX = platform === CFDPlatforms.DXTRADE;
-
-    const handleSendEmail = async () => {
-        if (data.email) {
-            await mutate({
-                type: isDerivX ? 'trading_platform_dxtrade_password_reset' : 'trading_platform_mt5_password_reset',
-                url_parameters: {
-                    redirect_to: platformPasswordResetRedirectLink(platform, activeTrading?.is_virtual),
-                },
-                verify_email: data.email,
-            });
-        }
-    };
 
     const ChangePasswordScreens = {
         confirmationScreen: {

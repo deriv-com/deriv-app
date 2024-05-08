@@ -1,4 +1,5 @@
 import { useGetAccountStatus, useKycAuthStatus, useSettings } from '@deriv/api-v2';
+import { CurrencyConstants } from '@deriv-com/utils';
 import {
     AUTH_STATUS_CODES,
     getPaymentMethodsConfig,
@@ -28,11 +29,13 @@ export type TAuthStatusCodes = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS
 
 export type TPaymentMethod = keyof ReturnType<typeof getPaymentMethodsConfig>;
 
-export type TPaymentMethodIdentifier = typeof PAYMENT_METHOD_IDENTIFIER[keyof typeof PAYMENT_METHOD_IDENTIFIER];
+export type TPaymentMethodIdentifier =
+    | typeof PAYMENT_METHOD_IDENTIFIER[keyof typeof PAYMENT_METHOD_IDENTIFIER]
+    | 'none';
 
 export type TPaymentMethodInfo = {
     documentsRequired?: number;
-    identifier: TPaymentMethodIdentifier | 'none';
+    identifier: TPaymentMethodIdentifier;
     inputLabel: string | null;
     isGenericPM: boolean;
     items: Exclude<
@@ -62,3 +65,15 @@ export type TProofOfOwnershipFormValue = Record<TPaymentMethod, Record<number | 
 export type TPOIService = typeof POI_SERVICE[keyof typeof POI_SERVICE];
 
 export type TIDVErrorStatusCode = typeof IDV_ERROR_CODES[keyof typeof IDV_ERROR_CODES]['code'];
+
+export type TAccountLimitValues = {
+    category?: string;
+    hintInfo?: string;
+    isLessProminent?: boolean;
+    title?: string;
+    value?: number | string;
+};
+
+export type TCurrency = CurrencyConstants.Currency;
+
+export type TProofOfOwnershipErrors = Record<TPaymentMethod, { files?: string[]; paymentMethodIdentifier?: string }[]>;

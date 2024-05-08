@@ -119,17 +119,7 @@ const CurrencyDisplay = ({ country_standpoint, currency, loginid, is_virtual }) 
     const account_type = loginid.replace(/\d/g, '');
 
     if (user_is_from_this_country_list) {
-        if (account_type === 'MLT') {
-            return <Localize i18n_default_text='Options' />;
-        } else if (account_type === 'MX') {
-            if (country_standpoint.is_united_kingdom) {
-                return <Localize i18n_default_text='Gaming' />;
-            }
-            if (country_standpoint.is_isle_of_man) {
-                return getCurrencyName(currency);
-            }
-            return <Localize i18n_default_text='Synthetic' />;
-        } else if (account_type === 'MF') {
+        if (account_type === 'MF') {
             return <Localize i18n_default_text='Multipliers' />;
         }
     }

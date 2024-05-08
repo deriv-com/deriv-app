@@ -8,18 +8,41 @@ import { Localize } from '@deriv/translations';
 
 const MT5MobileRedirectOption = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => {
     const mobileURLSet = async () => {
-        window.location.replace(getDeeplinkUrl({ mt5_trade_account }));
-        const mobileAppURL = await getMobileAppInstallerUrl({ mt5_trade_account });
+        // FIRST immediately check if iOS / isSafari
         const os = await mobileOSDetectAsync();
 
-        const timeout = setTimeout(() => {
-            mobileAppURL && window.location.replace(mobileAppURL);
-        }, 1500);
+        // Normal flow with NO popup for Android / Huawei
+        if (os !== 'iOS') {
+            window.location.replace(getDeeplinkUrl({ mt5_trade_account }));
+            const mobileAppURL = await getMobileAppInstallerUrl({ mt5_trade_account });
 
-        if (!isSafariBrowser() || (os === 'iOS' && /Version\/17/.test(navigator.userAgent))) {
+            const timeout = setTimeout(() => {
+                mobileAppURL && window.location.replace(mobileAppURL);
+            }, 1500);
+
             window.onblur = () => {
                 clearTimeout(timeout);
             };
+        } else {
+            window.location.replace(getDeeplinkUrl({ mt5_trade_account }));
+            const mobileAppURL = await getMobileAppInstallerUrl({ mt5_trade_account });
+
+            const timeout = setTimeout(() => {
+                mobileAppURL && window.location.replace(mobileAppURL);
+            }, 1500);
+
+            document.addEventListener('visibilitychange', function () {
+                if (document.hidden) {
+                    // The page is not visible, clear the timeout
+                    clearTimeout(timeout);
+                }
+                // else {
+                //     // The page is visible again, set a new timeout
+                //     timeout = setTimeout(() => {
+                //         mobileAppURL && window.location.replace(mobileAppURL);
+                //     }, 1500);
+                // }
+            });
         }
     };
 

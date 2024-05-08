@@ -9,11 +9,13 @@ import PasskeysList from './components/passkeys-list';
 import PasskeyModal from './components/passkey-modal';
 import {
     getModalContent,
+    NOT_SUPPORTED_ERROR_NAME,
     PASSKEY_STATUS_CODES,
     passkeysMenuActionEventTrack,
     TPasskeysStatus,
 } from './passkeys-configs';
 import './passkeys.scss';
+import { TServerError } from '../../../Types/common.type';
 
 const Passkeys = observer(() => {
     const { ui, client, common } = useStore();
@@ -24,7 +26,7 @@ const Passkeys = observer(() => {
 
     const [passkey_status, setPasskeyStatus] = React.useState<TPasskeysStatus>(PASSKEY_STATUS_CODES.NONE);
     const [is_modal_open, setIsModalOpen] = React.useState(false);
-    const { passkeys_list, is_passkeys_list_loading, passkeys_list_error } = useGetPasskeysList();
+    const { passkeys_list, is_passkeys_list_loading, passkeys_list_error, reloadPasskeysList } = useGetPasskeysList();
     const {
         cancelPasskeyRegistration,
         createPasskey,

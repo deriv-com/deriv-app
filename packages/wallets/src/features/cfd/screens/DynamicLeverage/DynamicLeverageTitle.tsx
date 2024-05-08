@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
+import { LegacyArrowRight2pxIcon } from '@deriv/quill-icons';
 import { WalletText } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
-import BackArrow from '../../../../public/images/ic-back-arrow.svg';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
 import './DynamicLeverageTitle.scss';
 
@@ -12,9 +12,10 @@ export const DynamicLeverageTitle: FC = () => {
 
     return (
         <div className='wallets-dynamic-leverage-screen__title'>
-            <BackArrow
+            <LegacyArrowRight2pxIcon
                 className='wallets-dynamic-leverage-screen__title-back'
                 data-testid='back_icon'
+                iconSize='xs'
                 onClick={toggleDynamicLeverage}
             />
             <WalletText color='prominent' size={isMobile ? 'sm' : 'md'} weight='bold'>

@@ -62,10 +62,11 @@ const TradersHub = observer(() => {
         if (!has_active_real_account && is_from_signup_account && is_logged_in) {
             if (direct_to_real_account_creation && is_cr_demo) {
                 openRealAccountSignup('svg');
+                setIsFromSignupAccount(false);
             } else if (is_eu_demo) {
                 openRealAccountSignup('maltainvest');
+                setIsFromSignupAccount(false);
             }
-            setIsFromSignupAccount(false);
         }
     }, [
         is_cr_demo,

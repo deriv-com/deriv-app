@@ -79,7 +79,7 @@ const CurrencySelector = observer(
         has_wallet_account,
         value,
     }: TCurrencySelector) => {
-        const { client, ui, traders_hub } = useStore();
+        const { client, ui } = useStore();
 
         const {
             currency,

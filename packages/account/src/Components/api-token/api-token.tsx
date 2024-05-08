@@ -8,8 +8,6 @@ import { localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import ApiTokenArticle from './api-token-article';
 import ApiTokenCard from './api-token-card';
-import ApiTokenFooter from './api-token-footer';
-import ApiTokenOverlay from './api-token-overlay';
 import ApiTokenTable from './api-token-table';
 import ApiTokenContext from './api-token-context';
 import { TToken } from 'Types';
@@ -31,19 +29,12 @@ type AptTokenState = {
 };
 
 export type TApiToken = {
-    footer_ref: Element | DocumentFragment | undefined;
     is_app_settings: boolean;
-    overlay_ref:
-        | undefined
-        | ((...args: unknown[]) => unknown)
-        | import('prop-types').InferProps<{
-              current: import('prop-types').Requireable<unknown>;
-          }>;
     setIsOverlayShown: (is_overlay_shown: boolean | undefined) => void;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
 };
 
-const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown }: TApiToken) => {
+const ApiToken = ({ is_app_settings, setIsOverlayShown }: TApiToken) => {
     const { client } = useStore();
     const { is_switching } = client;
     const isMounted = useIsMounted();
@@ -195,8 +186,6 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
         api_tokens,
         toggleOverlay,
         deleteToken,
-        footer_ref,
-        overlay_ref,
     };
 
     return (
@@ -349,8 +338,6 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
                         {!is_app_settings && isDesktop() && <ApiTokenArticle />}
                     </div>
                 </section>
-                {footer_ref && <ApiTokenFooter />}
-                {overlay_ref && is_overlay_shown && <ApiTokenOverlay />}
             </ApiTokenContext.Provider>
         </React.Fragment>
     );

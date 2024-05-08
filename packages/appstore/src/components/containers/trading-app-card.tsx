@@ -17,7 +17,6 @@ import { useActiveWallet } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import {
     CFD_PLATFORMS,
-    ContentFlag,
     getStaticUrl,
     getUrlSmartTrader,
     getUrlBinaryBot,

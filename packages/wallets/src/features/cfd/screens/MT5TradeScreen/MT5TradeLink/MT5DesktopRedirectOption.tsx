@@ -12,12 +12,12 @@ type TMT5DesktopRedirectOptionProps = {
 };
 
 const MT5DesktopRedirectOption: FC<TMT5DesktopRedirectOptionProps> = () => {
+ const apps = ['windows', 'macos', 'linux'];
+ 
     return (
-        <Fragment>
-            <MT5TradeLink app='windows' platform={CFD_PLATFORMS.MT5} />
-            <MT5TradeLink app='macos' platform={CFD_PLATFORMS.MT5} />
-            <MT5TradeLink app='linux' platform={CFD_PLATFORMS.MT5} />
-        </Fragment>
+            {apps.map(app => (
+                <MT5TradeLink key={app} app={app} platform={CFD_PLATFORMS.MT5} />
+            ))}
     );
 };
 

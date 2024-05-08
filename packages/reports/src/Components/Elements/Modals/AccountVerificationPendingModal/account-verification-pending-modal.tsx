@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 
 type TAccountVerificationPendingModalProps = {
     is_visible: boolean;
@@ -11,7 +11,7 @@ const AccountVerificationPendingModal = ({ is_visible, onConfirm }: TAccountVeri
     <Modal
         small
         is_open={is_visible}
-        title={localize('Pending verification')}
+        title={<Localize i18n_default_text='Pending verification' />}
         toggleModal={onConfirm}
         className='account-verification-pending-modal'
     >

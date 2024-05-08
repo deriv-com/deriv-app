@@ -17,7 +17,7 @@ const MarketUnavailableModal = observer(({ is_loading, onCancel, onConfirm }: TM
     return (
         <Dialog
             className='market-unavailable-modal'
-            title={localize('We’re working on it')}
+            title={<Localize i18n_default_text='We’re working on it' />}
             confirm_button_text={localize('Stay on {{platform_name_trader}}', {
                 platform_name_trader: getPlatformSettings('trader').name,
             })}

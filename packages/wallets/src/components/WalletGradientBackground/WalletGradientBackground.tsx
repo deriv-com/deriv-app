@@ -6,7 +6,7 @@ import './WalletGradientBackground.scss';
 type TProps = {
     bodyClassName?: string;
     children: React.ReactNode;
-    currency: THooks.WalletAccountsList['wallet_currency_type'] | undefined;
+    currency?: THooks.WalletAccountsList['wallet_currency_type'];
     device?: 'desktop' | 'mobile';
     hasShine?: boolean;
     isDemo?: THooks.WalletAccountsList['is_virtual'];

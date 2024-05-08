@@ -2200,7 +2200,7 @@ export default class ClientStore extends BaseStore {
             const redirect_url = sessionStorage.getItem('redirect_url');
             const is_next_wallet_enabled = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
 
-            const target_url = is_next_wallet_enabled ? routes.wallets : routes.traders_hub;
+            const target_url = this.has_wallet || is_next_wallet_enabled ? routes.wallets : routes.traders_hub;
 
             if (
                 (redirect_url?.endsWith('/') ||

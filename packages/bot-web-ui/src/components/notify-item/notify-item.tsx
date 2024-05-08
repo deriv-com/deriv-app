@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, ExpansionPanel, Icon } from '@deriv/components';
 
-export const getIcon = type => {
+export const getIcon = (type: string) => {
     switch (type) {
         case 'error':
             return 'IcAlertDanger';
@@ -14,7 +14,15 @@ export const getIcon = type => {
     }
 };
 
-export const messageWithButton = ({ unique_id, type, message, btn_text, onClick }) => (
+type TMessageWithButton = {
+    unique_id: string;
+    type: string;
+    message: string;
+    btn_text: string;
+    onClick: () => void;
+};
+
+export const messageWithButton = ({ unique_id, type, message, btn_text, onClick }: TMessageWithButton) => (
     <>
         <div key={`${unique_id}_message`} className='notify__item-container'>
             <Icon key={`${unique_id}_icon`} icon={getIcon(type)} size='22' />
@@ -33,7 +41,7 @@ export const messageWithButton = ({ unique_id, type, message, btn_text, onClick 
     </>
 );
 
-export const messageWithImage = (message, image) => (
+export const messageWithImage = (message: string, image: string) => (
     <>
         <div className='notify__item-message'>{message}</div>
         <img src={image} style={{ width: '100%' }} />

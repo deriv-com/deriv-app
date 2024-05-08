@@ -22,18 +22,12 @@ export default class ChartStore {
             chart_type: observable,
             granularity: observable,
             is_contract_ended: computed,
-            onStartBot: action.bound,
-            onStopBot: action.bound,
-            updateSymbol: action.bound,
-            onSymbolChange: action.bound,
-            updateGranularity: action.bound,
-            updateChartType: action.bound,
-            setChartStatus: action.bound,
-            wsSubscribe: action.bound,
-            wsForget: action.bound,
-            wsForgetStream: action.bound,
-            wsSendRequest: action.bound,
-            getMarketsOrder: action.bound,
+            updateSymbol: action,
+            onSymbolChange: action,
+            updateGranularity: action,
+            updateChartType: action,
+            setChartStatus: action,
+            restoreFromStorage: action,
         });
 
         this.root_store = root_store;
@@ -59,21 +53,18 @@ export default class ChartStore {
         return transactions.contracts.length > 0 && transactions.contracts[0].is_ended;
     }
 
-    onStartBot() {
+    onStartBot = () => {
         this.updateSymbol();
-
-        // const { main_content } = this.root_store;
-        // main_content.setActiveTab(tabs_title.CHART);
-    }
+    };
 
     // eslint-disable-next-line
-    onStopBot() {
+    onStopBot = () => {
         // const { main_content } = this.root_store;
         // main_content.setActiveTab(tabs_title.WORKSPACE);
-    }
+    };
 
-    updateSymbol() {
-        const workspace = Blockly.derivWorkspace;
+    updateSymbol = () => {
+        const workspace = window.Blockly.derivWorkspace;
         const market_block = workspace.getAllBlocks().find((block: Blockly.Block) => {
             return block.type === 'trade_definition_market';
         });
@@ -82,28 +73,28 @@ export default class ChartStore {
             const symbol = market_block.getFieldValue('SYMBOL_LIST');
             this.symbol = symbol;
         }
-    }
+    };
 
-    onSymbolChange(symbol: string) {
+    onSymbolChange = (symbol: string) => {
         this.symbol = symbol;
         this.saveToLocalStorage();
-    }
+    };
 
-    updateGranularity(granularity: number) {
+    updateGranularity = (granularity: number) => {
         this.granularity = granularity;
         this.saveToLocalStorage();
-    }
+    };
 
-    updateChartType(chart_type: string) {
+    updateChartType = (chart_type: string) => {
         this.chart_type = chart_type;
         this.saveToLocalStorage();
-    }
+    };
 
-    setChartStatus(status: boolean) {
+    setChartStatus = (status: boolean) => {
         this.is_chart_loading = status;
-    }
+    };
 
-    saveToLocalStorage() {
+    saveToLocalStorage = () => {
         LocalStore.set(
             'bot.chart_props',
             JSON.stringify({
@@ -112,9 +103,9 @@ export default class ChartStore {
                 chart_type: this.chart_type,
             })
         );
-    }
+    };
 
-    restoreFromStorage() {
+    restoreFromStorage = () => {
         try {
             const props = LocalStore.get('bot.chart_props');
 
@@ -130,7 +121,7 @@ export default class ChartStore {
         } catch {
             LocalStore.remove('bot.chart_props');
         }
-    }
+    };
 
     // #region WS
     wsSubscribe = (req: TicksStreamRequest, callback: () => void) => {
@@ -184,5 +175,4 @@ export default class ChartStore {
                 has_synthetic_index ? [synthetic_index] : []
             );
     };
-    // #endregion
 }

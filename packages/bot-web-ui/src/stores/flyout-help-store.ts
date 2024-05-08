@@ -2,9 +2,12 @@ import { action, makeObservable, observable, runInAction } from 'mobx';
 import { config } from '@deriv/bot-skeleton';
 import { help_content_config } from 'Utils/help-content/help-content.config';
 import * as help_strings from 'Utils/help-content/help-strings';
+import RootStore from './root-store';
 
 export default class FlyoutHelpStore {
-    constructor(root_store) {
+    root_store: RootStore;
+
+    constructor(root_store: RootStore) {
         makeObservable(this, {
             block_node: observable,
             block_type: observable,
@@ -48,7 +51,7 @@ export default class FlyoutHelpStore {
 
     setHelpContent = async block_node => {
         const block_type = block_node.getAttribute('type');
-        const title = Blockly.Blocks[block_type].meta().display_name;
+        const title = window.Blockly.Blocks[block_type].meta().display_name;
         if (block_type !== '') {
             this.active_helper = block_type;
         }

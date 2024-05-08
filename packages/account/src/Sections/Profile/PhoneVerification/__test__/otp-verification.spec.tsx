@@ -9,10 +9,10 @@ describe('ConfirmPhoneNumber', () => {
         client: {
             account_settings: {
                 email: 'johndoe@regentmarkets.com',
-                phone_number_verification: {
-                    verified: 0,
-                },
             },
+        },
+        ui: {
+            should_show_phone_number_otp: false,
         },
     });
     let phone_verification_type = 'sms';
@@ -47,7 +47,7 @@ describe('ConfirmPhoneNumber', () => {
     });
 
     it('should render Verify your number in OTP Verification', () => {
-        store.client.account_settings.phone_number_verification.verified = 1;
+        store.ui.should_show_phone_number_otp = true;
         render(
             <StoreProvider store={store}>
                 <OTPVerification phone_verification_type={phone_verification_type} />
@@ -58,7 +58,7 @@ describe('ConfirmPhoneNumber', () => {
     });
 
     it('should render whatsapp when phone_verification_type is whatsapp', () => {
-        store.client.account_settings.phone_number_verification.verified = 1;
+        store.ui.should_show_phone_number_otp = true;
         phone_verification_type = 'whatsapp';
         render(
             <StoreProvider store={store}>

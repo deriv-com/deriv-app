@@ -11,11 +11,13 @@ type TConfirmPhoneNumber = {
 };
 
 const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber) => {
-    const { client } = useStore();
+    const { client, ui } = useStore();
     const { account_settings } = client;
+    const { setShouldShowPhoneNumberOTP } = ui;
     const phoneNumber = account_settings.phone || '';
     const handleSubmit = (phone_verification_type: string) => {
         setOtpVerification({ show: true, phone_verification_type });
+        setShouldShowPhoneNumberOTP(true);
     };
 
     return (

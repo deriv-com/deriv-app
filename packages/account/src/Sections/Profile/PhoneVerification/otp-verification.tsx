@@ -13,10 +13,10 @@ const OTPVerification = observer(({ phone_verification_type }: TOTPVerification)
     const [timer, setTimer] = React.useState(60);
     const [startTimer, setStartTimer] = React.useState(false);
 
-    const { client } = useStore();
+    const { client, ui } = useStore();
     const { account_settings } = client;
-    const { email, phone_number_verification, phone } = account_settings;
-    const is_email_verified = phone_number_verification?.verified;
+    const { email, phone } = account_settings;
+    const { should_show_phone_number_otp } = ui;
 
     const resendCodeText = useRef('Resend code');
 
@@ -43,14 +43,14 @@ const OTPVerification = observer(({ phone_verification_type }: TOTPVerification)
     return (
         <PhoneVerificationCard is_small_card>
             <Text bold>
-                {is_email_verified ? (
+                {should_show_phone_number_otp ? (
                     <Localize i18n_default_text='Verify your number' />
                 ) : (
                     <Localize i18n_default_text="Confirm it's you" />
                 )}
             </Text>
             <div className='phone-verification__card--email-verification-content'>
-                {is_email_verified ? (
+                {should_show_phone_number_otp ? (
                     <Text size='sm'>
                         <Localize
                             i18n_default_text='Enter the 6-digit code sent to you via {{phone_verification_type}} at {{users_phone_number}}:'

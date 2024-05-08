@@ -228,7 +228,7 @@
     }
 
     .dc-dialog__footer {
-        @include mobile {
+        @include mobile-tablet-mix {
             display: flex;
             flex-direction: column;
             height: unset;

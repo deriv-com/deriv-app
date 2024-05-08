@@ -1196,6 +1196,15 @@
             margin-inline: 1.6rem;
         }
     }
+
+    &__inline-message {
+        width: 45%;
+        margin: 1.2rem auto;
+
+        @include mobile {
+            width: 95%;
+        }
+    }
 }
 
 .dc-modal {

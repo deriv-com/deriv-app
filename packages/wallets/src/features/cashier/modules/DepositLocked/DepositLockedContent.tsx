@@ -38,7 +38,7 @@ const getDepositLockedDesc = ({
         <WalletText align='center'>
             <Trans
                 components={components}
-                defaults={`You have reached the withdrawal limit. ${description}`}
+                defaults={unwelcomeStatus ? description : `You have reached the withdrawal limit. ${description}`}
                 values={{ values }}
             />
         </WalletText>

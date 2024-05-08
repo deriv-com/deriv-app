@@ -1,5 +1,5 @@
 import { THooks, TMarketTypes, TWalletLandingCompanyName } from '../../../types';
-import { LandingCompanyDetails, MT5MarketTypeDetails, PlatformDetails, walletIconMapper } from '../constants';
+import { LandingCompanyDetails, MT5MarketTypeDetails, PlatformDetails } from '../constants';
 
 type TGetAccountNameProps = {
     accountCategory: THooks.TransferAccount['account_category'];
@@ -24,10 +24,6 @@ export const getLandingCompanyNameOfMT5Account = (mt5Group?: string) => {
     if (mt5Group?.includes(LandingCompanyDetails.svg.name)) return LandingCompanyDetails.svg.name;
     if (mt5Group?.includes(LandingCompanyDetails.vanuatu.name)) return LandingCompanyDetails.vanuatu.name;
     return LandingCompanyDetails.svg.name;
-};
-
-export const getWalletIcon = (currency: string, isDemo: boolean) => {
-    return isDemo ? walletIconMapper.Demo?.light : walletIconMapper[currency as keyof typeof walletIconMapper]?.light;
 };
 
 export const getTradingAppIcon = (

@@ -24,7 +24,7 @@ const PreferredCountriesSelector = ({ country_list }: TPreferredCountriesSelecto
     const getSelectedCountriesText = () => {
         const eligible_countries = values.eligible_countries;
         if (eligible_countries?.length === countries.length) {
-            return null;
+            return '';
         }
 
         return eligible_countries?.map((value: string) => country_list[value]?.country_name).join(', ');

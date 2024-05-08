@@ -93,7 +93,7 @@ const AdConditionsSection = ({
                         <Text size='xs'>
                             <Localize i18n_default_text="We'll only show your ad to people with a completion rate higher than your selection." />
                         </Text>
-                        <Text as='div' line_height='xxl' size='xs'>
+                        <Text as='div' className='ad-conditions-section__rate' size='xs'>
                             <Localize i18n_default_text='The completion rate is the percentage of successful orders.' />
                         </Text>
                     </>
@@ -115,6 +115,7 @@ const AdConditionsSection = ({
                                     'We’ll only show your ad to people in the countries you choose.'
                                 ),
                                 error_modal_title: localize('Preferred countries'),
+                                has_close_icon: false,
                             },
                         });
                     }}

@@ -50,24 +50,26 @@ const OTPVerification = observer(({ phone_verification_type }: TOTPVerification)
                 )}
             </Text>
             <div className='phone-verification__card--email-verification-content'>
-                <Text size='sm'>
-                    {is_email_verified ? (
+                {is_email_verified ? (
+                    <Text size='sm'>
                         <Localize
                             i18n_default_text='Enter the 6-digit code sent to you via {{phone_verification_type}} at {{users_phone_number}}:'
                             values={{ phone_verification_type, users_phone_number: phone }}
                         />
-                    ) : (
-                        <Localize
-                            i18n_default_text="We've sent a verification code to <0>{{users_email}}</0>."
-                            values={{ users_email: email }}
-                            components={[<strong key={0} />]}
-                        />
-                    )}
-                </Text>
-                {!is_email_verified && (
-                    <Text size='sm'>
-                        <Localize i18n_default_text='Enter the code or click the link in the email to verify that the account belongs to you.' />
                     </Text>
+                ) : (
+                    <React.Fragment>
+                        <Text size='sm'>
+                            <Localize
+                                i18n_default_text="We've sent a verification code to <0>{{users_email}}</0>."
+                                values={{ users_email: email }}
+                                components={[<strong key={0} />]}
+                            />
+                        </Text>
+                        <Text size='sm'>
+                            <Localize i18n_default_text='Enter the code or click the link in the email to verify that the account belongs to you.' />
+                        </Text>
+                    </React.Fragment>
                 )}
             </div>
             <div className='phone-verification__card--email-verification-otp-container'>

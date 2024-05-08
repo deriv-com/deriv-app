@@ -6,7 +6,6 @@ module.exports = {
             files: ['*.ts', '*.mts', '*.cts', '*.tsx'],
             rules: {
                 'no-undef': 'off',
-                'import/namespace': 'off',
             },
         },
     ],

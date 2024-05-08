@@ -113,11 +113,9 @@ const TradersHub = observer(() => {
         );
     };
 
-    const getOrderedPlatformSections = (isDesktop = false) => {
+    const getOrderedPlatformSections = () => {
         if (is_mt5_allowed) {
-            return isDesktop ? (
-                <OrderedPlatformSections />
-            ) : (
+            return (
                 <OrderedPlatformSections
                     is_cfd_visible={selected_platform_type === 'cfd'}
                     is_options_and_multipliers_visible={selected_platform_type === 'options'}
@@ -140,23 +138,30 @@ const TradersHub = observer(() => {
                     ref={traders_hub_ref}
                 >
                     <MainTitleBar />
-                    <DesktopWrapper>{getOrderedPlatformSections(true)}</DesktopWrapper>
+                    <DesktopWrapper>
+                        {!is_landing_company_loaded ? (
+                            <OrderedPlatformSections />
+                        ) : (
+                            <OrderedPlatformSections is_cfd_visible={is_mt5_allowed} />
+                        )}
+                    </DesktopWrapper>
                     <MobileWrapper>
-                        {is_mt5_allowed &&
-                            (is_landing_company_loaded ? (
+                        {is_landing_company_loaded ? (
+                            is_mt5_allowed && (
                                 <ButtonToggle
                                     buttons_arr={is_eu_user ? platform_toggle_options_eu : platform_toggle_options}
                                     className='traders-hub__button-toggle'
                                     has_rounded_button
                                     is_traders_hub={window.location.pathname === routes.traders_hub}
-                                    name='platforn_type'
+                                    name='platform_type'
                                     onChange={platformTypeChange}
                                     value={selected_platform_type}
                                 />
-                            ) : (
-                                <ButtonToggleLoader />
-                            ))}
-                        {!is_mt5_allowed && (
+                            )
+                        ) : (
+                            <ButtonToggleLoader />
+                        )}
+                        {is_landing_company_loaded && !is_mt5_allowed && (
                             <div className='traders-hub--mt5-not-allowed'>
                                 <Text size='s' weight='bold' color='prominent'>
                                     <Localize i18n_default_text='Multipliers' />

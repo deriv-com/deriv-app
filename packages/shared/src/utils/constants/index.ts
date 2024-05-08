@@ -8,3 +8,4 @@ export * from './error';
 export * from './poi-failure-codes';
 export * from './mt5-login-list-status';
 export * from './auth-status-codes';
+export * from './phone-number-verification';

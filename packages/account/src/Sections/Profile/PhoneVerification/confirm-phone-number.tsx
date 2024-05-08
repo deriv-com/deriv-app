@@ -4,6 +4,7 @@ import { Button, Text } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { Input } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+import { VERIFICATION_SERVICES } from '@deriv/shared';
 
 type TConfirmPhoneNumber = {
     setOtpVerification: (value: { show: boolean; phone_verification_type: string }) => void;
@@ -24,12 +25,18 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
             </Text>
             <Input label={localize('Phone number')} value={phoneNumber} />
             <div className='phone-verification__card--buttons_container'>
-                <Button variant='secondary' color='black' fullWidth size='lg' onClick={() => handleSubmit('SMS')}>
+                <Button
+                    variant='secondary'
+                    color='black'
+                    fullWidth
+                    size='lg'
+                    onClick={() => handleSubmit(VERIFICATION_SERVICES.SMS)}
+                >
                     <Text bold>
                         <Localize i18n_default_text='Get code via SMS' />
                     </Text>
                 </Button>
-                <Button color='black' fullWidth size='lg' onClick={() => handleSubmit('WhatsApp')}>
+                <Button color='black' fullWidth size='lg' onClick={() => handleSubmit(VERIFICATION_SERVICES.WHATSAPP)}>
                     <Text color='white' bold>
                         <Localize i18n_default_text='Get code via WhatsApp' />
                     </Text>

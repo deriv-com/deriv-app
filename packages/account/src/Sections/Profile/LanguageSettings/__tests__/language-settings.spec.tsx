@@ -10,14 +10,14 @@ const mockedUseStoreWalletAccountsList = useStoreWalletAccountsList as jest.Mock
     typeof useStoreWalletAccountsList
 >;
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useStoreWalletAccountsList: jest.fn(() => ({ has_wallet: false })),
-}));
-
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isMobile: jest.fn(() => false),
+}));
+
+jest.mock('@deriv/stores', () => ({
+    ...jest.requireActual('@deriv/stores'),
+    useStore: jest.fn(() => ({ client: { has_wallet: false } })),
 }));
 
 jest.mock('@deriv/translations', () => ({

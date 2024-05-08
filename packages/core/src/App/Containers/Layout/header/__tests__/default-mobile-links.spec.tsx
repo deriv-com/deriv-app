@@ -15,8 +15,13 @@ jest.mock('../traders-hub-onboarding', () =>
 );
 
 jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
     useFeatureFlags: jest.fn(() => ({ is_next_wallet_enabled: false })),
-    useStoreWalletAccountsList: jest.fn(() => ({ has_wallet: false })),
+}));
+
+jest.mock('@deriv/stores', () => ({
+    ...jest.requireActual('@deriv/stores'),
+    useStore: jest.fn(() => ({ client: { has_wallet: false } })),
 }));
 
 describe('DefaultMobileLinks', () => {

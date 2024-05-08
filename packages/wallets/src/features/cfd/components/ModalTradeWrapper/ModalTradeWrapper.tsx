@@ -69,19 +69,19 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                                     return null;
                                 })}
                             </div>
-                            {isDesktop && (
-                                <div className='wallets-modal-trade-wrapper__footer-installations-qr'>
-                                    <QRCode size={80} value={link} />
-                                    <WalletText align='center' size='xs'>
-                                        Scan the QR code to download {title}
-                                    </WalletText>
-                                </div>
-                            )}
+
+                            <div className='wallets-modal-trade-wrapper__footer-installations-qr'>
+                                <QRCode size={80} value={link} />
+                                <WalletText align='center' size='xs'>
+                                    Scan the QR code to download {title}
+                                </WalletText>
+                            </div>
                         </div>
                     </div>
                 );
             }}
             shouldFixedFooter={isDesktop}
+            shouldHideFooter={!isDesktop}
             title='Trade'
         >
             {children}

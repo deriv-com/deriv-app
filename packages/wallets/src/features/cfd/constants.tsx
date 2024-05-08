@@ -121,9 +121,22 @@ export const CFD_PLATFORMS = {
     MT5: 'mt5',
 } as const;
 
+export const DESKTOP_PLATFORMS = {
+    LINUX: 'linux',
+    MACOS: 'macos',
+    WINDOWS: 'windows',
+} as const;
+
+export const MOBILE_PLATFORMS = {
+    ANDROID: 'android',
+    HAUWEI: 'huawei',
+    IOS: 'ios',
+} as const;
+
 export const MARKET_TYPE = {
     ALL: 'all',
     FINANCIAL: 'financial',
+    GAMING: 'gaming',
     SYNTHETIC: 'synthetic',
 } as const;
 

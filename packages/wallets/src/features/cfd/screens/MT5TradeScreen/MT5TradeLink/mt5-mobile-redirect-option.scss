@@ -1,0 +1,32 @@
+.wallets-mobile-redirect-option {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 2.4rem;
+    gap: 1rem;
+
+    &__button,
+    a {
+        border: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-decoration: none;
+        outline: none;
+        height: 3.4rem;
+        padding: 0.8rem;
+        border-radius: 0.8rem;
+        width: 100%;
+        gap: 0.5rem;
+        background-color: var(--general-section-4);
+
+        &--blue {
+            background-color: #0364b9;
+        }
+
+        &__content {
+            flex: 1;
+            text-align: left;
+        }
+    }
+}

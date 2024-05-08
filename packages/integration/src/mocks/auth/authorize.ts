@@ -10,7 +10,7 @@ export const DEFAULT_ACCOUNTS = [
         is_disabled: 0,
         is_virtual: 0,
         landing_company_name: 'svg',
-        linked_to: [{ loginid: 'CRW1297', platform: 'dwallet' }],
+        linked_to: [],
         token: 'a1-x0000000000000000000000000001',
     },
     {
@@ -37,19 +37,6 @@ export const DEFAULT_ACCOUNTS = [
         linked_to: [],
         token: 'a1-x0000000000000000000000000003',
     },
-    {
-        id: 'CRW1297',
-        account_category: 'wallet',
-        account_type: 'doughflow',
-        broker: 'CRW',
-        created_at: 1688638636,
-        currency: 'USD',
-        is_disabled: 0,
-        is_virtual: 0,
-        landing_company_name: 'svg',
-        linked_to: [{ loginid: 'CR5712715', platform: 'dtrade' }],
-        token: 'a1-x0000000000000000000000000004',
-    },
 ];
 
 export default function mockAuthorize(context: Context) {
@@ -65,7 +52,7 @@ export default function mockAuthorize(context: Context) {
                         is_disabled: 0,
                         is_virtual: 0,
                         landing_company_name: 'svg',
-                        linked_to: [{ loginid: 'CRW1297', platform: 'dwallet' }],
+                        linked_to: [],
                         loginid: 'CR5712715',
                     },
                     {
@@ -89,17 +76,6 @@ export default function mockAuthorize(context: Context) {
                         landing_company_name: 'virtual',
                         linked_to: [],
                         loginid: 'VRTC8420051',
-                    },
-                    {
-                        account_category: 'wallet',
-                        account_type: 'doughflow',
-                        created_at: 1688638636,
-                        currency: 'USD',
-                        is_disabled: 0,
-                        is_virtual: 0,
-                        landing_company_name: 'svg',
-                        linked_to: [{ loginid: 'CR5712715', platform: 'dtrade' }],
-                        loginid: 'CRW1297',
                     },
                 ],
                 balance: 0,

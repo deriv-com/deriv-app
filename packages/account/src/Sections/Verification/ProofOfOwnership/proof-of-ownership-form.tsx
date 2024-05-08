@@ -31,7 +31,6 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
 
     const grouped_payment_method_data_keys = Object.keys(grouped_payment_method_data) as Array<TPaymentMethod>;
 
-    let initial_values: Partial<TProofOfOwnershipFormValue> = {};
     const form_ref = React.useRef<FormikProps<Partial<TProofOfOwnershipFormValue>>>(null);
 
     const fileReadErrorMessage = (filename: string) => {
@@ -53,7 +52,10 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
         [is_mobile]
     );
 
-    if (grouped_payment_method_data_keys) {
+    const initial_values = React.useMemo(() => {
+        if (!grouped_payment_method_data_keys?.length) {
+            return {};
+        }
         const default_value: TProofOfOwnershipData = {
             documents_required: 0,
             id: 0,
@@ -84,8 +86,8 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
             {}
         );
 
-        initial_values = { ...initial_values, ...form_value };
-    }
+        return form_value;
+    }, [grouped_payment_method_data_keys, grouped_payment_method_data]);
 
     const validateFields = (values: TProofOfOwnershipFormValue) => {
         let errors = {} as TProofOfOwnershipErrors;
@@ -215,7 +217,7 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
                                             files: upload_error,
                                         },
                                     };
-
+                                    // @ts-expect-error Error is an array
                                     setFieldError(card_key, { ...error_obj });
                                 }
                             } else {
@@ -235,11 +237,10 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
 
     return (
         <Formik
-            initialValues={{ ...initial_values }}
+            initialValues={initial_values}
             validate={validateFields}
             innerRef={form_ref}
             onSubmit={handleFormSubmit}
-            enableReinitialize
         >
             {({ isValid, dirty, isSubmitting }) => (
                 <Form data-testid='dt_poo_form' className='proof-of-ownership'>

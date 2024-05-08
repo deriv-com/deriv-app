@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Button, CaptionText } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 
@@ -7,10 +7,10 @@ type TResendCodeTimer = {
     count_from: number;
 };
 const ResendCodeTimer = ({ count_from = 60, resend_code_text }: TResendCodeTimer) => {
-    // TODO: Use dynamic value for setting initial value for counter once mockApi for timestamp is finalised
+    // TODO: calculate count_from and time units(secs or mins) using timestamp once mockApi is finalised
+    // TODO: revist start timer logic and localizing the title
     const [timer, setTimer] = React.useState(count_from);
     const [start_timer, setStartTimer] = React.useState(true);
-    // TODO: change seconds to mins based on interval calculated using timestamp from mock api
     const initial_timer_title =
         resend_code_text === 'Resend code' ? `Resend code in ${timer}s` : `Didn’t get the code?(${timer}s)`;
     const [timer_title, setTimerTitle] = React.useState(initial_timer_title);

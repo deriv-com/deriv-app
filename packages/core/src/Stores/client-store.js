@@ -1,7 +1,6 @@
 import Cookies from 'js-cookie';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import moment from 'moment';
-import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 
 import {
     CFD_PLATFORMS,
@@ -42,7 +41,6 @@ import { getAccountTitle, getAvailableAccount, getClientAccountType } from './He
 import { setDeviceDataCookie } from './Helpers/device';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 import BaseStore from './base-store';
-
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
@@ -443,6 +441,15 @@ export default class ClientStore extends BaseStore {
 
                 this.setPreferredLanguage(language);
                 LocalStore.set(LANGUAGE_KEY, language);
+            }
+        );
+
+        reaction(
+            () => [this.is_logged_in, this.is_authorize, this.is_passkey_supported],
+            () => {
+                if (this.is_logged_in && this.is_authorize && this.is_passkey_supported) {
+                    this.fetchShouldShowEffortlessLoginModal();
+                }
             }
         );
 
@@ -1489,7 +1496,7 @@ export default class ClientStore extends BaseStore {
      * @param {string} loginid
      */
     async switchAccount(loginid) {
-        if (!loginid) return;
+        if (!loginid || this.is_logging_in) return;
 
         this.setPreSwitchAccount(true);
         this.setIsLoggingIn(true);
@@ -1504,6 +1511,11 @@ export default class ClientStore extends BaseStore {
     }
 
     async resetVirtualBalance() {
+        Analytics.trackEvent('ce_tradershub_dashboard_form', {
+            action: 'reset_balance',
+            form_name: 'traders_hub_default',
+            account_mode: 'demo',
+        });
         this.root_store.notifications.removeNotificationByKey({ key: 'reset_virtual_balance' });
         this.root_store.notifications.removeNotificationMessage({
             key: 'reset_virtual_balance',
@@ -1520,7 +1532,7 @@ export default class ClientStore extends BaseStore {
      * We initially fetch things from local storage, and then do everything inside the store.
      */
     async init(login_new_user) {
-        // delete walletsOnbaording key after page refresh
+        // delete walletsOnboarding key after page refresh
         /** will be removed later when header for the wallets is created) */
         localStorage.removeItem('walletsOnboarding');
 
@@ -1668,8 +1680,6 @@ export default class ClientStore extends BaseStore {
 
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
-            await this.setIsPasskeySupported();
-            await this.fetchShouldShowEffortlessLoginModal();
             if (this.account_settings && !this.account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
@@ -2700,17 +2710,8 @@ export default class ClientStore extends BaseStore {
         this.real_account_signup_form_step = step;
     }
 
-    async setIsPasskeySupported() {
-        try {
-            // TODO: replace later "Analytics?.isFeatureOn()" to "Analytics?.getFeatureValue()"
-            const is_passkeys_enabled = Analytics?.isFeatureOn('web_passkeys');
-            const is_passkeys_enabled_on_be = Analytics?.isFeatureOn('service_passkeys');
-            // "browserSupportsWebAuthn" does not consider, if platform authenticator is available (unlike "platformAuthenticatorIsAvailable()")
-            const is_supported_by_browser = await browserSupportsWebAuthn();
-            this.is_passkey_supported = is_passkeys_enabled && is_supported_by_browser && is_passkeys_enabled_on_be;
-        } catch (e) {
-            //error handling needed
-        }
+    setIsPasskeySupported(is_passkey_supported = false) {
+        this.is_passkey_supported = is_passkey_supported;
     }
 
     setShouldShowEffortlessLoginModal(should_show_effortless_login_modal = true) {
@@ -2725,7 +2726,7 @@ export default class ClientStore extends BaseStore {
                     localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
                 }
 
-                const data = await WS.send({ passkeys_list: 1 });
+                const data = await WS.authorized.send({ passkeys_list: 1 });
 
                 if (data?.passkeys_list) {
                     const should_show_effortless_login_modal =
@@ -2781,7 +2782,7 @@ export default class ClientStore extends BaseStore {
             return { key, subscription };
         } catch (error) {
             // eslint-disable-next-line no-console
-            console.warn(`Error: code = ${error?.error?.code}, message = ${error?.error?.message}`);
+            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
             return {};
         }
     };
@@ -2794,7 +2795,7 @@ export default class ClientStore extends BaseStore {
                 delete this.subscriptions?.[name]?.[key];
             } catch (error) {
                 // eslint-disable-next-line no-console
-                console.warn(`Error: code = ${error?.error?.code}, message = ${error?.error?.message}`);
+                console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
             }
         }
     };
@@ -2826,7 +2827,7 @@ export default class ClientStore extends BaseStore {
             },
             error => {
                 // eslint-disable-next-line no-console
-                console.warn(`Error: code = ${error?.error?.code}, message = ${error?.error?.message}`);
+                console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
             }
         );
     };

@@ -113,7 +113,7 @@
             padding: 0 1.6rem;
             cursor: pointer;
             position: relative;
-            border-top: 1px solid var(--general-section-1);
+            border-top: 1px solid var(--general-section-2);
 
             &:hover {
                 background-color: var(--state-hover);
@@ -144,12 +144,12 @@
     }
 
     &__divider {
-        border-top: 1px solid var(--general-section-1);
+        border-top: 1px solid var(--general-section-2);
         padding: 8px 16px;
 
         &-line {
             height: 4px;
-            background-color: var(--general-section-1);
+            background-color: var(--general-section-2);
         }
     }
     &__item-wrapper + &__divider {

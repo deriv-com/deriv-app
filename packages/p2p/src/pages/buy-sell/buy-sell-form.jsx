@@ -179,8 +179,8 @@ const BuySellForm = props => {
     ]);
 
     React.useEffect(() => {
-        buy_sell_store.form_props.setSubmitForm(submitForm);
-    }, [submitForm, buy_sell_store.form_props]);
+        buy_sell_store.setSubmitForm(submitForm);
+    }, [submitForm]);
 
     return (
         <React.Fragment>

@@ -11,7 +11,9 @@
         @include mobile {
             grid-template-rows: repeat(3, 1fr);
             grid-template-columns: auto;
-            padding-bottom: 1.6rem;
+            padding-bottom: 0;
+            margin-bottom: 0.8rem;
+            border-bottom: 1px solid var(--system-light-6-hover-background, #e6e9e9);
         }
     }
 }

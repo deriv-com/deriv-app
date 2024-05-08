@@ -31,43 +31,33 @@ export interface MfPlatformConfig extends PlatformConfig {
     app_title: string;
 }
 
-export const getAppstorePlatforms = (is_for_authorized_user = true): PlatformConfig[] => [
+export const getAppstorePlatforms = (): PlatformConfig[] => [
     {
         name: getPlatformSettingsAppstore('trader').name,
-        app_desc: is_for_authorized_user
-            ? localize('Options and multipliers trading platform.')
-            : localize('The options and multipliers trading platform'),
+        app_desc: localize('Options and multipliers trading platform.'),
         link_to: routes.trade,
     },
     {
         name: getPlatformSettingsAppstore('dbot').name,
-        app_desc: is_for_authorized_user
-            ? localize('Automate your trading, no coding needed.')
-            : localize('The ultimate bot trading platform'),
+        app_desc: localize('Automate your trading, no coding needed.'),
         link_to: routes.bot,
         is_external: true,
     },
     {
         name: getPlatformSettingsAppstore('smarttrader').name,
-        app_desc: is_for_authorized_user
-            ? localize('Our legacy options trading platform.')
-            : localize('The legacy options trading platform'),
+        app_desc: localize('Our legacy options trading platform.'),
         link_to: getUrlSmartTrader(),
         is_external: true,
     },
     {
         name: getPlatformSettingsAppstore('bbot').name,
-        app_desc: is_for_authorized_user
-            ? localize('Our legacy automated trading platform.')
-            : localize('The legacy bot trading platform'),
+        app_desc: localize('Our legacy automated trading platform.'),
         link_to: getUrlBinaryBot(),
         is_external: true,
     },
     {
         name: getPlatformSettingsAppstore('go').name,
-        app_desc: is_for_authorized_user
-            ? localize('Trade on the go with our mobile app.')
-            : localize('The mobile trading app for multipliers'),
+        app_desc: localize('Trade on the go with our mobile app.'),
         link_to: getStaticUrl('/deriv-go'),
         is_external: true,
         new_tab: true,

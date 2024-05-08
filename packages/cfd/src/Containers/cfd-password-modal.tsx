@@ -33,13 +33,7 @@ import { Localize, localize } from '@deriv/translations';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import SuccessDialog from '../Components/success-dialog.jsx';
 import MigrationSuccessModal from '../Components/migration-success-modal';
-import {
-    getDxCompanies,
-    getFormattedJurisdictionCode,
-    getMtCompanies,
-    TDxCompanies,
-    TMtCompanies,
-} from '../Stores/Modules/CFD/Helpers/cfd-config';
+import { getDxCompanies, getMtCompanies, TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import CFDPasswordModalTitle from './cfd-password-modal-title';
 import { CFD_PLATFORMS, JURISDICTION, CATEGORY } from '../Helpers/cfd-config';

@@ -20,7 +20,7 @@ type TContractAudit = Partial<
     is_dark_theme: boolean;
     is_history_tab_active: boolean;
     is_open: boolean;
-    current_lang_to_request_history: boolean | string;
+    current_lang_to_request_history: string;
     toggleHistoryTab: (state_change?: boolean) => void;
 };
 
@@ -46,9 +46,11 @@ const ContractAudit = ({
 
     const requestUpdatedHistory = React.useCallback((id?: number) => {
         if (!id) return;
-        WS.contractUpdateHistory(id).then((response: TResponse) => {
-            setUpdateHistory(getSortedUpdateHistory(response.contract_update_history));
-        });
+        WS.contractUpdateHistory(id)
+            .then((response: TResponse) => {
+                setUpdateHistory(getSortedUpdateHistory(response.contract_update_history));
+            })
+            .catch(() => null);
     }, []);
 
     React.useEffect(() => {

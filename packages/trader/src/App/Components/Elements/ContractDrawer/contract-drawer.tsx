@@ -82,7 +82,7 @@ const ContractDrawer = observer(
                 is_open
                 is_turbos={is_turbos}
                 is_vanilla={is_vanilla}
-                current_lang_to_request_history={!is_language_changing && current_language}
+                current_lang_to_request_history={is_language_changing ? '' : current_language}
                 toggleHistoryTab={toggleHistoryTab}
             />
         );

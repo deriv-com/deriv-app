@@ -136,8 +136,6 @@ const TradersHub = observer(() => {
         defaultValue: false,
     });
 
-    const row_user = (content_flag !== ContentFlag.EU_REAL || content_flag !== ContentFlag.EU_DEMO) && !is_eu;
-
     return (
         <React.Fragment>
             <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop()}>
@@ -150,11 +148,15 @@ const TradersHub = observer(() => {
                     })}
                     ref={traders_hub_ref}
                 >
-                    {should_show_banner && no_CR_account && row_user && is_landing_company_loaded && (
-                        <Suspense fallback={<div />}>
-                            <DerivRealAccountBanner />
-                        </Suspense>
-                    )}
+                    {should_show_banner &&
+                        no_CR_account &&
+                        !is_eu &&
+                        content_flag === ContentFlag.CR_DEMO &&
+                        is_landing_company_loaded && (
+                            <Suspense fallback={<div />}>
+                                <DerivRealAccountBanner />
+                            </Suspense>
+                        )}
 
                     <MainTitleBar />
                     <DesktopWrapper>{getOrderedPlatformSections(true)}</DesktopWrapper>

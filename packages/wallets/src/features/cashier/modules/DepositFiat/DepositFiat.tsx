@@ -16,7 +16,7 @@ const DepositFiat = () => {
     }, [isAuthorizeSuccess, mutate]);
 
     if (isError && isServerError(depositError.error))
-        return <WalletsErrorScreen message={depositError.error.message} />;
+        return <WalletsErrorScreen message={depositError.error.message} onClick={() => window.location.reload()} />;
 
     return (
         <React.Fragment>

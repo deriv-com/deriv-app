@@ -1,27 +1,34 @@
 import React, { ButtonHTMLAttributes, useEffect } from 'react';
 import { useCashierFiatAddress } from '@deriv/api-v2';
-import { Loader, WalletsErrorScreen } from '../../../../components';
-import { isServerError } from '../../../../utils/utils';
+import { TSocketError } from '@deriv/api-v2/types';
+import { Loader } from '../../../../components';
 import './WithdrawalFiat.scss';
 
 interface WithdrawalFiatProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    setError: React.Dispatch<
+        React.SetStateAction<
+            | {
+                  code: string;
+                  message: string;
+              }
+            | undefined
+        >
+    >;
     verificationCode?: string;
 }
 
-const WithdrawalFiat: React.FC<WithdrawalFiatProps> = ({ verificationCode }) => {
-    const { data: iframeUrl, error: withdrawalFiatError, isError, isLoading, mutate } = useCashierFiatAddress();
+const WithdrawalFiat: React.FC<WithdrawalFiatProps> = ({ setError, verificationCode }) => {
+    const { data: iframeUrl, isLoading, mutateAsync } = useCashierFiatAddress();
 
     useEffect(() => {
         if (verificationCode) {
-            mutate('withdraw', {
+            mutateAsync('withdraw', {
                 verification_code: verificationCode,
+            }).catch((error: TSocketError<'cashier'>) => {
+                setError(error.error);
             });
         }
-    }, [mutate, verificationCode]);
-
-    if (isError && isServerError(withdrawalFiatError.error)) {
-        return <WalletsErrorScreen message={withdrawalFiatError.error.message} />;
-    }
+    }, [mutateAsync, setError, verificationCode]);
 
     return (
         <React.Fragment>

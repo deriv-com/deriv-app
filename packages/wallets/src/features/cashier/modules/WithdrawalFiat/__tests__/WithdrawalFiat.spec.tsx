@@ -8,19 +8,18 @@ jest.mock('@deriv/api-v2', () => ({
 }));
 
 describe('<WithdrawalFiat />', () => {
+    const verificationCode = 'abcd1234';
+    const setError = jest.fn();
+
     it('should render the iframe with the withdrawal url from API response', async () => {
-        const verificationCode = 'abcd1234';
         (useCashierFiatAddress as jest.Mock).mockReturnValue({
             data: 'https://example.com',
-            error: null,
-            isError: false,
-
             isLoading: false,
-            mutate: jest.fn(),
+            mutateAsync: jest.fn().mockResolvedValueOnce({}),
         });
 
         await act(async () => {
-            render(<WithdrawalFiat verificationCode={verificationCode} />);
+            render(<WithdrawalFiat setError={jest.fn()} verificationCode={verificationCode} />);
             await waitFor(() => {
                 expect(screen.queryByTestId('dt_wallets_loader')).not.toBeInTheDocument();
             });
@@ -30,30 +29,33 @@ describe('<WithdrawalFiat />', () => {
     });
 
     it('should render the loader while the iframe is loading', () => {
-        const verificationCode = 'abcd1234';
-
         (useCashierFiatAddress as jest.Mock).mockReturnValue({
             isLoading: true,
-            mutate: jest.fn(),
+            mutateAsync: jest.fn().mockResolvedValueOnce({}),
         });
 
-        render(<WithdrawalFiat verificationCode={verificationCode} />);
+        render(<WithdrawalFiat setError={setError} verificationCode={verificationCode} />);
+
         expect(screen.getByTestId('dt_wallets_loader')).toBeInTheDocument();
     });
 
-    it('should render the error screen when server responds with error', () => {
-        (useCashierFiatAddress as jest.Mock).mockReturnValue({
+    it('should trigger setError callback with proper arguments when there is an API error', async () => {
+        const error = {
             error: {
-                error: {
-                    code: '500',
-                    message: 'Server Error',
-                },
+                code: '500',
+                message: 'Server Error',
             },
-            isError: true,
-            mutate: jest.fn(),
+        };
+
+        (useCashierFiatAddress as jest.Mock).mockReturnValue({
+            isLoading: false,
+            mutateAsync: jest.fn().mockRejectedValueOnce(error),
         });
 
-        render(<WithdrawalFiat />);
-        expect(screen.getByText('Server Error')).toBeInTheDocument();
+        render(<WithdrawalFiat setError={setError} verificationCode={verificationCode} />);
+
+        await waitFor(() => {
+            expect(setError).toHaveBeenCalledWith(error.error);
+        });
     });
 });

@@ -15,6 +15,7 @@ const useCryptoWithdrawal = () => {
             _mutate({ payload: { cashier: 'withdraw', provider: 'crypto', type: 'api', ...payload } }),
         [_mutate]
     );
+
     const mutateAsync = useCallback(
         (payload: TPayload) =>
             _mutateAsync({ payload: { cashier: 'withdraw', provider: 'crypto', type: 'api', ...payload } }),

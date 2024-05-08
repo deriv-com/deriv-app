@@ -2,7 +2,6 @@ import React from 'react';
 import { useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import WithdrawalVerification from '../WithdrawalVerification';
-import '@testing-library/jest-dom';
 
 jest.mock('@deriv/api-v2', () => ({
     useSettings: jest.fn(() => ({ data: { email: null } })),
@@ -50,6 +49,20 @@ describe('WithdrawalVerification', () => {
             expect(
                 screen.queryByText('Please check your email for the verification link to complete the process.')
             ).not.toBeInTheDocument();
+        });
+    });
+
+    it('should trigger mutate callback when `resendEmail` is equal to `true`', async () => {
+        const mockMutate = jest.fn();
+        (useSettings as jest.Mock).mockImplementation(() => ({ data: { email: 'test@example.com' } }));
+        (useVerifyEmail as jest.Mock).mockImplementation(() => ({
+            mutate: mockMutate,
+        }));
+
+        render(<WithdrawalVerification resendEmail />);
+
+        await waitFor(() => {
+            expect(mockMutate).toHaveBeenCalledTimes(1);
         });
     });
 });

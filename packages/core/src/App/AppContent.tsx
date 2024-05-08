@@ -108,7 +108,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             <SmartTraderIFrame />
             <BinaryBotIFrame />
             <AppToastMessages />
-            {(store.client.has_wallet || is_next_wallet_enabled) && <Devtools />}
+            {is_next_wallet_enabled && <Devtools />}
         </PlatformContainer>
     );
 });

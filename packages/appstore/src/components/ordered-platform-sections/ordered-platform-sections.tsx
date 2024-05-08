@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
-import OptionsAndMultipliersListingLoggedOut from 'Components/options-miltipliers-listing-logged-out';
+import OptionsAndMultipliersListingLoggedOut from 'Components/options-multipliers-listing-logged-out';
 import CFDsListingLoggedOut from 'Components/cfds-listing-logged-out';
 import './ordered-platform-sections.scss';
 

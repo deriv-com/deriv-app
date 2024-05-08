@@ -1,16 +1,18 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
-import { Text, StaticUrl } from '@deriv/components';
+import { Text } from '@deriv/components';
 import { redirectToLogin } from '@deriv/shared';
-import { getLanguage, localize, Localize } from '@deriv/translations';
+import { getLanguage, localize } from '@deriv/translations';
+import { getHasDivider } from 'Constants/utils';
 import ListingContainer from 'Components/containers/listing-container';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
-import { getHasDivider } from 'Constants/utils';
+import CFDsDescription from 'Components/elements/cfds-description';
+import CFDsTitle from 'Components/elements/cfds-title';
 import './cfds-listing-logged-out.scss';
 
 const CFDsListingLoggedOut = observer(() => {
-    const { client, traders_hub, ui } = useStore();
+    const { client, traders_hub } = useStore();
     const {
         available_dxtrade_accounts,
         available_ctrader_accounts,
@@ -22,28 +24,9 @@ const CFDsListingLoggedOut = observer(() => {
     } = traders_hub;
 
     const { is_landing_company_loaded, is_populating_mt5_account_list } = client;
-    const { is_mobile } = ui;
 
     return (
-        <ListingContainer
-            title={
-                !is_mobile && (
-                    <div className='cfds-listing-logged-out__cfd-accounts-title'>
-                        <Text size='sm' weight='bold' color='prominent'>
-                            {localize('CFDs')}
-                        </Text>
-                    </div>
-                )
-            }
-            description={
-                <Text size='xs' line_height='s'>
-                    <Localize
-                        i18n_default_text={'Trade CFDs with high leverage and tight spreads. <0>Learn more</0>'}
-                        components={[<StaticUrl key={0} className='options' href='/trade-types/cfds' />]}
-                    />
-                </Text>
-            }
-        >
+        <ListingContainer title={<CFDsTitle />} description={<CFDsDescription />}>
             <div className='cfds-listing-logged-out__cfd-full-row'>
                 <Text line_height='m' weight='bold' color='prominent'>
                     {localize('Deriv MT5')}

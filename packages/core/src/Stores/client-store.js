@@ -41,7 +41,6 @@ import { getAccountTitle, getAvailableAccount, getClientAccountType } from './He
 import { setDeviceDataCookie } from './Helpers/device';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 import BaseStore from './base-store';
-
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
@@ -1512,6 +1511,11 @@ export default class ClientStore extends BaseStore {
     }
 
     async resetVirtualBalance() {
+        Analytics.trackEvent('ce_tradershub_dashboard_form', {
+            action: 'reset_balance',
+            form_name: 'traders_hub_default',
+            account_mode: 'demo',
+        });
         this.root_store.notifications.removeNotificationByKey({ key: 'reset_virtual_balance' });
         this.root_store.notifications.removeNotificationMessage({
             key: 'reset_virtual_balance',
@@ -1528,7 +1532,7 @@ export default class ClientStore extends BaseStore {
      * We initially fetch things from local storage, and then do everything inside the store.
      */
     async init(login_new_user) {
-        // delete walletsOnbaording key after page refresh
+        // delete walletsOnboarding key after page refresh
         /** will be removed later when header for the wallets is created) */
         localStorage.removeItem('walletsOnboarding');
 

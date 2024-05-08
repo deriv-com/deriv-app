@@ -1,2 +1,4 @@
 dist/*.js
 webpack.config.js
+__tests__
+*.spec.tsx*

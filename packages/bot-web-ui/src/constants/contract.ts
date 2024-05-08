@@ -1,9 +1,49 @@
-import { getTotalProfit } from '@deriv/shared';
+import { getTotalProfit, TContractStore } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-import { getBuyPrice } from 'Utils/multiplier';
+export type TContract = {
+    name: string;
+    position: string;
+};
 
-export const getSupportedContracts = is_high_low => ({
+export type TContractType =
+    | 'ASIANU'
+    | 'ASIAND'
+    | 'CALL'
+    | 'PUT'
+    | 'CALLE'
+    | 'PUTE'
+    | 'CALLSPREAD'
+    | 'PUTSPREAD'
+    | 'DIGITMATCH'
+    | 'DIGITDIFF'
+    | 'DIGITEVEN'
+    | 'DIGITODD'
+    | 'DIGITOVER'
+    | 'DIGITUNDER'
+    | 'EXPIRYMISS'
+    | 'EXPIRYRANGE'
+    | 'LBFLOATCALL'
+    | 'LBFLOATPUT'
+    | 'LBHIGHLOW'
+    | 'MULTUP'
+    | 'MULTDOWN'
+    | 'ONETOUCH'
+    | 'NOTOUCH'
+    | 'RANGE'
+    | 'UPORDOWN'
+    | 'RESETCALL'
+    | 'RESETPUT'
+    | 'RUNHIGH'
+    | 'RUNLOW'
+    | 'TICKHIGH'
+    | 'TICKLOW';
+
+type TSupportedContracts = {
+    [key in TContractType]: TContract;
+};
+
+export const getSupportedContracts = (is_high_low: boolean): TSupportedContracts => ({
     ASIANU: {
         name: localize('Asian Up'),
         position: 'top',
@@ -130,16 +170,62 @@ export const getSupportedContracts = is_high_low => ({
     },
 });
 
-export const getContractConfig = is_high_low => ({
+export const getContractConfig = (is_high_low: boolean) => ({
     ...getSupportedContracts(is_high_low),
 });
 
-export const getContractTypeDisplay = (type, is_high_low = false) =>
-    getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].name : '';
+export const getContractTypeDisplay = (type: TContractType, is_high_low = false) =>
+    getContractConfig(is_high_low)[type]
+        ? getContractConfig(is_high_low)[type.toUpperCase() as TContractType].name
+        : '';
 
-export const getValidationRules = () => ({
+export type TValidationRuleIndex =
+    | 'has_contract_update_stop_loss'
+    | 'contract_update_stop_loss'
+    | 'has_contract_update_take_profit'
+    | 'contract_update_take_profit';
+
+type ValidationRuleFunc = (value: number, options: any, contract_store: TContractStore) => boolean;
+
+type ValidationConditionFunc = (contract_store: TContractStore) => boolean;
+
+type Rule =
+    | [
+          'req',
+          {
+              condition: ValidationConditionFunc;
+              message: string;
+          }
+      ]
+    | [
+          'custom',
+          {
+              func: ValidationRuleFunc;
+              message: string;
+          }
+      ];
+
+type Rules = {
+    rules: Rule[];
+};
+
+type Triggers = {
+    trigger: string;
+};
+
+export type TValidationRules = {
+    has_contract_update_stop_loss: Triggers;
+    has_contract_update_take_profit: Triggers;
+    contract_update_stop_loss: Rules;
+    contract_update_take_profit: Rules;
+};
+
+export const getValidationRules = (): TValidationRules => ({
     has_contract_update_stop_loss: {
         trigger: 'contract_update_stop_loss',
+    },
+    has_contract_update_take_profit: {
+        trigger: 'contract_update_take_profit',
     },
     contract_update_stop_loss: {
         rules: [
@@ -153,7 +239,7 @@ export const getValidationRules = () => ({
             [
                 'custom',
                 {
-                    func: (value, options, contract_store) => {
+                    func: (value: number, options, contract_store) => {
                         const profit = getTotalProfit(contract_store.contract_info);
                         return !(profit < 0 && -value > profit);
                     },
@@ -164,16 +250,13 @@ export const getValidationRules = () => ({
                 'custom',
                 {
                     func: (value, options, contract_store) => {
-                        const stake = getBuyPrice(contract_store);
+                        const stake = contract_store?.contract_info?.buy_price || 0;
                         return value < stake + 1;
                     },
                     message: localize('Invalid stop loss. Stop loss cannot be more than stake.'),
                 },
             ],
         ],
-    },
-    has_contract_update_take_profit: {
-        trigger: 'contract_update_take_profit',
     },
     contract_update_take_profit: {
         rules: [

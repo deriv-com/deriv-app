@@ -173,14 +173,14 @@ const CFDsListing = observer(() => {
     };
 
     useEffect(() => {
-        if (is_landing_company_loaded && !is_populating_mt5_account_list) {
+        if (is_landing_company_loaded && is_populating_mt5_account_list) {
             setPerformanceValue('login_time');
             setPerformanceValue('redirect_from_deriv_com_time');
             setPerformanceValue('switch_currency_accounts_time');
             setPerformanceValue('switch_from_demo_to_real_time');
             setPerformanceValue('switch_from_real_to_demo_time');
         }
-    }, [is_landing_company_loaded]);
+    }, [is_populating_mt5_account_list]);
 
     return (
         <ListingContainer

@@ -339,9 +339,13 @@ const ModalManager = () => {
                 />
             )}
             {is_failed_verification_modal_visible && <FailedVerificationModal />}
-            {is_next_wallet_enabled && (is_real_wallets_upgrade_on || is_in_progress) && <RealWalletsUpgrade />}
-            {is_next_wallet_enabled && is_wallet_migration_failed && <WalletsMigrationFailed />}
-            {is_next_wallet_enabled && is_eligible && <WalletsUpgradeModal />}
+            {is_next_wallet_enabled && (
+                <React.Fragment>
+                    {(is_real_wallets_upgrade_on || is_in_progress) && <RealWalletsUpgrade />}
+                    {is_wallet_migration_failed && <WalletsMigrationFailed />}
+                    {is_eligible && <WalletsUpgradeModal />}{' '}
+                </React.Fragment>
+            )}
         </React.Fragment>
     );
 };

@@ -41,7 +41,9 @@ const useAPI = () => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 onError: (response: any) => void
             ) => { unsubscribe?: VoidFunction };
-        } => derivAPI?.subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) }),
+        } => {
+            return derivAPI?.subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) });
+        },
         [derivAPI]
     );
 

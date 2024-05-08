@@ -11,9 +11,9 @@ const WalletListCard = () => {
     const isDemo = activeWallet?.is_virtual;
 
     return (
-        <div className='wallets-list-header__card_container'>
-            <div className='wallets-list-header__content'>
-                <div className='wallets-list-header__details-container'>
+        <div className='wallets-list-card'>
+            <div className='wallets-list-card__container'>
+                <div className='wallets-list-card__details'>
                     <WalletCurrencyCard currency={isDemo ? 'Demo' : currency} isDemo={isDemo} size='lg' />
                     <WalletListCardDetails />
                 </div>

@@ -16,7 +16,6 @@ import RunPanelStore from './run-panel-store';
 import SaveModalStore from './save-modal-store';
 import SelfExclusionStore from './self-exclusion-store';
 import SummaryCardStore from './summary-card-store';
-import SummaryStore from './summary-store';
 import ToolbarStore from './toolbar-store';
 import ToolboxStore from './toolbox-store';
 import TransactionsStore from './transactions-store';
@@ -34,7 +33,6 @@ export default class RootStore {
     public load_modal: LoadModalStore;
     public run_panel: RunPanelStore;
     public save_modal: SaveModalStore;
-    public summary: SummaryStore;
     public transactions: TransactionsStore;
     public toolbar: ToolbarStore;
     public toolbox: ToolboxStore;
@@ -59,7 +57,6 @@ export default class RootStore {
         this.load_modal = new LoadModalStore(this, core);
         this.run_panel = new RunPanelStore(this, core);
         this.save_modal = new SaveModalStore(this);
-        this.summary = new SummaryStore(this);
         this.transactions = new TransactionsStore(this, core);
         this.toolbar = new ToolbarStore(this);
         this.toolbox = new ToolboxStore(this, core);

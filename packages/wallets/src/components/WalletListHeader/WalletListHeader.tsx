@@ -50,6 +50,7 @@ const WalletListHeader: React.FC = () => {
                         <input
                             checked={isChecked}
                             className='wallets-list-header__switcher-input'
+                            data-testid='wallets_list_header__switcher_input'
                             id='wallets-list-header__switcher'
                             onChange={handleToggle}
                             type='checkbox'

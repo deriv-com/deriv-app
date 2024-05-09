@@ -744,6 +744,8 @@ type TUiStore = {
     setRealAccountSignupEnd: (status: boolean) => void;
     setPurchaseState: (index: number) => void;
     simple_duration_unit: string;
+    should_show_phone_number_verified_modal: boolean;
+    setShouldShowPhoneNumberVerifiedModal: (value: boolean) => void;
     //TODO: remove when BE API is ready
     should_show_phone_number_otp: boolean;
     setShouldShowPhoneNumberOTP: (value: boolean) => void;

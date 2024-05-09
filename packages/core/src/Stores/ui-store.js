@@ -133,6 +133,7 @@ export default class UIStore extends BaseStore {
     promptFn = () => {};
 
     //phone number verification
+    should_show_phone_number_verified_modal = true;
     //TODO: remove when BE API is ready
     should_show_phone_number_otp = false;
 
@@ -306,6 +307,7 @@ export default class UIStore extends BaseStore {
             real_account_signup: observable,
             reports_route_tab_index: observable,
             settings_extension: observable,
+            should_show_phone_number_verified_modal: observable,
             should_show_phone_number_otp: observable,
             should_show_appropriateness_warning_modal: observable,
             should_show_assessment_complete_modal: observable,
@@ -358,6 +360,7 @@ export default class UIStore extends BaseStore {
             resetPurchaseStates: action.bound,
             resetRealAccountSignupParams: action.bound,
             resetRealAccountSignupTarget: action.bound,
+            setShouldShowPhoneNumberVerifiedModal: action.bound,
             setShouldShowPhoneNumberOTP: action.bound,
             setAccountSwitcherDisabledMessage: action.bound,
             setAppContentsScrollRef: action.bound,
@@ -470,6 +473,10 @@ export default class UIStore extends BaseStore {
     setScamMessageLocalStorage() {
         localStorage.setItem('readScamMessage', !this.has_read_scam_message);
         this.has_read_scam_message = localStorage.getItem('readScamMessage') || false;
+    }
+
+    setShouldShowPhoneNumberVerifiedModal(should_show_phone_number_verified_modal) {
+        this.should_show_phone_number_verified_modal = should_show_phone_number_verified_modal;
     }
 
     setShouldShowPhoneNumberOTP(should_show_phone_number_otp) {

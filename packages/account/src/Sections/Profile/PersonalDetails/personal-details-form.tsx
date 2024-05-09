@@ -32,6 +32,7 @@ import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
 import { VerifyButton } from './verify-button';
+import PhoneNumberVerifiedModal from 'Components/phone-number-verified-modal';
 
 type TRestState = {
     show_form: boolean;
@@ -239,6 +240,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                 dirty,
             }) => (
                 <React.Fragment>
+                    <PhoneNumberVerifiedModal />
                     <LeaveConfirm onDirty={is_mobile ? showForm : undefined} />
                     {show_form && (
                         <Form

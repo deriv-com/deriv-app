@@ -4,6 +4,7 @@ import { Button, CaptionText, Text } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { Input } from '@deriv/components';
+import { VERIFICATION_SERVICES } from '@deriv/shared';
 
 type TOTPVerification = {
     phone_verification_type: string;
@@ -18,6 +19,14 @@ const OTPVerification = observer(({ phone_verification_type }: TOTPVerification)
     const { email, phone } = account_settings;
     //TODO: this shall be replace by BE API call when it's ready
     const { should_show_phone_number_otp } = ui;
+
+    const convertPhoneTypeDisplay = () => {
+        if (phone_verification_type === VERIFICATION_SERVICES.SMS) return phone_verification_type.toUpperCase();
+
+        return phone_verification_type.replace(/w|a/g, value => {
+            return value.toUpperCase();
+        });
+    };
 
     const resendCodeText = useRef('Resend code');
 
@@ -55,7 +64,7 @@ const OTPVerification = observer(({ phone_verification_type }: TOTPVerification)
                     <Text size='sm'>
                         <Localize
                             i18n_default_text='Enter the 6-digit code sent to you via {{phone_verification_type}} at {{users_phone_number}}:'
-                            values={{ phone_verification_type, users_phone_number: phone }}
+                            values={{ phone_verification_type: convertPhoneTypeDisplay(), users_phone_number: phone }}
                         />
                     </Text>
                 ) : (

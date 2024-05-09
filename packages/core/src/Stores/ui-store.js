@@ -132,6 +132,10 @@ export default class UIStore extends BaseStore {
     prompt_when = false;
     promptFn = () => {};
 
+    //phone number verification
+    //TODO: remove when BE API is ready
+    should_show_phone_number_otp = false;
+
     //warn user if they want to close create real account modal
     is_closing_create_real_account_modal = false;
 
@@ -302,6 +306,7 @@ export default class UIStore extends BaseStore {
             real_account_signup: observable,
             reports_route_tab_index: observable,
             settings_extension: observable,
+            should_show_phone_number_otp: observable,
             should_show_appropriateness_warning_modal: observable,
             should_show_assessment_complete_modal: observable,
             should_show_cancel: observable,
@@ -353,6 +358,7 @@ export default class UIStore extends BaseStore {
             resetPurchaseStates: action.bound,
             resetRealAccountSignupParams: action.bound,
             resetRealAccountSignupTarget: action.bound,
+            setShouldShowPhoneNumberOTP: action.bound,
             setAccountSwitcherDisabledMessage: action.bound,
             setAppContentsScrollRef: action.bound,
             setCFDPasswordResetModal: action.bound,
@@ -464,6 +470,10 @@ export default class UIStore extends BaseStore {
     setScamMessageLocalStorage() {
         localStorage.setItem('readScamMessage', !this.has_read_scam_message);
         this.has_read_scam_message = localStorage.getItem('readScamMessage') || false;
+    }
+
+    setShouldShowPhoneNumberOTP(should_show_phone_number_otp) {
+        this.should_show_phone_number_otp = should_show_phone_number_otp;
     }
 
     setIsNewAccount() {

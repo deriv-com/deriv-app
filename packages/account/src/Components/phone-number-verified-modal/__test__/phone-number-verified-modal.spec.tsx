@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import PhoneNumberVerifiedModal from '../phone-number-verified-modal';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
-describe('CancelPhoneVerificationModal', () => {
+describe('PhoneNumberVerifiedModal', () => {
     let modal_root_el: HTMLElement;
     const mock_store = mockStore({
         ui: {

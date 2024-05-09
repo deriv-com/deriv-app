@@ -133,7 +133,7 @@ export default class UIStore extends BaseStore {
     promptFn = () => {};
 
     //phone number verification
-    should_show_phone_number_verified_modal = true;
+    should_show_phone_number_verified_modal = false;
     //TODO: remove when BE API is ready
     should_show_phone_number_otp = false;
 

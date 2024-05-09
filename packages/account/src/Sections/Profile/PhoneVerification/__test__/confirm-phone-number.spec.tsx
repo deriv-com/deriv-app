@@ -20,12 +20,17 @@ describe('ConfirmPhoneNumber', () => {
                 phone: '+0123456789',
             },
         },
+        ui: {
+            setShouldShowPhoneNumberOTP: jest.fn(),
+        },
     });
+
+    const mockSetOtp = jest.fn();
 
     it('should render ConfirmPhoneNumber', () => {
         render(
             <StoreProvider store={store}>
-                <ConfirmPhoneNumber />
+                <ConfirmPhoneNumber setOtpVerification={mockSetOtp} />
             </StoreProvider>
         );
         const phone_number_textfield = screen.getByRole('textbox', { name: 'Phone number' });
@@ -43,7 +48,7 @@ describe('ConfirmPhoneNumber', () => {
         });
         render(
             <StoreProvider store={store}>
-                <ConfirmPhoneNumber />
+                <ConfirmPhoneNumber setOtpVerification={mockSetOtp} />
             </StoreProvider>
         );
         const whatsapp_btn = screen.getByRole('button', { name: 'Get code via WhatsApp' });
@@ -58,7 +63,7 @@ describe('ConfirmPhoneNumber', () => {
         });
         render(
             <StoreProvider store={store}>
-                <ConfirmPhoneNumber />
+                <ConfirmPhoneNumber setOtpVerification={mockSetOtp} />
             </StoreProvider>
         );
         const sms_btn = screen.getByRole('button', { name: 'Get code via SMS' });

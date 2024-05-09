@@ -18,7 +18,7 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
     const { setShouldShowPhoneNumberOTP } = ui;
     const phone_number = account_settings.phone || '';
     const handleSubmit = (phone_verification_type: string) => {
-        phone_verification_type === VERIFICATION_SERVICES.SMS ? () => requestOnSMS() : () => requestOnWhatsApp();
+        phone_verification_type === VERIFICATION_SERVICES.SMS ? requestOnSMS() : requestOnWhatsApp();
         setOtpVerification({ show: true, phone_verification_type });
         setShouldShowPhoneNumberOTP(true);
     };

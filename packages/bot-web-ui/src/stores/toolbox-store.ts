@@ -111,7 +111,7 @@ export default class ToolboxStore {
                 const block_canvas_rect = workspace.svgBlockCanvas_?.getBoundingClientRect(); // eslint-disable-line
 
                 if (workspace.RTL && block_canvas_rect) {
-                    const is_mobile = window.innerWidth < 768;
+                    const is_mobile = this.core.ui.is_mobile;
                     const block_canvas_space = is_mobile ? block_canvas_rect.right : block_canvas_rect.left;
 
                     const scroll_distance_mobile = toolbox_width - block_canvas_space + 20;

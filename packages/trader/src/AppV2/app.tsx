@@ -1,10 +1,14 @@
 import React from 'react';
-import Routes from 'App/Containers/Routes/routes';
 import type { TWebSocket } from 'Types';
 import initStore from 'App/init-store';
 import 'Sass/app.scss';
 import type { TCoreStores } from '@deriv/stores/types';
 import TraderProviders from '../trader-providers';
+import BottomNav from './Components/BottomNav';
+import Trade from './Containers/Trade';
+import Markets from './Containers/Markets';
+import Positions from './Containers/Positions';
+import Menu from './Containers/Menu';
 
 type Apptypes = {
     passthrough: {
@@ -21,7 +25,12 @@ const App = ({ passthrough }: Apptypes) => {
 
     return (
         <TraderProviders store={root_store}>
-            <Routes />
+            <BottomNav>
+                <Trade />
+                <Markets />
+                <Positions />
+                <Menu />
+            </BottomNav>
         </TraderProviders>
     );
 };

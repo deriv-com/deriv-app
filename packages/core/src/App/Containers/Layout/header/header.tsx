@@ -38,6 +38,11 @@ const TradersHubHeaderWallets = makeLazyLoader(
     () => <HeaderFallback />
 )();
 
+const DTraderV2Header = makeLazyLoader(
+    () => moduleLoader(() => import(/* webpackChunkName: "dtrader-v2-header" */ './dtrader-v2-header')),
+    () => <HeaderFallback />
+)();
+
 const Header = observer(() => {
     const { client } = useStore();
     const { accounts, is_logged_in, setAccounts, loginid, switchAccount } = client;
@@ -60,7 +65,7 @@ const Header = observer(() => {
         is_wallets_cashier_route;
 
     const client_accounts = useReadLocalStorage('client.accounts');
-    const { is_next_wallet_enabled } = useFeatureFlags();
+    const { is_next_wallet_enabled, is_dtrader_v2_enabled } = useFeatureFlags();
     const { has_wallet } = useStoreWalletAccountsList();
     const should_show_wallets = is_next_wallet_enabled && has_wallet;
 
@@ -82,6 +87,8 @@ const Header = observer(() => {
             result = should_show_wallets ? <TradersHubHeaderWallets /> : <TradersHubHeader />;
         } else if (pathname === routes.onboarding) {
             result = null;
+        } else if (pathname === routes.trade && is_dtrader_v2_enabled) {
+            result = <DTraderV2Header />;
         } else {
             result = should_show_wallets ? <DTraderHeaderWallets /> : <DTraderHeader />;
         }

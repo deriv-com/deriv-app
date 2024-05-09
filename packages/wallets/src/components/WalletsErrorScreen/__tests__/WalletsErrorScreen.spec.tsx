@@ -2,6 +2,12 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import WalletsErrorScreen from '../WalletsErrorScreen';
 
+jest.mock('../../../hooks/useDevice', () =>
+    jest.fn(() => ({
+        isMobile: false,
+    }))
+);
+
 describe('WalletsErrorScreen', () => {
     afterAll(() => {
         jest.clearAllMocks();
@@ -21,14 +27,11 @@ describe('WalletsErrorScreen', () => {
         expect(screen.getByText('Error message from props')).toBeInTheDocument();
     });
 
-    it('should reload the page when Try again button is clicked', () => {
-        const reloadMock = jest.fn();
-        Object.defineProperty(window, 'location', {
-            value: { reload: reloadMock },
-            writable: true,
-        });
-        render(<WalletsErrorScreen />);
+    it('should trigger onClick callback', () => {
+        const onClickHandler = jest.fn();
+
+        render(<WalletsErrorScreen onClick={onClickHandler} />);
         screen.getByRole('button', { name: 'Try again' }).click();
-        expect(reloadMock).toHaveBeenCalled();
+        expect(onClickHandler).toHaveBeenCalled();
     });
 });

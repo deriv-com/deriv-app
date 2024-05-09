@@ -4,19 +4,6 @@
     display: flex;
     justify-content: center;
 
-    @include mobile {
-        animation: popup 0.2s;
-    }
-
-    @include mobile {
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: var(--overlay-outside-dialog);
-    }
-
     &__close-icon {
         position: absolute;
         top: 2.4rem;
@@ -28,5 +15,27 @@
         height: calc(var(--wallets-vh, 1vh) * 100);
         width: 100vw;
         border-radius: 0;
+    }
+}
+.wallets-modal-body {
+    @include mobile {
+        width: calc(100vw - 3.2rem);
+    }
+}
+
+.wallets-modal-show-header-root {
+    .wallets-modal-wrapper {
+        @include mobile {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+    .wallets-modal-overlay {
+        position: fixed;
+        inset: 0;
+        background-color: var(--overlay-outside-dialog);
     }
 }

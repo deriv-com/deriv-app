@@ -43,8 +43,6 @@ const MT5ResetPasswordModal: React.FC<TProps> = ({
 
     useEffect(() => {
         if (formError) {
-            // eslint-disable-next-line no-console
-            console.log('==>', formError.error);
             if (formError.error.code === 'PasswordError') {
                 formikRef.current?.setErrors({ currentPassword: formError.error?.message });
             } else {

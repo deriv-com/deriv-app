@@ -5,7 +5,7 @@ import {
     WalletMarketCurrencyIcon,
     WalletText,
 } from '../../../../../../../../components';
-import { THooks, TWalletLandingCompanyName } from '../../../../../../../../types';
+import { THooks, TPlatforms, TWalletLandingCompanyName } from '../../../../../../../../types';
 import { getMarketType } from '../../../../../../helpers';
 import './TransactionsCompletedRowAccountDetails.scss';
 
@@ -45,7 +45,7 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
                     currency={currency}
                     isDemo={true}
                     marketType={marketType}
-                    platform={accountType}
+                    platform={accountType as TPlatforms.All}
                 />
             )}
             <div className='wallets-transactions-completed-row-account-details__type-and-wallet-name'>

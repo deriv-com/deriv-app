@@ -10,9 +10,9 @@ const PhoneNumberVerifiedModal = observer(() => {
     const { should_show_phone_number_verified_modal, setShouldShowPhoneNumberVerifiedModal } = ui;
 
     return (
-        <Modal className='phone-verification__cancel-modal' is_open={should_show_phone_number_verified_modal}>
+        <Modal className='phone-verification__verified-modal' is_open={should_show_phone_number_verified_modal}>
             <Modal.Body>
-                <div className='phone-verification__cancel-modal--contents'>
+                <div className='phone-verification__verified-modal--contents'>
                     <Text bold>
                         <Localize i18n_default_text='Verification successful' />
                     </Text>
@@ -22,7 +22,7 @@ const PhoneNumberVerifiedModal = observer(() => {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <div className='phone-verification__cancel-modal--buttons'>
+                <div className='phone-verification__verified-modal--buttons'>
                     <Button
                         color='black'
                         fullWidth

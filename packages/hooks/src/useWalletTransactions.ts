@@ -37,7 +37,7 @@ const useWalletTransactions = (
         currency: 'USD',
         loginid: 'VRTCMOCK0001',
         is_virtual: 1,
-        landing_company_shortcode: shortcode as 'svg' | 'malta',
+        landing_company_shortcode: shortcode as 'svg' | 'maltainvest',
         token: '',
     };
     real_platform_accounts.push({
@@ -46,7 +46,7 @@ const useWalletTransactions = (
         currency: 'USD',
         loginid: 'CRMOCK0001',
         is_virtual: 0,
-        landing_company_shortcode: shortcode as 'svg' | 'malta',
+        landing_company_shortcode: shortcode as 'svg' | 'maltainvest',
         token: '',
     });
     if (wallets && current_wallet)

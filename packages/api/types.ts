@@ -261,6 +261,10 @@ type KycAuthStatus = {
              * Reason(s) for the rejected POI attempt.
              */
             rejected_reasons?: string[];
+            /**
+             * Indicate if the verification report was returned by the provider (IDV only).
+             */
+            report_available?: 0 | 1;
         };
         /**
          * Service used for the current POI status.
@@ -2233,6 +2237,51 @@ type PasskeyRegisterResponse = {
     [k: string]: unknown;
 };
 
+// TODO: remove these mock phone number challenge types after implementing them inside api-types
+type PhoneNumberChallengeRequest = {
+    /**
+     * Must be `1`
+     */
+    phone_number_challenge: 1;
+    /**
+     * The carrier sending the OTP.
+     */
+    carrier: 'whatsapp' | 'sms';
+    /**
+     * [Optional] The login id of the user. If left unspecified, it defaults to the initial authorized token's login id.
+     */
+    loginid?: string;
+    /**
+     * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+     */
+    passthrough?: {
+        [k: string]: unknown;
+    };
+    /**
+     * [Optional] Used to map request to response.
+     */
+    req_id?: number;
+};
+
+type PhoneNumberChallengeResponse = {
+    phone_number_challenge?: number;
+    /**
+     * Echo of the request made.
+     */
+    echo_req: {
+        [k: string]: unknown;
+    };
+    /**
+     * Action name of the request made.
+     */
+    msg_type: 'phone_number_challenge';
+    /**
+     * Optional field sent in request to map to response, present only when request contains `req_id`.
+     */
+    req_id?: number;
+    [k: string]: unknown;
+};
+
 type TSocketEndpoints = {
     active_symbols: {
         request: ActiveSymbolsRequest;
@@ -2569,6 +2618,10 @@ type TSocketEndpoints = {
     payout_currencies: {
         request: PayoutCurrenciesRequest;
         response: PayoutCurrenciesResponse;
+    };
+    phone_number_challenge: {
+        request: PhoneNumberChallengeRequest;
+        response: PhoneNumberChallengeResponse;
     };
     ping: {
         request: PingRequest;

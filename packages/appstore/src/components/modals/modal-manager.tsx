@@ -294,7 +294,7 @@ const ModalManager = () => {
             {is_jurisdiction_modal_visible && <JurisdictionModal openPasswordModal={openRealPasswordModal} />}
             {should_show_cfd_password_modal && <CFDPasswordModal platform={platform} />}
             {is_cfd_verification_modal_visible && <CFDDbviOnBoarding />}
-            {is_cfd_reset_password_modal_enabled && <CFDResetPasswordModal platform={platform} />}
+            <CFDResetPasswordModal platform={platform} /> {/* a new condition for this hotfix needs to be found */}
             {is_ctrader_transfer_modal_visible && <CTraderTransferModal />}
             {has_cfd_error && <CFDServerErrorDialog />}
             {(is_top_up_virtual_open || is_top_up_virtual_success) && <CFDTopUpDemoModal platform={platform} />}

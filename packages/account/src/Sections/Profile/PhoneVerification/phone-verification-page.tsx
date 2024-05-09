@@ -4,23 +4,27 @@ import { LabelPairedArrowLeftCaptionFillIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import ConfirmPhoneNumber from './confirm-phone-number';
-import { useHistory } from 'react-router';
-import { routes } from '@deriv/shared';
-import ConfirmYourEmail from './confirm-your-email';
+import OTPVerification from './otp-verification';
+import CancelPhoneVerificationModal from './cancel-phone-verification-modal';
 
 const PhoneVerificationPage = () => {
-    const [show_email_verification, shouldShowEmailVerification] = React.useState(true);
-    const history = useHistory();
+    const [otp_verification, setOtpVerification] = React.useState({ show: true, phone_verification_type: '' });
+    const [should_show_cancel_verification_modal, setShouldShowCancelVerificationModal] = React.useState(false);
     const handleBackButton = () => {
-        history.push(routes.personal_details);
+        setShouldShowCancelVerificationModal(true);
     };
 
     return (
         <div>
+            <CancelPhoneVerificationModal
+                should_show_cancel_verification_modal={should_show_cancel_verification_modal}
+                setShouldShowCancelVerificationModal={setShouldShowCancelVerificationModal}
+            />
             <div className='phone-verification__redirect_button'>
                 <LabelPairedArrowLeftCaptionFillIcon
                     width={24}
                     height={24}
+                    data-testid='dt_phone_verification_back_btn'
                     className='phone-verification__redirect_button--icon'
                     onClick={handleBackButton}
                 />
@@ -28,7 +32,11 @@ const PhoneVerificationPage = () => {
                     <Localize i18n_default_text='Phone number verification' />
                 </Text>
             </div>
-            {show_email_verification ? <ConfirmYourEmail /> : <ConfirmPhoneNumber />}
+            {otp_verification.show ? (
+                <OTPVerification phone_verification_type={otp_verification.phone_verification_type} />
+            ) : (
+                <ConfirmPhoneNumber setOtpVerification={setOtpVerification} />
+            )}
         </div>
     );
 };

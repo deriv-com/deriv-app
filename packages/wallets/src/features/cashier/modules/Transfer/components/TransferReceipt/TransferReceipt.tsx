@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
+import { LegacyArrowRight2pxIcon } from '@deriv/quill-icons';
 import { AppCard, WalletButton, WalletCard, WalletText } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
-import Arrow from '../../../../../../public/images/ic-back-arrow.svg';
 import type { TWalletLandingCompanyName } from '../../../../../../types';
 import { getTradingAppIcon } from '../../../../helpers';
 import { useTransfer } from '../../provider';
@@ -81,7 +81,7 @@ const TransferReceipt = () => {
                     balance={`-${displayTransferredFromAmount}`}
                 />
                 <div className='wallets-transfer-receipt__arrow-icon'>
-                    <Arrow />
+                    <LegacyArrowRight2pxIcon iconSize='xs' />
                 </div>
                 <ReceiptCard
                     account={toAccount}

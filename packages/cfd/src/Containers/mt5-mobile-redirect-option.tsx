@@ -7,19 +7,52 @@ import { isSafariBrowser, mobileOSDetectAsync } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
 const MT5MobileRedirectOption = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => {
+    // PSEUDOCODE
+    // if (ioS17)
+    // - open deeplink && start timeout
+    // - if(onblur)
+    // -- if (visibilityChange)
+    // --- clear timeout
+    // -- else
+    // --- timeout trigger installer function
+    // else (android / huawei / iOS <17)
+    // - open deeplink && start timeout
+    // - if (onblur || visibbilityChange)
+    // -- clear timeout
+    // - else
+    // -- timeout trigger installer function
+
     const mobileURLSet = async () => {
-        window.location.replace(getDeeplinkUrl({ mt5_trade_account }));
-        const mobileAppURL = await getMobileAppInstallerUrl({ mt5_trade_account });
         const os = await mobileOSDetectAsync();
 
-        const timeout = setTimeout(() => {
-            mobileAppURL && window.location.replace(mobileAppURL);
-        }, 1500);
+        if (os === 'iOS' && /Version\/17/.test(navigator.userAgent)) {
+            window.location.replace(getDeeplinkUrl({ mt5_trade_account }));
+            const mobileAppURL = await getMobileAppInstallerUrl({ mt5_trade_account });
 
-        if (!isSafariBrowser() || (os === 'iOS' && /Version\/17/.test(navigator.userAgent))) {
-            window.onblur = () => {
-                clearTimeout(timeout);
-            };
+            const timeout = setTimeout(() => {
+                mobileAppURL && window.location.replace(mobileAppURL);
+            }, 2000);
+
+            if (window.onblur) {
+                document.addEventListener('visibilitychange', function () {
+                    if (document.hidden) {
+                        clearTimeout(timeout);
+                    }
+                });
+            }
+        } else {
+            window.location.replace(getDeeplinkUrl({ mt5_trade_account }));
+
+            const timeout = setTimeout(async () => {
+                const mobile_url = await getMobileAppInstallerUrl({ mt5_trade_account });
+                if (mobile_url) window.location.replace(mobile_url);
+            }, 1500);
+
+            if (!isSafariBrowser() || (isSafariBrowser() && /Version\/17/.test(navigator.userAgent))) {
+                window.onblur = () => {
+                    clearTimeout(timeout);
+                };
+            }
         }
     };
 

@@ -40,4 +40,11 @@
     &__gradient {
         border-radius: 1rem;
     }
+
+    &__market-icon {
+        display: flex;
+        padding: 0.5rem;
+        width: 10rem;
+        height: 7rem;
+    }
 }

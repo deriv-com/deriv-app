@@ -1,9 +1,8 @@
 import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { WalletSuccess, WalletText } from '../../../../components';
+import { WalletMarketCurrencyIcon, WalletSuccess, WalletText } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
-import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
 import useDevice from '../../../../hooks/useDevice';
 import { TDisplayBalance, THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS, MarketTypeDetails, PlatformDetails } from '../../constants';
@@ -76,12 +75,14 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
                                     {isDemo ? 'Demo' : 'Real'}
                                 </WalletText>
                             </div>
-                            <WalletMarketCurrencyIcon
-                                currency={data?.currency ?? 'USD'}
-                                isDemo={isDemo ?? false}
-                                marketType={marketType}
-                                platform={platform}
-                            />
+                            <div className='wallets-cfd-success__market-icon'>
+                                <WalletMarketCurrencyIcon
+                                    currency={data?.currency ?? 'USD'}
+                                    isDemo={isDemo ?? false}
+                                    marketType={marketType}
+                                    platform={platform}
+                                />
+                            </div>
                             <div className='wallets-cfd-success__info'>
                                 <WalletText size='2xs'>
                                     {platformTitlePrefix} {marketTypeTitle}{' '}

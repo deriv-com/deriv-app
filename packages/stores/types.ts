@@ -558,7 +558,6 @@ type TClientStore = {
     landing_companies: LandingCompany;
     getChangeableFields: () => string[];
     landing_company: LandingCompany;
-    isAccountOfTypeDisabled: (account: Record<string, DetailsOfEachMT5Loginid>) => boolean;
     is_mt5_allowed: boolean;
     mt5_disabled_signup_types: {
         real: boolean;
@@ -569,10 +568,6 @@ type TClientStore = {
         demo: boolean;
     };
     dxtrade_accounts_list_error: null;
-    has_account_error_in_mt5_real_list: boolean;
-    has_account_error_in_mt5_demo_list: boolean;
-    has_account_error_in_dxtrade_real_list: boolean;
-    has_account_error_in_dxtrade_demo_list: boolean;
     has_fiat: boolean;
     is_fully_authenticated: boolean;
     updateMt5LoginList: () => Promise<void>;

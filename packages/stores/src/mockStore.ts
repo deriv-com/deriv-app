@@ -244,7 +244,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             landing_company: {},
             upgradeable_currencies: [],
             getChangeableFields: jest.fn(),
-            isAccountOfTypeDisabled: jest.fn(),
             is_mt5_allowed: false,
             mt5_disabled_signup_types: {
                 real: false,
@@ -255,10 +254,6 @@ const mock = (): TStores & { is_mock: boolean } => {
                 demo: false,
             },
             dxtrade_accounts_list_error: null,
-            has_account_error_in_mt5_demo_list: false,
-            has_account_error_in_mt5_real_list: false,
-            has_account_error_in_dxtrade_demo_list: false,
-            has_account_error_in_dxtrade_real_list: false,
             website_status: {
                 dx_trade_status: {
                     all: 0,

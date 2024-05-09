@@ -247,10 +247,7 @@ export default class ClientStore extends BaseStore {
             account_list: computed,
             has_real_mt5_login: computed,
             has_real_dxtrade_login: computed,
-            has_account_error_in_mt5_real_list: computed,
             has_account_error_in_mt5_demo_list: computed,
-            has_account_error_in_dxtrade_real_list: computed,
-            has_account_error_in_dxtrade_demo_list: computed,
             active_accounts: computed,
             all_loginids: computed,
             account_title: computed,
@@ -281,7 +278,6 @@ export default class ClientStore extends BaseStore {
             is_from_restricted_country: computed,
             is_fully_authenticated: computed,
             is_financial_account: computed,
-            is_age_verified: computed,
             landing_company_shortcode: computed,
             landing_company: computed,
             is_logged_in: computed,
@@ -396,7 +392,6 @@ export default class ClientStore extends BaseStore {
             is_eu_or_multipliers_only: computed,
             getTwoFAStatus: action.bound,
             updateMT5Status: action.bound,
-            isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
             setPrevAccountType: action.bound,
             setIsAlreadyAttempted: action.bound,
@@ -610,38 +605,6 @@ export default class ClientStore extends BaseStore {
         return this.dxtrade_accounts_list.some(account => account.account_type === 'real');
     }
 
-    hasAccountErrorInCFDList = (platform, account_type) => {
-        if (!this.is_logged_in) return false;
-        let list;
-        switch (platform) {
-            case CFD_PLATFORMS.MT5:
-                list = this.mt5_login_list;
-                break;
-            case CFD_PLATFORMS.DXTRADE:
-                list = this.dxtrade_accounts_list;
-                break;
-            default:
-                return false;
-        }
-        return list?.some(account => !!account.has_error && account.account_type === account_type);
-    };
-
-    get has_account_error_in_mt5_real_list() {
-        return this.hasAccountErrorInCFDList(CFD_PLATFORMS.MT5, 'real');
-    }
-
-    get has_account_error_in_mt5_demo_list() {
-        return this.hasAccountErrorInCFDList(CFD_PLATFORMS.MT5, 'demo');
-    }
-
-    get has_account_error_in_dxtrade_real_list() {
-        return this.hasAccountErrorInCFDList(CFD_PLATFORMS.DXTRADE, 'real');
-    }
-
-    get has_account_error_in_dxtrade_demo_list() {
-        return this.hasAccountErrorInCFDList(CFD_PLATFORMS.DXTRADE, 'demo');
-    }
-
     get active_accounts() {
         return this.accounts instanceof Object
             ? Object.values(this.accounts).filter(account => !account.is_disabled)
@@ -772,10 +735,6 @@ export default class ClientStore extends BaseStore {
     get is_financial_account() {
         if (!this.landing_companies) return false;
         return this.account_type === 'financial';
-    }
-
-    get is_age_verified() {
-        return this.account_status?.status?.some(status => status === 'age_verification');
     }
 
     get landing_company_shortcode() {
@@ -1022,10 +981,6 @@ export default class ClientStore extends BaseStore {
         const country = this.website_status.clients_country;
         if (country) return isEuCountry(country);
         return false;
-    }
-
-    isEuropeCountry() {
-        return this.is_eu_country || this.is_eu;
     }
 
     get is_options_blocked() {
@@ -1421,11 +1376,6 @@ export default class ClientStore extends BaseStore {
         return '';
     }
 
-    isEuCountrySelected = selected_country => {
-        if (selected_country) return isEuCountry(selected_country);
-        return false;
-    };
-
     isAccountOfType = type => {
         const client_account_type = getClientAccountType(this.loginid);
 
@@ -1435,11 +1385,6 @@ export default class ClientStore extends BaseStore {
                 type === client_account_type) &&
             !this.isDisabled()
         );
-    };
-
-    isAccountOfTypeDisabled = type => {
-        const filtered_list = this.account_list.filter(acc => getClientAccountType(acc.loginid) === type);
-        return filtered_list.length > 0 && filtered_list.every(acc => acc.is_disabled);
     };
 
     updateAccountList(account_list) {

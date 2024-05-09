@@ -236,7 +236,6 @@ export default class ClientStore extends BaseStore {
             has_active_real_account: computed,
             has_maltainvest_account: computed,
             has_any_real_account: computed,
-            first_switchable_real_loginid: computed,
             can_change_fiat_currency: computed,
             legal_allowed_currencies: computed,
             upgradeable_currencies: computed,
@@ -260,7 +259,6 @@ export default class ClientStore extends BaseStore {
             default_currency: computed,
             should_allow_authentication: computed,
             should_allow_poinc_authentication: computed,
-            is_financial_assessment_incomplete: computed,
             is_financial_assessment_needed: computed,
             is_authentication_needed: computed,
             is_identity_verification_needed: computed,
@@ -282,7 +280,6 @@ export default class ClientStore extends BaseStore {
             social_identity_provider: computed,
             is_from_restricted_country: computed,
             is_fully_authenticated: computed,
-            is_pending_authentication: computed,
             is_financial_account: computed,
             is_age_verified: computed,
             landing_company_shortcode: computed,
@@ -333,7 +330,6 @@ export default class ClientStore extends BaseStore {
             createCryptoAccount: action.bound,
             residence: computed,
             email_address: computed,
-            is_website_status_ready: computed,
             updateAccountList: action.bound,
             switchAccount: action.bound,
             resetVirtualBalance: action.bound,
@@ -498,13 +494,6 @@ export default class ClientStore extends BaseStore {
 
     get has_wallet() {
         return Object.values(this.accounts).some(account => account.account_category === 'wallet');
-    }
-
-    get first_switchable_real_loginid() {
-        const result = this.active_accounts.find(
-            acc => acc.is_virtual === 0 && acc.landing_company_shortcode === 'svg'
-        );
-        return result.loginid || undefined;
     }
 
     get can_change_fiat_currency() {
@@ -704,10 +693,6 @@ export default class ClientStore extends BaseStore {
         );
     }
 
-    get is_financial_assessment_incomplete() {
-        return this.account_status?.status?.includes('financial_assessment_not_complete');
-    }
-
     get is_financial_assessment_needed() {
         return this.account_status?.status?.includes('financial_assessment_notification');
     }
@@ -782,10 +767,6 @@ export default class ClientStore extends BaseStore {
 
     get is_fully_authenticated() {
         return this.account_status?.status?.some(status => status === 'authenticated');
-    }
-
-    get is_pending_authentication() {
-        return this.account_status?.status?.some(status => status === 'document_under_review');
     }
 
     get is_financial_account() {
@@ -1438,10 +1419,6 @@ export default class ClientStore extends BaseStore {
         }
 
         return '';
-    }
-
-    get is_website_status_ready() {
-        return this.website_status && !BinarySocket.getAvailability().is_down;
     }
 
     isEuCountrySelected = selected_country => {

@@ -557,9 +557,11 @@
         align-items: center;
         text-decoration: none;
         border-radius: $BORDER_RADIUS;
+        padding: 0;
 
         &-icon {
             margin-left: 0.6rem;
+            margin-top: 0.1rem;
         }
 
         &-text {

@@ -20,12 +20,6 @@
     }
 }
 
-.landscape-blocker {
-    &--hidden {
-        display: none !important;
-    }
-}
-
 .app-contents {
     &--contract-mode,
     &--is-disabled {
@@ -1051,5 +1045,40 @@
                 padding: 1.6rem;
             }
         }
+    }
+}
+
+.tablet-landscape {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+
+    body {
+        transform: rotate(-90deg);
+        height: 100svw;
+        width: 100svh;
+        transition: transform 0.5s;
+    }
+
+    &[dir='rtl'] body {
+        transform: rotate(90deg);
+    }
+
+    .chart-container__wrapper {
+        height: calc(100svw - 48px);
+    }
+
+    .modal-root {
+        width: 100vh;
+        height: 100vw;
+    }
+
+    .positions-modal {
+        height: 84svw !important;
+    }
+
+    .portfolio-empty {
+        height: calc(100svw - 250px);
     }
 }

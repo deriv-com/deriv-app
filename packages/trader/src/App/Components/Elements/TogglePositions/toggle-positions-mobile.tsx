@@ -33,7 +33,7 @@ const TogglePositionsMobile = observer(
     }: TTogglePositionsMobile) => {
         const { togglePositionsDrawer, is_positions_drawer_on } = useStore().ui;
         const [hidden_positions_ids, setHiddenPositionsIds] = React.useState<THiddenPositionsId[]>([]);
-        const { isMobile } = useDevice();
+        const { isMobile, isTablet } = useDevice();
 
         const displayed_positions = filtered_positions
             .filter(p =>
@@ -96,7 +96,7 @@ const TogglePositionsMobile = observer(
                     width={isMobile ? 'calc(100vw - 32px)' : undefined}
                     className='toggle-positions'
                 >
-                    <Div100vhContainer className='positions-modal' height_offset='48px'>
+                    <Div100vhContainer className='positions-modal' height_offset={isTablet ? '16rvh' : '48px'}>
                         <div className='positions-modal__header'>
                             <Text size='xxxs' className='positions-modal__title'>
                                 <Icon icon='IcPortfolio' className='positions-modal__title-icon' />

@@ -10,7 +10,7 @@ const Footer = () => {
     const { pathname } = useLocation();
     const is_hidden_landscape_blocker = isDisabledLandscapeBlockerRoute(pathname);
     const is_dtrader_route = pathname === routes.trade;
-    const show_in_tablet_routes = [routes.trade, routes.contract];
+    const show_in_tablet_routes = [routes.contract];
 
     if (pathname === routes.onboarding) {
         return null;

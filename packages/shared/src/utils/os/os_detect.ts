@@ -42,6 +42,10 @@ export const isDesktopOs = () => {
 export const isMobileOs = () =>
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
+export const isTabletOs =
+    /ipad|android 3.0|xoom|sch-i800|playbook|tablet|kindle/i.test(navigator.userAgent.toLowerCase()) ||
+    (/android/i.test(navigator.userAgent.toLowerCase()) && !/mobile/i.test(navigator.userAgent.toLowerCase()));
+
 export const OSDetect = () => {
     // For testing purposes or more compatibility, if we set 'config.os'
     // inside our localStorage, we ignore fetching information from

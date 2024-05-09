@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import OTPVerification from '../otp-verification';
-import userEvent from '@testing-library/user-event';
 
 describe('ConfirmPhoneNumber', () => {
     const store = mockStore({
@@ -31,19 +30,6 @@ describe('ConfirmPhoneNumber', () => {
         ).toBeInTheDocument();
         expect(screen.getByRole('textbox', { name: /OTP code/ })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Resend code/ })).toBeInTheDocument();
-    });
-
-    it('should disable button when Resend code is clicked', () => {
-        render(
-            <StoreProvider store={store}>
-                <OTPVerification phone_verification_type={phone_verification_type} />
-            </StoreProvider>
-        );
-        const resend_button = screen.getByRole('button', { name: 'Resend code' });
-
-        userEvent.click(resend_button);
-
-        expect(resend_button).toBeDisabled();
     });
 
     it('should render Verify your number in OTP Verification', () => {

@@ -700,12 +700,6 @@
             border-bottom: unset;
             margin: unset;
         }
-
-        .dc-tick-counter-bar__text {
-            position: absolute;
-            color: var(--status-success);
-            width: 100%;
-        }
     }
     &__track {
         height: 1.8rem;
@@ -722,5 +716,9 @@
             border-bottom: unset;
             margin: 0.2rem 0 0.4rem;
         }
+    }
+    &__text {
+        position: absolute;
+        width: 100%;
     }
 }

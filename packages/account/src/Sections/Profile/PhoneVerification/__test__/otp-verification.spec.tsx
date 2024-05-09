@@ -54,7 +54,7 @@ describe('ConfirmPhoneNumber', () => {
             </StoreProvider>
         );
         expect(screen.getByText(/Verify your number/)).toBeInTheDocument();
-        expect(screen.getByText(/Enter the 6-digit code sent to you via sms at :/)).toBeInTheDocument();
+        expect(screen.getByText(/Enter the 6-digit code sent to you via SMS at :/)).toBeInTheDocument();
     });
 
     it('should render whatsapp when phone_verification_type is whatsapp', () => {
@@ -65,6 +65,6 @@ describe('ConfirmPhoneNumber', () => {
                 <OTPVerification phone_verification_type={phone_verification_type} />
             </StoreProvider>
         );
-        expect(screen.getByText(/whatsapp/)).toBeInTheDocument();
+        expect(screen.getByText(/WhatsApp/)).toBeInTheDocument();
     });
 });

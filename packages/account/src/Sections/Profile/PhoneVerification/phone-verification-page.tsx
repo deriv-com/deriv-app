@@ -8,7 +8,7 @@ import OTPVerification from './otp-verification';
 import CancelPhoneVerificationModal from './cancel-phone-verification-modal';
 
 const PhoneVerificationPage = () => {
-    const [otp_verification, setOtpVerification] = React.useState({ show: false, phone_verification_type: '' });
+    const [otp_verification, setOtpVerification] = React.useState({ show: true, phone_verification_type: '' });
     const [should_show_cancel_verification_modal, setShouldShowCancelVerificationModal] = React.useState(false);
     const handleBackButton = () => {
         setShouldShowCancelVerificationModal(true);

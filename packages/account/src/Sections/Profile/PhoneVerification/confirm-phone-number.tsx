@@ -4,6 +4,7 @@ import { Button, Text } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { Input } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+import { useGetPhoneNumberOTP } from '@deriv/hooks';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 
 type TConfirmPhoneNumber = {
@@ -11,11 +12,13 @@ type TConfirmPhoneNumber = {
 };
 
 const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber) => {
+    const { requestOnSMS, requestOnWhatsApp, ...rest } = useGetPhoneNumberOTP();
     const { client, ui } = useStore();
     const { account_settings } = client;
     const { setShouldShowPhoneNumberOTP } = ui;
-    const phoneNumber = account_settings.phone || '';
+    const phone_number = account_settings.phone || '';
     const handleSubmit = (phone_verification_type: string) => {
+        phone_verification_type === VERIFICATION_SERVICES.SMS ? () => requestOnSMS() : () => requestOnWhatsApp();
         setOtpVerification({ show: true, phone_verification_type });
         setShouldShowPhoneNumberOTP(true);
     };
@@ -25,7 +28,7 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
             <Text bold>
                 <Localize i18n_default_text='Confirm your phone number' />
             </Text>
-            <Input label={localize('Phone number')} value={phoneNumber} />
+            <Input label={localize('Phone number')} value={phone_number} />
             <div className='phone-verification__card--buttons_container'>
                 <Button
                     variant='secondary'

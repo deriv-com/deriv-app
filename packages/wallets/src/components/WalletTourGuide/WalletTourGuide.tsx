@@ -1,6 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
-import { useActiveWalletAccount, useAllWalletAccounts, useAuthorize, useWalletAccountsList } from '@deriv/api-v2';
+import {
+    useActiveWalletAccount,
+    useAllWalletAccounts,
+    useAuthorize,
+    useWalletAccountsList,
+    useCtraderAccountsList,
+    useDxtradeAccountsList,
+    useSortedMT5Accounts,
+} from '@deriv/api-v2';
 import Joyride, { ACTIONS, CallBackProps } from '@deriv/react-joyride';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
@@ -11,7 +19,7 @@ import {
     TooltipComponent,
     tourStepConfig,
     walletsOnboardingLocalStorageKey as key,
-    walletsOnboardingStartValue as startValue,
+    walletsOnboardingStartValue as START_VALUE,
 } from './WalletTourGuideSettings';
 import './WalletTourGuide.scss';
 
@@ -20,11 +28,19 @@ const WalletTourGuide = () => {
     const [addMoreWalletsTransformValue, setAddMoreWalletsTransformValue] = useState('');
     const { isMobile } = useDevice();
 
+    // just because someone clicked button in dtrader and set local storage
+    // does not mean we should run the tour as we might need to wait for the account to be switched
+    const [run, setRun] = useState<boolean>(false);
+
     const switchWalletAccount = useWalletAccountSwitcher();
     const { isFetching, isLoading, isSuccess } = useAuthorize();
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: availableWallets } = useAllWalletAccounts();
+
+    const { isLoading: ctraderIsLoading } = useCtraderAccountsList();
+    const { isLoading: dxtradeIsLoading } = useDxtradeAccountsList();
+    const { isLoading: sorteAccountsListLoading } = useSortedMT5Accounts();
 
     const addMoreWalletRef = useRef<HTMLElement | null>(document.getElementById('wallets_add_more_carousel_wrapper'));
 
@@ -51,6 +67,7 @@ const WalletTourGuide = () => {
 
         if (action === ACTIONS.RESET) {
             setWalletsOnboarding('');
+            setRun(false);
             if (!isAllWalletsAlreadyAdded && addMoreWalletRef.current) {
                 addMoreWalletRef.current.style.transform = addMoreWalletsTransformValue;
             }
@@ -58,17 +75,34 @@ const WalletTourGuide = () => {
     };
 
     useEffect(() => {
-        const switchToFiatWallet = () => {
+        const needToStart = walletsOnboarding === START_VALUE;
+        if (needToStart) {
+            const isAnythingLoading =
+                dxtradeIsLoading ||
+                ctraderIsLoading ||
+                isFetching ||
+                !isSuccess ||
+                isLoading ||
+                sorteAccountsListLoading;
             if (fiatWalletLoginId && fiatWalletLoginId !== activeWalletLoginId) {
                 switchWalletAccount(fiatWalletLoginId);
+            } else if (needToStart && !isAnythingLoading) {
+                setRun(true);
+                setWalletsOnboarding('');
             }
-        };
-
-        const needToStart = walletsOnboarding === startValue;
-        if (needToStart) {
-            switchToFiatWallet();
         }
-    }, [activeWalletLoginId, fiatWalletLoginId, switchWalletAccount, walletsOnboarding]);
+    }, [
+        activeWalletLoginId,
+        fiatWalletLoginId,
+        switchWalletAccount,
+        walletsOnboarding,
+        isLoading,
+        isFetching,
+        isSuccess,
+        dxtradeIsLoading,
+        ctraderIsLoading,
+        sorteAccountsListLoading,
+    ]);
 
     useEffect(() => {
         if (!addMoreWalletRef.current) {
@@ -85,7 +119,7 @@ const WalletTourGuide = () => {
             disableCloseOnEsc
             disableOverlayClose
             floaterProps={{ disableAnimation: true }}
-            run={walletsOnboarding === startValue && !isLoading && !isFetching && isSuccess}
+            run={run}
             scrollDuration={0}
             scrollOffset={150}
             steps={tourStepConfig(

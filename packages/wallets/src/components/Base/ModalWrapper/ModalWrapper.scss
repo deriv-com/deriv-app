@@ -9,7 +9,12 @@
     }
 
     @include mobile {
-        width: calc(100vw - 3.2rem);
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--overlay-outside-dialog);
     }
 
     &__close-icon {

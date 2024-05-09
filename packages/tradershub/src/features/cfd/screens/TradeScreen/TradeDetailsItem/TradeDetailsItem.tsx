@@ -38,10 +38,16 @@ const TradeDetailsItem = ({ className, label, value, variant = 'clipboard' }: TT
                 )}
                 {variant === 'clipboard' && <Clipboard textCopy={value} />}
                 {variant === 'password' && (
-                    <Tooltip alignment='left' isVisible={isHovered && isDesktop} message='Change password'>
+                    <Tooltip alignment='bottom' isVisible={isHovered && isDesktop} message='Change password'>
                         <div ref={hoverRef}>
-                            <Button className='underline' color='white' size='sm' variant='ghost'>
-                                <EditIcon className='cursor-pointer' onClick={() => openModal('ChangePassword')} />
+                            <Button
+                                className='underline'
+                                color='white'
+                                onClick={() => openModal('ChangePassword')}
+                                size='sm'
+                                variant='ghost'
+                            >
+                                <EditIcon className='cursor-pointer' />
                             </Button>
                         </div>
                     </Tooltip>

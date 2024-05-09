@@ -199,6 +199,7 @@ export default class TradeStore extends BaseStore {
     contract_expiry_type = '';
     contract_start_type = '';
     contract_type = '';
+    prev_contract_type = '';
     contract_types_list: TContractTypesList = {};
     non_available_contract_types_list: TContractTypesList = {};
     trade_types: { [key: string]: string } = {};
@@ -284,7 +285,10 @@ export default class TradeStore extends BaseStore {
     cancellation_duration = '60m';
     cancellation_range_list: Array<TTextValueStrings> = [];
     cached_multiplier_cancellation_list: Array<TTextValueStrings> = [];
-
+    ref: React.RefObject<{
+        hasPredictionIndicators(): void;
+        triggerPopup(arg: () => void): void;
+    }> | null = null;
     // Turbos trade params
     long_barriers: TBarriersData = {};
     short_barriers: TBarriersData = {};
@@ -312,9 +316,7 @@ export default class TradeStore extends BaseStore {
     initial_barriers?: { barrier_1: string; barrier_2: string };
     is_initial_barrier_applied = false;
     is_digits_widget_active = false;
-
     should_skip_prepost_lifecycle = false;
-
     constructor({ root_store }: { root_store: TCoreStores }) {
         const local_storage_properties = [
             'amount',
@@ -345,6 +347,7 @@ export default class TradeStore extends BaseStore {
             'is_trade_params_expanded',
         ];
         const session_storage_properties = ['contract_type', 'symbol'];
+
         super({
             root_store,
             local_storage_properties,
@@ -415,6 +418,7 @@ export default class TradeStore extends BaseStore {
             multiplier: observable,
             non_available_contract_types_list: observable,
             previous_symbol: observable,
+            ref: observable,
             proposal_info: observable.ref,
             purchase_info: observable.ref,
             setHoveredBarrier: action.bound,
@@ -673,13 +677,7 @@ export default class TradeStore extends BaseStore {
     async setActiveSymbols() {
         const is_on_mf_account = this.root_store.client.landing_company_shortcode === 'maltainvest';
         const is_logged_in = this.root_store.client.is_logged_in;
-        const clients_country = this.root_store.client.clients_country;
         const showError = this.root_store.common.showError;
-
-        // To resolve infinite load for Belgium and Isle of man logout IPs
-        if (['be', 'im'].includes(clients_country) && !is_logged_in) {
-            showUnavailableLocationError(showError, is_logged_in);
-        }
 
         const { active_symbols, error } = await WS.authorized.activeSymbols();
 
@@ -788,6 +786,13 @@ export default class TradeStore extends BaseStore {
 
     async onChange(e: { target: { name: string; value: unknown } }) {
         const { name, value } = e.target;
+        if (
+            name == 'contract_type' &&
+            ['accumulator', 'match_diff', 'even_odd', 'over_under'].includes(value as string)
+        ) {
+            this.prev_contract_type = this.contract_type;
+        }
+
         if (name === 'symbol' && value) {
             // set trade params skeleton and chart loader to true until processNewValuesAsync resolves
             this.setChartStatus(true);

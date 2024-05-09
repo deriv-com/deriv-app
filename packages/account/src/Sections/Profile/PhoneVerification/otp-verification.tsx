@@ -16,6 +16,7 @@ const OTPVerification = observer(({ phone_verification_type }: TOTPVerification)
     const { client, ui } = useStore();
     const { account_settings } = client;
     const { email, phone } = account_settings;
+    //TODO: this shall be replace by BE API call when it's ready
     const { should_show_phone_number_otp } = ui;
 
     const resendCodeText = useRef('Resend code');

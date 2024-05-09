@@ -4,6 +4,7 @@ import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
 import { makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useReadLocalStorage } from 'usehooks-ts';
+import { useDevice } from '@deriv/components';
 
 const HeaderFallback = () => <div className='header' />;
 
@@ -47,6 +48,7 @@ const Header = observer(() => {
     const { client } = useStore();
     const { accounts, is_logged_in, setAccounts, loginid, switchAccount } = client;
     const { pathname } = useLocation();
+    const { is_mobile } = useDevice();
 
     const is_wallets_cashier_route = pathname.includes(routes.wallets_cashier);
 
@@ -87,7 +89,7 @@ const Header = observer(() => {
             result = should_show_wallets ? <TradersHubHeaderWallets /> : <TradersHubHeader />;
         } else if (pathname === routes.onboarding) {
             result = null;
-        } else if (pathname === routes.trade && is_dtrader_v2_enabled) {
+        } else if (pathname === routes.trade && is_dtrader_v2_enabled && is_mobile) {
             result = <DTraderV2Header />;
         } else {
             result = should_show_wallets ? <DTraderHeaderWallets /> : <DTraderHeader />;

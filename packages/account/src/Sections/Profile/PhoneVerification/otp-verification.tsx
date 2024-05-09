@@ -23,9 +23,12 @@ const OTPVerification = observer(({ phone_verification_type }: TOTPVerification)
     const convertPhoneTypeDisplay = () => {
         if (phone_verification_type === VERIFICATION_SERVICES.SMS) return phone_verification_type.toUpperCase();
 
-        return phone_verification_type.replace(/w|a/g, value => {
-            return value.toUpperCase();
-        });
+        return (
+            phone_verification_type.charAt(0).toUpperCase() +
+            phone_verification_type.slice(1, 5) +
+            phone_verification_type.charAt(5).toUpperCase() +
+            phone_verification_type.slice(6)
+        );
     };
 
     const resendCodeText = useRef('Resend code');

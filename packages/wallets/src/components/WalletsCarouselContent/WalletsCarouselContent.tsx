@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useEmblaCarousel, { EmblaCarouselType, EmblaEventType } from 'embla-carousel-react';
+import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api-v2';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
+import { THooks } from '../../types';
 import { ProgressBar } from '../Base';
 import { WalletsCarouselLoader } from '../SkeletonLoader';
 import { WalletCard } from '../WalletCard';
 import { WalletListCardActions } from '../WalletListCardActions';
 import './WalletsCarouselContent.scss';
-import { useHistory } from 'react-router-dom';
 
 type TProps = {
     onWalletSettled?: (value: boolean) => void;
@@ -110,13 +111,25 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
         skipSnaps: true,
     });
 
+    const handleCardClick = useCallback(
+        (account: THooks.ActiveWalletAccount, index: number) => {
+            walletsCarouselEmblaApi?.scrollTo(index);
+            walletAccountsList && setSelectedLoginId(walletAccountsList[index].loginid);
+            account.is_active &&
+                (account.is_virtual
+                    ? history.push('/wallets/cashier/reset-balance')
+                    : history.push('/wallets/cashier/deposit'));
+        },
+        [walletsCarouselEmblaApi, walletAccountsList, history]
+    );
+
     useEffect(() => {
         walletsAccountsListRef.current = walletAccountsList;
     }, [walletAccountsList]);
 
     // set login ID once wallet changes
     useEffect(() => {
-        if (activeWallet) {
+        if (activeWallet?.loginid) {
             setSelectedLoginId(activeWallet?.loginid);
         }
     }, [activeWallet?.loginid]);
@@ -220,20 +233,16 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     return (
         <div className='wallets-carousel-content' ref={walletsCarouselEmblaRef}>
             <div className='wallets-carousel-content__container'>
-                {walletAccountsList?.map(account => (
+                {walletAccountsList?.map((account, index) => (
                     <WalletCard
                         balance={account.display_balance}
                         currency={account.currency || 'USD'}
-                        iconSize='xl'
+                        iconSize='lg'
                         isCarouselContent
                         isDemo={account.is_virtual}
                         key={`wallet-card-${account.loginid}`}
                         landingCompanyName={account.landing_company_name}
-                        onClick={() =>
-                            account.is_virtual
-                                ? history.push('/wallets/cashier/reset-balance')
-                                : history.push('/wallets/cashier/deposit')
-                        }
+                        onClick={() => handleCardClick(account, index)}
                     />
                 ))}
             </div>

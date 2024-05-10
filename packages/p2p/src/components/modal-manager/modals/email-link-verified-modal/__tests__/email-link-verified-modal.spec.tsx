@@ -27,6 +27,8 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
             rate: 1.2,
         },
         confirmOrder: jest.fn(),
+        setActionParam: jest.fn(),
+        setVerificationCode: jest.fn(),
     },
 };
 
@@ -64,5 +66,7 @@ describe('<EmailLinkVerifiedModal />', () => {
         userEvent.click(confirm_button);
         expect(mock_modal_manager.hideModal).toHaveBeenCalledWith({ should_hide_all_modals: true });
         expect(mock_store.order_store.confirmOrder).toHaveBeenCalledWith(true);
+        expect(mock_store.order_store.setVerificationCode).toHaveBeenCalledWith('');
+        expect(mock_store.order_store.setActionParam).toHaveBeenCalledWith(null);
     });
 });

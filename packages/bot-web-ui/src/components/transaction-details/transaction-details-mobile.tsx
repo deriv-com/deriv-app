@@ -1,16 +1,12 @@
 import React from 'react';
-
 import { MobileFullPageModal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-
 import { StatisticsSummary } from 'Components/run-panel/run-panel';
 import { transaction_elements } from 'Constants/transactions';
 import { useDBotStore } from 'Stores/useDBotStore';
-
 import MobileTransactionCards from './mobile-transaction-card';
-import { TRunPanelStore, TTransactionStore } from './transaction-details.types';
-
+import { TRunPanelStore } from './transaction-details.types';
 import './transaction-details-mobile.scss';
 
 const TransactionDetailsMobile = observer(() => {
@@ -20,8 +16,10 @@ const TransactionDetailsMobile = observer(() => {
         toggleTransactionDetailsModal,
         is_transaction_details_modal_open,
         transactions: transaction_list,
-    }: Partial<TTransactionStore> = transactions;
-    const { statistics, toggleStatisticsInfoModal }: Partial<TRunPanelStore> = run_panel;
+        statistics,
+    } = transactions;
+
+    const { toggleStatisticsInfoModal }: Partial<TRunPanelStore> = run_panel;
 
     return (
         <MobileFullPageModal
@@ -49,15 +47,15 @@ const TransactionDetailsMobile = observer(() => {
             </div>
             <div className='transaction-details-modal-mobile__card__footer'>
                 <StatisticsSummary
+                    is_mobile
                     currency={client?.currency}
-                    is_mobile={true}
                     lost_contracts={statistics?.lost_contracts ?? 0}
                     number_of_runs={statistics?.number_of_runs ?? 0}
-                    toggleStatisticsInfoModal={toggleStatisticsInfoModal}
                     total_payout={statistics?.total_payout ?? 0}
                     total_profit={statistics?.total_profit ?? 0}
                     total_stake={statistics?.total_stake ?? 0}
                     won_contracts={statistics?.won_contracts ?? 0}
+                    toggleStatisticsInfoModal={toggleStatisticsInfoModal}
                 />
             </div>
         </MobileFullPageModal>

@@ -1,18 +1,18 @@
 import { useMemo } from 'react';
-import useQuery from '../useQuery';
-import useAuthorize from './useAuthorize';
+import useAuthorizedQuery from '../useAuthorizedQuery';
 
 /** A custom hook that gets the list of available wallets. */
 const useAvailableWallets = () => {
-    const { isSuccess } = useAuthorize();
-    const { data, ...rest } = useQuery('available_accounts', {
-        payload: {
+    // pretty much stale data, unless user creates a new wallet
+    const { data, ...rest } = useAuthorizedQuery(
+        'available_accounts',
+        {
             categories: ['wallet'],
         },
-        options: {
-            enabled: isSuccess,
-        },
-    });
+        {
+            staleTime: Infinity,
+        }
+    );
 
     const modifiedData = useMemo(() => {
         if (!data?.available_accounts?.wallets) return;

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useCombobox } from 'downshift';
-import ArrowIcon from '../../../public/images/pointed-down-arrow-icon.svg';
+import { LabelPairedChevronDownLgFillIcon } from '@deriv/quill-icons';
 import { TGenericSizes } from '../../../types';
 import reactNodeToString from '../../../utils/react-node-to-string';
 import { WalletText } from '../WalletText';
@@ -133,7 +133,7 @@ const WalletDropdown: React.FC<TProps> = ({
                                 'wallets-dropdown__button--active': isOpen,
                             })}
                         >
-                            <ArrowIcon />
+                            <LabelPairedChevronDownLgFillIcon />
                         </button>
                     )}
                     showMessageContainer={showMessageContainer}

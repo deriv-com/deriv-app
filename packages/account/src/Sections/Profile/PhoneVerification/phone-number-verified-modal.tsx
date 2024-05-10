@@ -2,12 +2,9 @@ import React from 'react';
 import { Button, Text } from '@deriv-com/quill-ui';
 import { Modal } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { observer } from 'mobx-react';
-import { useStore } from '@deriv/stores';
 
-const PhoneNumberVerifiedModal = observer(() => {
-    const { ui } = useStore();
-    const { should_show_phone_number_verified_modal, setShouldShowPhoneNumberVerifiedModal } = ui;
+const PhoneNumberVerifiedModal = () => {
+    const [should_show_phone_number_verified_modal, setShouldShowPhoneNumberVerifiedModal] = React.useState(false);
 
     return (
         <Modal className='phone-verification__verified-modal' is_open={should_show_phone_number_verified_modal}>
@@ -37,6 +34,6 @@ const PhoneNumberVerifiedModal = observer(() => {
             </Modal.Footer>
         </Modal>
     );
-});
+};
 
 export default PhoneNumberVerifiedModal;

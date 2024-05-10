@@ -15,16 +15,9 @@ import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import { useActiveWallet } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import {
-    CFD_PLATFORMS,
-    getStaticUrl,
-    getUrlSmartTrader,
-    getUrlBinaryBot,
-    MT5_ACCOUNT_STATUS,
-    LocalStore,
-    isEuCountry,
-} from '@deriv/shared';
+import { CFD_PLATFORMS, getStaticUrl, getUrlSmartTrader, getUrlBinaryBot, MT5_ACCOUNT_STATUS } from '@deriv/shared';
 import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
+import { getAvailablePlatforms } from '../../helpers';
 import './trading-app-card.scss';
 
 type TWalletsProps = {
@@ -65,13 +58,12 @@ const TradingAppCard = ({
     const { account_status: { authentication } = {} } = client;
 
     const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
+    const available_platforms = getAvailablePlatforms();
+
     const demo_label = localize('Demo');
     const is_real_account = wallet_account ? !wallet_account.is_virtual : is_real;
 
-    const accounts = JSON.parse(LocalStore.get('client.accounts') ?? '{}');
-    const loginid = LocalStore.get('active_loginid');
-
-    const app_platform = !isEuCountry(accounts[loginid]?.residence) ? getAppstorePlatforms() : getMFAppstorePlatforms();
+    const app_platform = available_platforms.includes('options') ? getAppstorePlatforms() : getMFAppstorePlatforms();
 
     const { app_desc, link_to, is_external, new_tab } = app_platform.find(config => config.name === name) || {
         app_desc: description,

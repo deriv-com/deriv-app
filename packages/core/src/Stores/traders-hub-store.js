@@ -136,6 +136,20 @@ export default class TradersHubStore extends BaseStore {
             () => {
                 this.getAvailablePlatforms();
                 this.getAvailableCFDAccounts();
+
+                // Set the platforms for the trading app cards based on the content flag and the client's residence status (EU/Non-EU)
+                const low_risk_cr_non_eu = this.content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
+                const high_risk_cr = this.content_flag === ContentFlag.HIGH_RISK_CR;
+                const cr_demo = this.content_flag === ContentFlag.CR_DEMO;
+                const platforms = this.root_store.client.is_mt5_allowed ? ['multipliers', 'cfds'] : ['multipliers'];
+
+                if (
+                    this.root_store.client.is_landing_company_loaded &&
+                    (low_risk_cr_non_eu || high_risk_cr || cr_demo)
+                ) {
+                    platforms.push('options');
+                }
+                localStorage.setItem('th_platforms', JSON.stringify(platforms));
             }
         );
 
@@ -160,6 +174,8 @@ export default class TradersHubStore extends BaseStore {
                 const active_real_mf = /^MF|MFW/.test(this.root_store.client.loginid);
                 const default_region = () => {
                     if (((active_demo || active_real_mf) && isEuCountry(residence)) || active_real_mf) {
+                        // store the user's region in localStorage to remember the user's region selection on page refresh
+                        localStorage.setItem('is_eu_user', true);
                         return 'EU';
                     }
                     return 'Non-EU';
@@ -247,6 +263,9 @@ export default class TradersHubStore extends BaseStore {
 
         this.selected_account_type = 'real';
         this.selected_region = 'Non-EU';
+
+        // remove the user's region selection from localStorage to reset the user's region selection
+        localStorage.removeItem('is_eu_user');
     }
 
     selectAccountTypeCard(account_type_card) {
@@ -564,7 +583,8 @@ export default class TradersHubStore extends BaseStore {
         return this.selected_account_type === 'real';
     }
     get is_eu_user() {
-        return this.selected_region === 'EU';
+        // directly return the user's region selection from localStorage or the selected region from the store
+        return localStorage.getItem('is_eu_user') === 'true' || this.selected_region === 'EU';
     }
 
     handleTabItemClick(idx) {

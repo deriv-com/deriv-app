@@ -247,7 +247,6 @@ export default class ClientStore extends BaseStore {
             account_list: computed,
             has_real_mt5_login: computed,
             has_real_dxtrade_login: computed,
-            has_account_error_in_mt5_demo_list: computed,
             active_accounts: computed,
             all_loginids: computed,
             account_title: computed,

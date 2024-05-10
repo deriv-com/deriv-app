@@ -28,7 +28,7 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: { mt5_trade_account: Det
 
         const timeout = setTimeout(() => {
             mobileAppURL && window.location.replace(mobileAppURL);
-        }, 1500);
+        }, 3000);
 
         document.addEventListener('visibilitychange', function () {
             if (document.hidden) {

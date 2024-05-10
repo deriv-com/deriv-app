@@ -105,6 +105,20 @@ const Cashier_V2 = React.lazy(() =>
 const getModules = () => {
     const modules = [
         {
+            path: routes.trade,
+            component: Trader,
+            getTitle: () => localize('Trader'),
+            routes: [
+                {
+                    path: routes.contract,
+                    component: Trader,
+                    getTitle: () => localize('Contract Details'),
+                    is_authenticated: true,
+                },
+                { path: routes.error404, component: Trader, getTitle: () => localize('Error 404') },
+            ],
+        },
+        {
             path: routes.bot,
             component: Bot,
             // Don't use `Localize` component since native html tag like `option` cannot render them
@@ -428,20 +442,6 @@ const getModules = () => {
                     component: Cashier,
                     is_invisible: true,
                 },
-            ],
-        },
-        {
-            path: routes.trade,
-            component: Trader,
-            getTitle: () => localize('Trader'),
-            routes: [
-                {
-                    path: routes.contract,
-                    component: Trader,
-                    getTitle: () => localize('Contract Details'),
-                    is_authenticated: true,
-                },
-                { path: routes.error404, component: Trader, getTitle: () => localize('Error 404') },
             ],
         },
         {

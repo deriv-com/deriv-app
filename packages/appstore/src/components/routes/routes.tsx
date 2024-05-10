@@ -32,16 +32,15 @@ const Routes: React.FC = observer(() => {
     return (
         <React.Suspense fallback={<Loading />}>
             <Switch>
-                <RouteWithSubroutes path={routes.traders_hub} component={TradersHub} getTitle={() => title_TH} />
+                <RouteWithSubroutes
+                    path={routes.traders_hub}
+                    component={is_logged_in ? TradersHub : TradersHubLoggedOut}
+                    getTitle={() => (is_logged_in ? title_TH : title_TH_logged_out)}
+                />
                 <RouteWithSubroutes
                     path={routes.onboarding}
                     component={Onboarding}
                     getTitle={() => localize('Onboarding')}
-                />
-                <RouteWithSubroutes
-                    path={routes.root}
-                    component={is_logged_in ? TradersHub : TradersHubLoggedOut}
-                    getTitle={() => (is_logged_in ? title_TH : title_TH_logged_out)}
                 />
             </Switch>
         </React.Suspense>

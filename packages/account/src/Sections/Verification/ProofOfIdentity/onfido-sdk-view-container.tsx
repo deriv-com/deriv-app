@@ -153,8 +153,8 @@ const OnfidoSdkViewContainer = observer(
                 const link_node = document.createElement('link');
 
                 script_node.id = 'onfido_sdk';
-                script_node.src = 'https://assets.onfido.com/web-sdk-releases/latest/onfido.min.js';
-                link_node.href = 'https://assets.onfido.com/web-sdk-releases/latest/style.css';
+                script_node.src = 'https://assets.onfido.com/web-sdk-releases/13.4.0/onfido.min.js';
+                link_node.href = 'https://assets.onfido.com/web-sdk-releases/13.4.0/style.css';
                 link_node.rel = 'stylesheet';
                 link_node.id = 'onfido_style';
 

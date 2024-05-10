@@ -23,37 +23,26 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: { mt5_trade_account: Det
     // -- timeout trigger installer function
 
     const mobileURLSet = async () => {
-        const os = await mobileOSDetectAsync();
+        window.location.replace(getDeeplinkUrl({ mt5_trade_account }));
+        const mobileAppURL = await getMobileAppInstallerUrl({ mt5_trade_account });
 
-        if (os === 'iOS' && /Version\/17/.test(navigator.userAgent)) {
-            window.location.replace(getDeeplinkUrl({ mt5_trade_account }));
-            const mobileAppURL = await getMobileAppInstallerUrl({ mt5_trade_account });
+        let timeout = setTimeout(() => {
+            mobileAppURL && window.location.replace(mobileAppURL);
+        }, 1500);
 
-            const timeout = setTimeout(() => {
-                mobileAppURL && window.location.replace(mobileAppURL);
-            }, 2000);
+        window.onblur = () => {
+            clearTimeout(timeout);
+        };
 
-            if (window.onblur) {
-                document.addEventListener('visibilitychange', function () {
-                    if (document.hidden) {
-                        clearTimeout(timeout);
-                    }
-                });
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) {
+                clearTimeout(timeout);
+            } else {
+                timeout = setTimeout(() => {
+                    mobileAppURL && window.location.replace(mobileAppURL);
+                }, 1500);
             }
-        } else {
-            window.location.replace(getDeeplinkUrl({ mt5_trade_account }));
-
-            const timeout = setTimeout(async () => {
-                const mobile_url = await getMobileAppInstallerUrl({ mt5_trade_account });
-                if (mobile_url) window.location.replace(mobile_url);
-            }, 1500);
-
-            if (!isSafariBrowser() || (isSafariBrowser() && /Version\/17/.test(navigator.userAgent))) {
-                window.onblur = () => {
-                    clearTimeout(timeout);
-                };
-            }
-        }
+        });
     };
 
     return (

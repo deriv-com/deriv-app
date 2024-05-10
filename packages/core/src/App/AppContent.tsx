@@ -24,6 +24,7 @@ import initDatadog from '../Utils/Datadog';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
+    const { has_wallet } = store.client;
 
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());

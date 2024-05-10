@@ -2,8 +2,11 @@
     background: var(--general-main-2, #ffffff);
     border-radius: 0.8rem;
     animation: fadein 0.6s ease backwards;
-    max-height: calc(var(--wallets-vh, 1vh) * 100 - 10rem);
-    overflow: auto;
+
+    @include desktop {
+        max-height: calc(var(--wallets-vh, 1vh) * 100 - 10rem);
+        overflow: auto;
+    }
 
     @include mobile {
         animation: popup 0.2s;

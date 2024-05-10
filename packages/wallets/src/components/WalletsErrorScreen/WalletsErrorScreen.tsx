@@ -1,6 +1,6 @@
 import React, { ComponentProps } from 'react';
+import { DerivLightErrorIconIcon } from '@deriv/quill-icons';
 import useDevice from '../../hooks/useDevice';
-import ErrorIcon from '../../public/images/error-icon.svg';
 import { WalletButton } from '../Base';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 
@@ -28,8 +28,7 @@ const WalletsErrorScreen: React.FC<TProps> = ({
     return (
         <WalletsActionScreen
             description={message}
-            //TODO: replace with quill-icons
-            icon={<ErrorIcon {...imageSize} data-testid='dt_error_icon' />}
+            icon={<DerivLightErrorIconIcon {...imageSize} data-testid='dt_error_icon' />}
             renderButtons={() => (
                 <WalletButton onClick={onClick} size='lg' variant={buttonVariant}>
                     {buttonText}

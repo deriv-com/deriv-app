@@ -1,6 +1,7 @@
 import React from 'react';
 import { TSocketError } from '@deriv/api-v2/types';
 import { WalletsErrorScreen } from '../../../../components';
+import { CryptoWithdrawalErrorCodes } from '../../../../constants/errorCodes';
 
 type TProps = {
     error: TSocketError<'cashier'>['error'];
@@ -9,7 +10,7 @@ type TProps = {
 };
 
 const WithdrawalErrorScreen: React.FC<TProps> = ({ error, resetError, setResendEmail }) => {
-    if (error.code === 'InvalidToken') {
+    if (error.code === CryptoWithdrawalErrorCodes.InvalidToken) {
         return (
             <WalletsErrorScreen
                 buttonText='Resend email'

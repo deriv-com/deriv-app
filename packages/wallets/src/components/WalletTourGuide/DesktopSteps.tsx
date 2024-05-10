@@ -6,6 +6,7 @@ import './WalletTourGuide.scss';
 const stepProps = {
     disableBeacon: true,
     disableOverlayClose: true,
+    spotlightPadding: 0,
 };
 
 const SpotLightHeader = ({ children }: PropsWithChildren) => (
@@ -18,7 +19,7 @@ export const desktopStepTourGuide: Step[] = [
     {
         content: <WalletText size='sm'>Manage your funds with Wallets.</WalletText>,
         placement: 'bottom-start',
-        spotlightPadding: 0,
+        styles: { spotlight: { borderRadius: '1.6rem' } },
         target: '.wallets-container__header',
         title: <SpotLightHeader>This is your Wallet</SpotLightHeader>,
         ...stepProps,
@@ -36,6 +37,7 @@ export const desktopStepTourGuide: Step[] = [
         target: '.wallets-textfield__box',
         title: <SpotLightHeader>Switch between Wallets</SpotLightHeader>,
         ...stepProps,
+        spotlightPadding: 8,
     },
     {
         content: (
@@ -44,6 +46,7 @@ export const desktopStepTourGuide: Step[] = [
             </WalletText>
         ),
         placement: 'right',
+        styles: { spotlight: { borderRadius: '1.6rem' } },
         target: '.wallets-add-more__card',
         title: (
             <WalletText color='red' size='sm' weight='bold'>
@@ -55,6 +58,7 @@ export const desktopStepTourGuide: Step[] = [
     {
         content: <WalletText size='sm'>Press here to repeat this tour.</WalletText>,
         placement: 'bottom',
+        styles: { spotlight: { borderRadius: '0 0 0.8rem 0.8rem' } },
         target: '.traders-hub-header__tradershub--onboarding--logo',
         title: (
             <WalletText color='red' size='sm' weight='bold'>
@@ -62,5 +66,6 @@ export const desktopStepTourGuide: Step[] = [
             </WalletText>
         ),
         ...stepProps,
+        spotlightPadding: 12,
     },
 ];

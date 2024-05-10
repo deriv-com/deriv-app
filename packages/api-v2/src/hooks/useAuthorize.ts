@@ -7,7 +7,19 @@ import { getAccountListWithAuthToken } from '@deriv/utils';
  */
 const useAuthorize = () => {
     const ctx = useAuthContext();
-    const { data, switchAccount, isLoading, isSuccess, isFetching, isError, refetch, error, loginid } = ctx;
+    const {
+        data,
+        switchAccount,
+        isLoading,
+        isSuccess,
+        isFetching,
+        isError,
+        refetch,
+        error,
+        loginid,
+        isSwitching,
+        isInitializing,
+    } = ctx;
 
     const modifiedData = useMemo(() => {
         return { ...data?.authorize, account_list: getAccountListWithAuthToken(data?.authorize?.account_list) };
@@ -26,6 +38,8 @@ const useAuthorize = () => {
             refetch,
             error,
             loginid,
+            isSwitching,
+            isInitializing,
         };
     }, [modifiedData, switchAccount, isLoading, isSuccess, isFetching, isError, refetch, error, loginid]);
 

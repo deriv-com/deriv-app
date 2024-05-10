@@ -12,12 +12,11 @@ import './traders-hub-logged-out.scss';
 const TradersHubLoggedOut = observer(() => {
     const { traders_hub, client, ui } = useStore();
     const { is_desktop } = ui;
-    const { is_mt5_allowed, clients_country, is_landing_company_loaded, getLandingCompany } = client;
+    const { clients_country } = client;
     const { setTogglePlatformType, selectRegion, is_eu_user } = traders_hub;
 
     React.useEffect(() => {
         if (clients_country) {
-            getLandingCompany(clients_country);
             if (isEuCountry(clients_country)) {
                 setTogglePlatformType('cfd');
                 selectRegion('EU');
@@ -25,16 +24,15 @@ const TradersHubLoggedOut = observer(() => {
                 selectRegion('Non-EU');
             }
         }
-    }, [clients_country, getLandingCompany, setTogglePlatformType]);
+    }, [clients_country, setTogglePlatformType]);
 
-    if (!clients_country || !is_landing_company_loaded) return <Loading is_fullscreen />;
+    if (!clients_country) return <Loading is_fullscreen />;
 
     return (
         <Div100vhContainer className='traders-hub-logged-out__mobile' height_offset='50px' is_disabled={is_desktop}>
             <div
                 className={classNames('traders-hub-logged-out', {
-                    'traders-hub-logged-out__eu-user': is_eu_user && is_mt5_allowed,
-                    'traders-hub-logged-out__eu-user-without-mt5': is_eu_user && !is_mt5_allowed,
+                    'traders-hub-logged-out__eu-user': is_eu_user,
                 })}
             >
                 <GetStartedTradingBanner />

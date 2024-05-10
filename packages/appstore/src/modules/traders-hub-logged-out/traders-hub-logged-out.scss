@@ -15,12 +15,6 @@
         @include mobile {
             min-height: 650px;
         }
-
-        &-without-mt5 {
-            @include mobile {
-                min-height: 540px;
-            }
-        }
     }
 
     &__mobile {

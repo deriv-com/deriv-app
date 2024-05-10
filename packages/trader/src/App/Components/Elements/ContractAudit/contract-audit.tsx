@@ -14,13 +14,13 @@ type TContractAudit = Partial<
     contract_update_history: TContractUpdateHistory;
     contract_end_time: number | undefined;
     contract_info: TContractInfo;
+    current_language: string;
     duration: string | number;
     duration_unit: string;
     exit_spot: string | undefined;
     is_dark_theme: boolean;
     is_history_tab_active: boolean;
     is_open: boolean;
-    current_lang_to_request_history: string;
     toggleHistoryTab: (state_change?: boolean) => void;
 };
 
@@ -30,11 +30,11 @@ type TResponse = {
 
 const ContractAudit = ({
     contract_update_history,
+    current_language,
     is_accumulator,
     is_history_tab_active,
     is_multiplier,
     is_turbos,
-    current_lang_to_request_history,
     toggleHistoryTab,
     ...props
 }: TContractAudit) => {
@@ -59,8 +59,8 @@ const ContractAudit = ({
     }, [contract_update_history, update_history]);
 
     React.useEffect(() => {
-        if (is_history_tab_active && current_lang_to_request_history) requestUpdatedHistory(contract_id);
-    }, [contract_id, is_history_tab_active, current_lang_to_request_history, requestUpdatedHistory]);
+        if (is_history_tab_active && current_language) requestUpdatedHistory(contract_id);
+    }, [contract_id, is_history_tab_active, current_language, requestUpdatedHistory]);
 
     const onTabItemClick = (tab_index: number) => {
         toggleHistoryTab(!!tab_index);

@@ -4,18 +4,19 @@ import { notification_style, TAction, TNotificationContent, TNotificationStyle }
 
 export const NotificationContent: React.FC<TNotificationContent> = ({ message, primary_action, closeToast }) => {
     React.useEffect(() => {
-        const handleVisibilityChange = () => {
+        const handleToastVisibility = () => {
             if (document.visibilityState === 'hidden') {
                 toast.dismiss();
             }
         };
 
-        document.addEventListener('visibilitychange', handleVisibilityChange);
+        document.addEventListener('visibilitychange', handleToastVisibility);
 
         return () => {
-            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            document.removeEventListener('visibilitychange', handleToastVisibility);
         };
     }, []);
+
     return (
         <div className='notification-content'>
             <div>{message}</div>

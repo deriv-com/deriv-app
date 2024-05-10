@@ -105,20 +105,6 @@ const Cashier_V2 = React.lazy(() =>
 const getModules = () => {
     const modules = [
         {
-            path: routes.trade,
-            component: Trader,
-            getTitle: () => localize('Trader'),
-            routes: [
-                {
-                    path: routes.contract,
-                    component: Trader,
-                    getTitle: () => localize('Contract Details'),
-                    is_authenticated: true,
-                },
-                { path: routes.error404, component: Trader, getTitle: () => localize('Error 404') },
-            ],
-        },
-        {
             path: routes.bot,
             component: Bot,
             // Don't use `Localize` component since native html tag like `option` cannot render them
@@ -298,12 +284,6 @@ const getModules = () => {
             ],
         },
         {
-            path: routes.traders_hub,
-            component: AppStore,
-            is_authenticated: true,
-            getTitle: () => localize("Trader's Hub"),
-        },
-        {
             path: routes.wallets,
             component: Wallets,
             is_authenticated: true,
@@ -332,25 +312,6 @@ const getModules = () => {
             component: Cashier_V2,
             is_authenticated: true,
             getTitle: () => localize('Cashier'),
-        },
-        {
-            path: routes.onboarding,
-            component: AppStore,
-            is_authenticated: false,
-            getTitle: () => localize('Appstore'),
-            routes: [
-                {
-                    path: routes.traders_hub,
-                    component: AppStore,
-                    getTitle: () => localize("Trader's Hub"),
-                },
-                {
-                    path: routes.onboarding,
-                    component: AppStore,
-                    is_authenticated: false,
-                    getTitle: () => localize('Onboarding'),
-                },
-            ],
         },
         {
             path: routes.cashier,
@@ -445,10 +406,43 @@ const getModules = () => {
             ],
         },
         {
-            path: routes.root,
+            path: routes.trade,
+            component: Trader,
+            getTitle: () => localize('Trader'),
+            routes: [
+                {
+                    path: routes.contract,
+                    component: Trader,
+                    getTitle: () => localize('Contract Details'),
+                    is_authenticated: true,
+                },
+                { path: routes.error404, component: Trader, getTitle: () => localize('Error 404') },
+            ],
+        },
+        {
+            path: routes.onboarding,
             component: AppStore,
             is_authenticated: false,
-            getTitle: () => localize('Deriv App'),
+            getTitle: () => localize('Appstore'),
+            routes: [
+                {
+                    path: routes.traders_hub,
+                    component: AppStore,
+                    getTitle: () => localize("Trader's Hub"),
+                },
+                {
+                    path: routes.onboarding,
+                    component: AppStore,
+                    is_authenticated: false,
+                    getTitle: () => localize('Onboarding'),
+                },
+            ],
+        },
+        {
+            path: routes.traders_hub,
+            component: AppStore,
+            is_authenticated: false,
+            getTitle: () => localize("Trader's Hub"),
         },
     ];
 

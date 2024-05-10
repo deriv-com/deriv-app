@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Joyride, { ACTIONS, CallBackProps, EVENTS, STATUS } from 'react-joyride';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import {
     useActiveWalletAccount,
@@ -8,7 +9,6 @@ import {
     useSortedMT5Accounts,
     useWalletAccountsList,
 } from '@deriv/api-v2';
-import Joyride, { ACTIONS, CallBackProps, EVENTS, STATUS } from '@deriv/react-joyride';
 import useDevice from '../../hooks/useDevice';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { desktopStepTourGuide } from './DesktopSteps';

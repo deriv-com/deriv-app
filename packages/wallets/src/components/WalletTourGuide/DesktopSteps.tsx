@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { Step } from '@deriv/react-joyride';
+import { Step } from 'react-joyride';
 import { WalletText } from '../Base';
 import './WalletTourGuide.scss';
 

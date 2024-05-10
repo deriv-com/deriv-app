@@ -1,6 +1,6 @@
 import React from 'react';
+import { Step, TooltipRenderProps } from 'react-joyride';
 import { LegacyClose2pxIcon } from '@deriv/quill-icons';
-import { Step, TooltipRenderProps } from '@deriv/react-joyride';
 import { THooks } from '../../types';
 import { WalletButton } from '../Base';
 import { getMobileSteps } from './MobileSteps';

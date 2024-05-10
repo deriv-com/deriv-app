@@ -1,5 +1,5 @@
 import React from 'react';
-import { Step } from '@deriv/react-joyride';
+import { Step } from 'react-joyride';
 import { WalletText } from '../Base';
 
 const getMobileSteps = (

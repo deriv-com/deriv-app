@@ -6,6 +6,7 @@ import { Localize } from '@deriv/translations';
 import ConfirmPhoneNumber from './confirm-phone-number';
 import OTPVerification from './otp-verification';
 import CancelPhoneVerificationModal from './cancel-phone-verification-modal';
+import PhoneNumberVerifiedModal from './phone-number-verified-modal';
 
 const PhoneVerificationPage = () => {
     const [otp_verification, setOtpVerification] = React.useState({ show: true, phone_verification_type: '' });
@@ -16,6 +17,7 @@ const PhoneVerificationPage = () => {
 
     return (
         <div>
+            <PhoneNumberVerifiedModal />
             <CancelPhoneVerificationModal
                 should_show_cancel_verification_modal={should_show_cancel_verification_modal}
                 setShouldShowCancelVerificationModal={setShouldShowCancelVerificationModal}

@@ -744,11 +744,13 @@ type TUiStore = {
     setRealAccountSignupEnd: (status: boolean) => void;
     setPurchaseState: (index: number) => void;
     simple_duration_unit: string;
+
+    //TODO: remove when BE API is ready
     should_show_phone_number_verified_modal: boolean;
     setShouldShowPhoneNumberVerifiedModal: (value: boolean) => void;
-    //TODO: remove when BE API is ready
     should_show_phone_number_otp: boolean;
     setShouldShowPhoneNumberOTP: (value: boolean) => void;
+
     sub_section_index: number;
     setPromptHandler: (
         condition: boolean,

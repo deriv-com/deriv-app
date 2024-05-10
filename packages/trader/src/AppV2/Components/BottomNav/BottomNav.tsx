@@ -41,7 +41,7 @@ const BottomNav = ({ className, children }: BottomNavProps) => {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
     return (
         <div className={className}>
-            <div className='bottomNav-container'>
+            <div className='bottom-nav-container'>
                 {BottomNavItems.map((item, index) => (
                     <BottomNavItem
                         key={index}

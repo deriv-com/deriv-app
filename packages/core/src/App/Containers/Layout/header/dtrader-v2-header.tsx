@@ -10,11 +10,11 @@ const DTraderV2Header = observer(() => {
     const currency_lower = currency?.toLowerCase();
 
     return (
-        <header className='header headerV2'>
+        <header className='header header-v2'>
             <React.Suspense fallback={<div />}>
-                <div className='headerV2__acc-info'>
-                    <div className='headerV2__acc-info--top'>
-                        <span className='headerV2__acc-info--logo'>
+                <div className='header-v2__acc-info'>
+                    <div className='header-v2__acc-info--top'>
+                        <span className='header-v2__acc-info--logo'>
                             {(is_virtual || currency) && (
                                 <AccountInfoIcon is_virtual={is_virtual} currency={currency_lower} />
                             )}
@@ -22,7 +22,7 @@ const DTraderV2Header = observer(() => {
 
                         {loginid}
                     </div>
-                    <div className='headerV2__acc-info--bottom'>
+                    <div className='header-v2__acc-info--bottom'>
                         <span>{`${balance} ${getCurrencyDisplayCode(currency)}`}</span>
                     </div>
                 </div>

@@ -115,7 +115,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             country_standpoint: {
                 is_belgium: false,
                 is_france: false,
-                is_isle_of_man: false,
                 is_other_eu: false,
                 is_rest_of_eu: false,
                 is_united_kingdom: false,
@@ -189,8 +188,6 @@ const mock = (): TStores & { is_mock: boolean } => {
                 gaming_company: '',
                 maltainvest: false,
                 svg: false,
-                iom: false,
-                malta: false,
             },
             switchAccount: jest.fn(),
             verification_code: {
@@ -304,6 +301,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             real_account_signup_form_step: 0,
             setRealAccountSignupFormData: jest.fn(),
             setRealAccountSignupFormStep: jest.fn(),
+            wallet_migration_state: 'ineligible',
+            startWalletMigration: jest.fn(),
+            resetWalletMigration: jest.fn(),
+            is_wallet_migration_request_is_in_progress: false,
             is_passkey_supported: false,
             should_show_effortless_login_modal: false,
             setIsPasskeySupported: jest.fn(),
@@ -477,6 +478,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleKycInformationSubmittedModal: jest.fn(),
             setAccountSwitcherDisabledMessage: jest.fn(),
             toggleUrlUnavailableModal: jest.fn(),
+            is_set_currency_modal_visible: false,
         },
         traders_hub: {
             getAccount: jest.fn(),

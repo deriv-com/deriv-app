@@ -59,6 +59,7 @@ jest.mock('../../../../../provider', () => ({
     useTransfer: jest.fn(() => ({
         accounts: mockAccounts,
         isLoading: false,
+        refetchAccountLimits: jest.fn(),
         setTransferValidationSchema: mockSetTransferValidationSchema,
     })),
 }));
@@ -100,7 +101,7 @@ describe('<TransferAccountSelection />', () => {
         expect(screen.getByText('To-CR2')).toBeInTheDocument();
     });
 
-    fit('should test if setTransferValidationSchema is called with correct fromAccount and toAccount', () => {
+    it('should test if setTransferValidationSchema is called with correct fromAccount and toAccount', () => {
         render(<TransferAccountSelection />, { wrapper });
 
         expect(mockSetTransferValidationSchema).toBeCalledWith(mockAccounts[0], mockAccounts[1]);

@@ -1,16 +1,15 @@
 import React from 'react';
-import { extractInfoFromShortcode, getMarketName, getTradeTypeName, isHighLow } from '@deriv/shared';
+import { TContractInfo, extractInfoFromShortcode, getMarketName, getTradeTypeName, isHighLow } from '@deriv/shared';
 import { Icon, Popover, IconTradeTypes } from '@deriv/components';
 import classNames from 'classnames';
+import { formatStatementTransaction } from 'Stores/Modules/Statement/Helpers/format-response';
+
+type TStatementData = ReturnType<typeof formatStatementTransaction>;
 
 type TMarketSymbolIconRow = {
     has_full_contract_title?: boolean;
     icon?: string | null;
-    payload: {
-        shortcode: string;
-        display_name: string;
-        action_type: string;
-    };
+    payload: TContractInfo | TStatementData;
     should_show_multiplier?: boolean;
     should_show_accumulator?: boolean;
 };
@@ -22,8 +21,8 @@ const MarketSymbolIconRow = ({
     should_show_accumulator = true,
     should_show_multiplier = true,
 }: TMarketSymbolIconRow) => {
-    const should_show_category_icon = typeof payload.shortcode === 'string';
-    const info_from_shortcode = extractInfoFromShortcode(payload.shortcode);
+    const should_show_category_icon = typeof (payload as TContractInfo).shortcode === 'string';
+    const info_from_shortcode = extractInfoFromShortcode((payload as TContractInfo).shortcode ?? '');
     const is_high_low = isHighLow({ shortcode_info: info_from_shortcode });
     const category_label = getTradeTypeName(info_from_shortcode.category, {
         isHighLow: is_high_low,
@@ -59,7 +58,7 @@ const MarketSymbolIconRow = ({
                             size={32}
                         />
                     </Popover>
-                    {has_full_contract_title && payload.display_name}
+                    {has_full_contract_title && (payload as TContractInfo).display_name}
                 </div>
 
                 <div className='market-symbol-icon-category'>
@@ -90,7 +89,10 @@ const MarketSymbolIconRow = ({
                 )}
             </div>
         );
-    } else if (['deposit', 'hold', 'release', 'withdrawal', 'transfer'].includes(payload.action_type)) {
+    } else if (
+        'action_type' in payload &&
+        ['deposit', 'hold', 'release', 'withdrawal', 'transfer'].includes(payload.action_type ?? '')
+    ) {
         return (
             <div className='market-symbol-icon'>
                 {payload.action_type === 'deposit' && <Icon icon={icon || 'IcCashierDeposit'} size={32} />}
@@ -101,7 +103,7 @@ const MarketSymbolIconRow = ({
                 )}
             </div>
         );
-    } else if (['adjustment'].includes(payload.action_type)) {
+    } else if (['adjustment'].includes((payload as TStatementData).action_type ?? '')) {
         return (
             <div className='market-symbol-icon'>
                 <Icon icon='IcAdjustment' size={32} />

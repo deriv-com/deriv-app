@@ -115,7 +115,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             country_standpoint: {
                 is_belgium: false,
                 is_france: false,
-                is_isle_of_man: false,
                 is_other_eu: false,
                 is_rest_of_eu: false,
                 is_united_kingdom: false,
@@ -138,6 +137,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_cookie_account: false,
             has_maltainvest_account: false,
             has_restricted_mt5_account: false,
+            has_wallet: false,
             initialized_broadcast: false,
             is_account_setting_loaded: false,
             is_authorize: false,
@@ -188,8 +188,6 @@ const mock = (): TStores & { is_mock: boolean } => {
                 gaming_company: '',
                 maltainvest: false,
                 svg: false,
-                iom: false,
-                malta: false,
             },
             switchAccount: jest.fn(),
             verification_code: {

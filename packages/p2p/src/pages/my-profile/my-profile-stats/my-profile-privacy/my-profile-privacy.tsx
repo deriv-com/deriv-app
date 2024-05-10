@@ -20,7 +20,6 @@ const MyProfilePrivacy = () => {
             </div>
             <ToggleSwitch
                 id='my-profile-privacy__toggle'
-                classNameButton='my-profile-privacy__toggle-button'
                 classNameLabel='my-profile-privacy__toggle'
                 is_enabled={general_store.should_show_real_name}
                 handleToggle={my_profile_store.handleToggle}

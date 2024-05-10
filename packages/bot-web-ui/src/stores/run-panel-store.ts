@@ -21,67 +21,7 @@ export type TContractState = {
     id: string;
 };
 
-export interface IRunPanelStore {
-    active_index: number;
-    contract_stage: TContractStage;
-    dialog_options: object;
-    has_open_contract: boolean;
-    is_running: boolean;
-    is_statistics_info_modal_open: boolean;
-    is_drawer_open: boolean;
-    is_dialog_open: boolean;
-    is_sell_requested: boolean;
-    run_id: string;
-    error_type: string | undefined;
-    show_bot_stop_message: boolean;
-    is_stop_button_visible: boolean;
-    is_stop_button_disabled: boolean;
-    is_clear_stat_disabled: boolean;
-    onStopButtonClick: () => void;
-    onStopBotClick: () => void;
-    stopBot: () => void;
-    onClearStatClick: () => void;
-    clearStat: () => void;
-    toggleStatisticsInfoModal: () => void;
-    toggleDrawer: (is_open: boolean) => void;
-    setActiveTabIndex: (index: number) => void;
-    onCloseDialog: () => void;
-    performSelfExclusionCheck: () => void;
-    showStopMultiplierContractDialog: () => void;
-    showLoginDialog: () => void;
-    showRealAccountDialog: () => void;
-    showClearStatDialog: () => void;
-    showIncompatibleStrategyDialog: () => void;
-    showContractUpdateErrorDialog: (message: string) => void;
-    onBotSellEvent: () => void;
-    onBotStopEvent: () => void;
-    onBotReadyEvent: () => void;
-    onBotTradeAgain: (is_trade_again: boolean) => void;
-    onContractStatusEvent: (contract_status: TContractState) => void;
-    onClickSell: () => void;
-    onBotContractEvent: (data: object) => void;
-    onError: (data: { error: any }) => void;
-    showErrorMessage: (data: string | Error) => void;
-    switchToJournal: () => void;
-    setContractStage: (contract_stage: TContractStage) => void;
-    setHasOpenContract: (has_open_contract: boolean) => void;
-    setIsRunning: (is_running: boolean) => void;
-    onMount: () => void;
-    onUnmount: () => void;
-    handleInvalidToken: () => void;
-    onRunButtonClick: () => void;
-    registerBotListeners: () => void;
-    registerReactions: () => () => void;
-    onBotRunningEvent: () => void;
-    unregisterBotListeners: () => void;
-    clear: () => void;
-    preloadAudio: () => void;
-    stopMyBot: () => void;
-    closeMultiplierContract: () => void;
-    setShowBotStopMessage: (show_bot_stop_message: boolean) => void;
-}
-
-export default class RunPanelStore implements IRunPanelStore {
+export default class RunPanelStore {
     root_store: RootStore;
     dbot: TDbot;
     core: TStores;
@@ -106,6 +46,43 @@ export default class RunPanelStore implements IRunPanelStore {
             is_stop_button_disabled: computed,
             is_clear_stat_disabled: computed,
             toggleDrawer: action,
+            onBotSellEvent: action,
+            setContractStage: action,
+            setHasOpenContract: action,
+            setIsRunning: action,
+            onRunButtonClick: action,
+            onStopButtonClick: action,
+            onClearStatClick: action,
+            clearStat: action,
+            toggleStatisticsInfoModal: action,
+            setActiveTabIndex: action,
+            onCloseDialog: action,
+            stopMyBot: action,
+            closeMultiplierContract: action,
+            showStopMultiplierContractDialog: action,
+            showLoginDialog: action,
+            showRealAccountDialog: action,
+            showClearStatDialog: action,
+            showIncompatibleStrategyDialog: action,
+            showContractUpdateErrorDialog: action,
+            registerBotListeners: action,
+            registerReactions: action,
+            onBotRunningEvent: action,
+            onBotStopEvent: action,
+            onBotReadyEvent: action,
+            onBotTradeAgain: action,
+            onContractStatusEvent: action,
+            onClickSell: action,
+            clear: action,
+            onBotContractEvent: action,
+            onError: action,
+            showErrorMessage: action,
+            switchToJournal: action,
+            unregisterBotListeners: action,
+            handleInvalidToken: action,
+            preloadAudio: action,
+            onMount: action,
+            onUnmount: action,
         });
 
         this.root_store = root_store;
@@ -317,10 +294,6 @@ export default class RunPanelStore implements IRunPanelStore {
 
     setActiveTabIndex = (index: number) => {
         this.active_index = index;
-
-        if (this.active_index !== 1) {
-            this.root_store.transactions.setActiveTransactionId(null);
-        }
     };
 
     onCloseDialog = () => {
@@ -595,10 +568,6 @@ export default class RunPanelStore implements IRunPanelStore {
             }
             case 'contract.purchase_received': {
                 this.setContractStage(contract_stages.PURCHASE_RECEIVED);
-
-                // Close transaction-specific popover, if any.
-                this.root_store.transactions.setActiveTransactionId(null);
-
                 const { buy } = contract_status;
                 const { is_virtual } = this.core.client;
 

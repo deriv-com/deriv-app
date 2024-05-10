@@ -10,7 +10,7 @@ export const usePaymentMethodDetails = () => {
     const ownershipStatus = ownership?.status?.toLowerCase();
 
     const paymentMethodData = useMemo(() => {
-        const groups: Partial<TPaymentMethodData> = {};
+        const groups = {} as TPaymentMethodData;
         const paymentMethodConfig = getPaymentMethodsConfig();
         ownership?.requests?.forEach(request => {
             const paymentMethod = request?.payment_method?.toLowerCase() as TPaymentMethod;

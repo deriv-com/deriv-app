@@ -19,7 +19,16 @@ const EmailLinkVerifiedModal = () => {
     return (
         <React.Fragment>
             {order_store.order_information && (
-                <Modal is_open={is_modal_open} renderTitle={() => <></>} toggleModal={hideModal} width='440px'>
+                <Modal
+                    is_open={is_modal_open}
+                    renderTitle={() => <></>}
+                    toggleModal={() => {
+                        order_store.setVerificationCode('');
+                        order_store.setActionParam(null);
+                        hideModal();
+                    }}
+                    width='440px'
+                >
                     <Modal.Body className='email-link-verified-modal'>
                         <Icon icon='IcEmailVerificationLinkValid' size={getIconSize(96, 128)} />
                         <Text
@@ -45,6 +54,8 @@ const EmailLinkVerifiedModal = () => {
                             onClick={() => {
                                 hideModal({ should_hide_all_modals: true });
                                 order_store.confirmOrder(is_buy_order_for_user);
+                                order_store.setVerificationCode('');
+                                order_store.setActionParam(null);
                             }}
                         >
                             <Localize i18n_default_text='Confirm' />

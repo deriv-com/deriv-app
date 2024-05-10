@@ -557,9 +557,11 @@
         align-items: center;
         text-decoration: none;
         border-radius: $BORDER_RADIUS;
+        padding: 0;
 
         &-icon {
             margin-left: 0.6rem;
+            margin-top: 0.1rem;
         }
 
         &-text {
@@ -1194,6 +1196,15 @@
 
         .details-form__description {
             margin-inline: 1.6rem;
+        }
+    }
+
+    &__inline-message {
+        width: 45%;
+        margin: 1.2rem auto;
+
+        @include mobile {
+            width: 95%;
         }
     }
 }

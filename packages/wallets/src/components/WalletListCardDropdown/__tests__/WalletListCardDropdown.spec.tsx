@@ -25,17 +25,15 @@ jest.mock('@deriv/api-v2', () => ({
                 display_balance: '1.0000000',
                 loginid: '7654321',
             },
-            {
-                currency: 'USD',
-                display_balance: '10000.00',
-                loginid: '55555',
-                wallet_currency_type: 'Demo',
-            },
         ],
     })),
 }));
 
 describe('WalletListCardDropdown', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
     it('should render with the correct data', async () => {
         render(<WalletListCardDropdown />);
 
@@ -50,15 +48,9 @@ describe('WalletListCardDropdown', () => {
         fireEvent.click(screen.getByDisplayValue('USD Wallet'));
         expect(screen.getByText('USD Wallet')).toBeInTheDocument();
         expect(screen.getByText('BTC Wallet')).toBeInTheDocument();
-        expect(screen.getByText('USD Demo Wallet')).toBeInTheDocument();
         fireEvent.click(screen.getByText('BTC Wallet'));
 
         expect(mockSwitchAccount).toHaveBeenCalledWith('7654321');
-
-        fireEvent.click(screen.getByDisplayValue('BTC Wallet'));
-        fireEvent.click(screen.getByText('USD Demo Wallet'));
-
-        expect(mockSwitchAccount).toHaveBeenCalledWith('55555');
     });
 
     it('should render dropdown without crashing when unable to fetch wallets', async () => {

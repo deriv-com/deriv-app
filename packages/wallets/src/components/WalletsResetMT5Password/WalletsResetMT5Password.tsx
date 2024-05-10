@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
 import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordReset } from '@deriv/api-v2';
 import { CFD_PLATFORMS, PlatformDetails } from '../../features/cfd/constants';
-import useDevice from '../../hooks/useDevice';
 import { TPlatforms } from '../../types';
 import { validPassword, validPasswordMT5 } from '../../utils/password-validation';
 import { ModalWrapper, WalletButton, WalletPasswordFieldLazy, WalletText } from '../Base';
@@ -49,7 +48,6 @@ const WalletsResetMT5Password = ({
 
     const { hide, show } = useModal();
     const [password, setPassword] = useState('');
-    const { isMobile } = useDevice();
 
     const isMT5 = platform === CFD_PLATFORMS.MT5;
 
@@ -106,7 +104,7 @@ const WalletsResetMT5Password = ({
     }, [platform, title, actionParams, isChangeInvestorPasswordSuccess, isChangeInvestorPasswordError]);
 
     return (
-        <ModalWrapper hideCloseButton={isMobile}>
+        <ModalWrapper>
             <div className='wallets-reset-mt5-password'>
                 <WalletText weight='bold'>
                     {isInvestorPassword ? `Reset ${title} investor password` : `Create a new ${title} password`}
@@ -122,13 +120,14 @@ const WalletsResetMT5Password = ({
                 />
                 <WalletText size='sm'>{modalDescription[platform]}</WalletText>
                 <div className='wallets-reset-mt5-password__button-group'>
-                    <WalletButton onClick={() => hide()} variant='outlined'>
+                    <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
                         <Trans defaults='Cancel' />
                     </WalletButton>
                     <WalletButton
                         disabled={isMT5 ? !validPasswordMT5(password) : !validPassword(password)}
                         isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
                         onClick={handleSubmit}
+                        size='lg'
                         variant='contained'
                     >
                         <Trans defaults='Create' />

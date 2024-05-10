@@ -172,9 +172,12 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     // load active wallet whenever its scrolled
     useEffect(() => {
         if (selectedLoginId) {
+            const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
+            const carouselIndex = walletsCarouselEmblaApi?.selectedScrollSnap();
+
             switchWalletAccount(selectedLoginId).then(() => {
-                const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
                 if (index !== -1) {
+                    if (Number(carouselIndex) >= 0 && index >= 0 && carouselIndex !== index) onWalletSettled?.(false);
                     walletsCarouselEmblaApi?.scrollTo(index);
                 }
             });

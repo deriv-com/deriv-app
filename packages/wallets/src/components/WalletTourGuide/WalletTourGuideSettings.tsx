@@ -3,7 +3,6 @@ import { LegacyClose2pxIcon } from '@deriv/quill-icons';
 import { Step, TooltipRenderProps } from '@deriv/react-joyride';
 import { THooks } from '../../types';
 import { WalletButton } from '../Base';
-import { getDesktopSteps } from './DesktopSteps';
 import { getMobileSteps } from './MobileSteps';
 import './WalletTourGuide.scss';
 
@@ -18,9 +17,7 @@ export const tourStepConfig = (
     isAllWalletsAlreadyAdded: boolean,
     walletIndex = 1
 ): Step[] =>
-    isMobile
-        ? getMobileSteps(isDemoWallet, hasMT5Account, hasDerivAppsTradingAccount, isAllWalletsAlreadyAdded, walletIndex)
-        : getDesktopSteps(isDemoWallet, hasMT5Account, hasDerivAppsTradingAccount, isAllWalletsAlreadyAdded);
+    getMobileSteps(isDemoWallet, hasMT5Account, hasDerivAppsTradingAccount, isAllWalletsAlreadyAdded, walletIndex);
 
 export const TooltipComponent = ({
     backProps,

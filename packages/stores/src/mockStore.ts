@@ -301,6 +301,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             real_account_signup_form_step: 0,
             setRealAccountSignupFormData: jest.fn(),
             setRealAccountSignupFormStep: jest.fn(),
+            wallet_migration_state: 'ineligible',
+            startWalletMigration: jest.fn(),
+            resetWalletMigration: jest.fn(),
+            is_wallet_migration_request_is_in_progress: false,
             is_passkey_supported: false,
             should_show_effortless_login_modal: false,
             setIsPasskeySupported: jest.fn(),
@@ -475,6 +479,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleKycInformationSubmittedModal: jest.fn(),
             setAccountSwitcherDisabledMessage: jest.fn(),
             toggleUrlUnavailableModal: jest.fn(),
+            is_set_currency_modal_visible: false,
         },
         traders_hub: {
             getAccount: jest.fn(),

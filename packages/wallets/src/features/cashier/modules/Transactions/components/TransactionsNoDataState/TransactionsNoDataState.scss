@@ -1,10 +1,14 @@
 .wallets-transactions-no-data-state {
     display: flex;
-    padding-block: 2.4rem 1.6rem;
+    padding-block: 3.2rem 1.6rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 2.4rem;
+
+    @include mobile {
+        padding-block: 0;
+    }
 
     &__title {
         color: var(--system-light-1-prominent-text, #333);

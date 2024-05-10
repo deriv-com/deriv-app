@@ -3,7 +3,6 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import TradersHubHeader from '../traders-hub-header';
 import { TStores } from '@deriv/stores/types';
-import { useFeatureFlags } from '@deriv/hooks';
 
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),

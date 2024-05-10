@@ -6,7 +6,6 @@ import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../../trader-providers';
 import { createMemoryHistory } from 'history';
 import { isDesktop, isMobile } from '@deriv/shared';
-import { useFeatureFlags } from '@deriv/hooks';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),

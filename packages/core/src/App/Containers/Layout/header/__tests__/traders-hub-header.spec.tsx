@@ -29,7 +29,6 @@ jest.mock('../show-notifications', () => jest.fn(() => <div>MockedShowNotificati
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
-    useFeatureFlags: jest.fn(() => ({ is_next_wallet_enabled: false })),
     useIsRealAccountNeededForCashier: jest.fn(() => false),
     useHasSetCurrency: jest.fn(() => true),
 }));

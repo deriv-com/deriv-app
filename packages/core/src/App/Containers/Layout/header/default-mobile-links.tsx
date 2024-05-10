@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Button, Icon } from '@deriv/components';
-import { useFeatureFlags } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
@@ -16,7 +15,6 @@ type TDefaultMobileLinks = {
 };
 
 const DefaultMobileLinks = React.memo(({ handleClickCashier }: TDefaultMobileLinks) => {
-    const { is_next_wallet_enabled } = useFeatureFlags();
     const { client } = useStore();
     const { has_wallet } = client;
 
@@ -31,7 +29,7 @@ const DefaultMobileLinks = React.memo(({ handleClickCashier }: TDefaultMobileLin
             <BinaryLink className='traders-hub-header__setting' to={routes.personal_details}>
                 <Icon icon='IcUserOutline' size={20} />
             </BinaryLink>
-            {!has_wallet && !is_next_wallet_enabled && (
+            {!has_wallet && (
                 <div className='traders-hub-header__cashier-button'>
                     <Button primary small onClick={handleClickCashier}>
                         <Localize i18n_default_text='Cashier' />

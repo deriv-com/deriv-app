@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Loading } from '@deriv/components';
-import { useFeatureFlags /*useWalletsList*/ } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
@@ -11,17 +10,13 @@ const Onboarding = React.lazy(() => import(/* webpackChunkName: "modules-onboard
 const TradersHub = React.lazy(() => import(/* webpackChunkName: "modules-traders-hub" */ 'Modules/traders-hub'));
 
 const Routes: React.FC = observer(() => {
-    //TODO: Uncomment once useWalletList hook is optimized for production release.
-    const { /*is_wallet_enabled,*/ is_next_wallet_enabled } = useFeatureFlags();
     const { client } = useStore();
     const { has_wallet } = client;
     const history = useHistory();
-    // const { has_wallet, isLoading } = useWalletsList();
-    // const should_show_wallets = is_wallet_enabled && has_wallet;
 
     React.useLayoutEffect(() => {
-        if (has_wallet || is_next_wallet_enabled) history.push(routes.wallets);
-    }, [history, has_wallet, is_next_wallet_enabled]);
+        if (has_wallet) history.push(routes.wallets);
+    }, [history, has_wallet]);
 
     return (
         <React.Suspense fallback={<Loading />}>

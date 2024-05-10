@@ -8,11 +8,6 @@ import TradersHubOnboarding from '../traders-hub-onboarding';
 import { routes } from '@deriv/shared';
 import { TCoreStores } from '@deriv/stores/types';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useFeatureFlags: jest.fn(() => ({ is_next_wallet_enabled: false })),
-}));
-
 jest.mock('@deriv/stores', () => ({
     ...jest.requireActual('@deriv/stores'),
     useStore: jest.fn(() => ({ client: { has_wallet: false } })),

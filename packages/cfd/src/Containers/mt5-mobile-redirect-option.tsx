@@ -26,24 +26,13 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: { mt5_trade_account: Det
         window.location.replace(getDeeplinkUrl({ mt5_trade_account }));
         const mobileAppURL = await getMobileAppInstallerUrl({ mt5_trade_account });
 
-        let timeout = setTimeout(() => {
+        const timeout = setTimeout(() => {
             mobileAppURL && window.location.replace(mobileAppURL);
         }, 1500);
-
-        window.onblur = () => {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => {
-                mobileAppURL && window.location.replace(mobileAppURL);
-            }, 1500);
-        };
 
         document.addEventListener('visibilitychange', function () {
             if (document.hidden) {
                 clearTimeout(timeout);
-            } else {
-                timeout = setTimeout(() => {
-                    mobileAppURL && window.location.replace(mobileAppURL);
-                }, 1500);
             }
         });
     };

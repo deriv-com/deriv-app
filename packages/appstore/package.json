@@ -27,7 +27,6 @@
     "dependencies": {
         "@deriv-com/analytics": "1.4.13",
         "@deriv/account": "^1.0.0",
-        "@deriv/api-types": "^1.0.172",
         "@deriv/cashier": "^1.0.0",
         "@deriv/cfd": "^1.0.0",
         "@deriv/components": "^1.0.0",
@@ -47,6 +46,7 @@
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",
         "@babel/preset-react": "^7.16.7",
+        "@deriv/api-types": "^1.0.172",
         "@deriv/publisher": "^0.0.1-beta4",
         "@storybook/addon-docs": "^6.5.10",
         "@storybook/addon-essentials": "^6.5.10",

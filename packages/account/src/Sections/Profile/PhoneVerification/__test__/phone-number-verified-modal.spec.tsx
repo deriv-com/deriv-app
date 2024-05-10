@@ -2,6 +2,17 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PhoneNumberVerifiedModal from '../phone-number-verified-modal';
+import { MemoryRouter } from 'react-router';
+import { routes } from '@deriv/shared';
+
+const mockHistoryPush = jest.fn();
+
+jest.mock('react-router', () => ({
+    ...jest.requireActual('react-router'),
+    useHistory: () => ({
+        push: mockHistoryPush,
+    }),
+}));
 
 jest.mock('react', () => ({
     ...jest.requireActual('react'),
@@ -21,9 +32,17 @@ describe('PhoneNumberVerifiedModal', () => {
         document.body.removeChild(modal_root_el);
     });
 
+    const renderModal = () => {
+        render(
+            <MemoryRouter>
+                <PhoneNumberVerifiedModal />
+            </MemoryRouter>
+        );
+    };
+
     it('it should render PhoneNumberVerifiedModal', () => {
         (React.useState as jest.Mock).mockReturnValue([true, jest.fn()]);
-        render(<PhoneNumberVerifiedModal />);
+        renderModal();
         expect(screen.getByText(/Verification successful/)).toBeInTheDocument();
         expect(screen.getByText(/That's it! Your number is verified./)).toBeInTheDocument();
     });
@@ -31,9 +50,10 @@ describe('PhoneNumberVerifiedModal', () => {
     it('it should render setShouldShowPhoneNumberVerifiedModal when done is clicked', () => {
         const setState = jest.fn();
         (React.useState as jest.Mock).mockReturnValue([true, setState]);
-        render(<PhoneNumberVerifiedModal />);
+        renderModal();
         const doneButton = screen.getByRole('button', { name: /Done/ });
         userEvent.click(doneButton);
         expect(setState).toBeCalled();
+        expect(mockHistoryPush).toHaveBeenCalledWith(routes.personal_details);
     });
 });

@@ -15,11 +15,6 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(() => false),
 }));
 
-jest.mock('@deriv/stores', () => ({
-    ...jest.requireActual('@deriv/stores'),
-    useStore: jest.fn(() => ({ client: { has_wallet: false } })),
-}));
-
 jest.mock('@deriv/translations', () => ({
     ...jest.requireActual('@deriv/translations'),
     getAllowedLanguages: jest.fn(() => ({ lang_1: 'Test Lang 1', lang_2: 'Test Lang 2' })),
@@ -99,8 +94,7 @@ describe('LanguageSettings', () => {
     });
 
     it('should redirect when the user tries to reach `/account/languages` route having wallet accounts', () => {
-        //@ts-expect-error since this is a mock, we only need partial properties of useStoreWalletAccountsList data
-        mockedUseStoreWalletAccountsList.mockReturnValueOnce({ has_wallet: true });
+        mockRootStore.client.has_wallet = true;
         Object.defineProperty(window, 'location', {
             configurable: true,
             value: { pathname: routes.languages },

@@ -3,6 +3,7 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import TradersHubHeader from '../traders-hub-header';
 import { TStores } from '@deriv/stores/types';
+import { useFeatureFlags } from '@deriv/hooks';
 
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
@@ -29,13 +30,9 @@ jest.mock('../show-notifications', () => jest.fn(() => <div>MockedShowNotificati
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
-    useIsRealAccountNeededForCashier: jest.fn(() => false),
+    useFeatureFlags: jest.fn(() => ({})),
     useHasSetCurrency: jest.fn(() => true),
-}));
-
-jest.mock('@deriv/stores', () => ({
-    ...jest.requireActual('@deriv/stores'),
-    useStore: jest.fn(() => ({ client: { has_wallet: false } })),
+    useIsRealAccountNeededForCashier: jest.fn(() => false),
 }));
 
 describe('TradersHubHeader', () => {

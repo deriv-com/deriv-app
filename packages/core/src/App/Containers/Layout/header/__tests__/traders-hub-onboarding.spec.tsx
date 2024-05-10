@@ -8,11 +8,6 @@ import TradersHubOnboarding from '../traders-hub-onboarding';
 import { routes } from '@deriv/shared';
 import { TCoreStores } from '@deriv/stores/types';
 
-jest.mock('@deriv/stores', () => ({
-    ...jest.requireActual('@deriv/stores'),
-    useStore: jest.fn(() => ({ client: { has_wallet: false } })),
-}));
-
 describe('TradersHubOnboarding', () => {
     const onboarding_icon_testid = 'dt_traders_hub_onboarding_icon';
     const popover_wrapper_testid = 'dt_popover_wrapper';

@@ -43,7 +43,7 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
             ) : (
                 <WalletMarketCurrencyIcon
                     currency={currency}
-                    isDemo={true}
+                    isDemo={isDemo}
                     marketType={marketType}
                     platform={accountType as TPlatforms.All}
                 />

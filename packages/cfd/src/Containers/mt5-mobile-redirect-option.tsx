@@ -34,6 +34,16 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: { mt5_trade_account: Det
             if (document.hidden) {
                 clearTimeout(timeout);
             }
+
+            // iOS17 and certain browsers will have popups
+            if (window.onblur) {
+                // "open in appstore?" || "safari cannot open page because address is invalid" || "open in MetaTrader5?"
+                //// cancel || timeout: open in appstore?
+                clearTimeout(timeout); // installer wont open but will redirect to MetaTrader5 if installed
+                if (!document.hidden) {
+                    mobileAppURL && window.location.replace(mobileAppURL);
+                }
+            }
         });
     };
 

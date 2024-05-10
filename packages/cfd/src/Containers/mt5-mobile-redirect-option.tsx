@@ -3,25 +3,9 @@ import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, Text } from '@deriv/components';
 import { getDeeplinkUrl, getMobileAppInstallerUrl, getWebtraderUrl } from '../Helpers/constants';
 import './mt5-mobile-redirect-option.scss';
-import { isSafariBrowser, mobileOSDetectAsync } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
 const MT5MobileRedirectOption = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => {
-    // PSEUDOCODE
-    // if (ioS17)
-    // - open deeplink && start timeout
-    // - if(onblur)
-    // -- if (visibilityChange)
-    // --- clear timeout
-    // -- else
-    // --- timeout trigger installer function
-    // else (android / huawei / iOS <17)
-    // - open deeplink && start timeout
-    // - if (onblur || visibbilityChange)
-    // -- clear timeout
-    // - else
-    // -- timeout trigger installer function
-
     const mobileURLSet = async () => {
         window.location.replace(getDeeplinkUrl({ mt5_trade_account }));
         const mobileAppURL = await getMobileAppInstallerUrl({ mt5_trade_account });
@@ -36,11 +20,11 @@ const MT5MobileRedirectOption = ({ mt5_trade_account }: { mt5_trade_account: Det
             }
 
             // iOS17 and certain browsers will have popups
+            // "open in appstore?" || "safari cannot open page because address is invalid" || "open in MetaTrader5?"
             if (window.onblur) {
-                // "open in appstore?" || "safari cannot open page because address is invalid" || "open in MetaTrader5?"
-                //// cancel || timeout: open in appstore?
                 clearTimeout(timeout); // installer wont open but will redirect to MetaTrader5 if installed
                 if (!document.hidden) {
+                    // if it is not redirecting then open installer
                     mobileAppURL && window.location.replace(mobileAppURL);
                 }
             }

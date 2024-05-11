@@ -10,6 +10,7 @@ import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
+import useSendEmail from '../../../../hooks/useSendEmail';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
 import './DxtradeEnterPasswordModal.scss';
@@ -22,6 +23,7 @@ const DxtradeEnterPasswordModal = () => {
     const { error, isLoading, isSuccess, mutateAsync, status } = useCreateOtherCFDAccount();
     const { data: dxtradeAccount, isSuccess: dxtradeAccountListSuccess } = useDxtradeAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
+    const { sendEmail } = useSendEmail();
     const { hide, show } = useModal();
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
     const dxtradePlatform = PlatformDetails.dxtrade.platform;
@@ -174,13 +176,16 @@ const DxtradeEnterPasswordModal = () => {
                     marketType='all'
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}
-                    onSecondaryClick={() =>
+                    onSecondaryClick={() => {
+                        sendEmail({
+                            platform: dxtradePlatform,
+                        });
                         show(
                             <ModalWrapper>
                                 <SentEmailContent platform={dxtradePlatform} />
                             </ModalWrapper>
-                        )
-                    }
+                        );
+                    }}
                     password={password}
                     passwordError={error?.error?.code === 'PasswordError'}
                     platform={dxtradePlatform}

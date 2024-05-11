@@ -45,7 +45,6 @@
         "js-cookie": "^2.2.1",
         "mobx": "^6.6.1",
         "mobx-react": "^7.5.1",
-        "prop-types": "^15.7.2",
         "qrcode.react": "^3.1.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",

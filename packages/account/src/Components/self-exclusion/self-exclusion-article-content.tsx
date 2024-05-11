@@ -1,6 +1,5 @@
 import classNames from 'classnames';
-import * as React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { getStaticUrl, PlatformContext } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { Button, Icon, OpenLiveChatLink, Popup, Text } from '@deriv/components';
@@ -176,10 +175,6 @@ const SelfExclusionArticleContent = ({ is_in_overlay }: Partial<TSelfExclusionAr
             )}
         </div>
     );
-};
-
-SelfExclusionArticleContent.propTypes = {
-    is_in_overlay: PropTypes.bool,
 };
 
 export default SelfExclusionArticleContent;

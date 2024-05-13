@@ -32,7 +32,7 @@ const ModalWrapper: FC<React.PropsWithChildren<TProps>> = ({
     };
 
     const handleKeyDown = (ev: React.KeyboardEvent<HTMLDivElement>) => {
-        if (ev.key === 'Enter' || ev.key === 'Space') {
+        if (!shouldPreventCloseOnEscape && ev.key === 'Space') {
             ev.preventDefault();
             onClickOverlay();
         }

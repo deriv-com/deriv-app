@@ -8,6 +8,7 @@ import InstallationGoogleIcon from '../../../../public/images/ic-installation-go
 import InstallationHuaweiIcon from '../../../../public/images/ic-installation-huawei.svg';
 import { TPlatforms } from '../../../../types';
 import { PlatformDetails } from '../../constants';
+import { ctraderLinks, dxtradeLinks, whiteLabelLinks } from '../../screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 import './ModalTradeWrapper.scss';
 
 type TAppLinks = {
@@ -18,18 +19,18 @@ type TAppLinks = {
 
 const LinksMapper: Record<TPlatforms.All, TAppLinks> = {
     ctrader: {
-        android: 'https://play.google.com/store/apps/details?id=com.deriv.ct',
-        ios: 'https://apps.apple.com/cy/app/ctrader/id767428811',
+        android: ctraderLinks.android,
+        ios: ctraderLinks.ios,
     },
     dxtrade: {
-        android: 'https://play.google.com/store/apps/details?id=com.deriv.dx',
-        huawei: 'https://appgallery.huawei.com/app/C104633219',
-        ios: 'https://apps.apple.com/us/app/deriv-x/id1563337503',
+        android: dxtradeLinks.android,
+        huawei: dxtradeLinks.huawei,
+        ios: dxtradeLinks.ios,
     },
     mt5: {
-        android: 'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server,Deriv-Server-02',
-        huawei: 'https://appgallery.huawei.com/#/app/C102015329',
-        ios: 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server,Deriv-Server-02',
+        android: whiteLabelLinks.android,
+        huawei: whiteLabelLinks.huawei,
+        ios: whiteLabelLinks.ios,
     },
 };
 

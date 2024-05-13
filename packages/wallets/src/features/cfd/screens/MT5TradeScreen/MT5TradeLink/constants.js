@@ -5,11 +5,11 @@ import { whiteLabelLinks } from './urlConfig';
 export const getPlatformMt5DownloadLink = platform => {
     switch (platform || OSDetect()) {
         case DESKTOP_PLATFORMS.LINUX:
-            return 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux';
+            return whiteLabelLinks?.linux;
         case DESKTOP_PLATFORMS.MACOS:
-            return 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg';
+            return whiteLabelLinks?.macos;
         case MOBILE_PLATFORMS.HAUWEI:
-            return 'https://appgallery.huawei.com/#/app/C102015329';
+            return whiteLabelLinks?.huawei;
         default:
             return '';
     }

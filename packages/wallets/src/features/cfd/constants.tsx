@@ -14,6 +14,7 @@ import {
 } from '@deriv/quill-icons';
 import i18n from '../../translations/i18n';
 import { TPlatforms } from '../../types';
+import { ctraderLinks, whiteLabelLinks } from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 
 export const MarketTypeDetails = {
     all: {
@@ -71,31 +72,31 @@ export const companyNamesAndUrls = {
 export const AppToContentMapper = {
     ctrader: {
         icon: <LabelPairedWindowsXlIcon />,
-        link: 'https://getctrader.com/deriv/ctrader-deriv-setup.exe',
+        link: ctraderLinks.windows,
         text: i18n.t('Download'),
         title: i18n.t('CTrader Windows App'),
     },
     linux: {
         icon: <LabelPairedLinuxXlIcon />,
-        link: 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
+        link: whiteLabelLinks.linux,
         text: i18n.t('Learn more'),
         title: i18n.t('MetaTrader 5 Linux app'),
     },
     macos: {
         icon: <LabelPairedMacosXlIcon />,
-        link: 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg',
+        link: whiteLabelLinks.macos,
         text: i18n.t('Download'),
         title: i18n.t('MetaTrader 5 MacOS app'),
     },
     web: {
         icon: <PartnersProductDerivMt5BrandLightLogoHorizontalIcon height={32} width={32} />,
-        link: '',
+        link: whiteLabelLinks.webtrader_url,
         text: i18n.t('Open'),
         title: i18n.t('MetaTrader 5 web'),
     },
     windows: {
         icon: <LabelPairedWindowsXlIcon />,
-        link: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
+        link: whiteLabelLinks.windows,
         text: i18n.t('Download'),
         title: i18n.t('MetaTrader 5 Windows app'),
     },

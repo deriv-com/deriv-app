@@ -5,6 +5,7 @@ import { WalletButton, WalletText } from '../../../../../components/Base';
 import { getPlatformFromUrl } from '../../../../../helpers/urls';
 import { THooks, TPlatforms } from '../../../../../types';
 import { AppToContentMapper, CFD_PLATFORMS, PlatformDetails, PlatformToLabelIconMapper } from '../../../constants';
+import { ctraderLinks, dxtradeLinks } from './urlConfig';
 import './MT5TradeLink.scss';
 
 type TMT5TradeLinkProps = {
@@ -24,10 +25,10 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
         let url;
         switch (platform) {
             case CFD_PLATFORMS.DXTRADE:
-                url = isDemo ? 'https://dx-demo.deriv.com' : 'https://dx.deriv.com';
+                url = isDemo ? dxtradeLinks.demo : dxtradeLinks.live;
                 break;
             case CFD_PLATFORMS.CTRADER:
-                url = isTestLink || isStaging ? 'https://ct-uat.deriv.com' : 'https://ct.deriv.com';
+                url = isTestLink || isStaging ? ctraderLinks.staging : ctraderLinks.live;
                 if (ctraderToken) url += `?token=${ctraderToken}`;
                 break;
             default:

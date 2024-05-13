@@ -7,7 +7,6 @@ import {
 } from '@deriv/quill-icons';
 import { WalletText } from '../../../../../components/Base';
 import { getDeeplinkUrl, getMobileAppInstallerUrl, getWebtraderUrl } from './constants';
-import { mobileOSDetectAsync } from './mobileOsDetect';
 import './mt5-mobile-redirect-option.scss';
 
 type TMT5MobileRedirectOptionProps = {
@@ -18,20 +17,24 @@ const MT5MobileRedirectOption: FC<TMT5MobileRedirectOptionProps> = ({ mt5TradeAc
     const mobileURLSet = async () => {
         window.location.replace(getDeeplinkUrl({ mt5TradeAccount }));
         const mobileAppURL = await getMobileAppInstallerUrl({ mt5TradeAccount });
-        const os = await mobileOSDetectAsync();
+
         const timeout = setTimeout(() => {
             mobileAppURL && window.location.replace(mobileAppURL);
-        }, 1500);
+        }, 3000);
 
-        const isSafariBrowser = () => {
-            return false;
-        };
-
-        if (!isSafariBrowser() || (os === 'iOS' && /Version\/17/.test(navigator.userAgent))) {
-            window.onblur = () => {
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) {
                 clearTimeout(timeout);
-            };
-        }
+            }
+
+            // iOS (17+) and certain browsers (edge) may have popups before redirecting
+            if (window.onblur) {
+                clearTimeout(timeout); // installer wont open but will redirect to MetaTrader5
+                if (!document.hidden) {
+                    mobileAppURL && window.location.replace(mobileAppURL); // if it is not redirecting then open installer
+                }
+            }
+        });
     };
 
     return (

@@ -85,12 +85,13 @@ const Header = observer(() => {
 
     if (is_logged_in) {
         let result;
+        if (pathname === routes.trade && is_dtrader_v2_enabled && is_mobile) {
+            result = <DTraderV2Header />;
+        }
         if (traders_hub_routes) {
             result = should_show_wallets ? <TradersHubHeaderWallets /> : <TradersHubHeader />;
         } else if (pathname === routes.onboarding) {
             result = null;
-        } else if (pathname === routes.trade && is_dtrader_v2_enabled && is_mobile) {
-            result = <DTraderV2Header />;
         } else {
             result = should_show_wallets ? <DTraderHeaderWallets /> : <DTraderHeader />;
         }

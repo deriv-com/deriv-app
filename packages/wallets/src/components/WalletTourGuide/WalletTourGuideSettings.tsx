@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { Step, TooltipRenderProps } from 'react-joyride';
 import { LegacyClose2pxIcon } from '@deriv/quill-icons';
 import { THooks } from '../../types';
-import { WalletButton } from '../Base';
+import { WalletButton, WalletText } from '../Base';
 import { getMobileSteps } from './MobileSteps';
 import './WalletTourGuide.scss';
 
@@ -53,6 +53,12 @@ export const TooltipComponent = ({
         </div>
     );
 };
+
+export const SpotLightHeader = ({ children }: PropsWithChildren) => (
+    <WalletText color='red' size='sm' weight='bold'>
+        {children}
+    </WalletText>
+);
 
 export const getFiatWalletLoginId = (wallets?: THooks.WalletAccountsList[]) => {
     return wallets?.find(wallet => !wallet.is_crypto)?.loginid;

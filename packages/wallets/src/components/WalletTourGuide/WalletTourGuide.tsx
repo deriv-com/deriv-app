@@ -12,6 +12,7 @@ import {
 import useDevice from '../../hooks/useDevice';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { desktopStepTourGuide } from './DesktopSteps';
+import { mobileStepTourGuide } from './MobileSteps';
 import {
     getFiatWalletLoginId,
     TooltipComponent,
@@ -86,7 +87,7 @@ const WalletTourGuide = () => {
 
     const callbackHandle = (data: CallBackProps) => {
         const { action, index, status, type } = data;
-        const finishedStatuses: string[] = [STATUS.FINISHED];
+        const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
         const skipTypes: string[] = [EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND];
 
         if (finishedStatuses.includes(status)) {
@@ -118,7 +119,7 @@ const WalletTourGuide = () => {
             run={run}
             scrollOffset={100}
             stepIndex={joyrideIndex}
-            steps={desktopStepTourGuide}
+            steps={isMobile ? mobileStepTourGuide : desktopStepTourGuide}
             tooltipComponent={TooltipComponent}
         />
     );

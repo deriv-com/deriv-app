@@ -1,6 +1,7 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import { Step } from 'react-joyride';
 import { WalletText } from '../Base';
+import { SpotLightHeader } from './WalletTourGuideSettings';
 import './WalletTourGuide.scss';
 
 const stepProps = {
@@ -8,12 +9,6 @@ const stepProps = {
     disableOverlayClose: true,
     spotlightPadding: 0,
 };
-
-const SpotLightHeader = ({ children }: PropsWithChildren) => (
-    <WalletText color='red' size='sm' weight='bold'>
-        {children}
-    </WalletText>
-);
 
 export const desktopStepTourGuide: Step[] = [
     {

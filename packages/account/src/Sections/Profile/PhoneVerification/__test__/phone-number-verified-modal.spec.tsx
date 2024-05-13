@@ -47,7 +47,7 @@ describe('PhoneNumberVerifiedModal', () => {
         expect(screen.getByText(/That's it! Your number is verified./)).toBeInTheDocument();
     });
 
-    it('it should render setShouldShowPhoneNumberVerifiedModal when done is clicked', () => {
+    it('it should close PhoneNumberVerifiedModal and navigate to PersonalDetails section when done is clicked', () => {
         const setState = jest.fn();
         (React.useState as jest.Mock).mockReturnValue([true, setState]);
         renderModal();

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useActiveWalletAccount, useAuthorize, useCurrencyConfig } from '@deriv/api-v2';
+import { useActiveWalletAccount, useAuthorize } from '@deriv/api-v2';
 import { Loader } from '../../../../components';
 import { WithdrawalCryptoModule, WithdrawalFiatModule, WithdrawalVerificationModule } from '../../modules';
+import { WithdrawalNoBalance } from '../../screens';
 
 const WalletWithdrawal = () => {
-    const { isSuccess: isCurrencyConfigSuccess } = useCurrencyConfig();
     const { switchAccount } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
     const [verificationCode, setVerificationCode] = useState('');
@@ -33,20 +33,21 @@ const WalletWithdrawal = () => {
 
     const isCrypto = activeWallet?.currency_config?.is_crypto;
 
-    if (verificationCode) {
-        if (isCurrencyConfigSuccess && activeWallet?.currency) {
-            return isCrypto ? (
-                <WithdrawalCryptoModule
-                    onClose={() => {
-                        setVerificationCode('');
-                    }}
-                    verificationCode={verificationCode}
-                />
-            ) : (
-                <WithdrawalFiatModule verificationCode={verificationCode} />
-            );
-        }
-        return <Loader />;
+    if (!activeWallet) return <Loader />;
+
+    if (activeWallet.balance <= 0) return <WithdrawalNoBalance activeWallet={activeWallet} />;
+
+    if (activeWallet?.currency && verificationCode) {
+        return isCrypto ? (
+            <WithdrawalCryptoModule
+                onClose={() => {
+                    setVerificationCode('');
+                }}
+                verificationCode={verificationCode}
+            />
+        ) : (
+            <WithdrawalFiatModule verificationCode={verificationCode} />
+        );
     }
 
     return <WithdrawalVerificationModule />;

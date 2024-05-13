@@ -95,7 +95,7 @@ const AppModals = observer(() => {
         mt5_login_list,
         should_show_effortless_login_modal,
     } = client;
-    const { content_flag, is_tour_open } = traders_hub;
+    const { content_flag } = traders_hub;
     const { is_from_derivgo } = common;
     const {
         is_account_needed_modal_on,
@@ -218,7 +218,7 @@ const AppModals = observer(() => {
         ComponentToLoad = <WalletsUpgradeLogoutModal />;
     }
 
-    if (should_show_effortless_login_modal && !is_tour_open && !is_from_derivgo && !is_onboarding) {
+    if (should_show_effortless_login_modal && !is_from_derivgo && !is_onboarding) {
         ComponentToLoad = <EffortlessLoginModal />;
     }
 

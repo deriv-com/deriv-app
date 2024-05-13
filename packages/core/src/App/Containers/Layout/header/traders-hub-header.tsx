@@ -13,7 +13,6 @@ import { BinaryLink } from 'App/Components/Routes';
 import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-rebranding-logo.svg';
 import DefaultMobileLinks from './default-mobile-links';
 import ShowNotifications from './show-notifications';
-import TradersHubOnboarding from './traders-hub-onboarding';
 import TradersHubHomeButton from './traders-hub-home-button';
 
 type TPlatformConfig = typeof platform_config;
@@ -140,9 +139,6 @@ const TradersHubHeader = observer(() => {
                     <div className='traders-hub-header__menu-right'>
                         <div className='traders-hub-header__divider' />
                         <div className='traders-hub-header__menu-right--items'>
-                            <div className='traders-hub-header__menu-right--items--onboarding'>
-                                <TradersHubOnboarding />
-                            </div>
                             <div className='traders-hub-header__menu-right--items--notifications'>
                                 <ShowNotifications />
                             </div>

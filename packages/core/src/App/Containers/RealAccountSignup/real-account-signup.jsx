@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
 import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text, UILoader } from '@deriv/components';
-import { ContentFlag, WS, moduleLoader, routes } from '@deriv/shared';
+import { WS, moduleLoader, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import AddCurrency from './add-currency.jsx';
@@ -87,7 +87,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         real_account_signup: state_value,
         is_trading_assessment_for_new_user_enabled,
     } = ui;
-    const { content_flag, show_eu_related_content, toggleIsTourOpen } = traders_hub;
+    const { show_eu_related_content } = traders_hub;
     const deposit_target = modules.cashier.general_store.deposit_target;
     const setIsDeposit = modules.cashier.general_store.setIsDeposit;
     const should_show_all_available_currencies = modules.cashier.general_store.should_show_all_available_currencies;
@@ -424,9 +424,6 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
 
         if (modal_content[getActiveModalIndex()].action === 'signup') {
             setIsClosingCreateRealAccountModal(true);
-            if ([ContentFlag.EU_REAL, ContentFlag.EU_DEMO].includes(content_flag)) {
-                toggleIsTourOpen(true);
-            }
 
             return;
         }

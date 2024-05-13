@@ -19,7 +19,6 @@ describe('<SelfExclusionArticle />', () => {
     let mock_self_exclusion_context = {
         is_app_settings: false,
         is_eu: false,
-        is_uk: false,
         currency: '',
         overlay_ref: document.createElement('div'),
         toggleArticle: jest.fn(),
@@ -39,7 +38,6 @@ describe('<SelfExclusionArticle />', () => {
         mock_self_exclusion_context = {
             is_app_settings: false,
             is_eu: false,
-            is_uk: false,
             currency: '',
             overlay_ref: document.createElement('div'),
             toggleArticle: jest.fn(),

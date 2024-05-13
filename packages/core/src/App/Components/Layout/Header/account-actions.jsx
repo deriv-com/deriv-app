@@ -23,7 +23,6 @@ const AccountActions = React.memo(
         account_type,
         balance,
         currency,
-        country_standpoint,
         disableApp,
         enableApp,
         is_acc_switcher_on,
@@ -63,7 +62,6 @@ const AccountActions = React.memo(
                                 is_virtual={is_virtual}
                                 is_mobile
                                 currency={currency}
-                                country_standpoint={country_standpoint}
                                 is_dialog_on={is_acc_switcher_on}
                                 toggleDialog={toggleAccountsDialog}
                             />
@@ -99,7 +97,6 @@ const AccountActions = React.memo(
                                 is_eu={is_eu}
                                 is_virtual={is_virtual}
                                 currency={currency}
-                                country_standpoint={country_standpoint}
                                 is_dialog_on={is_acc_switcher_on}
                                 toggleDialog={toggleAccountsDialog}
                             />
@@ -148,7 +145,6 @@ AccountActions.propTypes = {
     is_eu: PropTypes.bool,
     disableApp: PropTypes.any,
     enableApp: PropTypes.any,
-    country_standpoint: PropTypes.object,
     is_acc_switcher_on: PropTypes.any,
     is_logged_in: PropTypes.any,
     is_notifications_visible: PropTypes.any,

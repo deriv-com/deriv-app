@@ -39,7 +39,7 @@ const modal_pages_indices = {
 };
 let active_modal_index_no = 0;
 
-const WizardHeading = ({ country_standpoint, currency, real_account_signup_target }) => {
+const WizardHeading = ({ currency, real_account_signup_target }) => {
     const maltainvest_signup = real_account_signup_target === 'maltainvest';
     const deposit_cash_signup = real_account_signup_target === 'deposit_cash';
 
@@ -53,10 +53,7 @@ const WizardHeading = ({ country_standpoint, currency, real_account_signup_targe
 
     switch (real_account_signup_target) {
         case 'maltainvest':
-            if (country_standpoint.is_france || country_standpoint.is_other_eu || country_standpoint.is_rest_of_eu) {
-                return <Localize i18n_default_text='Setup your account' />;
-            }
-            return <Localize i18n_default_text='Add a Deriv Financial account' />;
+            return <Localize i18n_default_text='Setup your account' />;
         default:
             return <Localize i18n_default_text='Add a Deriv account' />;
     }
@@ -66,7 +63,6 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
     const { ui, client, traders_hub, modules } = useStore();
     const {
         available_crypto_currencies,
-        country_standpoint,
         currency,
         fetchAccountSettings,
         has_fiat,
@@ -95,7 +91,6 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
     const deposit_target = modules.cashier.general_store.deposit_target;
     const setIsDeposit = modules.cashier.general_store.setIsDeposit;
     const should_show_all_available_currencies = modules.cashier.general_store.should_show_all_available_currencies;
-    const is_belgium_residence = client.residence === 'be'; // TODO: [deriv-eu] refactor this once more residence checks are required
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
@@ -631,10 +626,8 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                                     return (
                                         <Title
                                             available_crypto_currencies={available_crypto_currencies}
-                                            country_standpoint={country_standpoint}
                                             currency={currency}
                                             has_fiat={has_fiat}
-                                            is_belgium_residence={is_belgium_residence}
                                             is_eu={show_eu_related_content}
                                             real_account_signup_target={real_account_signup_target}
                                             should_show_all_available_currencies={should_show_all_available_currencies}
@@ -669,9 +662,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                                 if (Title) {
                                     return (
                                         <Title
-                                            country_standpoint={country_standpoint}
                                             currency={currency}
-                                            is_belgium_residence={is_belgium_residence}
                                             real_account_signup_target={real_account_signup_target}
                                             should_show_all_available_currencies={should_show_all_available_currencies}
                                         />

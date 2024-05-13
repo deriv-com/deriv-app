@@ -1,15 +1,12 @@
 import * as React from 'react';
 import { Formik, Form } from 'formik';
-import { Button, Div100vhContainer, Modal, Text, ThemedScrollbars } from '@deriv/components';
-import { useP2PCountryList, useP2PSettings } from '@deriv/hooks';
+import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
+import { useP2PSettings } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import { localize } from 'Components/i18next';
-import { api_error_codes } from 'Constants/api-error-codes';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import { ad_type } from 'Constants/floating-rate';
-import { generateErrorDialogTitle, generateErrorDialogBody } from 'Utils/adverts';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AdWizard from './ad-wizard';
 import './edit-ad-form.scss';
@@ -22,7 +19,7 @@ const EditAdFormWrapper = ({ children }) => {
     return children;
 };
 
-const EditAdForm = () => {
+const EditAdForm = ({ country_list }) => {
     const { my_ads_store, my_profile_store } = useStores();
     const steps = [
         { header: { title: 'Edit ad type and amount' } },
@@ -49,7 +46,6 @@ const EditAdForm = () => {
     const is_buy_advert = type === buy_sell.BUY;
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const { useRegisterModalProps } = useModalManagerContext();
-    const { p2p_country_list = {} } = useP2PCountryList();
     const { p2p_settings } = useP2PSettings();
 
     // when editing payment methods in creating an ad, once user declines to save their payment method, flow is to close all add payment method modals
@@ -70,13 +66,8 @@ const EditAdForm = () => {
         return rate_display;
     };
 
-    const is_api_error = [api_error_codes.ADVERT_SAME_LIMITS, api_error_codes.DUPLICATE_ADVERT].includes(
-        my_ads_store.error_code
-    );
-
     React.useEffect(() => {
         my_profile_store.getAdvertiserPaymentMethods();
-        my_ads_store.setIsEditAdErrorModalVisible(false);
         my_ads_store.setEditAdFormError('');
 
         if (payment_method_names && !payment_method_details) {
@@ -138,7 +129,7 @@ const EditAdForm = () => {
                                     <EditAdFormWrapper>
                                         <AdWizard
                                             action='edit'
-                                            country_list={p2p_country_list}
+                                            country_list={country_list}
                                             float_rate_offset_limit_string={p2p_settings.float_rate_offset_limit_string}
                                             onClose={() => {
                                                 my_ads_store.setShowEditAdForm(false);
@@ -153,28 +144,6 @@ const EditAdForm = () => {
                     );
                 }}
             </Formik>
-            <Modal
-                className='edit-ad-form__modal'
-                is_open={my_ads_store.is_edit_ad_error_modal_visible}
-                small
-                has_close_icon={false}
-                title={generateErrorDialogTitle(my_ads_store.error_code)}
-            >
-                <Modal.Body>
-                    <Text as='p' size='xs' color='prominent' className='ad-create-edit-error-modal__message'>
-                        {generateErrorDialogBody(my_ads_store.error_code, my_ads_store.edit_ad_form_error)}
-                    </Text>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button
-                        has_effect
-                        text={localize('{{text}}', { text: is_api_error ? 'Update ad' : 'Ok' })}
-                        onClick={() => my_ads_store.setIsEditAdErrorModalVisible(false)}
-                        primary
-                        large
-                    />
-                </Modal.Footer>
-            </Modal>
         </React.Fragment>
     );
 };

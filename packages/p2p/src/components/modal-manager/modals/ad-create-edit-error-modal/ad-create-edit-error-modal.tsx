@@ -38,7 +38,7 @@ const AdCreateEditErrorModal = ({ ad_type = ads.CREATE, onUpdateAd }: TAdCreateE
             <Modal.Footer>
                 <Button
                     has_effect
-                    text={is_api_error ? localize('Update ad') : localize('Ok')}
+                    text={is_api_error ? localize('Update ad') : localize('OK')}
                     onClick={() => {
                         if (is_api_error) {
                             onUpdateAd?.();

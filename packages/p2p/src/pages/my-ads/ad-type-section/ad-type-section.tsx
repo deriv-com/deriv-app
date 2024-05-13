@@ -233,7 +233,7 @@ const AdTypeSection = ({
                                 }
                                 error={touched.contact_info && errors.contact_info}
                                 className='ad-type-section__field ad-type-section__field--textarea'
-                                initial_character_count={general_store.contact_info.length}
+                                initial_character_count={values.contact_info.length}
                                 required
                                 has_character_counter
                                 max_characters={300}
@@ -258,7 +258,7 @@ const AdTypeSection = ({
                         }
                         hint={localize('This information will be visible to everyone.')}
                         className='ad-type-section__field ad-type-section__field--textarea'
-                        initial_character_count={general_store.default_advert_description.length}
+                        initial_character_count={values.default_advert_description.length}
                         has_character_counter
                         max_characters={300}
                         onFocus={() => setFieldTouched('default_advert_description', true)}

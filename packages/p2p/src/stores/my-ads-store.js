@@ -24,7 +24,6 @@ export default class MyAdsStore extends BaseStore {
     min_join_days = 0;
     min_completion_rate = 0;
     is_ad_created_modal_visible = false;
-    is_edit_ad_error_modal_visible = false;
     is_form_loading = false;
     is_table_loading = false;
     is_loading = false;
@@ -57,7 +56,6 @@ export default class MyAdsStore extends BaseStore {
             error_message: observable,
             has_more_items_to_load: observable,
             is_ad_created_modal_visible: observable,
-            is_edit_ad_error_modal_visible: observable,
             is_form_loading: observable,
             is_table_loading: observable,
             is_loading: observable,
@@ -97,7 +95,6 @@ export default class MyAdsStore extends BaseStore {
             setErrorMessage: action.bound,
             setHasMoreItemsToLoad: action.bound,
             setIsAdCreatedModalVisible: action.bound,
-            setIsEditAdErrorModalVisible: action.bound,
             setIsFormLoading: action.bound,
             setIsLoading: action.bound,
             setIsTableLoading: action.bound,
@@ -278,14 +275,14 @@ export default class MyAdsStore extends BaseStore {
         }
     }
 
-    async onClickCopy(id, is_copy_advert_modal_visible) {
+    async onClickCopy(country_list, id, is_copy_advert_modal_visible) {
         this.setSelectedAdId(id);
 
         if (is_copy_advert_modal_visible) {
             await this.getAdvertInfo();
             this.root_store.general_store.showModal({
                 key: 'CopyAdvertModal',
-                props: { advert: this.p2p_advert_information },
+                props: { advert: this.p2p_advert_information, country_list },
             });
         } else {
             this.getAdvertInfo();
@@ -374,7 +371,6 @@ export default class MyAdsStore extends BaseStore {
                     setSubmitting(false);
                     this.setApiErrorCode(response.error.code);
                     this.setEditAdFormError(response.error.message);
-                    this.setIsEditAdErrorModalVisible(true);
                 } else {
                     this.setShowEditAdForm(false);
                 }
@@ -519,10 +515,6 @@ export default class MyAdsStore extends BaseStore {
 
     setShouldCopyAdvert(should_copy_advert) {
         this.should_copy_advert = should_copy_advert;
-    }
-
-    setIsEditAdErrorModalVisible(is_edit_ad_error_modal_visible) {
-        this.is_edit_ad_error_modal_visible = is_edit_ad_error_modal_visible;
     }
 
     setIsFormLoading(is_form_loading) {

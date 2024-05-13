@@ -5,7 +5,7 @@ import CopyAdvertForm from 'Pages/my-ads/copy-advert-form';
 import CreateAdForm from 'Pages/my-ads/create-ad-form';
 import { useStores } from 'Stores';
 
-const CreateAd = () => {
+const CreateAd = ({ country_list }) => {
     const { my_ads_store } = useStores();
     const {
         is_form_loading,
@@ -27,9 +27,9 @@ const CreateAd = () => {
     return (
         <React.Fragment>
             {should_copy_advert ? (
-                <CopyAdvertForm advert={p2p_advert_information} onCancel={onClickBack} />
+                <CopyAdvertForm advert={p2p_advert_information} country_list={country_list} onCancel={onClickBack} />
             ) : (
-                <CreateAdForm />
+                <CreateAdForm country_list={country_list} />
             )}
         </React.Fragment>
     );

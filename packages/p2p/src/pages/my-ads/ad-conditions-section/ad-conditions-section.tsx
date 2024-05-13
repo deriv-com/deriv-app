@@ -126,7 +126,11 @@ const AdConditionsSection = ({
                 {...props}
                 action={action}
                 is_save_btn_disabled={
-                    !dirty && !is_form_dirty && !has_min_join_days_changed && !has_min_completion_rate_changed
+                    !dirty &&
+                    !is_form_dirty &&
+                    !has_min_join_days_changed &&
+                    !has_min_completion_rate_changed &&
+                    my_ads_store.required_ad_type === my_ads_store.selected_ad_type
                 }
             />
         </>

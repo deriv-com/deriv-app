@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Formik, Form } from 'formik';
 import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
-import { useP2PCountryList, useP2PSettings } from '@deriv/hooks';
+import { useP2PSettings } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { buy_sell } from 'Constants/buy-sell';
@@ -18,7 +18,7 @@ const CreateAdFormWrapper = ({ children }) => {
     return children;
 };
 
-const CreateAdForm = () => {
+const CreateAdForm = ({ country_list }) => {
     const { buy_sell_store, general_store, my_ads_store, my_profile_store } = useStores();
     const {
         p2p_settings: {
@@ -28,7 +28,6 @@ const CreateAdForm = () => {
             rate_type,
         },
     } = useP2PSettings();
-    const { p2p_country_list = {} } = useP2PCountryList();
     const { useRegisterModalProps } = useModalManagerContext();
     const steps = [
         { header: { title: 'Set ad type and amount' } },
@@ -77,7 +76,7 @@ const CreateAdForm = () => {
                 initialValues={{
                     contact_info: general_store.contact_info,
                     default_advert_description: general_store.default_advert_description,
-                    eligible_countries: p2p_country_list ? Object.keys(p2p_country_list) : [],
+                    eligible_countries: country_list ? Object.keys(country_list) : [],
                     float_rate_offset_limit: float_rate_offset_limit_string,
                     max_transaction: '',
                     min_transaction: '',
@@ -101,7 +100,7 @@ const CreateAdForm = () => {
                                 >
                                     <CreateAdFormWrapper>
                                         <AdWizard
-                                            country_list={p2p_country_list}
+                                            country_list={country_list}
                                             float_rate_offset_limit_string={float_rate_offset_limit_string}
                                             onClose={() => {
                                                 my_ads_store.setShowAdForm(false);

@@ -14,7 +14,7 @@ type TErrorModalProps = {
 
 const ErrorModal = ({
     error_message,
-    error_modal_button_text = 'Ok',
+    error_modal_button_text = 'OK',
     error_modal_title,
     has_close_icon,
     onClose,

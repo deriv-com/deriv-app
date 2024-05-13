@@ -2,23 +2,26 @@ import React from 'react';
 import { Formik, Field, FieldProps, Form } from 'formik';
 import { Button, InlineMessage, Input, Text, ThemedScrollbars } from '@deriv/components';
 import { useP2PSettings } from '@deriv/hooks';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import FloatingRate from 'Components/floating-rate';
 import { Localize, localize } from 'Components/i18next';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import OrderTimeSelection from 'Pages/my-ads/order-time-selection';
 import { useStores } from 'Stores';
-import { TAdvertProps } from 'Types';
+import { TAdvertProps, TCountryListProps } from 'Types';
 import { getInlineTextSize } from 'Utils/responsive';
 import CopyAdvertFormTrailingIcon from './copy-advert-from-trailing-icon';
 
 type TCopyAdvertFormProps = {
     advert: TAdvertProps;
+    country_list: TCountryListProps;
     onCancel: () => void;
 };
 
-const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
+const CopyAdvertForm = ({ advert, country_list, onCancel }: TCopyAdvertFormProps) => {
+    const { showModal } = useModalManagerContext();
     const {
         client: { currency, local_currency_config },
         ui: { is_desktop },
@@ -71,8 +74,16 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
         return rate_display;
     };
 
-    const eligible_countries_display =
-        eligible_countries?.length === 1 ? eligible_countries[0] : eligible_countries?.length;
+    const getEligibleCountriesDisplay = () => {
+        if (eligible_countries?.length === 1) {
+            return country_list[eligible_countries[0]]?.country_name;
+        } else if (eligible_countries?.length === Object.keys(country_list)?.length) {
+            return localize('All');
+        }
+
+        return eligible_countries?.length;
+    };
+
     const has_counterparty_conditions = min_join_days > 0 || min_completion_rate > 0 || eligible_countries?.length > 0;
 
     React.useEffect(() => {
@@ -99,6 +110,19 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
             my_ads_store.setP2pAdvertInformation({});
         };
     }, []);
+
+    React.useEffect(() => {
+        if (my_ads_store.error_code) {
+            showModal({
+                key: 'AdCreateEditErrorModal',
+                props: {
+                    onUpdateAd: () => {
+                        my_ads_store.setApiErrorCode(null);
+                    },
+                },
+            });
+        }
+    }, [my_ads_store.error_code]);
 
     return (
         <div className='copy-advert-form'>
@@ -305,7 +329,9 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
                                                     <Localize
                                                         i18n_default_text='Preferred countries <0>({{eligible_countries_display}})</0>'
                                                         components={[<strong key={0} />]}
-                                                        values={{ eligible_countries_display }}
+                                                        values={{
+                                                            eligible_countries_display: getEligibleCountriesDisplay(),
+                                                        }}
                                                     />
                                                 </li>
                                             )}
@@ -329,4 +355,4 @@ const CopyAdvertForm = ({ advert, onCancel }: TCopyAdvertFormProps) => {
     );
 };
 
-export default CopyAdvertForm;
+export default observer(CopyAdvertForm);

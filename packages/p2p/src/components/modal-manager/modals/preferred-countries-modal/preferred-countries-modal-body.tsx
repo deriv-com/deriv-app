@@ -31,7 +31,10 @@ const PreferredCountriesModalBody = ({
 
     const onClearSearch = () => {
         setSearchValue('');
-        setSearchResults(country_list);
+        setSearchResults([
+            ...country_list.filter(item => selected_countries.includes(item.value)),
+            ...country_list.filter(item => !selected_countries.includes(item.value)),
+        ]);
     };
 
     const onSearch = e => {

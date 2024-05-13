@@ -135,6 +135,7 @@ const DxtradeEnterPasswordModal = () => {
         isSuccess,
         onSubmit,
         password,
+        sendEmail,
         show,
     ]);
 
@@ -205,6 +206,7 @@ const DxtradeEnterPasswordModal = () => {
         password,
         dxtradePlatform,
         error?.error?.code,
+        sendEmail,
         show,
     ]);
     if (status === 'error' && error?.error?.code !== 'PasswordError') {

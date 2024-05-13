@@ -54,6 +54,12 @@ export const PlatformDetails = {
         platform: i18n.t('mt5') as TPlatforms.MT5,
         title: i18n.t('Deriv MT5'),
     },
+    mt5Investor: {
+        icon: <AccountsDmt5DerivedIcon height={48} width={48} />,
+        link: 'https://onelink.to/grmtyx',
+        platform: i18n.t('mt5') as TPlatforms.MT5,
+        title: i18n.t('Deriv MT5 investor'),
+    },
 } as const;
 
 export const companyNamesAndUrls = {

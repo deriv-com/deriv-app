@@ -48,7 +48,7 @@ const AccountList = ({
                     />
                     <span>
                         {display_type === 'currency' ? (
-                            <CurrencyDisplay currency={currency} loginid={loginid} is_virtual={is_virtual} />
+                            <CurrencyDisplay currency={currency} is_virtual={is_virtual} />
                         ) : (
                             <AccountDisplay
                                 is_eu={is_eu}
@@ -108,13 +108,7 @@ const AccountList = ({
     );
 };
 
-const CurrencyDisplay = ({ currency, loginid, is_virtual }) => {
-    const account_type = loginid.replace(/\d/g, '');
-
-    if (account_type === 'MF') {
-        return <Localize i18n_default_text='Multipliers' />;
-    }
-
+const CurrencyDisplay = ({ currency, is_virtual }) => {
     if (is_virtual) {
         return <Localize i18n_default_text='Demo' />;
     }

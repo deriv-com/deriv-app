@@ -4,7 +4,7 @@ import { Form, Formik } from 'formik';
 import { Analytics } from '@deriv-com/analytics';
 import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, ThemedScrollbars } from '@deriv/components';
 import { getIDVNotApplicableOption, isDesktop, isMobile, removeEmptyPropertiesFromObject } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import {
     isAdditionalDocumentValid,
@@ -224,6 +224,12 @@ const PersonalDetails = observer(
                                                 account_opening_reason_list={account_opening_reason_list}
                                                 should_close_tooltip={should_close_tooltip}
                                                 setShouldCloseTooltip={setShouldCloseTooltip}
+                                                inline_note_text={
+                                                    <Localize
+                                                        i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+                                                        components={[<strong key={0} />]}
+                                                    />
+                                                }
                                                 no_confirmation_needed={no_confirmation_needed}
                                             />
                                         </div>

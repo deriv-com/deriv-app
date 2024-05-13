@@ -18,7 +18,6 @@ import {
 import { useStatesList } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
-import InlineNoteWithIcon from '../inline-note-with-icon';
 import { FormInputField } from '../forms/form-fields';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';

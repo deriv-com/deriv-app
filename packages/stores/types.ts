@@ -395,13 +395,6 @@ type RealAccountSignupSettings = {
     previous_currency: string;
     success_message: string;
 };
-type TCountryStandpoint = {
-    is_belgium: boolean;
-    is_france: boolean;
-    is_other_eu: boolean;
-    is_rest_of_eu: boolean;
-    is_united_kingdom: boolean;
-};
 
 type TClientStore = {
     fetchStatesList: () => Promise<StatesList>;
@@ -426,7 +419,6 @@ type TClientStore = {
     clients_country: string;
     cfd_score: number;
     setCFDScore: (score: number) => void;
-    country_standpoint: TCountryStandpoint;
     currency: string;
     ctrader_total_balance: number;
     currencies_list: { text: string; value: string; has_tool_tip?: boolean }[];
@@ -457,7 +449,6 @@ type TClientStore = {
     is_dxtrade_allowed: boolean;
     is_eu_country: boolean;
     is_eu: boolean;
-    is_uk: boolean;
     is_unwelcome: boolean;
     is_single_currency: boolean;
     is_social_signup: boolean;
@@ -549,7 +540,6 @@ type TClientStore = {
     residence_list: ResidenceList;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
-    should_show_eu_content: boolean;
     updateMT5Status: () => Promise<void>;
     fetchAccountSettings: () => Promise<void>;
     setAccountSettings: (get_settings_response: GetSettings) => void;

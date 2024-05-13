@@ -37,10 +37,10 @@ const WalletTourGuide = () => {
     const { data: availableWallets } = useAllWalletAccounts();
     const { isLoading: ctraderIsLoading } = useCtraderAccountsList();
     const { isLoading: dxtradeIsLoading } = useDxtradeAccountsList();
-    const { isLoading: sortedAccountsListLoading } = useSortedMT5Accounts();
+    const { isLoading: sortedAccountsIsLoading } = useSortedMT5Accounts();
 
     const isEverytingLoaded =
-        !isLoading && !isFetching && isSuccess && !ctraderIsLoading && !dxtradeIsLoading && !sortedAccountsListLoading;
+        !isLoading && !isFetching && isSuccess && !ctraderIsLoading && !dxtradeIsLoading && !sortedAccountsIsLoading;
 
     const addMoreWalletRef = useRef<HTMLElement | null>(document.getElementById('wallets_add_more_carousel_wrapper'));
 

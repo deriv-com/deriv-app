@@ -137,7 +137,6 @@ export const MOBILE_PLATFORMS = {
 export const MARKET_TYPE = {
     ALL: 'all',
     FINANCIAL: 'financial',
-    GAMING: 'gaming',
     SYNTHETIC: 'synthetic',
 } as const;
 

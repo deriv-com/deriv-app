@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { Trans } from 'react-i18next';
 import { THooks } from 'src/types';
 import {
     LabelPairedChevronRightLgFillIcon,
@@ -48,7 +49,7 @@ const MT5MobileRedirectOption: FC<TMT5MobileRedirectOptionProps> = ({ mt5TradeAc
                 <StandaloneLaptopRegularIcon />
                 <div className='wallets-mobile-redirect-option__button__content'>
                     <WalletText align='left' size='xs' weight='bold'>
-                        MetaTrader5 web terminal
+                        <Trans defaults='MetaTrader5 web terminal' />
                     </WalletText>
                 </div>
                 <LabelPairedChevronRightLgFillIcon />
@@ -60,15 +61,17 @@ const MT5MobileRedirectOption: FC<TMT5MobileRedirectOptionProps> = ({ mt5TradeAc
                 <StandaloneMobileNotchRegularIcon fill='#FFF' />
                 <div className='wallets-mobile-redirect-option__button__content'>
                     <WalletText align='left' color='white' size='xs' weight='bold'>
-                        Trade with MT5 mobile app
+                        <Trans defaults='Trade with MT5 mobile app' />
                     </WalletText>
                 </div>
                 <LabelPairedChevronRightLgFillIcon fill='#FFF' />
             </button>
             <WalletText as='p' size='xs'>
-                Note: Don&apos;t have the MT5 app? Tap the
-                <span style={{ fontWeight: 'bold' }}> Trade with MT5 mobile app</span> WalletButton to download. Once
-                you have installed the app, return to this screen and hit the same button to log in.
+                <Trans
+                    components={[<b key={0} />]}
+                    defaults={`Note: Don&apos;t have the MT5 app? Tap the <0>Trade with MT5 mobile app</0> WalletButton to download. Once you have installed the app, return to this screen and hit the same button to log in.`}
+                />
+                <Trans />
             </WalletText>
         </div>
     );

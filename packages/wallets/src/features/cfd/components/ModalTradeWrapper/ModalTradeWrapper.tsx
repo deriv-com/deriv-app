@@ -1,5 +1,6 @@
 import React, { FC, PropsWithChildren } from 'react';
 import QRCode from 'qrcode.react';
+import { Trans } from 'react-i18next';
 import { WalletText } from '../../../../components/Base';
 import { ModalStepWrapper } from '../../../../components/Base/ModalStepWrapper';
 import useDevice from '../../../../hooks/useDevice';
@@ -56,7 +57,7 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                 return (
                     <div className='wallets-modal-trade-wrapper__footer'>
                         <WalletText align='center' size='sm' weight='bold'>
-                            Download {title} on your phone to trade with the {title} account
+                            <Trans defaults={`Download ${title} on your phone to trade with the ${title} account`} />
                         </WalletText>
                         <div className='wallets-modal-trade-wrapper__footer-installations'>
                             <div className='wallets-modal-trade-wrapper__footer-installations-icons'>
@@ -74,7 +75,7 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                             <div className='wallets-modal-trade-wrapper__footer-installations-qr'>
                                 <QRCode size={80} value={link} />
                                 <WalletText align='center' size='xs'>
-                                    Scan the QR code to download {title}
+                                    <Trans defaults={` Scan the QR code to download ${title}`} />
                                 </WalletText>
                             </div>
                         </div>

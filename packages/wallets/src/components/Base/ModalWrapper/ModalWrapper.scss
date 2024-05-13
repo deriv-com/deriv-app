@@ -4,6 +4,14 @@
     display: flex;
     justify-content: center;
 
+    @include mobile {
+        animation: popup 0.2s;
+    }
+
+    @include mobile {
+        width: calc(100vw - 3.2rem);
+    }
+
     &__close-icon {
         position: absolute;
         top: 2.4rem;

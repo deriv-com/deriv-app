@@ -65,6 +65,18 @@ describe('ErrorComponent', () => {
         expect(location.reload).toHaveBeenCalled();
     });
 
+    it('should refresh the page on clicking ok button on dialog modal', () => {
+        render(
+            <BrowserRouter>
+                <ErrorComponent is_dialog />
+            </BrowserRouter>
+        );
+        const ok_button = screen.getByText('Ok');
+        expect(ok_button).toBeInTheDocument();
+        ok_button.click();
+        expect(location.reload).toHaveBeenCalled();
+    });
+
     it('should show error modal with custom message', () => {
         // @ts-expect-error type mismatch
         jest.spyOn(React, 'useState').mockImplementationOnce(() => React.useState<boolean>(true));

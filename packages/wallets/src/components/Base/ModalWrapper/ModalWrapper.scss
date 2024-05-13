@@ -17,25 +17,3 @@
         border-radius: 0;
     }
 }
-.wallets-modal-body {
-    @include mobile {
-        width: calc(100vw - 3.2rem);
-    }
-}
-
-.wallets-modal-show-header-root {
-    .wallets-modal-wrapper {
-        @include mobile {
-            position: fixed;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    }
-    .wallets-modal-overlay {
-        position: fixed;
-        inset: 0;
-        background-color: var(--overlay-outside-dialog);
-    }
-}

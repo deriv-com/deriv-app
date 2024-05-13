@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, Fragment } from 'react';
 import classNames from 'classnames';
 import { useEventListener } from 'usehooks-ts';
 import useDevice from '../../../hooks/useDevice';
@@ -31,15 +31,15 @@ const ModalWrapper: FC<React.PropsWithChildren<TProps>> = ({
         isMobile && hide();
     };
 
-    const handleKeyDown = (ev: React.KeyboardEvent<HTMLDivElement>) => {
-        if (!shouldPreventCloseOnEscape && ev.key === 'Space') {
-            ev.preventDefault();
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (!shouldPreventCloseOnEscape && event.key === 'Space') {
+            event.preventDefault();
             onClickOverlay();
         }
     };
 
     return (
-        <>
+        <Fragment>
             <div className='wallets-modal-overlay' />
             <div
                 className={classNames('wallets-modal-wrapper', {
@@ -57,7 +57,7 @@ const ModalWrapper: FC<React.PropsWithChildren<TProps>> = ({
                     {children}
                 </div>
             </div>
-        </>
+        </Fragment>
     );
 };
 

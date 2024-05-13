@@ -1,3 +1,5 @@
+@import '../../../../components/SkeletonLoader/SkeletonLoader.scss';
+
 .wallets-cfd-success {
     display: flex;
     flex-direction: column;
@@ -39,5 +41,10 @@
 
     &__gradient {
         border-radius: 1rem;
+    }
+
+    &__balance-loader {
+        padding: 0.7rem;
+        width: 8rem;
     }
 }

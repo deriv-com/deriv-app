@@ -1,5 +1,4 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { useAvailableWallets, useWalletsList } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
@@ -43,8 +42,6 @@ export type TOpenAccountTransferMeta = {
 export type TStandPoint = {
     financial_company: string;
     gaming_company: string;
-    iom: boolean;
-    malta: boolean;
     maltainvest: boolean;
     svg: boolean;
 };
@@ -188,9 +185,6 @@ export type TLinkedTo = {
     balance?: string;
     currency?: string;
 };
-
-export type TWalletAccount = NonNullable<ReturnType<typeof useWalletsList>['data']>[number];
-export type TWalletInfo = NonNullable<ReturnType<typeof useAvailableWallets>['data']>[number];
 
 export type TTransferAccount = {
     active_wallet_icon: string | undefined;

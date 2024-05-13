@@ -248,6 +248,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                 password={password}
                 passwordError={createMT5AccountError?.error?.code === 'PasswordError'}
                 platform={mt5Platform}
+                setPassword={setPassword}
             />
         );
     }, [
@@ -277,9 +278,9 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
 
     if (emailVerificationStatus === 'success') {
         return (
-            <ModalStepWrapper>
+            <ModalWrapper isFullscreen={isMobile}>
                 <SentEmailContent platform={CFD_PLATFORMS.MT5} />
-            </ModalStepWrapper>
+            </ModalWrapper>
         );
     }
 

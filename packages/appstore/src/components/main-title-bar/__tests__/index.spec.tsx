@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import MainTitleBar from '..';
 
-jest.mock('Components/wallets-banner', () => jest.fn(() => 'WalletsBanner'));
+jest.mock('Components/banners/wallets-banner', () => jest.fn(() => 'WalletsBanner'));
 
 jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({
@@ -23,6 +23,7 @@ describe('MainTitleBar', () => {
         },
         client: {
             is_landing_company_loaded: false,
+            exchange_rates: {},
         },
         feature_flags: { data: { wallet: false } },
     });

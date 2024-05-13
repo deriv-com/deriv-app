@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 
 const currency_selector_config: TSchema = {
     currency: {
-        supported_in: ['maltainvest', 'malta', 'svg', 'iom'],
+        supported_in: ['maltainvest', 'svg'],
         default_value: '',
         rules: [['req', localize('Select an item')]],
     },

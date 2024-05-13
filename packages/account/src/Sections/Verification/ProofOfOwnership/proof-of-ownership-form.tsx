@@ -184,7 +184,7 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
         values: Partial<TProofOfOwnershipFormValue>,
         action: FormikHelpers<Partial<TProofOfOwnershipFormValue>>
     ) => {
-        const { setFieldError, setSubmitting } = action;
+        const { setFieldError, setSubmitting, resetForm } = action;
         try {
             const uploader = new DocumentUploader({ connection: WS.getSocket() });
             setSubmitting(true);
@@ -223,6 +223,7 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
                             } else {
                                 updateAccountStatus();
                                 refreshNotifications();
+                                resetForm();
                             }
                         }, Promise.resolve());
                     }

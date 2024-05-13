@@ -129,7 +129,7 @@ const getDXTradeWebTerminalLink = (category: string, token?: string) => {
     return url;
 };
 
-const getCTraderWebTerminalLink = (category?: string, token?: string) => {
+const getCTraderWebTerminalLink = (token?: string) => {
     return `${CTRADER_URL}${token && `?token=${token}`}`;
 };
 

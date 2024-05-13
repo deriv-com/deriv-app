@@ -6,6 +6,7 @@ import PhoneVerificationPage from '../phone-verification-page';
 jest.mock('../otp-verification.tsx', () => jest.fn(() => <div>Confirm Your Email</div>));
 jest.mock('../confirm-phone-number.tsx', () => jest.fn(() => <div>Confirm Phone Number</div>));
 jest.mock('../cancel-phone-verification-modal', () => jest.fn(() => <div>Cancel Phone Verification Modal</div>));
+jest.mock('../phone-number-verified-modal', () => jest.fn(() => <div>Phone Number Verified Modal</div>));
 
 describe('ConfirmPhoneNumber', () => {
     it('should render ConfirmPhoneNumber', () => {

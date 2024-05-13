@@ -31,6 +31,13 @@ const ModalWrapper: FC<React.PropsWithChildren<TProps>> = ({
         isMobile && hide();
     };
 
+    const handleKeyDown = (ev: React.KeyboardEvent<HTMLDivElement>) => {
+        if (ev.key === 'Enter' || ev.key === 'Space') {
+            ev.preventDefault();
+            onClickOverlay();
+        }
+    };
+
     return (
         <>
             <div className='wallets-modal-overlay' />
@@ -39,8 +46,13 @@ const ModalWrapper: FC<React.PropsWithChildren<TProps>> = ({
                     'wallets-modal-wrapper--fullscreen': isFullscreen,
                 })}
                 onClick={onClickOverlay}
+                onKeyDown={handleKeyDown}
             >
-                <div className='wallets-modal-body' onClick={e => e.stopPropagation()}>
+                <div
+                    className='wallets-modal-body'
+                    onClick={e => e.stopPropagation()}
+                    onKeyDown={e => e.stopPropagation()}
+                >
                     {!hideCloseButton && <CloseIcon className='wallets-modal-wrapper__close-icon' onClick={hide} />}
                     {children}
                 </div>

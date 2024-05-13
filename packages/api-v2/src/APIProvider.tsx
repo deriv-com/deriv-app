@@ -81,7 +81,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     const onReconnectedRef = useRef<() => void>();
     const onConnectedRef = useRef<() => void>();
     const isOpenRef = useRef<boolean>(false);
-    const wsClientRef = useRef<WSClient>();
+    const wsClientRef = useRef<WSClient>(new WSClient());
 
     if (!reactQueryRef.current) {
         reactQueryRef.current = new QueryClient({
@@ -99,6 +99,11 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
         connectionRef.current = initializeConnection(
             () => setReconnect(true),
             () => {
+                if (!connectionRef.current) {
+                    throw new Error('Connection is not set');
+                }
+
+                wsClientRef.current.setWs(connectionRef.current);
                 isOpenRef.current = true;
                 if (onConnectedRef.current) {
                     onConnectedRef.current();
@@ -106,10 +111,6 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
                 }
             }
         );
-    }
-
-    if (!wsClientRef.current) {
-        wsClientRef.current = new WSClient(connectionRef.current);
     }
 
     useEffect(() => {
@@ -192,6 +193,10 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
                     reconnectTimerId = setTimeout(() => setReconnect(true), 500);
                 },
                 () => {
+                    if (!connectionRef.current) {
+                        throw new Error('Connection is not set');
+                    }
+                    wsClientRef.current.setWs(connectionRef.current);
                     if (onReconnectedRef.current) {
                         onReconnectedRef.current();
                     }

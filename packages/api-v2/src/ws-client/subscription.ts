@@ -9,10 +9,11 @@ import {
 
 /**
  * Subscribes directly to backend stream
- * WARNING: it does not check for dubplicates, its just
+ * Backend does not support duplicate subscription on different subscriptionId though,
+ * so thats why we have subscriptions manager - to group multiple FE subscription in one backend subscriptions
  */
 export default class Subscription {
-    ws: WebSocket;
+    authorizedWs: WebSocket;
     name: TSocketSubscribableEndpointNames;
     payload: TSocketRequestPayload<TSocketSubscribableEndpointNames>['payload'];
 
@@ -26,12 +27,21 @@ export default class Subscription {
 
     listeners: Array<(data: TSocketResponse<TSocketSubscribableEndpointNames>) => void>;
 
+    setAuthorizedWs(authorizedWs: WebSocket) {
+        this.authorizedWs = authorizedWs;
+
+        this.authorizedWs.removeEventListener('message', this.boundOnWsMessage);
+        this.authorizedWs.removeEventListener('close', this.boundOnWsClose);
+
+        this.subscribe();
+    }
+
     constructor(
-        ws: WebSocket,
+        authorizedWs: WebSocket,
         name: TSocketSubscribableEndpointNames,
         payload: TSocketRequestPayload<TSocketSubscribableEndpointNames>['payload']
     ) {
-        this.ws = ws;
+        this.authorizedWs = authorizedWs;
         this.name = name;
         this.payload = payload;
 
@@ -47,24 +57,28 @@ export default class Subscription {
     }
 
     async unsubscribe() {
-        this.ws.removeEventListener('message', this.boundOnWsMessage);
-        this.ws.removeEventListener('close', this.boundOnWsClose);
-        await request(this.ws, 'forget', { forget: this.subscriptionId });
+        this.authorizedWs.removeEventListener('message', this.boundOnWsMessage);
+        this.authorizedWs.removeEventListener('close', this.boundOnWsClose);
+        await request(this.authorizedWs, 'forget', { forget: this.subscriptionId });
     }
 
     onWsClose() {
-        this.ws.removeEventListener('message', this.boundOnWsMessage);
-        this.ws.removeEventListener('close', this.boundOnWsClose);
+        this.authorizedWs.removeEventListener('message', this.boundOnWsMessage);
+        this.authorizedWs.removeEventListener('close', this.boundOnWsClose);
     }
 
     async subscribe() {
-        this.ws.addEventListener('message', this.boundOnWsMessage);
-        this.ws.addEventListener('close', this.boundOnWsClose);
+        this.authorizedWs.addEventListener('message', this.boundOnWsMessage);
+        this.authorizedWs.addEventListener('close', this.boundOnWsClose);
 
-        const data: TSocketResponseData<TSocketSubscribableEndpointNames> = await request(this.ws, this.name, {
-            subscribe: 1,
-            ...this.payload,
-        });
+        const data: TSocketResponseData<TSocketSubscribableEndpointNames> = await request(
+            this.authorizedWs,
+            this.name,
+            {
+                subscribe: 1,
+                ...this.payload,
+            }
+        );
 
         // @ts-expect-error due to incorrect type defintion, to be fixed later
         this.reqId = data.req_id;

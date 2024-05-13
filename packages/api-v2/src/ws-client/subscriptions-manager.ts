@@ -1,13 +1,17 @@
-import BackendSubscription from './subscription';
+import Subscription from './subscription';
 import { TSocketResponse, TSocketRequestPayload, TSocketSubscribableEndpointNames } from '../../types';
 import { getQueryKeys } from '../utils';
 
 export default class SubscriptionsManager {
-    backendSubscriptions: Map<string, BackendSubscription> = new Map();
-    ws: WebSocket;
+    backendSubscriptions: Map<string, Subscription> = new Map();
+    authorizedWs: WebSocket | undefined;
 
-    constructor(ws: WebSocket) {
-        this.ws = ws;
+    setAuthorizedWs(authorizedWs: WebSocket) {
+        this.authorizedWs = authorizedWs;
+
+        this.backendSubscriptions.forEach(subscription => {
+            subscription.setAuthorizedWs(authorizedWs);
+        });
     }
 
     async subscribe(
@@ -15,13 +19,16 @@ export default class SubscriptionsManager {
         payload: TSocketRequestPayload<TSocketSubscribableEndpointNames>['payload'],
         onData: (data: TSocketResponse<TSocketSubscribableEndpointNames>) => void
     ) {
+        if (!this.authorizedWs) {
+            throw new Error('No connection');
+        }
         const keys: Array<string> = getQueryKeys(name, payload); // potentially switch to separate function, which just returns primitive values (string)
         const key = keys.join('-'); // but until then, use "join" to conver array of specifci structre to just string (no idea why its overcomplicated on first place)
 
-        let backendSubscription: BackendSubscription | undefined;
+        let backendSubscription: Subscription | undefined;
 
         if (!this.backendSubscriptions.has(key)) {
-            backendSubscription = new BackendSubscription(this.ws, name, payload);
+            backendSubscription = new Subscription(this.authorizedWs, name, payload);
             this.backendSubscriptions.set(key, backendSubscription);
 
             await backendSubscription.subscribe();

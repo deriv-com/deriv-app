@@ -1,10 +1,9 @@
 import React, { FC, useState } from 'react';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
+import { DerivLightDmt5PasswordIcon, DerivLightIcDxtradePasswordIcon } from '@deriv/quill-icons';
 import { SentEmailContent, WalletButton, WalletsActionScreen, WalletText } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
-import DerivXPasswordIcon from '../../../../public/images/ic-derivx-password-updated.svg';
-import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TPlatforms } from '../../../../types';
 import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
 import { PlatformDetails } from '../../constants';
@@ -84,7 +83,7 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
     if (activeScreen === 'emailVerification')
         return (
             <div className='wallets-change-password__sent-email-wrapper'>
-                <SentEmailContent platform={platform} />
+                <SentEmailContent isChangePassword platform={platform} />
             </div>
         );
 
@@ -93,7 +92,13 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
             <WalletsActionScreen
                 description={ChangePasswordScreens[activeScreen].bodyText}
                 descriptionSize='sm'
-                icon={isDerivX ? <DerivXPasswordIcon /> : <MT5PasswordIcon />}
+                icon={
+                    isDerivX ? (
+                        <DerivLightIcDxtradePasswordIcon height={120} width={120} />
+                    ) : (
+                        <DerivLightDmt5PasswordIcon height={120} width={120} />
+                    )
+                }
                 renderButtons={() => ChangePasswordScreens[activeScreen].button}
                 title={ChangePasswordScreens[activeScreen].headingText}
             />

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
 import { useBalance } from '@deriv/api-v2';
 import { WalletText } from '../Base';
-import { WalletCardIcon } from '../WalletCardIcon';
+import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletListCardBadge } from '../WalletListCardBadge';
 import './WalletCard.scss';
@@ -10,10 +10,11 @@ import './WalletCard.scss';
 type TProps = {
     balance: string;
     currency: string;
-    iconSize?: React.ComponentProps<typeof WalletCardIcon>['size'];
+    iconSize?: ComponentProps<typeof WalletCurrencyIcon>['size'];
     isCarouselContent?: boolean;
     isDemo?: boolean;
     landingCompanyName?: string;
+    onClick?: () => void;
 };
 
 const WalletCard: React.FC<TProps> = ({
@@ -23,11 +24,15 @@ const WalletCard: React.FC<TProps> = ({
     isCarouselContent = false,
     isDemo,
     landingCompanyName,
+    onClick,
 }) => {
     const { isLoading } = useBalance();
 
     return (
-        <div className={classNames('wallets-card', { 'wallets-card__carousel-content': isCarouselContent })}>
+        <button
+            className={classNames('wallets-card', { 'wallets-card__carousel-content': isCarouselContent })}
+            onClick={onClick}
+        >
             <div className='wallets-card__container'>
                 <WalletGradientBackground
                     currency={isDemo ? 'Demo' : currency}
@@ -37,8 +42,9 @@ const WalletCard: React.FC<TProps> = ({
                     type='card'
                 >
                     <div
-                        className={classNames('wallets-card__details', {
+                        className={classNames({
                             'wallets-card__carousel-content-details': isCarouselContent,
+                            'wallets-card__details': !isCarouselContent,
                         })}
                         data-testid='dt_wallet_card_details'
                     >
@@ -47,7 +53,7 @@ const WalletCard: React.FC<TProps> = ({
                                 'wallets-card__carousel-content-details-top': isCarouselContent,
                             })}
                         >
-                            <WalletCardIcon size={iconSize} type={isDemo ? 'Demo' : currency} />
+                            <WalletCurrencyIcon currency={isDemo ? 'DEMO' : currency} size={iconSize} />
                             {!isCarouselContent && (
                                 <div className='wallets-card__details-landing-company'>
                                     {landingCompanyName && (
@@ -58,7 +64,7 @@ const WalletCard: React.FC<TProps> = ({
                         </div>
                         <div className='wallets-card__details-bottom'>
                             <WalletText color={isDemo ? 'white' : 'general'} size={isCarouselContent ? 'md' : '2xs'}>
-                                {currency} Wallet
+                                {currency} {isDemo && isCarouselContent ? 'Demo' : ''} Wallet
                             </WalletText>
                             {isLoading ? (
                                 <div
@@ -78,7 +84,7 @@ const WalletCard: React.FC<TProps> = ({
                     </div>
                 </WalletGradientBackground>
             </div>
-        </div>
+        </button>
     );
 };
 

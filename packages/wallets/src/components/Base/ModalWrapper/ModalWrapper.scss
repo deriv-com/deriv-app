@@ -1,6 +1,6 @@
 .wallets-modal-wrapper {
     position: relative;
-    animation: popup 0.4s;
+    animation: fadein 0.6s ease backwards;
     display: flex;
     justify-content: center;
 
@@ -17,5 +17,11 @@
         top: 2.4rem;
         right: 2rem;
         cursor: pointer;
+    }
+
+    &--fullscreen {
+        height: calc(var(--wallets-vh, 1vh) * 100);
+        width: 100vw;
+        border-radius: 0;
     }
 }

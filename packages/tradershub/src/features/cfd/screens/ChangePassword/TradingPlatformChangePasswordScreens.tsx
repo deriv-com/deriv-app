@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import DerivXPasswordIcon from '@/assets/svgs/ic-derivx-password-updated.svg';
 import MT5PasswordIcon from '@/assets/svgs/ic-mt5-password.svg';
 import { ActionScreen, SentEmailContent } from '@/components';
-import { useModal } from '@/providers';
+import { useHandleSendEmail, useQueryParams } from '@/hooks';
+import { useCFDContext } from '@/providers';
 import { TPlatforms } from '@/types';
-import { platformPasswordResetRedirectLink } from '@/utils';
 import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
-import { useActiveTradingAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { Button, Text } from '@deriv-com/ui';
 
 type TradingPlatformChangePasswordScreensProps = {
@@ -18,26 +17,13 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
     const [activeScreen, setActiveScreen] = useState<TChangePasswordScreenIndex>('introScreen');
     const handleClick = (nextScreen: TChangePasswordScreenIndex) => setActiveScreen(nextScreen);
 
-    const { hide } = useModal();
-    const { data } = useSettings();
-    const { mutate } = useVerifyEmail();
-    const { data: activeTrading } = useActiveTradingAccount();
+    const { closeModal } = useQueryParams();
+    const { setCfdState } = useCFDContext();
+    const { handleSendEmail } = useHandleSendEmail();
 
     const { title } = PlatformDetails[platform];
 
     const isDerivX = platform === CFDPlatforms.DXTRADE;
-
-    const handleSendEmail = async () => {
-        if (data.email) {
-            await mutate({
-                type: isDerivX ? 'trading_platform_dxtrade_password_reset' : 'trading_platform_mt5_password_reset',
-                url_parameters: {
-                    redirect_to: platformPasswordResetRedirectLink(platform, activeTrading?.is_virtual),
-                },
-                verify_email: data.email,
-            });
-        }
-    };
 
     const ChangePasswordScreens = {
         confirmationScreen: {
@@ -48,12 +34,13 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
             ),
             button: (
                 <div className='flex gap-8'>
-                    <Button color='black' onClick={() => hide()} size='lg' variant='outlined'>
+                    <Button color='black' onClick={closeModal} size='lg' variant='outlined'>
                         Cancel
                     </Button>
                     <Button
                         className='rounded-xs'
                         onClick={() => {
+                            setCfdState({ platform });
                             handleSendEmail();
                             handleClick('emailVerification');
                         }}
@@ -79,7 +66,7 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
     if (activeScreen === 'emailVerification')
         return (
             <div className='w-full mt-32 md:mt-40'>
-                <SentEmailContent platform={platform} />
+                <SentEmailContent />
             </div>
         );
 

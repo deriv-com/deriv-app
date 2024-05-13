@@ -23,9 +23,7 @@
         backface-visibility: hidden;
         transition: transform 0.6s ease;
         transform: rotateY(0deg);
-        @include mobile {
-            height: 100%;
-        }
+        height: 100%;
     }
 
     &__footer-content {
@@ -49,37 +47,33 @@
         }
     }
     &__wrapper {
-        @include desktop {
+        &--financial,
+        &--synthetic,
+        &--all {
+            height: 100%;
             position: relative;
+            bottom: 0;
+            overflow-y: scroll;
             perspective: 100rem;
-            overflow: scroll;
-            &--financial {
-                height: 76rem;
-            }
-            &--synthetic,
-            &--all {
-                height: 69rem;
+
+            @include mobile {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
             }
         }
     }
     &__flipped {
         @include desktop {
             height: 70rem;
+            overflow: scroll;
         }
 
         .jurisdiction-modal {
-            &__scrollable-content {
-                height: 80rem;
-            }
-
             &__content-wrapper {
-                height: 70rem;
+                height: 100%;
                 transform: rotateY(-180deg);
                 visibility: hidden;
-
-                @include mobile {
-                    height: 100%;
-                }
             }
         }
 
@@ -113,7 +107,9 @@
     &__wrapper {
         margin: 3rem 5rem 1rem;
         display: flex;
-        justify-content: center;
+        @include desktop {
+            justify-content: center;
+        }
         gap: 1.6rem;
         @include mobile {
             margin: 0;
@@ -412,11 +408,78 @@
     margin: 1.2rem 2.4rem;
     align-items: center;
     gap: 0.8rem;
+
+    &__balance {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__list-of-accounts {
+        display: flex;
+        justify-content: space-between;
+        &:first-child {
+            border-top: 0.2rem solid var(--general-section-1);
+            padding-top: 1rem;
+        }
+        margin: 0.8rem 0;
+    }
+
     &__acc_status {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
     }
+
+    &__expansion-panel {
+        background-color: var(--general-section-5);
+        padding: 1.6rem 2.4rem;
+        border-radius: $BORDER_RADIUS * 2;
+        margin-top: 0.8rem;
+
+        &--ordered-list {
+            list-style-type: decimal;
+            padding-left: 0.8rem;
+        }
+
+        &--unordered-list {
+            list-style-type: disc;
+            padding-left: 1.6rem;
+        }
+
+        &--content {
+            padding: 0.4rem 0;
+
+            &-bold {
+                font-weight: bold;
+            }
+        }
+
+        &--divider {
+            width: 100%;
+            border-bottom: 0.2rem solid var(--general-hover);
+            margin-bottom: 1rem;
+            margin-top: 0.4rem;
+        }
+    }
+
+    &__get-more-accounts {
+        cursor: pointer;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        border: 2px dashed var(--general-hover);
+        padding: 0.3rem 0;
+        margin: 1.6rem 0;
+
+        &--icon {
+            margin-right: 1.5rem;
+        }
+
+        &--details {
+            margin-top: 0.2rem;
+        }
+    }
+
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-less-prominent);
@@ -441,6 +504,10 @@
         display: flex;
         flex-direction: column;
         flex-grow: 1;
+
+        &-balance {
+            margin-left: 1.5rem;
+        }
     }
     &__password {
         &-box {
@@ -450,10 +517,16 @@
 
             .dc-btn:hover {
                 text-decoration: underline;
+                text-decoration-color: var(--text-general);
+                -webkit-text-decoration: underline var(--text-general); // these are required for Safari ! (stackoverflow https://bit.ly/3UTe9C7
+                -webkit-text-decoration-color: var(--text-general);
             }
         }
         &-action {
-            text-decoration: underline;
+            text-decoration: underline var(--text-general);
+            text-decoration-color: var(--text-general);
+            -webkit-text-decoration: underline var(--text-general); // these are required for Safari ! (stackoverflow https://bit.ly/3UTe9C7
+            -webkit-text-decoration-color: var(--text-general);
             padding-right: 0;
             height: 2.1rem;
         }
@@ -480,9 +553,11 @@
         align-items: center;
         text-decoration: none;
         border-radius: $BORDER_RADIUS;
+        padding: 0;
 
         &-icon {
             margin-left: 0.6rem;
+            margin-top: 0.1rem;
         }
 
         &-text {
@@ -518,10 +593,6 @@
         display: flex;
         flex-direction: column;
         gap: 0.1rem;
-        :first-child {
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-        }
         &-item {
             display: flex;
             padding: 0.5rem 0.8rem;
@@ -701,6 +772,29 @@
         }
         &-wrapper {
             overflow: scroll;
+        }
+    }
+}
+
+.ctrader-transfer-modal {
+    &__accounts-list {
+        width: 95%;
+        display: flex;
+        margin: 1rem;
+        padding: 1rem 1.6rem;
+        justify-content: space-between;
+        border: none;
+        background: none;
+
+        &--balance {
+            display: flex;
+            align-items: center;
+        }
+
+        &:hover {
+            cursor: pointer;
+            border-radius: $BORDER_RADIUS;
+            background-color: var(--general-hover);
         }
     }
 }
@@ -1100,6 +1194,15 @@
             margin-inline: 1.6rem;
         }
     }
+
+    &__inline-message {
+        width: 45%;
+        margin: 1.2rem auto;
+
+        @include mobile {
+            width: 95%;
+        }
+    }
 }
 
 .dc-modal {
@@ -1354,7 +1457,7 @@
                 margin: 0;
             }
             &:first-child {
-                margin-left: 0;
+                margin-inline-start: 0;
             }
         }
         @include mobile {
@@ -2209,6 +2312,8 @@
 }
 
 .dc-modal__container_jurisdiction-modal {
+    overflow-y: scroll;
+
     .dc-modal-header {
         border-bottom: 2px solid var(--general-section-1);
     }

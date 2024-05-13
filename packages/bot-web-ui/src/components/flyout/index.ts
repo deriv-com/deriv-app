@@ -1,4 +1,4 @@
-import Flyout from './flyout.jsx';
+import Flyout from './flyout';
 import './flyout.scss';
 
 export default Flyout;

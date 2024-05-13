@@ -82,7 +82,7 @@ describe('WalletCard', () => {
         const gradient = screen.getByTestId('dt_wallet_gradient_background');
         expect(gradient).toHaveClass('wallets-gradient--BTC-mobile-card-light');
         const details = screen.getByTestId('dt_wallet_card_details');
-        expect(details).toHaveClass('wallets-card__details wallets-card__carousel-content-details');
+        expect(details).toHaveClass('wallets-card__carousel-content-details');
     });
 
     it('should render the correct wallet card and gradient background for demo wallet', () => {
@@ -95,10 +95,11 @@ describe('WalletCard', () => {
         render(
             <APIProvider>
                 <WalletsAuthProvider>
-                    <WalletCard {...mockProps} />
+                    <WalletCard isCarouselContent {...mockProps} />
                 </WalletsAuthProvider>
             </APIProvider>
         );
+        expect(screen.getByText('USD Demo Wallet')).toBeInTheDocument();
         const gradient = screen.getByTestId('dt_wallet_gradient_background');
         expect(gradient).toHaveClass('wallets-gradient--demo-mobile-card-light');
     });
@@ -148,7 +149,7 @@ describe('WalletCard', () => {
     it('should show the icon with the correct size', () => {
         mockProps = {
             ...mockProps,
-            iconSize: 'sm',
+            iconSize: 'xs',
         };
         render(
             <APIProvider>
@@ -157,7 +158,7 @@ describe('WalletCard', () => {
                 </WalletsAuthProvider>
             </APIProvider>
         );
-        const icon = screen.getByTestId('dt_wallet_card_icon');
+        const icon = screen.getByTestId('dt_wallet_currency_icon');
         expect(icon).toHaveAttribute('width', '16');
     });
 });

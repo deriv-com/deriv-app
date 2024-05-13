@@ -28,6 +28,7 @@ import type {
     useTransferBetweenAccounts,
     useWalletAccountsList,
 } from '@deriv/api-v2';
+import { IconTypes } from '@deriv/quill-icons';
 
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace THooks {
@@ -98,3 +99,7 @@ export type TWalletLandingCompanyName =
     | Extract<THooks.MT5AccountsList['landing_company_short'], 'malta' | 'svg'>
     | 'virtual';
 export type TMT5LandingCompanyName = THooks.MT5AccountsList['landing_company_short'];
+
+export type TWalletCarouselItem = Omit<THooks.AllWalletAccounts, 'landing_company_name'>;
+
+export type TIconTypes = Record<string, IconTypes>;

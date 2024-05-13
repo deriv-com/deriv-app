@@ -1,6 +1,6 @@
 import React from 'react';
+import { LegacyClose2pxIcon } from '@deriv/quill-icons';
 import { Step, TooltipRenderProps } from '@deriv/react-joyride';
-import CloseIcon from '../../public/images/close-icon.svg';
 import { THooks } from '../../types';
 import { WalletButton } from '../Base';
 import { getDesktopSteps } from './DesktopSteps';
@@ -20,13 +20,7 @@ export const tourStepConfig = (
 ): Step[] =>
     isMobile
         ? getMobileSteps(isDemoWallet, hasMT5Account, hasDerivAppsTradingAccount, isAllWalletsAlreadyAdded, walletIndex)
-        : getDesktopSteps(
-              isDemoWallet,
-              hasMT5Account,
-              hasDerivAppsTradingAccount,
-              isAllWalletsAlreadyAdded,
-              walletIndex
-          );
+        : getDesktopSteps(isDemoWallet, hasMT5Account, hasDerivAppsTradingAccount, isAllWalletsAlreadyAdded);
 
 export const TooltipComponent = ({
     backProps,
@@ -43,8 +37,9 @@ export const TooltipComponent = ({
         <div {...tooltipProps} className='wallets-tour-guide__container'>
             <div className='wallets-tour-guide__header'>
                 {step?.title as React.ReactNode}
-                <CloseIcon
+                <LegacyClose2pxIcon
                     className='wallets-tour-guide__close-icon'
+                    iconSize='xs'
                     onClick={skipProps.onClick as unknown as React.MouseEventHandler<SVGElement>}
                 />
             </div>

@@ -1,42 +1,32 @@
 import React, { Fragment } from 'react';
-import { Field, FieldProps } from 'formik';
-import { Input, Text } from '@deriv-com/ui';
+import { Field, FieldProps, useFormikContext } from 'formik';
+import { Text } from '@deriv-com/ui';
 import { DatePicker } from '../../components/DatePicker';
-import { TManualDocumentTypes } from '../../constants/manualFormConstants';
+import { FormInputField } from '../../components/FormFields';
+import { TManualDocumentTypes } from '../../constants';
 import { getFieldsConfig, getTitleForFormInputs } from '../../utils/manualFormUtils';
 
 type TManualFormInputsProps = { isExpiryDateRequired: boolean; selectedDocument: TManualDocumentTypes };
 
 export const ManualFormInputs = ({ isExpiryDateRequired, selectedDocument }: TManualFormInputsProps) => {
-    const fieldsConfig = getFieldsConfig(selectedDocument);
+    const formik = useFormikContext();
+
+    if (!formik) {
+        throw new Error('ManualFormInputs must be wrapped with Formik');
+    }
+
+    const { documentExpiry, documentNumber } = getFieldsConfig(selectedDocument);
 
     return (
         <Fragment>
             <Text>{getTitleForFormInputs(selectedDocument)}</Text>
             <div className='gap-24 flex flex-col lg:grid lg:grid-cols-2'>
-                <Field name='documentNumber'>
-                    {({ field, meta }: FieldProps) => {
-                        const hasError = meta.touched && !!meta.error;
-                        const fieldLabel = `${fieldsConfig.documentNumber.label}*`;
-                        return (
-                            <Input
-                                {...field}
-                                aria-label={fieldLabel}
-                                autoComplete='off'
-                                className='w-full'
-                                error={hasError}
-                                label={fieldLabel}
-                                message={hasError ? meta.error : ''}
-                                wrapperClassName='w-full'
-                            />
-                        );
-                    }}
-                </Field>
+                <FormInputField isFullWidth label={`${documentNumber?.label}*`} name='documentNumber' />
                 {isExpiryDateRequired && (
                     <Field name='documentExpiry'>
                         {({ field, form, meta }: FieldProps) => {
                             const hasError = meta.touched && !!meta.error;
-                            const fieldLabel = `${fieldsConfig.documentExpiry.label}*`;
+                            const fieldLabel = `${documentExpiry?.label}*`;
                             return (
                                 <DatePicker
                                     {...field}

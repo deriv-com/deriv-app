@@ -3,28 +3,16 @@ import { Dialog } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendQsOpenEvent } from '../quick-strategy/analytics/rudderstack-quick-strategy';
+import { rudderStackSendQsOpenEventFromBotBuilder } from '../quick-strategy/analytics/rudderstack-quick-strategy';
 import ToolbarButton from './toolbar-button';
 import WorkspaceGroup from './workspace-group';
 
 const Toolbar = observer(() => {
-    const { run_panel, save_modal, load_modal, toolbar, quick_strategy } = useDBotStore();
+    const { run_panel, toolbar, quick_strategy } = useDBotStore();
     const {
         ui: { is_mobile },
     } = useStore();
-    const {
-        has_redo_stack,
-        has_undo_stack,
-        is_dialog_open,
-        closeResetDialog,
-        onResetOkButtonClick: onOkButtonClick,
-        onResetClick,
-        onSortClick,
-        onUndoClick,
-        onZoomInOutClick,
-    } = toolbar;
-    const { toggleSaveModal } = save_modal;
-    const { toggleLoadModal } = load_modal;
+    const { is_dialog_open, closeResetDialog, onResetOkButtonClick: onOkButtonClick } = toolbar;
     const { is_running } = run_panel;
     const { setFormVisibility } = quick_strategy;
     const confirm_button_text = is_running ? localize('Yes') : localize('OK');
@@ -32,7 +20,7 @@ const Toolbar = observer(() => {
     const handleQuickStrategyOpen = () => {
         setFormVisibility(true);
         // send to rs if quick strategy is opened from bot builder (mobile)
-        rudderStackSendQsOpenEvent();
+        rudderStackSendQsOpenEventFromBotBuilder();
     };
     return (
         <React.Fragment>
@@ -47,18 +35,10 @@ const Toolbar = observer(() => {
                             button_text={localize('Quick strategy')}
                         />
                     )}
-                    <WorkspaceGroup
-                        has_redo_stack={has_redo_stack}
-                        has_undo_stack={has_undo_stack}
-                        onResetClick={onResetClick}
-                        onSortClick={onSortClick}
-                        onUndoClick={onUndoClick}
-                        onZoomInOutClick={onZoomInOutClick}
-                        toggleLoadModal={toggleLoadModal}
-                        toggleSaveModal={toggleSaveModal}
-                    />
+                    {!is_mobile && <WorkspaceGroup />}
                 </div>
             </div>
+            {is_mobile && <WorkspaceGroup />}
             <Dialog
                 portal_element_id='modal_root'
                 title={localize('Are you sure?')}

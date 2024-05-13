@@ -4,15 +4,14 @@ import { updateWorkspaceName } from '@deriv/bot-skeleton';
 import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
+import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { Analytics } from '@deriv-com/analytics';
 import TradingViewModal from 'Components/trading-view-chart/trading-view-modal';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import RunPanel from '../../components/run-panel';
-import StrategyNotification from '../../components/strategy-notification';
 import Chart from '../chart';
 import ChartModal from '../chart/chart-modal';
 import Dashboard from '../dashboard';
@@ -88,14 +87,10 @@ const AppWrapper = observer(() => {
 
     React.useEffect(() => {
         if (active_tab === BOT_BUILDER) {
-            Analytics.trackEvent('ce_bot_builder_form', {
-                action: 'open',
-                form_source: 'bot_header_form',
-            });
             if (is_drawer_open) {
-                initTrashCan(400, -748);
+                isDbotRTL() ? initTrashCan(140, -260) : initTrashCan(400, -748);
             } else {
-                initTrashCan(20);
+                initTrashCan(isDbotRTL() ? -200 : 20);
             }
             setTimeout(() => {
                 window.dispatchEvent(new Event('resize')); // make the trash can work again after resize
@@ -207,7 +202,6 @@ const AppWrapper = observer(() => {
             >
                 {message}
             </Dialog>
-            <StrategyNotification />
         </React.Fragment>
     );
 });

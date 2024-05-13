@@ -26,6 +26,7 @@ retry() {
         ((attempt++))
       else
         fail "The command has failed after $attempt attempts."
+        break
       fi
     }
   done

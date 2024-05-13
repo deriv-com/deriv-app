@@ -44,6 +44,7 @@ export type TConfigItem = Partial<{
         multiple?: Array<string>;
     }[];
     hide_without_should_have: boolean;
+    has_currency_unit: boolean;
 }>;
 
 export type TDescriptionItem = Partial<{
@@ -66,7 +67,7 @@ export type TStrategy = {
     label: string;
     description: TDescriptionItem[];
     fields: TConfigItem[][];
-    rs_strategy_type?: TRsStrategyType;
+    rs_strategy_name?: TRsStrategyName;
 };
 
 export type TStrategies = {
@@ -112,7 +113,7 @@ export type TApiHelpersInstance = {
     };
 };
 
-export type TRsStrategyType =
+export type TRsStrategyName =
     | `d'alembert`
     | `martingale`
     | `oscar's-grind`
@@ -123,9 +124,8 @@ export type TRsStrategyType =
 export type TDurationType = 't' | 's' | 'm' | 'h' | 'd';
 
 export type TFormValues = Record<string, string | number | boolean> & {
-    durationtype: TDurationType;
     symbol: string;
     tradetype: string;
     type?: string;
-    duration?: string;
+    stake?: string;
 };

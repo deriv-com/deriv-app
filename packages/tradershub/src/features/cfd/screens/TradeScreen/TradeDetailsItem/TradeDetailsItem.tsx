@@ -3,8 +3,7 @@ import { twMerge } from 'tailwind-merge';
 import { useHover } from 'usehooks-ts';
 import EditIcon from '@/assets/svgs/ic-edit.svg';
 import { Clipboard, Tooltip } from '@/components';
-import { useModal } from '@/providers';
-import { ChangePassword } from '@cfd/screens';
+import { useQueryParams } from '@/hooks';
 import { Button, Text, useDevice } from '@deriv-com/ui';
 
 type TTradeDetailsItemProps = {
@@ -18,7 +17,7 @@ const TradeDetailsItem = ({ className, label, value, variant = 'clipboard' }: TT
     const { isDesktop } = useDevice();
     const hoverRef = useRef(null);
     const isHovered = useHover(hoverRef);
-    const { show } = useModal();
+    const { openModal } = useQueryParams();
     return (
         <div
             className={twMerge(
@@ -39,10 +38,16 @@ const TradeDetailsItem = ({ className, label, value, variant = 'clipboard' }: TT
                 )}
                 {variant === 'clipboard' && <Clipboard textCopy={value} />}
                 {variant === 'password' && (
-                    <Tooltip alignment='left' isVisible={isHovered && isDesktop} message='Change password'>
+                    <Tooltip alignment='bottom' isVisible={isHovered && isDesktop} message='Change password'>
                         <div ref={hoverRef}>
-                            <Button className='underline' color='white' size='sm' variant='ghost'>
-                                <EditIcon className='cursor-pointer' onClick={() => show(<ChangePassword />)} />
+                            <Button
+                                className='underline'
+                                color='white'
+                                onClick={() => openModal('ChangePassword')}
+                                size='sm'
+                                variant='ghost'
+                            >
+                                <EditIcon className='cursor-pointer' />
                             </Button>
                         </div>
                     </Tooltip>

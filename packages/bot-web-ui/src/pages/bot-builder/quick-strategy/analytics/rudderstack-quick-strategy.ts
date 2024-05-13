@@ -1,146 +1,87 @@
 import { Analytics, TEvents } from '@deriv-com/analytics';
-import { TDurationType } from '../types';
-import {
-    ACTION,
-    DURATION_TYPE_MAP,
-    form_name,
-    PARAMETER_TYPE_MAP,
-    type TFormStrategy,
-    type TSelectedStrategy,
-} from './constants';
-import { getRsStrategyType, getTradeParameterData } from './utils';
+import { ACTION, form_name, type TFormStrategy, type TSelectedStrategy } from './constants';
+import { getRsStrategyType, getSubpageName, getTradeParameterData } from './utils';
 
-export const rudderStackSendQsOpenEvent = () => {
-    Analytics.trackEvent('ce_bot_quick_strategy_form', {
+export const rudderStackSendQsOpenEventFromDashboard = () => {
+    Analytics.trackEvent('ce_bot_form', {
         action: ACTION.OPEN,
         form_name,
-        form_source: 'ce_bot_builder_form',
+        subpage_name: getSubpageName(),
+        subform_name: 'quick_strategy',
+        subform_source: 'dashboard',
+    });
+};
+
+export const rudderStackSendQsOpenEventFromBotBuilder = () => {
+    Analytics.trackEvent('ce_bot_form', {
+        action: ACTION.OPEN,
+        form_name,
+        subpage_name: getSubpageName(),
+        subform_name: 'quick_strategy',
+        subform_source: 'bot_builder',
     });
 };
 
 export const rudderStackSendQsCloseEvent = ({
-    strategy_switcher_mode,
+    quick_strategy_tab,
     selected_strategy,
-    form_values,
-}: TEvents['ce_bot_quick_strategy_form'] & TFormStrategy) => {
-    Analytics.trackEvent('ce_bot_quick_strategy_form', {
+}: TEvents['ce_bot_form'] & TFormStrategy) => {
+    Analytics.trackEvent('ce_bot_form', {
         action: ACTION.CLOSE,
         form_name,
-        strategy_type: getRsStrategyType(selected_strategy),
-        strategy_switcher_mode,
-        ...getTradeParameterData({ form_values, selected_strategy }),
+        subpage_name: getSubpageName(),
+        subform_name: 'quick_strategy',
+        quick_strategy_tab,
+        strategy_name: getRsStrategyType(selected_strategy),
     });
 };
 
 export const rudderStackSendQsRunStrategyEvent = ({
-    strategy_switcher_mode,
-    selected_strategy,
     form_values,
-}: TEvents['ce_bot_quick_strategy_form'] & TFormStrategy) => {
-    Analytics.trackEvent('ce_bot_quick_strategy_form', {
-        action: ACTION.RUN_STRATEGY,
+    selected_strategy,
+}: TEvents['ce_bot_form'] & TFormStrategy) => {
+    Analytics.trackEvent('ce_bot_form', {
+        action: ACTION.RUN_QUICK_STRATEGY,
         form_name,
-        strategy_type: getRsStrategyType(selected_strategy),
-        strategy_switcher_mode,
+        subform_name: 'quick_strategy',
         ...getTradeParameterData({ form_values, selected_strategy }),
     });
 };
 
 export const rudderStackSendQsEditStrategyEvent = ({
-    strategy_switcher_mode,
-    selected_strategy,
     form_values,
-}: TEvents['ce_bot_quick_strategy_form'] & TFormStrategy) => {
-    Analytics.trackEvent('ce_bot_quick_strategy_form', {
-        action: ACTION.EDIT_STRATEGY,
+    selected_strategy,
+}: TEvents['ce_bot_form'] & TFormStrategy) => {
+    Analytics.trackEvent('ce_bot_form', {
+        action: ACTION.EDIT_QUICK_STRATEGY,
         form_name,
-        strategy_type: getRsStrategyType(selected_strategy),
-        strategy_switcher_mode,
+        subform_name: 'quick_strategy',
         ...getTradeParameterData({ form_values, selected_strategy }),
     });
 };
 
-export const rudderStackSendQsStrategyChangeEvent = ({ selected_strategy }: TSelectedStrategy) => {
-    Analytics.trackEvent('ce_bot_quick_strategy_form', {
-        action: ACTION.CHOOSE_STRATEGY_TYPE,
+export const rudderStackSendQsSelectedTabEvent = ({ quick_strategy_tab }: TEvents['ce_bot_form']) => {
+    Analytics.trackEvent('ce_bot_form', {
+        action: ACTION.SWITCH_QUICK_STRATEGY_TAB,
         form_name,
-        strategy_type: getRsStrategyType(selected_strategy),
+        subform_name: 'quick_strategy',
+        quick_strategy_tab,
     });
 };
 
-export const rudderStackSendQsSelectedTabEvent = ({
-    strategy_switcher_mode,
-}: TEvents['ce_bot_quick_strategy_form']) => {
-    Analytics.trackEvent('ce_bot_quick_strategy_form', {
-        action: ACTION.SWITCH_STRATEGY_MODE,
+export const rudderStackSendSelectQsStrategyGuideEvent = ({ selected_strategy }: TSelectedStrategy) => {
+    Analytics.trackEvent('ce_bot_form', {
+        action: ACTION.SELECT_QUICK_STRATEGY_GUIDE,
         form_name,
-        strategy_switcher_mode,
+        subform_name: 'quick_strategy',
+        strategy_name: getRsStrategyType(selected_strategy),
     });
 };
 
-export const rudderStackSendQsParameterChangeEvent = ({
-    parameter_type,
-    parameter_value,
-    parameter_field_type,
-    manual_parameter_input,
-    plus_minus_push,
-}: TEvents['ce_bot_quick_strategy_form']) => {
-    let modified_parameter_value = parameter_value;
-    if (parameter_type === 'durationtype') {
-        const tmp_value = parameter_value as TDurationType;
-        modified_parameter_value = DURATION_TYPE_MAP[tmp_value ?? 't'];
-    }
-    Analytics.trackEvent('ce_bot_quick_strategy_form', {
-        action: ACTION.CHANGE_PARAMETER_VALUE,
+export const rudderStackSendRunBotEvent = () => {
+    Analytics.trackEvent('ce_bot_form', {
+        action: ACTION.SELECT_QUICK_STRATEGY_GUIDE,
         form_name,
-        parameter_type: PARAMETER_TYPE_MAP[parameter_type as keyof typeof PARAMETER_TYPE_MAP] ?? parameter_type,
-        parameter_value: modified_parameter_value,
-        parameter_field_type,
-        plus_minus_push,
-        manual_parameter_input,
-    });
-};
-
-export const rudderStackSendQsInfoPopupEvent = ({ parameter_type }: TEvents['ce_bot_quick_strategy_form']) => {
-    Analytics.trackEvent('ce_bot_quick_strategy_form', {
-        action: ACTION.INFO_POPUP_OPEN,
-        form_name,
-        parameter_type,
-    });
-};
-
-export const rudderStackSendQsLossThresholdWarningEvent = ({
-    dont_show_checkbox,
-    cta_name,
-}: TEvents['ce_bot_quick_strategy_form']) => {
-    Analytics.trackEvent('ce_bot_quick_strategy_form', {
-        action: ACTION.LOSS_THRESHOLD_WARNING_POPUP,
-        form_name,
-        dont_show_checkbox,
-        cta_name,
-    });
-};
-
-export const rudderStackSendQsLearnMoreExpansionEvent = ({
-    selected_strategy,
-    learn_more_title,
-}: TEvents['ce_bot_quick_strategy_form'] & TSelectedStrategy) => {
-    Analytics.trackEvent('ce_bot_quick_strategy_form', {
-        action: ACTION.LEARN_MORE_EXPANSION,
-        form_name,
-        strategy_type: getRsStrategyType(selected_strategy),
-        learn_more_title,
-    });
-};
-
-export const rudderStackSendQsLearnMoreCollapseEvent = ({
-    selected_strategy,
-    learn_more_title,
-}: TEvents['ce_bot_quick_strategy_form'] & TSelectedStrategy) => {
-    Analytics.trackEvent('ce_bot_quick_strategy_form', {
-        action: ACTION.LEARN_MORE_COLLAPSE,
-        form_name,
-        strategy_type: getRsStrategyType(selected_strategy),
-        learn_more_title,
+        subpage_name: getSubpageName(),
     });
 };

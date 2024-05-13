@@ -111,6 +111,11 @@
         svg {
             margin-bottom: 1.6rem;
         }
+        .dc-text {
+            @include rtl {
+                direction: rtl;
+            }
+        }
         @include mobile {
             /* postcss-bem-linter: ignore */
             h2 {

@@ -11,6 +11,7 @@ import { generateErrorDialogTitle } from 'Utils/adverts';
 import { api_error_codes } from '../constants/api-error-codes';
 
 export default class MyAdsStore extends BaseStore {
+    ad_form_values = null;
     advert_details = null;
     adverts = [];
     api_error = '';
@@ -27,9 +28,11 @@ export default class MyAdsStore extends BaseStore {
     is_loading = false;
     p2p_advert_information = {};
     show_ad_form = false;
+    should_copy_advert = false;
     selected_ad_id = '';
     should_show_add_payment_method = false;
     show_edit_ad_form = false;
+    table_height = 0;
     required_ad_type;
     error_code = '';
 
@@ -41,6 +44,7 @@ export default class MyAdsStore extends BaseStore {
         super(root_store);
 
         makeObservable(this, {
+            ad_form_values: observable,
             advert_details: observable,
             adverts: observable,
             api_error: observable,
@@ -57,6 +61,7 @@ export default class MyAdsStore extends BaseStore {
             is_loading: observable,
             p2p_advert_information: observable,
             selected_ad_id: observable,
+            should_copy_advert: observable,
             should_show_add_payment_method: observable,
             show_ad_form: observable,
             show_edit_ad_form: observable,
@@ -68,6 +73,7 @@ export default class MyAdsStore extends BaseStore {
             handleSubmit: action.bound,
             hideQuickAddModal: action.bound,
             onClickActivateDeactivate: action.bound,
+            onClickCopy: action.bound,
             onClickCreate: action.bound,
             onClickDelete: action.bound,
             onClickEdit: action.bound,
@@ -77,6 +83,7 @@ export default class MyAdsStore extends BaseStore {
             restrictLength: action.bound,
             restrictDecimalPlace: action.bound,
             showQuickAddModal: action.bound,
+            setAdFormValues: action.bound,
             setAdvertDetails: action.bound,
             setAdverts: action.bound,
             setApiError: action.bound,
@@ -94,9 +101,11 @@ export default class MyAdsStore extends BaseStore {
             setIsTableLoading: action.bound,
             setP2pAdvertInformation: action.bound,
             setSelectedAdId: action.bound,
+            setShouldCopyAdvert: action.bound,
             setShouldShowAddPaymentMethod: action.bound,
             setShowAdForm: action.bound,
             setShowEditAdForm: action.bound,
+            setTableHeight: action.bound,
             onToggleSwitchModal: action.bound,
             setRequiredAdType: action.bound,
             toggleMyAdsRateSwitchModal: action.bound,
@@ -115,8 +124,8 @@ export default class MyAdsStore extends BaseStore {
             requestWS({ get_account_status: 1 }).then(response => {
                 if (response) {
                     if (!response.error) {
-                        const { get_account_status } = response;
-                        const { authentication } = get_account_status;
+                        const { get_account_status = {} } = response || {};
+                        const { authentication = {} } = get_account_status;
                         const { document, identity } = authentication;
 
                         this.root_store.general_store.setPoiStatus(identity.status);
@@ -132,9 +141,9 @@ export default class MyAdsStore extends BaseStore {
         }
     }
 
-    getAdvertInfo() {
+    async getAdvertInfo() {
         this.setIsFormLoading(true);
-        requestWS({
+        await requestWS({
             p2p_advert_info: 1,
             id: this.selected_ad_id,
         })
@@ -155,7 +164,7 @@ export default class MyAdsStore extends BaseStore {
             .finally(() => this.setIsFormLoading(false));
     }
 
-    handleSubmit(values, { setSubmitting }) {
+    handleSubmit(values, { setSubmitting }, should_reload_ads = false, adverts_archive_period) {
         this.setApiErrorMessage('');
 
         const is_sell_ad = values.type === buy_sell.SELL;
@@ -192,10 +201,16 @@ export default class MyAdsStore extends BaseStore {
                 if (response.error) {
                     this.setApiErrorCode(response.error.code);
                     this.setApiErrorMessage(response.error.message);
+                    this.root_store.general_store.showModal({ key: 'AdCreateEditErrorModal' });
                     setSubmitting(false);
                 } else if (should_not_show_auto_archive_message !== 'true') {
                     this.setAdvertDetails(response.p2p_advert_create);
                     this.setIsAdCreatedModalVisible(true);
+                    this.root_store.general_store.showModal({
+                        key: 'AdCreatedModal',
+                        props: { adverts_archive_period },
+                    });
+                    this.setAdFormValues(null);
                 } else if (!this.is_ad_created_modal_visible) {
                     if (!response.p2p_advert_create.is_visible) {
                         this.setAdvertDetails(response.p2p_advert_create);
@@ -213,8 +228,12 @@ export default class MyAdsStore extends BaseStore {
                             props: { error_code: api_error_codes.AD_EXCEEDS_DAILY_LIMIT },
                         });
                     }
+                    this.root_store.general_store.hideModal();
                     this.setShowAdForm(false);
+                    this.setAdFormValues(null);
                 }
+
+                if (should_reload_ads) this.loadMoreAds({ startIndex: 0 });
             }
         });
     }
@@ -249,6 +268,22 @@ export default class MyAdsStore extends BaseStore {
                 }
                 this.setSelectedAdId('');
             });
+        }
+    }
+
+    async onClickCopy(id, is_copy_advert_modal_visible) {
+        this.setSelectedAdId(id);
+
+        if (is_copy_advert_modal_visible) {
+            await this.getAdvertInfo();
+            this.root_store.general_store.showModal({
+                key: 'CopyAdvertModal',
+                props: { advert: this.p2p_advert_information },
+            });
+        } else {
+            this.getAdvertInfo();
+            this.setShowAdForm(true);
+            this.setShouldCopyAdvert(true);
         }
     }
 
@@ -424,6 +459,10 @@ export default class MyAdsStore extends BaseStore {
         this.root_store.general_store.showModal({ key: 'QuickAddModal', props: { advert } });
     }
 
+    setAdFormValues(ad_form_values) {
+        this.ad_form_values = ad_form_values;
+    }
+
     setAdvertDetails(advert_details) {
         this.advert_details = advert_details;
     }
@@ -468,6 +507,10 @@ export default class MyAdsStore extends BaseStore {
         this.is_ad_created_modal_visible = is_ad_created_modal_visible;
     }
 
+    setShouldCopyAdvert(should_copy_advert) {
+        this.should_copy_advert = should_copy_advert;
+    }
+
     setIsEditAdErrorModalVisible(is_edit_ad_error_modal_visible) {
         this.is_edit_ad_error_modal_visible = is_edit_ad_error_modal_visible;
     }
@@ -502,6 +545,10 @@ export default class MyAdsStore extends BaseStore {
 
     setShowEditAdForm(show_edit_ad_form) {
         this.show_edit_ad_form = show_edit_ad_form;
+    }
+
+    setTableHeight(table_height) {
+        this.table_height = table_height;
     }
 
     onToggleSwitchModal(ad_id) {

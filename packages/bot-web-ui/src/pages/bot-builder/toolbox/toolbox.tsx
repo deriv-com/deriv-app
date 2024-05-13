@@ -4,7 +4,7 @@ import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from '../../../stores/useDBotStore';
-import { rudderStackSendQsOpenEvent } from '../quick-strategy/analytics/rudderstack-quick-strategy';
+import { rudderStackSendQsOpenEventFromBotBuilder } from '../quick-strategy/analytics/rudderstack-quick-strategy';
 import ToolbarButton from '../toolbar/toolbar-button';
 import SearchBox from './search-box';
 import { ToolboxItems } from './toolbox-items';
@@ -37,12 +37,13 @@ const Toolbox = observer(() => {
     React.useEffect(() => {
         onMount(toolbox_ref);
         return () => onUnmount();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleQuickStrategyOpen = () => {
         setFormVisibility(true);
         // send to rs if quick strategy is opened from bot builder (desktop)
-        rudderStackSendQsOpenEvent();
+        rudderStackSendQsOpenEventFromBotBuilder();
     };
 
     if (!is_mobile) {

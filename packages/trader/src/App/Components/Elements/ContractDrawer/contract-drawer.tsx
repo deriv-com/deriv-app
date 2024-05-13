@@ -4,13 +4,13 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
 import { DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
 import {
-    isUserSold,
     isMobile,
     isEmptyObject,
     getDurationPeriod,
     getDurationTime,
     getDurationUnitText,
     getEndTime,
+    mobileOSDetect,
     TContractStore,
     TContractInfo,
 } from '@deriv/shared';
@@ -40,6 +40,8 @@ type TContractDrawerProps = RouteComponentProps & {
         | 'onClickSell'
     >;
 
+const PAGE_BOTTOM_MARGIN = ['iOS', 'unknown'].includes(mobileOSDetect()) ? 0 : 13;
+
 const ContractDrawer = observer(
     ({
         contract_info = {},
@@ -64,10 +66,6 @@ const ContractDrawer = observer(
         const contract_drawer_ref = React.useRef<HTMLDivElement>(null);
         const contract_drawer_card_ref = React.useRef<HTMLDivElement>(null);
         const [should_show_contract_audit, setShouldShowContractAudit] = React.useState(false);
-        const exit_spot =
-            isUserSold(contract_info) && !is_accumulator && !is_multiplier && !is_turbos
-                ? '-'
-                : exit_tick_display_value;
 
         const contract_audit = (
             <ContractAudit
@@ -76,7 +74,7 @@ const ContractDrawer = observer(
                 contract_update_history={contract_update_history}
                 duration_unit={getDurationUnitText(getDurationPeriod(contract_info)) ?? ''}
                 duration={getDurationTime(contract_info)}
-                exit_spot={exit_spot}
+                exit_spot={exit_tick_display_value}
                 is_accumulator={is_accumulator}
                 is_dark_theme={is_dark_theme}
                 is_multiplier={is_multiplier}
@@ -135,7 +133,7 @@ const ContractDrawer = observer(
                         transform: (should_show_contract_audit &&
                             contract_drawer_ref.current &&
                             contract_drawer_card_ref.current &&
-                            `translateY(calc(${contract_drawer_card_ref.current.clientHeight}px - ${contract_drawer_ref.current.clientHeight}px))`) as React.CSSProperties['transform'],
+                            `translateY(calc(${contract_drawer_card_ref.current.clientHeight}px - ${contract_drawer_ref.current.clientHeight}px + ${PAGE_BOTTOM_MARGIN}px))`) as React.CSSProperties['transform'],
                     }}
                     ref={contract_drawer_ref}
                 >

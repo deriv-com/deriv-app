@@ -1,15 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useCopyToClipboard, useHover } from 'usehooks-ts';
+import { LegacyCopy1pxIcon, LegacyWonIcon } from '@deriv/quill-icons';
 import useDevice from '../../../hooks/useDevice';
-import Clipboard from '../../../public/images/clipboard.svg';
-import CheckmarkCircle from '../../../public/images/ic-checkmark-circle.svg';
 import { Tooltip } from '../Tooltip';
 import './WalletClipboard.scss';
 
 type TProps = {
     infoMessage?: string;
-    popoverAlignment: 'bottom' | 'left' | 'right' | 'top';
-    successMessage: string;
+    popoverAlignment?: 'bottom' | 'left' | 'right' | 'top';
+    successMessage?: string;
     textCopy: string;
 };
 
@@ -40,7 +39,7 @@ const WalletClipboard = ({
     return (
         <Tooltip alignment='right' isVisible={isHovered && !isMobile} message={isCopied ? 'Copied!' : 'Copy'}>
             <button className='wallets-clipboard' onClick={onClick} ref={hoverRef}>
-                {isCopied ? <CheckmarkCircle /> : <Clipboard />}
+                {isCopied ? <LegacyWonIcon iconSize='xs' /> : <LegacyCopy1pxIcon iconSize='xs' />}
             </button>
         </Tooltip>
     );

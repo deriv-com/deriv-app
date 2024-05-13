@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { lazy, Suspense, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
     useActiveWalletAccount,
@@ -9,11 +9,11 @@ import {
     useWalletAccountsList,
 } from '@deriv/api-v2';
 import { WalletButton, WalletError } from '../../../../components';
+import { Loader } from '../../../../components/Loader';
 import { useModal } from '../../../../components/ModalProvider';
 import useWalletAccountSwitcher from '../../../../hooks/useWalletAccountSwitcher';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS, MARKET_TYPE } from '../../constants';
-import { Verification } from '../../flows/Verification';
 import { DxtradeEnterPasswordModal, MT5PasswordModal } from '../../modals';
 import { CTraderSuccessModal } from '../../modals/CTraderSuccessModal';
 import {
@@ -24,6 +24,10 @@ import {
 import { JURISDICTION } from './constants';
 import './CompareAccountsButton.scss';
 
+const LazyVerification = lazy(
+    () => import(/* webpackChunkName: "wallets-verification-flow" */ '../../flows/Verification/Verification')
+);
+
 type TCompareAccountButton = {
     isAccountAdded: boolean;
     marketType: THooks.AvailableMT5Accounts['market_type'];
@@ -33,7 +37,7 @@ type TCompareAccountButton = {
 
 const CompareAccountsButton = ({ isAccountAdded, marketType, platform, shortCode }: TCompareAccountButton) => {
     const history = useHistory();
-    const { show } = useModal();
+    const { setModalState, show } = useModal();
 
     const switchWalletAccount = useWalletAccountSwitcher();
     const { data: accountSettings } = useSettings();
@@ -108,7 +112,8 @@ const CompareAccountsButton = ({ isAccountAdded, marketType, platform, shortCode
                 />
             );
         }
-    }, [createAccountError, isAccountCreated, isDemo, show, walletCurrencyType]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [createAccountError, isAccountCreated, isDemo, walletCurrencyType]);
 
     const onClickAdd = () => {
         if (isCrypto && USDSVGWallet) {
@@ -117,10 +122,16 @@ const CompareAccountsButton = ({ isAccountAdded, marketType, platform, shortCode
             });
         }
         if (platform === CFD_PLATFORMS.MT5) {
+            setModalState('marketType', marketType);
+            setModalState('selectedJurisdiction', shortCode);
             if (isAccountStatusVerified) {
                 show(<MT5PasswordModal marketType={marketType ?? 'synthetic'} platform={platform} />);
             } else {
-                show(<Verification selectedJurisdiction={shortCode} />);
+                show(
+                    <Suspense fallback={<Loader />}>
+                        <LazyVerification selectedJurisdiction={shortCode} />
+                    </Suspense>
+                );
             }
         } else if (platform === CFD_PLATFORMS.DXTRADE) {
             show(<DxtradeEnterPasswordModal />);

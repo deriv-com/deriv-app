@@ -4,6 +4,7 @@ import { Localize } from '@deriv/translations';
 import { unique } from '../object';
 import { capitalizeFirstLetter } from '../string/string_util';
 import { TContractInfo, TContractStore, TDigitsInfo, TLimitOrder, TTickItem } from './contract-types';
+import { isForwardStarting } from '../shortcode';
 
 type TGetAccuBarriersDTraderTimeout = (params: {
     barriers_update_timestamp: number;
@@ -112,7 +113,7 @@ export const getFinalPrice = (contract_info: TContractInfo) => contract_info.sel
 export const getIndicativePrice = (contract_info: TContractInfo) =>
     getFinalPrice(contract_info) && isEnded(contract_info)
         ? getFinalPrice(contract_info)
-        : Number(contract_info.bid_price) || null;
+        : Number(contract_info.bid_price);
 
 export const getCancellationPrice = (contract_info: TContractInfo) => {
     const { cancellation: { ask_price: cancellation_price = 0 } = {} } = contract_info;
@@ -275,9 +276,6 @@ export const getTimePercentage = (server_time: moment.Moment, start_time: number
     return Math.round(percentage);
 };
 
-export const getTickSizeBarrierPercentage = (tick_size_barrier: number) =>
-    `${(tick_size_barrier * 100 + Number.EPSILON).toFixed(5)}%`;
-
 export const getGrowthRatePercentage = (growth_rate: number) => growth_rate * 100;
 
 export const getDisplayStatus = (contract_info: TContractInfo) => {
@@ -318,9 +316,9 @@ export const getContractSubtype = (type = '') =>
 export const getLocalizedTurbosSubtype = (contract_type = '') => {
     if (!isTurbosContract(contract_type)) return '';
     return getContractSubtype(contract_type) === 'Long' ? (
-        <Localize i18n_default_text='Long' />
+        <Localize i18n_default_text='Up' />
     ) : (
-        <Localize i18n_default_text='Short' />
+        <Localize i18n_default_text='Down' />
     );
 };
 
@@ -347,3 +345,6 @@ export const getSortedTradeTypes = (array: string[] = []) => {
     }
     return array;
 };
+
+export const isForwardStartingBuyTransaction = (transactionType: string, shortcode: string, transactionTime: number) =>
+    transactionType === 'buy' && !!isForwardStarting(shortcode, transactionTime);

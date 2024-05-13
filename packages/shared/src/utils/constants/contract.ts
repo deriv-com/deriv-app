@@ -3,6 +3,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 
 import { shouldShowCancellation, shouldShowExpiration, CONTRACT_TYPES, TRADE_TYPES } from '../contract';
+import { TContractOptions } from '../contract/contract-types';
 import { cloneObject } from '../object';
 import { LocalStore } from '../storage';
 
@@ -37,6 +38,7 @@ type TContractConfig = {
     feature_flag?: string;
     name: React.ReactNode;
     position: string;
+    main_title?: JSX.Element;
 };
 
 type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
@@ -265,6 +267,7 @@ export const getCardLabels = () =>
         CANCEL: localize('Cancel'),
         CLOSE: localize('Close'),
         CLOSED: localize('Closed'),
+        CONTRACT_COST: localize('Contract cost:'),
         CONTRACT_VALUE: localize('Contract value:'),
         CURRENT_STAKE: localize('Current stake:'),
         DAY: localize('day'),
@@ -274,25 +277,25 @@ export const getCardLabels = () =>
         DONT_SHOW_THIS_AGAIN: localize("Don't show this again"),
         ENTRY_SPOT: localize('Entry spot:'),
         INCREMENT_VALUE: localize('Increment value'),
+        INDICATIVE_PRICE: localize('Indicative price:'),
+        INITIAL_STAKE: localize('Initial stake:'),
+        LOST: localize('Lost'),
+        MULTIPLIER: localize('Multiplier:'),
         NOT_AVAILABLE: localize('N/A'),
+        PAYOUT: localize('Sell price:'),
+        POTENTIAL_PAYOUT: localize('Potential payout:'),
+        POTENTIAL_PROFIT_LOSS: localize('Potential profit/loss:'),
+        PROFIT_LOSS: localize('Profit/Loss:'),
+        PURCHASE_PRICE: localize('Buy price:'),
         RESALE_NOT_OFFERED: localize('Resale not offered'),
         SELL: localize('Sell'),
         STAKE: localize('Stake:'),
         STOP_LOSS: localize('Stop loss:'),
         STRIKE: localize('Strike:'),
+        TAKE_PROFIT: localize('Take profit:'),
         TICK: localize('Tick '),
         TICKS: localize('Ticks'),
         TOTAL_PROFIT_LOSS: localize('Total profit/loss:'),
-        PROFIT_LOSS: localize('Profit/Loss:'),
-        POTENTIAL_PROFIT_LOSS: localize('Potential profit/loss:'),
-        INDICATIVE_PRICE: localize('Indicative price:'),
-        INITIAL_STAKE: localize('Initial stake:'),
-        LOST: localize('Lost'),
-        MULTIPLIER: localize('Multiplier:'),
-        PAYOUT: localize('Sell price:'),
-        PURCHASE_PRICE: localize('Buy price:'),
-        POTENTIAL_PAYOUT: localize('Payout limit:'),
-        TAKE_PROFIT: localize('Take profit:'),
         TAKE_PROFIT_LOSS_NOT_AVAILABLE: localize(
             'Take profit and/or stop loss are not available while deal cancellation is active.'
         ),
@@ -476,28 +479,32 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
         [CONTRACT_TYPES.MULTIPLIER.UP]: {
             name: localize('Up'),
             position: 'top',
+            main_title: localize('Multipliers'),
         },
         [CONTRACT_TYPES.MULTIPLIER.DOWN]: {
             name: localize('Down'),
             position: 'bottom',
+            main_title: localize('Multipliers'),
         },
         [CONTRACT_TYPES.TURBOS.LONG]: {
-            name: localize('Turbos'),
-            button_name: localize('Long'),
+            name: localize('Up'),
             position: 'top',
+            main_title: localize('Turbos'),
         },
         [CONTRACT_TYPES.TURBOS.SHORT]: {
-            name: localize('Turbos'),
-            button_name: localize('Short'),
+            name: localize('Down'),
             position: 'bottom',
+            main_title: localize('Turbos'),
         },
         [CONTRACT_TYPES.VANILLA.CALL]: {
             name: localize('Call'),
             position: 'top',
+            main_title: localize('Vanillas'),
         },
         [CONTRACT_TYPES.VANILLA.PUT]: {
             name: localize('Put'),
             position: 'bottom',
+            main_title: localize('Vanillas'),
         },
         [CONTRACT_TYPES.RUN_HIGH_LOW.HIGH]: {
             name: localize('Only Ups'),
@@ -598,13 +605,12 @@ export const getContractConfig = (is_high_low?: boolean) => ({
     ...getUnsupportedContracts(),
 });
 
-/*
-// TODO we can combine getContractTypeDisplay and getContractTypePosition functions.
-the difference between these two functions is just the property they return. (name/position)
-*/
-export const getContractTypeDisplay = (type: string, is_high_low = false, show_button_name = false) => {
-    const contract_config = getContractConfig(is_high_low)[type as TGetSupportedContracts] as TContractConfig;
-    return (show_button_name && contract_config?.button_name) || contract_config?.name || '';
+export const getContractTypeDisplay = (type: string, options: TContractOptions = {}) => {
+    const { isHighLow = false, showButtonName = false, showMainTitle = false } = options;
+
+    const contract_config = getContractConfig(isHighLow)[type as TGetSupportedContracts] as TContractConfig;
+    if (showMainTitle) return contract_config?.main_title ?? '';
+    return (showButtonName && contract_config?.button_name) || contract_config?.name || '';
 };
 
 export const getContractTypeFeatureFlag = (type: string, is_high_low = false) => {

@@ -40,7 +40,7 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
         marketType === 'all' &&
         (platform === PlatformDetails.dxtrade.platform || platform === PlatformDetails.ctrader.platform);
 
-    let marketTypeTitle = 'Deriv Apps';
+    let marketTypeTitle = 'Options';
 
     if (marketType && platform) {
         const isPlatformValid = Object.keys(PlatformDetails).includes(platform);
@@ -90,9 +90,13 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
                                 <WalletText color='primary' size='2xs'>
                                     {data?.currency} Wallet
                                 </WalletText>
-                                <WalletText size='sm' weight='bold'>
-                                    {displayBalance}
-                                </WalletText>
+                                {!displayBalance ? (
+                                    <div className='wallets-skeleton wallets-cfd-success__balance-loader' />
+                                ) : (
+                                    <WalletText size='sm' weight='bold'>
+                                        {displayBalance}
+                                    </WalletText>
+                                )}
                             </div>
                         </div>
                     </div>

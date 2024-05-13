@@ -28,7 +28,6 @@ const EditPaymentMethodForm = () => {
         setShouldShowEditPaymentMethodForm,
         validatePaymentMethodFields,
     } = my_profile_store;
-    const setSubmittingRef = React.useRef(null);
 
     const updatePaymentMethod = values => {
         update(payment_method_to_edit.id, values);
@@ -60,12 +59,10 @@ const EditPaymentMethodForm = () => {
         } else if (mutation_status === 'error') {
             my_profile_store.setAddPaymentMethodErrorMessage(mutation_error.message);
             showModal({ key: 'AddPaymentMethodErrorModal', props: {} });
-            if (setSubmittingRef.current) {
-                setSubmittingRef.current(false);
-            }
+            general_store.formik_ref.setSubmitting(false);
             reset();
         }
-    }, [mutation_error, mutation_status, reset, setSubmittingRef]);
+    }, [mutation_error, mutation_status, reset, general_store.formik_ref]);
 
     if (isEmptyObject(payment_method_to_edit)) {
         return <Loading is_fullscreen={false} />;
@@ -78,8 +75,7 @@ const EditPaymentMethodForm = () => {
             onSubmit={updatePaymentMethod}
             validate={validatePaymentMethodFields}
         >
-            {({ dirty, handleChange, isSubmitting, errors, setSubmitting }: FormikValues) => {
-                setSubmittingRef.current = setSubmitting;
+            {({ dirty, handleChange, isSubmitting, errors }: FormikValues) => {
                 return (
                     <React.Fragment>
                         <DesktopWrapper>

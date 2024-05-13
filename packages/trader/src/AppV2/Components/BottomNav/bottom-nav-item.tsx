@@ -1,4 +1,4 @@
-import { CaptionText } from '@deriv-com/quill-ui';
+import { Text } from '@deriv-com/quill-ui';
 import classNames from 'classnames';
 import React from 'react';
 
@@ -18,10 +18,7 @@ const BottomNavItem = ({ icon, selectedIndex, label, index, setSelectedIndex }: 
             onClick={() => setSelectedIndex(index)}
         >
             <span>{icon}</span>
-            {/* //waiting on quill-tokens */}
-            <CaptionText size='sm' color='var(--core-color-opacity-black-600)'>
-                {label}
-            </CaptionText>
+            <Text size='sm'>{label}</Text>
         </button>
     );
 };

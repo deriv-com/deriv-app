@@ -397,16 +397,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.4rem;
+            gap: var(--semantic-spacing-gap-sm);
         }
 
         &--logo {
-            height: 16px;
-            width: 16px;
+            height: var(--temp-static-spacing-16); //Waiting on quill-tokens
+            width: var(--temp-static-spacing-16); //Waiting on quill-tokens
 
             svg {
-                width: 1.6rem;
-                height: 1.6rem;
+                width: var(--temp-static-spacing-16); //Waiting on quill-tokens
+                height: var(--temp-static-spacing-16); //Waiting on quill-tokens
             }
         }
 
@@ -414,7 +414,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.2rem;
+            gap: var(--semantic-spacing-gap-sm);
 
             span {
                 font-weight: bold;

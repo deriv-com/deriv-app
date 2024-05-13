@@ -18,7 +18,7 @@ const DerivAppsSuccessFooter = () => {
             <WalletButton
                 isFullWidth={!isDesktop}
                 onClick={() => {
-                    history.push('/wallets/cashier/transfer');
+                    history.push('/wallet/account-transfer');
                     hide();
                 }}
                 size='lg'

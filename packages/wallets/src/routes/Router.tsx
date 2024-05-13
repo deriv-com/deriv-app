@@ -21,31 +21,29 @@ const LazyCompareAccountsRoute = lazy(
     () => import(/* webpackChunkName: "compare-accounts-route" */ './CompareAccountsRoute/CompareAccountsRoute')
 );
 
-const walletsPrefix = '/wallets';
-
 type TWalletsRoute =
-    | ''
-    | '/cashier'
-    | '/cashier/deposit'
-    | '/cashier/on-ramp'
-    | '/cashier/reset-balance'
-    | '/cashier/transactions'
-    | '/cashier/transfer'
-    | '/cashier/withdraw'
-    | '/compare-accounts';
+    | '/'
+    | '/cfd-compare-acccounts'
+    | '/wallet'
+    | '/wallet/account-transfer'
+    | '/wallet/deposit'
+    | '/wallet/on-ramp'
+    | '/wallet/reset-balance'
+    | '/wallet/transactions'
+    | '/wallet/withdraw';
 
-export type TRoute = '/endpoint' | `?${string}` | `${typeof walletsPrefix}${TWalletsRoute}`;
+export type TRoute = TWalletsRoute | '/endpoint' | `?${string}`;
 
 // wallets routes which have their states
 interface WalletsRouteState {
-    '/cashier/transactions': { showPending: boolean; transactionType: 'deposit' | 'withdrawal' };
-    '/cashier/transfer': { shouldSelectDefaultWallet: boolean; toAccountLoginId: string };
+    '/wallet/account-transfer': { shouldSelectDefaultWallet: boolean; toAccountLoginId: string };
+    '/wallet/transactions': { showPending: boolean; transactionType: 'deposit' | 'withdrawal' };
 }
 
-type TStatefulRoute = TRoute & `${typeof walletsPrefix}${keyof WalletsRouteState}`;
+type TStatefulRoute = TRoute & `${keyof WalletsRouteState}`;
 
 type TRouteState = {
-    [T in TStatefulRoute]: T extends `${typeof walletsPrefix}${infer R extends keyof WalletsRouteState}`
+    [T in TStatefulRoute]: T extends `${infer R extends keyof WalletsRouteState}`
         ? Partial<WalletsRouteState[R]>
         : never;
 };
@@ -75,7 +73,7 @@ const Router: React.FC = () => {
     if ((!walletAccounts || !walletAccounts.length) && !isLoading)
         return (
             <Route
-                path={walletsPrefix}
+                path={'/'}
                 render={() => (
                     <React.Suspense fallback={<Loader />}>
                         <LazyWalletsNotFoundState />
@@ -87,7 +85,7 @@ const Router: React.FC = () => {
     return (
         <Switch>
             <Route
-                path={`${walletsPrefix}/compare-accounts`}
+                path={`/cfd-compare-acccounts`}
                 render={() => (
                     <React.Suspense fallback={<Loader />}>
                         <LazyCompareAccountsRoute />
@@ -95,7 +93,7 @@ const Router: React.FC = () => {
                 )}
             />
             <Route
-                path={`${walletsPrefix}/cashier`}
+                path={`/wallet`}
                 render={() => (
                     <React.Suspense fallback={<Loader />}>
                         <LazyCashierModalRoute />
@@ -103,7 +101,7 @@ const Router: React.FC = () => {
                 )}
             />
             <Route
-                path={walletsPrefix}
+                path={'/'}
                 render={() => (
                     <React.Suspense fallback={<Loader />}>
                         <LazyWalletsListingRoute />

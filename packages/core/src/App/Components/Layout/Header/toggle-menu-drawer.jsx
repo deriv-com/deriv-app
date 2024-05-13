@@ -7,12 +7,10 @@ import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/comp
 import {
     useAccountTransferVisible,
     useAuthorize,
-    useFeatureFlags,
     useIsP2PEnabled,
     useOnrampVisible,
     usePaymentAgentTransferVisible,
     useP2PSettings,
-    useStoreWalletAccountsList,
 } from '@deriv/hooks';
 import { getOSNameWithUAParser, getStaticUrl, routes, useIsMounted, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -48,6 +46,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         should_allow_authentication,
         should_allow_poinc_authentication,
         landing_company_shortcode: active_account_landing_company,
+        has_wallet,
         is_landing_company_loaded,
         is_proof_of_ownership_enabled,
         is_eu,
@@ -62,14 +61,11 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const is_onramp_visible = useOnrampVisible();
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const { is_p2p_enabled } = useIsP2PEnabled();
-    const { is_next_wallet_enabled } = useFeatureFlags();
-    const { has_wallet } = useStoreWalletAccountsList();
 
     const { pathname: route } = useLocation();
 
     const is_trading_hub_category =
         route.startsWith(routes.traders_hub) || route.startsWith(routes.cashier) || route.startsWith(routes.account);
-    const is_wallets_category = route.startsWith(routes.wallets);
 
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());
@@ -90,7 +86,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     } = useP2PSettings();
 
     let TradersHubIcon;
-    if (is_next_wallet_enabled) {
+    if (has_wallet) {
         TradersHubIcon = 'IcAppstoreTradersHubHomeUpdated';
     } else if (is_dark_mode) {
         TradersHubIcon = 'IcAppstoreHomeDark';
@@ -109,12 +105,10 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             const routes_config = getRoutesConfig();
             let primary_routes = [];
 
-            const location = window.location.pathname;
-
-            if (location === routes.traders_hub || is_trading_hub_category) {
-                primary_routes = [routes.account, routes.cashier];
-            } else if (location === routes.wallets || is_next_wallet_enabled) {
+            if (has_wallet) {
                 primary_routes = [routes.reports, routes.account];
+            } else if (is_trading_hub_category) {
+                primary_routes = [routes.account, routes.cashier];
             } else {
                 primary_routes = [routes.reports, routes.account, routes.cashier];
             }
@@ -130,7 +124,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         account_status,
         should_allow_authentication,
         is_trading_hub_category,
-        is_next_wallet_enabled,
+        has_wallet,
         is_mobile,
         is_passkey_supported,
         is_p2p_enabled,
@@ -316,7 +310,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 <Div100vhContainer height_offset='40px'>
                     <div className='header__menu-mobile-body-wrapper'>
                         <React.Fragment>
-                            {!is_trading_hub_category && !is_wallets_category && (
+                            {!is_trading_hub_category && (
                                 <MobileDrawer.SubHeader
                                     className={classNames({
                                         'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
@@ -337,7 +331,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                             )}
                             <MobileDrawer.Body
                                 className={classNames({
-                                    'header__menu-mobile-traders-hub': is_trading_hub_category || is_wallets_category,
+                                    'header__menu-mobile-traders-hub': is_trading_hub_category,
                                 })}
                             >
                                 <div className='header__menu-mobile-platform-switcher' id='mobile_platform_switcher' />
@@ -352,14 +346,14 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 {is_logged_in && (
                                     <MobileDrawer.Item>
                                         <MenuLink
-                                            link_to={is_next_wallet_enabled ? routes.wallets : routes.traders_hub}
+                                            link_to={routes.traders_hub}
                                             icon={TradersHubIcon}
                                             text={localize("Trader's Hub")}
                                             onClickLink={toggleDrawer}
                                         />
                                     </MobileDrawer.Item>
                                 )}
-                                {!is_trading_hub_category && !is_wallets_category && (
+                                {!is_trading_hub_category && (
                                     <MobileDrawer.Item>
                                         <MenuLink
                                             link_to={routes.trade}

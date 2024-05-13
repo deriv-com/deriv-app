@@ -79,6 +79,6 @@ describe('ResetBalance', () => {
         const transferFundsButton = screen.getByRole('button', { name: 'Transfer funds' });
         fireEvent.click(transferFundsButton);
 
-        expect(push).toHaveBeenCalledWith('/wallets/cashier/transfer');
+        expect(push).toHaveBeenCalledWith('/wallet/account-transfer');
     });
 });

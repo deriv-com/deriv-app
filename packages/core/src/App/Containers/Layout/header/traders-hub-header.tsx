@@ -1,8 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Icon, Popover, Loading } from '@deriv/components';
-import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
 import { routes, platforms, formatMoney, makeLazyLoader, moduleLoader } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
@@ -56,8 +55,7 @@ const CurrencySelectionModal = makeLazyLoader(
 
 const TradersHubHeader = observer(() => {
     const { client, common, traders_hub, ui } = useStore();
-    const { account_type, balance, currency, has_any_real_account, is_eu, is_logged_in, is_mt5_allowed, is_virtual } =
-        client;
+    const { account_type, balance, currency, is_eu, is_logged_in, is_mt5_allowed, is_virtual } = client;
     const { platform } = common;
     const { modal_data } = traders_hub;
     const {
@@ -68,16 +66,12 @@ const TradersHubHeader = observer(() => {
         is_route_modal_on,
         account_switcher_disabled_message,
         toggleAccountsDialog,
-        toggleNeedRealAccountForCashierModal,
-        toggleReadyToDepositModal,
         is_real_acc_signup_on,
         is_set_currency_modal_visible,
     } = ui;
 
-    const history = useHistory();
     const { pathname } = useLocation();
     const cashier_routes = pathname.startsWith(routes.cashier);
-    const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
     const account_balance = formatMoney(currency, balance ?? '', true);
 
     const filterPlatformsForClients = (payload: TPlatformConfig) =>
@@ -87,22 +81,6 @@ const TradersHubHeader = observer(() => {
             }
             return true;
         });
-
-    const toggleModal = () => {
-        if (!has_any_real_account) {
-            toggleReadyToDepositModal();
-        } else if (window.location.pathname === routes.traders_hub) {
-            toggleNeedRealAccountForCashierModal();
-        }
-    };
-
-    const handleClickCashier = () => {
-        if ((!has_any_real_account && is_virtual) || real_account_needed_for_cashier) {
-            toggleModal();
-        } else {
-            history.push(routes.cashier_deposit);
-        }
-    };
 
     return (
         <header
@@ -199,7 +177,7 @@ const TradersHubHeader = observer(() => {
                                     </div>
                                 </React.Fragment>
                             ) : (
-                                <DefaultMobileLinks handleClickCashier={handleClickCashier} />
+                                <DefaultMobileLinks />
                             )}
                         </div>
                     </div>

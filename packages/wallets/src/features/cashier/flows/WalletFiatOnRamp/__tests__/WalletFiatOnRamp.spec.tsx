@@ -29,7 +29,7 @@ describe('WalletFiatOnRamp', () => {
         jest.clearAllMocks();
     });
 
-    it('should redirect to /wallets/cashier/deposit when isCrypto is false', () => {
+    it('should redirect to /wallet/deposit when isCrypto is false', () => {
         mockUseActiveWalletAccount.mockReturnValue({
             data: {
                 currency_config: {
@@ -43,7 +43,7 @@ describe('WalletFiatOnRamp', () => {
 
         render(<WalletFiatOnRamp />, { wrapper });
 
-        expect(pushMock).toHaveBeenCalledWith('/wallets/cashier/deposit');
+        expect(pushMock).toHaveBeenCalledWith('/wallet/deposit');
     });
 
     it('should render FiatOnRampModule when isCrypto is true', () => {

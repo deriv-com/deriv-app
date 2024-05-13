@@ -7,11 +7,6 @@ import TraderProviders from '../../../../trader-providers';
 import { createMemoryHistory } from 'history';
 import { isDesktop, isMobile } from '@deriv/shared';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useFeatureFlags: jest.fn(() => ({ is_next_wallet_enabled: false })),
-}));
-
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     FadeWrapper: jest.fn(({ children }) => <div>{children}</div>),
@@ -54,6 +49,9 @@ const MockContractReplay = ({ store }: { store?: any }) => {
 
 describe('<ContractReplay>', () => {
     const mocked_store = mockStore({
+        client: {
+            has_wallet: false,
+        },
         contract_replay: {
             contract_store: {
                 contract_info: {

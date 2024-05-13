@@ -85,7 +85,7 @@ const MenuLink = observer(
         }
 
         if (is_cashier_link && is_virtual && !has_any_real_account) {
-            const toggle_modal_routes = window.location.pathname === routes.root || traders_hub_path;
+            const toggle_modal_routes = traders_hub_path;
 
             const handleClickCashier = () => {
                 if (toggle_modal_routes) {

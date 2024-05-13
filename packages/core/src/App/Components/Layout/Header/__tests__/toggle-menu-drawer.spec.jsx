@@ -12,13 +12,9 @@ jest.mock('@deriv/components', () => {
         MobileDrawer,
     };
 });
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useFeatureFlags: jest.fn(() => ({ is_next_wallet_enabled: true })),
-}));
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
-    useLocation: jest.fn(() => ({ pathname: '/appstore/traders-hub' })),
+    useLocation: jest.fn(() => ({ pathname: '/' })),
     useHistory: jest.fn(() => ({
         push: jest.fn(),
     })),
@@ -30,6 +26,9 @@ describe('<ToggleMenuDrawer />', () => {
         return (
             <StoreProvider
                 store={mockStore({
+                    client: {
+                        has_wallet: false,
+                    },
                     modules: {
                         cashier: {
                             payment_agent: {

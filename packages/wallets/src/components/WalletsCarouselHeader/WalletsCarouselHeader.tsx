@@ -44,7 +44,7 @@ const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, is
                 icon={<LegacyTransferIcon iconSize='xs' />}
                 iconSize='lg'
                 onClick={() => {
-                    history.push(`/wallets/cashier/transfer`);
+                    history.push(`/wallet/account-transfer`);
                 }}
                 size='lg'
             />

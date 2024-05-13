@@ -11,17 +11,17 @@ import { CashierLocked, DepositLocked, WithdrawalLocked } from '../../modules';
 const WalletCashierContent = () => {
     const history = useHistory();
 
-    const isDeposit = useRouteMatch('/wallets/cashier/deposit');
-    const isFiatOnRamp = useRouteMatch('/wallets/cashier/on-ramp');
-    const isResetBalance = useRouteMatch('/wallets/cashier/reset-balance');
-    const isTransfer = useRouteMatch('/wallets/cashier/transfer');
-    const isTransactions = useRouteMatch('/wallets/cashier/transactions');
-    const isWithdraw = useRouteMatch('/wallets/cashier/withdraw');
+    const isDeposit = useRouteMatch('/wallet/deposit');
+    const isFiatOnRamp = useRouteMatch('/wallet/on-ramp');
+    const isResetBalance = useRouteMatch('/wallet/reset-balance');
+    const isTransfer = useRouteMatch('/wallet/account-transfer');
+    const isTransactions = useRouteMatch('/wallet/transactions');
+    const isWithdraw = useRouteMatch('/wallet/withdraw');
 
     useEffect(() => {
         // redirect to deposit page if no other page is matched
         if (!isTransfer && !isDeposit && !isTransactions && !isWithdraw && !isResetBalance && !isFiatOnRamp) {
-            history.push('/wallets/cashier/deposit');
+            history.push('/wallet/deposit');
         }
     }, [isTransfer, isDeposit, isTransactions, isWithdraw, isResetBalance, isFiatOnRamp, history]);
 

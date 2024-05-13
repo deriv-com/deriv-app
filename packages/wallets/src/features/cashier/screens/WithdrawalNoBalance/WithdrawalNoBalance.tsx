@@ -17,7 +17,7 @@ const WithdrawalNoBalance: React.FC<TWithdrawalNoBalanceProps> = ({ activeWallet
             descriptionSize='md'
             icon={<DerivLightCashierNoBalanceIcon height='128px' width='128px' />}
             renderButtons={() => (
-                <WalletButton onClick={() => history.push('/wallets/cashier/deposit')} size='lg'>
+                <WalletButton onClick={() => history.push('/wallet/deposit')} size='lg'>
                     Add funds
                 </WalletButton>
             )}

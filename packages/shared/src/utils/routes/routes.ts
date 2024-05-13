@@ -37,7 +37,6 @@ export const routes = {
     positions: '/reports/positions',
     profit: '/reports/profit',
     reports: '/reports',
-    root: '/',
     reset_password: '/',
     redirect: '/redirect',
     settings: '/settings',
@@ -45,6 +44,12 @@ export const routes = {
     token: '/settings/token',
     trade: '/dtrader',
     bot: '/bot',
+    smarttrader: getUrlSmartTrader(),
+    binarybot: getUrlBinaryBot(),
+    endpoint: '/endpoint',
+    complaints_policy: '/complaints-policy',
+
+    // cashier
     cashier: '/cashier',
     cashier_deposit: '/cashier/deposit',
     cashier_withdrawal: '/cashier/withdrawal',
@@ -55,6 +60,7 @@ export const routes = {
     cashier_onramp: '/cashier/on-ramp',
     cashier_p2p: '/cashier/p2p',
     cashier_p2p_v2: '/cashier/p2p-v2',
+    cashier_pa_transfer: '/cashier/payment-agent-transfer',
 
     // P2P
     p2p_verification: '/cashier/p2p/verification',
@@ -65,25 +71,10 @@ export const routes = {
     p2p_advertiser_page: '/cashier/p2p/advertiser',
     p2p_v2_inner: '/cashier/p2p-v2/inner',
 
-    cashier_pa_transfer: '/cashier/payment-agent-transfer',
-    smarttrader: getUrlSmartTrader(),
-    binarybot: getUrlBinaryBot(),
-    endpoint: '/endpoint',
-    complaints_policy: '/complaints-policy',
-
     // Appstore
     traders_hub: '/',
     onboarding: '/onboarding',
     compare_cfds: '/cfd-compare-acccounts',
-
-    // Wallets
-    wallets: '/wallets',
-    wallets_cashier: '/wallets/cashier',
-    wallets_deposit: '/wallets/cashier/deposit',
-    wallets_withdrawal: '/wallets/cashier/withdraw',
-    wallets_transfer: 'wallets/cashier/transfer',
-    wallets_transactions: '/wallets/cashier/transactions',
-    wallets_compare_accounts: '/wallets/compare-accounts',
 
     // Traders Hub
     traders_hub_v2: '/traders-hub',
@@ -94,4 +85,13 @@ export const routes = {
 
     // Cashier V2
     cashier_v2: '/cashier-v2',
+
+    //wallets
+    wallets: 'wallet',
+    wallets_transfer: '/wallet/account-transfer',
+    wallets_deposit: '/wallet/deposit',
+    wallets_onramp: '/wallet/on-ramp',
+    wallets_reset_balance: '/wallet/reset-balance',
+    wallets_withdraw: '/wallet/withdraw',
+    wallets_transactions: '/cashier/transactions',
 };

@@ -16,10 +16,8 @@ describe('TradersHubHomeButton', () => {
         render(
             <StoreProvider
                 store={mockStore({
-                    feature_flags: {
-                        data: {
-                            next_wallet: true,
-                        },
+                    client: {
+                        has_wallet: true,
                     },
                 })}
             >
@@ -33,10 +31,8 @@ describe('TradersHubHomeButton', () => {
         render(
             <StoreProvider
                 store={mockStore({
-                    feature_flags: {
-                        data: {
-                            next_wallet: true,
-                        },
+                    client: {
+                        has_wallet: true,
                     },
                 })}
             >

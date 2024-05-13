@@ -5,7 +5,7 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('react-router-dom', () => ({
     useLocation: jest.fn(() => ({
-        pathname: '/appstore/traders-hub',
+        pathname: '/',
     })),
 }));
 jest.mock('react-transition-group', () => ({

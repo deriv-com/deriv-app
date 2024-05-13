@@ -39,7 +39,7 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                         </WalletText>
                         <WalletButton
                             onClick={() => {
-                                history.push('/wallets/compare-accounts');
+                                history.push('/cfd-compare-acccounts');
                             }}
                             size='sm'
                             textSize='sm'
@@ -56,7 +56,7 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                             </WalletText>
                             <WalletButton
                                 onClick={() => {
-                                    history.push('/wallets/compare-accounts');
+                                    history.push('/cfd-compare-acccounts');
                                 }}
                                 size='sm'
                                 variant='ghost'

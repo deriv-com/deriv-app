@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { withRouter, useHistory } from 'react-router-dom';
-import { useStoreWalletAccountsList } from '@deriv/hooks';
 import { loginUrl, routes, redirectToLogin, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
@@ -10,7 +9,7 @@ import { Analytics } from '@deriv-com/analytics';
 const Redirect = observer(() => {
     const history = useHistory();
     const { client, ui } = useStore();
-    const { has_wallet } = useStoreWalletAccountsList();
+    const { has_wallet } = client;
 
     const { currency, is_logged_in, is_logging_in, setNewEmail, setVerificationCode, verification_code } = client;
 
@@ -32,7 +31,7 @@ const Redirect = observer(() => {
     const ext_platform_url = url_params.get('ext_platform_url');
 
     const redirectToExternalPlatform = url => {
-        history.push(`${routes.root}?ext_platform_url=${url}`);
+        history.push(`${routes.traders_hub}?ext_platform_url=${url}`);
         redirected_to_route = true;
     };
     setVerificationCode(code_param, action_param);
@@ -95,7 +94,7 @@ const Redirect = observer(() => {
             if (redirect_to) {
                 let pathname = '';
                 let hash = '';
-                const main_screen_route = has_wallet ? routes.wallets : routes.traders_hub;
+                const main_screen_route = routes.traders_hub;
                 switch (redirect_to) {
                     case '1':
                         pathname = routes.traders_hub;
@@ -159,12 +158,12 @@ const Redirect = observer(() => {
                   2. pass loginid as a query param so that the withdrawal component knows what account is being withdrawn from
                 */
                     history.push(
-                        `${routes.wallets_withdrawal}?verification=${verification_code.payment_withdraw}${
+                        `${routes.wallets_withdraw}?verification=${verification_code.payment_withdraw}${
                             client.loginid ? `&loginid=${client.loginid}` : ''
                         }`
                     );
                 } else {
-                    history.push(routes.wallets_withdrawal);
+                    history.push(routes.wallets_withdraw);
                 }
             } else {
                 history.push(routes.cashier_withdrawal);
@@ -232,7 +231,7 @@ const Redirect = observer(() => {
             const is_demo = localStorage.getItem('cfd_reset_password_intent')?.includes('demo');
             if (has_wallet) {
                 history.push({
-                    pathname: routes.wallets,
+                    pathname: routes.traders_hub,
                     search: url_query_string,
                 });
             } else {
@@ -254,9 +253,9 @@ const Redirect = observer(() => {
             break;
     }
 
-    if (!redirected_to_route && history.location.pathname !== routes.root) {
+    if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
         history.push({
-            pathname: routes.root,
+            pathname: routes.traders_hub,
             search: url_query_string,
         });
     }

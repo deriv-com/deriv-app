@@ -5,7 +5,7 @@ import { BinaryLink } from '../../Routes';
 import { observer, useStore } from '@deriv/stores';
 import { routes, startPerformanceEventTimer } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { useP2PNotificationCount, useIsRealAccountNeededForCashier, useFeatureFlags } from '@deriv/hooks';
+import { useP2PNotificationCount, useIsRealAccountNeededForCashier } from '@deriv/hooks';
 import './menu-links.scss';
 import { useHistory } from 'react-router';
 
@@ -46,9 +46,7 @@ const CashierTab = observer(() => {
     const history = useHistory();
 
     const toggle_modal_routes =
-        window.location.pathname === routes.root ||
-        window.location.pathname === routes.traders_hub ||
-        window.location.pathname === routes.bot;
+        window.location.pathname === routes.traders_hub || window.location.pathname === routes.bot;
 
     const toggleModal = () => {
         if (toggle_modal_routes && !has_any_real_account) {
@@ -91,16 +89,15 @@ const CashierTab = observer(() => {
 const MenuLinks = observer(({ is_traders_hub_routes = false }) => {
     const { i18n } = useTranslation();
     const { client, ui } = useStore();
-    const { is_logged_in } = client;
+    const { is_logged_in, has_wallet } = client;
     const { is_mobile } = ui;
-    const { is_next_wallet_enabled } = useFeatureFlags();
 
     if (!is_logged_in) return <></>;
 
     return (
         <div key={`menu-links__${i18n.language}`} className='header__menu-links'>
             {!is_traders_hub_routes && <ReportTab />}
-            {!is_mobile && !is_next_wallet_enabled && <CashierTab />}
+            {!is_mobile && !has_wallet && <CashierTab />}
         </div>
     );
 });

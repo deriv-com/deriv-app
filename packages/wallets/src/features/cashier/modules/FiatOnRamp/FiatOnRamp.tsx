@@ -22,7 +22,7 @@ const FiatOnRamp = () => {
                         <WalletButton
                             color='white'
                             icon={<LegacyArrowLeft2pxIcon iconSize='xs' />}
-                            onClick={() => history.push('/wallets/cashier/deposit')}
+                            onClick={() => history.push('/wallet/deposit')}
                         >
                             Back
                         </WalletButton>

@@ -23,7 +23,7 @@ const ResetBalance = () => {
             icon={isResetBalanceSuccess ? <IcResetDemoBalanceDone /> : <IcResetDemoBalance />}
             renderButtons={() => (
                 <WalletButton
-                    onClick={isResetBalanceSuccess ? () => history.push(`/wallets/cashier/transfer`) : resetBalance}
+                    onClick={isResetBalanceSuccess ? () => history.push(`/wallet/account-transfer`) : resetBalance}
                     size='lg'
                 >
                     {isResetBalanceSuccess ? 'Transfer funds' : 'Reset balance'}

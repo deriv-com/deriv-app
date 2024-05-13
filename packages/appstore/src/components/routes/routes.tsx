@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { Loading } from '@deriv/components';
-import { useFeatureFlags /*useWalletsList*/ } from '@deriv/hooks';
+import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { routes } from '@deriv/shared';
-import { Switch, useHistory } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import RouteWithSubroutes from './route-with-sub-routes.jsx';
 
 const Onboarding = React.lazy(() => import(/* webpackChunkName: "modules-onboarding" */ 'Modules/onboarding'));
@@ -12,29 +11,28 @@ const TradersHub = React.lazy(() => import(/* webpackChunkName: "modules-traders
 const TradersHubLoggedOut = React.lazy(
     () => import(/* webpackChunkName: "modules-traders-hub-logged-out" */ 'Modules/traders-hub-logged-out')
 );
+const Wallets = React.lazy(() => import(/* webpackChunkName: "wallets" */ '@deriv/wallets'));
 
 const Routes: React.FC = observer(() => {
     const { client } = useStore();
-    const { is_logged_in } = client;
-    //TODO: Uncomment once useWalletList hook is optimized for production release.
-    const { /*is_wallet_enabled,*/ is_next_wallet_enabled } = useFeatureFlags();
-    const history = useHistory();
-    // const { has_wallet, isLoading } = useWalletsList();
-    // const should_show_wallets = is_wallet_enabled && has_wallet;
-
+    const { is_logged_in, has_wallet } = client;
     const title_TH = localize("Trader's Hub");
     const title_TH_logged_out = localize('Deriv App');
 
-    React.useLayoutEffect(() => {
-        if (is_next_wallet_enabled) history.push(routes.wallets);
-    }, [history, is_next_wallet_enabled]);
+    const componentToRender = () => {
+        if (is_logged_in) {
+            if (has_wallet) return Wallets;
+            return TradersHub;
+        }
+        return TradersHubLoggedOut;
+    };
 
     return (
         <React.Suspense fallback={<Loading />}>
             <Switch>
                 <RouteWithSubroutes
                     path={routes.traders_hub}
-                    component={is_logged_in ? TradersHub : TradersHubLoggedOut}
+                    component={componentToRender()}
                     getTitle={() => (is_logged_in ? title_TH : title_TH_logged_out)}
                 />
                 <RouteWithSubroutes

@@ -86,9 +86,7 @@ type TRoutes =
     | '/cashier/payment-agent-transfer'
     | '/endpoint'
     | '/complaints-policy'
-    | '/appstore'
-    | '/appstore/traders-hub'
-    | '/appstore/onboarding'
+    | '/onboarding'
     | '/wallets';
 
 type TPopulateSettingsExtensionsMenuItem = {

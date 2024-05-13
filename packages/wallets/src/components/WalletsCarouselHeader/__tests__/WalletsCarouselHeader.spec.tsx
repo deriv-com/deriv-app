@@ -37,7 +37,7 @@ describe('WalletsCarouselHeader', () => {
 
         fireEvent.click(screen.getByTestId('dt_wallets_carousel_header_button'));
 
-        expect(useHistory().push).toHaveBeenCalledWith('/wallets/cashier/transfer');
+        expect(useHistory().push).toHaveBeenCalledWith('/wallet/account-transfer');
     });
 
     it('should display loader when balance is loading', () => {

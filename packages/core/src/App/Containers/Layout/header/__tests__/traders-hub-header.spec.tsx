@@ -7,7 +7,7 @@ import { TStores } from '@deriv/stores/types';
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
     useHistory: () => ({ history: {} }),
-    useLocation: () => ({ pathname: '/appstore/traders-hub' }),
+    useLocation: () => ({ pathname: '/' }),
 }));
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -28,9 +28,6 @@ jest.mock('../../../CurrencySelectionModal', () => jest.fn(() => <div>MockedCurr
 jest.mock('../show-notifications', () => jest.fn(() => <div>MockedShowNotifications</div>));
 
 jest.mock('@deriv/hooks', () => ({
-    useFeatureFlags: () => ({
-        is_next_wallet_enabled: false,
-    }),
     useIsRealAccountNeededForCashier: () => false,
     useHasSetCurrency: () => true,
 }));
@@ -42,12 +39,10 @@ describe('TradersHubHeader', () => {
                 store={
                     mock_store ??
                     mockStore({
-                        ui: { is_desktop: true },
-                        feature_flags: {
-                            data: {
-                                next_wallet: true,
-                            },
+                        client: {
+                            has_wallet: false,
                         },
+                        ui: { is_desktop: true },
                         traders_hub: {
                             modal_data: {
                                 active_modal: 'currency_selection',

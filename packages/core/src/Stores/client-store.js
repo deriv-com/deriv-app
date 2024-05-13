@@ -1947,7 +1947,7 @@ export default class ClientStore extends BaseStore {
             }
 
             //temporary workaround to sync this.loginid with selected wallet loginid
-            if (window.location.pathname.includes(routes.wallets_cashier)) {
+            if (this.has_wallet && window.location.pathname.includes(routes.cashier)) {
                 this.resetLocalStorageValues(localStorage.getItem('active_loginid') ?? this.loginid);
                 return;
             }
@@ -2191,9 +2191,8 @@ export default class ClientStore extends BaseStore {
             this.setIsLoggingIn(true);
 
             const redirect_url = sessionStorage.getItem('redirect_url');
-            const is_next_wallet_enabled = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
 
-            const target_url = is_next_wallet_enabled ? routes.wallets : routes.traders_hub;
+            const target_url = routes.traders_hub;
 
             if (
                 (redirect_url?.endsWith(routes.trade) ||

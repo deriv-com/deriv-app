@@ -8,15 +8,16 @@ import { Localize } from '@deriv/translations';
 import { useFeatureFlags } from '@deriv/hooks';
 
 const TradersHubHomeButton = observer(() => {
-    const { ui } = useStore();
+    const { ui, client } = useStore();
     const { is_dark_mode_on } = ui;
+    const { has_wallet } = client;
     const history = useHistory();
     const location = useLocation();
     const { pathname } = location;
-    const { is_next_tradershub_enabled, is_next_wallet_enabled } = useFeatureFlags();
+    const { is_next_tradershub_enabled } = useFeatureFlags();
 
     let TradersHubIcon;
-    if (is_next_wallet_enabled) {
+    if (has_wallet) {
         TradersHubIcon = 'IcAppstoreTradersHubHomeUpdated';
     } else if (is_dark_mode_on) {
         TradersHubIcon = 'IcAppstoreHomeDark';
@@ -25,9 +26,7 @@ const TradersHubHomeButton = observer(() => {
     }
 
     const redirectRoutes = () => {
-        if (is_next_wallet_enabled) {
-            return routes.wallets;
-        } else if (is_next_tradershub_enabled) {
+        if (is_next_tradershub_enabled) {
             return routes.traders_hub_v2;
         }
         return routes.traders_hub;
@@ -38,10 +37,7 @@ const TradersHubHomeButton = observer(() => {
             data-testid='dt_traders_hub_home_button'
             className={classNames('traders-hub-header__tradershub', {
                 'traders-hub-header__tradershub--active':
-                    pathname === routes.traders_hub ||
-                    pathname === routes.traders_hub_v2 ||
-                    pathname === routes.wallets ||
-                    pathname === routes.root,
+                    pathname === routes.traders_hub || pathname === routes.traders_hub_v2,
             })}
             onClick={() => history.push(redirectRoutes())}
         >

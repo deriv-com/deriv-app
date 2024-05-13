@@ -68,7 +68,7 @@ const DxtradeEnterPasswordModal = () => {
                     <WalletButton
                         onClick={() => {
                             hide();
-                            history.push('/wallets/cashier/transfer');
+                            history.push('/wallet/account-transfer');
                         }}
                         size={isMobile ? 'lg' : 'md'}
                     >

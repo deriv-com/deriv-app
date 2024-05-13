@@ -86,6 +86,9 @@ const DxtradeEnterPasswordModal = () => {
                     <WalletButton
                         isFullWidth
                         onClick={() => {
+                            sendEmail({
+                                platform: dxtradePlatform,
+                            });
                             show(
                                 <ModalStepWrapper title="We've sent you an email">
                                     <SentEmailContent platform={dxtradePlatform} />

@@ -5,14 +5,10 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TradersHubOnboarding from '../traders-hub-onboarding';
-import { routes } from '@deriv/shared';
 import { TCoreStores } from '@deriv/stores/types';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
-    useFeatureFlags: jest.fn(() => ({
-        is_next_wallet_enabled: false,
-    })),
 }));
 
 describe('TradersHubOnboarding', () => {
@@ -21,7 +17,13 @@ describe('TradersHubOnboarding', () => {
     const view_onboarding_message = /view tutorial/i;
 
     const history = createBrowserHistory();
-    const renderTradersHubOnboardingWithRouter = (mocked_store: TCoreStores = mockStore({})) => {
+    const renderTradersHubOnboardingWithRouter = (
+        mocked_store: TCoreStores = mockStore({
+            client: {
+                has_wallet: false,
+            },
+        })
+    ) => {
         render(
             <Router history={history}>
                 <StoreProvider store={mocked_store}>

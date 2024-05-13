@@ -4,11 +4,6 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import Header from '../header';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useFeatureFlags: jest.fn(() => ({ is_next_wallet_enabled: false })),
-    useStoreWalletAccountsList: jest.fn(() => ({ data: [], has_wallet: false })),
-}));
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useLocation: jest.fn().mockReturnValue({ pathname: '' }),
@@ -22,7 +17,7 @@ jest.mock('../traders-hub-header', () => () => <div data-testid='dt_traders_hub_
 
 describe('Header', () => {
     const store = mockStore({
-        client: { is_logged_in: true },
+        client: { has_wallet: false, is_logged_in: true },
     });
     const renderComponent = (modified_store = store) =>
         render(

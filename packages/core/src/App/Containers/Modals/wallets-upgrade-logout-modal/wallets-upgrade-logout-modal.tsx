@@ -17,7 +17,7 @@ const WalletsUpgradeLogoutModal = observer(() => {
             onConfirm={() => {
                 localStorage.setItem('should_show_wallets_upgrade_completed_modal', 'true');
                 logout().then(() => {
-                    window.location.href = routes.wallets;
+                    window.location.href = routes.traders_hub;
                     redirectToLogin(false, getLanguage());
                 });
             }}

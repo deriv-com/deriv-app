@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useStoreWalletAccountsList, useWalletMigration } from '@deriv/hooks';
+import { useWalletMigration } from '@deriv/hooks';
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
 
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
@@ -86,6 +86,7 @@ const InformationSubmittedModal = React.lazy(() =>
 const AppModals = observer(() => {
     const { client, ui, traders_hub, common } = useStore();
     const {
+        has_wallet,
         is_authorize,
         is_logged_in,
         fetchFinancialAssessment,
@@ -130,8 +131,6 @@ const AppModals = observer(() => {
             : false;
 
     const { is_migrated } = useWalletMigration();
-
-    const { has_wallet } = useStoreWalletAccountsList();
 
     const should_show_wallets_upgrade_completed_modal = localStorage.getItem(
         'should_show_wallets_upgrade_completed_modal'

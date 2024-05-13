@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { withRouter, useHistory } from 'react-router-dom';
-import { useStoreWalletAccountsList } from '@deriv/hooks';
 import { loginUrl, routes, redirectToLogin, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
@@ -10,7 +9,7 @@ import { Analytics } from '@deriv-com/analytics';
 const Redirect = observer(() => {
     const history = useHistory();
     const { client, ui } = useStore();
-    const { has_wallet } = useStoreWalletAccountsList();
+    const { has_wallet } = client;
 
     const { currency, is_logged_in, is_logging_in, setNewEmail, setVerificationCode, verification_code } = client;
 
@@ -140,11 +139,7 @@ const Redirect = observer(() => {
             break;
         }
         case 'payment_deposit': {
-            if (has_wallet) {
-                history.push(routes.wallets_deposit);
-            } else {
-                history.push(routes.cashier_deposit);
-            }
+            history.push(routes.cashier_deposit);
             redirected_to_route = true;
             break;
         }
@@ -173,11 +168,7 @@ const Redirect = observer(() => {
             break;
         }
         case 'payment_transfer': {
-            if (has_wallet) {
-                history.push(routes.wallets_transfer);
-            } else {
-                history.push(routes.cashier_acc_transfer);
-            }
+            history.push(routes.cashier_acc_transfer);
             redirected_to_route = true;
             break;
         }

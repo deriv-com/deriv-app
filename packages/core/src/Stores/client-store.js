@@ -1940,8 +1940,6 @@ export default class ClientStore extends BaseStore {
     }
 
     setBalanceActiveAccount(obj_balance) {
-        const is_next_wallet = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
-
         if (this.accounts[obj_balance?.loginid] && obj_balance.loginid === this.loginid) {
             this.accounts[obj_balance.loginid].balance = obj_balance.balance;
             if (this.accounts[obj_balance.loginid].is_virtual) {
@@ -1949,7 +1947,7 @@ export default class ClientStore extends BaseStore {
             }
 
             //temporary workaround to sync this.loginid with selected wallet loginid
-            if (is_next_wallet && window.location.pathname.includes(routes.cashier)) {
+            if (this.has_wallet && window.location.pathname.includes(routes.cashier)) {
                 this.resetLocalStorageValues(localStorage.getItem('active_loginid') ?? this.loginid);
                 return;
             }

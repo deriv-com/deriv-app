@@ -45,6 +45,12 @@ export const routes = {
     token: '/settings/token',
     trade: '/',
     bot: '/bot',
+    smarttrader: getUrlSmartTrader(),
+    binarybot: getUrlBinaryBot(),
+    endpoint: '/endpoint',
+    complaints_policy: '/complaints-policy',
+
+    // cashier
     cashier: '/cashier',
     cashier_deposit: '/cashier/deposit',
     cashier_withdrawal: '/cashier/withdrawal',
@@ -55,6 +61,7 @@ export const routes = {
     cashier_onramp: '/cashier/on-ramp',
     cashier_p2p: '/cashier/p2p',
     cashier_p2p_v2: '/cashier/p2p-v2',
+    cashier_pa_transfer: '/cashier/payment-agent-transfer',
 
     // P2P
     p2p_verification: '/cashier/p2p/verification',
@@ -64,12 +71,6 @@ export const routes = {
     p2p_my_profile: '/cashier/p2p/my-profile',
     p2p_advertiser_page: '/cashier/p2p/advertiser',
     p2p_v2_inner: '/cashier/p2p-v2/inner',
-
-    cashier_pa_transfer: '/cashier/payment-agent-transfer',
-    smarttrader: getUrlSmartTrader(),
-    binarybot: getUrlBinaryBot(),
-    endpoint: '/endpoint',
-    complaints_policy: '/complaints-policy',
 
     // Appstore
     appstore: '/appstore',
@@ -86,4 +87,7 @@ export const routes = {
 
     // Cashier V2
     cashier_v2: '/cashier-v2',
+
+    //wallets
+    wallets_transactions: '/cashier/transactions',
 };

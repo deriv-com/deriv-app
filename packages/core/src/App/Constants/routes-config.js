@@ -60,13 +60,6 @@ const AppStore = React.lazy(() =>
     })
 );
 
-const Wallets = React.lazy(() =>
-    moduleLoader(() => {
-        // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "wallets" */ '@deriv/wallets');
-    })
-);
-
 const TradersHub = React.lazy(() =>
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
@@ -103,8 +96,6 @@ const Cashier_V2 = React.lazy(() =>
 );
 
 const getModules = () => {
-    const is_next_wallet = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
-
     const modules = [
         {
             path: routes.bot,
@@ -287,9 +278,15 @@ const getModules = () => {
         },
         {
             path: routes.traders_hub,
-            component: is_next_wallet ? Wallets : AppStore,
+            component: AppStore,
             is_authenticated: true,
             getTitle: () => localize("Trader's Hub"),
+        },
+        {
+            path: routes.onboarding,
+            component: AppStore,
+            is_authenticated: false,
+            getTitle: () => localize('Onboarding'),
         },
         {
             path: routes.cashier_p2p_v2,
@@ -314,25 +311,6 @@ const getModules = () => {
             component: Cashier_V2,
             is_authenticated: true,
             getTitle: () => localize('Cashier'),
-        },
-        {
-            path: routes.onboarding,
-            component: AppStore,
-            is_authenticated: false,
-            getTitle: () => localize('Appstore'),
-            routes: [
-                {
-                    path: routes.traders_hub,
-                    component: AppStore,
-                    getTitle: () => localize("Trader's Hub"),
-                },
-                {
-                    path: routes.onboarding,
-                    component: AppStore,
-                    is_authenticated: false,
-                    getTitle: () => localize('Onboarding'),
-                },
-            ],
         },
         {
             path: routes.cashier,

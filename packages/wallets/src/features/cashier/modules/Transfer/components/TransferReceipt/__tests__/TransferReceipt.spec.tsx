@@ -61,7 +61,6 @@ const mockResetTransfer = jest.fn();
 jest.mock('../../../provider', () => ({
     ...jest.requireActual('../../../provider'),
     useTransfer: jest.fn(() => ({
-        resetTransfer: mockResetTransfer,
         activeWallet: {
             account_category: 'wallet',
             account_type: 'doughflow',
@@ -97,6 +96,7 @@ jest.mock('../../../provider', () => ({
             },
             toAmount: 100,
         },
+        resetTransfer: mockResetTransfer,
     })),
 }));
 

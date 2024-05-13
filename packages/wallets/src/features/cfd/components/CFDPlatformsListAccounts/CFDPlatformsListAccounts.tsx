@@ -26,6 +26,7 @@ const CFDPlatformsListAccounts: React.FC<TProps> = ({ onMT5PlatformListLoaded })
         areAllAccountsCreated,
         data: mt5AccountsList,
         isFetchedAfterMount: isMT5FetchedAfterMount,
+        isLoading: isMT5Loading,
     } = useSortedMT5Accounts();
     const { data: ctraderAccountsList } = useCtraderAccountsList();
     const { data: dxtradeAccountsList } = useDxtradeAccountsList();
@@ -45,8 +46,8 @@ const CFDPlatformsListAccounts: React.FC<TProps> = ({ onMT5PlatformListLoaded })
     return (
         <div className='wallets-cfd-list-accounts__content'>
             {/* TODO: Update loader with updated skeleton loader design */}
-            {!isMT5FetchedAfterMount && <TradingAppCardLoader />}
-            {isMT5FetchedAfterMount &&
+            {isMT5Loading && <TradingAppCardLoader />}
+            {!isMT5Loading &&
                 mt5AccountsList?.map((account, index) => {
                     if (account.is_added)
                         return (

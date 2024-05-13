@@ -6,7 +6,7 @@ import {
     StandaloneChartCandlestickRegularIcon,
     StandaloneClockThreeRegularIcon,
 } from '@deriv/quill-icons';
-import BottomNavItem from './BottomNavItem';
+import BottomNavItem from './bottom-nav-item';
 import { Badge } from '@deriv-com/quill-ui';
 
 type BottomNavProps = {

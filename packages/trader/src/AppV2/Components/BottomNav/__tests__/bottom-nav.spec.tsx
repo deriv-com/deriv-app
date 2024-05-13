@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 
 jest.mock('../bottom-nav-item', () => {
     return jest.fn(({ index, setSelectedIndex }) => (
-        <div onClick={() => setSelectedIndex(index)}>MockedBottomNavItem</div>
+        <button onClick={() => setSelectedIndex(index)}>MockedBottomNavItem</button>
     ));
 });
 

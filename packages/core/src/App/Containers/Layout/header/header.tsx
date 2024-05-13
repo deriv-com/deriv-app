@@ -85,15 +85,19 @@ const Header = observer(() => {
 
     if (is_logged_in) {
         let result;
-        if (pathname === routes.trade && is_dtrader_v2_enabled && is_mobile) {
-            result = <DTraderV2Header />;
-        }
-        if (traders_hub_routes) {
-            result = should_show_wallets ? <TradersHubHeaderWallets /> : <TradersHubHeader />;
-        } else if (pathname === routes.onboarding) {
-            result = null;
-        } else {
-            result = should_show_wallets ? <DTraderHeaderWallets /> : <DTraderHeader />;
+        switch (true) {
+            case pathname === routes.onboarding:
+                result = null;
+                break;
+            case pathname === routes.trade && is_dtrader_v2_enabled && is_mobile:
+                result = <DTraderV2Header />;
+                break;
+            case traders_hub_routes:
+                result = should_show_wallets ? <TradersHubHeaderWallets /> : <TradersHubHeader />;
+                break;
+            default:
+                result = should_show_wallets ? <DTraderHeaderWallets /> : <DTraderHeader />;
+                break;
         }
         return result;
     } else if (pathname === routes.onboarding) {

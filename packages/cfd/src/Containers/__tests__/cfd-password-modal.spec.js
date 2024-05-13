@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { WS, getErrorMessages, validPassword, Jurisdiction } from '@deriv/shared';
+import { WS, getErrorMessages, validPassword, Jurisdiction, routes } from '@deriv/shared';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import CFDPasswordModal from '../cfd-password-modal';
 import CFDProviders from '../../cfd-providers';
@@ -91,7 +91,24 @@ describe('<CFDPasswordModal/>', () => {
         document.body.removeChild(modal_root_el);
     });
 
+    const originalWindowLocation = window.location;
+
+    beforeEach(() => {
+        Object.defineProperty(window, 'location', {
+            configurable: true,
+            enumerable: true,
+            value: {
+                pathname: routes.trade,
+            },
+        });
+    });
+
     afterEach(() => {
+        Object.defineProperty(window, 'location', {
+            configurable: true,
+            enumerable: true,
+            value: originalWindowLocation,
+        });
         jest.clearAllMocks();
     });
 

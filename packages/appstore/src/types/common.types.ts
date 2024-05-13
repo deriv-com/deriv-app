@@ -238,3 +238,10 @@ export type TRealWalletsUpgradeSteps = {
         current_step: number;
     };
 };
+
+export type TTrustpilotWidgetData = {
+    stars: number;
+    trustScore: number;
+    numberOfReviews: string;
+    error?: string;
+};

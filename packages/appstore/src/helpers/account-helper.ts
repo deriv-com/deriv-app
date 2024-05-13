@@ -1,4 +1,5 @@
 import { isCryptocurrency } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 
 type TAccountProps = {
     a_currency: string;
@@ -35,3 +36,8 @@ export const getSortedAccountList = (account_list: TAccountProps, accounts: TAcc
         return 1;
     });
 };
+
+export const getPlatformToggleOptions = (is_eu_title: boolean) => [
+    { text: is_eu_title ? localize('Multipliers') : localize('Options & Multipliers'), value: 'options' },
+    { text: localize('CFDs'), value: 'cfd' },
+];

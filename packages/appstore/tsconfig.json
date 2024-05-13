@@ -15,6 +15,7 @@
             "Stores": ["src/stores/index"],
             "Types": ["src/types"],
             "Utils": ["src/utils"],
+            "Helpers": ["src/helpers"],
             "@deriv/*": ["../*/src"]
         }
     },

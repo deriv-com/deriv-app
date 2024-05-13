@@ -13,7 +13,7 @@ export const optionsAndMultipliersContent = [
     {
         description: i18n.t('Options and multipliers trading platform.'),
         icon: <DerivProductDerivTraderBrandLightLogoHorizontalIcon height='48' width='48' />,
-        redirect: '/',
+        redirect: '/dtrader',
         smallIcon: <DerivProductDerivTraderBrandLightLogoHorizontalIcon height='32' width='32' />,
         title: i18n.t('Deriv Trader'),
     },

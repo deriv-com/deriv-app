@@ -1,0 +1,10 @@
+.trustpilot-star-rating {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.2rem;
+
+    &__item {
+        padding: 0 0.2rem;
+    }
+}

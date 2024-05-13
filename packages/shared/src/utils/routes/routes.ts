@@ -43,7 +43,7 @@ export const routes = {
     settings: '/settings',
     statement: '/reports/statement',
     token: '/settings/token',
-    trade: '/',
+    trade: '/dtrader',
     bot: '/bot',
     cashier: '/cashier',
     cashier_deposit: '/cashier/deposit',
@@ -72,10 +72,9 @@ export const routes = {
     complaints_policy: '/complaints-policy',
 
     // Appstore
-    appstore: '/appstore',
-    traders_hub: '/appstore/traders-hub',
-    onboarding: '/appstore/onboarding',
-    compare_cfds: '/appstore/cfd-compare-acccounts',
+    traders_hub: '/',
+    onboarding: '/onboarding',
+    compare_cfds: '/cfd-compare-acccounts',
 
     // Wallets
     wallets: '/wallets',

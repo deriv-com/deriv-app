@@ -5,6 +5,7 @@ import TradeFooterExtensions from '../trade-footer-extensions';
 import { mockStore } from '@deriv/stores';
 import { RouteComponentProps, Router } from 'react-router-dom';
 import { MemoryHistory, createMemoryHistory } from 'history';
+import { routes } from '@deriv/shared';
 
 describe('<TradeFooterExtensions>', () => {
     let mock_store: ReturnType<typeof mockStore>,
@@ -41,7 +42,7 @@ describe('<TradeFooterExtensions>', () => {
         mock_store.client.is_logged_in = true;
         router_prop = {
             location: {
-                pathname: '/',
+                pathname: routes.trade,
             },
         };
         renderTraderFooterExtensions(router_prop);
@@ -57,7 +58,7 @@ describe('<TradeFooterExtensions>', () => {
     it('should call populateFooterExtensions with empty array when pathname is not trader', () => {
         router_prop = {
             location: {
-                pathname: '/cashier',
+                pathname: routes.cashier,
             },
         };
         renderTraderFooterExtensions(router_prop);

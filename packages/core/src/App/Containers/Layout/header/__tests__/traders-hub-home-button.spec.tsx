@@ -3,11 +3,13 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import TradersHubHomeButton from '../traders-hub-home-button';
 
-jest.mock('react-router', () => ({
-    ...jest.requireActual('react-router'),
-    useHistory: () => ({ history: {} }),
-    useLocation: () => ({ pathname: '/appstore/traders-hub' }),
-}));
+jest.mock('react-router', () => {
+    return {
+        ...jest.requireActual('react-router'),
+        useHistory: () => ({ history: {} }),
+        useLocation: () => ({ pathname: '/' }),
+    };
+});
 
 describe('TradersHubHomeButton', () => {
     it("should display the text Trader's Hub in the header", () => {

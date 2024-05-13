@@ -9,6 +9,7 @@
     --text-size-xsm: 1.8rem;
     --text-size-sm: 2rem;
     --text-size-m: 2.4rem;
+    --text-size-xm: 2.8rem;
     --text-size-l: 3.2rem;
     --text-size-xl: 4.8rem;
     --text-size-xxl: 6.4rem;
@@ -120,6 +121,7 @@
         --button-toggle-primary: #{$color-blue-3};
         --button-toggle-secondary: #{$color-grey-5};
         --button-toggle-alternate: #{$color-white};
+        --button-get-started-bg: #{$color-black-7};
         // Overlay
         --overlay-outside-dialog: #{$alpha-color-black-1};
         --overlay-inside-dialog: #{$alpha-color-white-1};
@@ -202,6 +204,7 @@
         --badge-green: #{$color-green-3};
         //TradersHub Banner
         --traders-hub-banner-border-color: #{$color-grey-4};
+        --traders-hub-logged-out-banner-bg-color: #{$color-grey-15};
         // wallets
         --wallets-banner-ready-bg-color: #{$ready-banner-bg-color};
         --wallets-banner-ready-tick-bg-color: #{$ready-banner-tick-bg-color};
@@ -262,6 +265,7 @@
         --purchase-section-2: #{$color-red-3};
         --purchase-disabled-main: #{$color-black-4};
         --purchase-disabled-section: #{$color-black};
+        // Buttons
         --button-primary-default: var(--brand-red-coral);
         --button-secondary-default: #{$color-grey-7};
         --button-tertiary-default: transparent;
@@ -273,6 +277,7 @@
         --button-toggle-primary: #{$color-blue-3};
         --button-toggle-secondary: #{$color-black-8};
         --button-toggle-alternate: #{$color-black-8};
+        --button-get-started-bg: #{$color-white};
         // Overlay
         --overlay-outside-dialog: #{$alpha-color-black-1};
         --overlay-inside-dialog: #{$alpha-color-black-2};
@@ -338,6 +343,7 @@
         --badge-green: #{$color-green-3};
         //TradersHub Banner
         --traders-hub-banner-border-color: #{$color-black-5};
+        --traders-hub-logged-out-banner-bg-color: #{$color-black-5};
         // wallets
         --wallets-banner-ready-bg-color: #{$ready-banner-bg-color};
         --wallets-banner-ready-tick-bg-color: #{$ready-banner-tick-bg-color};

@@ -6,6 +6,7 @@ import Text from '../text';
 
 export type TButtonCommonProps = {
     alternate: boolean;
+    black: boolean;
     blue: boolean;
     green: boolean;
     has_effect: boolean;
@@ -45,6 +46,7 @@ const ButtonGroup = ({ children, className }: TButtonGroupProps) => (
     <div className={classNames('dc-btn__group', className)}>{children}</div>
 );
 const Button = ({
+    black,
     blue,
     children,
     className = '',
@@ -83,6 +85,7 @@ const Button = ({
         {
             'dc-btn__effect': has_effect,
             'dc-btn--primary': primary,
+            'dc-btn--black': black,
             'dc-btn--blue': blue,
             'dc-btn--secondary': secondary,
             'dc-btn--tertiary': tertiary,

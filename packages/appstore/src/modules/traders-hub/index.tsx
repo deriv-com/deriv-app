@@ -1,7 +1,6 @@
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
-import { useContentFlag, useGrowthbookFeatureFlag } from '@deriv/hooks';
-import { isDesktop, routes, checkServerMaintenance } from '@deriv/shared';
+import { isDesktop, routes, checkServerMaintenance, startPerformanceEventTimer } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import CFDsListing from 'Components/cfds-listing';
@@ -12,6 +11,7 @@ import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import classNames from 'classnames';
 import TourGuide from '../tour-guide/tour-guide';
 import './traders-hub.scss';
+import { useContentFlag, useGrowthbookFeatureFlag } from '@deriv/hooks';
 
 const TradersHub = observer(() => {
     const { traders_hub, client, ui } = useStore();
@@ -92,8 +92,11 @@ const TradersHub = observer(() => {
         return () => clearTimeout(timer);
     }, [handleScroll, is_eu_user, is_tour_open, setTogglePlatformType]);
 
-    const eu_title = is_eu_demo || is_eu_real || is_eu_user;
+    React.useLayoutEffect(() => {
+        startPerformanceEventTimer('option_multiplier_section_loading_time');
+    }, []);
 
+    const eu_title = is_eu_demo || is_eu_real || is_eu_user;
     const getPlatformToggleOptions = () => [
         { text: eu_title ? localize('Multipliers') : localize('Options & Multipliers'), value: 'options' },
         { text: localize('CFDs'), value: 'cfd' },

@@ -395,13 +395,6 @@ type RealAccountSignupSettings = {
     previous_currency: string;
     success_message: string;
 };
-type TCountryStandpoint = {
-    is_belgium: boolean;
-    is_france: boolean;
-    is_other_eu: boolean;
-    is_rest_of_eu: boolean;
-    is_united_kingdom: boolean;
-};
 
 type TClientStore = {
     fetchStatesList: () => Promise<StatesList>;
@@ -426,7 +419,6 @@ type TClientStore = {
     clients_country: string;
     cfd_score: number;
     setCFDScore: (score: number) => void;
-    country_standpoint: TCountryStandpoint;
     currency: string;
     ctrader_total_balance: number;
     currencies_list: { text: string; value: string; has_tool_tip?: boolean }[];
@@ -457,7 +449,6 @@ type TClientStore = {
     is_dxtrade_allowed: boolean;
     is_eu_country: boolean;
     is_eu: boolean;
-    is_uk: boolean;
     is_unwelcome: boolean;
     is_single_currency: boolean;
     is_social_signup: boolean;
@@ -609,6 +600,10 @@ type TClientStore = {
     real_account_signup_form_step: number;
     setRealAccountSignupFormData: (data: Array<Record<string, unknown>>) => void;
     setRealAccountSignupFormStep: (step: number) => void;
+    wallet_migration_state?: 'ineligible' | 'eligible' | 'in_progress' | 'migrated' | 'failed';
+    startWalletMigration: () => void;
+    resetWalletMigration: () => void;
+    is_wallet_migration_request_is_in_progress: boolean;
     is_passkey_supported: boolean;
     setIsPasskeySupported: (value: boolean) => void;
     should_show_effortless_login_modal: boolean;
@@ -810,6 +805,7 @@ type TUiStore = {
     toggleAdditionalKycInfoModal: () => void;
     toggleKycInformationSubmittedModal: () => void;
     setAccountSwitcherDisabledMessage: (message?: string) => void;
+    is_set_currency_modal_visible: boolean;
 };
 
 type TPortfolioStore = {

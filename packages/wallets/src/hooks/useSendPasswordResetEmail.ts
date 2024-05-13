@@ -8,6 +8,10 @@ type TSendEmailPayload = {
     platform?: TPlatforms.All;
 };
 
+/**
+ * @description This hook is used to send a password reset email to the user. It handles MT5, DXTrade, and Investor password reset.
+ * @returns {Object} sendEmail - A function that sends a password reset email to the user.
+ */
 const useSendPasswordResetEmail = () => {
     const { data } = useSettings();
     const { mutate: verifyEmail } = useVerifyEmail();

@@ -38,16 +38,18 @@ const WalletsCarousel: React.FC = () => {
 
     return (
         <div className='wallets-carousel'>
-            {!isActiveWalletLoading && (
-                <WalletsCarouselHeader
-                    balance={activeWallet?.display_balance}
-                    currency={activeWallet?.currency || 'USD'}
-                    hidden={hideWalletsCarouselHeader}
-                    isDemo={activeWallet?.is_virtual}
-                />
-            )}
-            <div ref={contentRef}>
-                <WalletsCarouselContent onWalletSettled={setIsWalletSettled} />
+            <div className='wallets-carousel__header'>
+                {!isActiveWalletLoading && (
+                    <WalletsCarouselHeader
+                        balance={activeWallet?.display_balance}
+                        currency={activeWallet?.currency || 'USD'}
+                        hidden={hideWalletsCarouselHeader}
+                        isDemo={activeWallet?.is_virtual}
+                    />
+                )}
+                <div ref={contentRef}>
+                    <WalletsCarouselContent onWalletSettled={setIsWalletSettled} />
+                </div>
             </div>
             <AccountsList isWalletSettled={isWalletSettled} />
         </div>

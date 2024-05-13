@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import Joyride, { ACTIONS, CallBackProps, EVENTS, STATUS } from 'react-joyride';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
-import { useActiveWalletAccount, useAllWalletAccounts, useAuthorize, useWalletAccountsList } from '@deriv/api-v2';
-import { PlatformDetails } from '../../features/cfd/constants';
+import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api-v2';
 import useDevice from '../../hooks/useDevice';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { useTabs } from '../WalletsPrimaryTabs/WalletsPrimaryTabs';
 import {
     getFiatWalletLoginId,
-    getWalletIndexForTarget,
     TooltipComponent,
-    tourStepConfig,
     walletsOnboardingLocalStorageKey as key,
     walletsOnboardingStartValue as startValue,
 } from './WalletTourGuideSettings';
+import { mobileStepTourGuide } from './WalletTourSteps';
 import './WalletTourGuide.scss';
 
 type TProps = {
@@ -22,11 +20,7 @@ type TProps = {
     isWalletSettled?: boolean;
 };
 
-const WalletMobileTourGuide = ({
-    isMT5PlatformListLoaded = true,
-    isOptionsAndMultipliersLoaded = true,
-    isWalletSettled = true,
-}: TProps) => {
+const WalletMobileTourGuide = ({ isWalletSettled = true }: TProps) => {
     const switchWalletAccount = useWalletAccountSwitcher();
 
     const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key) ?? '');
@@ -38,10 +32,8 @@ const WalletMobileTourGuide = ({
     const { isFetching, isLoading, isSuccess } = useAuthorize();
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
-    const { data: availableWallets } = useAllWalletAccounts();
 
     const fiatWalletLoginId = getFiatWalletLoginId(wallets);
-    const walletIndex = getWalletIndexForTarget(fiatWalletLoginId, wallets);
     const activeWalletLoginId = activeWallet?.loginid;
 
     const callbackHandle = (data: CallBackProps) => {
@@ -98,28 +90,6 @@ const WalletMobileTourGuide = ({
         }
     }, [activeWalletLoginId, fiatWalletLoginId, switchWalletAccount, walletsOnboarding]);
 
-    // for isMT5PlatformListLoaded
-    useEffect(() => {
-        if (onboardingStep === 3 && !run) setRun(walletsOnboarding === startValue && isMT5PlatformListLoaded);
-    }, [isMT5PlatformListLoaded, onboardingStep, run, walletsOnboarding]);
-
-    // for isWalletSettled
-    useEffect(() => {
-        if (onboardingStep === 0 && !run) setRun(walletsOnboarding === startValue && isWalletSettled);
-    }, [isWalletSettled, onboardingStep, run, walletsOnboarding]);
-
-    // for isOptionsAndMultipliersLoaded
-    useEffect(() => {
-        if (onboardingStep === 4 && !run) setRun(walletsOnboarding === startValue && isOptionsAndMultipliersLoaded);
-    }, [isOptionsAndMultipliersLoaded, onboardingStep, run, walletsOnboarding]);
-
-    const isDemoWallet = Boolean(activeWallet?.is_virtual);
-    const hasMT5Account = Boolean(
-        activeWallet?.linked_to?.some(account => account.platform === PlatformDetails.mt5.platform)
-    );
-    const hasDerivAppsTradingAccount = Boolean(activeWallet?.dtrade_loginid);
-    const isAllWalletsAlreadyAdded = Boolean(availableWallets?.every(wallet => wallet.is_added));
-
     if (!isMobile) return null;
 
     return (
@@ -130,17 +100,9 @@ const WalletMobileTourGuide = ({
             disableOverlayClose
             floaterProps={{ disableAnimation: true }}
             run={walletsOnboarding === startValue && run && !isLoading && !isFetching && isSuccess}
-            scrollDuration={0}
-            scrollOffset={300}
+            scrollOffset={100}
             stepIndex={onboardingStep}
-            steps={tourStepConfig(
-                true,
-                isDemoWallet,
-                hasMT5Account,
-                hasDerivAppsTradingAccount,
-                isAllWalletsAlreadyAdded,
-                walletIndex
-            )}
+            steps={mobileStepTourGuide}
             tooltipComponent={TooltipComponent}
         />
     );

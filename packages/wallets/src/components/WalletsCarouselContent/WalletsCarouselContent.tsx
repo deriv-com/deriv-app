@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api-v2';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { THooks } from '../../types';
-import { ProgressBar } from '../Base';
+import { ProgressBar, WalletText } from '../Base';
 import { WalletsCarouselLoader } from '../SkeletonLoader';
 import { WalletCard } from '../WalletCard';
 import { WalletListCardActions } from '../WalletListCardActions';
@@ -231,27 +231,36 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     }
 
     return (
-        <div className='wallets-carousel-content' ref={walletsCarouselEmblaRef}>
-            <div className='wallets-carousel-content__container'>
-                {walletAccountsList?.map((account, index) => (
-                    <WalletCard
-                        balance={account.display_balance}
-                        currency={account.currency || 'USD'}
-                        iconSize='lg'
-                        isCarouselContent
-                        isDemo={account.is_virtual}
-                        key={`wallet-card-${account.loginid}`}
-                        landingCompanyName={account.landing_company_name}
-                        onClick={() => handleCardClick(account, index)}
-                    />
-                ))}
-            </div>
-            <div className='wallets-carousel-content__progress-bar'>
-                <ProgressBar
-                    activeIndex={currentIndex}
-                    count={walletAccountsList?.length ?? 0}
-                    onClick={walletsCarouselEmblaApi?.scrollTo}
-                />
+        <div className='wallets-carousel-content'>
+            <div className='wallets-carousel-content__wrapper'>
+                <div className='wallets-carousel-content__title'>
+                    <WalletText size='xl' weight='bold'>
+                        Trader&apos;s Hub
+                    </WalletText>
+                </div>
+                <div className='wallets-carousel-content__carousel' ref={walletsCarouselEmblaRef}>
+                    <div className='wallets-carousel-content__cards'>
+                        {walletAccountsList?.map((account, index) => (
+                            <WalletCard
+                                balance={account.display_balance}
+                                currency={account.currency || 'USD'}
+                                iconSize='lg'
+                                isCarouselContent
+                                isDemo={account.is_virtual}
+                                key={`wallet-card-${account.loginid}`}
+                                landingCompanyName={account.landing_company_name}
+                                onClick={() => handleCardClick(account, index)}
+                            />
+                        ))}
+                    </div>
+                    <div className='wallets-carousel-content__progress-bar'>
+                        <ProgressBar
+                            activeIndex={currentIndex}
+                            count={walletAccountsList?.length ?? 0}
+                            onClick={walletsCarouselEmblaApi?.scrollTo}
+                        />
+                    </div>
+                </div>
             </div>
             <WalletListCardActions />
         </div>

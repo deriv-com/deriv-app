@@ -11,14 +11,13 @@ import {
 } from '@deriv/api-v2';
 import useDevice from '../../hooks/useDevice';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
-import { desktopStepTourGuide } from './DesktopSteps';
-import { mobileStepTourGuide } from './MobileSteps';
 import {
     getFiatWalletLoginId,
     TooltipComponent,
     walletsOnboardingLocalStorageKey as key,
     walletsOnboardingStartValue as START_VALUE,
 } from './WalletTourGuideSettings';
+import { desktopStepTourGuide } from './WalletTourSteps';
 import './WalletTourGuide.scss';
 
 const WalletTourGuide = () => {
@@ -119,7 +118,7 @@ const WalletTourGuide = () => {
             run={run}
             scrollOffset={100}
             stepIndex={joyrideIndex}
-            steps={isMobile ? mobileStepTourGuide : desktopStepTourGuide}
+            steps={desktopStepTourGuide}
             tooltipComponent={TooltipComponent}
         />
     );

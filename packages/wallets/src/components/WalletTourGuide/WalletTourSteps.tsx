@@ -64,3 +64,53 @@ export const desktopStepTourGuide: Step[] = [
         spotlightPadding: 12,
     },
 ];
+
+export const mobileStepTourGuide: Step[] = [
+    {
+        content: <WalletText size='sm'>Manage your funds with Wallets.</WalletText>,
+        placement: 'bottom',
+        target: '.wallets-carousel-content',
+        title: <SpotLightHeader>This is your Wallet</SpotLightHeader>,
+        ...stepProps,
+    },
+    {
+        content: <WalletText size='sm'>Swipe left or right to switch between Wallets.</WalletText>,
+        placement: 'bottom',
+        target: '.wallets-carousel-content__wrapper',
+        title: <SpotLightHeader>Switch between Wallets</SpotLightHeader>,
+        ...stepProps,
+    },
+    {
+        content: <WalletText size='sm'>Press the tab to switch between CFDs and Options accounts.</WalletText>,
+        placement: 'bottom',
+        styles: { spotlight: { borderRadius: '0.8rem' } },
+        target: '.wallets-tabs-list',
+        title: <SpotLightHeader>Select your account type</SpotLightHeader>,
+        ...stepProps,
+    },
+    {
+        content: (
+            <WalletText size='sm'>
+                Want Wallets in other currencies too? Press <strong>Add</strong>.
+            </WalletText>
+        ),
+        placement: 'top',
+        styles: { spotlight: { borderRadius: '1.6rem' } },
+        target: '.wallets-add-more__card',
+        title: <SpotLightHeader>Add more currencies</SpotLightHeader>,
+        ...stepProps,
+    },
+    {
+        content: <WalletText size='sm'>Press here to repeat this tour.</WalletText>,
+        placement: 'bottom',
+        styles: { spotlight: { borderRadius: '0 0 0.8rem 0.8rem' } },
+        target: '.traders-hub-header__tradershub--onboarding--logo',
+        title: (
+            <WalletText color='red' size='sm' weight='bold'>
+                Trader&apos;s Hub tour
+            </WalletText>
+        ),
+        ...stepProps,
+        spotlightPadding: 12,
+    },
+];

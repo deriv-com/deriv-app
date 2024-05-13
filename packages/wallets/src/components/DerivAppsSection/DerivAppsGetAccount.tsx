@@ -83,7 +83,7 @@ const DerivAppsGetAccount: React.FC = () => {
                         Options
                     </WalletText>
                     <WalletText size={isDesktop ? '2xs' : 'xs'}>
-                        Trade options on multiple platforms with a single account.
+                        To trade options and multipliers, get a Deriv Apps account first.
                     </WalletText>
                 </div>
                 <WalletButton color='primary-light' onClick={createTradingAccount}>

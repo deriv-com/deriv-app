@@ -15,7 +15,7 @@ import { TPlatforms } from '../../types';
 import { WalletButton, WalletText } from '../Base';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 import './SentEmailContent.scss';
-import useSendEmail from '../../hooks/useSendEmail';
+import useSendPasswordResetEmail from '../../hooks/useSendPasswordResetEmail';
 
 type SentEmailContentProps = {
     description?: string;
@@ -60,7 +60,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
 }) => {
     const [shouldShowResendEmailReasons, setShouldShowResendEmailReasons] = useState(false);
     const [hasCountdownStarted, setHasCountdownStarted] = useState(false);
-    const { sendEmail } = useSendEmail();
+    const { sendEmail } = useSendPasswordResetEmail();
     const { isMobile } = useDevice();
     const mt5Platform = PlatformDetails.mt5.platform;
     const { title } = PlatformDetails[platform ?? mt5Platform];

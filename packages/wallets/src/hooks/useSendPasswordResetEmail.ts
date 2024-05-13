@@ -8,7 +8,7 @@ type TSendEmailPayload = {
     platform?: TPlatforms.All;
 };
 
-const useSendEmail = () => {
+const useSendPasswordResetEmail = () => {
     const { data } = useSettings();
     const { mutate: verifyEmail } = useVerifyEmail();
     const { data: activeWallet } = useActiveWalletAccount();
@@ -35,4 +35,4 @@ const useSendEmail = () => {
     };
 };
 
-export default useSendEmail;
+export default useSendPasswordResetEmail;

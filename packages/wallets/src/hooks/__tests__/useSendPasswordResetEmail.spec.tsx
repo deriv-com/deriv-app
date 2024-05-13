@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import { APIProvider } from '@deriv/api-v2';
 import { renderHook } from '@testing-library/react-hooks';
 import WalletsAuthProvider from '../../AuthProvider';
-import useSendEmail from '../useSendEmail';
+import useSendPasswordResetEmail from '../useSendPasswordResetEmail';
 
 const mockMutate = jest.fn();
 
@@ -24,9 +24,9 @@ const wrapper = ({ children }: PropsWithChildren) => (
     </APIProvider>
 );
 
-describe('useSendEmail', () => {
+describe('useSendPasswordResetEmail', () => {
     it('should call mutate when sendEmail is called', () => {
-        const { result } = renderHook(() => useSendEmail(), { wrapper });
+        const { result } = renderHook(() => useSendPasswordResetEmail(), { wrapper });
         result.current.sendEmail({
             isInvestorPassword: true,
             platform: 'mt5',

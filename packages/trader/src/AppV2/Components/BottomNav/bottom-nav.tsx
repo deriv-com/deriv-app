@@ -14,7 +14,7 @@ type BottomNavProps = {
     children: React.ReactNode[];
 };
 
-const BottomNavItems = [
+const bottomNavItems = [
     {
         icon: <StandaloneChartCandlestickRegularIcon iconSize='sm' />,
         label: <Localize i18n_default_text='Trade' />,
@@ -42,7 +42,7 @@ const BottomNav = ({ className, children }: BottomNavProps) => {
     return (
         <div className={className}>
             <div className='bottom-nav-container'>
-                {BottomNavItems.map((item, index) => (
+                {bottomNavItems.map((item, index) => (
                     <BottomNavItem
                         key={index}
                         index={index}

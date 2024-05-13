@@ -298,13 +298,10 @@ export default class ClientStore extends BaseStore {
             has_wallet: computed,
             should_restrict_bvi_account_creation: computed,
             should_restrict_vanuatu_account_creation: computed,
-            should_show_eu_content: computed,
             should_show_eu_error: computed,
             is_virtual: computed,
             is_eu: computed,
-            is_uk: computed,
             is_brazil: computed,
-            country_standpoint: computed,
             can_upgrade: computed,
             can_upgrade_to: computed,
             virtual_account_loginid: computed,
@@ -863,11 +860,6 @@ export default class ClientStore extends BaseStore {
         ).length;
     }
 
-    get should_show_eu_content() {
-        const is_current_mf = this.landing_company_shortcode === 'maltainvest';
-        return (!this.is_logged_in && this.is_eu_country) || this.is_eu || is_current_mf;
-    }
-
     get should_show_eu_error() {
         if (!this.is_landing_company_loaded) {
             return false;
@@ -897,30 +889,6 @@ export default class ClientStore extends BaseStore {
 
     get is_brazil() {
         return this.clients_country === 'br';
-    }
-
-    get is_uk() {
-        return this.residence === 'gb';
-    }
-
-    get country_standpoint() {
-        const result = {
-            is_united_kingdom: this.is_uk,
-            is_france: this.residence === 'fr',
-            is_belgium: this.residence === 'be',
-            // Other EU countries: Germany, Spain, Italy, Luxembourg and Greece
-            is_other_eu:
-                this.residence === 'de' ||
-                this.residence === 'es' ||
-                this.residence === 'it' ||
-                this.residence === 'lu' ||
-                this.residence === 'gr',
-        };
-
-        result.is_rest_of_eu =
-            this.is_eu && !result.is_uk && !result.is_france && !result.is_belgium && !result.is_other_eu;
-
-        return result;
     }
 
     get can_upgrade() {

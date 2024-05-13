@@ -12,6 +12,7 @@ import {
     MobileWrapper,
     Modal,
     SelectNative,
+    Text,
     ThemedScrollbars,
 } from '@deriv/components';
 import { useStatesList } from '@deriv/hooks';
@@ -141,16 +142,10 @@ const AddressDetails = observer(
                                     is_disabled={is_desktop}
                                 >
                                     <ScrollToFieldWithError />
-                                    {is_eu_user && (
-                                        <div className='details-form__banner-container'>
-                                            <InlineNoteWithIcon
-                                                icon='IcAlertWarning'
-                                                message={
-                                                    <Localize i18n_default_text='For verification purposes as required by regulation. It’s your responsibility to provide accurate and complete answers. You can update personal details at any time in your account settings.' />
-                                                }
-                                                title={localize('Why do we collect this?')}
-                                            />
-                                        </div>
+                                    {is_mobile && (
+                                        <Text size='xs' weight='bold' className='details-form__heading'>
+                                            <Localize i18n_default_text='Complete your address details' />
+                                        </Text>
                                     )}
                                     <ThemedScrollbars height={height} className='details-form__scrollbar'>
                                         <div

@@ -130,6 +130,8 @@ describe('<AddressDetails/>', () => {
             svgCommonRenderCheck();
         });
 
+        expect(screen.getByText('Complete your address details')).toBeInTheDocument();
+
         const inputs: HTMLTextAreaElement[] = screen.getAllByRole('textbox');
         expect(inputs).toHaveLength(5);
         const required_fields = inputs.filter(input => input.required === true);

@@ -19,10 +19,7 @@ describe('generateErrorDialogBody', () => {
             'You already have an ad with the same exchange rate for this currency pair and order type. \n\nPlease set a different rate for your ad.'
         );
     });
-    it('should return the passed error_message when error_code is not "AdvertSameLimits" or "DuplicateAdvert"', () => {
-        expect(generateErrorDialogBody('', 'this is the error message')).toBe('this is the error message');
-    });
-    it('should return "Something\'s not right" when error_code is not "AdvertSameLimits" or "DuplicateAdvert" and no error_message is passed', () => {
+    it('should return "Something\'s not right" when error_code is not "AdvertSameLimits" or "DuplicateAdvert"', () => {
         expect(generateErrorDialogBody('')).toBe("Something's not right");
     });
 });

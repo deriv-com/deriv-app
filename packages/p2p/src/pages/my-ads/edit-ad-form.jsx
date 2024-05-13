@@ -466,7 +466,7 @@ const EditAdForm = () => {
             >
                 <Modal.Body>
                     <Text as='p' size='xs' color='prominent' className='ad-create-edit-error-modal__message'>
-                        {generateErrorDialogBody(my_ads_store.error_code, my_ads_store.edit_ad_form_error)}
+                        {my_ads_store.edit_ad_form_error ?? generateErrorDialogBody(my_ads_store.error_code)}
                     </Text>
                 </Modal.Body>
                 <Modal.Footer>

@@ -52,11 +52,12 @@ describe('<PoiConfirmWithExampleFormContainer/>', () => {
         getChangeableFields: jest.fn(() => ['first_name', 'last_name', 'date_of_birth']),
         onFormConfirm: jest.fn(),
     };
-
+    const clarification_message = /To avoid delays, enter your/;
     it('should render PersonalDetailsForm with image and checkbox', async () => {
         render(<PoiConfirmWithExampleFormContainer {...mock_props} />);
 
         expect(await screen.findByText('PoiNameDobExampleImage')).toBeInTheDocument();
+        expect(screen.getByText(clarification_message)).toBeInTheDocument();
         const checkbox_el: HTMLInputElement = screen.getByRole('checkbox');
         expect(checkbox_el.checked).toBeFalsy();
 

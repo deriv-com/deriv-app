@@ -15,7 +15,7 @@ type TSendEmailPayload = {
  */
 const useSendPasswordResetEmail = () => {
     const { data } = useSettings();
-    const { mutate: verifyEmail } = useVerifyEmail();
+    const { mutate: verifyEmail, ...rest } = useVerifyEmail();
     const { data: activeWallet } = useActiveWalletAccount();
 
     const sendEmail = useCallback(
@@ -43,6 +43,7 @@ const useSendPasswordResetEmail = () => {
 
     return {
         sendEmail,
+        ...rest,
     };
 };
 

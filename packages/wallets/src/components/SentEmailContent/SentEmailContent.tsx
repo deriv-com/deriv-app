@@ -11,11 +11,12 @@ import {
 } from '@deriv/quill-icons';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
+import useSendPasswordResetEmail from '../../hooks/useSendPasswordResetEmail';
 import { TPlatforms } from '../../types';
 import { WalletButton, WalletText } from '../Base';
+import { WalletError } from '../WalletError';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 import './SentEmailContent.scss';
-import useSendPasswordResetEmail from '../../hooks/useSendPasswordResetEmail';
 
 type SentEmailContentProps = {
     description?: string;

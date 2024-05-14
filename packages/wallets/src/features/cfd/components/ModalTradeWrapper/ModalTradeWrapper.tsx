@@ -57,7 +57,10 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                 return (
                     <div className='wallets-modal-trade-wrapper__footer'>
                         <WalletText align='center' size='sm' weight='bold'>
-                            <Trans defaults={`Download ${title} on your phone to trade with the ${title} account`} />
+                            <Trans
+                                defaults={`Download {{title}} on your phone to trade with the {{title}} account`}
+                                values={{ title }}
+                            />
                         </WalletText>
                         <div className='wallets-modal-trade-wrapper__footer-installations'>
                             <div className='wallets-modal-trade-wrapper__footer-installations-icons'>
@@ -75,7 +78,7 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                             <div className='wallets-modal-trade-wrapper__footer-installations-qr'>
                                 <QRCode size={80} value={link} />
                                 <WalletText align='center' size='xs'>
-                                    <Trans defaults={` Scan the QR code to download ${title}`} />
+                                    <Trans defaults={` Scan the QR code to download {{title}}`} values={{ title }} />
                                 </WalletText>
                             </div>
                         </div>

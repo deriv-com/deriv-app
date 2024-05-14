@@ -31,17 +31,9 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
 
     const grouped_payment_method_data_keys = Object.keys(grouped_payment_method_data) as Array<TPaymentMethod>;
 
-    const form_ref = React.useRef<FormikProps<Partial<TProofOfOwnershipFormValue>>>(null);
-
     const fileReadErrorMessage = (filename: string) => {
         return localize('Unable to read file {{name}}', { name: filename });
     };
-
-    React.useEffect(() => {
-        if (form_ref?.current) {
-            form_ref.current?.resetForm();
-        }
-    }, [grouped_payment_method_data_keys.length]);
 
     const getScrollOffset = React.useCallback(
         (items_count = 0) => {
@@ -184,7 +176,7 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
         values: Partial<TProofOfOwnershipFormValue>,
         action: FormikHelpers<Partial<TProofOfOwnershipFormValue>>
     ) => {
-        const { setFieldError, setSubmitting, resetForm } = action;
+        const { setFieldError, setSubmitting } = action;
         try {
             const uploader = new DocumentUploader({ connection: WS.getSocket() });
             setSubmitting(true);
@@ -223,7 +215,6 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
                             } else {
                                 updateAccountStatus();
                                 refreshNotifications();
-                                resetForm();
                             }
                         }, Promise.resolve());
                     }
@@ -237,12 +228,7 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
     };
 
     return (
-        <Formik
-            initialValues={initial_values}
-            validate={validateFields}
-            innerRef={form_ref}
-            onSubmit={handleFormSubmit}
-        >
+        <Formik initialValues={initial_values} validate={validateFields} onSubmit={handleFormSubmit}>
             {({ isValid, dirty, isSubmitting }) => (
                 <Form data-testid='dt_poo_form' className='proof-of-ownership'>
                     <FormBody scroll_offset={getScrollOffset(grouped_payment_method_data_keys.length)}>

@@ -16,7 +16,7 @@ const JurisdictionCardRow = ({ description, renderTag, title }: TJurisdictionCar
                 </Text>
                 {renderTag && <div>{renderTag()}</div>}
             </div>
-            {description && <Text size='xs'>{description}</Text>}
+            {description && <Text size='sm'>{description}</Text>}
         </div>
     );
 };

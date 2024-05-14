@@ -30,7 +30,6 @@ jest.mock('../DepositLockedContent', () => ({
     default: jest.fn(),
 }));
 
-const mockActiveWalletData = { currency_config: { minimum_withdrawal: 10 } };
 const mockSettingsData = { client_tnc_status: '' };
 const mockWebsiteStatusData = { website_status: '' };
 const mockAuthenticationData = { is_poa_needed: false, is_poi_needed: false };
@@ -47,7 +46,7 @@ describe('DepositLocked', () => {
     });
 
     it('should render loader when no account status data', () => {
-        (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({ data: mockActiveWalletData });
+        (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({});
         (useSettings as jest.Mock).mockReturnValueOnce({ data: mockSettingsData });
         (useWebsiteStatus as jest.Mock).mockReturnValueOnce({ data: mockWebsiteStatusData });
         (useAuthentication as jest.Mock).mockReturnValueOnce({ data: mockAuthenticationData });
@@ -70,7 +69,7 @@ describe('DepositLocked', () => {
             is_financial_information_not_complete: false,
             is_trading_experience_not_complete: false,
         };
-        (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({ data: mockActiveWalletData });
+        (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({});
         (useSettings as jest.Mock).mockReturnValueOnce({ data: mockSettingsData });
         (useWebsiteStatus as jest.Mock).mockReturnValueOnce({ data: mockWebsiteStatusData });
         (useAuthentication as jest.Mock).mockReturnValueOnce({ data: mockAuthenticationData });
@@ -91,7 +90,7 @@ describe('DepositLocked', () => {
     });
 
     it('should render children when not in a locked state', () => {
-        (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({ data: mockActiveWalletData });
+        (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({});
         (useSettings as jest.Mock).mockReturnValueOnce({ data: mockSettingsData });
         (useWebsiteStatus as jest.Mock).mockReturnValueOnce({ data: mockWebsiteStatusData });
         (useAuthentication as jest.Mock).mockReturnValueOnce({ data: mockAuthenticationData });

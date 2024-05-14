@@ -2,9 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
+import { LegacyFilter1pxIcon } from '@deriv/quill-icons';
 import { ToggleSwitch, WalletDropdown, WalletText } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
-import FilterIcon from '../../../../public/images/filter.svg';
 import { TransactionsCompleted, TransactionsCompletedDemoResetBalance, TransactionsPending } from './components';
 import './Transactions.scss';
 
@@ -87,7 +87,7 @@ const Transactions = () => {
                     </div>
                 )}
                 <WalletDropdown
-                    icon={<FilterIcon />}
+                    icon={<LegacyFilter1pxIcon iconSize='xs' />}
                     label='Filter'
                     list={filterOptionsList}
                     name='wallets-transactions__dropdown'

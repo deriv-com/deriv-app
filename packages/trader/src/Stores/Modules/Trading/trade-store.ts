@@ -679,13 +679,7 @@ export default class TradeStore extends BaseStore {
     async setActiveSymbols() {
         const is_on_mf_account = this.root_store.client.landing_company_shortcode === 'maltainvest';
         const is_logged_in = this.root_store.client.is_logged_in;
-        const clients_country = this.root_store.client.clients_country;
         const showError = this.root_store.common.showError;
-
-        // To resolve infinite load for Belgium and Isle of man logout IPs
-        if (['be', 'im'].includes(clients_country) && !is_logged_in) {
-            showUnavailableLocationError(showError, is_logged_in);
-        }
 
         const { active_symbols, error } = await WS.authorized.activeSymbols();
 

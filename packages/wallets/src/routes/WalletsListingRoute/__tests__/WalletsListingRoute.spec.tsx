@@ -9,6 +9,7 @@ jest.mock('../../../hooks/useDevice', () => jest.fn());
 jest.mock('../../../components/', () => {
     return {
         DesktopWalletsList: () => <div>DesktopWalletsList</div>,
+        WalletListHeader: () => <div>WalletListHeader</div>,
         WalletsAddMoreCarousel: () => <div>WalletsAddMoreCarousel</div>,
         WalletsCarousel: () => <div>WalletsCarousel</div>,
         WalletTourGuide: () => <div>WalletTourGuide</div>,
@@ -22,6 +23,7 @@ describe('WalletsListingRoute', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
 
         render(<WalletsListingRoute />, { wrapper });
+        expect(screen.getByText('WalletListHeader')).toBeInTheDocument();
         expect(screen.getByText('DesktopWalletsList')).toBeInTheDocument();
         expect(screen.getByText('WalletTourGuide')).toBeInTheDocument();
         expect(screen.queryByText('WalletsCarousel')).not.toBeInTheDocument();
@@ -31,6 +33,7 @@ describe('WalletsListingRoute', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
 
         render(<WalletsListingRoute />, { wrapper });
+        expect(screen.getByText('WalletListHeader')).toBeInTheDocument();
         expect(screen.queryByText('DesktopWalletsList')).not.toBeInTheDocument();
         expect(screen.getByText('WalletsCarousel')).toBeInTheDocument();
         expect(screen.queryByText('WalletTourGuide')).not.toBeInTheDocument();

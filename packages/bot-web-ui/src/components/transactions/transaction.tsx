@@ -1,15 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 import ContentLoader from 'react-content-loader';
-import { ProposalOpenContract } from '@deriv/api-types';
 import { getContractTypeName } from '@deriv/bot-skeleton';
 import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { Icon, IconTradeTypes, Money, Popover } from '@deriv/components';
 import { convertDateFormat } from '@deriv/shared';
-import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { TContractInfo } from 'Components/summary/summary-card.types';
 import { popover_zindex } from 'Constants/z-indexes';
-import { useDBotStore } from 'Stores/useDBotStore';
 
 type TTransactionIconWithText = {
     icon: React.ReactElement;
@@ -25,11 +23,13 @@ type TPopoverItem = {
 };
 
 type TPopoverContent = {
-    contract: ProposalOpenContract;
+    contract: TContractInfo;
 };
 
 type TTransaction = {
-    contract?: ProposalOpenContract;
+    contract?: TContractInfo | null;
+    onClickTransaction?: (transaction_id: null | number) => void;
+    active_transaction_id?: number | null;
 };
 
 const TransactionIconWithText = ({ icon, title, message, className }: TTransactionIconWithText) => (
@@ -153,29 +153,26 @@ const PopoverContent = ({ contract }: TPopoverContent) => (
     </div>
 );
 
-const Transaction = observer(({ contract }: TTransaction) => {
-    const { transactions } = useDBotStore();
-    const { active_transaction_id, setActiveTransactionId } = transactions;
-
+const Transaction = ({ contract, active_transaction_id, onClickTransaction }: TTransaction) => {
     return (
         <Popover
             zIndex={popover_zindex.TRANSACTION.toString()}
             alignment={isDbotRTL() ? 'right' : 'left'}
             className='transactions__item-wrapper'
-            is_open={contract && active_transaction_id === contract.transaction_ids.buy}
+            is_open={!!(contract && active_transaction_id === contract?.transaction_ids?.buy)}
             message={contract && <PopoverContent contract={contract} />}
         >
             <div
                 data-testid='dt_transactions_item'
                 className='transactions__item'
-                onClick={contract && (() => setActiveTransactionId(contract.transaction_ids.buy))}
+                onClick={() => onClickTransaction && onClickTransaction(contract?.transaction_ids?.buy || null)}
             >
                 <div className='transactions__cell transactions__trade-type'>
                     <div className='transactions__loader-container'>
                         {contract ? (
                             <TransactionIconWithText
                                 icon={<Icon icon={`IcUnderlying${contract.underlying}`} size={16} />}
-                                title={contract.display_name}
+                                title={contract.display_name || ''}
                             />
                         ) : (
                             <TransactionIconLoader />
@@ -184,7 +181,7 @@ const Transaction = observer(({ contract }: TTransaction) => {
                     <div className='transactions__loader-container'>
                         {contract ? (
                             <TransactionIconWithText
-                                icon={<IconTradeTypes type={contract.contract_type} size={16} />}
+                                icon={<IconTradeTypes type={contract.contract_type || ''} size={16} />}
                                 title={getContractTypeName(contract)}
                             />
                         ) : (
@@ -217,11 +214,11 @@ const Transaction = observer(({ contract }: TTransaction) => {
                     {contract?.is_completed ? (
                         <div
                             className={classNames({
-                                'transactions__profit--win': contract.profit >= 0,
-                                'transactions__profit--loss': contract.profit < 0,
+                                'transactions__profit--win': contract?.profit && contract?.profit >= 0,
+                                'transactions__profit--loss': contract?.profit && contract?.profit < 0,
                             })}
                         >
-                            <Money amount={Math.abs(contract.profit)} currency={contract.currency} show_currency />
+                            <Money amount={Math.abs(contract.profit || 0)} currency={contract.currency} show_currency />
                         </div>
                     ) : (
                         <TransactionFieldLoader />
@@ -230,6 +227,6 @@ const Transaction = observer(({ contract }: TTransaction) => {
             </div>
         </Popover>
     );
-});
+};
 
 export default Transaction;

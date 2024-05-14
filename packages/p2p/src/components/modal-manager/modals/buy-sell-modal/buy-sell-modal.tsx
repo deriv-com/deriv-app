@@ -18,7 +18,7 @@ import BuySellModalError from './buy-sell-modal-error';
 const BuySellModal = () => {
     const { hideModal, is_modal_open, showModal } = useModalManagerContext();
     const { buy_sell_store, general_store, my_profile_store, order_store } = useStores();
-    const { is_buy_advert, selected_ad_state } = buy_sell_store;
+    const { is_buy_advert, selected_ad_state, submitForm } = buy_sell_store;
     const { account_currency } = selected_ad_state;
     const { balance } = general_store;
     const { should_show_add_payment_method_form } = my_profile_store;
@@ -29,11 +29,8 @@ const BuySellModal = () => {
     const [error_message, setErrorMessage] = React.useState('');
     const [is_submit_disabled, setIsSubmitDisabled] = React.useState(false);
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
-    const submitForm = React.useRef<(() => void) | null>(null);
 
     const show_low_balance_message = !is_buy_advert && is_account_balance_low;
-
-    const setSubmitForm = (submitFormFn: () => void) => (submitForm.current = submitFormFn);
 
     const onCancel = () => {
         if (should_show_add_payment_method_form) {
@@ -158,13 +155,12 @@ const BuySellModal = () => {
                                     handleConfirm={onConfirmClick}
                                     setIsSubmitDisabled={setIsSubmitDisabled}
                                     setErrorMessage={setErrorMessage}
-                                    setSubmitForm={setSubmitForm}
                                 />
                                 <BuySellFormReceiveAmount />
                                 <BuySellModalFooter
                                     is_submit_disabled={!!is_submit_disabled}
                                     onCancel={onCancel}
-                                    onSubmit={submitForm.current}
+                                    onSubmit={submitForm}
                                 />
                             </React.Fragment>
                         )}
@@ -204,7 +200,6 @@ const BuySellModal = () => {
                                     handleConfirm={onConfirmClick}
                                     setIsSubmitDisabled={setIsSubmitDisabled}
                                     setErrorMessage={setErrorMessage}
-                                    setSubmitForm={setSubmitForm}
                                 />
                             )}
                         </Modal.Body>
@@ -214,7 +209,7 @@ const BuySellModal = () => {
                             <BuySellModalFooter
                                 is_submit_disabled={!!is_submit_disabled}
                                 onCancel={onCancel}
-                                onSubmit={submitForm.current}
+                                onSubmit={submitForm}
                             />
                         </Modal.Footer>
                     )}

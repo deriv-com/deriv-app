@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
+import { LegacyClose2pxIcon } from '@deriv/quill-icons';
 import { WalletText } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../hooks/useDevice';
-import CloseIcon from '../../../../../../public/images/close-icon.svg';
 import type { TAccount, TAccountsList } from '../../types';
 import { TransferFormAccountCard } from '../TransferFormAccountCard';
 import './TransferFormAccountSelection.scss';
@@ -54,7 +54,7 @@ const TransferFormAccountSelection: React.FC<TProps> = ({
                     </WalletText>
                 </div>
                 <button className='wallets-transfer-form-account-selection__close-button' onClick={() => modal.hide()}>
-                    <CloseIcon />
+                    <LegacyClose2pxIcon iconSize='xs' />
                 </button>
             </div>
             <div className='wallets-transfer-form-account-selection__accounts'>

@@ -2,6 +2,7 @@ import React from 'react';
 import {
     useAccountLimits,
     useActiveAccount,
+    useCryptoConfig,
     useCryptoWithdrawal,
     useCurrencyConfig,
     useExchangeRateSubscription,
@@ -15,6 +16,7 @@ import { waitFor } from '@testing-library/react';
 jest.mock('@deriv/api-v2', () => ({
     useAccountLimits: jest.fn(),
     useActiveAccount: jest.fn(),
+    useCryptoConfig: jest.fn(),
     useCryptoWithdrawal: jest.fn(),
     useCurrencyConfig: jest.fn(),
     useExchangeRateSubscription: jest.fn(),
@@ -24,6 +26,7 @@ jest.mock('@deriv/api-v2', () => ({
 
 const mockUseAccountLimits = useAccountLimits as jest.Mock;
 const mockUseActiveAccount = useActiveAccount as jest.Mock;
+const mockUseCryptoConfig = useCryptoConfig as jest.Mock;
 const mockUseCryptoWithdrawal = useCryptoWithdrawal as jest.Mock;
 const mockUseCurrencyConfig = useCurrencyConfig as jest.Mock;
 const mockUseExchangeRate = useExchangeRateSubscription as jest.Mock;
@@ -42,6 +45,7 @@ describe('useWithdrawalCryptoContext', () => {
                 },
             },
         });
+        mockUseCryptoConfig.mockReturnValue({});
         mockUseCryptoWithdrawal.mockReturnValue({
             mutateAsync: jest.fn().mockResolvedValue({}),
         });

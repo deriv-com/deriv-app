@@ -13,6 +13,8 @@ jest.mock('react-router-dom', () => ({
 
 const mockWithdrawalReceipt = {
     address: 'test_crypto_address',
+    amount: '100',
+    currency: 'BTC',
 };
 
 const wrapper = ({ children }: PropsWithChildren) => (
@@ -23,12 +25,7 @@ const wrapper = ({ children }: PropsWithChildren) => (
 
 describe('WithdrawalCryptoReceipt', () => {
     it('should render the component with withdrawal information', () => {
-        const mockBTCWithdrawalReceipt = {
-            address: 'test_crypto_address',
-            amount: '100',
-            currency: 'BTC',
-        };
-        render(<WithdrawalCryptoReceipt onClose={() => jest.fn()} withdrawalReceipt={mockBTCWithdrawalReceipt} />, {
+        render(<WithdrawalCryptoReceipt onClose={() => jest.fn()} withdrawalReceipt={mockWithdrawalReceipt} />, {
             wrapper,
         });
 

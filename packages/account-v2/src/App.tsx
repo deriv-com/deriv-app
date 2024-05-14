@@ -8,7 +8,11 @@ import { ACCOUNT_MODAL_REF } from './constants';
 import './index.scss';
 
 const App: React.FC = () => {
-    Modal.setAppElement(ACCOUNT_MODAL_REF);
+    if (document.getElementById(ACCOUNT_MODAL_REF.replace('#', ''))) {
+        // Set the Modal REF only if the element exists
+        Modal.setAppElement(ACCOUNT_MODAL_REF);
+    }
+
     return (
         <APIProvider standalone>
             <AuthProvider>

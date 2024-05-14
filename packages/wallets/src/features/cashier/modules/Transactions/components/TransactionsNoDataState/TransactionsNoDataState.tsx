@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+//TODO: replace with quill-icons
 import NoRecentTransactions from '../../../../../../public/images/no-recent-transactions.svg';
 import './TransactionsNoDataState.scss';
 

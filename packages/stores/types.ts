@@ -211,14 +211,7 @@ type TAccountsList = {
     mt5_login_list?: DetailsOfEachMT5Loginid[];
     title?: string;
 }[];
-type TRealAccount = {
-    active_modal_index: number;
-    current_currency: string;
-    error_message: string;
-    previous_currency: string;
-    success_message: string;
-    error_code: number;
-};
+
 // balance is missing in @deriv/api-types
 type TActiveAccount = TAccount & {
     balance?: string | number;
@@ -338,16 +331,6 @@ export type TNotificationMessage = {
     timeout?: number;
     timeoutMessage?: (remaining: number | string) => string;
     type: string;
-};
-type TCommonVariables = {
-    language: string;
-    visitorId?: string;
-    currency?: string;
-    userId?: string;
-    email?: string;
-    loggedIn: boolean;
-    theme: string;
-    platform: string;
 };
 
 type TNotification =
@@ -540,7 +523,6 @@ type TClientStore = {
     residence_list: ResidenceList;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
-    should_show_eu_content: boolean;
     updateMT5Status: () => Promise<void>;
     fetchAccountSettings: () => Promise<void>;
     setAccountSettings: (get_settings_response: GetSettings) => void;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
-import { isDesktop, routes, ContentFlag, checkServerMaintenance } from '@deriv/shared';
+import { isDesktop, routes, ContentFlag, checkServerMaintenance, startPerformanceEventTimer } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import CFDsListing from 'Components/cfds-listing';
@@ -79,6 +79,10 @@ const TradersHub = observer(() => {
         }, 100);
         return () => clearTimeout(timer);
     }, [handleScroll, is_eu_user, is_tour_open, setTogglePlatformType]);
+
+    React.useLayoutEffect(() => {
+        startPerformanceEventTimer('option_multiplier_section_loading_time');
+    }, []);
 
     const eu_title = content_flag === ContentFlag.EU_DEMO || content_flag === ContentFlag.EU_REAL || is_eu_user;
 

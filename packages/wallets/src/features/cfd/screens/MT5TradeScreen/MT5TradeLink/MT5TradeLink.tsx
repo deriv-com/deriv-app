@@ -21,7 +21,7 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
 
     const getCtraderToken = () => {
         const cTraderTokenResponse = requestToken({
-            payload: { service: CFD_PLATFORMS.CTRADER, server: isDemo ? 'demo' : 'real' },
+            payload: { server: isDemo ? 'demo' : 'real', service: CFD_PLATFORMS.CTRADER },
         });
         return cTraderTokenResponse;
     };

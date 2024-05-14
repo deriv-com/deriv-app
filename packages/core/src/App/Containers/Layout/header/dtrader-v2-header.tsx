@@ -23,7 +23,7 @@ const DTraderV2Header = observer(() => {
                         <Text size='sm'>{loginid}</Text>
                     </div>
                     <div className='header-v2__acc-info--bottom'>
-                        <Text size='sm'>{`${balance} ${getCurrencyDisplayCode(currency)}`}</Text>
+                        <Text size='sm' bold>{`${balance} ${getCurrencyDisplayCode(currency)}`}</Text>
                     </div>
                 </div>
             </React.Suspense>

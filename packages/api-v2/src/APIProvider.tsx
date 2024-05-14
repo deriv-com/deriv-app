@@ -145,7 +145,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
                 subscribe: async (
                     onData: (response: TSocketResponseData<TSocketSubscribableEndpointNames>) => void
                 ) => {
-                    return wsClientRef.current?.subscribe(name, _payload, onData);
+                    await wsClientRef.current?.subscribe(name, _payload, onData);
                 },
                 unsubscribe: () => {
                     unsubscribe(id);

@@ -6,23 +6,24 @@ import { WalletsActionScreen } from '../WalletsActionScreen';
 
 type TProps = {
     errorMessage: string;
-    renderButtons: JSX.Element | null;
+    renderButtons?: React.ComponentProps<typeof WalletsActionScreen>['renderButtons'];
     title: string;
 };
 
 const WalletsErrorMT5Password: React.FC<TProps> = ({ errorMessage, renderButtons, title }) => {
-    const { isMobile } = useDevice();
+    const { isDesktop, isMobile } = useDevice();
 
     return (
         <ModalStepWrapper
-            renderFooter={() => renderButtons}
-            shouldHideFooter={!isMobile}
+            renderFooter={renderButtons}
+            shouldHideFooter={isDesktop}
+            shouldHideHeader={isDesktop}
             title={`Manage ${title} password`}
         >
             <WalletsActionScreen
                 description={errorMessage}
                 icon={<DerivLightIcDxtradePasswordIcon height={100} width={100} />}
-                renderButtons={() => (!isMobile ? renderButtons : null)}
+                renderButtons={!isMobile ? renderButtons : undefined}
             />
         </ModalStepWrapper>
     );

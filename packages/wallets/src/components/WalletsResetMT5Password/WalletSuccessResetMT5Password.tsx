@@ -35,7 +35,12 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
     }, [handleSuccess, isInvestorPassword, isMobile]);
 
     return (
-        <ModalStepWrapper renderFooter={renderButtons} shouldHideFooter={!isMobile} title={`Manage ${title} password`}>
+        <ModalStepWrapper
+            renderFooter={isMobile ? renderButtons : undefined}
+            shouldHideFooter={!isMobile}
+            shouldHideHeader={!isMobile}
+            title={`Manage ${title} password`}
+        >
             <div className='wallets-reset-mt5-password'>
                 {isInvestorPassword && !isMobile && (
                     <WalletText size='md' weight='bold'>
@@ -56,7 +61,7 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
                             <DerivLightMt5SuccessPasswordResetIcon height={100} width={100} />
                         )
                     }
-                    renderButtons={isMobile ? () => <></> : renderButtons}
+                    renderButtons={isMobile ? undefined : renderButtons}
                     title={isInvestorPassword ? 'Password saved' : 'Success'}
                 />
             </div>

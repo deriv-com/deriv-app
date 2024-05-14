@@ -98,11 +98,11 @@ const WalletsResetMT5Password = ({
             show(
                 <WalletsErrorMT5Password
                     errorMessage={changeInvestorPasswordError?.error?.message}
-                    renderButtons={
+                    renderButtons={() => (
                         <WalletButton isFullWidth={isMobile} onClick={hide}>
                             Ok
                         </WalletButton>
-                    }
+                    )}
                     title={title}
                 />
             );
@@ -129,7 +129,12 @@ const WalletsResetMT5Password = ({
     );
 
     return (
-        <ModalStepWrapper renderFooter={Footer} shouldHideFooter={!isMobile} title={`Manage ${title} password`}>
+        <ModalStepWrapper
+            renderFooter={isMobile ? () => <Footer /> : undefined}
+            shouldHideFooter={!isMobile}
+            shouldHideHeader={!isMobile}
+            title={`Manage ${title} password`}
+        >
             <div className='wallets-reset-mt5-password'>
                 <WalletText align={isMobile ? 'center' : 'left'} weight='bold'>
                     {`Create a new ${title} password`}

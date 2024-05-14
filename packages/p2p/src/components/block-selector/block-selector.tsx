@@ -40,6 +40,10 @@ const BlockSelector = ({ label, onSelect, options, tooltip_info, value }: TBlock
         setSelectors(updated_selectors);
     };
 
+    React.useEffect(() => {
+        onSelect(value);
+    }, []);
+
     return (
         <div className='block-selector'>
             <div className='block-selector__label'>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormikValues, useFormikContext } from 'formik';
 import { Icon, Text } from '@deriv/components';
+import { observer } from '@deriv/stores';
 import BlockSelector from 'Components/block-selector';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -137,4 +138,4 @@ const AdConditionsSection = ({
     );
 };
 
-export default AdConditionsSection;
+export default observer(AdConditionsSection);

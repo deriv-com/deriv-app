@@ -215,6 +215,7 @@ export default class MyAdsStore extends BaseStore {
                         props: { adverts_archive_period },
                     });
                     this.setAdFormValues(null);
+                    this.setShouldCopyAdvert(false);
                 } else if (!this.is_ad_created_modal_visible) {
                     if (!response.p2p_advert_create.is_visible) {
                         this.setAdvertDetails(response.p2p_advert_create);
@@ -235,6 +236,7 @@ export default class MyAdsStore extends BaseStore {
                     this.root_store.general_store.hideModal();
                     this.setShowAdForm(false);
                     this.setAdFormValues(null);
+                    this.setShouldCopyAdvert(false);
                 }
 
                 if (should_reload_ads) this.loadMoreAds({ startIndex: 0 });

@@ -13,16 +13,11 @@ import {
 } from 'Constants/platform-config';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
-import { useActiveWallet } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { CFD_PLATFORMS, getStaticUrl, getUrlSmartTrader, getUrlBinaryBot, MT5_ACCOUNT_STATUS } from '@deriv/shared';
 import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
 import { getAvailablePlatforms } from '../../helpers';
 import './trading-app-card.scss';
-
-type TWalletsProps = {
-    wallet_account?: ReturnType<typeof useActiveWallet>;
-};
 
 const TradingAppCard = ({
     availability,
@@ -41,9 +36,8 @@ const TradingAppCard = ({
     selected_mt5_jurisdiction,
     openFailedVerificationModal,
     market_type,
-    wallet_account,
     is_new = false,
-}: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid & TWalletsProps) => {
+}: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
     const {
         common,
         traders_hub,
@@ -61,7 +55,6 @@ const TradingAppCard = ({
     const available_platforms = getAvailablePlatforms();
 
     const demo_label = localize('Demo');
-    const is_real_account = wallet_account ? !wallet_account.is_virtual : is_real;
 
     const app_platform = available_platforms.includes('options') ? getAppstorePlatforms() : getMFAppstorePlatforms();
 
@@ -160,9 +153,9 @@ const TradingAppCard = ({
                             color='prominent'
                             data-testid='dt_cfd-account-name'
                         >
-                            {!is_real_account && sub_title ? `${sub_title} ${demo_label}` : sub_title}
+                            {!is_real && sub_title ? `${sub_title} ${demo_label}` : sub_title}
                         </Text>
-                        {!wallet_account && short_code_and_region && (
+                        {short_code_and_region && (
                             <Text
                                 weight='bolder'
                                 size='xxxs'

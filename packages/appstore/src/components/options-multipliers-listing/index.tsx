@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Text, StaticUrl } from '@deriv/components';
+import { setPerformanceValue } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
@@ -14,7 +15,7 @@ const OptionsAndMultipliersListing = observer(() => {
     const { traders_hub, client, ui } = useStore();
     const { available_platforms, is_eu_user, is_real, no_MF_account, no_CR_account, is_demo, selected_account_type } =
         traders_hub;
-    const { has_maltainvest_account, real_account_creation_unlock_date } = client;
+    const { has_maltainvest_account, real_account_creation_unlock_date, is_landing_company_loaded } = client;
 
     const { setShouldShowCooldownModal, openRealAccountSignup, is_mobile } = ui;
 
@@ -37,6 +38,12 @@ const OptionsAndMultipliersListing = observer(() => {
         }
         return null;
     };
+
+    useEffect(() => {
+        if (is_landing_company_loaded) {
+            setPerformanceValue('option_multiplier_section_loading_time');
+        }
+    }, [is_landing_company_loaded]);
 
     return (
         <ListingContainer

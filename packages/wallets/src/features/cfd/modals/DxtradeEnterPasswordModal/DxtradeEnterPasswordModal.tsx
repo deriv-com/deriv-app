@@ -57,19 +57,20 @@ const DxtradeEnterPasswordModal = () => {
         if (!isDxtradePasswordNotSet && isMobile) {
             show(
                 <ModalStepWrapper title="We've sent you an email">
-                    <SentEmailContent platform={dxtradePlatform} />
+                    <SentEmailContent onErrorButtonClick={hide} platform={dxtradePlatform} />
                 </ModalStepWrapper>
             );
         } else if (!isDxtradePasswordNotSet) {
             show(
                 <ModalWrapper>
-                    <SentEmailContent platform={dxtradePlatform} />
+                    <SentEmailContent onErrorButtonClick={hide} platform={dxtradePlatform} />
                 </ModalWrapper>
             );
         }
     }, [
         accountStatusSuccess,
         dxtradePlatform,
+        hide,
         isCreateAccountSuccessful,
         isDxtradePasswordNotSet,
         isMobile,

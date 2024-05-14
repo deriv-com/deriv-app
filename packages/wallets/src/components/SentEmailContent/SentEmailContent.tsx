@@ -22,6 +22,7 @@ type SentEmailContentProps = {
     description?: string;
     isChangePassword?: boolean; // NOTE: This prop is ONLY used for rendering different email icons between either Change Password/Forgot password email modal
     isInvestorPassword?: boolean;
+    onErrorButtonClick?: () => void;
     platform?: TPlatforms.All;
 };
 
@@ -57,11 +58,12 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
     description,
     isChangePassword = false,
     isInvestorPassword = false,
+    onErrorButtonClick,
     platform,
 }) => {
     const [shouldShowResendEmailReasons, setShouldShowResendEmailReasons] = useState(false);
     const [hasCountdownStarted, setHasCountdownStarted] = useState(false);
-    const { sendEmail } = useSendPasswordResetEmail();
+    const { error: resetPasswordError, sendEmail } = useSendPasswordResetEmail();
     const { isMobile } = useDevice();
     const mt5Platform = PlatformDetails.mt5.platform;
     const { title } = PlatformDetails[platform ?? mt5Platform];
@@ -88,6 +90,16 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
     useEffect(() => {
         if (count === 0) setHasCountdownStarted(false);
     }, [count]);
+
+    if (resetPasswordError) {
+        return (
+            <WalletError
+                errorMessage={resetPasswordError?.error.message}
+                onClick={onErrorButtonClick}
+                title={resetPasswordError?.error?.code}
+            />
+        );
+    }
 
     return (
         <div className='wallets-sent-email-content'>

@@ -2,7 +2,7 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import {
     LegacyMarketBasketIndicesIcon,
-    LegacyMenuHamburger1pxIcon,
+    StandaloneBarsRegularIcon,
     StandaloneChartCandlestickRegularIcon,
     StandaloneClockThreeRegularIcon,
 } from '@deriv/quill-icons';
@@ -32,7 +32,7 @@ const bottomNavItems = [
         label: <Localize i18n_default_text='Positions' />,
     },
     {
-        icon: <LegacyMenuHamburger1pxIcon iconSize='sm' />,
+        icon: <StandaloneBarsRegularIcon iconSize='sm' />,
         label: <Localize i18n_default_text='Menu' />,
     },
 ];

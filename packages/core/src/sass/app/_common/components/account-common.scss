@@ -289,7 +289,12 @@
             border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
             border-top: 1px solid var(--general-section-1);
             background-color: var(--general-main-1);
-
+            @include tablet-screen {
+                max-width: 600px;
+                margin: 0 auto;
+                left: 0;
+                right: 0;
+            }
             .back-btn {
                 margin-right: 8px;
 
@@ -330,7 +335,9 @@
 
             &-btn {
                 height: 4rem;
-
+                @include tablet-screen {
+                    width: 100%;
+                }
                 &-wrapper {
                     align-items: normal;
                     display: flex;

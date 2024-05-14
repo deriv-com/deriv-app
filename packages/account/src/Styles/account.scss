@@ -213,6 +213,22 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
+        @include tablet-screen {
+            &__financial-assessment {
+                max-width: 600px;
+                margin: 0 auto;
+                .account-form__fieldset {
+                    max-width: 100%;
+                    width: 100%;
+                }
+                .account-form__footer {
+                    max-width: 600px;
+                    margin: 0 auto;
+                    left: 0;
+                    right: 0;
+                }
+            }
+        }
 
         &__header {
             font-size: var(--text-size-xs);

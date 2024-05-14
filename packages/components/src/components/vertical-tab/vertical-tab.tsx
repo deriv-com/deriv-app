@@ -9,6 +9,7 @@ import VerticalTabHeaderTitle from './vertical-tab-header-title';
 import VerticalTabLayout from './vertical-tab-layout';
 import VerticalTabWrapper from './vertical-tab-wrapper';
 import Icon from '../icon/icon';
+import { useDevice } from '@deriv-com/ui';
 
 type TSetSelectedIndex = {
     current_path: string;
@@ -96,6 +97,7 @@ const VerticalTab = ({
     vertical_tab_index,
 }: TVerticalTab) => {
     const [curr_tab_index, setCurrTabIndex] = React.useState(vertical_tab_index || 0);
+    const { isDesktop } = useDevice();
 
     const changeSelected = (e: TItem) => {
         setSelectedIndex({
@@ -140,7 +142,7 @@ const VerticalTab = ({
                 </div>
             )}
 
-            {is_sidebar_enabled && (
+            {is_sidebar_enabled && isDesktop && (
                 <div
                     className={classNames('dc-vertical-tab__tab-meta-wrapper', {
                         'dc-vertical-tab__tab-meta-wrapper--floating': is_floating,

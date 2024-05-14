@@ -28,7 +28,7 @@ const DatePicker = ({
     validationSchema,
 }: TDatePickerProps) => {
     const [selectedDate, setSelectedDate] = useState<Date | null>(defaultValue ? new Date(defaultValue) : null);
-    const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
+    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const datePickerRef = useRef<HTMLDivElement>(null);
     const inputeDateRef = useRef<HTMLInputElement>(null);
 
@@ -79,7 +79,7 @@ const DatePicker = ({
                 )}
                 showMessage
                 validationSchema={validationSchema}
-                value={selectedDate !== null ? unixToDateString(selectedDate) : undefined}
+                value={selectedDate !== null ? unixToDateString(selectedDate) : ''}
             />
             {isCalendarOpen && (
                 <div
@@ -92,7 +92,7 @@ const DatePicker = ({
                         maxDate={maxDate}
                         minDate={minDate}
                         onChange={handleDateChange}
-                        value={selectedDate !== null ? selectedDate : undefined}
+                        value={selectedDate !== null ? selectedDate : ''}
                     />
                 </div>
             )}

@@ -10,10 +10,6 @@ import { WalletCard } from '../WalletCard';
 import { WalletListCardActions } from '../WalletListCardActions';
 import './WalletsCarouselContent.scss';
 
-type TProps = {
-    onWalletSettled?: (value: boolean) => void;
-};
-
 const numberWithinRange = (number: number, min: number, max: number): number => Math.min(Math.max(number, min), max);
 
 // scale based on the width difference between active wallet (288px) and inactive wallets + padding (240px + 16px)
@@ -25,7 +21,7 @@ const TRANSITION_FACTOR_SCALE = 1 - 25.6 / 28.8;
  * - Embla is the SINGLE SOURCE OF TRUTH for current active card, so the state flow / data flow is simple
  * - everything else gets in sync with Embla eventually
  */
-const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
+const WalletsCarouselContent: React.FC = () => {
     const switchWalletAccount = useWalletAccountSwitcher();
     const history = useHistory();
 
@@ -146,11 +142,6 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
             loginId && setSelectedLoginId(loginId);
         });
 
-        // on settle, this is only for tutorial / onboarding plugin in some other components,
-        walletsCarouselEmblaApi?.on('settle', () => {
-            onWalletSettled?.(true);
-        });
-
         return () => {
             walletsCarouselEmblaApi?.off('select', () => {
                 const index = walletsCarouselEmblaApi?.selectedScrollSnap();
@@ -160,10 +151,6 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
                 const loginId = walletsAccountsListRef?.current?.[index]?.loginid;
 
                 loginId && setSelectedLoginId(loginId);
-            });
-
-            walletsCarouselEmblaApi?.off('settle', () => {
-                onWalletSettled?.(true);
             });
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps

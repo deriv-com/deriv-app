@@ -28,7 +28,7 @@ export const desktopStepTourGuide: Step[] = [
     },
     {
         content: <WalletText size='sm'>Use the drop-down menu to switch between your Wallets.</WalletText>,
-        placement: 'right',
+        placement: 'bottom',
         target: '.wallets-textfield__box',
         title: <SpotLightHeader>Switch between Wallets</SpotLightHeader>,
         ...stepProps,
@@ -69,6 +69,7 @@ export const mobileStepTourGuide: Step[] = [
     {
         content: <WalletText size='sm'>Manage your funds with Wallets.</WalletText>,
         placement: 'bottom',
+        styles: { spotlight: { borderRadius: '0' } },
         target: '.wallets-carousel-content',
         title: <SpotLightHeader>This is your Wallet</SpotLightHeader>,
         ...stepProps,
@@ -76,6 +77,7 @@ export const mobileStepTourGuide: Step[] = [
     {
         content: <WalletText size='sm'>Swipe left or right to switch between Wallets.</WalletText>,
         placement: 'bottom',
+        styles: { spotlight: { borderRadius: '0' } },
         target: '.wallets-carousel-content__wrapper',
         title: <SpotLightHeader>Switch between Wallets</SpotLightHeader>,
         ...stepProps,

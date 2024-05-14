@@ -17,7 +17,7 @@ import {
     walletsOnboardingLocalStorageKey as key,
     walletsOnboardingStartValue as START_VALUE,
 } from './WalletTourGuideSettings';
-import { desktopStepTourGuide } from './WalletTourSteps';
+import { desktopStepTourGuide, mobileStepTourGuide } from './WalletTourGuideSteps';
 import './WalletTourGuide.scss';
 
 const WalletTourGuide = () => {
@@ -36,10 +36,14 @@ const WalletTourGuide = () => {
 
     const { isLoading: ctraderIsLoading } = useCtraderAccountsList();
     const { isLoading: dxtradeIsLoading } = useDxtradeAccountsList();
-    const { isLoading: sorteAccountsListLoading } = useSortedMT5Accounts();
+    const { isLoading: sortedAccountsIsLoading } = useSortedMT5Accounts();
 
-    const fiatWalletLoginId = getFiatWalletLoginId(wallets);
+    const needToStart = walletsOnboarding === START_VALUE;
     const activeWalletLoginId = activeWallet?.loginid;
+    const fiatWalletLoginId = getFiatWalletLoginId(wallets);
+    const activeFiatWalletLoginId = fiatWalletLoginId == activeWalletLoginId;
+    const isEverythingLoaded =
+        !isLoading && !isFetching && isSuccess && !ctraderIsLoading && !dxtradeIsLoading && !sortedAccountsIsLoading;
 
     const handleNextAction = (index: number) => {
         setJoyrideIndex(index + 1);
@@ -54,34 +58,28 @@ const WalletTourGuide = () => {
     };
 
     useEffect(() => {
-        const needToStart = walletsOnboarding === START_VALUE;
-        if (needToStart) {
-            const isAnythingLoading =
-                dxtradeIsLoading ||
-                ctraderIsLoading ||
-                isFetching ||
-                !isSuccess ||
-                isLoading ||
-                sorteAccountsListLoading;
-            if (fiatWalletLoginId && fiatWalletLoginId !== activeWalletLoginId) {
-                switchWalletAccount(fiatWalletLoginId);
-            } else if (needToStart && !isAnythingLoading) {
-                setRun(true);
-                setWalletsOnboarding('');
+        const switchAccountAndRun = async () => {
+            if (needToStart) {
+                if (fiatWalletLoginId && !activeFiatWalletLoginId) {
+                    await switchWalletAccount(fiatWalletLoginId);
+                }
+                if (isEverythingLoaded && activeFiatWalletLoginId) {
+                    setWalletsOnboarding('');
+                    setRun(true);
+                }
             }
-        }
+        };
+
+        switchAccountAndRun();
     }, [
+        activeFiatWalletLoginId,
         activeWalletLoginId,
         fiatWalletLoginId,
-        switchWalletAccount,
-        walletsOnboarding,
-        isLoading,
-        isFetching,
-        isSuccess,
-        dxtradeIsLoading,
-        ctraderIsLoading,
-        sorteAccountsListLoading,
+        isEverythingLoaded,
+        needToStart,
+        run,
         setWalletsOnboarding,
+        switchWalletAccount,
     ]);
 
     const callbackHandle = (data: CallBackProps) => {
@@ -92,7 +90,6 @@ const WalletTourGuide = () => {
         if (finishedStatuses.includes(status)) {
             setRun(false);
             setJoyrideIndex(0);
-            return;
         }
 
         if (!skipTypes.includes(type)) {
@@ -106,8 +103,6 @@ const WalletTourGuide = () => {
         }
     };
 
-    if (isMobile) return null;
-
     return (
         <Joyride
             callback={callbackHandle}
@@ -118,7 +113,7 @@ const WalletTourGuide = () => {
             run={run}
             scrollOffset={100}
             stepIndex={joyrideIndex}
-            steps={desktopStepTourGuide}
+            steps={isMobile ? mobileStepTourGuide : desktopStepTourGuide}
             tooltipComponent={TooltipComponent}
         />
     );

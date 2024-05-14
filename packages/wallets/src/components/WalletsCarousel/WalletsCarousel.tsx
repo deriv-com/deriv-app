@@ -6,7 +6,6 @@ import { WalletsCarouselHeader } from '../WalletsCarouselHeader';
 import './WalletsCarousel.scss';
 
 const WalletsCarousel: React.FC = () => {
-    const [isWalletSettled, setIsWalletSettled] = useState(true);
     const [hideWalletsCarouselHeader, setHideWalletsCarouselHeader] = useState(true);
     const contentRef = useRef(null);
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
@@ -48,10 +47,10 @@ const WalletsCarousel: React.FC = () => {
                     />
                 )}
                 <div ref={contentRef}>
-                    <WalletsCarouselContent onWalletSettled={setIsWalletSettled} />
+                    <WalletsCarouselContent />
                 </div>
             </div>
-            <AccountsList isWalletSettled={isWalletSettled} />
+            <AccountsList />
         </div>
     );
 };

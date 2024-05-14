@@ -1,7 +1,7 @@
 import React from 'react';
+import { useHistory } from 'react-router';
 import { Modal, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
-import { useHistory } from 'react-router';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { LabelPairedBadgeCheckLgRegularIcon } from '@deriv/quill-icons';

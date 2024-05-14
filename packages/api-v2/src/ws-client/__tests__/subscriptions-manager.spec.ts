@@ -12,7 +12,7 @@ describe('SubscriptionsManager', () => {
         mockWs = mockWebSocketFactory();
 
         subscriptionsManager = new SubscriptionsManager();
-        subscriptionsManager.setAuthorizedWs(mockWs);
+        subscriptionsManager.setAuthorizedWs(mockWs as unknown as WebSocket);
     });
 
     afterEach(() => {

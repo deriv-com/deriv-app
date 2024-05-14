@@ -158,6 +158,9 @@
         @include desktop {
             position: absolute;
         }
+        @include tablet {
+            position: absolute;
+        }
 
         inset-inline-end: 1.6rem;
         top: 1.6rem;
@@ -313,6 +316,9 @@
     }
     &__run-strategy-wrapper {
         @include desktop {
+            position: absolute;
+        }
+        @include tablet {
             position: absolute;
         }
 

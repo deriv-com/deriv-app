@@ -2,7 +2,7 @@ import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import AccountInfoIcon from 'App/Components/Layout/Header/account-info-icon';
-import { Text } from '@deriv/quill-ui';
+import { Text } from '@deriv-com/quill-ui';
 
 const DTraderV2Header = observer(() => {
     const { client } = useStore();

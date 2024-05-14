@@ -12,6 +12,9 @@ $MIN_HEIGHT_FLOATING: calc(
             overflow-x: hidden;
             overflow-y: auto;
         }
+        @include tablet-screen {
+            width: 60rem;
+        }
     }
 
     .dc-vertical-tab {
@@ -211,6 +214,24 @@ $MIN_HEIGHT_FLOATING: calc(
                     margin-top: 0.8rem;
                     margin-bottom: 2rem;
                 }
+            }
+        }
+
+        @include tablet-screen {
+            &__personal-details {
+                max-width: 60rem;
+                .account-form__fieldset {
+                    max-width: 100%;
+                }
+                .account-form__footer {
+                    max-width: 600px;
+                    padding: 1.6rem 0;
+                }
+            }
+        }
+        & .account__scrollbars_container--grid-layout {
+            @include tablet-screen {
+                padding: 0;
             }
         }
 

@@ -1,20 +1,36 @@
 import React from 'react';
-import { Button, Text } from '@deriv-com/quill-ui';
-import { Modal } from '@deriv/components';
+import { Modal, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
 import { routes } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { LabelPairedBadgeCheckLgRegularIcon } from '@deriv/quill-icons';
 
-const PhoneNumberVerifiedModal = () => {
+const PhoneNumberVerifiedModal = observer(() => {
     const [should_show_phone_number_verified_modal, setShouldShowPhoneNumberVerifiedModal] = React.useState(false);
     const history = useHistory();
     const handleDoneButton = () => {
         setShouldShowPhoneNumberVerifiedModal(false);
         history.push(routes.personal_details);
     };
+    const { ui } = useStore();
+    const { is_mobile } = ui;
 
     return (
-        <Modal className='phone-verification__verified-modal' is_open={should_show_phone_number_verified_modal}>
+        <Modal
+            isMobile={is_mobile}
+            showHandleBar
+            isOpened={should_show_phone_number_verified_modal}
+            primaryButtonCallback={handleDoneButton}
+            primaryButtonLabel={<Localize i18n_default_text='Done' />}
+            disableCloseOnOverlay
+        >
+            <Modal.Header
+                image={<LabelPairedBadgeCheckLgRegularIcon fill='#007A22' height={96} width={96} />}
+                style={{
+                    backgroundColor: 'var(--core-color-solid-green-100)',
+                }}
+            />
             <Modal.Body>
                 <div className='phone-verification__verified-modal--contents'>
                     <Text bold>
@@ -25,17 +41,8 @@ const PhoneNumberVerifiedModal = () => {
                     </Text>
                 </div>
             </Modal.Body>
-            <Modal.Footer>
-                <div className='phone-verification__verified-modal--buttons'>
-                    <Button color='black' fullWidth size='lg' onClick={handleDoneButton}>
-                        <Text color='white' bold>
-                            <Localize i18n_default_text='Done' />
-                        </Text>
-                    </Button>
-                </div>
-            </Modal.Footer>
         </Modal>
     );
-};
+});
 
 export default PhoneNumberVerifiedModal;

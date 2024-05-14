@@ -249,9 +249,13 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
             <div className='wallets-carousel-content__container'>
                 {walletAccountsList?.map((account, index) => (
                     <WalletCard
-                        balance={displayMoney(balanceData.balance ?? 0, activeWallet?.currency ?? '', {
-                            fractional_digits: activeWallet?.currency_config?.fractional_digits,
-                        })}
+                        balance={
+                            account.loginid === selectedLoginId
+                                ? displayMoney(balanceData.balance ?? 0, activeWallet?.currency ?? '', {
+                                      fractional_digits: activeWallet?.currency_config?.fractional_digits,
+                                  })
+                                : account.display_balance
+                        }
                         currency={account.currency || 'USD'}
                         iconSize='lg'
                         isCarouselContent

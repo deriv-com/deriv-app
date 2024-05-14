@@ -1,7 +1,8 @@
 import React from 'react';
+import { Text } from '@deriv-com/quill-ui';
 
 const Positions = () => {
-    return <div>Positions</div>;
+    return <Text size='sm'>Positions</Text>;
 };
 
 export default Positions;

@@ -1,7 +1,8 @@
+import { Text } from '@deriv-com/quill-ui';
 import React from 'react';
 
 const Markets = () => {
-    return <div>Markets</div>;
+    return <Text size='sm'>Markets</Text>;
 };
 
 export default Markets;

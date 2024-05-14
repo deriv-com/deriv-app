@@ -401,12 +401,12 @@
         }
 
         &--logo {
-            height: var(--temp-static-spacing-16); //Waiting on quill-tokens
-            width: var(--temp-static-spacing-16); //Waiting on quill-tokens
+            height: var(--core-size-800);
+            width: var(--core-size-800);
 
             svg {
-                width: var(--temp-static-spacing-16); //Waiting on quill-tokens
-                height: var(--temp-static-spacing-16); //Waiting on quill-tokens
+                width: var(--core-size-800);
+                height: var(--core-size-800);
             }
         }
 

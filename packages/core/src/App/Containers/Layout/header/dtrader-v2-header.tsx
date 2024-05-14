@@ -2,6 +2,7 @@ import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import AccountInfoIcon from 'App/Components/Layout/Header/account-info-icon';
+import { Text } from '@deriv/quill-ui';
 
 const DTraderV2Header = observer(() => {
     const { client } = useStore();
@@ -19,11 +20,10 @@ const DTraderV2Header = observer(() => {
                                 <AccountInfoIcon is_virtual={is_virtual} currency={currency_lower} />
                             )}
                         </span>
-
-                        {loginid}
+                        <Text size='sm'>{loginid}</Text>
                     </div>
                     <div className='header-v2__acc-info--bottom'>
-                        <span>{`${balance} ${getCurrencyDisplayCode(currency)}`}</span>
+                        <Text size='sm'>{`${balance} ${getCurrencyDisplayCode(currency)}`}</Text>
                     </div>
                 </div>
             </React.Suspense>

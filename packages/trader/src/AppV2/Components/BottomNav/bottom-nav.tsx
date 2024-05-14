@@ -16,29 +16,40 @@ type BottomNavProps = {
 
 const bottomNavItems = [
     {
-        icon: <StandaloneChartCandlestickRegularIcon iconSize='sm' />,
+        icon: (
+            <StandaloneChartCandlestickRegularIcon
+                iconSize='sm'
+                fill='var(--semantic-color-monochrome-textIcon-normal-high)'
+            />
+        ),
         label: <Localize i18n_default_text='Trade' />,
     },
     {
-        icon: <LegacyMarketBasketIndicesIcon iconSize='sm' />,
+        icon: (
+            <LegacyMarketBasketIndicesIcon iconSize='sm' fill='var(--semantic-color-monochrome-textIcon-normal-high)' />
+        ),
         label: <Localize i18n_default_text='Markets' />,
     },
     {
         icon: (
             <Badge variant='notification' position='top-right' label='10' color='danger' size='sm' contentSize='sm'>
-                <StandaloneClockThreeRegularIcon iconSize='sm' />
+                <StandaloneClockThreeRegularIcon
+                    iconSize='sm'
+                    fill='var(--semantic-color-monochrome-textIcon-normal-high)'
+                />
             </Badge>
         ),
         label: <Localize i18n_default_text='Positions' />,
     },
     {
-        icon: <StandaloneBarsRegularIcon iconSize='sm' />,
+        icon: <StandaloneBarsRegularIcon iconSize='sm' fill='var(--semantic-color-monochrome-textIcon-normal-high)' />,
         label: <Localize i18n_default_text='Menu' />,
     },
 ];
 
 const BottomNav = ({ className, children }: BottomNavProps) => {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
+
     return (
         <div className={className}>
             <div className='bottom-nav-container'>

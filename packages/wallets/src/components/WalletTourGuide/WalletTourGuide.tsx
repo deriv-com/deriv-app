@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Joyride, { CallBackProps, STATUS } from 'react-joyride';
+import Joyride, { STATUS, CallBackProps } from '@deriv/react-joyride';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import {
     useActiveWalletAccount,

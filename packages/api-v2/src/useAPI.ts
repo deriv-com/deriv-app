@@ -9,6 +9,8 @@ import type {
 } from '../types';
 import { useAPIContext } from './APIProvider';
 
+type UnsubscribeFunction = () => Promise<void> | undefined;
+
 const useAPI = () => {
     const { wsClient, connection } = useAPIContext();
 
@@ -18,15 +20,9 @@ const useAPI = () => {
             payload?: TSocketRequestPayload<T>['payload']
         ): Promise<TSocketResponseData<T>> => {
             // casting needed as there is genuine type mismatch which have been there already
-            const response = await wsClient?.request<T>(
-                name,
-                payload as unknown as TSocketRequestPayload<T>['payload']
-            );
-
-            // if (response.error) {
-            //     throw response.error;
-            // }
-            return response;
+            // so it needs to be fixed in one of the layers,
+            // potentially will make this consistent in upcoming PRs
+            return wsClient?.request<T>(name, payload as unknown as TSocketRequestPayload<T>['payload']);
         },
         [wsClient]
     );
@@ -45,20 +41,20 @@ const useAPI = () => {
                 onError: (response: any) => void
             ) => { unsubscribe?: VoidFunction };
         } => {
-            return {
-                subscribe(onData: (response: any) => void, onError: (response: any) => void) {
-                    const subscribeResponse = wsClient?.subscribe(name, payload, onData);
-                    const unsubscribe = () => {
-                        return subscribeResponse?.then(response => {
-                            return response.unsubscribe?.();
-                        });
-                    };
+            const subscribeHandler = (onData: (response: any) => void): { unsubscribe?: UnsubscribeFunction } => {
+                // Start the subscription and keep the promise.
+                const subscriptionPromise = wsClient?.subscribe(name, payload, onData);
 
-                    return {
-                        unsubscribe,
-                    };
-                },
+                // Define unsubscribe function, which will be returned inside the object from subscribeHandler.
+                const unsubscribe: UnsubscribeFunction = async () => {
+                    const subscribeResponse = await subscriptionPromise;
+                    return subscribeResponse?.unsubscribe?.();
+                };
+
+                return { unsubscribe };
             };
+
+            return { subscribe: subscribeHandler };
         },
         [wsClient]
     );

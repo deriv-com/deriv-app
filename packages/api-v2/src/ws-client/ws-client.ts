@@ -50,6 +50,7 @@ export default class WSClient {
             if ((response as unknown as any).msg_type === 'authorize') {
                 this.onWebsocketAuthorized();
             }
+
             return response;
         });
     }

@@ -97,8 +97,6 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
         return rootRef;
     }, [modalOptions?.rootRef, modalOptions?.shouldHideDerivAppHeader, modalOptions?.defaultRootId, isMobile]);
 
-    if (!modalRootRef?.current) return null;
-
     return (
         <ModalContext.Provider
             value={{
@@ -112,9 +110,9 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
             }}
         >
             {children}
-            {modalRootRef?.current &&
-                content &&
-                createPortal(<div ref={modalRef}>{content}</div>, modalRootRef.current)}
+            {modalRootRef?.current && content
+                ? createPortal(<div ref={modalRef}>{content}</div>, modalRootRef.current)
+                : null}
         </ModalContext.Provider>
     );
 };

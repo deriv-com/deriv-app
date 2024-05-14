@@ -9,7 +9,6 @@ import {
     WalletsPrimaryTabPanels,
     WalletsPrimaryTabs,
 } from '../WalletsPrimaryTabs';
-import { WalletTourGuide } from '../WalletTourGuide';
 import './AccountsList.scss';
 
 const AccountsList: FC = () => {
@@ -28,7 +27,6 @@ const AccountsList: FC = () => {
                         <OptionsAndMultipliersListing />
                     </WalletsPrimaryTabPanel>
                 </WalletsPrimaryTabPanels>
-                <WalletTourGuide />
             </WalletsPrimaryTabs>
         );
     }

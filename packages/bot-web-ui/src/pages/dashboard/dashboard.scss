@@ -175,6 +175,11 @@
                 align-items: flex-start;
                 padding: 1.6rem;
             }
+
+            @include tablet {
+                padding: 0 6rem;
+            }
+
             .quick-panel {
                 flex: 1 1 44%;
             }
@@ -297,6 +302,10 @@
         &__table {
             &--minimized {
                 width: 100%;
+
+                @include tablet {
+                    width: 600px;
+                }
             }
 
             &__tiles {

@@ -130,9 +130,7 @@ const OptionsAndMultipliersListing = observer(() => {
                                 action: 'account_open',
                                 form_name: 'traders_hub_default',
                                 account_mode: selected_account_type,
-                                account_name: is_demo
-                                    ? `${available_platform.name} ${localize('Demo')}`
-                                    : available_platform.name,
+                                account_name: is_demo ? `${available_platform.name} Demo` : available_platform.name,
                             });
                         }}
                         has_divider={(!is_eu_user || is_demo) && getHasDivider(index, available_platforms.length, 3)}

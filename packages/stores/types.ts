@@ -994,6 +994,7 @@ type TTradersHubStore = {
     content_flag: 'low_risk_cr_eu' | 'low_risk_cr_non_eu' | 'high_risk_cr' | 'cr_demo' | 'eu_demo' | 'eu_real' | '';
     combined_cfd_mt5_accounts: DetailsOfEachMT5Loginid &
         {
+            tracking_name: string;
             short_code_and_region: string;
             login: string;
             sub_title: string;

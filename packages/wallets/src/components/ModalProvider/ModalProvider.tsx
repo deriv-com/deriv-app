@@ -1,11 +1,9 @@
 import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import classNames from 'classnames';
 import { createPortal } from 'react-dom';
 import { useHistory } from 'react-router-dom';
 import { useOnClickOutside } from 'usehooks-ts';
 import useDevice from '../../hooks/useDevice';
 import { THooks, TMarketTypes, TPlatforms } from '../../types';
-import './ModalProvider.scss';
 
 type TModalState = {
     accountId?: string;
@@ -99,6 +97,8 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
         return rootRef;
     }, [modalOptions?.rootRef, modalOptions?.shouldHideDerivAppHeader, modalOptions?.defaultRootId, isMobile]);
 
+    if (!modalRootRef?.current) return null;
+
     return (
         <ModalContext.Provider
             value={{
@@ -113,15 +113,8 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
         >
             {children}
             {modalRootRef?.current &&
-                createPortal(
-                    <div
-                        className={classNames('wallets-modal__content', { 'wallets-modal__content--hidden': !content })}
-                        ref={modalRef}
-                    >
-                        {content ?? null}
-                    </div>,
-                    modalRootRef.current
-                )}
+                content &&
+                createPortal(<div ref={modalRef}>{content}</div>, modalRootRef.current)}
         </ModalContext.Provider>
     );
 };

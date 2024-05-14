@@ -21,7 +21,6 @@ import CompareAccount from 'Components/compare-account';
 import { getHasDivider } from 'Constants/utils';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import './cfds-listing.scss';
-import { TMarketType } from '../../types/common.types';
 
 const MigrationBanner = makeLazyLoader(
     () =>

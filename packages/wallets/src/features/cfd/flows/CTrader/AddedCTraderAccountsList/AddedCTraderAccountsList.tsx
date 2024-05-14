@@ -5,7 +5,7 @@ import { TradingAccountCard } from '../../../../../components';
 import { WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import { PlatformDetails } from '../../../constants';
-import { MT5TradeModal } from '../../../modals';
+import { CTraderTradeModal } from '../../../modals';
 import './AddedCTraderAccountsList.scss';
 
 const AddedCTraderAccountsList: React.FC = () => {
@@ -18,7 +18,7 @@ const AddedCTraderAccountsList: React.FC = () => {
                 <TradingAccountCard
                     key={`added-ctrader-${account.login}`}
                     leading={<div className='wallets-added-ctrader__icon'>{PlatformDetails.ctrader.icon}</div>}
-                    onClick={() => show(<MT5TradeModal platform={PlatformDetails.ctrader.platform} />)}
+                    onClick={() => show(<CTraderTradeModal platform={PlatformDetails.ctrader.platform} />)}
                     trailing={
                         <div className='wallets-added-ctrader__icon'>
                             <LabelPairedChevronRightCaptionRegularIcon width={16} />

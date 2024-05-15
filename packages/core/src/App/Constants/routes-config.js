@@ -102,6 +102,10 @@ const Cashier_V2 = React.lazy(() =>
     })
 );
 
+const RedirectToNewTradersHub = () => {
+    return <Redirect to={routes.traders_hub} />;
+};
+
 const getModules = () => {
     const modules = [
         {
@@ -442,6 +446,12 @@ const getModules = () => {
             path: routes.traders_hub,
             component: AppStore,
             exact: true,
+            is_authenticated: false,
+            getTitle: () => localize("Trader's Hub"),
+        },
+        {
+            path: routes.old_traders_hub,
+            component: RedirectToNewTradersHub,
             is_authenticated: false,
             getTitle: () => localize("Trader's Hub"),
         },

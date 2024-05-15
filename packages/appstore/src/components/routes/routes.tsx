@@ -14,7 +14,7 @@ const TradersHubLoggedOut = React.lazy(
 
 const Routes: React.FC = observer(() => {
     const { client } = useStore();
-    const { is_logged_in, has_wallet } = client;
+    const { is_logged_in, is_logging_in, has_wallet } = client;
     const history = useHistory();
 
     const title_TH = localize("Trader's Hub");
@@ -29,8 +29,8 @@ const Routes: React.FC = observer(() => {
             <Switch>
                 <RouteWithSubroutes
                     path={routes.traders_hub}
-                    component={is_logged_in ? TradersHub : TradersHubLoggedOut}
-                    getTitle={() => (is_logged_in ? title_TH : title_TH_logged_out)}
+                    component={is_logged_in || is_logging_in ? TradersHub : TradersHubLoggedOut}
+                    getTitle={() => (is_logged_in || is_logging_in ? title_TH : title_TH_logged_out)}
                 />
                 <RouteWithSubroutes
                     path={routes.onboarding}

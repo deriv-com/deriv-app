@@ -1,0 +1,1 @@
+export { ProofOfIncomeForm } from './ProofOfIncomeForm';

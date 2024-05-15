@@ -14,7 +14,6 @@ type TProps = {
     cardSize: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     device: 'desktop' | 'mobile';
     isDemoWallet?: THooks.ActiveWalletAccount['is_virtual'];
-    walletIcon: string;
     walletName?: string;
 };
 
@@ -26,7 +25,6 @@ const AppCard: React.FC<TProps> = ({
     cardSize = 'md',
     device = 'desktop',
     isDemoWallet = false,
-    walletIcon,
     walletName,
 }) => {
     return (
@@ -44,7 +42,6 @@ const AppCard: React.FC<TProps> = ({
                             currency={activeWalletCurrency ?? ''}
                             isDemo={isDemoWallet}
                             size='small'
-                            walletIcon={walletIcon}
                         />
                     </div>
                     {cardSize !== 'sm' && (

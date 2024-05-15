@@ -1,12 +1,12 @@
 import React from 'react';
 import classnames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
-import { ProposalOpenContract } from '@deriv/api-types';
 import { Button, DataList, Icon, Text, ThemedScrollbars } from '@deriv/components';
 import { useNewRowTransition } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import Download from 'Components/download';
+import { TContractInfo } from 'Components/summary/summary-card.types';
 import { contract_stages } from 'Constants/contract-stage';
 import { transaction_elements } from 'Constants/transactions';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -19,19 +19,25 @@ type TTransactions = {
 type TTransactionItem = {
     row: {
         type: string;
-        data: ProposalOpenContract;
+        data: TContractInfo;
     };
-    is_new_row: boolean;
+    is_new_row?: boolean;
+    onClickTransaction?: (transaction_id: null | number) => void;
+    active_transaction_id?: number | null;
 };
 
-const TransactionItem = ({ row, is_new_row }: TTransactionItem) => {
+const TransactionItem = ({ row, is_new_row = false, onClickTransaction, active_transaction_id }: TTransactionItem) => {
     const { in_prop } = useNewRowTransition(is_new_row);
     switch (row.type) {
         case transaction_elements.CONTRACT: {
             const { data: contract } = row;
             return (
                 <CSSTransition in={in_prop} timeout={500} classNames='list__animation'>
-                    <Transaction contract={contract} />
+                    <Transaction
+                        contract={contract}
+                        onClickTransaction={onClickTransaction}
+                        active_transaction_id={active_transaction_id}
+                    />
                 </CSSTransition>
             );
         }
@@ -49,15 +55,47 @@ const TransactionItem = ({ row, is_new_row }: TTransactionItem) => {
 };
 
 const Transactions = observer(({ is_drawer_open }: TTransactions) => {
+    const [active_transaction_id, setActiveTransactionId] = React.useState<number | null>(null);
     const { ui } = useStore();
     const { run_panel, transactions } = useDBotStore();
     const { contract_stage } = run_panel;
-    const { transactions: transaction_list, onMount, onUnmount, toggleTransactionDetailsModal } = transactions;
+    const { transactions: transaction_list, toggleTransactionDetailsModal, recoverPendingContracts } = transactions;
     const { is_mobile } = ui;
+
     React.useEffect(() => {
-        onMount();
-        return () => onUnmount();
-    }, [onMount, onUnmount]);
+        window.addEventListener('click', onClickOutsideTransaction);
+        recoverPendingContracts();
+        return () => {
+            window.removeEventListener('click', onClickOutsideTransaction);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    React.useEffect(() => {
+        if (active_transaction_id) {
+            setActiveTransactionId(null);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [transaction_list?.length]);
+
+    const onClickOutsideTransaction = (event: PointerEvent | MouseEvent | TouchEvent) => {
+        const path: EventTarget[] = event?.composedPath() || [];
+        const is_transaction_click = path.some(el =>
+            (el as HTMLElement).classList?.contains('transactions__item-wrapper')
+        );
+        if (!is_transaction_click) {
+            setActiveTransactionId(null);
+        }
+    };
+
+    const onClickTransaction = (transaction_id: null | number) => {
+        // Toggle transaction popover if passed transaction_id is the same.
+        if (transaction_id && active_transaction_id === transaction_id) {
+            setActiveTransactionId(null);
+        } else {
+            setActiveTransactionId(transaction_id);
+        }
+    };
 
     return (
         <div
@@ -100,7 +138,13 @@ const Transactions = observer(({ is_drawer_open }: TTransactions) => {
                         <DataList
                             className='transactions'
                             data_source={transaction_list}
-                            rowRenderer={props => <TransactionItem {...props} />}
+                            rowRenderer={props => (
+                                <TransactionItem
+                                    onClickTransaction={onClickTransaction}
+                                    active_transaction_id={active_transaction_id}
+                                    {...props}
+                                />
+                            )}
                             keyMapper={row => {
                                 switch (row.type) {
                                     case transaction_elements.CONTRACT: {

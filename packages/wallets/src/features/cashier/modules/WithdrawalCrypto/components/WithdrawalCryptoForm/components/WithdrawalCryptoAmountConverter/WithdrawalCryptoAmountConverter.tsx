@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
+import { LegacyArrowRight2pxIcon } from '@deriv/quill-icons';
 import { WalletTextField } from '../../../../../../../../components';
-import ArrowBold from '../../../../../../../../public/images/ic-back-arrow.svg';
 import { useWithdrawalCryptoContext } from '../../../../provider';
 import type { TWithdrawalForm } from '../../../../types';
 import { validateCryptoInput, validateFiatInput } from '../../../../utils';
@@ -87,7 +87,7 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
                 })}
                 data-testid='dt_withdrawal_crypto_amount_converter_arrow'
             >
-                <ArrowBold />
+                <LegacyArrowRight2pxIcon iconSize='xs' />
             </div>
             <Field name='fiatAmount' validate={(value: string) => validateFiatInput(fractionalDigits, value)}>
                 {({ field }: FieldProps<string>) => (

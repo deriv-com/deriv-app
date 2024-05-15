@@ -1,10 +1,18 @@
 import React from 'react';
 import { act, waitFor } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
+import { useExchangeRateSubscription, useTransferBetweenAccounts } from '@deriv/api-v2';
 import TransferProvider, { useTransfer } from '../TransferProvider';
 import { useExtendedTransferAccounts } from '../../hooks';
 import { THooks } from '../../../../hooks/types';
 import { TTransferableAccounts } from '../../types';
+import { TCurrency } from 'src/types';
+
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
+    useExchangeRateSubscription: jest.fn(),
+    useTransferBetweenAccounts: jest.fn(),
+}));
 
 jest.mock('../../hooks', () => ({
     ...jest.requireActual('../../hooks'),
@@ -12,6 +20,8 @@ jest.mock('../../hooks', () => ({
 }));
 
 const mockUseExtendedTransferAccounts = useExtendedTransferAccounts as jest.Mock;
+const mockUseExchangeRateSubscription = useExchangeRateSubscription as jest.Mock;
+const mockUseTransferBetweenAccounts = useTransferBetweenAccounts as jest.Mock;
 
 jest.mock('../../../../components', () => ({
     ...jest.requireActual('../../../../components'),
@@ -19,6 +29,11 @@ jest.mock('../../../../components', () => ({
         return params;
     }),
 }));
+
+const mockTransferLimits = {
+    max: 1000,
+    min: 1,
+} as THooks.AccountLimits;
 
 const mockAccounts = [
     {
@@ -31,6 +46,11 @@ const mockAccounts = [
         currency: 'BTC',
         loginid: 'CR3',
     },
+    {
+        account_type: 'ctrader',
+        currency: 'USD',
+        loginid: 'CR4',
+    },
 ] as THooks.TransferAccounts;
 
 const mockExtendedAccounts = [
@@ -41,6 +61,7 @@ const mockExtendedAccounts = [
         currencyConfig: {
             fractional_digits: 2,
         },
+        limits: mockTransferLimits,
         loginid: 'CR1',
     },
     {
@@ -50,7 +71,18 @@ const mockExtendedAccounts = [
         currencyConfig: {
             fractional_digits: 8,
         },
+        limits: mockTransferLimits,
         loginid: 'CR3',
+    },
+    {
+        account_type: 'ctrader',
+        balance: '95.00',
+        currency: 'USD',
+        currencyConfig: {
+            fractional_digits: 2,
+        },
+        limits: mockTransferLimits,
+        loginid: 'CR4',
     },
 ] as TTransferableAccounts;
 
@@ -63,15 +95,44 @@ const mockGetConfig = jest.fn();
 
 const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
-        <TransferProvider accounts={mockAccounts} activeAccount={mockActiveAccount} getConfig={mockGetConfig}>
+        <TransferProvider
+            accountLimits={mockTransferLimits}
+            accounts={mockAccounts}
+            activeAccount={mockActiveAccount}
+            getConfig={mockGetConfig}
+            refetchAccountLimits={jest.fn()}
+        >
             {children}
         </TransferProvider>
     );
 };
 
 describe('<TransferProvider />', () => {
+    beforeEach(() => {
+        mockUseExtendedTransferAccounts.mockReturnValue({ accounts: mockExtendedAccounts });
+
+        mockUseTransferBetweenAccounts.mockReturnValue({
+            data: 'transfer-between-accounts-data',
+            mutate: jest.fn(),
+            mutateAsync: jest.fn(),
+        });
+
+        mockUseExchangeRateSubscription.mockReturnValue({
+            isSubscribed: false,
+            subscribe: jest.fn(),
+            unsubscribe: jest.fn(),
+        });
+    });
+
+    it('should test whether all transferable accounts are loaded on initial render', async () => {
+        const { result } = renderHook(useTransfer, { wrapper });
+
+        await waitFor(() => {
+            expect(result.current.accounts).toEqual(mockExtendedAccounts);
+        });
+    });
+
     it('should test whether the correct validation schema is set', async () => {
-        mockUseExtendedTransferAccounts.mockReturnValue(mockExtendedAccounts);
         const { result } = renderHook(useTransfer, { wrapper });
 
         act(() => {
@@ -85,7 +146,7 @@ describe('<TransferProvider />', () => {
                     currency: 'USD',
                     fractionalDigits: 2,
                     limits: {
-                        max: 100,
+                        max: 1000,
                         min: 1,
                     },
                 },
@@ -94,6 +155,134 @@ describe('<TransferProvider />', () => {
                     fractionalDigits: 8,
                 },
             });
+        });
+    });
+
+    it('should check if subscribeToExchangeRate subscribes to exchange rate if already not subscribed', () => {
+        const mockSubscribe = jest.fn((base_currency, loginid, target_currency) => {});
+
+        mockUseExchangeRateSubscription.mockReturnValue({
+            isSubscribed: false,
+            subscribe: mockSubscribe,
+            unsubscribe: jest.fn(),
+        });
+
+        const { result } = renderHook(useTransfer, { wrapper });
+
+        result.current.subscribeToExchangeRate(
+            mockExtendedAccounts[0].currency as TCurrency,
+            mockExtendedAccounts[1].currency as TCurrency,
+            mockExtendedAccounts[0].loginid
+        );
+
+        expect(mockSubscribe).toBeCalledWith({
+            base_currency: mockExtendedAccounts[0].currency as TCurrency,
+            target_currency: mockExtendedAccounts[1].currency as TCurrency,
+            loginid: mockExtendedAccounts[0].loginid,
+        });
+    });
+
+    it('should check if subscribeToExchangeRate resubscribes to exchange rate properly', async () => {
+        const mockSubscribe = jest.fn((base_currency, loginid, target_currency) => {});
+        const mockUnsubscribe = jest.fn();
+
+        mockUseExchangeRateSubscription.mockReturnValue({
+            isSubscribed: true,
+            subscribe: mockSubscribe,
+            unsubscribe: mockUnsubscribe,
+        });
+
+        const { result } = renderHook(useTransfer, { wrapper });
+
+        result.current.subscribeToExchangeRate(
+            mockExtendedAccounts[1].currency as TCurrency,
+            mockExtendedAccounts[0].currency as TCurrency,
+            mockExtendedAccounts[1].loginid
+        );
+
+        await expect(mockUnsubscribe).toBeCalled();
+
+        expect(mockSubscribe).toBeCalledWith({
+            base_currency: mockExtendedAccounts[1].currency as TCurrency,
+            target_currency: mockExtendedAccounts[0].currency as TCurrency,
+            loginid: mockExtendedAccounts[1].loginid,
+        });
+    });
+
+    it('should check if requestForTransfer() sets the transferReceipt state with correct data', async () => {
+        mockUseExchangeRateSubscription.mockReturnValue({
+            isSubscribed: true,
+            subscribe: jest.fn(),
+            unsubscribe: jest.fn(),
+        });
+        mockUseTransferBetweenAccounts.mockReturnValue({
+            data: 'transfer-between-accounts-data',
+            mutate: jest.fn(),
+            mutateAsync: jest.fn(({ accounts, account_from, account_to, amount, currency }) =>
+                Promise.resolve(
+                    accounts === 'all'
+                        ? {
+                              mockAccounts,
+                          }
+                        : {
+                              fromAccount: mockAccounts[0],
+                              toAccount: mockAccounts[1],
+                          }
+                )
+            ),
+        });
+
+        const { result } = renderHook(useTransfer, { wrapper });
+
+        act(() => {
+            result.current.requestForTransfer('1.00', mockExtendedAccounts[0], mockExtendedAccounts[1]);
+        });
+
+        await waitFor(() => {
+            expect(result.current.transferReceipt).toEqual({
+                amount: '1.00',
+                fromAccount: mockExtendedAccounts[0],
+                toAccount: mockExtendedAccounts[1],
+            });
+        });
+    });
+
+    it('should check if requestForTransfer() if the updated list of all the accounts is fetched before showing the transferReceipt', async () => {
+        mockUseExchangeRateSubscription.mockReturnValue({
+            data: {
+                rates: {
+                    BTC: '0.5',
+                },
+            },
+            isSubscribed: true,
+            subscribe: jest.fn(),
+            unsubscribe: jest.fn(),
+        });
+        mockUseTransferBetweenAccounts.mockReturnValue({
+            data: 'transfer-between-accounts-data',
+            mutate: jest.fn(),
+            mutateAsync: jest.fn(({ accounts, account_from, account_to, amount, currency }) =>
+                Promise.resolve(
+                    accounts === 'all'
+                        ? {
+                              mockAccounts,
+                          }
+                        : {
+                              fromAccount: mockAccounts[0],
+                              toAccount: mockAccounts[1],
+                          }
+                )
+            ),
+        });
+
+        const { result } = renderHook(useTransfer, { wrapper });
+
+        act(() => {
+            result.current.requestForTransfer('1.00', mockExtendedAccounts[0], mockExtendedAccounts[1]);
+        });
+
+        await waitFor(() => {
+            expect(result.current.accounts).toEqual(mockExtendedAccounts);
         });
     });
 });

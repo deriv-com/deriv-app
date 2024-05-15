@@ -32,6 +32,7 @@ export default class BuySellStore extends BaseStore {
     show_advertiser_page = false;
     show_filter_payment_methods = false;
     sort_by = 'rate';
+    submitForm = null;
     table_type = buy_sell.BUY;
     form_props = {};
     is_create_order_subscribed = false;
@@ -71,6 +72,7 @@ export default class BuySellStore extends BaseStore {
             show_advertiser_page: observable,
             show_filter_payment_methods: observable,
             sort_by: observable,
+            submitForm: observable,
             table_type: observable,
             form_props: observable,
             is_create_order_subscribed: observable,
@@ -114,6 +116,7 @@ export default class BuySellStore extends BaseStore {
             setShowAdvertiserPage: action.bound,
             setShowFilterPaymentMethods: action.bound,
             setSortBy: action.bound,
+            setSubmitForm: action.bound,
             setTableType: action.bound,
             setSelectedAdvert: action.bound,
             showAdvertiserPage: action.bound,
@@ -360,6 +363,10 @@ export default class BuySellStore extends BaseStore {
 
     setSortBy(sort_by) {
         this.sort_by = sort_by;
+    }
+
+    setSubmitForm(submitForm) {
+        this.submitForm = submitForm;
     }
 
     setTableType(table_type) {

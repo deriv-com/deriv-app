@@ -1,8 +1,9 @@
 import React from 'react';
 import { TSocketError } from '@deriv/api/types';
+import { Analytics } from '@deriv-com/analytics';
 import { Text } from '@deriv/components';
+import { getOSNameWithUAParser } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { mobileOSDetect } from '@deriv/shared';
 import { DescriptionContainer } from './components/description-container';
 import { TipsBlock } from './components/tips-block';
 import { TServerError } from '../../../Types/common.type';
@@ -27,8 +28,7 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
     const add_more_passkeys_button_text = <Localize i18n_default_text='Add more passkeys' />;
 
     const getPasskeysRemovedDescription = () => {
-        const os_type = mobileOSDetect();
-
+        const os_type = getOSNameWithUAParser();
         switch (os_type) {
             case 'Android':
                 return (
@@ -113,7 +113,28 @@ type TGetModalContent = {
     is_passkey_registration_started: boolean;
 };
 
+export const NOT_SUPPORTED_ERROR_NAME = 'NotSupportedError';
+
 export const getModalContent = ({ error, is_passkey_registration_started }: TGetModalContent) => {
+    const isNotSupportedError = (error: TServerError) => error?.name === NOT_SUPPORTED_ERROR_NAME;
+
+    const error_message = isNotSupportedError(error as TServerError) ? (
+        <Localize i18n_default_text="This device doesn't support passkeys." />
+    ) : (
+        <Localize i18n_default_text='We’re experiencing a temporary issue in processing your request. Please try again later.' />
+    );
+    const button_text = <Localize i18n_default_text='OK' />;
+
+    const error_message_header = (
+        <Text size='xs' weight='bold'>
+            {isNotSupportedError(error as TServerError) ? (
+                <Localize i18n_default_text='Passkey setup failed' />
+            ) : (
+                <Localize i18n_default_text='Unable to process your request' />
+            )}
+        </Text>
+    );
+
     const reminder_tips = [
         <Localize i18n_default_text='Enable screen lock on your device.' key='tip_1' />,
         <Localize i18n_default_text='Enable bluetooth.' key='tip_2' />,
@@ -142,7 +163,20 @@ export const getModalContent = ({ error, is_passkey_registration_started }: TGet
     }
 
     return {
-        description: (error as TServerError)?.message ?? '',
-        button_text: error ? <Localize i18n_default_text='Try again' /> : undefined,
+        description: error_message ?? '',
+        button_text: error ? button_text : undefined,
+        header: error ? error_message_header : undefined,
     };
+};
+
+export const passkeysMenuActionEventTrack = (
+    action: string,
+    additional_data: { error_message?: string; subform_name?: string } = {}
+) => {
+    Analytics.trackEvent('ce_passkey_account_settings_form', {
+        action,
+        form_name: 'ce_passkey_account_settings_form',
+        operating_system: getOSNameWithUAParser(),
+        ...additional_data,
+    });
 };

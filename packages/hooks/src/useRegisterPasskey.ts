@@ -2,9 +2,22 @@ import React from 'react';
 import { startRegistration } from '@simplewebauthn/browser';
 import { PublicKeyCredentialCreationOptionsJSON } from '@simplewebauthn/typescript-types';
 import { useInvalidateQuery } from '@deriv/api';
-import { WS } from '@deriv/shared';
+import { mobileOSDetect, WS } from '@deriv/shared';
+import { Analytics } from '@deriv-com/analytics';
 
 type TError = { code?: string; name?: string; message: string };
+
+const passkeyErrorEventTrack = (error: TError) => {
+    // TODO: remove ts ignore after adding types to Analytics
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    Analytics.trackEvent('ce_passkey_account_settings_form', {
+        action: 'error',
+        form_name: 'ce_passkey_account_settings_form',
+        operating_system: mobileOSDetect(),
+        error_message: error?.message,
+    });
+};
 
 const useRegisterPasskey = () => {
     const invalidate = useInvalidateQuery();
@@ -29,6 +42,7 @@ const useRegisterPasskey = () => {
         } catch (e) {
             setIsPasskeyRegistrationStarted(false);
             setPasskeyRegistrationError(e as TError);
+            passkeyErrorEventTrack(e as TError);
         }
     };
 
@@ -44,11 +58,15 @@ const useRegisterPasskey = () => {
                 if (passkeys_register_response?.passkeys_register?.properties?.name) {
                     invalidate('passkeys_list');
                     setIsPasskeyRegistered(true);
+                } else if (passkeys_register_response?.error) {
+                    setPasskeyRegistrationError(passkeys_register_response?.error);
+                    passkeyErrorEventTrack(passkeys_register_response?.error);
                 }
             }
         } catch (e) {
             if (!excluded_error_names.some(name => name === (e as TError).name)) {
                 setPasskeyRegistrationError(e as TError);
+                passkeyErrorEventTrack(e as TError);
             }
         } finally {
             setIsPasskeyRegistrationStarted(false);

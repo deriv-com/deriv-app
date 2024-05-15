@@ -1,1 +1,1 @@
-export * from './TransferNoAccount';
+export { default as TransferNoAccount } from './TransferNoAccount';

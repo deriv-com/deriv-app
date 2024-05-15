@@ -1,11 +1,17 @@
 import React from 'react';
-import { useAvailableCTraderAccounts, useCtraderAccountsList } from '@deriv/api-v2';
+import {
+    useAccountStatus,
+    useActiveWalletAccount,
+    useAvailableCTraderAccounts,
+    useCreateOtherCFDAccount,
+    useCtraderAccountsList,
+} from '@deriv/api-v2';
 import { LabelPairedCircleExclamationMdFillIcon } from '@deriv/quill-icons';
 import { Accordion } from '@deriv-com/ui';
 import { WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
-import { CFD_PLATFORMS, PlatformDetails, serviceMaintenanceMessages } from '../../constants';
+import { CFD_PLATFORMS, MARKET_TYPE, PlatformDetails, serviceMaintenanceMessages } from '../../constants';
 import { MT5TradeLink } from '../../screens/MT5TradeScreen/MT5TradeLink';
 
 const CTraderTradeScreen = () => {
@@ -18,6 +24,27 @@ const CTraderTradeScreen = () => {
     const { data: ctraderAccountsList } = useCtraderAccountsList();
     const { data: availableCtraderAccounts } = useAvailableCTraderAccounts();
     const availableAccount = availableCtraderAccounts?.[0];
+
+    const { data: activeWalletData } = useActiveWalletAccount();
+    const {
+        error: createAccountError,
+        isSuccess: isAccountCreated,
+        mutate: createAccount,
+    } = useCreateOtherCFDAccount();
+    const { is_virtual: isDemo = false } = activeWalletData ?? {};
+
+    const onClickGetMoreButton = () => {
+        createAccount({
+            payload: {
+                account_type: isDemo ? 'demo' : 'real',
+                market_type: MARKET_TYPE.ALL,
+                platform: CFD_PLATFORMS.CTRADER,
+            },
+        });
+    };
+
+    // eslint-disable-next-line no-console
+    console.log('==>', { createAccountError, isAccountCreated });
 
     const totalBalance = ctraderAccountsList?.reduce((acc, cur) => acc + +(cur?.display_balance || 0), 0);
 
@@ -54,7 +81,9 @@ const CTraderTradeScreen = () => {
                 {availableAccount?.available_count !== undefined &&
                     availableAccount?.max_count !== undefined &&
                     availableAccount.available_count < availableAccount.max_count && (
-                        <button>Get another cTrader account</button>
+                        <button onClick={onClickGetMoreButton} type='button'>
+                            Get another cTrader account
+                        </button>
                     )}
 
                 <Accordion title='See important notes'>

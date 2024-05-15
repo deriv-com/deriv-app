@@ -9,6 +9,7 @@ import {
     usePOA,
     usePOI,
 } from '@deriv/api-v2';
+import { act } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import WithdrawalCryptoProvider, { useWithdrawalCryptoContext } from './WithdrawalCryptoProvider';
 
@@ -33,11 +34,13 @@ const mockUsePOA = usePOA as jest.Mock;
 const mockUsePOI = usePOI as jest.Mock;
 
 describe('useWithdrawalCryptoContext', () => {
+    const setError = jest.fn();
+
     beforeEach(() => {
         mockUseAccountLimits.mockReturnValue({});
         mockUseActiveWalletAccount.mockReturnValue({});
         mockUseCryptoConfig.mockReturnValue({});
-        mockUseCryptoWithdrawal.mockReturnValue({});
+        mockUseCryptoWithdrawal.mockReturnValue({ mutateAsync: jest.fn().mockResolvedValueOnce({}) });
         mockUseCurrencyConfig.mockReturnValue({
             getConfig: () => ({
                 fractionalDigits: 2,
@@ -50,12 +53,12 @@ describe('useWithdrawalCryptoContext', () => {
     });
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-        <WithdrawalCryptoProvider onClose={() => jest.fn()} verificationCode='Abcd1234'>
+        <WithdrawalCryptoProvider onClose={() => jest.fn()} setError={setError} verificationCode='Abcd1234'>
             {children}
         </WithdrawalCryptoProvider>
     );
 
-    it('should check whether the client is verified', () => {
+    it('should check whether the client is verified', async () => {
         mockUsePOA.mockReturnValue({
             data: {
                 is_verified: true,
@@ -68,10 +71,13 @@ describe('useWithdrawalCryptoContext', () => {
         });
 
         const { result } = renderHook(() => useWithdrawalCryptoContext(), { wrapper });
-        expect(result.current.isClientVerified).toBe(true);
+
+        await act(async () => {
+            expect(result.current.isClientVerified).toBe(true);
+        });
     });
 
-    it('should check whether the client is not verified', () => {
+    it('should check whether the client is not verified', async () => {
         mockUsePOA.mockReturnValue({
             data: {
                 is_verified: false,
@@ -84,7 +90,10 @@ describe('useWithdrawalCryptoContext', () => {
         });
 
         const { rerender, result } = renderHook(() => useWithdrawalCryptoContext(), { wrapper });
-        expect(result.current.isClientVerified).toBe(false);
+
+        await act(async () => {
+            expect(result.current.isClientVerified).toBe(false);
+        });
 
         mockUsePOA.mockReturnValue({
             data: {
@@ -99,7 +108,10 @@ describe('useWithdrawalCryptoContext', () => {
         });
 
         rerender();
-        expect(result.current.isClientVerified).toBe(false);
+
+        await act(async () => {
+            expect(result.current.isClientVerified).toBe(false);
+        });
 
         mockUsePOA.mockReturnValue({
             data: {
@@ -112,7 +124,10 @@ describe('useWithdrawalCryptoContext', () => {
                 is_verified: false,
             },
         });
-        expect(result.current.isClientVerified).toBe(false);
+
+        await act(async () => {
+            expect(result.current.isClientVerified).toBe(false);
+        });
 
         rerender();
     });

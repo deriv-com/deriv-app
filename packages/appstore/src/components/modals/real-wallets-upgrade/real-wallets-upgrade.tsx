@@ -12,10 +12,10 @@ const RealWalletsUpgrade = observer(() => {
     const [current_step, setCurrentStep] = React.useState(0);
 
     React.useEffect(() => {
-        if (is_in_progress || is_ineligible || is_migrated) {
+        if (is_migrating || is_in_progress || is_ineligible || is_migrated) {
             toggleWalletsUpgrade(false);
         }
-    }, [is_in_progress, is_ineligible, is_migrated, toggleWalletsUpgrade]);
+    }, [is_in_progress, is_ineligible, is_migrated, is_migrating, toggleWalletsUpgrade]);
 
     React.useEffect(() => {
         if (!is_real_wallets_upgrade_on) {

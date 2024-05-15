@@ -9,7 +9,7 @@ type TStatementData = ReturnType<typeof formatStatementTransaction>;
 type TMarketSymbolIconRow = {
     has_full_contract_title?: boolean;
     icon?: string | null;
-    payload: TContractInfo | TStatementData;
+    payload: Partial<TContractInfo | TStatementData>;
     should_show_multiplier?: boolean;
     should_show_accumulator?: boolean;
 };
@@ -112,7 +112,7 @@ const MarketSymbolIconRow = ({
     }
 
     return (
-        <svg width='32' height='32' className='unknown-icon'>
+        <svg width='32' height='32' className='unknown-icon' data-testid='dt_unknown_icon'>
             <rect width='32' height='32' />
         </svg>
     );

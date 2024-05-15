@@ -5,7 +5,7 @@ import { Accordion } from '@deriv-com/ui';
 import { WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
-import { CFD_PLATFORMS, PlatformDetails } from '../../constants';
+import { CFD_PLATFORMS, PlatformDetails, serviceMaintenanceMessages } from '../../constants';
 
 const CTraderTradeScreen = () => {
     const { isDesktop } = useDevice();
@@ -99,7 +99,7 @@ const CTraderTradeScreen = () => {
                 <div className='wallets-mt5-trade-screen__details-maintenance'>
                     <LabelPairedCircleExclamationMdFillIcon fill='#FFAD3A' />
                     <WalletText color='less-prominent' size={isDesktop ? '2xs' : 'xs'}>
-                        dsfddf
+                        {serviceMaintenanceMessages[platform]}
                     </WalletText>
                 </div>
             </div>

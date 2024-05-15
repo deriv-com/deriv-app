@@ -103,7 +103,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
     React.useEffect(() => {
         const processRoutes = () => {
-            const routes_config = getRoutesConfig({});
+            const routes_config = getRoutesConfig();
             let primary_routes = [];
 
             const location = window.location.pathname;

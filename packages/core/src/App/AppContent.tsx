@@ -17,7 +17,6 @@ import AppContents from './Containers/Layout/app-contents.jsx';
 import Footer from './Containers/Layout/footer.jsx';
 import Header from './Containers/Layout/header';
 import AppModals from './Containers/Modals';
-import PlatformContainer from './Containers/PlatformContainer/PlatformContainer.jsx';
 import Routes from './Containers/Routes/routes.jsx';
 import Devtools from './Devtools';
 import initDatadog from '../Utils/Datadog';
@@ -90,7 +89,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     }, [has_wallet, store.common, store.ui]);
 
     return (
-        <PlatformContainer>
+        <>
             <Header />
             <ErrorBoundary root_store={store}>
                 <AppContents>
@@ -108,7 +107,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             <BinaryBotIFrame />
             <AppToastMessages />
             <Devtools />
-        </PlatformContainer>
+        </>
     );
 });
 

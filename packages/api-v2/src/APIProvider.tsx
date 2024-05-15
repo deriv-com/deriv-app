@@ -142,10 +142,8 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
         const result: Awaited<ReturnType<TSubscribeFunction>> = {
             id,
             subscription: {
-                subscribe: async (
-                    onData: (response: TSocketResponseData<TSocketSubscribableEndpointNames>) => void
-                ) => {
-                    await wsClientRef.current?.subscribe(name, _payload, onData);
+                subscribe: (onData: (response: TSocketResponseData<TSocketSubscribableEndpointNames>) => void) => {
+                    wsClientRef.current?.subscribe(name, _payload, onData);
                 },
                 unsubscribe: () => {
                     unsubscribe(id);

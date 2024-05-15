@@ -217,7 +217,7 @@ const CFDsListing = observer(() => {
                 <React.Fragment>
                     {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
-                        const track_account_name = is_demo ? `${existing_account.name} Demo` : existing_account.name;
+
                         const track_account_subtitle = is_demo
                             ? `${existing_account.tracking_name} Demo`
                             : existing_account.tracking_name;
@@ -447,9 +447,7 @@ const CFDsListing = observer(() => {
                                 key={`trading_app_card_${existing_account.login}`}
                                 onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                     const button_name = e?.currentTarget?.name;
-                                    const track_account_subtitle = is_demo
-                                        ? `${existing_account.name} ${'Demo'}`
-                                        : existing_account.sub_title;
+
                                     if (button_name === 'transfer-btn') {
                                         Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                             action: 'account_transfer',

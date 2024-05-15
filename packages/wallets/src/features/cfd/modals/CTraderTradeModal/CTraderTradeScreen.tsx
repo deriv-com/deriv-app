@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     useActiveWalletAccount,
     useAvailableCTraderAccounts,
@@ -12,10 +12,11 @@ import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { CFD_PLATFORMS, MARKET_TYPE, PlatformDetails, serviceMaintenanceMessages } from '../../constants';
 import { MT5TradeLink } from '../../screens/MT5TradeScreen/MT5TradeLink';
+import { CTraderAddAccountSuccessModal } from '../CTraderAddAccountSuccessModal';
 
 const CTraderTradeScreen = () => {
     const { isDesktop } = useDevice();
-    const { getModalState } = useModal();
+    const { getModalState, show } = useModal();
     const ctraderPlatform = CFD_PLATFORMS.CTRADER;
     const platform = getModalState('platform') ?? ctraderPlatform;
     const { icon: platformIcon, title: platformTitle } = PlatformDetails[platform];
@@ -43,6 +44,14 @@ const CTraderTradeScreen = () => {
     };
 
     const totalBalance = ctraderAccountsList?.reduce((acc, cur) => acc + +(cur?.display_balance || 0), 0);
+
+    useEffect(() => {
+        if (isAccountCreated) {
+            show(<CTraderAddAccountSuccessModal />);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isAccountCreated]);
 
     return (
         <div className='wallets-mt5-trade-screen'>

@@ -2,6 +2,7 @@ import React, { FC, useEffect } from 'react';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import { ModalTradeWrapper } from '../../components';
+import CTraderTradeScreen from './CTraderTradeScreen';
 
 type TCTraderTradeModalProps = {
     marketType?: TMarketTypes.All;
@@ -18,7 +19,7 @@ const CTraderTradeModal: FC<TCTraderTradeModalProps> = ({ platform }) => {
 
     return (
         <ModalTradeWrapper platform={platform}>
-            <div>ddd</div>
+            <CTraderTradeScreen />
         </ModalTradeWrapper>
     );
 };

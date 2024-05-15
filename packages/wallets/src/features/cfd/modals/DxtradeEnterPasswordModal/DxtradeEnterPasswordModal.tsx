@@ -67,16 +67,7 @@ const DxtradeEnterPasswordModal = () => {
                 </ModalWrapper>
             );
         }
-    }, [
-        accountStatusSuccess,
-        dxtradePlatform,
-        hide,
-        isCreateAccountSuccessful,
-        isDxtradePasswordNotSet,
-        isMobile,
-        isResetPasswordSuccessful,
-        show,
-    ]);
+    }, [dxtradePlatform, hide, isDxtradePasswordNotSet, isMobile, isResetPasswordSuccessful, show]);
 
     const dxtradeBalance = useMemo(() => {
         return dxtradeAccount?.find(account => account.market_type === 'all')?.display_balance;

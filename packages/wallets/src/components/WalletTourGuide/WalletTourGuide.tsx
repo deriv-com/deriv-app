@@ -22,17 +22,13 @@ import './WalletTourGuide.scss';
 
 const WalletTourGuide = () => {
     const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key) ?? '');
-    const { isMobile } = useDevice();
-
-    // just because someone clicked button in dtrader and set local storage
-    // does not mean we should run the tour as we might need to wait for the account to be switched
     const [run, setRun] = useState(false);
+    const { isMobile } = useDevice();
 
     const switchWalletAccount = useWalletAccountSwitcher();
     const { isFetching, isLoading, isSuccess } = useAuthorize();
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
-
     const { isFetching: ctraderIsLoading } = useCtraderAccountsList();
     const { isFetching: dxtradeIsLoading } = useDxtradeAccountsList();
     const { isFetching: sortedAccountsIsLoading } = useSortedMT5Accounts();
@@ -85,7 +81,8 @@ const WalletTourGuide = () => {
             disableOverlayClose
             floaterProps={{ disableAnimation: true }}
             run={run}
-            scrollOffset={100}
+            scrollOffset={isMobile ? 100 : 80}
+            scrollToFirstStep
             steps={isMobile ? mobileStepTourGuide : desktopStepTourGuide}
             tooltipComponent={TooltipComponent}
         />

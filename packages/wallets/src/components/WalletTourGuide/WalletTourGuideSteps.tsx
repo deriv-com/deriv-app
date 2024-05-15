@@ -21,6 +21,7 @@ export const desktopStepTourGuide: Step[] = [
     },
     {
         content: <WalletText size='sm'>Press the tab to switch between Demo or Real Wallets.</WalletText>,
+        disableScrolling: true,
         placement: 'bottom',
         target: '.wallets-list-header__slider',
         title: <SpotLightHeader>Select Demo or Real</SpotLightHeader>,
@@ -28,6 +29,7 @@ export const desktopStepTourGuide: Step[] = [
     },
     {
         content: <WalletText size='sm'>Use the drop-down menu to switch between your Wallets.</WalletText>,
+        disableScrolling: true,
         placement: 'bottom',
         target: '.wallets-textfield__box',
         title: <SpotLightHeader>Switch between Wallets</SpotLightHeader>,
@@ -40,6 +42,7 @@ export const desktopStepTourGuide: Step[] = [
                 Want Wallets in other currencies too? Press <strong>Add</strong>.
             </WalletText>
         ),
+        disableScrolling: false,
         placement: 'right',
         styles: { spotlight: { borderRadius: '1.6rem' } },
         target: '.wallets-add-more__card',

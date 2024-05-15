@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    useAccountStatus,
     useActiveWalletAccount,
     useAvailableCTraderAccounts,
     useCreateOtherCFDAccount,
@@ -42,9 +41,6 @@ const CTraderTradeScreen = () => {
             },
         });
     };
-
-    // eslint-disable-next-line no-console
-    console.log('==>', { createAccountError, isAccountCreated });
 
     const totalBalance = ctraderAccountsList?.reduce((acc, cur) => acc + +(cur?.display_balance || 0), 0);
 

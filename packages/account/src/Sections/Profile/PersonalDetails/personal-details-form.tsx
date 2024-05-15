@@ -41,8 +41,6 @@ type TRestState = {
 };
 
 export const PersonalDetailsForm = observer(({ history }: { history: BrowserHistory }) => {
-    console.log('Personal details called');
-
     const [is_loading, setIsLoading] = useState(true);
     const [is_state_loading, setIsStateLoading] = useState(false);
     const [is_btn_loading, setIsBtnLoading] = useState(false);

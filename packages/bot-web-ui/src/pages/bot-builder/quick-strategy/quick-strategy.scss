@@ -12,7 +12,7 @@
     --input-action-width: 4.6rem;
     --group-outer-padding: 1.6rem;
 
-    @include mobile-or-tablet-screen() {
+    @include mobile-or-tablet-screen {
         --select-height: 4rem;
         --input-height: 3.4rem;
         --footer-height: 4.2rem;
@@ -56,8 +56,12 @@
             height: 72rem;
         }
 
-        @include mobile-or-tablet-screen() {
+        @include mobile-screen {
             display: block;
+        }
+
+        @include tablet-screen {
+            justify-content: center;
         }
 
         &__sidebar {
@@ -102,16 +106,20 @@
             position: relative;
             padding: 0.8rem;
 
-            @include mobile-or-tablet-screen() {
+            @include mobile-screen {
                 width: 100%;
                 padding: 0;
+            }
+
+            @include tablet-screen {
+                max-width: 60rem;
             }
 
             &__head {
                 @include flex-center;
                 padding-bottom: 1rem;
 
-                @include mobile-or-tablet-screen() {
+                @include mobile-or-tablet-screen {
                     padding: 0 1.6rem 1.6rem;
                     margin-top: 1.6rem;
                 }
@@ -123,7 +131,7 @@
                     border-radius: 0.6rem;
                     height: 4rem;
 
-                    @include mobile-or-tablet-screen() {
+                    @include mobile-or-tablet-screen {
                         width: 100%;
                     }
 
@@ -135,7 +143,7 @@
                         border-radius: 0.4rem;
                         user-select: none;
 
-                        @include mobile-or-tablet-screen() {
+                        @include mobile-or-tablet-screen {
                             min-width: auto;
                             width: 50%;
                         }
@@ -176,7 +184,7 @@
             &__form {
                 padding: 0 2.4rem;
 
-                @include mobile-or-tablet-screen() {
+                @include mobile-or-tablet-screen {
                     padding: 0 1.6rem;
                 }
 
@@ -225,7 +233,7 @@
             margin-bottom: 1rem;
             overflow-y: auto;
 
-            @include mobile-or-tablet-screen() {
+            @include mobile-or-tablet-screen {
                 margin-bottom: 0;
                 max-height: calc(100% - 12.2rem) !important;
             }
@@ -233,7 +241,7 @@
             &--no-footer {
                 max-height: 100% !important;
 
-                @include mobile-or-tablet-screen() {
+                @include mobile-or-tablet-screen {
                     max-height: calc(100% - 8rem) !important;
                 }
             }
@@ -356,7 +364,7 @@
                 display: flex;
                 flex-direction: row-reverse;
 
-                @include mobile-or-tablet-screen() {
+                @include mobile-or-tablet-screen {
                     top: -2.8rem;
                     right: 4rem;
                 }
@@ -385,7 +393,7 @@
                 height: 2.4rem;
                 width: 2.4rem;
 
-                @include mobile-or-tablet-screen() {
+                @include mobile-or-tablet-screen {
                     top: 50%;
                     left: 0;
                     transform: translateY(-50%);
@@ -521,7 +529,7 @@
                 left: 0.3rem;
                 color: var(--text-general);
 
-                @include mobile-or-tablet-screen() {
+                @include mobile-or-tablet-screen {
                     left: 0.2rem;
                 }
 
@@ -540,7 +548,7 @@
                 right: 0.3rem;
                 color: var(--text-general);
 
-                @include mobile-or-tablet-screen() {
+                @include mobile-or-tablet-screen {
                     right: 0.2rem;
                 }
 

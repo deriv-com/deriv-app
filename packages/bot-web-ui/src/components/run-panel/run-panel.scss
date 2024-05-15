@@ -158,6 +158,10 @@
         height: 6rem;
         display: flex;
         width: inherit;
+
+        @include tablet-screen {
+            max-width: 60rem;
+        }
     }
     &__stop-button,
     &__run-button {

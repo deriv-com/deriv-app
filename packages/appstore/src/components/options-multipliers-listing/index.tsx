@@ -4,6 +4,7 @@ import { Text, StaticUrl } from '@deriv/components';
 import { ContentFlag } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import ListingContainer from 'Components/containers/listing-container';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import TradingAppCard from 'Components/containers/trading-app-card';
@@ -12,6 +13,7 @@ import { getHasDivider } from 'Constants/utils';
 import { Analytics } from '@deriv-com/analytics';
 
 const OptionsAndMultipliersListing = observer(() => {
+    const { isDesktop } = useDevice();
     const { traders_hub, client, ui } = useStore();
     const {
         available_platforms,
@@ -25,7 +27,7 @@ const OptionsAndMultipliersListing = observer(() => {
     } = traders_hub;
     const { is_landing_company_loaded, is_eu, has_maltainvest_account, real_account_creation_unlock_date } = client;
 
-    const { setShouldShowCooldownModal, openRealAccountSignup, is_mobile } = ui;
+    const { setShouldShowCooldownModal, openRealAccountSignup } = ui;
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -36,7 +38,7 @@ const OptionsAndMultipliersListing = observer(() => {
     const cr_demo = content_flag === ContentFlag.CR_DEMO;
 
     const OptionsTitle = () => {
-        if (is_mobile) return null;
+        if (!isDesktop) return null;
         if (low_risk_cr_non_eu || high_risk_cr || cr_demo) {
             return (
                 <Text size='sm' weight='bold'>

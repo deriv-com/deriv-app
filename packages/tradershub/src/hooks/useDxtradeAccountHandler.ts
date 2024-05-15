@@ -12,6 +12,8 @@ const useDxtradeAccountHandler = () => {
         status,
     } = useCreateOtherCFDAccount();
 
+    //checking if this PR fails or not
+
     const accountType = activeTrading?.is_virtual ? 'demo' : 'real';
     const dxtradePlatform = PlatformDetails.dxtrade.platform;
     const isDxtradePasswordNotSet = getAccountStatus?.is_dxtrade_password_not_set;

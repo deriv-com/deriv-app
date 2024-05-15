@@ -98,9 +98,9 @@ const TradingHubFooter = observer(() => {
                 </div>
             )}
             <EndpointNote />
-            <NetworkStatus showPopover={showPopover} />
+            <NetworkStatus />
             <FooterIconSeparator />
-            <ServerTime showPopover={showPopover} />
+            <ServerTime />
             <FooterIconSeparator />
             <div className='footer__links'>
                 {footer_extensions_right.map(FooterExtensionRenderer)}

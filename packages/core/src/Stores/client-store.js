@@ -451,23 +451,10 @@ export default class ClientStore extends BaseStore {
         );
 
         reaction(
-            () => [
-                this.is_logged_in,
-                this.is_authorize,
-                this.is_passkey_supported,
-                this.root_store.ui?.is_real_acc_signup_on,
-                this.root_store.ui?.is_from_signup_account,
-                this.root_store.traders_hub.is_eu_user,
-            ],
+            () => [this.is_logged_in, this.is_authorize, this.is_passkey_supported],
             () => {
                 if (this.is_logged_in && this.is_authorize && this.is_passkey_supported) {
-                    if (this.root_store.ui?.is_from_signup_account) {
-                        if (this.root_store.traders_hub.is_eu_user && this.root_store.ui.is_real_acc_signup_on) {
-                            this.should_show_effortless_login_modal = false;
-                        }
-                    } else {
-                        this.fetchShouldShowEffortlessLoginModal();
-                    }
+                    this.fetchShouldShowEffortlessLoginModal();
                 }
             }
         );

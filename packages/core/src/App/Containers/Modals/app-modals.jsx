@@ -119,6 +119,8 @@ const AppModals = observer(() => {
         should_show_account_success_modal,
         should_show_appropriateness_warning_modal,
         should_show_risk_warning_modal,
+        is_real_acc_signup_on,
+        is_from_signup_account,
     } = ui;
     const temp_session_signup_params = SessionStore.get('signup_query_param');
     const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
@@ -226,7 +228,9 @@ const AppModals = observer(() => {
         !is_from_derivgo &&
         !is_onboarding &&
         !should_show_appropriateness_warning_modal &&
-        !should_show_risk_warning_modal
+        !should_show_risk_warning_modal &&
+        !is_from_signup_account &&
+        !is_real_acc_signup_on
     ) {
         ComponentToLoad = <EffortlessLoginModal />;
     }

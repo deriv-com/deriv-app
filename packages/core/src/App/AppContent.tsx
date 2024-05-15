@@ -2,7 +2,6 @@ import React from 'react';
 import Cookies from 'js-cookie';
 import { useRemoteConfig } from '@deriv/api';
 import { DesktopWrapper } from '@deriv/components';
-import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
 import { getAppId, LocalStore, useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
@@ -23,9 +22,8 @@ import Devtools from './Devtools';
 import initDatadog from '../Utils/Datadog';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
-    const { is_next_wallet_enabled } = useFeatureFlags();
-    const { has_wallet } = useStoreWalletAccountsList();
     const store = useStore();
+    const { has_wallet } = store.client;
 
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());
@@ -108,7 +106,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             <SmartTraderIFrame />
             <BinaryBotIFrame />
             <AppToastMessages />
-            {is_next_wallet_enabled && <Devtools />}
+            <Devtools />
         </>
     );
 });

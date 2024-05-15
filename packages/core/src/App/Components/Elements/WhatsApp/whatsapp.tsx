@@ -2,12 +2,10 @@ import React from 'react';
 import { Popover, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
-import { whatsapp_url, isTabletOs } from '@deriv/shared';
-import { useDevice } from '@deriv-com/ui';
+import { whatsapp_url } from '@deriv/shared';
 
-const WhatsApp = () => {
+const WhatsApp = ({ showPopover }: { showPopover?: boolean }) => {
     const liveChat = useLiveChat();
-    const { isDesktop } = useDevice();
     if (!liveChat.isReady) return null;
 
     return (
@@ -18,12 +16,12 @@ const WhatsApp = () => {
             target='_blank'
             rel='noreferrer'
         >
-            {isDesktop && !isTabletOs ? (
+            {showPopover ? (
                 <Popover
                     classNameBubble='whatsapp__tooltip'
                     alignment='top'
                     message={localize('WhatsApp')}
-                    zIndex={9999}
+                    zIndex='9999'
                 >
                     <Icon icon='IcWhatsApp' className='footer__icon' />
                 </Popover>

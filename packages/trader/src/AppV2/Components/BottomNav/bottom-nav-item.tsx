@@ -18,7 +18,9 @@ const BottomNavItem = ({ icon, selectedIndex, label, index, setSelectedIndex }: 
             onClick={() => setSelectedIndex(index)}
         >
             <span>{icon}</span>
-            <Text size='sm'>{label}</Text>
+            <Text size='sm' className='bottom-nav-item-label'>
+                {label}
+            </Text>
         </button>
     );
 };

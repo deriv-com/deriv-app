@@ -16,8 +16,9 @@
         flex: 1 0 0;
 
         &--active {
-            color: var(--core-color-opacity-coral-600);
-
+            .bottom-nav-item-label {
+                color: var(--core-color-opacity-coral-600);
+            }
             svg {
                 fill: var(--core-color-opacity-coral-600);
             }

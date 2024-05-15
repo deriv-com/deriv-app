@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Joyride, { STATUS, CallBackProps } from '@deriv/react-joyride';
+import Joyride, { CallBackProps, STATUS } from 'react-joyride';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import {
     useActiveWalletAccount,
@@ -18,7 +18,6 @@ import {
     walletsOnboardingStartValue as START_VALUE,
 } from './WalletTourGuideSettings';
 import { desktopStepTourGuide, mobileStepTourGuide } from './WalletTourGuideSteps';
-import './WalletTourGuide.scss';
 
 const WalletTourGuide = () => {
     const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key) ?? '');
@@ -81,8 +80,7 @@ const WalletTourGuide = () => {
             disableOverlayClose
             floaterProps={{ disableAnimation: true }}
             run={run}
-            scrollOffset={isMobile ? 100 : 80}
-            scrollToFirstStep
+            scrollOffset={80}
             steps={isMobile ? mobileStepTourGuide : desktopStepTourGuide}
             tooltipComponent={TooltipComponent}
         />

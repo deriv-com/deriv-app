@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { withRouter, useHistory } from 'react-router-dom';
-import { useStoreWalletAccountsList } from '@deriv/hooks';
 import { loginUrl, routes, redirectToLogin, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';

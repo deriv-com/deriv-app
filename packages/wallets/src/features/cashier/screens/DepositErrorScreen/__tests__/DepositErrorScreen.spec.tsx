@@ -7,7 +7,7 @@ describe('DepositErrorScreen', () => {
         jest.clearAllMocks();
     });
 
-    it('should show default deposit error details', () => {
+    it('should show deposit error details', () => {
         const error = {
             code: 'MyError',
             message: 'Error message',
@@ -17,6 +17,16 @@ describe('DepositErrorScreen', () => {
 
         expect(screen.getByText('Oops, something went wrong!')).toBeInTheDocument();
         expect(screen.getByText('Error message')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument();
+    });
+
+    it('should show default deposit error details when no error details is received', () => {
+        render(<DepositErrorScreen />);
+
+        expect(screen.getByText('Oops, something went wrong!')).toBeInTheDocument();
+        expect(
+            screen.getByText('Sorry an error occurred. Please try accessing our cashier again.')
+        ).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument();
     });
 

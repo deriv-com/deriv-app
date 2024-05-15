@@ -6,22 +6,22 @@ import './DepositErrorScreen.scss';
 
 type TProps = {
     currency?: string;
-    error: TSocketError<'cashier'>['error'];
+    error?: TSocketError<'cashier'>['error'];
 };
 
 const DepositErrorScreen: React.FC<TProps> = ({ currency, error }) => {
-    const CryptoSuspendedCurrency = error.code === 'CryptoSuspendedCurrency';
+    const CryptoSuspendedCurrency = error?.code === 'CryptoSuspendedCurrency';
 
     const getErrorTitle = () => {
         if (CryptoSuspendedCurrency) return `${currency} Wallet deposits are temporarily unavailable`;
-        //TODO: add check for crypto node down
+        //TODO: add check for CryptoConnectionError
         return undefined;
     };
 
     const getErrorMessage = () => {
         if (CryptoSuspendedCurrency)
             return `Due to system maintenance, deposits with your ${currency} Wallet are unavailable at the moment. Please try again later.`;
-        return error.message;
+        return error?.message;
     };
 
     const errorTitle = error ? getErrorTitle() : undefined;

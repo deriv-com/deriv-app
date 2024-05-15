@@ -74,13 +74,7 @@ describe('WalletDeposit', () => {
     });
 
     it('should render loader while data is loading', () => {
-        (useActiveWalletAccount as jest.Mock).mockReturnValue({
-            data: {
-                currency_config: {
-                    is_crypto: true,
-                },
-            },
-        });
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({ undefined });
         (useAuthorize as jest.Mock).mockReturnValue({ isSuccess: false });
         (useCashierFiatAddress as jest.Mock).mockReturnValue({
             isLoading: true,

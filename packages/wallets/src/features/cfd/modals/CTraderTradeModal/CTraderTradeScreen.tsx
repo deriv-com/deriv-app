@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAvailableCTraderAccounts, useCtraderAccountsList } from '@deriv/api-v2';
 import { LabelPairedCircleExclamationMdFillIcon } from '@deriv/quill-icons';
+import { Accordion } from '@deriv-com/ui';
 import { WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
@@ -54,6 +55,39 @@ const CTraderTradeScreen = () => {
                     availableAccount.available_count < availableAccount.max_count && (
                         <button>Get another cTrader account</button>
                     )}
+
+                <Accordion title='See important notes'>
+                    <ol>
+                        <li>Use your Deriv account email and password to log in to cTrader.</li>
+                        <li>
+                            Manage up to 5 Deriv cTrader accounts. While you can convert any of your Deriv cTrader
+                            accounts into a strategy account, please take note of the following:
+                            <ul>
+                                <li>When setting up a strategy, you have the option to impose fees.</li>
+                                <li>
+                                    For strategies where you impose fees, you must assign one of your existing accounts
+                                    to process these fees. The same ‘Account For Fees’ can support multiple fee-based
+                                    strategies.
+                                </li>
+                                <li>Free strategies do not require an ‘Account For Fees’.</li>
+                                <li>
+                                    An account designated as a strategy provider is irreversible unless it remains
+                                    inactive for 30 days.
+                                </li>
+                                <li>
+                                    An account cannot simultaneously be a strategy provider and serve as an ‘Account For
+                                    Fees’.
+                                </li>
+                                <li>
+                                    To ensure you can always create and manage strategies with fees,{' '}
+                                    <strong>keep at least one account free from being a strategy provider</strong>. This
+                                    way, you’ll always have an account ready for collecting fees, allowing you to have
+                                    up to four strategies where you may impose fees.
+                                </li>
+                            </ul>
+                        </li>
+                    </ol>
+                </Accordion>
 
                 <div className='wallets-mt5-trade-screen__details-clipboards'>
                     {/* <MT5TradeDetailsItem

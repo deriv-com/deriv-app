@@ -992,7 +992,7 @@ $side-padding: 1.2em;
                     white-space: break-spaces;
                 }
             }
-            .limit_order {
+            .limit_order:not(.table__head *) {
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;

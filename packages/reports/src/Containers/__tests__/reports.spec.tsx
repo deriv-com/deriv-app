@@ -32,9 +32,9 @@ jest.mock('@deriv/components', () => ({
     Loading: () => <div>Loading...</div>,
     PageOverlay: jest.fn(({ children, onClickClose }) => (
         <div data-testid='overlay'>
-            <span data-testid='onclose-click' onClick={onClickClose}>
+            <button data-testid='onclose-click' onClick={onClickClose}>
                 close
-            </span>
+            </button>
             Overlay
             {children}
         </div>

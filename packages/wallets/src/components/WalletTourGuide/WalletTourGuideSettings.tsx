@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { TooltipRenderProps } from 'react-joyride';
+import { TooltipRenderProps } from '@deriv/react-joyride';
 import { LegacyClose2pxIcon } from '@deriv/quill-icons';
 import { THooks } from '../../types';
 import { WalletButton, WalletText } from '../Base';

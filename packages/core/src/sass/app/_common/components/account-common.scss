@@ -98,7 +98,7 @@
         &__fieldset {
             .dc-autocomplete,
             .dc-select-native {
-                margin-bottom: 3.2rem;
+                // margin-bottom: 3.2rem;
             }
             @include mobile {
                 &--email-consent {
@@ -292,6 +292,7 @@
             @include tablet-screen {
                 max-width: 600px;
                 margin: 0 auto;
+                padding: 1.6rem 0;
                 left: 0;
                 right: 0;
             }
@@ -335,9 +336,6 @@
 
             &-btn {
                 height: 4rem;
-                @include tablet-screen {
-                    width: 100%;
-                }
                 &-wrapper {
                     align-items: normal;
                     display: flex;
@@ -359,12 +357,13 @@
                 }
 
                 @include desktop {
-                    margin-left: 1.6rem;
-
                     &-wrapper--dashboard {
                         display: flex;
                         justify-content: space-between;
                     }
+                }
+                @include tablet-screen {
+                    width: 100%;
                 }
 
                 @include mobile {
@@ -434,7 +433,7 @@
                 }
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding: 0 1.6rem;
                 overflow-x: hidden;
                 overflow-y: auto;
@@ -452,6 +451,10 @@
         @include desktop {
             padding-left: 16px;
             padding-right: 16px;
+        }
+        @include tablet-screen {
+            padding-left: 0;
+            padding-right: 0;
         }
 
         @include mobile {

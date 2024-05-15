@@ -213,19 +213,15 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
-        @include tablet-screen {
+        @include mobile-or-tablet-screen {
             &__financial-assessment {
                 max-width: 600px;
                 margin: 0 auto;
                 .account-form__fieldset {
                     max-width: 100%;
                     width: 100%;
-                }
-                .account-form__footer {
-                    max-width: 600px;
-                    margin: 0 auto;
-                    left: 0;
-                    right: 0;
+                    margin-top: 0.8rem;
+                    margin-bottom: 2rem;
                 }
             }
         }
@@ -439,7 +435,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
             .account__scrollbars_container {
                 &--grid-layout {
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         display: flex;
                         flex-direction: column;
                     }
@@ -527,9 +523,20 @@ $MIN_HEIGHT_FLOATING: calc(
             gap: 0.8rem;
             margin-top: 0.8rem;
             justify-content: flex-end;
+            // @include tablet-screen {
+            //     max-width: 600px;
+            //     margin: 0 auto;
+            //     padding: 1.6rem 0;
+            //     left: 0;
+            //     right: 0;
+            //     margin: 0;
+            // }
 
             &-btn {
                 min-width: 14.9rem;
+                @include tablet-screen {
+                    margin: 0;
+                }
             }
         }
 

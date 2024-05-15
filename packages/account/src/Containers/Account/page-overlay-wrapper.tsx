@@ -24,7 +24,7 @@ type PageOverlayWrapperProps = {
 const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperProps) => {
     const history = useHistory();
     const { client, common, ui } = useStore();
-    const { is_mobile } = ui;
+    const { is_mobile, is_tablet } = ui;
     const { logout } = client;
     const { is_from_derivgo } = common;
     const { is_next_wallet_enabled } = useFeatureFlags();
@@ -58,7 +58,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
         logout().then(() => (window.location.href = getStaticUrl('/')));
     };
 
-    if (is_mobile && selected_route) {
+    if ((is_mobile || is_tablet) && selected_route) {
         const RouteComponent = selected_route.component as React.ElementType<{ component_icon: string | undefined }>;
         return (
             <PageOverlay header={selected_route?.getTitle()} onClickClose={onClickClose} is_from_app={is_from_derivgo}>

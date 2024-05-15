@@ -6,15 +6,19 @@ import { observer, useStore } from '@deriv/stores';
 import { Input } from '@deriv/components';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 import ResendCodeTimer from './resend-code-timer';
+import DidntGetTheCodeModal from './didnt-get-the-code-modal';
 
 type TOTPVerification = {
     phone_verification_type: string;
+    setOtpVerification: (value: { show: boolean; phone_verification_type: string }) => void;
 };
 
-const OTPVerification = observer(({ phone_verification_type }: TOTPVerification) => {
+const OTPVerification = observer(({ phone_verification_type, setOtpVerification }: TOTPVerification) => {
     const { client, ui } = useStore();
     const { account_settings } = client;
     const { email, phone } = account_settings;
+    const [should_show_didnt_get_the_code_modal, setShouldShowDidntGetTheCodeModal] = React.useState(false);
+    const [start_timer, setStartTimer] = React.useState(true);
     //TODO: this shall be replace by BE API call when it's ready
     const { should_show_phone_number_otp } = ui;
 
@@ -31,6 +35,13 @@ const OTPVerification = observer(({ phone_verification_type }: TOTPVerification)
 
     return (
         <PhoneVerificationCard is_small_card>
+            <DidntGetTheCodeModal
+                should_show_didnt_get_the_code_modal={should_show_didnt_get_the_code_modal}
+                setShouldShowDidntGetTheCodeModal={setShouldShowDidntGetTheCodeModal}
+                phone_verification_type={phone_verification_type}
+                setOtpVerification={setOtpVerification}
+                setStartTimer={setStartTimer}
+            />
             <Text bold>
                 {should_show_phone_number_otp ? (
                     <Localize i18n_default_text='Verify your number' />
@@ -63,7 +74,13 @@ const OTPVerification = observer(({ phone_verification_type }: TOTPVerification)
             </div>
             <div className='phone-verification__card--email-verification-otp-container'>
                 <Input id='otp_code' type='text' name='otp_code' label={localize('OTP code')} data-lpignore='true' />
-                <ResendCodeTimer resend_code_text='Resend code' count_from={60} />
+                <ResendCodeTimer
+                    resend_code_text={should_show_phone_number_otp ? "Didn't get the code?" : 'Resend code'}
+                    count_from={60}
+                    setShouldShowDidntGetTheCodeModal={setShouldShowDidntGetTheCodeModal}
+                    start_timer={start_timer}
+                    setStartTimer={setStartTimer}
+                />
             </div>
         </PhoneVerificationCard>
     );

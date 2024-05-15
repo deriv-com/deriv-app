@@ -35,7 +35,10 @@ const PhoneVerificationPage = () => {
                 </Text>
             </div>
             {otp_verification.show ? (
-                <OTPVerification phone_verification_type={otp_verification.phone_verification_type} />
+                <OTPVerification
+                    phone_verification_type={otp_verification.phone_verification_type}
+                    setOtpVerification={setOtpVerification}
+                />
             ) : (
                 <ConfirmPhoneNumber setOtpVerification={setOtpVerification} />
             )}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { Loading, Text, StaticUrl } from '@deriv/components';
 import {
@@ -9,6 +9,7 @@ import {
     MT5_ACCOUNT_STATUS,
     makeLazyLoader,
     moduleLoader,
+    setPerformanceValue,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
@@ -67,7 +68,6 @@ const CFDsListing = observer(() => {
     const { setAccountType, toggleCTraderTransferModal } = cfd;
     const {
         account_status,
-        ctrader_accounts_list,
         is_landing_company_loaded,
         is_populating_mt5_account_list,
         real_account_creation_unlock_date,
@@ -172,6 +172,16 @@ const CFDsListing = observer(() => {
         return null;
     };
 
+    useEffect(() => {
+        if (is_landing_company_loaded && is_populating_mt5_account_list) {
+            setPerformanceValue('login_time');
+            setPerformanceValue('redirect_from_deriv_com_time');
+            setPerformanceValue('switch_currency_accounts_time');
+            setPerformanceValue('switch_from_demo_to_real_time');
+            setPerformanceValue('switch_from_real_to_demo_time');
+        }
+    }, [is_populating_mt5_account_list]);
+
     return (
         <ListingContainer
             title={
@@ -188,7 +198,7 @@ const CFDsListing = observer(() => {
                 <Text size='xs' line_height='s'>
                     <Localize
                         i18n_default_text={
-                            'Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'
+                            'Trade bigger positions with less capital across diverse financial and derived instruments. <0>Learn more</0>'
                         }
                         components={[<StaticUrl key={0} className='options' href='/trade-types/cfds' />]}
                     />

@@ -78,7 +78,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
 
     return (
         <WalletGradientBackground
-            currency={activeWallet?.currency_config?.display_code || 'USD'}
+            currency={activeWallet?.currency}
             device={isMobile ? 'mobile' : 'desktop'}
             isDemo={activeWallet?.is_virtual}
             theme='light'

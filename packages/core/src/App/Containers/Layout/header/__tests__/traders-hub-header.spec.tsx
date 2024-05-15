@@ -42,11 +42,6 @@ describe('TradersHubHeader', () => {
                     mock_store ??
                     mockStore({
                         ui: { is_desktop: true },
-                        feature_flags: {
-                            data: {
-                                next_wallet: true,
-                            },
-                        },
                         traders_hub: {
                             modal_data: {
                                 active_modal: 'currency_selection',

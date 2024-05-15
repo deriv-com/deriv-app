@@ -1,14 +1,6 @@
 import React, { lazy } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { useWalletAccountsList } from '@deriv/api-v2';
 import { Loader } from '../components/Loader';
-
-const LazyWalletsNotFoundState = lazy(
-    () =>
-        import(
-            /* webpackChunkName: "wallets-not-found-route" */ '../components/WalletNoWalletFoundState/WalletNoWalletFoundState'
-        )
-);
 
 const LazyWalletsListingRoute = lazy(
     () => import(/* webpackChunkName: "wallets-listing-route" */ './WalletsListingRoute/WalletsListingRoute')
@@ -70,20 +62,6 @@ declare module 'react-router-dom' {
 }
 
 const Router: React.FC = () => {
-    const { data: walletAccounts, isLoading } = useWalletAccountsList();
-
-    if ((!walletAccounts || !walletAccounts.length) && !isLoading)
-        return (
-            <Route
-                path={walletsPrefix}
-                render={() => (
-                    <React.Suspense fallback={<Loader />}>
-                        <LazyWalletsNotFoundState />
-                    </React.Suspense>
-                )}
-            />
-        );
-
     return (
         <Switch>
             <Route

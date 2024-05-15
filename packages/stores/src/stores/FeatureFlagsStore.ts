@@ -5,7 +5,6 @@ const FLAGS = {
     next_account: false,
     next_cashier: false,
     next_tradershub: false,
-    next_wallet: false,
     p2p_v2: false,
     sharkfin: false,
     wallet: false,

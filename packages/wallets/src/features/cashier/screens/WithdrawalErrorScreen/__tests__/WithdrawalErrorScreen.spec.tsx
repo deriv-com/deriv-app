@@ -87,6 +87,19 @@ describe('WithdrawalErrorScreen', () => {
         expect(screen.queryByText('Try again')).not.toBeInTheDocument();
     });
 
+    it('should show correct withdrawal error screen for crypto connection error', () => {
+        const error = {
+            code: 'CryptoConnectionError',
+            message: 'Crypto Connection Error',
+        };
+
+        render(<WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />);
+
+        expect(screen.getByText('Maintenance in progess')).toBeInTheDocument();
+        expect(screen.getByText('Crypto Connection Error')).toBeInTheDocument();
+        expect(screen.queryByText('Try again')).not.toBeInTheDocument();
+    });
+
     it('should reload page when the user clicks on `Try again` button', () => {
         const reloadMock = jest.fn();
         Object.defineProperty(window, 'location', {

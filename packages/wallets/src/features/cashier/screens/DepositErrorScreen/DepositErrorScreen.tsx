@@ -11,12 +11,13 @@ type TProps = {
 };
 
 const DepositErrorScreen: React.FC<TProps> = ({ currency, error }) => {
+    const CryptoConnectionError = error?.code === CryptoDepositErrorCodes.CryptoConnectionError;
     const SuspendedCurrencyDeposit =
         error?.code === (CryptoDepositErrorCodes.SuspendedCurrency || CryptoDepositErrorCodes.SuspendedDeposit);
 
     const getErrorTitle = () => {
         if (SuspendedCurrencyDeposit) return `${currency} Wallet deposits are temporarily unavailable`;
-        //TODO: add check for CryptoConnectionError
+        if (CryptoConnectionError) return 'Maintenance in progess';
         return undefined;
     };
 
@@ -36,7 +37,7 @@ const DepositErrorScreen: React.FC<TProps> = ({ currency, error }) => {
             })}
         >
             <WalletsErrorScreen
-                buttonText={SuspendedCurrencyDeposit ? undefined : 'Try again'}
+                buttonText={SuspendedCurrencyDeposit || CryptoConnectionError ? undefined : 'Try again'}
                 message={errorMessage}
                 onClick={() => window.location.reload()}
                 showIcon={!SuspendedCurrencyDeposit}

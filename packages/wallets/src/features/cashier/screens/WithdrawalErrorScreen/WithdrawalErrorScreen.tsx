@@ -12,6 +12,7 @@ type TProps = {
 };
 
 const WithdrawalErrorScreen: React.FC<TProps> = ({ currency, error, resetError, setResendEmail }) => {
+    const CryptoConnectionError = error?.code === CryptoWithdrawalErrorCodes.CryptoConnectionError;
     const CryptoInvalidAddress = error?.code === CryptoWithdrawalErrorCodes.CryptoInvalidAddress;
     const InvalidToken = error?.code === CryptoWithdrawalErrorCodes.InvalidToken;
     const SuspendedCurrencyWithdrawal =
@@ -19,9 +20,9 @@ const WithdrawalErrorScreen: React.FC<TProps> = ({ currency, error, resetError, 
         (CryptoWithdrawalErrorCodes.SuspendedCurrency || CryptoWithdrawalErrorCodes.SuspendedWithdrawal);
 
     const getErrorTitle = () => {
-        if (SuspendedCurrencyWithdrawal) return `${currency} Wallet withdrawals are temporarily unavailable`;
         if (CryptoInvalidAddress) return 'Error';
-        //TODO: add check for CryptoConnectionError
+        if (SuspendedCurrencyWithdrawal) return `${currency} Wallet withdrawals are temporarily unavailable`;
+        if (CryptoConnectionError) return 'Maintenance in progess';
         return undefined;
     };
 
@@ -56,7 +57,7 @@ const WithdrawalErrorScreen: React.FC<TProps> = ({ currency, error, resetError, 
             })}
         >
             <WalletsErrorScreen
-                buttonText={SuspendedCurrencyWithdrawal ? undefined : 'Try again'}
+                buttonText={SuspendedCurrencyWithdrawal || CryptoConnectionError ? undefined : 'Try again'}
                 message={errorMessage}
                 onClick={CryptoInvalidAddress ? resetError : () => window.location.reload()}
                 showIcon={!SuspendedCurrencyWithdrawal}

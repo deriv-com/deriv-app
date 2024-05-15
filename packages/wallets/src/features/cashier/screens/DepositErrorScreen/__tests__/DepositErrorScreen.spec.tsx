@@ -47,6 +47,19 @@ describe('DepositErrorScreen', () => {
         expect(screen.queryByText('Try again')).not.toBeInTheDocument();
     });
 
+    it('should show correct deposit error screen for crypto connection error', () => {
+        const error = {
+            code: 'CryptoConnectionError',
+            message: 'Crypto Connection Error',
+        };
+
+        render(<DepositErrorScreen error={error} />);
+
+        expect(screen.getByText('Maintenance in progess')).toBeInTheDocument();
+        expect(screen.getByText('Crypto Connection Error')).toBeInTheDocument();
+        expect(screen.queryByText('Try again')).not.toBeInTheDocument();
+    });
+
     it('should reload page when user clicks on button', () => {
         const reloadMock = jest.fn();
         Object.defineProperty(window, 'location', {

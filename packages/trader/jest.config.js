@@ -17,5 +17,9 @@ module.exports = {
         '^Services/(.*)$': '<rootDir>/src/Services/$1',
         '^Stores/(.*)$': '<rootDir>/src/Stores/$1',
     },
+    transform: {
+        '\\.(ts|tsx)?$': '<rootDir>/jestTransformer.js',
+        '^.+\\.jsx?$': 'babel-jest',
+    },
     transformIgnorePatterns: ['/node_modules/(?!(@deriv-com/quill-ui)).+\\.js$'],
 };

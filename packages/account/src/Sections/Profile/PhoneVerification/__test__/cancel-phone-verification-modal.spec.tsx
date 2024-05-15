@@ -43,11 +43,11 @@ describe('CancelPhoneVerificationModal', () => {
 
     it('it should render CancelPhoneVerificationModal', () => {
         renderComponent();
-        expect(screen.getByText(/Cancel phone number verification?/)).toBeInTheDocument();
-        expect(screen.getByText(/All details entered will be lost./)).toBeInTheDocument();
         buttons.forEach(value => {
             expect(screen.getByRole('button', { name: value })).toBeInTheDocument();
         });
+        expect(screen.getByText(/Cancel phone number verification?/)).toBeInTheDocument();
+        expect(screen.getByText(/All details entered will be lost./)).toBeInTheDocument();
     });
 
     it('it should render only mockSetShowCancelModal when Go back is clicked', () => {

@@ -47,7 +47,7 @@ export const isMobileOs = () =>
 export const isTabletOs =
     /ipad|android 3.0|xoom|sch-i800|playbook|tablet|kindle/i.test(navigator.userAgent.toLowerCase()) ||
     (/android/i.test(navigator.userAgent.toLowerCase()) && !/mobile/i.test(navigator.userAgent.toLowerCase())) ||
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); /** iOS13 and up */
+    (/MacIntel|Linux/.test(navigator.platform) && navigator.maxTouchPoints > 0); /** iOS13 and linux based tablet */
 
 export const OSDetect = () => {
     // For testing purposes or more compatibility, if we set 'config.os'

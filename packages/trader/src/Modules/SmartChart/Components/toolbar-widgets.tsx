@@ -1,6 +1,6 @@
 import React from 'react';
-import { isDesktop } from '@deriv/shared';
 import { ChartMode, DrawTools, Share, StudyLegend, Views, ToolbarWidget } from 'Modules/SmartChart';
+import { useDevice } from '@deriv-com/ui';
 
 type TToolbarWidgetsProps = {
     is_mobile?: boolean;
@@ -9,12 +9,14 @@ type TToolbarWidgetsProps = {
     updateGranularity: (granularity: number) => void;
 };
 
-const ToolbarWidgets = ({ is_mobile, position, updateChartType, updateGranularity }: TToolbarWidgetsProps) => {
+const ToolbarWidgets = ({ position, updateChartType, updateGranularity }: TToolbarWidgetsProps) => {
+    const { isMobile } = useDevice();
+
     return (
-        <ToolbarWidget position={position || (is_mobile ? 'bottom' : null)}>
+        <ToolbarWidget position={position || (isMobile ? 'bottom' : null)}>
             <ChartMode portalNodeId='modal_root' onChartType={updateChartType} onGranularity={updateGranularity} />
-            {isDesktop() && <StudyLegend portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />}
-            {isDesktop() && (
+            {!isMobile && <StudyLegend portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />}
+            {!isMobile && (
                 <Views
                     portalNodeId='modal_root'
                     searchInputClassName='data-hj-whitelist'
@@ -22,8 +24,8 @@ const ToolbarWidgets = ({ is_mobile, position, updateChartType, updateGranularit
                     onGranularity={updateGranularity}
                 />
             )}
-            {isDesktop() && <DrawTools portalNodeId='modal_root' />}
-            {isDesktop() && <Share portalNodeId='modal_root' />}
+            {!isMobile && <DrawTools portalNodeId='modal_root' />}
+            {!isMobile && <Share portalNodeId='modal_root' />}
         </ToolbarWidget>
     );
 };

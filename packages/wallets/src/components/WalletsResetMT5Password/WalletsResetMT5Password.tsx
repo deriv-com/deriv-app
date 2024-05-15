@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
 import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordReset } from '@deriv/api-v2';
 import { CFD_PLATFORMS, PlatformDetails } from '../../features/cfd/constants';
-import useDevice from '../../hooks/useDevice';
 import { TPlatforms } from '../../types';
 import { validPassword, validPasswordMT5 } from '../../utils/password-validation';
-import { ModalStepWrapper, WalletButton, WalletPasswordFieldLazy, WalletText } from '../Base';
+import { ModalWrapper, WalletButton, WalletPasswordFieldLazy, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletError } from '../WalletError';
 import WalletSuccessResetMT5Password from './WalletSuccessResetMT5Password';
@@ -49,29 +48,8 @@ const WalletsResetMT5Password = ({
 
     const { hide, show } = useModal();
     const [password, setPassword] = useState('');
-    const { isDesktop, isMobile } = useDevice();
 
     const isMT5 = platform === CFD_PLATFORMS.MT5;
-
-    const renderFooter = isMobile
-        ? () => {
-              return (
-                  <div className='wallets-reset-mt5-password__button-group'>
-                      <WalletButton onClick={() => hide()} variant='outlined'>
-                          <Trans defaults='Cancel' />
-                      </WalletButton>
-                      <WalletButton
-                          disabled={isMT5 ? !validPasswordMT5(password) : !validPassword(password)}
-                          isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
-                          onClick={handleSubmit}
-                          variant='contained'
-                      >
-                          <Trans defaults='Create' />
-                      </WalletButton>
-                  </div>
-              );
-          }
-        : undefined;
 
     const handleSubmit = () => {
         if (isInvestorPassword && isMT5) {
@@ -126,12 +104,7 @@ const WalletsResetMT5Password = ({
     }, [platform, title, actionParams, isChangeInvestorPasswordSuccess, isChangeInvestorPasswordError]);
 
     return (
-        <ModalStepWrapper
-            renderFooter={renderFooter}
-            shouldHideFooter={isDesktop}
-            shouldHideHeader={isDesktop}
-            title={`Manage ${title} password`}
-        >
+        <ModalWrapper>
             <div className='wallets-reset-mt5-password'>
                 <WalletText weight='bold'>
                     {isInvestorPassword ? `Reset ${title} investor password` : `Create a new ${title} password`}
@@ -146,24 +119,22 @@ const WalletsResetMT5Password = ({
                     password={password}
                 />
                 <WalletText size='sm'>{modalDescription[platform]}</WalletText>
-                {isDesktop && (
-                    <div className='wallets-reset-mt5-password__button-group'>
-                        <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
-                            <Trans defaults='Cancel' />
-                        </WalletButton>
-                        <WalletButton
-                            disabled={isMT5 ? !validPasswordMT5(password) : !validPassword(password)}
-                            isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
-                            onClick={handleSubmit}
-                            size='lg'
-                            variant='contained'
-                        >
-                            <Trans defaults='Create' />
-                        </WalletButton>
-                    </div>
-                )}
+                <div className='wallets-reset-mt5-password__button-group'>
+                    <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
+                        <Trans defaults='Cancel' />
+                    </WalletButton>
+                    <WalletButton
+                        disabled={isMT5 ? !validPasswordMT5(password) : !validPassword(password)}
+                        isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
+                        onClick={handleSubmit}
+                        size='lg'
+                        variant='contained'
+                    >
+                        <Trans defaults='Create' />
+                    </WalletButton>
+                </div>
             </div>
-        </ModalStepWrapper>
+        </ModalWrapper>
     );
 };
 

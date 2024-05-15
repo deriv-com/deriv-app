@@ -15,6 +15,13 @@
         }
     }
 
+    &__cancel-modal--header {
+        background-color: var(--core-color-solid-red-100);
+    }
+    &__verified-modal--header {
+        background-color: var(--core-color-solid-green-100);
+    }
+
     &__redirect_button {
         display: flex;
         align-items: center;

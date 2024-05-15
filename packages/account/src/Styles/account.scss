@@ -218,20 +218,13 @@ $MIN_HEIGHT_FLOATING: calc(
         }
 
         @include tablet-screen {
-            &__personal-details {
-                max-width: 60rem;
-                .account-form__fieldset {
-                    max-width: 100%;
-                }
-                .account-form__footer {
-                    max-width: 600px;
-                    padding: 1.6rem 0;
-                }
+            .account-form__fieldset {
+                max-width: 100%;
             }
-        }
-        & .account__scrollbars_container--grid-layout {
-            @include tablet-screen {
-                padding: 0;
+            .account-form__footer-note {
+                width: auto;
+                text-align: center;
+                align-self: center;
             }
         }
 

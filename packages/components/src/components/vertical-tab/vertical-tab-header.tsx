@@ -105,7 +105,7 @@ const VerticalTabHeader = ({
         >
             <HeaderIcon icon={item.icon ?? ''} is_active={is_active} />
             <Header text={label} />
-            {children} ed
+            {children}
             <>{item.component}</>
         </div>
     );

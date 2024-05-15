@@ -3,6 +3,7 @@
     border-radius: $BORDER_RADIUS * 4;
 
     &__content {
+        position: relative;
         display: flex;
         justify-content: space-between;
 
@@ -42,6 +43,8 @@
     }
 
     &__image {
+        position: absolute;
+        right: 0;
         margin-inline-end: 1.2rem;
 
         @include mobile {

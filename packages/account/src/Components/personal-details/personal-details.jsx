@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, Fragment, useCallback, useMemo, useEffect } from 'react';
 import classNames from 'classnames';
 import { Form, Formik } from 'formik';
 import { Analytics } from '@deriv-com/analytics';
@@ -51,8 +51,8 @@ const PersonalDetails = observer(
             traders_hub: { is_eu_user },
         } = useStore();
         const { account_status, account_settings, residence, real_account_signup_target } = props;
-        const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
-        const [no_confirmation_needed, setNoConfirmationNeeded] = React.useState(false);
+        const [should_close_tooltip, setShouldCloseTooltip] = useState(false);
+        const [no_confirmation_needed, setNoConfirmationNeeded] = useState(false);
 
         const PoiNameDobExampleIcon = PoiNameDobExample;
 
@@ -63,7 +63,7 @@ const PersonalDetails = observer(
         };
         const citizen = residence || account_settings?.citizen;
 
-        const trackEvent = React.useCallback(
+        const trackEvent = useCallback(
             payload => {
                 if (is_eu_user) return;
                 Analytics.trackEvent('ce_real_account_signup_identity_form', {
@@ -75,7 +75,7 @@ const PersonalDetails = observer(
             [is_eu_user, real_account_signup_target]
         );
 
-        React.useEffect(() => {
+        useEffect(() => {
             trackEvent({
                 action: 'open',
             });
@@ -95,7 +95,7 @@ const PersonalDetails = observer(
             real_account_signup_target,
         });
 
-        const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
+        const IDV_NOT_APPLICABLE_OPTION = useMemo(() => getIDVNotApplicableOption(), []);
 
         const validateIDV = values => {
             const errors = {};
@@ -220,14 +220,14 @@ const PersonalDetails = observer(
                                             style={{ paddingBottom: isDesktop() ? 'unset' : null }}
                                         >
                                             {is_rendered_for_idv && (
-                                                <React.Fragment>
+                                                <Fragment>
                                                     <FormSubHeader title={localize('Identity verification')} />
                                                     <IDVForm
                                                         selected_country={selected_country}
                                                         hide_hint
                                                         is_for_real_account_signup_modal
                                                     />
-                                                </React.Fragment>
+                                                </Fragment>
                                             )}
                                             {is_svg && !is_eu_user && <FormSubHeader title={localize('Details')} />}
                                             <PersonalDetailsForm

@@ -30,11 +30,6 @@ jest.mock('@deriv/components', () => ({
     Icon: jest.fn(() => <div>Flag Icon</div>),
 }));
 
-jest.mock('react-i18next', () => ({
-    ...jest.requireActual('react-i18next'),
-    useTranslation: jest.fn(() => ({ i18n: { changeLanguage: jest.fn() } })),
-}));
-
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     Redirect: jest.fn(() => <div>Redirect</div>),

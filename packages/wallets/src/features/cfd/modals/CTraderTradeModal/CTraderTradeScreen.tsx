@@ -90,13 +90,6 @@ const CTraderTradeScreen = () => {
                     </ol>
                 </Accordion>
 
-                <div className='wallets-mt5-trade-screen__details-clipboards'>
-                    {/* <MT5TradeDetailsItem
-                        value=' Use your Deriv account email and password to login into the cTrader platform.'
-                        variant='info'
-                    /> */}
-                </div>
-
                 <div className='wallets-mt5-trade-screen__details-maintenance'>
                     <LabelPairedCircleExclamationMdFillIcon fill='#FFAD3A' />
                     <WalletText color='less-prominent' size={isDesktop ? '2xs' : 'xs'}>

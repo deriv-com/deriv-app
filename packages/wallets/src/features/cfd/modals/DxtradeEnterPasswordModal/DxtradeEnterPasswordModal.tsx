@@ -19,7 +19,7 @@ const DxtradeEnterPasswordModal = () => {
     const { isMobile } = useDevice();
     const [password, setPassword] = useState('');
     const { data: getAccountStatus, isSuccess: accountStatusSuccess } = useAccountStatus();
-    const { error, isLoading, isSuccess, mutateAsync, status } = useCreateOtherCFDAccount();
+    const { data: createdAccount, error, isLoading, isSuccess, mutateAsync, status } = useCreateOtherCFDAccount();
     const { data: dxtradeAccount, isSuccess: dxtradeAccountListSuccess } = useDxtradeAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const { hide, show } = useModal();
@@ -68,7 +68,7 @@ const DxtradeEnterPasswordModal = () => {
                     <WalletButton
                         onClick={() => {
                             hide();
-                            history.push('/wallets/cashier/transfer');
+                            history.push('/wallets/cashier/transfer', { toAccountLoginId: createdAccount?.account_id });
                         }}
                         size={isMobile ? 'lg' : 'md'}
                     >
@@ -121,6 +121,7 @@ const DxtradeEnterPasswordModal = () => {
         );
     }, [
         accountType,
+        createdAccount?.account_id,
         dxtradePlatform,
         hide,
         history,

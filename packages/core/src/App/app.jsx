@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Analytics } from '@deriv-com/analytics';
 import { BreakpointProvider } from '@deriv/quill-design';
-import { ThemeProvider } from '@deriv-com/quill-ui';
 import { APIProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
@@ -102,19 +101,17 @@ const AppWithoutTranslation = ({ root_store }) => {
             {is_translation_loaded ? (
                 <Router basename={has_base ? `/${base}` : null}>
                     <StoreProvider store={root_store}>
-                        <ThemeProvider theme={root_store.ui.is_dark_mode_on ? 'dark' : 'light'}>
-                            <BreakpointProvider>
-                                <APIProvider>
-                                    <POIProvider>
-                                        <StoreProvider store={root_store}>
-                                            <P2PSettingsProvider>
-                                                <AppContent passthrough={platform_passthrough} />
-                                            </P2PSettingsProvider>
-                                        </StoreProvider>
-                                    </POIProvider>
-                                </APIProvider>
-                            </BreakpointProvider>
-                        </ThemeProvider>
+                        <BreakpointProvider>
+                            <APIProvider>
+                                <POIProvider>
+                                    <StoreProvider store={root_store}>
+                                        <P2PSettingsProvider>
+                                            <AppContent passthrough={platform_passthrough} />
+                                        </P2PSettingsProvider>
+                                    </StoreProvider>
+                                </POIProvider>
+                            </APIProvider>
+                        </BreakpointProvider>
                     </StoreProvider>
                 </Router>
             ) : (

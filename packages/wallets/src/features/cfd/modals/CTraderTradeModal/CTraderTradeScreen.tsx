@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCtraderAccountsList } from '@deriv/api-v2';
+import { useAvailableCTraderAccounts, useCtraderAccountsList } from '@deriv/api-v2';
 import { LabelPairedCircleExclamationMdFillIcon } from '@deriv/quill-icons';
 import { WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
@@ -14,6 +14,8 @@ const CTraderTradeScreen = () => {
     const { icon: platformIcon, title: platformTitle } = PlatformDetails[platform];
 
     const { data: ctraderAccountsList } = useCtraderAccountsList();
+    const { data: availableCtraderAccounts } = useAvailableCTraderAccounts();
+    const availableAccount = availableCtraderAccounts?.[0];
 
     const totalBalance = ctraderAccountsList?.reduce((acc, cur) => acc + +(cur?.display_balance || 0), 0);
 
@@ -46,6 +48,12 @@ const CTraderTradeScreen = () => {
                         </li>
                     ))}
                 </ul>
+
+                {availableAccount?.available_count !== undefined &&
+                    availableAccount?.max_count !== undefined &&
+                    availableAccount.available_count < availableAccount.max_count && (
+                        <button>Get another cTrader account</button>
+                    )}
 
                 <div className='wallets-mt5-trade-screen__details-clipboards'>
                     {/* <MT5TradeDetailsItem

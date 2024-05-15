@@ -36,10 +36,8 @@ const CancelPhoneVerificationModal = observer(
                 secondaryButtonCallback={handleCancelButton}
             >
                 <Modal.Header
+                    className='phone-verification__cancel-modal--header'
                     image={<LabelPairedCircleXmarkLgRegularIcon fill='#C40000' height={96} width={96} />}
-                    style={{
-                        backgroundColor: 'var(--core-color-solid-red-100)',
-                    }}
                 />
                 <Modal.Body>
                     <div className='phone-verification__cancel-modal--contents'>

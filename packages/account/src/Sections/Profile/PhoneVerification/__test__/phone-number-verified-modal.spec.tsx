@@ -1,8 +1,6 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router';
 import { render } from '@testing-library/react';
-// import userEvent from '@testing-library/user-event';
-// import { routes } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import PhoneNumberVerifiedModal from '../phone-number-verified-modal';
 

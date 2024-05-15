@@ -26,10 +26,8 @@ const PhoneNumberVerifiedModal = observer(() => {
             disableCloseOnOverlay
         >
             <Modal.Header
+                className='phone-verification__verified-modal--header'
                 image={<LabelPairedBadgeCheckLgRegularIcon fill='#007A22' height={96} width={96} />}
-                style={{
-                    backgroundColor: 'var(--core-color-solid-green-100)',
-                }}
             />
             <Modal.Body>
                 <div className='phone-verification__verified-modal--contents'>

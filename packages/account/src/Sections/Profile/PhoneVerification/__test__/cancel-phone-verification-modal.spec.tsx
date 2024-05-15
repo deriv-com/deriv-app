@@ -26,11 +26,7 @@ describe('CancelPhoneVerificationModal', () => {
         document.body.removeChild(modal_root_el);
     });
 
-    const mock_store = mockStore({
-        ui: {
-            is_mobile: false,
-        },
-    });
+    const mock_store = mockStore({});
 
     const buttons = [/Go back/, /Yes, cancel/];
 

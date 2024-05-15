@@ -37,7 +37,13 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
 
     const { data: walletAccountsList, isLoading: isWalletAccountsListLoading } = useMobileCarouselWalletsList();
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
-    const { data: balanceData, isSubscribed, subscribe, unsubscribe } = useBalanceSubscription();
+    const {
+        data: balanceData,
+        isLoading: isBalanceLoading,
+        isSubscribed,
+        subscribe,
+        unsubscribe,
+    } = useBalanceSubscription();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
     const [selectedLoginId, setSelectedLoginId] = useState('');
@@ -250,8 +256,10 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
                 {walletAccountsList?.map((account, index) => (
                     <WalletCard
                         balance={
-                            account.loginid === selectedLoginId
-                                ? displayMoney(balanceData.balance ?? 0, activeWallet?.currency ?? '', {
+                            !isBalanceLoading &&
+                            account.loginid === activeWallet?.loginid &&
+                            balanceData.loginid === selectedLoginId
+                                ? displayMoney(balanceData.balance ?? account.balance, activeWallet?.currency ?? '', {
                                       fractional_digits: activeWallet?.currency_config?.fractional_digits,
                                   })
                                 : account.display_balance

@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
-import * as formik from 'formik';
 import { useFormikContext } from 'formik';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import useDevice from '../../../../../../../hooks/useDevice';
 import { TransferProvider, useTransfer } from '../../../provider';
 import TransferForm from '../TransferForm';
+
+const mockAccounts = ['CR1', 'CR2'];
+let mockFormikValues: unknown;
 
 jest.mock('../../../../../../../hooks/useDevice', () => jest.fn());
 
@@ -13,10 +15,7 @@ jest.mock('../../../provider', () => ({
     ...jest.requireActual('../../../provider'),
     TransferProvider: jest.fn(({ children }) => <div>{children}</div>),
     useTransfer: jest.fn(),
-}));
-
-const mockAccounts = ['CR1', 'CR2'];
-// const mockUseFormikContext = jest.spyOn(formik, 'useFormikContext') as jest.Mock;
+})); // const mockUseFormikContext = jest.spyOn(formik, 'useFormikContext') as jest.Mock;
 
 jest.mock('../../TransferFormAmountInput', () => ({
     ...jest.requireActual('../../TransferFormAmountInput'),
@@ -31,15 +30,8 @@ jest.mock('../../TransferFormDropdown', () => ({
 const mockTransferMessages = jest.fn(() => {
     const { setValues } = useFormikContext();
     useEffect(() => {
-        setValues({
-            activeAmountFieldName: 'fromAmount',
-            fromAccount: mockAccounts[0],
-            fromAmount: 100,
-            isError: false,
-            toAccount: mockAccounts[1],
-            toAmount: 10,
-        });
-    }, []);
+        setValues(mockFormikValues);
+    }, [setValues]);
 
     return <div>TransferMessages</div>;
 });
@@ -69,70 +61,85 @@ describe('<TransferForm />', () => {
     });
 
     it('should test that transfer button is disabled when fromAmount is 0', async () => {
-        const dummyRequest = jest.fn();
-
         (useTransfer as jest.Mock).mockReturnValue({
             activeWallet: mockAccounts[0],
             isLoading: false,
-            requestTransferBetweenAccounts: dummyRequest,
+            requestTransferBetweenAccounts: jest.fn(),
         });
 
-        // mockUseFormikContext.mockReturnValue({
-        //     values: {
-        //         activeAmountFieldName: 'fromAmount',
-        //         fromAccount: mockAccounts[0],
-        //         fromAmount: 0,
-        //         isError: false,
-        //         toAccount: mockAccounts[1],
-        //         toAmount: 10,
-        //     },
-        // });
+        mockFormikValues = {
+            activeAmountFieldName: 'fromAmount',
+            fromAccount: mockAccounts[0],
+            fromAmount: 0,
+            isError: false,
+            toAccount: mockAccounts[1],
+            toAmount: 10,
+        };
 
         render(<TransferForm />, { wrapper });
 
-        const transferSubmitButton = screen.getByRole('button');
-        userEvent.click(transferSubmitButton);
-
         await waitFor(() => {
-            expect(dummyRequest).toBeCalled();
+            expect(within(screen.getByTestId('dt_transfer_form_submit_btn')).getByRole('button')).toBeDisabled();
         });
     });
-    // it('should test that transfer button is disabled when toAmount is 0');
 
-    // it('should test that transfer button is disabled when when there is an error in the input');
+    it('should test that transfer button is disabled when toAmount is 0', async () => {
+        (useTransfer as jest.Mock).mockReturnValue({
+            activeWallet: mockAccounts[0],
+            isLoading: false,
+            requestTransferBetweenAccounts: jest.fn(),
+        });
+
+        mockFormikValues = {
+            activeAmountFieldName: 'fromAmount',
+            fromAccount: mockAccounts[0],
+            fromAmount: 1000,
+            isError: false,
+            toAccount: mockAccounts[1],
+            toAmount: 0,
+        };
+
+        render(<TransferForm />, { wrapper });
+
+        await waitFor(() => {
+            expect(within(screen.getByTestId('dt_transfer_form_submit_btn')).getByRole('button')).toBeDisabled();
+        });
+    });
 
     it('should test if API is called with correct params when transfer button is clicked', async () => {
         const dummyRequest = jest.fn();
 
+        mockFormikValues = {
+            activeAmountFieldName: 'fromAmount',
+            fromAccount: mockAccounts[0],
+            fromAmount: 100,
+            isError: false,
+            toAccount: mockAccounts[1],
+            toAmount: 10,
+        };
+
         (useTransfer as jest.Mock).mockReturnValue({
             activeWallet: mockAccounts[0],
             isLoading: false,
             requestTransferBetweenAccounts: dummyRequest,
         });
-        // mockUseFormikContext.mockReturnValue({
-        //     values: {
-        //         activeAmountFieldName: 'fromAmount',
-        //         fromAccount: mockAccounts[0],
-        //         fromAmount: 100,
-        //         isError: false,
-        //         toAccount: mockAccounts[1],
-        //         toAmount: 10,
-        //     },
-        // });
 
         render(<TransferForm />, { wrapper });
 
         await waitFor(() => {
-            const transferSubmitButton = screen.getByRole('button');
+            const transferSubmitButton = within(screen.getByTestId('dt_transfer_form_submit_btn')).getByRole('button');
             userEvent.click(transferSubmitButton);
         });
 
         await waitFor(() => {
-            // expect(dummyRequest).toBeCalledWith({
-            //     fromAccount: 'CR1',
-            //     toAccount: 'CR2',
-            // });
-            expect(dummyRequest).toBeCalled();
+            expect(dummyRequest).toBeCalledWith({
+                activeAmountFieldName: 'fromAmount',
+                fromAccount: mockAccounts[0],
+                fromAmount: 100,
+                isError: false,
+                toAccount: mockAccounts[1],
+                toAmount: 10,
+            });
         });
     });
 });

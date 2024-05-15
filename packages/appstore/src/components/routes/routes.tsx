@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Loading } from '@deriv/components';
-import { useFeatureFlags /*useWalletsList*/ } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
@@ -15,19 +14,15 @@ const TradersHubLoggedOut = React.lazy(
 
 const Routes: React.FC = observer(() => {
     const { client } = useStore();
-    const { is_logged_in } = client;
-    //TODO: Uncomment once useWalletList hook is optimized for production release.
-    const { /*is_wallet_enabled,*/ is_next_wallet_enabled } = useFeatureFlags();
+    const { is_logged_in, has_wallet } = client;
     const history = useHistory();
-    // const { has_wallet, isLoading } = useWalletsList();
-    // const should_show_wallets = is_wallet_enabled && has_wallet;
 
     const title_TH = localize("Trader's Hub");
     const title_TH_logged_out = localize('Deriv App');
 
     React.useLayoutEffect(() => {
-        if (is_next_wallet_enabled) history.push(routes.wallets);
-    }, [history, is_next_wallet_enabled]);
+        if (has_wallet) history.push(routes.wallets);
+    }, [history, has_wallet]);
 
     return (
         <React.Suspense fallback={<Loading />}>

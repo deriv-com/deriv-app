@@ -29,7 +29,7 @@ export const desktopStepTourGuide: Step[] = [
     },
     {
         content: <WalletText size='sm'>Use the drop-down menu to switch between your Wallets.</WalletText>,
-        disableScrolling: true,
+        disableScrolling: false,
         placement: 'bottom',
         target: '.wallets-textfield__box',
         title: <SpotLightHeader>Switch between Wallets</SpotLightHeader>,

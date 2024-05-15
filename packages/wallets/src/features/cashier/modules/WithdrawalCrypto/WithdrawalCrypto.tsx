@@ -1,18 +1,35 @@
 import React from 'react';
-import { WalletText } from '../../../../components';
+import { Loader, WalletText } from '../../../../components';
 import { TransactionStatus } from '../TransactionStatus';
-import { WithdrawalCryptoProvider, useWithdrawalCryptoContext } from './provider';
 import { WithdrawalCryptoDisclaimer, WithdrawalCryptoForm, WithdrawalCryptoReceipt } from './components';
+import { useWithdrawalCryptoContext, WithdrawalCryptoProvider } from './provider';
 import './WithdrawalCrypto.scss';
 
 type TWithdrawalCryptoProps = {
     onClose: () => void;
+    setError: React.Dispatch<
+        React.SetStateAction<
+            | {
+                  code: string;
+                  message: string;
+              }
+            | undefined
+        >
+    >;
     verificationCode: string;
 };
 
 const WithdrawalCrypto: React.FC = () => {
-    const { activeWallet, getCurrencyConfig, isWithdrawalSuccess, onClose, withdrawalReceipt } =
-        useWithdrawalCryptoContext();
+    const {
+        activeWallet,
+        getCurrencyConfig,
+        isTokenValidationLoading,
+        isWithdrawalSuccess,
+        onClose,
+        withdrawalReceipt,
+    } = useWithdrawalCryptoContext();
+
+    if (isTokenValidationLoading) return <Loader />;
 
     if (isWithdrawalSuccess) return <WithdrawalCryptoReceipt onClose={onClose} withdrawalReceipt={withdrawalReceipt} />;
 
@@ -34,9 +51,9 @@ const WithdrawalCrypto: React.FC = () => {
     );
 };
 
-const WithdrawalCryptoModule: React.FC<TWithdrawalCryptoProps> = ({ onClose, verificationCode }) => {
+const WithdrawalCryptoModule: React.FC<TWithdrawalCryptoProps> = ({ onClose, setError, verificationCode }) => {
     return (
-        <WithdrawalCryptoProvider onClose={onClose} verificationCode={verificationCode}>
+        <WithdrawalCryptoProvider onClose={onClose} setError={setError} verificationCode={verificationCode}>
             <WithdrawalCrypto />
         </WithdrawalCryptoProvider>
     );

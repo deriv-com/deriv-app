@@ -40,7 +40,7 @@ const OptionsAndMultipliersListing = observer(() => {
         if (low_risk_cr_non_eu || high_risk_cr || cr_demo) {
             return (
                 <Text size='sm' weight='bold'>
-                    <Localize i18n_default_text='Options & Multipliers' />
+                    <Localize i18n_default_text='Options' />
                 </Text>
             );
         } else if (low_risk_cr_eu || is_eu) {
@@ -66,22 +66,20 @@ const OptionsAndMultipliersListing = observer(() => {
                 low_risk_cr_non_eu || high_risk_cr || cr_demo ? (
                     <Text size='xs' line_height='s'>
                         <Localize
-                            i18n_default_text='Earn a range of payouts by correctly predicting market movements with <0>options</0>, or get the
-                    upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
+                            i18n_default_text='Buy or sell at a specific time for a specific price. <0>Learn more</0>'
                             components={[
                                 <StaticUrl
                                     key={0}
                                     className='options'
                                     href='trade-types/options/digital-options/up-and-down/'
                                 />,
-                                <StaticUrl key={1} className='options' href='trade-types/multiplier/' />,
                             ]}
                         />
                     </Text>
                 ) : (
                     <Text size='xs' line_height='s'>
                         <Localize
-                            i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>Multipliers</0>.'
+                            i18n_default_text='Multipliers let you trade with leverage and limit your risk to your stake. <0>Learn more</0>'
                             components={[<StaticUrl key={0} className='options' href='trade-types/multiplier/' />]}
                         />
                     </Text>
@@ -96,7 +94,11 @@ const OptionsAndMultipliersListing = observer(() => {
                         availability='All'
                         clickable_icon
                         name={localize('Deriv account')}
-                        description={localize('Get a real Deriv account, start trading and manage your funds.')}
+                        description={
+                            is_eu_user
+                                ? localize('To trade multipliers, get a Deriv Apps account first.')
+                                : localize('To trade options and multipliers, get a Deriv Apps account first.')
+                        }
                         icon='Options'
                         onAction={() => {
                             if (no_MF_account) {

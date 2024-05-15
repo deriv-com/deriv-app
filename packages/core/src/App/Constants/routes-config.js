@@ -441,6 +441,7 @@ const getModules = () => {
         {
             path: routes.traders_hub,
             component: AppStore,
+            exact: true,
             is_authenticated: false,
             getTitle: () => localize("Trader's Hub"),
         },

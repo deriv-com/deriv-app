@@ -87,7 +87,12 @@ describe('WithdrawalErrorScreen', () => {
         expect(screen.queryByText('Try again')).not.toBeInTheDocument();
     });
 
-    it('should trigger `resetError` callback whe the user is clicking on `OK` button', () => {
+    it('should reload page when the user clicks on `Try again` button', () => {
+        const reloadMock = jest.fn();
+        Object.defineProperty(window, 'location', {
+            value: { reload: reloadMock },
+            writable: true,
+        });
         const error = {
             code: 'MyError',
             message: 'Error message',
@@ -97,6 +102,22 @@ describe('WithdrawalErrorScreen', () => {
 
         expect(screen.getByText('Oops, something went wrong!')).toBeInTheDocument();
         expect(screen.getByText('Error message')).toBeInTheDocument();
+        const ReloadButton = screen.getByRole('button', { name: 'Try again' });
+
+        userEvent.click(ReloadButton);
+        expect(reloadMock).toHaveBeenCalled();
+    });
+
+    it('should reload page when the user clicks on `Try again` button for invalid crypto address error', () => {
+        const error = {
+            code: 'CryptoInvalidAddress',
+            message: 'Crypto Invalid Address',
+        };
+
+        render(<WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />);
+
+        expect(screen.getByText('Error')).toBeInTheDocument();
+        expect(screen.getByText('Crypto Invalid Address')).toBeInTheDocument();
         const ReloadButton = screen.getByRole('button', { name: 'Try again' });
 
         userEvent.click(ReloadButton);

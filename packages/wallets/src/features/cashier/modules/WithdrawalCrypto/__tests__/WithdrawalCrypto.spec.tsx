@@ -41,7 +41,7 @@ describe('WithdrawalCrypto', () => {
         render(
             <APIProvider>
                 <AuthProvider>
-                    <WithdrawalCryptoModule onClose={jest.fn()} verificationCode='Abcd1234' />
+                    <WithdrawalCryptoModule onClose={jest.fn()} setError={jest.fn()} verificationCode='Abcd1234' />
                 </AuthProvider>
             </APIProvider>
         );
@@ -64,7 +64,7 @@ describe('WithdrawalCrypto', () => {
         render(
             <APIProvider>
                 <AuthProvider>
-                    <WithdrawalCryptoModule onClose={jest.fn()} verificationCode='Abcd1234' />
+                    <WithdrawalCryptoModule onClose={jest.fn()} setError={jest.fn()} verificationCode='Abcd1234' />
                 </AuthProvider>
             </APIProvider>
         );
@@ -89,7 +89,7 @@ describe('WithdrawalCrypto', () => {
         render(
             <APIProvider>
                 <AuthProvider>
-                    <WithdrawalCryptoModule onClose={jest.fn()} verificationCode='Abcd1234' />
+                    <WithdrawalCryptoModule onClose={jest.fn()} setError={jest.fn()} verificationCode='Abcd1234' />
                 </AuthProvider>
             </APIProvider>
         );

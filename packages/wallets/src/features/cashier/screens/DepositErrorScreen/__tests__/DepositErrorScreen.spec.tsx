@@ -1,12 +1,6 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import DepositErrorScreen from '../DepositErrorScreen';
-
-jest.mock('react-router-dom', () => ({
-    useHistory: jest.fn(),
-}));
-const mockUseHistory = useHistory as jest.Mock;
 
 describe('DepositErrorScreen', () => {
     beforeEach(() => {
@@ -23,27 +17,27 @@ describe('DepositErrorScreen', () => {
 
         expect(screen.getByText('Oops, something went wrong!')).toBeInTheDocument();
         expect(screen.getByText('Error message')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'OK' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument();
     });
 
-    it('should redirect to wallets when user clicks on OK button', () => {
-        const pushMock = jest.fn();
-        mockUseHistory.mockReturnValue({ push: pushMock });
-
+    it('should show correct deposit error screen for crypto suspended currency error', () => {
         const error = {
-            code: 'MyError',
-            message: 'Error message',
+            code: 'CryptoSuspendedCurrency',
+            message: 'Crypto Suspended Currency',
         };
 
-        render(<DepositErrorScreen error={error} />);
+        render(<DepositErrorScreen currency='BTC' error={error} />);
 
-        const OkButton = screen.getByRole('button', { name: 'OK' });
-
-        fireEvent.click(OkButton);
-        expect(pushMock).toHaveBeenCalledWith('/wallets');
+        expect(screen.getByText('BTC Wallet deposits are temporarily unavailable')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Due to system maintenance, deposits with your BTC Wallet are unavailable at the moment. Please try again later.'
+            )
+        ).toBeInTheDocument();
+        expect(screen.queryByText('Try again')).not.toBeInTheDocument();
     });
 
-    it('should reload page when user clicks on OK button for `CashierForwardError` error code', () => {
+    it('should reload page when user clicks on button', () => {
         const reloadMock = jest.fn();
         Object.defineProperty(window, 'location', {
             value: { reload: reloadMock },
@@ -59,9 +53,9 @@ describe('DepositErrorScreen', () => {
 
         expect(screen.getByText('Oops, something went wrong!')).toBeInTheDocument();
         expect(screen.getByText('Error message')).toBeInTheDocument();
-        const OkButton = screen.getByRole('button', { name: 'OK' });
+        const ReloadButton = screen.getByRole('button', { name: 'Try again' });
 
-        fireEvent.click(OkButton);
+        fireEvent.click(ReloadButton);
         expect(reloadMock).toHaveBeenCalled();
     });
 });

@@ -23,11 +23,7 @@ jest.mock('../../../../../components', () => ({
 }));
 
 jest.mock('../../../screens', () => ({
-    DepositErrorScreen: jest.fn(({ error, title }) => (
-        <div>
-            MockedDepositErrorScreen - {error.message} - {title}
-        </div>
-    )),
+    DepositErrorScreen: jest.fn(({ error }) => <div>MockedDepositErrorScreen - {error.message}</div>),
 }));
 
 const wrapper = ({ children }: PropsWithChildren) => (
@@ -59,7 +55,7 @@ describe('WalletDeposit', () => {
         expect(screen.queryByText(/MockedDepositFiatModule/)).not.toBeInTheDocument();
     });
 
-    it('should render fiat module when wallet is not crypto', () => {
+    it('should render fiat module when wallet is fiat', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: {
                 currency_config: {
@@ -117,7 +113,7 @@ describe('WalletDeposit', () => {
 
         render(<WalletDeposit />, { wrapper });
 
-        expect(screen.getByText(/MockedDepositErrorScreen - Crypto Suspended Error - Error/)).toBeInTheDocument();
+        expect(screen.getByText(/MockedDepositErrorScreen - Crypto Suspended Error/)).toBeInTheDocument();
     });
 
     it('should render error screen for a specific fiat error', () => {
@@ -137,6 +133,6 @@ describe('WalletDeposit', () => {
 
         render(<WalletDeposit />, { wrapper });
 
-        expect(screen.getByText(/MockedDepositErrorScreen - Fiat Error -/)).toBeInTheDocument();
+        expect(screen.getByText(/MockedDepositErrorScreen - Fiat Error/)).toBeInTheDocument();
     });
 });

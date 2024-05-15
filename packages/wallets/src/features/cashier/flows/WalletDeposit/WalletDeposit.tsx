@@ -20,16 +20,9 @@ const WalletDeposit = () => {
     } = useDepositCryptoAddress();
 
     const isLoading = isFiatAddressLoading || isCryptoAddressLoading;
+    const currency = data?.currency;
     const isCrypto = data?.currency_config?.is_crypto;
     const depositError = isCrypto ? depositCryptoError?.error : depositFiatError?.error;
-
-    const getErrorTitle = (errorCode: string) => {
-        if (errorCode === 'CryptoSuspendedCurrency') return 'Error';
-        //TODO: add check for crypto node down
-        return undefined;
-    };
-
-    const errorTitle = depositError ? getErrorTitle(depositError.code) : undefined;
 
     useEffect(() => {
         if (isAuthorizeSuccess) {
@@ -44,7 +37,7 @@ const WalletDeposit = () => {
     if (isLoading) return <Loader />;
 
     if (isServerError(depositError)) {
-        return <DepositErrorScreen error={depositError} title={errorTitle} />;
+        return <DepositErrorScreen currency={currency} error={depositError} />;
     }
 
     return isCrypto ? <DepositCryptoModule /> : <DepositFiatModule />;

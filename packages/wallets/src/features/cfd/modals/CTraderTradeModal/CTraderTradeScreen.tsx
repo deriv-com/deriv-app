@@ -6,6 +6,7 @@ import { WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { CFD_PLATFORMS, PlatformDetails, serviceMaintenanceMessages } from '../../constants';
+import { MT5TradeLink } from '../../screens/MT5TradeScreen/MT5TradeLink';
 
 const CTraderTradeScreen = () => {
     const { isDesktop } = useDevice();
@@ -104,8 +105,8 @@ const CTraderTradeScreen = () => {
                 </div>
             </div>
             <div className='wallets-mt5-trade-screen__links'>
-                {/* <MT5TradeLink platform={ctraderPlatform} />
-                <MT5TradeLink app={ctraderPlatform} platform={ctraderPlatform} /> */}
+                <MT5TradeLink platform={ctraderPlatform} />
+                <MT5TradeLink app={ctraderPlatform} platform={ctraderPlatform} />
             </div>
         </div>
     );

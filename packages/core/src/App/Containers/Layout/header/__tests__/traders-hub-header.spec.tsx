@@ -28,11 +28,10 @@ jest.mock('../../../CurrencySelectionModal', () => jest.fn(() => <div>MockedCurr
 jest.mock('../show-notifications', () => jest.fn(() => <div>MockedShowNotifications</div>));
 
 jest.mock('@deriv/hooks', () => ({
-    useFeatureFlags: () => ({
-        is_next_wallet_enabled: false,
-    }),
-    useIsRealAccountNeededForCashier: () => false,
-    useHasSetCurrency: () => true,
+    ...jest.requireActual('@deriv/hooks'),
+    useFeatureFlags: jest.fn(() => ({})),
+    useHasSetCurrency: jest.fn(() => true),
+    useIsRealAccountNeededForCashier: jest.fn(() => false),
 }));
 
 describe('TradersHubHeader', () => {

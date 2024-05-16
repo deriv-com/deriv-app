@@ -1,8 +1,8 @@
 import React from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 import { Icon, Popover } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { useLocalStorage } from 'usehooks-ts';
 
 const TradersHubOnboarding = observer(() => {
     const { ui } = useStore();

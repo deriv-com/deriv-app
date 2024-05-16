@@ -80,7 +80,7 @@ const WalletTourGuide = () => {
             disableOverlayClose
             floaterProps={{ disableAnimation: true }}
             run={run}
-            scrollOffset={80}
+            scrollOffset={isMobile ? 100 : 80}
             steps={isMobile ? mobileStepTourGuide : desktopStepTourGuide}
             tooltipComponent={TooltipComponent}
         />

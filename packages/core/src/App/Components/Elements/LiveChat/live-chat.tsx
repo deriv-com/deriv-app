@@ -43,7 +43,9 @@ const LiveChat = observer(({ showPopover }: { showPopover?: boolean }) => {
                     <Icon icon='IcLiveChat' className='footer__icon gtm-deriv-livechat' />
                 </Popover>
             ) : (
-                <Icon icon='IcLiveChat' className='footer__icon gtm-deriv-livechat' />
+                <div className='footer__link'>
+                    <Icon icon='IcLiveChat' className='footer__icon gtm-deriv-livechat' />
+                </div>
             )}
         </div>
     );

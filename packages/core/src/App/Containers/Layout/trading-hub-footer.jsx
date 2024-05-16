@@ -17,14 +17,13 @@ import LiveChat from 'App/Components/Elements/LiveChat';
 import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
 import ServerTime from '../server-time.jsx';
 import { useStoreWalletAccountsList } from '@deriv/hooks';
-import { routes, useIsMounted } from '@deriv/shared';
+import { routes, useIsMounted, isTabletOs } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import DarkModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-light-theme.svg';
 import LightModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-dark-theme.svg';
 import { Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { useRemoteConfig } from '@deriv/api';
-import device from '@deriv/shared/src/utils/os/tests';
 
 const FooterIconSeparator = () => <div className='footer-icon-separator' />;
 
@@ -77,8 +76,7 @@ const TradingHubFooter = observer(() => {
     const { data } = useRemoteConfig(isMounted());
     const { cs_chat_livechat, cs_chat_whatsapp } = data;
 
-    //TODO: isTabletOS is not working, isTablet does not return correct value for big tablets in landscape view. Temporary using device?.tablet()
-    const showPopover = !device?.tablet();
+    const showPopover = !isTabletOs;
 
     const modeIcon = is_dark_mode ? (
         <LightModeToggleIcon onClick={changeTheme} />

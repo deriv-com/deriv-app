@@ -1,5 +1,4 @@
-import React, { FC } from 'react';
-import { MARKET_TYPE } from '../../features/cfd/constants';
+import React, { ComponentProps, FC } from 'react';
 import { THooks, TPlatforms } from '../../types';
 import { WalletCurrencyCard } from '../WalletCurrencyCard';
 import { WalletMarketIcon } from '../WalletMarketIcon';
@@ -24,17 +23,19 @@ type TWalletMarketCurrencyIconProps = {
 };
 
 const WalletMarketCurrencyIcon: FC<TWalletMarketCurrencyIconProps> = ({ currency, isDemo, marketType, platform }) => {
-    const MarketTypeIcon =
-        marketType && platform && marketType === MARKET_TYPE.ALL && platform in cfdPlatformIcon
-            ? cfdPlatformIcon[platform as keyof typeof cfdPlatformIcon]
-            : mt5MarketTypeIcon[marketType as keyof typeof mt5MarketTypeIcon];
+    let MarketTypeIcon: ComponentProps<typeof WalletMarketIcon>['icon'];
+    if (!marketType && platform && platform in cfdPlatformIcon) {
+        MarketTypeIcon = cfdPlatformIcon[platform as keyof typeof cfdPlatformIcon];
+    } else if (marketType && marketType in mt5MarketTypeIcon) {
+        MarketTypeIcon = mt5MarketTypeIcon[marketType as keyof typeof mt5MarketTypeIcon];
+    } else MarketTypeIcon = 'IcWalletOptionsLight';
 
     return (
         <div className='wallets-market-currency-icon'>
             <div className='wallets-market-currency-icon__container'>
                 <WalletMarketIcon
                     className='wallets-market-currency-icon__market-icon'
-                    icon={MarketTypeIcon ?? 'IcWalletOptionsLight'}
+                    icon={MarketTypeIcon}
                     size='sm'
                 />
                 <WalletCurrencyCard

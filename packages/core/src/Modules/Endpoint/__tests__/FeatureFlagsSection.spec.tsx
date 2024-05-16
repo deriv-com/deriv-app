@@ -101,15 +101,6 @@ describe('<FeatureFlagsSection/>', () => {
         expect(screen.queryByRole('checkbox', { name: FLAGS.DTRADER_V2 })).not.toBeInTheDocument();
         expect(screen.queryByRole('checkbox', { name: FLAGS.WALLET })).not.toBeInTheDocument();
     });
-    it('should not render any flags or "Feature flags" title when data object with flags is undefined', () => {
-        delete default_mock_store.feature_flags.data;
-        render(mockFeatureFlagsSection());
-
-        expect(screen.queryByRole(feature_flags_title)).not.toBeInTheDocument();
-        expect(screen.queryByRole('checkbox', { name: FLAGS.SHARKFIN })).not.toBeInTheDocument();
-        expect(screen.queryByRole('checkbox', { name: FLAGS.DTRADER_V2 })).not.toBeInTheDocument();
-        expect(screen.queryByRole('checkbox', { name: FLAGS.WALLET })).not.toBeInTheDocument();
-    });
     it('should call feature_flags.update() method when a flag is checked', () => {
         const update = jest.fn();
         default_mock_store.feature_flags.update = update;
@@ -118,5 +109,14 @@ describe('<FeatureFlagsSection/>', () => {
         userEvent.click(screen.getByRole('checkbox', { name: FLAGS.DTRADER_V2 }));
 
         expect(update).toBeCalled();
+    });
+    it('should not render any flags or "Feature flags" title when data object with flags is undefined', () => {
+        delete default_mock_store.feature_flags.data;
+        render(mockFeatureFlagsSection());
+
+        expect(screen.queryByRole(feature_flags_title)).not.toBeInTheDocument();
+        expect(screen.queryByRole('checkbox', { name: FLAGS.SHARKFIN })).not.toBeInTheDocument();
+        expect(screen.queryByRole('checkbox', { name: FLAGS.DTRADER_V2 })).not.toBeInTheDocument();
+        expect(screen.queryByRole('checkbox', { name: FLAGS.WALLET })).not.toBeInTheDocument();
     });
 });

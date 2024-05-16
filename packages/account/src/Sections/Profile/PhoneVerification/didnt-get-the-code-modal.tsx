@@ -4,7 +4,7 @@ import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 import { useGetPhoneNumberOTP } from '@deriv/hooks';
-import { convertPhoneTypeDisplay } from 'Components/Routes';
+import { convertPhoneTypeDisplay } from 'Helpers/utils';
 
 type TDidntGetTheCodeModal = {
     should_show_didnt_get_the_code_modal: boolean;

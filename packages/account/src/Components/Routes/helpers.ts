@@ -1,5 +1,5 @@
 import { match, matchPath, RouteProps } from 'react-router';
-import { routes, VERIFICATION_SERVICES } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { TRouteConfig } from '../../Types';
 
 export const normalizePath = (path: string) => (path.startsWith('/') ? path : `/${path || ''}`); // Default to '/'
@@ -37,9 +37,3 @@ export const getPath = (route_path: string, params: { [key: string]: string } = 
     Object.keys(params).reduce((p, name) => p.replace(`:${name}`, params[name]), route_path);
 
 export const getContractPath = (contract_id: string) => getPath(routes.contract, { contract_id });
-
-export const convertPhoneTypeDisplay = (phone_verification_type: string) => {
-    if (phone_verification_type === VERIFICATION_SERVICES.SMS) return phone_verification_type.toUpperCase();
-
-    return 'WhatsApp';
-};

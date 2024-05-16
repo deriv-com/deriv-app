@@ -102,8 +102,9 @@ export const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [
     routes.traders_hub,
     routes.onboarding,
     routes.compare_cfds,
-    routes.contract,
     routes.reports,
+    /** because contract route has dynamic id */
+    '/contract',
 ];
 
 export const isDisabledLandscapeBlockerRoute = (path: string) =>

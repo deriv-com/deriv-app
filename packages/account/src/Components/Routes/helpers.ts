@@ -43,9 +43,3 @@ export const convertPhoneTypeDisplay = (phone_verification_type: string) => {
 
     return 'WhatsApp';
 };
-
-export const convertPhoneTypeForButton = (phone_verification_type: string) => {
-    if (phone_verification_type === VERIFICATION_SERVICES.WHATSAPP) return VERIFICATION_SERVICES.SMS.toUpperCase();
-
-    return 'WhatsApp';
-};

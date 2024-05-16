@@ -4,7 +4,7 @@ import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 import { useGetPhoneNumberOTP } from '@deriv/hooks';
-import { convertPhoneTypeForButton } from 'Components/Routes';
+import { convertPhoneTypeDisplay } from 'Components/Routes';
 
 type TDidntGetTheCodeModal = {
     should_show_didnt_get_the_code_modal: boolean;
@@ -83,7 +83,11 @@ const DidntGetTheCodeModal = observer(
                                     <Localize
                                         i18n_default_text='Send code via {{phone_verification_type}}'
                                         values={{
-                                            phone_verification_type: convertPhoneTypeForButton(phone_verification_type),
+                                            phone_verification_type: convertPhoneTypeDisplay(
+                                                phone_verification_type === VERIFICATION_SERVICES.SMS
+                                                    ? VERIFICATION_SERVICES.WHATSAPP
+                                                    : VERIFICATION_SERVICES.SMS
+                                            ),
                                         }}
                                     />
                                 </Text>

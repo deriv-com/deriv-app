@@ -180,7 +180,7 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
         }
         switch (type) {
             case 'synthetic':
-                return <TradingPlatformIcon icon='Derived' size={128} />;
+                return <TradingPlatformIcon icon='Standard' size={128} />;
             case 'all':
                 return <TradingPlatformIcon icon='SwapFree' size={128} />;
             case 'financial':
@@ -194,7 +194,7 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
     } else {
         switch (type) {
             case 'synthetic':
-                return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
+                return <Icon icon='IcMt5StandardPlatform' size={128} />;
             case 'all':
                 return <Icon icon='IcMt5SwapFreePlatform' size={128} />;
             case 'financial':

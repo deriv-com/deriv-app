@@ -146,8 +146,13 @@
                 &__has-list {
                     margin-top: 0;
                     text-align: start;
-                    @include mobile-or-tablet-screen {
+                    @include mobile-screen {
                         width: 85%;
+                    }
+
+                    @include tablet-screen {
+                        display: flex;
+                        justify-content: center;
                     }
                 }
             }

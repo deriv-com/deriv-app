@@ -76,12 +76,6 @@ const DatePicker = ({
         return () => setIsCalendarOpen(false);
     }, []);
 
-    useEffect(() => {
-        if (inputDateNativeRef.current) {
-            inputDateNativeRef.current.value = selectedDate;
-        }
-    }, [selectedDate]);
-
     if (isMobile) {
         return (
             <div className='wallets-datepicker'>
@@ -94,7 +88,6 @@ const DatePicker = ({
                     name={name}
                     onChange={e => setSelectedDate(new Date(e.target.value))}
                     onClick={() => inputDateNativeRef.current?.showPicker()}
-                    placeholder=''
                     ref={inputDateNativeRef}
                     renderRightIcon={() => (
                         <DatePickerButton
@@ -104,7 +97,7 @@ const DatePicker = ({
                     )}
                     type='date'
                     validationSchema={validationSchema}
-                    value={selectedDate !== null ? unixToDateString(selectedDate) : undefined}
+                    value={selectedDate !== null ? unixToDateString(selectedDate) : ''}
                 />
             </div>
         );

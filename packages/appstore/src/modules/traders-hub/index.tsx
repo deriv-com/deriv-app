@@ -9,6 +9,7 @@ import MainTitleBar from 'Components/main-title-bar';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import classNames from 'classnames';
+import TourGuide from '../tour-guide/tour-guide';
 import './traders-hub.scss';
 import { useContentFlag, useGrowthbookFeatureFlag } from '@deriv/hooks';
 
@@ -33,12 +34,21 @@ const TradersHub = observer(() => {
     } = client;
 
     const { is_cr_demo, is_eu_demo, is_eu_real } = useContentFlag();
-    const { selected_platform_type, setTogglePlatformType, is_eu_user } = traders_hub;
+    const { selected_platform_type, setTogglePlatformType, is_tour_open, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef<HTMLDivElement>(null);
 
     const can_show_notify =
         (!is_switching && !is_logging_in && is_account_setting_loaded && is_landing_company_loaded) ||
         checkServerMaintenance(website_status);
+
+    const [scrolled, setScrolled] = React.useState(false);
+
+    const handleScroll = React.useCallback(() => {
+        const element = traders_hub_ref?.current;
+        if (element && is_tour_open) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, [is_tour_open]);
 
     const direct_to_real_account_creation = useGrowthbookFeatureFlag({
         featureFlag: 'direct-real-account-creation-flow',
@@ -73,7 +83,14 @@ const TradersHub = observer(() => {
 
     React.useEffect(() => {
         if (is_eu_user) setTogglePlatformType('cfd');
-    }, [is_eu_user, setTogglePlatformType]);
+        const timer = setTimeout(() => {
+            handleScroll();
+            setTimeout(() => {
+                setScrolled(true);
+            }, 200);
+        }, 100);
+        return () => clearTimeout(timer);
+    }, [handleScroll, is_eu_user, is_tour_open, setTogglePlatformType]);
 
     React.useLayoutEffect(() => {
         startPerformanceEventTimer('option_multiplier_section_loading_time');
@@ -164,6 +181,7 @@ const TradersHub = observer(() => {
                         {getOrderedPlatformSections()}
                     </MobileWrapper>
                     <ModalManager />
+                    {scrolled && <TourGuide />}
                 </div>
             </Div100vhContainer>
             {is_eu_user && (

@@ -16,6 +16,7 @@ type TModalContext = {
     getModalState: <T extends keyof TModalState>(key: T) => TModalState[T];
     hide: () => void;
     isOpen: boolean;
+    modalRootRef: React.RefObject<HTMLElement>;
     modalState?: Map<keyof TModalState, TModalState[keyof TModalState]>;
     setModalOptions: React.Dispatch<React.SetStateAction<TModalOptions>>;
     setModalState: <T extends keyof TModalState>(key: T, value: TModalState[T]) => void;
@@ -103,6 +104,7 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
                 getModalState,
                 hide,
                 isOpen: content !== null,
+                modalRootRef,
                 modalState,
                 setModalOptions,
                 setModalState: updateModalState,

@@ -4,6 +4,7 @@ export * from './Divider';
 export * from './IconButton';
 export * from './InlineMessage';
 export * from './ModalStepWrapper';
+export * from './ModalWithBackdropWrapper';
 export * from './ModalWrapper';
 export * from './ProgressBar';
 export * from './Tabs';

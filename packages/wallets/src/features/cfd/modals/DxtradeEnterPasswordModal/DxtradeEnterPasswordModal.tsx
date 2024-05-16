@@ -7,12 +7,19 @@ import {
     useDxtradeAccountsList,
 } from '@deriv/api-v2';
 import { SentEmailContent, WalletError } from '../../../../components';
-import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
+import {
+    ModalStepWrapper,
+    ModalWithBackdropWrapper,
+    ModalWrapper,
+    WalletButton,
+    WalletButtonGroup,
+} from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import useSendPasswordResetEmail from '../../../../hooks/useSendPasswordResetEmail';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
+import { PasswordLimitExceeded } from '../../screens/PasswordLimitExceeded';
 import './DxtradeEnterPasswordModal.scss';
 
 const DxtradeEnterPasswordModal = () => {
@@ -67,16 +74,7 @@ const DxtradeEnterPasswordModal = () => {
                 </ModalWrapper>
             );
         }
-    }, [
-        accountStatusSuccess,
-        dxtradePlatform,
-        hide,
-        isCreateAccountSuccessful,
-        isDxtradePasswordNotSet,
-        isMobile,
-        isResetPasswordSuccessful,
-        show,
-    ]);
+    }, [dxtradePlatform, hide, isDxtradePasswordNotSet, isMobile, isResetPasswordSuccessful, show]);
 
     const dxtradeBalance = useMemo(() => {
         return dxtradeAccount?.find(account => account.market_type === 'all')?.display_balance;
@@ -232,6 +230,20 @@ const DxtradeEnterPasswordModal = () => {
         error?.error?.code,
         sendEmail,
     ]);
+    if (status === 'error' && error?.error?.code === 'PasswordReset') {
+        return (
+            <ModalWithBackdropWrapper>
+                <PasswordLimitExceeded
+                    onPrimaryClick={hide}
+                    onSecondaryClick={() => {
+                        sendEmail({
+                            platform: dxtradePlatform,
+                        });
+                    }}
+                />
+            </ModalWithBackdropWrapper>
+        );
+    }
 
     if (status === 'error' && error?.error?.code !== 'PasswordError') {
         return <WalletError errorMessage={error?.error.message} onClick={hide} title={error?.error?.code} />;

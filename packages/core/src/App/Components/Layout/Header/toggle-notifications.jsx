@@ -4,6 +4,7 @@ import { Counter, Icon, Popover } from '@deriv/components';
 import NotificationsDialog from 'App/Containers/NotificationsDialog';
 import 'Sass/app/modules/notifications-dialog.scss';
 import { useDevice } from '@deriv-com/ui';
+import { isTabletOs } from '@deriv/shared';
 
 const ToggleNotificationsDrawer = ({
     count,
@@ -44,15 +45,19 @@ const ToggleNotificationsDrawer = ({
                 'notifications-toggle--active': is_visible,
             })}
         >
-            <Popover
-                classNameBubble='notifications-toggle__tooltip'
-                alignment='bottom'
-                message={tooltip_message}
-                should_disable_pointer_events={should_disable_pointer_events}
-                zIndex='9999'
-            >
-                {notifications_toggler_el}
-            </Popover>
+            {isTabletOs ? (
+                notifications_toggler_el
+            ) : (
+                <Popover
+                    classNameBubble='notifications-toggle__tooltip'
+                    alignment='bottom'
+                    message={tooltip_message}
+                    should_disable_pointer_events={should_disable_pointer_events}
+                    zIndex='9999'
+                >
+                    {notifications_toggler_el}
+                </Popover>
+            )}
             <NotificationsDialog is_visible={is_visible} toggleDialog={toggleDialog} />
         </div>
     );

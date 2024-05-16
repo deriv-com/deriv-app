@@ -1,11 +1,12 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { History, createMemoryHistory } from 'history';
 import Reports from '../reports';
 import { Analytics } from '@deriv-com/analytics';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv-com/analytics', () => ({
     Analytics: {
@@ -22,17 +23,22 @@ jest.mock('@deriv/shared', () => ({
 
 const mockSelectNative = jest.fn();
 const mockVerticalTab = jest.fn();
-
+const route1 = '/report1';
+const route2 = '/report2';
+const onCloseClick = 'onclose-click';
+const report1Text = 'Report 1';
+const report2Text = 'Report 2';
+const Loading = 'Loading';
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     DesktopWrapper: jest.fn(({ children }) => children),
     MobileWrapper: jest.fn(({ children }) => children),
     Div100vhContainer: jest.fn(({ children }) => children),
     FadeWrapper: jest.fn(({ children }) => children),
-    Loading: () => <div>Loading...</div>,
+    Loading: () => <div>{Loading}</div>,
     PageOverlay: jest.fn(({ children, onClickClose }) => (
-        <div data-testid='overlay'>
-            <button data-testid='onclose-click' onClick={onClickClose}>
+        <div>
+            <button data-testid={onCloseClick} onClick={onClickClose}>
                 close
             </button>
             Overlay
@@ -41,12 +47,12 @@ jest.mock('@deriv/components', () => ({
     )),
     VerticalTab: (props: any) => {
         mockVerticalTab(props);
-        return <div data-testid='vertical-tab'>Vertical Tab</div>;
+        return <div>Vertical Tab</div>;
     },
     SelectNative: (props: { onChange: React.ChangeEventHandler<HTMLSelectElement> | undefined; list_items: any[] }) => {
         mockSelectNative(props);
         return (
-            <select data-testid='select-native' onChange={props.onChange}>
+            <select onChange={props.onChange}>
                 {props.list_items.map(item => (
                     <option key={item.value} value={item.value}>
                         {item.text}
@@ -81,8 +87,8 @@ jest.mock('@deriv/stores', () => ({
 }));
 
 const routes = [
-    { path: '/report1', component: () => <div>Report 1</div>, getTitle: () => 'Report 1', default: true },
-    { path: '/report2', component: () => <div>Report 2</div>, getTitle: () => 'Report 2' },
+    { path: route1, component: () => <div>{report1Text}</div>, getTitle: () => report1Text, default: true },
+    { path: route2, component: () => <div>{report2Text}</div>, getTitle: () => report2Text },
 ];
 
 describe('Reports', () => {
@@ -105,8 +111,8 @@ describe('Reports', () => {
     test('renders Reports component', () => {
         const history = createMemoryHistory();
         renderReports(store, history);
-        expect(screen.getAllByText('Report 1').length).toBeGreaterThan(0);
-        expect(screen.getAllByText('Report 2').length).toBeGreaterThan(0);
+        expect(screen.getAllByText(report1Text).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(report2Text).length).toBeGreaterThan(0);
     });
 
     test('shows loader when is_logged_in is false', () => {
@@ -120,7 +126,7 @@ describe('Reports', () => {
             },
         });
         renderReports(store, history);
-        expect(screen.getByText('Loading...')).toBeInTheDocument();
+        expect(screen.getByText(Loading)).toBeInTheDocument();
     });
 
     test('tracks Analytics events on open and close', () => {
@@ -147,9 +153,8 @@ describe('Reports', () => {
     test('navigates to a different route on select change', () => {
         const history = createMemoryHistory();
         renderReports(store, history);
-
-        fireEvent.change(screen.getByRole('combobox'), { target: { value: '/report2' } });
-        expect(history.location.pathname).toBe('/report2');
+        userEvent.selectOptions(screen.getByRole('combobox'), route2);
+        expect(history.location.pathname).toBe(route2);
     });
 
     test('calls routeBackInApp on close button click', () => {
@@ -163,13 +168,13 @@ describe('Reports', () => {
         });
         const history = createMemoryHistory();
         renderReports(store, history);
-        fireEvent.click(screen.getByTestId('onclose-click'));
+        userEvent.click(screen.getByTestId(onCloseClick));
         expect(mockRouteBackInApp).toHaveBeenCalled();
     });
 
     test('sets vertical_tab_index to 0 if the selected route is default', () => {
         const history = createMemoryHistory();
-        history.push('/report1');
+        history.push(route1);
         renderReports(store, history);
 
         expect(mockVerticalTab).toHaveBeenCalledWith(
@@ -181,7 +186,7 @@ describe('Reports', () => {
 
     test('sets vertical_tab_index to reports_route_tab_index if the selected route is not default', () => {
         const history = createMemoryHistory();
-        history.push('/report2');
+        history.push(route2);
         renderReports(store, history);
 
         expect(mockVerticalTab).toHaveBeenCalledWith(

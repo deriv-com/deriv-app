@@ -108,6 +108,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             <BinaryBotIFrame />
             <AppToastMessages />
             <Devtools />
+            <Devtools />
         </ThemeProvider>
     );
 });

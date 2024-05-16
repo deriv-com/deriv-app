@@ -67,7 +67,7 @@ const Header = observer(() => {
         is_wallets_cashier_route;
 
     const client_accounts = useReadLocalStorage('client.accounts');
-    const { is_dtrader_v2_enabled } = useFeatureFlags();
+    const { is_dtrader_v2_enabled, is_next_account_enabled } = useFeatureFlags();
 
     React.useEffect(() => {
         if (has_wallet && is_logged_in) {

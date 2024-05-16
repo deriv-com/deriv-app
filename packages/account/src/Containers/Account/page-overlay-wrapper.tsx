@@ -8,6 +8,7 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import TradingHubLogout from './tradinghub-logout';
 import { TRoute } from '../../Types';
+import { useDevice } from '@deriv-com/ui';
 
 type RouteItems = React.ComponentProps<typeof VerticalTab>['list'];
 
@@ -23,11 +24,11 @@ type PageOverlayWrapperProps = {
  */
 const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperProps) => {
     const history = useHistory();
-    const { client, common, ui } = useStore();
-    const { is_mobile, is_tablet } = ui;
+    const { client, common } = useStore();
     const { logout } = client;
     const { is_from_derivgo } = common;
     const { is_next_wallet_enabled } = useFeatureFlags();
+    const { isDesktop } = useDevice();
 
     const passkeysMenuCloseActionEventTrack = React.useCallback(() => {
         Analytics.trackEvent('ce_passkey_account_settings_form', {
@@ -58,7 +59,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
         logout().then(() => (window.location.href = getStaticUrl('/')));
     };
 
-    if ((is_mobile || is_tablet) && selected_route) {
+    if (!isDesktop && selected_route) {
         const RouteComponent = selected_route.component as React.ElementType<{ component_icon: string | undefined }>;
         return (
             <PageOverlay header={selected_route?.getTitle()} onClickClose={onClickClose} is_from_app={is_from_derivgo}>

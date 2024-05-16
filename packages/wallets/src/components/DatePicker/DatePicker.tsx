@@ -1,12 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ComponentProps, useEffect, useRef, useState } from 'react';
 import Calendar, { CalendarProps } from 'react-calendar';
 import { useOnClickOutside } from 'usehooks-ts';
 import { LegacyCalendar1pxIcon } from '@deriv/quill-icons';
+import useDevice from '../../hooks/useDevice';
 import unixToDateString from '../../utils/utils';
 import FlowTextField, { TFlowFieldProps } from '../FlowField/FlowTextField';
 import customFormatShortWeekday from './utils';
 import 'react-calendar/dist/Calendar.css';
 import './DatePicker.scss';
+
+type TProps = {
+    disabled?: ComponentProps<'button'>['disabled'];
+    onClick?: ComponentProps<'button'>['onClick'];
+};
+
+const DatePickerButton = ({ disabled, onClick }: TProps) => (
+    <button
+        className='wallets-datepicker__button'
+        data-testid='wallets_datepicker_button'
+        disabled={disabled}
+        onClick={onClick}
+    >
+        <LegacyCalendar1pxIcon iconSize='xs' />
+    </button>
+);
 
 interface TDatePickerProps extends TFlowFieldProps {
     maxDate?: Date;
@@ -29,8 +46,10 @@ const DatePicker = ({
 }: TDatePickerProps) => {
     const [selectedDate, setSelectedDate] = useState<Date | null>(defaultValue ? new Date(defaultValue) : null);
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+    const { isMobile } = useDevice();
     const datePickerRef = useRef<HTMLDivElement>(null);
     const inputeDateRef = useRef<HTMLInputElement>(null);
+    const inputDateNativeRef = useRef<HTMLInputElement>(null);
 
     const toggleCalendar = () => {
         setIsCalendarOpen(prevState => !prevState);
@@ -57,6 +76,40 @@ const DatePicker = ({
         return () => setIsCalendarOpen(false);
     }, []);
 
+    useEffect(() => {
+        if (inputDateNativeRef.current) {
+            inputDateNativeRef.current.value = selectedDate;
+        }
+    }, [selectedDate]);
+
+    if (isMobile) {
+        return (
+            <div className='wallets-datepicker'>
+                <FlowTextField
+                    disabled={disabled}
+                    label={label}
+                    max={maxDate && unixToDateString(maxDate)}
+                    message={message}
+                    min={minDate && unixToDateString(minDate)}
+                    name={name}
+                    onChange={e => setSelectedDate(new Date(e.target.value))}
+                    onClick={() => inputDateNativeRef.current?.showPicker()}
+                    placeholder=''
+                    ref={inputDateNativeRef}
+                    renderRightIcon={() => (
+                        <DatePickerButton
+                            disabled={disabled}
+                            onClick={() => inputDateNativeRef.current?.showPicker()}
+                        />
+                    )}
+                    type='date'
+                    validationSchema={validationSchema}
+                    value={selectedDate !== null ? unixToDateString(selectedDate) : undefined}
+                />
+            </div>
+        );
+    }
+
     return (
         <div className='wallets-datepicker' ref={datePickerRef}>
             <FlowTextField
@@ -67,16 +120,7 @@ const DatePicker = ({
                 onClick={toggleCalendar}
                 onKeyDown={e => e.preventDefault()}
                 ref={inputeDateRef}
-                renderRightIcon={() => (
-                    <button
-                        className='wallets-datepicker__button'
-                        data-testid='wallets_datepicker_button'
-                        disabled={disabled}
-                        onClick={toggleCalendar}
-                    >
-                        <LegacyCalendar1pxIcon iconSize='xs' />
-                    </button>
-                )}
+                renderRightIcon={() => <DatePickerButton disabled={disabled} onClick={toggleCalendar} />}
                 showMessage
                 validationSchema={validationSchema}
                 value={selectedDate !== null ? unixToDateString(selectedDate) : ''}

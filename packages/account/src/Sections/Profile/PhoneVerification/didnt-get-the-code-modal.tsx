@@ -4,6 +4,7 @@ import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 import { useGetPhoneNumberOTP } from '@deriv/hooks';
+import { convertPhoneTypeForButton } from 'Components/Routes';
 
 type TDidntGetTheCodeModal = {
     should_show_didnt_get_the_code_modal: boolean;
@@ -24,18 +25,6 @@ const DidntGetTheCodeModal = observer(
         const { requestOnSMS, requestOnWhatsApp, ...rest } = useGetPhoneNumberOTP();
         const { ui } = useStore();
         const { is_mobile } = ui;
-
-        const convertPhoneTypeDisplay = () => {
-            if (phone_verification_type === VERIFICATION_SERVICES.WHATSAPP)
-                return VERIFICATION_SERVICES.SMS.toUpperCase();
-
-            return (
-                VERIFICATION_SERVICES.WHATSAPP.charAt(0).toUpperCase() +
-                VERIFICATION_SERVICES.WHATSAPP.slice(1, 5) +
-                VERIFICATION_SERVICES.WHATSAPP.charAt(5).toUpperCase() +
-                VERIFICATION_SERVICES.WHATSAPP.slice(6)
-            );
-        };
 
         const handleResendCode = () => {
             phone_verification_type === VERIFICATION_SERVICES.SMS ? requestOnSMS() : requestOnWhatsApp();
@@ -93,7 +82,9 @@ const DidntGetTheCodeModal = observer(
                                 <Text color='white' bold>
                                     <Localize
                                         i18n_default_text='Send code via {{phone_verification_type}}'
-                                        values={{ phone_verification_type: convertPhoneTypeDisplay() }}
+                                        values={{
+                                            phone_verification_type: convertPhoneTypeForButton(phone_verification_type),
+                                        }}
                                     />
                                 </Text>
                             </Button>

@@ -18,7 +18,7 @@ describe('ConfirmPhoneNumber', () => {
                 resend_code_text='Resend code'
                 count_from={60}
                 setStartTimer={jest.fn()}
-                start_timer={true}
+                start_timer
                 setShouldShowDidntGetTheCodeModal={jest.fn()}
             />
         );
@@ -35,7 +35,7 @@ describe('ConfirmPhoneNumber', () => {
                 resend_code_text='Resend code'
                 count_from={60}
                 setStartTimer={jest.fn()}
-                start_timer={true}
+                start_timer
                 setShouldShowDidntGetTheCodeModal={jest.fn()}
             />
         );
@@ -49,7 +49,7 @@ describe('ConfirmPhoneNumber', () => {
                 resend_code_text='Didn’t get the code?'
                 count_from={60}
                 setStartTimer={jest.fn()}
-                start_timer={true}
+                start_timer
                 setShouldShowDidntGetTheCodeModal={jest.fn()}
             />
         );
@@ -63,7 +63,7 @@ describe('ConfirmPhoneNumber', () => {
                 resend_code_text='Didn’t get the code?'
                 count_from={6}
                 setStartTimer={jest.fn()}
-                start_timer={true}
+                start_timer
                 setShouldShowDidntGetTheCodeModal={jest.fn()}
             />
         );
@@ -100,7 +100,7 @@ describe('ConfirmPhoneNumber', () => {
                 resend_code_text='Didn’t get the code?'
                 count_from={6}
                 setStartTimer={jest.fn()}
-                start_timer={true}
+                start_timer
                 setShouldShowDidntGetTheCodeModal={jest.fn()}
             />
         );
@@ -122,7 +122,7 @@ describe('ConfirmPhoneNumber', () => {
                 resend_code_text='Resend code'
                 count_from={6}
                 setStartTimer={jest.fn()}
-                start_timer={true}
+                start_timer
                 setShouldShowDidntGetTheCodeModal={jest.fn()}
             />
         );
@@ -143,7 +143,7 @@ describe('ConfirmPhoneNumber', () => {
                 resend_code_text='Resend code'
                 count_from={6}
                 setStartTimer={jest.fn()}
-                start_timer={true}
+                start_timer
                 setShouldShowDidntGetTheCodeModal={jest.fn()}
             />
         );

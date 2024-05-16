@@ -4,7 +4,7 @@ import { Text } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { Input } from '@deriv/components';
-import { VERIFICATION_SERVICES } from '@deriv/shared';
+import { convertPhoneTypeDisplay } from 'Components/Routes';
 import ResendCodeTimer from './resend-code-timer';
 import DidntGetTheCodeModal from './didnt-get-the-code-modal';
 
@@ -21,17 +21,6 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     const [start_timer, setStartTimer] = React.useState(true);
     //TODO: this shall be replace by BE API call when it's ready
     const { should_show_phone_number_otp } = ui;
-
-    const convertPhoneTypeDisplay = () => {
-        if (phone_verification_type === VERIFICATION_SERVICES.SMS) return phone_verification_type.toUpperCase();
-
-        return (
-            phone_verification_type.charAt(0).toUpperCase() +
-            phone_verification_type.slice(1, 5) +
-            phone_verification_type.charAt(5).toUpperCase() +
-            phone_verification_type.slice(6)
-        );
-    };
 
     return (
         <PhoneVerificationCard is_small_card>
@@ -54,7 +43,10 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                     <Text size='sm'>
                         <Localize
                             i18n_default_text='Enter the 6-digit code sent to you via {{phone_verification_type}} at {{users_phone_number}}:'
-                            values={{ phone_verification_type: convertPhoneTypeDisplay(), users_phone_number: phone }}
+                            values={{
+                                phone_verification_type: convertPhoneTypeDisplay(phone_verification_type),
+                                users_phone_number: phone,
+                            }}
                         />
                     </Text>
                 ) : (

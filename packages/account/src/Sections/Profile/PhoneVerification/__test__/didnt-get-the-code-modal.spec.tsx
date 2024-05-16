@@ -19,6 +19,7 @@ describe('DidntGetTheCodeModal', () => {
     const mockSetShouldShowDidntGetTheCodeModal = jest.fn();
     const mockSetStartTimer = jest.fn();
     const mockSetOtpVerification = jest.fn();
+    const resend_code_text = /Resend code/;
 
     const renderComponent = (phone_verification_type: string) => {
         render(
@@ -36,7 +37,7 @@ describe('DidntGetTheCodeModal', () => {
     it('should render DidntGetTheCodeModal', () => {
         renderComponent(VERIFICATION_SERVICES.SMS);
         expect(screen.getByText(/Get a new code/)).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /Resend code/ })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: resend_code_text })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Send code via WhatsApp/ })).toBeInTheDocument();
         expect(screen.getByText(/or/)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Change phone number/ })).toBeInTheDocument();
@@ -58,7 +59,7 @@ describe('DidntGetTheCodeModal', () => {
 
     it('should render setStartTimer and setShouldShowDidintGetTheCodeModal when Resend code is clicked', () => {
         renderComponent(VERIFICATION_SERVICES.SMS);
-        const resend_code_button = screen.getByRole('button', { name: /Resend code/ });
+        const resend_code_button = screen.getByRole('button', { name: resend_code_text });
         userEvent.click(resend_code_button);
         expect(mockSetShouldShowDidntGetTheCodeModal).toBeCalled();
         expect(mockSetStartTimer).toBeCalled();
@@ -71,7 +72,7 @@ describe('DidntGetTheCodeModal', () => {
             requestOnSMS: mockRequestOnSMS,
         });
         renderComponent(VERIFICATION_SERVICES.SMS);
-        const resend_code_button = screen.getByRole('button', { name: /Resend code/ });
+        const resend_code_button = screen.getByRole('button', { name: resend_code_text });
         userEvent.click(resend_code_button);
         expect(mockRequestOnSMS).toBeCalled();
     });
@@ -83,7 +84,7 @@ describe('DidntGetTheCodeModal', () => {
             requestOnWhatsApp: mockRequestOnWhatsapp,
         });
         renderComponent(VERIFICATION_SERVICES.WHATSAPP);
-        const resend_code_button = screen.getByRole('button', { name: /Resend code/ });
+        const resend_code_button = screen.getByRole('button', { name: resend_code_text });
         userEvent.click(resend_code_button);
         expect(mockRequestOnWhatsapp).toBeCalled();
     });
@@ -95,7 +96,7 @@ describe('DidntGetTheCodeModal', () => {
             requestOnSMS: mockRequestOnSMS,
         });
         renderComponent(VERIFICATION_SERVICES.WHATSAPP);
-        const resend_code_button = screen.getByRole('button', { name: /Send code via SMS/ });
+        const resend_code_button = screen.getByRole('button', { name: resend_code_text });
         userEvent.click(resend_code_button);
         expect(mockRequestOnSMS).toBeCalled();
     });

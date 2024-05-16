@@ -34,6 +34,13 @@ describe('DidntGetTheCodeModal', () => {
             </StoreProvider>
         );
     };
+
+    beforeEach(() => {
+        mockSetShouldShowDidntGetTheCodeModal.mockClear();
+        mockSetStartTimer.mockClear();
+        mockSetOtpVerification.mockClear();
+    });
+
     it('should render DidntGetTheCodeModal', () => {
         renderComponent(VERIFICATION_SERVICES.SMS);
         expect(screen.getByText(/Get a new code/)).toBeInTheDocument();
@@ -52,8 +59,8 @@ describe('DidntGetTheCodeModal', () => {
         renderComponent(VERIFICATION_SERVICES.SMS);
         const change_phone_number_button = screen.getByRole('button', { name: /Change phone number/ });
         userEvent.click(change_phone_number_button);
-        expect(mockSetShouldShowDidntGetTheCodeModal).toBeCalled();
-        expect(mockSetOtpVerification).toBeCalled();
+        expect(mockSetShouldShowDidntGetTheCodeModal).toHaveBeenCalledTimes(1);
+        expect(mockSetOtpVerification).toHaveBeenCalledTimes(1);
         expect(mockSetStartTimer).not.toBeCalled();
     });
 
@@ -61,11 +68,11 @@ describe('DidntGetTheCodeModal', () => {
         renderComponent(VERIFICATION_SERVICES.SMS);
         const resend_code_button = screen.getByRole('button', { name: resend_code_text });
         userEvent.click(resend_code_button);
-        expect(mockSetShouldShowDidntGetTheCodeModal).toBeCalled();
-        expect(mockSetStartTimer).toBeCalled();
+        expect(mockSetShouldShowDidntGetTheCodeModal).toHaveBeenCalledTimes(1);
+        expect(mockSetStartTimer).toHaveBeenCalledTimes(1);
     });
 
-    it('should render mockRequestOnSMS when Resend code is clicked, phone_verification_type is sms', () => {
+    it('should render mockRequestOnSMS and setOtpVerification with phone_verification_type: sms when Resend code is clicked, phone_verification_type is sms', () => {
         const mockRequestOnSMS = jest.fn();
 
         (useGetPhoneNumberOTP as jest.Mock).mockReturnValueOnce({
@@ -74,10 +81,14 @@ describe('DidntGetTheCodeModal', () => {
         renderComponent(VERIFICATION_SERVICES.SMS);
         const resend_code_button = screen.getByRole('button', { name: resend_code_text });
         userEvent.click(resend_code_button);
-        expect(mockRequestOnSMS).toBeCalled();
+        expect(mockRequestOnSMS).toHaveBeenCalledTimes(1);
+        expect(mockSetOtpVerification).toBeCalledWith({
+            show: true,
+            phone_verification_type: VERIFICATION_SERVICES.SMS,
+        });
     });
 
-    it('should render mockRequestOnWhatsapp when Resend code is clicked, phone_verification_type is whatsapp', () => {
+    it('should render mockRequestOnWhatsapp and setOtpVerification with phone_verification_type: whatsapp when Resend code is clicked, phone_verification_type is whatsapp', () => {
         const mockRequestOnWhatsapp = jest.fn();
 
         (useGetPhoneNumberOTP as jest.Mock).mockReturnValueOnce({
@@ -86,22 +97,30 @@ describe('DidntGetTheCodeModal', () => {
         renderComponent(VERIFICATION_SERVICES.WHATSAPP);
         const resend_code_button = screen.getByRole('button', { name: resend_code_text });
         userEvent.click(resend_code_button);
-        expect(mockRequestOnWhatsapp).toBeCalled();
+        expect(mockRequestOnWhatsapp).toHaveBeenCalledTimes(1);
+        expect(mockSetOtpVerification).toBeCalledWith({
+            show: true,
+            phone_verification_type: VERIFICATION_SERVICES.WHATSAPP,
+        });
     });
 
-    it('should render mockRequestOnSMS when Send code via SMS is clicked, phone_verification_type is whatsapp', () => {
+    it('should render mockRequestOnSMS and setOtpVerification with phone_verification_type: sms when Send code via SMS is clicked, phone_verification_type is whatsapp', () => {
         const mockRequestOnSMS = jest.fn();
 
         (useGetPhoneNumberOTP as jest.Mock).mockReturnValueOnce({
             requestOnSMS: mockRequestOnSMS,
         });
         renderComponent(VERIFICATION_SERVICES.WHATSAPP);
-        const resend_code_button = screen.getByRole('button', { name: resend_code_text });
+        const resend_code_button = screen.getByRole('button', { name: /Send code via SMS/ });
         userEvent.click(resend_code_button);
-        expect(mockRequestOnSMS).toBeCalled();
+        expect(mockRequestOnSMS).toHaveBeenCalledTimes(1);
+        expect(mockSetOtpVerification).toBeCalledWith({
+            show: true,
+            phone_verification_type: VERIFICATION_SERVICES.SMS,
+        });
     });
 
-    it('should render mockRequestOnWhatsApp when Send code via WhatsApp is clicked, phone_verification_type is whatsapp', () => {
+    it('should render mockRequestOnWhatsApp and setOtpVerification with phone_verification_type: whatsapp when Send code via WhatsApp is clicked, phone_verification_type is whatsapp', () => {
         const mockRequestOnWhatsapp = jest.fn();
 
         (useGetPhoneNumberOTP as jest.Mock).mockReturnValueOnce({
@@ -110,6 +129,10 @@ describe('DidntGetTheCodeModal', () => {
         renderComponent(VERIFICATION_SERVICES.SMS);
         const resend_code_button = screen.getByRole('button', { name: /Send code via WhatsApp/ });
         userEvent.click(resend_code_button);
-        expect(mockRequestOnWhatsapp).toBeCalled();
+        expect(mockRequestOnWhatsapp).toHaveBeenCalledTimes(1);
+        expect(mockSetOtpVerification).toBeCalledWith({
+            show: true,
+            phone_verification_type: VERIFICATION_SERVICES.WHATSAPP,
+        });
     });
 });

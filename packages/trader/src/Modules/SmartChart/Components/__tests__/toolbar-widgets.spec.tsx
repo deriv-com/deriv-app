@@ -22,7 +22,6 @@ describe('<ToolBarWidgets />', () => {
     let mocked_props: React.ComponentProps<typeof ToolbarWidgets>;
     beforeEach(() => {
         mocked_props = {
-            is_mobile: true,
             position: 'top',
             updateChartType: jest.fn(),
             updateGranularity: jest.fn(),

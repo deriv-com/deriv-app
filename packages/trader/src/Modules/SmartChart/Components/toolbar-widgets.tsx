@@ -3,7 +3,6 @@ import { ChartMode, DrawTools, Share, StudyLegend, Views, ToolbarWidget } from '
 import { useDevice } from '@deriv-com/ui';
 
 type TToolbarWidgetsProps = {
-    is_mobile?: boolean;
     position?: string;
     updateChartType: (type: string) => void;
     updateGranularity: (granularity: number) => void;

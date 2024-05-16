@@ -23,7 +23,7 @@
         border-radius: $BORDER_RADIUS * 2;
     }
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         padding: 1.6rem;
 
         & .onfido-sdk-ui-PageTitle {
@@ -60,7 +60,7 @@
         max-width: max-content;
         width: 100% !important;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin-top: 1.6rem;
         }
 
@@ -100,7 +100,7 @@
             .dc-select-native {
                 margin-bottom: 3.2rem;
             }
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 &--email-consent {
                     margin-bottom: 1.6rem;
                 }
@@ -115,7 +115,7 @@
             display: flex;
             flex-direction: column;
             gap: 0.8rem;
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 height: fit-content;
             }
 
@@ -132,11 +132,11 @@
                 border: 1px solid var(--general-active);
                 border-radius: 0.8rem;
 
-                @include desktop {
+                @include desktop-screen {
                     padding: 1.6rem;
                 }
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     padding: 1.6rem 1.6rem 0;
                     margin-bottom: 2.4rem;
                 }
@@ -149,7 +149,7 @@
                 padding: 1.6rem;
                 max-width: 67rem;
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     padding-inline: 0;
                 }
 
@@ -180,7 +180,7 @@
 
                 &-form {
                     &__section-side-note {
-                        @include mobile {
+                        @include mobile-or-tablet-screen {
                             margin-top: 1.6rem;
                             justify-content: center;
                             display: flex;
@@ -188,7 +188,7 @@
                     }
 
                     &__section {
-                        @include desktop {
+                        @include desktop-screen {
                             margin-top: 1.6rem;
                         }
 
@@ -229,7 +229,7 @@
         &__section {
             display: grid;
 
-            @include desktop {
+            @include desktop-screen {
                 grid-template-areas: 'section-side-note section-content';
                 grid-template-columns: auto 1fr;
                 grid-gap: 1rem;
@@ -237,20 +237,20 @@
 
             align-items: center;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 grid-template-areas: 'section-side-note' 'section-content';
             }
 
             &-side-note {
                 grid-area: section-side-note;
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     margin-top: unset;
                     width: 100%;
                     margin-bottom: 0.8rem;
                 }
                 &__example {
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         flex-direction: column;
                     }
 
@@ -263,11 +263,11 @@
             &-content {
                 grid-area: section-content;
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     width: 100%;
                 }
             }
-            @include desktop {
+            @include desktop-screen {
                 &--reversed {
                     grid-template-areas: 'section-content section-side-note';
                     grid-template-columns: 1fr auto;
@@ -293,7 +293,7 @@
             .back-btn {
                 margin-right: 8px;
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     width: 100%;
                 }
 
@@ -316,7 +316,7 @@
                 max-width: 36.6rem;
                 height: 3.6rem;
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     width: auto;
                     text-align: center;
                     align-self: center;
@@ -336,7 +336,7 @@
                     display: flex;
                     flex-direction: row;
 
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         flex-direction: column;
                     }
                 }
@@ -351,7 +351,7 @@
                     background-color: unset !important;
                 }
 
-                @include desktop {
+                @include desktop-screen {
                     margin-left: 1.6rem;
 
                     &-wrapper--dashboard {
@@ -360,7 +360,7 @@
                     }
                 }
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     &--has-bottom-margin {
                         margin-bottom: 1.6rem;
                     }
@@ -371,7 +371,7 @@
                 width: 68.5rem;
                 margin-left: 6rem;
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     width: 100vw;
                     margin-left: unset;
 
@@ -399,7 +399,7 @@
                 padding-top: 0.8rem;
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 flex-direction: column;
                 height: auto;
                 align-items: initial;
@@ -427,7 +427,7 @@
                 }
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding: 0 1.6rem;
                 overflow-x: hidden;
                 overflow-y: auto;
@@ -442,12 +442,12 @@
             }
         }
 
-        @include desktop {
+        @include desktop-screen {
             padding-left: 16px;
             padding-right: 16px;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             height: unset;
             padding-top: unset;
             padding-bottom: unset;
@@ -456,15 +456,15 @@
 
     &-management {
         &__message-content {
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding-top: 2.4rem;
             }
         }
         &__container {
-            @include desktop {
+            @include desktop-screen {
                 max-width: 68.2rem;
             }
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin: 0 auto;
             }
         }
@@ -482,11 +482,11 @@
 
             &__fieldset {
                 margin-bottom: 2rem;
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     margin-bottom: 1.6rem;
                 }
                 &-input {
-                    @include desktop {
+                    @include desktop-screen {
                         margin-bottom: unset;
                     }
                 }
@@ -501,7 +501,7 @@
     .additional-field {
         margin-top: 0.8rem;
         margin-bottom: 2rem !important;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin-top: 1.6rem;
         }
 
@@ -527,7 +527,7 @@
                 &-content {
                     width: 40rem;
 
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         width: 100%;
                     }
                 }
@@ -555,7 +555,7 @@
 
 .file-uploader {
     &__container {
-        @include desktop {
+        @include desktop-screen {
             margin: 1.6rem 0;
             padding: 1.6rem 2.4rem;
             border-radius: $BORDER_RADIUS * 2;
@@ -611,18 +611,18 @@
             justify-content: space-between;
             margin: 1.6rem 0 2.4rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin-bottom: 1.6rem;
             }
 
             span {
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     max-width: 14rem;
                 }
             }
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             flex: unset;
             margin-bottom: 2.4rem;
             height: 15rem;
@@ -673,7 +673,7 @@
             min-height: 30vh;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             min-height: unset;
         }
     }
@@ -686,7 +686,7 @@
         height: 100%;
         padding-bottom: 1.6rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             min-height: unset;
             overflow-y: scroll;
             padding: 0 1.6rem;
@@ -702,12 +702,12 @@
         &--reset {
             align-items: normal;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 overflow-y: unset;
             }
 
             .proof-of-identity__submit-button {
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     margin: unset;
                     width: 100%;
                     margin-inline: 1.6rem;
@@ -715,7 +715,7 @@
             }
 
             .form-body {
-                @include desktop {
+                @include desktop-screen {
                     z-index: 5;
                 }
             }
@@ -730,11 +730,11 @@
             height: 128px;
             margin-bottom: 2.6rem;
 
-            @include desktop {
+            @include desktop-screen {
                 margin-top: 5.2rem;
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 72px;
                 height: 72px;
             }
@@ -756,7 +756,7 @@
             margin-top: 3.2rem;
             height: 4rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin: 1.6rem 0;
                 padding: 1.6rem;
                 width: 100%;
@@ -771,7 +771,7 @@
             .proof-of-identity__fieldset {
                 width: 100%;
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     margin-top: 0;
 
                     .proof-of-identity__dropdown-container {
@@ -786,7 +786,7 @@
     }
 
     &__text {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             text-align: center;
         }
     }
@@ -802,7 +802,7 @@
         align-items: center;
         width: 100%;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             flex-direction: column;
         }
     }
@@ -810,7 +810,7 @@
     &__header {
         margin-bottom: 1.6rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin: 1.6rem 0;
         }
     }
@@ -826,7 +826,7 @@
     }
 
     &__footer {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -847,7 +847,7 @@
     &__fieldset {
         width: 39.5rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 94%;
             margin: 0.4rem 0 3.2rem;
         }
@@ -863,7 +863,7 @@
         justify-content: center;
         align-items: center;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 100%;
         }
     }
@@ -871,7 +871,7 @@
     &__fieldset-input {
         width: 39.5rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 94%;
             margin-top: 0.4rem;
         }
@@ -880,7 +880,7 @@
     &__sample-container {
         margin-left: 1.6rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin-left: unset;
             width: 94%;
         }
@@ -903,7 +903,7 @@
         border-radius: 4px;
         object-fit: contain;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             max-width: calc(95vw - 16px);
         }
     }
@@ -932,19 +932,19 @@
         height: 100%;
 
         .idv-form {
-            @include desktop {
+            @include desktop-screen {
                 margin-bottom: 1.6rem;
             }
         }
 
         .account__scrollbars_container {
-            @include desktop {
+            @include desktop-screen {
                 padding-top: 0;
             }
         }
 
         .account__scrollbars_container--grid-layout {
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin-top: 2.4rem;
             }
         }
@@ -955,7 +955,7 @@
     }
 }
 
-@include mobile {
+@include mobile-or-tablet-screen {
     .formik__confirmation-checkbox {
         margin-bottom: 1.6rem;
     }

@@ -1,39 +1,36 @@
 import { ComponentProps } from 'react';
 import { TSocketError } from '@deriv/api-v2/types';
 import { WalletButton } from '../../../../components';
+import { CryptoWithdrawalErrorCodes } from '../../../../constants/errorCodes';
 
 type TWithdrawalErrorContentProps = {
-    cryptoConnectionError: boolean;
-    cryptoInvalidAddress: boolean;
     currency?: string;
     error: TSocketError<'cashier'>['error'];
-    invalidToken: boolean;
     resetError: VoidFunction;
     setResendEmail: React.Dispatch<React.SetStateAction<boolean>>;
-    suspendedCurrencyWithdrawal: boolean;
 };
 
-const getWithdrawalErrorContent = ({
-    cryptoConnectionError,
-    cryptoInvalidAddress,
-    currency,
-    error,
-    invalidToken,
-    resetError,
-    setResendEmail,
-    suspendedCurrencyWithdrawal,
-}: TWithdrawalErrorContentProps) => {
+const getWithdrawalErrorContent = ({ currency, error, resetError, setResendEmail }: TWithdrawalErrorContentProps) => {
+    const cryptoConnectionError = error.code === CryptoWithdrawalErrorCodes.CryptoConnectionError;
+    const cryptoInvalidAddress = error.code === CryptoWithdrawalErrorCodes.CryptoInvalidAddress;
+    const invalidToken = error.code === CryptoWithdrawalErrorCodes.InvalidToken;
+    const suspendedCurrencyWithdrawal =
+        error.code === CryptoWithdrawalErrorCodes.SuspendedCurrency ||
+        error.code === CryptoWithdrawalErrorCodes.SuspendedWithdrawal;
+
     let content: {
         buttonText?: string;
         buttonVariant?: ComponentProps<typeof WalletButton>['variant'];
         message?: string;
         onClick?: () => void;
+        showIcon?: boolean;
         title?: string;
     } = {
         buttonText: 'Try again',
         buttonVariant: 'ghost',
         message: error.message,
         onClick: () => window.location.reload(),
+        showIcon: true,
         title: undefined,
     };
 
@@ -61,6 +58,7 @@ const getWithdrawalErrorContent = ({
             ...content,
             buttonText: undefined,
             message: `Due to system maintenance, withdrawals with your ${currency} Wallet are unavailable at the moment. Please try again later.`,
+            showIcon: false,
             title: `${currency} Wallet withdrawals are temporarily unavailable`,
         };
     }

@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { TSocketError } from '@deriv/api-v2/types';
 import { WalletsErrorScreen } from '../../../../components';
-import { CryptoDepositErrorCodes } from '../../../../constants/errorCodes';
 import getDepositErrorContent from './DepositErrorContent';
 import './DepositErrorScreen.scss';
 
@@ -12,30 +11,23 @@ type TProps = {
 };
 
 const DepositErrorScreen: React.FC<TProps> = ({ currency, error }) => {
-    const cryptoConnectionError = error.code === CryptoDepositErrorCodes.CryptoConnectionError;
-    const suspendedCurrencyDeposit =
-        error.code === CryptoDepositErrorCodes.SuspendedCurrency ||
-        error.code === CryptoDepositErrorCodes.SuspendedDeposit;
-
-    const depositErrorContent = getDepositErrorContent({
-        cryptoConnectionError,
+    const { buttonText, message, onClick, showIcon, title } = getDepositErrorContent({
         currency,
         error,
-        suspendedCurrencyDeposit,
     });
 
     return (
         <div
             className={classNames('wallets-deposit-error-screen', {
-                'wallets-deposit-eror-screen__no-icon': suspendedCurrencyDeposit,
+                'wallets-deposit-eror-screen__no-icon': !showIcon,
             })}
         >
             <WalletsErrorScreen
-                buttonText={depositErrorContent.buttonText}
-                message={depositErrorContent.message}
-                onClick={() => window.location.reload()}
-                showIcon={!suspendedCurrencyDeposit}
-                title={depositErrorContent.title}
+                buttonText={buttonText}
+                message={message}
+                onClick={onClick}
+                showIcon={showIcon}
+                title={title}
             />
         </div>
     );

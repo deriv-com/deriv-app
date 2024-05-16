@@ -3,10 +3,8 @@ import getDepositErrorContent from '../DepositErrorContent';
 describe('DepositErrorContent', () => {
     it('should render default content for title and description', () => {
         const result = getDepositErrorContent({
-            cryptoConnectionError: false,
             currency: 'BTC',
             error: { code: 'Error', message: 'Error message' },
-            suspendedCurrencyDeposit: false,
         });
 
         expect(result.title).toBeFalsy();
@@ -14,12 +12,10 @@ describe('DepositErrorContent', () => {
         expect(result.buttonText).toBe('Try again');
     });
 
-    it('should render correct content for suspendedCurrencyDeposit', () => {
+    it('should render correct content for crypto suspended currency', () => {
         const result = getDepositErrorContent({
-            cryptoConnectionError: false,
             currency: 'BTC',
-            error: { code: 'suspendedCurrencyDeposit', message: 'Suspended Currency Deposit' },
-            suspendedCurrencyDeposit: true,
+            error: { code: 'CryptoSuspendedCurrency', message: 'Crypto Suspended Currency' },
         });
 
         expect(result.title).toBe('BTC Wallet deposits are temporarily unavailable');
@@ -29,12 +25,23 @@ describe('DepositErrorContent', () => {
         expect(result.buttonText).toBeFalsy();
     });
 
-    it('should render correct content for cryptoConnectionError', () => {
+    it('should render correct content for crypto suspended deposit', () => {
         const result = getDepositErrorContent({
-            cryptoConnectionError: true,
             currency: 'BTC',
-            error: { code: 'cryptoConnectionError', message: 'Crypto Connection Error' },
-            suspendedCurrencyDeposit: false,
+            error: { code: 'CryptoDisabledCurrencyDeposit', message: 'Crypto Suspended Deposit' },
+        });
+
+        expect(result.title).toBe('BTC Wallet deposits are temporarily unavailable');
+        expect(result.message).toBe(
+            'Due to system maintenance, deposits with your BTC Wallet are unavailable at the moment. Please try again later.'
+        );
+        expect(result.buttonText).toBeFalsy();
+    });
+
+    it('should render correct content for crypto connection error', () => {
+        const result = getDepositErrorContent({
+            currency: 'BTC',
+            error: { code: 'CryptoConnectionError', message: 'Crypto Connection Error' },
         });
 
         expect(result.title).toBe('Maintenance in progess');

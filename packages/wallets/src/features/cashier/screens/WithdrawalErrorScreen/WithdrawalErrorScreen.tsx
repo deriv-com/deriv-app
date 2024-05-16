@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { TSocketError } from '@deriv/api-v2/types';
 import { WalletsErrorScreen } from '../../../../components';
-import { CryptoWithdrawalErrorCodes } from '../../../../constants/errorCodes';
 import getWithdrawalErrorContent from './WithdrawalErrorContent';
 
 type TProps = {
@@ -13,37 +12,26 @@ type TProps = {
 };
 
 const WithdrawalErrorScreen: React.FC<TProps> = ({ currency, error, resetError, setResendEmail }) => {
-    const cryptoConnectionError = error.code === CryptoWithdrawalErrorCodes.CryptoConnectionError;
-    const cryptoInvalidAddress = error.code === CryptoWithdrawalErrorCodes.CryptoInvalidAddress;
-    const invalidToken = error.code === CryptoWithdrawalErrorCodes.InvalidToken;
-    const suspendedCurrencyWithdrawal =
-        error.code === CryptoWithdrawalErrorCodes.SuspendedCurrency ||
-        error.code === CryptoWithdrawalErrorCodes.SuspendedWithdrawal;
-
-    const withdrawalErrorContent = getWithdrawalErrorContent({
-        cryptoConnectionError,
-        cryptoInvalidAddress,
+    const { buttonText, buttonVariant, message, onClick, showIcon, title } = getWithdrawalErrorContent({
         currency,
         error,
-        invalidToken,
         resetError,
         setResendEmail,
-        suspendedCurrencyWithdrawal,
     });
 
     return (
         <div
             className={classNames('wallets-withdrawal-error-screen', {
-                'wallets-withdrawal-eror-screen__no-icon': suspendedCurrencyWithdrawal,
+                'wallets-withdrawal-eror-screen__no-icon': !showIcon,
             })}
         >
             <WalletsErrorScreen
-                buttonText={withdrawalErrorContent.buttonText}
-                buttonVariant={withdrawalErrorContent.buttonVariant}
-                message={withdrawalErrorContent.message}
-                onClick={withdrawalErrorContent.onClick}
-                showIcon={!suspendedCurrencyWithdrawal}
-                title={withdrawalErrorContent.title}
+                buttonText={buttonText}
+                buttonVariant={buttonVariant}
+                message={message}
+                onClick={onClick}
+                showIcon={showIcon}
+                title={title}
             />
         </div>
     );

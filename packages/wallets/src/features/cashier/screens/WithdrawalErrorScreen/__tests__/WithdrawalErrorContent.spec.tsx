@@ -3,14 +3,10 @@ import getWithdrawalErrorContent from '../WithdrawalErrorContent';
 describe('WithdrawalErrorContent', () => {
     it('should render default content for title and description', () => {
         const result = getWithdrawalErrorContent({
-            cryptoConnectionError: false,
-            cryptoInvalidAddress: false,
             currency: 'BTC',
             error: { code: 'Error', message: 'Error message' },
-            invalidToken: false,
             resetError: () => null,
             setResendEmail: () => null,
-            suspendedCurrencyWithdrawal: false,
         });
 
         expect(result.title).toBeFalsy();
@@ -18,16 +14,12 @@ describe('WithdrawalErrorContent', () => {
         expect(result.buttonText).toBe('Try again');
     });
 
-    it('should render correct content for invalidToken', () => {
+    it('should render correct content for invalid token', () => {
         const result = getWithdrawalErrorContent({
-            cryptoConnectionError: false,
-            cryptoInvalidAddress: false,
             currency: 'BTC',
-            error: { code: 'invalidToken', message: 'Invalid Token' },
-            invalidToken: true,
+            error: { code: 'InvalidToken', message: 'Invalid Token' },
             resetError: () => null,
             setResendEmail: () => null,
-            suspendedCurrencyWithdrawal: false,
         });
 
         expect(result.title).toBe('Email verification failed');
@@ -37,16 +29,12 @@ describe('WithdrawalErrorContent', () => {
         expect(result.buttonText).toBe('Resend email');
     });
 
-    it('should render correct content for cryptoInvalidAddress', () => {
+    it('should render correct content for crypto invalid address', () => {
         const result = getWithdrawalErrorContent({
-            cryptoConnectionError: false,
-            cryptoInvalidAddress: true,
             currency: 'BTC',
-            error: { code: 'cryptoInvalidAddress', message: 'Crypto Invalid Address' },
-            invalidToken: false,
+            error: { code: 'CryptoInvalidAddress', message: 'Crypto Invalid Address' },
             resetError: () => null,
             setResendEmail: () => null,
-            suspendedCurrencyWithdrawal: false,
         });
 
         expect(result.title).toBe('Error');
@@ -54,16 +42,12 @@ describe('WithdrawalErrorContent', () => {
         expect(result.buttonText).toBe('Try again');
     });
 
-    it('should render correct content for suspendedCurrencyWithdrawal', () => {
+    it('should render correct content for crypto suspended currency', () => {
         const result = getWithdrawalErrorContent({
-            cryptoConnectionError: false,
-            cryptoInvalidAddress: false,
             currency: 'BTC',
-            error: { code: 'suspendedCurrencyWithdrawal', message: 'Suspended Currency Withdrawal' },
-            invalidToken: false,
+            error: { code: 'CryptoSuspendedCurrency', message: 'Crypto Suspended Currency' },
             resetError: () => null,
             setResendEmail: () => null,
-            suspendedCurrencyWithdrawal: true,
         });
 
         expect(result.title).toBe('BTC Wallet withdrawals are temporarily unavailable');
@@ -73,16 +57,27 @@ describe('WithdrawalErrorContent', () => {
         expect(result.buttonText).toBeFalsy();
     });
 
-    it('should render correct content for cryptoConnectionError', () => {
+    it('should render correct content for crypto suspended withdrawal', () => {
         const result = getWithdrawalErrorContent({
-            cryptoConnectionError: true,
-            cryptoInvalidAddress: false,
             currency: 'BTC',
-            error: { code: 'cryptoConnectionError', message: 'Crypto Connection Error' },
-            invalidToken: false,
+            error: { code: 'CryptoDisabledCurrencyWithdrawal', message: 'Crypto Suspended Withdrawal' },
             resetError: () => null,
             setResendEmail: () => null,
-            suspendedCurrencyWithdrawal: false,
+        });
+
+        expect(result.title).toBe('BTC Wallet withdrawals are temporarily unavailable');
+        expect(result.message).toBe(
+            'Due to system maintenance, withdrawals with your BTC Wallet are unavailable at the moment. Please try again later.'
+        );
+        expect(result.buttonText).toBeFalsy();
+    });
+
+    it('should render correct content for crypto connection error', () => {
+        const result = getWithdrawalErrorContent({
+            currency: 'BTC',
+            error: { code: 'CryptoConnectionError', message: 'Crypto Connection Error' },
+            resetError: () => null,
+            setResendEmail: () => null,
         });
 
         expect(result.title).toBe('Maintenance in progess');

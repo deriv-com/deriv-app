@@ -19,7 +19,6 @@ export default class TradersHubStore extends BaseStore {
     is_failed_verification_modal_visible = false;
     is_regulators_compare_modal_visible = false;
     is_mt5_notification_modal_visible = false;
-    is_tour_open = false;
     account_type_card = '';
     selected_platform_type = 'options';
     mt5_existing_account = {};
@@ -50,7 +49,6 @@ export default class TradersHubStore extends BaseStore {
             is_regulators_compare_modal_visible: observable,
             is_mt5_notification_modal_visible: observable,
             is_failed_verification_modal_visible: observable,
-            is_tour_open: observable,
             modal_data: observable,
             is_onboarding_visited: observable,
             is_first_time_visit: observable,
@@ -105,7 +103,6 @@ export default class TradersHubStore extends BaseStore {
             toggleFailedVerificationModalVisibility: action.bound,
             setMT5ExistingAccount: action.bound,
             openFailedVerificationModal: action.bound,
-            toggleIsTourOpen: action.bound,
             toggleRegulatorsCompareModal: action.bound,
             showTopUpModal: action.bound,
             toggleWalletsUpgrade: action.bound,
@@ -253,10 +250,6 @@ export default class TradersHubStore extends BaseStore {
 
     selectRegion(region) {
         this.selected_region = region;
-    }
-
-    toggleIsTourOpen(is_tour_open) {
-        this.is_tour_open = is_tour_open;
     }
 
     get is_demo_low_risk() {

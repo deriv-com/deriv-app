@@ -41,21 +41,11 @@ export const getContractPath = (contract_id: string) => getPath(routes.contract,
 export const convertPhoneTypeDisplay = (phone_verification_type: string) => {
     if (phone_verification_type === VERIFICATION_SERVICES.SMS) return phone_verification_type.toUpperCase();
 
-    return (
-        phone_verification_type.charAt(0).toUpperCase() +
-        phone_verification_type.slice(1, 5) +
-        phone_verification_type.charAt(5).toUpperCase() +
-        phone_verification_type.slice(6)
-    );
+    return 'WhatsApp';
 };
 
 export const convertPhoneTypeForButton = (phone_verification_type: string) => {
     if (phone_verification_type === VERIFICATION_SERVICES.WHATSAPP) return VERIFICATION_SERVICES.SMS.toUpperCase();
 
-    return (
-        VERIFICATION_SERVICES.WHATSAPP.charAt(0).toUpperCase() +
-        VERIFICATION_SERVICES.WHATSAPP.slice(1, 5) +
-        VERIFICATION_SERVICES.WHATSAPP.charAt(5).toUpperCase() +
-        VERIFICATION_SERVICES.WHATSAPP.slice(6)
-    );
+    return 'WhatsApp';
 };

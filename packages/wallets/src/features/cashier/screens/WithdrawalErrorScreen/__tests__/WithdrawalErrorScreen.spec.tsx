@@ -53,20 +53,34 @@ describe('WithdrawalErrorScreen', () => {
         expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument();
     });
 
-    it('should show default withdrawal error details when no error details is received', () => {
-        render(<WithdrawalErrorScreen resetError={resetError} setResendEmail={setResendEmail} />);
-
-        expect(screen.getByText('Oops, something went wrong!')).toBeInTheDocument();
-        expect(
-            screen.getByText('Sorry an error occurred. Please try accessing our cashier again.')
-        ).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument();
-    });
-
     it('should show correct withdrawal error screen for crypto suspended currency error', () => {
         const error = {
             code: 'CryptoSuspendedCurrency',
             message: 'Crypto Suspended Currency',
+        };
+
+        render(
+            <WithdrawalErrorScreen
+                currency='BTC'
+                error={error}
+                resetError={resetError}
+                setResendEmail={setResendEmail}
+            />
+        );
+
+        expect(screen.getByText('BTC Wallet withdrawals are temporarily unavailable')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Due to system maintenance, withdrawals with your BTC Wallet are unavailable at the moment. Please try again later.'
+            )
+        ).toBeInTheDocument();
+        expect(screen.queryByText('Try again')).not.toBeInTheDocument();
+    });
+
+    it('should show correct withdrawal error screen for crypto suspended withdrawal error', () => {
+        const error = {
+            code: 'CryptoDisabledCurrencyWithdrawal',
+            message: 'Crypto Disabled Currency Withdrawal',
         };
 
         render(

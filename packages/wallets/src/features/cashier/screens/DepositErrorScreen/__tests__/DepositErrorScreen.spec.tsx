@@ -7,7 +7,7 @@ describe('DepositErrorScreen', () => {
         jest.clearAllMocks();
     });
 
-    it('should show deposit error details', () => {
+    it('should show default deposit error details', () => {
         const error = {
             code: 'MyError',
             message: 'Error message',
@@ -20,20 +20,27 @@ describe('DepositErrorScreen', () => {
         expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument();
     });
 
-    it('should show default deposit error details when no error details is received', () => {
-        render(<DepositErrorScreen />);
-
-        expect(screen.getByText('Oops, something went wrong!')).toBeInTheDocument();
-        expect(
-            screen.getByText('Sorry an error occurred. Please try accessing our cashier again.')
-        ).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument();
-    });
-
     it('should show correct deposit error screen for crypto suspended currency error', () => {
         const error = {
             code: 'CryptoSuspendedCurrency',
             message: 'Crypto Suspended Currency',
+        };
+
+        render(<DepositErrorScreen currency='BTC' error={error} />);
+
+        expect(screen.getByText('BTC Wallet deposits are temporarily unavailable')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Due to system maintenance, deposits with your BTC Wallet are unavailable at the moment. Please try again later.'
+            )
+        ).toBeInTheDocument();
+        expect(screen.queryByText('Try again')).not.toBeInTheDocument();
+    });
+
+    it('should show correct deposit error screen for crypto suspended deposit error', () => {
+        const error = {
+            code: 'CryptoDisabledCurrencyDeposit',
+            message: 'Crypto Disabled Currency Deposit',
         };
 
         render(<DepositErrorScreen currency='BTC' error={error} />);

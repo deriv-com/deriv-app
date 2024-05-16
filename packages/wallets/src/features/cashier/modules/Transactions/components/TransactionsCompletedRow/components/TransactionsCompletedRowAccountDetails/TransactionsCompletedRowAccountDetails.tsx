@@ -6,6 +6,7 @@ import {
     WalletText,
 } from '../../../../../../../../components';
 import { THooks, TPlatforms, TWalletLandingCompanyName } from '../../../../../../../../types';
+import { MARKET_TYPE } from '../../../../../../../cfd/constants';
 import { getMarketType } from '../../../../../../helpers';
 import './TransactionsCompletedRowAccountDetails.scss';
 
@@ -44,7 +45,7 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
                 <WalletMarketCurrencyIcon
                     currency={currency}
                     isDemo={isDemo}
-                    marketType={marketType}
+                    marketType={marketType ?? MARKET_TYPE.ALL}
                     platform={accountType as TPlatforms.All}
                 />
             )}

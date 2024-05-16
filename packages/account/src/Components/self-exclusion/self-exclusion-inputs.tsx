@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { Button, DatePicker, Input, Text } from '@deriv/components';
 import { epochToMoment, toMoment, isMobile } from '@deriv/shared';

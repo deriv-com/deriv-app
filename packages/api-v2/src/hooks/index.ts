@@ -28,6 +28,7 @@ export { default as useCountryConfig } from './useCountryConfig';
 export { default as useCreateNewRealAccount } from './useCreateNewRealAccount';
 export { default as useCreateWallet } from './useCreateWallet';
 export { default as useCryptoConfig } from './useCryptoConfig';
+export { default as useCryptoEstimations } from './useCryptoEstimations';
 export { default as useCryptoTransactions } from './useCryptoTransactions';
 export { default as useCryptoWithdrawal } from './useCryptoWithdrawal';
 export { default as useCtraderAccountsList } from './useCtraderAccountsList';

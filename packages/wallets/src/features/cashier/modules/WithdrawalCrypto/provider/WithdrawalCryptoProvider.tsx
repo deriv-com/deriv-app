@@ -3,6 +3,7 @@ import {
     useAccountLimits,
     useActiveWalletAccount,
     useCryptoConfig,
+    useCryptoEstimations,
     useCryptoWithdrawal,
     useCurrencyConfig,
     useExchangeRateSubscription,
@@ -16,7 +17,11 @@ import { TWithdrawalReceipt } from '../types';
 export type TWithdrawalCryptoContext = {
     accountLimits: ReturnType<typeof useAccountLimits>['data'];
     activeWallet: ReturnType<typeof useActiveWalletAccount>['data'];
+    countDownEstimationFee: ReturnType<typeof useCryptoEstimations>['countDown'];
     cryptoConfig: ReturnType<typeof useCryptoConfig>['data'];
+    cryptoEstimationsError: ReturnType<typeof useCryptoEstimations>['error'];
+    cryptoEstimationsFee: ReturnType<typeof useCryptoEstimations>['cryptoEstimationsFee'];
+    cryptoEstimationsFeeUniqueId: ReturnType<typeof useCryptoEstimations>['cryptoEstimationsFeeUniqueId'];
     exchangeRates: Partial<ReturnType<typeof useExchangeRateSubscription>>;
     fractionalDigits: {
         crypto?: number;
@@ -24,12 +29,15 @@ export type TWithdrawalCryptoContext = {
     };
     getConvertedCryptoAmount: (fiatInput: number | string) => string;
     getConvertedFiatAmount: (cryptoInput: number | string) => string;
+    getCryptoEstimations: ReturnType<typeof useCryptoEstimations>['getCryptoEstimations'];
     getCurrencyConfig: ReturnType<typeof useCurrencyConfig>['getConfig'];
     isClientVerified: boolean | undefined;
+    isLoadingCryptoEstimationFee: ReturnType<typeof useCryptoEstimations>['isLoading'];
     isTokenValidationLoading: boolean;
     isWithdrawalSuccess: ReturnType<typeof useCryptoWithdrawal>['isSuccess'];
     onClose: () => void;
     requestCryptoWithdrawal: (values: Parameters<THooks.CryptoWithdrawal>[0]) => void;
+    serverTime: ReturnType<typeof useCryptoEstimations>['serverTime'];
     setError: React.Dispatch<
         React.SetStateAction<
             | {
@@ -73,6 +81,15 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
     const { data: poaStatus } = usePOA();
     const { data: poiStatus } = usePOI();
     const { isSuccess: isWithdrawalSuccess, mutateAsync } = useCryptoWithdrawal();
+    const {
+        countDown: countDownEstimationFee,
+        cryptoEstimationsFee,
+        cryptoEstimationsFeeUniqueId,
+        error: cryptoEstimationsError,
+        getCryptoEstimations,
+        isLoading: isLoadingCryptoEstimationFee,
+        serverTime,
+    } = useCryptoEstimations();
     const { getConfig } = useCurrencyConfig();
     const [isTokenValidationLoading, setIsTokenValidationLoading] = useState(true);
     const [withdrawalReceipt, setWithdrawalReceipt] = useState<TWithdrawalReceipt>({});
@@ -125,10 +142,12 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
     };
 
     const requestCryptoWithdrawal = (values: Parameters<THooks.CryptoWithdrawal>[0]) => {
-        const { address, amount } = values;
+        // eslint-disable-next-line camelcase
+        const { address, amount, estimated_fee_unique_id } = values;
         mutateAsync({
             address,
             amount,
+            estimated_fee_unique_id,
             verification_code: verificationCode,
         })
             .then(() =>
@@ -147,7 +166,11 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
     const value = {
         accountLimits,
         activeWallet,
+        countDownEstimationFee,
         cryptoConfig,
+        cryptoEstimationsError,
+        cryptoEstimationsFee,
+        cryptoEstimationsFeeUniqueId,
         exchangeRates: {
             data: exchangeRates,
             subscribe,
@@ -159,12 +182,15 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
         },
         getConvertedCryptoAmount,
         getConvertedFiatAmount,
+        getCryptoEstimations,
         getCurrencyConfig: getConfig,
         isClientVerified: getClientVerificationStatus(),
+        isLoadingCryptoEstimationFee,
         isTokenValidationLoading,
         isWithdrawalSuccess,
         onClose,
         requestCryptoWithdrawal,
+        serverTime,
         setError,
         withdrawalReceipt,
     };

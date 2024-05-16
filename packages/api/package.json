@@ -22,5 +22,8 @@
         "@types/md5": "^2.3.5",
         "@types/uuid": "^9.0.6",
         "typescript": "^4.6.3"
-    }
+    },
+    "peerDependencies": {
+        "moment": "^2.29.2"
+      }
 }

@@ -3,3 +3,4 @@ export { default as WalletsAddMoreLoader } from './WalletsAddMoreLoader/WalletsA
 export { default as WalletsCardLoader } from './WalletsCardLoader/WalletsCardLoader';
 export { default as WalletsCarouselLoader } from './WalletsCarouselLoader/WalletsCarouselLoader';
 export { default as WalletsDepositCryptoAddressLoader } from './WalletsDepositCryptoAddressLoader/WalletsDepositCryptoAddressLoader';
+export { default as WalletsPriorityCryptoWithdrawLoader } from './WalletsPriorityCryptoWithdrawLoader/WalletsPriorityCryptoWithdrawLoader';

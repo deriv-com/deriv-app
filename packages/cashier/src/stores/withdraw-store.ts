@@ -68,7 +68,7 @@ export default class WithdrawStore {
         this.withdraw_amount = amount;
     }
 
-    async requestWithdraw(verification_code: string) {
+    async requestWithdraw(verification_code: string, estimated_fee_unique_id?: string) {
         const { client, modules } = this.root_store;
         const { crypto_fiat_converter } = modules.cashier;
 
@@ -85,24 +85,26 @@ export default class WithdrawStore {
             address: this.blockchain_address,
             amount: +crypto_fiat_converter.converter_from_amount,
             verification_code,
+            estimated_fee_unique_id,
             dry_run: 1,
         }).then(response => {
             if (response.error) {
                 this.error.setErrorMessage({ code: response.error.code, message: response.error.message });
                 this.setCryptoConfig().then(() => this.validateWithdrawFromAmount());
             } else {
-                this.saveWithdraw(verification_code);
+                this.saveWithdraw(verification_code, estimated_fee_unique_id);
             }
         });
     }
 
-    async saveWithdraw(verification_code: string) {
+    async saveWithdraw(verification_code: string, estimated_fee_unique_id?: string) {
         const converter_from_amount = this.root_store.modules.cashier?.crypto_fiat_converter.converter_from_amount;
 
         this.error.setErrorMessage({ code: '', message: '' });
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
             amount: +converter_from_amount,
+            estimated_fee_unique_id,
             verification_code,
         }).then(response => {
             if (response.error) {

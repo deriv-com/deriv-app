@@ -2,9 +2,10 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, Formik, FormikProps } from 'formik';
 
-import { Button, Icon, Input, Loading, Text } from '@deriv/components';
+import { useCryptoEstimations } from '@deriv/api';
+import { Button, Checkbox, Icon, Input, Loading, Popover, Text } from '@deriv/components';
 import { useCurrentAccountDetails, useExchangeRate } from '@deriv/hooks';
-import { CryptoConfig, getCurrencyName } from '@deriv/shared';
+import { CryptoConfig, getCurrencyName, getDecimalPlaces } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 
@@ -21,6 +22,7 @@ type THeaderProps = {
 
 type TFormValues = {
     address: string;
+    priority_withdrawal: boolean;
 };
 
 const MIN_ADDRESS_LENGTH = 25;
@@ -70,9 +72,11 @@ const WithdrawalCryptoForm = observer(() => {
         setWithdrawPercentageSelectorResult,
         validateWithdrawFromAmount,
         validateWithdrawToAmount,
+        error,
     } = withdraw;
     const {
         converter_from_error,
+        converter_from_amount,
         converter_to_error,
         onChangeConverterFromAmount,
         onChangeConverterToAmount,
@@ -81,6 +85,16 @@ const WithdrawalCryptoForm = observer(() => {
     const { is_loading, percentage, percentageSelectorSelectionStatus, should_percentage_reset } = general_store;
     const account_details = useCurrentAccountDetails();
     const { handleSubscription } = useExchangeRate();
+    const {
+        getCryptoEstimations,
+        error: crypto_estimation_error,
+        crypto_estimations_fee,
+        crypto_estimations_fee_unique_id,
+        count_down,
+        serve_time,
+    } = useCryptoEstimations();
+    const [priority_withdrawal_checkbox, setPriorityWithdrawalCheckbox] = React.useState(false);
+    const decimal_places = getDecimalPlaces(currency);
 
     React.useEffect(() => {
         if (current_fiat_currency && crypto_currency) {
@@ -99,6 +113,14 @@ const WithdrawalCryptoForm = observer(() => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        if (crypto_estimation_error) {
+            error.setErrorMessage({ code: crypto_estimation_error.code, message: crypto_estimation_error.message });
+            setPriorityWithdrawalCheckbox(!priority_withdrawal_checkbox);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [crypto_estimation_error]);
 
     const validateAddress = (address: string): string | undefined => {
         if (!address) return localize('This field is required.');
@@ -122,8 +144,14 @@ const WithdrawalCryptoForm = observer(() => {
             <Formik
                 initialValues={{
                     address: '',
+                    priority_withdrawal: false,
                 }}
-                onSubmit={() => requestWithdraw(verification_code)}
+                onSubmit={() =>
+                    requestWithdraw(
+                        verification_code,
+                        priority_withdrawal_checkbox ? crypto_estimations_fee_unique_id : undefined
+                    )
+                }
             >
                 {({
                     errors,
@@ -183,6 +211,86 @@ const WithdrawalCryptoForm = observer(() => {
                                 validateFromAmount={validateWithdrawFromAmount}
                                 validateToAmount={validateWithdrawToAmount}
                             />
+                            <div className='withdrawal-crypto-form__priority-withdrawal-checkbox-div'>
+                                <Checkbox
+                                    name='priority_withdrawal'
+                                    onChange={() => {
+                                        if (!priority_withdrawal_checkbox) {
+                                            getCryptoEstimations(currency);
+                                        }
+                                        setPriorityWithdrawalCheckbox(!priority_withdrawal_checkbox);
+                                    }}
+                                    label={localize('Priority withdrawal')}
+                                    value={priority_withdrawal_checkbox}
+                                />
+                                <Popover
+                                    message={
+                                        <Localize i18n_default_text='Pay a small fee to prioritise your withdrawal, this fee will be deducted from the withdrawal amount.' />
+                                    }
+                                    zIndex='9999'
+                                    alignment='top'
+                                    icon='info'
+                                    disable_message_icon
+                                />
+                            </div>
+                            {priority_withdrawal_checkbox && crypto_estimations_fee_unique_id && (
+                                <div className='withdrawal-crypto-form__priority-withdrawal-info'>
+                                    <div className='withdrawal-crypto-form__priority-withdrawal-info--flex'>
+                                        <Text as='p' size='xxs' line_height='l'>
+                                            <Localize i18n_default_text='Withdrawal amount:' />
+                                        </Text>
+                                        <Text as='p' size='xxs' line_height='l'>
+                                            {Number(converter_from_amount).toFixed(decimal_places)} {currency}
+                                        </Text>
+                                    </div>
+                                    <div className='withdrawal-crypto-form__priority-withdrawal-info--flex'>
+                                        <Text as='p' size='xxs' line_height='l'>
+                                            <Localize i18n_default_text='Transaction fee' />
+                                            <Text as='span' size='xxs' line_height='l' weight='lighter'>
+                                                ({count_down}s)
+                                            </Text>
+                                            :
+                                        </Text>
+                                        <Popover
+                                            message={
+                                                <Localize
+                                                    i18n_default_text='Fee calculated at {{ time_stamp }}'
+                                                    values={{
+                                                        time_stamp: serve_time,
+                                                    }}
+                                                />
+                                            }
+                                            zIndex='9999'
+                                            alignment='top'
+                                            icon='info'
+                                            disable_target_icon
+                                            disable_message_icon
+                                        >
+                                            <Text
+                                                as='p'
+                                                size='xxs'
+                                                line_height='l'
+                                                className='text-decoration-underline '
+                                            >
+                                                {Number(crypto_estimations_fee).toFixed(decimal_places)} {currency}
+                                            </Text>
+                                        </Popover>
+                                    </div>
+                                    <hr className='withdrawal-crypto-form__priority-withdrawal-info-divider' />
+                                    <div className='withdrawal-crypto-form__priority-withdrawal-info--flex'>
+                                        <Text as='p' size='xxs' line_height='l'>
+                                            <Localize i18n_default_text='Amount received:' />
+                                        </Text>
+                                        <Text as='p' size='xxs' line_height='l' weight='bold'>
+                                            {(
+                                                parseFloat(Number(converter_from_amount).toFixed(decimal_places)) -
+                                                Number(crypto_estimations_fee)
+                                            ).toFixed(decimal_places)}{' '}
+                                            {currency}
+                                        </Text>
+                                    </div>
+                                </div>
+                            )}
                             <div className='withdrawal-crypto-form__submit'>
                                 <Button
                                     className='cashier__form-submit-button'

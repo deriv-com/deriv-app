@@ -42,10 +42,12 @@ const WithdrawalCryptoPriorityFeeInfo = ({ cryptoAmount }: { cryptoAmount: strin
                     Amount received:
                 </WalletText>
                 <WalletText as='div' size='sm' weight='bold'>
-                    {(
-                        parseFloat(Number(cryptoAmount).toFixed(fractionalDigits.crypto as number)) -
-                        Number(cryptoEstimationsFee)
-                    ).toFixed(fractionalDigits.crypto as number)}{' '}
+                    {Number(cryptoAmount) > 0
+                        ? (
+                              parseFloat(Number(cryptoAmount).toFixed(fractionalDigits.crypto as number)) -
+                              Number(cryptoEstimationsFee)
+                          ).toFixed(fractionalDigits.crypto as number)
+                        : Number(cryptoAmount).toFixed(fractionalDigits.crypto as number)}{' '}
                     {activeWallet?.currency}
                 </WalletText>
             </div>

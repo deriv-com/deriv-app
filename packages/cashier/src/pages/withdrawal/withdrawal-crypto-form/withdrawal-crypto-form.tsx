@@ -282,10 +282,13 @@ const WithdrawalCryptoForm = observer(() => {
                                             <Localize i18n_default_text='Amount received:' />
                                         </Text>
                                         <Text as='p' size='xxs' line_height='l' weight='bold'>
-                                            {(
-                                                parseFloat(Number(converter_from_amount).toFixed(decimal_places)) -
-                                                Number(crypto_estimations_fee)
-                                            ).toFixed(decimal_places)}{' '}
+                                            {Number(converter_from_amount)
+                                                ? (
+                                                      parseFloat(
+                                                          Number(converter_from_amount).toFixed(decimal_places)
+                                                      ) - Number(crypto_estimations_fee)
+                                                  ).toFixed(decimal_places)
+                                                : Number(converter_from_amount).toFixed(decimal_places)}{' '}
                                             {currency}
                                         </Text>
                                     </div>

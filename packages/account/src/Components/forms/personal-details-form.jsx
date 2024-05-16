@@ -56,6 +56,15 @@ const PersonalDetailsForm = props => {
 
     const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched } = useFormikContext();
 
+    const handleToolTipStatus = React.useCallback(() => {
+        if (is_tax_residence_popover_open) {
+            setIsTaxResidencePopoverOpen(false);
+        }
+        if (is_tin_popover_open) {
+            setIsTinPopoverOpen(false);
+        }
+    }, [is_tax_residence_popover_open, is_tin_popover_open]);
+
     React.useEffect(() => {
         if (should_close_tooltip) {
             handleToolTipStatus();
@@ -90,15 +99,6 @@ const PersonalDetailsForm = props => {
                 values={{ field_name }}
             />
         );
-
-    const handleToolTipStatus = React.useCallback(() => {
-        if (is_tax_residence_popover_open) {
-            setIsTaxResidencePopoverOpen(false);
-        }
-        if (is_tin_popover_open) {
-            setIsTinPopoverOpen(false);
-        }
-    }, [is_tax_residence_popover_open, is_tin_popover_open]);
 
     const handleSalutationSelection = event => {
         if (event.target?.type === 'radio') {

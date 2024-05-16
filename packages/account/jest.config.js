@@ -22,4 +22,5 @@ module.exports = {
         '^.+/es/^.+$': 'babel-jest',
         '^.+\\.(ts|tsx)?$': 'ts-jest',
     },
+    transformIgnorePatterns: ['<rootDir>/src/*.spec.*'],
 };

@@ -11,33 +11,35 @@ describe('WithdrawalErrorScreen', () => {
         setResendEmail = jest.fn();
     });
 
-    describe('InvalidToken', () => {
+    it('should show proper error for `InvalidToken` error code', () => {
         const error = {
             code: 'InvalidToken',
             message: 'Error message',
         };
 
-        it('should show proper error for `InvalidToken` error code', () => {
-            render(<WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />);
+        render(<WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />);
 
-            expect(screen.getByText('Email verification failed')).toBeInTheDocument();
-            expect(
-                screen.getByText('The verification link you used is invalid or expired. Please request for a new one.')
-            ).toBeInTheDocument();
-            expect(screen.getByRole('button', { name: 'Resend email' })).toBeInTheDocument();
-        });
+        expect(screen.getByText('Email verification failed')).toBeInTheDocument();
+        expect(
+            screen.getByText('The verification link you used is invalid or expired. Please request for a new one.')
+        ).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Resend email' })).toBeInTheDocument();
+    });
 
-        it('should trigger proper callbacks when the user is clicking on `Resend email` button', () => {
-            render(<WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />);
+    it('should trigger proper callbacks when the user is clicking on `Resend email` button', () => {
+        const error = {
+            code: 'InvalidToken',
+            message: 'Error message',
+        };
 
-            const resendEmailBtn = screen.getByRole('button', { name: 'Resend email' });
+        render(<WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />);
 
-            userEvent.click(resendEmailBtn);
+        const resendEmailBtn = screen.getByRole('button', { name: 'Resend email' });
 
-            expect(resetError).toHaveBeenCalledTimes(1);
-            expect(setResendEmail).toHaveBeenCalledTimes(1);
-            expect(setResendEmail).toHaveBeenCalledWith(true);
-        });
+        userEvent.click(resendEmailBtn);
+        expect(resetError).toHaveBeenCalledTimes(1);
+        expect(setResendEmail).toHaveBeenCalledTimes(1);
+        expect(setResendEmail).toHaveBeenCalledWith(true);
     });
 
     it('should show withdrawal error details', () => {
@@ -109,7 +111,7 @@ describe('WithdrawalErrorScreen', () => {
 
         render(<WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />);
 
-        expect(screen.getByText('Maintenance in progess')).toBeInTheDocument();
+        expect(screen.getByText('Maintenance in progress')).toBeInTheDocument();
         expect(screen.getByText('Crypto Connection Error')).toBeInTheDocument();
         expect(screen.queryByText('Try again')).not.toBeInTheDocument();
     });

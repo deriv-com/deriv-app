@@ -6,6 +6,7 @@ import { whatsapp_url } from '@deriv/shared';
 
 const WhatsApp = ({ showPopover }: { showPopover?: boolean }) => {
     const liveChat = useLiveChat();
+
     if (!liveChat.isReady) return null;
 
     return (

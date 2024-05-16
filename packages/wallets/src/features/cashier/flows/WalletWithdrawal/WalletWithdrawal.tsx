@@ -36,6 +36,7 @@ const WalletWithdrawal = () => {
     }, [activeWallet?.loginid, switchAccount]);
 
     const isCrypto = activeWallet?.currency_config?.is_crypto;
+    const currency = activeWallet?.currency;
 
     const onCloseHandler = () => setVerificationCode('');
 
@@ -45,7 +46,14 @@ const WalletWithdrawal = () => {
     };
 
     if (isServerError(error)) {
-        return <WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />;
+        return (
+            <WithdrawalErrorScreen
+                currency={currency}
+                error={error}
+                resetError={resetError}
+                setResendEmail={setResendEmail}
+            />
+        );
     }
 
     if (!activeWallet) return <Loader />;

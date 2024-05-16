@@ -345,8 +345,8 @@ export default class MyAdsStore extends BaseStore {
             order_expiry_period: values.order_completion_time,
             rate_type: this.required_ad_type,
             rate: Number(values.rate_type),
-            min_completion_rate: Number(this.min_completion_rate),
-            min_join_days: Number(this.min_join_days),
+            min_completion_rate: Number(this.min_completion_rate) > 0 ? Number(this.min_completion_rate) : null,
+            min_join_days: Number(this.min_join_days) > 0 ? Number(this.min_join_days) : null,
             ...(this.payment_method_names.length > 0 && !is_sell_ad
                 ? { payment_method_names: this.payment_method_names }
                 : {}),

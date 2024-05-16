@@ -29,7 +29,7 @@ const AdConditionsSection = ({
     const { showModal } = useModalManagerContext();
     const { dirty, errors, values } = useFormikContext<FormikValues>();
     const { my_ads_store } = useStores();
-    const { min_completion_rate, min_join_days } = my_ads_store.p2p_advert_information;
+    const { min_completion_rate = 0, min_join_days = 0 } = my_ads_store.p2p_advert_information;
     const joining_days = [
         { name: '15 days', value: 15 },
         { name: '30 days', value: 30 },

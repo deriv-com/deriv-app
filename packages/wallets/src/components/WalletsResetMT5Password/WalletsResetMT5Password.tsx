@@ -110,7 +110,7 @@ const WalletsResetMT5Password = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [platform, title, actionParams, isChangeInvestorPasswordSuccess, isChangeInvestorPasswordError]);
 
-    const Footer = () => (
+    const renderButtons = () => (
         <div className={'wallets-reset-mt5-password__footer'}>
             <WalletButton isFullWidth={isMobile} onClick={() => hide()} size='lg' variant='outlined'>
                 <Trans defaults='Cancel' />
@@ -130,7 +130,7 @@ const WalletsResetMT5Password = ({
 
     return (
         <ModalStepWrapper
-            renderFooter={isMobile ? () => <Footer /> : undefined}
+            renderFooter={isMobile ? renderButtons : undefined}
             shouldHideFooter={!isMobile}
             shouldHideHeader={!isMobile}
             title={`Manage ${title} password`}
@@ -149,7 +149,7 @@ const WalletsResetMT5Password = ({
                     password={password}
                 />
                 <WalletText size='sm'>{modalDescription[platform]}</WalletText>
-                {!isMobile && <Footer />}
+                {!isMobile && renderButtons()}
             </div>
         </ModalStepWrapper>
     );

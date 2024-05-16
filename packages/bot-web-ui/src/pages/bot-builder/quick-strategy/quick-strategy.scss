@@ -52,7 +52,7 @@
     &__body {
         display: flex;
 
-        @include desktop() {
+        @include desktop-screen {
             height: 72rem;
         }
 
@@ -226,7 +226,7 @@
             // to overwrite the height of the ThemedScrollbar
             max-height: calc(100vh - 23rem) !important;
 
-            @include desktop() {
+            @include desktop-screen {
                 height: calc(100vh - 16rem) !important;
             }
 
@@ -617,7 +617,7 @@
         &__content {
             margin-bottom: 0.8rem;
 
-            @include desktop {
+            @include desktop-screen {
                 padding-left: 1rem;
             }
 
@@ -661,7 +661,7 @@
                 object-fit: contain;
             }
 
-            @include desktop {
+            @include desktop-screen {
                 padding-left: 1rem;
             }
 

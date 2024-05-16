@@ -39,7 +39,7 @@ const Drawer = ({
 }: React.PropsWithChildren<TDrawer>) => {
     const [is_open, setIsOpen] = React.useState(props.is_open);
     const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { is_desktop } = ui;
 
     React.useEffect(() => {
         setIsOpen(props.is_open);
@@ -56,13 +56,13 @@ const Drawer = ({
         <div
             data-testid='drawer'
             className={classNames('dc-drawer', className, {
-                [`dc-drawer--${anchor}`]: !is_mobile,
+                [`dc-drawer--${anchor}`]: is_desktop,
                 'dc-drawer--open': is_open,
             })}
             style={{
                 zIndex,
                 transform:
-                    is_open && !is_mobile
+                    is_open && is_desktop
                         ? anchor === 'left'
                             ? `translateX(calc(${width}px - 16px))`
                             : `translateX(calc(-${width}px + 16px))`
@@ -75,17 +75,17 @@ const Drawer = ({
                 })}
                 onClick={toggleDrawer}
             >
-                {is_mobile ? (
-                    <Icon icon='IcChevronUp' className='dc-drawer__toggle-icon' />
-                ) : (
+                {is_desktop ? (
                     <IconDrawer
                         className={classNames('dc-drawer__toggle-icon', {
-                            [`dc-drawer__toggle-icon--${anchor}`]: !is_mobile,
+                            [`dc-drawer__toggle-icon--${anchor}`]: is_desktop,
                         })}
                     />
+                ) : (
+                    <Icon icon='IcChevronUp' className='dc-drawer__toggle-icon' />
                 )}
             </div>
-            <div className={classNames('dc-drawer__container', { [`dc-drawer__container--${anchor}`]: !is_mobile })}>
+            <div className={classNames('dc-drawer__container', { [`dc-drawer__container--${anchor}`]: is_desktop })}>
                 {header && <div className='dc-drawer__header'>{header}</div>}
                 <div className={classNames('dc-drawer__content', contentClassName)}>{children}</div>
                 {footer && <div className='dc-drawer__footer'>{footer}</div>}

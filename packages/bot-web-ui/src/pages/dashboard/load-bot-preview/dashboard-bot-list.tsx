@@ -34,7 +34,7 @@ const DashboardBotList = observer(() => {
     const { setDashboardStrategies, dashboard_strategies } = load_modal;
     const { setStrategySaveType, strategy_save_type } = dashboard;
     const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { is_desktop } = ui;
     const get_first_strategy_info = React.useRef(false);
     const get_instacee = React.useRef(false);
 
@@ -64,7 +64,7 @@ const DashboardBotList = observer(() => {
         <div className='bot-list__container'>
             <div className='bot-list__wrapper'>
                 <div className='bot-list__title'>
-                    <Text size={is_mobile ? 'xs' : 's'} weight='bold'>
+                    <Text size={is_desktop ? 's' : 'xs'} weight='bold'>
                         <Localize i18n_default_text='Your bots:' />
                     </Text>
                 </div>
@@ -72,7 +72,7 @@ const DashboardBotList = observer(() => {
                     {HEADERS.map(({ label, className }) => {
                         return (
                             <div className={className} key={label}>
-                                <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
+                                <Text size={is_desktop ? 'xs' : 'xxs'} weight='bold'>
                                     {label}
                                 </Text>
                             </div>

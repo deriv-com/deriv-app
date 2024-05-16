@@ -3,8 +3,7 @@ import classnames from 'classnames';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from '../../../constants/dashboard';
@@ -18,6 +17,8 @@ type TRecentWorkspace = {
 };
 
 const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
+    const { ui } = useStore();
+    const { is_desktop } = ui;
     const { dashboard, load_modal, save_modal } = useDBotStore();
     const { setActiveTab } = dashboard;
     const { toggleSaveModal, updateBotName } = save_modal;
@@ -38,7 +39,6 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const is_div_triggered_once = React.useRef<boolean>(false);
     const visible = useComponentVisibility(toggle_ref);
     const { setDropdownVisibility, is_dropdown_visible } = visible;
-    const is_desktop = isDesktop();
 
     React.useEffect(() => {
         let timer: ReturnType<typeof setTimeout>;

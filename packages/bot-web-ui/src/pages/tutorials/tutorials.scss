@@ -202,12 +202,7 @@
         opacity: unset;
         transition: unset;
 
-        @include mobile-or-tablet-screen {
-            width: 90vw;
-            padding: 1.6rem;
-        }
-        @include tablet {
-            width: 90vw;
+        @include mobile-screen {
             padding: 1.6rem;
         }
     }
@@ -228,7 +223,7 @@
     }
 
     .dc-dialog__footer {
-        @include mobile-or-tablet-screen {
+        @include mobile-screen {
             display: flex;
             flex-direction: column;
             height: unset;
@@ -239,6 +234,13 @@
                     margin-bottom: unset;
                     margin-inline-end: 0.8rem;
                 }
+            }
+        }
+
+        @include tablet-screen {
+            button {
+                flex-basis: unset;
+                margin-bottom: unset;
             }
         }
     }

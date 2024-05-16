@@ -155,10 +155,7 @@
     }
 
     &__run-strategy-wrapper {
-        @include desktop {
-            position: absolute;
-        }
-        @include tablet {
+        @include desktop-screen {
             position: absolute;
         }
 
@@ -315,10 +312,7 @@
         }
     }
     &__run-strategy-wrapper {
-        @include desktop {
-            position: absolute;
-        }
-        @include tablet {
+        @include desktop-screen {
             position: absolute;
         }
 

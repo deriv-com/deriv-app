@@ -10,7 +10,9 @@ export const getJurisdictionBviContents = ({
         {
             key: 'assets',
             title: localize('Assets'),
-            description: localize('Synthetic indices, basket indices, and derived FX'),
+            description: localize(
+                'Synthetic indices, basket indices, and derived FX, Forex (standard), commodities, stock indices, cryptocurrencies'
+            ),
             title_indicators: {
                 type: 'displayText',
                 display_text: localize('40+'),

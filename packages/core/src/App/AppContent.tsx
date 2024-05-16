@@ -5,8 +5,9 @@ import { DesktopWrapper } from '@deriv/components';
 import { getAppId, LocalStore, useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
-import { Analytics } from '@deriv-com/analytics';
+// import { Analytics } from '@deriv-com/analytics';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
+import { GrowthBook } from "@growthbook/growthbook-react";
 
 import BinaryBotIFrame from 'Modules/BinaryBotIFrame';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
@@ -21,6 +22,11 @@ import Routes from './Containers/Routes/routes.jsx';
 import Devtools from './Devtools';
 import initDatadog from '../Utils/Datadog';
 
+const gb = new GrowthBook({
+    apiHost: "https://cdn.growthbook.io",
+    clientKey: process.env.GROWTHBOOK_CLIENT_KEY,
+});
+
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
     const { has_wallet } = store.client;
@@ -34,43 +40,60 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
         ?.match(/[a-zA-Z]+/g)
         ?.join('');
 
-    React.useEffect(() => {
-        if (process.env.RUDDERSTACK_KEY && tracking_rudderstack) {
-            const config = {
-                growthbookKey: marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
-                growthbookDecryptionKey: marketing_growthbook ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
-                rudderstackKey: process.env.RUDDERSTACK_KEY,
-            };
-            Analytics.initialise(config);
-            const ppc_campaign_cookies =
-                Cookies.getJSON('utm_data') === 'null'
-                    ? {
-                          utm_source: 'no source',
-                          utm_medium: 'no medium',
-                          utm_campaign: 'no campaign',
-                          utm_content: 'no content',
-                      }
-                    : Cookies.getJSON('utm_data');
+    // React.useEffect(() => {
+    //     if (process.env.RUDDERSTACK_KEY && tracking_rudderstack) {
+    //         const config = {
+    //             growthbookKey: marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
+    //             growthbookDecryptionKey: marketing_growthbook ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
+    //             rudderstackKey: process.env.RUDDERSTACK_KEY,
+    //         };
+    //         Analytics.initialise(config);
+    //         const ppc_campaign_cookies =
+    //             Cookies.getJSON('utm_data') === 'null'
+    //                 ? {
+    //                       utm_source: 'no source',
+    //                       utm_medium: 'no medium',
+    //                       utm_campaign: 'no campaign',
+    //                       utm_content: 'no content',
+    //                   }
+    //                 : Cookies.getJSON('utm_data');
+    //
+    //         Analytics.setAttributes({
+    //             account_type: account_type === 'null' ? 'unlogged' : account_type,
+    //             app_id: String(getAppId()),
+    //             device_type: store?.ui?.is_mobile ? 'mobile' : 'desktop',
+    //             device_language: navigator?.language || 'en-EN',
+    //             user_language: getLanguage().toLowerCase(),
+    //             country: Cookies.get('clients_country') || Cookies?.getJSON('website_status')?.clients_country,
+    //             utm_source: ppc_campaign_cookies?.utm_source,
+    //             utm_medium: ppc_campaign_cookies?.utm_medium,
+    //             utm_campaign: ppc_campaign_cookies?.utm_campaign,
+    //             utm_content: ppc_campaign_cookies?.utm_content,
+    //         });
+    //     }
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [data.marketing_growthbook, tracking_rudderstack]);
 
-            Analytics.setAttributes({
+    React.useEffect(() => {
+
+        const initGB = async () => {
+            await gb.init({})
+            await gb.setAttributes({
                 account_type: account_type === 'null' ? 'unlogged' : account_type,
                 app_id: String(getAppId()),
                 device_type: store?.ui?.is_mobile ? 'mobile' : 'desktop',
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
                 country: Cookies.get('clients_country') || Cookies?.getJSON('website_status')?.clients_country,
-                utm_source: ppc_campaign_cookies?.utm_source,
-                utm_medium: ppc_campaign_cookies?.utm_medium,
-                utm_campaign: ppc_campaign_cookies?.utm_campaign,
-                utm_content: ppc_campaign_cookies?.utm_content,
             });
+            const is_passkeys_on =  gb.isOn('web_passkeys')
+            store.client.setIsPasskeySupported(is_passkeys_supported && is_passkeys_on);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data.marketing_growthbook, tracking_rudderstack]);
 
-    React.useEffect(() => {
-        store.client.setIsPasskeySupported(is_passkeys_supported && passkeys);
-    }, [passkeys, is_passkeys_supported, store.client]);
+        initGB()
+
+        // store.client.setIsPasskeySupported(is_passkeys_supported && passkeys);
+    }, [gb, is_passkeys_supported, store.client]);
 
     React.useEffect(() => {
         initDatadog(tracking_datadog);

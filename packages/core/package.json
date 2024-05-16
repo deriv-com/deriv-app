@@ -120,7 +120,10 @@
         "@deriv/translations": "^1.0.0",
         "@deriv/utils": "^1.0.0",
         "@deriv/wallets": "^1.0.0",
+        "@growthbook/growthbook-react": "^1.0.0",
         "@livechat/customer-sdk": "^2.0.4",
+        "@simplewebauthn/browser": "^8.3.4",
+        "@simplewebauthn/typescript-types": "^8.3.4",
         "acorn": "^6.1.1",
         "babel-polyfill": "^6.26.0",
         "canvas-toBlob": "^1.0.0",
@@ -154,8 +157,6 @@
         "react-tiny-popover": "^7.0.1",
         "react-transition-group": "4.4.2",
         "react-window": "^1.8.5",
-        "@simplewebauthn/browser": "^8.3.4",
-        "@simplewebauthn/typescript-types": "^8.3.4",
         "usehooks-ts": "^2.7.0"
     }
 }

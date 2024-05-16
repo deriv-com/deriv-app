@@ -60,13 +60,6 @@ const AppStore = React.lazy(() =>
     })
 );
 
-const Wallets = React.lazy(() =>
-    moduleLoader(() => {
-        // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "wallets" */ '@deriv/wallets');
-    })
-);
-
 const TradersHub = React.lazy(() =>
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
@@ -284,12 +277,6 @@ const getModules = () => {
             ],
         },
         {
-            path: routes.wallets,
-            component: Wallets,
-            is_authenticated: true,
-            getTitle: () => localize('Wallets'),
-        },
-        {
             path: routes.cashier_p2p_v2,
             component: P2P_V2,
             getTitle: () => localize('P2P-V2'),
@@ -420,30 +407,17 @@ const getModules = () => {
             ],
         },
         {
-            path: routes.onboarding,
+            path: routes.traders_hub,
             component: AppStore,
-            is_authenticated: false,
-            getTitle: () => localize('Appstore'),
+            getTitle: () => localize("Trader's Hub"),
             routes: [
-                {
-                    path: routes.traders_hub,
-                    component: AppStore,
-                    getTitle: () => localize("Trader's Hub"),
-                },
                 {
                     path: routes.onboarding,
                     component: AppStore,
-                    is_authenticated: false,
-                    getTitle: () => localize('Onboarding'),
+                    is_authenticated: true,
+                    getTitle: () => localize("Trader's Hub"),
                 },
             ],
-        },
-        {
-            path: routes.traders_hub,
-            component: AppStore,
-            exact: true,
-            is_authenticated: false,
-            getTitle: () => localize("Trader's Hub"),
         },
     ];
 
@@ -458,7 +432,7 @@ const lazyLoadComplaintsPolicy = makeLazyLoader(
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
 const initRoutesConfig = () => [
-    { path: routes.index, component: RouterRedirect, getTitle: () => '', to: routes.root },
+    { path: routes.index, component: RouterRedirect, getTitle: () => '', to: routes.traders_hub },
     { path: routes.endpoint, component: Endpoint, getTitle: () => 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, getTitle: () => localize('Redirect') },
     {

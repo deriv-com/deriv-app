@@ -116,9 +116,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
             walletsCarouselEmblaApi?.scrollTo(index);
             walletAccountsList && setSelectedLoginId(walletAccountsList[index].loginid);
             account.is_active &&
-                (account.is_virtual
-                    ? history.push('/wallets/cashier/reset-balance')
-                    : history.push('/wallets/cashier/deposit'));
+                (account.is_virtual ? history.push('/wallet/reset-balance') : history.push('/wallet/deposit'));
         },
         [walletsCarouselEmblaApi, walletAccountsList, history]
     );

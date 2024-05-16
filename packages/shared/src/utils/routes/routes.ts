@@ -37,7 +37,6 @@ export const routes = {
     positions: '/reports/positions',
     profit: '/reports/profit',
     reports: '/reports',
-    root: '/',
     reset_password: '/',
     redirect: '/redirect',
     settings: '/settings',
@@ -77,13 +76,14 @@ export const routes = {
     compare_cfds: '/cfd-compare-acccounts',
 
     // Wallets
-    wallets: '/wallets',
-    wallets_cashier: '/wallets/cashier',
-    wallets_deposit: '/wallets/cashier/deposit',
-    wallets_withdrawal: '/wallets/cashier/withdraw',
-    wallets_transfer: 'wallets/cashier/transfer',
-    wallets_transactions: '/wallets/cashier/transactions',
-    wallets_compare_accounts: '/wallets/compare-accounts',
+    wallets: '/wallet',
+    wallets_deposit: '/wallet/deposit',
+    wallets_withdrawal: '/wallet/withdrawal',
+    wallets_transfer: 'wallet/account-transfer',
+    wallets_transactions: '/wallet/transactions',
+    wallets_compare_accounts: '/compare-accounts',
+    wallets_on_ramp: '/wallet/on-ramp',
+    wallets_reset_balance: '/wallet/reset-balance',
 
     // Traders Hub
     traders_hub_v2: '/traders-hub',

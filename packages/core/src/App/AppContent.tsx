@@ -7,10 +7,8 @@ import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
-
 import BinaryBotIFrame from 'Modules/BinaryBotIFrame';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
-
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import AppToastMessages from './Containers/app-toast-messages.jsx';
 import AppContents from './Containers/Layout/app-contents.jsx';

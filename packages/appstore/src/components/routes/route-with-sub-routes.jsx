@@ -2,10 +2,19 @@ import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { redirectToLogin, isEmptyObject, routes, removeBranchName, default_title } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
+import Page404 from 'Modules/Page404';
 
 const RouteWithSubRoutes = route => {
+    const validateRoute = pathname => {
+        if (pathname === '') return true;
+        return route.path === pathname || !!pathname.includes('wallet') || !!pathname.includes('compare-accounts');
+    };
+
     const renderFactory = props => {
         let result = null;
+
+        const pathname = removeBranchName(location.pathname);
+        const is_valid_route = validateRoute(pathname);
 
         if (route.component instanceof Redirect) {
             let to = route.to;
@@ -27,12 +36,11 @@ const RouteWithSubRoutes = route => {
                 {}
             );
             const has_default_subroute = !isEmptyObject(default_subroute);
-            const pathname = removeBranchName(location.pathname);
 
             result = (
                 <React.Fragment>
                     {has_default_subroute && pathname === route.path && <Redirect to={default_subroute.path} />}
-                    <route.component {...props} routes={route.routes} />
+                    {is_valid_route ? <route.component {...props} routes={route.routes} /> : <Page404 />}
                 </React.Fragment>
             );
         }

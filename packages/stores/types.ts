@@ -89,7 +89,14 @@ type TRoutes =
     | '/appstore'
     | '/appstore/traders-hub'
     | '/appstore/onboarding'
-    | '/wallets';
+    | '/wallet'
+    | '/wallet/deposit'
+    | '/wallet/withdrawal'
+    | '/wallet/account-transfer'
+    | '/wallet/reset-balance'
+    | '/wallet/transactions'
+    | '/wallet/on-ramp'
+    | '/compare-accounts';
 
 type TPopulateSettingsExtensionsMenuItem = {
     icon: string;

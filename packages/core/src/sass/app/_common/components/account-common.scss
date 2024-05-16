@@ -351,7 +351,7 @@
                     background-color: unset !important;
                 }
 
-                @include desktop {
+                @include desktop-screen {
                     margin-left: 1.6rem;
 
                     &-wrapper--dashboard {
@@ -364,6 +364,11 @@
                     &--has-bottom-margin {
                         margin-bottom: 1.6rem;
                     }
+                }
+
+                @include tablet-screen {
+                    width: 60rem;
+                    margin: auto;
                 }
             }
 
@@ -399,15 +404,17 @@
                 padding-top: 0.8rem;
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
+                position: fixed;
                 flex-direction: column;
                 height: auto;
                 align-items: initial;
                 border-top: 2px solid var(--general-section-1);
+                gap: 16px;
             }
 
             @include tablet-screen {
-                max-width: 60rem;
+                // max-width: 60rem;
                 padding: 1.6rem 0;
             }
         }
@@ -432,7 +439,7 @@
                 }
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding: 0 1.6rem;
                 overflow-x: hidden;
                 overflow-y: auto;

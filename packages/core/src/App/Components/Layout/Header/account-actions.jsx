@@ -57,6 +57,7 @@ const AccountActions = React.memo(
                             toggleDialog={toggleNotifications}
                             tooltip_message={<Localize i18n_default_text='View notifications' />}
                             should_disable_pointer_events
+                            showPopover={!isTabletOs}
                         />
                         {isTabletOs ? (
                             accountSettings

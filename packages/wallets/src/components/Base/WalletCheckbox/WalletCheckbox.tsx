@@ -64,7 +64,6 @@ const WalletCheckbox = forwardRef<HTMLInputElement, TCheckBoxProps>(
                     'wallets-checkbox--disabled': disabled,
                 })}
                 htmlFor={id}
-                onClick={e => e.stopPropagation()}
             >
                 <span>
                     <input

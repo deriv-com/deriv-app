@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ValidationError } from 'yup';
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
-import { dictionary } from '@zxcvbn-ts/language-common';
 import { passwordErrorMessage, warningMessages } from '../../../constants/password';
 import {
     calculateScoreCFD,
@@ -22,9 +21,6 @@ import './WalletPasswordField.scss';
 export const validatePassword = (password: string, mt5Policy: boolean) => {
     const score = mt5Policy ? calculateScoreMT5(password) : calculateScoreCFD(password);
     let errorMessage = '';
-
-    const options = { dictionary: { ...dictionary } };
-    zxcvbnOptions.setOptions(options);
 
     const { feedback } = zxcvbn(password);
     try {

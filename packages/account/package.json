@@ -14,10 +14,11 @@
         "node": "18.x"
     },
     "scripts": {
-        "analyze": "webpack-bundle-analyzer --no-open -m static -r analyzed.html stats.json ./dist && webpack-bundle-analyzer -m json stats.json ./dist",
+        "analyze:stats": "f () { NODE_OPTIONS='-r ts-node/register' webpack --progress --config \"./build/webpack.config.js\" --env base=$1 --profile --json=stats.json;}; f",
+        "analyze:build": "webpack-bundle-analyzer --no-open -m static -r analyzed.html stats.json ./dist && webpack-bundle-analyzer -m json stats.json ./dist",
         "start": "npm run test && npm run serve",
         "serve": "echo \"Serving...\" && NODE_OPTIONS='-r ts-node/register' webpack --progress --watch --config \"./build/webpack.config.js\"",
-        "build": "f () { NODE_OPTIONS='-r ts-node/register' webpack --config \"./build/webpack.config.js\" --env base=$1 --profile --json > stats.json;}; f",
+        "build": "f () { NODE_OPTIONS='-r ts-node/register' webpack --config \"./build/webpack.config.js\" --env base=$1;}; f",
         "build:travis": "rimraf dist && webpack --config \"./build/webpack.config.js\"  --mode=production",
         "test": "echo \"No test specified\"",
         "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",
@@ -45,7 +46,6 @@
         "js-cookie": "^2.2.1",
         "mobx": "^6.6.1",
         "mobx-react": "^7.5.1",
-        "prop-types": "^15.7.2",
         "qrcode.react": "^3.1.0",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",

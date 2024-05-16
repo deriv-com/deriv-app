@@ -70,6 +70,7 @@ const DidntGetTheCodeModal = observer(
                 disableCloseOnOverlay
                 showCrossIcon
                 toggleModal={() => setShouldShowDidntGetTheCodeModal(false)}
+                hasFooter={false}
             >
                 <Modal.Body>
                     <div className='phone-verification__get-code-modal--contents'>

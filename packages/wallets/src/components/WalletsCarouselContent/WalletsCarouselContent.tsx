@@ -1,7 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useEmblaCarousel, { EmblaCarouselType, EmblaEventType } from 'embla-carousel-react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api-v2';
+import {
+    useActiveWalletAccount,
+    useBalanceSubscription,
+    useCurrencyConfig,
+    useMobileCarouselWalletsList,
+} from '@deriv/api-v2';
+import { displayMoney } from '@deriv/api-v2/src/utils';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { THooks } from '../../types';
 import { ProgressBar } from '../Base';
@@ -31,6 +37,13 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
 
     const { data: walletAccountsList, isLoading: isWalletAccountsListLoading } = useMobileCarouselWalletsList();
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
+    const {
+        data: balanceData,
+        isLoading: isBalanceLoading,
+        isSubscribed,
+        subscribe,
+        unsubscribe,
+    } = useBalanceSubscription();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
     const [selectedLoginId, setSelectedLoginId] = useState('');
@@ -177,10 +190,17 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
                 if (index !== -1) {
                     walletsCarouselEmblaApi?.scrollTo(index);
                 }
+                if (isSubscribed) unsubscribe();
+                subscribe({ loginid: selectedLoginId });
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedLoginId, walletAccountsList]);
+
+    // unsubscribe to the balance call if the whole component unmounts
+    useEffect(() => {
+        return () => unsubscribe();
+    }, [unsubscribe]);
 
     // initial loading
     useEffect(() => {
@@ -235,7 +255,15 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
             <div className='wallets-carousel-content__container'>
                 {walletAccountsList?.map((account, index) => (
                     <WalletCard
-                        balance={account.display_balance}
+                        balance={
+                            !isBalanceLoading &&
+                            account.loginid === activeWallet?.loginid &&
+                            balanceData.loginid === selectedLoginId
+                                ? displayMoney(balanceData.balance ?? account.balance, activeWallet?.currency ?? '', {
+                                      fractional_digits: activeWallet?.currency_config?.fractional_digits,
+                                  })
+                                : account.display_balance
+                        }
                         currency={account.currency || 'USD'}
                         iconSize='lg'
                         isCarouselContent

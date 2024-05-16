@@ -150,6 +150,15 @@ const AppModals = observer(() => {
 
     const is_onboarding = window.location.href.includes(routes.onboarding);
 
+    const should_show_passkeys_info_modal = should_show_effortless_login_modal &&
+        !is_tour_open &&
+        !is_from_derivgo &&
+        !is_onboarding &&
+        !should_show_appropriateness_warning_modal &&
+        !should_show_risk_warning_modal &&
+        !is_from_signup_account &&
+        !is_real_acc_signup_on
+
     if (temp_session_signup_params && is_onboarding) {
         toggleAccountSignupModal(true);
     } else {
@@ -221,16 +230,7 @@ const AppModals = observer(() => {
         ComponentToLoad = <WalletsUpgradeLogoutModal />;
     }
 
-    if (
-        should_show_effortless_login_modal &&
-        !is_tour_open &&
-        !is_from_derivgo &&
-        !is_onboarding &&
-        !should_show_appropriateness_warning_modal &&
-        !should_show_risk_warning_modal &&
-        !is_from_signup_account &&
-        !is_real_acc_signup_on
-    ) {
+    if (should_show_passkeys_info_modal) {
         ComponentToLoad = <EffortlessLoginModal />;
     }
 

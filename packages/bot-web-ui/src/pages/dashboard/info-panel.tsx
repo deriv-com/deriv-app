@@ -8,7 +8,7 @@ import { SIDEBAR_INTRO } from './constants';
 
 const InfoPanel = observer(() => {
     const {
-        ui: { is_mobile },
+        ui: { is_desktop },
     } = useStore();
     const { dashboard } = useDBotStore();
     const {
@@ -44,7 +44,7 @@ const InfoPanel = observer(() => {
                 const { label, content, link } = sidebar_item;
                 return (
                     <div key={`${label}-${content}`}>
-                        <Text color='prominent' line_height='xxl' size={is_mobile ? 's' : 'm'} weight='bold' as='h1'>
+                        <Text color='prominent' line_height='xxl' size={is_desktop ? 'm' : 's'} weight='bold' as='h1'>
                             {label}
                         </Text>
                         {content.map(text => (
@@ -57,7 +57,7 @@ const InfoPanel = observer(() => {
                                 line_height='xl'
                                 as='p'
                                 onClick={() => switchTab(link, label, text.faq_id)}
-                                size={is_mobile ? 'xxs' : 's'}
+                                size={is_desktop ? 's' : 'xxs'}
                             >
                                 {text.data}
                             </Text>

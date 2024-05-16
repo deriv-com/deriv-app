@@ -4,7 +4,7 @@
     flex-direction: column;
     background-color: var(--general-section-2);
     width: 100%;
-    @include desktop {
+    @include desktop-screen {
         height: inherit;
     }
 

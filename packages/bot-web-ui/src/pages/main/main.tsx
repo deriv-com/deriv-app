@@ -40,7 +40,7 @@ const AppWrapper = observer(() => {
     const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
     const init_render = React.useRef(true);
     const { ui } = useStore();
-    const { url_hashed_values, is_mobile } = ui;
+    const { url_hashed_values, is_desktop } = ui;
     const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial'];
 
     let tab_value: number | string = active_tab;
@@ -74,7 +74,7 @@ const AppWrapper = observer(() => {
 
         if (init_render.current) {
             setActiveTab(Number(active_hash_tab));
-            if (is_mobile) handleTabChange(Number(active_hash_tab));
+            if (!is_desktop) handleTabChange(Number(active_hash_tab));
             init_render.current = false;
         } else {
             window.location.hash = hash[active_tab] || hash[0];
@@ -133,7 +133,7 @@ const AppWrapper = observer(() => {
             <div className='main'>
                 <div
                     className={classNames('main__container', {
-                        'main__container--active': active_tour && active_tab === DASHBOARD && is_mobile,
+                        'main__container--active': active_tour && active_tab === DASHBOARD && !is_desktop,
                     })}
                 >
                     <Tabs

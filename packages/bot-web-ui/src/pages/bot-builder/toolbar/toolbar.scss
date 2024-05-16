@@ -63,7 +63,7 @@
         }
 
         > * {
-            @include desktop {
+            @include desktop-screen {
                 align-self: center;
             }
         }

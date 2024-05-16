@@ -37,7 +37,7 @@
     }
 
     &__container {
-        @include desktop {
+        @include desktop-screen {
             height: calc(80vh - 15rem);
 
             &--has-footer {
@@ -145,7 +145,7 @@
 
     &__local {
         &-dropzone {
-            @include desktop {
+            @include desktop-screen {
                 padding-top: 1.6rem;
             }
 
@@ -273,6 +273,77 @@
         height: 100%;
         width: 100%;
         top: 0;
+    }
+}
+
+.dc-dialog {
+    @include mobile {
+        &__wrapper--preview {
+            top: 6.5rem;
+
+            .dc-dialog {
+                &__dialog {
+                    justify-content: flex-start;
+                    min-width: 100vw;
+                    min-height: 100vh;
+                    padding: 0;
+                }
+
+                &__header {
+                    &-wrapper {
+                        margin-bottom: 0;
+
+                        h1 {
+                            width: 100%;
+                            text-align: center;
+                        }
+
+                        @include flex-center;
+                        height: 4rem;
+                        box-shadow: inset 0 -0.1rem 0 $color-grey-2;
+                    }
+
+                    &--close {
+                        padding: 1.6rem;
+                        margin-top: -1rem;
+                    }
+                }
+
+                &__content {
+                    max-width: unset;
+
+                    .injectionDiv {
+                        margin: 2.4rem;
+                        height: calc(100vh - 26.5rem);
+                        border: 1px solid $color-grey-6;
+                    }
+
+                    .load-strategy {
+                        &__preview-workspace {
+                            &-container {
+                                position: relative;
+                                margin-bottom: 3.2rem;
+                                min-height: 33rem;
+                            }
+
+                            &-controls {
+                                inset-inline-end: 3.6rem;
+                            }
+                        }
+
+                        &__button-group {
+                            box-shadow: inset 0 0.2rem 0rem $color-grey-2;
+                            margin: 0;
+                            padding: 1.6rem;
+                        }
+                    }
+                }
+
+                &__footer {
+                    display: none;
+                }
+            }
+        }
     }
 }
 

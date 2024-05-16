@@ -3,7 +3,6 @@ import classnames from 'classnames';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { waitForDomElement } from 'Utils/dom-observer';
@@ -20,7 +19,7 @@ type TRecentWorkspace = {
 
 const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { is_desktop } = ui;
     const { dashboard, load_modal, save_modal } = useDBotStore();
     const { active_tab, setActiveTab, setPreviewOnDialog } = dashboard;
     const { toggleSaveModal, updateBotName } = save_modal;
@@ -43,7 +42,6 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const is_div_triggered_once = React.useRef<boolean>(false);
     const visible = useComponentVisibility(toggle_ref);
     const { setDropdownVisibility, is_dropdown_visible } = visible;
-    const is_desktop = isDesktop();
 
     React.useEffect(() => {
         let timer: ReturnType<typeof setTimeout>;
@@ -78,7 +76,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const handlePreviewList = () => {
         setPreviewedStrategyId(workspace.id);
         // Fires for mobile on clicking preview button
-        if (is_mobile) {
+        if (!is_desktop) {
             setPreviewOnDialog(true);
             const dashboard_tab_dom_element = document.getElementsByClassName('tab__dashboard')?.[0];
             waitForDomElement('#load-strategy__blockly-container', dashboard_tab_dom_element).then(() => {

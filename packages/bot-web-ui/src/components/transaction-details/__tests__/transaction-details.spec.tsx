@@ -58,7 +58,11 @@ describe('TransactionDetails', () => {
     };
 
     it('should render Desktop component based on Desktop', async () => {
-        const mock_store = mockStore({});
+        const mock_store = mockStore({
+            ui: {
+                is_desktop: true,
+            },
+        });
         await waitFor(() => render(<TransactionDetails />, { wrapper: wrapper(mock_store) }));
         expect(screen.queryByText('Desktop Details')).toBeInTheDocument();
     });

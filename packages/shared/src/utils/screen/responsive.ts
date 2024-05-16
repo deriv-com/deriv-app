@@ -1,5 +1,3 @@
-import { isBot } from '../platform';
-
 declare global {
     interface Navigator {
         msMaxTouchPoints: number;
@@ -10,10 +8,8 @@ declare global {
     }
 }
 
-const is_bot = isBot();
-
-export const MAX_MOBILE_WIDTH = is_bot ? 1279 : 926; // iPhone 12 Pro Max has the world largest viewport size of 428 x 926
-export const MAX_TABLET_WIDTH = is_bot ? 1279 : 1081;
+export const MAX_MOBILE_WIDTH = 600;
+export const MAX_TABLET_WIDTH = 1279;
 
 export const isTouchDevice = () =>
     'ontouchstart' in window ||

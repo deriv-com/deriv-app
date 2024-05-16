@@ -355,7 +355,6 @@
 
                     @include mobile-or-tablet-screen {
                         display: flex;
-                        justify-content: space-evenly;
                         flex-flow: unset;
                     }
                 }
@@ -391,15 +390,10 @@
                 }
 
                 &--minimized {
-                    width: 6.4rem;
-
                     & .dc-text {
                         width: 8rem;
                         text-align: center;
                     }
-                }
-                &:nth-last-child(2) {
-                    padding-inline: 0;
                 }
             }
 

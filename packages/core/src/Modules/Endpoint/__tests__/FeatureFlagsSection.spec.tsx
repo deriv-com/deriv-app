@@ -23,8 +23,6 @@ describe('<FeatureFlagsSection/>', () => {
             value: new URL('https://localhost:8443'),
         });
 
-        location.hostname = 'localhost:8443';
-
         default_mock_store = mockStore({
             feature_flags: {
                 data: {

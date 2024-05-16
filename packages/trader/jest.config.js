@@ -18,10 +18,5 @@ module.exports = {
         '^Services/(.*)$': '<rootDir>/src/Services/$1',
         '^Stores/(.*)$': '<rootDir>/src/Stores/$1',
     },
-    transform: {
-        '^.+\\.jsx?$': 'babel-jest',
-        '^.+/es/^.+$': 'babel-jest',
-        '^.+\\.(ts|tsx)?$': 'ts-jest',
-    },
-    transformIgnorePatterns: ['/node_modules/(?!(@deriv-com/quill-ui)).+\\.js$'],
+    transformIgnorePatterns: ['/node_modules/(?!(@deriv-com/quill-ui|@simplewebauthn/browser)).+\\.js$'],
 };

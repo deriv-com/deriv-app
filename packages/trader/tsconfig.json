@@ -18,6 +18,7 @@
             "Utils/*": ["src/Utils/*"],
             "@deriv/*": ["../*/src"]
         },
+        "useDefineForClassFields": true,
         "outDir": "./dist",
         "baseUrl": "./"
     },

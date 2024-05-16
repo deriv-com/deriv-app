@@ -19,9 +19,4 @@ module.exports = {
     setupFiles: ['<rootDir>/../../jest.setup.js'],
     setupFilesAfterEnv: ['<rootDir>/../../setupTests.js'],
     testPathIgnorePatterns: ['/integration-tests/', '/component-tests/'],
-    transform: {
-        '^.+\\.jsx?$': 'babel-jest',
-        '^.+/es/^.+$': 'babel-jest',
-        '^.+\\.(ts|tsx)?$': 'ts-jest',
-    },
 };

@@ -71,6 +71,7 @@ export const routes = {
     complaints_policy: '/complaints-policy',
 
     // Appstore
+    old_traders_hub: '/appstore/traders-hub',
     traders_hub: '/',
     onboarding: '/onboarding',
     compare_cfds: '/cfd-compare-acccounts',

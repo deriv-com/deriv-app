@@ -15,13 +15,13 @@ const Wallets = React.lazy(() => import(/* webpackChunkName: "wallets" */ '@deri
 
 const Routes: React.FC = observer(() => {
     const { client } = useStore();
-    const { is_logged_in, has_wallet } = client;
+    const { is_logged_in, is_logging_in, has_wallet } = client;
 
     const title_TH = localize("Trader's Hub");
     const title_TH_logged_out = localize('Deriv App');
 
     const componentToRender = () => {
-        if (is_logged_in) {
+        if (is_logged_in || is_logging_in) {
             if (has_wallet) return Wallets;
             return TradersHub;
         }
@@ -34,7 +34,7 @@ const Routes: React.FC = observer(() => {
                 <RouteWithSubroutes
                     path={routes.traders_hub}
                     component={componentToRender()}
-                    getTitle={() => (is_logged_in ? title_TH : title_TH_logged_out)}
+                    getTitle={() => (is_logged_in || is_logging_in ? title_TH : title_TH_logged_out)}
                 />
                 <RouteWithSubroutes
                     path={routes.onboarding}

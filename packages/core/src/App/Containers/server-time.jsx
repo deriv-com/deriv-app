@@ -26,7 +26,6 @@ const ServerTime = observer(({ is_mobile }) => {
 
 ServerTime.propTypes = {
     is_mobile: PropTypes.bool,
-    showPopover: PropTypes.bool,
 };
 
 export default ServerTime;

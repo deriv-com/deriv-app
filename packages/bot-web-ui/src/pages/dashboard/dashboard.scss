@@ -148,6 +148,11 @@
                         text-align: start;
                         width: 85%;
                     }
+
+                    @include tablet-screen {
+                        display: flex;
+                        justify-content: center;
+                    }
                 }
             }
         }

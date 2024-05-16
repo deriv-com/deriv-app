@@ -453,8 +453,8 @@
             padding-right: 16px;
         }
         @include tablet-screen {
-            padding-left: 0;
-            padding-right: 0;
+            padding-inline-start: 0;
+            padding-inline-end: 0;
         }
 
         @include mobile {

@@ -13,7 +13,6 @@ jest.mock('@deriv/hooks', () => ({
     useCurrentAccountDetails: jest.fn(() => {
         'icon';
     }),
-    useCryptoEstimations: jest.fn(),
 }));
 
 jest.mock('@deriv/api', () => ({

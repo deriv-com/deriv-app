@@ -1,10 +1,10 @@
 .details-form {
     display: grid;
     align-content: start;
-    @include desktop {
+    @include desktop-screen {
         padding: 0 0.4rem;
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         overflow-x: hidden;
         overflow-y: auto;
     }
@@ -23,16 +23,16 @@
             line-height: 1.4rem;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 0 1.6rem;
         }
     }
 
     &__sub-header {
-        @include desktop {
+        @include desktop-screen {
             margin: 0 4rem 4rem;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin-bottom: 0.8rem;
         }
     }
@@ -49,7 +49,7 @@
             height: calc(100% - 76px);
             overflow: hidden;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 height: auto;
                 width: calc(100% - 3.2rem);
                 overflow: unset;
@@ -69,14 +69,14 @@
             label {
                 top: 1rem;
                 background-color: var(--general-main-2);
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     background-color: var(--fill-normal);
                 }
             }
             .dc-field--error {
                 font-size: 1.1rem;
             }
-            @include desktop {
+            @include desktop-screen {
                 /* To get rid of ugly chrome autofill shadow dom-applied background color */
                 &__field {
                     &:-webkit-autofill {
@@ -109,7 +109,7 @@
         .dc-dropdown__container {
             margin-bottom: 3rem;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 100%;
             margin: 0;
             padding: 1rem 1.6rem 6rem;
@@ -125,7 +125,7 @@
     &__tax {
         position: relative;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding-right: 2rem;
         }
 
@@ -135,14 +135,14 @@
             top: 10px;
             right: -25px;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 right: -5px;
             }
         }
     }
     &__tin-warn-divider {
         height: 5rem;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             height: 6rem;
         }
     }
@@ -159,14 +159,14 @@
     &__description {
         margin: 1.6rem auto;
         width: 45%;
-        @include desktop {
+        @include desktop-screen {
             display: flex;
             flex-direction: column;
         }
         @include tablet {
             width: 70%;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             text-align: left;
             width: unset;
             margin: 0 2.4rem;
@@ -187,7 +187,7 @@
 .financial-assessment {
     gap: 1.6rem;
     &__form {
-        @include desktop {
+        @include desktop-screen {
             width: 70%;
         }
     }

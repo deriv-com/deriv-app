@@ -53,18 +53,23 @@ const WithdrawalCryptoForm: React.FC = () => {
                 })
             }
         >
-            {({ errors, handleChange, handleSubmit, isSubmitting, touched, values }) => {
+            {({ errors, handleChange, handleSubmit, isSubmitting, setFieldTouched, setFieldValue, values }) => {
                 return (
                     <form autoComplete='off' className='wallets-withdrawal-crypto-form' onSubmit={handleSubmit}>
                         <div className='wallets-withdrawal-crypto-address'>
                             <Field name='cryptoAddress' validate={validateCryptoAddress}>
-                                {({ field }: FieldProps<string>) => (
+                                {({ field, meta }: FieldProps<string>) => (
                                     <WalletTextField
                                         {...field}
                                         data-testid='dt_withdrawal_crypto_address_input'
-                                        errorMessage={touched.cryptoAddress && errors.cryptoAddress}
-                                        isInvalid={touched.cryptoAddress && Boolean(errors?.cryptoAddress)}
+                                        errorMessage={meta.touched && errors.cryptoAddress}
+                                        isInvalid={meta.touched && Boolean(errors?.cryptoAddress)}
                                         label={`Your ${activeWallet?.currency_config?.name} cryptocurrency wallet address`}
+                                        onChange={event => {
+                                            setFieldValue(field.name, event.target.value, true);
+                                            setFieldTouched(field.name, true);
+                                            handleChange(event);
+                                        }}
                                         showMessage
                                     />
                                 )}

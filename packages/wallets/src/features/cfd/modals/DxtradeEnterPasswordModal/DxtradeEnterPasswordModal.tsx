@@ -238,6 +238,7 @@ const DxtradeEnterPasswordModal = () => {
         error?.error?.code,
         sendEmail,
     ]);
+
     if (status === 'error' && error?.error?.code === 'PasswordReset') {
         return (
             <ModalWithBackdropWrapper>

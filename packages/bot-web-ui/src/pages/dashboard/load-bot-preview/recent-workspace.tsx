@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
-import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { waitForDomElement } from 'Utils/dom-observer';
@@ -170,7 +170,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                     </Text>
                 </div>
             </div>
-            <DesktopWrapper>
+            {is_desktop ? (
                 <div className='bot-list__item__actions'>
                     {MENU_DESKTOP.map(item => (
                         <div
@@ -185,43 +185,44 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                         </div>
                     ))}
                 </div>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <div className='bot-list__item__actions'>
-                    <button ref={toggle_ref} onClick={onToggleDropdown} tabIndex={0}>
-                        <Icon icon='IcMenuDots' />
-                    </button>
-                </div>
-                <div
-                    className={classnames('bot-list__item__responsive', {
-                        'bot-list__item__responsive--active': is_active_mobile,
-                        'bot-list__item__responsive--min': dashboard_strategies.length <= 5,
-                    })}
-                >
-                    {CONTEXT_MENU_MOBILE.map(item => (
-                        <div
-                            key={item.type}
-                            className='bot-list__item__responsive__menu'
-                            onClick={e => {
-                                e.stopPropagation();
-                                viewRecentStrategy(item.type);
-                            }}
-                        >
-                            <div>
-                                <Icon icon={item.icon} />
-                            </div>
-                            <Text
-                                color='prominent'
-                                className='bot-list__item__responsive__menu__item'
-                                as='p'
-                                size='xxs'
+            ) : (
+                <>
+                    <div className='bot-list__item__actions'>
+                        <button ref={toggle_ref} onClick={onToggleDropdown} tabIndex={0}>
+                            <Icon icon='IcMenuDots' />
+                        </button>
+                    </div>
+                    <div
+                        className={classnames('bot-list__item__responsive', {
+                            'bot-list__item__responsive--active': is_active_mobile,
+                            'bot-list__item__responsive--min': dashboard_strategies.length <= 5,
+                        })}
+                    >
+                        {CONTEXT_MENU_MOBILE.map(item => (
+                            <div
+                                key={item.type}
+                                className='bot-list__item__responsive__menu'
+                                onClick={e => {
+                                    e.stopPropagation();
+                                    viewRecentStrategy(item.type);
+                                }}
                             >
-                                {item.label}
-                            </Text>
-                        </div>
-                    ))}
-                </div>
-            </MobileWrapper>
+                                <div>
+                                    <Icon icon={item.icon} />
+                                </div>
+                                <Text
+                                    color='prominent'
+                                    className='bot-list__item__responsive__menu__item'
+                                    as='p'
+                                    size='xxs'
+                                >
+                                    {item.label}
+                                </Text>
+                            </div>
+                        ))}
+                    </div>
+                </>
+            )}
         </div>
     );
 });

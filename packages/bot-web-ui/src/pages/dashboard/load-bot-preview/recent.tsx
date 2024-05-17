@@ -1,6 +1,6 @@
 import React from 'react';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
-import { MobileWrapper, Text } from '@deriv/components';
+import { Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -86,9 +86,7 @@ const RecentComponent = observer(() => {
                         })}
                     </div>
                     <DeleteDialog setStrategies={setDashboardStrategies} />
-                    <MobileWrapper>
-                        <SaveModal />
-                    </MobileWrapper>
+                    {!is_desktop && <SaveModal />}
                 </div>
             </div>
         </div>

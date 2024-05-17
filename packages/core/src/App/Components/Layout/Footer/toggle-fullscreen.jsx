@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Icon, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
@@ -67,6 +68,10 @@ const ToggleFullScreen = ({ showPopover }) => {
             )}
         </a>
     );
+};
+
+ToggleFullScreen.propTypes = {
+    showPopover: PropTypes.bool,
 };
 
 export { ToggleFullScreen };

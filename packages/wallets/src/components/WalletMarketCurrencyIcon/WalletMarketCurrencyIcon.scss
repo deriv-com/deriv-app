@@ -11,12 +11,11 @@
     }
 
     &__market-icon {
-        z-index: 2;
+        z-index: 1;
         position: relative;
     }
 
     &__currency-icon {
-        z-index: 1;
         transform: translate(-0.8rem, 1.2rem);
     }
 }

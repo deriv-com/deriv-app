@@ -22,8 +22,7 @@ const Routes: React.FC = observer(() => {
 
     const componentToRender = () => {
         if (is_logged_in || is_logging_in) {
-            if (has_wallet) return Wallets;
-            return TradersHub;
+            return has_wallet ? Wallets : TradersHub;
         }
         return TradersHubLoggedOut;
     };

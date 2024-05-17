@@ -100,6 +100,8 @@ module.exports = function (env) {
                 '@deriv/api': '@deriv/api',
                 '@deriv/hooks': '@deriv/hooks',
                 '@deriv/stores': '@deriv/stores',
+                '@deriv/quill-icons': `@deriv/quill-icons`,
+                '@deriv-com/utils': '@deriv-com/utils',
             },
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,

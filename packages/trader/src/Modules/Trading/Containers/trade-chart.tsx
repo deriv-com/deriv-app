@@ -20,7 +20,7 @@ type TTradeChartProps = {
 
 const TradeChart = observer((props: TTradeChartProps) => {
     const { has_barrier, is_accumulator, topWidgets } = props;
-    const { client, ui, common, contract_trade, portfolio } = useStore();
+    const { ui, common, contract_trade, portfolio } = useStore();
     const { isMobile } = useDevice();
     const {
         accumulator_barriers_data,
@@ -36,7 +36,6 @@ const TradeChart = observer((props: TTradeChartProps) => {
     const { all_positions } = portfolio;
     const { is_chart_countdown_visible, is_chart_layout_default, is_dark_mode_on, is_positions_drawer_on } = ui;
     const { current_language, is_socket_opened } = common;
-    const { should_show_eu_content } = client;
     const {
         active_symbols,
         barriers_flattened: extra_barriers,
@@ -137,7 +136,6 @@ const TradeChart = observer((props: TTradeChartProps) => {
             requestForgetStream={wsForgetStream}
             requestSubscribe={wsSubscribe}
             settings={settings}
-            should_show_eu_content={should_show_eu_content}
             allowTickChartTypeOnly={show_digits_stats || is_accumulator}
             stateChangeListener={chartStateChange}
             symbol={symbol}
@@ -145,13 +143,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
             isConnectionOpened={is_socket_opened}
             clearChart={false}
             toolbarWidget={() => {
-                return (
-                    <ToolbarWidgets
-                        updateChartType={updateChartType}
-                        updateGranularity={updateGranularity}
-                        is_mobile={isMobile}
-                    />
-                );
+                return <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />;
             }}
             importedLayout={chart_layout}
             onExportLayout={exportLayout}

@@ -60,7 +60,6 @@ const RenderRow = ({ category, hintInfo, isLessProminent, title, value }: TAccou
 export const AccountLimitsTable = ({ accountLimitValues }: { accountLimitValues: TAccountLimitValues[] }) => (
     <Table
         data={accountLimitValues}
-        isFetching={false}
         loadMoreFunction={() => {
             //[TODO]: Add load more function
         }}

@@ -49,31 +49,31 @@
         }
     }
     &__wrapper {
-        @include desktop-screen {
+        &--financial,
+        &--synthetic,
+        &--all {
+            height: 100%;
             position: relative;
+            bottom: 0;
+            overflow-y: scroll;
             perspective: 100rem;
-            overflow: scroll;
-            &--financial {
-                height: 76rem;
-            }
-            &--synthetic,
-            &--all {
-                height: 69rem;
+
+            @include mobile-or-tablet-screen {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
             }
         }
     }
     &__flipped {
         @include desktop-screen {
             height: 70rem;
+            overflow: scroll;
         }
 
         .jurisdiction-modal {
-            &__scrollable-content {
-                height: 80rem;
-            }
-
             &__content-wrapper {
-                height: 70rem;
+                height: 100%;
                 transform: rotateY(-180deg);
                 visibility: hidden;
 
@@ -113,7 +113,9 @@
     &__wrapper {
         margin: 3rem 5rem 1rem;
         display: flex;
-        justify-content: center;
+        @include desktop {
+            justify-content: center;
+        }
         gap: 1.6rem;
         @include mobile-or-tablet-screen {
             margin: 0;
@@ -2316,6 +2318,8 @@
 }
 
 .dc-modal__container_jurisdiction-modal {
+    overflow-y: scroll;
+
     .dc-modal-header {
         border-bottom: 2px solid var(--general-section-1);
     }

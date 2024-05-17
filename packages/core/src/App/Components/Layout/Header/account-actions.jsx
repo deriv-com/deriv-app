@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, Popover } from '@deriv/components';
-import { routes, formatMoney, PlatformContext, moduleLoader } from '@deriv/shared';
+import { routes, formatMoney, moduleLoader, isTabletOs } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
@@ -24,7 +24,6 @@ const AccountActions = React.memo(
         account_type,
         balance,
         currency,
-        country_standpoint,
         disableApp,
         enableApp,
         is_acc_switcher_on,
@@ -39,8 +38,12 @@ const AccountActions = React.memo(
         toggleAccountsDialog,
         toggleNotifications,
     }) => {
-        const { is_appstore } = React.useContext(PlatformContext);
         const { isDesktop } = useDevice();
+        const accountSettings = (
+            <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
+                <Icon icon='IcUserOutline' />
+            </BinaryLink>
+        );
 
         if (is_logged_in) {
             if (isDesktop) {
@@ -52,18 +55,21 @@ const AccountActions = React.memo(
                             toggleDialog={toggleNotifications}
                             tooltip_message={<Localize i18n_default_text='View notifications' />}
                             should_disable_pointer_events
+                            showPopover={!isTabletOs}
                         />
-                        <Popover
-                            classNameBubble='account-settings-toggle__tooltip'
-                            alignment='bottom'
-                            message={<Localize i18n_default_text='Manage account settings' />}
-                            should_disable_pointer_events
-                            zIndex={9999}
-                        >
-                            <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
-                                <Icon icon='IcUserOutline' />
-                            </BinaryLink>
-                        </Popover>
+                        {isTabletOs ? (
+                            accountSettings
+                        ) : (
+                            <Popover
+                                classNameBubble='account-settings-toggle__tooltip'
+                                alignment='bottom'
+                                message={<Localize i18n_default_text='Manage account settings' />}
+                                should_disable_pointer_events
+                                zIndex={9999}
+                            >
+                                {accountSettings}
+                            </Popover>
+                        )}
                         <React.Suspense fallback={<div />}>
                             <AccountInfo
                                 acc_switcher_disabled_message={acc_switcher_disabled_message}
@@ -75,7 +81,6 @@ const AccountActions = React.memo(
                                 is_eu={is_eu}
                                 is_virtual={is_virtual}
                                 currency={currency}
-                                country_standpoint={country_standpoint}
                                 is_dialog_on={is_acc_switcher_on}
                                 toggleDialog={toggleAccountsDialog}
                             />
@@ -123,7 +128,6 @@ const AccountActions = React.memo(
                             is_virtual={is_virtual}
                             is_mobile
                             currency={currency}
-                            country_standpoint={country_standpoint}
                             is_dialog_on={is_acc_switcher_on}
                             toggleDialog={toggleAccountsDialog}
                         />
@@ -135,7 +139,7 @@ const AccountActions = React.memo(
         return (
             <React.Fragment>
                 <LoginButton className='acc-info__button' />
-                <SignupButton className='acc-info__button' is_appstore={is_appstore} />
+                <SignupButton className='acc-info__button' />
             </React.Fragment>
         );
     }
@@ -152,7 +156,6 @@ AccountActions.propTypes = {
     is_eu: PropTypes.bool,
     disableApp: PropTypes.any,
     enableApp: PropTypes.any,
-    country_standpoint: PropTypes.object,
     is_acc_switcher_on: PropTypes.any,
     is_logged_in: PropTypes.any,
     is_notifications_visible: PropTypes.any,

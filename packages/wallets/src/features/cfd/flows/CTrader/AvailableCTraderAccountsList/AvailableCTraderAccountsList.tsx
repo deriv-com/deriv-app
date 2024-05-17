@@ -11,7 +11,7 @@ import './AvailableCTraderAccountsList.scss';
 
 const AvailableCTraderAccountsList: React.FC = () => {
     const { hide, show } = useModal();
-    const { error, mutate, status } = useCreateOtherCFDAccount();
+    const { data: createdAccount, error, mutate, status } = useCreateOtherCFDAccount();
     const { data: activeWallet } = useActiveWalletAccount();
     const { t } = useTranslation();
 
@@ -31,6 +31,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
         if (status === 'success') {
             show(
                 <CTraderSuccessModal
+                    createdAccount={createdAccount}
                     displayBalance={activeWallet?.display_balance || ''}
                     isDemo={accountType === 'demo'}
                     walletCurrencyType={activeWallet?.wallet_currency_type || 'USD'}

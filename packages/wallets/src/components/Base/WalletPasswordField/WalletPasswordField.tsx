@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ValidationError } from 'yup';
-import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
+import { zxcvbn } from '@zxcvbn-ts/core';
 import { passwordErrorMessage, warningMessages } from '../../../constants/password';
 import {
     calculateScoreCFD,

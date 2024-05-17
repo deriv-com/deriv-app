@@ -50,22 +50,23 @@ const TradersHub = observer(() => {
         }
     }, [is_tour_open]);
 
-    const direct_to_real_account_creation = useGrowthbookFeatureFlag({
-        featureFlag: 'direct-real-account-creation-flow',
-        defaultValue: false,
-    });
+    // const direct_to_real_account_creation = useGrowthbookFeatureFlag({
+    //     featureFlag: 'direct-real-account-creation-flow',
+    //     defaultValue: false,
+    // });
 
     React.useEffect(() => {
         if (is_eu_user) {
             setTogglePlatformType('cfd');
         }
         if (!has_active_real_account && is_from_signup_account && is_logged_in) {
-            if (direct_to_real_account_creation && is_cr_demo) {
+            if (is_cr_demo) {
                 openRealAccountSignup('svg');
+                setIsFromSignupAccount(false);
             } else if (is_eu_demo) {
                 openRealAccountSignup('maltainvest');
+                setIsFromSignupAccount(false);
             }
-            setIsFromSignupAccount(false);
         }
     }, [
         is_cr_demo,
@@ -74,7 +75,6 @@ const TradersHub = observer(() => {
         is_eu_user,
         is_from_signup_account,
         is_logged_in,
-        direct_to_real_account_creation,
         openRealAccountSignup,
         setIsFromSignupAccount,
         setTogglePlatformType,

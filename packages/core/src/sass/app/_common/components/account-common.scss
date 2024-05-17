@@ -106,7 +106,13 @@
                 }
             }
         }
-
+        &__financial-assessment {
+            @include mobile-or-tablet-screen {
+                .dc-select-native {
+                    margin-bottom: 0;
+                }
+            }
+        }
         &__poi-inline-message {
             margin-bottom: 1.6rem;
         }
@@ -289,7 +295,6 @@
             border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
             border-top: 1px solid var(--general-section-1);
             background-color: var(--general-main-1);
-
             .back-btn {
                 margin-right: 8px;
 
@@ -330,7 +335,6 @@
 
             &-btn {
                 height: 4rem;
-
                 &-wrapper {
                     align-items: normal;
                     display: flex;
@@ -358,6 +362,9 @@
                         display: flex;
                         justify-content: space-between;
                     }
+                }
+                @include tablet-screen {
+                    width: 100%;
                 }
 
                 @include mobile {
@@ -456,6 +463,10 @@
         @include desktop {
             padding-left: 16px;
             padding-right: 16px;
+        }
+        @include tablet-screen {
+            padding-inline-start: 0;
+            padding-inline-end: 0;
         }
 
         @include mobile {

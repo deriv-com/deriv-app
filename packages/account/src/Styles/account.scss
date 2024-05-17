@@ -216,6 +216,14 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
+        @include mobile-or-tablet-screen {
+            &__financial-assessment {
+                .account-form__fieldset {
+                    margin-top: 0.8rem;
+                    margin-bottom: 2rem;
+                }
+            }
+        }
 
         @include tablet-screen {
             .account-form__fieldset {
@@ -304,7 +312,10 @@ $MIN_HEIGHT_FLOATING: calc(
         &__fieldset {
             position: relative;
             max-width: 400px;
-
+            @include mobile-or-tablet-screen {
+                max-width: 100%;
+                width: 100%;
+            }
             .cfd-personal-details-modal__form & {
                 margin: unset;
                 max-width: unset;
@@ -437,7 +448,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
             .account__scrollbars_container {
                 &--grid-layout {
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         display: flex;
                         flex-direction: column;
                     }
@@ -528,6 +539,9 @@ $MIN_HEIGHT_FLOATING: calc(
 
             &-btn {
                 min-width: 14.9rem;
+                @include tablet-screen {
+                    margin: 0;
+                }
             }
         }
 

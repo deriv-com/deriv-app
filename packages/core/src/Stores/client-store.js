@@ -152,6 +152,9 @@ export default class ClientStore extends BaseStore {
     is_p2p_enabled = false;
     real_account_signup_form_data = [];
     real_account_signup_form_step = 0;
+    wallet_migration_state;
+    wallet_migration_interval_id;
+    is_wallet_migration_request_is_in_progress = false;
 
     is_passkey_supported = false;
     should_show_effortless_login_modal = false;
@@ -228,6 +231,8 @@ export default class ClientStore extends BaseStore {
             is_p2p_enabled: observable,
             real_account_signup_form_data: observable,
             real_account_signup_form_step: observable,
+            wallet_migration_state: observable,
+            is_wallet_migration_request_is_in_progress: observable,
             is_passkey_supported: observable,
             should_show_effortless_login_modal: observable,
             balance: computed,
@@ -293,13 +298,10 @@ export default class ClientStore extends BaseStore {
             has_wallet: computed,
             should_restrict_bvi_account_creation: computed,
             should_restrict_vanuatu_account_creation: computed,
-            should_show_eu_content: computed,
             should_show_eu_error: computed,
             is_virtual: computed,
             is_eu: computed,
-            is_uk: computed,
             is_brazil: computed,
-            country_standpoint: computed,
             can_upgrade: computed,
             can_upgrade_to: computed,
             virtual_account_loginid: computed,
@@ -407,6 +409,10 @@ export default class ClientStore extends BaseStore {
             setIsP2PEnabled: action.bound,
             setRealAccountSignupFormData: action.bound,
             setRealAccountSignupFormStep: action.bound,
+            getWalletMigrationState: action.bound,
+            setWalletMigrationState: action.bound,
+            startWalletMigration: action.bound,
+            resetWalletMigration: action.bound,
             setIsPasskeySupported: action.bound,
             setShouldShowEffortlessLoginModal: action.bound,
             fetchShouldShowEffortlessLoginModal: action.bound,
@@ -456,6 +462,19 @@ export default class ClientStore extends BaseStore {
         when(
             () => !this.is_logged_in && this.root_store.ui && this.root_store.ui.is_real_acc_signup_on,
             () => this.root_store.ui.closeRealAccountSignup()
+        );
+
+        reaction(
+            () => [this.wallet_migration_state],
+            () => {
+                if (this.wallet_migration_state === 'in_progress') {
+                    this.wallet_migration_interval_id = setInterval(() => {
+                        this.getWalletMigrationState();
+                    }, 2000);
+                } else {
+                    clearInterval(this.wallet_migration_interval_id);
+                }
+            }
         );
     }
 
@@ -841,11 +860,6 @@ export default class ClientStore extends BaseStore {
         ).length;
     }
 
-    get should_show_eu_content() {
-        const is_current_mf = this.landing_company_shortcode === 'maltainvest';
-        return (!this.is_logged_in && this.is_eu_country) || this.is_eu || is_current_mf;
-    }
-
     get should_show_eu_error() {
         if (!this.is_landing_company_loaded) {
             return false;
@@ -875,30 +889,6 @@ export default class ClientStore extends BaseStore {
 
     get is_brazil() {
         return this.clients_country === 'br';
-    }
-
-    get is_uk() {
-        return this.residence === 'gb';
-    }
-
-    get country_standpoint() {
-        const result = {
-            is_united_kingdom: this.is_uk,
-            is_france: this.residence === 'fr',
-            is_belgium: this.residence === 'be',
-            // Other EU countries: Germany, Spain, Italy, Luxembourg and Greece
-            is_other_eu:
-                this.residence === 'de' ||
-                this.residence === 'es' ||
-                this.residence === 'it' ||
-                this.residence === 'lu' ||
-                this.residence === 'gr',
-        };
-
-        result.is_rest_of_eu =
-            this.is_eu && !result.is_uk && !result.is_france && !result.is_belgium && !result.is_other_eu;
-
-        return result;
     }
 
     get can_upgrade() {
@@ -1655,7 +1645,10 @@ export default class ClientStore extends BaseStore {
         this.selectCurrency('');
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
+
         if (this.is_logged_in) {
+            this.getWalletMigrationState();
+
             await WS.mt5LoginList().then(this.responseMt5LoginList);
             WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
 
@@ -2198,9 +2191,8 @@ export default class ClientStore extends BaseStore {
             this.setIsLoggingIn(true);
 
             const redirect_url = sessionStorage.getItem('redirect_url');
-            const is_next_wallet_enabled = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
 
-            const target_url = is_next_wallet_enabled ? routes.wallets : routes.traders_hub;
+            const target_url = this.has_wallet ? routes.wallets : routes.traders_hub;
 
             if (
                 (redirect_url?.endsWith('/') ||
@@ -2708,6 +2700,50 @@ export default class ClientStore extends BaseStore {
 
     setRealAccountSignupFormStep(step) {
         this.real_account_signup_form_step = step;
+    }
+
+    setWalletMigrationState(state) {
+        this.wallet_migration_state = state;
+    }
+
+    setIsWalletMigrationRequestIsInProgress(value) {
+        this.is_wallet_migration_request_is_in_progress = value;
+    }
+
+    async getWalletMigrationState() {
+        try {
+            const response = await WS.authorized.getWalletMigrationState();
+            if (response?.wallet_migration?.state) this.setWalletMigrationState(response?.wallet_migration?.state);
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
+        }
+    }
+
+    async startWalletMigration() {
+        this.setIsWalletMigrationRequestIsInProgress(true);
+        try {
+            await WS.authorized.startWalletMigration();
+            this.getWalletMigrationState();
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
+        } finally {
+            this.setIsWalletMigrationRequestIsInProgress(false);
+        }
+    }
+
+    async resetWalletMigration() {
+        this.setIsWalletMigrationRequestIsInProgress(true);
+        try {
+            await WS.authorized.resetWalletMigration();
+            this.getWalletMigrationState();
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
+        } finally {
+            this.setIsWalletMigrationRequestIsInProgress(false);
+        }
     }
 
     setIsPasskeySupported(is_passkey_supported = false) {

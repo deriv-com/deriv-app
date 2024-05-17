@@ -7,6 +7,7 @@ import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button'
 import CancelDealInfo from '../Form/Purchase/cancel-deal-info';
 import { TProposalTypeInfo, TTradeStore } from 'Types';
 import { useDevice } from '@deriv-com/ui';
+import { isTabletOs } from '@deriv/shared';
 
 type TPurchaseFieldset = {
     basis: string;
@@ -158,7 +159,7 @@ const PurchaseFieldset = ({
                             </Popover>
                         ) : (
                             <React.Fragment>
-                                {is_multiplier ? (
+                                {is_multiplier && !isTabletOs ? (
                                     <Popover
                                         alignment='left'
                                         is_bubble_hover_enabled

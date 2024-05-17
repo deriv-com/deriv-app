@@ -8,9 +8,12 @@ $MIN_HEIGHT_FLOATING: calc(
     margin: 0 16px;
 
     .dc-page-overlay__content {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             overflow-x: hidden;
             overflow-y: auto;
+        }
+        @include tablet-screen {
+            width: 60rem;
         }
     }
 
@@ -211,6 +214,17 @@ $MIN_HEIGHT_FLOATING: calc(
                     margin-top: 0.8rem;
                     margin-bottom: 2rem;
                 }
+            }
+        }
+
+        @include tablet-screen {
+            .account-form__fieldset {
+                max-width: 100%;
+            }
+            .account-form__footer-note {
+                width: auto;
+                text-align: center;
+                align-self: center;
             }
         }
 

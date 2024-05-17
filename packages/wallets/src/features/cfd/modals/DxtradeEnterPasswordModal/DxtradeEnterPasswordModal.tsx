@@ -7,19 +7,13 @@ import {
     useDxtradeAccountsList,
 } from '@deriv/api-v2';
 import { SentEmailContent, WalletError } from '../../../../components';
-import {
-    ModalStepWrapper,
-    ModalWithBackdropWrapper,
-    ModalWrapper,
-    WalletButton,
-    WalletButtonGroup,
-} from '../../../../components/Base';
+import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import useSendPasswordResetEmail from '../../../../hooks/useSendPasswordResetEmail';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
-import { PasswordLimitExceeded } from '../../screens/PasswordLimitExceeded';
+import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
 import './DxtradeEnterPasswordModal.scss';
 
 const DxtradeEnterPasswordModal = () => {
@@ -241,16 +235,14 @@ const DxtradeEnterPasswordModal = () => {
 
     if (status === 'error' && error?.error?.code === 'PasswordReset') {
         return (
-            <ModalWithBackdropWrapper>
-                <PasswordLimitExceeded
-                    onPrimaryClick={hide}
-                    onSecondaryClick={() => {
-                        sendEmail({
-                            platform: dxtradePlatform,
-                        });
-                    }}
-                />
-            </ModalWithBackdropWrapper>
+            <PasswordLimitExceededModal
+                onPrimaryClick={hide}
+                onSecondaryClick={() => {
+                    sendEmail({
+                        platform: dxtradePlatform,
+                    });
+                }}
+            />
         );
     }
 

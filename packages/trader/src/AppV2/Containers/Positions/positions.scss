@@ -1,0 +1,36 @@
+// TODO: Utilize tokens from "@deriv-com/quill-ui/quill.css";
+$TABS_HEIGHT: 4.8rem;
+$FOOTER_HEIGHT: 5.8rem;
+
+.positions-page {
+    height: calc(100% - $FOOTER_HEIGHT);
+    background-color: var(--core-color-solid-slate-75);
+
+    .tab-list--container {
+        display: block;
+        justify-content: unset;
+        background-color: var(--core-color-solid-slate-50);
+
+        button {
+            width: 50%;
+        }
+    }
+    &__tabs {
+        height: 100%;
+
+        &-content {
+            height: calc(100% - $TABS_HEIGHT);
+
+            & > div {
+                height: 100%;
+
+                .positions-page {
+                    &__open,
+                    &__closed {
+                        height: 100%;
+                    }
+                }
+            }
+        }
+    }
+}

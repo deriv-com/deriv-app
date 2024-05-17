@@ -19,6 +19,7 @@ type TDateOfBirthFieldProps = {
 const DateOfBirthField = ({ name, portal_id, ...rest }: TDateOfBirthFieldProps) => (
     <Field name={name}>
         {({ field, form: { setFieldValue }, meta: { error, touched } }: FieldProps<string | moment.Moment>) => (
+            // @ts-expect-error [TODO] need to fix types for  DateOfBirthPicker component
             <DateOfBirthPicker
                 {...rest}
                 {...field}

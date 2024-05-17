@@ -16,7 +16,7 @@
     },
     "dependencies": {
         "class-variance-authority": "^0.7.0",
-        "clsx": "^2.0.0",
+        "clsx": "^2.1.1",
         "i18n-iso-countries": "^6.8.0",
         "i18next": "^22.4.6",
         "usehooks-ts": "^2.7.0"

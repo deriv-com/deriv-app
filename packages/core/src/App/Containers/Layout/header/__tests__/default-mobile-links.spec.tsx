@@ -14,10 +14,9 @@ jest.mock('../traders-hub-onboarding', () =>
     jest.fn(() => <div data-testid='dt_traders_hub_onboarding'>MockedTradersHubOnboarding</div>)
 );
 
-jest.mock('@deriv/hooks', () => ({
-    useFeatureFlags: () => ({
-        is_next_wallet_enabled: false,
-    }),
+jest.mock('@deriv/stores', () => ({
+    ...jest.requireActual('@deriv/stores'),
+    useStore: jest.fn(() => ({ client: { has_wallet: false } })),
 }));
 
 describe('DefaultMobileLinks', () => {

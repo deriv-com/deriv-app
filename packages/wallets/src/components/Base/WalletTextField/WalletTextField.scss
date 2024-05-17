@@ -179,9 +179,10 @@
             color: inherit;
             width: inherit;
             outline: none;
-            background: none;
             text-align: left;
             font-size: 1.4rem;
+            background: transparent;
+            background-color: transparent;
         }
         input[type='date']::-webkit-inner-spin-button,
         input[type='date']::-webkit-calendar-picker-indicator {

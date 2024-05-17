@@ -61,6 +61,7 @@ const DatePicker = ({
         <div className='wallets-datepicker' ref={datePickerRef}>
             <FlowTextField
                 disabled={disabled}
+                inputMode='none'
                 label={label}
                 message={message}
                 name={name}

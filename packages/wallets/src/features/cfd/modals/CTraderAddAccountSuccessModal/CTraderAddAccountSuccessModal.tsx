@@ -1,9 +1,11 @@
 import React from 'react';
 import { ModalWrapper, WalletButton, WalletButtonGroup, WalletsActionScreen } from '../../../../components';
+import { useModal } from '../../../../components/ModalProvider';
 import SuccessIcon from './SuccessIcon';
 import './CTraderAddAccountSuccessModal.scss';
 
 const CTraderAddAccountSuccessModal = () => {
+    const { hide } = useModal();
     return (
         <ModalWrapper>
             <div className='wallets-ctrader-account-add-success-modal'>
@@ -13,7 +15,7 @@ const CTraderAddAccountSuccessModal = () => {
                     icon={<SuccessIcon />}
                     renderButtons={() => (
                         <WalletButtonGroup>
-                            <WalletButton size='lg' variant='outlined'>
+                            <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
                                 Maybe later
                             </WalletButton>
                             <WalletButton size='lg' variant='contained'>

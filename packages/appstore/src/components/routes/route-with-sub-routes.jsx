@@ -4,10 +4,20 @@ import { redirectToLogin, isEmptyObject, routes, removeBranchName, default_title
 import { getLanguage } from '@deriv/translations';
 import Page404 from 'Modules/Page404';
 
+const wallet_routes = [
+    routes.wallets,
+    routes.wallets_deposit,
+    routes.wallets_withdrawal,
+    routes.wallets_transfer,
+    routes.wallets_transactions,
+    routes.wallets_compare_accounts,
+    routes.wallets_on_ramp,
+    routes.wallets_reset_balance,
+];
 const RouteWithSubRoutes = route => {
     const validateRoute = pathname => {
         if (pathname === '') return true;
-        return route.path === pathname || !!pathname.includes('wallet') || !!pathname.includes('compare-accounts');
+        return route.path === pathname || wallet_routes.some(route => route == pathname);
     };
 
     const renderFactory = props => {

@@ -5,7 +5,7 @@ import DrivingLicenseCardBack from '../../../../../../public/images/accounts/doc
 import DrivingLicenseCardFront from '../../../../../../public/images/accounts/driving-license-front.svg';
 import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
 import { DocumentRuleHints } from '../DocumentRuleHints';
-import '../wallets-manual-upload.scss';
+import './DrivingLicenseDocumentUpload.scss';
 
 const DrivingLicenseDocumentUpload = () => {
     const { formValues, setFormValues } = useFlow();
@@ -15,9 +15,9 @@ const DrivingLicenseDocumentUpload = () => {
     };
 
     return (
-        <div className='wallets-manual-upload' data-testid='dt_driving-license-document-upload'>
+        <div className='wallets-driving-license-document-upload' data-testid='dt_driving-license-document-upload'>
             <WalletText>First, enter your Driving licence number and the expiry date.</WalletText>
-            <div className='wallets-manual-upload__input-group'>
+            <div className='wallets-driving-license-document-upload__input-group'>
                 <FlowTextField
                     defaultValue={formValues.drivingLicenceNumber ?? ''}
                     label='Driving licence number*'
@@ -35,9 +35,9 @@ const DrivingLicenseDocumentUpload = () => {
                 />
             </div>
             <Divider />
-            <div className='wallets-manual-upload__document-upload'>
+            <div className='wallets-driving-license-document-upload__document-upload'>
                 <WalletText>Next, upload the front and back of your driving licence.</WalletText>
-                <div className='wallets-manual-upload__dropzone'>
+                <div className='wallets-driving-license-document-upload__dropzone'>
                     <Dropzone
                         buttonText='Drop file or click here to upload'
                         defaultFile={formValues.drivingLicenseCardFront}

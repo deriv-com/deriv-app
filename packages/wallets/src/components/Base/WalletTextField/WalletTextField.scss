@@ -94,6 +94,8 @@
         color: var(--system-light-2-general-text, #333);
         transition: border-color 0.2s;
         flex: 1;
+        -webkit-appearance: none;
+        -moz-appearance: none;
 
         &--listcard {
             font-size: 1.6rem;
@@ -165,6 +167,26 @@
         &--msg {
             float: left;
             text-align: left;
+        }
+    }
+
+    @include mobile {
+        input[type='date']::-webkit-datetime-edit {
+            margin: 0;
+            padding: 0;
+            border: none;
+            font: inherit;
+            color: inherit;
+            width: inherit;
+            outline: none;
+            background: none;
+            text-align: left;
+            font-size: 1.4rem;
+        }
+        input[type='date']::-webkit-inner-spin-button,
+        input[type='date']::-webkit-calendar-picker-indicator {
+            display: none;
+            -webkit-appearance: none;
         }
     }
 }

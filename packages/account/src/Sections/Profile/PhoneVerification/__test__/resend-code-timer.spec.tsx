@@ -104,16 +104,10 @@ describe('ConfirmPhoneNumber', () => {
                 setShouldShowDidntGetTheCodeModal={jest.fn()}
             />
         );
-        const resend_button = screen.getByRole('button', { name: 'Didn’t get the code? (6s)' });
-        userEvent.click(resend_button);
-
-        await waitFor(
-            () => {
-                const resend_button = screen.getByRole('button', { name: 'Didn’t get the code? (4s)' });
-                expect(resend_button).toBeInTheDocument();
-            },
-            { timeout: 4000 }
-        );
+        expect(screen.getByRole('button', { name: 'Didn’t get the code? (6s)' })).toBeInTheDocument();
+        jest.advanceTimersByTime(3000);
+        const updated_resend_button = screen.getByRole('button', { name: 'Didn’t get the code? (4s)' });
+        expect(updated_resend_button).toBeInTheDocument();
     });
 
     it('should check if title changes when timer expires and value of resend_code_text is Resend code', () => {
@@ -147,15 +141,9 @@ describe('ConfirmPhoneNumber', () => {
                 setShouldShowDidntGetTheCodeModal={jest.fn()}
             />
         );
-        const resend_button = screen.getByRole('button', { name: 'Resend code in 6s' });
-        userEvent.click(resend_button);
-
-        await waitFor(
-            () => {
-                const resend_button = screen.getByRole('button', { name: 'Resend code in 4s' });
-                expect(resend_button).toBeInTheDocument();
-            },
-            { timeout: 4000 }
-        );
+        expect(screen.getByRole('button', { name: 'Resend code in 6s' })).toBeInTheDocument();
+        jest.advanceTimersByTime(3000);
+        const updated_resend_button = screen.getByRole('button', { name: 'Resend code in 4s' });
+        expect(updated_resend_button).toBeInTheDocument();
     });
 });

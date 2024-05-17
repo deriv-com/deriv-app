@@ -183,8 +183,6 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
         isErasing.current = false;
     };
 
-    const keyboardHandlers = { onKeyDown, onKeyUp };
-
     useEffect(() => {
         if (typeof initial === 'number') {
             return onChangeDecimal({
@@ -198,7 +196,7 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
         }
     }, [fractionDigits, initial, locale, onChangeDecimal]);
 
-    return { keyboardHandlers, onChange, onPaste, value: formattedValue };
+    return { onKeyDown, onKeyUp, onChange, onPaste, value: formattedValue };
 };
 
 export default useInputATMFormatter;

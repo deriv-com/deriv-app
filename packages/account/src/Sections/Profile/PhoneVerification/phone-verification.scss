@@ -1,17 +1,19 @@
 .phone-verification {
+    &__get-code-modal,
     &__verified-modal,
     &__cancel-modal {
         &--contents {
             display: flex;
             flex-direction: column;
             gap: 3.2rem;
-        }
-        &--buttons {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            gap: 0.8rem;
-            padding: 0 1.6rem 1.6rem;
+            &__buttons {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                gap: 0.8rem;
+                margin-top: 2.4rem;
+            }
         }
     }
 

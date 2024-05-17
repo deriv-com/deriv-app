@@ -10,7 +10,10 @@ import PhoneNumberVerifiedModal from './phone-number-verified-modal';
 import VerificationLinkExpiredModal from './verification-link-expired-modal';
 
 const PhoneVerificationPage = () => {
-    const [otp_verification, setOtpVerification] = React.useState({ show: true, phone_verification_type: '' });
+    const [otp_verification, setOtpVerification] = React.useState({
+        show_otp_verification: true,
+        phone_verification_type: '',
+    });
     const [should_show_cancel_verification_modal, setShouldShowCancelVerificationModal] = React.useState(false);
     const [should_show_verification_link_expired_modal, setShouldShowVerificationLinkExpiredModal] =
         React.useState(false);
@@ -41,8 +44,11 @@ const PhoneVerificationPage = () => {
                     <Localize i18n_default_text='Phone number verification' />
                 </Text>
             </div>
-            {otp_verification.show ? (
-                <OTPVerification phone_verification_type={otp_verification.phone_verification_type} />
+            {otp_verification.show_otp_verification ? (
+                <OTPVerification
+                    phone_verification_type={otp_verification.phone_verification_type}
+                    setOtpVerification={setOtpVerification}
+                />
             ) : (
                 <ConfirmPhoneNumber setOtpVerification={setOtpVerification} />
             )}

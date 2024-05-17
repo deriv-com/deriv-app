@@ -15,7 +15,6 @@ type TProps = {
     isDemo?: boolean;
     landingCompanyName?: string;
     onClick?: () => void;
-    testId?: string;
 };
 
 const WalletCard: React.FC<TProps> = ({
@@ -26,14 +25,13 @@ const WalletCard: React.FC<TProps> = ({
     isDemo,
     landingCompanyName,
     onClick,
-    testId,
 }) => {
     const { isLoading } = useBalance();
 
     return (
         <button
             className={classNames('wallets-card', { 'wallets-card__carousel-content': isCarouselContent })}
-            data-testid={testId}
+            data-testid='dt_wallets_wallet_card'
             onClick={onClick}
         >
             <div className='wallets-card__container'>

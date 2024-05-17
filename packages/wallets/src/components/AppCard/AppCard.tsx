@@ -14,7 +14,6 @@ type TProps = {
     cardSize: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     device: 'desktop' | 'mobile';
     isDemoWallet?: THooks.ActiveWalletAccount['is_virtual'];
-    testId?: string;
     walletName?: string;
 };
 
@@ -26,11 +25,13 @@ const AppCard: React.FC<TProps> = ({
     cardSize = 'md',
     device = 'desktop',
     isDemoWallet = false,
-    testId,
     walletName,
 }) => {
     return (
-        <div className={`wallets-app-card wallets-app-card--border-radius--${cardSize}`} data-testid={testId}>
+        <div
+            className={`wallets-app-card wallets-app-card--border-radius--${cardSize}`}
+            data-testid='dt_wallets_app_card'
+        >
             <WalletGradientBackground currency='' hasShine theme='grey'>
                 {cardSize !== 'sm' && (
                     <div className='wallets-app-card__badge'>

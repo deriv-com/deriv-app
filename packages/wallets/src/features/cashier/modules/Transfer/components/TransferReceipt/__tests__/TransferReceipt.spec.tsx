@@ -8,7 +8,7 @@ import { TransferProvider } from '../../../provider';
 import { TAccount } from '../../../types';
 import TransferReceipt from '../TransferReceipt';
 
-const ACCOUNTS: NonNullable<TAccount>[] = [
+const ACCOUNTS = [
     {
         account_category: 'wallet',
         account_type: 'doughflow',
@@ -76,6 +76,7 @@ jest.mock('../../../provider', () => ({
             fromAccount: {
                 account_category: 'trading',
                 account_type: 'doughflow',
+                accountName: 'fromAccount',
                 balance: '1000',
                 currency: 'USD',
                 currencyConfig: {
@@ -87,6 +88,7 @@ jest.mock('../../../provider', () => ({
             toAccount: {
                 account_category: 'wallet',
                 account_type: 'crypto',
+                accountName: 'toAccount',
                 balance: '0.1',
                 currency: 'BTC',
                 currencyConfig: {
@@ -120,8 +122,8 @@ describe('TransferReceipt', () => {
     it('Should render the correct from and to card labels', () => {
         render(<TransferReceipt />, { wrapper });
 
-        const fromCard = screen.getByTestId('dt_wallets_transfer_receipt_from_card');
-        const toCard = screen.getByTestId('dt_wallets_transfer_receipt_to_card');
+        const fromCard = screen.getByTestId('dt_wallets_app_card');
+        const toCard = screen.getByTestId('dt_wallets_wallet_card');
 
         expect(within(fromCard).getByText('-10000.00 USD')).toBeInTheDocument();
         expect(within(toCard).queryByText('+100.00000000 BTC')).toBeInTheDocument();

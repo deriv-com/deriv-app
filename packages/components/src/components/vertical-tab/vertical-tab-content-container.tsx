@@ -134,7 +134,6 @@ const VerticalTabContentContainer = ({
                     })}
                 </div>
             )}
-
             <div className={classNames('dc-vertical-tab__content-container', tab_container_classname)}>
                 <ContentWrapper has_side_note={selected.has_side_note}>
                     <Content is_routed={is_routed} items={items} selected={selected} />

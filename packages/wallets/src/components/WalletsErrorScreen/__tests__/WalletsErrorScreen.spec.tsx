@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import useDevice from '../../../hooks/useDevice';
 import WalletsErrorScreen from '../WalletsErrorScreen';
 
 jest.mock('../../../hooks/useDevice', () =>
@@ -18,7 +19,7 @@ describe('WalletsErrorScreen', () => {
         expect(screen.getByTestId('dt_error_icon')).toBeInTheDocument();
         expect(screen.getByText('Oops, something went wrong!')).toBeInTheDocument();
         expect(
-            screen.getByText('Sorry an error occurred. Please try accessing our cashier page again.')
+            screen.getByText('Sorry an error occurred. Please try accessing our cashier again.')
         ).toBeInTheDocument();
     });
 
@@ -28,9 +29,10 @@ describe('WalletsErrorScreen', () => {
     });
 
     it('should trigger onClick callback', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         const onClickHandler = jest.fn();
 
-        render(<WalletsErrorScreen onClick={onClickHandler} />);
+        render(<WalletsErrorScreen buttonText='Try again' buttonVariant='contained' onClick={onClickHandler} />);
         screen.getByRole('button', { name: 'Try again' }).click();
         expect(onClickHandler).toHaveBeenCalled();
     });

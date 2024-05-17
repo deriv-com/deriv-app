@@ -18,8 +18,8 @@ const WalletsListingRoute: React.FC = () => {
             <WalletListHeader />
             {isMobile ? <WalletsCarousel /> : <DesktopWalletsList />}
             <WalletsAddMoreCarousel />
-            {!isMobile && <WalletTourGuide />}
             <ResetMT5PasswordHandler />
+            <WalletTourGuide />
         </div>
     );
 };

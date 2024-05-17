@@ -411,6 +411,12 @@ const getModules = () => {
             ],
         },
         {
+            path: routes.old_traders_hub,
+            component: RedirectToNewTradersHub,
+            is_authenticated: false,
+            getTitle: () => localize("Trader's Hub"),
+        },
+        {
             path: routes.traders_hub,
             component: AppStore,
             is_authenticated: false,
@@ -423,12 +429,6 @@ const getModules = () => {
                     getTitle: () => localize("Trader's Hub"),
                 },
             ],
-        },
-        {
-            path: routes.old_traders_hub,
-            component: RedirectToNewTradersHub,
-            is_authenticated: false,
-            getTitle: () => localize("Trader's Hub"),
         },
     ];
 

@@ -1,11 +1,11 @@
 import React from 'react';
-import { AccountsDerivCtraderIcon, StandaloneCircleCheckFillIcon } from '@deriv/quill-icons';
+import { AccountsDerivCtraderIcon, LegacyWonIcon } from '@deriv/quill-icons';
 
 const SuccessIcon = () => {
     return (
-        <div>
+        <div className='wallets-ctrader-success-icon'>
             <AccountsDerivCtraderIcon height={128} width={128} />
-            <StandaloneCircleCheckFillIcon fill='#4BB4B3' iconSize='xl' />
+            <LegacyWonIcon className='wallets-ctrader-success-icon-check' iconSize='lg' />
         </div>
     );
 };

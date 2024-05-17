@@ -1,13 +1,15 @@
 import React from 'react';
 import { ModalWrapper, WalletButton, WalletButtonGroup, WalletsActionScreen } from '../../../../components';
 import SuccessIcon from './SuccessIcon';
+import './CTraderAddAccountSuccessModal.scss';
 
 const CTraderAddAccountSuccessModal = () => {
     return (
         <ModalWrapper>
-            <div className='wallets-reset-mt5-password'>
+            <div className='wallets-ctrader-account-add-success-modal'>
                 <WalletsActionScreen
                     description='Congratulations, you have successfully created your real Deriv cTrader account. To start trading,transfer funds from your Deriv account into this account.'
+                    descriptionSize='sm'
                     icon={<SuccessIcon />}
                     renderButtons={() => (
                         <WalletButtonGroup>
@@ -19,6 +21,7 @@ const CTraderAddAccountSuccessModal = () => {
                             </WalletButton>
                         </WalletButtonGroup>
                     )}
+                    title='Success!'
                 />
             </div>
         </ModalWrapper>

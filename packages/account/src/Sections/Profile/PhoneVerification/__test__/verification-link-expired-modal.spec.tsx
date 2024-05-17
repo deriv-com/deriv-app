@@ -46,7 +46,7 @@ describe('VerificationLinkExpiredModal', () => {
         );
     };
 
-    it('it should render VerificationLinkExpiredModal', () => {
+    it('should render VerificationLinkExpiredModal', () => {
         renderComponent();
         buttons.forEach(value => {
             expect(screen.getByRole('button', { name: value })).toBeInTheDocument();
@@ -55,7 +55,7 @@ describe('VerificationLinkExpiredModal', () => {
         expect(screen.getByText(/Get another link to verify your number./)).toBeInTheDocument();
     });
 
-    it('it should render only mockSetShowVerificationLinkExpiredModal when Send new link is clicked', () => {
+    it('should render only mockSetShowVerificationLinkExpiredModal when Send new link is clicked', () => {
         renderComponent();
         const cancelButton = screen.getByRole('button', { name: buttons[0] });
         userEvent.click(cancelButton);
@@ -63,7 +63,7 @@ describe('VerificationLinkExpiredModal', () => {
         expect(mock_back_router).not.toBeCalled();
     });
 
-    it('it should render mockSetShowVerificationLinkExpiredModal and mock_back_router when Cancel is clicked', () => {
+    it('should render mockSetShowVerificationLinkExpiredModal and mock_back_router when Cancel is clicked', () => {
         renderComponent();
         const cancelButton = screen.getByRole('button', { name: buttons[1] });
         userEvent.click(cancelButton);

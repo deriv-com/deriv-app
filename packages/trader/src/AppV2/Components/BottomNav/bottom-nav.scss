@@ -8,6 +8,7 @@
         bottom: 0;
         width: 100%;
         border-top: 1px solid var(--core-color-opacity-black-100); // waiting on quill tokens in deriv-app
+        background-color: var(--core-color-solid-slate-50);
     }
     &-item {
         display: flex;

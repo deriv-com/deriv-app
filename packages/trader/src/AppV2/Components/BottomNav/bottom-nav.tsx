@@ -10,7 +10,6 @@ import BottomNavItem from './bottom-nav-item';
 import { Badge } from '@deriv-com/quill-ui';
 
 type BottomNavProps = {
-    className?: string;
     children: React.ReactNode[];
 };
 
@@ -47,11 +46,11 @@ const bottomNavItems = [
     },
 ];
 
-const BottomNav = ({ className, children }: BottomNavProps) => {
+const BottomNav = ({ children }: BottomNavProps) => {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 
     return (
-        <div className={className}>
+        <React.Fragment>
             <div className='bottom-nav-container'>
                 {bottomNavItems.map((item, index) => (
                     <BottomNavItem
@@ -65,7 +64,7 @@ const BottomNav = ({ className, children }: BottomNavProps) => {
                 ))}
             </div>
             {children[selectedIndex]}
-        </div>
+        </React.Fragment>
     );
 };
 

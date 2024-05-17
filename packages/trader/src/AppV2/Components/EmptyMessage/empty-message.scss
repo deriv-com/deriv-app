@@ -1,0 +1,26 @@
+// TODO: Utilize tokens from "@deriv-com/quill-ui/quill.css";
+.empty-message {
+    &__open,
+    &__closed {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        padding: 0 4.8rem;
+
+        .icon {
+            margin-bottom: 0.8rem;
+        }
+        .message {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .button-container {
+            align-self: stretch;
+            margin-top: 1.6rem;
+        }
+    }
+}

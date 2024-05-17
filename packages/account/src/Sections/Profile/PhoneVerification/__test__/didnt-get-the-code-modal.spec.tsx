@@ -83,7 +83,7 @@ describe('DidntGetTheCodeModal', () => {
         userEvent.click(resend_code_button);
         expect(mockRequestOnSMS).toHaveBeenCalledTimes(1);
         expect(mockSetOtpVerification).toBeCalledWith({
-            show: true,
+            show_otp_verification: true,
             phone_verification_type: VERIFICATION_SERVICES.SMS,
         });
     });
@@ -99,7 +99,7 @@ describe('DidntGetTheCodeModal', () => {
         userEvent.click(resend_code_button);
         expect(mockRequestOnWhatsapp).toHaveBeenCalledTimes(1);
         expect(mockSetOtpVerification).toBeCalledWith({
-            show: true,
+            show_otp_verification: true,
             phone_verification_type: VERIFICATION_SERVICES.WHATSAPP,
         });
     });
@@ -115,7 +115,7 @@ describe('DidntGetTheCodeModal', () => {
         userEvent.click(resend_code_button);
         expect(mockRequestOnSMS).toHaveBeenCalledTimes(1);
         expect(mockSetOtpVerification).toBeCalledWith({
-            show: true,
+            show_otp_verification: true,
             phone_verification_type: VERIFICATION_SERVICES.SMS,
         });
     });
@@ -131,7 +131,7 @@ describe('DidntGetTheCodeModal', () => {
         userEvent.click(resend_code_button);
         expect(mockRequestOnWhatsapp).toHaveBeenCalledTimes(1);
         expect(mockSetOtpVerification).toBeCalledWith({
-            show: true,
+            show_otp_verification: true,
             phone_verification_type: VERIFICATION_SERVICES.WHATSAPP,
         });
     });

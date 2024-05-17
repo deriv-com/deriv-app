@@ -10,7 +10,7 @@ import DidntGetTheCodeModal from './didnt-get-the-code-modal';
 
 type TOTPVerification = {
     phone_verification_type: string;
-    setOtpVerification: (value: { show: boolean; phone_verification_type: string }) => void;
+    setOtpVerification: (value: { show_otp_verification: boolean; phone_verification_type: string }) => void;
 };
 
 const OTPVerification = observer(({ phone_verification_type, setOtpVerification }: TOTPVerification) => {

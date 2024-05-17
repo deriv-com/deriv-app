@@ -11,7 +11,7 @@ type TDidntGetTheCodeModal = {
     setShouldShowDidntGetTheCodeModal: (value: boolean) => void;
     setStartTimer: (value: boolean) => void;
     phone_verification_type: string;
-    setOtpVerification: (value: { show: boolean; phone_verification_type: string }) => void;
+    setOtpVerification: (value: { show_otp_verification: boolean; phone_verification_type: string }) => void;
 };
 
 const DidntGetTheCodeModal = observer(
@@ -28,7 +28,7 @@ const DidntGetTheCodeModal = observer(
 
         const handleResendCode = () => {
             phone_verification_type === VERIFICATION_SERVICES.SMS ? requestOnSMS() : requestOnWhatsApp();
-            setOtpVerification({ show: true, phone_verification_type });
+            setOtpVerification({ show_otp_verification: true, phone_verification_type });
             setStartTimer(true);
             setShouldShowDidntGetTheCodeModal(false);
         };
@@ -42,13 +42,16 @@ const DidntGetTheCodeModal = observer(
             phone_verification_type === VERIFICATION_SERVICES.SMS ? requestOnWhatsApp() : requestOnSMS();
 
             setStartTimer(true);
-            setOtpVerification({ show: true, phone_verification_type: changed_phone_verification_type });
+            setOtpVerification({
+                show_otp_verification: true,
+                phone_verification_type: changed_phone_verification_type,
+            });
             setShouldShowDidntGetTheCodeModal(false);
         };
 
         const handleChangePhoneNumber = () => {
             setShouldShowDidntGetTheCodeModal(false);
-            setOtpVerification({ show: false, phone_verification_type });
+            setOtpVerification({ show_otp_verification: false, phone_verification_type });
         };
 
         return (

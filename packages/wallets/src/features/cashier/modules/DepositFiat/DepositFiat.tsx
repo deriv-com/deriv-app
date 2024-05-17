@@ -1,22 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useAuthorize, useCashierFiatAddress } from '@deriv/api-v2';
-import { Loader, WalletsErrorScreen } from '../../../../components';
-import { isServerError } from '../../../../utils/utils';
+import React, { useState } from 'react';
+import { useCashierFiatAddress } from '@deriv/api-v2';
+import { Loader } from '../../../../components';
 import './DepositFiat.scss';
 
 const DepositFiat = () => {
-    const { isSuccess: isAuthorizeSuccess } = useAuthorize();
-    const { data: iframeUrl, error: depositError, isError, mutate } = useCashierFiatAddress();
+    const { data: iframeUrl } = useCashierFiatAddress();
     const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        if (isAuthorizeSuccess) {
-            mutate('deposit');
-        }
-    }, [isAuthorizeSuccess, mutate]);
-
-    if (isError && isServerError(depositError.error))
-        return <WalletsErrorScreen message={depositError.error.message} />;
 
     return (
         <React.Fragment>

@@ -80,7 +80,7 @@ export const routes = {
     wallets: '/wallet',
     wallets_deposit: '/wallet/deposit',
     wallets_withdrawal: '/wallet/withdrawal',
-    wallets_transfer: 'wallet/account-transfer',
+    wallets_transfer: '/wallet/account-transfer',
     wallets_transactions: '/wallet/transactions',
     wallets_compare_accounts: '/compare-accounts',
     wallets_on_ramp: '/wallet/on-ramp',

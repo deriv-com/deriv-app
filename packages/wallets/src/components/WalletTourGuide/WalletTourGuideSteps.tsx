@@ -28,11 +28,11 @@ export const desktopStepTourGuide: Step[] = [
         ...stepProps,
     },
     {
-        content: <WalletText size='sm'>Use the drop-down menu to switch between your Wallets.</WalletText>,
+        content: <WalletText size='sm'>Switch to a Wallet from the drop-down menu.</WalletText>,
         disableScrolling: false,
         placement: 'bottom',
         target: '.wallets-textfield__box',
-        title: <SpotLightHeader>Switch between Wallets</SpotLightHeader>,
+        title: <SpotLightHeader>Change your Wallet</SpotLightHeader>,
         ...stepProps,
         spotlightPadding: 8,
     },
@@ -48,7 +48,7 @@ export const desktopStepTourGuide: Step[] = [
         target: '.wallets-add-more__card',
         title: (
             <WalletText color='red' size='sm' weight='bold'>
-                Explore more Wallets
+                Add more currencies
             </WalletText>
         ),
         ...stepProps,

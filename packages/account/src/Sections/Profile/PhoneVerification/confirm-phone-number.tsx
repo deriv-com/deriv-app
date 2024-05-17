@@ -8,7 +8,7 @@ import { useGetPhoneNumberOTP } from '@deriv/hooks';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 
 type TConfirmPhoneNumber = {
-    setOtpVerification: (value: { show: boolean; phone_verification_type: string }) => void;
+    setOtpVerification: (value: { show_otp_verification: boolean; phone_verification_type: string }) => void;
 };
 
 const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber) => {
@@ -19,7 +19,7 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
     const phone_number = account_settings.phone || '';
     const handleSubmit = (phone_verification_type: string) => {
         phone_verification_type === VERIFICATION_SERVICES.SMS ? requestOnSMS() : requestOnWhatsApp();
-        setOtpVerification({ show: true, phone_verification_type });
+        setOtpVerification({ show_otp_verification: true, phone_verification_type });
         setShouldShowPhoneNumberOTP(true);
     };
 

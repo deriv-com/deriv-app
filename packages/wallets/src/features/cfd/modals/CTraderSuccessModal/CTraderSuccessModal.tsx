@@ -9,12 +9,13 @@ import { CFDSuccess } from '../../screens';
 import { CTraderSuccessModalButtons } from './components';
 
 type TCTraderSuccessModal = {
+    createdAccount?: THooks.CreateOtherCFDAccount;
     displayBalance?: string;
     isDemo: boolean;
     walletCurrencyType: THooks.WalletAccountsList['wallet_currency_type'];
 };
 
-const CTraderSuccessModal = ({ displayBalance, isDemo, walletCurrencyType }: TCTraderSuccessModal) => {
+const CTraderSuccessModal = ({ createdAccount, displayBalance, isDemo, walletCurrencyType }: TCTraderSuccessModal) => {
     const { data: cTraderAccounts } = useCtraderAccountsList();
     const { isMobile } = useDevice();
     const { hide } = useModal();
@@ -26,7 +27,9 @@ const CTraderSuccessModal = ({ displayBalance, isDemo, walletCurrencyType }: TCT
     if (isMobile) {
         return (
             <ModalStepWrapper
-                renderFooter={() => <CTraderSuccessModalButtons hide={hide} isDemo={isDemo} />}
+                renderFooter={() => (
+                    <CTraderSuccessModalButtons createdAccount={createdAccount} hide={hide} isDemo={isDemo} />
+                )}
                 title={' '}
             >
                 <CFDSuccess
@@ -34,7 +37,9 @@ const CTraderSuccessModal = ({ displayBalance, isDemo, walletCurrencyType }: TCT
                     displayBalance={cTraderAccounts?.find(account => account.login)?.formatted_balance}
                     marketType='all'
                     platform='ctrader'
-                    renderButton={() => <CTraderSuccessModalButtons hide={hide} isDemo={isDemo} />}
+                    renderButton={() => (
+                        <CTraderSuccessModalButtons createdAccount={createdAccount} hide={hide} isDemo={isDemo} />
+                    )}
                     title={`Your ${PlatformDetails.ctrader.title} ${isDemo ? 'demo' : ''} account is ready`}
                 />
                 ;
@@ -42,13 +47,15 @@ const CTraderSuccessModal = ({ displayBalance, isDemo, walletCurrencyType }: TCT
         );
     }
     return (
-        <ModalWrapper>
+        <ModalWrapper hideCloseButton>
             <CFDSuccess
                 description={description}
                 displayBalance={cTraderAccounts?.find(account => account.login)?.formatted_balance}
                 marketType='all'
                 platform={PlatformDetails.ctrader.platform}
-                renderButton={() => <CTraderSuccessModalButtons hide={hide} isDemo={isDemo} />}
+                renderButton={() => (
+                    <CTraderSuccessModalButtons createdAccount={createdAccount} hide={hide} isDemo={isDemo} />
+                )}
                 title={`Your ${PlatformDetails.ctrader.title} ${isDemo ? 'demo' : ''} account is ready`}
             />
         </ModalWrapper>

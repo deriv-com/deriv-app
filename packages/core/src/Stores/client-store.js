@@ -298,7 +298,6 @@ export default class ClientStore extends BaseStore {
             has_wallet: computed,
             should_restrict_bvi_account_creation: computed,
             should_restrict_vanuatu_account_creation: computed,
-            should_show_eu_content: computed,
             should_show_eu_error: computed,
             is_virtual: computed,
             is_eu: computed,
@@ -859,11 +858,6 @@ export default class ClientStore extends BaseStore {
         return !!this.mt5_login_list.filter(
             item => item?.landing_company_short === 'vanuatu' && item?.status === 'poa_failed'
         ).length;
-    }
-
-    get should_show_eu_content() {
-        const is_current_mf = this.landing_company_shortcode === 'maltainvest';
-        return (!this.is_logged_in && this.is_eu_country) || this.is_eu || is_current_mf;
     }
 
     get should_show_eu_error() {
@@ -2197,9 +2191,8 @@ export default class ClientStore extends BaseStore {
             this.setIsLoggingIn(true);
 
             const redirect_url = sessionStorage.getItem('redirect_url');
-            const is_next_wallet_enabled = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
 
-            const target_url = is_next_wallet_enabled ? routes.wallets : routes.traders_hub;
+            const target_url = this.has_wallet ? routes.wallets : routes.traders_hub;
 
             if (
                 (redirect_url?.endsWith('/') ||

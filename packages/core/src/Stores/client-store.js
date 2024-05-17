@@ -1548,6 +1548,11 @@ export default class ClientStore extends BaseStore {
             '_filteredParams',
         ];
 
+        // redirect to the DTrader of there is needed query params
+        if (!window.location.pathname.endsWith(routes.trade) && /chart_type|interval|symbol|trade_type/.test(search)) {
+            window.history.replaceState({}, document.title, routes.trade + search);
+        }
+
         const authorize_response = await this.setUserLogin(login_new_user);
 
         if (action_param === 'signup') {

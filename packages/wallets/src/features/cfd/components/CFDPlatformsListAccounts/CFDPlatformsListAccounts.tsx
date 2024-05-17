@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useCtraderAccountsList, useDxtradeAccountsList, useSortedMT5Accounts } from '@deriv/api-v2';
 import { TradingAppCardLoader } from '../../../../components/SkeletonLoader';
 import {
@@ -11,28 +11,19 @@ import {
 } from '../../flows';
 import './CFDPlatformsListAccounts.scss';
 
-type TProps = {
-    onMT5PlatformListLoaded?: (value: boolean) => void;
-};
-
-const CFDPlatformsListAccounts: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
-    const { data: mt5AccountsList, isFetchedAfterMount: isMT5FetchedAfterMount } = useSortedMT5Accounts();
+const CFDPlatformsListAccounts: React.FC = () => {
+    const { data: mt5AccountsList, isFetchedAfterMount, isLoading: isMT5Loading } = useSortedMT5Accounts();
     const { data: ctraderAccountsList } = useCtraderAccountsList();
     const { data: dxtradeAccountsList } = useDxtradeAccountsList();
 
     const hasCTraderAccount = !!ctraderAccountsList?.length;
     const hasDxtradeAccount = !!dxtradeAccountsList?.length;
 
-    useEffect(() => {
-        onMT5PlatformListLoaded?.(isMT5FetchedAfterMount);
-        return () => onMT5PlatformListLoaded?.(false);
-    }, [isMT5FetchedAfterMount, onMT5PlatformListLoaded]);
-
     return (
         <div className='wallets-cfd-list-accounts__content'>
             {/* TODO: Update loader with updated skeleton loader design */}
-            {!isMT5FetchedAfterMount && <TradingAppCardLoader />}
-            {isMT5FetchedAfterMount &&
+            {(isMT5Loading || !isFetchedAfterMount) && <TradingAppCardLoader />}
+            {(!isMT5Loading || isFetchedAfterMount) &&
                 mt5AccountsList?.map((account, index) => {
                     if (account.is_added)
                         return (

@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, Popover } from '@deriv/components';
-import { routes, formatMoney, PlatformContext, moduleLoader } from '@deriv/shared';
+import { routes, formatMoney, PlatformContext, moduleLoader, isTabletOs } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
@@ -41,6 +41,11 @@ const AccountActions = React.memo(
     }) => {
         const { is_appstore } = React.useContext(PlatformContext);
         const { isDesktop } = useDevice();
+        const accountSettings = (
+            <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
+                <Icon icon='IcUserOutline' />
+            </BinaryLink>
+        );
 
         if (is_logged_in) {
             if (isDesktop) {
@@ -52,18 +57,21 @@ const AccountActions = React.memo(
                             toggleDialog={toggleNotifications}
                             tooltip_message={<Localize i18n_default_text='View notifications' />}
                             should_disable_pointer_events
+                            showPopover={!isTabletOs}
                         />
-                        <Popover
-                            classNameBubble='account-settings-toggle__tooltip'
-                            alignment='bottom'
-                            message={<Localize i18n_default_text='Manage account settings' />}
-                            should_disable_pointer_events
-                            zIndex={9999}
-                        >
-                            <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
-                                <Icon icon='IcUserOutline' />
-                            </BinaryLink>
-                        </Popover>
+                        {isTabletOs ? (
+                            accountSettings
+                        ) : (
+                            <Popover
+                                classNameBubble='account-settings-toggle__tooltip'
+                                alignment='bottom'
+                                message={<Localize i18n_default_text='Manage account settings' />}
+                                should_disable_pointer_events
+                                zIndex={9999}
+                            >
+                                {accountSettings}
+                            </Popover>
+                        )}
                         <React.Suspense fallback={<div />}>
                             <AccountInfo
                                 acc_switcher_disabled_message={acc_switcher_disabled_message}

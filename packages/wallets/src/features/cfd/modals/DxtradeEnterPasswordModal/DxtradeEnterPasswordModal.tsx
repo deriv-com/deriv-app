@@ -64,7 +64,7 @@ const DxtradeEnterPasswordModal = () => {
         if (!isResetPasswordSuccessful) return;
         if (!isDxtradePasswordNotSet && isMobile) {
             show(
-                <ModalStepWrapper title="We've sent you an email">
+                <ModalStepWrapper>
                     <SentEmailContent onErrorButtonClick={hide} platform={dxtradePlatform} />
                 </ModalStepWrapper>
             );

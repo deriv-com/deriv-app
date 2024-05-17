@@ -44,7 +44,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                         <Localize
                             i18n_default_text='Enter the 6-digit code sent to you via {{phone_verification_type}} at {{users_phone_number}}:'
                             values={{
-                                phone_verification_type: convertPhoneTypeDisplay(phone_verification_type),
+                                phone_verification_type: localize(convertPhoneTypeDisplay(phone_verification_type)),
                                 users_phone_number: phone,
                             }}
                         />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 import { useGetPhoneNumberOTP } from '@deriv/hooks';
@@ -86,10 +86,12 @@ const DidntGetTheCodeModal = observer(
                                     <Localize
                                         i18n_default_text='Send code via {{phone_verification_type}}'
                                         values={{
-                                            phone_verification_type: convertPhoneTypeDisplay(
-                                                phone_verification_type === VERIFICATION_SERVICES.SMS
-                                                    ? VERIFICATION_SERVICES.WHATSAPP
-                                                    : VERIFICATION_SERVICES.SMS
+                                            phone_verification_type: localize(
+                                                convertPhoneTypeDisplay(
+                                                    phone_verification_type === VERIFICATION_SERVICES.SMS
+                                                        ? VERIFICATION_SERVICES.WHATSAPP
+                                                        : VERIFICATION_SERVICES.SMS
+                                                )
                                             ),
                                         }}
                                     />

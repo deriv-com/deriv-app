@@ -101,6 +101,11 @@ Blockly.Blocks.trade_definition_market = {
                 const top_blocks = this.workspace.getTopBlocks();
                 const trade_definition_block = top_blocks.find(block => block.type === 'trade_definition');
 
+                const trade_options = trade_definition_block.getChildByType('trade_definition_tradeoptions');
+                if (trade_options) {
+                    trade_options.dispose();
+                }
+
                 // Reconnect self to trade definition block.
                 if (trade_definition_block) {
                     const connection = trade_definition_block.getLastConnectionInStatement('TRADE_OPTIONS');

@@ -17,7 +17,9 @@ const TradersHubOnboarding = observer(() => {
     const onClickHandler = has_wallet
         ? () => {
               setWalletsOnboarding('started');
-              history.push(routes.wallets);
+              if (history.location.pathname !== routes.wallets) {
+                  history.push(routes.wallets);
+              }
           }
         : () => {
               if (!is_tour_open) {

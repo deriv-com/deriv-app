@@ -56,7 +56,6 @@ const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecond
                         </WalletButtonGroup>
                     );
                 }}
-                shouldHideDerivAppHeader
             >
                 <div className='wallets-password-limit-exceeded__modal'>
                     <PasswordLimitExceeded />

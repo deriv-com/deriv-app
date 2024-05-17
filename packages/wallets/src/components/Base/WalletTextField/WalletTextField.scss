@@ -169,25 +169,4 @@
             text-align: left;
         }
     }
-
-    @include mobile {
-        input[type='date']::-webkit-datetime-edit {
-            margin: 0;
-            padding: 0;
-            border: none;
-            font: inherit;
-            color: inherit;
-            width: inherit;
-            outline: none;
-            text-align: left;
-            font-size: 1.4rem;
-            background: transparent;
-            background-color: transparent;
-        }
-        input[type='date']::-webkit-inner-spin-button,
-        input[type='date']::-webkit-calendar-picker-indicator {
-            display: none;
-            -webkit-appearance: none;
-        }
-    }
 }

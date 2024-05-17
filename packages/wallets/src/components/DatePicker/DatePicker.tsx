@@ -53,10 +53,6 @@ const DatePicker = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedDate]);
 
-    useEffect(() => {
-        return () => setIsCalendarOpen(false);
-    }, []);
-
     return (
         <div className='wallets-datepicker' ref={datePickerRef}>
             <FlowTextField

@@ -57,12 +57,7 @@ const FlowTextField = forwardRef(
                             errorMessage={hasTouched && (form.errors[name] || errorMessage)}
                             isInvalid={(hasTouched && isInvalid) || (hasTouched && Boolean(form.errors[name]))}
                             name={field.name}
-                            onChange={e => {
-                                field.onChange(e);
-                                if (rest.onChange) {
-                                    rest.onChange(e);
-                                }
-                            }}
+                            onChange={field.onChange}
                             onFocus={e => {
                                 setHasTouched(true);
                                 field.onBlur(e);

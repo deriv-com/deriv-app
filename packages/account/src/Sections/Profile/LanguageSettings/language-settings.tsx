@@ -6,21 +6,22 @@ import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import FormSubHeader from 'Components/form-sub-header';
 import LanguageRadioButton from 'Components/language-settings';
+import { useDevice } from '@deriv-com/ui';
 
 const LanguageSettings = observer(() => {
-    const { common, ui } = useStore();
-    const { is_mobile } = ui;
+    const { common } = useStore();
     const { changeSelectedLanguage, current_language } = common;
     const { has_wallet } = useStoreWalletAccountsList();
+    const { isDesktop } = useDevice();
 
-    if (is_mobile || has_wallet) {
+    if (!isDesktop || has_wallet) {
         return <Redirect to={routes.traders_hub} />;
     }
 
     const allowed_language_keys: string[] = Object.keys(getAllowedLanguages());
     return (
         <div className='settings-language'>
-            <FormSubHeader title={localize('Select Language')} />
+            <FormSubHeader title={localize('Select language')} />
             <div className='settings-language__language-container'>
                 {allowed_language_keys.map(language_key => {
                     return (

@@ -8,11 +8,7 @@ import CFDPlatformsListEmptyState from './CFDPlatformsListEmptyState';
 import { CFDPlatformsListAccounts } from './components';
 import './CFDPlatformsList.scss';
 
-type TProps = {
-    onMT5PlatformListLoaded?: (value: boolean) => void;
-};
-
-const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
+const CFDPlatformsList: React.FC = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const { t } = useTranslation();
@@ -73,11 +69,7 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                     </div>
                 )}
             </section>
-            {activeWallet?.currency_config?.is_crypto ? (
-                <CFDPlatformsListEmptyState />
-            ) : (
-                <CFDPlatformsListAccounts onMT5PlatformListLoaded={onMT5PlatformListLoaded} />
-            )}
+            {activeWallet?.currency_config?.is_crypto ? <CFDPlatformsListEmptyState /> : <CFDPlatformsListAccounts />}
         </div>
     );
 };

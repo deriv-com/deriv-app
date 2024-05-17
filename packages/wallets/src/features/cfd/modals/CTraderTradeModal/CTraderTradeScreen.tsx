@@ -46,9 +46,10 @@ const CTraderTradeScreen = () => {
     const totalBalance = ctraderAccountsList?.reduce((acc, cur) => acc + +(cur?.display_balance || 0), 0);
 
     useEffect(() => {
-        if (isAccountCreated) {
-            show(<CTraderAddAccountSuccessModal />);
-        }
+        // if (isAccountCreated) {
+
+        // }
+        show(<CTraderAddAccountSuccessModal />);
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isAccountCreated]);

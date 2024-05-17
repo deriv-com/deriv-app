@@ -33,7 +33,6 @@ export const LoginHistoryTable = ({ loginHistory }: TLoginHistoryProps) => {
             <Table
                 columns={header}
                 data={formattedLoginHistory}
-                isFetching={false}
                 loadMoreFunction={() => {
                     //[TODO]: Add load more function
                 }}

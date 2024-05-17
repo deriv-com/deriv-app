@@ -165,6 +165,6 @@ runs:
   - name: Upload reports.zip
     uses: actions/upload-artifact@v4
     with:
-      name: report-${{ github.sha }}
+      name: reports-${{ github.sha }}
       path: reports.zip
       retention-days: 5

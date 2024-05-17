@@ -1,10 +1,13 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import { Icon, Popover } from '@deriv/components';
+import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 
 const TradersHubOnboarding = observer(() => {
+    const history = useHistory();
     const { client, traders_hub, ui } = useStore();
     const { has_wallet } = client;
     const { setIsFirstTimeVisit, toggleIsTourOpen, is_tour_open } = traders_hub;
@@ -14,6 +17,7 @@ const TradersHubOnboarding = observer(() => {
     const onClickHandler = has_wallet
         ? () => {
               setWalletsOnboarding('started');
+              history.push(routes.wallets);
           }
         : () => {
               if (!is_tour_open) {

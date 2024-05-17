@@ -1,8 +1,10 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import { useFeatureFlags } from '@deriv/hooks';
 import { useReadLocalStorage } from 'usehooks-ts';
 import { makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { useDevice } from '@deriv/components';
 
 const HeaderFallback = () => <div className='header' />;
 
@@ -37,10 +39,16 @@ const TradersHubHeaderWallets = makeLazyLoader(
     () => <HeaderFallback />
 )();
 
+const DTraderV2Header = makeLazyLoader(
+    () => moduleLoader(() => import(/* webpackChunkName: "dtrader-v2-header" */ './dtrader-v2-header')),
+    () => <HeaderFallback />
+)();
+
 const Header = observer(() => {
     const { client } = useStore();
     const { accounts, has_wallet, is_logged_in, setAccounts, loginid, switchAccount } = client;
     const { pathname } = useLocation();
+    const { is_mobile } = useDevice();
 
     const is_wallets_cashier_route = pathname.includes(routes.wallets);
 
@@ -58,6 +66,7 @@ const Header = observer(() => {
         is_wallets_cashier_route;
 
     const client_accounts = useReadLocalStorage('client.accounts');
+    const { is_dtrader_v2_enabled } = useFeatureFlags();
 
     React.useEffect(() => {
         if (has_wallet && is_logged_in) {
@@ -73,12 +82,22 @@ const Header = observer(() => {
 
     if (is_logged_in) {
         let result;
-        if (traders_hub_routes) {
-            result = has_wallet ? <TradersHubHeaderWallets /> : <TradersHubHeader />;
-        } else if (pathname === routes.onboarding) {
-            result = null;
-        } else {
-            result = has_wallet ? <DTraderHeaderWallets /> : <DTraderHeader />;
+        switch (true) {
+            case pathname === routes.onboarding:
+                result = null;
+                break;
+            case is_dtrader_v2_enabled &&
+                is_mobile &&
+                (pathname === routes.trade ||
+                    pathname.startsWith('/contract/') === routes.contract.startsWith('/contract/')):
+                result = <DTraderV2Header />;
+                break;
+            case traders_hub_routes:
+                result = has_wallet ? <TradersHubHeaderWallets /> : <TradersHubHeader />;
+                break;
+            default:
+                result = has_wallet ? <DTraderHeaderWallets /> : <DTraderHeader />;
+                break;
         }
         return result;
     } else if (pathname === routes.onboarding) {

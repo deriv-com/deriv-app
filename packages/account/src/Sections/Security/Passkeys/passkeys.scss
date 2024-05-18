@@ -15,6 +15,10 @@
             align-items: center;
             margin-block: 1.6rem;
 
+            .dc-input--error {
+                margin-bottom: 3.2rem;
+            }
+
             &--expanded {
                 display: block;
 
@@ -115,25 +119,29 @@
         height: 4rem;
     }
 
-    &-card {
+    &-list {
         &__wrapper {
-            display: flex;
-            gap: 0.8rem;
-            margin-block: 1.6rem;
-            padding-bottom: 1.6rem;
-            border-bottom: 1px solid var(--general-hover);
+            display: block;
+        }
+    }
 
-            & > .dc-icon:first-child {
-                margin-top: 0.4rem;
-            }
+    &-card {
+        display: flex;
+        gap: 0.8rem;
+        margin-block: 1.6rem;
+        padding-bottom: 1.6rem;
+        border-bottom: 1px solid var(--general-hover);
 
-            & > .dc-icon:last-child {
-                margin-left: auto;
-            }
+        & > .dc-icon:first-child {
+            margin-top: 0.4rem;
+        }
 
-            &:last-child {
-                border-bottom: none;
-            }
+        & > .dc-icon:last-child {
+            margin-left: auto;
+        }
+
+        &:last-child {
+            border-bottom: none;
         }
 
         &__passkey-type-icon {

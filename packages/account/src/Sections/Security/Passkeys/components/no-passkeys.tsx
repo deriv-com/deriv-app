@@ -1,27 +1,19 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { PasskeyCard } from './passkey-card';
 import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status-layout';
 
-type TPasskeysList = {
-    passkeys_list: React.ComponentProps<typeof PasskeyCard>[];
-} & TPasskeysButtonOnClicks;
-
-export const PasskeysList = ({ passkeys_list, onPrimaryButtonClick, onSecondaryButtonClick }: TPasskeysList) => {
+export const NoPasskeys = ({ onPrimaryButtonClick, onSecondaryButtonClick }: TPasskeysButtonOnClicks) => {
     return (
         <div className='passkeys'>
             <PasskeysStatusLayout
-                className='passkeys-list__wrapper'
+                description={<Localize i18n_default_text='Enhanced security is just a tap away.' />}
+                icon='IcAddPasskey'
+                title={<Localize i18n_default_text='Experience safer logins' />}
                 onPrimaryButtonClick={onPrimaryButtonClick}
                 onSecondaryButtonClick={onSecondaryButtonClick}
                 primary_button_text={<Localize i18n_default_text='Create passkey' />}
-                scroll_offset='16rem'
                 secondary_button_text={<Localize i18n_default_text='Learn more' />}
-            >
-                {passkeys_list.map(passkey => (
-                    <PasskeyCard {...passkey} key={passkey.passkey_id} />
-                ))}
-            </PasskeysStatusLayout>
+            />
         </div>
     );
 };

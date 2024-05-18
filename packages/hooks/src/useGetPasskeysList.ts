@@ -1,8 +1,8 @@
-import { useQuery } from '@deriv/api';
-import { useStore } from '@deriv/stores';
 import { useEffect } from 'react';
 import { Analytics } from '@deriv-com/analytics';
+import { useQuery } from '@deriv/api';
 import { getOSNameWithUAParser } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import useAuthorize from './useAuthorize';
 
 const useGetPasskeysList = () => {

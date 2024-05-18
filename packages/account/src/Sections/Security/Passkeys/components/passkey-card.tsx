@@ -14,11 +14,11 @@ type TPasskeyCard = {
     icon?: string;
 };
 
-const PasskeyCard = ({ name, last_used, stored_on, icon }: TPasskeyCard) => {
+export const PasskeyCard = ({ name, last_used, stored_on, icon }: TPasskeyCard) => {
     // TODO: add revoke and rename flow as the next step. 'IcContextMenu' is supposed to be used here
 
     return (
-        <div className='passkeys-card__wrapper'>
+        <div className='passkeys-card'>
             <Icon icon='IcPasskey' size={24} />
             <div>
                 <Text as='p' weight='bold' line_height='l'>
@@ -42,5 +42,3 @@ const PasskeyCard = ({ name, last_used, stored_on, icon }: TPasskeyCard) => {
         </div>
     );
 };
-
-export default PasskeyCard;

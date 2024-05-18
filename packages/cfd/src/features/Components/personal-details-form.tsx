@@ -11,7 +11,7 @@ import {
     FormSubmitErrorMessage,
     Input,
     Loading,
-    MobileWrapper,
+    MobileOrTabletWrapper,
     Modal,
     SelectNative,
     Text,
@@ -313,7 +313,7 @@ const PersonalDetailsForm = ({
                                                         )}
                                                     </Field>
                                                 </DesktopWrapper>
-                                                <MobileWrapper>
+                                                <MobileOrTabletWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         label={localize('Citizenship*')}
@@ -328,7 +328,7 @@ const PersonalDetailsForm = ({
                                                         required
                                                         should_hide_disabled_options={false}
                                                     />
-                                                </MobileWrapper>
+                                                </MobileOrTabletWrapper>
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
@@ -353,7 +353,7 @@ const PersonalDetailsForm = ({
                                                         )}
                                                     </Field>
                                                 </DesktopWrapper>
-                                                <MobileWrapper>
+                                                <MobileOrTabletWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         label={localize('Place of birth*')}
@@ -368,7 +368,7 @@ const PersonalDetailsForm = ({
                                                         required
                                                         should_hide_disabled_options={false}
                                                     />
-                                                </MobileWrapper>
+                                                </MobileOrTabletWrapper>
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
@@ -392,7 +392,7 @@ const PersonalDetailsForm = ({
                                                         )}
                                                     </Field>
                                                 </DesktopWrapper>
-                                                <MobileWrapper>
+                                                <MobileOrTabletWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         label={localize('Tax residence*')}
@@ -406,7 +406,7 @@ const PersonalDetailsForm = ({
                                                         }
                                                         required
                                                     />
-                                                </MobileWrapper>
+                                                </MobileOrTabletWrapper>
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 <InputField
@@ -441,7 +441,7 @@ const PersonalDetailsForm = ({
                                                                 list_portal_id='modal_root'
                                                             />
                                                         </DesktopWrapper>
-                                                        <MobileWrapper>
+                                                        <MobileOrTabletWrapper>
                                                             <SelectNative
                                                                 {...field}
                                                                 placeholder={localize('Please select')}
@@ -461,7 +461,7 @@ const PersonalDetailsForm = ({
                                                                 }}
                                                                 data_testid='account_opening_reason_mobile'
                                                             />
-                                                        </MobileWrapper>
+                                                        </MobileOrTabletWrapper>
                                                     </React.Fragment>
                                                 )}
                                             </Field>

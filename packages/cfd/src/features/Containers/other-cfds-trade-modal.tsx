@@ -27,7 +27,7 @@ type TOtherCFDsTradeModalProps = {
     ctraderTokenCall: (url: string, account_type: 'real' | 'demo') => void;
     is_demo: string;
     platform: TCFDsPlatformType;
-    is_mobile?: boolean;
+    is_mobile_or_tablet?: boolean;
 };
 
 const PlatformIconsAndDescriptions = (
@@ -74,7 +74,7 @@ const OtherCFDsTradeModal = ({
     ctraderTokenCall,
     is_demo,
     platform,
-    is_mobile,
+    is_mobile_or_tablet,
 }: TOtherCFDsTradeModalProps) => {
     const CTraderDescription = () => {
         const platform_name = 'cTrader';
@@ -125,9 +125,9 @@ const OtherCFDsTradeModal = ({
         let app_title = '';
         if (platform_type === CFD_PLATFORMS.DXTRADE) {
             app_title = localize('Run Deriv X on your browser');
-        } else if (platform_type === CFD_PLATFORMS.CTRADER && !is_mobile) {
+        } else if (platform_type === CFD_PLATFORMS.CTRADER && !is_mobile_or_tablet) {
             app_title = localize('Run cTrader on your browser');
-        } else if (platform_type === CFD_PLATFORMS.CTRADER && is_mobile) {
+        } else if (platform_type === CFD_PLATFORMS.CTRADER && is_mobile_or_tablet) {
             return null;
         } else {
             return null;
@@ -228,7 +228,7 @@ const OtherCFDsTradeModal = ({
             <div className='cfd-trade-modal__download-center-app'>{downloadCenterAppOption(platform)}</div>
             {platform === CFD_PLATFORMS.CTRADER && (
                 <React.Fragment>
-                    {!is_mobile && (
+                    {!is_mobile_or_tablet && (
                         <div className='cfd-trade-modal__download-center-app--windows'>
                             <Icon icon='IcWindowsLogo' size={32} />
                             <Text className='cfd-trade-modal__download-center-app--windows-item' size='xs'>
@@ -247,7 +247,7 @@ const OtherCFDsTradeModal = ({
                             </a>
                         </div>
                     )}
-                    {is_mobile && mobileOSDetect() === 'iOS' && (
+                    {is_mobile_or_tablet && mobileOSDetect() === 'iOS' && (
                         <div className='cfd-trade-modal__download-center-app-ctrader-container'>
                             <Text
                                 className='cfd-trade-modal__download-center-app-ctrader__banner-text'

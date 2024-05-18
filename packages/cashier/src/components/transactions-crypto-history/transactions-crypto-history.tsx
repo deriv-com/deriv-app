@@ -1,5 +1,5 @@
 import React from 'react';
-import { DataList, Icon, Loading, MobileWrapper, Modal, Table, Text } from '@deriv/components';
+import { DataList, Icon, Loading, MobileOrTabletWrapper, Modal, Table, Text } from '@deriv/components';
 import { isDesktop, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
@@ -55,10 +55,10 @@ const TransactionsCryptoHistory = observer(() => {
                         </Text>
                     </div>
                 </div>
-                <MobileWrapper>
+                <MobileOrTabletWrapper>
                     <TransactionsCryptoCancelModal />
                     <TransactionsCryptoStatusModal />
-                </MobileWrapper>
+                </MobileOrTabletWrapper>
                 {(data?.length || 0) > 0 ? (
                     <Table className='transactions-crypto-history__table'>
                         {isDesktop() && (

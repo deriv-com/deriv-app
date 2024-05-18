@@ -7,7 +7,7 @@
     width: fit-content;
     background: var(--light-8-primary-background, #fff);
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         width: 100%;
     }
 
@@ -21,7 +21,7 @@
             height: 25rem;
             min-width: 72.6rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 min-width: 100%;
             }
         }
@@ -29,12 +29,12 @@
         & > .wallets-dropzone {
             padding: 2.8rem 15.2rem 3.5rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding: 2.4rem 2.5rem 0.4rem;
             }
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             gap: 1.6rem;
         }
     }
@@ -45,7 +45,7 @@
         padding-bottom: 2rem;
         width: 100%;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             flex-direction: column;
             gap: 1.6rem;
         }

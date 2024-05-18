@@ -12,7 +12,7 @@ import {
     PasswordInput,
     PasswordMeter,
     Text,
-    MobileWrapper,
+    MobileOrTabletWrapper,
     DesktopWrapper,
 } from '@deriv/components';
 import {
@@ -118,12 +118,12 @@ type TCFDPasswordModalProps = {
 const PasswordModalHeader = observer(
     ({ should_set_trading_password, is_password_reset_error, platform }: TPasswordModalHeaderProps) => {
         const { ui } = useStore();
-        const { is_mobile } = ui;
+        const { is_mobile_or_tablet } = ui;
 
-        const element = is_mobile ? 'p' : 'span';
+        const element = is_mobile_or_tablet ? 'p' : 'span';
         const alignment = 'center';
         const font_size = 's';
-        const style = is_mobile
+        const style = is_mobile_or_tablet
             ? {
                   padding: '2rem',
               }
@@ -404,7 +404,7 @@ const CFDPasswordForm = observer(
         validatePassword,
     }: TCFDPasswordFormProps) => {
         const { ui } = useStore();
-        const { is_mobile } = ui;
+        const { is_mobile_or_tablet } = ui;
 
         const button_label = React.useMemo(() => {
             if (error_type === 'PasswordReset') {
@@ -444,7 +444,7 @@ const CFDPasswordForm = observer(
                                         has_cancel={has_cancel_button}
                                         cancel_label={cancel_button_label}
                                         onCancel={handleCancel}
-                                        is_absolute={is_mobile}
+                                        is_absolute={is_mobile_or_tablet}
                                         label={button_label}
                                     />
                                 </form>
@@ -537,7 +537,7 @@ const CFDPasswordForm = observer(
                             has_cancel={has_cancel_button}
                             cancel_label={cancel_button_label}
                             onCancel={handleCancel}
-                            is_absolute={is_mobile}
+                            is_absolute={is_mobile_or_tablet}
                             is_loading={isSubmitting}
                             label={button_label}
                             is_center={should_set_trading_password}
@@ -565,7 +565,12 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         updateMT5Status,
     } = client;
     const { show_eu_related_content, is_eu_user, toggleAccountTransferModal } = traders_hub;
-    const { is_mobile, is_mt5_migration_modal_enabled, setMT5MigrationModalEnabled, is_mt5_migration_modal_open } = ui;
+    const {
+        is_mobile_or_tablet,
+        is_mt5_migration_modal_enabled,
+        setMT5MigrationModalEnabled,
+        is_mt5_migration_modal_open,
+    } = ui;
 
     const {
         account_type,
@@ -779,10 +784,10 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const should_show_password_dialog = React.useMemo(() => {
         if (should_show_password) {
-            if (!should_set_trading_password) return is_mobile;
+            if (!should_set_trading_password) return is_mobile_or_tablet;
         }
         return false;
-    }, [is_mobile, should_set_trading_password, should_show_password]);
+    }, [is_mobile_or_tablet, should_set_trading_password, should_show_password]);
 
     const success_modal_submit_label = React.useMemo(() => {
         if (account_type.category === CATEGORY.REAL) {
@@ -927,7 +932,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             onUnmount={() => getAccountStatus(platform)}
             onExited={() => setPasswordModalExited(true)}
             onEntered={() => setPasswordModalExited(false)}
-            width={is_mobile ? '32.8rem' : 'auto'}
+            width={is_mobile_or_tablet ? '32.8rem' : 'auto'}
         >
             {cfd_password_form}
         </Modal>
@@ -977,7 +982,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     />
                 </Modal>
             </DesktopWrapper>
-            <MobileWrapper>
+            <MobileOrTabletWrapper>
                 <MobileDialog
                     has_full_height
                     portal_element_id='modal_root'
@@ -998,7 +1003,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         onCancel={closeModal}
                     />
                 </MobileDialog>
-            </MobileWrapper>
+            </MobileOrTabletWrapper>
         </React.Fragment>
     );
 
@@ -1033,8 +1038,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         : account_type.category === CATEGORY.REAL
                 }
                 has_close_icon={false}
-                width={is_mobile ? '32.8rem' : 'auto'}
-                is_medium_button={is_mobile}
+                width={is_mobile_or_tablet ? '32.8rem' : 'auto'}
+                is_medium_button={is_mobile_or_tablet}
             />
             <MigrationSuccessModal is_open={should_show_migration_success} closeModal={closeModal} />
             <SentEmailModal

@@ -5,7 +5,7 @@ import { withRouter } from 'react-router';
 import {
     Button,
     DesktopWrapper,
-    MobileWrapper,
+    MobileOrTabletWrapper,
     Div100vhContainer,
     Icon,
     Money,
@@ -25,7 +25,7 @@ import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
 import { getSortedAccountList, getSortedCFDList, isDemo } from './helpers';
 
-const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
+const AccountSwitcher = observer(({ history, is_mobile_or_tablet, is_visible }) => {
     const { client, ui, traders_hub } = useStore();
     const {
         available_crypto_currencies,
@@ -440,32 +440,32 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                             <DesktopWrapper>
                                 <ThemedScrollbars height='354px'>{real_accounts}</ThemedScrollbars>
                             </DesktopWrapper>
-                            <MobileWrapper>
+                            <MobileOrTabletWrapper>
                                 <Div100vhContainer
                                     className='acc-switcher__list-container'
                                     max_autoheight_offset='234px'
                                 >
                                     {real_accounts}
                                 </Div100vhContainer>
-                            </MobileWrapper>
+                            </MobileOrTabletWrapper>
                         </div>
                         <div label={localize('Demo')} id='dt_core_account-switcher_demo-tab'>
                             <DesktopWrapper>
                                 <ThemedScrollbars height='354px'>{demo_account}</ThemedScrollbars>
                             </DesktopWrapper>
-                            <MobileWrapper>
+                            <MobileOrTabletWrapper>
                                 <Div100vhContainer
                                     className='acc-switcher__list-container'
                                     max_autoheight_offset='234px'
                                 >
                                     {demo_account}
                                 </Div100vhContainer>
-                            </MobileWrapper>
+                            </MobileOrTabletWrapper>
                         </div>
                     </Tabs>
                     <div
                         className={classNames('acc-switcher__separator', {
-                            'acc-switcher__separator--auto-margin': is_mobile,
+                            'acc-switcher__separator--auto-margin': is_mobile_or_tablet,
                         })}
                     />
                     <div className='acc-switcher__total'>

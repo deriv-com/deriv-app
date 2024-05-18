@@ -8,7 +8,7 @@ import {
     DesktopWrapper,
     Dropdown,
     InlineMessage,
-    MobileWrapper,
+    MobileOrTabletWrapper,
     Popover,
     RadioGroup,
     SelectNative,
@@ -307,7 +307,7 @@ const PersonalDetailsForm = props => {
                                             )}
                                         </Field>
                                     </DesktopWrapper>
-                                    <MobileWrapper>
+                                    <MobileOrTabletWrapper>
                                         <SelectNative
                                             placeholder={localize('Please select')}
                                             label={localize('State/Province')}
@@ -317,7 +317,7 @@ const PersonalDetailsForm = props => {
                                             use_text
                                             onChange={e => setFieldValue('address_state', e.target.value, true)}
                                         />
-                                    </MobileWrapper>
+                                    </MobileOrTabletWrapper>
                                 </React.Fragment>
                             ) : (
                                 <FormInputField
@@ -381,7 +381,7 @@ const PersonalDetailsForm = props => {
                                                 data-testid='citizenship'
                                             />
                                         </DesktopWrapper>
-                                        <MobileWrapper>
+                                        <MobileOrTabletWrapper>
                                             <SelectNative
                                                 placeholder={localize('Citizenship')}
                                                 name={field.name}
@@ -404,7 +404,7 @@ const PersonalDetailsForm = props => {
                                                 should_hide_disabled_options={false}
                                                 data_testid='citizenship_mobile'
                                             />
-                                        </MobileWrapper>
+                                        </MobileOrTabletWrapper>
                                     </React.Fragment>
                                 )}
                             </Field>
@@ -462,7 +462,7 @@ const PersonalDetailsForm = props => {
                                                 disabled={isFieldImmutable('employment_status', editable_fields)}
                                             />
                                         </DesktopWrapper>
-                                        <MobileWrapper>
+                                        <MobileOrTabletWrapper>
                                             <SelectNative
                                                 placeholder={localize('Please select')}
                                                 name='employment_status'
@@ -481,7 +481,7 @@ const PersonalDetailsForm = props => {
                                                 }}
                                                 disabled={isFieldImmutable('employment_status', editable_fields)}
                                             />
-                                        </MobileWrapper>
+                                        </MobileOrTabletWrapper>
                                     </fieldset>
                                 )}
                                 {'tax_identification_confirm' in values && (
@@ -649,7 +649,7 @@ const PlaceOfBirthField = ({ handleChange, setFieldValue, disabled, residence_li
                         data-testid='place_of_birth'
                     />
                 </DesktopWrapper>
-                <MobileWrapper>
+                <MobileOrTabletWrapper>
                     <SelectNative
                         placeholder={required ? localize('Place of birth') : localize('Place of birth')}
                         name={field.name}
@@ -669,7 +669,7 @@ const PlaceOfBirthField = ({ handleChange, setFieldValue, disabled, residence_li
                         should_hide_disabled_options={false}
                         data_testid='place_of_birth_mobile'
                     />
-                </MobileWrapper>
+                </MobileOrTabletWrapper>
             </React.Fragment>
         )}
     </Field>
@@ -703,7 +703,7 @@ const TaxResidenceField = ({
                         required={required}
                     />
                 </DesktopWrapper>
-                <MobileWrapper>
+                <MobileOrTabletWrapper>
                     <SelectNative
                         placeholder={required ? localize('Tax residence*') : localize('Tax residence')}
                         name={field.name}
@@ -721,7 +721,7 @@ const TaxResidenceField = ({
                         data_testid='tax_residence_mobile'
                         disabled={disabled}
                     />
-                </MobileWrapper>
+                </MobileOrTabletWrapper>
                 <div
                     data-testid='tax_residence_pop_over'
                     onClick={e => {
@@ -818,7 +818,7 @@ const AccountOpeningReasonField = ({ no_header, required, account_opening_reason
                             required
                         />
                     </DesktopWrapper>
-                    <MobileWrapper>
+                    <MobileOrTabletWrapper>
                         <SelectNative
                             placeholder={localize('Please select')}
                             name={field.name}
@@ -834,7 +834,7 @@ const AccountOpeningReasonField = ({ no_header, required, account_opening_reason
                             data_testid='account_opening_reason_mobile'
                             disabled={disabled}
                         />
-                    </MobileWrapper>
+                    </MobileOrTabletWrapper>
                 </React.Fragment>
             )}
         </Field>

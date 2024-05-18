@@ -4,7 +4,7 @@
     align-items: center;
     gap: 2.4rem;
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         width: 100%;
     }
 
@@ -18,7 +18,7 @@
         height: 3.6rem;
         border-radius: 4px;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 100%;
         }
     }

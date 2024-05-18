@@ -10,7 +10,7 @@ import {
     Modal,
     Icon,
     DesktopWrapper,
-    MobileWrapper,
+    MobileOrTabletWrapper,
     SelectNative,
     Text,
 } from '@deriv/components';
@@ -200,7 +200,7 @@ const FinancialAssessment = observer(() => {
     } = client;
     const { platform, routeBackInApp } = common;
     const { refreshNotifications } = notifications;
-    const { is_mobile, is_desktop } = ui;
+    const { is_mobile_or_tablet, is_desktop } = ui;
     const is_mf = landing_company_shortcode === 'maltainvest';
 
     const history = useHistory();
@@ -328,7 +328,7 @@ const FinancialAssessment = observer(() => {
 
     const toggleConfirmationModal = (value: boolean) => {
         setIsConfirmationVisible(value);
-        if (is_mobile) {
+        if (is_mobile_or_tablet) {
             setIsFormVisible(!value);
         }
     };
@@ -345,16 +345,16 @@ const FinancialAssessment = observer(() => {
 
     const getScrollOffset = () => {
         if (is_mf) {
-            if (is_mobile && is_financial_information_incomplete) return '22rem';
+            if (is_mobile_or_tablet && is_financial_information_incomplete) return '22rem';
             return is_financial_information_incomplete && !is_submit_success ? '16.5rem' : '16rem';
-        } else if (is_mobile) return '20rem';
+        } else if (is_mobile_or_tablet) return '20rem';
         return '8rem';
     };
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
     if (is_virtual) return <DemoMessage />;
-    if (is_mobile && is_authentication_needed && !is_mf && is_submit_success)
+    if (is_mobile_or_tablet && is_authentication_needed && !is_mf && is_submit_success)
         return <SubmittedPage platform={platform} routeBackInApp={routeBackInApp} />;
 
     const setInitialFormData = () => {
@@ -408,7 +408,7 @@ const FinancialAssessment = observer(() => {
                 isValid,
             }) => (
                 <React.Fragment>
-                    {is_mobile && is_confirmation_visible && (
+                    {is_mobile_or_tablet && is_confirmation_visible && (
                         <ConfirmationPage toggleModal={toggleConfirmationModal} onSubmit={handleSubmit} />
                     )}
                     {is_desktop && (
@@ -418,7 +418,7 @@ const FinancialAssessment = observer(() => {
                             onSubmit={handleSubmit}
                         />
                     )}
-                    <LeaveConfirm onDirty={is_mobile ? showForm : () => undefined} />
+                    <LeaveConfirm onDirty={is_mobile_or_tablet ? showForm : () => undefined} />
                     {is_form_visible && (
                         <form className='account-form account-form__financial-assessment' onSubmit={handleSubmit}>
                             {is_mf && is_financial_information_incomplete && !is_submit_success && (
@@ -426,7 +426,7 @@ const FinancialAssessment = observer(() => {
                                     <div className='financial-banner__frame'>
                                         <div className='financial-banner__container'>
                                             <Icon icon='IcAlertWarning' />
-                                            {is_mobile ? (
+                                            {is_mobile_or_tablet ? (
                                                 <Text size='xxxs' line_height='s'>
                                                     <Localize i18n_default_text='To enable withdrawals, please complete your financial assessment.' />
                                                 </Text>
@@ -460,7 +460,7 @@ const FinancialAssessment = observer(() => {
                                                 error={touched.income_source && errors.income_source}
                                             />
                                         </DesktopWrapper>
-                                        <MobileWrapper>
+                                        <MobileOrTabletWrapper>
                                             <SelectNative
                                                 placeholder={localize('Please select')}
                                                 name='income_source'
@@ -473,7 +473,7 @@ const FinancialAssessment = observer(() => {
                                                     handleChange(e);
                                                 }}
                                             />
-                                        </MobileWrapper>
+                                        </MobileOrTabletWrapper>
                                     </fieldset>
                                     {!is_mf && (
                                         <fieldset className='account-form__fieldset'>
@@ -496,7 +496,7 @@ const FinancialAssessment = observer(() => {
                                                     error={touched.employment_status && errors.employment_status}
                                                 />
                                             </DesktopWrapper>
-                                            <MobileWrapper>
+                                            <MobileOrTabletWrapper>
                                                 <SelectNative
                                                     placeholder={localize('Please select')}
                                                     name='employment_status'
@@ -516,7 +516,7 @@ const FinancialAssessment = observer(() => {
                                                         handleChange(e);
                                                     }}
                                                 />
-                                            </MobileWrapper>
+                                            </MobileOrTabletWrapper>
                                         </fieldset>
                                     )}
                                     <fieldset className='account-form__fieldset'>
@@ -532,7 +532,7 @@ const FinancialAssessment = observer(() => {
                                                 error={touched.employment_industry && errors.employment_industry}
                                             />
                                         </DesktopWrapper>
-                                        <MobileWrapper>
+                                        <MobileOrTabletWrapper>
                                             <SelectNative
                                                 placeholder={localize('Please select')}
                                                 name='employment_industry'
@@ -547,7 +547,7 @@ const FinancialAssessment = observer(() => {
                                                     handleChange(e);
                                                 }}
                                             />
-                                        </MobileWrapper>
+                                        </MobileOrTabletWrapper>
                                     </fieldset>
                                     {!shouldHideOccupationField(values.employment_status || employment_status) && (
                                         <fieldset className='account-form__fieldset'>
@@ -567,7 +567,7 @@ const FinancialAssessment = observer(() => {
                                                     test_id='occupation'
                                                 />
                                             </DesktopWrapper>
-                                            <MobileWrapper>
+                                            <MobileOrTabletWrapper>
                                                 <SelectNative
                                                     placeholder={localize('Please select')}
                                                     name='occupation'
@@ -583,7 +583,7 @@ const FinancialAssessment = observer(() => {
                                                     }}
                                                     data_testid='occupation'
                                                 />
-                                            </MobileWrapper>
+                                            </MobileOrTabletWrapper>
                                         </fieldset>
                                     )}
                                     <fieldset className='account-form__fieldset'>
@@ -599,7 +599,7 @@ const FinancialAssessment = observer(() => {
                                                 error={touched.source_of_wealth && errors.source_of_wealth}
                                             />
                                         </DesktopWrapper>
-                                        <MobileWrapper>
+                                        <MobileOrTabletWrapper>
                                             <SelectNative
                                                 placeholder={localize('Please select')}
                                                 name='source_of_wealth'
@@ -612,7 +612,7 @@ const FinancialAssessment = observer(() => {
                                                     handleChange(e);
                                                 }}
                                             />
-                                        </MobileWrapper>
+                                        </MobileOrTabletWrapper>
                                     </fieldset>
                                     <fieldset className='account-form__fieldset'>
                                         <DesktopWrapper>
@@ -627,7 +627,7 @@ const FinancialAssessment = observer(() => {
                                                 error={touched.education_level && errors.education_level}
                                             />
                                         </DesktopWrapper>
-                                        <MobileWrapper>
+                                        <MobileOrTabletWrapper>
                                             <SelectNative
                                                 placeholder={localize('Please select')}
                                                 name='education_level'
@@ -640,7 +640,7 @@ const FinancialAssessment = observer(() => {
                                                     handleChange(e);
                                                 }}
                                             />
-                                        </MobileWrapper>
+                                        </MobileOrTabletWrapper>
                                     </fieldset>
                                     <fieldset className='account-form__fieldset'>
                                         <DesktopWrapper>
@@ -655,7 +655,7 @@ const FinancialAssessment = observer(() => {
                                                 error={touched.net_income && errors.net_income}
                                             />
                                         </DesktopWrapper>
-                                        <MobileWrapper>
+                                        <MobileOrTabletWrapper>
                                             <SelectNative
                                                 placeholder={localize('Please select')}
                                                 name='net_income'
@@ -668,7 +668,7 @@ const FinancialAssessment = observer(() => {
                                                     handleChange(e);
                                                 }}
                                             />
-                                        </MobileWrapper>
+                                        </MobileOrTabletWrapper>
                                     </fieldset>
                                     <fieldset className='account-form__fieldset'>
                                         <DesktopWrapper>
@@ -684,7 +684,7 @@ const FinancialAssessment = observer(() => {
                                                 error={touched.estimated_worth && errors.estimated_worth}
                                             />
                                         </DesktopWrapper>
-                                        <MobileWrapper>
+                                        <MobileOrTabletWrapper>
                                             <SelectNative
                                                 placeholder={localize('Please select')}
                                                 name='estimated_worth'
@@ -697,7 +697,7 @@ const FinancialAssessment = observer(() => {
                                                     handleChange(e);
                                                 }}
                                             />
-                                        </MobileWrapper>
+                                        </MobileOrTabletWrapper>
                                     </fieldset>
                                     <fieldset className='account-form__fieldset'>
                                         <DesktopWrapper>
@@ -713,7 +713,7 @@ const FinancialAssessment = observer(() => {
                                                 error={touched.account_turnover && errors.account_turnover}
                                             />
                                         </DesktopWrapper>
-                                        <MobileWrapper>
+                                        <MobileOrTabletWrapper>
                                             <SelectNative
                                                 placeholder={localize('Please select')}
                                                 name='account_turnover'
@@ -726,7 +726,7 @@ const FinancialAssessment = observer(() => {
                                                     handleChange(e);
                                                 }}
                                             />
-                                        </MobileWrapper>
+                                        </MobileOrTabletWrapper>
                                     </fieldset>
                                     {/* Trading experience fieldset */}
                                 </FormBodySection>
@@ -753,7 +753,7 @@ const FinancialAssessment = observer(() => {
                                                         }
                                                     />
                                                 </DesktopWrapper>
-                                                <MobileWrapper>
+                                                <MobileOrTabletWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         name='forex_trading_experience'
@@ -770,7 +770,7 @@ const FinancialAssessment = observer(() => {
                                                             handleChange(e);
                                                         }}
                                                     />
-                                                </MobileWrapper>
+                                                </MobileOrTabletWrapper>
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
@@ -788,7 +788,7 @@ const FinancialAssessment = observer(() => {
                                                         }
                                                     />
                                                 </DesktopWrapper>
-                                                <MobileWrapper>
+                                                <MobileOrTabletWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         name='forex_trading_frequency'
@@ -805,7 +805,7 @@ const FinancialAssessment = observer(() => {
                                                             handleChange(e);
                                                         }}
                                                     />
-                                                </MobileWrapper>
+                                                </MobileOrTabletWrapper>
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
@@ -823,7 +823,7 @@ const FinancialAssessment = observer(() => {
                                                         }
                                                     />
                                                 </DesktopWrapper>
-                                                <MobileWrapper>
+                                                <MobileOrTabletWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         name='binary_options_trading_experience'
@@ -840,7 +840,7 @@ const FinancialAssessment = observer(() => {
                                                             handleChange(e);
                                                         }}
                                                     />
-                                                </MobileWrapper>
+                                                </MobileOrTabletWrapper>
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
@@ -858,7 +858,7 @@ const FinancialAssessment = observer(() => {
                                                         }
                                                     />
                                                 </DesktopWrapper>
-                                                <MobileWrapper>
+                                                <MobileOrTabletWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         name='binary_options_trading_frequency'
@@ -875,7 +875,7 @@ const FinancialAssessment = observer(() => {
                                                             handleChange(e);
                                                         }}
                                                     />
-                                                </MobileWrapper>
+                                                </MobileOrTabletWrapper>
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
@@ -893,7 +893,7 @@ const FinancialAssessment = observer(() => {
                                                         }
                                                     />
                                                 </DesktopWrapper>
-                                                <MobileWrapper>
+                                                <MobileOrTabletWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         name='cfd_trading_experience'
@@ -910,7 +910,7 @@ const FinancialAssessment = observer(() => {
                                                             handleChange(e);
                                                         }}
                                                     />
-                                                </MobileWrapper>
+                                                </MobileOrTabletWrapper>
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
@@ -928,7 +928,7 @@ const FinancialAssessment = observer(() => {
                                                         }
                                                     />
                                                 </DesktopWrapper>
-                                                <MobileWrapper>
+                                                <MobileOrTabletWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         name='cfd_trading_frequency'
@@ -945,7 +945,7 @@ const FinancialAssessment = observer(() => {
                                                             handleChange(e);
                                                         }}
                                                     />
-                                                </MobileWrapper>
+                                                </MobileOrTabletWrapper>
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
@@ -963,7 +963,7 @@ const FinancialAssessment = observer(() => {
                                                         }
                                                     />
                                                 </DesktopWrapper>
-                                                <MobileWrapper>
+                                                <MobileOrTabletWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         name='other_instruments_trading_experience'
@@ -983,7 +983,7 @@ const FinancialAssessment = observer(() => {
                                                             handleChange(e);
                                                         }}
                                                     />
-                                                </MobileWrapper>
+                                                </MobileOrTabletWrapper>
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
@@ -1002,7 +1002,7 @@ const FinancialAssessment = observer(() => {
                                                         }
                                                     />
                                                 </DesktopWrapper>
-                                                <MobileWrapper>
+                                                <MobileOrTabletWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         name='other_instruments_trading_frequency'
@@ -1022,7 +1022,7 @@ const FinancialAssessment = observer(() => {
                                                             handleChange(e);
                                                         }}
                                                     />
-                                                </MobileWrapper>
+                                                </MobileOrTabletWrapper>
                                             </fieldset>
                                         </FormBodySection>
                                     </>
@@ -1030,7 +1030,7 @@ const FinancialAssessment = observer(() => {
                             </FormBody>
                             <FormFooter>
                                 {status?.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                {is_mobile && !is_mf && (
+                                {is_mobile_or_tablet && !is_mf && (
                                     <Text
                                         align='center'
                                         size='xxs'

@@ -160,7 +160,7 @@
             &__description {
                 padding: 1rem 2.4rem;
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     padding: 1rem;
                 }
             }
@@ -431,7 +431,7 @@
                 font-weight: bold;
                 color: var(--text-general);
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     text-align: center;
                 }
             }
@@ -609,7 +609,7 @@
         &__content {
             margin-bottom: 0.8rem;
 
-            @include desktop {
+            @include desktop-screen {
                 padding-left: 1rem;
             }
 
@@ -619,7 +619,7 @@
                 span {
                     font-size: 1.2rem;
 
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         font-size: 1.2rem;
                     }
                 }
@@ -642,7 +642,7 @@
             width: 100%;
             margin-bottom: 2rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 height: 36rem;
             }
 
@@ -653,7 +653,7 @@
                 object-fit: contain;
             }
 
-            @include desktop {
+            @include desktop-screen {
                 padding-left: 1rem;
             }
 

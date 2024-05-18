@@ -6,7 +6,7 @@ import { useWalletMigration } from '@deriv/hooks';
 const RealWalletsUpgrade = observer(() => {
     const { traders_hub, ui } = useStore();
     const { is_real_wallets_upgrade_on, toggleWalletsUpgrade } = traders_hub;
-    const { is_mobile } = ui;
+    const { is_mobile_or_tablet } = ui;
     const { startMigration, is_eligible, is_migrating } = useWalletMigration();
 
     const [current_step, setCurrentStep] = React.useState(0);
@@ -52,7 +52,7 @@ const RealWalletsUpgrade = observer(() => {
 
     return (
         <React.Fragment>
-            {is_mobile ? (
+            {is_mobile_or_tablet ? (
                 <MobileRealWalletsUpgrade wallet_upgrade_steps={wallet_upgrade_steps} />
             ) : (
                 <DesktopRealWalletsUpgrade wallet_upgrade_steps={wallet_upgrade_steps} />

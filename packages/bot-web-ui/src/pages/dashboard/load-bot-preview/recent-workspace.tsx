@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
-import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileOrTabletWrapper, Text } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { DBOT_TABS } from 'Constants/bot-contents';
@@ -20,7 +20,7 @@ type TRecentWorkspace = {
 
 const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { is_mobile_or_tablet } = ui;
     const { dashboard, load_modal, save_modal } = useDBotStore();
     const { active_tab, setActiveTab, setPreviewOnDialog } = dashboard;
     const { toggleSaveModal, updateBotName } = save_modal;
@@ -78,7 +78,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const handlePreviewList = () => {
         setPreviewedStrategyId(workspace.id);
         // Fires for mobile on clicking preview button
-        if (is_mobile) {
+        if (is_mobile_or_tablet) {
             setPreviewOnDialog(true);
             const dashboard_tab_dom_element = document.getElementsByClassName('tab__dashboard')?.[0];
             waitForDomElement('#load-strategy__blockly-container', dashboard_tab_dom_element).then(() => {
@@ -188,7 +188,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                     ))}
                 </div>
             </DesktopWrapper>
-            <MobileWrapper>
+            <MobileOrTabletWrapper>
                 <div className='bot-list__item__actions'>
                     <button ref={toggle_ref} onClick={onToggleDropdown} tabIndex={0}>
                         <Icon icon='IcMenuDots' />
@@ -223,7 +223,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                         </div>
                     ))}
                 </div>
-            </MobileWrapper>
+            </MobileOrTabletWrapper>
         </div>
     );
 });

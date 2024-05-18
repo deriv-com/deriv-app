@@ -11,7 +11,7 @@ import {
     FormSubmitErrorMessage,
     Input,
     Loading,
-    MobileWrapper,
+    MobileOrTabletWrapper,
     Modal,
     SelectNative,
     Text,
@@ -393,7 +393,7 @@ const CFDPersonalDetailsForm = ({
                                                         )}
                                                     </Field>
                                                 </DesktopWrapper>
-                                                <MobileWrapper>
+                                                <MobileOrTabletWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         label={localize('Citizenship*')}
@@ -408,7 +408,7 @@ const CFDPersonalDetailsForm = ({
                                                         required
                                                         should_hide_disabled_options={false}
                                                     />
-                                                </MobileWrapper>
+                                                </MobileOrTabletWrapper>
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
@@ -433,7 +433,7 @@ const CFDPersonalDetailsForm = ({
                                                         )}
                                                     </Field>
                                                 </DesktopWrapper>
-                                                <MobileWrapper>
+                                                <MobileOrTabletWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         label={localize('Place of birth*')}
@@ -448,7 +448,7 @@ const CFDPersonalDetailsForm = ({
                                                         required
                                                         should_hide_disabled_options={false}
                                                     />
-                                                </MobileWrapper>
+                                                </MobileOrTabletWrapper>
                                             </fieldset>
                                             {!tin_manually_approved && (
                                                 <fieldset className='account-form__fieldset'>
@@ -473,7 +473,7 @@ const CFDPersonalDetailsForm = ({
                                                             )}
                                                         </Field>
                                                     </DesktopWrapper>
-                                                    <MobileWrapper>
+                                                    <MobileOrTabletWrapper>
                                                         <SelectNative
                                                             placeholder={localize('Please select')}
                                                             label={localize('Tax residence*')}
@@ -486,7 +486,7 @@ const CFDPersonalDetailsForm = ({
                                                                 setFieldValue('tax_residence', e.target.value, true)
                                                             }
                                                         />
-                                                    </MobileWrapper>
+                                                    </MobileOrTabletWrapper>
                                                 </fieldset>
                                             )}
                                             {is_tin_mandatory && !tin_manually_approved && (
@@ -524,7 +524,7 @@ const CFDPersonalDetailsForm = ({
                                                                 list_portal_id='modal_root'
                                                             />
                                                         </DesktopWrapper>
-                                                        <MobileWrapper>
+                                                        <MobileOrTabletWrapper>
                                                             <SelectNative
                                                                 {...field}
                                                                 placeholder={localize('Please select')}
@@ -544,7 +544,7 @@ const CFDPersonalDetailsForm = ({
                                                                 }}
                                                                 data_testid='account_opening_reason_mobile'
                                                             />
-                                                        </MobileWrapper>
+                                                        </MobileOrTabletWrapper>
                                                     </React.Fragment>
                                                 )}
                                             </Field>

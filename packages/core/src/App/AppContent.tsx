@@ -55,7 +55,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             Analytics.setAttributes({
                 account_type: account_type === 'null' ? 'unlogged' : account_type,
                 app_id: String(getAppId()),
-                device_type: store?.ui?.is_mobile ? 'mobile' : 'desktop',
+                device_type: store?.ui?.is_mobile_or_tablet ? 'mobile' : 'desktop',
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
                 country: Cookies.get('clients_country') || Cookies?.getJSON('website_status')?.clients_country,

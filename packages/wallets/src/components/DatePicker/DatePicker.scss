@@ -28,7 +28,7 @@ abbr[title] {
         transform: translateY(4rem);
         z-index: 1;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             align-self: center;
 
             &--above {

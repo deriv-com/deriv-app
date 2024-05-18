@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
-import { DesktopWrapper, Icon, MobileWrapper, Popover, StaticUrl } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileOrTabletWrapper, Popover, StaticUrl } from '@deriv/components';
 import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
 import { routes, platforms, formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -77,7 +77,7 @@ const TradersHubHeaderWallets = observer(() => {
             })}
         >
             <div className='traders-hub-header__menu-left'>
-                <MobileWrapper>
+                <MobileOrTabletWrapper>
                     <ToggleMenuDrawer {...{ platform_config: filterPlatformsForClients(platform_config) }} />
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                     <div
@@ -91,7 +91,7 @@ const TradersHubHeaderWallets = observer(() => {
                             </StaticUrl>
                         </div>
                     </div>
-                </MobileWrapper>
+                </MobileOrTabletWrapper>
                 <DesktopWrapper>
                     <div className='traders-hub-header-wallets__logo'>
                         <StaticUrl href='/'>
@@ -143,7 +143,7 @@ const TradersHubHeaderWallets = observer(() => {
                 </div>
                 <RealAccountSignup />
             </DesktopWrapper>
-            <MobileWrapper>
+            <MobileOrTabletWrapper>
                 <div className='traders-hub-header__mobile-parent'>
                     <div className='traders-hub-header__menu-middle'>
                         {cashier_routes ? (
@@ -171,7 +171,7 @@ const TradersHubHeaderWallets = observer(() => {
                     </div>
                 </div>
                 <RealAccountSignup />
-            </MobileWrapper>
+            </MobileOrTabletWrapper>
             <SetAccountCurrencyModal />
             <CurrencySelectionModal is_visible={modal_data.active_modal === 'currency_selection'} />
         </header>

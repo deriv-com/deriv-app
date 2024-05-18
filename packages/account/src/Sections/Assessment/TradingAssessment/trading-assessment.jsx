@@ -7,7 +7,7 @@ import { getTradingAssessmentQuestions } from 'Constants/trading-assessment-ques
 import {
     DesktopWrapper,
     Dropdown,
-    MobileWrapper,
+    MobileOrTabletWrapper,
     SelectNative,
     Text,
     FormSubmitButton,
@@ -193,7 +193,7 @@ const TradingAssessment = observer(() => {
                                                     handleBlur={handleBlur}
                                                 />
                                             </DesktopWrapper>
-                                            <MobileWrapper>
+                                            <MobileOrTabletWrapper>
                                                 <Text
                                                     as='h1'
                                                     color='prominent'
@@ -211,7 +211,7 @@ const TradingAssessment = observer(() => {
                                                     onChange={e => handleChange(e)}
                                                     should_show_empty_option={false}
                                                 />
-                                            </MobileWrapper>
+                                            </MobileOrTabletWrapper>
                                         </fieldset>
                                     );
                                     // eslint-disable-next-line no-else-return
@@ -241,7 +241,7 @@ const TradingAssessment = observer(() => {
                                                                 handleBlur={handleBlur}
                                                             />
                                                         </DesktopWrapper>
-                                                        <MobileWrapper>
+                                                        <MobileOrTabletWrapper>
                                                             <Text
                                                                 as='h1'
                                                                 color='prominent'
@@ -259,7 +259,7 @@ const TradingAssessment = observer(() => {
                                                                 onChange={e => handleChange(e)}
                                                                 should_show_empty_option={false}
                                                             />
-                                                        </MobileWrapper>
+                                                        </MobileOrTabletWrapper>
                                                     </fieldset>
                                                 );
                                             })}

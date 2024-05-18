@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Button, Text } from '@deriv/components';
+import { DesktopWrapper, MobileOrTabletWrapper, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import './add-options-account.scss';
 import { useStore, observer } from '@deriv/stores';
@@ -64,9 +64,9 @@ const AddOptionsAccount = observer(() => {
                 <DesktopWrapper>
                     <AddOptions />
                 </DesktopWrapper>
-                <MobileWrapper>
+                <MobileOrTabletWrapper>
                     <AddOptions />
-                </MobileWrapper>
+                </MobileOrTabletWrapper>
             </div>
         </React.Fragment>
     );

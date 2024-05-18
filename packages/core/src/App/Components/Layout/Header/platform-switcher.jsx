@@ -55,7 +55,7 @@ const PlatformSwitcher = ({
                 'platform-switcher__preloader--is-mobile': isMobile(),
             })}
         >
-            <PlatformSwitcherLoader is_mobile={isMobile()} speed={3} />
+            <PlatformSwitcherLoader is_mobile_or_tablet={isMobile()} speed={3} />
         </div>
     ) : (
         <React.Fragment>

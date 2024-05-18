@@ -9,7 +9,7 @@
     background-color: var(--general-main-1, #ffffff);
     padding: 0 4rem;
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         padding: 0;
         gap: 0.8rem;
     }

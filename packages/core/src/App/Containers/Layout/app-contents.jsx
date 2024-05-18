@@ -20,7 +20,7 @@ const AppContents = observer(({ children }) => {
         gtm: { pushDataLayer },
         ui,
     } = useStore();
-    const { isDesktop, isMobile } = useDevice();
+    const { isMobile, isTablet, isDesktop } = useDevice();
 
     const { is_eu_country, is_logged_in, is_logging_in } = client;
     const {
@@ -106,7 +106,7 @@ const AppContents = observer(({ children }) => {
             className={classNames('app-contents', {
                 'app-contents--show-positions-drawer': is_positions_drawer_on,
                 'app-contents--is-disabled': is_app_disabled,
-                'app-contents--is-mobile': isMobile,
+                'app-contents--is-mobile': isMobile || isTablet,
                 'app-contents--is-route-modal': is_route_modal_on,
                 'app-contents--is-scrollable': is_cfd_page || is_cashier_visible,
                 'app-contents--is-hidden': platforms[platform],
@@ -114,8 +114,8 @@ const AppContents = observer(({ children }) => {
             })}
             ref={scroll_ref}
         >
-            {isMobile && children}
-            {!isMobile &&
+            {(isMobile || isTablet) && children}
+            {isDesktop &&
                 /* Calculate height of user screen and offset height of header and footer */
                 (window.location.pathname === routes.onboarding ? (
                     <ThemedScrollbars style={{ maxHeight: '', height: '100%' }} refSetter={child_ref}>

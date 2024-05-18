@@ -13,7 +13,7 @@
         justify-content: space-between;
         padding: 0 2.4rem 1.2rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             padding: 0;
         }
     }
@@ -39,7 +39,7 @@
     .dc-input {
         &__label {
             top: 1.2rem;
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 top: 0.9rem;
                 background-color: var(--fill-normal);
             }
@@ -48,7 +48,7 @@
     .dc-password-meter {
         &__bg {
             background: var(--general-section-2);
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 background: var(--fill-disabled);
             }
         }
@@ -57,7 +57,7 @@
         margin-top: 3em;
     }
     .cfd-password-reset {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             flex: 1;
         }
     }
@@ -65,7 +65,7 @@
         flex-grow: 1;
         margin: auto;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: calc(100vw - 4.8rem);
             max-width: 30rem;
         }
@@ -77,7 +77,7 @@
     .input-element {
         width: 100%;
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         .cfd-password-modal__content {
             overflow-y: auto;
             overflow-x: hidden;
@@ -161,7 +161,7 @@
         flex-direction: column;
         max-width: 30rem;
 
-        @include desktop {
+        @include desktop-screen {
             margin-top: -2.5rem;
         }
 
@@ -274,7 +274,7 @@
         gap: 4rem;
         padding: 2.4rem 0;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             min-height: 24rem;
             width: calc(100vw - 3.2rem);
         }
@@ -296,10 +296,10 @@
         }
     }
     &__password-area {
-        @include desktop {
+        @include desktop-screen {
             width: calc(min(34rem, 100vw));
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 100%;
             max-width: calc(100% - 2.4rem);
         }
@@ -335,12 +335,12 @@
         justify-content: space-around;
         padding: 2.4rem 0 2rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: calc(100vw - 3.2rem);
             height: 100%;
         }
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         & .dc-form-submit-button {
             all: unset;
         }
@@ -369,7 +369,7 @@
             margin-top: 8px;
             font-weight: bold;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             &:not(:first-child):not(:last-child) {
                 margin: 0;
             }
@@ -387,7 +387,7 @@
             }
         }
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         display: grid;
         grid-gap: 2.4rem;
         grid-template-columns: 1fr 1fr 1fr;

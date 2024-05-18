@@ -7,7 +7,7 @@ import {
     Icon,
     Loading,
     MobileDialog,
-    MobileWrapper,
+    MobileOrTabletWrapper,
     Modal,
     Text,
     UILoader,
@@ -146,7 +146,7 @@ const CFDDbviOnboarding = observer(() => {
                     {getModalContent()}
                 </Modal>
             </DesktopWrapper>
-            <MobileWrapper>
+            <MobileOrTabletWrapper>
                 <MobileDialog
                     portal_element_id='deriv_app'
                     title={getModalTitle()}
@@ -156,7 +156,7 @@ const CFDDbviOnboarding = observer(() => {
                 >
                     {getModalContent()}
                 </MobileDialog>
-            </MobileWrapper>
+            </MobileOrTabletWrapper>
         </React.Suspense>
     );
 });

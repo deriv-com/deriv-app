@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { reaction } from 'mobx';
 import { useP2PAdvertiserAdverts } from 'Hooks';
 import { useHistory, useLocation } from 'react-router-dom';
-import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
+import { DesktopWrapper, Loading, MobileOrTabletWrapper, Text } from '@deriv/components';
 import { useP2PAdvertInfo } from '@deriv/hooks';
 import { daysSince, isEmptyObject, isMobile, routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
@@ -239,9 +239,9 @@ const AdvertiserPage = () => {
                     page_title={localize("Advertiser's page")}
                 />
                 {!is_my_advert && (
-                    <MobileWrapper>
+                    <MobileOrTabletWrapper>
                         <AdvertiserPageDropdownMenu />
-                    </MobileWrapper>
+                    </MobileOrTabletWrapper>
                 )}
             </div>
             <BlockUserOverlay
@@ -272,7 +272,7 @@ const AdvertiserPage = () => {
                                     </div>
                                 )}
                             </div>
-                            <MobileWrapper>
+                            <MobileOrTabletWrapper>
                                 <div className='advertiser-page__row'>
                                     <div className='advertiser-page__rating--row'>
                                         <OnlineStatusIcon is_online={is_online} />
@@ -295,7 +295,7 @@ const AdvertiserPage = () => {
                                         </Text>
                                     </div>
                                 </div>
-                            </MobileWrapper>
+                            </MobileOrTabletWrapper>
                             {!isEmptyObject(info) && (
                                 <div className='advertiser-page__rating'>
                                     <DesktopWrapper>

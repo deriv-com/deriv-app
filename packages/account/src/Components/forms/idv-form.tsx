@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, FormikProps, FieldProps, useFormikContext } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
-import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative } from '@deriv/components';
+import { Autocomplete, DesktopWrapper, Input, MobileOrTabletWrapper, SelectNative } from '@deriv/components';
 import { formatInput, getIDVNotApplicableOption } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
@@ -157,7 +157,7 @@ const IDVForm = ({
                                                         required
                                                     />
                                                 </DesktopWrapper>
-                                                <MobileWrapper>
+                                                <MobileOrTabletWrapper>
                                                     <SelectNative
                                                         {...field}
                                                         name='document_type'
@@ -177,7 +177,7 @@ const IDVForm = ({
                                                         use_text={true}
                                                         required
                                                     />
-                                                </MobileWrapper>
+                                                </MobileOrTabletWrapper>
                                             </React.Fragment>
                                         )}
                                     </Field>

@@ -124,7 +124,7 @@ describe('<AddressDetails/>', () => {
             ...store,
             ui: {
                 ...store.ui,
-                is_mobile: true,
+                is_mobile_or_tablet: true,
             },
         };
 
@@ -225,7 +225,7 @@ describe('<AddressDetails/>', () => {
             ...store,
             ui: {
                 ...store.ui,
-                is_mobile: true,
+                is_mobile_or_tablet: true,
             },
         };
         renderComponent({ store_config: new_store_config });

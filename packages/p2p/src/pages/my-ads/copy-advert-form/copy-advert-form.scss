@@ -1,5 +1,5 @@
 .copy-advert-form {
-    @include mobile {
+    @include mobile-or-tablet-screen {
         margin: 1.6rem;
     }
 
@@ -8,7 +8,7 @@
         column-gap: 0.8rem;
         justify-content: end;
 
-        @include desktop {
+        @include desktop-screen {
             position: absolute;
             bottom: 0;
             width: 100%;
@@ -16,7 +16,7 @@
             padding: 2.4rem;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             border-top: 2px solid var(--general-section-1);
             padding: 1.6rem 1.6rem 0;
             margin: 0 -1.6rem;
@@ -40,7 +40,7 @@
             height: auto;
             pointer-events: none;
 
-            @include desktop {
+            @include desktop-screen {
                 background-color: var(--general-main-2);
             }
         }
@@ -53,7 +53,7 @@
     &__floating-rate {
         margin: 0.4rem 0 1.5rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             height: 6.8rem;
         }
 
@@ -66,7 +66,7 @@
                     justify-content: center;
                     margin-bottom: 2rem;
 
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         margin-top: 2rem;
                     }
                 }
@@ -91,7 +91,7 @@
         }
 
         .dc-input {
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 &-field {
                     margin-top: 0;
                 }
@@ -122,13 +122,13 @@
     }
 
     .dc-input__label {
-        @include desktop {
+        @include desktop-screen {
             background-color: var(--general-main-2);
         }
     }
 
     &__scrollbar {
-        @include desktop {
+        @include desktop-screen {
             padding: 0 2.4rem 8.8rem;
         }
     }

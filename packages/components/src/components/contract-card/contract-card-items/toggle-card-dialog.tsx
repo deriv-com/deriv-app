@@ -5,7 +5,7 @@ import ContractUpdateForm, { TGeneralContractCardBodyProps } from './contract-up
 import Icon from '../../icon';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileDialog from '../../mobile-dialog';
-import MobileWrapper from '../../mobile-wrapper';
+import MobileOrTabletWrapper from '../../mobile-wrapper';
 import Popover from '../../popover';
 import Div100vhContainer from '../../div100vh-container';
 import './sass/contract-card-dialog.scss';
@@ -127,7 +127,7 @@ const ToggleCardDialog = ({
                     {edit_icon}
                 </button>
             )}
-            <MobileWrapper>
+            <MobileOrTabletWrapper>
                 <MobileDialog
                     portal_element_id='modal_root'
                     visible={is_visible}
@@ -146,7 +146,7 @@ const ToggleCardDialog = ({
                         />
                     </Div100vhContainer>
                 </MobileDialog>
-            </MobileWrapper>
+            </MobileOrTabletWrapper>
             <DesktopWrapper>
                 <ContractCardDialog
                     ref={dialog_ref}

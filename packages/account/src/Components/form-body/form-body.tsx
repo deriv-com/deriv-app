@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollbarsContainer } from '../scrollbars-container/scrollbars-container';
-import { Div100vhContainer, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { Div100vhContainer, DesktopWrapper, MobileOrTabletWrapper } from '@deriv/components';
 import classNames from 'classnames';
 
 type TFormBody = {
@@ -18,13 +18,13 @@ export const FormBody = ({ children, scroll_offset, className }: React.PropsWith
                 {children}
             </ScrollbarsContainer>
         </DesktopWrapper>
-        <MobileWrapper>
+        <MobileOrTabletWrapper>
             <Div100vhContainer
                 className={classNames('account__scrollbars_container--grid-layout', className)}
                 height_offset={scroll_offset || '200px'}
             >
                 {children}
             </Div100vhContainer>
-        </MobileWrapper>
+        </MobileOrTabletWrapper>
     </React.Fragment>
 );

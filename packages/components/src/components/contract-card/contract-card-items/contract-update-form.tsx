@@ -11,7 +11,7 @@ import {
     pick,
 } from '@deriv/shared';
 import Button from '../../button';
-import MobileWrapper from '../../mobile-wrapper';
+import MobileOrTabletWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import InputWithCheckbox from '../../input-wth-checkbox';
 import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
@@ -218,7 +218,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
 
     return (
         <React.Fragment>
-            <MobileWrapper>
+            <MobileOrTabletWrapper>
                 <div className='dc-contract-card-dialog__total-profit'>
                     <Text color='less-prominent' size='xs' weight='bold'>
                         {getCardLabels().TOTAL_PROFIT_LOSS}
@@ -239,7 +239,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
                         )}
                     </div>
                 </div>
-            </MobileWrapper>
+            </MobileOrTabletWrapper>
             <div
                 className={classNames('dc-contract-card-dialog__form', {
                     'dc-contract-card-dialog__form--no-stop-loss': is_accumulator || is_turbos,

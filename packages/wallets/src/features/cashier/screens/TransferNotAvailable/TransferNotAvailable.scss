@@ -1,5 +1,5 @@
 .wallets-transfer-not-available {
-    @include mobile {
+    @include mobile-or-tablet-screen {
         align-self: center;
     }
 }

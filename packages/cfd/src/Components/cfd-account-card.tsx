@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { FormikValues } from 'formik';
 
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { Button, DesktopWrapper, Icon, MobileWrapper, Money, Text } from '@deriv/components';
+import { Button, DesktopWrapper, Icon, MobileOrTabletWrapper, Money, Text } from '@deriv/components';
 import { getCFDPlatformLabel, isMobile, mobileOSDetect } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -747,13 +747,13 @@ const CFDAccountCardComponent = observer(
                     </div>
                     <React.Fragment>
                         {should_show_extra_add_account_button && (
-                            <MobileWrapper>
+                            <MobileOrTabletWrapper>
                                 <AddAccountButton
                                     ref={button_ref}
                                     onSelectAccount={onSelectAccount}
                                     is_disabled={has_cfd_account_error}
                                 />
-                            </MobileWrapper>
+                            </MobileOrTabletWrapper>
                         )}
                     </React.Fragment>
                 </div>

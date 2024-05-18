@@ -36,10 +36,13 @@ const Popover = ({
     const ref = React.useRef<HTMLDivElement | undefined>();
     const [popover_ref, setPopoverRef] = React.useState<HTMLDivElement | undefined>(undefined);
     const [is_bubble_visible, setIsBubbleVisible] = React.useState(false);
-    const { is_mobile } = useDevice();
+    const { is_mobile, is_tablet } = useDevice();
     const [hover_ref, is_hovered] = useHover(null, true);
     const [bubble_hover_ref, is_bubble_hovered] = useHoverCallback();
-    const should_toggle_on_target_tap = React.useMemo(() => is_mobile && is_open === undefined, [is_mobile, is_open]);
+    const should_toggle_on_target_tap = React.useMemo(
+        () => (is_mobile || is_tablet) && is_open === undefined,
+        [is_mobile, is_tablet, is_open]
+    );
 
     React.useEffect(() => {
         if (ref.current) {

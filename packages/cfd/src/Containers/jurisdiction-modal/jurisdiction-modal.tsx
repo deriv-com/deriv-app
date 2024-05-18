@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
+import { DesktopWrapper, MobileDialog, MobileOrTabletWrapper, Modal, UILoader } from '@deriv/components';
 import { TJurisdictionModalProps } from '../props.types';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
@@ -70,7 +70,7 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
                             {modal_content}
                         </Modal>
                     </DesktopWrapper>
-                    <MobileWrapper>
+                    <MobileOrTabletWrapper>
                         <MobileDialog
                             portal_element_id='deriv_app'
                             visible={is_jurisdiction_modal_visible}
@@ -87,7 +87,7 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
                         >
                             {modal_content}
                         </MobileDialog>
-                    </MobileWrapper>
+                    </MobileOrTabletWrapper>
                 </DynamicLeverageContext.Provider>
             </React.Suspense>
         </div>

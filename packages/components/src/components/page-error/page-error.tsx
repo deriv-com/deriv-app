@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { isMobile } from '@deriv/shared';
 import DesktopWrapper from '../desktop-wrapper';
-import MobileWrapper from '../mobile-wrapper';
+import MobileOrTabletWrapper from '../mobile-wrapper';
 import ButtonLink from '../button-link/button-link';
 import Text from '../text/text';
 import Button from '../button';
@@ -60,7 +60,7 @@ const PageError = ({
                             height='366px'
                         />
                     </DesktopWrapper>
-                    <MobileWrapper>
+                    <MobileOrTabletWrapper>
                         <img
                             className={classNameImage}
                             src={image_url}
@@ -69,7 +69,7 @@ const PageError = ({
                             width='328px'
                             height='200px'
                         />
-                    </MobileWrapper>
+                    </MobileOrTabletWrapper>
                 </>
             )}
             <div

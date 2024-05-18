@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, DesktopWrapper, Div100vhContainer, MobileWrapper, ThemedScrollbars } from '@deriv/components';
+import { Tabs, DesktopWrapper, Div100vhContainer, MobileOrTabletWrapper, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile, validLength, validPassword, getErrorMessages, getCFDPlatformLabel } from '@deriv/shared';
 import { useTradingPlatformInvestorPasswordChange, useTradingPlatformPasswordChange } from '@deriv/api';
@@ -133,7 +133,7 @@ export const CFDPasswordManagerTabContent = ({
                     />
                 </ThemedScrollbars>
             </DesktopWrapper>
-            <MobileWrapper>
+            <MobileOrTabletWrapper>
                 <Div100vhContainer className='cfd-password-manager__scroll-wrapper' height_offset='120px'>
                     <TradingPasswordManager
                         toggleModal={toggleModal}
@@ -142,7 +142,7 @@ export const CFDPasswordManagerTabContent = ({
                         account_group={account_group}
                     />
                 </Div100vhContainer>
-            </MobileWrapper>
+            </MobileOrTabletWrapper>
         </React.Fragment>
     );
 
@@ -171,7 +171,7 @@ export const CFDPasswordManagerTabContent = ({
                         />
                     </ThemedScrollbars>
                 </DesktopWrapper>
-                <MobileWrapper>
+                <MobileOrTabletWrapper>
                     <Div100vhContainer className='cfd-password-manager__scroll-wrapper' height_offset='120px'>
                         <InvestorPasswordManager
                             is_submit_success_investor={is_submit_success_investor}
@@ -183,7 +183,7 @@ export const CFDPasswordManagerTabContent = ({
                             multi_step_ref={multi_step_ref}
                         />
                     </Div100vhContainer>
-                </MobileWrapper>
+                </MobileOrTabletWrapper>
             </div>
         </Tabs>
     );

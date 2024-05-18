@@ -82,7 +82,7 @@ const IdvFailed = ({
 }: TIdvFailed) => {
     const { client, ui } = useStore();
     const { setIsAlreadyAttempted } = client;
-    const { is_mobile } = ui;
+    const { is_mobile_or_tablet } = ui;
 
     const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig>({
         required_fields: [],
@@ -289,7 +289,7 @@ const IdvFailed = ({
     }
 
     const setScrollOffset = () => {
-        if (is_mobile) {
+        if (is_mobile_or_tablet) {
             if (is_from_external) {
                 return '140px';
             }
@@ -319,7 +319,7 @@ const IdvFailed = ({
                     })}
                 >
                     <FormBody className='form-body' scroll_offset={setScrollOffset()}>
-                        <Text size={is_mobile ? 'xs' : 's'} weight='bold' align='center'>
+                        <Text size={is_mobile_or_tablet ? 'xs' : 's'} weight='bold' align='center'>
                             <Localize i18n_default_text='Your identity verification failed because:' />
                         </Text>
                         {(status?.error_msg || idv_failure?.failure_message) && (
@@ -327,7 +327,11 @@ const IdvFailed = ({
                                 className={classNames('proof-of-identity__failed-message', 'hint-box-layout')}
                                 icon='IcAlertDanger'
                                 message={
-                                    <Text as='p' size={is_mobile ? 'xxs' : 'xs'} data-testid={mismatch_status}>
+                                    <Text
+                                        as='p'
+                                        size={is_mobile_or_tablet ? 'xxs' : 'xs'}
+                                        data-testid={mismatch_status}
+                                    >
                                         {status?.error_msg ?? idv_failure?.failure_message}
                                     </Text>
                                 }
@@ -336,7 +340,7 @@ const IdvFailed = ({
                         )}
                         {is_document_upload_required && (
                             <div>
-                                <Text size='xs' align={is_mobile ? 'left' : 'center'}>
+                                <Text size='xs' align={is_mobile_or_tablet ? 'left' : 'center'}>
                                     <Localize i18n_default_text='Let’s try again. Choose another document and enter the corresponding details.' />
                                 </Text>
                                 <FormSubHeader title={localize('Identity verification')} />

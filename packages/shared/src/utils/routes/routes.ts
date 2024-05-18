@@ -97,12 +97,11 @@ export const routes = {
     cashier_v2: '/cashier-v2',
 };
 
+const disabled_routes: Partial<typeof routes> = { ...routes };
+delete disabled_routes.trade;
+
 export const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [
-    routes.appstore,
-    routes.traders_hub,
-    routes.onboarding,
-    routes.compare_cfds,
-    routes.reports,
+    ...Object.values(disabled_routes),
     /** because contract route has dynamic id */
     '/contract',
 ];

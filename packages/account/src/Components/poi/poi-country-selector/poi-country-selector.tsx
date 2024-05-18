@@ -1,7 +1,15 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik';
-import { Autocomplete, Button, DesktopWrapper, HintBox, MobileWrapper, Text, SelectNative } from '@deriv/components';
+import {
+    Autocomplete,
+    Button,
+    DesktopWrapper,
+    HintBox,
+    MobileOrTabletWrapper,
+    Text,
+    SelectNative,
+} from '@deriv/components';
 import { IDV_ERROR_STATUS, isMobile, TIDVErrorStatus, POIContext } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import FormFooter from '../../form-footer';
@@ -133,7 +141,7 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
                                                 required
                                             />
                                         </DesktopWrapper>
-                                        <MobileWrapper>
+                                        <MobileOrTabletWrapper>
                                             <div className='proof-of-identity__dropdown-container'>
                                                 <SelectNative
                                                     {...field}
@@ -151,7 +159,7 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
                                                     required
                                                 />
                                             </div>
-                                        </MobileWrapper>
+                                        </MobileOrTabletWrapper>
                                     </React.Fragment>
                                 )}
                             </Field>

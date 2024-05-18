@@ -34,7 +34,7 @@ type TTradeModalProps = {
     ctrader_tokens: TCFDDashboardContainer['ctrader_tokens'];
     is_demo: string;
     platform: TCFDsPlatformType;
-    is_mobile?: boolean;
+    is_mobile_or_tablet?: boolean;
 };
 
 const PlatformIconsAndDescriptions = (
@@ -82,7 +82,7 @@ const CTraderDerivXTradeModal = ({
     ctrader_tokens,
     is_demo,
     platform,
-    is_mobile,
+    is_mobile_or_tablet,
 }: TTradeModalProps) => {
     const {
         ui,
@@ -175,9 +175,9 @@ const CTraderDerivXTradeModal = ({
         let app_title = '';
         if (platform_type === CFD_PLATFORMS.DXTRADE) {
             app_title = localize('Run Deriv X on your browser');
-        } else if (platform_type === 'ctrader' && !is_mobile) {
+        } else if (platform_type === 'ctrader' && !is_mobile_or_tablet) {
             app_title = localize('Run cTrader on your browser');
-        } else if (platform_type === 'ctrader' && is_mobile) {
+        } else if (platform_type === 'ctrader' && is_mobile_or_tablet) {
             return null;
         } else {
             return null;
@@ -351,7 +351,7 @@ const CTraderDerivXTradeModal = ({
             <div className='cfd-trade-modal__download-center-app'>{downloadCenterAppOption(platform)}</div>
             {platform === CFD_PLATFORMS.CTRADER && (
                 <React.Fragment>
-                    {!is_mobile && (
+                    {!is_mobile_or_tablet && (
                         <React.Fragment>
                             <div className='cfd-trade-modal__download-center-app--windows'>
                                 <Icon icon='IcWindowsLogo' size={32} />

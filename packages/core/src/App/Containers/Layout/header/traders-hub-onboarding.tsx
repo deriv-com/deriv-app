@@ -8,7 +8,7 @@ const TradersHubOnboarding = observer(() => {
     const { client, traders_hub, ui } = useStore();
     const { has_wallet } = client;
     const { setIsFirstTimeVisit, toggleIsTourOpen, is_tour_open } = traders_hub;
-    const { is_dark_mode_on, is_mobile } = ui;
+    const { is_dark_mode_on, is_mobile_or_tablet } = ui;
     const [, setWalletsOnboarding] = useLocalStorage('walletsOnboarding', '');
 
     const onClickHandler = has_wallet
@@ -28,7 +28,7 @@ const TradersHubOnboarding = observer(() => {
                 <Popover
                     classNameBubble='account-settings-toggle__tooltip'
                     alignment='bottom'
-                    message={!is_mobile && <Localize i18n_default_text='View tutorial' />}
+                    message={!is_mobile_or_tablet && <Localize i18n_default_text='View tutorial' />}
                     should_disable_pointer_events
                     zIndex='9999'
                 >

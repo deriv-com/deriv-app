@@ -30,7 +30,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const {
         disableApp,
         enableApp,
-        is_mobile,
+        is_mobile_or_tablet,
         is_mobile_language_menu_open,
         is_dark_mode_on: is_dark_mode,
         setDarkMode: toggleTheme,
@@ -128,7 +128,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         should_allow_authentication,
         has_wallet,
         is_trading_hub_category,
-        is_mobile,
+        is_mobile_or_tablet,
         is_passkey_supported,
         is_p2p_enabled,
     ]);
@@ -180,7 +180,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         }
 
         const has_subroutes = route_config.routes.some(route => route.subroutes);
-        const should_hide_passkeys_route = !is_mobile || !is_passkey_supported;
+        const should_hide_passkeys_route = !is_mobile_or_tablet || !is_passkey_supported;
 
         const disableRoute = route_path => {
             if (/financial-assessment/.test(route_path)) {
@@ -321,7 +321,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 >
                                     <PlatformSwitcher
                                         app_routing_history={app_routing_history}
-                                        is_mobile
+                                        is_mobile_or_tablet
                                         is_landing_company_loaded={is_landing_company_loaded}
                                         is_logged_in={is_logged_in}
                                         is_logging_in={is_logging_in}
@@ -457,8 +457,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 )}
                             </MobileDrawer.Body>
                             <MobileDrawer.Footer className={is_logged_in ? 'dc-mobile-drawer__footer--servertime' : ''}>
-                                <ServerTime is_mobile />
-                                <NetworkStatus is_mobile />
+                                <ServerTime is_mobile_or_tablet />
+                                <NetworkStatus is_mobile_or_tablet />
                             </MobileDrawer.Footer>
                             {is_mobile_language_menu_open && (
                                 <MobileLanguageMenu expandSubMenu={expandSubMenu} toggleDrawer={toggleDrawer} />

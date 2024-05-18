@@ -23,7 +23,12 @@ const AccountSwitcherMobile = props => {
                 className={classNames('acc-switcher__wrapper', 'acc-switcher__wrapper--is-mobile')}
                 max_autoheight_offset='48px'
             >
-                <AccountSwitcher is_mobile is_visible={true} toggle={toggle} is_upgrade_enabled={is_upgrade_enabled} />
+                <AccountSwitcher
+                    is_mobile_or_tablet
+                    is_visible={true}
+                    toggle={toggle}
+                    is_upgrade_enabled={is_upgrade_enabled}
+                />
             </Div100vhContainer>
         </Modal>
     );

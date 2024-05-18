@@ -11,6 +11,8 @@ import { Badge } from '@deriv-com/quill-ui';
 
 type BottomNavProps = {
     children: React.ReactNode[];
+    selectedItemIdx?: number;
+    setSelectedItemIdx?: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const bottomNavItems = [
@@ -46,8 +48,17 @@ const bottomNavItems = [
     },
 ];
 
-const BottomNav = ({ children }: BottomNavProps) => {
-    const [selectedIndex, setSelectedIndex] = React.useState(0);
+const BottomNav = ({ children, selectedItemIdx = 0, setSelectedItemIdx }: BottomNavProps) => {
+    const [selectedIndex, setSelectedIndex] = React.useState(selectedItemIdx);
+
+    const handleSelect = (index: number) => {
+        setSelectedIndex(index);
+        setSelectedItemIdx?.(index);
+    };
+
+    React.useEffect(() => {
+        setSelectedIndex(selectedItemIdx);
+    }, [selectedItemIdx]);
 
     return (
         <React.Fragment>
@@ -59,7 +70,7 @@ const BottomNav = ({ children }: BottomNavProps) => {
                         icon={item.icon}
                         selectedIndex={selectedIndex}
                         label={item.label}
-                        setSelectedIndex={setSelectedIndex}
+                        setSelectedIndex={handleSelect}
                     />
                 ))}
             </div>

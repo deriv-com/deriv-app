@@ -3,12 +3,16 @@ import { Localize } from '@deriv/translations';
 import { Tab } from '@deriv-com/quill-ui';
 import PositionsContent from './positions-content';
 
-const Positions = () => {
+type TPositionsProps = {
+    onRedirectToTrade?: () => void;
+};
+
+const Positions = ({ onRedirectToTrade }: TPositionsProps) => {
     const tabs = [
         {
             id: 'open',
             title: <Localize i18n_default_text='Open' />,
-            content: <PositionsContent />,
+            content: <PositionsContent onRedirectToTrade={onRedirectToTrade} />,
         },
         {
             id: 'closed',

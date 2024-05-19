@@ -93,11 +93,12 @@ export const tradeOptionToBuy = (contract_type, trade_option) => {
     if (['MULTUP', 'MULTDOWN'].includes(contract_type)) {
         buy.parameters.duration = undefined;
         buy.parameters.duration_unit = undefined;
-
         buy.parameters.multiplier = trade_option.multiplier;
     }
     // This will be required only in the case of accumulator contracts
     if (['ACCU'].includes(contract_type)) {
+        buy.parameters.duration = undefined;
+        buy.parameters.duration_unit = undefined;
         buy.parameters.growth_rate = trade_option.growth_rate;
     }
     return buy;

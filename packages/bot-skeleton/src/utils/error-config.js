@@ -29,4 +29,8 @@ export const error_message_map = {
         localize('Trade options multipliers'),
         localize('trade parameters')
     ),
+    trade_definition_accumulator: generateErrorMessage(
+        localize('Trade options accumulators'),
+        localize('trade parameters')
+    ),
 };

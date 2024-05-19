@@ -52,6 +52,11 @@ export const config = {
         CURRENCY: ['USD', 'EUR', 'GBP', 'AUD', ...CRYPTO_CURRENCIES],
     },
     opposites: {
+        ACCUMULATOR: [
+            {
+                ACCU: localize('Accumulator'),
+            },
+        ],
         MULTIPLIER: [
             {
                 MULTUP: localize('Up'),
@@ -219,6 +224,7 @@ export const config = {
         callputspread: ['callputspread'],
         highlowticks: ['highlowticks'],
         runs: ['runs'],
+        accumulator: ['accumulator'],
     },
     TRADE_TYPE_CATEGORY_NAMES: {
         callput: localize('Up/Down'),
@@ -231,6 +237,7 @@ export const config = {
         highlowticks: localize('High/Low Ticks'),
         runs: localize('Only Ups/Only Downs'),
         multiplier: localize('Multipliers'),
+        accumulator: localize('Accumulators'),
     },
     BARRIER_CATEGORIES: {
         euro_atm: ['callput', 'callputequal'],
@@ -240,6 +247,7 @@ export const config = {
         asian: ['asians'],
         reset: ['reset'],
         lookback: ['lookback'],
+        accumulator: ['accumulator'],
     },
     DEFAULT_DURATION_DROPDOWN_OPTIONS: [
         [localize('Ticks'), 't'],

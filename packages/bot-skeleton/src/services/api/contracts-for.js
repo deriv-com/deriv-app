@@ -235,7 +235,7 @@ export default class ContractsFor {
     }
 
     async getDurations(symbol, trade_type, convert_day_to_hours = true) {
-        if (trade_type === 'multiplier') {
+        if (trade_type === 'multiplier' || trade_type === 'accumulator') {
             return [];
         }
 
@@ -344,6 +344,10 @@ export default class ContractsFor {
 
         return prediction_range;
     }
+
+    getAccumulationRange = async () => {
+        return [0.01, 0.02, 0.03, 0.04, 0.05];
+    };
 
     async getMultiplierRange(symbol, trade_type) {
         const contracts = await this.getContractsByTradeType(symbol, trade_type);

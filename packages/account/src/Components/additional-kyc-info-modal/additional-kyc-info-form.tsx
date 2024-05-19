@@ -2,7 +2,7 @@ import { Button, Loading, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Form, Formik } from 'formik';
 import React from 'react';
 import { useSettings } from '@deriv/api';
@@ -99,7 +99,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                 <FormSelectField {...fields.place_of_birth} />
                             </fieldset>
                             <fieldset
-                                className={classNames(
+                                className={clsx(
                                     'additional-kyc-info-modal__form-field',
                                     'additional-kyc-info-modal__form-field--info'
                                 )}

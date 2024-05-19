@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Formik, Field, FormikProps, FormikHelpers, FormikHandlers, FormikState, FieldProps } from 'formik';
 import { StatesList } from '@deriv/api-types';
 import {
@@ -169,7 +169,7 @@ const AddressDetails = observer(
 
                                     <ThemedScrollbars height={height} className='details-form__scrollbar'>
                                         <div
-                                            className={classNames('details-form__elements', 'address-details-form', {
+                                            className={clsx('details-form__elements', 'address-details-form', {
                                                 'address-details-form__eu': is_eu_user,
                                             })}
                                         >

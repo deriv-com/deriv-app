@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { useFormikContext } from 'formik';
 import { Button, Input, Icon } from '@deriv/components';
 import { compressImageFiles } from '@deriv/shared';
@@ -95,7 +95,7 @@ const FileUploader = ({ class_name, name, sub_index, payment_id }: TFileUploader
         updateError();
     };
     return (
-        <div className={classNames('poo-file-uploader', class_name)}>
+        <div className={clsx('poo-file-uploader', class_name)}>
             <input
                 type='file'
                 accept='image/png, image/jpeg, image/jpg, application/pdf'
@@ -122,14 +122,14 @@ const FileUploader = ({ class_name, name, sub_index, payment_id }: TFileUploader
                         icon='IcCross'
                         height='100%'
                         size={20}
-                        className={classNames('stack-top ', {
+                        className={clsx('stack-top ', {
                             'remove-element': show_browse_button,
                         })}
                     />
                 }
             />
             <Button
-                className={classNames('proof-of-ownership__card-open-inputs-photo-btn ', {
+                className={clsx('proof-of-ownership__card-open-inputs-photo-btn ', {
                     'remove-element': !show_browse_button,
                 })}
                 text={localize('Browse')}

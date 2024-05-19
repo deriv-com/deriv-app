@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Field, useFormikContext } from 'formik';
 import {
     Autocomplete,
@@ -118,7 +118,7 @@ const PersonalDetailsForm = props => {
     return (
         <React.Fragment>
             <div
-                className={classNames(class_name, {
+                className={clsx(class_name, {
                     'account-form__poi-confirm-example': is_rendered_for_idv,
                 })}
             >
@@ -441,7 +441,7 @@ const PersonalDetailsForm = props => {
                                     />
                                 )}
                                 {'employment_status' in values && (
-                                    <fieldset className={classNames('account-form__fieldset', 'emp-status')}>
+                                    <fieldset className={clsx('account-form__fieldset', 'emp-status')}>
                                         <DesktopWrapper>
                                             <Dropdown
                                                 placeholder={

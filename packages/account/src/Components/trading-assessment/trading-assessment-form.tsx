@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { Formik, Form, FormikErrors } from 'formik';
@@ -188,7 +188,7 @@ const TradingAssessmentForm = observer(
         };
 
         return (
-            <div className={classNames('trading-assessment', class_name)}>
+            <div className={clsx('trading-assessment', class_name)}>
                 {is_eu_user ? (
                     <div className='details-form__banner-container'>
                         <InlineNoteWithIcon
@@ -233,7 +233,7 @@ const TradingAssessmentForm = observer(
                                     <Form noValidate className='trading-assessment__form--layout'>
                                         <ScrollToFieldWithError should_recollect_inputs_names={is_section_filled} />
                                         <div
-                                            className={classNames('trading-assessment__form--fields', {
+                                            className={clsx('trading-assessment__form--fields', {
                                                 'field-layout': has_long_question,
                                             })}
                                         >

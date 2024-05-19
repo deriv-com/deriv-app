@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, Fragment } from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Formik, Form, FormikHelpers } from 'formik';
 import { BrowserHistory } from 'history';
 import { withRouter } from 'react-router';
@@ -634,7 +634,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                 <FormSubHeader title={localize('Email preference')} />
                                 <Fragment>
                                     <fieldset
-                                        className={classNames(
+                                        className={clsx(
                                             'account-form__fieldset',
                                             'account-form__fieldset--email-consent'
                                         )}
@@ -669,7 +669,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                     </Text>
                                 )}
                                 <Button
-                                    className={classNames('account-form__footer-btn', {
+                                    className={clsx('account-form__footer-btn', {
                                         'dc-btn--green': is_submit_success,
                                     })}
                                     type='submit'

@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Field, Formik, FormikHandlers, FormikState } from 'formik';
 import { WebsiteStatus } from '@deriv/api-types';
 import {
@@ -195,7 +195,7 @@ const CurrencySelector = observer(
                                 data-testid='currency_selector_form'
                             >
                                 <Div100vhContainer
-                                    className={classNames('currency-selector__container', {
+                                    className={clsx('currency-selector__container', {
                                         'currency-selector__container--no-top-margin':
                                             !has_currency && has_real_account && is_mobile,
                                     })}

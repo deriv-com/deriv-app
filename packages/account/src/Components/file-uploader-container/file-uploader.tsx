@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { FileDropzone, Icon, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { getSupportedFiles, max_document_size, supported_filetypes } from '@deriv/shared';
@@ -93,7 +93,7 @@ const FileUploader = ({ onFileDrop, onError }: TFileUploaderProps) => {
                 <div className='file-uploader__remove-btn-container'>
                     <Icon
                         icon='IcCloseCircle'
-                        className={classNames('file-uploader__remove-btn', {
+                        className={clsx('file-uploader__remove-btn', {
                             'file-uploader__remove-btn--error': file_error,
                         })}
                         onClick={removeFile}

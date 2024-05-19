@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormikValues } from 'formik';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { formatMoney, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
@@ -113,7 +113,7 @@ const AccountLimits = observer(
             <AccountLimitsContext.Provider value={context_value}>
                 <section className='da-account-limits__wrapper' data-testid='account_limits_data'>
                     <div
-                        className={classNames('da-account-limits', {
+                        className={clsx('da-account-limits', {
                             'da-account-limits--app-settings': is_app_settings,
                         })}
                     >

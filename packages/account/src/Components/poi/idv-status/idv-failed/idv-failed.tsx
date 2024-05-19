@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Form, Formik, FormikHelpers, FormikState, FormikValues } from 'formik';
 import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button, HintBox, Loading, Text } from '@deriv/components';
@@ -313,7 +313,7 @@ const IdvFailed = ({
         >
             {({ isSubmitting, isValid, dirty, status, values }) => (
                 <Form
-                    className={classNames('proof-of-identity__mismatch-container', {
+                    className={clsx('proof-of-identity__mismatch-container', {
                         'upload-layout': is_document_upload_required,
                         'min-height': shouldSkipIdv(values?.document_type?.id),
                     })}
@@ -324,7 +324,7 @@ const IdvFailed = ({
                         </Text>
                         {(status?.error_msg || idv_failure?.failure_message) && (
                             <HintBox
-                                className={classNames('proof-of-identity__failed-message', 'hint-box-layout')}
+                                className={clsx('proof-of-identity__failed-message', 'hint-box-layout')}
                                 icon='IcAlertDanger'
                                 message={
                                     <Text as='p' size={is_mobile ? 'xxs' : 'xs'} data-testid={mismatch_status}>

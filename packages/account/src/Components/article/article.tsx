@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import './article.scss';
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 type TDescriptionsItem = {
     key: string;
@@ -21,7 +21,7 @@ const Article = ({ title, descriptions, onClickLearnMore, className }: TArticle)
     const has_single_description: boolean = descriptions?.length === 1;
 
     return (
-        <article className={classNames('da-article', className)}>
+        <article className={clsx('da-article', className)}>
             <Text as='h4' color='prominent' line_height='m' size='xs' weight='bold' className='da-article__header'>
                 {title}
             </Text>

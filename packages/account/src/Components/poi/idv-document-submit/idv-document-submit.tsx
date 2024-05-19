@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Form, Formik, FormikErrors, FormikHelpers, FormikState } from 'formik';
 import { Button, HintBox, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
@@ -187,7 +187,7 @@ const IdvDocumentSubmit = observer(
                         );
                     return (
                         <Form
-                            className={classNames('proof-of-identity__container proof-of-identity__container--reset', {
+                            className={clsx('proof-of-identity__container proof-of-identity__container--reset', {
                                 'min-height': shouldSkipIdv(values?.document_type?.id),
                             })}
                         >

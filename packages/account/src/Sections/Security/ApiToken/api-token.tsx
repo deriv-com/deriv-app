@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Formik, Form, Field, FormikErrors, FieldProps, FormikHelpers } from 'formik';
 import { ApiToken as TApitoken, APITokenResponse as TAPITokenResponse } from '@deriv/api-types';
 import { Timeline, Input, Button, ThemedScrollbars, Loading } from '@deriv/components';
@@ -262,13 +262,9 @@ const ApiToken = observer(() => {
                                                     )}
                                                 </Field>
                                                 <Button
-                                                    className={classNames(
-                                                        'dc-btn__button-group',
-                                                        'da-api-token__button',
-                                                        {
-                                                            'da-api-token__button--success': is_success,
-                                                        }
-                                                    )}
+                                                    className={clsx('dc-btn__button-group', 'da-api-token__button', {
+                                                        'da-api-token__button--success': is_success,
+                                                    })}
                                                     type='submit'
                                                     is_disabled={
                                                         !dirty ||

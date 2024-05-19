@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Field, FieldProps, FormikProps, FormikValues } from 'formik';
 import { localize } from '@deriv/translations';
 import { isMobile, supported_filetypes, max_document_size } from '@deriv/shared';
@@ -64,7 +64,7 @@ const Preview = ({ data, setFieldValue, value, has_frame, handleChange }: Partia
     return (
         <div className={`${ROOT_CLASS}__uploader-details ${ROOT_CLASS}__uploader-details--preview`}>
             <div
-                className={classNames(`${ROOT_CLASS}__uploader-image`, {
+                className={clsx(`${ROOT_CLASS}__uploader-image`, {
                     [`${ROOT_CLASS}__uploader-image--has-frame`]: has_frame,
                 })}
                 style={{ backgroundImage: `url(${background_url})` }}
@@ -141,7 +141,7 @@ const Uploader = ({ data, value, is_full, onChange, has_frame }: Partial<TUpload
         <Field name={data?.name}>
             {({ form: { setFieldValue } }: FieldProps) => (
                 <div
-                    className={classNames(`${ROOT_CLASS}__uploader`, {
+                    className={clsx(`${ROOT_CLASS}__uploader`, {
                         [`${ROOT_CLASS}__uploader--full`]: is_full,
                     })}
                 >

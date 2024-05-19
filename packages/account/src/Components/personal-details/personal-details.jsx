@@ -1,5 +1,5 @@
 import { useState, Fragment, useCallback, useMemo, useEffect } from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Form, Formik } from 'formik';
 import { Analytics } from '@deriv-com/analytics';
 import {
@@ -216,7 +216,7 @@ const PersonalDetails = observer(
                                         testId='dt_personal_details_container'
                                     >
                                         <div
-                                            className={classNames('details-form__elements', 'personal-details-form')}
+                                            className={clsx('details-form__elements', 'personal-details-form')}
                                             style={{ paddingBottom: isDesktop() ? 'unset' : null }}
                                         >
                                             {is_rendered_for_idv && (
@@ -231,7 +231,7 @@ const PersonalDetails = observer(
                                             )}
                                             {is_svg && !is_eu_user && <FormSubHeader title={localize('Details')} />}
                                             <PersonalDetailsForm
-                                                class_name={classNames({
+                                                class_name={clsx({
                                                     'account-form__poi-confirm-example_container':
                                                         is_svg && !is_eu_user,
                                                 })}

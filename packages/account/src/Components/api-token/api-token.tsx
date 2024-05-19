@@ -2,7 +2,7 @@
 //@ts-nocheck [TODO] - Need to fix typescript errors
 
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Formik, Form, Field, FormikValues, FormikErrors, FieldProps } from 'formik';
 import { Timeline, Input, Button, ThemedScrollbars, Loading } from '@deriv/components';
 import InlineNoteWithIcon from '../inline-note-with-icon';
@@ -198,7 +198,7 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
         <React.Fragment>
             <ApiTokenContext.Provider value={context_value}>
                 <section
-                    className={classNames('da-api-token', {
+                    className={clsx('da-api-token', {
                         'da-api-token--app-settings': is_app_settings,
                     })}
                 >
@@ -308,7 +308,7 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
                                                         )}
                                                     </Field>
                                                     <Button
-                                                        className={classNames(
+                                                        className={clsx(
                                                             'dc-btn__button-group',
                                                             'da-api-token__button',
                                                             {

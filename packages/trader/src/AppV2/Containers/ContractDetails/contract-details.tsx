@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv-com/quill-ui';
+import ChartPlaceholder from '../Chart';
 
 const ContractDetails = () => {
     return (
@@ -14,7 +15,7 @@ const ContractDetails = () => {
                 <Text size='sm'>Contract card</Text>
             </div>
             <div className='placeholder'>
-                <Text size='sm'>Chart placeholder</Text>
+                <ChartPlaceholder />
             </div>
             <div className='placeholder'>
                 <Text size='sm'>Take profit</Text>

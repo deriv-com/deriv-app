@@ -5,7 +5,7 @@ import useDevice from '../../../../hooks/useDevice';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess } from '../../screens';
 
-type TProps = ComponentProps<typeof CFDSuccess> & {
+type TProps = Omit<ComponentProps<typeof CFDSuccess>, 'title'> & {
     onPrimaryClick?: () => void;
     onSecondaryClick?: () => void;
 };

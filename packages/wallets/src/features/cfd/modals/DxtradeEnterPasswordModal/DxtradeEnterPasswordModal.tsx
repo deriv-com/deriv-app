@@ -137,9 +137,6 @@ const DxtradeEnterPasswordModal = () => {
                 }}
                 onSecondaryClick={hide}
                 platform={dxtradePlatform}
-                title={`Your ${PlatformDetails.dxtrade.title}${
-                    accountType === 'demo' ? ` ${accountType}` : ''
-                } account is ready`}
             />
         );
     }

@@ -7,6 +7,7 @@ import { EnterPassword } from '../../screens';
 const EnterPasswordModal: FC<ComponentProps<typeof EnterPassword>> = ({
     isForgotPasswordLoading,
     isLoading,
+    marketType,
     onPasswordChange,
     onPrimaryClick,
     onSecondaryClick,
@@ -51,7 +52,7 @@ const EnterPasswordModal: FC<ComponentProps<typeof EnterPassword>> = ({
                 <EnterPassword
                     isForgotPasswordLoading={isForgotPasswordLoading}
                     isLoading={isLoading}
-                    marketType='all'
+                    marketType={marketType}
                     onPasswordChange={onPasswordChange}
                     onPrimaryClick={onPrimaryClick}
                     onSecondaryClick={onSecondaryClick}
@@ -69,7 +70,7 @@ const EnterPasswordModal: FC<ComponentProps<typeof EnterPassword>> = ({
             <EnterPassword
                 isForgotPasswordLoading={isForgotPasswordLoading}
                 isLoading={isLoading}
-                marketType='all'
+                marketType={marketType}
                 modalTitle={title}
                 onPasswordChange={onPasswordChange}
                 onPrimaryClick={onPrimaryClick}

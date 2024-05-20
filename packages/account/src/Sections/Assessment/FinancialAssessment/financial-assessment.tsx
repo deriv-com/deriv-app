@@ -508,12 +508,12 @@ const FinancialAssessment = observer(() => {
                                                     }
                                                     onChange={e => {
                                                         setFieldTouched('employment_status', true);
-                                                        handleChange(e);
                                                         setFieldValue(
                                                             'occupation',
                                                             '',
                                                             !shouldHideOccupationField(e.target.value)
                                                         );
+                                                        handleChange(e);
                                                     }}
                                                 />
                                             </MobileWrapper>

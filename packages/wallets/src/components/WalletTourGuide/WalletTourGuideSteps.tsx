@@ -21,7 +21,7 @@ export const desktopStepTourGuide = (allWalletsAreAdded: boolean): Step[] => [
     },
     {
         content: <WalletText size='sm'>Press the tab to switch between Demo or Real Wallets.</WalletText>,
-        disableScrolling: !!allWalletsAreAdded,
+        disableScrolling: true,
         placement: 'bottom',
         target: '.wallets-list-header__slider',
         title: <SpotLightHeader>Select Demo or Real</SpotLightHeader>,

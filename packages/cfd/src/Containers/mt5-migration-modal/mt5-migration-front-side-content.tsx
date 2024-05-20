@@ -30,7 +30,7 @@ const MT5MigrationFrontSideContent = observer(() => {
         has_derived_and_financial_mt5
             ? {
                   platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
-                  type_1: getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.DERIVED),
+                  type_1: getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.STANDARD),
                   type_2: getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.FINANCIAL),
                   from_account: getFormattedJurisdictionCode(Jurisdiction.SVG),
               }

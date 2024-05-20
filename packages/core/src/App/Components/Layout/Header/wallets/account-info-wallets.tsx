@@ -143,7 +143,7 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
         <div className='acc-info__wrapper'>
             <div className='acc-info__separator' />
             <AccountInfoWrapper
-                is_mobile_or_tablet={is_mobile_or_tablet}
+                is_mobile={is_mobile_or_tablet}
                 is_disabled={Boolean(active_account?.is_disabled)}
                 disabled_message={account_switcher_disabled_message}
             >

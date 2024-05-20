@@ -1,4 +1,4 @@
-import { isMobile } from '@deriv/shared';
+import { isMobileOrTablet } from '@deriv/shared';
 
 /**
  * Function to get desired text size based off responsive size
@@ -6,7 +6,7 @@ import { isMobile } from '@deriv/shared';
  * @returns {string} text size
  */
 export const getTextSize = (mobile_size: string, desktop_size: string): string =>
-    isMobile() ? mobile_size : desktop_size;
+    isMobileOrTablet() ? mobile_size : desktop_size;
 
 /**
  * Function to get desired icon size based off responsive size
@@ -14,7 +14,7 @@ export const getTextSize = (mobile_size: string, desktop_size: string): string =
  * @returns {number} icon size
  */
 export const getIconSize = (mobile_size: number, desktop_size: number): number =>
-    isMobile() ? mobile_size : desktop_size;
+    isMobileOrTablet() ? mobile_size : desktop_size;
 
 type TInlineTextSize = 'xs' | 'sm' | 'md' | 'lg';
 
@@ -24,4 +24,4 @@ type TInlineTextSize = 'xs' | 'sm' | 'md' | 'lg';
  * @returns {TInlineTextSize} inline message text size
  */
 export const getInlineTextSize = (mobile_size: TInlineTextSize, desktop_size: TInlineTextSize): TInlineTextSize =>
-    isMobile() ? mobile_size : desktop_size;
+    isMobileOrTablet() ? mobile_size : desktop_size;

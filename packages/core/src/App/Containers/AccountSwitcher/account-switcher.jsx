@@ -25,7 +25,7 @@ import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
 import { getSortedAccountList, getSortedCFDList, isDemo } from './helpers';
 
-const AccountSwitcher = observer(({ history, is_mobile_or_tablet, is_visible }) => {
+const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
     const { client, ui, traders_hub } = useStore();
     const {
         available_crypto_currencies,
@@ -465,7 +465,7 @@ const AccountSwitcher = observer(({ history, is_mobile_or_tablet, is_visible }) 
                     </Tabs>
                     <div
                         className={classNames('acc-switcher__separator', {
-                            'acc-switcher__separator--auto-margin': is_mobile_or_tablet,
+                            'acc-switcher__separator--auto-margin': is_mobile,
                         })}
                     />
                     <div className='acc-switcher__total'>

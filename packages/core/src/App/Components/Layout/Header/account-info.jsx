@@ -24,7 +24,7 @@ const AccountInfo = ({
     is_virtual,
     toggleDialog,
     is_disabled,
-    is_mobile_or_tablet,
+    is_mobile,
 }) => {
     const currency_lower = currency?.toLowerCase();
     const { isDesktop } = useDevice();
@@ -35,7 +35,7 @@ const AccountInfo = ({
             <AccountInfoWrapper
                 is_disabled={is_disabled}
                 disabled_message={acc_switcher_disabled_message}
-                is_mobile_or_tablet={is_mobile_or_tablet}
+                is_mobile={is_mobile}
             >
                 <div
                     data-testid='dt_acc_info'
@@ -124,7 +124,7 @@ AccountInfo.propTypes = {
     is_disabled: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_virtual: PropTypes.bool,
-    is_mobile_or_tablet: PropTypes.bool,
+    is_mobile: PropTypes.bool,
     loginid: PropTypes.string,
     toggleDialog: PropTypes.func,
 };

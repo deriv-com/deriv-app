@@ -27,7 +27,7 @@
         &--is-vertical-top {
             top: $HEADER_HEIGHT;
             position: absolute;
-            @include mobile-screen {
+            @include mobile-or-tablet-screen {
                 top: $MOBILE_HEADER_HEIGHT;
                 left: 1.6rem;
                 width: calc(100vw - 3.2rem) !important;
@@ -36,7 +36,7 @@
         &--is-vertical-bottom {
             bottom: $FOOTER_HEIGHT;
             position: absolute;
-            @include mobile-screen {
+            @include mobile-or-tablet-screen {
                 left: 1.6rem;
                 width: calc(100vw - 3.2rem) !important;
             }
@@ -83,7 +83,7 @@
             min-width: 440px !important;
             max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT}) !important;
         }
-        @include mobile-screen {
+        @include mobile-or-tablet-screen {
             max-width: calc(100vw - 3.2rem) !important;
         }
     }

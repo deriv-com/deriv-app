@@ -94,7 +94,7 @@ export const getPersonalDetailsInitialValues = (
 };
 
 export const getPersonalDetailsBaseValidationSchema = () => {
-    const characterLengthMessage = 'You should enter 1-50 characters.';
+    const characterLengthMessage = 'Enter no more than 50 characters.';
     const addressLengthMessage = 'Should be less than 70 characters.';
     const phoneNumberLengthMessage = 'You should enter 9-35 numbers.';
 

@@ -103,7 +103,7 @@ describe('<PersonalDetailsForm />', () => {
         await waitFor(() => {
             const last_name = screen.getByTestId('dt_last_name');
             userEvent.type(last_name, 'ABCDEFGHIJKLMNOP.QRSTU VWXYZabcdefghi-jklmnopqrstuvwxyzh-shs');
-            expect(screen.getByText(/You should enter 1-50 characters./)).toBeInTheDocument();
+            expect(screen.getByText(/Enter no more than 50 characters./)).toBeInTheDocument();
         });
     });
 

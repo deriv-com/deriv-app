@@ -12,15 +12,15 @@
     }
     &__box {
         display: flex;
-        width: 16px;
-        height: 16px;
+        width: 1.6rem;
+        height: 1.6rem;
         transition: 0.3s ease-in-out;
         flex-shrink: 0;
-        margin: 0 8px;
-        border-radius: 2px;
+        margin: 0 0.8rem;
+        border-radius: 0.2rem;
         align-self: center;
         box-sizing: border-box;
-        border: 2px solid var(--text-less-prominent);
+        border: 0.2rem solid var(--text-less-prominent);
         outline: none;
 
         &--active {

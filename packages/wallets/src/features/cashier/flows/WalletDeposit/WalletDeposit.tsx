@@ -9,6 +9,7 @@ const WalletDeposit = () => {
     const { data } = useActiveWalletAccount();
     const { isSuccess: isAuthorizeSuccess } = useAuthorize();
     const {
+        data: iframeUrl,
         error: depositFiatError,
         isLoading: isFiatAddressLoading,
         mutate: mutateDepositFiat,
@@ -40,7 +41,7 @@ const WalletDeposit = () => {
         return <DepositErrorScreen currency={currency} error={depositError} />;
     }
 
-    return isCrypto ? <DepositCryptoModule /> : <DepositFiatModule />;
+    return isCrypto ? <DepositCryptoModule /> : <DepositFiatModule iframeUrl={iframeUrl} />;
 };
 
 export default WalletDeposit;

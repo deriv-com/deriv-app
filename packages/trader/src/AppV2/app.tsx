@@ -1,7 +1,6 @@
 import React from 'react';
 import type { TWebSocket } from 'Types';
 import initStore from 'App/init-store';
-import 'Sass/app.scss';
 import type { TCoreStores } from '@deriv/stores/types';
 import TraderProviders from '../trader-providers';
 import BottomNav from './Components/BottomNav';
@@ -11,6 +10,8 @@ import Positions from './Containers/Positions';
 import Menu from './Containers/Menu';
 import { NotificationsProvider } from '@deriv-com/quill-ui';
 import Notifications from './Containers/Notifications/notifications';
+import 'Sass/app.scss';
+import '@deriv-com/quill-ui/quill.css';
 
 type Apptypes = {
     passthrough: {

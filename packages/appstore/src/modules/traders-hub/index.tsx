@@ -87,7 +87,7 @@ const TradersHub = observer(() => {
     const eu_title = content_flag === ContentFlag.EU_DEMO || content_flag === ContentFlag.EU_REAL || is_eu_user;
 
     const getPlatformToggleOptions = () => [
-        { text: eu_title ? localize('Multipliers') : localize('Options & Multipliers'), value: 'options' },
+        { text: eu_title ? localize('Multipliers') : localize('Options'), value: 'options' },
         { text: localize('CFDs'), value: 'cfd' },
     ];
     const platform_toggle_options = getPlatformToggleOptions();

@@ -13,15 +13,24 @@ const FLAGS = {
 const feature_flags_title = 'Feature flags';
 
 describe('<FeatureFlagsSection/>', () => {
-    const original_window_location = window.location;
+    const original_window_location = { ...window.location };
+    const original_location = { ...location };
     let default_mock_store: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
         Object.defineProperty(window, 'location', {
+            value: { ...original_window_location },
             configurable: true,
-            enumerable: true,
-            value: new URL('https://localhost:8443'),
+            writable: true,
         });
+
+        Object.defineProperty(global, 'location', {
+            value: { ...original_location },
+            configurable: true,
+            writable: true,
+        });
+
+        window.location.href = 'https://localhost:8443';
 
         default_mock_store = mockStore({
             feature_flags: {
@@ -38,9 +47,15 @@ describe('<FeatureFlagsSection/>', () => {
         jest.clearAllMocks();
 
         Object.defineProperty(window, 'location', {
+            value: { ...original_window_location },
             configurable: true,
-            enumerable: true,
-            value: original_window_location,
+            writable: true,
+        });
+
+        Object.defineProperty(global, 'location', {
+            value: { ...original_location },
+            configurable: true,
+            writable: true,
         });
     });
 

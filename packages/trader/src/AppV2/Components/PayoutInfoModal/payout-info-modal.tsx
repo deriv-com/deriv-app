@@ -21,9 +21,7 @@ const PayoutInfoModal = () => {
             >
                 <Modal.Header title={<Localize i18n_default_text='How do I earn a payout?' />} />
                 <Modal.Body>
-                    {
-                        <Localize i18n_default_text='After the entry spot tick, your stake will grow continuously by 1% for every tick that the spot price remains within the ± 0.06444% from the previous spot price.' />
-                    }
+                    <Localize i18n_default_text='After the entry spot tick, your stake will grow continuously by 1% for every tick that the spot price remains within the ± 0.06444% from the previous spot price.' />
                 </Modal.Body>
             </Modal>
         </>

@@ -116,7 +116,7 @@ runs:
     if: steps.get_artifact_url.outputs.artifact_url != 'null'
     shell: bash
     run: |
-      DIFF_OUTPUT=$(node .github/workflows/compareReports.js)
+      DIFF_OUTPUT=$(node .github/actions/analyze/compareReports.js)
       echo "diff_output<<EOF" >> $GITHUB_OUTPUT
       echo "$DIFF_OUTPUT" >> $GITHUB_OUTPUT
       echo "EOF" >> $GITHUB_OUTPUT

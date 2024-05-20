@@ -1,10 +1,7 @@
-/* eslint @typescript-eslint/triple-slash-reference: "off" */
-/// <reference path="../../../@types/@contentpass/zxcvbn/contentpass-zxcvbn-config.d.ts" />
 import classNames from 'classnames';
 import React from 'react';
-import { useIsMounted } from '@deriv/shared';
 import Field from '../field';
-import Loading from '../loading';
+import { zxcvbn } from '@zxcvbn-ts/core';
 
 type TPasswordMeter = {
     children?: React.ReactNode | ((prop: { [key: string]: boolean }) => string);
@@ -16,48 +13,23 @@ type TPasswordMeter = {
 type TCustomFeedback = { warning: () => string; suggestions: string };
 
 const PasswordMeter = ({ children, has_error, input, custom_feedback_messages }: TPasswordMeter) => {
-    const zxcvbn =
-        React.useRef<
-            (
-                propA: string,
-                propB: { feedback_messages: { [key: string]: string } }
-            ) => { score: number; feedback: TCustomFeedback }
-        >();
-
-    const [is_loading, setLoading] = React.useState(true);
     const [score, setScore] = React.useState<number>(0);
-    const [feedback, setFeedback] = React.useState<TCustomFeedback>({ warning: () => '', suggestions: '' });
-
-    const isMounted = useIsMounted();
-
-    React.useEffect(() => {
-        async function loadLibrary() {
-            const lib = await import('@contentpass/zxcvbn');
-            zxcvbn.current = lib.default;
-            if (isMounted()) setLoading(false);
-        }
-
-        loadLibrary();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const [feedback, setFeedback] = React.useState<{ warning: string | null; suggestions: string[] | null }>({
+        warning: '',
+        suggestions: [],
+    });
 
     React.useEffect(() => {
-        if (typeof zxcvbn.current === 'function') {
-            // 0 - 4 Score for password strength
-            if (input?.length > 0) {
-                const { score: updated_score, feedback: updated_feedback } = zxcvbn.current(input, {
-                    feedback_messages: custom_feedback_messages,
-                });
-                setScore(updated_score);
-                setFeedback(updated_feedback);
-            } else {
-                setScore(0);
-                setFeedback({ warning: () => '', suggestions: '' });
-            }
+        // 0 - 4 Score for password strength
+        if (input?.length > 0) {
+            const { score: updated_score, feedback: updated_feedback } = zxcvbn(input);
+            setScore(updated_score);
+            setFeedback(updated_feedback);
+        } else {
+            setScore(0);
+            setFeedback({ warning: '', suggestions: [] });
         }
     }, [custom_feedback_messages, has_error, input]);
-
-    if (is_loading) return <Loading is_fullscreen={false} />;
 
     const width_scale = (() => {
         if (has_error && input.length) return 0.25;
@@ -79,7 +51,7 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages }:
                 {feedback?.warning && !has_error && (
                     <Field
                         className='dc-password-meter__warning'
-                        message={`${custom_feedback_messages ? feedback.warning() : feedback.warning}`}
+                        message={`${custom_feedback_messages[feedback.warning]}`}
                         type='error'
                     />
                 )}

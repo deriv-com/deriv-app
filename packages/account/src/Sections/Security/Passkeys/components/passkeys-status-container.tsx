@@ -1,22 +1,28 @@
 import React from 'react';
 import { observer } from '@deriv/stores';
-import './passkeys.scss';
-import { NoPasskeys } from './components/no-passkeys';
-import { PasskeyRename } from './components/passkey-rename';
-import { PasskeysList } from './components/passkeys-list';
-import { PASSKEY_STATUS_CODES, TPasskeysStatus } from './passkeys-configs';
-import { PasskeyCreated } from './components/passkey-created';
-import { TPasskeysButtonOnClicks } from './components/passkeys-status-layout';
-import { PasskeyCard } from './components/passkey-card';
-import { PasskeysLearnMore } from './components/passkeys-learn-more';
+import { NoPasskeys } from './no-passkeys';
+import { PASSKEY_STATUS_CODES, TPasskeysStatus } from '../passkeys-configs';
+import { PasskeyCard } from './passkey-card';
+import { PasskeyCreated } from './passkey-created';
+import { PasskeysLearnMore } from './passkeys-learn-more';
+import { PasskeysList } from './passkeys-list';
+import { PasskeyRename } from './passkey-rename';
+import { TPasskeysButtonOnClicks } from './passkeys-status-layout';
 
 type TPasskeysStatusContainer = {
     passkey_status: TPasskeysStatus;
     passkeys_list: React.ComponentProps<typeof PasskeyCard>[];
+    onCardMenuClick?: () => void;
 } & TPasskeysButtonOnClicks;
 
 export const PasskeysStatusContainer = observer(
-    ({ onPrimaryButtonClick, onSecondaryButtonClick, passkeys_list, passkey_status }: TPasskeysStatusContainer) => {
+    ({
+        onPrimaryButtonClick,
+        onSecondaryButtonClick,
+        passkeys_list,
+        passkey_status,
+        onCardMenuClick,
+    }: TPasskeysStatusContainer) => {
         switch (passkey_status) {
             case PASSKEY_STATUS_CODES.CREATED:
                 return (
@@ -50,6 +56,7 @@ export const PasskeysStatusContainer = observer(
             default:
                 return (
                     <PasskeysList
+                        onCardMenuClick={onCardMenuClick}
                         passkeys_list={passkeys_list || []}
                         onPrimaryButtonClick={onPrimaryButtonClick}
                         onSecondaryButtonClick={onSecondaryButtonClick}

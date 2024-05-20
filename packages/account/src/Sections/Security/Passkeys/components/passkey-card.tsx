@@ -12,6 +12,7 @@ type TPasskeyCard = {
     stored_on?: string;
     passkey_id?: string;
     icon?: string;
+    onClick?: () => void;
 };
 
 export const PasskeyCard = ({ name, last_used, stored_on, icon }: TPasskeyCard) => {

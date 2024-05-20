@@ -1,19 +1,18 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { TServerError } from '../../../../Types/common.type';
-import { TSocketError } from '@deriv/api/types';
+import { TPasskeyError } from '../passkeys-configs';
+import { TServerError } from '../../../../Types';
 
 type TPasskeyErrorModal = {
     // TODO: fix types for TServerError and TSocketError
-    error: TServerError | null | TSocketError<'passkeys_list' | 'passkeys_register' | 'passkeys_register_options'>;
-    onButtonClick: React.MouseEventHandler<HTMLButtonElement>;
+    error: TPasskeyError;
+    onButtonClick: () => void;
     is_modal_open: boolean;
 };
 
-export const PasskeyErrorModal = ({ is_modal_open, error, onButtonClick }: TPasskeyErrorModal) => {
-    const NOT_SUPPORTED_ERROR_NAME = 'NotSupportedError';
-    const isNotSupportedError = (error: TServerError) => error?.name === NOT_SUPPORTED_ERROR_NAME;
+const getErrorModalContent = (error: TPasskeyError) => {
+    const isNotSupportedError = (error: TServerError) => error?.name === 'NotSupportedError';
 
     const error_message_header = (
         <Text size='xs' weight='bold'>
@@ -31,15 +30,24 @@ export const PasskeyErrorModal = ({ is_modal_open, error, onButtonClick }: TPass
         <Localize i18n_default_text='We’re experiencing a temporary issue in processing your request. Please try again later.' />
     );
 
+    return {
+        error_message_header,
+        error_message,
+    };
+};
+
+export const PasskeyErrorModal = ({ is_modal_open, error, onButtonClick }: TPasskeyErrorModal) => {
+    const error_modal_content = getErrorModalContent(error);
+
     return (
         <Modal
             portalId='modal_root'
-            header={error_message_header}
+            header={error_modal_content.error_message_header}
             is_open={is_modal_open}
             has_close_icon={false}
             className='passkeys-modal'
         >
-            <Modal.Body>{error_message}</Modal.Body>
+            <Modal.Body>{error_modal_content.error_message}</Modal.Body>
             <Modal.Footer>
                 <Button onClick={onButtonClick} large primary>
                     <Localize i18n_default_text='OK' />

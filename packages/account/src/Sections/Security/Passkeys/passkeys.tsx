@@ -5,10 +5,10 @@ import { useGetPasskeysList, useRegisterPasskey } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { PASSKEY_STATUS_CODES, TPasskeysStatus, passkeysMenuActionEventTrack } from './passkeys-configs';
-import { PasskeysStatusContainer } from './passkeys-status-container';
-import './passkeys.scss';
-import { PasskeyReminderModal } from './components/passkey-reminder-modal';
 import { PasskeyErrorModal } from './components/passkey-error-modal';
+import { PasskeyReminderModal } from './components/passkey-reminder-modal';
+import { PasskeysStatusContainer } from './components/passkeys-status-container';
+import './passkeys.scss';
 
 const Passkeys = observer(() => {
     const { client, ui } = useStore();
@@ -63,7 +63,7 @@ const Passkeys = observer(() => {
             timeout.current = setTimeout(() => setIsErrorModalOpen(true), 500);
         }
         return () => clearTimeOut();
-    }, [error]);
+    }, [error, is_reminder_modal_open]);
 
     if (should_show_passkeys && is_passkeys_list_loading) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
@@ -141,15 +141,19 @@ const Passkeys = observer(() => {
         prev_passkey_status.current = passkey_status;
     };
 
+    const onCardMenuClick = () => {
+        //TODO: add the logic to open proper component for rename and revoke
+    };
+
     return (
         <Fragment>
             <PasskeysStatusContainer
+                onCardMenuClick={onCardMenuClick}
                 onPrimaryButtonClick={onPrimaryButtonClick}
                 onSecondaryButtonClick={onSecondaryButtonClick}
                 passkey_status={passkey_status}
                 passkeys_list={passkeys_list || []}
             />
-            {/*add snackbar*/}
             <PasskeyReminderModal
                 is_modal_open={is_reminder_modal_open}
                 onButtonClick={onContinueReminderModal}

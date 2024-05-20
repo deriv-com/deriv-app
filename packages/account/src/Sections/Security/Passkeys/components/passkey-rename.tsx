@@ -1,34 +1,31 @@
 import React from 'react';
 import { Formik } from 'formik';
-import * as Yup from 'yup';
 import { localize, Localize } from '@deriv/translations';
+import { getPasskeyRenameValidationSchema } from '../passkeys-configs';
 import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status-layout';
 import FormInputField from '../../../../Components/forms/form-fields/form-input-field';
 
-type TPasskeyRename = { id?: number } & TPasskeysButtonOnClicks;
+// TODO: check the props for renaming
+type TPasskeyRename = { id?: number; passkey_name?: string } & TPasskeysButtonOnClicks;
 
-export const PasskeyRename = ({ onPrimaryButtonClick, onSecondaryButtonClick }: TPasskeyRename) => {
-    const form_initial_values = {
-        passkey_rename: 'old name',
+type TInitialValues = { passkey_rename: string };
+
+export const PasskeyRename = ({ onPrimaryButtonClick, onSecondaryButtonClick, passkey_name = '' }: TPasskeyRename) => {
+    const form_initial_values: TInitialValues = {
+        passkey_rename: passkey_name,
     };
 
-    const passkey_rename_validation_schema = Yup.object().shape({
-        passkey_rename: Yup.string()
-            .min(3, localize('Only 3-30 characters allowed.'))
-            .max(30, localize('Only 3-30 characters allowed.'))
-            .matches(/^[A-Za-z0-9][A-Za-z0-9\s-]*$/, localize('Only letters, numbers, space, and hyphen are allowed.')),
-    });
+    // TODO: add api call for renaming passkey
 
-    const onSubmitValues = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        //TODO: refactor types
-        onPrimaryButtonClick(e);
+    const onSubmitValues = () => {
+        onPrimaryButtonClick();
     };
 
     return (
         <Formik
             initialValues={form_initial_values}
             onSubmit={onSubmitValues}
-            validationSchema={passkey_rename_validation_schema}
+            validationSchema={getPasskeyRenameValidationSchema()}
         >
             {({ dirty, isValid }) => (
                 <div className='passkeys'>
@@ -41,11 +38,7 @@ export const PasskeyRename = ({ onPrimaryButtonClick, onSecondaryButtonClick }: 
                         secondary_button_text={<Localize i18n_default_text='Back' />}
                         primary_button_disabled={!dirty || !isValid}
                     >
-                        <FormInputField
-                            initial_character_count={form_initial_values.passkey_rename.length}
-                            label={localize('Passkey rename')}
-                            name='passkey_rename'
-                        />
+                        <FormInputField label={localize('Passkey rename')} name='passkey_rename' />
                     </PasskeysStatusLayout>
                 </div>
             )}

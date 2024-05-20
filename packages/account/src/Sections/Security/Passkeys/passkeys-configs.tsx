@@ -1,5 +1,9 @@
 import { Analytics } from '@deriv-com/analytics';
 import { getOSNameWithUAParser } from '@deriv/shared';
+import { TServerError } from '../../../Types';
+import { TSocketError } from '@deriv/api/types';
+import { localize } from '@deriv/translations';
+import * as Yup from 'yup';
 
 export const PASSKEY_STATUS_CODES = {
     CREATED: 'created',
@@ -12,6 +16,19 @@ export const PASSKEY_STATUS_CODES = {
 } as const;
 
 export type TPasskeysStatus = typeof PASSKEY_STATUS_CODES[keyof typeof PASSKEY_STATUS_CODES];
+
+export type TPasskeyError =
+    | TServerError
+    | null
+    | TSocketError<'passkeys_list' | 'passkeys_register' | 'passkeys_register_options'>;
+
+export const getPasskeyRenameValidationSchema = () =>
+    Yup.object().shape({
+        passkey_rename: Yup.string()
+            .min(3, localize('Only 3-30 characters allowed.'))
+            .max(30, localize('Only 3-30 characters allowed.'))
+            .matches(/^[A-Za-z0-9][A-Za-z0-9\s-]*$/, localize('Only letters, numbers, space, and hyphen are allowed.')),
+    });
 
 export const passkeysMenuActionEventTrack = (
     action: string,

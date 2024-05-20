@@ -6,8 +6,8 @@ import FormBody from '../../../../Components/form-body';
 import FormFooter from '../../../../Components/form-footer';
 
 export type TPasskeysButtonOnClicks = {
-    onPrimaryButtonClick: React.MouseEventHandler<HTMLButtonElement>;
-    onSecondaryButtonClick?: React.MouseEventHandler<HTMLButtonElement>;
+    onPrimaryButtonClick: () => void;
+    onSecondaryButtonClick?: () => void;
 };
 
 type TPasskeysStatusLayout = {

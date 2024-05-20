@@ -8,7 +8,7 @@ import { useGetPasskeysList, useRegisterPasskey } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import Passkeys from '../passkeys';
-import PasskeysList from '../components/passkeys-list';
+import { PasskeysList } from '../components/passkeys-list';
 
 const passkey_name_1 = 'Test Passkey 1';
 const passkey_name_2 = 'Test Passkey 2';
@@ -19,7 +19,7 @@ export const mock_passkeys_list: React.ComponentProps<typeof PasskeysList>['pass
         name: passkey_name_1,
         last_used: 1633024800000,
         created_at: 1633024800000,
-        stored_on: '',
+        stored_on: 'Test device 1',
         icon: 'Test Icon 1',
         passkey_id: 'mock-id-1',
     },
@@ -28,7 +28,7 @@ export const mock_passkeys_list: React.ComponentProps<typeof PasskeysList>['pass
         name: passkey_name_2,
         last_used: 1633124800000,
         created_at: 1634024800000,
-        stored_on: '',
+        stored_on: 'Test device 2',
         icon: 'Test Icon 2',
         passkey_id: 'mock-id-2',
     },
@@ -144,7 +144,7 @@ describe('Passkeys', () => {
         expect(Analytics.trackEvent).not.toHaveBeenCalled();
     });
 
-    it('renders loader if network_status is offline', () => {
+    it('renders primary button with loader if network_status is offline', () => {
         (useGetPasskeysList as jest.Mock).mockReturnValue({
             is_passkeys_list_loading: false,
         });
@@ -157,8 +157,16 @@ describe('Passkeys', () => {
             </RenderWrapper>
         );
 
-        expect(screen.getByText('MockLoading')).toBeInTheDocument();
         expect(Analytics.trackEvent).not.toHaveBeenCalled();
+        const buttons = screen.getAllByRole('button');
+        expect(buttons[0]).toHaveClass('dc-btn--secondary');
+        expect(buttons[1]).toHaveClass('dc-btn--primary');
+        expect(buttons[0]).toBeEnabled();
+        expect(buttons[1]).toBeDisabled();
+        const loader = screen.getByTestId('dt_initial_loader');
+        expect(loader).toBeInTheDocument();
+        expect(loader).toHaveClass('initial-loader--btn');
+        expect(buttons[1].contains(loader)).toBeTruthy();
     });
 
     it('renders existed passkeys correctly and triggers new passkey creation', async () => {
@@ -276,6 +284,7 @@ describe('Passkeys', () => {
         (useRegisterPasskey as jest.Mock).mockReturnValue({
             createPasskey: mockCreatePasskey,
             is_passkey_registration_started: true,
+            startPasskeyRegistration: mockStartPasskeyRegistration,
         });
 
         render(
@@ -284,13 +293,13 @@ describe('Passkeys', () => {
             </RenderWrapper>
         );
 
+        userEvent.click(screen.getByRole('button', { name: create_passkey }));
         expect(screen.getByText('Just a reminder')).toBeInTheDocument();
         expect(screen.getByText('Enable screen lock on your device.')).toBeInTheDocument();
         expect(screen.getByText('Enable bluetooth.')).toBeInTheDocument();
         expect(screen.getByText('Sign in to your Google or iCloud account.')).toBeInTheDocument();
 
-        const continue_button = screen.getByRole('button', { name: /continue/i });
-        userEvent.click(continue_button);
+        userEvent.click(screen.getByRole('button', { name: /continue/i }));
         expect(mockCreatePasskey).toBeCalledTimes(1);
         expect(Analytics.trackEvent).toHaveBeenCalledWith(
             tracking_event,
@@ -300,8 +309,10 @@ describe('Passkeys', () => {
 
     it('renders passkeys registration error modal and triggers closing', async () => {
         (useRegisterPasskey as jest.Mock).mockReturnValue({
+            createPasskey: mockCreatePasskey,
             passkey_registration_error: { message: 'error' },
             clearPasskeyRegistrationError: mockClearPasskeyRegistrationError,
+            startPasskeyRegistration: mockStartPasskeyRegistration,
         });
 
         render(
@@ -310,36 +321,19 @@ describe('Passkeys', () => {
             </RenderWrapper>
         );
 
-        const ok_button = screen.getByRole('button', { name: /ok/i });
-        expect(screen.getByText(error_message)).toBeInTheDocument();
-        expect(screen.getByText(error_title)).toBeInTheDocument();
-        userEvent.click(ok_button);
+        userEvent.click(screen.getByRole('button', { name: create_passkey }));
+        userEvent.click(screen.getByRole('button', { name: /continue/i }));
+
+        await waitFor(() => {
+            const ok_button = screen.getByRole('button', { name: /ok/i });
+            expect(screen.getByText(error_message)).toBeInTheDocument();
+            expect(screen.getByText(error_title)).toBeInTheDocument();
+            userEvent.click(ok_button);
+        });
+
         await waitFor(() => {
             expect(mockClearPasskeyRegistrationError).toBeCalledTimes(1);
             expect(mockHistoryPush).toHaveBeenCalledWith(routes.traders_hub);
         });
-    });
-
-    it('renders passkeys list error modal and triggers closing', async () => {
-        (useRegisterPasskey as jest.Mock).mockReturnValue({
-            passkey_registration_error: null,
-        });
-
-        (useGetPasskeysList as jest.Mock).mockReturnValue({
-            passkeys_list_error: { message: 'error' },
-            reloadPasskeysList: mockReloadPasskeysList,
-        });
-
-        render(
-            <RenderWrapper>
-                <Passkeys />
-            </RenderWrapper>
-        );
-
-        const ok_button = screen.getByRole('button', { name: /ok/i });
-        expect(screen.getByText(error_message)).toBeInTheDocument();
-        expect(screen.getByText(error_title)).toBeInTheDocument();
-        userEvent.click(ok_button);
-        expect(mockHistoryPush).toHaveBeenCalledWith(routes.traders_hub);
     });
 });

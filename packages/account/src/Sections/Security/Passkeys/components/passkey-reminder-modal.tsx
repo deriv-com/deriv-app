@@ -8,20 +8,14 @@ type TPasskeyReminderModal = {
     toggleModal?: () => void;
 };
 
-export const PasskeyReminderModal = ({ is_modal_open, onButtonClick, toggleModal }: TPasskeyReminderModal) => {
-    const header = (
-        <Text size='xs' weight='bold'>
-            <Localize i18n_default_text='Just a reminder' />
-        </Text>
-    );
-
+const getReminderModalContent = () => {
     const reminder_tips = [
         <Localize i18n_default_text='Enable screen lock on your device.' key='tip_1' />,
         <Localize i18n_default_text='Enable bluetooth.' key='tip_2' />,
         <Localize i18n_default_text='Sign in to your Google or iCloud account.' key='tip_3' />,
     ];
 
-    const description = (
+    return (
         <ul>
             {reminder_tips.map(tip => (
                 <li key={tip.key}>
@@ -32,6 +26,15 @@ export const PasskeyReminderModal = ({ is_modal_open, onButtonClick, toggleModal
             ))}
         </ul>
     );
+};
+
+export const PasskeyReminderModal = ({ is_modal_open, onButtonClick, toggleModal }: TPasskeyReminderModal) => {
+    const header = (
+        <Text size='xs' weight='bold'>
+            <Localize i18n_default_text='Just a reminder' />
+        </Text>
+    );
+
     return (
         <Modal
             portalId='modal_root'
@@ -40,7 +43,7 @@ export const PasskeyReminderModal = ({ is_modal_open, onButtonClick, toggleModal
             toggleModal={toggleModal}
             className='passkeys-modal'
         >
-            <Modal.Body>{description}</Modal.Body>
+            <Modal.Body>{getReminderModalContent()}</Modal.Body>
             <Modal.Footer>
                 <Button onClick={onButtonClick} large primary>
                     <Localize i18n_default_text='Continue' />

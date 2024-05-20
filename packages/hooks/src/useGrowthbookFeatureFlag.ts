@@ -12,7 +12,7 @@ const useGrowthbookFeatureFlag = ({ featureFlag }: UseGrowthbookFeatureFlagArgs)
 
     useEffect(() => {
         let analytics_interval: NodeJS.Timeout;
-        if (data.marketing_growthbook) {
+        if (data?.marketing_growthbook) {
             let timeout = 0;
             analytics_interval = setInterval(() => {
                 // Check if the analytics instance is available for 10 seconds before setting the feature flag value

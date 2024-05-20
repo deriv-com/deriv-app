@@ -56,7 +56,8 @@
         "ts-jest": "^26.4.2"
     },
     "scripts": {
-        "analyze": "nx run-many --target=analyze",
+        "analyze:build": "nx run-many --target=analyze:build",
+        "analyze:stats": "nx run-many --target=analyze:stats",
         "build:all": "nx build @deriv/components --skip-nx-cache && nx build @deriv/account  --skip-nx-cache && nx build @deriv/bot-web-ui --skip-nx-cache && nx run-many --target=build",
         "build:one": "f () { nx build @deriv/$1 $2 ;}; f",
         "build:since": "nx affected --target=build",

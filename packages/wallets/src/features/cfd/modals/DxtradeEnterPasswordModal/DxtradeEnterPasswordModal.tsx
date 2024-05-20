@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
     useAccountStatus,
@@ -10,6 +10,7 @@ import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
+import useSendPasswordResetEmail from '../../../../hooks/useSendPasswordResetEmail';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
 import './DxtradeEnterPasswordModal.scss';
@@ -19,9 +20,23 @@ const DxtradeEnterPasswordModal = () => {
     const { isMobile } = useDevice();
     const [password, setPassword] = useState('');
     const { data: getAccountStatus, isSuccess: accountStatusSuccess } = useAccountStatus();
-    const { error, isLoading, isSuccess, mutateAsync, status } = useCreateOtherCFDAccount();
+    const {
+        data: createdAccount,
+        error,
+        isLoading,
+        isSuccess: isCreateAccountSuccessful,
+        mutateAsync,
+        status,
+    } = useCreateOtherCFDAccount();
+
     const { data: dxtradeAccount, isSuccess: dxtradeAccountListSuccess } = useDxtradeAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
+    const {
+        error: resetPasswordError,
+        isLoading: isResetPasswordLoading,
+        isSuccess: isResetPasswordSuccessful,
+        sendEmail,
+    } = useSendPasswordResetEmail();
     const { hide, show } = useModal();
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
     const dxtradePlatform = PlatformDetails.dxtrade.platform;
@@ -45,12 +60,29 @@ const DxtradeEnterPasswordModal = () => {
             : `Transfer funds from your ${activeWallet?.currency} Wallet to your ${PlatformDetails.dxtrade.title} account to start trading.`;
     }, [accountType, activeWallet?.currency, activeWallet?.display_balance]);
 
+    useEffect(() => {
+        if (!isResetPasswordSuccessful) return;
+        if (!isDxtradePasswordNotSet && isMobile) {
+            show(
+                <ModalStepWrapper title="We've sent you an email">
+                    <SentEmailContent onErrorButtonClick={hide} platform={dxtradePlatform} />
+                </ModalStepWrapper>
+            );
+        } else if (!isDxtradePasswordNotSet) {
+            show(
+                <ModalWrapper>
+                    <SentEmailContent onErrorButtonClick={hide} platform={dxtradePlatform} />
+                </ModalWrapper>
+            );
+        }
+    }, [dxtradePlatform, hide, isDxtradePasswordNotSet, isMobile, isResetPasswordSuccessful, show]);
+
     const dxtradeBalance = useMemo(() => {
         return dxtradeAccount?.find(account => account.market_type === 'all')?.display_balance;
     }, [dxtradeAccount]);
 
     const renderFooter = useMemo(() => {
-        if (isSuccess) {
+        if (isCreateAccountSuccessful) {
             if (accountType === 'demo') {
                 return (
                     <div className='wallets-success-btn'>
@@ -68,7 +100,7 @@ const DxtradeEnterPasswordModal = () => {
                     <WalletButton
                         onClick={() => {
                             hide();
-                            history.push('/wallets/cashier/transfer');
+                            history.push('/wallets/cashier/transfer', { toAccountLoginId: createdAccount?.account_id });
                         }}
                         size={isMobile ? 'lg' : 'md'}
                     >
@@ -83,12 +115,11 @@ const DxtradeEnterPasswordModal = () => {
                 <WalletButtonGroup isFullWidth>
                     <WalletButton
                         isFullWidth
+                        isLoading={isResetPasswordLoading}
                         onClick={() => {
-                            show(
-                                <ModalStepWrapper title="We've sent you an email">
-                                    <SentEmailContent platform={dxtradePlatform} />
-                                </ModalStepWrapper>
-                            );
+                            sendEmail({
+                                platform: dxtradePlatform,
+                            });
                         }}
                         size={isMobile ? 'lg' : 'md'}
                         variant='outlined'
@@ -121,20 +152,22 @@ const DxtradeEnterPasswordModal = () => {
         );
     }, [
         accountType,
+        createdAccount?.account_id,
         dxtradePlatform,
         hide,
         history,
+        isCreateAccountSuccessful,
         isDxtradePasswordNotSet,
         isLoading,
         isMobile,
-        isSuccess,
+        isResetPasswordLoading,
         onSubmit,
         password,
-        show,
+        sendEmail,
     ]);
 
     const successComponent = useMemo(() => {
-        if (isSuccess && dxtradeAccountListSuccess) {
+        if (isCreateAccountSuccessful && dxtradeAccountListSuccess) {
             return (
                 <CFDSuccess
                     description={successDescription}
@@ -149,7 +182,7 @@ const DxtradeEnterPasswordModal = () => {
             );
         }
     }, [
-        isSuccess,
+        isCreateAccountSuccessful,
         dxtradeAccountListSuccess,
         successDescription,
         dxtradeBalance,
@@ -159,7 +192,7 @@ const DxtradeEnterPasswordModal = () => {
     ]);
 
     const passwordComponent = useMemo(() => {
-        if (!isSuccess && accountStatusSuccess) {
+        if (!isCreateAccountSuccessful && accountStatusSuccess) {
             return isDxtradePasswordNotSet ? (
                 <CreatePassword
                     isLoading={isLoading}
@@ -170,17 +203,16 @@ const DxtradeEnterPasswordModal = () => {
                 />
             ) : (
                 <EnterPassword
+                    isForgotPasswordLoading={isResetPasswordLoading}
                     isLoading={isLoading}
                     marketType='all'
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}
-                    onSecondaryClick={() =>
-                        show(
-                            <ModalWrapper>
-                                <SentEmailContent platform={dxtradePlatform} />
-                            </ModalWrapper>
-                        )
-                    }
+                    onSecondaryClick={() => {
+                        sendEmail({
+                            platform: dxtradePlatform,
+                        });
+                    }}
                     password={password}
                     passwordError={error?.error?.code === 'PasswordError'}
                     platform={dxtradePlatform}
@@ -189,18 +221,30 @@ const DxtradeEnterPasswordModal = () => {
             );
         }
     }, [
-        isSuccess,
+        isCreateAccountSuccessful,
         accountStatusSuccess,
         isDxtradePasswordNotSet,
         isLoading,
         onSubmit,
         password,
         dxtradePlatform,
+        isResetPasswordLoading,
         error?.error?.code,
-        show,
+        sendEmail,
     ]);
+
     if (status === 'error' && error?.error?.code !== 'PasswordError') {
         return <WalletError errorMessage={error?.error.message} onClick={hide} title={error?.error?.code} />;
+    }
+
+    if (resetPasswordError) {
+        return (
+            <WalletError
+                errorMessage={resetPasswordError?.error.message}
+                onClick={hide}
+                title={resetPasswordError?.error?.code}
+            />
+        );
     }
 
     if (isMobile) {
@@ -212,7 +256,7 @@ const DxtradeEnterPasswordModal = () => {
         );
     }
     return (
-        <ModalWrapper hideCloseButton={isSuccess}>
+        <ModalWrapper hideCloseButton={isCreateAccountSuccessful}>
             {successComponent}
             {passwordComponent}
         </ModalWrapper>

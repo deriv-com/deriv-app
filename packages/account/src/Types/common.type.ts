@@ -22,8 +22,8 @@ export type TToken = {
 };
 
 export type TPoaStatusProps = {
-    needs_poi: boolean;
-    redirect_button: React.ReactNode;
+    needs_poi?: boolean;
+    redirect_button?: React.ReactNode;
 };
 
 export type TAuthAccountInfo = NonNullable<Authorize['account_list']>[0] & {

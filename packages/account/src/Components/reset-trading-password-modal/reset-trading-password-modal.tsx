@@ -182,6 +182,7 @@ const ResetTradingPassword = ({
                                         <PasswordMeter
                                             input={values.password}
                                             has_error={!!(touched.password && errors.password)}
+                                            // @ts-ignore [TODO] - Fix Type for custom_feedback_messages
                                             custom_feedback_messages={getErrorMessages().password_warnings}
                                         >
                                             <PasswordInput

@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from '@deriv-com/quill-ui';
 import PayoutInfoModal from 'AppV2/Components/PayoutInfoModal';
 import ChartPlaceholder from '../Chart';
+import { Localize } from '@deriv/translations';
 
 const ContractDetails = () => {
     return (
@@ -9,7 +10,11 @@ const ContractDetails = () => {
             <div className='placeholder'>
                 <Text size='sm'>Contract Details</Text>
             </div>
-            <PayoutInfoModal />
+            <PayoutInfoModal
+                body_content={
+                    <Localize i18n_default_text='After the entry spot tick, your stake will grow continuously by 1% for every tick that the spot price remains within the ± 0.06444% from the previous spot price.' />
+                }
+            />
             <div className='placeholder'>
                 <Text size='sm'>Contract card</Text>
             </div>

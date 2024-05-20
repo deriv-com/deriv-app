@@ -181,12 +181,7 @@ export const isDocumentNumberValid = (document_number: string, document_type: Fo
                 document_name = 'document number';
                 break;
         }
-        return (
-            <Localize
-                i18n_default_text='Please enter your {{document_name}}. {{example_format}}'
-                values={{ document_name, example_format }}
-            />
-        );
+        return localize('Please enter your {{document_name}}. {{example_format}}', { document_name, example_format });
     } else if (is_document_number_invalid) {
         return localize('Please enter a valid ID number.');
     }

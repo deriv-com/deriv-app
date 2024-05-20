@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Form, Formik, FormikHelpers, FormikState, FormikValues } from 'formik';
+import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
 import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button, HintBox, Loading, Text } from '@deriv/components';
 import {

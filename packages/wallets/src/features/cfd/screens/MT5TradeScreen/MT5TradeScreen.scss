@@ -47,6 +47,9 @@
 
             &__balance {
                 margin-left: auto;
+                &-total {
+                    text-align: end;
+                }
             }
         }
 
@@ -86,6 +89,76 @@
             grid-gap: 1.6rem;
             border-top: 0.2rem solid #f2f3f4;
             padding: 1.6rem 2.4rem;
+        }
+    }
+    &__ctrader-account-list {
+        border-block-start: 1px solid #f2f3f4;
+        padding-block-start: 0.8rem;
+        &-item {
+            display: flex;
+            justify-content: space-between;
+            padding-block: 0.8rem;
+        }
+    }
+    &__ctrader-get-more-button {
+        display: flex;
+        align-items: center;
+        height: 4rem;
+        padding: 1.6rem;
+        gap: 1.6rem;
+        border-radius: 0.8rem;
+        border: 1px dashed #d6dadb;
+        background-color: transparent;
+        cursor: pointer;
+        &:hover {
+            background-color: transparent;
+        }
+        &-icon {
+            width: 2.4rem;
+            height: 2.4rem;
+            background-color: #d6dadb;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+    &__accordion {
+        // .deriv-accordion {
+        //     --du-general-main-2: #F2F3F4;
+        //     --du-general-active: var(--du-general-main-2);
+        //     &--bordered{
+        //         padding-block: 1.6rem;
+        //     }
+        //     &__header{
+        //         color: #333;
+        //         font-size: 1.4rem;
+        //         font-weight: 700;
+        //         line-height: 1.43
+        //     }
+        //     &__content {
+        //         background-color: var(--du-general-main-2);
+        //     }
+        //     &__text {
+        //         margin-top: 0.8rem;
+        //     }
+        // }
+    }
+    &__notes {
+        list-style: decimal;
+        padding-left: 1.4rem;
+        &-item {
+            font-size: 1.2rem;
+            line-height: 1.5;
+            padding-block: 0.8rem;
+        }
+        &-inner-list {
+            list-style: disc;
+            padding-left: 1.8rem;
+            margin-block-start: 0.8rem;
+        }
+        &-inner-item {
+            padding-block-start: 0;
         }
     }
 }

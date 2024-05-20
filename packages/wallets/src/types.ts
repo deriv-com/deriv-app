@@ -103,3 +103,5 @@ export type TMT5LandingCompanyName = THooks.MT5AccountsList['landing_company_sho
 export type TWalletCarouselItem = Omit<THooks.AllWalletAccounts, 'landing_company_name'>;
 
 export type TIconTypes = Record<string, IconTypes>;
+
+export type ArrayElementType<T> = T extends (infer U)[] ? U : never;

@@ -15,7 +15,7 @@ export const GrowthbookInitializer = async () => {
         const config = {
             growthbookKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
             growthbookDecryptionKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
-            rudderstackKey: '1oV5agvlcnCZ6IH94wCKM1oR8Pd',
+            rudderstackKey: process.env.RUDDERSTACK_KEY,
         };
         Analytics.initialise(config);
         await Analytics.getInstances().ab.GrowthBook.loadFeatures();

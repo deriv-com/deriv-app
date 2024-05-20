@@ -49,7 +49,7 @@ const MigrationBanner = observer(({ is_trade_modal = false }: TMigrationBannerPr
                             <Localize
                                 i18n_default_text='Upgrade your <0>{{account_1}}</0> <1/>and <0>{{account_2}} {{platform}} </0> account(s)'
                                 values={{
-                                    account_1: getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.DERIVED),
+                                    account_1: getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.STANDARD),
                                     account_2: getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.FINANCIAL),
                                     platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
                                 }}
@@ -63,7 +63,7 @@ const MigrationBanner = observer(({ is_trade_modal = false }: TMigrationBannerPr
                                 values={{
                                     account_title: getFormattedJurisdictionMarketTypes(
                                         has_derived_mt5_to_migrate
-                                            ? JURISDICTION_MARKET_TYPES.DERIVED
+                                            ? JURISDICTION_MARKET_TYPES.STANDARD
                                             : JURISDICTION_MARKET_TYPES.FINANCIAL
                                     ),
                                     platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),

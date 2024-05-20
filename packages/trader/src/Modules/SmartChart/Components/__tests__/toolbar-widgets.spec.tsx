@@ -15,7 +15,7 @@ jest.mock('Modules/SmartChart', () => ({
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
-    useDevice: jest.fn(() => ({ isMobile: true })),
+    useDevice: jest.fn(() => ({ isMobile: true, isDesktop: false })),
 }));
 
 describe('<ToolBarWidgets />', () => {
@@ -35,8 +35,8 @@ describe('<ToolBarWidgets />', () => {
         expect(screen.queryByText(/mockedstudylegend/i)).not.toBeInTheDocument();
         expect(screen.queryByText(/mockedviews/i)).not.toBeInTheDocument();
     });
-    it('Should render all mocked widgets when isMobile is false', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
+    it('Should render all mocked widgets when isDesktop is true', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: true, isMobile: false });
         render(<ToolbarWidgets {...mocked_props} />);
         expect(screen.getByText(/mockedchartmode/i)).toBeInTheDocument();
         expect(screen.getByText(/mockeddrawtools/i)).toBeInTheDocument();

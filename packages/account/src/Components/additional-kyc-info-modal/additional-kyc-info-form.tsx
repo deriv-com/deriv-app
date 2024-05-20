@@ -113,6 +113,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                 />
                             </fieldset>
                             <fieldset className='additional-kyc-info-modal__form-field--info'>
+                                {/* @ts-expect-error Label type of Input field is string instead of ReactNode */}
                                 <FormInputField
                                     {...fields.tax_identification_number}
                                     data_testId='dt_tax_identification_number'

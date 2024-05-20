@@ -2,7 +2,6 @@ import React from 'react';
 import Cookies from 'js-cookie';
 import { useRemoteConfig } from '@deriv/api';
 import { DesktopWrapper } from '@deriv/components';
-import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
 import { getAppId, LocalStore, useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
@@ -21,11 +20,11 @@ import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
 import Devtools from './Devtools';
 import initDatadog from '../Utils/Datadog';
+import { ThemeProvider } from '@deriv-com/quill-ui';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
-    const { is_next_wallet_enabled } = useFeatureFlags();
-    const { has_wallet } = useStoreWalletAccountsList();
     const store = useStore();
+    const { has_wallet } = store.client;
 
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());
@@ -91,7 +90,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     }, [has_wallet, store.common, store.ui]);
 
     return (
-        <>
+        <ThemeProvider theme={store.ui.is_dark_mode_on ? 'dark' : 'light'}>
             <Header />
             <ErrorBoundary root_store={store}>
                 <AppContents>
@@ -108,8 +107,8 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             <SmartTraderIFrame />
             <BinaryBotIFrame />
             <AppToastMessages />
-            {is_next_wallet_enabled && <Devtools />}
-        </>
+            <Devtools />
+        </ThemeProvider>
     );
 });
 

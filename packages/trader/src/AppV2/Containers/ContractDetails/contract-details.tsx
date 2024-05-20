@@ -3,6 +3,7 @@ import { Text } from '@deriv-com/quill-ui';
 import InfoSheet from 'AppV2/Components/InfoModal';
 import { localize } from '@deriv/translations';
 import { LabelPairedCircleInfoSmRegularIcon } from '@deriv/quill-icons';
+import ChartPlaceholder from '../Chart';
 
 const ContractDetails = () => {
     return (
@@ -28,7 +29,7 @@ const ContractDetails = () => {
                 )}
             />
             <div className='placeholder'>
-                <Text size='sm'>Chart placeholder</Text>
+                <ChartPlaceholder />
             </div>
             <div className='placeholder'>
                 <Text size='sm'>Take profit</Text>

@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Loader } from '../components/Loader';
+import { Page404 } from '../components/Page404';
 
 const LazyWalletsListingRoute = lazy(
     () => import(/* webpackChunkName: "wallets-listing-route" */ './WalletsListingRoute/WalletsListingRoute')
@@ -62,6 +63,7 @@ const Router: React.FC = () => {
     return (
         <Switch>
             <Route
+                exact
                 path={'/compare-accounts'}
                 render={() => (
                     <React.Suspense fallback={<Loader />}>
@@ -78,6 +80,7 @@ const Router: React.FC = () => {
                 )}
             />
             <Route
+                exact
                 path={'/'}
                 render={() => (
                     <React.Suspense fallback={<Loader />}>
@@ -85,6 +88,7 @@ const Router: React.FC = () => {
                     </React.Suspense>
                 )}
             />
+            <Route render={() => <Page404 />} />
         </Switch>
     );
 };

@@ -11,18 +11,18 @@ const TradersHub = React.lazy(() => import(/* webpackChunkName: "modules-traders
 const TradersHubLoggedOut = React.lazy(
     () => import(/* webpackChunkName: "modules-traders-hub-logged-out" */ 'Modules/traders-hub-logged-out')
 );
-const Wallets = React.lazy(() => import(/* webpackChunkName: "wallets" */ '@deriv/wallets'));
+const Page404 = React.lazy(() => import(/* */ 'Modules/Page404'));
 
 const Routes: React.FC = observer(() => {
     const { client } = useStore();
-    const { is_logged_in, is_logging_in, has_wallet } = client;
+    const { is_logged_in, is_logging_in } = client;
 
     const title_TH = localize("Trader's Hub");
     const title_TH_logged_out = localize('Deriv App');
 
     const componentToRender = () => {
         if (is_logged_in || is_logging_in) {
-            return has_wallet ? Wallets : TradersHub;
+            return TradersHub;
         }
         return TradersHubLoggedOut;
     };
@@ -32,14 +32,17 @@ const Routes: React.FC = observer(() => {
             <Switch>
                 <RouteWithSubroutes
                     path={routes.traders_hub}
+                    exact
                     component={componentToRender()}
                     getTitle={() => (is_logged_in || is_logging_in ? title_TH : title_TH_logged_out)}
                 />
                 <RouteWithSubroutes
                     path={routes.onboarding}
+                    exact
                     component={Onboarding}
                     getTitle={() => localize('Onboarding')}
                 />
+                <RouteWithSubroutes component={Page404} getTitle={() => localize('Deriv App')} />
             </Switch>
         </React.Suspense>
     );

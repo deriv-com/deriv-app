@@ -4,6 +4,7 @@ import { makeLazyLoader, routes, moduleLoader } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Redirect from 'App/Containers/Redirect';
+import RootComponent from 'App/Containers/RootComponent';
 import Endpoint from 'Modules/Endpoint';
 
 const CFDCompareAccounts = React.lazy(() =>
@@ -50,13 +51,6 @@ const Bot = React.lazy(() =>
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
         return import(/* webpackChunkName: "bot-web-ui-app" */ '@deriv/bot-web-ui');
-    })
-);
-
-const AppStore = React.lazy(() =>
-    moduleLoader(() => {
-        // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "appstore" */ '@deriv/appstore');
     })
 );
 
@@ -418,17 +412,9 @@ const getModules = () => {
         },
         {
             path: routes.traders_hub,
-            component: AppStore,
+            component: RootComponent,
             is_authenticated: false,
             getTitle: () => localize("Trader's Hub"),
-            routes: [
-                {
-                    path: routes.onboarding,
-                    component: AppStore,
-                    is_authenticated: true,
-                    getTitle: () => localize("Trader's Hub"),
-                },
-            ],
         },
     ];
 

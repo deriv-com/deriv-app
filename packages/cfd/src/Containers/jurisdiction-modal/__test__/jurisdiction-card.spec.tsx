@@ -195,7 +195,11 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('St. Vincent & Grenadines')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(screen.getByText('40+')).toBeInTheDocument();
-        expect(screen.getByText('Synthetic indices, basket indices, and derived FX')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Synthetic indices, basket indices, and derived FX, Forex (standard), commodities, stock indices, cryptocurrencies'
+            )
+        ).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:1000')).toBeInTheDocument();
         expect(screen.getByText('Verifications')).toBeInTheDocument();

@@ -1,9 +1,8 @@
 import React, { FC, useCallback } from 'react';
 import { Trans } from 'react-i18next';
 import { DerivLightIcMt5PasswordUpdatedIcon, DerivLightMt5SuccessPasswordResetIcon } from '@deriv/quill-icons';
-import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
-import { ModalStepWrapper, WalletButton, WalletText } from '../Base';
+import { ModalStepWrapper, WalletButton } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 
@@ -38,14 +37,9 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
         <ModalStepWrapper
             renderFooter={isMobile ? renderButtons : undefined}
             shouldHideFooter={!isMobile}
-            title={`Manage ${title} password`}
+            title={isInvestorPassword ? `Reset ${title} password` : `Manage ${title} password`}
         >
             <div className='wallets-reset-mt5-password'>
-                {isInvestorPassword && !isMobile && (
-                    <WalletText size='md' weight='bold'>
-                        Reset {PlatformDetails.mt5.title} investor password
-                    </WalletText>
-                )}
                 <WalletsActionScreen
                     description={
                         isInvestorPassword

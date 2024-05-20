@@ -8,7 +8,7 @@ import { validPassword, validPasswordMT5 } from '../../utils/password-validation
 import { ModalStepWrapper, WalletButton, WalletPasswordFieldLazy, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletError } from '../WalletError';
-import WalletsErrorMT5Password from './WalletsErrorMT5Password';
+import WalletsErrorMT5InvestorPassword from './WalletsErrorMT5InvestorPassword';
 import WalletSuccessResetMT5Password from './WalletSuccessResetMT5Password';
 import './WalletsResetMT5Password.scss';
 
@@ -96,7 +96,7 @@ const WalletsResetMT5Password = ({
             });
         } else if (isChangeInvestorPasswordError) {
             show(
-                <WalletsErrorMT5Password
+                <WalletsErrorMT5InvestorPassword
                     errorMessage={changeInvestorPasswordError?.error?.message}
                     renderButtons={() => (
                         <WalletButton isFullWidth={isMobile} onClick={hide}>

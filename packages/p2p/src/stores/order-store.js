@@ -8,6 +8,7 @@ import { api_error_codes } from '../constants/api-error-codes';
 export default class OrderStore {
     constructor(root_store) {
         makeObservable(this, {
+            action_param: observable,
             active_order: observable,
             api_error_message: observable,
             date_from: observable,
@@ -44,6 +45,7 @@ export default class OrderStore {
             onOrdersUpdate: action.bound,
             onPageReturn: action.bound,
             onUnmount: action.bound,
+            setActionParam: action.bound,
             setActiveOrder: action.bound,
             setDateTo: action.bound,
             setForceRerenderOrders: action.bound,
@@ -83,6 +85,7 @@ export default class OrderStore {
         );
     }
 
+    action_param = null;
     active_order = null;
     api_error_message = '';
     date_from = null;
@@ -168,6 +171,8 @@ export default class OrderStore {
                 }
 
                 localStorage.removeItem('verification_code.p2p_order_confirm');
+                this.setVerificationCode('');
+                this.setActionParam(null);
             }
         });
     }
@@ -527,11 +532,17 @@ export default class OrderStore {
                                 },
                             });
                         }
+                        this.setVerificationCode('');
+                        this.setActionParam(null);
                     }
                     localStorage.removeItem('verification_code.p2p_order_confirm');
                 }
             });
         }
+    }
+
+    setActionParam(action_param) {
+        this.action_param = action_param;
     }
 
     setApiErrorMessage(api_error_message) {

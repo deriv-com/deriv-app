@@ -445,6 +445,23 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
         if (block_canvas_rect_top > toolbox_top) {
             scroll_y = delta_y;
         }
+
+        /* NOTE: This was done for mobile view since 
+        when we try to calculate the scroll amount for RTL,
+        we need to realign the scroll to(0, 0) for the workspace.
+        Then, from the width of the canvas, we need to subtract the width of the block. 
+        To Make the block visible in the view width
+        */
+
+        if (window.innerWidth < 768) {
+            workspace.scrollbar.set(0, scroll_y);
+            const calc_scroll =
+                Blockly.derivWorkspace.svgBlockCanvas_?.getBoundingClientRect().width -
+                Blockly.derivWorkspace.svgBlockCanvas_?.getBoundingClientRect().left +
+                60;
+            workspace.scrollbar.set(calc_scroll, scroll_y);
+            return;
+        }
     }
     workspace.scrollbar.set(scroll_x, scroll_y);
 };

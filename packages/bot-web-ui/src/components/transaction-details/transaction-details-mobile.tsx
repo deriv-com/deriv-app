@@ -1,16 +1,12 @@
 import React from 'react';
-
 import { MobileFullPageModal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-
 import { StatisticsSummary } from 'Components/run-panel/run-panel';
 import { transaction_elements } from 'Constants/transactions';
 import { useDBotStore } from 'Stores/useDBotStore';
-
 import MobileTransactionCards from './mobile-transaction-card';
-import { TRunPanelStore, TTransactionStore } from './transaction-details.types';
-
+import { TRunPanelStore } from './transaction-details.types';
 import './transaction-details-mobile.scss';
 
 const TransactionDetailsMobile = observer(() => {
@@ -21,7 +17,8 @@ const TransactionDetailsMobile = observer(() => {
         is_transaction_details_modal_open,
         transactions: transaction_list,
         statistics,
-    }: Partial<TTransactionStore> = transactions;
+    } = transactions;
+
     const { toggleStatisticsInfoModal }: Partial<TRunPanelStore> = run_panel;
 
     return (

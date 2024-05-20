@@ -1,0 +1,124 @@
+.quill-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-style: solid;
+    border-width: var(--component-chip-border-width);
+    border-color: var(--component-chip-border-color);
+    border-radius: var(--component-chip-border-radius);
+    background-color: var(--core-color-solid-slate-50);
+
+    &:hover {
+        background-color: var(--component-chip-bg-hover);
+    }
+
+    &:active {
+        background-color: var(--component-chip-bg-active);
+    }
+
+    & > svg {
+        fill: var(--component-chip-icon-default);
+    }
+
+    &[data-state='selected']:hover {
+        background-color: var(--component-chip-bg-selectedHover);
+    }
+
+    &[data-state='selected']:active {
+        background-color: var(--component-chip-bg-selectedActive);
+    }
+
+    &[data-state='selected'] {
+        background-color: var(--component-chip-bg-selected);
+
+        & > p {
+            color: var(--component-chip-item-color-default);
+        }
+
+        & > svg {
+            fill: var(--component-chip-icon-selected);
+        }
+
+        &:has(.rotate[data-state='open']) {
+            background-color: var(--component-chip-bg-selectedExpand);
+        }
+    }
+
+    &:disabled {
+        pointer-events: none;
+        user-select: none;
+
+        & > p {
+            color: var(--component-chip-label-color-disabled);
+        }
+
+        & > svg {
+            fill: var(--component-chip-icon-disabled);
+        }
+
+        &[data-state='selected'] {
+            background-color: var(--component-chip-bg-selectedDisabled);
+
+            & > p,
+            svg {
+                color: var(--component-chip-label-color-disabledWhite);
+                fill: var(--component-chip-icon-disabledWhite);
+            }
+        }
+    }
+
+    &__disabled {
+        &--true {
+            & > svg {
+                fill: var(--component-chip-icon-disabled) !important;
+            }
+
+            & > p {
+                color: var(--component-chip-label-color-disabled) !important;
+            }
+        }
+    }
+
+    &__size {
+        &--sm {
+            padding-inline: var(--component-chip-spacing-padding-md);
+            height: var(--component-chip-height-sm);
+            gap: var(--component-chip-spacing-padding-xs);
+        }
+        &--md {
+            padding-inline: var(--component-chip-spacing-padding-lg);
+            height: var(--component-chip-height-md);
+            gap: var(--component-chip-spacing-padding-sm);
+        }
+        &--lg {
+            padding-inline: var(--component-chip-spacing-padding-xl);
+            height: var(--component-chip-height-lg);
+            gap: var(--component-chip-spacing-padding-md);
+        }
+    }
+
+    &__custom-right-padding {
+        &__size {
+            &--sm {
+                padding-inline: var(--component-chip-spacing-padding-md) var(--component-chip-spacing-padding-xs);
+            }
+            &--md {
+                padding-inline: var(--component-chip-spacing-padding-lg) var(--component-chip-spacing-padding-sm);
+            }
+            &--lg {
+                padding-inline: var(--component-chip-spacing-padding-xl) var(--component-chip-spacing-padding-md);
+            }
+        }
+    }
+}
+
+.rotate {
+    transition-property: transform;
+    transition-timing-function: var(--core-motion-ease-400);
+    transition-duration: var(--core-motion-duration-200);
+    transform: rotate(0);
+
+    &[data-state='open'] {
+        transform: rotate(180deg);
+    }
+}

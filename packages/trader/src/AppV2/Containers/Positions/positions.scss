@@ -28,9 +28,31 @@ $FOOTER_HEIGHT: 5.8rem;
                     &__open,
                     &__closed {
                         height: 100%;
+                        // TODO: Temporary css
+                        overflow-y: scroll;
                     }
                 }
             }
         }
+    }
+
+    &__filter {
+        &__wrapper {
+            padding: var(--core-spacing-400);
+        }
+    }
+
+    // TODO: Temporary css (until contract card will be done)
+    .contract-card {
+        height: 107px;
+        width: 100%;
+        border: 1px solid var(--component-textIcon-normal-prominent);
+        box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, 0.2);
+        background-color: var(--general-main-1);
+        margin-block: 15px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-direction: column;
     }
 }

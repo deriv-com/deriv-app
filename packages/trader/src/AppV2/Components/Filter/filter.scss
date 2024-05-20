@@ -1,0 +1,44 @@
+.filter {
+    &__item {
+        justify-content: space-between;
+        width: 100%;
+        height: var(--core-size-2000);
+        padding-block: var(--core-spacing-400);
+
+        &__wrapper {
+            padding-block: var(--core-spacing-800);
+        }
+        // TODO: Temporary css (until quill fix)
+        .quill-checkbox__wrapper {
+            order: 3;
+        }
+    }
+}
+
+// TODO: Temporary css (until quill fix)
+.quill-action-sheet {
+    &--root {
+        width: 100%;
+    }
+
+    &--handle-bar--line {
+        width: var(--core-size-2400);
+    }
+
+    &--header > p,
+    &--title--icon {
+        display: none;
+    }
+
+    &--header {
+        padding-block: var(--core-spacing-400);
+    }
+
+    &--title {
+        height: var(--core-size-2400);
+    }
+
+    &--footer {
+        padding-block: var(--core-spacing-800);
+    }
+}

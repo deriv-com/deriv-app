@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-//@ts-nocheck [TODO] - Need to fix typescript errors
+//@ts-nocheck [TODO] - Need to fix typescript errors in Autocomplete List items and TItems
 
 import React from 'react';
 import clsx from 'clsx';

@@ -1,11 +1,16 @@
 import React from 'react';
 import { ModalWrapper, WalletButton, WalletButtonGroup, WalletsActionScreen } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
+import { PlatformDetails } from '../../constants';
+import { CTraderTradeModal } from '../CTraderTradeModal';
 import SuccessIcon from './SuccessIcon';
 import './CTraderAddAccountSuccessModal.scss';
 
 const CTraderAddAccountSuccessModal = () => {
-    const { hide } = useModal();
+    const { hide, show } = useModal();
+    const onClickTransferNow = () => {
+        show(<CTraderTradeModal platform={PlatformDetails.ctrader.platform} />);
+    };
     return (
         <ModalWrapper>
             <div className='wallets-ctrader-account-add-success-modal'>
@@ -18,7 +23,7 @@ const CTraderAddAccountSuccessModal = () => {
                             <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
                                 Maybe later
                             </WalletButton>
-                            <WalletButton size='lg' variant='contained'>
+                            <WalletButton onClick={onClickTransferNow} size='lg' variant='contained'>
                                 Transfer now
                             </WalletButton>
                         </WalletButtonGroup>

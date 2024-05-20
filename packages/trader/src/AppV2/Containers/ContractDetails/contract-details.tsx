@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv-com/quill-ui';
+import EntryExitDetails from 'AppV2/Components/EntryExitDetails';
 
 const ContractDetails = () => {
     return (
@@ -22,9 +23,7 @@ const ContractDetails = () => {
             <div className='placeholder'>
                 <Text size='sm'>Order details</Text>
             </div>
-            <div className='placeholder'>
-                <Text size='sm'>Entry & exit details</Text>
-            </div>
+            <EntryExitDetails />
         </div>
     );
 };

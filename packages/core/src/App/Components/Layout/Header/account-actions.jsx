@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Icon, Popover } from '@deriv/components';
-import { routes, formatMoney, PlatformContext, moduleLoader, isTabletOs } from '@deriv/shared';
+import { routes, formatMoney, moduleLoader, isTabletOs } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
@@ -38,7 +38,6 @@ const AccountActions = React.memo(
         toggleAccountsDialog,
         toggleNotifications,
     }) => {
-        const { is_appstore } = React.useContext(PlatformContext);
         const { isDesktop } = useDevice();
         const accountSettings = (
             <BinaryLink className='account-settings-toggle' to={routes.personal_details}>
@@ -129,7 +128,6 @@ const AccountActions = React.memo(
                             is_virtual={is_virtual}
                             is_mobile
                             currency={currency}
-                            country_standpoint={country_standpoint}
                             is_dialog_on={is_acc_switcher_on}
                             toggleDialog={toggleAccountsDialog}
                         />

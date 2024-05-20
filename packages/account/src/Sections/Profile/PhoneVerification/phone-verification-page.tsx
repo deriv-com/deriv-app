@@ -7,6 +7,7 @@ import ConfirmPhoneNumber from './confirm-phone-number';
 import OTPVerification from './otp-verification';
 import CancelPhoneVerificationModal from './cancel-phone-verification-modal';
 import PhoneNumberVerifiedModal from './phone-number-verified-modal';
+import VerificationLinkExpiredModal from './verification-link-expired-modal';
 
 const PhoneVerificationPage = () => {
     const [otp_verification, setOtpVerification] = React.useState({
@@ -14,12 +15,18 @@ const PhoneVerificationPage = () => {
         phone_verification_type: '',
     });
     const [should_show_cancel_verification_modal, setShouldShowCancelVerificationModal] = React.useState(false);
+    const [should_show_verification_link_expired_modal, setShouldShowVerificationLinkExpiredModal] =
+        React.useState(false);
     const handleBackButton = () => {
         setShouldShowCancelVerificationModal(true);
     };
 
     return (
         <div>
+            <VerificationLinkExpiredModal
+                should_show_verification_link_expired_modal={should_show_verification_link_expired_modal}
+                setShouldShowVerificationLinkExpiredModal={setShouldShowVerificationLinkExpiredModal}
+            />
             <PhoneNumberVerifiedModal />
             <CancelPhoneVerificationModal
                 should_show_cancel_verification_modal={should_show_cancel_verification_modal}

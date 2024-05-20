@@ -9,6 +9,7 @@ import Trade from './Containers/Trade';
 import Markets from './Containers/Markets';
 import Positions from './Containers/Positions';
 import Menu from './Containers/Menu';
+import ContractDetails from './Containers/ContractDetails';
 
 type Apptypes = {
     passthrough: {
@@ -30,6 +31,7 @@ const App = ({ passthrough }: Apptypes) => {
                 <Markets />
                 <Positions />
                 <Menu />
+                <ContractDetails />
             </BottomNav>
         </TraderProviders>
     );

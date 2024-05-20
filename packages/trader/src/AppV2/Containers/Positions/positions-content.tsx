@@ -39,7 +39,7 @@ const PositionsContent = ({
         <div className={`positions-page__${isClosedTab ? 'closed' : 'open'}`}>
             <div className='positions-page__container'>
                 <div className='positions-page__filter__wrapper'>
-                    {(positions.length || (!positions.length && noMatchesFound)) && (
+                    {(!!positions.length || (!positions.length && noMatchesFound)) && (
                         <Filter setContractTypeFilter={setContractTypeFilter} />
                     )}
                 </div>

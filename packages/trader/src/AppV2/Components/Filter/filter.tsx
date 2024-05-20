@@ -22,11 +22,11 @@ const mockAvailableContractsList = [
 ];
 
 const Filter = ({ setContractTypeFilter }: TFilter) => {
-    const [isDropdownOpen, setIsDropDownOpen] = React.useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
     const [changedOptions, setChangedOptions] = React.useState<string[]>([]);
 
     const onDropdownClick = () => {
-        setIsDropDownOpen(!isDropdownOpen);
+        setIsDropdownOpen(!isDropdownOpen);
     };
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => {
@@ -64,7 +64,7 @@ const Filter = ({ setContractTypeFilter }: TFilter) => {
                 onClick={onDropdownClick}
                 selected={!!changedOptions.length}
             />
-            <ActionSheet.Root isOpen={isDropdownOpen} onClose={() => setIsDropDownOpen(false)} position='left'>
+            <ActionSheet.Root isOpen={isDropdownOpen} onClose={() => setIsDropdownOpen(false)} position='left'>
                 <ActionSheet.Portal>
                     {/* TODO: Add a PR to Quill with changing type of title (need ReactNode)*/}
                     <ActionSheet.Header title='Filter by trade types' />

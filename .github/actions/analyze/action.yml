@@ -57,6 +57,9 @@ inputs:
   IS_GROWTHBOOK_ENABLED:
     description: 'Is growthbook enabled'
     required: true
+  ISSUE_NUMBER:
+    description: 'Issue to post a comment to'
+    required: false
 
 runs:
   using: composite
@@ -122,17 +125,19 @@ runs:
       echo "EOF" >> $GITHUB_OUTPUT
 
   - name: Comment on PR with Diff Output
-    if: github.event_name == 'pull_request' && steps.get_artifact_url.outputs.artifact_url != 'null'
+    if: steps.get_artifact_url.outputs.artifact_url != 'null' && inputs.ISSUE_NUMBER
     uses: actions/github-script@v5
     env:
       DIFF_OUTPUT: ${{ steps.diff.outputs.diff_output }}
+      ISSUE_NUMBER: ${{ github.event.pull_request.number }}
     with:
       script: |
         const diffOutput = process.env.DIFF_OUTPUT;
+        const issueNumber = process.env.ISSUE_NUMBER;
         github.rest.issues.createComment({
           owner: context.repo.owner,
           repo: context.repo.repo,
-          issue_number: context.issue.number,
+          issue_number: issueNumber,
           body: `${diffOutput}`
         });
 

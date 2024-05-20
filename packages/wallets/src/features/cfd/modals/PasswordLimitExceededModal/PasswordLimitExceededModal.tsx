@@ -42,8 +42,8 @@ const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecond
                 }}
                 title='Too many attempts'
             >
-                <div className='wallets-password-limit-exceeded__modal'>
-                    <div className='wallets-password-limit-exceeded__modal--content'>
+                <div className='wallets-password-limit-exceeded-modal'>
+                    <div className='wallets-password-limit-exceeded-modal__content'>
                         <WalletText align={alignment} size={textSize}>
                             Please try again in a minute.
                         </WalletText>
@@ -54,18 +54,18 @@ const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecond
     }
     return (
         <ModalWrapper hideCloseButton>
-            <div className='wallets-password-limit-exceeded__modal'>
-                <div className='wallets-password-limit-exceeded__modal--title'>
+            <div className='wallets-password-limit-exceeded-modal'>
+                <div className='wallets-password-limit-exceeded-modal__title'>
                     <WalletText align='start' weight='bold'>
                         Too many attempts
                     </WalletText>
                 </div>
-                <div className='wallets-password-limit-exceeded__modal--content'>
+                <div className='wallets-password-limit-exceeded-modal__content'>
                     <WalletText align={alignment} size={textSize}>
                         Please try again in a minute.
                     </WalletText>
                 </div>
-                <div className='wallets-password-limit-exceeded__modal--buttons'>
+                <div className='wallets-password-limit-exceeded-modal__buttons'>
                     <WalletButton
                         borderWidth='md'
                         onClick={onSecondaryClick}

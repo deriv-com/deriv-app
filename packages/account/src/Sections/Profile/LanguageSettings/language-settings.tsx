@@ -9,8 +9,7 @@ import LanguageRadioButton from 'Components/language-settings';
 import { useDevice } from '@deriv-com/ui';
 
 const LanguageSettings = observer(() => {
-    const { common, ui } = useStore();
-    const { is_mobile } = ui;
+    const { common } = useStore();
     const { changeSelectedLanguage, current_language } = common;
     const { has_wallet } = useStoreWalletAccountsList();
     const { isDesktop } = useDevice();
@@ -22,7 +21,7 @@ const LanguageSettings = observer(() => {
     const allowed_language_keys: string[] = Object.keys(getAllowedLanguages());
     return (
         <div className='settings-language'>
-            <FormSubHeader title={localize('Select Language')} />
+            <FormSubHeader title={localize('Select language')} />
             <div className='settings-language__language-container'>
                 {allowed_language_keys.map(language_key => {
                     return (

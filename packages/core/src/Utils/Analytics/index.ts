@@ -4,7 +4,7 @@ import { getLanguage } from '@deriv/translations';
 import { LocalStore } from '@deriv/shared';
 import { MAX_MOBILE_WIDTH } from '../../Constants';
 
-export const GrowthbookInitializer = async () => {
+export const AnalyticsInitializer = async () => {
     const account_type = LocalStore?.get('active_loginid')
         ?.match(/[a-zA-Z]+/g)
         ?.join('');

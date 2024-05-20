@@ -1,0 +1,13 @@
+.chart-placeholder {
+    height: 360px;
+    margin: 0.5rem;
+    background-color: var(--core-color-solid-grape-100);
+    border: 1px dashed var(--core-color-solid-grape-700);
+    .placeholder-text {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        color: var(--core-color-solid-grape-700);
+        justify-content: center;
+    }
+}

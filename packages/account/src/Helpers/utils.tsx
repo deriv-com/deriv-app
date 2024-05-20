@@ -241,19 +241,22 @@ export const getOnfidoSupportedLocaleCode = (language_code: string) => {
 
 export const getIDVDocumentType = (
     idv_latest_attempt: DeepRequired<GetAccountStatus>['authentication']['attempts']['latest'],
-    residence: DeepRequired<ResidenceList[0]>
+    residence: ResidenceList[0]
 ) => {
     if (!idv_latest_attempt || !Object.keys(residence).length) return localize('identity document');
     const { document_type } = idv_latest_attempt;
     if (!document_type) return localize('identity document');
-    const {
-        identity: {
-            services: {
-                idv: { documents_supported },
+    if (residence?.identity?.services?.idv?.documents_supported) {
+        const {
+            identity: {
+                services: {
+                    idv: { documents_supported },
+                },
             },
-        },
-    } = residence;
-    return documents_supported[document_type as string].display_name;
+        } = residence;
+        return documents_supported[document_type as string].display_name;
+    }
+    return null;
 };
 
 export const validate = <T,>(errors: Record<string, string>, values: T) => {

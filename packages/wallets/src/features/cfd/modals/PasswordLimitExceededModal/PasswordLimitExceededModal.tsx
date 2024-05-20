@@ -14,26 +14,10 @@ type TProps = {
     onSecondaryClick: () => void;
 };
 
-const PasswordLimitExceeded = () => {
-    const { isMobile } = useDevice();
-    const textSize = isMobile ? 'md' : 'sm';
-    return (
-        <>
-            <div className='wallets-password-limit-exceeded__modal--title'>
-                <WalletText align='start' weight='bold'>
-                    Too many attempts
-                </WalletText>
-            </div>
-            <div className='wallets-password-limit-exceeded__modal--content'>
-                <WalletText size={textSize}>Please try again in a minute.</WalletText>
-            </div>
-        </>
-    );
-};
-
 const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecondaryClick }) => {
     const { isMobile } = useDevice();
     const textSize = isMobile ? 'md' : 'sm';
+    const alignment = isMobile ? 'center' : 'start';
     if (isMobile) {
         return (
             <ModalStepWrapper
@@ -56,9 +40,14 @@ const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecond
                         </WalletButtonGroup>
                     );
                 }}
+                title='Too many attempts'
             >
                 <div className='wallets-password-limit-exceeded__modal'>
-                    <PasswordLimitExceeded />
+                    <div className='wallets-password-limit-exceeded__modal--content'>
+                        <WalletText align={alignment} size={textSize}>
+                            Please try again in a minute.
+                        </WalletText>
+                    </div>
                 </div>
             </ModalStepWrapper>
         );
@@ -66,7 +55,16 @@ const PasswordLimitExceededModal: React.FC<TProps> = ({ onPrimaryClick, onSecond
     return (
         <ModalWrapper hideCloseButton>
             <div className='wallets-password-limit-exceeded__modal'>
-                <PasswordLimitExceeded />
+                <div className='wallets-password-limit-exceeded__modal--title'>
+                    <WalletText align='start' weight='bold'>
+                        Too many attempts
+                    </WalletText>
+                </div>
+                <div className='wallets-password-limit-exceeded__modal--content'>
+                    <WalletText align={alignment} size={textSize}>
+                        Please try again in a minute.
+                    </WalletText>
+                </div>
                 <div className='wallets-password-limit-exceeded__modal--buttons'>
                     <WalletButton
                         borderWidth='md'

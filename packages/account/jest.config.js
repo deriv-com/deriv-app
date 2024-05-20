@@ -18,7 +18,7 @@ module.exports = {
         '^Sections$': '<rootDir>/src/Sections/index.js',
     },
     transform: {
-        '^.+\\.jsx?$': 'babel-jest',
+        '^.+\\.(js|jsx)?$': 'babel-jest',
         '^.+/es/^.+$': 'babel-jest',
         '^.+\\.(ts|tsx)?$': 'ts-jest',
     },

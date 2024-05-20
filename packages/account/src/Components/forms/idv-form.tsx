@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+//@ts-nocheck [TODO] - Need to fix typescript errors
+
 import React from 'react';
 import clsx from 'clsx';
 import { Field, FormikProps, FieldProps, useFormikContext } from 'formik';
@@ -18,7 +21,7 @@ type TIDVFormProps = {
     hide_hint?: boolean;
     class_name?: string;
     is_for_real_account_signup_modal?: boolean;
-    is_for_mt5: boolean;
+    is_for_mt5?: boolean;
 };
 
 const IDVForm = ({

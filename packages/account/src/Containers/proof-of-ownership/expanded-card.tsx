@@ -20,7 +20,7 @@ type TExpandedCardProps = {
  * @returns React Component
  */
 const ExpandedCard = ({ card_details }: TExpandedCardProps) => {
-    const { values, setFieldValue, errors } = useFormikContext<Partial<TProofOfOwnershipFormValue>>();
+    const { values, setFieldValue, errors } = useFormikContext<TProofOfOwnershipFormValue>();
 
     const payment_method = card_details.payment_method.toLowerCase() as TPaymentMethod;
 

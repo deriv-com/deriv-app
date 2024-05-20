@@ -287,3 +287,15 @@ export type TQuestion = {
     answer_options: { text: string; value: string }[];
     field_type?: string;
 };
+
+// Type for the list of items in a dropdown or select
+export type TListItem = {
+    /**
+     * The text of the item (e.g. 'United Kingdom', 'Germany', etc.)
+     */
+    text?: string;
+    /**
+     * The value of the item
+     */
+    value?: string;
+};

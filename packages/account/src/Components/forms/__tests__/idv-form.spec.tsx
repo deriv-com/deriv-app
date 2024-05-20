@@ -7,8 +7,12 @@ import { TIDVFormValues } from 'Types';
 
 jest.mock('Helpers/utils', () => ({
     ...jest.requireActual('Helpers/utils'),
-    getDocumentData: jest.fn((country_code, key) => {
-        const data = {
+    getDocumentData: jest.fn((country_code: string, key) => {
+        const data: {
+            [key: string]: {
+                [key: string]: { new_display_name: string; example_format: string; sample_image: string };
+            };
+        } = {
             tc: {
                 document_1: {
                     new_display_name: '',

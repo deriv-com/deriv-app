@@ -20,7 +20,7 @@ const AddedCTraderAccountsList: React.FC = () => {
                     onClick={() => show(<CTraderTradeModal platform={PlatformDetails.ctrader.platform} />)}
                     trailing={
                         <WalletButtonGroup isVertical>
-                            <WalletButton>Transfer</WalletButton>
+                            <WalletButton variant='outlined'>Transfer</WalletButton>
                             <WalletButton>Open</WalletButton>
                         </WalletButtonGroup>
                     }

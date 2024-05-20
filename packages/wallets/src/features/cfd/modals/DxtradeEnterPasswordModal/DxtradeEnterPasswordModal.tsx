@@ -13,6 +13,7 @@ import useDevice from '../../../../hooks/useDevice';
 import useSendPasswordResetEmail from '../../../../hooks/useSendPasswordResetEmail';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
+import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
 import './DxtradeEnterPasswordModal.scss';
 
 const DxtradeEnterPasswordModal = () => {
@@ -28,7 +29,6 @@ const DxtradeEnterPasswordModal = () => {
         mutateAsync,
         status,
     } = useCreateOtherCFDAccount();
-
     const { data: dxtradeAccount, isSuccess: dxtradeAccountListSuccess } = useDxtradeAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const {
@@ -68,7 +68,7 @@ const DxtradeEnterPasswordModal = () => {
         if (!isResetPasswordSuccessful) return;
         if (!isDxtradePasswordNotSet && isMobile) {
             show(
-                <ModalStepWrapper title="We've sent you an email">
+                <ModalStepWrapper>
                     <SentEmailContent onErrorButtonClick={hide} platform={dxtradePlatform} />
                 </ModalStepWrapper>
             );
@@ -232,6 +232,19 @@ const DxtradeEnterPasswordModal = () => {
         error?.error?.code,
         sendEmail,
     ]);
+
+    if (status === 'error' && error?.error?.code === 'PasswordReset') {
+        return (
+            <PasswordLimitExceededModal
+                onPrimaryClick={hide}
+                onSecondaryClick={() => {
+                    sendEmail({
+                        platform: dxtradePlatform,
+                    });
+                }}
+            />
+        );
+    }
 
     if (status === 'error' && error?.error?.code !== 'PasswordError') {
         return <WalletError errorMessage={error?.error.message} onClick={hide} title={error?.error?.code} />;

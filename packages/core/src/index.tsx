@@ -10,7 +10,9 @@ import initStore from 'App/initStore';
 import App from 'App/app.jsx';
 import { checkAndSetEndpointFromUrl } from '@deriv/shared';
 import AppNotificationMessages from './App/Containers/app-notification-messages.jsx';
+import { GrowthbookInitializer } from 'Utils/Growthbook';
 
+GrowthbookInitializer();
 if (
     !!window?.localStorage.getItem?.('debug_service_worker') || // To enable local service worker related development
     (!window.location.hostname.startsWith('localhost') && !/binary\.sx/.test(window.location.hostname)) ||

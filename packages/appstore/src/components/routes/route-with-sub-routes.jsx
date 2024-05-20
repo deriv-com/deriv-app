@@ -7,8 +7,6 @@ const RouteWithSubRoutes = route => {
     const renderFactory = props => {
         let result = null;
 
-        const pathname = removeBranchName(location.pathname);
-
         if (route.component instanceof Redirect) {
             let to = route.to;
 
@@ -29,11 +27,12 @@ const RouteWithSubRoutes = route => {
                 {}
             );
             const has_default_subroute = !isEmptyObject(default_subroute);
+            const pathname = removeBranchName(location.pathname);
 
             result = (
                 <React.Fragment>
                     {has_default_subroute && pathname === route.path && <Redirect to={default_subroute.path} />}
-                    {<route.component {...props} routes={route.routes} />}
+                    <route.component {...props} routes={route.routes} />
                 </React.Fragment>
             );
         }

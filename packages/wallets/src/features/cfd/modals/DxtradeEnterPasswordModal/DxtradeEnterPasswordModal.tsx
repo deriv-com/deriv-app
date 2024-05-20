@@ -56,11 +56,15 @@ const DxtradeEnterPasswordModal = () => {
         }).catch(() => setPassword(''));
     }, [mutateAsync, accountType, password, dxtradePlatform]);
 
+    const dxtradeBalance = useMemo(() => {
+        return dxtradeAccount?.find(account => account.market_type === 'all')?.display_balance;
+    }, [dxtradeAccount]);
+
     const successDescription = useMemo(() => {
         return accountType === 'demo'
-            ? `Let's practise trading with ${activeWallet?.display_balance} virtual funds.`
+            ? `Let's practise trading with ${dxtradeBalance} virtual funds.`
             : `Transfer funds from your ${activeWallet?.currency} Wallet to your ${PlatformDetails.dxtrade.title} account to start trading.`;
-    }, [accountType, activeWallet?.currency, activeWallet?.display_balance]);
+    }, [accountType, activeWallet?.currency, dxtradeBalance]);
 
     useEffect(() => {
         if (!isResetPasswordSuccessful) return;
@@ -78,10 +82,6 @@ const DxtradeEnterPasswordModal = () => {
             );
         }
     }, [dxtradePlatform, hide, isDxtradePasswordNotSet, isMobile, isResetPasswordSuccessful, show]);
-
-    const dxtradeBalance = useMemo(() => {
-        return dxtradeAccount?.find(account => account.market_type === 'all')?.display_balance;
-    }, [dxtradeAccount]);
 
     if (status === 'error' && error?.error?.code !== 'PasswordError') {
         return <WalletError errorMessage={error?.error.message} onClick={hide} title={error?.error?.code} />;

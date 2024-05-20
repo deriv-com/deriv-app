@@ -32,6 +32,10 @@
 
         .dc-datepicker {
             margin-left: 2.4rem;
+
+            @include mobile-or-tablet-screen {
+                margin-left: unset;
+            }
         }
 
         @include mobile-or-tablet-screen {

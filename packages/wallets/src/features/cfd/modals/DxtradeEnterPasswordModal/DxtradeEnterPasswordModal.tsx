@@ -13,6 +13,7 @@ import useDevice from '../../../../hooks/useDevice';
 import useSendPasswordResetEmail from '../../../../hooks/useSendPasswordResetEmail';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
+import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
 import './DxtradeEnterPasswordModal.scss';
 
 const DxtradeEnterPasswordModal = () => {
@@ -28,7 +29,6 @@ const DxtradeEnterPasswordModal = () => {
         mutateAsync,
         status,
     } = useCreateOtherCFDAccount();
-
     const { data: dxtradeAccount, isSuccess: dxtradeAccountListSuccess } = useDxtradeAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const {
@@ -54,17 +54,21 @@ const DxtradeEnterPasswordModal = () => {
         }).catch(() => setPassword(''));
     }, [mutateAsync, accountType, password, dxtradePlatform]);
 
+    const dxtradeBalance = useMemo(() => {
+        return dxtradeAccount?.find(account => account.market_type === 'all')?.display_balance;
+    }, [dxtradeAccount]);
+
     const successDescription = useMemo(() => {
         return accountType === 'demo'
-            ? `Let's practise trading with ${activeWallet?.display_balance} virtual funds.`
+            ? `Let's practise trading with ${dxtradeBalance} virtual funds.`
             : `Transfer funds from your ${activeWallet?.currency} Wallet to your ${PlatformDetails.dxtrade.title} account to start trading.`;
-    }, [accountType, activeWallet?.currency, activeWallet?.display_balance]);
+    }, [accountType, activeWallet?.currency, dxtradeBalance]);
 
     useEffect(() => {
         if (!isResetPasswordSuccessful) return;
         if (!isDxtradePasswordNotSet && isMobile) {
             show(
-                <ModalStepWrapper title="We've sent you an email">
+                <ModalStepWrapper>
                     <SentEmailContent onErrorButtonClick={hide} platform={dxtradePlatform} />
                 </ModalStepWrapper>
             );
@@ -76,10 +80,6 @@ const DxtradeEnterPasswordModal = () => {
             );
         }
     }, [dxtradePlatform, hide, isDxtradePasswordNotSet, isMobile, isResetPasswordSuccessful, show]);
-
-    const dxtradeBalance = useMemo(() => {
-        return dxtradeAccount?.find(account => account.market_type === 'all')?.display_balance;
-    }, [dxtradeAccount]);
 
     const renderFooter = useMemo(() => {
         if (isCreateAccountSuccessful) {
@@ -232,6 +232,19 @@ const DxtradeEnterPasswordModal = () => {
         error?.error?.code,
         sendEmail,
     ]);
+
+    if (status === 'error' && error?.error?.code === 'PasswordReset') {
+        return (
+            <PasswordLimitExceededModal
+                onPrimaryClick={hide}
+                onSecondaryClick={() => {
+                    sendEmail({
+                        platform: dxtradePlatform,
+                    });
+                }}
+            />
+        );
+    }
 
     if (status === 'error' && error?.error?.code !== 'PasswordError') {
         return <WalletError errorMessage={error?.error.message} onClick={hide} title={error?.error?.code} />;

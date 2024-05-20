@@ -14,7 +14,7 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isMobile, getCFDPlatformLabel } from '@deriv/shared';
+import { isMobileOrTablet, getCFDPlatformLabel } from '@deriv/shared';
 import { FormikErrors } from 'formik';
 import CFDStore from '../Stores/Modules/CFD/cfd-store';
 import TradingPasswordManager from './trading-password-manager';
@@ -208,7 +208,7 @@ const CFDPasswordManagerTabContent = ({
     const trading_password_manager = (
         <React.Fragment>
             <DesktopWrapper>
-                <ThemedScrollbars height={container_height} is_bypassed={isMobile()} autohide={false}>
+                <ThemedScrollbars height={container_height} is_bypassed={isMobileOrTablet()} autohide={false}>
                     <TradingPasswordManager
                         toggleModal={toggleModal}
                         platform={platform}

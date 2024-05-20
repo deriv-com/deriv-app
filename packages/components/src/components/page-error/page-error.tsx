@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { isMobile } from '@deriv/shared';
+import { isMobileOrTablet } from '@deriv/shared';
 import DesktopWrapper from '../desktop-wrapper';
 import MobileOrTabletWrapper from '../mobile-wrapper';
 import ButtonLink from '../button-link/button-link';
@@ -43,7 +43,7 @@ const PageError = ({
             buttonOnClick?.();
         }
     };
-    const is_mobile = isMobile();
+    const is_mobile = isMobileOrTablet();
 
     return (
         // if image_url is passed we should split the page to two columns and left-align messages

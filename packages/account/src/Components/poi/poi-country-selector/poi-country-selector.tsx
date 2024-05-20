@@ -10,7 +10,7 @@ import {
     Text,
     SelectNative,
 } from '@deriv/components';
-import { IDV_ERROR_STATUS, isMobile, TIDVErrorStatus, POIContext } from '@deriv/shared';
+import { IDV_ERROR_STATUS, isMobileOrTablet, TIDVErrorStatus, POIContext } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import FormFooter from '../../form-footer';
 import { useResidenceList } from '@deriv/api';
@@ -79,14 +79,14 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
                     >
                         {failed_message ? (
                             <React.Fragment>
-                                <Text align='center' weight='bold' size={isMobile() ? 'xs' : 's'}>
+                                <Text align='center' weight='bold' size={isMobileOrTablet() ? 'xs' : 's'}>
                                     <Localize i18n_default_text='Your identity verification failed because:' />
                                 </Text>
                                 <HintBox
                                     className={classNames('proof-of-identity__failed-message', 'hint-box-layout')}
                                     icon='IcAlertDanger'
                                     message={
-                                        <Text as='p' size={isMobile() ? 'xxs' : 'xs'}>
+                                        <Text as='p' size={isMobileOrTablet() ? 'xxs' : 'xs'}>
                                             {failed_message}
                                         </Text>
                                     }

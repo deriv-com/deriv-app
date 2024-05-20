@@ -17,7 +17,6 @@ export const isTouchDevice = () =>
     (window.DocumentTouch && document instanceof window.DocumentTouch) ||
     navigator.maxTouchPoints > 0 ||
     window.navigator.msMaxTouchPoints > 0;
-/** @deprecated Use `is_mobile` from ui-store instead. */
 export const isMobile = () => window.innerWidth <= MAX_MOBILE_WIDTH;
 export const isTablet = () => MAX_MOBILE_WIDTH < window.innerWidth && window.innerWidth < MIN_DESKTOP_WIDTH;
 export const isMobileOrTablet = () => window.innerWidth < MIN_DESKTOP_WIDTH;

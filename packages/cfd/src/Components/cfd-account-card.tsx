@@ -5,7 +5,7 @@ import { FormikValues } from 'formik';
 
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Button, DesktopWrapper, Icon, MobileOrTabletWrapper, Money, Text } from '@deriv/components';
-import { getCFDPlatformLabel, isMobile, mobileOSDetect } from '@deriv/shared';
+import { getCFDPlatformLabel, isMobileOrTablet, mobileOSDetect } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 
@@ -289,7 +289,7 @@ const CFDAccountCardComponent = observer(
             return null;
         };
 
-        const is_web_terminal_unsupported = isMobile() && platform === CFD_PLATFORMS.DXTRADE;
+        const is_web_terminal_unsupported = isMobileOrTablet() && platform === CFD_PLATFORMS.DXTRADE;
         const tbody_content = platform === CFD_PLATFORMS.DXTRADE && (
             <React.Fragment>
                 <tr className='cfd-account-card__login-specs-table-row'>

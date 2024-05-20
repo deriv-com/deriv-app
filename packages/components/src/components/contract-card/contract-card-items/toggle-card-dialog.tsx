@@ -1,5 +1,5 @@
 import React from 'react';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobileOrTablet } from '@deriv/shared';
 import ContractCardDialog from './contract-card-dialog';
 import ContractUpdateForm, { TGeneralContractCardBodyProps } from './contract-update-form';
 import Icon from '../../icon';
@@ -81,7 +81,7 @@ const ToggleCardDialog = ({
     const toggleDialog = (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
-        if (isMobile() && should_show_cancellation_warning && is_valid_to_cancel) {
+        if (isMobileOrTablet() && should_show_cancellation_warning && is_valid_to_cancel) {
             addToast({
                 key: 'deal_cancellation_active',
                 content: getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE,

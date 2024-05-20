@@ -1,5 +1,5 @@
 import React from 'react';
-import { isMobile, isDesktop, getDecimalPlaces } from '@deriv/shared';
+import { isMobileOrTablet, isDesktop, getDecimalPlaces } from '@deriv/shared';
 import InputField from '../input-field';
 import Checkbox from '../checkbox';
 import Popover from '../popover';
@@ -70,7 +70,7 @@ const InputWithCheckbox = ({
     }, [defaultChecked]);
     // eslint-disable-next-line consistent-return
     React.useEffect(() => {
-        if (isMobile()) {
+        if (isMobileOrTablet()) {
             const showErrorToast = () => {
                 if (typeof addToast === 'function') {
                     addToast({
@@ -127,7 +127,7 @@ const InputWithCheckbox = ({
             current_focus={current_focus || ''}
             error_messages={error_messages}
             error_message_alignment={error_message_alignment}
-            is_error_tooltip_hidden={isMobile()}
+            is_error_tooltip_hidden={isMobileOrTablet()}
             is_disabled={!!is_disabled}
             fractional_digits={getDecimalPlaces(currency)}
             id={`dc_${name}_input`}
@@ -189,7 +189,7 @@ const InputWithCheckbox = ({
                         id={`dc_${name}-checkbox__tooltip`}
                         is_bubble_hover_enabled
                         message={tooltip_label}
-                        margin={isMobile() || tooltip_alignment === 'right' ? 0 : 216}
+                        margin={isMobileOrTablet() || tooltip_alignment === 'right' ? 0 : 216}
                         zIndex='9999'
                         {...(isDesktop() ? { relative_render: tooltip_alignment === 'left' } : {})}
                     />

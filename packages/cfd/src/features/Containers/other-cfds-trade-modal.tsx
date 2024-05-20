@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, Icon, Money } from '@deriv/components';
 import { TTradingPlatformAccounts, TCFDDashboardContainer, TCFDsPlatformType } from 'Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { getCFDAccountKey, isMobile, mobileOSDetect } from '@deriv/shared';
+import { getCFDAccountKey, isMobileOrTablet, mobileOSDetect } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getPlatformQRCode, PlatformsDesktopDownload, mobileDownloadLink } from '../../Helpers/config';
 import { getTitle, platformsText, CTRADER_DESKTOP_WINDOWS_DOWNLOAD } from '../../Helpers/constants';
@@ -98,7 +98,7 @@ const OtherCFDsTradeModal = ({
                         align='center'
                         as='p'
                         className='cfd-trade-modal__download-center-text'
-                        size={isMobile() ? 'xxxs' : 'xxs'}
+                        size={isMobileOrTablet() ? 'xxxs' : 'xxs'}
                         weight='bold'
                     >
                         {localize('Download Deriv X on your phone to trade with the Deriv X account')}
@@ -110,7 +110,7 @@ const OtherCFDsTradeModal = ({
                         align='center'
                         as='p'
                         className='cfd-trade-modal__download-center-text'
-                        size={isMobile() ? 'xxxs' : 'xxs'}
+                        size={isMobileOrTablet() ? 'xxxs' : 'xxs'}
                         weight='bold'
                     >
                         {localize('Download cTrader on your phone to trade with the Deriv cTrader account')}
@@ -207,7 +207,7 @@ const OtherCFDsTradeModal = ({
                 <div className='cfd-trade-modal__maintenance'>
                     <Icon
                         icon='IcAlertWarning'
-                        size={isMobile() ? 28 : 24}
+                        size={isMobileOrTablet() ? 28 : 24}
                         className='cfd-trade-modal__maintenance-icon'
                     />
                     <div className='cfd-trade-modal__maintenance-text'>
@@ -281,7 +281,11 @@ const OtherCFDsTradeModal = ({
                                 target='_blank'
                                 rel='noopener noreferrer'
                             >
-                                <Icon icon='IcInstallationApple' width={isMobile() ? '160' : '130'} height={40} />
+                                <Icon
+                                    icon='IcInstallationApple'
+                                    width={isMobileOrTablet() ? '160' : '130'}
+                                    height={40}
+                                />
                             </a>
                         </div>
                     )}
@@ -314,7 +318,7 @@ const OtherCFDsTradeModal = ({
                         </React.Fragment>
                     )}
                 </div>
-                {!isMobile() && (
+                {!isMobileOrTablet() && (
                     <div className='cfd-trade-modal__download-center-options--qrcode'>
                         {getPlatformQRCode(platform)}
                     </div>

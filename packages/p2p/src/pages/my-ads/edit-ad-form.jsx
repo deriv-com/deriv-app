@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Formik, Field, Form } from 'formik';
 import { Button, Div100vhContainer, Input, Modal, Text, ThemedScrollbars } from '@deriv/components';
 import { useP2PSettings } from '@deriv/hooks';
-import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
+import { formatMoney, isDesktop, isMobileOrTablet } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return';
@@ -20,7 +20,7 @@ import OrderTimeSelection from './order-time-selection';
 import './edit-ad-form.scss';
 
 const EditAdFormWrapper = ({ children }) => {
-    if (isMobile()) {
+    if (isMobileOrTablet()) {
         return <Div100vhContainer height_offset='auto'>{children}</Div100vhContainer>;
     }
 
@@ -176,7 +176,10 @@ const EditAdForm = () => {
                     return (
                         <div className='edit-ad-form'>
                             <Form noValidate>
-                                <ThemedScrollbars className='edit-ad-form__scrollbar' is_scrollbar_hidden={isMobile()}>
+                                <ThemedScrollbars
+                                    className='edit-ad-form__scrollbar'
+                                    is_scrollbar_hidden={isMobileOrTablet()}
+                                >
                                     <EditAdFormWrapper>
                                         <div className='edit-ad-form__scrollbar-container'>
                                             <div className='edit-ad-form__summary'>

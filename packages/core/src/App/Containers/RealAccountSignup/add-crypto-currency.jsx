@@ -4,7 +4,7 @@ import React from 'react';
 import { FormSubmitButton, Icon, Text, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { isMobile, reorderCurrencies, website_name } from '@deriv/shared';
+import { isMobileOrTablet, reorderCurrencies, website_name } from '@deriv/shared';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
 import './currency-selector.scss';
 
@@ -176,7 +176,7 @@ const AddCryptoCurrency = observer(
                             className='currency-selector__button'
                             is_disabled={isSubmitting || !values.currency}
                             label={localize('Add account')}
-                            is_absolute={!isMobile()}
+                            is_absolute={!isMobileOrTablet()}
                             form_error={form_error}
                             has_cancel={should_show_cancel}
                             cancel_label={localize('Back')}

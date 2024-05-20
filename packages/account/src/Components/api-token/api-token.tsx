@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Formik, Form, Field, FormikValues, FormikErrors, FieldProps } from 'formik';
 import { Timeline, Input, Button, ThemedScrollbars, Loading } from '@deriv/components';
 import InlineNoteWithIcon from '../inline-note-with-icon';
-import { isDesktop, isMobile, getPropertyValue, useIsMounted, WS } from '@deriv/shared';
+import { isDesktop, isMobileOrTablet, getPropertyValue, useIsMounted, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import ApiTokenArticle from './api-token-article';
@@ -200,8 +200,8 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
                     })}
                 >
                     <div className='da-api-token__wrapper'>
-                        <ThemedScrollbars className='da-api-token__scrollbars' is_bypassed={isMobile()}>
-                            {!is_app_settings && isMobile() && <ApiTokenArticle />}
+                        <ThemedScrollbars className='da-api-token__scrollbars' is_bypassed={isMobileOrTablet()}>
+                            {!is_app_settings && isMobileOrTablet() && <ApiTokenArticle />}
                             <Formik initialValues={initial_form} onSubmit={handleSubmit} validate={validateFields}>
                                 {({
                                     values,

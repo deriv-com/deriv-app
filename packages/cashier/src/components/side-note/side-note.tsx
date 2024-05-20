@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, MobileOrTabletWrapper, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
+import { isMobileOrTablet } from '@deriv/shared';
 import './side-note.scss';
 
 type TSideNoteTitle = {
@@ -61,7 +61,7 @@ const SideNote = ({
                     <div
                         className={classNames(
                             'side-note-legacy',
-                            { 'side-note-legacy--mobile': isMobile() },
+                            { 'side-note-legacy--mobile': isMobileOrTablet() },
                             className
                         )}
                     >

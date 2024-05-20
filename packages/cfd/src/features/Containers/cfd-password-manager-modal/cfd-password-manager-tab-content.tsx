@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tabs, DesktopWrapper, Div100vhContainer, MobileOrTabletWrapper, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isMobile, validLength, validPassword, getErrorMessages, getCFDPlatformLabel } from '@deriv/shared';
+import { isMobileOrTablet, validLength, validPassword, getErrorMessages, getCFDPlatformLabel } from '@deriv/shared';
 import { useTradingPlatformInvestorPasswordChange, useTradingPlatformPasswordChange } from '@deriv/api';
 import { FormikErrors } from 'formik';
 import TradingPasswordManager from 'Containers/trading-password-manager';
@@ -124,7 +124,7 @@ export const CFDPasswordManagerTabContent = ({
     const trading_password_manager = (
         <React.Fragment>
             <DesktopWrapper>
-                <ThemedScrollbars height={container_height} is_bypassed={isMobile()} autohide={false}>
+                <ThemedScrollbars height={container_height} is_bypassed={isMobileOrTablet()} autohide={false}>
                     <TradingPasswordManager
                         toggleModal={toggleModal}
                         platform={platform}

@@ -2,7 +2,7 @@ import React from 'react';
 import { Step, Locale } from 'react-joyride';
 import { Text, SpanButton, Icon } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
+import { isMobileOrTablet } from '@deriv/shared';
 import 'Components/toggle-account-type/toggle-account-type.scss';
 
 const stepProps = {
@@ -49,7 +49,7 @@ export const tour_step_config: Step[] = [
                 />
             </Text>
         ),
-        target: isMobile() ? '.main-title-bar-mobile--regulator' : '.regulators-switcher__container',
+        target: isMobileOrTablet() ? '.main-title-bar-mobile--regulator' : '.regulators-switcher__container',
         ...stepProps,
     },
     {

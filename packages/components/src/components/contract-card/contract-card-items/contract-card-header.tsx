@@ -8,7 +8,7 @@ import {
     isAccumulatorContract,
     isSmartTraderContract,
     isBot,
-    isMobile,
+    isMobileOrTablet,
     isTurbosContract,
     isMultiplierContract,
     getLocalizedTurbosSubtype,
@@ -68,7 +68,7 @@ const ContractCardHeader = ({
     const is_sold = !!contract_info.is_sold || is_contract_sold;
     const is_accumulator = isAccumulatorContract(contract_type);
     const is_smarttrader_contract = isSmartTraderContract(contract_type);
-    const is_mobile = isMobile();
+    const is_mobile = isMobileOrTablet();
     const is_turbos = isTurbosContract(contract_type);
     const is_multipliers = isMultiplierContract(contract_type);
     const is_high_low = isHighLow({ shortcode });

@@ -19,7 +19,7 @@ import {
     Checkbox,
     InlineMessage,
 } from '@deriv/components';
-import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
+import { isDeepEqual, isDesktop, isMobileOrTablet } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { useStore } from '@deriv/stores';
@@ -368,7 +368,7 @@ const CFDPersonalDetailsForm = ({
                                             }
                                         />
                                     </div>
-                                    <ThemedScrollbars height='512px' is_bypassed={isMobile()}>
+                                    <ThemedScrollbars height='512px' is_bypassed={isMobileOrTablet()}>
                                         <div className='details-form__elements'>
                                             <fieldset className='account-form__fieldset'>
                                                 <DesktopWrapper>
@@ -561,7 +561,7 @@ const CFDPersonalDetailsForm = ({
                                                             label={
                                                                 <Localize i18n_default_text='I confirm that my tax information is accurate and complete.' />
                                                             }
-                                                            label_font_size={isMobile() ? 'xxs' : 'xs'}
+                                                            label_font_size={isMobileOrTablet() ? 'xxs' : 'xs'}
                                                             onChange={(e: React.FormEvent<HTMLInputElement>) =>
                                                                 setFieldValue(field.name, e.currentTarget.checked, true)
                                                             }
@@ -574,11 +574,11 @@ const CFDPersonalDetailsForm = ({
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer is_bypassed={isMobile()} has_separator>
+                                <Modal.Footer is_bypassed={isMobileOrTablet()} has_separator>
                                     {form_error && <FormSubmitErrorMessage message={form_error} />}
                                     <FormSubmitButton
                                         is_disabled={isSubmitting || !isValid || Object.keys(errors).length > 0}
-                                        is_absolute={isMobile()}
+                                        is_absolute={isMobileOrTablet()}
                                         label={localize('Next')}
                                     />
                                 </Modal.Footer>

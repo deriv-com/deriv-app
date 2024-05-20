@@ -2,7 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, Form } from 'formik';
 import { Button, Div100vhContainer, Input, RadioGroup, Text, ThemedScrollbars } from '@deriv/components';
-import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
+import { formatMoney, isDesktop, isMobileOrTablet } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useP2PExchangeRate, useP2PSettings } from '@deriv/hooks';
 import FloatingRate from 'Components/floating-rate';
@@ -17,7 +17,7 @@ import OrderTimeSelection from './order-time-selection';
 import './create-ad-form.scss';
 
 const CreateAdFormWrapper = ({ children }) => {
-    if (isMobile()) {
+    if (isMobileOrTablet()) {
         return <Div100vhContainer height_offset='auto'>{children}</Div100vhContainer>;
     }
     return children;
@@ -117,7 +117,7 @@ const CreateAdForm = () => {
                             <Form noValidate>
                                 <ThemedScrollbars
                                     className='create-ad-form__scrollbar'
-                                    is_scrollbar_hidden={isMobile()}
+                                    is_scrollbar_hidden={isMobileOrTablet()}
                                 >
                                     <CreateAdFormWrapper>
                                         <div className='create-ad-form__scrollbar-container'>

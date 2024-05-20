@@ -10,7 +10,7 @@ import {
     Text,
     ThemedScrollbars,
 } from '@deriv/components';
-import { getIDVNotApplicableOption, isDesktop, isMobile, removeEmptyPropertiesFromObject } from '@deriv/shared';
+import { getIDVNotApplicableOption, isDesktop, isMobileOrTablet, removeEmptyPropertiesFromObject } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import {
@@ -179,8 +179,8 @@ const PersonalDetails = observer(
                                 data-testid='personal_details_form'
                             >
                                 <ScrollToFieldWithError
-                                    fields_to_scroll_bottom={isMobile() ? '' : ['account_opening_reason']}
-                                    fields_to_scroll_top={isMobile() ? ['account_opening_reason'] : ''}
+                                    fields_to_scroll_bottom={isMobileOrTablet() ? '' : ['account_opening_reason']}
+                                    fields_to_scroll_top={isMobileOrTablet() ? ['account_opening_reason'] : ''}
                                     should_recollect_inputs_names={
                                         values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
                                     }
@@ -263,12 +263,12 @@ const PersonalDetails = observer(
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer has_separator is_bypassed={isMobile()}>
+                                <Modal.Footer has_separator is_bypassed={isMobileOrTablet()}>
                                     <FormSubmitButton
                                         cancel_label={localize('Previous')}
                                         has_cancel
                                         is_disabled={isSubmitting}
-                                        is_absolute={isMobile()}
+                                        is_absolute={isMobileOrTablet()}
                                         label={localize('Next')}
                                         onCancel={() => handleCancel(values)}
                                     />

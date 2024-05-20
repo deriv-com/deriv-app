@@ -22,8 +22,15 @@
         margin-bottom: 0;
     }
 
-    .onfido-sdk-ui-Modal-inner {
-        border-radius: $BORDER_RADIUS * 2;
+    .onfido-sdk-ui {
+        &-Modal-inner {
+            border-radius: $BORDER_RADIUS * 2;
+        }
+        &-Theme-step {
+            @include mobile {
+                height: auto;
+            }
+        }
     }
 
     @include mobile {

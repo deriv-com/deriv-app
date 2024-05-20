@@ -11,6 +11,7 @@ import {
 } from '@deriv/api-v2';
 import useDevice from '../../hooks/useDevice';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
+import { useModal } from '../ModalProvider';
 import {
     getFiatWalletLoginId,
     TooltipComponent,
@@ -23,6 +24,7 @@ const WalletTourGuide = () => {
     const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key) ?? '');
     const [run, setRun] = useState(false);
     const { isMobile } = useDevice();
+    const modal = useModal();
 
     const switchWalletAccount = useWalletAccountSwitcher();
     const { isFetching, isLoading, isSuccess } = useAuthorize();
@@ -38,6 +40,12 @@ const WalletTourGuide = () => {
     const activeFiatWalletLoginId = fiatWalletLoginId == activeWalletLoginId;
     const isEverythingLoaded =
         !isLoading && !isFetching && isSuccess && !ctraderIsLoading && !dxtradeIsLoading && !sortedAccountsIsLoading;
+
+    useEffect(() => {
+        if (needToStart) {
+            modal.hide();
+        }
+    }, [needToStart, modal.hide]);
 
     useEffect(() => {
         const switchAccountAndRun = async () => {

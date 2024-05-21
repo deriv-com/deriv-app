@@ -1,7 +1,8 @@
+
+
 import React from 'react';
 import clsx from 'clsx';
 import { Field, Formik, FormikHandlers, FormikState } from 'formik';
-import { WebsiteStatus } from '@deriv/api-types';
 import {
     AutoHeightWrapper,
     FormSubmitButton,
@@ -79,7 +80,7 @@ const CurrencySelector = observer(
         has_wallet_account,
         value,
     }: TCurrencySelector) => {
-        const { client, ui, traders_hub } = useStore();
+        const { client, ui } = useStore();
 
         const {
             currency,
@@ -252,7 +253,7 @@ const CurrencySelector = observer(
                                                             component={RadioButton}
                                                             selected={
                                                                 available_crypto_currencies?.filter(
-                                                                    (crypto_data: WebsiteStatus['currencies_config']) =>
+                                                                    crypto_data =>
                                                                         crypto_data.value === avbl_currency.value
                                                                 )?.length === 0
                                                             }

@@ -1,16 +1,9 @@
 import React from 'react';
-import { screen, render, waitFor } from '@testing-library/react';
-import { PasskeyRename } from '../passkey-rename';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { PasskeyRename } from '../passkey-rename';
 
 describe('PasskeyRename', () => {
-    const mock_store = mockStore({
-        ui: { is_mobile: true },
-        client: { is_passkey_supported: true },
-        common: { network_status: { class: 'online' } },
-    });
-
     const init_passkey_name = 'init passkey_name';
     const new_passkey_name = 'new passkey name';
     const validation_error = 'Only 3-30 characters allowed.';
@@ -21,13 +14,11 @@ describe('PasskeyRename', () => {
 
     it('renders PasskeyRename form correctly and the name is changed', async () => {
         render(
-            <StoreProvider store={mock_store}>
-                <PasskeyRename
-                    passkey_name={init_passkey_name}
-                    onPrimaryButtonClick={mockOnPrimaryButtonClick}
-                    onSecondaryButtonClick={mockOnSecondaryButtonClick}
-                />
-            </StoreProvider>
+            <PasskeyRename
+                passkey_name={init_passkey_name}
+                onPrimaryButtonClick={mockOnPrimaryButtonClick}
+                onSecondaryButtonClick={mockOnSecondaryButtonClick}
+            />
         );
 
         expect(screen.getByText('Edit passkey')).toBeInTheDocument();
@@ -51,13 +42,11 @@ describe('PasskeyRename', () => {
 
     it('renders PasskeyRename form correctly and check the validation for name', async () => {
         render(
-            <StoreProvider store={mock_store}>
-                <PasskeyRename
-                    passkey_name={init_passkey_name}
-                    onPrimaryButtonClick={mockOnPrimaryButtonClick}
-                    onSecondaryButtonClick={mockOnSecondaryButtonClick}
-                />
-            </StoreProvider>
+            <PasskeyRename
+                passkey_name={init_passkey_name}
+                onPrimaryButtonClick={mockOnPrimaryButtonClick}
+                onSecondaryButtonClick={mockOnSecondaryButtonClick}
+            />
         );
 
         expect(screen.getByText('Edit passkey')).toBeInTheDocument();

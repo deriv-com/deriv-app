@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { DerivLightIcInfoPasskeyIcon } from '@deriv/quill-icons';
 import { DescriptionContainer } from './description-container';
 import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status-layout';
 import { TipsBlock } from './tips-block';
@@ -21,7 +22,7 @@ export const PasskeysLearnMore = ({ onPrimaryButtonClick, onSecondaryButtonClick
                     <TipsBlock />
                 </React.Fragment>
             }
-            icon='IcInfoPasskey'
+            icon={<DerivLightIcInfoPasskeyIcon height='96px' width='96px' className='passkey-status__icon' />}
             title={<Localize i18n_default_text='Effortless login with passkeys' />}
             onPrimaryButtonClick={onPrimaryButtonClick}
             onSecondaryButtonClick={onSecondaryButtonClick}

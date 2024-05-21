@@ -11,24 +11,23 @@ import { PasskeysStatusContainer } from './components/passkeys-status-container'
 import './passkeys.scss';
 
 const Passkeys = observer(() => {
-    const { client, ui } = useStore();
+    const { client, ui, common } = useStore();
     const { is_passkey_supported } = client;
     const { is_mobile } = ui;
+    const is_network_on = common.network_status.class === 'online';
 
     const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
     const history = useHistory();
 
     const { passkeys_list, is_passkeys_list_loading, passkeys_list_error, reloadPasskeysList } = useGetPasskeysList();
     const {
-        cancelPasskeyRegistration,
         createPasskey,
         clearPasskeyRegistrationError,
         startPasskeyRegistration,
-        is_passkey_registration_started,
         is_passkey_registered,
         passkey_registration_error,
     } = useRegisterPasskey();
-    const [passkey_status, setPasskeyStatus] = useState<TPasskeysStatus>(PASSKEY_STATUS_CODES.CREATED);
+    const [passkey_status, setPasskeyStatus] = useState<TPasskeysStatus>(PASSKEY_STATUS_CODES.LIST);
     const [is_reminder_modal_open, setIsReminderModalOpen] = useState(false);
     const [is_error_modal_open, setIsErrorModalOpen] = useState(false);
 
@@ -65,7 +64,7 @@ const Passkeys = observer(() => {
         return () => clearTimeOut();
     }, [error, is_reminder_modal_open]);
 
-    if (should_show_passkeys && is_passkeys_list_loading) {
+    if (should_show_passkeys && (is_passkeys_list_loading || !is_network_on)) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
@@ -81,7 +80,6 @@ const Passkeys = observer(() => {
     };
 
     const onCloseReminderModal = () => {
-        cancelPasskeyRegistration();
         setIsReminderModalOpen(false);
     };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import { PasskeyCard } from '../passkey-card';
-import { mock_passkeys_list } from 'Sections/Security/Passkeys/__tests__/passkeys.spec';
+import { mock_passkeys_list } from '../../__tests__/passkeys.spec';
 
 describe('PasskeyCard', () => {
     it('renders the passkey card correctly', () => {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
+import { DerivLightIcSuccessPasskeyIcon } from '@deriv/quill-icons';
 import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status-layout';
 
 export const PasskeyCreated = ({ onPrimaryButtonClick, onSecondaryButtonClick }: TPasskeysButtonOnClicks) => (
@@ -11,7 +12,7 @@ export const PasskeyCreated = ({ onPrimaryButtonClick, onSecondaryButtonClick }:
                     components={[<br key={0} />]}
                 />
             }
-            icon='IcSuccessPasskey'
+            icon={<DerivLightIcSuccessPasskeyIcon height='96px' width='96px' />}
             title={<Localize i18n_default_text='Success!' />}
             onPrimaryButtonClick={onPrimaryButtonClick}
             onSecondaryButtonClick={onSecondaryButtonClick}

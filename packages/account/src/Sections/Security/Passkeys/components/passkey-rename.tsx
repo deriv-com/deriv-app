@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { localize, Localize } from '@deriv/translations';
+import { DerivLightIcEditPasskeyIcon } from '@deriv/quill-icons';
 import { getPasskeyRenameValidationSchema } from '../passkeys-configs';
 import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status-layout';
 import FormInputField from '../../../../Components/forms/form-fields/form-input-field';
@@ -30,7 +31,7 @@ export const PasskeyRename = ({ onPrimaryButtonClick, onSecondaryButtonClick, pa
             {({ dirty, isValid }) => (
                 <div className='passkeys'>
                     <PasskeysStatusLayout
-                        icon='IcEditPasskey'
+                        icon={<DerivLightIcEditPasskeyIcon height='96px' width='96px' />}
                         title={<Localize i18n_default_text='Edit passkey' />}
                         onPrimaryButtonClick={onPrimaryButtonClick}
                         onSecondaryButtonClick={onSecondaryButtonClick}

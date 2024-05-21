@@ -22,13 +22,15 @@
             &--expanded {
                 display: block;
 
-                .dc-icon {
-                    display: block;
-                    margin-inline: auto;
-                }
+                .passkey-status {
+                    &__icon {
+                        display: block;
+                        margin-inline: auto;
+                    }
 
-                .passkeys-status__title {
-                    margin-bottom: 0;
+                    &__title {
+                        margin-bottom: 0;
+                    }
                 }
             }
         }

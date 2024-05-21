@@ -8,6 +8,7 @@ import { Button, Icon, Text } from '@deriv/components';
 import { getOSNameWithUAParser, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { DerivLightIcInfoPasskeyIcon } from '@deriv/quill-icons';
 import { EffortLessLoginTips } from './effortless-login-tips';
 import { EffortlessLoginDescription } from './effortless-login-description';
 import './effortless-login-modal.scss';
@@ -83,7 +84,7 @@ const EffortlessLoginModal = observer(() => {
             )}
 
             <FormBody scroll_offset='15rem' className='effortless-login-modal__wrapper'>
-                <Icon icon='IcInfoPasskey' size={96} />
+                icon={<DerivLightIcInfoPasskeyIcon height='96px' width='96px' className='passkey__info-icon' />}
                 <Text as='div' color='general' weight='bold' align='center' className='effortless-login-modal__title'>
                     <Localize i18n_default_text='Effortless login with passkeys' />
                 </Text>

@@ -6,14 +6,16 @@ import classNames from 'classnames';
 type TFormBody = {
     scroll_offset?: string;
     className?: string;
+    isFullHeight?: boolean;
 };
 
-export const FormBody = ({ children, scroll_offset, className }: React.PropsWithChildren<TFormBody>) => (
+export const FormBody = ({ children, scroll_offset, className, isFullHeight }: React.PropsWithChildren<TFormBody>) => (
     <React.Fragment>
         <DesktopWrapper>
             <ScrollbarsContainer
                 className={classNames('account__scrollbars_container--grid-layout', className)}
                 scroll_offset={scroll_offset}
+                isFullHeight={isFullHeight}
             >
                 {children}
             </ScrollbarsContainer>

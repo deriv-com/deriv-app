@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Form, Formik, FormikHelpers, FormikState, FormikValues } from 'formik';
+import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
 import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button, HintBox, Loading, Text } from '@deriv/components';
 import {
@@ -180,10 +180,7 @@ const IdvFailed = ({
         setIsAlreadyAttempted,
     ]);
 
-    const onSubmit = async (
-        values: TIdvFailedForm,
-        { setStatus, setSubmitting, status }: FormikHelpers<TIdvFailedForm> & FormikState<TIdvDocumentSubmitForm>
-    ) => {
+    const onSubmit = async (values: TIdvFailedForm, { setStatus, setSubmitting }: FormikHelpers<TIdvFailedForm>) => {
         if (shouldSkipIdv(values?.document_type?.id)) {
             handleSelectionNext?.(true);
             return;
@@ -191,7 +188,7 @@ const IdvFailed = ({
 
         delete values.confirmation_checkbox;
         setSubmitting(true);
-        setStatus({ ...status, error_msg: null });
+        setStatus({ error_msg: null });
         const { document_number, document_type } = values;
         const request = makeSettingsRequest(
             values,
@@ -204,7 +201,7 @@ const IdvFailed = ({
                 data.error?.code === API_ERROR_CODES.DUPLICATE_ACCOUNT
                     ? DUPLICATE_ACCOUNT_ERROR_MESSAGE
                     : GENERIC_ERROR_MESSAGE;
-            setStatus({ ...status, error_msg: response_error });
+            setStatus({ error_msg: response_error });
             setSubmitting(false);
         } else {
             const response = await WS.authorized.storage.getSettings();
@@ -231,7 +228,7 @@ const IdvFailed = ({
                     idv_update_response.error?.code === API_ERROR_CODES.CLAIMED_DOCUMENT
                         ? CLAIMED_DOCUMENT_ERROR_MESSAGE
                         : idv_update_response?.error?.message ?? GENERIC_ERROR_MESSAGE;
-                setStatus({ ...status, error_msg: response_error });
+                setStatus({ error_msg: response_error });
                 setSubmitting(false);
                 return;
             }
@@ -259,7 +256,7 @@ const IdvFailed = ({
             }
         }
 
-        const validateValues = validate(errors, values);
+        const validateValues = validate(errors as Record<string, string>, values);
 
         validateValues(val => val, idv_failure?.required_fields ?? [], localize('This field is required'));
 

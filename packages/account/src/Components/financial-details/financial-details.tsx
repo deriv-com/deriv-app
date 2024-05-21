@@ -33,7 +33,7 @@ type TFinancialDetails = {
     validate: (values: TFinancialInformationForm) => object;
     value: TFinancialInformationForm;
     employment_status: string;
-    is_eu_user: boolean;
+    is_eu_user?: boolean;
 };
 
 /**

@@ -5,7 +5,7 @@ import { Localize } from '@deriv/translations';
 import clsx from 'clsx';
 
 type TPoaButton = {
-    custom_text?: JSX.Element;
+    custom_text?: React.ReactNode;
     class_name?: string;
 };
 

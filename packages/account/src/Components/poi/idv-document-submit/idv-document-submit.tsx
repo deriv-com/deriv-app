@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Form, Formik, FormikErrors, FormikHelpers, FormikState } from 'formik';
+import { Form, Formik, FormikErrors, FormikHelpers } from 'formik';
 import { Button, HintBox, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import {
@@ -48,6 +48,7 @@ export type TIdvDocumentSubmitForm = TIDVFormValues & TPersonalDetailsForm & { c
 
 const IdvDocumentSubmit = observer(
     ({ handleBack, handleViewComplete, handleSelectionNext, selected_country }: TIDVDocumentSubmitProps) => {
+        console.log('Component IdvDocumentSubmit');
         const { client, ui } = useStore();
         const { account_settings, getChangeableFields } = client;
         const { is_mobile, is_desktop } = ui;
@@ -116,11 +117,7 @@ const IdvDocumentSubmit = observer(
 
         const submitHandler = async (
             values: TIdvDocumentSubmitForm,
-            {
-                setSubmitting,
-                setStatus,
-                status,
-            }: FormikHelpers<TIdvDocumentSubmitForm> & FormikState<TIdvDocumentSubmitForm>
+            { setSubmitting, setStatus }: FormikHelpers<TIdvDocumentSubmitForm>
         ) => {
             if (shouldSkipIdv(values?.document_type?.id)) {
                 handleSelectionNext?.(true);
@@ -138,20 +135,20 @@ const IdvDocumentSubmit = observer(
                     data.error?.code === API_ERROR_CODES.DUPLICATE_ACCOUNT
                         ? DUPLICATE_ACCOUNT_ERROR_MESSAGE
                         : GENERIC_ERROR_MESSAGE;
-                setStatus({ ...status, error_message: response_error });
+                setStatus({ error_message: response_error });
                 setSubmitting(false);
                 return;
             }
             const get_settings = await WS.authorized.storage.getSettings();
             if (get_settings?.error) {
-                setStatus({ ...status, error_message: get_settings?.error?.message ?? GENERIC_ERROR_MESSAGE });
+                setStatus({ error_message: get_settings?.error?.message ?? GENERIC_ERROR_MESSAGE });
                 setSubmitting(false);
                 return;
             }
 
             const submit_data = {
                 identity_verification_document_add: 1,
-                ...formatIDVFormValues(values, selected_country.value),
+                ...formatIDVFormValues(values, selected_country.value as string),
             };
 
             const idv_update_response = await WS.send(submit_data);
@@ -161,7 +158,7 @@ const IdvDocumentSubmit = observer(
                     idv_update_response.error?.code === API_ERROR_CODES.CLAIMED_DOCUMENT
                         ? CLAIMED_DOCUMENT_ERROR_MESSAGE
                         : idv_update_response.error?.message ?? GENERIC_ERROR_MESSAGE;
-                setStatus({ ...status, error_message: response_error });
+                setStatus({ error_message: response_error });
                 setSubmitting(false);
                 return;
             }

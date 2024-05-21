@@ -25,8 +25,8 @@ export type TFormattedToken = Partial<{
 }>;
 
 export type TPoaStatusProps = {
-    needs_poi: boolean;
-    redirect_button: React.ReactNode;
+    needs_poi?: boolean;
+    redirect_button?: React.ReactNode;
 };
 
 export type TAuthAccountInfo = NonNullable<Authorize['account_list']>[0] & {
@@ -289,4 +289,16 @@ export type TQuestion = {
     form_control: keyof TTradingAssessmentForm;
     answer_options: { text: string; value: string }[];
     field_type?: string;
+};
+
+// Type for the list of items in a dropdown or select
+export type TListItem = {
+    /**
+     * The text of the item (e.g. 'United Kingdom', 'Germany', etc.)
+     */
+    text?: string;
+    /**
+     * The value of the item
+     */
+    value?: string;
 };

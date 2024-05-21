@@ -21,7 +21,7 @@ import FatcaDeclaration from './fatca-declaration';
 type TTermsOfUseFormProps = {
     agreed_tos: boolean;
     agreed_tnc: boolean;
-    fatca_declaration: '0' | '1';
+    fatca_declaration?: '0' | '1';
     resident_self_declaration?: boolean;
 };
 

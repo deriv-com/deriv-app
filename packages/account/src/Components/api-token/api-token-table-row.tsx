@@ -2,14 +2,10 @@ import ApiTokenDeleteButton from './api-token-delete-button';
 import ApiTokenTableRowCell from './api-token-table-row-cell';
 import ApiTokenTableRowScopesCell from './api-token-table-row-scopes-cell';
 import ApiTokenTableRowTokenCell from './api-token-table-row-token-cell';
+import { TFormattedToken } from 'Types';
 
 type TApiTokenTableRow = {
-    token: Partial<{
-        display_name: string;
-        formatted_scopes: string[];
-        last_used: string;
-        token: string;
-    }>;
+    token: TFormattedToken;
 };
 
 const ApiTokenTableRow = ({ token }: TApiTokenTableRow) => (

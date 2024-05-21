@@ -3,16 +3,11 @@ import { Button, Icon, Modal, Text, Popover } from '@deriv/components';
 import { isDesktop, useIsMounted } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import ApiTokenContext from './api-token-context';
-import { TPopoverAlignment, TToken, TApiContext } from 'Types';
+import { TPopoverAlignment, TFormattedToken, TApiContext } from 'Types';
 
 type TApiTokenDeleteButton = {
     popover_alignment?: TPopoverAlignment;
-    token: Partial<{
-        display_name: string;
-        formatted_scopes: string[];
-        last_used: string;
-        token: string;
-    }>;
+    token: TFormattedToken;
 };
 
 const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDeleteButton) => {

@@ -17,6 +17,13 @@ import { AUTH_STATUS_CODES, CFD_PLATFORMS, MT5_ACCOUNT_STATUS, Platforms } from 
 
 export type TToken = NonNullable<ApiToken['tokens']>[0];
 
+export type TFormattedToken = Partial<{
+    display_name: string;
+    formatted_scopes: string[];
+    last_used: string;
+    token: string;
+}>;
+
 export type TPoaStatusProps = {
     needs_poi: boolean;
     redirect_button: React.ReactNode;

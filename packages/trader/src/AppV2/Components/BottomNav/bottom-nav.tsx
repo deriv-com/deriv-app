@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Localize } from '@deriv/translations';
 import {
     LegacyMarketBasketIndicesIcon,
@@ -55,7 +56,8 @@ const BottomNav = ({ className, children }: BottomNavProps) => {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 
     return (
-        <div className={className}>
+        <div className={classNames('bottom-nav', className)}>
+            <div className='bottom-nav-selection'>{children[selectedIndex]}</div>
             <div className='bottom-nav-container'>
                 {bottomNavItems.map((item, index) => (
                     <BottomNavItem
@@ -68,7 +70,6 @@ const BottomNav = ({ className, children }: BottomNavProps) => {
                     />
                 ))}
             </div>
-            {children[selectedIndex]}
         </div>
     );
 };

@@ -1,14 +1,13 @@
-import React from 'react';
 import clsx from 'clsx';
 
 type TApiTokenTableRowScopesCell = {
-    scopes: string[];
+    scopes?: string[];
 };
 
 const ApiTokenTableRowScopesCell = ({ scopes }: TApiTokenTableRowScopesCell) => {
     return (
         <div className='da-api-token__table-scopes-cell-block'>
-            {scopes.map(scope => (
+            {scopes?.map(scope => (
                 <div
                     key={scope}
                     className={clsx('da-api-token__table-scope-cell', {

@@ -178,6 +178,9 @@ const ApiToken = observer(() => {
         return <LoadErrorMessage error_message={error_message} />;
     }
 
+    if (typeof api_tokens === 'undefined') {
+        return null;
+    }
     const context_value = {
         api_tokens,
         deleteToken,

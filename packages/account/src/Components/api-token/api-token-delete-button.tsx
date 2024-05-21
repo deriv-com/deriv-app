@@ -7,7 +7,12 @@ import { TPopoverAlignment, TToken, TApiContext } from 'Types';
 
 type TApiTokenDeleteButton = {
     popover_alignment?: TPopoverAlignment;
-    token: TToken;
+    token: Partial<{
+        display_name: string;
+        formatted_scopes: string[];
+        last_used: string;
+        token: string;
+    }>;
 };
 
 const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDeleteButton) => {
@@ -34,7 +39,7 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDe
 
     const onSubmit = async () => {
         setIsLoading(true);
-        await deleteToken(token.token);
+        await deleteToken(token.token ?? '');
         if (isMounted()) {
             setIsLoading(false);
             setIsDeleting(false);

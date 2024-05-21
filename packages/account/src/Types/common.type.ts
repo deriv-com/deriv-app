@@ -11,15 +11,11 @@ import {
     GetFinancialAssessment,
     SetFinancialAssessmentRequest,
     IdentityVerificationAddDocumentResponse,
+    ApiToken,
 } from '@deriv/api-types';
 import { AUTH_STATUS_CODES, CFD_PLATFORMS, MT5_ACCOUNT_STATUS, Platforms } from '@deriv/shared';
 
-export type TToken = {
-    display_name: string;
-    last_used: string;
-    scopes: string[];
-    token: string;
-};
+export type TToken = NonNullable<ApiToken['tokens']>[0];
 
 export type TPoaStatusProps = {
     needs_poi: boolean;

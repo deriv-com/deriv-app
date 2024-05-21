@@ -39,8 +39,6 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     const { data: availableCtraderAccounts } = useAvailableCTraderAccounts();
     const { isSuccess: isAccountCreated, mutate: createAccount } = useCreateOtherCFDAccount();
 
-    const availableTraderAccount = availableCtraderAccounts?.[0];
-
     const mt5Platform = CFD_PLATFORMS.MT5;
     const dxtradePlatform = CFD_PLATFORMS.DXTRADE;
     const ctraderPlatform = CFD_PLATFORMS.CTRADER;
@@ -184,9 +182,8 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                                 </li>
                             ))}
                         </ul>
-                        {availableTraderAccount?.available_count !== undefined &&
-                            availableTraderAccount?.max_count !== undefined &&
-                            availableTraderAccount.available_count < availableTraderAccount.max_count && (
+                        {availableCtraderAccounts?.[0].available_count !== undefined &&
+                            availableCtraderAccounts[0].available_count > 0 && (
                                 <button
                                     className='wallets-mt5-trade-screen__ctrader-get-more-button'
                                     onClick={onClickCtraderGetMoreButton}

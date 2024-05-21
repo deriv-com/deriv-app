@@ -63,7 +63,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
         >
             <div className='wallets-available-ctrader__details'>
                 <WalletText size='sm'>{PlatformDetails.ctrader.title}</WalletText>
-                <WalletText size='xs'>{t('This account offers CFDs on a feature-rich trading platform.')}</WalletText>
+                <WalletText size='xs'>{t('CFDs on financial and derived instruments with copy trading.')}</WalletText>
             </div>
         </TradingAccountCard>
     );

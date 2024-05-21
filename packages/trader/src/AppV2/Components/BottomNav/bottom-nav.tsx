@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Localize } from '@deriv/translations';
 import {
     LegacyMarketBasketIndicesIcon,
@@ -11,6 +12,7 @@ import { Badge } from '@deriv-com/quill-ui';
 
 type BottomNavProps = {
     children: React.ReactNode[];
+    className?: string;
     selectedItemIdx?: number;
     setSelectedItemIdx?: React.Dispatch<React.SetStateAction<number>>;
 };
@@ -48,7 +50,7 @@ const bottomNavItems = [
     },
 ];
 
-const BottomNav = ({ children, selectedItemIdx = 0, setSelectedItemIdx }: BottomNavProps) => {
+const BottomNav = ({ children, className, selectedItemIdx = 0, setSelectedItemIdx }: BottomNavProps) => {
     const [selectedIndex, setSelectedIndex] = React.useState(selectedItemIdx);
 
     const handleSelect = (index: number) => {
@@ -61,7 +63,8 @@ const BottomNav = ({ children, selectedItemIdx = 0, setSelectedItemIdx }: Bottom
     }, [selectedItemIdx]);
 
     return (
-        <React.Fragment>
+        <div className={classNames('bottom-nav', className)}>
+            <div className='bottom-nav-selection'>{children[selectedIndex]}</div>
             <div className='bottom-nav-container'>
                 {bottomNavItems.map((item, index) => (
                     <BottomNavItem
@@ -74,8 +77,7 @@ const BottomNav = ({ children, selectedItemIdx = 0, setSelectedItemIdx }: Bottom
                     />
                 ))}
             </div>
-            {children[selectedIndex]}
-        </React.Fragment>
+        </div>
     );
 };
 

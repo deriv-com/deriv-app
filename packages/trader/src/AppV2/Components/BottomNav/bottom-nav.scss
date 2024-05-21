@@ -1,15 +1,23 @@
 .bottom-nav {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
     &-container {
         display: flex;
         padding: var(--core-spacing-400);
         align-items: flex-start;
         gap: var(--core-spacing-500);
-        position: fixed;
-        bottom: 0;
         width: 100%;
         border-top: 1px solid var(--core-color-opacity-black-100); // waiting on quill tokens in deriv-app
         background-color: var(--core-color-solid-slate-50);
     }
+
+    &-selection {
+        flex: 1;
+        overflow: auto;
+    }
+
     &-item {
         display: flex;
         flex-direction: column;

@@ -10,7 +10,7 @@ import initStore from 'App/initStore';
 import App from 'App/app.jsx';
 import { checkAndSetEndpointFromUrl } from '@deriv/shared';
 import AppNotificationMessages from './App/Containers/app-notification-messages.jsx';
-import { AnalyticsInitializer } from 'Utils/Growthbook';
+import { AnalyticsInitializer } from 'Utils/Analytics';
 
 AnalyticsInitializer();
 if (

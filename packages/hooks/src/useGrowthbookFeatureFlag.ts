@@ -22,13 +22,13 @@ const useGrowthbookFeatureFlag = ({ featureFlag }: UseGrowthbookFeatureFlagArgs)
                     return;
                 }
                 timeout += 1;
-                if (Analytics.getInstances().ab) {
+                if (Analytics?.getInstances()?.ab) {
                     const setFeatureValue = () => {
                         const value = Analytics?.getFeatureValue(featureFlag);
                         setFeatureFlagValue(value);
                     };
                     setFeatureValue();
-                    Analytics.getInstances()?.ab?.GrowthBook?.setRenderer(() => {
+                    Analytics?.getInstances()?.ab?.GrowthBook?.setRenderer(() => {
                         // this will be called whenever the feature flag value changes and acts as a event listener
                         setFeatureValue();
                     });

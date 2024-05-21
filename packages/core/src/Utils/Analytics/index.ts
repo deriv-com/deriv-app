@@ -17,7 +17,7 @@ export const AnalyticsInitializer = async () => {
                 rudderstackKey: process.env.RUDDERSTACK_KEY,
             };
             Analytics.initialise(config);
-            await Analytics.getInstances().ab.GrowthBook.loadFeatures();
+            await Analytics?.getInstances()?.ab?.GrowthBook?.loadFeatures();
             const ppc_campaign_cookies =
                 Cookies.getJSON('utm_data') === 'null'
                     ? {

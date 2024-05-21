@@ -125,7 +125,7 @@ describe('WithdrawStore', () => {
 
         withdraw_store.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount = '100';
         await withdraw_store.requestWithdraw(verification_code);
-        expect(spySaveWithdraw).toHaveBeenCalledWith(verification_code, undefined);
+        expect(spySaveWithdraw).toHaveBeenCalledWith(verification_code);
 
         (withdraw_store.WS.cryptoWithdraw as jest.Mock).mockResolvedValueOnce({
             error: { code: error_code, message: error_message },

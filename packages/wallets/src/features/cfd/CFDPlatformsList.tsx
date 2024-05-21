@@ -35,7 +35,7 @@ const CFDPlatformsList: React.FC = () => {
                         </WalletText>
                         <WalletButton
                             onClick={() => {
-                                history.push('/wallets/compare-accounts');
+                                history.push('/compare-accounts');
                             }}
                             size='sm'
                             textSize='sm'
@@ -52,7 +52,7 @@ const CFDPlatformsList: React.FC = () => {
                             </WalletText>
                             <WalletButton
                                 onClick={() => {
-                                    history.push('/wallets/compare-accounts');
+                                    history.push('/compare-accounts');
                                 }}
                                 size='sm'
                                 variant='ghost'

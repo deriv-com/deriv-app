@@ -1952,7 +1952,7 @@ export default class ClientStore extends BaseStore {
             }
 
             //temporary workaround to sync this.loginid with selected wallet loginid
-            if (window.location.pathname.includes(routes.wallets_cashier)) {
+            if (window.location.pathname.includes(routes.wallets)) {
                 this.resetLocalStorageValues(localStorage.getItem('active_loginid') ?? this.loginid);
                 return;
             }
@@ -2197,7 +2197,7 @@ export default class ClientStore extends BaseStore {
 
             const redirect_url = sessionStorage.getItem('redirect_url');
 
-            const target_url = this.has_wallet ? routes.wallets : routes.traders_hub;
+            const target_url = routes.traders_hub;
 
             if (
                 (redirect_url?.endsWith(routes.trade) ||

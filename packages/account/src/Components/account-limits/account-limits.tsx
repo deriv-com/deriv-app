@@ -14,7 +14,7 @@ import AccountLimitsFooter from './account-limits-footer';
 import AccountLimitsOverlay from './account-limits-overlay';
 import AccountLimitsTableCell from './account-limits-table-cell';
 import AccountLimitsTableHeader from './account-limits-table-header';
-import AccountLimitsTurnoverLimitRow from './account-limits-turnover-limit-row';
+import AccountLimitsTurnoverLimitRow, { TAccountLimitsCollection } from './account-limits-turnover-limit-row';
 import WithdrawalLimitsTable from './withdrawal-limits-table';
 
 type TAccountLimits = {
@@ -69,6 +69,17 @@ const AccountLimits = observer(
 
         const toggleOverlay = () => setIsOverlayShown(!is_overlay_shown);
 
+        const {
+            api_initial_load_error,
+            open_positions,
+            account_balance,
+            payout,
+            market_specific,
+            num_of_days_limit,
+            remainder,
+            withdrawal_since_inception_monetary,
+        } = account_limits;
+
         if (is_switching || is_loading) {
             return <Loading is_fullscreen={false} />;
         }
@@ -81,22 +92,11 @@ const AccountLimits = observer(
             );
         }
 
-        const {
-            api_initial_load_error,
-            open_positions,
-            account_balance,
-            payout,
-            market_specific,
-            num_of_days_limit,
-            remainder,
-            withdrawal_since_inception_monetary,
-        } = account_limits;
-
         if (api_initial_load_error) {
             return <LoadErrorMessage error_message={api_initial_load_error} />;
         }
 
-        const { commodities, forex, indices, synthetic_index } = { ...market_specific };
+        const { commodities, forex, indices, synthetic_index } = market_specific ?? {};
         const forex_ordered = forex?.slice().sort((a: FormikValues, b: FormikValues) => a.name.localeCompare(b.name));
         const derived_ordered = synthetic_index
             ?.slice()
@@ -213,10 +213,18 @@ const AccountLimits = observer(
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <AccountLimitsTurnoverLimitRow collection={commodities} />
-                                        <AccountLimitsTurnoverLimitRow collection={forex_ordered} />
-                                        <AccountLimitsTurnoverLimitRow collection={indices} />
-                                        <AccountLimitsTurnoverLimitRow collection={derived_ordered} />
+                                        <AccountLimitsTurnoverLimitRow
+                                            collection={commodities as TAccountLimitsCollection[]}
+                                        />
+                                        <AccountLimitsTurnoverLimitRow
+                                            collection={forex_ordered as TAccountLimitsCollection[]}
+                                        />
+                                        <AccountLimitsTurnoverLimitRow
+                                            collection={indices as TAccountLimitsCollection[]}
+                                        />
+                                        <AccountLimitsTurnoverLimitRow
+                                            collection={derived_ordered as TAccountLimitsCollection[]}
+                                        />
                                     </tbody>
                                 </table>
                                 {/* We only show "Withdrawal Limits" on account-wide settings pages. */}

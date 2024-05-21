@@ -14,7 +14,7 @@ import Verified from '../../../Components/poa/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification.js';
 
 type TProofOfAddressContainer = {
-    onSubmit: () => void;
+    onSubmit?: () => void;
 };
 
 type TAuthenticationStatus = Record<
@@ -97,7 +97,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
             ...{ has_submitted_poa: true, needs_poi },
         }));
         if (is_verification_modal_visible) {
-            onSubmit();
+            onSubmit?.();
         }
     };
 

@@ -28,7 +28,6 @@ $FOOTER_HEIGHT: 5.8rem;
                     &__open,
                     &__closed {
                         height: 100%;
-                        // TODO: Temporary css
                         overflow-y: scroll;
                     }
                 }
@@ -54,5 +53,13 @@ $FOOTER_HEIGHT: 5.8rem;
         justify-content: space-around;
         align-items: center;
         flex-direction: column;
+    }
+}
+
+// TODO: Temporary style, waiting for new Quill version
+.disabled {
+    .quill__color--secondary-black {
+        pointer-events: none;
+        opacity: 0.1;
     }
 }

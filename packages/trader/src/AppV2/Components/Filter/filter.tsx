@@ -42,10 +42,10 @@ const Filter = ({ setContractTypeFilter, contractTypeFilter }: TFilter) => {
     };
 
     const chipLabelFormatting = () => {
-        const arrayLength = changedOptions.length;
+        const arrayLength = contractTypeFilter.length;
         if (!arrayLength) return <Localize i18n_default_text='All trade types' />;
-        if (changedOptions.length === 1)
-            return mockAvailableContractsList.find(type => type.id === changedOptions[0])?.tradeType;
+        if (arrayLength === 1)
+            return mockAvailableContractsList.find(type => type.id === contractTypeFilter[0])?.tradeType;
         return <Localize i18n_default_text='{{amount}} trade types' values={{ amount: arrayLength }} />;
     };
 
@@ -80,6 +80,8 @@ const Filter = ({ setContractTypeFilter, contractTypeFilter }: TFilter) => {
                         secondaryAction={{ content: 'Clear All', onAction: () => setChangedOptions([]) }}
                         alignment='vertical'
                         shouldCloseOnSecondaryButtonClick={false}
+                        // TODO: replace className with disabling props after Quill library updates
+                        className={`${changedOptions.length ? '' : 'disabled'}`}
                     />
                 </ActionSheet.Portal>
             </ActionSheet.Root>

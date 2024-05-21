@@ -1,13 +1,13 @@
 import React from 'react';
-import { TPortfolioPosition } from '@deriv/stores/types';
 import EmptyMessage from 'AppV2/Components/EmptyMessage';
 import { TEmptyMessageProps } from 'AppV2/Components/EmptyMessage/empty-message';
 import Filter from 'AppV2/Components/Filter';
 import { isHighLow } from '@deriv/shared';
+import { TClosedPositions } from './positions';
 
 type TPositionsContentProps = Omit<TEmptyMessageProps, 'noMatchesFound'> & {
     noMatchesFound?: boolean;
-    positions?: TPortfolioPosition[];
+    positions?: TClosedPositions;
     setContractTypeFilter: React.Dispatch<React.SetStateAction<string[]>>;
     contractTypeFilter: string[] | [];
 };
@@ -48,12 +48,12 @@ const PositionsContent = ({
             </div>
             {positions.length ? (
                 <React.Fragment>
-                    {positions.map(({ contract_info }) => (
+                    {positions.map(({ contract_type, purchase_time, shortcode }) => (
                         <ContractCard
-                            contractType={contract_info.contract_type}
-                            purchaseTime={contract_info.purchase_time}
-                            shortcode={contract_info.shortcode}
-                            key={contract_info.purchase_time}
+                            contractType={contract_type}
+                            purchaseTime={purchase_time}
+                            shortcode={shortcode}
+                            key={purchase_time}
                         />
                     ))}
                 </React.Fragment>

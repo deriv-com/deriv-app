@@ -1,76 +1,27 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Tab } from '@deriv-com/quill-ui';
-import { TPortfolioPosition } from '@deriv/stores/types';
+import { observer } from '@deriv/stores';
 import useClosedPositions from 'AppV2/Hooks/useClosedPositions';
-import { useModulesStore } from 'Stores/useModulesStores';
 import { filterPositions } from '../../Utils/positions-utils';
 import PositionsContent from './positions-content';
-import { observer } from '@deriv/stores';
 
 type TPositionsProps = {
     onRedirectToTrade?: () => void;
 };
 
-//TODO: Remove after Bala's PR with hook for real data will be merged
-const mockPositions = [
-    {
-        contract_info: {
-            contract_type: 'MULTUP',
-            purchase_time: 1716198125,
-            shortcode: 'MULTUP_1HZ100V_10.00_10_1716014450_4869676799_0_0.00_N1',
-        },
-    },
-    {
-        contract_info: {
-            contract_type: 'VANILLALONGCALL',
-            purchase_time: 1716198390,
-            shortcode: 'VANILLALONGCALL_1HZ100V_10.00_1716205893_1716206073_S0P_12.66345_1716205893',
-        },
-    },
-    {
-        contract_info: {
-            contract_type: 'CALL',
-            purchase_time: 1716205999,
-            shortcode: 'CALL_1HZ100V_19.55_1716205999_1716206179_S0P_0',
-        },
-    },
-    {
-        contract_info: {
-            contract_type: 'PUT',
-            purchase_time: 1716206101,
-            shortcode: 'PUT_1HZ100V_19.51_1716206101_1716206281_S0P_0',
-        },
-    },
-    {
-        contract_info: {
-            contract_type: 'CALL',
-            purchase_time: 1716206154,
-            shortcode: 'CALL_1HZ100V_24.09_1716206154_1716206334_S40P_0',
-        },
-    },
-    {
-        contract_info: {
-            contract_type: 'PUT',
-            purchase_time: 1716206194,
-            shortcode: 'PUT_1HZ100V_16.42_1716206194_1716206374_S40P_0',
-        },
-    },
-] as TPortfolioPosition[];
+export type TClosedPositions = ReturnType<typeof useClosedPositions>['closedPositions'];
+
+// TODO: Temporary loader, will be replaced
+const Loader = () => <div style={{ fontSize: '25px' }}>Loader</div>;
 
 const Positions = observer(({ onRedirectToTrade }: TPositionsProps) => {
+    // TODO: refactor this hook for date filtration. e.g. date_from and date_to
+    const { closedPositions, isLoading } = useClosedPositions();
+
     const [contractTypeFilter, setContractTypeFilter] = React.useState<string[]>([]);
-    const [filteredPositions, setFilteredPositions] = React.useState<TPortfolioPosition[]>(mockPositions || []);
+    const [filteredPositions, setFilteredPositions] = React.useState<TClosedPositions>(closedPositions);
     const [noMatchesFound, setNoMatchesFound] = React.useState(false);
-
-    const { positions: positionsStore } = useModulesStore();
-    const { closedContractTypeFilter } = positionsStore;
-
-    const { closedPositions } = useClosedPositions({ contractTypes: closedContractTypeFilter });
-
-    // TODO: remove this line
-    // eslint-disable-next-line no-console
-    console.log('closedPositions', closedPositions);
 
     const tabs = [
         {
@@ -80,7 +31,8 @@ const Positions = observer(({ onRedirectToTrade }: TPositionsProps) => {
                 <PositionsContent
                     noMatchesFound={noMatchesFound}
                     onRedirectToTrade={onRedirectToTrade}
-                    positions={filteredPositions}
+                    // TODO: Refactor hook or create new one for Open positions
+                    positions={[]}
                     setContractTypeFilter={setContractTypeFilter}
                     contractTypeFilter={contractTypeFilter}
                 />
@@ -103,11 +55,15 @@ const Positions = observer(({ onRedirectToTrade }: TPositionsProps) => {
 
     React.useEffect(() => {
         if (contractTypeFilter.length) {
-            const result = filterPositions(mockPositions, contractTypeFilter);
+            const result = filterPositions(closedPositions, contractTypeFilter);
             setNoMatchesFound(!result.length);
             setFilteredPositions(result);
-        } else setFilteredPositions(mockPositions);
+        } else setFilteredPositions(closedPositions);
     }, [contractTypeFilter]);
+
+    React.useEffect(() => {
+        if (!isLoading) setFilteredPositions(closedPositions);
+    }, [closedPositions]);
 
     return (
         <div className='positions-page'>
@@ -118,9 +74,7 @@ const Positions = observer(({ onRedirectToTrade }: TPositionsProps) => {
                     ))}
                 </Tab.List>
                 <Tab.Content className='positions-page__tabs-content'>
-                    {tabs.map(({ id, content }) => (
-                        <Tab.Panel key={id}>{content}</Tab.Panel>
-                    ))}
+                    {isLoading ? <Loader /> : tabs.map(({ id, content }) => <Tab.Panel key={id}>{content}</Tab.Panel>)}
                 </Tab.Content>
             </Tab.Container>
         </div>

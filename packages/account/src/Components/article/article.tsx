@@ -4,14 +4,9 @@ import { Localize } from '@deriv/translations';
 import './article.scss';
 import clsx from 'clsx';
 
-type TDescriptionsItem = {
-    key: string;
-    component: React.ReactElement;
-};
-
 export type TArticle = {
     title: JSX.Element | string;
-    descriptions: Array<TDescriptionsItem | React.ReactElement>;
+    descriptions: Array<React.ReactNode>;
     onClickLearnMore?: () => void;
     className?: string;
 };
@@ -36,7 +31,7 @@ const Article = ({ title, descriptions, onClickLearnMore, className }: TArticle)
                             {descriptions.map((description, idx) => (
                                 <li key={idx}>
                                     <Text size='xxs' line_height='xs'>
-                                        {'component' in description ? description.component : description}
+                                        {description}
                                     </Text>
                                 </li>
                             ))}

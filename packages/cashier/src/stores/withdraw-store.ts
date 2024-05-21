@@ -10,6 +10,7 @@ export default class WithdrawStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
         makeObservable(this, {
             blockchain_address: observable,
+            crypto_estimations_fee_unique_id: observable,
             error: observable,
             is_10k_withdrawal_limit_reached: observable,
             is_withdraw_confirmed: observable,
@@ -29,6 +30,7 @@ export default class WithdrawStore {
             check10kLimit: action.bound,
             set10kLimitation: action.bound,
             setCryptoConfig: action.bound,
+            setCryptoEstimationsFeeUniqueId: action.bound,
             setWithdrawPercentageSelectorResult: action.bound,
             validateWithdrawFromAmount: action.bound,
             validateWithdrawToAmount: action.bound,
@@ -39,6 +41,7 @@ export default class WithdrawStore {
     }
 
     blockchain_address = '';
+    crypto_estimations_fee_unique_id = '';
     error = new ErrorStore();
     is_10k_withdrawal_limit_reached?: boolean = undefined;
     is_withdraw_confirmed = false;
@@ -68,7 +71,11 @@ export default class WithdrawStore {
         this.withdraw_amount = amount;
     }
 
-    async requestWithdraw(verification_code: string, estimated_fee_unique_id?: string) {
+    setCryptoEstimationsFeeUniqueId(crypto_estimations_fee_unique_id: string) {
+        this.crypto_estimations_fee_unique_id = crypto_estimations_fee_unique_id;
+    }
+
+    async requestWithdraw(verification_code: string) {
         const { client, modules } = this.root_store;
         const { crypto_fiat_converter } = modules.cashier;
 
@@ -85,26 +92,26 @@ export default class WithdrawStore {
             address: this.blockchain_address,
             amount: +crypto_fiat_converter.converter_from_amount,
             verification_code,
-            estimated_fee_unique_id,
+            estimated_fee_unique_id: this.crypto_estimations_fee_unique_id || undefined,
             dry_run: 1,
         }).then(response => {
             if (response.error) {
                 this.error.setErrorMessage({ code: response.error.code, message: response.error.message });
                 this.setCryptoConfig().then(() => this.validateWithdrawFromAmount());
             } else {
-                this.saveWithdraw(verification_code, estimated_fee_unique_id);
+                this.saveWithdraw(verification_code);
             }
         });
     }
 
-    async saveWithdraw(verification_code: string, estimated_fee_unique_id?: string) {
+    async saveWithdraw(verification_code: string) {
         const converter_from_amount = this.root_store.modules.cashier?.crypto_fiat_converter.converter_from_amount;
 
         this.error.setErrorMessage({ code: '', message: '' });
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
             amount: +converter_from_amount,
-            estimated_fee_unique_id,
+            estimated_fee_unique_id: this.crypto_estimations_fee_unique_id || undefined,
             verification_code,
         }).then(response => {
             if (response.error) {

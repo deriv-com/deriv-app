@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import moment from 'moment';
+import { epochToMoment } from '@deriv/utils';
 import useMutation from '../useMutation';
 import { TSocketError } from '../../types';
 
@@ -13,7 +13,7 @@ const useCryptoEstimations = () => {
     const [currency_code, setCurrencyCode] = useState<string>('BTC');
     const [error, setError] = useState<TSocketError<'crypto_estimations'>['error']>();
     const [count_down, setCountDown] = useState<number>(0);
-    const [serve_time, setServeTime] = useState<string>('');
+    const [server_time, setServerTime] = useState<string>('');
 
     useEffect(() => {
         let timer: NodeJS.Timeout | undefined;
@@ -48,16 +48,16 @@ const useCryptoEstimations = () => {
                 });
 
                 const { time } = await mutateAsyncTime();
-                setServeTime(
-                    `${moment((time ?? 0) * 1000)
+                setServerTime(
+                    `${epochToMoment(time ?? 0)
                         .utc()
                         .format('HH:mm:ss')} GMT`
                 );
 
                 if (crypto_estimations?.[currency_code].withdrawal_fee?.expiry_time && time) {
                     const expiry_time =
-                        moment((crypto_estimations?.[currency_code]?.withdrawal_fee?.expiry_time ?? 0) * 1000).diff(
-                            moment(time * 1000),
+                        epochToMoment(crypto_estimations?.[currency_code]?.withdrawal_fee?.expiry_time ?? 0).diff(
+                            epochToMoment(time),
                             'seconds'
                         ) - 1;
                     setCountDown(expiry_time);
@@ -84,7 +84,7 @@ const useCryptoEstimations = () => {
         crypto_estimations_fee_unique_id,
         error,
         getCryptoEstimations,
-        serve_time,
+        server_time,
     };
 };
 

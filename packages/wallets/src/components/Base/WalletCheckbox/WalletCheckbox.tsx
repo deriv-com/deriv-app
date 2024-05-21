@@ -83,6 +83,7 @@ const WalletCheckbox = forwardRef<HTMLInputElement, TCheckBoxProps>(
                             'wallets-checkbox__box--disabled': disabled,
                         })}
                         onKeyDown={handleKeyDown}
+                        role='checkbox'
                         tabIndex={withTabIndex}
                     >
                         {!!checked && <IconCheckMark />}

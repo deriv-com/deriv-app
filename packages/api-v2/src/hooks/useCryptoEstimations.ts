@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import moment from 'moment';
 import useMutation from '../useMutation';
 import { TSocketError } from '../../types';
+import { epochToMoment } from '@deriv/utils';
 
 /** A custom hook that returns the crypto_estimations fee for given currency code along with count_down and an unique_id */
 const useCryptoEstimations = () => {
@@ -13,7 +13,7 @@ const useCryptoEstimations = () => {
     const [currencyCode, setCurrencyCode] = useState<string>('BTC');
     const [error, setError] = useState<TSocketError<'crypto_estimations'>['error']>();
     const [countDown, setCountDown] = useState<number>(0);
-    const [serverTime, setServeTime] = useState<string>('');
+    const [serverTime, setServerTime] = useState<string>('');
 
     useEffect(() => {
         let timer: NodeJS.Timeout | undefined;
@@ -47,16 +47,16 @@ const useCryptoEstimations = () => {
                 });
 
                 const { time } = await mutateAsyncTime();
-                setServeTime(
-                    moment((time ?? 0) * 1000)
+                setServerTime(
+                    epochToMoment(time ?? 0)
                         .utc()
                         .format('HH:mm:ss')
                 );
 
                 if (crypto_estimations?.[currencyCode].withdrawal_fee?.expiry_time && time) {
                     const expiry_time =
-                        moment((crypto_estimations?.[currencyCode]?.withdrawal_fee?.expiry_time ?? 0) * 1000).diff(
-                            moment(time * 1000),
+                        epochToMoment(crypto_estimations?.[currencyCode]?.withdrawal_fee?.expiry_time ?? 0).diff(
+                            epochToMoment(time),
                             'seconds'
                         ) - 1;
                     setCountDown(expiry_time);
@@ -69,7 +69,7 @@ const useCryptoEstimations = () => {
                     );
                 }
             } catch (error: unknown) {
-                setError(error as TSocketError<'crypto_estimations'>['error']);
+                setError((error as TSocketError<'crypto_estimations'>).error);
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,0 +1,13 @@
+.card-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #fff;
+    margin-top: 0.5rem;
+    padding: 1rem;
+    border-radius: 0.625rem;
+
+    .title {
+        margin-bottom: 1rem;
+    }
+}

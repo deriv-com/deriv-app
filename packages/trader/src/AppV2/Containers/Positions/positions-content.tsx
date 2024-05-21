@@ -9,6 +9,7 @@ type TPositionsContentProps = Omit<TEmptyMessageProps, 'noMatchesFound'> & {
     noMatchesFound?: boolean;
     positions?: TPortfolioPosition[];
     setContractTypeFilter: React.Dispatch<React.SetStateAction<string[]>>;
+    contractTypeFilter: string[] | [];
 };
 
 //TODO: Implement contract card
@@ -34,13 +35,14 @@ const PositionsContent = ({
     onRedirectToTrade,
     positions = [],
     setContractTypeFilter,
+    contractTypeFilter,
 }: TPositionsContentProps) => {
     return (
         <div className={`positions-page__${isClosedTab ? 'closed' : 'open'}`}>
             <div className='positions-page__container'>
                 <div className='positions-page__filter__wrapper'>
                     {(!!positions.length || (!positions.length && noMatchesFound)) && (
-                        <Filter setContractTypeFilter={setContractTypeFilter} />
+                        <Filter setContractTypeFilter={setContractTypeFilter} contractTypeFilter={contractTypeFilter} />
                     )}
                 </div>
             </div>

@@ -82,6 +82,7 @@ const Positions = observer(({ onRedirectToTrade }: TPositionsProps) => {
                     onRedirectToTrade={onRedirectToTrade}
                     positions={filteredPositions}
                     setContractTypeFilter={setContractTypeFilter}
+                    contractTypeFilter={contractTypeFilter}
                 />
             ),
         },
@@ -94,6 +95,7 @@ const Positions = observer(({ onRedirectToTrade }: TPositionsProps) => {
                     noMatchesFound={noMatchesFound}
                     positions={filteredPositions}
                     setContractTypeFilter={setContractTypeFilter}
+                    contractTypeFilter={contractTypeFilter}
                 />
             ),
         },

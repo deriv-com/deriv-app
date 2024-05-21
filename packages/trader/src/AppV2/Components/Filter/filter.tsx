@@ -5,6 +5,7 @@ import { Localize } from '@deriv/translations';
 
 type TFilter = {
     setContractTypeFilter: React.Dispatch<React.SetStateAction<string[]>>;
+    contractTypeFilter: string[] | [];
 };
 
 // TODO: Replace mockAvailableContractsList with real data when BE will be ready (send list of all available contracts based on account)
@@ -21,12 +22,13 @@ const mockAvailableContractsList = [
     { tradeType: <Localize i18n_default_text='Over/Under' />, id: 'Over/Under' },
 ];
 
-const Filter = ({ setContractTypeFilter }: TFilter) => {
+const Filter = ({ setContractTypeFilter, contractTypeFilter }: TFilter) => {
     const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
-    const [changedOptions, setChangedOptions] = React.useState<string[]>([]);
+    const [changedOptions, setChangedOptions] = React.useState<string[]>(contractTypeFilter);
 
-    const onDropdownClick = () => {
-        setIsDropdownOpen(!isDropdownOpen);
+    const onActionSheetClose = () => {
+        setIsDropdownOpen(false);
+        setChangedOptions(contractTypeFilter);
     };
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => {
@@ -39,14 +41,6 @@ const Filter = ({ setContractTypeFilter }: TFilter) => {
         }
     };
 
-    const onApply = () => {
-        setContractTypeFilter(changedOptions);
-    };
-    const onClearAll = () => {
-        setContractTypeFilter([]);
-        setChangedOptions([]);
-    };
-
     const chipLabelFormatting = () => {
         const arrayLength = changedOptions.length;
         if (!arrayLength) return <Localize i18n_default_text='All trade types' />;
@@ -56,18 +50,17 @@ const Filter = ({ setContractTypeFilter }: TFilter) => {
     };
 
     return (
-        <>
+        <React.Fragment>
             <Chip
                 label={chipLabelFormatting()}
                 dropdown
                 isDropdownOpen={isDropdownOpen}
-                onClick={onDropdownClick}
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 selected={!!changedOptions.length}
             />
-            <ActionSheet.Root isOpen={isDropdownOpen} onClose={() => setIsDropdownOpen(false)} position='left'>
+            <ActionSheet.Root isOpen={isDropdownOpen} onClose={onActionSheetClose} position='left'>
                 <ActionSheet.Portal>
-                    {/* TODO: Add a PR to Quill with changing type of title (need ReactNode)*/}
-                    <ActionSheet.Header title='Filter by trade types' />
+                    <ActionSheet.Header title={<Localize i18n_default_text='Filter by trade types' />} />
                     <ActionSheet.Content className='filter__item__wrapper'>
                         {mockAvailableContractsList.map(({ tradeType, id }) => (
                             <Checkbox
@@ -78,18 +71,19 @@ const Filter = ({ setContractTypeFilter }: TFilter) => {
                                 id={id}
                                 checked={changedOptions.includes(id)}
                                 size='md'
+                                checkboxPosition='right'
                             />
                         ))}
                     </ActionSheet.Content>
-                    {/* TODO: Add PR to Quill in order to switch off (make optional) ability to close action sheet by clicking on btns */}
                     <ActionSheet.Footer
-                        primaryAction={{ content: 'Apply', onAction: onApply }}
-                        secondaryAction={{ content: 'Clear All', onAction: onClearAll }}
+                        primaryAction={{ content: 'Apply', onAction: () => setContractTypeFilter(changedOptions) }}
+                        secondaryAction={{ content: 'Clear All', onAction: () => setChangedOptions([]) }}
                         alignment='vertical'
+                        shouldCloseOnSecondaryButtonClick={false}
                     />
                 </ActionSheet.Portal>
             </ActionSheet.Root>
-        </>
+        </React.Fragment>
     );
 };
 

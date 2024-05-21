@@ -26,17 +26,12 @@ const ToggleLanguageSettings = observer(() => {
             >
                 <Popover alignment='top' message={localize('Language')} zIndex='9999'>
                     {TranslationFlag[current_language] ? (
-                        TranslationFlag[current_language]
+                        TranslationFlag[current_language](18)
                     ) : (
-                        <Icon
-                            icon={`IcFlag${current_language}`}
-                            data_testid='dt_icon'
-                            className='ic-settings-language__icon'
-                            size={18}
-                        />
+                        <Icon icon={`IcFlag${current_language}`} data_testid='dt_icon' size={18} />
                     )}
 
-                    <Text weight='bold' size='xxs'>
+                    <Text weight='bold' size='xxs' className='ic-settings-language__text'>
                         <Localize i18n_default_text={current_language} />
                     </Text>
                 </Popover>

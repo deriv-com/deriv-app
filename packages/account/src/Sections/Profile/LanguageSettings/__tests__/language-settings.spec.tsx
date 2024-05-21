@@ -8,7 +8,7 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isMobile: jest.fn(() => false),
-    TranslationFlag: { lang_1: <div>Language 1 Flag</div>, lang_2: <div>Language 2 Flag</div> },
+    TranslationFlag: { lang_1: () => <div>Language 1 Flag</div>, lang_2: () => <div>Language 2 Flag</div> },
 }));
 
 jest.mock('@deriv/translations', () => ({

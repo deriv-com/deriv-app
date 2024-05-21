@@ -13,7 +13,7 @@ jest.mock('@deriv/translations', () => {
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    TranslationFlag: { lang_1: <div>Language 1 Flag</div> },
+    TranslationFlag: { lang_1: () => <div>Language 1 Flag</div> },
 }));
 
 describe('LanguageRadioButton', () => {

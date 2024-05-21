@@ -12,7 +12,7 @@ jest.mock('react-i18next', () => ({
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    TranslationFlag: { ID: <div>Indonesia Flag</div> },
+    TranslationFlag: { ID: () => <div>Indonesia Flag</div> },
 }));
 
 jest.mock('Utils/Language', () => ({

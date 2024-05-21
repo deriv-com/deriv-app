@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { useCashierFiatAddress } from '@deriv/api-v2';
 import { Loader } from '../../../../components';
 import './DepositFiat.scss';
 
-const DepositFiat = () => {
-    const { data: iframeUrl } = useCashierFiatAddress();
+type TProps = {
+    iframeUrl?: string;
+};
+
+const DepositFiat: React.FC<TProps> = ({ iframeUrl }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     return (

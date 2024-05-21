@@ -1,7 +1,7 @@
 import { Text } from '@deriv-com/quill-ui';
 import React from 'react';
 
-const CardWrapper = ({ title = 'Entry & exit details', children }: { title: string; children: React.ReactNode }) => {
+const CardWrapper = ({ title, children }: { title: string; children: React.ReactNode }) => {
     return (
         <div className='card-wrapper'>
             {title !== '' && (

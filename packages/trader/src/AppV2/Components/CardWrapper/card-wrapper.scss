@@ -1,8 +1,5 @@
 .card-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: #fff;
+    background-color: var(--core-color-solid-slate-50);
     margin-top: 0.5rem;
     padding: 1rem;
     border-radius: 0.625rem;

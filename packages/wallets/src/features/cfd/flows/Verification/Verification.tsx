@@ -299,7 +299,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
 
     return (
         <FlowProvider
-            initialScreenId={'duplicateUploadErrorScreen'}
+            initialScreenId={initialScreenId}
             initialValues={{
                 hasSubmittedOnfido: false,
                 selectedJurisdiction,

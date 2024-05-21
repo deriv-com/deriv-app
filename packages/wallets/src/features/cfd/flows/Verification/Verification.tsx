@@ -299,7 +299,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
 
     return (
         <FlowProvider
-            initialScreenId={initialScreenId}
+            initialScreenId={'duplicateUploadErrorScreen'}
             initialValues={{
                 hasSubmittedOnfido: false,
                 selectedJurisdiction,
@@ -331,7 +331,11 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                                       </WalletButton>
                                   )
                         }
-                        title='Add a real MT5 account'
+                        title={
+                            context.currentScreenId === 'duplicateUploadErrorScreen'
+                                ? 'Submit your proof of identity and address'
+                                : 'Add a real MT5 account'
+                        }
                     >
                         {context.WalletScreen}
                     </ModalStepWrapper>

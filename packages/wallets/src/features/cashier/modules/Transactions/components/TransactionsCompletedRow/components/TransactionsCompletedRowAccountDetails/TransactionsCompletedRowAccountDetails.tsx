@@ -40,7 +40,12 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
     return (
         <div className='wallets-transactions-completed-row-account-details'>
             {actionType !== 'transfer' || isInterWallet ? (
-                <WalletCurrencyCard currency={currency} isDemo={isDemo} size='md' />
+                <WalletCurrencyCard
+                    className='wallets-transactions-completed-row-account-details__currency-card'
+                    currency={currency}
+                    isDemo={isDemo}
+                    size='md'
+                />
             ) : (
                 <WalletMarketCurrencyIcon
                     currency={currency}

@@ -1,4 +1,6 @@
 .bottom-nav {
+    overflow: auto;
+
     &-container {
         display: flex;
         padding: var(--core-spacing-400);

@@ -54,7 +54,6 @@ const ProofOfAddressForm = observer(
             removeNotificationMessage,
             removeNotificationByKey,
         } = notifications;
-        // const { isMobile } = ui;
         const [document_files, setDocumentFiles] = React.useState<File[]>([]);
         const [file_selection_error, setFileSelectionError] = React.useState<string | null>(null);
         const [is_loading, setIsLoading] = React.useState(true);

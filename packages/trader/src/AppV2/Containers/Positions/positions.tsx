@@ -2,8 +2,11 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Tab } from '@deriv-com/quill-ui';
 import { TPortfolioPosition } from '@deriv/stores/types';
+import useClosedPositions from 'AppV2/Hooks/useClosedPositions';
+import { useModulesStore } from 'Stores/useModulesStores';
 import { filterPositions } from '../../Utils/positions-utils';
 import PositionsContent from './positions-content';
+import { observer } from '@deriv/stores';
 
 type TPositionsProps = {
     onRedirectToTrade?: () => void;
@@ -55,10 +58,19 @@ const mockPositions = [
     },
 ] as TPortfolioPosition[];
 
-const Positions = ({ onRedirectToTrade }: TPositionsProps) => {
+const Positions = observer(({ onRedirectToTrade }: TPositionsProps) => {
     const [contractTypeFilter, setContractTypeFilter] = React.useState<string[]>([]);
     const [filteredPositions, setFilteredPositions] = React.useState<TPortfolioPosition[]>(mockPositions || []);
     const [noMatchesFound, setNoMatchesFound] = React.useState(false);
+
+    const { positions: positionsStore } = useModulesStore();
+    const { closedContractTypeFilter } = positionsStore;
+
+    const { closedPositions } = useClosedPositions({ contractTypes: closedContractTypeFilter });
+
+    // TODO: remove this line
+    // eslint-disable-next-line no-console
+    console.log('closedPositions', closedPositions);
 
     const tabs = [
         {
@@ -111,6 +123,6 @@ const Positions = ({ onRedirectToTrade }: TPositionsProps) => {
             </Tab.Container>
         </div>
     );
-};
+});
 
 export default Positions;

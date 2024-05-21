@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useActiveWalletAccount, useAuthorize } from '@deriv/api-v2';
+import type { TSocketError } from '@deriv/api-v2/types';
 import { Loader } from '../../../../components';
+import { isServerError } from '../../../../utils/utils';
 import { WithdrawalCryptoModule, WithdrawalFiatModule, WithdrawalVerificationModule } from '../../modules';
-import { WithdrawalNoBalance } from '../../screens';
+import { WithdrawalErrorScreen, WithdrawalNoBalance } from '../../screens';
 
 const WalletWithdrawal = () => {
     const { switchAccount } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
     const [verificationCode, setVerificationCode] = useState('');
+    const [resendEmail, setResendEmail] = useState(false);
+    const [error, setError] = useState<TSocketError<'cashier'>['error'] | undefined>();
 
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
@@ -32,6 +36,25 @@ const WalletWithdrawal = () => {
     }, [activeWallet?.loginid, switchAccount]);
 
     const isCrypto = activeWallet?.currency_config?.is_crypto;
+    const currency = activeWallet?.currency;
+
+    const onCloseHandler = () => setVerificationCode('');
+
+    const resetError = () => {
+        onCloseHandler();
+        setError(undefined);
+    };
+
+    if (isServerError(error)) {
+        return (
+            <WithdrawalErrorScreen
+                currency={currency}
+                error={error}
+                resetError={resetError}
+                setResendEmail={setResendEmail}
+            />
+        );
+    }
 
     if (!activeWallet) return <Loader />;
 
@@ -43,14 +66,15 @@ const WalletWithdrawal = () => {
                 onClose={() => {
                     setVerificationCode('');
                 }}
+                setError={setError}
                 verificationCode={verificationCode}
             />
         ) : (
-            <WithdrawalFiatModule verificationCode={verificationCode} />
+            <WithdrawalFiatModule setError={setError} verificationCode={verificationCode} />
         );
     }
 
-    return <WithdrawalVerificationModule />;
+    return <WithdrawalVerificationModule resendEmail={resendEmail} />;
 };
 
 export default WalletWithdrawal;

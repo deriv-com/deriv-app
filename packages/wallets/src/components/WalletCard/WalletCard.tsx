@@ -31,6 +31,7 @@ const WalletCard: React.FC<TProps> = ({
     return (
         <button
             className={classNames('wallets-card', { 'wallets-card__carousel-content': isCarouselContent })}
+            data-testid='dt_wallets_wallet_card'
             onClick={onClick}
         >
             <div className='wallets-card__container'>

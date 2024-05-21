@@ -27,8 +27,7 @@ export type TWithdrawalCryptoContext = {
     getConvertedFiatAmount: (cryptoInput: number | string) => string;
     getCurrencyConfig: ReturnType<typeof useCurrencyConfig>['getConfig'];
     isClientVerified: boolean | undefined;
-    isCryptoConfigLoading: boolean;
-    isTokenValidationLoading: boolean;
+    isLoading: boolean;
     isWithdrawalSuccess: ReturnType<typeof useCryptoWithdrawal>['isSuccess'];
     requestCryptoWithdrawal: (values: Parameters<THooks.CryptoWithdrawal>[0]) => void;
     setError: React.Dispatch<
@@ -66,12 +65,7 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
 }) => {
     const { data: accountLimits } = useAccountLimits();
     const { data: activeWallet } = useActiveWalletAccount();
-    const {
-        data: cryptoConfig,
-        error: cryptoConfigError,
-        isError: isCryptoConfigError,
-        isLoading: isCryptoConfigLoading,
-    } = useCryptoConfig();
+    const { data: cryptoConfig, error: cryptoConfigError, isLoading: isCryptoConfigLoading } = useCryptoConfig();
     const { data: poaStatus } = usePOA();
     const { data: poiStatus } = usePOI();
     const { isSuccess: isWithdrawalSuccess, mutateAsync } = useCryptoWithdrawal();
@@ -94,10 +88,10 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
     }, [activeWallet?.currency, activeWallet?.loginid, subscribe, unsubscribe]);
 
     useEffect(() => {
-        if (isCryptoConfigError) {
+        if (cryptoConfigError) {
             setError(cryptoConfigError?.error);
         }
-    }, [cryptoConfigError, isCryptoConfigError]);
+    }, [cryptoConfigError]);
 
     useEffect(() => {
         if (verificationCode) {
@@ -171,8 +165,7 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
         getConvertedFiatAmount,
         getCurrencyConfig: getConfig,
         isClientVerified: getClientVerificationStatus(),
-        isCryptoConfigLoading,
-        isTokenValidationLoading,
+        isLoading: isCryptoConfigLoading || isTokenValidationLoading,
         isWithdrawalSuccess,
         requestCryptoWithdrawal,
         setError,

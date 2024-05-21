@@ -32,7 +32,7 @@ const DepositCrypto = () => {
             <div className='wallets-deposit-crypto__side-pane' />
             <div className='wallets-deposit-crypto__main-content'>
                 <DepositCryptoCurrencyDetails />
-                <DepositCryptoAddress depositCryptoAddress={depositCryptoAddress} isLoading={isLoading} />
+                <DepositCryptoAddress depositCryptoAddress={depositCryptoAddress} />
                 <DepositCryptoDisclaimers />
                 <Divider />
                 <DepositCryptoTryFiatOnRamp />

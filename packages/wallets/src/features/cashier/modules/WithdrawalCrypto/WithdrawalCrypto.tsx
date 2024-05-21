@@ -17,16 +17,8 @@ const WithdrawalCrypto: React.FC<Pick<TWithdrawalCryptoProps, 'setResendEmail' |
     setResendEmail,
     setVerificationCode,
 }) => {
-    const {
-        activeWallet,
-        error,
-        getCurrencyConfig,
-        isCryptoConfigLoading,
-        isTokenValidationLoading,
-        isWithdrawalSuccess,
-        setError,
-        withdrawalReceipt,
-    } = useWithdrawalCryptoContext();
+    const { activeWallet, error, getCurrencyConfig, isLoading, isWithdrawalSuccess, setError, withdrawalReceipt } =
+        useWithdrawalCryptoContext();
 
     const onCloseHandler = () => setVerificationCode('');
 
@@ -35,21 +27,15 @@ const WithdrawalCrypto: React.FC<Pick<TWithdrawalCryptoProps, 'setResendEmail' |
         setError(undefined);
     };
 
-    if (isCryptoConfigLoading || isTokenValidationLoading) return <Loader />;
+    if (isLoading) return <Loader />;
 
     if (isServerError(error)) {
         return <WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />;
     }
 
-    if (isWithdrawalSuccess)
-        return (
-            <WithdrawalCryptoReceipt
-                onClose={() => {
-                    setVerificationCode('');
-                }}
-                withdrawalReceipt={withdrawalReceipt}
-            />
-        );
+    if (isWithdrawalSuccess) {
+        return <WithdrawalCryptoReceipt onClose={onCloseHandler} withdrawalReceipt={withdrawalReceipt} />;
+    }
 
     return (
         <div className='wallets-withdrawal-crypto'>

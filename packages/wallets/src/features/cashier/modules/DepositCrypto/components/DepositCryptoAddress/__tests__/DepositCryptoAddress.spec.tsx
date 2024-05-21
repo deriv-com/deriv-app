@@ -18,25 +18,21 @@ describe('DepositCryptoAddress', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: false });
         (useHover as jest.Mock).mockReturnValue(false);
     });
-    it('should show loader when crypto address not loaded yet', () => {
-        render(<DepositCryptoAddress depositCryptoAddress={undefined} isLoading={true} />);
-        expect(screen.getByTestId('dt_deposit-crypto-address-loader')).toBeInTheDocument();
-    });
 
     it('should show crypto address after the address fetched', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
-        render(<DepositCryptoAddress depositCryptoAddress='1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa' isLoading={false} />);
+        render(<DepositCryptoAddress depositCryptoAddress='1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa' />);
         expect(screen.getByText('1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa')).toBeInTheDocument();
     });
 
     it('should show QR code', () => {
-        render(<DepositCryptoAddress depositCryptoAddress='1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa' isLoading={false} />);
+        render(<DepositCryptoAddress depositCryptoAddress='1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa' />);
         expect(screen.getByTestId('dt_deposit-crypto-address-qr-code')).toBeInTheDocument();
     });
 
     it('should show copy text when hovering', () => {
         (useHover as jest.Mock).mockReturnValue(true);
-        render(<DepositCryptoAddress depositCryptoAddress='1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa' isLoading={false} />);
+        render(<DepositCryptoAddress depositCryptoAddress='1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa' />);
         expect(screen.getByText('Copy')).toBeInTheDocument();
     });
 });

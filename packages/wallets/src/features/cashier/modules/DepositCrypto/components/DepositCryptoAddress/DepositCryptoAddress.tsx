@@ -1,24 +1,15 @@
 import React from 'react';
 import QRCode from 'qrcode.react';
-import { WalletsDepositCryptoAddressLoader } from '../../../../../../components';
 import { WalletClipboard, WalletText } from '../../../../../../components/Base';
 import useDevice from '../../../../../../hooks/useDevice';
 import './DepositCryptoAddress.scss';
 
 type TProps = {
     depositCryptoAddress?: string;
-    isLoading: boolean;
 };
 
-const DepositCryptoAddress: React.FC<TProps> = ({ depositCryptoAddress, isLoading }) => {
+const DepositCryptoAddress: React.FC<TProps> = ({ depositCryptoAddress }) => {
     const { isMobile } = useDevice();
-
-    if (isLoading)
-        return (
-            <div className='wallets-deposit-crypto-address__loader' data-testid='dt_deposit-crypto-address-loader'>
-                <WalletsDepositCryptoAddressLoader />
-            </div>
-        );
 
     return (
         <div className='wallets-deposit-crypto-address'>

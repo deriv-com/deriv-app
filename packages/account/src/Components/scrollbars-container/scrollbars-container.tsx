@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { ThemedScrollbars } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 
 type TScrollbarsContainer = {
     className?: string;
@@ -15,10 +15,11 @@ export const ScrollbarsContainer = ({
     scroll_offset,
     isFullHeight = false,
 }: React.PropsWithChildren<TScrollbarsContainer>) => {
+    const { isDesktop } = useDevice();
     const height_unit = isFullHeight ? '100vh' : '100%';
     return (
         <ThemedScrollbars
-            is_bypassed={isMobile()}
+            is_bypassed={!isDesktop}
             height={scroll_offset ? `calc(${height_unit} - ${scroll_offset})` : '100%'}
         >
             <div

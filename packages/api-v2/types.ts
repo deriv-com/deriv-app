@@ -1613,10 +1613,6 @@ type TPrivateSocketEndpoints = {
                        */
                       available_count?: number;
                       /**
-                       * The maximum number of accounts a user can create on the trading platform.
-                       */
-                      max_count?: number;
-                      /**
                        * A list of Deriv landing companies that can work with this account type
                        */
                       linkable_landing_companies?: ('svg' | 'maltainvest')[];

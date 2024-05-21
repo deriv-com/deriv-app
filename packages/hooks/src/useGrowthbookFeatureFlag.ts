@@ -7,7 +7,8 @@ interface UseGrowthbookFeatureFlagArgs {
 }
 
 const useGrowthbookFeatureFlag = ({ featureFlag }: UseGrowthbookFeatureFlagArgs) => {
-    const [featureFlagValue, setFeatureFlagValue] = useState(Analytics?.getFeatureValue(featureFlag));
+    const [featureFlagValue, setFeatureFlagValue] = useState(Analytics?.getFeatureValue(featureFlag, false));
+    const [isGBLoaded, setIsGBLoaded] = useState(false);
     const { data } = useRemoteConfig();
 
     useEffect(() => {
@@ -23,8 +24,9 @@ const useGrowthbookFeatureFlag = ({ featureFlag }: UseGrowthbookFeatureFlagArgs)
                 }
                 timeout += 1;
                 if (Analytics?.getInstances()?.ab) {
+                    setIsGBLoaded(true);
                     const setFeatureValue = () => {
-                        const value = Analytics?.getFeatureValue(featureFlag);
+                        const value = Analytics?.getFeatureValue(featureFlag, false);
                         setFeatureFlagValue(value);
                     };
                     setFeatureValue();
@@ -41,7 +43,7 @@ const useGrowthbookFeatureFlag = ({ featureFlag }: UseGrowthbookFeatureFlagArgs)
         };
     }, []);
 
-    return featureFlagValue;
+    return [featureFlagValue, isGBLoaded];
 };
 
 export default useGrowthbookFeatureFlag;

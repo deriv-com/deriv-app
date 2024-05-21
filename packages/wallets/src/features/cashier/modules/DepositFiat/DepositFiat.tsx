@@ -23,7 +23,7 @@ const DepositFiat: React.FC = () => {
 
     if (isDepositFiatLoading) return <Loader />;
 
-    if (isServerError(error?.error)) {
+    if (isServerError(error)) {
         return <DepositErrorScreen error={error?.error} />;
     }
 

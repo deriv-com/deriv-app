@@ -24,7 +24,7 @@ const WithdrawalFiat: React.FC<WithdrawalFiatProps> = ({ verificationCode }) => 
     if (isWithdrawalFiatLoading) return <Loader />;
 
     if (isServerError(error)) {
-        return <WithdrawalErrorScreen error={error} />;
+        return <WithdrawalErrorScreen error={error?.error} />;
     }
 
     return (

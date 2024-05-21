@@ -56,6 +56,7 @@ const WithdrawalErrorScreen: React.FC<TProps> = ({ currency, error, resetError, 
             buttonText: 'Verify identity',
             buttonVariant: 'contained',
             onClick: () => {
+                // @ts-expect-error the following link is not part of wallets routes config
                 history.push('/account/proof-of-identity');
             },
             title: 'Error',

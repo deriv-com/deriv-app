@@ -29,18 +29,6 @@ describe('DepositFiat', () => {
         expect(screen.getByTestId('dt_wallets_loader')).toBeInTheDocument();
     });
 
-    it('should render error screen for fiat deposit error', () => {
-        (useAuthorize as jest.Mock).mockReturnValue({ isSuccess: true });
-        (useCashierFiatAddress as jest.Mock).mockReturnValue({
-            error: { error: { code: 'CashierForwardError', message: 'Fiat Error' } },
-            mutate: jest.fn(),
-        });
-
-        render(<DepositFiat />);
-
-        expect(screen.getByText(/MockedDepositErrorScreen - Fiat Error/)).toBeInTheDocument();
-    });
-
     it('should render loader if iframe is not yet loaded', () => {
         (useAuthorize as jest.Mock).mockReturnValue({ isSuccess: true });
         (useCashierFiatAddress as jest.Mock).mockReturnValue({

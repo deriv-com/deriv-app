@@ -6,9 +6,7 @@ import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 
 import { BinaryLink } from 'App/Components/Routes';
-
 import ShowNotifications from './show-notifications';
-import TradersHubOnboarding from './traders-hub-onboarding';
 
 type TDefaultMobileLinks = {
     handleClickCashier: () => void;
@@ -20,9 +18,6 @@ const DefaultMobileLinks = React.memo(({ handleClickCashier }: TDefaultMobileLin
 
     return (
         <React.Fragment>
-            <div className='traders-hub-header__menu-right--items--onboarding'>
-                <TradersHubOnboarding />
-            </div>
             <div className='traders-hub-header__menu-right--items--notifications'>
                 <ShowNotifications />
             </div>

@@ -182,7 +182,7 @@ const AccountLimits = observer(
                                                 <Localize i18n_default_text='Maximum aggregate payouts on open positions' />
                                             </AccountLimitsTableCell>
                                             <AccountLimitsTableCell align='right'>
-                                                {formatMoney(currency, payout, true)}
+                                                {formatMoney(currency, payout as number, true)}
                                             </AccountLimitsTableCell>
                                         </tr>
                                         <tr>

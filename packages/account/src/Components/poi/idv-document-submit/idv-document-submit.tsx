@@ -48,7 +48,6 @@ export type TIdvDocumentSubmitForm = TIDVFormValues & TPersonalDetailsForm & { c
 
 const IdvDocumentSubmit = observer(
     ({ handleBack, handleViewComplete, handleSelectionNext, selected_country }: TIDVDocumentSubmitProps) => {
-        console.log('Component IdvDocumentSubmit');
         const { client, ui } = useStore();
         const { account_settings, getChangeableFields } = client;
         const { is_mobile, is_desktop } = ui;

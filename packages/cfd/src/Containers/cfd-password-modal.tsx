@@ -292,11 +292,7 @@ const CreatePassword = ({
                             />
                         </Text>
                         <div className='input-element'>
-                            <PasswordMeter
-                                input={values.password}
-                                has_error={!!(touched.password && errors.password)}
-                                custom_feedback_messages={getErrorMessages().password_warnings}
-                            >
+                            <PasswordMeter input={values.password} has_error={!!(touched.password && errors.password)}>
                                 {() => (
                                     <PasswordInput
                                         autoComplete='new-password'

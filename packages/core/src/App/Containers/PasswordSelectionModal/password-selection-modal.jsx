@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Field } from 'formik';
 
 import { Button, PasswordInput, PasswordMeter, Text } from '@deriv/components';
-import { getErrorMessages, redirectToSignUp } from '@deriv/shared';
+import { redirectToSignUp } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
@@ -51,11 +51,7 @@ const PasswordSelectionModal = observer(
                 </Text>
                 <Field name='password'>
                     {({ field }) => (
-                        <PasswordMeter
-                            input={pw_input}
-                            has_error={!!(touched.password && errors.password)}
-                            custom_feedback_messages={getErrorMessages().password_warnings}
-                        >
+                        <PasswordMeter input={pw_input} has_error={!!(touched.password && errors.password)}>
                             <PasswordInput
                                 {...field}
                                 autoComplete='new-password'

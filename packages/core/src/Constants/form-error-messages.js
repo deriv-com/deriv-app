@@ -32,24 +32,4 @@ export const FORM_ERROR_MESSAGES = {
         }),
     minNumber: min_value => localize('Should be more than {{min_value}}', { min_value }),
     maxNumber: max_value => localize('Should be less than {{max_value}}', { max_value }),
-    // all existing warning phrases from zxcvbn
-
-    password_warnings: {
-        common: () => localize('This is a very common password'),
-        commonNames: () => localize('Common names and surnames are easy to guess'),
-        dates: () => localize('Dates are easy to guess'),
-        extendedRepeat: () => localize('Repeated character patterns like "abcabcabc" are easy to guess'),
-        keyPattern: () => localize('Short keyboard patterns are easy to guess'),
-        namesByThemselves: () => localize('Single names or surnames are easy to guess'),
-        pwned: () => localize('Your password was exposed by a data breach on the Internet'),
-        recentYears: () => localize('Recent years are easy to guess'),
-        sequences: () => localize('Common character sequences like "abc" are easy to guess'),
-        similarToCommon: () => localize('This is similar to a commonly used password'),
-        simpleRepeat: () => localize('Repeated characters like "aaa" are easy to guess'),
-        straightRow: () => localize('Straight rows of keys on your keyboard are easy to guess'),
-        topHundred: () => localize('This is a frequently used password'),
-        topTen: () => localize('This is a heavily used password'),
-        userInputs: () => localize('There should not be any personal or page related data'),
-        wordByItself: () => localize('Single words are easy to guess'),
-    },
 };

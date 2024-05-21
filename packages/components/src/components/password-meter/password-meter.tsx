@@ -30,14 +30,12 @@ const FEEDBACK_WARNINGS = {
     wordByItself: 'Single words are easy to guess',
 };
 
-const PasswordMeter = ({ children, has_error, input, custom_feedback_messages }: TPasswordMeter) => {
+const PasswordMeter = ({ children, has_error, input }: TPasswordMeter) => {
     const [score, setScore] = React.useState<number>(0);
     const [feedback, setFeedback] = React.useState<{ warning: string | null; suggestions: string[] | null }>({
         warning: '',
         suggestions: [],
     });
-
-    const warningMessages = { ...FEEDBACK_WARNINGS, ...custom_feedback_messages };
 
     React.useEffect(() => {
         // 0 - 4 Score for password strength
@@ -49,7 +47,7 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages }:
             setScore(0);
             setFeedback({ warning: '', suggestions: [] });
         }
-    }, [custom_feedback_messages, has_error, input]);
+    }, [has_error, input]);
 
     const width_scale = (() => {
         if (has_error && input.length) return 0.25;
@@ -71,7 +69,7 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages }:
                 {feedback?.warning && !has_error && (
                     <Field
                         className='dc-password-meter__warning'
-                        message={localize(warningMessages[feedback.warning as keyof typeof warningMessages])}
+                        message={localize(FEEDBACK_WARNINGS[feedback.warning as keyof typeof FEEDBACK_WARNINGS])}
                         type='error'
                     />
                 )}

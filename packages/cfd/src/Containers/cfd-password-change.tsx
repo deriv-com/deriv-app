@@ -141,7 +141,6 @@ const CFDPasswordChange = observer(
                                     <PasswordMeter
                                         input={values.new_password}
                                         has_error={!!(touched.new_password && errors.new_password)}
-                                        custom_feedback_messages={getErrorMessages().password_warnings}
                                     >
                                         <PasswordInput
                                             autoComplete='new-password'

@@ -115,7 +115,6 @@ const ResetPasswordModal = observer(() => {
                                         <PasswordMeter
                                             input={values.password}
                                             has_error={!!((touched.password && errors.password) || status.error_msg)}
-                                            custom_feedback_messages={getErrorMessages().password_warnings}
                                         >
                                             <PasswordInput
                                                 autoComplete='new-password'

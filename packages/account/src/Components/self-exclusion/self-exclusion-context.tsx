@@ -20,6 +20,7 @@ export type TSelfExclusionContext = {
     state?: FormikValues;
     toggleArticle?: () => void;
     validateFields?: (values: FormikValues) => Record<string, string | null | undefined>;
+    backToReview?: () => void;
 };
 
 const SelfExclusionContext = React.createContext<TSelfExclusionContext>({

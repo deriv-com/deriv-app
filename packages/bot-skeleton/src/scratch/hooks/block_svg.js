@@ -9,20 +9,20 @@ import debounce from 'lodash.debounce';
 
 const addClass = (element, className) => {
     const classNames = className.split(' ');
-    if (classNames.every((name) => element.classList.contains(name))) {
+    if (classNames.every(name => element.classList.contains(name))) {
         return false;
     }
     element.classList.add(...classNames);
     return true;
-}
+};
 Blockly.BlockSvg.prototype.addSelect = function () {
-    if (!this.isInFlyout) {
+    if (!Blockly.derivWorkspace.isFlyout_) {
         const { flyout } = DBotStore.instance;
         if (flyout) {
             flyout.setVisibility(false);
         }
 
-        addClass(/** @type {!Element} */(this.svgGroup_), 'blocklySelected');
+        addClass(/** @type {!Element} */ (this.svgGroup_), 'blocklySelected');
     }
 };
 
@@ -33,7 +33,6 @@ Blockly.BlockSvg.prototype.addSelect = function () {
  */
 Blockly.BlockSvg.prototype.setDisabled = function (disabled) {
     if (this.disabled !== disabled) {
-
         if (this.rendered) {
             this.updateDisabled();
         }
@@ -53,7 +52,7 @@ Blockly.BlockSvg.prototype.updateDisabled = function () {
             this.svgGroup_.setAttribute('fill', fill);
         }
     } else {
-        Blockly.utils.removeClass(this.svgGroup_, 'blocklyDisabled');
+        Blockly.utils.dom.removeClass(this.svgGroup_, 'blocklyDisabled');
     }
 
     const children = this.getChildren(false);
@@ -197,13 +196,12 @@ Blockly.BlockSvg.prototype.setErrorHighlighted = function (
         // Below function does its own checks to check if class already exists.
         addClass(this.svgGroup_, highlight_class);
     } else {
-        Blockly.utils.removeClass(this.svgGroup_, highlight_class);
+        Blockly.utils.dom.removeClass(this.svgGroup_, highlight_class);
     }
 
     this.is_error_highlighted = should_be_error_highlighted;
     this.error_message = error_message;
 };
-
 
 // Highlight the block that is being executed
 Blockly.BlockSvg.prototype.highlightExecutedBlock = function () {
@@ -211,17 +209,17 @@ Blockly.BlockSvg.prototype.highlightExecutedBlock = function () {
     const hasClass = (element, className) => element.classList.contains(className);
     const addClass = (element, className) => {
         const classNames = className.split(' ');
-        if (classNames.every((name) => element.classList.contains(name))) {
+        if (classNames.every(name => element.classList.contains(name))) {
             return false;
         }
         element.classList.add(...classNames);
         return true;
-    }
+    };
     if (!hasClass(this.svgGroup_, highlight_block_class)) {
         addClass(this.svgGroup_, highlight_block_class);
         setTimeout(() => {
             if (this.svgGroup_) {
-                Blockly.utils.removeClass(this.svgGroup_, highlight_block_class);
+                Blockly.utils.dom.removeClass(this.svgGroup_, highlight_block_class);
             }
         }, 1505);
     }
@@ -236,7 +234,7 @@ Blockly.BlockSvg.prototype.blink = function () {
     addClass(this.svgGroup_, blink_class);
 
     setTimeout(() => {
-        Blockly.utils.removeClass(this.svgGroup_, blink_class);
+        Blockly.utils.dom.removeClass(this.svgGroup_, blink_class);
     }, 2000);
 };
 
@@ -245,9 +243,10 @@ Blockly.BlockSvg.prototype.blink = function () {
  * @param {boolean} collapsed True if collapsed.
  */
 Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
-    if (this.collapsed_ === collapsed) {
-        return;
-    }
+    //removed this to fix collaspe
+    // if (this.collapsed_ === collapsed) {
+    //     return;
+    // }
 
     // Firefox fix for Blockly widthcache bug
     if (navigator.userAgent.search('Firefox') > 0) {
@@ -263,7 +262,6 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
     // Show/hide the inputs.
     this.inputList.forEach(input => {
         render_list.push(...input.setVisible(!collapsed));
-
         // Hide empty rounded inputs
         if (collapsed && input.type === 1 && !input.connection.targetConnection && input.outlinePath)
             input.outlinePath.style.visibility = 'hidden';
@@ -314,25 +312,17 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
             this.appendDummyInput(COLLAPSED_INPUT_NAME).appendField(field_label).appendField(field_expand_icon).init();
         }
     } else {
-        this.removeInput(COLLAPSED_INPUT_NAME);
+        this.inputList.forEach(input => {
+            if (input.name === COLLAPSED_INPUT_NAME) {
+                input.sourceBlock.removeInput(COLLAPSED_INPUT_NAME, true);
+            }
+        });
         this.setWarningText(null); // Clear any warnings inherited from enclosed blocks.
     }
-
-    const Blockly_SVG = new Blockly.BlockSvg();
-    Blockly_SVG.setCollapsed.call(this, collapsed);
 
     if (!render_list.length) {
         render_list.push(this); // No child blocks, just render this block.
     }
-
-    if (this.rendered) {
-        render_list.forEach(block => block.render());
-        // Don't bump neighbours.
-        // Although bumping neighbours would make sense, users often collapse
-        // all their functions and store them next to each other.  Expanding and
-        // bumping causes all their definitions to go out of alignment.
-    }
-
     // Check whether the collapsed block needs to be highlighted.
     this.setErrorHighlighted(collapsed && this.hasErrorHighlightedDescendant());
 };
@@ -346,35 +336,3 @@ Blockly.BlockSvg.prototype.toggleCollapseWithDelay = function (collapsed) {
         this.setCollapsed(collapsed);
     }, 100)();
 };
-
-/**
- * @deriv/bot: Add check for workspace.getCanvas() before appendChild() is called.
- */
-// Blockly.BlockSvg.prototype.initSvg = function () {
-//     goog.asserts.assert(this.workspace.rendered, 'Workspace is headless.');
-//     if (!this.isInsertionMarker()) {
-//         // Insertion markers not allowed to have inputs or icons
-//         // Input shapes are empty holes drawn when a value input is not connected.
-//         // eslint-disable-next-line no-cond-assign
-//         this.constants = new Blockly.blockRendering.ConstantProvider();
-//         this.inputList.forEach(input => {
-//             input.init();
-//             input.initOutlinePath(this.svgGroup_);
-//         });
-
-//         const icons = this.getIcons();
-//         for (let i = 0; i < icons.length; i++) {
-//             icons[i].createIcon();
-//         }
-//     }
-//     //this.updateColour();
-//     //this.updateMovable();
-//     if (!this.workspace.options.readOnly && !this.eventsInit_) {
-//         Blockly.browserEvents.bind(this.getSvgRoot(), 'mousedown', this, this.onMouseDown_);
-//     }
-//     this.eventsInit_ = true;
-
-//     if (!this.getSvgRoot().parentNode && this.workspace.getCanvas()) {
-//         this.workspace.getCanvas().appendChild(this.getSvgRoot());
-//     }
-// };

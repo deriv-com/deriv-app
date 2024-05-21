@@ -33,6 +33,7 @@ Blockly.Blocks.lists_indexOf = {
                 },
             ],
             output: 'Number',
+            inputsInline: true,
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
@@ -55,10 +56,20 @@ Blockly.Blocks.lists_indexOf = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['lists_indexOf'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.lists_indexOf = block => {
     const operator = block.getFieldValue('END') === 'FIRST' ? 'indexOf' : 'lastIndexOf';
-    const item = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'FIND', Blockly.JavaScript.javascriptGenerator.ORDER_NONE) || "''";
-    const list = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'VALUE', Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER) || "''";
+    const item =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'FIND',
+            Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+        ) || "''";
+    const list =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'VALUE',
+            Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+        ) || "''";
 
     const code = `${list}.${operator}(${item})`;
 

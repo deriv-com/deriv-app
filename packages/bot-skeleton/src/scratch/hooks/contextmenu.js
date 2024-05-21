@@ -145,7 +145,13 @@ Blockly.ContextMenu.wsDeleteOption = function (ws, blocks) {
  * @package
  */
 Blockly.ContextMenu.blockCommentOption = function (block) {
-    const comment_option = { enabled: !goog.userAgent.IE };
+    function isInternetExplorer() {
+        const ua = window.navigator.userAgent;
+        const msie = ua.indexOf('MSIE ');
+        const trident = ua.indexOf('Trident/');
+        return msie > 0 || trident > 0;
+    }
+    const comment_option = { enabled: !isInternetExplorer() };
 
     // If there's already a comment, add an option to delete it.
     if (block.comment) {
@@ -273,4 +279,3 @@ Blockly.ContextMenu.blockEnableOption = function (block) {
     };
     return enableStack_option;
 };
-console.log('8')

@@ -11,190 +11,8 @@ import main_xml from './xml/main.xml';
 import DBotStore from './dbot-store';
 import { isAllRequiredBlocksEnabled, updateDisabledBlocks, validateErrorOnBlockDelete } from './utils';
 
-import './blockly';
-import { localize } from '@deriv/translations';
-import PendingPromise from '../utils/pending-promise';
+import { loadBlockly } from './blockly';
 
-Blockly.Workspace.prototype.wait_events = [];
-
-/**
- * Clear the undo/redo stacks.
- * deriv-bot: Sync undo/redo stack with our toolbar store.
- */
-Blockly.Workspace.prototype.clearUndo = function () {
-    this.undoStack_.length = 0;
-    this.redoStack_.length = 0;
-
-    const { toolbar } = DBotStore.instance;
-
-    toolbar.setHasRedoStack();
-    toolbar.setHasUndoStack();
-
-    // Stop any events already in the firing queue from being undoable.
-    Blockly.Events.clearPendingUndo();
-};
-
-/**
- * Fire a change event.
- * deriv-bot: Sync undo/redo stack with our toolbar store.
- * @param {!Blockly.Events.Abstract} event Event to fire.
- */
-Blockly.Workspace.prototype.fireChangeListener = function (event) {
-    if (event.recordUndo) {
-        this.undoStack_.push(event);
-        this.redoStack_.length = 0;
-
-        if (this.undoStack_.length > this.MAX_UNDO) {
-            this.undoStack_.unshift();
-        }
-
-        const { toolbar } = DBotStore.instance;
-
-        toolbar.setHasRedoStack();
-        toolbar.setHasUndoStack();
-    }
-
-    // Copy listeners in case a listener attaches/detaches itself.
-    const current_listeners = this.listeners.slice();
-
-    current_listeners.forEach(listener => {
-        listener(event);
-    });
-    /**
-     * Gets a trade definition block instance and returns it.
-     * @returns {Blockly.Block|null} The trade definition or null.
-     */
-};
-
-Blockly.Workspace.prototype.getTradeDefinitionBlock = function () {
-    return this.getAllBlocks(true).find(b => b.type === 'trade_definition');
-};
-
-Blockly.Workspace.prototype.waitForBlockEvent = function (block_id, opt_event_type = null) {
-    const event_promise = new PendingPromise();
-
-    if (!this.wait_events.some(event => event.blockId === block_id && event.type === opt_event_type)) {
-        this.wait_events.push({
-            blockId: block_id,
-            promise: event_promise,
-            type: opt_event_type,
-        });
-    }
-
-    return event_promise;
-};
-
-Blockly.Workspace.prototype.waitForBlockEvent = function (options) {
-    const { block_type, event_type, timeout } = options;
-    const promise = new PendingPromise();
-
-    this.wait_events.push({ block_type, event_type, promise });
-
-    if (timeout) {
-        setTimeout(() => {
-            if (promise.isPending) {
-                promise.reject();
-            }
-        }, timeout);
-    }
-
-    return promise;
-};
-
-Blockly.Workspace.prototype.dispatchBlockEventEffects = function (event) {
-    this.wait_events.forEach((wait_event, idx) => {
-        if (!event.blockId) {
-            return;
-        }
-
-        const block = this.getBlockById(event.blockId);
-
-        if (block) {
-            const is_same_block_type = wait_event.block_type === block.type;
-            const is_same_event_type = wait_event.event_type === null || wait_event.event_type === event.type;
-
-            if (is_same_block_type && is_same_event_type) {
-                setTimeout(() => {
-                    wait_event.promise.resolve();
-                    this.wait_events.splice(idx, 1);
-                }, 500);
-            }
-        }
-    });
-};
-
-Blockly.Workspace.prototype.getAllFields = function (is_ordered) {
-    return this.getAllBlocks(is_ordered).reduce((fields, block) => {
-        block.inputList.forEach(input => fields.push(...input.fieldRow));
-        return fields;
-    }, []);
-};
-
-Blockly.Block.prototype.hasErrorHighlightedDescendant = function () {
-    const hasHighlightedDescendant = child_blocks =>
-        child_blocks.some(child_block => {
-            const is_self_highlighted = child_block.is_error_highlighted;
-            const is_descendant_highlighted = hasHighlightedDescendant(child_block.getChildren());
-
-            return is_self_highlighted || is_descendant_highlighted;
-        });
-
-    return hasHighlightedDescendant(this.getChildren());
-};
-Blockly.Block.prototype.isIndependentBlock = function () {
-    return config.INDEPEDENT_BLOCKS.includes(this.type);
-};
-Blockly.Block.prototype.getTopParent = function () {
-    let parent = this.getParent();
-    while (parent !== null) {
-        const nextParent = parent.getParent();
-        if (!nextParent) {
-            return parent;
-        }
-        parent = nextParent;
-    }
-    return null;
-};
-
-Blockly.utils.removeClass = function (element, className) {
-    const classNames = className.split(' ');
-    if (classNames.every(name => !element.classList.contains(name))) {
-        return false;
-    }
-    element.classList.remove(...classNames);
-    return true;
-};
-
-Blockly.BlockSvg.prototype.setErrorHighlighted = function (
-    should_be_error_highlighted,
-    error_message = localize(
-        'The block(s) highlighted in red are missing input values. Please update them and click "Run bot".'
-    )
-) {
-    if (this.is_error_highlighted === should_be_error_highlighted) {
-        return;
-    }
-
-    const highlight_class = 'block--error-highlighted';
-
-    if (should_be_error_highlighted) {
-        const addClass = (element, className) => {
-            const classNames = className.split(' ');
-            if (classNames.every(name => element.classList.contains(name))) {
-                return false;
-            }
-            element.classList.add(...classNames);
-            return true;
-        };
-        // Below function does its own checks to check if class already exists.
-        addClass(this.svgGroup_, highlight_class);
-    } else {
-        Blockly.utils.removeClass(this.svgGroup_, highlight_class);
-    }
-
-    this.is_error_highlighted = should_be_error_highlighted;
-    this.error_message = error_message;
-};
 class DBot {
     constructor() {
         this.interpreter = null;
@@ -207,14 +25,14 @@ class DBot {
     /**
      * Initialises the workspace and mounts it to a container element (app_contents).
      */
-    async initWorkspace(public_path, store, api_helpers_store, is_mobile) {
+    async initWorkspace(public_path, store, api_helpers_store, is_mobile, is_dark_mode) {
+        await loadBlockly(is_dark_mode);
         const recent_files = await getSavedWorkspaces();
-
         api_base.init();
         this.interpreter = Interpreter();
         const that = this;
         Blockly.Blocks.trade_definition_tradetype.onchange = function (event) {
-            if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+            if (!this.workspace || Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
                 return;
             }
 
@@ -302,7 +120,7 @@ class DBot {
                     trashcan: !is_mobile,
                     zoom: { wheel: true, startScale: workspaceScale },
                     scrollbars: true,
-                    theme: Blockly.Themes.haba,
+                    theme: Blockly.Themes.zelos_renderer,
                 });
 
                 this.workspace.RTL = isDbotRTL();
@@ -313,19 +131,19 @@ class DBot {
                 this.workspace.addChangeListener(event => updateDisabledBlocks(this.workspace, event));
                 this.workspace.addChangeListener(event => this.workspace.dispatchBlockEventEffects(event));
                 this.workspace.addChangeListener(event => {
-                   if (event.type === 'drag' && !event.isStart && !is_mobile) validateErrorOnBlockDelete();
-                   if (event.type == Blockly.Events.BLOCK_CHANGE) {
-                       const block = this.workspace.getBlockById(event.blockId);
-                       if (block && event.element == 'collapsed') {
+                    if (event.type === 'drag' && !event.isStart && !is_mobile) validateErrorOnBlockDelete();
+                    if (event.type == Blockly.Events.BLOCK_CHANGE) {
+                        const block = this.workspace.getBlockById(event.blockId);
+                        if (block && event.element == 'collapsed') {
                             block.contextMenu = false;
-                       }
+                        }
                     }
                 });
 
                 Blockly.derivWorkspace = this.workspace;
 
                 const varDB = new Blockly.Names('window');
-                varDB.variableMap_ = Blockly.derivWorkspace.getVariableMap();
+                varDB.variableMap = Blockly.derivWorkspace.getVariableMap();
 
                 Blockly.JavaScript.variableDB_ = varDB;
 
@@ -360,7 +178,7 @@ class DBot {
                 const { save_modal } = DBotStore.instance;
 
                 save_modal.updateBotName(file_name);
-                this.workspace.cleanUp(0, is_mobile ? 60 : 56);
+                //this.workspace.cleanUp(0, is_mobile ? 60 : 56);
                 this.workspace.clearUndo();
 
                 window.dispatchEvent(new Event('resize'));

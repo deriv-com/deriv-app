@@ -10,155 +10,155 @@ import { config } from '../../../../constants/config';
  * @return {string} #RRGGBB for random colour.
  */
 function randomColour() {
-    var num = Math.floor(Math.random() * Math.pow(2, 24));
-    return '#' + ('00000' + num.toString(16)).substr(-6);
+    const num = Math.floor(Math.random() * Math.pow(2, 24));
+    return `#${  (`00000${  num.toString(16)}`).substr(-6)}`;
 }
 
-Blockly.Blocks['colour_picker'] = {
+Blockly.Blocks.colour_picker = {
     /**
      * Block for colour picker.
      * @this Blockly.Block
      */
-    init: function () {
+    init () {
         this.jsonInit({
-            "message0": "%1",
-            "args0": [
+            message0: '%1',
+            args0: [
                 {
-                    "type": "field_colour_slider",
-                    "name": "COLOUR",
-                    "colour": randomColour()
-                }
+                    type: 'field_colour_slider',
+                    name: 'COLOUR',
+                    colour: randomColour(),
+                },
             ],
-            "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
-            "output": "Colour"
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            output: 'Colour',
         });
-    }
+    },
 };
 
-Blockly.Blocks['math_number'] = {
+Blockly.Blocks.math_number = {
     /**
      * Block for generic numeric value.
      * @this Blockly.Block
      */
-    init: function () {
+    init () {
         this.jsonInit({
-            "message0": "%1",
-            "args0": [
+            message0: '%1',
+            args0: [
                 {
-                    "type": "field_number",
-                    "name": "NUM",
-                    "value": "0"
-                }
+                    type: 'field_number',
+                    name: 'NUM',
+                    value: '0',
+                },
             ],
-            "output": "Number",
-            "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
-            "colour": Blockly.Colours.textField,
-            "colourSecondary": Blockly.Colours.textField,
-            "colourTertiary": Blockly.Colours.textField,
-            "colourQuaternary": Blockly.Colours.textField
+            output: 'Number',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.textField,
+            colourSecondary: Blockly.Colours.textField,
+            colourTertiary: Blockly.Colours.textField,
+            colourQuaternary: Blockly.Colours.textField,
         });
-    }
+    },
 };
 
-Blockly.Blocks['math_integer'] = {
+Blockly.Blocks.math_integer = {
     /**
      * Block for integer value (no decimal, + or -).
      * @this Blockly.Block
      */
-    init: function () {
+    init () {
         this.jsonInit({
-            "message0": "%1",
-            "args0": [
+            message0: '%1',
+            args0: [
                 {
-                    "type": "field_number",
-                    "name": "NUM",
-                    "precision": 1
-                }
+                    type: 'field_number',
+                    name: 'NUM',
+                    precision: 1,
+                },
             ],
-            "output": "Number",
-            "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
-            "colour": Blockly.Colours.textField,
-            "colourSecondary": Blockly.Colours.textField,
-            "colourTertiary": Blockly.Colours.textField,
-            "colourQuaternary": Blockly.Colours.textField
+            output: 'Number',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.textField,
+            colourSecondary: Blockly.Colours.textField,
+            colourTertiary: Blockly.Colours.textField,
+            colourQuaternary: Blockly.Colours.textField,
         });
-    }
+    },
 };
 
-Blockly.Blocks['math_whole_number'] = {
+Blockly.Blocks.math_whole_number = {
     /**
      * Block for whole number value, no negatives or decimals.
      * @this Blockly.Block
      */
-    init: function () {
+    init () {
         this.jsonInit({
-            "message0": "%1",
-            "args0": [
+            message0: '%1',
+            args0: [
                 {
-                    "type": "field_number",
-                    "name": "NUM",
-                    "min": 0,
-                    "precision": 1
-                }
+                    type: 'field_number',
+                    name: 'NUM',
+                    min: 0,
+                    precision: 1,
+                },
             ],
-            "output": "Number",
-            "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
-            "colour": Blockly.Colours.textField,
-            "colourSecondary": Blockly.Colours.textField,
-            "colourTertiary": Blockly.Colours.textField,
-            "colourQuaternary": Blockly.Colours.textField
+            output: 'Number',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.textField,
+            colourSecondary: Blockly.Colours.textField,
+            colourTertiary: Blockly.Colours.textField,
+            colourQuaternary: Blockly.Colours.textField,
         });
-    }
+    },
 };
 
-Blockly.Blocks['math_positive_number'] = {
+Blockly.Blocks.math_positive_number = {
     /**
      * Block for positive number value, with decimal.
      * @this Blockly.Block
      */
-    init: function () {
+    init () {
         this.jsonInit({
-            "message0": "%1",
-            "args0": [
+            message0: '%1',
+            args0: [
                 {
-                    "type": "field_number",
-                    "name": "NUM",
-                    "min": 0
-                }
+                    type: 'field_number',
+                    name: 'NUM',
+                    min: 0,
+                },
             ],
-            "output": "Number",
-            "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
-            "colour": Blockly.Colours.textField,
-            "colourSecondary": Blockly.Colours.textField,
-            "colourTertiary": Blockly.Colours.textField,
-            "colourQuaternary": Blockly.Colours.textField
+            output: 'Number',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.textField,
+            colourSecondary: Blockly.Colours.textField,
+            colourTertiary: Blockly.Colours.textField,
+            colourQuaternary: Blockly.Colours.textField,
         });
-    }
+    },
 };
 
-Blockly.Blocks['math_angle'] = {
+Blockly.Blocks.math_angle = {
     /**
      * Block for angle picker.
      * @this Blockly.Block
      */
-    init: function () {
+    init () {
         this.jsonInit({
-            "message0": "%1",
-            "args0": [
+            message0: '%1',
+            args0: [
                 {
-                    "type": "field_angle",
-                    "name": "NUM",
-                    "value": 90
-                }
+                    type: 'field_angle',
+                    name: 'NUM',
+                    value: 90,
+                },
             ],
-            "output": "Number",
-            "outputShape": Blockly.OUTPUT_SHAPE_ROUND,
-            "colour": Blockly.Colours.textField,
-            "colourSecondary": Blockly.Colours.textField,
-            "colourTertiary": Blockly.Colours.textField,
-            "colourQuaternary": Blockly.Colours.textField
+            output: 'Number',
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            colour: Blockly.Colours.textField,
+            colourSecondary: Blockly.Colours.textField,
+            colourTertiary: Blockly.Colours.textField,
+            colourQuaternary: Blockly.Colours.textField,
         });
-    }
+    },
 };
 
 export const defineContract =
@@ -191,7 +191,7 @@ Blockly.Block.prototype.getSiblings = function () {
     });
     return siblings;
 };
-Blockly.Blocks.trade_definition = {
+const trade_definition_block = {
     init() {
         this.jsonInit(this.definition());
         this.setDeletable(false);
@@ -205,6 +205,7 @@ Blockly.Blocks.trade_definition = {
             message3: '%1',
             message4: '%1 %2 %3',
             message5: '%1',
+            message6: '%1',
             args0: [
                 {
                     type: 'field_image',
@@ -272,6 +273,14 @@ Blockly.Blocks.trade_definition = {
                     name: 'SUBMARKET',
                 },
             ],
+            args6: [
+                {
+                    type: 'field_image',
+                    src: ' ', // this is here to add extra padding
+                    width: 380,
+                    height: 10,
+                },
+            ],
             colour: Blockly.Colours.RootBlock.colour,
             colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
             colourTertiary: Blockly.Colours.RootBlock.colourTertiary,
@@ -294,11 +303,14 @@ Blockly.Blocks.trade_definition = {
             this.isInit = false;
             removeErrorHandlingEventListener('keydown');
         }
-        if (!this.workspace || this.workspace.isDragging() || this.isInFlyout) {
+        if (!this.workspace || this.workspace.isDragging() || Blockly.derivWorkspace.isFlyout_) {
             return;
         }
 
-        if (event.type === Blockly.Events.BLOCK_CHANGE || event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
+        if (
+            event.type === Blockly.Events.BLOCK_CHANGE ||
+            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
+        ) {
             // Enforce only trade_definition_<type> blocks in TRADE_OPTIONS statement.
             const blocks_in_trade_options = this.getBlocksInStatement('TRADE_OPTIONS');
 
@@ -319,7 +331,7 @@ Blockly.Blocks.trade_definition = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['trade_definition'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition = block => {
     const { client } = DBotStore.instance;
 
     if (!client || !client.is_logged_in) {
@@ -369,3 +381,5 @@ Blockly.JavaScript.javascriptGenerator.forBlock['trade_definition'] = block => {
       };\n`;
     return code;
 };
+Blockly.Blocks.trade_definition = trade_definition_block;
+export default trade_definition_block;

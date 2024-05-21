@@ -38,6 +38,7 @@ Blockly.Blocks.text_charAt = {
                     ],
                 },
             ],
+            inputsInline: true,
             output: 'String',
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Base.colour,
@@ -72,7 +73,7 @@ Blockly.Blocks.text_charAt = {
 
         this.isAt = isAt;
         this.initSvg();
-        this.render(false);
+        //this.render(false);
     },
     getRequiredValueInputs() {
         return {
@@ -82,19 +83,22 @@ Blockly.Blocks.text_charAt = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['text_charAt'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.text_charAt = block => {
     const where = block.getFieldValue('WHERE') || 'FROM_START';
-    const textOrder = where === 'RANDOM' ? Blockly.JavaScript.javascriptGenerator.ORDER_NONE : Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
+    const textOrder =
+        where === 'RANDOM'
+            ? Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+            : Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
     const text = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'VALUE', textOrder) || "''";
 
     let code;
 
     if (where === 'FROM_START') {
-        const at = Blockly.JavaScript.getAdjusted(block, 'AT');
+        const at = Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT');
         // Adjust index if using one-based indices
         code = `${text}.charAt(${at})`;
     } else if (where === 'FROM_END') {
-        const at = Blockly.JavaScript.getAdjusted(block, 'AT', 1, true);
+        const at = Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT', 1, true);
         code = `${text}.slice(${at}).charAt(0)`;
     } else if (where === 'FIRST') {
         code = `${text}.charAt(0)`;

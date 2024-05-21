@@ -29,6 +29,7 @@ Blockly.Blocks.logic_compare = {
                     name: 'B',
                 },
             ],
+            inputsInline: true,
             output: 'Boolean',
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Base.colour,
@@ -52,7 +53,7 @@ Blockly.Blocks.logic_compare = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['logic_compare'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.logic_compare = block => {
     const operatorMapping = {
         EQ: '==',
         NEQ: '!=',

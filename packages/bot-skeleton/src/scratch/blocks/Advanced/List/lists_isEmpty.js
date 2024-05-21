@@ -14,6 +14,7 @@ Blockly.Blocks.lists_isEmpty = {
                     check: ['Array'],
                 },
             ],
+            inputsInline: true,
             output: 'Boolean',
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Base.colour,
@@ -38,8 +39,13 @@ Blockly.Blocks.lists_isEmpty = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['lists_isEmpty'] = block => {
-    const list = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'VALUE', Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER) || '[]';
+Blockly.JavaScript.javascriptGenerator.forBlock.lists_isEmpty = block => {
+    const list =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'VALUE',
+            Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+        ) || '[]';
     const isVariable = block.workspace.getAllVariables().findIndex(variable => variable.name === list) !== -1;
 
     const code = isVariable ? `!${list} || !${list}.length` : `!${list}.length`;

@@ -17,6 +17,7 @@ Blockly.Blocks.logic_boolean = {
                     ],
                 },
             ],
+            inputsInline: true,
             output: 'Boolean',
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Base.colour,
@@ -34,7 +35,7 @@ Blockly.Blocks.logic_boolean = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['logic_boolean'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.logic_boolean = block => {
     const code = block.getFieldValue('BOOL') === 'TRUE' ? 'true' : 'false';
     return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };

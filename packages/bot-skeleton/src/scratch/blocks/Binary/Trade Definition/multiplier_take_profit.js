@@ -44,12 +44,12 @@ Blockly.Blocks.multiplier_take_profit = {
         };
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
             return;
         }
         if (
             (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
-            event.type === Blockly.Events.BLOCK_DRAG && !event.isStart
+            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
         ) {
             this.setCurrency();
         }
@@ -71,4 +71,4 @@ Blockly.Blocks.multiplier_take_profit = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['multiplier_take_profit'] = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.multiplier_take_profit = () => {};

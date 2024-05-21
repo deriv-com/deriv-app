@@ -210,4 +210,3 @@ Blockly.FieldImage.prototype.showEditor_ = function () {
 };
 
 Blockly.Extensions.register('field_image', Blockly.FieldImage);
- console.log('12')

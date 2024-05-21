@@ -23,14 +23,13 @@ Blockly.Blocks.lists_getIndex = {
         this.appendDummyInput().appendField(modeMenu, 'MODE');
         this.appendDummyInput('AT');
         // eslint-disable-next-line no-underscore-dangle
-        // this.setColourFromRawValues_(
-        //     Blockly.Colours.Base.colour,
-        //     Blockly.Colours.Base.colourSecondary,
-        //     Blockly.Colours.Base.colourTertiary
-        // );
+        this.setColour(Blockly.Colours.Base.colour);
+
+        this.setColour(Blockly.Colours.Base.colour);
         this.setTooltip(
             'This block gives you the value of a specific item in a list, given the position of the item. It can also remove the item from the list.'
         );
+        this.setInputsInline(true);
         this.setOutput(true, null);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
         this.updateAt(true);
@@ -72,7 +71,7 @@ Blockly.Blocks.lists_getIndex = {
             this.setNextStatement(newStatement);
 
             this.initSvg();
-            this.render(false);
+            //this.render(false);
         }
     },
     updateAt(isAt) {
@@ -97,14 +96,17 @@ Blockly.Blocks.lists_getIndex = {
         this.getInput('AT').appendField(menu, 'WHERE');
 
         this.initSvg();
-        this.render(false);
+        //this.render(false);
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['lists_getIndex'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.lists_getIndex = block => {
     const mode = block.getFieldValue('MODE') || 'GET';
     const where = block.getFieldValue('WHERE') || 'FIRST';
-    const listOrder = where === 'RANDOM' ? Blockly.JavaScript.javascriptGenerator.ORDER_COMMA : Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
+    const listOrder =
+        where === 'RANDOM'
+            ? Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+            : Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
     const list = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'VALUE', listOrder) || '[]';
 
     let code, order;
@@ -130,7 +132,7 @@ Blockly.JavaScript.javascriptGenerator.forBlock['lists_getIndex'] = block => {
             return `${list}.pop();\n`;
         }
     } else if (where === 'FROM_START') {
-        const at = Blockly.JavaScript.getAdjusted(block, 'AT');
+        const at = Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT');
         if (mode === 'GET') {
             code = `${list}[${at}]`;
             order = Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER;
@@ -141,7 +143,7 @@ Blockly.JavaScript.javascriptGenerator.forBlock['lists_getIndex'] = block => {
             return `${list}.splice(${at}, 1);\n`;
         }
     } else if (where === 'FROM_END') {
-        const at = Blockly.JavaScript.getAdjusted(block, 'AT', 1, true);
+        const at = Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT', 1, true);
         if (mode === 'GET') {
             code = `${list}.slice(${at})[0]`;
             order = Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL;

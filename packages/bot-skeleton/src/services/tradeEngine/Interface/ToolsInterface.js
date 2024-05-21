@@ -47,7 +47,6 @@ const getToolsInterface = tradeEngine => {
         ...getMiscInterface(tradeEngine),
         ...getIndicatorsInterface(tradeEngine),
 
-        
         // Highlight the block that is being executed
         highlightBlock: block_id => {
             const block = Blockly.derivWorkspace.getBlockById(block_id);
@@ -56,17 +55,17 @@ const getToolsInterface = tradeEngine => {
                 const hasClass = (element, className) => element.classList.contains(className);
                 const addClass = (element, className) => {
                     const classNames = className.split(' ');
-                    if (classNames.every((name) => element.classList.contains(name))) {
+                    if (classNames.every(name => element.classList.contains(name))) {
                         return false;
                     }
                     element.classList.add(...classNames);
                     return true;
-                }
+                };
                 if (!hasClass(this.svgGroup_, highlight_block_class)) {
                     addClass(this.svgGroup_, highlight_block_class);
                     setTimeout(() => {
                         if (this.svgGroup_) {
-                            Blockly.utils.removeClass(this.svgGroup_, highlight_block_class);
+                            Blockly.utils.dom.removeClass(this.svgGroup_, highlight_block_class);
                         }
                     }, 1505);
                 }

@@ -13,6 +13,7 @@ Blockly.Blocks.text = {
                     name: 'TEXT',
                 },
             ],
+            inputsInline: true,
             output: 'String',
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Base.colour,
@@ -30,10 +31,8 @@ Blockly.Blocks.text = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['text'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.text = block => {
     // eslint-disable-next-line no-underscore-dangle
     const code = Blockly.JavaScript.javascriptGenerator.quote_(block.getFieldValue('TEXT'));
     return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
 };
-
-

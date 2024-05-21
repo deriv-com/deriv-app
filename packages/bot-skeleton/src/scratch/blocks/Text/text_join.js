@@ -46,7 +46,7 @@ Blockly.Blocks.text_join = {
         };
     },
     onIconClick() {
-        if (this.workspace.options.readOnly || this.isInFlyout) {
+        if (this.workspace.options.readOnly || Blockly.derivWorkspace.isFlyout_) {
             return;
         }
 
@@ -55,13 +55,13 @@ Blockly.Blocks.text_join = {
             text_block.required_parent_id = this.id;
             text_block.setMovable(true);
             text_block.initSvg();
-            text_block.render();
+            //text_block.render();
 
             const shadow_block = this.workspace.newBlock('text');
             shadow_block.setShadow(true);
             shadow_block.setFieldValue('', 'TEXT');
             shadow_block.initSvg();
-            shadow_block.render();
+            //shadow_block.render();
 
             const text_input = text_block.getInput('TEXT');
             text_input.connection.connect(shadow_block.outputConnection);
@@ -78,15 +78,15 @@ Blockly.Blocks.text_join = {
 };
 
 // Blockly.JavaScript.text_join = Blockly.JavaScript.lists_create_with;
-Blockly.JavaScript.javascriptGenerator.forBlock['text_join'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.text_join = block => {
     // eslint-disable-next-line no-underscore-dangle
     const var_name = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
-        Blockly.Variables.NAME_TYPE
+        Blockly.Variables.CATEGORY_NAME
     );
     const blocks_in_stack = block.getBlocksInStatement('STACK');
     const elements = blocks_in_stack.map(b => {
-        const value = Blockly.JavaScript[b.type](b);
+        const value = Blockly.JavaScript.javascriptGenerator.forBlock[b.type](b);
         return Array.isArray(value) ? value[0] : value;
     });
 

@@ -35,7 +35,7 @@ Blockly.Blocks.loader = {
         };
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyout_) {
             return;
         }
 
@@ -92,4 +92,4 @@ Blockly.Blocks.loader = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['loader'] = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.loader = () => {};

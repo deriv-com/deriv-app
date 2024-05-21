@@ -49,7 +49,7 @@ export default class ToolboxStore {
     onMount = (toolbox_ref: React.RefObject<HTMLDivElement>) => {
         this.adjustWorkspace();
 
-        this.toolbox_dom = window.Blockly.Xml.textToDom(toolbox_ref?.current);
+        this.toolbox_dom = window.Blockly.utils.xml.textToDom(toolbox_ref?.current);
         const el = [...(this.toolbox_dom?.childNodes ?? [])].find(
             el => el instanceof HTMLElement && el.tagName === 'examples'
         );
@@ -104,7 +104,6 @@ export default class ToolboxStore {
         // NOTE: added this load modal open check to prevent scroll when load modal is open
         if (!this.is_workspace_scroll_adjusted && !this.root_store.load_modal.is_load_modal_open) {
             this.is_workspace_scroll_adjusted = true;
-
             setTimeout(() => {
                 const workspace = window.Blockly.derivWorkspace;
                 const toolbox_width = document.getElementById('gtm-toolbox')?.getBoundingClientRect().width || 0;

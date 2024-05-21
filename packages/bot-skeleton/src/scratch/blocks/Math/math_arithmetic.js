@@ -31,6 +31,7 @@ Blockly.Blocks.math_arithmetic = {
                 },
             ],
             output: 'Number',
+            inputsInline: true,
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
@@ -53,7 +54,7 @@ Blockly.Blocks.math_arithmetic = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['math_arithmetic'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.math_arithmetic = block => {
     const operators = {
         ADD: ['+', Blockly.JavaScript.javascriptGenerator.ORDER_ADDITION],
         MINUS: ['-', Blockly.JavaScript.javascriptGenerator.ORDER_SUBTRACTION],

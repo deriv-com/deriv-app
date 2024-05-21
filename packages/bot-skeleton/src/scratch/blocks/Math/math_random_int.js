@@ -22,6 +22,7 @@ Blockly.Blocks.math_random_int = {
                     check: 'Number',
                 },
             ],
+            inputsInline: true,
             output: 'Number',
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Base.colour,
@@ -45,9 +46,19 @@ Blockly.Blocks.math_random_int = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['math_random_int'] = block => {
-    const argument0 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'FROM', Blockly.JavaScript.javascriptGenerator.ORDER_COMMA) || '0';
-    const argument1 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'TO', Blockly.JavaScript.javascriptGenerator.ORDER_COMMA) || '0';
+Blockly.JavaScript.javascriptGenerator.forBlock.math_random_int = block => {
+    const argument0 =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'FROM',
+            Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+        ) || '0';
+    const argument1 =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'TO',
+            Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+        ) || '0';
 
     // eslint-disable-next-line no-underscore-dangle
     const functionName = Blockly.JavaScript.javascriptGenerator.provideFunction_('mathRandomInt', [

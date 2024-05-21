@@ -4,10 +4,9 @@
  * @return {number} Horizontal offset for next item to draw.
  */
 
-Blockly.Icon = new Blockly.icons.Icon;
+Blockly.Icon = new Blockly.icons.Icon();
 
 Blockly.Icon.renderIcon = function (cursorX) {
-    //console.log('16')
     if (this.collapseHidden && this.block_.isCollapsed()) {
         this.iconGroup_.setAttribute('display', 'none');
         return cursorX;
@@ -34,4 +33,3 @@ Blockly.Icon.renderIcon = function (cursorX) {
 
     return newCursorX;
 };
-console.log('16')

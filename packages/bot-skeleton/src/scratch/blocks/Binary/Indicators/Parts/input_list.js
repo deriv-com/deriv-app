@@ -23,7 +23,7 @@ Blockly.Blocks.input_list = {
         this.setDeletable(false);
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
             return;
         }
 
@@ -79,4 +79,4 @@ Blockly.Blocks.input_list = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['input_list'] = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.input_list = () => {};

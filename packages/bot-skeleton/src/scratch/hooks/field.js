@@ -6,9 +6,9 @@ import { localize } from '@deriv/translations';
  */
 
 Blockly.Field.prototype.setText = function (e) {
-    null !== e && (e = String(e)) !== this.text_ && (this.text_ = e,
-        this.forceRerender())
-}
+    // eslint-disable-next-line no-param-reassign
+    e !== null && (e = String(e)) !== this.text_ && ((this.text_ = e), this.forceRerender());
+};
 const FieldCheckbox = () => {
     const getAltText = is_checked => (is_checked ? localize('Y') : localize('N'));
     const onCheckboxClick = function () {
@@ -30,7 +30,6 @@ const FieldCheckbox = () => {
     // Custom setValue to support imported values, this allows us to bypass
     // adding domToMutation and mutationToDom logic to each block consuming this checkbox.
     icon.setValue = function (value) {
-        console.log('creating checkbox')
         const is_checked = value === true || value === 'TRUE';
         const old_value = this.getValue();
         this.src_ = is_checked ? 'TRUE' : 'FALSE';
@@ -78,4 +77,3 @@ const FieldCheckbox = () => {
 };
 
 Blockly.fieldRegistry.register('field_image_checkbox', FieldCheckbox());
-console.log('11')

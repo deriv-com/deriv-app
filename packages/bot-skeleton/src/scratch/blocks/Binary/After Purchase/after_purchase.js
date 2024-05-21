@@ -9,6 +9,7 @@ Blockly.Blocks.after_purchase = {
         return {
             message0: '%1 %2 %3',
             message1: '%1',
+            // message2: '%1',
             args0: [
                 {
                     type: 'field_image',
@@ -33,6 +34,14 @@ Blockly.Blocks.after_purchase = {
                     check: 'TradeAgain',
                 },
             ],
+            // args2: [
+            //     {
+            //         type: 'field_image',
+            //         src: ' ', // this is here to add extra padding
+            //         width: 380,
+            //         height: 10,
+            //     },
+            // ],
             colour: Blockly.Colours.RootBlock.colour,
             colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
             colourTertiary: Blockly.Colours.RootBlock.colourTertiary,
@@ -48,7 +57,7 @@ Blockly.Blocks.after_purchase = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['after_purchase'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.after_purchase = block => {
     const stack = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'AFTERPURCHASE_STACK');
     const code = `
     BinaryBotPrivateAfterPurchase = function BinaryBotPrivateAfterPurchase() {

@@ -26,8 +26,9 @@ Blockly.Blocks.procedures_callreturn = {
             colour: Blockly.Colours.Special2.colour,
             colourSecondary: Blockly.Colours.Special2.colourSecondary,
             colourTertiary: Blockly.Colours.Special2.colourTertiary,
-            tooltip: localize('Custom function'),
+            tooltip: localize('Custom function call 2'),
             category: Blockly.Categories.Functions,
+            inputsInline: true,
         };
     },
     meta() {
@@ -49,14 +50,19 @@ Blockly.Blocks.procedures_callreturn = {
     defType: 'procedures_defreturn',
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['procedures_callreturn'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.procedures_callreturn = block => {
     // eslint-disable-next-line no-underscore-dangle
     const functionName = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('NAME'),
-        Blockly.Procedures.NAME_TYPE
+        Blockly.Procedures.CATEGORY_NAME
     );
     const args = block.arguments.map(
-        (arg, i) => Blockly.JavaScript.javascriptGenerator.valueToCode(block, `ARG${i}`, Blockly.JavaScript.javascriptGenerator.ORDER_COMMA) || 'null'
+        (arg, i) =>
+            Blockly.JavaScript.javascriptGenerator.valueToCode(
+                block,
+                `ARG${i}`,
+                Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+            ) || 'null'
     );
 
     const code = `${functionName}(${args.join(', ')})`;

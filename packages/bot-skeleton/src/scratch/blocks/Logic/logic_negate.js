@@ -13,6 +13,7 @@ Blockly.Blocks.logic_negate = {
                     name: 'BOOL',
                 },
             ],
+            inputsInline: true,
             output: 'Boolean',
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Base.colour,
@@ -35,7 +36,7 @@ Blockly.Blocks.logic_negate = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['logic_negate'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.logic_negate = block => {
     const order = Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_NOT;
     const argument0 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'BOOL', order) || 'true';
 

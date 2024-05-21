@@ -70,7 +70,7 @@ Blockly.Blocks.math_number_property = {
             if (!inputExists) {
                 this.appendValueInput('DIVISOR').setCheck('Number');
                 this.initSvg();
-                this.render(false);
+                //this.render(false);
             }
         } else {
             //this.removeInput('DIVISOR');
@@ -83,8 +83,13 @@ Blockly.Blocks.math_number_property = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['math_number_property'] = block => {
-    const argument0 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'NUMBER_TO_CHECK', Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS) || '0';
+Blockly.JavaScript.javascriptGenerator.forBlock.math_number_property = block => {
+    const argument0 =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'NUMBER_TO_CHECK',
+            Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS
+        ) || '0';
     const property = block.getFieldValue('PROPERTY');
 
     let code;
@@ -127,7 +132,12 @@ Blockly.JavaScript.javascriptGenerator.forBlock['math_number_property'] = block 
     } else if (property === 'NEGATIVE') {
         code = `${argument0} < 0`;
     } else if (property === 'DIVISIBLE_BY') {
-        const divisor = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'DIVISOR', Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS) || '0';
+        const divisor =
+            Blockly.JavaScript.javascriptGenerator.valueToCode(
+                block,
+                'DIVISOR',
+                Blockly.JavaScript.javascriptGenerator.ORDER_MODULUS
+            ) || '0';
         code = `${argument0} % ${divisor} == 0`;
     }
 

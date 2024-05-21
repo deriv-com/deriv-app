@@ -424,6 +424,7 @@ export default class LoadModalStore implements ILoadModalStore {
                 readOnly: true,
                 scrollbars: true,
                 renderer: 'zelos',
+                theme: window.Blockly.Themes.zelos_renderer,
             });
         }
         this.refreshStrategiesTheme();
@@ -523,6 +524,7 @@ export default class LoadModalStore implements ILoadModalStore {
                     readOnly: true,
                     scrollbars: true,
                     renderer: 'zelos',
+                    theme: window.Blockly.Themes.zelos_renderer,
                 });
                 load_options.workspace = this.local_workspace;
                 if (load_options.workspace) {

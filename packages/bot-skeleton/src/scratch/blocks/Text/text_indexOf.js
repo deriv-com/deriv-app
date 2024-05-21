@@ -33,6 +33,7 @@ Blockly.Blocks.text_indexOf = {
                     name: 'FIND',
                 },
             ],
+            inputsInline: true,
             output: 'String',
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Base.colour,
@@ -58,10 +59,20 @@ Blockly.Blocks.text_indexOf = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['text_indexOf'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.text_indexOf = block => {
     const functionName = block.getFieldValue('END') === 'FIRST' ? 'indexOf' : 'lastIndexOf';
-    const substring = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'FIND', Blockly.JavaScript.javascriptGenerator.ORDER_NONE) || "''";
-    const text = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'VALUE', Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER) || "''";
+    const substring =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'FIND',
+            Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+        ) || "''";
+    const text =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'VALUE',
+            Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+        ) || "''";
 
     const code = `${text}.${functionName}(${substring})`;
     if (block.workspace.options.oneBasedIndex) {

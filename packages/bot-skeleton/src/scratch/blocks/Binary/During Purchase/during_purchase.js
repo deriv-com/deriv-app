@@ -9,6 +9,7 @@ Blockly.Blocks.during_purchase = {
         return {
             message0: '%1 %2 %3',
             message1: '%1',
+            message2: '%1',
             args0: [
                 {
                     type: 'field_image',
@@ -33,6 +34,14 @@ Blockly.Blocks.during_purchase = {
                     check: 'SellAtMarket',
                 },
             ],
+            args2: [
+                {
+                    type: 'field_image',
+                    src: ' ', // this is here to add extra padding
+                    width: 380,
+                    height: 10,
+                },
+            ],
             colour: Blockly.Colours.RootBlock.colour,
             colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
             colourTertiary: Blockly.Colours.RootBlock.colourTertiary,
@@ -50,7 +59,7 @@ Blockly.Blocks.during_purchase = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['during_purchase'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.during_purchase = block => {
     const stack = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'DURING_PURCHASE_STACK');
 
     const code = `BinaryBotPrivateDuringPurchase = function BinaryBotPrivateDuringPurchase() {

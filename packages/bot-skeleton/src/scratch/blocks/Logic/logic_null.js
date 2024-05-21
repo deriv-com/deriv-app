@@ -6,6 +6,7 @@ Blockly.Blocks.logic_null = {
     },
     definition() {
         return {
+            inputsInline: true,
             message0: 'null',
             output: null,
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
@@ -23,4 +24,7 @@ Blockly.Blocks.logic_null = {
         };
     },
 };
-Blockly.JavaScript.javascriptGenerator.forBlock['logic_null'] = () => ['null', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+Blockly.JavaScript.javascriptGenerator.forBlock.logic_null = () => [
+    'null',
+    Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+];

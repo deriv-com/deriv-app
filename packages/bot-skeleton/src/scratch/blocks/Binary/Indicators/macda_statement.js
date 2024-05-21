@@ -58,11 +58,11 @@ Blockly.Blocks.macda_statement = {
     onchange: Blockly.Blocks.bb_statement.onchange,
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['macda_statement'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.macda_statement = block => {
     // eslint-disable-next-line no-underscore-dangle
     const var_name = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
-        Blockly.Variables.NAME_TYPE
+        Blockly.Variables.CATEGORY_NAME
     );
     const macd_field = block.getFieldValue('MACDFIELDS_LIST');
     const input = block.childValueToCode('input_list', 'INPUT_LIST');

@@ -31,11 +31,14 @@ Blockly.Blocks.contract_check_result = {
         };
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
             return;
         }
 
-        if (event.type === Blockly.Events.BLOCK_CREATE || event.type === Blockly.Events.BLOCK_DRAG && !event.isStart) {
+        if (
+            event.type === Blockly.Events.BLOCK_CREATE ||
+            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
+        ) {
             const top_parent = this.getTopParent();
 
             if (top_parent) {
@@ -49,7 +52,7 @@ Blockly.Blocks.contract_check_result = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['contract_check_result'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.contract_check_result = block => {
     const checkWith = block.getFieldValue('CHECK_RESULT');
 
     const code = `Bot.isResult('${checkWith}')`;

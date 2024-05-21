@@ -21,6 +21,7 @@ Blockly.Blocks.lists_repeat = {
                     name: 'NUM',
                 },
             ],
+            inputsInline: true,
             output: null,
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Base.colour,
@@ -44,7 +45,7 @@ Blockly.Blocks.lists_repeat = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['lists_repeat'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.lists_repeat = block => {
     // eslint-disable-next-line no-underscore-dangle
     const function_name = Blockly.JavaScript.javascriptGenerator.provideFunction_('listsRepeat', [
         // eslint-disable-next-line no-underscore-dangle
@@ -57,8 +58,18 @@ Blockly.JavaScript.javascriptGenerator.forBlock['lists_repeat'] = block => {
         }`,
     ]);
 
-    const element = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'ITEM', Blockly.JavaScript.javascriptGenerator.ORDER_COMMA) || 'null';
-    const repeat_count = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'NUM', Blockly.JavaScript.javascriptGenerator.ORDER_COMMA) || '0';
+    const element =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'ITEM',
+            Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+        ) || 'null';
+    const repeat_count =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'NUM',
+            Blockly.JavaScript.javascriptGenerator.ORDER_COMMA
+        ) || '0';
     const code = `${function_name}(${element}, ${repeat_count})`;
 
     return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];

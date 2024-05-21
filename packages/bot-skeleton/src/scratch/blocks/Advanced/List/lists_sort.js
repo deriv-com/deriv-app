@@ -33,6 +33,7 @@ Blockly.Blocks.lists_sort = {
                     name: 'LIST',
                 },
             ],
+            inputsInline: true,
             output: 'Array',
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Base.colour,
@@ -57,8 +58,13 @@ Blockly.Blocks.lists_sort = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['lists_sort'] = block => {
-    const list = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'LIST', Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL) || '[]';
+Blockly.JavaScript.javascriptGenerator.forBlock.lists_sort = block => {
+    const list =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'LIST',
+            Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL
+        ) || '[]';
     const direction = block.getFieldValue('DIRECTION') === '1' ? 1 : -1;
     const type = block.getFieldValue('TYPE');
     // eslint-disable-next-line no-underscore-dangle

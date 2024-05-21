@@ -2,7 +2,6 @@ import { localize } from '@deriv/translations';
 import { config } from '../constants/config';
 import ApiHelpers from '../services/api/api-helpers';
 
-
 /* eslint-disable no-underscore-dangle */
 export default class BlockConversion {
     constructor() {
@@ -514,7 +513,7 @@ export default class BlockConversion {
 
         this.workspace.getAllBlocks(true).forEach(block => {
             block.initSvg();
-            block.render();
+            // block.render();
         });
 
         this.workspace.cleanUp();
@@ -666,9 +665,8 @@ export default class BlockConversion {
                     const is_minimised = el_block_child.getAttribute('pinned') !== 'true';
                     const comment_text = el_block_child.innerText;
 
-                    block.comment = new Blockly.ScratchBlockComment(block, comment_text, null, 0, 0, is_minimised);
+                    block.comment = new Blockly.WorkspaceComment(this.workspace, comment_text, 0, 0, is_minimised);
                     block.comment.iconXY_ = { x: 0, y: 0 };
-                    block.comment.setVisible(true); // Scratch comments are always visible.
                     break;
                 }
                 default:

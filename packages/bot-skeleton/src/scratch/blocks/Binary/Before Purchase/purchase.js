@@ -40,7 +40,7 @@ Blockly.Blocks.purchase = {
         };
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
             return;
         }
 
@@ -81,7 +81,7 @@ Blockly.Blocks.purchase = {
     restricted_parents: ['before_purchase'],
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['purchase'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.purchase = block => {
     const purchaseList = block.getFieldValue('PURCHASE_LIST');
 
     const code = `Bot.purchase('${purchaseList}');\n`;

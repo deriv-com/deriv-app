@@ -15,7 +15,7 @@ export const hasAllRequiredBlocks = () => {
 export const onWorkspaceResize = () => {
     const workspace = Blockly.derivWorkspace;
     if (workspace) {
-        workspace.getAllFields().forEach(field => field.forceRerender());
+        //workspace.getAllFields().forEach(field => field.forceRerender());
 
         const el_scratch_div = document.getElementById('scratch_div');
         if (el_scratch_div) {

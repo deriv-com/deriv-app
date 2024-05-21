@@ -51,6 +51,7 @@ export default class FlyoutStore implements IFlyoutStore {
         move: { scrollbars: false, drag: true, wheel: false },
         zoom: { startScale: config.workspaces.flyoutWorkspacesStartScale },
         sounds: false,
+        theme: window.Blockly.Themes?.zelos_renderer,
     };
 
     is_help_content = false;
@@ -123,11 +124,9 @@ export default class FlyoutStore implements IFlyoutStore {
         this.flyout.workspace_.getGesture = this.flyout.targetWorkspace.getGesture.bind(this.flyout.targetWorkspace_);
 
         // Get variables from the main workspace rather than the target workspace.
-        workspace.variableMap_ = this.flyout.targetWorkspace.getVariableMap();
+        workspace.VariableMap = this.flyout.targetWorkspace.getVariableMap();
 
         this.flyout.workspace_.createPotentialVariableMap();
-
-        workspace.flyout = this.flyout;
     }
 
     /**
@@ -243,6 +242,8 @@ export default class FlyoutStore implements IFlyoutStore {
             this.setSelectedCategory(null);
             this.flyout_content = [];
         }
+
+        window.Blockly.derivWorkspace.isFlyout_ = is_visible;
     }
 
     /**

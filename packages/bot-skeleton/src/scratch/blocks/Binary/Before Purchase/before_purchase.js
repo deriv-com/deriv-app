@@ -10,6 +10,7 @@ Blockly.Blocks.before_purchase = {
         return {
             message0: '%1 %2 %3',
             message1: '%1',
+            message2: '%1',
             args0: [
                 {
                     type: 'field_image',
@@ -34,6 +35,14 @@ Blockly.Blocks.before_purchase = {
                     check: 'Purchase',
                 },
             ],
+            args2: [
+                {
+                    type: 'field_image',
+                    src: ' ', // this is here to add extra padding
+                    width: 380,
+                    height: 10,
+                },
+            ],
             colour: Blockly.Colours.RootBlock.colour,
             colourSecondary: Blockly.Colours.RootBlock.colourSecondary,
             colourTertiary: Blockly.Colours.RootBlock.colourTertiary,
@@ -51,7 +60,7 @@ Blockly.Blocks.before_purchase = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['before_purchase'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.before_purchase = block => {
     const stack = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'BEFOREPURCHASE_STACK');
 
     const code = `BinaryBotPrivateBeforePurchase = function BinaryBotPrivateBeforePurchase() {

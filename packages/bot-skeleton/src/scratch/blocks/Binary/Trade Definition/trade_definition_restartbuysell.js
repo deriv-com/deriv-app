@@ -24,7 +24,7 @@ Blockly.Blocks.trade_definition_restartbuysell = {
         this.setDeletable(false);
     },
     onchange(/* event */) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
             return;
         }
 
@@ -33,4 +33,4 @@ Blockly.Blocks.trade_definition_restartbuysell = {
     enforceLimitations: Blockly.Blocks.trade_definition_market.enforceLimitations,
     required_inputs: ['TIME_MACHINE_ENABLED'],
 };
-Blockly.JavaScript.javascriptGenerator.forBlock['trade_definition_restartbuysell'] = () => { };
+Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_restartbuysell = () => {};

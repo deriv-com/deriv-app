@@ -106,7 +106,6 @@ Blockly.Flyout.prototype.placeNewBlock_ = function (event, old_block) {
             event.clientX ? event.clientX - x_offset : 0,
             event.clientY ? event.clientY - y_offset : 0
         );
-
         // The position of the old block in pixels relative to the origin of the main workspace.
         const final_offset_pixels = goog.math.Coordinate.difference(old_block_pos_pixels, main_offset_pixels);
 

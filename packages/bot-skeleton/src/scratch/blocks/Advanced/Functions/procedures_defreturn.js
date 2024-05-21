@@ -39,9 +39,10 @@ Blockly.Blocks.procedures_defreturn = {
     },
     definition() {
         return {
-            message0: localize('function {{ function_name }} {{ function_params }}', {
+            message0: localize('function {{ function_name }} {{ function_params }} {{ dummy }}', {
                 function_name: '%1',
                 function_params: '%2',
+                dummy: '%3',
             }),
             message1: 'return %1',
             args0: [
@@ -55,6 +56,9 @@ Blockly.Blocks.procedures_defreturn = {
                     name: 'PARAMS',
                     text: '',
                 },
+                {
+                    type: 'input_dummy',
+                },
             ],
             args1: [
                 {
@@ -63,6 +67,7 @@ Blockly.Blocks.procedures_defreturn = {
                     check: null,
                 },
             ],
+            inputsInline: true,
             colour: Blockly.Colours.Special2.colour,
             colourSecondary: Blockly.Colours.Special2.colourSecondary,
             colourTertiary: Blockly.Colours.Special2.colourTertiary,
@@ -101,9 +106,9 @@ Blockly.Blocks.procedures_defreturn = {
     renameVarById: Blockly.Blocks.procedures_defnoreturn.renameVarById,
     displayRenamedVar: Blockly.Blocks.procedures_defnoreturn.displayRenamedVar,
     customContextMenu: Blockly.Blocks.procedures_defnoreturn.customContextMenu,
-    callType: 'procedures_callreturn',
     registerWorkspaceListener: Blockly.Blocks.procedures_defnoreturn.registerWorkspaceListener,
+    callType: 'procedures_callreturn',
 };
 
-
-Blockly.JavaScript.javascriptGenerator.forBlock['procedures_defreturn'] = Blockly.JavaScript.javascriptGenerator.forBlock.procedures_defnoreturn;
+Blockly.JavaScript.javascriptGenerator.forBlock.procedures_defreturn =
+    Blockly.JavaScript.javascriptGenerator.forBlock.procedures_defnoreturn;

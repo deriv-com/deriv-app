@@ -29,6 +29,7 @@ Blockly.Blocks.controls_whileUntil = {
                     name: 'DO',
                 },
             ],
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary: Blockly.Colours.Base.colourTertiary,
@@ -51,10 +52,12 @@ Blockly.Blocks.controls_whileUntil = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['controls_whileUntil'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.controls_whileUntil = block => {
     const branch = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'DO');
     const until = block.getFieldValue('MODE') === 'UNTIL';
-    const order = until ? Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_NOT : Blockly.JavaScript.javascriptGenerator.ORDER_NONE;
+    const order = until
+        ? Blockly.JavaScript.javascriptGenerator.ORDER_LOGICAL_NOT
+        : Blockly.JavaScript.javascriptGenerator.ORDER_NONE;
     let argument0 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'BOOL', order) || 'false';
 
     if (until) {
@@ -62,9 +65,12 @@ Blockly.JavaScript.javascriptGenerator.forBlock['controls_whileUntil'] = block =
     }
 
     // eslint-disable-next-line no-underscore-dangle
-    const maxLoopVar = Blockly.JavaScript.variableDB_.getDistinctName('maxLoops', Blockly.Variables.NAME_TYPE);
+    const maxLoopVar = Blockly.JavaScript.variableDB_.getDistinctName('maxLoops', Blockly.Variables.CATEGORY_NAME);
     // eslint-disable-next-line no-underscore-dangle
-    const currentLoopVar = Blockly.JavaScript.variableDB_.getDistinctName('currentLoop', Blockly.Variables.NAME_TYPE);
+    const currentLoopVar = Blockly.JavaScript.variableDB_.getDistinctName(
+        'currentLoop',
+        Blockly.Variables.CATEGORY_NAME
+    );
 
     return `
         var ${maxLoopVar} = 10000;

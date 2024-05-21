@@ -55,7 +55,7 @@ Blockly.Blocks.bb_statement = {
         };
     },
     onchange(event) {
-        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {
             return;
         }
 
@@ -72,11 +72,11 @@ Blockly.Blocks.bb_statement = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['bb_statement'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.bb_statement = block => {
     // eslint-disable-next-line no-underscore-dangle
     const var_name = Blockly.JavaScript.variableDB_.getName(
         block.getFieldValue('VARIABLE'),
-        Blockly.Variables.NAME_TYPE
+        Blockly.Variables.CATEGORY_NAME
     );
     const bb_result = block.getFieldValue('BBRESULT_LIST');
     const input = block.childValueToCode('input_list', 'INPUT_LIST');

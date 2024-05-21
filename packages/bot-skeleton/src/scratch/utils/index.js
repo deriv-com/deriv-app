@@ -235,12 +235,6 @@ export const loadWorkspace = async (xml, event_group, workspace) => {
             resolve();
         });
     };
-    Blockly.WorkspaceSvg.prototype.asyncClear = function () {
-        return new Promise(resolve => {
-            this.clear();
-            resolve();
-        });
-    };
     Blockly.Events.setGroup(event_group);
     await workspace.asyncClear();
     Blockly.Xml.domToWorkspace(xml, workspace);
@@ -438,8 +432,8 @@ export const isAllRequiredBlocksEnabled = workspace => {
 
 export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chronological) => {
     const ws_metrics = workspace.getMetrics();
-    let scroll_x = ws_metrics.viewLeft - ws_metrics.contentLeft;
-    const delta_y = ws_metrics.viewTop - ws_metrics.contentTop;
+    let scroll_x = ws_metrics.viewLeft - ws_metrics.scrollLeft;
+    const delta_y = ws_metrics.viewTop - ws_metrics.scrollTop;
     let scroll_y = delta_y;
     if (is_horizontal) {
         scroll_x += is_chronological ? scroll_amount : -scroll_amount;

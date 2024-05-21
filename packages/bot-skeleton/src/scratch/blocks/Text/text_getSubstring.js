@@ -54,6 +54,7 @@ Blockly.Blocks.text_getSubstring = {
                     name: 'AT2',
                 },
             ],
+            inputsInline: true,
             output: 'String',
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Base.colour,
@@ -127,7 +128,7 @@ Blockly.Blocks.text_getSubstring = {
         }
 
         this.initSvg();
-        this.render(false);
+        //this.render(false);
     },
     getRequiredValueInputs() {
         const hasInput = input_name => this.getInput(input_name)?.type === Blockly.INPUT_VALUE;
@@ -139,8 +140,13 @@ Blockly.Blocks.text_getSubstring = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['text_getSubstring'] = block => {
-    const text = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'STRING', Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL) || "''";
+Blockly.JavaScript.javascriptGenerator.forBlock.text_getSubstring = block => {
+    const text =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'STRING',
+            Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL
+        ) || "''";
     const where1 = block.getFieldValue('WHERE1');
     const where2 = block.getFieldValue('WHERE2');
 
@@ -154,11 +160,17 @@ Blockly.JavaScript.javascriptGenerator.forBlock['text_getSubstring'] = block => 
     ) {
         switch (where1) {
             case 'FROM_START': {
-                at1 = Blockly.JavaScript.getAdjusted(block, 'AT1');
+                at1 = Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT1');
                 break;
             }
             case 'FROM_END': {
-                at1 = Blockly.JavaScript.getAdjusted(block, 'AT1', 1, false, Blockly.JavaScript.javascriptGenerator.ORDER_SUBTRACTION);
+                at1 = Blockly.JavaScript.javascriptGenerator.getAdjusted(
+                    block,
+                    'AT1',
+                    1,
+                    false,
+                    Blockly.JavaScript.javascriptGenerator.ORDER_SUBTRACTION
+                );
                 at1 = `${text}.length - ${at1}`;
                 break;
             }
@@ -172,11 +184,17 @@ Blockly.JavaScript.javascriptGenerator.forBlock['text_getSubstring'] = block => 
 
         switch (where2) {
             case 'FROM_START': {
-                at2 = Blockly.JavaScript.getAdjusted(block, 'AT2', 1);
+                at2 = Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT2', 1);
                 break;
             }
             case 'FROM_END': {
-                at2 = Blockly.JavaScript.getAdjusted(block, 'AT2', 0, false, Blockly.JavaScript.javascriptGenerator.ORDER_SUBTRACTION);
+                at2 = Blockly.JavaScript.javascriptGenerator.getAdjusted(
+                    block,
+                    'AT2',
+                    0,
+                    false,
+                    Blockly.JavaScript.javascriptGenerator.ORDER_SUBTRACTION
+                );
                 at2 = `${text}.length - ${at2}`;
                 break;
             }
@@ -190,8 +208,8 @@ Blockly.JavaScript.javascriptGenerator.forBlock['text_getSubstring'] = block => 
 
         code = `${text}.slice(${at1}, ${at2})`;
     } else {
-        at1 = Blockly.JavaScript.getAdjusted(block, 'AT1');
-        at2 = Blockly.JavaScript.getAdjusted(block, 'AT2');
+        at1 = Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT1');
+        at2 = Blockly.JavaScript.javascriptGenerator.getAdjusted(block, 'AT2');
 
         const getIndex = (string_name, where, opt_at) => {
             if (where === 'FIRST') {

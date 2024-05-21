@@ -1,8 +1,7 @@
 import DBotStore from '../dbot-store';
 import PendingPromise from '../../utils/pending-promise';
-console.log('22')
-Blockly.Workspace.prototype.wait_events = [];
 
+Blockly.Workspace.prototype.wait_events = [];
 /**
  * Clear the undo/redo stacks.
  * deriv-bot: Sync undo/redo stack with our toolbar store.
@@ -115,4 +114,25 @@ Blockly.Workspace.prototype.getAllFields = function (is_ordered) {
         return fields;
     }, []);
 };
-console.log('22')
+
+/* eslint-disble */
+/**
+ * Create a main workspace and add it to the SVG.
+ * @param {!Element} svg SVG element with pattern defined.
+ * @param {!Blockly.Options} options Dictionary of options.
+ * @param {!Blockly.BlockDragSurfaceSvg} blockDragSurface Drag surface SVG
+ *     for the blocks.
+ * @param {!Blockly.WorkspaceDragSurfaceSvg} workspaceDragSurface Drag surface
+ *     SVG for the workspace.
+ * @return {!Blockly.Workspace} Newly created main workspace.
+ * @private
+ */
+
+Blockly.createVirtualWorkspace_ = function (fragment, options, blockDragSurface, workspaceDragSurface) {
+    options.parentWorkspace = null;
+    const mainWorkspace = new Blockly.WorkspaceSvg(options, blockDragSurface, workspaceDragSurface);
+    mainWorkspace.scale = options.zoomOptions.startScale;
+    fragment.appendChild(mainWorkspace.createDom('blocklyMainBackground'));
+
+    return mainWorkspace;
+};

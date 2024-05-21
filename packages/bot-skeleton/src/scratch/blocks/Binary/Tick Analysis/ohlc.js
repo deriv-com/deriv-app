@@ -7,9 +7,10 @@ Blockly.Blocks.ohlc = {
     },
     definition() {
         return {
-            message0: localize('Candles List'),
-            message1: localize('with interval: {{ candle_interval_type }}', { candle_interval_type: '%1' }),
-            args1: [
+            message0: localize('Candles List with interval here 2: {{ candle_interval_type }}', {
+                candle_interval_type: '%1',
+            }),
+            args0: [
                 {
                     type: 'field_dropdown',
                     name: 'CANDLEINTERVAL_LIST',
@@ -33,7 +34,7 @@ Blockly.Blocks.ohlc = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['ohlc'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.ohlc = block => {
     const selectedGranularity = block.getFieldValue('CANDLEINTERVAL_LIST');
     const granularity = selectedGranularity === 'default' ? 'undefined' : selectedGranularity;
 

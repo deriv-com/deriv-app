@@ -29,6 +29,7 @@ Blockly.Blocks.controls_if = {
                     name: 'DO0',
                 },
             ],
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary: Blockly.Colours.Base.colourTertiary,
@@ -126,13 +127,13 @@ Blockly.Blocks.controls_if = {
 
             setTimeout(() => {
                 Blockly.Events.setGroup(group);
-                this.bumpNeighbours_();
+                this.bumpNeighbours();
                 Blockly.Events.setGroup(false);
             }, Blockly.BUMP_DELAY);
         }
 
         if (this.rendered) {
-            this.render();
+            //this.render();
         }
 
         Blockly.Events.setGroup(false);
@@ -291,13 +292,18 @@ Blockly.Blocks.controls_if = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['controls_if'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.controls_if = block => {
     // If/elseif/else condition.
     let n = 0;
     let code = '';
 
     do {
-        const condition = Blockly.JavaScript.javascriptGenerator.valueToCode(block, `IF${n}`, Blockly.JavaScript.javascriptGenerator.ORDER_NONE) || 'false';
+        const condition =
+            Blockly.JavaScript.javascriptGenerator.valueToCode(
+                block,
+                `IF${n}`,
+                Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+            ) || 'false';
 
         // i.e. (else)? if { // code }
         const keyword = n > 0 ? 'else if' : 'if';

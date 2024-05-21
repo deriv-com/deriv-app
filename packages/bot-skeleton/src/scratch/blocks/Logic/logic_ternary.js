@@ -28,6 +28,7 @@ Blockly.Blocks.logic_ternary = {
                     name: 'ELSE',
                 },
             ],
+            inputsInline: true,
             output: null,
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Base.colour,
@@ -56,10 +57,25 @@ Blockly.Blocks.logic_ternary = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['logic_ternary'] = block => {
-    const valueIf = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'IF', Blockly.JavaScript.javascriptGenerator.ORDER_CONDITIONAL) || 'false';
-    const valueThen = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'THEN', Blockly.JavaScript.javascriptGenerator.ORDER_CONDITIONAL) || 'null';
-    const valueElse = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'ELSE', Blockly.JavaScript.javascriptGenerator.ORDER_CONDITIONAL) || 'null';
+Blockly.JavaScript.javascriptGenerator.forBlock.logic_ternary = block => {
+    const valueIf =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'IF',
+            Blockly.JavaScript.javascriptGenerator.ORDER_CONDITIONAL
+        ) || 'false';
+    const valueThen =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'THEN',
+            Blockly.JavaScript.javascriptGenerator.ORDER_CONDITIONAL
+        ) || 'null';
+    const valueElse =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'ELSE',
+            Blockly.JavaScript.javascriptGenerator.ORDER_CONDITIONAL
+        ) || 'null';
 
     const code = `(${valueIf} ? ${valueThen} : ${valueElse})`;
     return [code, Blockly.JavaScript.javascriptGenerator.ORDER_CONDITIONAL];

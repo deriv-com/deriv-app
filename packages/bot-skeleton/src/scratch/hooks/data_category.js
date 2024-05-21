@@ -25,9 +25,9 @@ Blockly.DataCategory.search = function (variableModelList) {
         const generateVariableFieldXmlString = variableModel => {
             // The variable name may be user input, so it may contain characters that
             // need to be escaped to create valid XML.
-            const escapedText = `<field name="VAR" id="${variableModel.getId()}" variabletype="${goog.string.htmlEscape(
+            const escapedText = `<field name="VAR" id="${variableModel.getId()}" variabletype="${encodeURIComponent(
                 variableModel.type
-            )}">${goog.string.htmlEscape(variableModel.name)}</field>`;
+            )}">${encodeURIComponent(variableModel.name)}</field>`;
             return escapedText;
         };
 
@@ -81,8 +81,8 @@ Blockly.DataCategory.search = function (variableModelList) {
  * @deriv/bot: We only use a single type of variable, so `type` arg was removed.
  */
 Blockly.DataCategory.addCreateVariable = function (xmlList, workspace) {
-    const el_button_xml = goog.dom.createDom('button');
-    const el_input_xml = goog.dom.createDom('input');
+    const el_button_xml = document.createElement('button');
+    const el_input_xml = document.createElement('input');
 
     // Set default msg, callbackKey, and callback values for type 'VARIABLE'
     const button_text = localize('Create');
@@ -117,4 +117,3 @@ Blockly.DataCategory.addCreateVariable = function (xmlList, workspace) {
     xmlList.push(el_input_xml);
     xmlList.push(el_button_xml);
 };
-console.log('9')

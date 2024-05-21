@@ -43,4 +43,5 @@ Blockly.Blocks.controls_repeat = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['controls_repeat'] = Blockly.JavaScript.controls_repeat_ext;
+Blockly.JavaScript.javascriptGenerator.forBlock.controls_repeat =
+    Blockly.JavaScript.javascriptGenerator.forBlock.controls_repeat_ext;

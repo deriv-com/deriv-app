@@ -12,7 +12,7 @@ Blockly.Blocks.balance = {
                 this.setOutput(true, 'Number');
             }
             this.initSvg();
-            this.render(false);
+            //this.render(false);
             return undefined;
         });
     },
@@ -45,7 +45,7 @@ Blockly.Blocks.balance = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['balance'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.balance = block => {
     const balanceType = block.getFieldValue('BALANCE_TYPE');
 
     const code = `Bot.getBalance('${balanceType}')`;

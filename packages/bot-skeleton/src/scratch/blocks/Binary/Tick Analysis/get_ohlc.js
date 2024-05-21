@@ -7,7 +7,7 @@ Blockly.Blocks.get_ohlc = {
     },
     definition() {
         return {
-            message0: localize('in candle list get # from end {{ input_number }}', { input_number: '%1' }),
+            message0: localize('in candle list get # from end here 1 {{ input_number }}', { input_number: '%1' }),
             message1: localize('with interval: {{ candle_interval_type }}', { candle_interval_type: '%1' }),
             args0: [
                 {
@@ -44,10 +44,15 @@ Blockly.Blocks.get_ohlc = {
         };
     },
 };
-Blockly.JavaScript.javascriptGenerator.forBlock['get_ohlc'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.get_ohlc = block => {
     const selectedGranularity = block.getFieldValue('CANDLEINTERVAL_LIST');
     const granularity = selectedGranularity === 'default' ? 'undefined' : selectedGranularity;
-    const index = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'CANDLEINDEX', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC) || '1';
+    const index =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'CANDLEINDEX',
+            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+        ) || '1';
 
     const code = `Bot.getOhlcFromEnd({ index: ${index}, granularity: ${granularity} })`;
     return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];

@@ -1,8 +1,9 @@
 import React from 'react';
 import { FormikValues } from 'formik';
 import classNames from 'classnames';
-import { formatMoney, isDesktop, isMobile, useIsMounted, PlatformContext } from '@deriv/shared';
+import { formatMoney, useIsMounted, PlatformContext } from '@deriv/shared';
 import { Loading, ThemedScrollbars } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import DemoMessage from 'Components/demo-message';
@@ -50,6 +51,7 @@ const AccountLimits = observer(
         const [is_loading, setLoading] = React.useState(true);
         const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
         const { is_appstore } = React.useContext(PlatformContext);
+        const { isDesktop } = useDevice();
 
         const handleGetLimitsResponse = () => {
             if (isMounted()) setLoading(false);
@@ -131,9 +133,9 @@ const AccountLimits = observer(
                             'da-account-limits--app-settings': is_app_settings,
                         })}
                     >
-                        {should_show_article && isMobile() && <AccountLimitsArticle />}
+                        {should_show_article && !isDesktop && <AccountLimitsArticle />}
                         <div className='da-account-limits__table-wrapper'>
-                            <ThemedScrollbars is_bypassed={!!should_bypass_scrollbars || isMobile()}>
+                            <ThemedScrollbars is_bypassed={!!should_bypass_scrollbars || !isDesktop}>
                                 <table className='da-account-limits__table' data-testid='trading_limit_item_table'>
                                     <thead>
                                         <tr>
@@ -245,7 +247,7 @@ const AccountLimits = observer(
                                 )}
                             </ThemedScrollbars>
                         </div>
-                        {should_show_article && isDesktop() && <AccountLimitsArticle />}
+                        {should_show_article && isDesktop && <AccountLimitsArticle />}
                         {footer_ref && <AccountLimitsFooter />}
                         {is_overlay_shown && overlay_ref && <AccountLimitsOverlay />}
                     </div>

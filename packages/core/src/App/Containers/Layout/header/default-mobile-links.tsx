@@ -7,7 +7,6 @@ import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import ShowNotifications from './show-notifications';
-import TradersHubOnboarding from './traders-hub-onboarding';
 
 const DefaultMobileLinks = React.memo(() => {
     const { client, ui } = useStore();
@@ -36,9 +35,6 @@ const DefaultMobileLinks = React.memo(() => {
 
     return (
         <React.Fragment>
-            <div className='traders-hub-header__menu-right--items--onboarding'>
-                <TradersHubOnboarding />
-            </div>
             <div className='traders-hub-header__menu-right--items--notifications'>
                 <ShowNotifications />
             </div>

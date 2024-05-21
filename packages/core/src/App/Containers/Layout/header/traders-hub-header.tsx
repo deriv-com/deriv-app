@@ -11,7 +11,6 @@ import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.js
 import { BinaryLink } from 'App/Components/Routes';
 import DefaultMobileLinks from './default-mobile-links';
 import ShowNotifications from './show-notifications';
-import TradersHubOnboarding from './traders-hub-onboarding';
 import TradersHubHomeButton from './traders-hub-home-button';
 import DerivShortLogo from './deriv-short-logo';
 
@@ -116,9 +115,6 @@ const TradersHubHeader = observer(() => {
                     <div className='traders-hub-header__menu-right'>
                         <div className='traders-hub-header__divider' />
                         <div className='traders-hub-header__menu-right--items'>
-                            <div className='traders-hub-header__menu-right--items--onboarding'>
-                                <TradersHubOnboarding />
-                            </div>
                             <div className='traders-hub-header__menu-right--items--notifications'>
                                 <ShowNotifications />
                             </div>

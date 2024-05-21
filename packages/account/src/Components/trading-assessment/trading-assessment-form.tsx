@@ -1,7 +1,7 @@
-import clsx from 'clsx';
 import React from 'react';
+import clsx from 'clsx';
 import { observer, useStore } from '@deriv/stores';
-import { Formik, Form, FormikErrors } from 'formik';
+import { Formik, Form, FormikErrors, FormikHelpers } from 'formik';
 import { Button, Modal, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import TradingAssessmentRadioButton from './trading-assessment-radio-buttons';
@@ -16,8 +16,8 @@ type TradingAssessmentFormProps = {
     class_name?: string;
     disabled_items: string[];
     form_value: TTradingAssessmentForm;
-    getCurrentStep: () => number;
-    onSubmit: (values?: TTradingAssessmentForm, action?: React.ReactNode, should_override?: boolean) => void;
+    getCurrentStep?: () => number;
+    onSubmit: (values?: TTradingAssessmentForm, should_override?: boolean) => void;
     onCancel: (form_data: TTradingAssessmentForm) => void;
     onSave?: (current_step: number, values: TTradingAssessmentForm) => void;
     should_move_to_next: boolean;
@@ -49,11 +49,13 @@ const TradingAssessmentForm = observer(
             current_question_index: 0,
             current_question: assessment_questions[stored_items],
         });
-        const [form_data, setFormData] = React.useState({ ...form_value });
+        const [form_data, setFormData] = React.useState<TTradingAssessmentForm>({ ...form_value });
         const last_question_index = assessment_questions.length - 1;
         const should_display_previous_button = is_independent_section
             ? current_question_details.current_question_index !== 0
             : true;
+
+        type TField = keyof typeof form_value;
 
         React.useEffect(() => {
             setCurrentQuestionDetails(prevState => {
@@ -77,8 +79,8 @@ const TradingAssessmentForm = observer(
 
         const displayNextPage = () => {
             if (form_data.risk_tolerance === 'No') {
-                // onSubmit hold reference to a function that takes 3 params - values, action and should_override
-                onSubmit(form_data, null, true);
+                // onSubmit hold reference to a function that takes 2 params - values, should_override
+                onSubmit(form_data, true);
             } else {
                 const next_question = current_question_details.current_question_index + 1;
 
@@ -131,7 +133,10 @@ const TradingAssessmentForm = observer(
         const isAssessmentCompleted = (answers: TTradingAssessmentForm) =>
             Object.values(answers).every(answer => Boolean(answer));
 
-        const nextButtonHandler = (values: TTradingAssessmentForm, { setTouched }) => {
+        const nextButtonHandler = (
+            values: TTradingAssessmentForm,
+            { setTouched }: FormikHelpers<TTradingAssessmentForm>
+        ) => {
             if (is_section_filled) {
                 if (isAssessmentCompleted(values) && stored_items === last_question_index) {
                     onSubmit(values);
@@ -212,7 +217,7 @@ const TradingAssessmentForm = observer(
                             question => question.question_text.length > MAX_QUESTION_TEXT_LENGTH
                         );
                         const is_section_required = Object.keys(values).some(
-                            field => !!errors[field] && !!touched[field]
+                            field => !!errors[field as TField] && !!touched[field as TField]
                         );
 
                         return (

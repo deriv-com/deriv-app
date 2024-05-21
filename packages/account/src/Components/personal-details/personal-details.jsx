@@ -1,4 +1,6 @@
-import { useState, Fragment, useCallback, useMemo, useEffect } from 'react';
+// [TODO] - Convert this to TypeScript
+
+import React, { useState, Fragment, useCallback, useMemo, useEffect } from 'react';
 import clsx from 'clsx';
 import { Form, Formik } from 'formik';
 import { Analytics } from '@deriv-com/analytics';

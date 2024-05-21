@@ -1,5 +1,6 @@
 import { ACCOUNT_V2_ROUTES } from '../constants/routes';
 import { PersonalDetailsForm } from '../containers/PersonalDetailsForm';
+import { ProofOfIncomeForm } from '../containers/ProofOfIncome';
 import { TradingAssessmentForm } from '../containers/TradingAssessmentForm';
 import { FinancialAssessmentForm } from '../modules/src/FinancialAssessment/FinancialAssessmentForm';
 import { POAFormContainer } from '../modules/src/POAForm/POAFormContainer';
@@ -51,7 +52,7 @@ export const routes = [
         routePath: ACCOUNT_V2_ROUTES.ProofOfOwnership,
     },
     {
-        routeComponent: DummyRoute,
+        routeComponent: ProofOfIncomeForm,
         routeName: 'Proof of income',
         routePath: ACCOUNT_V2_ROUTES.ProofOfIncome,
     },

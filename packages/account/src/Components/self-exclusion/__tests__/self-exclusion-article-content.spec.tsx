@@ -18,8 +18,6 @@ describe('<SelfExclusionArticleContent />', () => {
     };
     const descr_text = 'About trading limits and self-exclusion';
     const eu_item = /These limits apply to your multipliers trades only. For example,/;
-    const eu_uk_item =
-        'These trading limits are optional, and you can strengthen them at any time. If you don’t wish to set a specific limit, leave the field blank. If you live in the United Kingdom, Customer Support can only remove or weaken your trading limits after 24 hours of receiving the request. If you live in the Isle of Man, Customer Support can only remove or weaken your trading limits after your trading limit period has expired.';
     const not_app_settings_eu_descr = /We’ll make the adjustments within 24 hours./i;
     const not_app_settings_non_eu_descr = /If you want to adjust your self-exclusion limits,/i;
     const non_eu_item =
@@ -58,7 +56,6 @@ describe('<SelfExclusionArticleContent />', () => {
         expect(screen.getByText(non_eu_item)).toBeInTheDocument();
         expect(screen.queryByText('Done')).not.toBeInTheDocument();
         expect(screen.queryByText(eu_item)).not.toBeInTheDocument();
-        expect(screen.queryByText(eu_uk_item)).not.toBeInTheDocument();
     });
 
     it('should render SelfExclusionArticleContent with items component with button and trigger click EU', () => {
@@ -89,7 +86,6 @@ describe('<SelfExclusionArticleContent />', () => {
         expect(screen.getByText(descr_text)).toBeInTheDocument();
         expect(screen.getByText(eu_item)).toBeInTheDocument();
         expect(screen.getByText(not_app_settings_eu_descr)).toBeInTheDocument();
-        expect(screen.queryByText(eu_uk_item)).not.toBeInTheDocument();
         expect(screen.queryByText(non_eu_item)).not.toBeInTheDocument();
     });
 });

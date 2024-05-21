@@ -11,6 +11,15 @@ jest.mock('../../../../../../../components', () => ({
     )),
 }));
 
+jest.mock('../../../../../provider', () => ({
+    ...jest.requireActual('../../../../../provider'),
+    useTransfer: jest.fn(() => ({
+        exchangeRates: {
+            BTC: 0.1,
+        },
+    })),
+}));
+
 const mockFromAccount = {
     balance: 1000,
     currency: 'USD' as TCurrency,

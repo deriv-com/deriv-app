@@ -30,3 +30,6 @@ test-results/
 playwright-report/
 playwright/.cache/
 .nx
+packages/*/stats.json
+packages/*/report.json
+packages/*/analyzed.html

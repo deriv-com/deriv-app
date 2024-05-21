@@ -2,18 +2,21 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
     useAccountLimits,
     useActiveWalletAccount,
+    useCryptoConfig,
     useCryptoWithdrawal,
     useCurrencyConfig,
     useExchangeRateSubscription,
     usePOA,
     usePOI,
 } from '@deriv/api-v2';
+import { TSocketError } from '@deriv/api-v2/types';
 import { THooks } from '../../../../../types';
 import { TWithdrawalReceipt } from '../types';
 
 export type TWithdrawalCryptoContext = {
     accountLimits: ReturnType<typeof useAccountLimits>['data'];
     activeWallet: ReturnType<typeof useActiveWalletAccount>['data'];
+    cryptoConfig: ReturnType<typeof useCryptoConfig>['data'];
     exchangeRates: Partial<ReturnType<typeof useExchangeRateSubscription>>;
     fractionalDigits: {
         crypto?: number;
@@ -23,14 +26,25 @@ export type TWithdrawalCryptoContext = {
     getConvertedFiatAmount: (cryptoInput: number | string) => string;
     getCurrencyConfig: ReturnType<typeof useCurrencyConfig>['getConfig'];
     isClientVerified: boolean | undefined;
+    isTokenValidationLoading: boolean;
     isWithdrawalSuccess: ReturnType<typeof useCryptoWithdrawal>['isSuccess'];
     onClose: () => void;
     requestCryptoWithdrawal: (values: Parameters<THooks.CryptoWithdrawal>[0]) => void;
+    setError: React.Dispatch<
+        React.SetStateAction<
+            | {
+                  code: string;
+                  message: string;
+              }
+            | undefined
+        >
+    >;
     withdrawalReceipt: TWithdrawalReceipt;
 };
 
 type TWithdrawalCryptoContextProps = {
     onClose: TWithdrawalCryptoContext['onClose'];
+    setError: TWithdrawalCryptoContext['setError'];
     verificationCode: string;
 };
 
@@ -50,14 +64,17 @@ export const useWithdrawalCryptoContext = () => {
 const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryptoContextProps>> = ({
     children,
     onClose,
+    setError,
     verificationCode,
 }) => {
     const { data: accountLimits } = useAccountLimits();
     const { data: activeWallet } = useActiveWalletAccount();
+    const { data: cryptoConfig } = useCryptoConfig();
     const { data: poaStatus } = usePOA();
     const { data: poiStatus } = usePOI();
     const { isSuccess: isWithdrawalSuccess, mutateAsync } = useCryptoWithdrawal();
     const { getConfig } = useCurrencyConfig();
+    const [isTokenValidationLoading, setIsTokenValidationLoading] = useState(true);
     const [withdrawalReceipt, setWithdrawalReceipt] = useState<TWithdrawalReceipt>({});
     const { data: exchangeRates, subscribe, unsubscribe } = useExchangeRateSubscription();
     const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency_config?.fractional_digits;
@@ -72,6 +89,16 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
             });
         return () => unsubscribe();
     }, [activeWallet?.currency, activeWallet?.loginid, subscribe, unsubscribe]);
+
+    useEffect(() => {
+        if (verificationCode) {
+            mutateAsync({ dry_run: 1, verification_code: verificationCode })
+                .catch((error: TSocketError<'cashier'> | null) => {
+                    if (error?.error.code === 'InvalidToken') setError(error?.error);
+                })
+                .finally(() => setIsTokenValidationLoading(false));
+        }
+    }, [mutateAsync, setError, verificationCode]);
 
     const getClientVerificationStatus = () => {
         const isVerified = poaStatus?.is_verified && poiStatus?.is_verified;
@@ -103,19 +130,24 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
             address,
             amount,
             verification_code: verificationCode,
-        }).then(() =>
-            setWithdrawalReceipt({
-                address,
-                amount: amount?.toFixed(activeWallet?.currency_config?.fractional_digits),
-                currency: activeWallet?.currency,
-                landingCompany: activeWallet?.landing_company_name,
-            })
-        );
+        })
+            .then(() =>
+                setWithdrawalReceipt({
+                    address,
+                    amount: amount?.toFixed(activeWallet?.currency_config?.fractional_digits),
+                    currency: activeWallet?.currency,
+                    landingCompany: activeWallet?.landing_company_name,
+                })
+            )
+            .catch((error: TSocketError<'cashier'>) => {
+                setError(error.error);
+            });
     };
 
     const value = {
         accountLimits,
         activeWallet,
+        cryptoConfig,
         exchangeRates: {
             data: exchangeRates,
             subscribe,
@@ -129,9 +161,11 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
         getConvertedFiatAmount,
         getCurrencyConfig: getConfig,
         isClientVerified: getClientVerificationStatus(),
+        isTokenValidationLoading,
         isWithdrawalSuccess,
         onClose,
         requestCryptoWithdrawal,
+        setError,
         withdrawalReceipt,
     };
 

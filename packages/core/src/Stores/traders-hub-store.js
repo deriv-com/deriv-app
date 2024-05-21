@@ -374,13 +374,11 @@ export default class TradersHubStore extends BaseStore {
     getAvailableCFDAccounts() {
         const getAccountDesc = () => {
             return !this.is_eu_user || this.is_demo_low_risk
-                ? localize('This account offers CFDs on financial instruments.')
+                ? localize('CFDs on financial instruments.')
                 : localize('CFDs on derived and financial instruments.');
         };
         const getSwapFreeAccountDesc = () => {
-            return localize(
-                'Trade swap-free CFDs on MT5 with forex, stocks, stock indices, commodities cryptocurrencies, ETFs and synthetic indices.'
-            );
+            return localize('Swap-free CFDs on selected financial and derived instruments.');
         };
 
         const all_available_accounts = [
@@ -560,15 +558,10 @@ export default class TradersHubStore extends BaseStore {
     }
 
     async openDemoCFDAccount(account_type, platform) {
-        const { client, modules, ui } = this.root_store;
-        const { standpoint, createCFDAccount, enableCFDPasswordModal, has_maltainvest_account } = modules.cfd;
+        const { modules } = this.root_store;
+        const { createCFDAccount, enableCFDPasswordModal } = modules.cfd;
 
-        const { openAccountNeededModal } = ui;
-        const { is_eu } = client;
-
-        if (is_eu && !has_maltainvest_account && standpoint?.iom) {
-            openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
-        } else if (platform !== CFD_PLATFORMS.CTRADER) {
+        if (platform !== CFD_PLATFORMS.CTRADER) {
             enableCFDPasswordModal();
         } else {
             await createCFDAccount({ ...account_type, platform });

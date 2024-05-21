@@ -48,11 +48,11 @@ jobs:
         # in GitHub repo → Settings → Secrets → Actions
         CYPRESS_RECORD_KEY: ${{ secrets.E2E_CYPRESS_RECORD_KEY }}
         # Creating a token https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
-        # GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # Set Base Url from client_payload.
         CYPRESS_BASE_URL: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
         # Send PR details to Cypress test run
-        COMMIT_INFO_MESSAGE: PR "${{ github.event.issue_number }}" Changed By "${{ github.event.pull_request.user.login }}" in Branch "${{ github.head_ref }}" (draft? "${{ github.event.pull_request.draft }} )"
+        COMMIT_INFO_MESSAGE: PR "${{ github.event.issue.number }}" Changed By "${{ github.event.issue.user.login }}" in Labels "${{ github.event.issue.lables.name }}" (draft? "${{ github.event.issue.draft }} )"
         # Set login env variables
         E2E_OAUTH_URL: ${{ secrets.E2E_OAUTH_URL }}
         E2E_CONFIG_APPID: ${{ secrets.E2E_CONFIG_APPID }}
@@ -69,7 +69,7 @@ jobs:
         if [[ "${{ job.status }}" == "success" ]]; then
           echo "msg=:rocket: Smoke test run (${{ matrix.containers }}) passed successfully!" >> $GITHUB_OUTPUT
         else
-          echo "msg=:x: Smoke test run (${{ matrix.containers }}) failed. See logs for details: [Visit Action](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}})" >> $GITHUB_OUTPUT
+          # echo "msg=:x: Smoke test run (${{ matrix.containers }}) failed. See logs for details: [Visit Action](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}})" >> $GITHUB_OUTPUT
         fi
         
     - name: Leave comment

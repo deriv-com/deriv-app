@@ -13,6 +13,7 @@ export { default as useAccesiblePlatforms } from './useAccesiblePlatforms';
 export { default as useAvailableMT5Accounts } from './useAvailableMT5Accounts';
 export { default as useAvailableWallets } from './useAvailableWallets';
 export { default as useBalance } from './useBalance';
+export { default as useBalanceSubscription } from './useBalanceSubscription';
 export { default as useCashierValidation } from './useCashierValidation';
 export { default as useCloseDerivAccount } from './useCloseDerivAccount';
 export { default as useCFDAccountsList } from './useCFDAccountsList';
@@ -26,6 +27,7 @@ export { default as useOrderInfo } from './p2p/entity/order/p2p-order/useOrderIn
 export { default as useCountryConfig } from './useCountryConfig';
 export { default as useCreateNewRealAccount } from './useCreateNewRealAccount';
 export { default as useCreateWallet } from './useCreateWallet';
+export { default as useCryptoConfig } from './useCryptoConfig';
 export { default as useCryptoTransactions } from './useCryptoTransactions';
 export { default as useCryptoWithdrawal } from './useCryptoWithdrawal';
 export { default as useCtraderAccountsList } from './useCtraderAccountsList';

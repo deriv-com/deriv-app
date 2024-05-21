@@ -1,13 +1,13 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useStoreWalletAccountsList, useWalletMigration } from '@deriv/hooks';
+import { useWalletMigration } from '@deriv/hooks';
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
-import { observer, useStore } from '@deriv/stores';
 
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
 import ReadyToVerifyModal from './ready-to-verify-modal';
@@ -86,6 +86,7 @@ const InformationSubmittedModal = React.lazy(() =>
 const AppModals = observer(() => {
     const { client, ui, traders_hub, common } = useStore();
     const {
+        has_wallet,
         is_authorize,
         is_logged_in,
         fetchFinancialAssessment,
@@ -131,8 +132,6 @@ const AppModals = observer(() => {
 
     const { is_migrated } = useWalletMigration();
 
-    const { has_wallet } = useStoreWalletAccountsList();
-
     const should_show_wallets_upgrade_completed_modal = localStorage.getItem(
         'should_show_wallets_upgrade_completed_modal'
     );
@@ -144,7 +143,10 @@ const AppModals = observer(() => {
             });
         }
     }, [is_logged_in, is_authorize]);
-    if (temp_session_signup_params && window.location.href.includes(routes.onboarding)) {
+
+    const is_onboarding = window.location.href.includes(routes.onboarding);
+
+    if (temp_session_signup_params && is_onboarding) {
         toggleAccountSignupModal(true);
     } else {
         SessionStore.remove('signup_query_param');
@@ -215,7 +217,7 @@ const AppModals = observer(() => {
         ComponentToLoad = <WalletsUpgradeLogoutModal />;
     }
 
-    if (should_show_effortless_login_modal && !is_tour_open && !is_from_derivgo) {
+    if (should_show_effortless_login_modal && !is_tour_open && !is_from_derivgo && !is_onboarding) {
         ComponentToLoad = <EffortlessLoginModal />;
     }
 

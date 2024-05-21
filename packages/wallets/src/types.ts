@@ -28,6 +28,7 @@ import type {
     useTransferBetweenAccounts,
     useWalletAccountsList,
 } from '@deriv/api-v2';
+import { IconTypes } from '@deriv/quill-icons';
 
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace THooks {
@@ -37,6 +38,7 @@ export namespace THooks {
     export type Authorize = NonNullable<ReturnType<typeof useAuthorize>['data']>;
     export type CreateWallet = NonNullable<ReturnType<typeof useCreateWallet>['data']>;
     export type CreateMT5Account = NonNullable<ReturnType<typeof useCreateMT5Account>['data']>;
+    export type CreateOtherCFDAccount = NonNullable<ReturnType<typeof useCreateOtherCFDAccount>['data']>;
     export type CtraderAccountsList = NonNullable<ReturnType<typeof useCtraderAccountsList>['data']>[number];
     export type DxtradeAccountsList = NonNullable<ReturnType<typeof useDxtradeAccountsList>['data']>[number];
     export type ExchangeRate = NonNullable<ReturnType<typeof useExchangeRateSubscription>['data']>;
@@ -100,3 +102,5 @@ export type TWalletLandingCompanyName =
 export type TMT5LandingCompanyName = THooks.MT5AccountsList['landing_company_short'];
 
 export type TWalletCarouselItem = Omit<THooks.AllWalletAccounts, 'landing_company_name'>;
+
+export type TIconTypes = Record<string, IconTypes>;

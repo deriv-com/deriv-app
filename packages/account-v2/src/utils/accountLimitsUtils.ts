@@ -117,7 +117,6 @@ export const getAccountLimitValues = (accountLimits: GetLimits, currency: TCurre
         remainder,
         withdrawal_since_inception_monetary: withdrawalSinceInceptionMonetary,
     } = accountLimits;
-
     return [
         ...getTradingLimitsTableData(currency, payout, openPositions, accountBalance),
         ...getMaximumDailyLimiitsTableData(marketSpecific, currency),

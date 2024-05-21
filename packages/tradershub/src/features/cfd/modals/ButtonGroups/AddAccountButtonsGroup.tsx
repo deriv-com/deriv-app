@@ -1,9 +1,9 @@
 import React from 'react';
 import { ButtonGroup } from '@/components';
-import { useQueryParams } from '@/hooks';
+import { useHandleSendEmail, useQueryParams } from '@/hooks';
 import { useCFDContext } from '@/providers';
 import { Button } from '@deriv-com/ui';
-import { PlatformDetails } from '../../constants';
+import { CFDPlatforms } from '../../constants';
 import DxtradeCreateAccountButton from '../DxtradePasswordModal/DxtradeCreateAccountButton';
 import MT5CreateAccountButton from '../MT5PasswordModal/MT5CreateAccountButton';
 
@@ -13,20 +13,24 @@ type TAddAccountButtonsGroupProps = {
 
 const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
     const { cfdState } = useCFDContext();
-    const { platform } = cfdState;
+    const { platform = CFDPlatforms.MT5 } = cfdState;
     const { openModal } = useQueryParams();
+    const { handleSendEmail } = useHandleSendEmail();
+
+    const handleForgotPassword = () => {
+        handleSendEmail();
+        openModal('SentEmailContentModal');
+    };
 
     return (
         <ButtonGroup className='justify-end w-full'>
-            <Button color='black' onClick={() => openModal('SentEmailContentModal')} variant='outlined'>
+            <Button color='black' onClick={handleForgotPassword} variant='outlined'>
                 Forgot password?
             </Button>
-            {platform === PlatformDetails.dxtrade.platform && (
+            {platform === CFDPlatforms.DXTRADE && (
                 <DxtradeCreateAccountButton buttonText='Add account' password={password} />
             )}
-            {platform === PlatformDetails.mt5.platform && (
-                <MT5CreateAccountButton buttonText='Add account' password={password} />
-            )}
+            {platform === CFDPlatforms.MT5 && <MT5CreateAccountButton buttonText='Add account' password={password} />}
         </ButtonGroup>
     );
 };

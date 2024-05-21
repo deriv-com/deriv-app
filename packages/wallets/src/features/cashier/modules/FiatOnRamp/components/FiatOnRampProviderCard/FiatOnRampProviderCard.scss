@@ -66,4 +66,13 @@
             justify-content: space-evenly;
         }
     }
+
+    &__payment-icon {
+        height: 4rem;
+        width: 6.4rem;
+        * {
+            height: inherit;
+            width: inherit;
+        }
+    }
 }

@@ -1,21 +1,35 @@
 import React from 'react';
-import { Text, DesktopWrapper, MobileWrapper, Tabs, Icon } from '@deriv/components';
-import { ContentFlag } from '@deriv/shared';
+import { Text, DesktopWrapper, MobileWrapper, Tabs, Icon, Loading } from '@deriv/components';
+import { ContentFlag, makeLazyLoader, moduleLoader } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import { useFeatureFlags, useWalletMigration } from '@deriv/hooks';
 import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
-import WalletsBanner from 'Components/wallets-banner';
+import BookBanner from 'Components/banners/book-banner';
 import AccountTypeDropdown from './account-type-dropdown';
 import AssetSummary from './asset-summary';
 import RegulatorSwitcher from './regulators-switcher';
 import './main-title-bar.scss';
 
+const WalletsBanner = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () => import(/* webpackChunkName: "Components_wallets-banner" */ 'Components/banners/wallets-banner')
+        ),
+    () => <Loading />
+)();
+
 const MainTitleBar = () => {
     const { traders_hub, client } = useStore();
-    const { selected_region, handleTabItemClick, toggleRegulatorsCompareModal, content_flag } = traders_hub;
     const { is_landing_company_loaded, is_switching } = client;
+    const { state: wallet_migration_state } = useWalletMigration();
+    const { selected_region, handleTabItemClick, toggleRegulatorsCompareModal, content_flag } = traders_hub;
+    const { is_next_wallet_enabled } = useFeatureFlags();
+
     const is_low_risk_cr_real_account =
         content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
+    const show_wallets_banner =
+        is_next_wallet_enabled && wallet_migration_state && wallet_migration_state !== 'ineligible';
 
     const [active_index, setActiveIndex] = React.useState(0);
     React.useEffect(() => {
@@ -24,7 +38,8 @@ const MainTitleBar = () => {
 
     return (
         <React.Fragment>
-            <WalletsBanner />
+            <BookBanner />
+            {show_wallets_banner && <WalletsBanner />}
             <DesktopWrapper>
                 <div className='main-title-bar'>
                     <div className='main-title-bar__right'>

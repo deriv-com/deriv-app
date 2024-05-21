@@ -1,11 +1,9 @@
 import { useCallback, useMemo } from 'react';
 import useWebsiteStatus from './useWebsiteStatus';
-import useCryptoConfig from './useCryptoConfig';
 
 /** A custom hook to get the currency config information from `website_status` endpoint and `crypto_config` endpoint. */
 const useCurrencyConfig = () => {
-    const { data: website_status_data, isLoading: isWebsiteStatusLoading, ...rest } = useWebsiteStatus();
-    const { data: crypto_config_data, isLoading: isCryptConfigLoading } = useCryptoConfig();
+    const { data: website_status_data, ...rest } = useWebsiteStatus();
 
     // Add additional information to the currency config.
     const modified_currencies_config = useMemo(() => {
@@ -68,21 +66,13 @@ const useCurrencyConfig = () => {
         });
     }, [website_status_data?.website_status?.currencies_config]);
 
-    // Add additional information to the crypto config.
-    const modified_crypto_config = useMemo(() => {
-        return modified_currencies_config?.map(currency_config => ({
-            ...currency_config,
-            ...crypto_config_data?.crypto_config?.currencies_config[currency_config.code],
-        }));
-    }, [crypto_config_data?.crypto_config?.currencies_config, modified_currencies_config]);
-
     // Transform the currency config array into a record object.
     const transformed_currencies_config = useMemo(() => {
-        return modified_crypto_config?.reduce<Record<string, typeof modified_crypto_config[number]>>(
+        return modified_currencies_config?.reduce<Record<string, typeof modified_currencies_config[number]>>(
             (previous, current) => ({ ...previous, [current.code]: current }),
             {}
         );
-    }, [modified_crypto_config]);
+    }, [modified_currencies_config]);
 
     const getConfig = useCallback(
         (currency: string) => transformed_currencies_config?.[currency],
@@ -94,7 +84,6 @@ const useCurrencyConfig = () => {
         data: transformed_currencies_config,
         /** Returns the currency config object for the given currency */
         getConfig,
-        isLoading: isWebsiteStatusLoading || isCryptConfigLoading,
         ...rest,
     };
 };

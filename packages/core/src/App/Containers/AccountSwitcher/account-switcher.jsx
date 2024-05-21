@@ -33,8 +33,6 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         accounts,
         account_type,
         account_list,
-        residence: client_residence,
-        country_standpoint,
         currency,
         is_eu,
         is_landing_company_loaded,
@@ -43,7 +41,6 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         is_logged_in,
         is_virtual,
         has_fiat,
-        landing_company_shortcode,
         mt5_login_list,
         obj_total_balance,
         switchAccount,
@@ -151,20 +148,9 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         return !is_virtual;
     };
 
-    const is_regulated_able_to_change_currency =
-        show_eu_related_content &&
-        (landing_company_shortcode === 'malta' ||
-            (landing_company_shortcode === 'iom' && upgradeable_landing_companies.length !== 0));
-
     // SVG clients can't upgrade.
     const getRemainingRealAccounts = () => {
-        if (
-            show_eu_related_content ||
-            is_virtual ||
-            !canOpenMulti() ||
-            is_regulated_able_to_change_currency ||
-            is_low_risk
-        ) {
+        if (show_eu_related_content || is_virtual || !canOpenMulti() || is_low_risk) {
             return upgradeable_landing_companies;
         }
         return [];
@@ -235,7 +221,6 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                                     balance={accounts[account.loginid].balance}
                                     currency={accounts[account.loginid].currency}
                                     currency_icon={`IcCurrency-${account.icon}`}
-                                    country_standpoint={country_standpoint}
                                     display_type={'currency'}
                                     has_balance={'balance' in accounts[account.loginid]}
                                     has_reset_balance={canResetBalance(accounts[account_loginid])}
@@ -282,7 +267,6 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                                                 balance={accounts[account.loginid].balance}
                                                 currency={accounts[account.loginid].currency}
                                                 currency_icon={`IcCurrency-${account.icon}`}
-                                                country_standpoint={country_standpoint}
                                                 display_type={'currency'}
                                                 has_balance={'balance' in accounts[account.loginid]}
                                                 is_disabled={account.is_disabled}
@@ -305,11 +289,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                                         <div key={index} className='acc-switcher__new-account'>
                                             <Icon icon='IcDeriv' size={24} />
                                             <Text size='xs' color='general' className='acc-switcher__new-account-text'>
-                                                {getAccountTitle(
-                                                    account,
-                                                    { account_residence: client_residence },
-                                                    country_standpoint
-                                                )}
+                                                {getAccountTitle(account)}
                                             </Text>
                                             <Button
                                                 id='dt_core_account-switcher_add-new-account'
@@ -358,7 +338,6 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                                             balance={accounts[account.loginid].balance}
                                             currency={accounts[account.loginid].currency}
                                             currency_icon={`IcCurrency-${account.icon}`}
-                                            country_standpoint={country_standpoint}
                                             display_type={'currency'}
                                             has_balance={'balance' in accounts[account.loginid]}
                                             is_disabled={account.is_disabled}
@@ -381,11 +360,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                                     <div key={index} className='acc-switcher__new-account'>
                                         <Icon icon='IcDeriv' size={24} />
                                         <Text size='xs' color='general' className='acc-switcher__new-account-text'>
-                                            {getAccountTitle(
-                                                account,
-                                                { account_residence: client_residence },
-                                                country_standpoint
-                                            )}
+                                            {getAccountTitle(account)}
                                         </Text>
                                         <Button
                                             id='dt_core_account-switcher_add-new-account'

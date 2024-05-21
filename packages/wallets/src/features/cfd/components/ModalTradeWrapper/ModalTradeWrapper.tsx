@@ -81,6 +81,7 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                     </div>
                 );
             }}
+            shouldAllowOverflow
             shouldFixedFooter={isDesktop}
             title='Trade'
         >

@@ -6,6 +6,10 @@
     @include desktop {
         max-height: calc(var(--wallets-vh, 1vh) * 100 - 10rem);
         overflow: auto;
+
+        &--allow-overflow {
+            overflow: visible;
+        }
     }
 
     @include mobile {

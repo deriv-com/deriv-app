@@ -1,7 +1,13 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import WithdrawalErrorScreen from '../WithdrawalErrorScreen';
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: jest.fn(),
+}));
 
 describe('WithdrawalErrorScreen', () => {
     let resetError: jest.Mock, setResendEmail: jest.Mock;
@@ -114,6 +120,37 @@ describe('WithdrawalErrorScreen', () => {
         expect(screen.getByText('Maintenance in progress')).toBeInTheDocument();
         expect(screen.getByText('Crypto Connection Error')).toBeInTheDocument();
         expect(screen.queryByText('Try again')).not.toBeInTheDocument();
+    });
+
+    it('should show correct withdrawal error screen for crypto age limit verified error', () => {
+        const error = {
+            code: 'CryptoLimitAgeVerified',
+            message: 'Crypto Limit Age Verified Error',
+        };
+
+        render(<WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />);
+
+        expect(screen.getByText('Error')).toBeInTheDocument();
+        expect(screen.getByText('Crypto Limit Age Verified Error')).toBeInTheDocument();
+        expect(screen.queryByText('Verify identity')).toBeInTheDocument();
+    });
+
+    it('should show redirect the user to the account/proof-of-identity when the user clicks on `Verify identity` after receiving crypto age limit verified error', () => {
+        const mockHistoryPush = jest.fn();
+        (useHistory as jest.Mock).mockReturnValueOnce({
+            push: mockHistoryPush,
+        });
+        const error = {
+            code: 'CryptoLimitAgeVerified',
+            message: 'Crypto Limit Age Verified Error',
+        };
+
+        render(<WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />);
+
+        const verifyIdentityButton = screen.getByText('Verify identity');
+        userEvent.click(verifyIdentityButton);
+
+        expect(mockHistoryPush).toBeCalledWith('/account/proof-of-identity');
     });
 
     it('should reload page when the user clicks on `Try again` button', () => {

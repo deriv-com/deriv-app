@@ -2753,28 +2753,25 @@ export default class ClientStore extends BaseStore {
     setShouldShowEffortlessLoginModal(should_show_effortless_login_modal = true) {
         this.should_show_effortless_login_modal = should_show_effortless_login_modal;
     }
+
     async fetchShouldShowEffortlessLoginModal() {
-        if (this.is_passkey_supported) {
+        if (this.is_passkey_supported && this.root_store.ui.is_mobile && this.is_logged_in && this.is_authorize) {
             try {
                 const stored_value = localStorage.getItem('show_effortless_login_modal');
                 const show_effortless_login_modal = stored_value === null || JSON.parse(stored_value) === true;
+
                 if (show_effortless_login_modal) {
                     localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
-                }
 
-                const data = await WS.authorized.send({ passkeys_list: 1 });
+                    const data = await WS.authorized.send({ passkeys_list: 1 });
 
-                if (data?.passkeys_list) {
-                    const should_show_effortless_login_modal =
-                        this.root_store.ui.is_mobile &&
-                        !data?.passkeys_list?.length &&
-                        this.is_passkey_supported &&
-                        show_effortless_login_modal &&
-                        this.is_logged_in;
+                    if (data?.passkeys_list) {
+                        const should_show_effortless_login_modal = !data?.passkeys_list?.length;
 
-                    this.setShouldShowEffortlessLoginModal(should_show_effortless_login_modal);
-                } else {
-                    this.setShouldShowEffortlessLoginModal(false);
+                        this.setShouldShowEffortlessLoginModal(should_show_effortless_login_modal);
+                    } else {
+                        this.setShouldShowEffortlessLoginModal(false);
+                    }
                 }
             } catch (e) {
                 //error handling needed

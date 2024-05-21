@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useFormikContext } from 'formik';
 import { useHover } from 'usehooks-ts';
 import { Tooltip, WalletCheckbox, WalletsPriorityCryptoWithdrawLoader } from '../../../../../../../../components';
-import InfoIcon from '../../../../../../../../public/images/ic-checkmark.svg';
+import InfoIcon from '../../../../../../../../public/images/ic-info-outline.svg';
 import { useWithdrawalCryptoContext } from '../../../../provider';
 import { WithdrawalCryptoPriorityFeeInfo } from '../WithdrawalCryptoPriorityFeeInfo';
 import './WithdrawalCryptoPriority.scss';

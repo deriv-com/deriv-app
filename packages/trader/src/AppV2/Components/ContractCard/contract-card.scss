@@ -1,0 +1,148 @@
+// TODO: Utilize tokens from quill and logical css properties;
+.contract-card {
+    position: relative;
+    display: flex;
+    width: 100%;
+    cursor: pointer;
+    background-color: var(--component-modal-bg);
+    padding: var(--semantic-spacing-general-md);
+    justify-content: space-between;
+    height: 10.4rem;
+    transform: translateX(0);
+    transition: transform var(--motion-duration-snappy) var(--motion-easing-inandout);
+
+    .icon,
+    .dc-icon {
+        position: relative;
+        display: flex;
+        flex-shrink: 0;
+        justify-content: center;
+        align-items: center;
+        width: var(--core-size-1600);
+        height: var(--core-size-1600);
+        cursor: pointer;
+    }
+    .body {
+        display: flex;
+        flex-direction: column;
+        gap: var(--semantic-spacing-gap-md);
+    }
+    .body,
+    .title {
+        min-width: 0;
+        flex-grow: 1;
+    }
+    .details,
+    .status-and-profit,
+    &-duration {
+        display: flex;
+        gap: 0.8rem;
+        align-items: center;
+    }
+    &-duration {
+        background-color: color-mix(in sRGB, var(--component-textIcon-normal-default) 4%, transparent);
+        height: 2.4rem;
+        padding: 0 0.8rem;
+        border-radius: var(--semantic-borderRadius-sm);
+    }
+    .status-and-profit {
+        justify-content: space-between;
+    }
+    .title {
+        display: flex;
+        flex-direction: column;
+    }
+    .trade-type,
+    .symbol {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        &__icon {
+            padding: 0.4rem;
+        }
+    }
+    .symbol,
+    .stake {
+        color: var(--component-textIcon-normal-subtle);
+    }
+    .stake {
+        align-self: flex-end;
+    }
+    .buttons {
+        display: flex;
+        align-self: center;
+        justify-content: flex-end;
+        flex-shrink: 0;
+        width: fit-content;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        transform: translateX(100%);
+
+        button {
+            width: var(--core-size-3600);
+            height: 100%;
+
+            p {
+                color: var(--core-color-solid-slate-50);
+            }
+
+            &:disabled {
+                background-color: var(--core-color-opacity-black-200);
+
+                p {
+                    color: var(--component-textIcon-normal-disabled);
+                }
+            }
+        }
+    }
+    &.lost {
+        .total-profit {
+            color: var(--core-color-solid-red-600);
+        }
+        button:not(:disabled) {
+            background-color: var(--core-color-solid-cherry-700);
+        }
+    }
+    &.won {
+        .total-profit {
+            color: var(--core-color-solid-green-600);
+        }
+        button:not(:disabled) {
+            background-color: var(--core-color-solid-emerald-700);
+        }
+    }
+    &.show-buttons {
+        transform: translateX(calc(var(--core-size-3600) * -1));
+
+        &--has-cancel-button {
+            transform: translateX(calc(var(--core-size-3600) * -2));
+        }
+    }
+    &-wrapper {
+        position: relative;
+        width: inherit;
+        overflow: hidden;
+        max-height: 10.4rem; // equal to __item's height of 104px, must be an exact value for for item deletion transition to work
+        box-shadow: var(--core-elevation-shadow-130);
+        border-radius: var(--semantic-borderRadius-md);
+
+        &.deleted {
+            opacity: var(--core-opacity-50);
+            max-height: 0;
+            transition: max-height var(--core-motion-duration-200), opacity var(--core-motion-duration-200);
+            transition-timing-function: var(--motion-easing-inandout);
+        }
+    }
+    &-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        width: inherit;
+        padding: 0.8rem;
+        overflow: hidden;
+    }
+}

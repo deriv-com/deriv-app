@@ -9,6 +9,7 @@ import Trade from './Containers/Trade';
 import Markets from './Containers/Markets';
 import Positions from './Containers/Positions';
 import Menu from './Containers/Menu';
+import { ReportsStoreProvider } from '../../../reports/src/Stores/useReportsStores';
 import 'Sass/app.scss';
 import '@deriv-com/quill-tokens/dist/quill.css';
 
@@ -29,14 +30,16 @@ const App = ({ passthrough }: Apptypes) => {
 
     return (
         <TraderProviders store={root_store}>
-            <ModulesProvider store={root_store}>
-                <BottomNav selectedItemIdx={currentPageIdx} setSelectedItemIdx={setCurrentPageIdx}>
-                    <Trade />
-                    <Markets />
-                    <Positions onRedirectToTrade={() => setCurrentPageIdx(0)} />
-                    <Menu />
-                </BottomNav>
-            </ModulesProvider>
+            <ReportsStoreProvider>
+                <ModulesProvider store={root_store}>
+                    <BottomNav selectedItemIdx={currentPageIdx} setSelectedItemIdx={setCurrentPageIdx}>
+                        <Trade />
+                        <Markets />
+                        <Positions onRedirectToTrade={() => setCurrentPageIdx(0)} />
+                        <Menu />
+                    </BottomNav>
+                </ModulesProvider>
+            </ReportsStoreProvider>
         </TraderProviders>
     );
 };

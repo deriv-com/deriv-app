@@ -1,42 +1,32 @@
 import React from 'react';
 import EmptyMessage from 'AppV2/Components/EmptyMessage';
 import { TEmptyMessageProps } from 'AppV2/Components/EmptyMessage/empty-message';
+import { TPortfolioPosition } from '@deriv/stores/types';
+import { ContractCardList } from 'AppV2/Components/ContractCard';
 import Filter from 'AppV2/Components/Filter';
-import { isHighLow } from '@deriv/shared';
-import { TClosedPositions } from './positions';
+import type { TContractCardListProps } from 'AppV2/Components/ContractCard/contract-card-list';
+import { Loading } from '@deriv/components';
 
-type TPositionsContentProps = Omit<TEmptyMessageProps, 'noMatchesFound'> & {
-    noMatchesFound?: boolean;
-    positions?: TClosedPositions;
-    setContractTypeFilter: React.Dispatch<React.SetStateAction<string[]>>;
-    contractTypeFilter: string[] | [];
-};
-
-//TODO: Implement contract card
-const ContractCard = ({
-    contractType,
-    purchaseTime,
-    shortcode,
-}: {
-    contractType?: string;
-    purchaseTime?: number;
-    shortcode?: string;
-}) => (
-    <div className='contract-card'>
-        <div>{contractType}</div>
-        <div>{purchaseTime}</div>
-        <div>{`${isHighLow({ shortcode }) ? 'High/Low' : 'Rise/Fall'}`}</div>
-    </div>
-);
+type TPositionsContentProps = Omit<TEmptyMessageProps, 'noMatchesFound'> &
+    Pick<TContractCardListProps, 'currency' | 'onClickCancel' | 'onClickSell'> & {
+        contractTypeFilter: string[] | [];
+        isLoading?: boolean;
+        noMatchesFound?: boolean;
+        positions?: TPortfolioPosition[];
+        setContractTypeFilter: React.Dispatch<React.SetStateAction<string[]>>;
+    };
 
 const PositionsContent = ({
+    contractTypeFilter,
     isClosedTab,
+    isLoading,
     noMatchesFound,
     onRedirectToTrade,
     positions = [],
     setContractTypeFilter,
-    contractTypeFilter,
+    ...rest
 }: TPositionsContentProps) => {
+    if (isLoading) return <Loading />;
     return (
         <div className={`positions-page__${isClosedTab ? 'closed' : 'open'}`}>
             <div className='positions-page__container'>
@@ -47,16 +37,7 @@ const PositionsContent = ({
                 )}
             </div>
             {positions.length ? (
-                <React.Fragment>
-                    {positions.map(({ contract_type, purchase_time, shortcode }) => (
-                        <ContractCard
-                            contractType={contract_type}
-                            purchaseTime={purchase_time}
-                            shortcode={shortcode}
-                            key={purchase_time}
-                        />
-                    ))}
-                </React.Fragment>
+                <ContractCardList positions={positions} {...rest} />
             ) : (
                 <EmptyMessage
                     isClosedTab={isClosedTab}

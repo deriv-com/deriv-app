@@ -71,7 +71,7 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages }:
                 {feedback?.warning && !has_error && (
                     <Field
                         className='dc-password-meter__warning'
-                        message={localize(warningMessages[feedback.warning])}
+                        message={localize(warningMessages[feedback.warning as keyof typeof warningMessages])}
                         type='error'
                     />
                 )}

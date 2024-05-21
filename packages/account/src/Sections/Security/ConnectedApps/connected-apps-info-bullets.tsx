@@ -1,7 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { CONNECTED_APPS_INFO_BULLETS } from 'Constants/connected-apps-config';
 
 type TConnectedAppsInfoBulletsProps = {
@@ -10,10 +11,9 @@ type TConnectedAppsInfoBulletsProps = {
 };
 
 const ConnectedAppsInfoBullets = observer(({ class_name, text_color }: TConnectedAppsInfoBulletsProps) => {
-    const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { isDesktop } = useDevice();
 
-    const text_size = is_mobile ? 'xxxs' : 'xxs';
+    const text_size = isDesktop ? 'xxs' : 'xxxs';
 
     return (
         <Text

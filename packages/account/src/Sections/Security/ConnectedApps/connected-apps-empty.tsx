@@ -1,14 +1,14 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import ConnectedAppsInfoBullets from './connected-apps-info-bullets';
 
 const ConnectedAppsEmpty = observer(() => {
-    const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { isDesktop } = useDevice();
 
-    const text_size = is_mobile ? 'xxs' : 'xs';
+    const text_size = isDesktop ? 'xs' : 'xxs';
 
     return (
         <div className='connected-apps__empty--wrapper'>

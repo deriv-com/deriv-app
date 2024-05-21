@@ -1,4 +1,3 @@
-export * from './CTraderTradeModal';
 export * from './DxtradeEnterPasswordModal';
 export * from './JurisdictionModal';
 export * from './MT5AccountTypeModal';

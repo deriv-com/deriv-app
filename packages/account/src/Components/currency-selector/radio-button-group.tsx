@@ -6,8 +6,8 @@ export type TRadioButtonGroup = {
     is_fiat?: boolean;
     is_title_enabled?: boolean;
     item_count: number;
-    label: string;
-    description: React.ReactNode;
+    label?: string;
+    description?: React.ReactNode;
 };
 
 /**

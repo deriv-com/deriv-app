@@ -11,13 +11,10 @@ jest.mock('@deriv/translations', () => {
     };
 });
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
-    return {
-        ...original_module,
-        Icon: jest.fn(() => <div>Flag Icon</div>),
-    };
-});
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    TranslationFlag: { lang_1: <div>Language 1 Flag</div> },
+}));
 
 describe('LanguageRadioButton', () => {
     const mock_props: TLanguageRadioButton = {
@@ -31,8 +28,8 @@ describe('LanguageRadioButton', () => {
     it('should render active LanguageRadioButton', () => {
         render(<LanguageRadioButton {...mock_props} />);
 
-        expect(screen.getByText('Flag Icon')).toBeInTheDocument();
         expect(screen.getByText('Test Lang 1')).toBeInTheDocument();
+        expect(screen.getByText('Language 1 Flag')).toBeInTheDocument();
         expect(screen.getByTestId('dt_language_settings_button')).toHaveClass(
             'settings-language__language-link--active'
         );
@@ -43,8 +40,8 @@ describe('LanguageRadioButton', () => {
 
         render(<LanguageRadioButton {...mock_props} />);
 
-        expect(screen.getByText('Flag Icon')).toBeInTheDocument();
         expect(screen.getByText('Test Lang 1')).toBeInTheDocument();
+        expect(screen.getByText('Language 1 Flag')).toBeInTheDocument();
         expect(screen.getByTestId('dt_language_settings_button')).not.toHaveClass(
             'settings-language__language-link--active'
         );

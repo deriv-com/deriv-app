@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, Icon } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import classNames from 'classnames';
 import { getAllowedLanguages } from '@deriv/translations';
+import { TranslationFlag } from '@deriv/shared';
 
 export type TLanguageRadioButton = {
     is_current_language: boolean;
@@ -31,10 +32,11 @@ const LanguageRadioButton = ({ is_current_language, id, language_code, name, onC
             />
             <label htmlFor={id} className='settings-language__language--center-label'>
                 <div>
-                    <Icon
-                        icon={`IcFlag${id.replace('_', '-')}`}
-                        className='settings-language__language-link-flag settings-language__language-flag'
-                    />
+                    {TranslationFlag[language_code] ? (
+                        TranslationFlag[language_code]
+                    ) : (
+                        <Icon icon={`IcFlag${id}`} className='settings-language__language-flag' />
+                    )}
                 </div>
                 <div>
                     <Text

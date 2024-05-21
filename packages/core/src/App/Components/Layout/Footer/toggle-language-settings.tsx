@@ -5,6 +5,7 @@ import { Icon, Modal, Popover, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import 'Sass/app/modules/settings.scss';
 import LanguageSettings from '../../../Containers/SettingsModal/settings-language';
+import { TranslationFlag } from '@deriv/shared';
 
 const ToggleLanguageSettings = observer(() => {
     const { common, ui } = useStore();
@@ -24,12 +25,17 @@ const ToggleLanguageSettings = observer(() => {
                 className={toggle_settings_class}
             >
                 <Popover alignment='top' message={localize('Language')} zIndex='9999'>
-                    <Icon
-                        icon={`IcFlag${current_language.replace('_', '-')}`}
-                        data_testid='dt_icon'
-                        className='ic-settings-language__icon'
-                        size={18}
-                    />
+                    {TranslationFlag[current_language] ? (
+                        TranslationFlag[current_language]
+                    ) : (
+                        <Icon
+                            icon={`IcFlag${current_language}`}
+                            data_testid='dt_icon'
+                            className='ic-settings-language__icon'
+                            size={18}
+                        />
+                    )}
+
                     <Text weight='bold' size='xxs'>
                         <Localize i18n_default_text={current_language} />
                     </Text>

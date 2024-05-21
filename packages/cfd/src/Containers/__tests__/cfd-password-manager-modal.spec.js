@@ -22,19 +22,6 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     useWS: () => undefined,
 }));
 
-jest.mock('@contentpass/zxcvbn', () => ({
-    ...jest.requireActual('@contentpass/zxcvbn'),
-    lib: {
-        zxcvbn: jest.fn(() => ({
-            score: 0,
-            feedback: {
-                warning: '',
-                suggestions: [],
-            },
-        })),
-    },
-}));
-
 const validPasswordMock = value => /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]+/.test(value);
 
 const validLengthMock = (value, options) =>

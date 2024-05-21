@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, render, act, fireEvent, waitForElementToBeRemoved, waitFor } from '@testing-library/react';
+import { screen, render, act, fireEvent, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { ResetTradingPasswordModal } from '../reset-trading-password-modal';
@@ -30,7 +30,6 @@ jest.mock('react-router-dom', () => ({
 }));
 
 const interactWithPasswordField = async (trigger_click = true) => {
-    await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
     fireEvent.change(screen.getByLabelText('Deriv MT5 password', { selector: 'input' }), {
         target: { value: 'hN795jCWkDtPy5@' },
     });
@@ -177,7 +176,6 @@ describe('<ResetTradingPasswordModal/>', () => {
                 <ResetTradingPasswordModal {...props} />
             </Router>
         );
-        await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
         fireEvent.click(screen.getByRole('button', { name: /Cancel/i }));
 
         await waitFor(() => {

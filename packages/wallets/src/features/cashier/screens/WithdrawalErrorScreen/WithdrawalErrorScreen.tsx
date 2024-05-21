@@ -41,8 +41,8 @@ const WithdrawalErrorScreen: React.FC<TProps> = ({ error, resetError, setResendE
             buttonVariant: 'contained',
             message: 'The verification link you used is invalid or expired. Please request for a new one.',
             onClick: () => {
-                resetError && resetError();
-                setResendEmail && setResendEmail(true);
+                resetError?.();
+                setResendEmail?.(true);
             },
             title: 'Email verification failed',
         },

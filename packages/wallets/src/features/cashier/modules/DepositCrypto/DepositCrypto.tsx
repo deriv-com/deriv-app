@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useAuthorize, useDepositCryptoAddress } from '@deriv/api-v2';
+import { Loader } from '../../../../components';
 import { Divider } from '../../../../components/Base';
+import { isServerError } from '../../../../utils/utils';
+import { DepositErrorScreen } from '../../screens';
 import { TransactionStatus } from '../TransactionStatus';
 import DepositCryptoAddress from './components/DepositCryptoAddress/DepositCryptoAddress';
 import DepositCryptoCurrencyDetails from './components/DepositCryptoCurrencyDetails/DepositCryptoCurrencyDetails';
@@ -8,12 +12,27 @@ import DepositCryptoTryFiatOnRamp from './components/DepositCryptoTryFiatOnRamp/
 import './DepositCrypto.scss';
 
 const DepositCrypto = () => {
+    const { isSuccess: isAuthorizeSuccess } = useAuthorize();
+    const { data: depositCryptoAddress, error, isLoading, mutate: mutateDepositCrypto } = useDepositCryptoAddress();
+
+    useEffect(() => {
+        if (isAuthorizeSuccess) {
+            mutateDepositCrypto();
+        }
+    }, [isAuthorizeSuccess, mutateDepositCrypto]);
+
+    if (isLoading) return <Loader />;
+
+    if (isServerError(error?.error)) {
+        return <DepositErrorScreen error={error?.error} />;
+    }
+
     return (
         <div className='wallets-deposit-crypto'>
             <div className='wallets-deposit-crypto__side-pane' />
             <div className='wallets-deposit-crypto__main-content'>
                 <DepositCryptoCurrencyDetails />
-                <DepositCryptoAddress />
+                <DepositCryptoAddress depositCryptoAddress={depositCryptoAddress} isLoading={isLoading} />
                 <DepositCryptoDisclaimers />
                 <Divider />
                 <DepositCryptoTryFiatOnRamp />

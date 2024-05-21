@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { TSocketError } from '@deriv/api-v2/types';
 import { WalletsErrorScreen } from '../../../../components';
 import { CryptoDepositErrorCodes } from '../../../../constants/errorCodes';
 import './DepositErrorScreen.scss';
 
 type TProps = {
-    currency?: string;
     error: TSocketError<'cashier'>['error'];
 };
 
@@ -20,7 +20,10 @@ type TErrorContent = {
 
 type TErrorCodeHandlers = Record<string, TErrorContent>;
 
-const DepositErrorScreen: React.FC<TProps> = ({ currency, error }) => {
+const DepositErrorScreen: React.FC<TProps> = ({ error }) => {
+    const { data } = useActiveWalletAccount();
+    const currency = data?.currency;
+
     const defaultContent: TErrorContent = {
         buttonText: 'Try again',
         message: error.message,

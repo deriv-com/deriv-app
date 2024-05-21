@@ -1,21 +1,17 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import QRCode from 'qrcode.react';
-import { useAuthorize, useDepositCryptoAddress } from '@deriv/api-v2';
 import { WalletsDepositCryptoAddressLoader } from '../../../../../../components';
 import { WalletClipboard, WalletText } from '../../../../../../components/Base';
 import useDevice from '../../../../../../hooks/useDevice';
 import './DepositCryptoAddress.scss';
 
-const DepositCryptoAddress = () => {
-    const { data: depositCryptoAddress, isLoading, mutate } = useDepositCryptoAddress();
-    const { isSuccess: isAuthorizeSuccess } = useAuthorize();
-    const { isMobile } = useDevice();
+type TProps = {
+    depositCryptoAddress?: string;
+    isLoading: boolean;
+};
 
-    useEffect(() => {
-        if (isAuthorizeSuccess) {
-            mutate();
-        }
-    }, [isAuthorizeSuccess, mutate]);
+const DepositCryptoAddress: React.FC<TProps> = ({ depositCryptoAddress, isLoading }) => {
+    const { isMobile } = useDevice();
 
     if (isLoading)
         return (

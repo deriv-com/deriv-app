@@ -26,7 +26,10 @@ const AddedCTraderAccountsList: React.FC = () => {
                     onClick={() => show(<MT5TradeModal platform={PlatformDetails.ctrader.platform} />)}
                     trailing={
                         <div className='wallets-added-ctrader__icon'>
-                            <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                            <LabelPairedChevronRightCaptionRegularIcon
+                                data-testid='dt_wallets_trading_account_chevron_icon'
+                                width={16}
+                            />
                         </div>
                     }
                 >

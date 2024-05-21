@@ -4,10 +4,13 @@ import { useRemoteConfig } from '@deriv/api';
 
 interface UseGrowthbookFeatureFlagArgs {
     featureFlag: string;
+    defaultValue?: boolean;
 }
 
-const useGrowthbookFeatureFlag = ({ featureFlag }: UseGrowthbookFeatureFlagArgs) => {
-    const [featureFlagValue, setFeatureFlagValue] = useState(Analytics?.getFeatureValue(featureFlag, false));
+const useGrowthbookFeatureFlag = ({ featureFlag, defaultValue = false }: UseGrowthbookFeatureFlagArgs) => {
+    const [featureFlagValue, setFeatureFlagValue] = useState(
+        Analytics?.getFeatureValue(featureFlag, defaultValue) ?? false
+    );
     const [isGBLoaded, setIsGBLoaded] = useState(false);
     const { data } = useRemoteConfig();
 
@@ -26,7 +29,7 @@ const useGrowthbookFeatureFlag = ({ featureFlag }: UseGrowthbookFeatureFlagArgs)
                 if (Analytics?.getInstances()?.ab) {
                     setIsGBLoaded(true);
                     const setFeatureValue = () => {
-                        const value = Analytics?.getFeatureValue(featureFlag, false);
+                        const value = Analytics?.getFeatureValue(featureFlag, defaultValue);
                         setFeatureFlagValue(value);
                     };
                     setFeatureValue();

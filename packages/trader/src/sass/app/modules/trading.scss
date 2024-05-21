@@ -1059,6 +1059,8 @@
         height: 100svw;
         width: 100svh;
         transition: transform 0.5s;
+        /* need to disable scroll for DTrader in tablet view turning on in MobileDialog */
+        overflow: hidden !important;
     }
 
     &[dir='rtl'] body {

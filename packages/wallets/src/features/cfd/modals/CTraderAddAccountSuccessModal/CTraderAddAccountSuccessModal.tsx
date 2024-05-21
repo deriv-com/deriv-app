@@ -1,15 +1,15 @@
 import React from 'react';
 import { ModalWrapper, WalletButton, WalletButtonGroup, WalletsActionScreen } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
-// import { PlatformDetails } from '../../constants';
-// import { CTraderTradeModal } from '../CTraderTradeModal';
+import { PlatformDetails } from '../../constants';
+import { MT5TradeModal } from '../MT5TradeModal';
 import SuccessIcon from './SuccessIcon';
 import './CTraderAddAccountSuccessModal.scss';
 
 const CTraderAddAccountSuccessModal = () => {
     const { hide, show } = useModal();
     const onClickTransferNow = () => {
-        // show(<CTraderTradeModal platform={PlatformDetails.ctrader.platform} />);
+        show(<MT5TradeModal platform={PlatformDetails.ctrader.platform} />);
     };
     return (
         <ModalWrapper>

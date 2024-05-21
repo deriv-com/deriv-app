@@ -6,13 +6,14 @@ import './SelfieDocumentUpload.scss';
 
 const SelfieDocumentUpload = () => {
     const { isDesktop } = useDevice();
-    const { setFormValues } = useFlow();
+    const { formValues, setFormValues } = useFlow();
 
     return (
         <div className='wallets-selfie-document-upload'>
             <WalletText>Upload your selfie</WalletText>
             <Dropzone
                 buttonText='Drop file or click here to upload'
+                defaultFile={formValues.selfie}
                 description='Upload your selfie'
                 descriptionColor={isDesktop ? 'less-prominent' : 'general'}
                 fileFormats='image/*'

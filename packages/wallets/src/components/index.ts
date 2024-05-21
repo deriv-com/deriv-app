@@ -28,6 +28,7 @@ export * from './WalletListCardBalance';
 export * from './WalletListCardDetails';
 export * from './WalletListCardDropdown';
 export * from './WalletListHeader';
+export * from './WalletMarketCurrencyIcon';
 export * from './WalletMarketIcon';
 export * from './WalletsActionScreen';
 export * from './WalletsAddMoreCarousel';

@@ -109,11 +109,13 @@ const Passkeys = observer(() => {
         }
 
         if (passkey_status === PASSKEY_STATUS_CODES.RENAMING) {
-            // call API to rename passkey
+            // TODO: call API to rename passkey
+            // TODO: track event when renaming is done
         }
 
         if (passkey_status === PASSKEY_STATUS_CODES.REMOVED) {
             // TODO: continue after removing
+            // TODO: tracking event
         }
     };
 
@@ -133,7 +135,7 @@ const Passkeys = observer(() => {
         }
 
         if (passkey_status === PASSKEY_STATUS_CODES.RENAMING) {
-            // passkeysMenuActionEventTrack('exit renaming????');
+            passkeysMenuActionEventTrack('passkey_rename_back');
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
         }
         prev_passkey_status.current = passkey_status;
@@ -141,6 +143,7 @@ const Passkeys = observer(() => {
 
     const onCardMenuClick = () => {
         //TODO: add the logic to open proper component for rename and revoke
+        //TODO: add tracking event for renaming
     };
 
     return (

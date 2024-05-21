@@ -22,7 +22,7 @@ export const MarketTypeDetails = {
         title: i18n.t('Swap-Free'),
     },
     financial: {
-        description: 'CFDs on financial instruments.',
+        description: i18n.t('CFDs on financial instruments.'),
         icon: <AccountsDmt5FinancialIcon height={48} width={48} />,
         title: i18n.t('Financial'),
     },

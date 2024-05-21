@@ -134,3 +134,8 @@ export const JURISDICTION = {
     SVG: 'svg',
     VANUATU: 'vanuatu',
 } as const;
+
+export const CATEGORY = {
+    DEMO: 'demo',
+    REAL: 'real',
+} as const;

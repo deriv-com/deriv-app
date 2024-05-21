@@ -9,7 +9,7 @@ import Markets from './Containers/Markets';
 import Positions from './Containers/Positions';
 import Menu from './Containers/Menu';
 import 'Sass/app.scss';
-import '@deriv-com/quill-ui/quill.css';
+import '@deriv-com/quill-tokens/dist/quill.css';
 
 type Apptypes = {
     passthrough: {

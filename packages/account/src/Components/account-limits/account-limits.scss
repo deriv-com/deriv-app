@@ -61,7 +61,7 @@
             flex: 1;
             margin-inline-end: 1rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin-block-start: 0;
                 margin-inline-start: 1.6rem;
                 margin-block-end: 1.6rem;

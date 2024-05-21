@@ -2765,12 +2765,11 @@ export default class ClientStore extends BaseStore {
 
                     const data = await WS.authorized.send({ passkeys_list: 1 });
 
-                    if (data?.passkeys_list) {
-                        const should_show_effortless_login_modal = !data?.passkeys_list?.length;
-
-                        this.setShouldShowEffortlessLoginModal(should_show_effortless_login_modal);
+                    if (data?.passkeys_list?.length === 0) {
+                        this.setShouldShowEffortlessLoginModal(true);
                     } else {
                         this.setShouldShowEffortlessLoginModal(false);
+                        localStorage.setItem('show_effortless_login_modal', JSON.stringify(false));
                     }
                 }
             } catch (e) {

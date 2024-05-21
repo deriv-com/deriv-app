@@ -333,7 +333,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                         }
                         title={
                             context.currentScreenId === 'duplicateUploadErrorScreen'
-                                ? 'Submit your proof of identity and address'
+                                ? 'Submit your proof of identity'
                                 : 'Add a real MT5 account'
                         }
                     >

@@ -15,7 +15,33 @@ const errorCodeToDescriptionMapper: Record<keyof typeof ErrorCode, string> = {
 };
 
 const PoiUploadError = ({ errorCode }: PoiUploadErrorProps) => {
-    const { switchScreen } = useFlow();
+    const { formValues, setFormValues, switchScreen } = useFlow();
+
+    // clears the form values to navigate back to document selection
+    const switchBackToDocumentSelection = () => {
+        if (formValues.selectedManualDocument === 'passport') {
+            setFormValues('passportNumber', '');
+            setFormValues('passportExpiryDate', '');
+            setFormValues('passportCard', '');
+        } else if (formValues.selectedManualDocument === 'driving-license') {
+            setFormValues('drivingLicenseNumber', '');
+            setFormValues('drivingLicenseExpiryDate', '');
+            setFormValues('drivingLicenseCardFront', '');
+            setFormValues('drivingLicenseCardBack', '');
+        } else if (formValues.selectedManualDocument === 'identity-card') {
+            setFormValues('identityCardNumber', '');
+            setFormValues('identityCardExpiryDate', '');
+            setFormValues('identityCardFront', '');
+            setFormValues('identityCardBack', '');
+        } else if (formValues.selectedManualDocument === 'nimc-slip') {
+            setFormValues('nimcNumber', '');
+            setFormValues('nimcCardFront', '');
+            setFormValues('nimcCardBack', '');
+        }
+
+        setFormValues('selectedManualDocument', '');
+        switchScreen('manualScreen');
+    };
 
     return (
         <div className='wallets-poi-upload-error'>
@@ -23,7 +49,7 @@ const PoiUploadError = ({ errorCode }: PoiUploadErrorProps) => {
                 description={errorCodeToDescriptionMapper[errorCode]}
                 icon={<DerivLightDeclinedPoiIcon height={120} width={120} />}
                 renderButtons={() => (
-                    <WalletButton onClick={() => switchScreen('manualScreen')} size='lg'>
+                    <WalletButton onClick={switchBackToDocumentSelection} size='lg'>
                         Try again
                     </WalletButton>
                 )}

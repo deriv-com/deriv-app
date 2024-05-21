@@ -13,7 +13,6 @@ const IdentityCardDocumentUpload = () => {
     const handleDateChange = (formattedDate: string | null) => {
         setFormValues('identityCardExpiryDate', formattedDate);
     };
-
     return (
         <div className='wallets-identity-card-document-upload' data-testid='dt_identity-card-document-upload'>
             <WalletText>First, enter your Identity card number and the expiry date.</WalletText>

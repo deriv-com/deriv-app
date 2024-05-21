@@ -57,43 +57,25 @@ inputs:
   IS_GROWTHBOOK_ENABLED:
     description: 'Is growthbook enabled'
     required: true
+  ISSUE_NUMBER:
+    description: 'Issue to post a comment to'
+    required: false
 
 runs:
   using: composite
   steps:
 
-  - name: Get latest commit hash from master
-    id: latest_commit
-    shell: bash
-    run: |
-      git fetch origin master
-      latest_commit=$(git rev-parse origin/master)
-      echo "latest_commit=$latest_commit" >> $GITHUB_OUTPUT
-
-  - name: Check if previous artifact exists
-    env:
-      LATEST_COMMIT: ${{ steps.latest_commit.outputs.latest_commit }}
-    id: artifact_check
-    shell: bash
-    run: |
-      ARTIFACT_EXISTS=$(curl -s -H "Authorization: Bearer ${{ github.token }}" "https://api.github.com/repos/${{ github.repository }}/actions/artifacts?name=reports-$LATEST_COMMIT" | jq '.total_count' | awk '{print $1}')
-      if [[ $ARTIFACT_EXISTS -gt 0 ]]; then
-        echo "artifact_exists=true" >> $GITHUB_OUTPUT
-      else
-        echo "artifact_exists=false" >> $GITHUB_OUTPUT
-      fi
-
   - name: Get artifact URL
     id: get_artifact_url
     env:
       GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-      LATEST_COMMIT: ${{ steps.latest_commit.outputs.latest_commit }}
     shell: bash
     run: |
       ARTIFACT_URL=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
-        "https://api.github.com/repos/${{ github.repository }}/actions/artifacts?name=reports-${LATEST_COMMIT}" | \
-        jq -r '.artifacts[0].archive_download_url')
+        "https://api.github.com/repos/${{ github.repository }}/actions/artifacts" | \
+        jq -r '.artifacts | map(select(.workflow_run.head_branch == "master" and (.name | startswith("reports-")))) | .[0] | .archive_download_url')
       echo "artifact_url=$ARTIFACT_URL" >> $GITHUB_OUTPUT
+      echo "artifact_url=$ARTIFACT_URL"
 
   - name: Download artifact
     if: steps.get_artifact_url.outputs.artifact_url != 'null'
@@ -137,23 +119,25 @@ runs:
     if: steps.get_artifact_url.outputs.artifact_url != 'null'
     shell: bash
     run: |
-      DIFF_OUTPUT=$(node .github/workflows/compareReports.js)
+      DIFF_OUTPUT=$(node .github/actions/analyze/compareReports.js)
       echo "diff_output<<EOF" >> $GITHUB_OUTPUT
       echo "$DIFF_OUTPUT" >> $GITHUB_OUTPUT
       echo "EOF" >> $GITHUB_OUTPUT
 
   - name: Comment on PR with Diff Output
-    if: github.event_name == 'pull_request' && steps.get_artifact_url.outputs.artifact_url != 'null'
+    if: steps.get_artifact_url.outputs.artifact_url != 'null' && inputs.ISSUE_NUMBER
     uses: actions/github-script@v5
     env:
       DIFF_OUTPUT: ${{ steps.diff.outputs.diff_output }}
+      ISSUE_NUMBER: ${{ inputs.ISSUE_NUMBER }}
     with:
       script: |
         const diffOutput = process.env.DIFF_OUTPUT;
+        const issueNumber = process.env.ISSUE_NUMBER;
         github.rest.issues.createComment({
           owner: context.repo.owner,
           repo: context.repo.repo,
-          issue_number: context.issue.number,
+          issue_number: issueNumber,
           body: `${diffOutput}`
         });
 

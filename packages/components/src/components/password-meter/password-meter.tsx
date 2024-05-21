@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import Field from '../field';
 import { zxcvbn } from '@zxcvbn-ts/core';
+import { localize } from '@deriv/translations';
 
 type TPasswordMeter = {
     children?: React.ReactNode | ((prop: { [key: string]: boolean }) => string);
@@ -10,7 +11,24 @@ type TPasswordMeter = {
     custom_feedback_messages: { [key: string]: string };
 };
 
-type TCustomFeedback = { warning: () => string; suggestions: string };
+const FEEDBACK_WARNINGS = {
+    common: 'This is a very common password',
+    commonNames: 'Common names and surnames are easy to guess',
+    dates: 'Dates are easy to guess',
+    extendedRepeat: 'Repeated character patterns like "abcabcabc" are easy to guess',
+    keyPattern: 'Short keyboard patterns are easy to guess',
+    namesByThemselves: 'Single names or surnames are easy to guess',
+    pwned: 'Your password was exposed by a data breach on the Internet',
+    recentYears: 'Recent years are easy to guess',
+    sequences: 'Common character sequences like "abc" are easy to guess',
+    similarToCommon: 'This is similar to a commonly used password',
+    simpleRepeat: 'Repeated characters like "aaa" are easy to guess',
+    straightRow: 'Straight rows of keys on your keyboard are easy to guess',
+    topHundred: 'This is a frequently used password',
+    topTen: 'This is a heavily used password',
+    userInputs: 'There should not be any personal or page related data',
+    wordByItself: 'Single words are easy to guess',
+};
 
 const PasswordMeter = ({ children, has_error, input, custom_feedback_messages }: TPasswordMeter) => {
     const [score, setScore] = React.useState<number>(0);
@@ -18,6 +36,8 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages }:
         warning: '',
         suggestions: [],
     });
+
+    const warningMessages = { ...FEEDBACK_WARNINGS, ...custom_feedback_messages };
 
     React.useEffect(() => {
         // 0 - 4 Score for password strength
@@ -51,7 +71,7 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages }:
                 {feedback?.warning && !has_error && (
                     <Field
                         className='dc-password-meter__warning'
-                        message={`${custom_feedback_messages[feedback.warning]}`}
+                        message={localize(warningMessages[feedback.warning])}
                         type='error'
                     />
                 )}

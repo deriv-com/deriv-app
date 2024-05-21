@@ -66,7 +66,7 @@ describe('<InvestorPasswordManager> ', () => {
             fireEvent.change(new_investor, { target: { value: 'abcabcabc' } });
         });
         expect(
-            await screen.findByText(/repeats like "abcabcabc" are only slightly harder to guess than "abc"/i)
+            await screen.findByText(/Repeated character patterns like "abcabcabc" are easy to guess/i)
         ).toBeInTheDocument();
     });
 
@@ -77,7 +77,7 @@ describe('<InvestorPasswordManager> ', () => {
         await waitFor(() => {
             fireEvent.change(new_investor, { target: { value: 'aaaaa' } });
         });
-        expect(await screen.findByText(/repeats like "aaa" are easy to guess/i)).toBeInTheDocument();
+        expect(await screen.findByText(/Repeated characters like "aaa" are easy to guess/i)).toBeInTheDocument();
     });
 
     it('should fill the password field and trigger the appropriate error message for using recent years', async () => {

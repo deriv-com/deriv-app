@@ -13,22 +13,11 @@ import {
 } from 'Constants/platform-config';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
-import { useActiveWallet } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import {
-    CFD_PLATFORMS,
-    ContentFlag,
-    getStaticUrl,
-    getUrlSmartTrader,
-    getUrlBinaryBot,
-    MT5_ACCOUNT_STATUS,
-} from '@deriv/shared';
+import { CFD_PLATFORMS, getStaticUrl, getUrlSmartTrader, getUrlBinaryBot, MT5_ACCOUNT_STATUS } from '@deriv/shared';
 import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
+import { getAvailablePlatforms } from '../../helpers';
 import './trading-app-card.scss';
-
-type TWalletsProps = {
-    wallet_account?: ReturnType<typeof useActiveWallet>;
-};
 
 const TradingAppCard = ({
     availability,
@@ -47,9 +36,8 @@ const TradingAppCard = ({
     selected_mt5_jurisdiction,
     openFailedVerificationModal,
     market_type,
-    wallet_account,
     is_new = false,
-}: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid & TWalletsProps) => {
+}: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
     const {
         common,
         traders_hub,
@@ -58,19 +46,17 @@ const TradingAppCard = ({
         client,
     } = useStore();
     const { setIsVerificationModalVisible } = ui;
-    const { is_eu_user, is_demo_low_risk, content_flag, is_real, selected_account_type } = traders_hub;
+    const { is_eu_user, is_real, selected_account_type } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;
     const { account_status: { authentication } = {} } = client;
 
     const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
+    const available_platforms = getAvailablePlatforms();
+
     const demo_label = localize('Demo');
-    const is_real_account = wallet_account ? !wallet_account.is_virtual : is_real;
 
-    const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
-
-    const app_platform =
-        !is_eu_user || low_risk_cr_non_eu || is_demo_low_risk ? getAppstorePlatforms() : getMFAppstorePlatforms();
+    const app_platform = available_platforms.includes('options') ? getAppstorePlatforms() : getMFAppstorePlatforms();
 
     const { app_desc, link_to, is_external, new_tab } = app_platform.find(config => config.name === name) || {
         app_desc: description,
@@ -167,9 +153,9 @@ const TradingAppCard = ({
                             color='prominent'
                             data-testid='dt_cfd-account-name'
                         >
-                            {!is_real_account && sub_title ? `${sub_title} ${demo_label}` : sub_title}
+                            {!is_real && sub_title ? `${sub_title} ${demo_label}` : sub_title}
                         </Text>
-                        {!wallet_account && short_code_and_region && (
+                        {short_code_and_region && (
                             <Text
                                 weight='bolder'
                                 size='xxxs'

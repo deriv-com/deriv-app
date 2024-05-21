@@ -77,16 +77,10 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
 
     const renderSuccessDescription = useMemo(() => {
         if (isDemo) {
-            return `Let's practise trading with ${activeWallet?.display_balance} virtual funds.`;
+            return `Let's practise trading with ${displayBalance} virtual funds.`;
         }
         return `Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your ${marketTypeTitle} ${landingCompanyName} account to start trading.`;
-    }, [
-        activeWallet?.display_balance,
-        activeWallet?.wallet_currency_type,
-        isDemo,
-        landingCompanyName,
-        marketTypeTitle,
-    ]);
+    }, [activeWallet?.wallet_currency_type, displayBalance, isDemo, landingCompanyName, marketTypeTitle]);
 
     const renderMainContent = useMemo(() => {
         if (!isSuccess) return null;

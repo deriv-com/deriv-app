@@ -6,7 +6,7 @@ export type TSelfExclusionContext = {
     currency: string;
     currency_display?: string;
     exclusion_texts?: Record<string, string>;
-    footer_ref?: React.RefObject<HTMLElement>;
+    footer_ref?: Element | DocumentFragment | undefined;
     getMaxLength?: (value: string) => void;
     goToConfirm?: (value: FormikValues) => void;
     handleSubmit: (values: FormikValues, setSubmitting: FormikHelpers<FormikValues>) => void;
@@ -15,7 +15,7 @@ export type TSelfExclusionContext = {
     is_mf?: boolean;
     is_tablet?: boolean;
     is_wrapper_bypassed?: boolean;
-    overlay_ref: HTMLDivElement;
+    overlay_ref?: HTMLDivElement;
     session_duration_digits?: number | boolean;
     state?: FormikValues;
     toggleArticle?: () => void;
@@ -24,7 +24,6 @@ export type TSelfExclusionContext = {
 };
 
 const SelfExclusionContext = React.createContext<TSelfExclusionContext>({
-    overlay_ref: document.createElement('div'),
     currency: '',
     handleSubmit: () => null,
 });

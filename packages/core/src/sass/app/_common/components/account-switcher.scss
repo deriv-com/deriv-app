@@ -569,3 +569,10 @@
         background-color: var(--border-disabled);
     }
 }
+
+.dc-modal__container:has(.acc-switcher__wrapper) {
+    @include tablet-screen {
+        width: unset !important;
+        right: 0;
+    }
+}

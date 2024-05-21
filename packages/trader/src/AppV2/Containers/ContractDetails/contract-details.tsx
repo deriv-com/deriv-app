@@ -1,8 +1,10 @@
 import React from 'react';
 import { Text } from '@deriv-com/quill-ui';
+import EntryExitDetails from 'AppV2/Components/EntryExitDetails';
 import PayoutInfoModal from 'AppV2/Components/PayoutInfoModal';
 import ChartPlaceholder from '../Chart';
 import { Localize } from '@deriv/translations';
+import RiskManagementInfoModal from 'AppV2/Components/RiskManagementInfoModal/risk-management-info-modal';
 
 const ContractDetails = () => {
     return (
@@ -19,6 +21,10 @@ const ContractDetails = () => {
                 <Text size='sm'>Contract card</Text>
             </div>
             Take Profit
+            <RiskManagementInfoModal
+                header_content={<Localize i18n_default_text='Take profit' />}
+                body_content={<Localize i18n_default_text='Whatever you desire' />}
+            />
             <div className='placeholder'>
                 <ChartPlaceholder />
             </div>
@@ -28,9 +34,7 @@ const ContractDetails = () => {
             <div className='placeholder'>
                 <Text size='sm'>Order details</Text>
             </div>
-            <div className='placeholder'>
-                <Text size='sm'>Entry & exit details</Text>
-            </div>
+            <EntryExitDetails />
         </div>
     );
 };

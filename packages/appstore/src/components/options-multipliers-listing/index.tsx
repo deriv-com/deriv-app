@@ -71,7 +71,6 @@ const OptionsAndMultipliersListing = observer(() => {
                     </Text>
                 )
             }
-            is_deriv_platform
         >
             {is_real && (no_CR_account || no_MF_account) && (
                 <div className='full-row'>

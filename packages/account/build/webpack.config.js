@@ -102,6 +102,7 @@ module.exports = function (env) {
                 '@deriv/stores': '@deriv/stores',
                 '@deriv/quill-icons': `@deriv/quill-icons`,
                 '@deriv-com/utils': '@deriv-com/utils',
+                '@deriv-com/translations': '@deriv-com/translations',
             },
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,

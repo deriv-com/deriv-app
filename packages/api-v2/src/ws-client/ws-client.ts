@@ -8,7 +8,7 @@ import {
 } from '../../types';
 
 /**
- * really have doubts about the sense of existence of this class
+ * WSClient as main instance
  */
 export default class WSClient {
     ws?: WebSocket;
@@ -44,7 +44,7 @@ export default class WSClient {
         payload?: TSocketRequestPayload<T>['payload']
     ): Promise<TSocketResponse<T>> {
         if (!this.ws) {
-            return Promise.reject(new Error('No connection'));
+            return Promise.reject(new Error('No websocket connection set on WsClient'));
         }
         return request(this.ws, name, payload).then((response: TSocketResponse<TSocketEndpointNames>) => {
             if ((response as unknown as any).msg_type === 'authorize') {

@@ -20,7 +20,7 @@ export default class SubscriptionsManager {
         onData: (data: TSocketResponse<TSocketSubscribableEndpointNames>) => void
     ) {
         if (!this.authorizedWs) {
-            throw new Error('No connection');
+            throw new Error('Unauthorized websocket connection.');
         }
         const keys: Array<string> = getQueryKeys(name, payload); // potentially switch to separate function, which just returns primitive values (string)
         const key = keys.join('-'); // but until then, use "join" to conver array of specifci structre to just string (no idea why its overcomplicated on first place)

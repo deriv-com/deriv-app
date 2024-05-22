@@ -22,6 +22,13 @@ jest.mock('../components/WithdrawalCryptoPercentageSelector', () => ({
     WithdrawalCryptoPercentageSelector: jest.fn(() => <div>WithdrawalCryptoPercentageSelector</div>),
 }));
 
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
+    useCryptoWithdrawal: jest.fn().mockReturnValue({
+        mutateAsync: jest.fn().mockResolvedValue({}),
+    }),
+}));
+
 const mockUseWithdrawalCryptoContext = useWithdrawalCryptoContext as jest.MockedFunction<
     typeof useWithdrawalCryptoContext
 >;

@@ -85,6 +85,7 @@ describe('<SelfExclusionInputs />', () => {
     });
 
     it('should render SelfExclusionFooter instead of Next Button', () => {
+        // @ts-expect-error - footer ref is mocked
         mock_context.footer_ref = React.createRef<DocumentFragment>();
 
         render(

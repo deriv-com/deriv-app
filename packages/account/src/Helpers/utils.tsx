@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormikValues } from 'formik';
+import { FormikErrors, FormikValues } from 'formik';
 import countries from 'i18n-iso-countries';
 import { ResidenceList, GetAccountStatus } from '@deriv/api-types';
 import {
@@ -254,7 +254,7 @@ export const getIDVDocumentType = (
     return null;
 };
 
-export const validate = <T,>(errors: Record<string, string>, values: T) => {
+export const validate = <T,>(errors: FormikErrors<FormikValues>, values: T) => {
     return (fn: (value: string) => string, arr: string[], err_msg: string) => {
         arr.forEach(field => {
             const value = values[field as keyof typeof values] as string;

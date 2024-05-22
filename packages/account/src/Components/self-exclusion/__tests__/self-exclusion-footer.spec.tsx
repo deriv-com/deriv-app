@@ -17,6 +17,7 @@ describe('<SelfExclusionFooter />', () => {
         goToConfirm: jest.fn(),
         toggleArticle: jest.fn(),
         footer_ref: portal_root,
+        overlay_ref: document.createElement('div'),
     };
 
     beforeEach(() => {

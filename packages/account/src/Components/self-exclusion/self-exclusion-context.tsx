@@ -6,7 +6,7 @@ export type TSelfExclusionContext = {
     currency: string;
     currency_display?: string;
     exclusion_texts?: Record<string, string>;
-    footer_ref?: React.RefObject<HTMLElement | DocumentFragment>;
+    footer_ref?: HTMLElement | DocumentFragment;
     getMaxLength?: (value: string) => void;
     goToConfirm?: (value: FormikValues) => void;
     handleSubmit: (values: FormikValues, setSubmitting: FormikHelpers<FormikValues>) => void;

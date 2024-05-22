@@ -123,23 +123,24 @@ runs:
       echo "diff_output<<EOF" >> $GITHUB_OUTPUT
       echo "$DIFF_OUTPUT" >> $GITHUB_OUTPUT
       echo "EOF" >> $GITHUB_OUTPUT
+      echo $DIFF_OUTPUT
 
-  - name: Comment on PR with Diff Output
-    if: steps.get_artifact_url.outputs.artifact_url != 'null' && inputs.ISSUE_NUMBER
-    uses: actions/github-script@v5
-    env:
-      DIFF_OUTPUT: ${{ steps.diff.outputs.diff_output }}
-      ISSUE_NUMBER: ${{ inputs.ISSUE_NUMBER }}
-    with:
-      script: |
-        const diffOutput = process.env.DIFF_OUTPUT;
-        const issueNumber = process.env.ISSUE_NUMBER;
-        github.rest.issues.createComment({
-          owner: context.repo.owner,
-          repo: context.repo.repo,
-          issue_number: issueNumber,
-          body: `${diffOutput}`
-        });
+  # - name: Comment on PR with Diff Output
+  #   if: steps.get_artifact_url.outputs.artifact_url != 'null' && inputs.ISSUE_NUMBER
+  #   uses: actions/github-script@v5
+  #   env:
+  #     DIFF_OUTPUT: ${{ steps.diff.outputs.diff_output }}
+  #     ISSUE_NUMBER: ${{ inputs.ISSUE_NUMBER }}
+  #   with:
+  #     script: |
+  #       const diffOutput = process.env.DIFF_OUTPUT;
+  #       const issueNumber = process.env.ISSUE_NUMBER;
+  #       github.rest.issues.createComment({
+  #         owner: context.repo.owner,
+  #         repo: context.repo.repo,
+  #         issue_number: issueNumber,
+  #         body: `${diffOutput}`
+  #       });
 
   - name: Zip all report.json files
     shell: bash

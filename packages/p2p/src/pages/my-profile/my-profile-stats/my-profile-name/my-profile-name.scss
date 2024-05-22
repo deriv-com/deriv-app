@@ -67,6 +67,23 @@
                 border-inline-end: unset;
             }
 
+            .dc-tooltip[data-tooltip]:before {
+                width: max-content;
+                color: #000;
+                cursor: pointer;
+            }
+
+            &-tooltip {
+                display: flex !important;
+                align-items: center;
+                gap: 0.5rem;
+                position: relative;
+
+                &-text {
+                    text-decoration: underline;
+                }
+            }
+
             .filled-icons {
                 pointer-events: none;
             }

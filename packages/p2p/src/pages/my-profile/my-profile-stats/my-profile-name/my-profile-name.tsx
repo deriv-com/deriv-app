@@ -1,8 +1,9 @@
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileWrapper, Text, Tooltip } from '@deriv/components';
 import { daysSince } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from 'Components/i18next';
+import { Localize, localize } from 'Components/i18next';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import BlockUserCount from 'Pages/advertiser-page/block-user/block-user-count';
 import RecommendedBy from 'Components/recommended-by';
 import StarRating from 'Components/star-rating';
@@ -14,6 +15,7 @@ import { getIconSize, getTextSize } from 'Utils/responsive';
 import MyProfilePrivacy from '../my-profile-privacy';
 
 const MyProfileName = () => {
+    const { showModal } = useModalManagerContext();
     const { general_store } = useStores();
     const { client } = useStore();
     const {
@@ -132,6 +134,24 @@ const MyProfileName = () => {
                             <DesktopWrapper>
                                 <div className='my-profile-name__rating__row'>
                                     <BlockUserCount />
+                                </div>
+                                <div className='my-profile-name__rating__row'>
+                                    <Tooltip
+                                        alignment='top'
+                                        className='my-profile-name__rating__row-tooltip'
+                                        message={localize('Business hour')}
+                                        onClickMessage={() => showModal({ key: 'BusinessHourModal', props: {} })}
+                                    >
+                                        <Icon icon='IcClockOutline' />
+                                        <Text
+                                            className='my-profile-name__rating__row-tooltip-text'
+                                            line_height='xxs'
+                                            size='xs'
+                                            weight='bold'
+                                        >
+                                            <Localize i18n_default_text='Open' />
+                                        </Text>
+                                    </Tooltip>
                                 </div>
                             </DesktopWrapper>
                         </div>

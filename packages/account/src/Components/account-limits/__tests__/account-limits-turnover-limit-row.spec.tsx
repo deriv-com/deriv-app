@@ -9,7 +9,7 @@ jest.mock('@deriv/shared', () => ({
     formatMoney: jest.fn(),
 }));
 const AccountLimitsTurnoverLimitRowComponent = (props: React.ComponentProps<typeof AccountLimitsTurnoverLimitRow>) => (
-    <AccountLimitsContext.Provider value={{ currency: 'AUD' }}>
+    <AccountLimitsContext.Provider value={{ currency: 'AUD', overlay_ref: document.createElement('div') }}>
         <AccountLimitsTurnoverLimitRow {...props} />
     </AccountLimitsContext.Provider>
 );

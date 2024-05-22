@@ -22,7 +22,7 @@ const Tooltip: React.FC<React.PropsWithChildren<TProps>> = ({
             {isVisible && (
                 <div
                     className={classNames(
-                        'wallets-tooltip__conten',
+                        'wallets-tooltip__content',
                         `wallets-tooltip__content--${alignment}`,
                         className
                     )}

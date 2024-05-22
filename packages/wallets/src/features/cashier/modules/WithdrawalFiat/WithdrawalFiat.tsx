@@ -1,45 +1,44 @@
-import React, { ButtonHTMLAttributes, useEffect } from 'react';
+import React, { ButtonHTMLAttributes, useEffect, useState } from 'react';
 import { useCashierFiatAddress } from '@deriv/api-v2';
-import { TSocketError } from '@deriv/api-v2/types';
 import { Loader } from '../../../../components';
+import { isServerError } from '../../../../utils/utils';
+import { WithdrawalErrorScreen } from '../../screens';
 import './WithdrawalFiat.scss';
 
 interface WithdrawalFiatProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    setError: React.Dispatch<
-        React.SetStateAction<
-            | {
-                  code: string;
-                  message: string;
-              }
-            | undefined
-        >
-    >;
     verificationCode?: string;
 }
 
-const WithdrawalFiat: React.FC<WithdrawalFiatProps> = ({ setError, verificationCode }) => {
-    const { data: iframeUrl, isLoading, mutateAsync } = useCashierFiatAddress();
+const WithdrawalFiat: React.FC<WithdrawalFiatProps> = ({ verificationCode }) => {
+    const { data: iframeUrl, error, isLoading: isWithdrawalFiatLoading, mutateAsync } = useCashierFiatAddress();
+    const [isIframeLoading, setIsIframeLoading] = useState(true);
+    const withdrawalFiatError = error?.error;
 
     useEffect(() => {
         if (verificationCode) {
             mutateAsync('withdraw', {
                 verification_code: verificationCode,
-            }).catch((error: TSocketError<'cashier'>) => {
-                setError(error.error);
             });
         }
-    }, [mutateAsync, setError, verificationCode]);
+    }, [mutateAsync, verificationCode]);
+
+    if (isWithdrawalFiatLoading) return <Loader />;
+
+    if (isServerError(withdrawalFiatError)) {
+        return <WithdrawalErrorScreen error={withdrawalFiatError} />;
+    }
 
     return (
         <React.Fragment>
-            {isLoading && <Loader />}
+            {isIframeLoading && <Loader />}
             {iframeUrl && (
                 <iframe
                     className='wallets-withdrawal-fiat__iframe'
                     data-testid='dt_wallets_withdrawal_fiat_iframe'
                     key={iframeUrl}
+                    onLoad={() => setIsIframeLoading(false)}
                     src={iframeUrl}
-                    style={{ display: isLoading ? 'none' : 'block' }}
+                    style={{ display: isIframeLoading ? 'none' : 'block' }}
                 />
             )}
         </React.Fragment>

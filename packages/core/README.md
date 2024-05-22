@@ -19,7 +19,7 @@
 
 ## Other documents
 
--   [Modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding help, etc.)
+-   [modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding help, etc.)
 
 ## Description
 

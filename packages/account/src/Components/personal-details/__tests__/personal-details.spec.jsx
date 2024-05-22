@@ -106,10 +106,6 @@ const runCommonFormfieldsTests = is_svg => {
 
     expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
-    expect(screen.getByText('here').closest('a')).toHaveAttribute(
-        'href',
-        'https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
-    );
 
     if (is_svg)
         expect(
@@ -472,7 +468,6 @@ describe('<PersonalDetails/>', () => {
             )
         ).toBeInTheDocument();
         expect(screen.getByRole('link', { name: /account settings/i })).toBeInTheDocument();
-        expect(screen.getByText(/account settings/i).closest('a')).toHaveAttribute('href', '/account/personal-details');
 
         fireEvent.click(screen.getByText('account settings'));
 

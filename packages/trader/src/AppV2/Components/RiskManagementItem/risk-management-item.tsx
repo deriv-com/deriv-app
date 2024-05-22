@@ -28,7 +28,7 @@ const RiskManagementItem = ({
                     <RiskManagementInfoModal header_content={label} body_content={modal_body_content} />
                 </span>
                 {dummy_boolean && <span>5 USD</span>}
-                {is_deal_cancellation && <div>For now</div>}{' '}
+                {is_deal_cancellation && <div>For now</div>}
                 {!dummy_boolean && !is_deal_cancellation && (
                     <ToggleSwitch checked={toggle} onChange={() => setToggle(!toggle)} />
                 )}

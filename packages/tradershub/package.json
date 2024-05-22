@@ -17,7 +17,7 @@
     "dependencies": {
         "@deriv/api-v2": "^1.0.0",
         "@deriv-lib/account-v2-lib": "1.0.0",
-        "@deriv/quill-icons": "^1.22.4",
+        "@deriv/quill-icons": "^1.22.7",
         "@deriv-com/ui": "^1.14.5",
         "@deriv-com/utils": "^0.0.20",
         "@deriv/react-joyride": "^2.6.2",

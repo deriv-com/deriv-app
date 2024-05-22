@@ -22,9 +22,7 @@ const mockUseWithdrawalCryptoContext = useWithdrawalCryptoContext as jest.Mocked
 const wrapper = ({ children }: PropsWithChildren) => (
     <APIProvider>
         <AuthProvider>
-            <WithdrawalCryptoProvider onClose={jest.fn()} setError={jest.fn()} verificationCode='Abcd1234'>
-                {children}
-            </WithdrawalCryptoProvider>
+            <WithdrawalCryptoProvider verificationCode='Abcd1234'>{children}</WithdrawalCryptoProvider>
         </AuthProvider>
     </APIProvider>
 );

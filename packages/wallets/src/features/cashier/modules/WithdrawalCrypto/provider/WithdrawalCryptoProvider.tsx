@@ -22,6 +22,7 @@ export type TWithdrawalCryptoContext = {
     cryptoEstimationsError: ReturnType<typeof useCryptoEstimations>['error'];
     cryptoEstimationsFee: ReturnType<typeof useCryptoEstimations>['cryptoEstimationsFee'];
     cryptoEstimationsFeeUniqueId: ReturnType<typeof useCryptoEstimations>['cryptoEstimationsFeeUniqueId'];
+    error: TSocketError<'cashier'>['error'] | undefined;
     exchangeRates: Partial<ReturnType<typeof useExchangeRateSubscription>>;
     fractionalDigits: {
         crypto?: number;
@@ -32,10 +33,9 @@ export type TWithdrawalCryptoContext = {
     getCryptoEstimations: ReturnType<typeof useCryptoEstimations>['getCryptoEstimations'];
     getCurrencyConfig: ReturnType<typeof useCurrencyConfig>['getConfig'];
     isClientVerified: boolean | undefined;
+    isLoading: boolean;
     isLoadingCryptoEstimationFee: ReturnType<typeof useCryptoEstimations>['isLoading'];
-    isTokenValidationLoading: boolean;
     isWithdrawalSuccess: ReturnType<typeof useCryptoWithdrawal>['isSuccess'];
-    onClose: () => void;
     requestCryptoWithdrawal: (values: Parameters<THooks.CryptoWithdrawal>[0]) => void;
     serverTime: ReturnType<typeof useCryptoEstimations>['serverTime'];
     setError: React.Dispatch<
@@ -51,8 +51,6 @@ export type TWithdrawalCryptoContext = {
 };
 
 type TWithdrawalCryptoContextProps = {
-    onClose: TWithdrawalCryptoContext['onClose'];
-    setError: TWithdrawalCryptoContext['setError'];
     verificationCode: string;
 };
 
@@ -71,13 +69,11 @@ export const useWithdrawalCryptoContext = () => {
 
 const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryptoContextProps>> = ({
     children,
-    onClose,
-    setError,
     verificationCode,
 }) => {
     const { data: accountLimits } = useAccountLimits();
     const { data: activeWallet } = useActiveWalletAccount();
-    const { data: cryptoConfig } = useCryptoConfig();
+    const { data: cryptoConfig, error: cryptoConfigError, isLoading: isCryptoConfigLoading } = useCryptoConfig();
     const { data: poaStatus } = usePOA();
     const { data: poiStatus } = usePOI();
     const { isSuccess: isWithdrawalSuccess, mutateAsync } = useCryptoWithdrawal();
@@ -91,6 +87,7 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
         serverTime,
     } = useCryptoEstimations();
     const { getConfig } = useCurrencyConfig();
+    const [error, setError] = useState<TSocketError<'cashier'>['error'] | undefined>();
     const [isTokenValidationLoading, setIsTokenValidationLoading] = useState(true);
     const [withdrawalReceipt, setWithdrawalReceipt] = useState<TWithdrawalReceipt>({});
     const { data: exchangeRates, subscribe, unsubscribe } = useExchangeRateSubscription();
@@ -106,6 +103,12 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
             });
         return () => unsubscribe();
     }, [activeWallet?.currency, activeWallet?.loginid, subscribe, unsubscribe]);
+
+    useEffect(() => {
+        if (cryptoConfigError) {
+            setError(cryptoConfigError?.error);
+        }
+    }, [cryptoConfigError]);
 
     useEffect(() => {
         if (verificationCode) {
@@ -171,6 +174,7 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
         cryptoEstimationsError,
         cryptoEstimationsFee,
         cryptoEstimationsFeeUniqueId,
+        error,
         exchangeRates: {
             data: exchangeRates,
             subscribe,
@@ -185,10 +189,9 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
         getCryptoEstimations,
         getCurrencyConfig: getConfig,
         isClientVerified: getClientVerificationStatus(),
+        isLoading: isCryptoConfigLoading || isTokenValidationLoading,
         isLoadingCryptoEstimationFee,
-        isTokenValidationLoading,
         isWithdrawalSuccess,
-        onClose,
         requestCryptoWithdrawal,
         serverTime,
         setError,

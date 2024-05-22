@@ -1,7 +1,7 @@
 import { Analytics } from '@deriv-com/analytics';
 import Cookies from 'js-cookie';
 import { getLanguage } from '@deriv/translations';
-import { LocalStore } from '@deriv/shared';
+import { LocalStore, getAppId } from '@deriv/shared';
 import { MAX_MOBILE_WIDTH } from '../../Constants';
 
 export const AnalyticsInitializer = async () => {

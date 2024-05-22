@@ -74,7 +74,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
                         allow_document_upload,
                         allow_poa_resubmission,
                         document_status,
-                        has_submitted_poa,
+                        has_submitted_poa: has_submitted_poa as boolean,
                         is_age_verified,
                         needs_poa,
                         needs_poi,

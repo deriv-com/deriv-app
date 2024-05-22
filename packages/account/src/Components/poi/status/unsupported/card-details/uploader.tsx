@@ -17,9 +17,9 @@ type TDROPZONE_ERRORS = Readonly<typeof DROPZONE_ERRORS>;
 type TUploader = {
     data: FormikValues;
     value: FormikValues;
-    is_full: boolean;
-    has_frame: boolean;
-    onChange: (e: unknown) => void;
+    is_full?: boolean;
+    has_frame?: boolean;
+    onChange?: (e: unknown) => void;
     setFieldValue: FormikProps<FormikValues>['setFieldValue'];
     handleChange: (file: object | null, setFieldValue: FormikProps<FormikValues>['setFieldValue']) => void;
 };
@@ -54,7 +54,7 @@ const Message = ({ data, open }: TMessage) => (
     </div>
 );
 
-const Preview = ({ data, setFieldValue, value, has_frame, handleChange }: Partial<TUploader>) => {
+const Preview = ({ data, setFieldValue, value, has_frame, handleChange }: Omit<TUploader, 'is_full' | 'onChange'>) => {
     const [background_url, setBackgroundUrl] = React.useState('');
 
     React.useEffect(() => {
@@ -94,7 +94,7 @@ const Preview = ({ data, setFieldValue, value, has_frame, handleChange }: Partia
     );
 };
 
-const Uploader = ({ data, value, is_full, onChange, has_frame }: Partial<TUploader>) => {
+const Uploader = ({ data, value, is_full, onChange, has_frame }: Omit<TUploader, 'setFieldValue' | 'handleChange'>) => {
     const [image, setImage] = React.useState<FormikValues>();
 
     React.useEffect(() => {

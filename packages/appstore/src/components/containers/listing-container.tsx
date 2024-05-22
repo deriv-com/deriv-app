@@ -39,7 +39,7 @@ const ListingContainer = ({
     return (
         <div className={classNames('listing-container', className)}>
             <div className='listing-container__top-container'>
-                <Options title={title} description={description} is_deriv_platform={is_deriv_platform} />
+                <Options title={title} description={description} />
                 <Switcher is_deriv_platform={is_deriv_platform} />
             </div>
             {is_outside_grid_container ? children : <GridContainer>{children}</GridContainer>}

@@ -85,7 +85,7 @@ describe('<SelfExclusionInputs />', () => {
     });
 
     it('should render SelfExclusionFooter instead of Next Button', () => {
-        mock_context.footer_ref = React.createRef();
+        mock_context.footer_ref = React.createRef<DocumentFragment>();
 
         render(
             <Formik initialValues={{}} onSubmit={common_mock_formik_context.handleSubmit()}>

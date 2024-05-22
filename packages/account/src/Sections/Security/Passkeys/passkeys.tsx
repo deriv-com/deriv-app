@@ -37,7 +37,8 @@ const Passkeys = observer(() => {
     const error = passkeys_list_error || passkey_registration_error;
 
     useEffect(() => {
-        if (is_passkeys_list_loading) return;
+        if (is_passkeys_list_loading || passkey_status === PASSKEY_STATUS_CODES.CREATED) return;
+
         if (!passkeys_list?.length) {
             setPasskeyStatus(PASSKEY_STATUS_CODES.NO_PASSKEY);
         } else {

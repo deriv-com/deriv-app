@@ -4,6 +4,7 @@ import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { routes } from '@deriv/shared';
 import DefaultMobileLinks from '../default-mobile-links';
 import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
 
@@ -72,6 +73,6 @@ describe('DefaultMobileLinks', () => {
         render(<DefaultMobileLinks />, { wrapper });
         const cashierButton = screen.getByRole('button', { name: 'Cashier' });
         userEvent.click(cashierButton);
-        expect(history.location.pathname).toBe('/cashier/deposit');
+        expect(history.location.pathname).toBe(routes.cashier_deposit);
     });
 });

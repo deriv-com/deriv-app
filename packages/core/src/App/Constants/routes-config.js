@@ -394,15 +394,12 @@ const getModules = () => {
             path: routes.trade,
             component: Trader,
             getTitle: () => localize('Trader'),
-            routes: [
-                {
-                    path: routes.contract,
-                    component: Trader,
-                    getTitle: () => localize('Contract Details'),
-                    is_authenticated: true,
-                },
-                { path: routes.error404, component: Trader, getTitle: () => localize('Error 404') },
-            ],
+        },
+        {
+            path: routes.contract,
+            component: Trader,
+            getTitle: () => localize('Contract Details'),
+            is_authenticated: true,
         },
         {
             path: routes.old_traders_hub,

@@ -49,14 +49,19 @@ const TradingAppCard = ({
     const { is_eu_user, is_real, selected_account_type } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;
-    const { account_status: { authentication } = {} } = client;
+    const { account_status: { authentication } = {}, is_logged_in } = client;
 
     const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
     const available_platforms = getAvailablePlatforms();
 
     const demo_label = localize('Demo');
 
-    const app_platform = available_platforms.includes('options') ? getAppstorePlatforms() : getMFAppstorePlatforms();
+    const logged_in_app_platform = available_platforms.includes('options')
+        ? getAppstorePlatforms()
+        : getMFAppstorePlatforms();
+    const logged_out_app_platform = is_eu_user ? getMFAppstorePlatforms() : getAppstorePlatforms();
+
+    const app_platform = is_logged_in ? logged_in_app_platform : logged_out_app_platform;
 
     const { app_desc, link_to, is_external, new_tab } = app_platform.find(config => config.name === name) || {
         app_desc: description,

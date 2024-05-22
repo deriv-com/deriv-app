@@ -1,21 +1,20 @@
 import React from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { Calendar } from '@deriv/components';
-import { addMonths, diffInMonths, subMonths, toMoment } from '@deriv/shared';
 
 type TTwoMonthPickerProps = {
-    onChange: (date: moment.MomentInput) => void;
-    getIsPeriodDisabled: (date: moment.Moment) => boolean;
-    value: moment.Moment | number;
+    onChange: (date: dayjs.Dayjs) => void;
+    getIsPeriodDisabled: (date: dayjs.Dayjs) => boolean;
+    value: dayjs.Dayjs | number;
 };
 
 type TCalendarPaneProps = {
-    getIsPeriodDisabled: (date: moment.Moment) => boolean;
-    navigateFn: (date: moment.Moment) => void;
-    onChange: (date: moment.MomentInput) => void;
-    paneDate: moment.Moment | number;
-    validateArrows: (date: moment.Moment) => boolean;
-    value: moment.Moment | number;
+    getIsPeriodDisabled: (date: dayjs.Dayjs) => boolean;
+    navigateFn: (date: dayjs.Dayjs) => void;
+    onChange: (date: dayjs.Dayjs) => void;
+    paneDate: dayjs.Dayjs | number;
+    validateArrows: (date: dayjs.Dayjs) => boolean;
+    value: dayjs.Dayjs | number;
 };
 
 const CalendarPane = ({
@@ -27,7 +26,7 @@ const CalendarPane = ({
     value,
 }: TCalendarPaneProps) => {
     const updateSelectedDate = (e: React.MouseEvent<HTMLElement>) => {
-        onChange(moment.utc(e.currentTarget.dataset.date, 'YYYY-MM-DD'));
+        onChange(dayjs.utc(e.currentTarget.dataset.date, 'YYYY-MM-DD'));
     };
 
     return (
@@ -54,48 +53,27 @@ const CalendarPane = ({
 };
 
 const TwoMonthPicker = ({ onChange, getIsPeriodDisabled, value }: TTwoMonthPickerProps) => {
-    const [left_pane_date, setLeftPaneDate] = React.useState(toMoment(value).clone().subtract(1, 'month'));
+    const [left_pane_date, setLeftPaneDate] = React.useState(dayjs(value).subtract(1, 'month'));
     const [right_pane_date, setRightPaneDate] = React.useState(value);
 
-    /**
-     * Navigate from date
-     *
-     * @param {moment.Moment} date
-     */
-    const navigateFrom = (date: moment.Moment) => {
+    const navigateFrom = (date: dayjs.Dayjs) => {
         setLeftPaneDate(date);
-        setRightPaneDate(addMonths(date.toISOString(), 1));
+        setRightPaneDate(dayjs(date).add(1, 'month'));
     };
 
-    /**
-     * Navigate to date
-     *
-     * @param {moment.Moment} date
-     */
-    const navigateTo = (date: moment.Moment) => {
-        setLeftPaneDate(subMonths(date.toISOString(), 1));
-        setRightPaneDate(toMoment(date));
+    const navigateTo = (date: dayjs.Dayjs) => {
+        setLeftPaneDate(dayjs(date).subtract(1, 'month'));
+        setRightPaneDate(date);
     };
 
-    /**
-     * Only allow previous months to be available to navigate. Disable other periods
-     *
-     * @param {moment.Moment} date
-     */
-    const validateFromArrows = (date: moment.Moment) => {
-        return diffInMonths(toMoment(left_pane_date), date) !== -1;
+    const validateFromArrows = (date: dayjs.Dayjs) => {
+        return dayjs(left_pane_date).diff(date, 'month') !== -1;
     };
 
-    /**
-     * Only allow next month to be available to navigate (unless next month is in the future).
-     * Disable other periods
-     *
-     * @param {moment.Moment} date
-     */
-    const validateToArrows = (date: moment.Moment) => {
-        const r_date = toMoment(right_pane_date).startOf('month');
-        if (diffInMonths(toMoment().startOf('month'), r_date) === 0) return true; // future months are disallowed
-        return diffInMonths(r_date, date) !== 1;
+    const validateToArrows = (date: dayjs.Dayjs) => {
+        const r_date = dayjs(right_pane_date).startOf('month');
+        if (dayjs().startOf('month').diff(r_date, 'month') === 0) return true;
+        return r_date.diff(date, 'month') !== 1;
     };
 
     return (

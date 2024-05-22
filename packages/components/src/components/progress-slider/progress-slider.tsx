@@ -4,7 +4,7 @@ import { getTimePercentage } from '@deriv/shared';
 import ProgressTicks from './progress-ticks';
 import RemainingTime from '../remaining-time';
 import Text from '../text';
-import moment from 'moment';
+import dayjs, { Dayjs } from 'dayjs';
 import { TGetCardLables } from '../types';
 
 type TProgressSliderProps = {
@@ -13,7 +13,7 @@ type TProgressSliderProps = {
     expiry_time?: number;
     getCardLabels: TGetCardLables;
     is_loading: boolean;
-    server_time: moment.Moment;
+    server_time: Dayjs;
     start_time?: number;
     ticks_count?: number;
 };
@@ -60,6 +60,5 @@ const ProgressSlider = ({
         </div>
     );
 };
-// Keypress events do not trigger on Safari due to the way it handles input type='range' elements, using focus on the input element also doesn't work for Safari.
 
 export default ProgressSlider;

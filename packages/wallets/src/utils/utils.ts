@@ -1,8 +1,7 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 export default function unixToDateString(date: Date) {
-    const formattedDate = moment(date).format('YYYY-MM-DD');
-
+    const formattedDate = dayjs(date).format('YYYY-MM-DD');
     return formattedDate;
 }
 

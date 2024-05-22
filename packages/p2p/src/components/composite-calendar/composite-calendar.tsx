@@ -1,8 +1,8 @@
 import React from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import Loadable from 'react-loadable';
 import { DesktopWrapper, InputField, MobileWrapper, useOnClickOutside } from '@deriv/components';
-import { daysFromTodayTo, toMoment } from '@deriv/shared';
+import { daysFromTodayTo } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import CalendarIcon from './calendar-icon';
@@ -17,7 +17,7 @@ export type TInputDateRange = {
 
 type TCompositeCalendarProps = {
     input_date_range: TInputDateRange;
-    onChange: (values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean }) => void;
+    onChange: (values: { to?: dayjs.Dayjs; from?: dayjs.Dayjs; is_batch?: boolean }) => void;
     to: number;
     from: number;
 };
@@ -103,13 +103,13 @@ const CompositeCalendar = (props: TCompositeCalendarProps) => {
     const validateClickOutside = (event: MouseEvent) => !wrapper_ref.current?.contains(event.target as Node);
 
     const calculateFrom = (new_from: number) =>
-        new_from === 1 ? toMoment().startOf('day') : toMoment().startOf('day').subtract(new_from, 'day').add(1, 's');
+        new_from === 1 ? dayjs().startOf('day') : dayjs().startOf('day').subtract(new_from, 'day').add(1, 'second');
 
     const selectDateRange = (new_from?: number) => {
         hideCalendar();
         onChange({
             from: new_from ? calculateFrom(new_from) : undefined,
-            to: toMoment().endOf('day'),
+            to: dayjs().endOf('day'),
             is_batch: true,
         });
     };
@@ -121,7 +121,7 @@ const CompositeCalendar = (props: TCompositeCalendarProps) => {
      * @returns {string}
      */
     const getToDateLabel = () => {
-        const date = toMoment(to);
+        const date = dayjs(to);
         return daysFromTodayTo(date) === 0 ? localize('Today') : date.format('MMM, DD YYYY');
     };
 
@@ -131,7 +131,7 @@ const CompositeCalendar = (props: TCompositeCalendarProps) => {
      * @returns {string}
      */
     const getFromDateLabel = () => {
-        const date = toMoment(from);
+        const date = dayjs(from);
         return from ? date.format('MMM, DD YYYY') : '';
     };
 
@@ -159,11 +159,11 @@ const CompositeCalendar = (props: TCompositeCalendarProps) => {
         validateClickOutside
     );
 
-    const setFromToDate = (date: moment.Moment, label: string) => {
+    const setFromToDate = (date: dayjs.Dayjs, label: string) => {
         if (label === 'to') {
-            onChange({ to: toMoment(date).endOf('day') });
+            onChange({ to: date.endOf('day') });
         } else {
-            onChange({ from: toMoment(date) });
+            onChange({ from: date });
         }
 
         hideCalendar();
@@ -173,11 +173,11 @@ const CompositeCalendar = (props: TCompositeCalendarProps) => {
      * The below function is used to determine whether a given date should be disalbed or not(either from or to) based on the current from and to date.
      * @returns {boolean}
      */
-    const getIsPeriodDisabled = (date: moment.Moment, label: string) => {
+    const getIsPeriodDisabled = (date: dayjs.Dayjs, label: string) => {
         if (label === 'from') {
             return date.unix() > to;
         }
-        return date.unix() < from || date.unix() > toMoment().endOf('day').unix();
+        return date.unix() < from || date.unix() > dayjs().endOf('day').unix();
     };
 
     return (

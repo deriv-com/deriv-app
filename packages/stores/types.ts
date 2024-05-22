@@ -1,5 +1,5 @@
 import type { RouteComponentProps } from 'react-router';
-import type { Moment } from 'moment';
+import dayjs from 'dayjs';
 
 import type {
     AccountLimitsResponse,
@@ -651,7 +651,7 @@ type TCommonStore = {
     platform: 'dxtrade' | 'mt5' | 'ctrader' | '';
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
-    server_time: Moment;
+    server_time: dayjs.Dayjs;
     changeCurrentLanguage: (new_language: string) => void;
     changeSelectedLanguage: (key: string) => void;
     current_language: string;

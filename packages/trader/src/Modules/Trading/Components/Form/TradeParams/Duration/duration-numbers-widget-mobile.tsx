@@ -6,9 +6,12 @@ import { Numpad } from '@deriv/components';
 import DurationRangeText from './duration-range-text';
 import ExpiryText from './expiry-text';
 import { addComma, getDurationMinMaxValues, getUnitMap, isEmptyObject } from '@deriv/shared';
-import moment from 'moment';
 import { updateAmountChanges } from './duration-utils';
 import { observer, useStore } from '@deriv/stores';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 type TNumber = Pick<
     TDurationMobile,
@@ -105,17 +108,15 @@ const DurationNumbersWidgetMobile = observer(
 
         const setExpiryDate = (epoch: number, duration: string | number) => {
             if (trade_duration_unit !== 'd') {
-                return moment.utc().add(Number(duration), 'days').format('D MMM YYYY, [23]:[59]:[59] [GMT +0]');
+                return dayjs.utc().add(Number(duration), 'days').format('D MMM YYYY, [23]:[59]:[59] [GMT +0]');
             }
-            let expiry_date = new Date((epoch - trade_duration * 24 * 60 * 60) * 1000);
+            let expiry_date = dayjs.unix(epoch - trade_duration * 24 * 60 * 60);
             if (duration) {
-                expiry_date = new Date(expiry_date.getTime() + Number(duration) * 24 * 60 * 60 * 1000);
+                expiry_date = expiry_date.add(Number(duration) * 24 * 60 * 60, 'second');
             }
 
             return expiry_date
-                .toUTCString()
-                .replace('GMT', 'GMT +0')
-                .substring(5)
+                .format('ddd, D MMM YYYY HH:mm:ss [GMT +0]')
                 .replace(/(\d{2}) (\w{3} \d{4})/, '$1 $2,');
         };
 

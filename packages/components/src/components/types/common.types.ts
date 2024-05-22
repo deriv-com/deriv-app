@@ -1,6 +1,7 @@
 import React from 'react';
 import { getCardLabels, getContractTypeDisplay } from '@deriv/shared';
 import { TContractOptions } from '@deriv/shared/src/utils/contract/contract-types';
+import dayjs from 'dayjs';
 
 export type TGenericObjectType = {
     [key: string]: React.ReactNode;
@@ -31,5 +32,5 @@ export type TPassThrough = { isTopUp: (item: TRow) => boolean };
 export type TDatePickerOnChangeEvent = {
     date?: string;
     duration?: number | null | string;
-    target?: { name?: string; value?: number | string | moment.Moment | null };
+    target?: { name?: string; value?: number | string | dayjs.Dayjs | null };
 };

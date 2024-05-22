@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useActiveWalletAccount, useAllAccountsList, useInfiniteTransactions } from '@deriv/api-v2';
 import { TSocketRequestPayload } from '@deriv/api-v2/types';
 import { Loader } from '../../../../../../components';
@@ -61,7 +61,7 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
         <TransactionsTable
             columns={[
                 {
-                    accessorFn: row => row.transaction_time && moment.unix(row.transaction_time).format('DD MMM YYYY'),
+                    accessorFn: row => row.transaction_time && dayjs.unix(row.transaction_time).format('DD MMM YYYY'),
                     accessorKey: 'date',
                     header: 'Date',
                 },
@@ -72,7 +72,7 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
                 <div className='wallets-transactions-completed__group-title'>
                     <WalletText color='primary' size='2xs'>
                         {transaction.transaction_time &&
-                            moment.unix(transaction.transaction_time).format('DD MMM YYYY')}
+                            dayjs.unix(transaction.transaction_time).format('DD MMM YYYY')}
                     </WalletText>
                 </div>
             )}

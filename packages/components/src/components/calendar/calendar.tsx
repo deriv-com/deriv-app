@@ -1,5 +1,6 @@
 import React from 'react';
-import { getStartOfMonth, toMoment } from '@deriv/shared';
+import { getStartOfMonth } from '@deriv/shared';
+import dayjs, { OpUnitType } from 'dayjs';
 import Body from './calendar-body';
 import Footer from './calendar-footer';
 import Header from './calendar-header';
@@ -29,7 +30,7 @@ type TCalendarProps = {
     }>;
     has_range_selection?: boolean;
     keep_open?: boolean;
-    onHover?: (selected_date: moment.MomentInput | null) => void;
+    onHover?: (selected_date: dayjs.ConfigType | null) => void;
     should_show_today?: boolean;
 };
 
@@ -50,7 +51,7 @@ const Calendar = React.memo(
                 has_today_btn,
                 has_range_selection,
                 keep_open,
-                max_date = toMoment().add(120, 'y').format('YYYY-MM-DD'), // by default, max_date is set to 120 years after today
+                max_date = dayjs().add(120, 'year').format('YYYY-MM-DD'), // by default, max_date is set to 120 years after today
                 min_date = '1970-01-01', // by default, min_date is set to Unix Epoch (January 1st 1970)
                 onChangeCalendarMonth,
                 onHover,
@@ -62,27 +63,27 @@ const Calendar = React.memo(
             ref
         ) => {
             const [calendar_date, setCalendarDate] = React.useState<string>(
-                toMoment(value || start_date).format(date_format)
+                dayjs(value || start_date).format(date_format)
             ); // calendar date reference
-            const [selected_date, setSelectedDate] = React.useState<moment.MomentInput>(value); // selected date
+            const [selected_date, setSelectedDate] = React.useState<dayjs.ConfigType>(value); // selected date
             const [view, setView] = React.useState(calendar_view || 'date');
             const [hovered_date, setHoveredDate] = React.useState<string | null>('');
 
             React.useImperativeHandle(ref, () => ({
                 setSelectedDate: (date: string) => {
-                    const moment_date = toMoment(date).startOf('day');
-                    const formatted_date = moment_date.format(date_format);
+                    const dayjs_date = dayjs(date).startOf('day');
+                    const formatted_date = dayjs_date.format(date_format);
                     setCalendarDate(formatted_date);
                     setSelectedDate(formatted_date);
                 },
             }));
 
-            const navigateTo = (new_date: moment.MomentInput) => {
-                setCalendarDate(toMoment(new_date).format(date_format));
+            const navigateTo = (new_date: dayjs.ConfigType) => {
+                setCalendarDate(dayjs(new_date).format(date_format));
 
                 if (onChangeCalendarMonth) {
-                    const start_of_month = getStartOfMonth(new_date);
-                    onChangeCalendarMonth(start_of_month);
+                    const start_of_month = dayjs(new_date).startOf('month');
+                    onChangeCalendarMonth(start_of_month.format(date_format));
                 }
             };
 
@@ -118,15 +119,15 @@ const Calendar = React.memo(
             };
 
             const updateSelectedDate = (e: React.MouseEvent<HTMLSpanElement>) => {
-                const moment_date = toMoment(e.currentTarget.dataset.date).startOf('day');
-                const is_before = moment_date.isBefore(toMoment(min_date));
-                const is_after = moment_date.isAfter(toMoment(max_date));
+                const dayjs_date = dayjs(e.currentTarget.dataset.date).startOf('day');
+                const is_before = dayjs_date.isBefore(dayjs(min_date));
+                const is_after = dayjs_date.isAfter(dayjs(max_date));
 
                 if (is_before || is_after) {
                     return;
                 }
 
-                const formatted_date = moment_date.format(date_format);
+                const formatted_date = dayjs_date.format(date_format);
                 setCalendarDate(formatted_date);
                 setSelectedDate(formatted_date);
 
@@ -135,7 +136,7 @@ const Calendar = React.memo(
                 }
             };
 
-            const updateSelected = (e: React.MouseEvent<HTMLSpanElement>, type: moment.unitOfTime.StartOf) => {
+            const updateSelected = (e: React.MouseEvent<HTMLSpanElement>, type: OpUnitType) => {
                 if (e) e.stopPropagation();
 
                 if (type === 'day') {
@@ -152,7 +153,7 @@ const Calendar = React.memo(
                 let date = '';
                 if (type) {
                     const selected_date_part = e?.currentTarget?.dataset?.[type]?.split?.('-')?.[0] || 0;
-                    date = getDate(toMoment(calendar_date), type, date_format, +selected_date_part);
+                    date = getDate(dayjs(calendar_date), type, date_format, +selected_date_part);
                 }
                 if (isPeriodDisabled(date, type)) return;
 
@@ -166,7 +167,7 @@ const Calendar = React.memo(
             };
 
             const setToday = () => {
-                const now = toMoment().format(date_format);
+                const now = dayjs().format(date_format);
                 setCalendarDate(now);
                 setSelectedDate(now);
                 setView('date');
@@ -176,10 +177,10 @@ const Calendar = React.memo(
                 }
             };
 
-            const isPeriodDisabled = (date: moment.Moment | string, unit: moment.unitOfTime.StartOf) => {
-                const start_of_period = toMoment(date).clone().startOf(unit);
-                const end_of_period = toMoment(date).clone().endOf(unit);
-                return end_of_period.isBefore(toMoment(min_date)) || start_of_period.isAfter(toMoment(max_date));
+            const isPeriodDisabled = (date: dayjs.ConfigType, unit: dayjs.OpUnitType) => {
+                const start_of_period = dayjs(date).startOf(unit);
+                const end_of_period = dayjs(date).endOf(unit);
+                return end_of_period.isBefore(dayjs(min_date)) || start_of_period.isAfter(dayjs(max_date));
             };
 
             return (

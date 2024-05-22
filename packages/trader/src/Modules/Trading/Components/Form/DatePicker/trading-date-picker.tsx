@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import moment from 'moment';
 import React from 'react';
+import dayjs from 'dayjs';
 import { DatePicker, Tooltip } from '@deriv/components';
-import { isTimeValid, setTime, toMoment, useIsMounted, hasIntradayDurationUnit } from '@deriv/shared';
+import { isTimeValid, setTime, useIsMounted, hasIntradayDurationUnit } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { observer, useStore } from '@deriv/stores';
@@ -41,7 +41,7 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
     const [disabled_days, setDisabledDays] = React.useState<number[]>([]);
     const [market_events, setMarketEvents] = React.useState<TMarketEvent[]>([]);
     const [duration, setDuration] = React.useState(current_duration);
-    const [selected_date, setSelectedDate] = React.useState<moment.Moment>();
+    const [selected_date, setSelectedDate] = React.useState<dayjs.Dayjs>();
 
     React.useEffect(() => {
         onChangeCalendarMonth();
@@ -57,13 +57,13 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
 
     const getMinDuration = () => {
         return hasIntradayDurationUnit(duration_units_list)
-            ? toMoment(server_time).clone()
-            : toMoment(server_time).clone().add(duration_min_max?.daily?.min, 'second');
+            ? dayjs(server_time)
+            : dayjs(server_time).add(duration_min_max?.daily?.min, 'second');
     };
 
-    const getMomentContractStartDateTime = () => {
+    const getDayjsContractStartDateTime = () => {
         return setTime(
-            toMoment(getMinDuration()),
+            getMinDuration(),
             isTimeValid(start_time ?? '') ? start_time : server_time?.format('HH:mm:ss') ?? ''
         );
     };
@@ -74,7 +74,7 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
 
     const getMinDateExpiry = () => {
         const is_duration_contract = expiry_type === 'duration';
-        const min_date = getMomentContractStartDateTime().clone().startOf('day');
+        const min_date = getDayjsContractStartDateTime().startOf('day');
 
         return is_duration_contract && hasIntradayDurationUnit(duration_units_list) ? min_date.add(1, 'day') : min_date;
     };
@@ -82,8 +82,8 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
     const getMaxDateDuration = () => {
         const max_daily_duration = start_date ? 24 * 3600 : getMaxDailyDuration();
         return is_24_hours_contract
-            ? getMomentContractStartDateTime().clone().add(max_daily_duration, 'second')
-            : getMomentContractStartDateTime().clone().add(getMaxDailyDuration(), 'second');
+            ? getDayjsContractStartDateTime().add(max_daily_duration, 'second')
+            : getDayjsContractStartDateTime().add(getMaxDailyDuration(), 'second');
     };
 
     const hasRangeSelection = () => mode === 'duration';
@@ -98,7 +98,7 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
 
     const getDatepickerValue = () => {
         return hasRangeSelection()
-            ? toMoment().add(duration, 'days').format('YYYY-MM-DD')
+            ? dayjs().add(duration, 'days').format('YYYY-MM-DD')
             : selected_date || getMinDateExpiry();
     };
 
@@ -107,12 +107,12 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
             if (hasRangeSelection()) {
                 setDuration(Number(e.duration));
             } else if (e.target?.value) {
-                setSelectedDate(toMoment(e.target?.value));
+                setSelectedDate(dayjs(e.target?.value));
             }
         }
 
         if (typeof onChange === 'function' && e.target) {
-            const value = hasRangeSelection() ? e.target.value : toMoment(e.target.value).format('YYYY-MM-DD');
+            const value = hasRangeSelection() ? e.target.value : dayjs(e.target.value).format('YYYY-MM-DD');
             onChange({
                 target: {
                     name: e.target.name || '',
@@ -133,7 +133,7 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
 
     const onChangeCalendarMonth = React.useCallback(
         // Do not move this callback up. It will cause infinite loop.
-        async (e = toMoment().format('YYYY-MM-DD')) => {
+        async (e = dayjs().format('YYYY-MM-DD')) => {
             const new_market_events: TMarketEvent[] = [];
             let new_disabled_days: number[] = [];
             const events = await ContractType.getTradingEvents(e, symbol);

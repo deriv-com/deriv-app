@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { toMoment } from '@deriv/shared';
+import dayjs from 'dayjs';
 import Icon from '../icon';
 import Text from '../text';
 
@@ -8,8 +8,8 @@ type TDatePickerNativeProps = Omit<React.HTMLAttributes<HTMLInputElement>, 'onSe
     value: string | null;
     label?: string;
     placeholder?: string;
-    max_date?: moment.Moment | string;
-    min_date?: moment.Moment | string;
+    max_date?: dayjs.Dayjs | string;
+    min_date?: dayjs.Dayjs | string;
     display_format?: string;
     data_testid?: string;
     name?: string;
@@ -82,7 +82,7 @@ const Native = ({
                                 'dc-datepicker__display-text--disabled': disabled,
                             })}
                         >
-                            {toMoment(value).format(display_format)}
+                            {dayjs(value).format(display_format)}
                         </Text>
                     )}
                 </div>
@@ -109,8 +109,8 @@ const Native = ({
                     name={name}
                     className='dc-datepicker__native'
                     type='date'
-                    max={max_date && toMoment(max_date).format('YYYY-MM-DD')}
-                    min={min_date && toMoment(min_date).format('YYYY-MM-DD')}
+                    max={max_date && dayjs(max_date).format('YYYY-MM-DD')}
+                    min={min_date && dayjs(min_date).format('YYYY-MM-DD')}
                     required
                     onBlur={handleBlur}
                     onFocus={handleFocus}
@@ -118,20 +118,20 @@ const Native = ({
                     data-testid={data_testid}
                     onChange={e => {
                         let new_value = e.target.value;
-                        const moment_value = toMoment(new_value);
+                        const dayjs_value = dayjs(new_value);
 
                         if (min_date) {
-                            const moment_mindate = toMoment(min_date);
-                            const days_diff = moment_mindate.diff(moment_value, 'days');
+                            const dayjs_mindate = dayjs(min_date);
+                            const days_diff = dayjs_mindate.diff(dayjs_value, 'days');
 
-                            new_value = days_diff > 0 ? moment_mindate.format('YYYY-MM-DD') : new_value;
+                            new_value = days_diff > 0 ? dayjs_mindate.format('YYYY-MM-DD') : new_value;
                         }
 
                         if (max_date) {
-                            const moment_maxdate = toMoment(max_date);
-                            const days_diff = moment_maxdate.diff(moment_value, 'days');
+                            const dayjs_maxdate = dayjs(max_date);
+                            const days_diff = dayjs_maxdate.diff(dayjs_value, 'days');
 
-                            new_value = days_diff < 0 ? moment_maxdate.format('YYYY-MM-DD') : new_value;
+                            new_value = days_diff < 0 ? dayjs_maxdate.format('YYYY-MM-DD') : new_value;
                         }
 
                         if (input_ref.current) {

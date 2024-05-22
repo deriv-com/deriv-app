@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { getTimePercentage } from '@deriv/shared';
+import { Dayjs } from 'dayjs';
 import ProgressTicksMobile from './progress-ticks-mobile';
 import CircularProgress from '../circular-progress';
 import RemainingTime from '../remaining-time';
@@ -12,7 +13,7 @@ type TProgressSliderMobileProps = {
     current_tick?: number | null;
     expiry_time?: number;
     is_loading?: boolean;
-    server_time: moment.Moment;
+    server_time: Dayjs;
     start_time?: number;
     ticks_count?: number;
     getCardLabels: TGetCardLables;

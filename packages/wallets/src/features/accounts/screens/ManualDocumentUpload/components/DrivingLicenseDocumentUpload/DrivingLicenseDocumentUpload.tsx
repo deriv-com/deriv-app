@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { DatePicker, Divider, Dropzone, FlowTextField, useFlow, WalletText } from '../../../../../../components';
 import DrivingLicenseCardBack from '../../../../../../public/images/accounts/document-back.svg';
 import DrivingLicenseCardFront from '../../../../../../public/images/accounts/driving-license-front.svg';
@@ -27,7 +27,7 @@ const DrivingLicenseDocumentUpload = () => {
                 <DatePicker
                     defaultValue={formValues.drivingLicenseExpiryDate ?? ''}
                     label='Expiry date*'
-                    minDate={moment().add(2, 'days').toDate()}
+                    minDate={dayjs().add(2, 'days').toDate()}
                     name='drivingLicenseExpiryDate'
                     onDateChange={handleDateChange}
                     placeholder='DD/MM/YYYY'

@@ -1,10 +1,13 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import { WS } from '@deriv/shared';
 import { PromiseUtils } from '@deriv-com/utils';
 
+dayjs.extend(utc);
+
 let clock_started = false;
 const pending = PromiseUtils.createPromise();
-let server_time: moment.Moment,
+let server_time: dayjs.Dayjs,
     performance_request_time: number,
     get_time_interval: ReturnType<typeof setInterval>,
     update_time_interval: ReturnType<typeof setInterval>,
@@ -53,7 +56,7 @@ const timeCounter = (response: { error?: Error; time: number }) => {
 
     const updateTime = () => {
         const time_since_response = performance.now() - performance_response_time;
-        server_time = moment(server_time_at_response + time_since_response).utc();
+        server_time = dayjs.utc(server_time_at_response + time_since_response);
 
         if (typeof onTimeUpdated === 'function') {
             onTimeUpdated();
@@ -77,9 +80,9 @@ export const get = (): object | undefined => (server_time ? server_time.clone() 
  * @returns {Number} The distance to the server time.
  */
 export const getDistanceToServerTime = (compare_time: number): number => {
-    const time = moment(compare_time);
+    const time = dayjs(compare_time);
     const now_time = get();
-    const distance = time.diff(now_time, 'milliseconds');
+    const distance = time.diff(now_time, 'millisecond');
 
     return distance;
 };

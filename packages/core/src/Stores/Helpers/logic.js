@@ -1,4 +1,6 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+dayjs.extend(duration);
 import { isAccumulatorContract, isEmptyObject, getEndTime } from '@deriv/shared';
 import ServerTime from '../../_common/base/server_time';
 
@@ -38,7 +40,7 @@ const hour_to_granularity_map = [
 const getExpiryTime = time => time || ServerTime.get().unix();
 
 export const getChartType = (start_time, expiry_time) => {
-    const duration = moment.duration(moment.unix(getExpiryTime(expiry_time)).diff(moment.unix(start_time))).asHours();
+    const duration = dayjs.duration(dayjs.unix(getExpiryTime(expiry_time)).diff(dayjs.unix(start_time))).asHours();
     // use line chart if duration is equal or less than 1 hour
     return duration <= 1 ? 'line' : 'candles';
 };

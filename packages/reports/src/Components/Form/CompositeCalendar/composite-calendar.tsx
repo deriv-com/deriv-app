@@ -2,23 +2,23 @@ import React from 'react';
 import Loadable from 'react-loadable';
 import { DesktopWrapper, InputField, MobileWrapper, useOnClickOutside } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { daysFromTodayTo, toMoment } from '@deriv/shared';
+import { daysFromTodayTo } from '@deriv/shared';
 import CompositeCalendarMobile from './composite-calendar-mobile';
 import SideList from './side-list';
 import CalendarIcon from './calendar-icon';
 import TwoMonthPicker from './two-month-picker';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { observer, useStore } from '@deriv/stores';
 
 type TCompositeCalendar = {
-    onChange: (values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean }) => void;
+    onChange: (values: { to?: dayjs.Dayjs; from?: dayjs.Dayjs; is_batch?: boolean }) => void;
     to: number;
     from: number;
 };
 
 type TTwoMonthPickerLoadable = {
-    onChange: (date: moment.Moment) => void;
-    isPeriodDisabled: (date: moment.Moment) => boolean;
+    onChange: (date: dayjs.Dayjs) => void;
+    isPeriodDisabled: (date: dayjs.Dayjs) => boolean;
     value: number;
 };
 
@@ -78,19 +78,18 @@ const CompositeCalendar = observer((props: TCompositeCalendar) => {
     const selectDateRange = (new_from?: number) => {
         hideCalendar();
         onChange({
-            from: new_from ? toMoment().startOf('day').subtract(new_from, 'day').add(1, 's') : undefined,
-            to: toMoment().endOf('day'),
+            from: new_from ? dayjs().startOf('day').subtract(new_from, 'day').add(1, 'second') : undefined,
+            to: dayjs().endOf('day'),
             is_batch: true,
         });
     };
-
     const getToDateLabel = () => {
-        const date = toMoment(to);
+        const date = dayjs(to);
         return daysFromTodayTo(date) === 0 ? localize('Today') : date.format('MMM, DD YYYY');
     };
 
     const getFromDateLabel = () => {
-        const date = toMoment(from);
+        const date = dayjs(from);
         return from ? date.format('MMM, DD YYYY') : '';
     };
 
@@ -118,20 +117,20 @@ const CompositeCalendar = observer((props: TCompositeCalendar) => {
         validateClickOutside
     );
 
-    const setToDate = (date: moment.Moment) => {
-        onChange({ to: toMoment(date).endOf('day') });
+    const setToDate = (date: dayjs.Dayjs) => {
+        onChange({ to: date.endOf('day') });
     };
 
-    const setFromDate = (date: moment.Moment) => {
-        onChange({ from: toMoment(date) });
+    const setFromDate = (date: dayjs.Dayjs) => {
+        onChange({ from: date });
         hideCalendar();
     };
 
-    const isPeriodDisabledTo = (date: moment.Moment) => {
-        return date.unix() < from || date.unix() > toMoment().endOf('day').unix();
+    const isPeriodDisabledTo = (date: dayjs.Dayjs) => {
+        return date.unix() < from || date.unix() > dayjs().endOf('day').unix();
     };
 
-    const isPeriodDisabledFrom = (date: moment.Moment) => date.unix() > to;
+    const isPeriodDisabledFrom = (date: dayjs.Dayjs) => date.unix() > to;
 
     return (
         <React.Fragment>

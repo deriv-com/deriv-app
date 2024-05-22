@@ -18,7 +18,7 @@ import MarketSymbolIconRow from '../Components/market-symbol-icon-row';
 import ProfitLossCell from '../Components/profit_loss_cell';
 import CurrencyWrapper from '../Components/currency-wrapper';
 import { useStore } from '@deriv/stores';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 type TPortfolioStore = ReturnType<typeof useStore>['portfolio'];
 
@@ -48,7 +48,7 @@ type TMultiplierOpenPositionstemplateProps = Pick<
     'getPositionById' | 'onClickCancel' | 'onClickSell'
 > & {
     currency: string;
-    server_time: moment.Moment;
+    server_time: dayjs.Dayjs;
 };
 
 /* eslint-disable react/display-name, react/prop-types */

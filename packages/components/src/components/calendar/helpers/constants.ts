@@ -1,5 +1,9 @@
-import { toMoment } from '@deriv/shared';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import weekOfYear from 'dayjs/plugin/weekOfYear';
+import quarterOfYear from 'dayjs/plugin/quarterOfYear';
+
+dayjs.extend(weekOfYear);
+dayjs.extend(quarterOfYear);
 
 export const week_headers: Record<
     string,
@@ -38,76 +42,42 @@ export const getDaysOfTheWeek = (day: string) => {
     return days_of_the_week[day];
 };
 
-export const getDecade = (moment_date: moment.MomentInput) => {
-    const year = toMoment(moment_date).year();
+export const getDecade = (date: dayjs.ConfigType) => {
+    const year = dayjs(date).year();
     const decade_start_year = year - (year % 10) + 1;
     return `${decade_start_year}-${decade_start_year + 9}`;
 };
 
-export const getCentury = (moment_date: moment.MomentInput) => {
-    const year = toMoment(moment_date).year();
+export const getCentury = (date: dayjs.ConfigType) => {
+    const year = dayjs(date).year();
     const decade_start_year = year - (year % 10) + 1;
     return `${decade_start_year}-${decade_start_year + 99}`;
 };
 
-export const getDate = (
-    date: moment.Moment,
-    type: moment.unitOfTime.StartOf,
-    date_format: string,
-    selected_date_part: number
-) => {
+export const getDate = (date: dayjs.Dayjs, type: dayjs.OpUnitType, date_format: string, selected_date_part: number) => {
     switch (type) {
         case 'year':
-        case 'y':
-        case 'years':
             return date.year(selected_date_part).format(date_format);
         case 'month':
-        case 'months':
-        case 'M':
             return date.month(selected_date_part).format(date_format);
         case 'week':
-        case 'w':
             return date.week(selected_date_part).format(date_format);
-        case 'weeks':
-            return date.weeks(selected_date_part).format(date_format);
         case 'day':
-        case 'd':
             return date.day(selected_date_part).format(date_format);
-        case 'days':
-            return date.days(selected_date_part).format(date_format);
         case 'hour':
-        case 'h':
             return date.hour(selected_date_part).format(date_format);
-        case 'hours':
-            return date.hours(selected_date_part).format(date_format);
         case 'minute':
-        case 'm':
             return date.minute(selected_date_part).format(date_format);
-        case 'minutes':
-            return date.minutes(selected_date_part).format(date_format);
         case 'second':
-        case 's':
             return date.second(selected_date_part).format(date_format);
-        case 'seconds':
-            return date.seconds(selected_date_part).format(date_format);
         case 'millisecond':
-        case 'ms':
             return date.millisecond(selected_date_part).format(date_format);
-        case 'milliseconds':
-            return date.milliseconds(selected_date_part).format(date_format);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+        // https://github.com/iamkun/dayjs/issues/2557
         case 'quarter':
-        case 'Q':
             return date.quarter(selected_date_part).format(date_format);
-        case 'quarters':
-            return date.quarters(selected_date_part).format(date_format);
-        case 'isoWeek':
-        case 'W':
-            return date.isoWeek(selected_date_part).format(date_format);
-        case 'isoWeeks':
-            return date.isoWeeks(selected_date_part).format(date_format);
         case 'date':
-        case 'dates':
-        case 'D':
             return date.date(selected_date_part).format(date_format);
         default:
             return date.day(selected_date_part).format(date_format);

@@ -15,6 +15,7 @@ import VanillaOptionsCardBody from './vanilla-options-card-body';
 import LookBacksCardBody from './lookbacks-card-body';
 import { TGeneralContractCardBodyProps } from './contract-update-form';
 import ArrowIndicator from '../../arrow-indicator';
+import { Dayjs } from 'dayjs';
 
 export type TContractCardBodyProps = {
     is_accumulator?: boolean;
@@ -22,7 +23,7 @@ export type TContractCardBodyProps = {
     is_multiplier: boolean;
     is_turbos?: boolean;
     is_vanilla?: boolean;
-    server_time: moment.Moment;
+    server_time: Dayjs;
 } & TGeneralContractCardBodyProps;
 
 const ContractCardBody = ({

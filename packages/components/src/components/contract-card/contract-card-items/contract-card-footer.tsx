@@ -3,6 +3,7 @@ import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { isValidToCancel, isValidToSell, hasContractEntered, isOpen, useNewRowTransition } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import dayjs from 'dayjs';
 import ContractCardSell from './contract-card-sell';
 import MultiplierCloseActions from './multiplier-close-actions';
 import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
@@ -19,7 +20,7 @@ export type TCardFooterPropTypes = {
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
     onFooterEntered?: () => void;
-    server_time: moment.Moment;
+    server_time: dayjs.Dayjs;
     should_show_transition?: boolean;
 };
 

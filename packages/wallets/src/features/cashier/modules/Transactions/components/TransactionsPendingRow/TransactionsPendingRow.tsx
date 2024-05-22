@@ -1,6 +1,8 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import classNames from 'classnames';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
 import { useHover } from 'usehooks-ts';
 import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api-v2';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
@@ -12,6 +14,8 @@ import { THooks } from '../../../../../../types';
 import { WalletActionModal } from '../../../../components/WalletActionModal';
 import { TransactionsPendingRowField } from './components/TransactionsPendingRowField';
 import './TransactionsPendingRow.scss';
+
+dayjs.extend(utc);
 
 type TProps = {
     transaction: THooks.CryptoTransactions;
@@ -129,7 +133,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                         />
                         <TransactionsPendingRowField
                             name='Date'
-                            value={moment.unix(transaction.submit_date).format('DD MMM YYYY')}
+                            value={dayjs.unix(transaction.submit_date).format('DD MMM YYYY')}
                             valueTextProps={{
                                 color: 'general',
                             }}
@@ -139,7 +143,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                 <TransactionsPendingRowField
                     className={{ 'wallets-transactions-pending-row__transaction-time': !isMobile }}
                     name='Time'
-                    value={moment
+                    value={dayjs
                         .unix(transaction.submit_date)
                         .utc()
                         .format(isMobile ? 'HH:mm:ss [GMT]' : 'DD MMM YYYY HH:mm:ss [GMT]')}

@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import dayjs, { Dayjs } from 'dayjs';
 
 import { formatDuration, getDiffDuration } from '@deriv/shared';
 
@@ -7,7 +7,7 @@ import { TGetCardLables } from '../types';
 
 type TRemainingTimeProps = {
     end_time?: number;
-    start_time: moment.Moment;
+    start_time: Dayjs;
     format?: string;
     getCardLabels: TGetCardLables;
 };

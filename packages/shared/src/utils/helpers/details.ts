@@ -1,7 +1,10 @@
-import { epochToMoment, formatMilliseconds, getDiffDuration } from '../date';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
 import { localize } from '@deriv/translations';
-import moment from 'moment';
+import { formatMilliseconds, getDiffDuration } from '../date';
 import { TContractInfo } from '../contract';
+
+dayjs.extend(duration);
 
 type TUnitMap = {
     name_plural?: string;
@@ -9,11 +12,8 @@ type TUnitMap = {
     name?: string;
 };
 
-export const getDurationUnitValue = (obj_duration: moment.Duration) => {
-    const duration_ms = obj_duration.asMilliseconds() / 1000;
-    // Check with isEndTime to find out if value of duration has decimals
-    // for days we do not require precision for End Time value since users cannot select with timepicker if not in same day
-    // Seconds is the smallest End Time duration displayed thus we can keep the same formatting as normal Duration
+export const getDurationUnitValue = (obj_duration: duration.Duration) => {
+    const duration_ms = obj_duration.as('millisecond') / 1000;
 
     if (duration_ms >= 86400000) {
         const duration = duration_ms / (1000 * 60 * 60 * 24);
@@ -56,10 +56,9 @@ const TIME = {
     DAY: 86400000,
 } as const;
 
-export const getDurationUnitText = (obj_duration: moment.Duration, should_ignore_end_time?: boolean) => {
+export const getDurationUnitText = (obj_duration: duration.Duration, should_ignore_end_time?: boolean) => {
     const unit_map = getUnitMap();
-    const duration_ms = obj_duration.asMilliseconds() / TIME.SECOND;
-    // return empty suffix string if duration is End Time set except for days and seconds, refer to L18 and L19
+    const duration_ms = obj_duration.as('millisecond') / TIME.SECOND;
 
     if (duration_ms >= TIME.DAY) {
         const days_value = duration_ms / TIME.DAY;
@@ -81,15 +80,15 @@ export const getDurationUnitText = (obj_duration: moment.Duration, should_ignore
 
 export const formatResetDuration = (contract_info: TContractInfo) => {
     const time_duration = getUnitMap();
-    const duration_ms = getDurationPeriod(contract_info).asMilliseconds() / TIME.SECOND / 2;
+    const duration_ms = getDurationPeriod(contract_info).as('millisecond') / TIME.SECOND / 2;
     const reset_hours =
         duration_ms === TIME.HOUR ? `h [${time_duration.h.name_singular}] ` : `h [${time_duration.h.name_plural}] `;
     const reset_minutes =
         duration_ms === TIME.MINUTE ? `m [${time_duration.m.name_singular}] ` : `m [${time_duration.m.name_plural}] `;
     const reset_seconds = duration_ms % TIME.MINUTE === 0 ? '' : `s [${time_duration.s.name}]`;
 
-    return moment
-        .utc(moment.duration(duration_ms, 'milliseconds').asMilliseconds())
+    return dayjs
+        .utc(dayjs.duration(duration_ms, 'milliseconds').asMilliseconds())
         .format(
             `${duration_ms >= TIME.HOUR ? reset_hours : ''}${
                 duration_ms >= TIME.MINUTE && duration_ms % TIME.HOUR !== 0 ? reset_minutes : ''
@@ -99,8 +98,8 @@ export const formatResetDuration = (contract_info: TContractInfo) => {
 
 export const getDurationPeriod = (contract_info: TContractInfo) =>
     getDiffDuration(
-        +epochToMoment(contract_info.date_start || contract_info.purchase_time || 0),
-        +epochToMoment(contract_info.date_expiry || 0)
+        +dayjs.unix(contract_info.date_start || contract_info.purchase_time || 0),
+        +dayjs.unix(contract_info.date_expiry || 0)
     );
 
 export const getDurationTime = (contract_info: TContractInfo) =>

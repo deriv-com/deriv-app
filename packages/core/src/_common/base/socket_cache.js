@@ -1,4 +1,4 @@
-const moment = require('moment');
+import dayjs from 'dayjs';
 const isEmptyObject = require('@deriv/shared').isEmptyObject;
 const getPropertyValue = require('@deriv/shared').getPropertyValue;
 const getStaticHash = require('_common/utility').getStaticHash;
@@ -73,7 +73,7 @@ const SocketCache = (() => {
             return;
         }
 
-        const expires = moment().add(config[msg_type].expire, 'm').valueOf();
+        const expires = dayjs().add(config[msg_type].expire, 'minute').valueOf();
 
         if (!data_obj.static_hash) {
             data_obj.static_hash = getStaticHash();
@@ -117,7 +117,7 @@ const SocketCache = (() => {
         const response_obj = getData(key);
 
         let response;
-        if (moment().isBefore(response_obj.expires)) {
+        if (dayjs().isBefore(response_obj.expires)) {
             response = response_obj.value;
         } else {
             // remove if expired
@@ -137,7 +137,7 @@ const SocketCache = (() => {
         const response_obj = getData(key);
 
         let response;
-        if (moment().isBefore(response_obj.expires)) {
+        if (dayjs().isBefore(dayjs(response_obj.expires))) {
             response = response_obj.value;
         } else {
             // remove if expired

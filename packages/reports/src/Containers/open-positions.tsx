@@ -29,7 +29,6 @@ import {
     getDurationUnitText,
     getGrowthRatePercentage,
     getCardLabels,
-    toMoment,
     hasContractStarted,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -45,7 +44,7 @@ import {
 import PlaceholderComponent from '../Components/placeholder-component';
 import { observer, useStore } from '@deriv/stores';
 import { TColIndex, TUnsupportedContractType } from 'Types';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 type TRangeFloatZeroToOne = React.ComponentProps<typeof ProgressBar>['value'];
 type TPortfolioStore = ReturnType<typeof useStore>['portfolio'];
@@ -73,7 +72,7 @@ type TMobileRowRenderer = TUiStore & {
     is_footer?: boolean;
     columns_map: Record<TColIndex, TDataListCell['column']>;
     getContractById: ReturnType<typeof useStore>['contract_trade']['getContractById'];
-    server_time: moment.Moment;
+    server_time: dayjs.Dayjs;
     onClickCancel: (contract_id?: number) => void;
     onClickRemove: TPortfolioStore['removePositionById'];
     onClickSell: (contract_id?: number) => void;
@@ -140,7 +139,7 @@ const MobileRowRenderer = ({
     row = {},
     is_footer,
     columns_map = {},
-    server_time = toMoment(),
+    server_time = dayjs(),
     onClickCancel,
     onClickSell,
     measure,
@@ -612,7 +611,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         <MobileRowRenderer
             {...args}
             columns_map={columns_map}
-            server_time={server_time || toMoment()}
+            server_time={server_time || dayjs()}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
             {...props}

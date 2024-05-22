@@ -2,7 +2,10 @@ import React from 'react';
 import { StaticUrl } from '@deriv/components';
 import { useCryptoTransactions } from '@deriv/hooks';
 import { Localize, localize } from '@deriv/translations';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 const cryptoTransactionMapper = (
     transaction: NonNullable<ReturnType<typeof useCryptoTransactions>['last_transaction']>
@@ -147,10 +150,7 @@ const cryptoTransactionMapper = (
         ? deposit_confirmation_display_mapper[transaction.status_code]
         : withdrawal_confirmation_display_mapper[transaction.status_code];
 
-    const submit_date_display = moment
-        .unix(submit_date || 0)
-        .utc()
-        .format('MMM D, YYYY');
+    const submit_date_display = dayjs.unix(submit_date || 0).utc().format('MMM D, YYYY');
 
     return {
         ...transaction,

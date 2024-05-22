@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
+import dayjs from 'dayjs';
 import ContractCard from '../contract-card';
 import {
     getContractPath,
@@ -16,6 +17,7 @@ import {
 } from '@deriv/shared';
 import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
 import { TToastConfig } from '../types/contract.types';
+
 
 type TPositionsDrawerCardProps = {
     addToast: (toast_config: TToastConfig) => void;
@@ -39,7 +41,7 @@ type TPositionsDrawerCardProps = {
     removeToast: (key: string) => void;
     result?: string;
     setCurrentFocus: (value: string | null) => void;
-    server_time?: moment.Moment;
+    server_time?: dayjs.Dayjs;
     should_show_transition?: boolean;
     should_show_cancellation_warning: boolean;
     toggleCancellationWarning: () => void;
@@ -99,7 +101,7 @@ const PositionsDrawerCard = ({
             is_mobile={is_mobile}
             is_sell_requested={!!is_sell_requested}
             onClickSell={onClickSell}
-            server_time={server_time as moment.Moment}
+            server_time={server_time as dayjs.Dayjs}
         />
     );
 
@@ -124,7 +126,7 @@ const PositionsDrawerCard = ({
             is_vanilla={is_vanilla}
             has_progress_slider={is_mobile && has_progress_slider}
             removeToast={removeToast}
-            server_time={server_time as moment.Moment}
+            server_time={server_time as dayjs.Dayjs}
             setCurrentFocus={setCurrentFocus}
             should_show_cancellation_warning={should_show_cancellation_warning}
             toggleCancellationWarning={toggleCancellationWarning}
@@ -141,7 +143,7 @@ const PositionsDrawerCard = ({
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
             onFooterEntered={onFooterEntered}
-            server_time={server_time as moment.Moment}
+            server_time={server_time as dayjs.Dayjs}
             should_show_transition={!!should_show_transition}
         />
     );

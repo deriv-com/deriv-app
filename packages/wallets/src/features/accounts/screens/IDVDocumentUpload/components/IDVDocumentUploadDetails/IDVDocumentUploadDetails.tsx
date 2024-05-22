@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import { Field, useFormikContext } from 'formik';
-import moment from 'moment';
 import { useSettings } from '@deriv/api-v2';
 import { DerivLightDobPoiIcon } from '@deriv/quill-icons';
+import dayjs from 'dayjs';
 import { DatePicker, FlowTextField, InlineMessage, useFlow, WalletText } from '../../../../../../components';
 import unixToDateString from '../../../../../../utils/utils';
 import { dateOfBirthValidator, firstNameValidator, lastNameValidator } from '../../../../validations';
@@ -78,9 +78,9 @@ const IDVDocumentUploadDetails = () => {
                         defaultValue={unixToDateString(formattedDateOfBirth)}
                         disabled={formValues.verifiedIdvDetails}
                         label='Date of birth*'
-                        maxDate={moment().subtract(18, 'years').toDate()}
+                        maxDate={dayjs().subtract(18, 'years').toDate()}
                         message='Your date of birth as in your identity document'
-                        minDate={moment().subtract(100, 'years').toDate()}
+                        minDate={dayjs().subtract(100, 'years').toDate()}
                         mobileAlignment='above'
                         name='dateOfBirth'
                         onDateChange={handleDateChange}

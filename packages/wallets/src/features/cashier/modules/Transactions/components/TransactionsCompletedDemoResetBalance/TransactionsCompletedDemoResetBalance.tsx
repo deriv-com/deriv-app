@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useActiveWalletAccount, useAllAccountsList, useTransactions } from '@deriv/api-v2';
 import { Loader } from '../../../../../../components';
 import { WalletText } from '../../../../../../components/Base';
@@ -42,7 +42,7 @@ const TransactionsCompletedDemoResetBalance: React.FC = () => {
         <TransactionsTable
             columns={[
                 {
-                    accessorFn: row => row.transaction_time && moment.unix(row.transaction_time).format('DD MMM YYYY'),
+                    accessorFn: row => row.transaction_time && dayjs.unix(row.transaction_time).format('DD MMM YYYY'),
                     accessorKey: 'date',
                     header: 'Date',
                 },
@@ -53,7 +53,7 @@ const TransactionsCompletedDemoResetBalance: React.FC = () => {
                 <div className='wallets-transactions-completed-demo-reset-balance__group-title'>
                     <WalletText color='primary' size='2xs'>
                         {transaction.transaction_time &&
-                            moment.unix(transaction.transaction_time).format('DD MMM YYYY')}
+                            dayjs.unix(transaction.transaction_time).format('DD MMM YYYY')}
                     </WalletText>
                 </div>
             )}

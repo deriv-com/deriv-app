@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { isValidToCancel } from '@deriv/shared';
+import dayjs from 'dayjs';
 import Button from '../../button';
 import RemainingTime from '../../remaining-time';
 import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
@@ -13,7 +14,7 @@ export type TMultiplierCloseActionsProps = {
     is_sell_requested: boolean;
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
-    server_time: moment.Moment;
+    server_time: dayjs.Dayjs;
 };
 
 const MultiplierCloseActions = ({

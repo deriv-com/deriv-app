@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { flow } from 'mobx';
 import {
     State,
@@ -133,7 +133,7 @@ const BinarySocketGeneral = (() => {
         sessionStorage.setItem('session_start_time', session_start_time);
 
         if (duration && duration !== session_duration_limit) {
-            const current_session_duration = session_duration_limit ? ServerTime.get() - moment(session_start_time) : 0;
+            const current_session_duration = session_duration_limit ? ServerTime.get() - dayjs(session_start_time) : 0;
             const remaining_session_time = duration * 60 * 1000 - current_session_duration;
             clearTimeout(session_timeout);
             session_timeout = setTimeout(() => {

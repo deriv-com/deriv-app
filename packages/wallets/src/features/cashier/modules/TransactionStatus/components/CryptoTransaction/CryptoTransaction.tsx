@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import { useCancelCryptoTransaction } from '@deriv/api-v2';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { WalletButton, WalletText } from '../../../../../../components/Base';
@@ -9,6 +10,8 @@ import useDevice from '../../../../../../hooks/useDevice';
 import { THooks } from '../../../../../../types';
 import { WalletActionModal } from '../../../../components/WalletActionModal';
 import './CryptoTransaction.scss';
+
+dayjs.extend(utc);
 
 type TCryptoTransaction = {
     currencyDisplayCode: THooks.CurrencyConfig['code'];
@@ -84,7 +87,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
                     {transaction.amount} {currency}
                 </WalletText>
                 <WalletText color='less-prominent' size='2xs'>
-                    {moment.unix(transaction.submit_date).utc().format('MMM D, YYYY')}
+                    {dayjs.unix(transaction.submit_date).utc().format('MMM D, YYYY')}
                 </WalletText>
             </div>
             <WalletText lineHeight='2xs' size='2xs'>

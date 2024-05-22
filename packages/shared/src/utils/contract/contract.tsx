@@ -1,6 +1,6 @@
-import moment from 'moment';
 import React from 'react';
 import { Localize } from '@deriv/translations';
+import dayjs from 'dayjs';
 import { unique } from '../object';
 import { capitalizeFirstLetter } from '../string/string_util';
 import { TContractInfo, TContractStore, TDigitsInfo, TLimitOrder, TTickItem } from './contract-types';
@@ -262,10 +262,10 @@ export const getLimitOrderAmount = (limit_order?: TLimitOrder) => {
     };
 };
 
-export const getTimePercentage = (server_time: moment.Moment, start_time: number, expiry_time: number) => {
-    const duration_from_purchase = moment.duration(moment.unix(expiry_time).diff(moment.unix(start_time)));
-    const duration_from_now = moment.duration(moment.unix(expiry_time).diff(server_time));
-    let percentage = (duration_from_now.asMilliseconds() / duration_from_purchase.asMilliseconds()) * 100;
+export const getTimePercentage = (server_time: dayjs.Dayjs, start_time: number, expiry_time: number) => {
+    const duration_from_purchase = dayjs.unix(expiry_time).diff(dayjs.unix(start_time));
+    const duration_from_now = dayjs.unix(expiry_time).diff(server_time);
+    let percentage = (duration_from_now / duration_from_purchase) * 100;
 
     if (percentage < 0.5) {
         percentage = 0;

@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
+import dayjs from 'dayjs';
 import {
     isHighLow,
     getCurrentTick,
@@ -24,6 +25,7 @@ import TickCounterBar from './tick-counter-bar';
 import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 import { TGetCardLables, TGetContractTypeDisplay } from '../../types/common.types';
 
+
 export type TContractCardHeaderProps = {
     contract_info: TContractInfo;
     display_name: string;
@@ -34,7 +36,7 @@ export type TContractCardHeaderProps = {
     is_sell_requested: boolean;
     is_valid_to_sell?: boolean;
     onClickSell: (contract_id?: number) => void;
-    server_time: moment.Moment;
+    server_time: dayjs.Dayjs;
     id?: number;
     is_sold?: boolean;
 };

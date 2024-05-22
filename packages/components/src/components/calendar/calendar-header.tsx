@@ -1,16 +1,17 @@
 import React from 'react';
-import { addMonths, addYears, subMonths, subYears, toMoment } from '@deriv/shared';
+import { addMonths, addYears, subMonths, subYears } from '@deriv/shared';
 import Button from './calendar-button';
 import { getCentury, getDecade } from './helpers';
+import dayjs, { OpUnitType } from 'dayjs';
 
 type THeaderProps = {
-    calendar_date: moment.MomentInput;
+    calendar_date: dayjs.ConfigType;
     calendar_view: string;
     disable_month_selector?: boolean;
     disable_year_selector?: boolean;
     hide_disabled_periods?: boolean;
-    isPeriodDisabled: (date: moment.Moment, unit: moment.unitOfTime.StartOf) => boolean;
-    navigateTo: (new_date: moment.Moment) => void;
+    isPeriodDisabled: (date: dayjs.Dayjs, unit: OpUnitType) => boolean;
+    navigateTo: (new_date: dayjs.Dayjs) => void;
     switchView?: (new_view: string) => void;
 };
 
@@ -28,22 +29,22 @@ const Header = ({
     const is_month_view = calendar_view === 'month';
     const is_year_view = calendar_view === 'year';
     const is_decade_view = calendar_view === 'years';
-    const moment_date = toMoment(calendar_date);
+    const dayjs_date = dayjs(calendar_date);
 
     let num_of_years = 1;
     if (is_year_view) num_of_years = 10;
     if (is_decade_view) num_of_years = 100;
 
-    const century = getCentury(moment_date.clone());
-    const decade = getDecade(moment_date.clone());
+    const century = getCentury(dayjs_date.clone());
+    const decade = getDecade(dayjs_date.clone());
     const end_of_decade = +(is_year_view ? decade : century).split('-')[1];
 
-    const is_prev_month_disabled = isPeriodDisabled(subMonths(moment_date, 1), 'month');
-    const is_prev_year_disabled = isPeriodDisabled(subYears(moment_date, num_of_years), 'month');
-    const is_next_month_disabled = isPeriodDisabled(addMonths(moment_date, 1), 'month');
-    const is_next_year_disabled = isPeriodDisabled(addYears(moment_date, num_of_years), 'month');
+    const is_prev_month_disabled = isPeriodDisabled(dayjs_date.subtract(1, 'month'), 'month');
+    const is_prev_year_disabled = isPeriodDisabled(dayjs_date.subtract(num_of_years, 'year'), 'month');
+    const is_next_month_disabled = isPeriodDisabled(dayjs_date.add(1, 'month'), 'month');
+    const is_next_year_disabled = isPeriodDisabled(dayjs_date.add(num_of_years, 'year'), 'month');
     const is_select_year_disabled =
-        isPeriodDisabled(moment_date.clone().year(end_of_decade), 'year') || disable_year_selector;
+        isPeriodDisabled(dayjs_date.clone().year(end_of_decade), 'year') || disable_year_selector;
     const should_hide_next_month = is_next_month_disabled && hide_disabled_periods;
     const should_hide_prev_month = is_prev_month_disabled && hide_disabled_periods;
     const should_hide_prev_year = is_prev_year_disabled && hide_disabled_periods;
@@ -87,7 +88,7 @@ const Header = ({
                     <Button
                         className='dc-calendar__btn--select'
                         is_hidden={!is_date_view}
-                        label={moment_date.format('MMM')}
+                        label={dayjs_date.format('MMM')}
                         onClick={() => (disable_month_selector ? undefined : switchView?.('month'))}
                     />
                 )}
@@ -95,7 +96,7 @@ const Header = ({
                     <Button
                         className='dc-calendar__btn--select'
                         is_disabled={is_select_year_disabled}
-                        label={moment_date.format('YYYY')}
+                        label={dayjs_date.format('YYYY')}
                         onClick={() => (is_select_year_disabled ? undefined : switchView?.('year'))}
                     />
                 )}

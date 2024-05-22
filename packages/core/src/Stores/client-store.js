@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 
 import {
@@ -27,7 +27,6 @@ import {
     SessionStore,
     setCurrencies,
     State,
-    toMoment,
     sortApiData,
     urlForLanguage,
     getAppId,
@@ -1220,7 +1219,7 @@ export default class ClientStore extends BaseStore {
         this.accounts[this.loginid].email = response.authorize.email;
         this.accounts[this.loginid].currency = response.authorize.currency;
         this.accounts[this.loginid].is_virtual = +response.authorize.is_virtual;
-        this.accounts[this.loginid].session_start = parseInt(moment().utc().valueOf() / 1000);
+        this.accounts[this.loginid].session_start = parseInt(dayjs().utc().valueOf() / 1000);
         this.accounts[this.loginid].landing_company_shortcode = response.authorize.landing_company_name;
         this.accounts[this.loginid].country = response.country;
         this.updateAccountList(response.authorize.account_list);
@@ -1414,7 +1413,7 @@ export default class ClientStore extends BaseStore {
             currency,
             first_name,
             last_name,
-            date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
+            date_of_birth: dayjs(date_of_birth).format('YYYY-MM-DD'),
         };
 
         const response = await WS.newAccountReal(data);

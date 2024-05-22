@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Calendar from '../calendar';
 import { useBlockScroll } from '../../hooks';
+import dayjs from 'dayjs';
 
 type TDatePickerCalendarProps = {
     value: string;
@@ -32,7 +33,7 @@ type TDatePickerCalendarProps = {
         descrip: string;
     }>;
     has_range_selection?: boolean;
-    onHover?: (selected_date: moment.MomentInput | null) => void;
+    onHover?: (selected_date: dayjs.ConfigType | null) => void;
     should_show_today?: boolean;
 };
 

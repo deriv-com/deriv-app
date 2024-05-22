@@ -4,18 +4,18 @@ import { CSSTransition } from 'react-transition-group';
 import { Icon, InputField } from '@deriv/components';
 import Dialog from './dialog';
 import { observer, useStore } from '@deriv/stores';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TTimePickerProps = {
-    end_times: moment.Moment[];
+    end_times: dayjs.Dayjs[];
     is_nativepicker?: boolean;
     name: string;
     onChange: (e: { target: { name: string; value: string } }) => Promise<void>;
     padding?: string;
     placeholder: string;
     selected_time: string;
-    start_times: moment.Moment[];
+    start_times: dayjs.Dayjs[];
     validation_errors?: string[];
 };
 

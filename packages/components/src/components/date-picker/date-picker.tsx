@@ -1,12 +1,12 @@
 import React from 'react';
-import { addDays, daysFromTodayTo, toMoment, convertDateFormat, getPosition, isMobile } from '@deriv/shared';
+import { addDays, daysFromTodayTo, convertDateFormat, getPosition, isMobile } from '@deriv/shared';
 import Input from './date-picker-input';
 import Calendar from './date-picker-calendar';
 import Native from './date-picker-native';
 import MobileWrapper from '../mobile-wrapper';
 import DesktopWrapper from '../desktop-wrapper';
 import { useOnClickOutside } from '../../hooks/use-onclickoutside';
-import moment, { MomentInput } from 'moment';
+import dayjs, { ConfigType } from 'dayjs';
 import { TDatePickerOnChangeEvent } from '../types';
 
 type TDatePicker = Omit<
@@ -23,7 +23,7 @@ type TDatePicker = Omit<
     | 'onChangeInput'
 > & {
     mode?: string;
-    value: moment.Moment | string;
+    value: dayjs.Dayjs | string;
     onChange: (e: TDatePickerOnChangeEvent) => void;
     date_format?: string;
 };
@@ -68,7 +68,7 @@ const DatePicker = React.memo((props: TDatePicker) => {
     const calendar_el_ref = React.useRef<HTMLDivElement>(null);
     const [placement, setPlacement] = React.useState('');
     const [style, setStyle] = React.useState<React.CSSProperties>({});
-    const [date, setDate] = React.useState<string>(value ? toMoment(value).format(display_format) : '');
+    const [date, setDate] = React.useState<string>(value ? dayjs(value).format(display_format) : '');
     const [duration, setDuration] = React.useState<number | null | string>(daysFromTodayTo(value));
     const [is_datepicker_visible, setIsDatepickerVisible] = React.useState(false);
     const [is_placeholder_visible, setIsPlaceholderVisible] = React.useState(!!placeholder && !value);
@@ -99,7 +99,7 @@ const DatePicker = React.memo((props: TDatePicker) => {
     }, [value, placeholder]);
 
     React.useEffect(() => {
-        if (value) setDate(toMoment(value).format(display_format));
+        if (value) setDate(dayjs(value).format(display_format));
     }, [value, display_format, setDate]);
 
     React.useEffect(() => {
@@ -113,17 +113,17 @@ const DatePicker = React.memo((props: TDatePicker) => {
         setIsDatepickerVisible(!is_datepicker_visible);
     };
 
-    const onHover = (hovered_date: MomentInput) => {
+    const onHover = (hovered_date: ConfigType) => {
         if (typeof onChange === 'function') {
             onChange({
-                date: toMoment(hovered_date).format(display_format),
+                date: dayjs(hovered_date).format(display_format),
                 duration: mode === 'duration' ? daysFromTodayTo(hovered_date?.toString()) : null,
             });
         }
     };
 
     const onSelectCalendar = (selected_date: string, is_visible = true) => {
-        const new_date = toMoment(selected_date).format(display_format);
+        const new_date = dayjs(selected_date).format(display_format);
         const new_duration = mode === 'duration' ? daysFromTodayTo(selected_date) : null;
 
         setDate(new_date);
@@ -144,7 +144,7 @@ const DatePicker = React.memo((props: TDatePicker) => {
     };
 
     const onSelectCalendarNative = (selected_date: string) => {
-        const new_date = selected_date ? toMoment(selected_date).format(display_format) : '';
+        const new_date = selected_date ? dayjs(selected_date).format(display_format) : '';
 
         setDate(new_date);
 
@@ -162,7 +162,7 @@ const DatePicker = React.memo((props: TDatePicker) => {
      * TODO: currently only works for duration, make it works for date as well
      */
     const onChangeInput: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = e => {
-        const new_date = addDays(toMoment(), isNaN(Number(e.target.value)) ? 0 : Number(e.target.value)).format(
+        const new_date = addDays(dayjs(), isNaN(Number(e.target.value)) ? 0 : Number(e.target.value)).format(
             display_format
         );
         const new_duration = mode === 'duration' ? e.target.value : '';
@@ -190,14 +190,16 @@ const DatePicker = React.memo((props: TDatePicker) => {
     // onClickClear = () => {};
 
     const getTargetValue = (new_date: string | null, new_duration: string | number | null) => {
-        const calendar_value = getCalendarValue(new_date) && toMoment(getCalendarValue(new_date));
+        const calendar_value = getCalendarValue(new_date) && dayjs(getCalendarValue(new_date));
         return mode === 'duration' ? new_duration : calendar_value;
     };
 
     const getInputValue = (): string | number => (mode === 'duration' ? duration || 0 : date);
 
     const getCalendarValue = (new_date: string | null): string | null => {
-        if (!new_date) return isMobile() ? null : toMoment(start_date || max_date).format(date_format);
+        if (!new_date) {
+            return isMobile() ? null : dayjs(start_date || max_date).format(date_format);
+        }
         return convertDateFormat(new_date, display_format, date_format);
     };
 

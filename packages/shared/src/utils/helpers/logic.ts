@@ -1,9 +1,12 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
 import { isEmptyObject } from '../object';
 import { isAccumulatorContract, isOpen, isUserSold } from '../contract';
 import { TContractInfo, TContractStore } from '../contract/contract-types';
 import { TickSpotData, WebsiteStatus, AccountListResponse } from '@deriv/api-types';
 import { getSupportedContracts } from '../constants/contract';
+
+dayjs.extend(duration);
 
 type TIsSoldBeforeStart = Required<Pick<TContractInfo, 'sell_time' | 'date_start'>>;
 
@@ -28,7 +31,7 @@ export const isContractElapsed = (contract_info: TContractInfo, tick?: null | Ti
     if (isEmptyObject(tick) || isEmptyObject(contract_info)) return false;
     const end_time = getEndTime(contract_info) || 0;
     if (end_time && tick && tick.epoch) {
-        const seconds = moment.duration(moment.unix(tick.epoch).diff(moment.unix(end_time))).asSeconds();
+        const seconds = dayjs.duration(dayjs.unix(tick.epoch).diff(dayjs.unix(end_time))).asSeconds();
         return seconds >= 2;
     }
     return false;

@@ -1,8 +1,11 @@
 import { useCallback } from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import { useActiveAccount, useCreateNewRealAccount, useCreateWallet, useSettings } from '@deriv/api-v2';
 import { getAccountsFromLocalStorage } from '@deriv/utils';
+
+dayjs.extend(utc);
 
 type TNewWalletAccount = NonNullable<ReturnType<typeof useCreateWallet>['data']>;
 type TNewTradingAccount = NonNullable<ReturnType<typeof useCreateNewRealAccount>['data']>;
@@ -33,7 +36,7 @@ const useSyncLocalStorageClientAccounts = () => {
                     landing_company_shortcode: newAccount.landing_company_shortcode,
                     linked_to: data.linked_to,
                     residence: settingsData.citizen || settingsData.country_code,
-                    session_start: moment().utc().valueOf() / 1000,
+                    session_start: dayjs().utc().valueOf() / 1000,
                     token: newAccount.oauth_token,
                 };
 
@@ -63,7 +66,7 @@ const useSyncLocalStorageClientAccounts = () => {
                     landing_company_shortcode: newAccount.landing_company_shortcode,
                     linked_to: [{ loginid: data.loginid, platform: 'dwallet' }],
                     residence: settingsData.citizen || settingsData.country_code,
-                    session_start: moment().utc().valueOf() / 1000,
+                    session_start: dayjs().utc().valueOf() / 1000,
                     token: newAccount.oauth_token,
                 };
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useCryptoTransactions } from '@deriv/api-v2';
 import { Loader } from '../../../../../../components';
 import { WalletText } from '../../../../../../components/Base';
@@ -28,12 +28,12 @@ const TransactionsPending: React.FC<TProps> = ({ filter = 'all' }) => {
 
     if (!transactions) return <TransactionsNoDataState />;
 
-    return (
+    (
         <div className='wallets-transactions-pending'>
             <TransactionsTable
                 columns={[
                     {
-                        accessorFn: row => moment.unix(row.submit_date).format('DD MMM YYYY'),
+                        accessorFn: row => dayjs.unix(row.submit_date).format('DD MMM YYYY'),
                         accessorKey: 'date',
                         header: 'Date',
                     },
@@ -43,7 +43,7 @@ const TransactionsPending: React.FC<TProps> = ({ filter = 'all' }) => {
                 rowGroupRender={transaction => (
                     <div className='wallets-transactions-pending__group-title'>
                         <WalletText color='primary' size='2xs'>
-                            {transaction.submit_date && moment.unix(transaction.submit_date).format('DD MMM YYYY')}
+                            {transaction.submit_date && dayjs.unix(transaction.submit_date).format('DD MMM YYYY')}
                         </WalletText>
                     </div>
                 )}

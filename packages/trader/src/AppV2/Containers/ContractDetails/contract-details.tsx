@@ -4,7 +4,8 @@ import EntryExitDetails from 'AppV2/Components/EntryExitDetails';
 import PayoutInfoModal from 'AppV2/Components/PayoutInfoModal';
 import ChartPlaceholder from '../Chart';
 import { Localize } from '@deriv/translations';
-import RiskManagementInfoModal from 'AppV2/Components/RiskManagementInfoModal/risk-management-info-modal';
+import RiskManagementItem from 'AppV2/Components/RiskManagementItem';
+import CardWrapper from 'AppV2/Components/CardWrapper';
 
 const ContractDetails = () => {
     return (
@@ -20,17 +21,21 @@ const ContractDetails = () => {
             <div className='placeholder'>
                 <Text size='sm'>Contract card</Text>
             </div>
-            Take Profit
-            <RiskManagementInfoModal
-                header_content={<Localize i18n_default_text='Take profit' />}
-                body_content={<Localize i18n_default_text='Whatever you desire' />}
-            />
             <div className='placeholder'>
                 <ChartPlaceholder />
             </div>
-            <div className='placeholder'>
-                <Text size='sm'>Take profit</Text>
-            </div>
+            <CardWrapper>
+                <RiskManagementItem
+                    label={<Localize i18n_default_text='Take profit' />}
+                    modal_body_content={<Localize i18n_default_text='Whatever you desire' />}
+                    validation_message='hello'
+                />
+                <RiskManagementItem
+                    label={<Localize i18n_default_text='Stop Loss' />}
+                    modal_body_content={<Localize i18n_default_text='Whatever you desire' />}
+                    validation_message='hello'
+                />
+            </CardWrapper>
             <div className='placeholder'>
                 <Text size='sm'>Order details</Text>
             </div>

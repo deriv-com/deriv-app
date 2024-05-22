@@ -33,8 +33,8 @@ type TTooltipProps = {
  */
 const Tooltip = ({ alignment = 'bottom', children, className, message }: TTooltipProps) => {
     return (
-        <div className='relative w-max h-max group z-1'>
-            <div className='border rounded-md border-neutral-12'>{children}</div>
+        <div className='relative w-max h-max z-1'>
+            <div className='border rounded-md border-neutral-12 peer'>{children}</div>
 
             <div className={twMerge(TooltipClass({ alignment }), className)}>
                 <div className={twMerge(TooltipPointerClass({ alignment }), className)} />

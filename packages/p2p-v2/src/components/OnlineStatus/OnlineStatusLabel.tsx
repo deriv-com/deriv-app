@@ -4,7 +4,7 @@ import { Text } from '@deriv-com/ui';
 
 type TOnlineStatusLabelProps = {
     isOnline?: boolean;
-    lastOnlineTime: number;
+    lastOnlineTime?: number;
 };
 
 const OnlineStatusLabel = ({ isOnline = false, lastOnlineTime }: TOnlineStatusLabelProps) => {

@@ -24,13 +24,14 @@ const ProfileStats = ({ advertiserStats }: { advertiserStats: Partial<TAdvertise
         return [
             {
                 text: 'Buy completion 30d',
-                value: buyCompletionRate > 0 ? `${buyCompletionRate}% (${buyOrdersCount})` : '-',
+                value: buyCompletionRate && buyCompletionRate > 0 ? `${buyCompletionRate}% (${buyOrdersCount})` : '-',
             },
             {
                 text: 'Sell completion 30d',
-                value: sellCompletionRate > 0 ? `${sellCompletionRate}% (${sellOrdersCount})` : '-',
+                value:
+                    sellCompletionRate && sellCompletionRate > 0 ? `${sellCompletionRate}% (${sellOrdersCount})` : '-',
             },
-            { text: 'Trade volume 30d', value: `${tradeVolume.toFixed(2)} USD` },
+            { text: 'Trade volume 30d', value: `${tradeVolume ? tradeVolume.toFixed(2) : '0.00'} USD` },
             { text: 'Avg pay time 30d', value: averagePayTime !== -1 ? `${averagePayTime} min` : '-' },
             { text: 'Avg release time 30d', value: averageReleaseTime !== -1 ? `${averageReleaseTime} min` : '-' },
             { text: 'Trade partners', value: tradePartners },

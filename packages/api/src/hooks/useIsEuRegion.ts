@@ -10,7 +10,7 @@ const useIsEuRegion = () => {
         if (!landing_company) return false;
 
         /** Regular expressions for EU shortcodes and excluded residence */
-        const eu_shortcode_regex = /^(maltainvest|malta|iom)$/;
+        const eu_shortcode_regex = /^maltainvest$/;
         const eu_excluded_regex = /^mt$/;
 
         /** Destructure landing company response */

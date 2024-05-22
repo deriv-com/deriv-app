@@ -10,9 +10,7 @@ import { MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { BinaryLink } from 'App/Components/Routes';
-import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-rebranding-logo.svg';
 import DerivBrandShortLogo from 'Assets/SvgComponents/header/deriv-logo-short.svg';
-import WalletsLogo from 'Assets/SvgComponents/header/wallets-logo.svg';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import AccountInfo from 'App/Components/Layout/Header/account-info';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
@@ -20,23 +18,15 @@ import CurrencySelectionModal from '../../CurrencySelectionModal';
 import DefaultMobileLinks from './default-mobile-links';
 import ShowNotifications from './show-notifications';
 import TradersHubOnboarding from './traders-hub-onboarding';
+import TradersHubHomeButton from './traders-hub-home-button';
 
 type TPlatformConfig = typeof platform_config;
 type TPlatforms = typeof platforms;
 
 const TradersHubHeaderWallets = observer(() => {
     const { client, common, traders_hub, ui } = useStore();
-    const {
-        account_type,
-        balance,
-        country_standpoint,
-        currency,
-        has_any_real_account,
-        is_eu,
-        is_logged_in,
-        is_mt5_allowed,
-        is_virtual,
-    } = client;
+    const { account_type, balance, currency, has_any_real_account, is_eu, is_logged_in, is_mt5_allowed, is_virtual } =
+        client;
     const { platform } = common;
     const { modal_data } = traders_hub;
     const {
@@ -95,9 +85,11 @@ const TradersHubHeaderWallets = observer(() => {
                             'traders-hub-header__logo-wrapper--cashier': cashier_routes,
                         })}
                     >
-                        <StaticUrl href='/'>
-                            <DerivBrandLogo className='traders-hub-header__logo' />
-                        </StaticUrl>
+                        <div className='traders-hub-header-wallets__logo'>
+                            <StaticUrl href='/'>
+                                <DerivBrandShortLogo />
+                            </StaticUrl>
+                        </div>
                     </div>
                 </MobileWrapper>
                 <DesktopWrapper>
@@ -106,10 +98,8 @@ const TradersHubHeaderWallets = observer(() => {
                             <DerivBrandShortLogo />
                         </StaticUrl>
                     </div>
-                    <WalletsLogo
-                        className='traders-hub-header-wallets__logo'
-                        onClick={() => history.push(routes.wallets)}
-                    />
+                    <div className='traders-hub-header__divider' />
+                    <TradersHubHomeButton />
                 </DesktopWrapper>
                 <MenuLinks {...{ is_traders_hub_routes: true }} />
             </div>
@@ -140,7 +130,6 @@ const TradersHubHeaderWallets = observer(() => {
                                     acc_switcher_disabled_message={account_switcher_disabled_message}
                                     account_type={account_type}
                                     balance={account_balance}
-                                    country_standpoint={country_standpoint}
                                     currency={currency}
                                     is_dialog_on={is_accounts_switcher_on}
                                     is_disabled={false}
@@ -167,7 +156,6 @@ const TradersHubHeaderWallets = observer(() => {
                                         acc_switcher_disabled_message={account_switcher_disabled_message}
                                         account_type={account_type}
                                         balance={account_balance}
-                                        country_standpoint={country_standpoint}
                                         currency={currency}
                                         is_dialog_on={is_accounts_switcher_on}
                                         is_disabled={false}

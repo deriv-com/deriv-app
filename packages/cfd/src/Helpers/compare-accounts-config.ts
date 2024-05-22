@@ -1,10 +1,6 @@
 import { localize } from '@deriv/translations';
-import {
-    TInstrumentsIcon,
-    TModifiedTradingPlatformAvailableAccount,
-    TDetailsOfEachMT5Loginid,
-} from '../Components/props.types';
-import { CFD_PLATFORMS, MARKET_TYPE, CATEGORY, JURISDICTION, REGION, MARKET_TYPE_SHORTCODE } from './cfd-config';
+import { TInstrumentsIcon, TModifiedTradingPlatformAvailableAccount } from '../Components/props.types';
+import { CFD_PLATFORMS, MARKET_TYPE, JURISDICTION, REGION, MARKET_TYPE_SHORTCODE } from './cfd-config';
 
 // Map the accounts according to the market type
 const getHighlightedIconLabel = (
@@ -218,7 +214,8 @@ const getJuridisctionDescription = (shortcode: string) => {
         regulator: string,
         regulator_license: string | undefined,
         regulator_description: string,
-        leverage: string = cfd_config().leverage
+        leverage: string = cfd_config().leverage,
+        spread: string = cfd_config().spread
     ) => ({
         ...cfd_config(),
         counterparty_company,
@@ -227,6 +224,7 @@ const getJuridisctionDescription = (shortcode: string) => {
         regulator_license,
         regulator_description,
         leverage,
+        spread,
     });
 
     switch (shortcode) {
@@ -255,7 +253,8 @@ const getJuridisctionDescription = (shortcode: string) => {
                 localize('Labuan Financial Services Authority'),
                 localize('(licence no. MB/18/0024)'),
                 localize('Regulator/External dispute resolution'),
-                '1:100'
+                '1:100',
+                '1.4 pips'
             );
         case MARKET_TYPE_SHORTCODE.FINANCIAL_MALTA_INVEST:
             return createDescription(
@@ -335,95 +334,6 @@ const ctrader_data: TModifiedTradingPlatformAvailableAccount = {
     platform: CFD_PLATFORMS.CTRADER,
 };
 
-// Check whether the POA POI status are completed for different jurisdictions
-const getAccountVerficationStatus = (
-    market_type_shortcode: string,
-    poi_or_poa_not_submitted: boolean,
-    poi_acknowledged_for_maltainvest: boolean,
-    poi_acknowledged_for_bvi_labuan_vanuatu: boolean,
-    poa_acknowledged: boolean,
-    poa_resubmit_for_labuan: boolean,
-    has_submitted_personal_details: boolean,
-    should_restrict_bvi_account_creation: boolean,
-    should_restrict_vanuatu_account_creation: boolean,
-    is_demo?: boolean
-) => {
-    switch (market_type_shortcode) {
-        case MARKET_TYPE_SHORTCODE.ALL_SVG:
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_SVG:
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_SVG:
-            return true;
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_BVI:
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_BVI:
-            if (
-                poi_acknowledged_for_bvi_labuan_vanuatu &&
-                !poi_or_poa_not_submitted &&
-                !should_restrict_bvi_account_creation &&
-                has_submitted_personal_details &&
-                poa_acknowledged
-            ) {
-                return true;
-            }
-            return false;
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_VANUATU:
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_VANUATU:
-            if (
-                poi_acknowledged_for_bvi_labuan_vanuatu &&
-                !poi_or_poa_not_submitted &&
-                !should_restrict_vanuatu_account_creation &&
-                has_submitted_personal_details &&
-                poa_acknowledged
-            ) {
-                return true;
-            }
-            return false;
-
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
-            if (
-                poi_acknowledged_for_bvi_labuan_vanuatu &&
-                poa_acknowledged &&
-                has_submitted_personal_details &&
-                !poa_resubmit_for_labuan
-            ) {
-                return true;
-            }
-            return false;
-
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_MALTA_INVEST:
-            if ((poi_acknowledged_for_maltainvest && poa_acknowledged) || is_demo) {
-                return true;
-            }
-            return false;
-        default:
-            return false;
-    }
-};
-
-// Check what MT5 accounts are added based on jurisdisction
-const isMt5AccountAdded = (current_list: Record<string, TDetailsOfEachMT5Loginid>, item: string, is_demo?: boolean) =>
-    Object.entries(current_list).some(([key, value]) => {
-        const [market, type] = item.split('_');
-        const current_account_type = is_demo ? CATEGORY.DEMO : CATEGORY.REAL;
-        return (
-            value.market_type === market &&
-            value.landing_company_short === type &&
-            value.account_type === current_account_type &&
-            key.includes(CFD_PLATFORMS.MT5)
-        );
-    });
-
-const isDxtradeAccountAdded = (current_list: Record<string, TDetailsOfEachMT5Loginid>, is_demo?: boolean) =>
-    Object.entries(current_list).some(([key, value]) => {
-        const current_account_type = is_demo ? CATEGORY.DEMO : CATEGORY.REAL;
-        return value.account_type === current_account_type && key.includes(CFD_PLATFORMS.DXTRADE);
-    });
-
-const isCTraderAccountAdded = (current_list: Record<string, TDetailsOfEachMT5Loginid>, is_demo?: boolean) =>
-    Object.entries(current_list).some(([key, value]) => {
-        const current_account_type = is_demo ? CATEGORY.DEMO : CATEGORY.REAL;
-        return value.account_type === current_account_type && key.includes(CFD_PLATFORMS.CTRADER);
-    });
-
 // Get the MT5 demo accounts of the user
 const getMT5DemoData = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
     const swap_free_demo_accounts = available_accounts.filter(
@@ -461,10 +371,6 @@ export {
     ctrader_data,
     getHeaderColor,
     platformsHeaderLabel,
-    getAccountVerficationStatus,
-    isMt5AccountAdded,
-    isDxtradeAccountAdded,
-    isCTraderAccountAdded,
     getMT5DemoData,
     getDxtradeDemoData,
     getCtraderDemoData,

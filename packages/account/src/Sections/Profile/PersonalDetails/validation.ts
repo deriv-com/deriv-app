@@ -55,7 +55,7 @@ const getBaseSchema = () =>
                 localize('Only letters, space, hyphen, period, and apostrophe are allowed.')
             ),
         address_postcode: Yup.string()
-            .max(20, localize('Please enter a Postal/ZIP code under 20 chatacters.'))
+            .max(20, localize('Please enter a Postal/ZIP code under 20 characters.'))
             .matches(/^[A-Za-z0-9][A-Za-z0-9\s-]*$/, localize('Only letters, numbers, space, and hyphen are allowed.')),
     });
 
@@ -63,21 +63,26 @@ export const getPersonalDetailsInitialValues = (
     account_settings: GetSettings,
     residence_list: ResidenceList,
     states_list: StatesList,
-    is_social_signup: boolean
-) => {
-    const initialValues: GetSettings = {
+    is_virtual: boolean
+): GetSettings => {
+    const virtualAccountInitialValues: GetSettings = {
+        email_consent: account_settings.email_consent ?? 0,
+        residence: account_settings.residence,
+    };
+    if (is_virtual) return virtualAccountInitialValues;
+
+    const initialValues = {
+        ...virtualAccountInitialValues,
+        address_city: account_settings.address_city,
+        address_line_1: account_settings.address_line_1,
+        address_line_2: account_settings.address_line_2 ?? '',
+        address_postcode: account_settings.address_postcode ?? '',
+        address_state: '',
+        date_of_birth: account_settings.date_of_birth,
         first_name: account_settings.first_name,
         last_name: account_settings.last_name,
         phone: account_settings.phone,
-        date_of_birth: account_settings.date_of_birth,
-        residence: account_settings.residence,
-        address_line_1: account_settings.address_line_1,
-        address_line_2: account_settings.address_line_2 ?? '',
-        address_city: account_settings.address_city,
-        address_state: '',
-        address_postcode: account_settings.address_postcode ?? '',
         tax_identification_number: account_settings.tax_identification_number ?? '',
-        email_consent: account_settings.email_consent ?? 0,
     };
 
     const isGetSettingsKey = (value: string): value is keyof GetSettings =>
@@ -91,10 +96,6 @@ export const getPersonalDetailsInitialValues = (
             }
         }
     });
-
-    if (is_social_signup) {
-        initialValues.email = account_settings.email;
-    }
 
     if (account_settings.address_state) {
         initialValues.address_state = states_list.length
@@ -123,7 +124,6 @@ export const makeSettingsRequest = (
     const request = settings;
 
     if (request.residence) delete request.residence;
-    if (request.email) delete request.email;
     if (request.first_name) {
         request.first_name = request.first_name.trim();
     }
@@ -163,7 +163,8 @@ export const makeSettingsRequest = (
     return request;
 };
 
-export const getPersonalDetailsValidationSchema = (is_eu: boolean) => {
+export const getPersonalDetailsValidationSchema = (is_eu: boolean, is_virtual: boolean) => {
+    if (is_virtual) return Yup.object();
     if (!is_eu) return getBaseSchema();
     return getBaseSchema().concat(
         Yup.object().shape({

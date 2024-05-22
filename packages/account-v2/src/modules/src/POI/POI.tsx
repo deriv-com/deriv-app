@@ -3,7 +3,8 @@ import { useKycAuthStatus } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { AUTH_STATUS_CODES, POI_SUBMISSION_STATUS } from '../../../constants';
 import { POICountrySelector, POIFlowContainer, VerificationStatus } from '../../../containers';
-import { TPOIActions, TPOISubmissionStatus } from '../../../utils';
+import { TPOIService } from '../../../types';
+import { checkIDVErrorStatus, shouldSkipCountrySelector, TPOIActions, TPOISubmissionStatus } from '../../../utils';
 
 type TPOIInitialState = {
     selectedCountry: string;
@@ -14,8 +15,11 @@ export const ProofOfIdentity = () => {
     const { isLoading, kyc_auth_status: kycAuthStatus } = useKycAuthStatus();
 
     const poiStatus = kycAuthStatus?.identity.status;
+
     const service = kycAuthStatus?.identity.service;
     const isPOARequired = kycAuthStatus?.address.status === AUTH_STATUS_CODES.NONE;
+    const rejectedReasons = kycAuthStatus?.identity.last_rejected?.rejected_reasons;
+    const isReportAvailable = kycAuthStatus?.identity.last_rejected?.report_available;
 
     const initialState: TPOIInitialState = {
         selectedCountry: '',
@@ -42,7 +46,15 @@ export const ProofOfIdentity = () => {
         if (!isLoading && shouldDisplayStatus) {
             dispatch({ payload: POI_SUBMISSION_STATUS.complete, type: 'setSubmissionStatus' });
         }
-    }, [poiStatus, isLoading]);
+
+        if (
+            !isLoading &&
+            poiStatus === AUTH_STATUS_CODES.REJECTED &&
+            shouldSkipCountrySelector({ errors: rejectedReasons, isReportAvailable, service: service as TPOIService })
+        ) {
+            dispatch({ payload: POI_SUBMISSION_STATUS.submitting, type: 'setSubmissionStatus' });
+        }
+    }, [poiStatus, isLoading, rejectedReasons, service, isReportAvailable]);
 
     if (isLoading) {
         return <Loader />;
@@ -61,9 +73,11 @@ export const ProofOfIdentity = () => {
                     }
                 />
             );
-        default:
+        default: {
+            const errorStatus = checkIDVErrorStatus({ isReportAvailable, status: poiStatus });
             return (
                 <POICountrySelector
+                    errorStatus={errorStatus}
                     handleNext={() =>
                         dispatch({ payload: POI_SUBMISSION_STATUS.submitting, type: 'setSubmissionStatus' })
                     }
@@ -72,5 +86,6 @@ export const ProofOfIdentity = () => {
                     }}
                 />
             );
+        }
     }
 };

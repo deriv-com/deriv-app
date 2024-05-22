@@ -33,7 +33,7 @@ const useInfiniteQuery = <T extends TSocketPaginateableEndpointNames>(
                 ...payload,
                 limit,
                 offset: pageParam * limit + initial_offset,
-            } as unknown as TSocketRequestPayload<T>),
+            } as TSocketRequestPayload<T>['payload']),
         {
             ...options,
             getNextPageParam: options?.getNextPageParam ? options.getNextPageParam : (_lastPage, pages) => pages.length,

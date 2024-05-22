@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Calendar, { CalendarProps } from 'react-calendar';
 import { useOnClickOutside } from 'usehooks-ts';
-import CalendarIcon from '../../public/images/ic-calendar.svg';
+import { LegacyCalendar1pxIcon } from '@deriv/quill-icons';
 import unixToDateString from '../../utils/utils';
 import FlowTextField, { TFlowFieldProps } from '../FlowField/FlowTextField';
 import customFormatShortWeekday from './utils';
@@ -28,8 +28,9 @@ const DatePicker = ({
     validationSchema,
 }: TDatePickerProps) => {
     const [selectedDate, setSelectedDate] = useState<Date | null>(defaultValue ? new Date(defaultValue) : null);
-    const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
+    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const datePickerRef = useRef<HTMLDivElement>(null);
+    const inputeDateRef = useRef<HTMLInputElement>(null);
 
     const toggleCalendar = () => {
         setIsCalendarOpen(prevState => !prevState);
@@ -56,10 +57,13 @@ const DatePicker = ({
         <div className='wallets-datepicker' ref={datePickerRef}>
             <FlowTextField
                 disabled={disabled}
+                inputMode='none'
                 label={label}
                 message={message}
                 name={name}
                 onClick={toggleCalendar}
+                onKeyDown={e => e.preventDefault()}
+                ref={inputeDateRef}
                 renderRightIcon={() => (
                     <button
                         className='wallets-datepicker__button'
@@ -67,11 +71,11 @@ const DatePicker = ({
                         disabled={disabled}
                         onClick={toggleCalendar}
                     >
-                        <CalendarIcon />
+                        <LegacyCalendar1pxIcon iconSize='xs' />
                     </button>
                 )}
                 showMessage
-                type='date'
+                type='text'
                 validationSchema={validationSchema}
                 value={selectedDate !== null ? unixToDateString(selectedDate) : ''}
             />
@@ -82,6 +86,7 @@ const DatePicker = ({
                 >
                     <Calendar
                         formatShortWeekday={customFormatShortWeekday}
+                        inputRef={inputeDateRef}
                         maxDate={maxDate}
                         minDate={minDate}
                         onChange={handleDateChange}

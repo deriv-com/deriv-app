@@ -320,9 +320,6 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
         col_index: 'cancellation',
         renderCellContent: ({ row_obj }: TCellContentProps) => {
             if (!row_obj.contract_info || !row_obj.contract_info.underlying) return '-';
-
-            if (!shouldShowCancellation(row_obj.contract_info.underlying)) return localize('N/A');
-
             if (row_obj.contract_info.cancellation) {
                 return <Money amount={row_obj.contract_info.cancellation.ask_price} currency={currency} />;
             }

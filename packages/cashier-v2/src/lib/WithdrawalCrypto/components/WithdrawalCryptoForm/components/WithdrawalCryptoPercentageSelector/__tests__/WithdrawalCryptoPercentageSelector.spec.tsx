@@ -23,8 +23,11 @@ describe('<WithdrawalCryptoPercentageSelector />', () => {
                 currency: 'BTC',
                 display_balance: '10.00000000 BTC',
             },
+            cryptoConfig: {
+                minimum_withdrawal: 1,
+            },
             fractionalDigits: {
-                crypto: 7,
+                crypto: 8,
                 fiat: 2,
             },
             isClientVerified: true,

@@ -9,6 +9,7 @@ import { TSocketResponseData } from '../types';
 type AuthContextType = {
     loginIDKey?: string;
     data: TSocketResponseData<'authorize'> | null | undefined;
+    loginid: string | null;
     switchAccount: (loginid: string, forceRefresh?: boolean) => Promise<void>;
     isLoading: boolean;
     isSuccess: boolean;
@@ -16,6 +17,8 @@ type AuthContextType = {
     refetch: () => void;
     isFetching: boolean;
     error: unknown;
+    isSwitching: boolean;
+    isInitializing: boolean;
 };
 
 type LoginToken = {
@@ -97,6 +100,8 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
     const { queryClient, setOnReconnected, setOnConnected } = useAPIContext();
 
     const [isLoading, setIsLoading] = useState(true);
+    const [isSwitching, setIsSwitching] = useState(false);
+    const [isInitializing, setIsInitializing] = useState(true);
     const [isSuccess, setIsSuccess] = useState(false);
     const [isError, setIsError] = useState(false);
     const [isFetching, setIsFetching] = useState(false);
@@ -137,6 +142,7 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
 
     function initialize() {
         setIsLoading(true);
+        setIsInitializing(true);
         setIsSuccess(false);
 
         const { promise, cleanup } = waitForLoginAndTokenWithTimeout(cookieTimeout, loginIDKey, selectDefaultAccount);
@@ -146,26 +152,31 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
         promise
             .then(async ({ token }) => {
                 setIsLoading(true);
+                setIsInitializing(true);
                 setIsFetching(true);
                 await mutateAsync({ payload: { authorize: token || '' } })
                     .then(res => {
                         processAuthorizeResponse(res);
                         setIsLoading(false);
+                        setIsInitializing(false);
                         setIsSuccess(true);
                         setLoginid(res?.authorize?.loginid ?? '');
                     })
                     .catch(() => {
                         setIsLoading(false);
+                        setIsInitializing(false);
                         setIsError(true);
                     })
                     .finally(() => {
                         setIsLoading(false);
+                        setIsInitializing(false);
                         setIsFetching(false);
                     });
             })
             .catch(() => {
                 if (isMounted) {
                     setIsLoading(false);
+                    setIsInitializing(false);
                     setIsError(true);
                 }
             });
@@ -184,12 +195,14 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             queryClient.cancelQueries();
 
             setIsLoading(true);
+            setIsSwitching(true);
 
             const authorizeResponse = await mutateAsync({ payload: { authorize: getToken(newLoginId) ?? '' } });
             setLoginid(newLoginId);
             processAuthorizeResponse(authorizeResponse);
 
             setIsLoading(false);
+            setIsSwitching(false);
         },
         [loginid, mutateAsync, processAuthorizeResponse, queryClient]
     );
@@ -208,8 +221,11 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             isFetching,
             isSuccess: isSuccess && !isLoading,
             error: isError,
+            loginid,
+            isSwitching,
+            isInitializing,
         };
-    }, [data, switchAccount, refetch, isLoading, isError, isFetching, isSuccess]);
+    }, [data, switchAccount, refetch, isLoading, isError, isFetching, isSuccess, loginid]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

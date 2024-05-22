@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { THooks } from 'types';
 import { AdCancelCreateEditModal, AdCreateEditErrorModal, AdCreateEditSuccessModal } from '@/components/Modals';
-import { MY_ADS_URL } from '@/constants';
-import { useFloatingRate, useQueryString } from '@/hooks';
+import { MY_ADS_URL, RATE_TYPE } from '@/constants';
+import { useFloatingRate, useModalManager, useQueryString } from '@/hooks';
 import { p2p, useActiveAccount } from '@deriv/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { AdWizard } from '../../components';
@@ -22,6 +22,7 @@ type FormValues = {
     'ad-type': 'buy' | 'sell';
     amount: string;
     'contact-details': string;
+    'float-rate-offset-limit': string;
     instructions: string;
     'max-order': string;
     'min-completion-rate': string;
@@ -30,6 +31,7 @@ type FormValues = {
     'order-completion-time': string;
     'payment-method': number[] | string[];
     'preferred-countries': string[];
+    'rate-type-string': string;
     'rate-value': string;
 };
 
@@ -41,12 +43,10 @@ const CreateEditAd = () => {
         { enabled: !!advertId, refetchOnWindowFocus: false }
     );
     const isEdit = !!advertId;
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-    const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
+    const { hideModal, isModalOpenFor, showModal } = useModalManager({ shouldReinitializeModals: false });
     const { data: countryList = {} } = p2p.countryList.useGet();
     const { data: paymentMethodList = [] } = p2p.paymentMethods.useGet();
-    const { rateType } = useFloatingRate();
+    const { floatRateOffsetLimitString, rateType } = useFloatingRate();
     const { data: activeAccount } = useActiveAccount();
     const { data: p2pSettings } = p2p.settings.useGetSettings();
     const { order_payment_period: orderPaymentPeriod } = p2pSettings ?? {};
@@ -63,6 +63,7 @@ const CreateEditAd = () => {
             'ad-type': 'buy',
             amount: '',
             'contact-details': '',
+            'float-rate-offset-limit': floatRateOffsetLimitString,
             instructions: '',
             'max-order': '',
             'min-completion-rate': '',
@@ -71,9 +72,10 @@ const CreateEditAd = () => {
             'order-completion-time': `${orderPaymentPeriod ? (orderPaymentPeriod * 60).toString() : '3600'}`,
             'payment-method': [],
             'preferred-countries': Object.keys(countryList),
-            'rate-value': '-0.01',
+            'rate-type-string': rateType,
+            'rate-value': rateType === RATE_TYPE.FLOAT ? '-0.01' : '',
         },
-        mode: 'all',
+        mode: 'onBlur',
     });
 
     const {
@@ -131,14 +133,24 @@ const CreateEditAd = () => {
             // TODO: Show success modal and other 2 visibility modals after modal manager implementation or update ad impelementation
             // Redirect to the ad list page
             if (shouldNotShowArchiveMessageAgain !== 'true') {
-                setIsSuccessModalOpen(true);
+                showModal('AdCreateEditSuccessModal');
             } else {
                 history.push(MY_ADS_URL);
             }
         } else if (isError || isUpdateError) {
-            setIsModalOpen(true);
+            showModal('AdCreateEditErrorModal');
         }
     }, [isSuccess, history, shouldNotShowArchiveMessageAgain, isError, isUpdateSuccess, isUpdateError]);
+
+    const setInitialAdRate = () => {
+        if (rateType !== advertInfo?.rate_type) {
+            if (rateType === RATE_TYPE.FLOAT) {
+                return advertInfo?.is_buy ? '-0.01' : '+0.01';
+            }
+            return '';
+        }
+        return advertInfo?.rate;
+    };
 
     const setFormValues = useCallback(
         (advertInfo: THooks.Advert.Get) => {
@@ -149,7 +161,7 @@ const CreateEditAd = () => {
             setValue('min-completion-rate', advertInfo.min_completion_rate);
             setValue('min-join-days', advertInfo.min_join_days);
             setValue('min-order', advertInfo.min_order_amount);
-            setValue('rate-value', advertInfo.rate);
+            setValue('rate-value', setInitialAdRate() as string);
             setValue('preferred-countries', advertInfo.eligible_countries ?? Object.keys(countryList));
             setValue('order-completion-time', `${advertInfo.order_expiry_period}`);
             if (advertInfo.type === 'sell') {
@@ -163,7 +175,7 @@ const CreateEditAd = () => {
                 setValue('payment-method', paymentMethodKeys);
             }
         },
-        [setValue, countryList, paymentMethodList]
+        [setValue, paymentMethodList, countryList]
     );
 
     useEffect(() => {
@@ -177,7 +189,7 @@ const CreateEditAd = () => {
     }
 
     const onClickCancel = () => {
-        if (isDirty) setIsCancelModalOpen(true);
+        if (isDirty) showModal('AdCancelCreateEditModal');
         else history.push(MY_ADS_URL);
     };
 
@@ -195,27 +207,21 @@ const CreateEditAd = () => {
                     />
                 </form>
             </FormProvider>
-            {isModalOpen && (
-                <AdCreateEditErrorModal
-                    errorCode={error?.error?.code || updateError?.error?.code}
-                    errorMessage={(error?.error?.message || updateError?.error?.message) ?? 'Something’s not right'}
-                    isModalOpen={isModalOpen}
-                    onRequestClose={() => setIsModalOpen(false)}
-                />
-            )}
-            {isSuccessModalOpen && (
-                <AdCreateEditSuccessModal
-                    advertsArchivePeriod={orderPaymentPeriod}
-                    isModalOpen={isSuccessModalOpen}
-                    onRequestClose={() => setIsSuccessModalOpen(false)}
-                />
-            )}
-            {isCancelModalOpen && (
-                <AdCancelCreateEditModal
-                    isModalOpen={isCancelModalOpen}
-                    onRequestClose={() => setIsCancelModalOpen(false)}
-                />
-            )}
+            <AdCreateEditErrorModal
+                errorCode={error?.error?.code || updateError?.error?.code}
+                errorMessage={(error?.error?.message || updateError?.error?.message) ?? 'Something’s not right'}
+                isModalOpen={!!isModalOpenFor('AdCreateEditErrorModal')}
+                onRequestClose={hideModal}
+            />
+            <AdCreateEditSuccessModal
+                advertsArchivePeriod={orderPaymentPeriod}
+                isModalOpen={!!isModalOpenFor('AdCreateEditSuccessModal')}
+                onRequestClose={hideModal}
+            />
+            <AdCancelCreateEditModal
+                isModalOpen={!!isModalOpenFor('AdCancelCreateEditModal')}
+                onRequestClose={hideModal}
+            />
         </>
     );
 };

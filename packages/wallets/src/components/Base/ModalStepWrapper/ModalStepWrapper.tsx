@@ -1,7 +1,7 @@
 import React, { FC, PropsWithChildren, ReactNode, useEffect } from 'react';
 import classNames from 'classnames';
 import { useEventListener } from 'usehooks-ts';
-import CloseIcon from '../../../public/images/close-icon.svg';
+import { LegacyClose2pxIcon } from '@deriv/quill-icons';
 import { useModal } from '../../ModalProvider';
 import { WalletText } from '../WalletText';
 import './ModalStepWrapper.scss';
@@ -64,9 +64,10 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
             {!shouldHideHeader && (
                 <div className='wallets-modal-step-wrapper__header' data-testid='dt_modal_step_wrapper_header'>
                     <WalletText weight='bold'>{title}</WalletText>
-                    <CloseIcon
+                    <LegacyClose2pxIcon
                         className='wallets-modal-step-wrapper__header-close-icon'
                         data-testid='dt_modal_step_wrapper_header_icon'
+                        iconSize='xs'
                         onClick={hide}
                     />
                 </div>

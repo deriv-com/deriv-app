@@ -6,7 +6,7 @@ import './WalletGradientBackground.scss';
 type TProps = {
     bodyClassName?: string;
     children: React.ReactNode;
-    currency: THooks.WalletAccountsList['wallet_currency_type'];
+    currency?: THooks.WalletAccountsList['wallet_currency_type'];
     device?: 'desktop' | 'mobile';
     hasShine?: boolean;
     isDemo?: THooks.WalletAccountsList['is_virtual'];
@@ -24,10 +24,14 @@ const WalletGradientBackground: React.FC<TProps> = ({
     theme = 'light',
     type = 'card',
 }) => {
+    // All of the currency classnames are uppercase'd in WalletGradientBackground.scss
+    // This is uppercase'd to normalize some currency names like eUSDT and tUSDT to EUSDT and TUSDT
+    const gradientCurrencyClassName = currency?.toUpperCase();
+
     const getClassName = () => {
         if (isDemo) return `wallets-gradient--demo-${device}-${type}-${theme}`;
         if (theme !== 'dark' && theme !== 'light') return `wallets-gradient__palette--${theme}`;
-        return `wallets-gradient--${currency}-${device}-${type}-${theme}`;
+        return `wallets-gradient--${gradientCurrencyClassName}-${device}-${type}-${theme}`;
     };
 
     return (

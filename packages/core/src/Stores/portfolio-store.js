@@ -5,7 +5,6 @@ import {
     isAccumulatorContract,
     isEmptyObject,
     isEnded,
-    isUserSold,
     isValidToSell,
     isMultiplierContract,
     getCurrentTick,
@@ -406,9 +405,6 @@ export default class PortfolioStore extends BaseStore {
             this.positions[i].contract_info.barrier = this.positions[i].barrier;
             this.positions[i].contract_info.entry_spot = this.positions[i].entry_spot;
         }
-
-        // remove exit_spot for manually sold contracts
-        if (isUserSold(contract_response)) this.positions[i].exit_spot = '-';
 
         this.positions[i].is_loading = false;
 

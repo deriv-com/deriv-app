@@ -30,13 +30,15 @@ export const TipsBlock = () => {
                 <Text size='xxs' line_height='l'>
                     <Localize i18n_default_text='Before using passkey:' />
                 </Text>
-                {tips.map(({ id, description }) => (
-                    <li key={`tip-${id}`}>
-                        <Text size='xxs' line_height='l'>
-                            {description}
-                        </Text>
-                    </li>
-                ))}
+                <Text as='ul' size='xxs'>
+                    {tips.map(({ id, description }) => (
+                        <li key={`tip-${id}`}>
+                            <Text size='xxs' line_height='l'>
+                                {description}
+                            </Text>
+                        </li>
+                    ))}
+                </Text>
             </div>
         </div>
     );

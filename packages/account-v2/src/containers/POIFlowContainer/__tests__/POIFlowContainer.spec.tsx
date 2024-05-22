@@ -9,6 +9,7 @@ jest.mock('../../../hooks', () => ({
 
 jest.mock('@deriv/api-v2', () => ({
     useIdentityDocumentVerificationAdd: jest.fn().mockReturnValue({ mutateAsync: jest.fn() }),
+    useKycAuthStatus: jest.fn().mockReturnValue({ data: {}, isLoading: false }),
     useOnfido: jest.fn().mockReturnValue({
         data: {},
         hasSubmitted: false,

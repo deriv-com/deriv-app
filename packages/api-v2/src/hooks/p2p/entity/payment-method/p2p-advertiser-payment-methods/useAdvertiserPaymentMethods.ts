@@ -3,9 +3,11 @@ import useAuthorize from '../../../../useAuthorize';
 import useQuery from '../../../../../useQuery';
 
 /** A custom hook that returns the list of P2P Advertiser Payment Methods */
-const useAdvertiserPaymentMethods = () => {
+const useAdvertiserPaymentMethods = (is_enabled = true) => {
     const { isSuccess } = useAuthorize();
-    const { data, ...rest } = useQuery('p2p_advertiser_payment_methods', { options: { enabled: isSuccess } });
+    const { data, ...rest } = useQuery('p2p_advertiser_payment_methods', {
+        options: { enabled: isSuccess && is_enabled },
+    });
 
     // Modify the response to add additional information
     const modified_data = useMemo(() => {

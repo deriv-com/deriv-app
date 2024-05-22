@@ -20,7 +20,7 @@ type TWithdrawalLockedDescProps = {
 
 const generateDescription = (description: string, components?: JSX.Element[]) => (
     <WalletText align='center'>
-        <Trans components={components} defaults={`You have reached the withdrawal limit. ${description}`} />
+        <Trans components={components} defaults={description} />
     </WalletText>
 );
 
@@ -35,7 +35,7 @@ export const getWithdrawalLimitReachedDesc = ({
 
     if (poiNeedsVerification || poaNeedsVerification || poaStatus !== 'verified' || poiStatus !== 'verified') {
         description = generateDescription(
-            'Please check your <0>proof of identity</0> and <1>address</1> document verification status to lift the limit to continue your withdrawal.',
+            'You have reached the withdrawal limit. Please check your <0>proof of identity</0> and <1>address</1> document verification status to lift the limit to continue your withdrawal.',
             [
                 <WalletLink href='/account/proof-of-identity' key={0} variant='bold' />,
                 <WalletLink href='/account/proof-of-address' key={1} variant='bold' />,

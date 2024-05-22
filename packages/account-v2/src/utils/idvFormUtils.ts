@@ -1,8 +1,9 @@
 import { FormikValues } from 'formik';
 import * as Yup from 'yup';
 import { AnyObject } from 'yup/lib/object';
+import { IDV_ERROR_CODES } from '../constants';
 import { getIDVDocumentExampleFormat, TIDVDocumentConfig } from '../constants/idvDocumentConfig';
-import { TSupportedDocuments } from '../types';
+import { TIDVErrorStatusCode, TSupportedDocuments } from '../types';
 
 export const getExampleFormat = (exampleFormat?: string) => (exampleFormat ? `Example: ${exampleFormat}` : '');
 
@@ -146,3 +147,10 @@ export const generateIDVPayloadData = (values: Yup.InferType<ReturnType<typeof g
     document_number: values.documentType === 'none' ? 'none' : values.documentNumber,
     document_type: values.documentType,
 });
+
+export const getButtonText = (errorCode: TIDVErrorStatusCode | null) =>
+    errorCode === IDV_ERROR_CODES.nameMismatch.code ||
+    errorCode === IDV_ERROR_CODES.dobMismatch.code ||
+    errorCode === IDV_ERROR_CODES.nameDobMismatch.code
+        ? 'Update profile'
+        : 'Verify';

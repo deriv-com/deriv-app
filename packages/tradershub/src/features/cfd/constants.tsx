@@ -146,6 +146,11 @@ export const companyNamesAndUrls: TcompanyNamesAndUrls = {
     vanuatu: { name: 'Deriv (V) Ltd', shortcode: 'Vanuatu', tncUrl: 'tnc/general-terms.pdf' },
 };
 
+const iconSize = {
+    width: 32,
+    height: 32,
+};
+
 export const AppToContentMapper: TAppToContentMapper = {
     ctrader_web: {
         icon: '',
@@ -160,37 +165,37 @@ export const AppToContentMapper: TAppToContentMapper = {
         title: 'DerivX web',
     },
     ctrader_windows: {
-        icon: <WindowsIcon />,
+        icon: <WindowsIcon {...iconSize} />,
         link: 'https://getctrader.com/deriv/ctrader-deriv-setup.exe',
         text: 'Download',
         title: 'cTrader Windows App',
     },
     ctrader_mac: {
-        icon: <MacOSIcon />,
+        icon: <MacOSIcon {...iconSize} />,
         link: 'https://getctradermac.com/deriv/ctrader-deriv-setup.dmg',
         text: 'Download',
         title: 'cTrader MacOS App',
     },
     mt5_linux: {
-        icon: <LinuxIcon />,
+        icon: <LinuxIcon {...iconSize} />,
         link: 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
         text: 'Learn more',
         title: 'MetaTrader 5 Linux app',
     },
     mt5_macos: {
-        icon: <MacOSIcon />,
+        icon: <MacOSIcon {...iconSize} />,
         link: 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg',
         text: 'Download',
         title: 'MetaTrader 5 MacOS app',
     },
     mt5_web: {
-        icon: <MT5Icon />,
+        icon: <MT5Icon {...iconSize} />,
         link: '',
         text: 'Open',
         title: 'MetaTrader 5 web',
     },
     mt5_windows: {
-        icon: <WindowsIcon />,
+        icon: <WindowsIcon {...iconSize} />,
         link: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
         text: 'Download',
         title: 'MetaTrader 5 Windows app',

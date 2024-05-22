@@ -20,7 +20,15 @@ const CFDPlatformsListEmptyState = () => {
                 To trade CFDs, you’ll need to use your {fiatAccount?.wallet_currency_type} Wallet. Click Transfer to
                 move your {activeWallet?.currency} to your {fiatAccount?.wallet_currency_type} Wallet.
             </WalletText>
-            <WalletButton color='primary-light' onClick={() => history.push('/wallets/cashier/transfer')} size='lg'>
+            <WalletButton
+                color='primary-light'
+                onClick={() =>
+                    history.push('/wallets/cashier/transfer', {
+                        shouldSelectDefaultWallet: true,
+                    })
+                }
+                size='lg'
+            >
                 Transfer
             </WalletButton>
         </div>

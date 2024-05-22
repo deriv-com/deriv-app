@@ -20,6 +20,22 @@ export const MANUAL_DOCUMENT_TYPES = Object.freeze({
     selfieWithID: 'selfie_with_id',
 });
 
+export const UPLOAD_FILE_TYPE = Object.freeze({
+    amlglobalcheck: 'amlglobalcheck',
+    bankstatement: 'bankstatement',
+    docverification: 'docverification',
+    driverslicense: 'driverslicense',
+    driving_licence: 'driving_licence',
+    national_identity_card: 'national_identity_card',
+    other: 'other',
+    passport: 'passport',
+    powerOfAttorney: 'power_of_attorney',
+    proofaddress: 'proofaddress',
+    proofid: 'proofid',
+    proofOfOwnership: 'proof_of_ownership',
+    utilityBill: 'utility_bill',
+});
+
 export const MANUAL_FORM_PAGE_TYPES = Object.freeze({
     back: 'back',
     front: 'front',

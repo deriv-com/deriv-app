@@ -34,7 +34,7 @@ const FooterExtensionRenderer = (footer_extension, idx) => {
 
 const Footer = observer(() => {
     const { client, common, ui, traders_hub } = useStore();
-    const { is_logged_in, landing_company_shortcode, is_eu, is_virtual } = client;
+    const { has_wallet, is_logged_in, landing_company_shortcode, is_eu, is_virtual } = client;
     const { current_language } = common;
     const {
         enableApp,
@@ -52,6 +52,7 @@ const Footer = observer(() => {
     const { data } = useRemoteConfig(isMounted());
     const { cs_chat_livechat, cs_chat_whatsapp } = data;
     const { show_eu_related_content } = traders_hub;
+
     let footer_extensions_left = [];
     let footer_extensions_right = [];
     if (footer_extensions.filter) {
@@ -97,11 +98,13 @@ const Footer = observer(() => {
                     enableApp={enableApp}
                     settings_extension={settings_extension}
                 />
-                <ToggleLanguageSettings
-                    is_settings_visible={is_language_settings_modal_on}
-                    toggleSettings={toggleLanguageSettingsModal}
-                    lang={current_language}
-                />
+                {!has_wallet && (
+                    <ToggleLanguageSettings
+                        is_settings_visible={is_language_settings_modal_on}
+                        toggleSettings={toggleLanguageSettingsModal}
+                        lang={current_language}
+                    />
+                )}
                 <ToggleFullScreen />
             </div>
         </footer>

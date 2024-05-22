@@ -1,13 +1,16 @@
 .wallets-listing-route {
     width: 100%;
     flex: 1;
+    gap: 2.4rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2.4rem;
+    background-color: var(--general-main-1, #ffffff);
+    padding: 0 4rem;
 
-    @include desktop {
-        padding: 4rem;
+    @include mobile {
+        padding: 0;
+        gap: 0.8rem;
     }
 }

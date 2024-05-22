@@ -18,4 +18,10 @@
         right: 2rem;
         cursor: pointer;
     }
+
+    &--fullscreen {
+        height: calc(var(--wallets-vh, 1vh) * 100);
+        width: 100vw;
+        border-radius: 0;
+    }
 }

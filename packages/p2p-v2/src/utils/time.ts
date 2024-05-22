@@ -29,9 +29,9 @@ export const toMoment = (value?: moment.MomentInput): moment.Moment => {
  * @param  {String} date   the date to calculate number of days since
  * @return {Number} an integer of the number of days
  */
-export const daysSince = (date: string) => {
+export const daysSince = (date: string): number => {
     const diff = toMoment().startOf('day').diff(toMoment(date).startOf('day'), 'days');
-    return !date ? '' : diff;
+    return !date ? 0 : diff;
 };
 
 /**

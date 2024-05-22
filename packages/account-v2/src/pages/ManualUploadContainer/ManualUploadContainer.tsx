@@ -5,7 +5,7 @@ import { MANUAL_DOCUMENT_TYPES, TManualDocumentTypes } from '../../constants';
 import { ManualForm } from '../../containers/ManualForm';
 import { SelfieDocumentUpload } from '../../containers/SelfieDocumentUpload';
 import { useManualForm } from '../../hooks';
-import { OnfidoContainer } from '../../modules/src/Onfido';
+import { OnfidoContainer } from '../../modules/src/Onfido/OnfidoContainer';
 import { getUploadConfig, TManualDocumentUploadFormData } from '../../utils';
 
 type TManualUploadContainerProps = {

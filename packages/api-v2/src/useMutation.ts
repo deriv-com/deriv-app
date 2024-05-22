@@ -18,7 +18,7 @@ const useMutation = <T extends TSocketEndpointNames>(name: T, options?: TSocketR
         ...rest
     } = _useMutation<TSocketResponseData<T>, TSocketError<T>, TSocketAcceptableProps<T>>(props => {
         const prop = props?.[0];
-        const payload = prop && 'payload' in prop ? (prop.payload as TSocketRequestPayload<T>) : undefined;
+        const payload = prop && 'payload' in prop ? (prop.payload as TSocketRequestPayload<T>['payload']) : undefined;
 
         return send(name, payload);
     }, options);

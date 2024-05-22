@@ -31,9 +31,8 @@ describe('PasskeysStatusLayout', () => {
         expect(primary_button).toBeEnabled();
 
         userEvent.click(screen.getByRole('button', { name: mock_primary_button_text }));
-        userEvent.click(screen.getByRole('button', { name: mock_secondary_button_text }));
-
         expect(mockOnPrimaryButtonClick).toHaveBeenCalled();
+        userEvent.click(screen.getByRole('button', { name: mock_secondary_button_text }));
         expect(mockOnSecondaryButtonClick).toHaveBeenCalled();
     });
 });

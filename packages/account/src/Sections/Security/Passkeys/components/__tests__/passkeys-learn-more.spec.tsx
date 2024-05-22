@@ -26,8 +26,8 @@ describe('PasskeysLearnMore', () => {
         expect(screen.getByText('DescriptionContainer')).toBeInTheDocument();
         expect(screen.getByText('TipsBlock')).toBeInTheDocument();
         userEvent.click(screen.getByRole('button', { name: /create passkey/i }));
-        userEvent.click(screen.getByTestId('dt_learn_more_back_button'));
         expect(mockOnPrimaryButtonClick).toHaveBeenCalled();
+        userEvent.click(screen.getByTestId('dt_learn_more_back_button'));
         expect(mockOnSecondaryButtonClick).toHaveBeenCalled();
     });
 });

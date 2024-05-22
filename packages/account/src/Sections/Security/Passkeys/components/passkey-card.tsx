@@ -2,7 +2,6 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { getLongDate } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { StandalonePasskeyFillIcon } from '@deriv/quill-icons';
 
 // TODO: remove here types and grab from API after implementation
 type TPasskeyCard = {
@@ -22,7 +21,6 @@ export const PasskeyCard = ({ name, last_used, stored_on, icon }: TPasskeyCard) 
     return (
         <div className='passkeys-card'>
             <Icon icon='IcPasskey' size={24} />
-            {/*<StandalonePasskeyFillIcon fill='var(--general-main-4)'  iconSize='sm'/>*/}
             <div>
                 <Text as='p' weight='bold' line_height='l'>
                     {name}

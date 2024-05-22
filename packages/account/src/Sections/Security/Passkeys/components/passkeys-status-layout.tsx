@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import classNames from 'classnames';
-import { Button, Icon, Text } from '@deriv/components';
+import { Button, Text } from '@deriv/components';
 import FormBody from '../../../../Components/form-body';
 import FormFooter from '../../../../Components/form-footer';
 
@@ -36,7 +36,6 @@ export const PasskeysStatusLayout = ({
 }: React.PropsWithChildren<TPasskeysStatusLayout>) => (
     <Fragment>
         <FormBody scroll_offset={scroll_offset} className={classNames('passkeys-status__wrapper', className)}>
-            {/*{icon && <Icon icon={icon} size={96} />}*/}
             {icon}
             {title && (
                 <Text as='div' weight='bold' align='center' className='passkeys-status__title'>

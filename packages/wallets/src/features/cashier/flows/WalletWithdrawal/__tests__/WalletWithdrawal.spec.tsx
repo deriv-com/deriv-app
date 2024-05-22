@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { CashierLocked, WithdrawalLocked } from '../../../modules';
 import WalletWithdrawal from '../WalletWithdrawal';
 
@@ -8,12 +8,11 @@ jest.mock('../../../modules', () => ({
     ...jest.requireActual('../../../modules'),
     CashierLocked: jest.fn(({ children }) => <>{children}</>),
     SystemMaintenance: jest.fn(({ children }) => <>{children}</>),
-    WithdrawalCryptoModule: jest.fn(({ onClose, verificationCode }) => {
+    WithdrawalCryptoModule: jest.fn(({ verificationCode }) => {
         return (
             <>
                 <div>WithdrawalCryptoModule</div>
                 <div>verificationCode={verificationCode}</div>
-                <button onClick={onClose}>close</button>
             </>
         );
     }),
@@ -134,27 +133,6 @@ describe('WalletWithdrawal', () => {
         render(<WalletWithdrawal />, { wrapper });
         expect(screen.getByText('WithdrawalCryptoModule')).toBeInTheDocument();
         expect(screen.getByText('verificationCode=1234')).toBeInTheDocument();
-    });
-
-    it('should render withdrawal email verification module when onClose is triggered on the withdrawal crypto module', async () => {
-        mockUseActiveWalletAccount.mockReturnValue({
-            data: {
-                balance: 100,
-
-                currency: 'BTC',
-                // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-                currency_config: { is_crypto: true },
-                loginid: 'CR42069',
-            },
-        });
-
-        render(<WalletWithdrawal />, { wrapper });
-        await waitFor(() => {
-            const button = screen.getByRole('button');
-            fireEvent.click(button);
-
-            expect(screen.getByText('WithdrawalVerificationModule')).toBeInTheDocument();
-        });
     });
 
     it('should show loader if verification code is activeWallet data has not been received yet', () => {

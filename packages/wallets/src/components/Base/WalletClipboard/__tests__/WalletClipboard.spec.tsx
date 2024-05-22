@@ -82,4 +82,20 @@ describe('WalletClipboard', () => {
         expect(screen.queryByText('Copy')).not.toBeInTheDocument();
         expect(screen.queryByText('Copied!')).not.toBeInTheDocument();
     });
+    it('should reset the icon and message after 2 seconds', () => {
+        jest.useFakeTimers();
+        (useHover as jest.Mock).mockReturnValue(true);
+        render(<WalletClipboard textCopy='Sample text to copy' />);
+        const button = screen.getByRole('button');
+
+        fireEvent.click(button);
+
+        expect(screen.getByText('Copied!')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_legacy_won_icon')).toBeInTheDocument();
+
+        jest.advanceTimersByTime(2000);
+
+        expect(screen.queryByText('Copied!')).not.toBeInTheDocument();
+        expect(screen.getByTestId('dt_legacy_copy_icon')).toBeInTheDocument();
+    });
 });

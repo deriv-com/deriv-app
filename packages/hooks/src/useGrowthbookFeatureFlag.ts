@@ -33,7 +33,7 @@ const useGrowthbookFeatureFlag = <T extends string | boolean>({
                 if (Analytics?.getInstances()?.ab) {
                     setIsGBLoaded(true);
                     const setFeatureValue = () => {
-                        const value = Analytics?.getFeatureValue(featureFlag, defaultValue);
+                        const value = Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue);
                         setFeatureFlagValue(value);
                     };
                     setFeatureValue();

@@ -14,7 +14,7 @@ describe('useGrowthbookFeatureFlag', () => {
     const mockData = { marketing_growthbook: true };
 
     test('Should call getFeatureValue from the package', async () => {
-        useRemoteConfig.mockImplementation(() => ({
+        (useRemoteConfig as jest.Mock).mockImplementation(() => ({
             data: mockData,
         }));
         const { result } = renderHook(() =>
@@ -31,7 +31,7 @@ describe('useGrowthbookFeatureFlag', () => {
     });
 
     test('The default value for the feature flag must be sent correctly to the package', async () => {
-        useRemoteConfig.mockImplementation(() => ({
+        (useRemoteConfig as jest.Mock).mockImplementation(() => ({
             data: mockData,
         }));
         renderHook(() =>

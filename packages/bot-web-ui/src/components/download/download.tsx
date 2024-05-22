@@ -33,7 +33,8 @@ const Download = observer(({ tab }: TDownloadProps) => {
                 localize('Profit/Loss'),
             ],
         ];
-        transaction_list.forEach(({ data }: { data: TTransaction }) =>
+        transaction_list.forEach(({ data }: { data: TTransaction }) => {
+            if (typeof data === 'string') return;
             items.push([
                 data.display_name,
                 data.transaction_ids.buy,
@@ -46,8 +47,8 @@ const Download = observer(({ tab }: TDownloadProps) => {
                 data.exit_tick_time,
                 data.buy_price,
                 data.profit,
-            ])
-        );
+            ]);
+        });
 
         const content = items.map(e => e.join(',')).join('\n');
         downloadFile(localize('Transactions'), content);
@@ -95,9 +96,6 @@ const Download = observer(({ tab }: TDownloadProps) => {
                 id='download-button'
                 is_disabled={disabled}
                 className='download__button'
-                icon={
-                    <Icon icon='IcDbotDownload' color={disabled ? 'disabled' : undefined} className='download__icon' />
-                }
                 text={localize('Download')}
                 onClick={clickFunction}
                 secondary

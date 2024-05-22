@@ -123,6 +123,8 @@ import type {
     P2PAdvertUpdateResponse,
     P2PChatCreateRequest,
     P2PChatCreateResponse,
+    P2PCountryListRequest,
+    P2PCountryListResponse,
     P2POrderCancelRequest,
     P2POrderCancelResponse,
     P2POrderConfirmRequest,
@@ -261,6 +263,10 @@ type KycAuthStatus = {
              * Reason(s) for the rejected POI attempt.
              */
             rejected_reasons?: string[];
+            /**
+             * Indicate if the verification report was returned by the provider (IDV only).
+             */
+            report_available?: 0 | 1;
         };
         /**
          * Service used for the current POI status.
@@ -2489,6 +2495,10 @@ type TSocketEndpoints = {
     p2p_chat_create: {
         request: P2PChatCreateRequest;
         response: P2PChatCreateResponse;
+    };
+    p2p_country_list: {
+        request: P2PCountryListRequest;
+        response: P2PCountryListResponse;
     };
     p2p_order_cancel: {
         request: P2POrderCancelRequest;

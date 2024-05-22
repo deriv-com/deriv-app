@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './real-account-creation-banner.scss';
 import { getUrlBase, Jurisdiction } from '@deriv/shared';
+import { Analytics } from '@deriv-com/analytics';
 import { Localize } from '@deriv/translations';
 import { Text, Button } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
@@ -15,8 +16,21 @@ const RealAccountCreationBanner = observer(() => {
     const device = is_mobile ? 'mobile' : 'desktop';
 
     const handleClick = () => {
+        Analytics.trackEvent('ce_tradershub_banner', {
+            action: 'click_cta',
+            banner_name: 'real_account_cta',
+            banner_type: 'with_cta',
+        });
         openRealAccountSignup(Jurisdiction.SVG);
     };
+
+    useEffect(() => {
+        Analytics.trackEvent('ce_tradershub_banner', {
+            action: 'open',
+            banner_name: 'real_account_cta',
+            banner_type: 'with_cta',
+        });
+    }, []);
 
     return (
         <div className='real-account-creation-banner'>

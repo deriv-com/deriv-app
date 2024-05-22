@@ -5,7 +5,7 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import userEvent from '@testing-library/user-event';
 
 describe('RealAccountCreationBanner', () => {
-    let mock = mockStore({});
+    const mock = mockStore({});
     const wrapper = ({ children }: { children: JSX.Element }) => <StoreProvider store={mock}>{children}</StoreProvider>;
 
     it('Should render the RealAccountCreationBanner', () => {
@@ -28,36 +28,5 @@ describe('RealAccountCreationBanner', () => {
         });
         userEvent.click(screen.getByText('Get real account'));
         expect(mock.ui.openRealAccountSignup).toBeCalledWith('svg');
-    });
-
-    it('should call openRealAccountSignup with maltainvest when button is clicked and user is eu', () => {
-        mock = mockStore({
-            traders_hub: {
-                is_real: true,
-                content_flag: 'low_risk_cr_eu',
-            },
-        });
-        render(<RealAccountCreationBanner />, {
-            wrapper,
-        });
-        userEvent.click(screen.getByText('Get real account'));
-        expect(mock.ui.openRealAccountSignup).toBeCalledWith('maltainvest');
-    });
-
-    it('should call setShouldShowCooldownModalwith true when button is clicked for user with cooling off expiration date for their account', () => {
-        mock = mockStore({
-            traders_hub: {
-                is_real: true,
-                content_flag: 'low_risk_cr_eu',
-            },
-            client: {
-                real_account_creation_unlock_date: '2020 - 10 - 10',
-            },
-        });
-        render(<RealAccountCreationBanner />, {
-            wrapper,
-        });
-        userEvent.click(screen.getByText('Get real account'));
-        expect(mock.ui.setShouldShowCooldownModal).toBeCalledWith(true);
     });
 });

@@ -1,6 +1,5 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import ListingContainer from 'Components/containers/listing-container';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import OptionsDescription from 'Components/elements/options-description';

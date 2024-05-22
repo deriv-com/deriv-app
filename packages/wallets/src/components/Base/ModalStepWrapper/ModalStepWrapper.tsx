@@ -8,7 +8,6 @@ import './ModalStepWrapper.scss';
 
 type TModalStepWrapperProps = {
     renderFooter?: () => ReactNode;
-    shouldAllowOverflow?: boolean;
     shouldFixedFooter?: boolean;
     shouldHideDerivAppHeader?: boolean;
     shouldHideFooter?: boolean;
@@ -20,7 +19,6 @@ type TModalStepWrapperProps = {
 const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     children,
     renderFooter,
-    shouldAllowOverflow = false,
     shouldFixedFooter = true,
     shouldHideDerivAppHeader = false,
     shouldHideFooter = false,
@@ -55,7 +53,6 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     return (
         <div
             className={classNames('wallets-modal-step-wrapper', {
-                'wallets-modal-step-wrapper--allow-overflow': shouldAllowOverflow,
                 'wallets-modal-step-wrapper--fixed-footer': fixedFooter && !shouldHideHeader,
                 'wallets-modal-step-wrapper--hide-deriv-app-header': shouldHideDerivAppHeader,
                 'wallets-modal-step-wrapper--no-footer': shouldHideFooter,

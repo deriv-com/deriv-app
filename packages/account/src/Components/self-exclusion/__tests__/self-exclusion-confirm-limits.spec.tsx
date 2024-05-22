@@ -12,6 +12,7 @@ describe('<SelfExclusionConfirmLimits />', () => {
         currency: '',
         handleSubmit: () => null,
         backToReview: jest.fn(),
+        overlay_ref: document.createElement('div'),
     };
 
     beforeEach(() => {

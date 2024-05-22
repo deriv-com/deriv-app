@@ -18,19 +18,32 @@ import Routes from './Containers/Routes/routes.jsx';
 import Devtools from './Devtools';
 import initDatadog from '../Utils/Datadog';
 import { ThemeProvider } from '@deriv-com/quill-ui';
+import { useGrowthbookFeatureFlag } from '@deriv/hooks';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
     const { has_wallet } = store.client;
 
+    const [isWebPasskeysFFEnabled, isGBLoaded] = useGrowthbookFeatureFlag({
+        featureFlag: 'web_passkeys',
+        defaultValue: false,
+    });
+    const [isServicePasskeysFFEnabled] = useGrowthbookFeatureFlag({
+        featureFlag: 'service_passkeys',
+        defaultValue: false,
+    });
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());
-    const { tracking_datadog, passkeys } = data;
+    const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();
 
     React.useEffect(() => {
-        store.client.setIsPasskeySupported(is_passkeys_supported && passkeys);
-    }, [passkeys, is_passkeys_supported, store.client]);
+        if (isGBLoaded && isWebPasskeysFFEnabled && isServicePasskeysFFEnabled) {
+            store.client.setIsPasskeySupported(
+                is_passkeys_supported && isServicePasskeysFFEnabled && isWebPasskeysFFEnabled
+            );
+        }
+    }, [isServicePasskeysFFEnabled, isGBLoaded, isWebPasskeysFFEnabled, is_passkeys_supported]);
 
     React.useEffect(() => {
         initDatadog(tracking_datadog);

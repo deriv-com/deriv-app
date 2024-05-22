@@ -5,7 +5,7 @@ import { Localize, localize } from '@deriv/translations';
 import { getSupportedFiles, max_document_size, supported_filetypes } from '@deriv/shared';
 import { DropzoneOptions } from 'react-dropzone';
 import { observer, useStore } from '@deriv/stores';
-import { TFile } from 'Types';
+import { TFile } from '../../Types';
 
 type THandleRejectedFiles = DropzoneOptions['onDropRejected'];
 

@@ -29,6 +29,28 @@ describe('<WithdrawalFiat />', () => {
         expect(screen.getByTestId('dt_wallets_loader')).toBeInTheDocument();
     });
 
+    it('should render error screen for fiat withdrawal error', () => {
+        (useCashierFiatAddress as jest.Mock).mockReturnValue({
+            error: { error: { code: 'CashierForwardError', message: 'Fiat Error' } },
+            mutateAsync: jest.fn().mockResolvedValueOnce({}),
+        });
+
+        render(<WithdrawalFiat verificationCode={verificationCode} />);
+
+        expect(screen.getByText(/MockedWithdrawalErrorScreen - Fiat Error/)).toBeInTheDocument();
+    });
+
+    it('should render the loader while the iframe is loading', () => {
+        (useCashierFiatAddress as jest.Mock).mockReturnValue({
+            isLoading: false,
+            mutateAsync: jest.fn().mockResolvedValueOnce({}),
+        });
+
+        render(<WithdrawalFiat verificationCode={verificationCode} />);
+
+        expect(screen.getByTestId('dt_wallets_loader')).toBeInTheDocument();
+    });
+
     it('should render the iframe with the withdrawal url from API response', () => {
         (useCashierFiatAddress as jest.Mock).mockReturnValue({
             data: 'https://iframe_url',
@@ -43,16 +65,5 @@ describe('<WithdrawalFiat />', () => {
 
         fireEvent.load(iframe);
         expect(iframe).toHaveStyle({ display: 'block' });
-    });
-
-    it('should render the loader while the iframe is loading', () => {
-        (useCashierFiatAddress as jest.Mock).mockReturnValue({
-            isLoading: false,
-            mutateAsync: jest.fn().mockResolvedValueOnce({}),
-        });
-
-        render(<WithdrawalFiat verificationCode={verificationCode} />);
-
-        expect(screen.getByTestId('dt_wallets_loader')).toBeInTheDocument();
     });
 });

@@ -12,6 +12,7 @@ interface WithdrawalFiatProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 const WithdrawalFiat: React.FC<WithdrawalFiatProps> = ({ verificationCode }) => {
     const { data: iframeUrl, error, isLoading: isWithdrawalFiatLoading, mutateAsync } = useCashierFiatAddress();
     const [isIframeLoading, setIsIframeLoading] = useState(true);
+    const withdrawalFiatError = error?.error;
 
     useEffect(() => {
         if (verificationCode) {
@@ -23,8 +24,8 @@ const WithdrawalFiat: React.FC<WithdrawalFiatProps> = ({ verificationCode }) => 
 
     if (isWithdrawalFiatLoading) return <Loader />;
 
-    if (isServerError(error)) {
-        return <WithdrawalErrorScreen error={error?.error} />;
+    if (isServerError(withdrawalFiatError)) {
+        return <WithdrawalErrorScreen error={withdrawalFiatError} />;
     }
 
     return (

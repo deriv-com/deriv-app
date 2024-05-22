@@ -14,6 +14,7 @@ import './DepositCrypto.scss';
 const DepositCrypto = () => {
     const { isSuccess: isAuthorizeSuccess } = useAuthorize();
     const { data: depositCryptoAddress, error, isLoading, mutate: mutateDepositCrypto } = useDepositCryptoAddress();
+    const depositCryptoError = error?.error;
 
     useEffect(() => {
         if (isAuthorizeSuccess) {
@@ -23,8 +24,8 @@ const DepositCrypto = () => {
 
     if (isLoading) return <Loader />;
 
-    if (isServerError(error)) {
-        return <DepositErrorScreen error={error?.error} />;
+    if (isServerError(depositCryptoError)) {
+        return <DepositErrorScreen error={depositCryptoError} />;
     }
 
     return (

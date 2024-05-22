@@ -14,6 +14,7 @@ const DepositFiat: React.FC = () => {
         mutate: mutateDepositFiat,
     } = useCashierFiatAddress();
     const [isIframeLoading, setIsIframeLoading] = useState(true);
+    const depositFiatError = error?.error;
 
     useEffect(() => {
         if (isAuthorizeSuccess) {
@@ -23,8 +24,8 @@ const DepositFiat: React.FC = () => {
 
     if (isDepositFiatLoading) return <Loader />;
 
-    if (isServerError(error)) {
-        return <DepositErrorScreen error={error?.error} />;
+    if (isServerError(depositFiatError)) {
+        return <DepositErrorScreen error={depositFiatError} />;
     }
 
     return (

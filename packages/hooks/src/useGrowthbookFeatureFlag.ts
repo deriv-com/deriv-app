@@ -2,14 +2,18 @@ import { useState, useEffect } from 'react';
 import { Analytics } from '@deriv-com/analytics';
 import { useRemoteConfig } from '@deriv/api';
 
-interface UseGrowthbookFeatureFlagArgs {
+interface UseGrowthbookFeatureFlagArgs<T> {
     featureFlag: string;
-    defaultValue?: boolean;
+    defaultValue?: T;
 }
 
-const useGrowthbookFeatureFlag = ({ featureFlag, defaultValue = false }: UseGrowthbookFeatureFlagArgs) => {
+const useGrowthbookFeatureFlag = <T extends string | boolean>({
+    featureFlag,
+    defaultValue,
+}: UseGrowthbookFeatureFlagArgs<T>) => {
+    const resolvedDefaultValue: T = defaultValue !== undefined ? defaultValue : (false as T);
     const [featureFlagValue, setFeatureFlagValue] = useState(
-        Analytics?.getFeatureValue(featureFlag, defaultValue) ?? false
+        Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue) ?? resolvedDefaultValue
     );
     const [isGBLoaded, setIsGBLoaded] = useState(false);
     const { data } = useRemoteConfig();

@@ -340,7 +340,7 @@ export default class TradersHubStore extends BaseStore {
     getAvailablePlatforms() {
         const appstore_platforms = getAppstorePlatforms();
 
-        const accounts = JSON.parse(LocalStore.get('client.accounts'));
+        const accounts = JSON.parse(LocalStore.get('client.accounts') ?? '{}');
         const loginid = LocalStore.get('active_loginid');
 
         if (!accounts || !loginid) return (this.available_platforms = appstore_platforms);

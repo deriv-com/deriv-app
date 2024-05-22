@@ -686,7 +686,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     height: 4rem;
                     margin-top: 3.2rem;
 
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         margin: 1.6rem 0;
                         padding: 1.6rem;
                     }
@@ -697,7 +697,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 width: 12.8rem;
                 height: 12.8rem;
 
-                @include desktop {
+                @include desktop-screen {
                     margin-top: 8rem;
                 }
             }
@@ -726,18 +726,18 @@ $MIN_HEIGHT_FLOATING: calc(
                 &-full-width {
                     width: calc(100vw - 33rem);
 
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         width: 100%;
                     }
                 }
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     overflow-x: hidden;
                     overflow-y: auto;
                 }
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 line-height: 2rem;
                 text-align: center;
             }
@@ -768,14 +768,14 @@ $MIN_HEIGHT_FLOATING: calc(
 
         &-leave-confirm,
         &-submit-success {
-            @include desktop {
+            @include desktop-screen {
                 .dc-btn--primary {
                     width: 13rem;
                     margin-left: 0.8rem;
                 }
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 flex-direction: column;
                 width: 100%;
                 margin-top: 1.2rem;
@@ -801,7 +801,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     @include typeface(--paragraph-left-bold-black, none);
                     color: var(--text-prominent);
 
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         font-size: 1.2rem;
                         color: var(--text-general);
                     }
@@ -819,7 +819,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     width: 5rem;
                     margin: 0 0.6rem;
 
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         margin: 1.1rem 0;
                     }
                 }
@@ -832,12 +832,12 @@ $MIN_HEIGHT_FLOATING: calc(
                     margin-left: 0.8rem;
                 }
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     margin-left: unset;
                 }
             }
 
-            @include desktop {
+            @include desktop-screen {
                 max-width: 54.6rem;
             }
         }
@@ -1913,7 +1913,7 @@ $MIN_HEIGHT_FLOATING: calc(
     width: 100%;
     overflow: hidden;
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         margin-top: 2.4rem;
     }
 
@@ -1924,14 +1924,14 @@ $MIN_HEIGHT_FLOATING: calc(
         display: flex;
         flex-direction: column;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 100%;
             flex-direction: column;
             padding: 1.6rem;
             margin-bottom: 0.8rem;
         }
 
-        @include desktop {
+        @include desktop-screen {
             width: 80%;
             padding: 2.4rem;
         }
@@ -1948,11 +1948,11 @@ $MIN_HEIGHT_FLOATING: calc(
 
             &-text {
                 line-height: 2.4rem;
-                padding-left: 1.6rem;
+                padding-inline-start: 1.6rem;
             }
 
             &-icon {
-                margin-left: auto;
+                margin-inline-start: auto;
                 transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
                 padding: 0;
 
@@ -1980,7 +1980,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 align-items: center;
                 margin-top: 3rem;
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     display: flex;
                 }
 
@@ -1990,7 +1990,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     width: 100%;
                     flex-grow: 4;
 
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         width: 100%;
                     }
                 }
@@ -2001,7 +2001,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     align-self: flex-start;
                     flex-grow: 1;
 
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         width: 100%;
                     }
                 }
@@ -2011,19 +2011,19 @@ $MIN_HEIGHT_FLOATING: calc(
                     -webkit-text-fill-color: var(--text-loss-danger);
                 }
 
-                @include desktop {
+                @include desktop-screen {
                     .dc-input {
                         width: unset;
                     }
                 }
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     .dc-input {
                         margin-bottom: 1rem;
                     }
                 }
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     flex-direction: column;
                     padding-bottom: 1rem;
                 }
@@ -2033,11 +2033,11 @@ $MIN_HEIGHT_FLOATING: calc(
                     box-sizing: border-box;
                     border-radius: 4px;
                     height: 4rem;
-                    margin-right: 10px;
+                    margin-inline-end: 10px;
                     color: var(--text-less-prominent);
                     -webkit-text-fill-color: var(--text-less-prominent);
 
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         width: 100%;
                     }
                 }
@@ -2045,20 +2045,20 @@ $MIN_HEIGHT_FLOATING: calc(
                 &-photo {
                     margin-bottom: 35px;
 
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         width: 100%;
-                        margin-left: 0;
+                        margin-inline-start: 0;
                         margin-top: 1.6rem;
                     }
 
-                    @include desktop {
+                    @include desktop-screen {
                         .dc-input {
                             flex-grow: 8;
                         }
                     }
 
                     &-btn {
-                        margin-left: 1rem;
+                        margin-inline-start: 1rem;
                         padding: 10px 16px;
                         position: static;
                         height: 40px;
@@ -2083,11 +2083,11 @@ $MIN_HEIGHT_FLOATING: calc(
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-right: 25px;
+        margin-inline-end: 25px;
         overflow: visible;
 
-        @include mobile {
-            margin-right: 8px;
+        @include mobile-or-tablet-screen {
+            margin-inline-end: 8px;
         }
 
         &-number {
@@ -2118,7 +2118,7 @@ $MIN_HEIGHT_FLOATING: calc(
         padding: 2rem auto !important;
         width: 72%;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 100%;
         }
 
@@ -2146,7 +2146,7 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 
     & .account__scrollbars_container--grid-layout {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             display: flex;
             flex-direction: column;
         }

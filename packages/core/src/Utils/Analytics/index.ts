@@ -3,13 +3,16 @@ import Cookies from 'js-cookie';
 import { getLanguage } from '@deriv/translations';
 import { LocalStore, getAppId } from '@deriv/shared';
 import { MAX_MOBILE_WIDTH } from '../../Constants';
+import FIREBASE_INIT_DATA from '../../../../api/src/remote_config.json';
 
 export const AnalyticsInitializer = async () => {
     const account_type = LocalStore?.get('active_loginid')
         ?.match(/[a-zA-Z]+/g)
         ?.join('');
     if (process.env.REMOTE_CONFIG_URL) {
-        const flags = await fetch(process.env.REMOTE_CONFIG_URL).then(res => res.json());
+        const flags = await fetch(process.env.REMOTE_CONFIG_URL)
+            .then(res => res.json())
+            .catch(() => FIREBASE_INIT_DATA);
         if (process.env.RUDDERSTACK_KEY && flags?.tracking_rudderstack) {
             const config = {
                 growthbookKey: flags.marketing_growthbook ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,

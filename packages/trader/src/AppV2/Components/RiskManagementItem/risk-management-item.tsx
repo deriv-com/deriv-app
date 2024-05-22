@@ -7,9 +7,15 @@ type RiskManagementItemProps = {
     label: React.ReactNode;
     modal_body_content: React.ReactNode;
     validation_message?: React.ReactNode;
+    is_deal_cancellation?: boolean;
 };
 
-const RiskManagementItem = ({ label, modal_body_content, validation_message }: RiskManagementItemProps) => {
+const RiskManagementItem = ({
+    label,
+    modal_body_content,
+    validation_message,
+    is_deal_cancellation = false,
+}: RiskManagementItemProps) => {
     const [toggle, setToggle] = React.useState(false);
     const [isOpen, setIsOpen] = React.useState(false);
 
@@ -20,7 +26,11 @@ const RiskManagementItem = ({ label, modal_body_content, validation_message }: R
                     <Text size='sm'>{label}</Text>
                     <RiskManagementInfoModal header_content={label} body_content={modal_body_content} />
                 </span>
-                <ToggleSwitch checked={toggle} onChange={() => setToggle(!toggle)} />
+                {is_deal_cancellation ? (
+                    <div>For now</div>
+                ) : (
+                    <ToggleSwitch checked={toggle} onChange={() => setToggle(!toggle)} />
+                )}
             </div>
             {toggle && (
                 <TextField

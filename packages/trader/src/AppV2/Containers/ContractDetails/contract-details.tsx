@@ -26,6 +26,14 @@ const ContractDetails = () => {
             </div>
             <CardWrapper>
                 <RiskManagementItem
+                    label={<Localize i18n_default_text='Deal cancellation' />}
+                    modal_body_content={<Localize i18n_default_text='Whatever you desire' />}
+                    validation_message='hello'
+                    is_deal_cancellation
+                />
+            </CardWrapper>
+            <CardWrapper>
+                <RiskManagementItem
                     label={<Localize i18n_default_text='Take profit' />}
                     modal_body_content={<Localize i18n_default_text='Whatever you desire' />}
                     validation_message='hello'

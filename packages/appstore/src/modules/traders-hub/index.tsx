@@ -40,7 +40,7 @@ const TradersHub = observer(() => {
         (!is_switching && !is_logging_in && is_account_setting_loaded && is_landing_company_loaded) ||
         checkServerMaintenance(website_status);
 
-    const direct_to_real_account_creation = useGrowthbookFeatureFlag({
+    const [direct_to_real_account_creation] = useGrowthbookFeatureFlag({
         featureFlag: 'direct-real-account-creation-flow',
         defaultValue: false,
     });

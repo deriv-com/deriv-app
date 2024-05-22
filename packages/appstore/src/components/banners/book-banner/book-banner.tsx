@@ -59,8 +59,7 @@ const BookBanner = () => {
         );
     }
 
-    // Will be a part of upcoming a/b experiment
-    if (e_book_from_landing && e_book_show_way?.includes('popup'))
+    if (e_book_from_landing && e_book_show_way?.includes('popup')) {
         return (
             <BookModalTemplate
                 e_book_show_way={e_book_show_way}
@@ -69,6 +68,7 @@ const BookBanner = () => {
                 lang={lang}
             />
         );
+    }
 
     return null;
 };

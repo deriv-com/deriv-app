@@ -18,6 +18,7 @@ const RiskManagementItem = ({
 }: RiskManagementItemProps) => {
     const [toggle, setToggle] = React.useState(false);
     const [isOpen, setIsOpen] = React.useState(false);
+    const dummy_boolean = true; // This will be flag from backend
 
     return (
         <div className='risk-management-item--container'>
@@ -26,9 +27,9 @@ const RiskManagementItem = ({
                     <Text size='sm'>{label}</Text>
                     <RiskManagementInfoModal header_content={label} body_content={modal_body_content} />
                 </span>
-                {is_deal_cancellation ? (
-                    <div>For now</div>
-                ) : (
+                {dummy_boolean && <span>5 USD</span>}
+                {is_deal_cancellation && <div>For now</div>}{' '}
+                {!dummy_boolean && !is_deal_cancellation && (
                     <ToggleSwitch checked={toggle} onChange={() => setToggle(!toggle)} />
                 )}
             </div>

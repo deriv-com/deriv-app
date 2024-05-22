@@ -14,4 +14,9 @@
         display: flex;
         gap: var(--semantic-spacing-gap-md);
     }
+
+    .deal-cancellation-badge {
+        background-color: var(--semantic-color-monochrome-surface-normal-lowest);
+        border-radius: var(--semantic-borderRadius-sm);
+    }
 }

@@ -69,17 +69,6 @@ const AccountLimits = observer(
 
         const toggleOverlay = () => setIsOverlayShown(!is_overlay_shown);
 
-        const {
-            api_initial_load_error,
-            open_positions,
-            account_balance,
-            payout,
-            market_specific,
-            num_of_days_limit,
-            remainder,
-            withdrawal_since_inception_monetary,
-        } = account_limits;
-
         if (is_switching || is_loading) {
             return <Loading is_fullscreen={false} />;
         }
@@ -91,6 +80,17 @@ const AccountLimits = observer(
                 </div>
             );
         }
+
+        const {
+            api_initial_load_error,
+            open_positions,
+            account_balance,
+            payout,
+            market_specific,
+            num_of_days_limit,
+            remainder,
+            withdrawal_since_inception_monetary,
+        } = account_limits;
 
         if (api_initial_load_error) {
             return <LoadErrorMessage error_message={api_initial_load_error} />;

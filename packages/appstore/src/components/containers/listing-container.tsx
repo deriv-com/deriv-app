@@ -1,9 +1,7 @@
 import React, { HTMLAttributes, ReactNode } from 'react';
 import classNames from 'classnames';
-import { observer, useStore } from '@deriv/stores';
 import CurrencySwitcherCard from 'Components/currency-switcher-card';
 import GridContainer from 'Components/containers/grid-container';
-import TitleCardLoader from 'Components/pre-loader/title-card-loader';
 import './listing-container.scss';
 
 type TListingContainerProps = {
@@ -16,22 +14,16 @@ type TListingContainerProps = {
 type TOptionsProps = Pick<TListingContainerProps, 'title' | 'description' | 'is_deriv_platform'>;
 type TSwitcherProps = Pick<TListingContainerProps, 'is_deriv_platform'>;
 
-const Options = observer(({ title, description, is_deriv_platform }: TOptionsProps) => {
-    const {
-        client: { is_landing_company_loaded },
-    } = useStore();
+const Options = ({ title, description, is_deriv_platform }: TOptionsProps) => {
+    if (!is_deriv_platform) return null;
 
-    if (is_landing_company_loaded || !is_deriv_platform) {
-        return (
-            <div className='listing-container__title'>
-                {title}
-                {description}
-            </div>
-        );
-    }
-
-    return <TitleCardLoader />;
-});
+    return (
+        <div className='listing-container__title'>
+            {title}
+            {description}
+        </div>
+    );
+};
 
 const Switcher = ({ is_deriv_platform }: TSwitcherProps) => {
     if (!is_deriv_platform) return null;

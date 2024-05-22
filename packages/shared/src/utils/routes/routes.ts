@@ -1,7 +1,23 @@
 import { getUrlSmartTrader, getUrlBinaryBot } from '../url/helpers';
 
 export const routes = {
+    reset_password: '/',
     error404: '/404',
+    index: '/index',
+    redirect: '/redirect',
+    endpoint: '/endpoint',
+    complaints_policy: '/complaints-policy',
+    contract: '/contract/:contract_id',
+
+    // platforms
+    mt5: '/mt5',
+    dxtrade: '/derivx',
+    bot: '/bot',
+    trade: '/dtrader',
+    smarttrader: getUrlSmartTrader(),
+    binarybot: getUrlBinaryBot(),
+
+    // account
     account: '/account',
     trading_assessment: '/account/trading-assessment',
     languages: '/account/languages',
@@ -22,28 +38,26 @@ export const routes = {
     login_history: '/account/login-history',
     two_factor_authentication: '/account/two-factor-authentication',
     self_exclusion: '/account/self-exclusion',
+
+    // settings
+    settings: '/settings',
     account_password: '/settings/account_password',
     apps: '/settings/apps',
     cashier_password: '/settings/cashier_password',
-    contract: '/contract/:contract_id',
     exclusion: '/settings/exclusion',
     financial: '/settings/financial',
     history: '/settings/history',
-    index: '/index',
     limits: '/settings/limits',
-    mt5: '/mt5',
-    dxtrade: '/derivx',
+    token: '/settings/token',
     personal: '/settings/personal',
+
+    // reports
+    reports: '/reports',
     positions: '/reports/positions',
     profit: '/reports/profit',
-    reports: '/reports',
-    reset_password: '/',
-    redirect: '/redirect',
-    settings: '/settings',
     statement: '/reports/statement',
-    token: '/settings/token',
-    trade: '/dtrader',
-    bot: '/bot',
+
+    // cashier
     cashier: '/cashier',
     cashier_deposit: '/cashier/deposit',
     cashier_withdrawal: '/cashier/withdrawal',
@@ -54,6 +68,7 @@ export const routes = {
     cashier_onramp: '/cashier/on-ramp',
     cashier_p2p: '/cashier/p2p',
     cashier_p2p_v2: '/cashier/p2p-v2',
+    cashier_pa_transfer: '/cashier/payment-agent-transfer',
 
     // P2P
     p2p_verification: '/cashier/p2p/verification',
@@ -63,12 +78,6 @@ export const routes = {
     p2p_my_profile: '/cashier/p2p/my-profile',
     p2p_advertiser_page: '/cashier/p2p/advertiser',
     p2p_v2_inner: '/cashier/p2p-v2/inner',
-
-    cashier_pa_transfer: '/cashier/payment-agent-transfer',
-    smarttrader: getUrlSmartTrader(),
-    binarybot: getUrlBinaryBot(),
-    endpoint: '/endpoint',
-    complaints_policy: '/complaints-policy',
 
     // Appstore
     old_traders_hub: '/appstore/traders-hub',

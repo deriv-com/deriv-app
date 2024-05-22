@@ -11,17 +11,17 @@ type TPros = {
 
 const useClosedPositions = ({ date_from, date_to }: TPros = {}) => {
     const [positions, setPositions] = useState<NonNullable<ProfitTable['transactions']>>([]);
-    const [isLoading, setLoading] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(false);
     const positionsRef = useRef<NonNullable<ProfitTable['transactions']>>([]);
 
     const fetch = useCallback(async () => {
-        setLoading(true);
+        setIsLoading(true);
         const data: ProfitTableResponse = await WS.profitTable(50, positionsRef.current.length, {
             date_from,
             date_to,
         });
 
-        setLoading(false);
+        setIsLoading(false);
         // TODO: handle errors
         setPositions(prevPositions => [...prevPositions, ...(data?.profit_table?.transactions ?? [])]);
     }, [date_from, date_to]);

@@ -1,14 +1,9 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useStoreWalletAccountsList } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import LanguageSettings from '../language-settings';
 import { mockStore, StoreProvider } from '@deriv/stores';
-
-const mockedUseStoreWalletAccountsList = useStoreWalletAccountsList as jest.MockedFunction<
-    typeof useStoreWalletAccountsList
->;
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -23,11 +18,6 @@ jest.mock('@deriv/translations', () => ({
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Icon: jest.fn(() => <div>Flag Icon</div>),
-}));
-
-jest.mock('react-i18next', () => ({
-    ...jest.requireActual('react-i18next'),
-    useTranslation: jest.fn(() => ({ i18n: { changeLanguage: jest.fn() } })),
 }));
 
 jest.mock('react-router-dom', () => ({

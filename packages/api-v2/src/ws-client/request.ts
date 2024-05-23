@@ -35,6 +35,12 @@ function request<T extends TSocketSubscribableEndpointNames>(
                 return;
             }
 
+            if (data.error) {
+                clearTimeout(timeout);
+                reject(data);
+                return;
+            }
+
             ws.removeEventListener('message', receive);
             clearTimeout(timeout);
             resolve(data);

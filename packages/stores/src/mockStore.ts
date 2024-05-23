@@ -540,8 +540,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             active_modal_wallet_id: '',
             setWalletModalActiveWalletID: jest.fn(),
             available_ctrader_accounts: [],
-            toggleIsTourOpen: jest.fn(),
-            is_tour_open: false,
             is_mt5_notification_modal_visible: false,
             setMT5NotificationModal: jest.fn(),
             has_any_real_account: false,

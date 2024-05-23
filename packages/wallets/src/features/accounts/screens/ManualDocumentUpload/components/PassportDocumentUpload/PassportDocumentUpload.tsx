@@ -30,12 +30,11 @@ const PassportDocumentUpload = () => {
                     minDate={moment().add(2, 'days').toDate()}
                     name='passportExpiryDate'
                     onDateChange={handleDateChange}
-                    placeholder='DD/MM/YYYY'
                     validationSchema={expiryDateValidator}
                 />
             </div>
             <Divider />
-            <div className='wallets-passport-document-upload__document-section'>
+            <div className='wallets-passport-document-upload__document-upload'>
                 <WalletText>Next, upload the page of your passport that contains your photo.</WalletText>
                 <Dropzone
                     buttonText='Drop file or click here to upload'

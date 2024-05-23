@@ -182,6 +182,12 @@ export const Modals = {
                 /* webpackChunkName: "order-time-tooltip-modal" */ 'Components/modal-manager/modals/order-time-tooltip-modal'
             )
     ),
+    PreferredCountriesModal: React.lazy(
+        () =>
+            import(
+                /* webpackChunkName: "preferred-countries-modal" */ 'Components/modal-manager/modals/preferred-countries-modal'
+            )
+    ),
     QuickAddModal: React.lazy(
         () => import(/* webpackChunkName: "quick-add-modal" */ 'Components/modal-manager/modals/quick-add-modal')
     ),

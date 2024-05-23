@@ -1,12 +1,18 @@
 import React from 'react';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import WithdrawalErrorScreen from '../WithdrawalErrorScreen';
+
+jest.mock('@deriv/api-v2', () => ({
+    useActiveWalletAccount: jest.fn(),
+}));
 
 describe('WithdrawalErrorScreen', () => {
     let resetError: jest.Mock, setResendEmail: jest.Mock;
 
     beforeEach(() => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: { currency: 'BTC' } });
         resetError = jest.fn();
         setResendEmail = jest.fn();
     });
@@ -61,14 +67,7 @@ describe('WithdrawalErrorScreen', () => {
             message: 'Crypto Suspended Currency',
         };
 
-        render(
-            <WithdrawalErrorScreen
-                currency='BTC'
-                error={error}
-                resetError={resetError}
-                setResendEmail={setResendEmail}
-            />
-        );
+        render(<WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />);
 
         expect(screen.getByText('BTC Wallet withdrawals are temporarily unavailable')).toBeInTheDocument();
         expect(
@@ -85,14 +84,7 @@ describe('WithdrawalErrorScreen', () => {
             message: 'Crypto Disabled Currency Withdrawal',
         };
 
-        render(
-            <WithdrawalErrorScreen
-                currency='BTC'
-                error={error}
-                resetError={resetError}
-                setResendEmail={setResendEmail}
-            />
-        );
+        render(<WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />);
 
         expect(screen.getByText('BTC Wallet withdrawals are temporarily unavailable')).toBeInTheDocument();
         expect(

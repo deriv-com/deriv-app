@@ -124,9 +124,9 @@
         }
     }
     &__accordion {
-        // .deriv-accordion {
-        //     --du-general-main-2: #F2F3F4;
-        //     --du-general-active: var(--du-general-main-2);
+        --du-general-main-2: #f2f3f4;
+        --du-general-active: var(--du-general-main-2);
+        // &.deriv-accordion {
         //     &--bordered{
         //         padding-block: 1.6rem;
         //     }

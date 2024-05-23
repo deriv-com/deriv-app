@@ -195,48 +195,50 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                                     <WalletText size='xs'>Get another cTrader cTrader account</WalletText>
                                 </button>
                             )}
-                        <div className='wallets-mt5-trade-screen__accordion'>
-                            <Accordion title='See important notes' variant='bordered'>
-                                <ol className='wallets-mt5-trade-screen__notes'>
-                                    <li className='wallets-mt5-trade-screen__notes-item'>
-                                        Use your Deriv account email and password to log in to cTrader.
-                                    </li>
-                                    <li className='wallets-mt5-trade-screen__notes-item'>
-                                        Manage up to 5 Deriv cTrader accounts. While you can convert any of your Deriv
-                                        cTrader accounts into a strategy account, please take note of the following:
-                                        <ul className='wallets-mt5-trade-screen__notes-inner-list'>
-                                            <li className='wallets-mt5-trade-screen__notes-item wallets-mt5-trade-screen__notes-inner-item'>
-                                                When setting up a strategy, you have the option to impose fees.
-                                            </li>
-                                            <li className='wallets-mt5-trade-screen__notes-item wallets-mt5-trade-screen__notes-inner-item'>
-                                                For strategies where you impose fees, you must assign one of your
-                                                existing accounts to process these fees. The same ‘Account For Fees’ can
-                                                support multiple fee-based strategies.
-                                            </li>
-                                            <li className='wallets-mt5-trade-screen__notes-item wallets-mt5-trade-screen__notes-inner-item'>
-                                                Free strategies do not require an ‘Account For Fees’.
-                                            </li>
-                                            <li className='wallets-mt5-trade-screen__notes-item wallets-mt5-trade-screen__notes-inner-item'>
-                                                An account designated as a strategy provider is irreversible unless it
-                                                remains inactive for 30 days.
-                                            </li>
-                                            <li className='wallets-mt5-trade-screen__notes-item wallets-mt5-trade-screen__notes-inner-item'>
-                                                An account cannot simultaneously be a strategy provider and serve as an
-                                                ‘Account For Fees’.
-                                            </li>
-                                            <li className='wallets-mt5-trade-screen__notes-item wallets-mt5-trade-screen__notes-inner-item'>
-                                                To ensure you can always create and manage strategies with fees,{' '}
-                                                <strong>
-                                                    keep at least one account free from being a strategy provider
-                                                </strong>
-                                                . This way, you’ll always have an account ready for collecting fees,
-                                                allowing you to have up to four strategies where you may impose fees.
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ol>
-                            </Accordion>
-                        </div>
+                        <Accordion
+                            className='wallets-mt5-trade-screen__accordion'
+                            title='See important notes'
+                            variant='bordered'
+                        >
+                            <ol className='wallets-mt5-trade-screen__notes'>
+                                <li className='wallets-mt5-trade-screen__notes-item'>
+                                    Use your Deriv account email and password to log in to cTrader.
+                                </li>
+                                <li className='wallets-mt5-trade-screen__notes-item'>
+                                    Manage up to 5 Deriv cTrader accounts. While you can convert any of your Deriv
+                                    cTrader accounts into a strategy account, please take note of the following:
+                                    <ul className='wallets-mt5-trade-screen__notes-inner-list'>
+                                        <li className='wallets-mt5-trade-screen__notes-item wallets-mt5-trade-screen__notes-inner-item'>
+                                            When setting up a strategy, you have the option to impose fees.
+                                        </li>
+                                        <li className='wallets-mt5-trade-screen__notes-item wallets-mt5-trade-screen__notes-inner-item'>
+                                            For strategies where you impose fees, you must assign one of your existing
+                                            accounts to process these fees. The same ‘Account For Fees’ can support
+                                            multiple fee-based strategies.
+                                        </li>
+                                        <li className='wallets-mt5-trade-screen__notes-item wallets-mt5-trade-screen__notes-inner-item'>
+                                            Free strategies do not require an ‘Account For Fees’.
+                                        </li>
+                                        <li className='wallets-mt5-trade-screen__notes-item wallets-mt5-trade-screen__notes-inner-item'>
+                                            An account designated as a strategy provider is irreversible unless it
+                                            remains inactive for 30 days.
+                                        </li>
+                                        <li className='wallets-mt5-trade-screen__notes-item wallets-mt5-trade-screen__notes-inner-item'>
+                                            An account cannot simultaneously be a strategy provider and serve as an
+                                            ‘Account For Fees’.
+                                        </li>
+                                        <li className='wallets-mt5-trade-screen__notes-item wallets-mt5-trade-screen__notes-inner-item'>
+                                            To ensure you can always create and manage strategies with fees,{' '}
+                                            <strong>
+                                                keep at least one account free from being a strategy provider
+                                            </strong>
+                                            . This way, you’ll always have an account ready for collecting fees,
+                                            allowing you to have up to four strategies where you may impose fees.
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </Accordion>
                     </>
                 )}
 

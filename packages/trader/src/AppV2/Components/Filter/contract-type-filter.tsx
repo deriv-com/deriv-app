@@ -3,7 +3,7 @@ import Chip from 'AppV2/Components/Chip';
 import { ActionSheet, Checkbox } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 
-type TFilter = {
+type TContractTypeFilter = {
     setContractTypeFilter: React.Dispatch<React.SetStateAction<string[]>>;
     contractTypeFilter: string[] | [];
 };
@@ -22,7 +22,7 @@ const mockAvailableContractsList = [
     { tradeType: <Localize i18n_default_text='Over/Under' />, id: 'Over/Under' },
 ];
 
-const Filter = ({ setContractTypeFilter, contractTypeFilter }: TFilter) => {
+const ContractTypeFilter = ({ setContractTypeFilter, contractTypeFilter }: TContractTypeFilter) => {
     const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
     const [changedOptions, setChangedOptions] = React.useState<string[]>(contractTypeFilter);
 
@@ -89,4 +89,4 @@ const Filter = ({ setContractTypeFilter, contractTypeFilter }: TFilter) => {
     );
 };
 
-export default Filter;
+export default ContractTypeFilter;

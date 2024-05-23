@@ -101,7 +101,6 @@
         "@deriv-com/translations": "^1.2.3",
         "@deriv-com/utils": "^0.0.20",
         "@deriv/account": "^1.0.0",
-        "@deriv/account-v2": "^1.0.0",
         "@deriv/api": "^1.0.0",
         "@deriv/appstore": "^0.0.4",
         "@deriv/bot-web-ui": "^1.0.0",

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Icon, Popover, StaticUrl, Loading } from '@deriv/components';
 import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
-import { routes, platforms, formatMoney, makeLazyLoader, moduleLoader } from '@deriv/shared';
+import { routes, platforms, formatMoney, makeLazyLoader, moduleLoader, isTabletOs } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
@@ -81,6 +81,12 @@ const TradersHubHeader = observer(() => {
     const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
     const account_balance = formatMoney(currency, balance ?? '', true);
 
+    const accountSettings = (
+        <BinaryLink className='traders-hub-header__setting' to={routes.personal_details}>
+            <Icon icon='IcUserOutline' size={20} />
+        </BinaryLink>
+    );
+
     const filterPlatformsForClients = (payload: TPlatformConfig) =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
@@ -147,17 +153,19 @@ const TradersHubHeader = observer(() => {
                             <div className='traders-hub-header__menu-right--items--notifications'>
                                 <ShowNotifications />
                             </div>
-                            <Popover
-                                classNameBubble='account-settings-toggle__tooltip'
-                                alignment='bottom'
-                                message={<Localize i18n_default_text='Manage account settings' />}
-                                should_disable_pointer_events
-                                zIndex='9999'
-                            >
-                                <BinaryLink className='traders-hub-header__setting' to={routes.personal_details}>
-                                    <Icon icon='IcUserOutline' size={20} />
-                                </BinaryLink>
-                            </Popover>
+                            {isTabletOs ? (
+                                accountSettings
+                            ) : (
+                                <Popover
+                                    classNameBubble='account-settings-toggle__tooltip'
+                                    alignment='bottom'
+                                    message={<Localize i18n_default_text='Manage account settings' />}
+                                    should_disable_pointer_events
+                                    zIndex='9999'
+                                >
+                                    {accountSettings}
+                                </Popover>
+                            )}
                             {cashier_routes && (
                                 <div className='traders-hub-header__menu-right--items--account-toggle'>
                                     <AccountInfo

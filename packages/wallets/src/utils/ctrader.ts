@@ -10,7 +10,7 @@ export type CTraderAccount = {
     display_balance?: number | string | null;
 };
 
-export function calculateTotalBalance<T extends CTraderAccount>(accountsList: T[]): string {
+export function calculateTotalBalance(accountsList: CTraderAccount[]): string {
     return accountsList
         .reduce((acc, cur) => {
             let balance = 0;

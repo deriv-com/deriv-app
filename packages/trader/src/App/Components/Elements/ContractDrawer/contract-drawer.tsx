@@ -4,7 +4,6 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
 import { DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
 import {
-    isUserSold,
     isMobile,
     isEmptyObject,
     getDurationPeriod,
@@ -61,17 +60,12 @@ const ContractDrawer = observer(
         toggleHistoryTab,
     }: TContractDrawerProps) => {
         const { common, ui } = useStore();
-        const { server_time } = common;
-        const { is_mobile } = ui;
+        const { current_language, is_language_changing, server_time } = common;
+        const { is_history_tab_active, is_mobile } = ui;
         const { currency, exit_tick_display_value } = contract_info;
         const contract_drawer_ref = React.useRef<HTMLDivElement>(null);
         const contract_drawer_card_ref = React.useRef<HTMLDivElement>(null);
         const [should_show_contract_audit, setShouldShowContractAudit] = React.useState(false);
-
-        const exit_spot =
-            isUserSold(contract_info) && !is_accumulator && !is_multiplier && !is_turbos
-                ? '-'
-                : exit_tick_display_value;
 
         const contract_audit = (
             <ContractAudit
@@ -80,13 +74,15 @@ const ContractDrawer = observer(
                 contract_update_history={contract_update_history}
                 duration_unit={getDurationUnitText(getDurationPeriod(contract_info)) ?? ''}
                 duration={getDurationTime(contract_info)}
-                exit_spot={exit_spot}
+                exit_spot={exit_tick_display_value}
                 is_accumulator={is_accumulator}
                 is_dark_theme={is_dark_theme}
+                is_history_tab_active={is_history_tab_active}
                 is_multiplier={is_multiplier}
                 is_open
                 is_turbos={is_turbos}
                 is_vanilla={is_vanilla}
+                current_language={is_language_changing ? '' : current_language}
                 toggleHistoryTab={toggleHistoryTab}
             />
         );

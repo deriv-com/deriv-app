@@ -126,16 +126,14 @@
     &__accordion {
         --du-general-main-2: #f2f3f4;
         --du-general-active: var(--du-general-main-2);
+        padding-block: 1.6rem;
+        &-header {
+            color: #333;
+            font-size: 1.4rem;
+            font-weight: 700;
+            line-height: 1.43;
+        }
         // &.deriv-accordion {
-        //     &--bordered{
-        //         padding-block: 1.6rem;
-        //     }
-        //     &__header{
-        //         color: #333;
-        //         font-size: 1.4rem;
-        //         font-weight: 700;
-        //         line-height: 1.43
-        //     }
         //     &__content {
         //         background-color: var(--du-general-main-2);
         //     }

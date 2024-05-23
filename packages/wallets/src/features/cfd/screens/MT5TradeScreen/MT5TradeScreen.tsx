@@ -197,6 +197,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                             )}
                         <Accordion
                             className='wallets-mt5-trade-screen__accordion'
+                            headerClassName='wallets-mt5-trade-screen__accordion-header'
                             title='See important notes'
                             variant='bordered'
                         >

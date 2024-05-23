@@ -3,28 +3,34 @@ import classNames from 'classnames';
 import { CaptionText, Text } from '@deriv-com/quill-ui';
 import { useSwipeable } from 'react-swipeable';
 import { IconTradeTypes, Money } from '@deriv/components';
-import { getCardLabels } from '@deriv/shared';
-import { TPortfolioPosition } from '@deriv/stores/types';
+import {
+    TContractInfo,
+    getCardLabels,
+    getCurrentTick,
+    getMarketName,
+    getTotalProfit,
+    getTradeTypeName,
+    isHighLow,
+    isMultiplierContract,
+    isValidToCancel,
+    isValidToSell,
+} from '@deriv/shared';
 import { ContractCardDuration, TContractCardDurationProps } from './contract-card-duration';
 import { BinaryLink } from 'App/Components/Routes';
+import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 
-type TContractCardProps = Pick<
-    TPortfolioPosition['contract_info'],
-    'buy_price' | 'contract_type' | 'sell_time' | 'profit'
-> &
-    TContractCardDurationProps & {
-        className?: string;
-        currency?: string;
-        isValidToCancel?: boolean;
-        isValidToSell?: boolean;
-        onClick?: (e?: React.MouseEvent<HTMLAnchorElement>) => void;
-        onCancel?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
-        onClose?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
-        redirectTo?: string;
-        symbolName?: string;
-        totalProfit?: string | number;
-        tradeTypeName?: string;
-    };
+type TContractCardProps = TContractCardDurationProps & {
+    className?: string;
+    contractInfo: TContractInfo | TClosedPosition['contract_info'];
+    currency?: string;
+    hasActionButtons?: boolean;
+    id?: number | null;
+    isSellRequested?: boolean;
+    onClick?: (e?: React.MouseEvent<HTMLAnchorElement>) => void;
+    onCancel?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
+    onClose?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
+    redirectTo?: string;
+};
 
 const DIRECTION = {
     LEFT: 'left',
@@ -38,24 +44,34 @@ const swipeConfig = {
 
 const ContractCard = ({
     className,
-    contract_type,
+    contractInfo,
     currency,
-    buy_price,
-    isValidToCancel,
-    isValidToSell,
+    hasActionButtons = true,
+    isSellRequested,
     onCancel,
     onClick,
     onClose,
-    profit,
     redirectTo,
-    sell_time,
-    symbolName,
-    totalProfit,
-    tradeTypeName,
-    ...rest
 }: TContractCardProps) => {
     const [isDeleted, setIsDeleted] = React.useState(false);
     const [shouldShowButtons, setShouldShowButtons] = React.useState(false);
+    const { buy_price, contract_type, display_name, sell_time, shortcode } = contractInfo;
+    const contract_main_title = getTradeTypeName(contract_type ?? '', {
+        isHighLow: isHighLow({ shortcode }),
+        showMainTitle: true,
+    });
+    const currentTick = 'tick_count' in contractInfo && contractInfo.tick_count ? getCurrentTick(contractInfo) : null;
+    const tradeTypeName = `${contract_main_title} ${getTradeTypeName(contract_type ?? '', {
+        isHighLow: isHighLow({ shortcode }),
+    })}`.trim();
+    const symbolName =
+        'underlying_symbol' in contractInfo ? getMarketName(contractInfo.underlying_symbol ?? '') : display_name;
+    const isMultiplier = isMultiplierContract(contract_type);
+    const totalProfit = isMultiplierContract(contract_type)
+        ? getTotalProfit(contractInfo as TContractInfo)
+        : (contractInfo as TContractInfo).profit ?? (contractInfo as TClosedPosition['contract_info']).profit_loss;
+    const validToCancel = isValidToCancel(contractInfo as TContractInfo);
+    const validToSell = isValidToSell(contractInfo as TContractInfo) && !isSellRequested;
 
     const handleSwipe = (direction: string) => {
         const isLeft = direction === DIRECTION.LEFT;
@@ -79,14 +95,15 @@ const ContractCard = ({
         <div className={classNames('contract-card-wrapper', { deleted: isDeleted })}>
             <BinaryLink
                 {...(sell_time ? {} : swipeHandlers)}
-                onClick={onClick}
                 className={classNames('contract-card', className, {
-                    [`show-buttons${isValidToCancel ? '--has-cancel-button' : ''}`]: shouldShowButtons,
+                    'show-buttons': shouldShowButtons,
+                    'has-cancel-button': validToCancel,
                     lost: Number(totalProfit) < 0,
                     won: Number(totalProfit) > 0,
                 })}
-                to={redirectTo}
+                onClick={onClick}
                 onDragStart={e => e.preventDefault()}
+                to={redirectTo}
             >
                 <div className='body'>
                     <div className='details'>
@@ -105,24 +122,26 @@ const ContractCard = ({
                     </div>
                     <div className='status-and-profit'>
                         {sell_time ? (
-                            <CaptionText aria-label='status' className='status'>
-                                {getCardLabels().CLOSED}
-                            </CaptionText>
+                            <CaptionText className='status'>{getCardLabels().CLOSED}</CaptionText>
                         ) : (
-                            <ContractCardDuration {...rest} />
+                            <ContractCardDuration
+                                currentTick={currentTick}
+                                hasNoAutoExpiry={isMultiplier}
+                                {...contractInfo}
+                            />
                         )}
                         <Text className='total-profit' size='sm'>
                             <Money amount={totalProfit} currency={currency} has_sign show_currency />
                         </Text>
                     </div>
                 </div>
-                {!sell_time && (
+                {!sell_time && hasActionButtons && (
                     <div className='buttons'>
-                        {isValidToCancel && (
+                        {validToCancel && (
                             <button
                                 className={classNames('icon', 'cancel')}
                                 aria-label='cancel'
-                                disabled={Number(profit) >= 0}
+                                disabled={Number(totalProfit) >= 0}
                                 onClick={e => handleClose(e, true)}
                             >
                                 <CaptionText bold>{getCardLabels().CANCEL}</CaptionText>
@@ -131,7 +150,7 @@ const ContractCard = ({
                         <button
                             className={classNames('icon', 'close')}
                             aria-label='close'
-                            disabled={!isValidToSell}
+                            disabled={!validToSell}
                             onClick={handleClose}
                         >
                             <CaptionText bold>{getCardLabels().CLOSE}</CaptionText>

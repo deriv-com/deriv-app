@@ -28,6 +28,8 @@ $TABS_HEIGHT: 4.8rem;
                     &__closed {
                         height: 100%;
                         overflow-y: scroll;
+                        display: flex;
+                        flex-direction: column;
                     }
                 }
             }

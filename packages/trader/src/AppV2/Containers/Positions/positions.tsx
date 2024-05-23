@@ -8,11 +8,19 @@ type TPositionsProps = {
 };
 
 const Positions = ({ onRedirectToTrade }: TPositionsProps) => {
+    const [hasButtonsDemo, setHasButtonsDemo] = React.useState(true);
+
     const tabs = [
         {
             id: 'open',
             title: <Localize i18n_default_text='Open' />,
-            content: <PositionsContent onRedirectToTrade={onRedirectToTrade} />,
+            content: (
+                <PositionsContent
+                    onRedirectToTrade={onRedirectToTrade}
+                    hasButtonsDemo={hasButtonsDemo}
+                    setHasButtonsDemo={setHasButtonsDemo}
+                />
+            ),
         },
         {
             id: 'closed',

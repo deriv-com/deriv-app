@@ -9,7 +9,7 @@
     justify-content: space-between;
     height: 10.4rem;
     transform: translateX(0);
-    transition: transform var(--motion-duration-snappy) var(--motion-easing-inandout);
+    transition: transform var(--motion-duration-snappy) var(--motion-easing-linear);
 
     .icon,
     .dc-icon {
@@ -34,16 +34,22 @@
     }
     .details,
     .status-and-profit,
+    .status,
     &-duration {
         display: flex;
         gap: 0.8rem;
         align-items: center;
     }
+    .status,
     &-duration {
-        background-color: color-mix(in sRGB, var(--component-textIcon-normal-default) 4%, transparent);
+        background-color: var(--core-color-opacity-black-75);
         height: 2.4rem;
         padding: 0 0.8rem;
         border-radius: var(--semantic-borderRadius-sm);
+
+        .dc-remaining-time {
+            font-size: unset;
+        }
     }
     .status-and-profit {
         justify-content: space-between;
@@ -106,6 +112,10 @@
         button:not(:disabled) {
             background-color: var(--core-color-solid-cherry-700);
         }
+        .status {
+            color: var(--core-color-solid-red-900);
+            background-color: var(--core-color-opacity-red-100);
+        }
     }
     &.won {
         .total-profit {
@@ -114,11 +124,15 @@
         button:not(:disabled) {
             background-color: var(--core-color-solid-emerald-700);
         }
+        .status {
+            color: var(--core-color-solid-green-900);
+            background-color: var(--core-color-opacity-green-100);
+        }
     }
     &.show-buttons {
         transform: translateX(calc(var(--core-size-3600) * -1));
 
-        &--has-cancel-button {
+        &.has-cancel-button {
             transform: translateX(calc(var(--core-size-3600) * -2));
         }
     }
@@ -133,16 +147,51 @@
         &.deleted {
             opacity: var(--core-opacity-50);
             max-height: 0;
-            transition: max-height var(--core-motion-duration-200), opacity var(--core-motion-duration-200);
+            transition: max-height var(--motion-duration-snappy), opacity var(--motion-duration-snappy);
             transition-timing-function: var(--motion-easing-inandout);
         }
     }
     &-list {
         display: flex;
+        flex-grow: 1;
         flex-direction: column;
         gap: 0.8rem;
         width: inherit;
         padding: 0.8rem;
         overflow: hidden;
+
+        &--has-buttons-demo {
+            .contract-card-wrapper:first-child {
+                .contract-card {
+                    animation: var(--motion-duration-relax) var(--motion-easing-inandout) bounce-one-button;
+
+                    &.has-cancel-button {
+                        animation: var(--motion-duration-relax) var(--motion-easing-inandout) bounce-two-buttons;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes bounce-one-button {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    30%,
+    70% {
+        transform: translateX(calc(var(--core-size-3600) * -1));
+    }
+}
+
+@keyframes bounce-two-buttons {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    30%,
+    70% {
+        transform: translateX(calc(var(--core-size-3600) * -2));
     }
 }

@@ -580,6 +580,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             barriers: [],
             error: '',
             getPositionById: jest.fn(),
+            is_active_empty: false,
             is_loading: false,
             is_accumulator: false,
             is_multiplier: false,

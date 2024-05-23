@@ -1,7 +1,8 @@
 import { getSupportedContracts, isHighLow } from '@deriv/shared';
 import { TPortfolioPosition } from '@deriv/stores/types';
+import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 
-export const filterPositions = (positions: TPortfolioPosition[], filter: string[]) => {
+export const filterPositions = (positions: (TPortfolioPosition | TClosedPosition)[], filter: string[]) => {
     // Split contract type names with '/' (e.g. Rise/Fall)
     const splittedFilter = filter.map(option => (option.includes('/') ? option.split('/') : option)).flat();
 

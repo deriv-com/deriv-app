@@ -802,6 +802,7 @@ type TPortfolioStore = {
     barriers: TBarriers;
     error: string;
     getPositionById: (id: number) => TPortfolioPosition;
+    is_active_empty: boolean;
     is_loading: boolean;
     is_multiplier: boolean;
     is_accumulator: boolean;

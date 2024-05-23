@@ -1,76 +1,67 @@
-import {
-    getContractPath,
-    getCurrentTick,
-    getTotalProfit,
-    getTradeTypeName,
-    isHighLow,
-    isMultiplierContract,
-    isValidToCancel,
-    isValidToSell,
-} from '@deriv/shared';
+import { getContractPath } from '@deriv/shared';
 import { TPortfolioPosition } from '@deriv/stores/types';
 import React from 'react';
 import ContractCard from './contract-card';
+import classNames from 'classnames';
+import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 
 export type TContractCardListProps = {
     currency?: string;
+    hasButtonsDemo?: boolean;
     onClickCancel?: (contractId: number) => void;
     onClickSell?: (contractId: number) => void;
-    positions?: TPortfolioPosition[];
+    positions?: (TPortfolioPosition | TClosedPosition)[];
+    setHasButtonsDemo?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ContractCardList = ({ onClickCancel, onClickSell, positions = [], ...rest }: TContractCardListProps) => {
-    // TODO: make it work not only with an open position data but also with a profit_table transaction data
-    const timeoutIds = React.useRef<Array<ReturnType<typeof setTimeout>>>([]);
+const ContractCardList = ({
+    currency,
+    hasButtonsDemo,
+    onClickCancel,
+    onClickSell,
+    positions = [],
+    setHasButtonsDemo,
+}: TContractCardListProps) => {
+    const closedCardsTimeouts = React.useRef<Array<ReturnType<typeof setTimeout>>>([]);
 
     React.useEffect(() => {
-        const timers = timeoutIds.current;
+        const timers = closedCardsTimeouts.current;
+        const demoTimeout = setTimeout(() => setHasButtonsDemo?.(false), 720);
         return () => {
             if (timers.length) {
                 timers.forEach(id => clearTimeout(id));
             }
+            if (demoTimeout) clearTimeout(demoTimeout);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleClose = (id: number, shouldCancel?: boolean) => {
         const timeoutId = setTimeout(() => {
             shouldCancel ? onClickCancel?.(id) : onClickSell?.(id);
         }, 160);
-        timeoutIds.current.push(timeoutId);
+        closedCardsTimeouts.current.push(timeoutId);
     };
 
     if (!positions.length) return null;
     return (
-        <div className='contract-card-list'>
-            {positions.map(({ id, is_sell_requested, contract_info }) => {
-                const { contract_type, display_name, profit, shortcode } = contract_info;
-                const contract_main_title = getTradeTypeName(contract_type ?? '', {
-                    isHighLow: isHighLow({ shortcode }),
-                    showMainTitle: true,
-                });
-                const currentTick = contract_info.tick_count ? getCurrentTick(contract_info) : null;
-                const tradeTypeName = `${contract_main_title} ${getTradeTypeName(contract_type ?? '', {
-                    isHighLow: isHighLow({ shortcode }),
-                })}`.trim();
-                const isMultiplier = isMultiplierContract(contract_type);
-                const validToCancel = isValidToCancel(contract_info);
-                const validToSell = isValidToSell(contract_info) && !is_sell_requested;
-                const totalProfit = isMultiplierContract(contract_type) ? getTotalProfit(contract_info) : profit;
+        <div
+            className={classNames('contract-card-list', {
+                'contract-card-list--has-buttons-demo': hasButtonsDemo && !positions[0].contract_info.sell_time,
+            })}
+        >
+            {positions.map(position => {
+                const { contract_id: id } = position.contract_info;
                 return (
                     <ContractCard
-                        key={id ?? contract_info.contract_id}
-                        {...contract_info}
-                        {...rest}
-                        currentTick={currentTick}
-                        isMultiplier={isMultiplier}
-                        isValidToCancel={validToCancel}
-                        isValidToSell={validToSell}
+                        key={id}
+                        contractInfo={position.contract_info}
+                        currency={currency}
+                        id={id}
+                        isSellRequested={(position as TPortfolioPosition).is_sell_requested}
                         onCancel={() => id && handleClose?.(id, true)}
                         onClose={() => id && handleClose?.(id)}
-                        redirectTo={getContractPath(id)}
-                        symbolName={display_name}
-                        totalProfit={totalProfit}
-                        tradeTypeName={tradeTypeName}
+                        redirectTo={id ? getContractPath(id) : undefined}
                     />
                 );
             })}

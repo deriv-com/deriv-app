@@ -19,6 +19,7 @@ const SelfieDocumentUpload = () => {
                 fileFormats='image/*'
                 hasFrame={isDesktop}
                 icon={<SelfieIcon />}
+                noClick
                 onFileChange={(file: File) => setFormValues('selfie', file)}
             />
             <WalletText color={isDesktop ? 'less-prominent' : 'general'}>

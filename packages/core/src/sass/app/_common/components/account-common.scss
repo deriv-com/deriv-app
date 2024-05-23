@@ -490,15 +490,15 @@
 
     &-management {
         &__message-content {
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding-top: 2.4rem;
             }
         }
         &__container {
-            @include desktop {
+            @include desktop-screen {
                 max-width: 68.2rem;
             }
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin: 0 auto;
             }
         }

@@ -18,12 +18,14 @@ jest.mock('../../../../hooks/useDevice', () => ({
 describe('WalletClipboard', () => {
     let mockCopy: jest.Mock;
     const mockUseDevice = useDevice as jest.Mock;
+    const mockUseHover = useHover as jest.Mock;
+    const mockUseCopyToClipboard = useCopyToClipboard as jest.Mock;
     const renderComponent = () => render(<WalletClipboard textCopy='Sample text to copy' />);
 
     beforeEach(() => {
         mockCopy = jest.fn();
-        (useCopyToClipboard as jest.Mock).mockReturnValue([null, mockCopy]);
-        (useHover as jest.Mock).mockReturnValue(false);
+        mockUseCopyToClipboard.mockReturnValue([null, mockCopy]);
+        mockUseHover.mockReturnValue(false);
         mockUseDevice.mockReturnValue({ isMobile: false });
     });
 
@@ -42,7 +44,7 @@ describe('WalletClipboard', () => {
 
     describe('when hovered', () => {
         it('shows tooltip with "Copy" message', async () => {
-            (useHover as jest.Mock).mockReturnValue(true);
+            mockUseHover.mockReturnValue(true);
             renderComponent();
 
             await waitFor(() => {
@@ -53,7 +55,7 @@ describe('WalletClipboard', () => {
 
     describe('when hovered and clicked', () => {
         it('renders the button with won icon', async () => {
-            (useHover as jest.Mock).mockReturnValue(true);
+            mockUseHover.mockReturnValue(true);
             renderComponent();
             const button = await screen.findByRole('button');
             await userEvent.click(button);
@@ -63,7 +65,7 @@ describe('WalletClipboard', () => {
             });
         });
         it('calls copy function with textCopy', async () => {
-            (useHover as jest.Mock).mockReturnValue(true);
+            mockUseHover.mockReturnValue(true);
             renderComponent();
             const button = await screen.findByRole('button');
             await userEvent.click(button);
@@ -71,7 +73,7 @@ describe('WalletClipboard', () => {
             expect(mockCopy).toHaveBeenCalledWith('Sample text to copy');
         });
         it('shows tooltip with "Copied!" message', async () => {
-            (useHover as jest.Mock).mockReturnValue(true);
+            mockUseHover.mockReturnValue(true);
             renderComponent();
             const button = await screen.findByRole('button');
             await userEvent.click(button);
@@ -104,7 +106,7 @@ describe('WalletClipboard', () => {
         });
         it('resets the icon and message after 2 seconds', async () => {
             jest.useFakeTimers();
-            (useHover as jest.Mock).mockReturnValue(true);
+            mockUseHover.mockReturnValue(true);
             renderComponent();
             const button = await screen.findByRole('button');
 

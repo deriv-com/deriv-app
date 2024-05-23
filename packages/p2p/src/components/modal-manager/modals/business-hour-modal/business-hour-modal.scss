@@ -5,7 +5,7 @@
         gap: 1.6rem;
         padding-top: 0;
 
-        &__separator {
+        .separator-container-line {
             flex: unset;
             margin: 0;
         }
@@ -27,9 +27,17 @@
 
     &__footer {
         padding: 0 2.4rem 2.4rem;
+
+        &-buttons {
+            padding-top: 2.4rem;
+        }
     }
 }
 
 .dc-modal-header__title {
     padding: 2.4rem;
+}
+
+.dc-modal__container {
+    overflow: unset;
 }

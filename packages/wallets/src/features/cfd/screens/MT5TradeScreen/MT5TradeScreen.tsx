@@ -12,8 +12,9 @@ import { WalletListCardBadge } from '../../../../components';
 import { InlineMessage, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
-import { ArrayElementType, THooks } from '../../../../types';
+import { THooks } from '../../../../types';
 import { calculateTotalBalance } from '../../../../utils/ctrader';
+import { sortAccountList } from '../../../../utils/sort-account-list';
 import {
     CFD_PLATFORMS,
     MARKET_TYPE,
@@ -84,8 +85,19 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
         return details?.login;
     }, [details, dxtradePlatform, mt5Platform, platform]);
 
-    const ctraderTotalBalance =
-        ctraderAccountsList && calculateTotalBalance<ArrayElementType<typeof ctraderAccountsList>>(ctraderAccountsList);
+    const ctraderTotalBalance = useMemo(() => {
+        if (ctraderAccountsList) {
+            return calculateTotalBalance(ctraderAccountsList);
+        }
+        return 0;
+    }, [ctraderAccountsList]);
+
+    const sortedCtraderAccountList = useMemo(() => {
+        if (ctraderAccountsList) {
+            return sortAccountList(ctraderAccountsList);
+        }
+        return ctraderAccountsList;
+    }, [ctraderAccountsList]);
 
     const { is_virtual: isDemo = false } = activeWalletData ?? {};
 
@@ -173,7 +185,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                 {platform === ctraderPlatform && (
                     <>
                         <ul className='wallets-mt5-trade-screen__ctrader-account-list'>
-                            {ctraderAccountsList?.map(account => (
+                            {sortedCtraderAccountList?.map(account => (
                                 <li className='wallets-mt5-trade-screen__ctrader-account-list-item' key={account.login}>
                                     <WalletText size='sm'>{account.login}</WalletText>
                                     <WalletText size='sm' weight='bold'>

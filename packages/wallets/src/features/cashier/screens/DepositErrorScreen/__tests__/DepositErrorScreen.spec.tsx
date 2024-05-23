@@ -1,6 +1,11 @@
 import React from 'react';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import DepositErrorScreen from '../DepositErrorScreen';
+
+jest.mock('@deriv/api-v2', () => ({
+    useActiveWalletAccount: jest.fn(),
+}));
 
 describe('DepositErrorScreen', () => {
     beforeEach(() => {
@@ -8,6 +13,7 @@ describe('DepositErrorScreen', () => {
     });
 
     it('should show default deposit error details', () => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: { currency: 'BTC' } });
         const error = {
             code: 'MyError',
             message: 'Error message',
@@ -21,12 +27,13 @@ describe('DepositErrorScreen', () => {
     });
 
     it('should show correct deposit error screen for crypto suspended currency error', () => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: { currency: 'BTC' } });
         const error = {
             code: 'CryptoSuspendedCurrency',
             message: 'Crypto Suspended Currency',
         };
 
-        render(<DepositErrorScreen currency='BTC' error={error} />);
+        render(<DepositErrorScreen error={error} />);
 
         expect(screen.getByText('BTC Wallet deposits are temporarily unavailable')).toBeInTheDocument();
         expect(
@@ -38,12 +45,13 @@ describe('DepositErrorScreen', () => {
     });
 
     it('should show correct deposit error screen for crypto suspended deposit error', () => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: { currency: 'BTC' } });
         const error = {
             code: 'CryptoDisabledCurrencyDeposit',
             message: 'Crypto Disabled Currency Deposit',
         };
 
-        render(<DepositErrorScreen currency='BTC' error={error} />);
+        render(<DepositErrorScreen error={error} />);
 
         expect(screen.getByText('BTC Wallet deposits are temporarily unavailable')).toBeInTheDocument();
         expect(

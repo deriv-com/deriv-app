@@ -882,7 +882,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 height: 100%;
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 flex-direction: column;
                 overflow-y: auto;
                 overflow-x: hidden;
@@ -891,10 +891,10 @@ $MIN_HEIGHT_FLOATING: calc(
 
         &__title {
             margin-bottom: 1.5rem;
-            margin-left: 1.2rem;
+            margin-inline-start: 1.2rem;
 
-            @include mobile {
-                margin-right: 1.2rem;
+            @include mobile-or-tablet-screen {
+                margin-inline-end: 1.2rem;
             }
         }
 
@@ -903,7 +903,7 @@ $MIN_HEIGHT_FLOATING: calc(
             width: 40rem;
             margin: 2.7rem auto 0;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 100%;
                 max-width: 40rem;
             }
@@ -918,7 +918,7 @@ $MIN_HEIGHT_FLOATING: calc(
         &__button {
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
-            margin-left: -1px;
+            margin-inline-start: -1px;
         }
 
         &__link {
@@ -928,8 +928,8 @@ $MIN_HEIGHT_FLOATING: calc(
         &__timeline {
             padding: 0 1.4rem;
 
-            @include mobile {
-                margin-left: 1.2rem;
+            @include mobile-or-tablet-screen {
+                margin-inline-start: 1.2rem;
             }
         }
 
@@ -969,7 +969,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 align-items: center;
 
                 span {
-                    margin-right: 0.8rem;
+                    margin-inline-end: 0.8rem;
                 }
             }
         }

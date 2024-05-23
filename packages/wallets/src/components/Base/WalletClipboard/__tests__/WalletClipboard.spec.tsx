@@ -84,6 +84,7 @@ describe('WalletClipboard', () => {
         });
         it('clears timeout on unmount', async () => {
             jest.useFakeTimers();
+            mockUseHover.mockReturnValue(true);
             const { unmount } = renderComponent();
             const button = await screen.findByRole('button');
             await userEvent.click(button);
@@ -95,6 +96,7 @@ describe('WalletClipboard', () => {
         });
         it("doesn't show tooltip on mobile", async () => {
             mockUseDevice.mockReturnValue({ isMobile: true });
+            mockUseHover.mockReturnValue(true);
             renderComponent();
             const button = await screen.findByRole('button');
             await userEvent.click(button);

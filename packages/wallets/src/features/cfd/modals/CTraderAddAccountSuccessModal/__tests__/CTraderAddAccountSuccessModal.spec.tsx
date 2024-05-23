@@ -1,21 +1,24 @@
 import React, { PropsWithChildren } from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ModalProvider, TModalContext, useModal } from '../../../../../components/ModalProvider';
-import { PlatformDetails } from '../../../constants';
-import { MT5TradeModal } from '../../MT5TradeModal';
 import CTraderAddAccountSuccessModal from '../CTraderAddAccountSuccessModal';
 
-const mockModalFn = jest.fn();
 jest.mock('../../../../../components/ModalProvider', () => ({
     ...jest.requireActual('../../../../../components/ModalProvider'),
     useModal: jest.fn(() => ({
         ...jest.requireActual('../../../../../components/ModalProvider').useModal(),
-        hide: mockModalFn,
-        show: mockModalFn,
     })),
 }));
 
 const wrapper = ({ children }: PropsWithChildren) => <ModalProvider>{children}</ModalProvider>;
+
+// Mocking the useHistory hook
+const mockPush = jest.fn();
+jest.mock('react-router-dom', () => ({
+    useHistory: () => ({
+        push: mockPush,
+    }),
+}));
 
 describe('CTraderAddAccountSuccessModal', () => {
     const mockUseModal = useModal as jest.MockedFunction<() => TModalContext>;
@@ -57,6 +60,6 @@ describe('CTraderAddAccountSuccessModal', () => {
         render(<CTraderAddAccountSuccessModal />, { wrapper });
         fireEvent.click(screen.getByText('Transfer now'));
 
-        expect(mockShowModal).toHaveBeenCalledWith(<MT5TradeModal platform={PlatformDetails.ctrader.platform} />);
+        expect(mockPush).toHaveBeenCalledWith('/wallets/cashier/transfer');
     });
 });

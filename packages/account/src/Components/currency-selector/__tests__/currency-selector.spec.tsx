@@ -36,7 +36,6 @@ describe('<CurrencySelector/>', () => {
         expect(screen.getByRole('radio', { name: /us dollar \(usd\)/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /euro \(eur\)/i })).toBeInTheDocument();
 
-        expect(screen.getByRole('heading', { name: /cryptocurrencies/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /tether erc20 \(eusdt\)/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /usd coin \(usdc\)/i })).toBeInTheDocument();
 
@@ -347,7 +346,6 @@ describe('<CurrencySelector/>', () => {
             set_currency: true,
         };
         renderComponent({ props: new_props });
-        expect(screen.getByRole('heading', { name: /cryptocurrencies/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /tether erc20 \(eusdt\)/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /usd coin \(usdc\)/i })).toBeInTheDocument();
 

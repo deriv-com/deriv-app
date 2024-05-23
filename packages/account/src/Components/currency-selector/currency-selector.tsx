@@ -216,8 +216,8 @@ const CurrencySelector = observer(
                                             ?.length && (
                                             <React.Fragment>
                                                 <RadioButtonGroup
+                                                    is_title_enabled={false}
                                                     className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                                                    label={localize('Cryptocurrencies')}
                                                     item_count={
                                                         reorderCurrencies(
                                                             crypto as keyof typeof reorderCurrencies,

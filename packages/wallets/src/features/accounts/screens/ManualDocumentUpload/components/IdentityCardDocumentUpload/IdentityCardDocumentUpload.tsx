@@ -45,7 +45,7 @@ const IdentityCardDocumentUpload = () => {
                         icon={<IdentityCardFront />}
                         maxSize={8388608}
                         noClick
-                        onFileChange={(file: File) => setFormValues('identityCardFront', file)}
+                        onFileChange={(file?: File) => setFormValues('identityCardFront', file)}
                     />
                     <Dropzone
                         buttonText='Drop file or click here to upload'
@@ -55,7 +55,7 @@ const IdentityCardDocumentUpload = () => {
                         icon={<IdentityCardBack />}
                         maxSize={8388608}
                         noClick
-                        onFileChange={(file: File) => setFormValues('identityCardBack', file)}
+                        onFileChange={(file?: File) => setFormValues('identityCardBack', file)}
                     />
                 </div>
                 <DocumentRuleHints docType='identityCard' />

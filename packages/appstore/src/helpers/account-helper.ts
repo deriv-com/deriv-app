@@ -38,6 +38,6 @@ export const getSortedAccountList = (account_list: TAccountProps, accounts: TAcc
 };
 
 export const getPlatformToggleOptions = (is_eu_title: boolean) => [
-    { text: is_eu_title ? localize('Multipliers') : localize('Options & Multipliers'), value: 'options' },
+    { text: is_eu_title ? localize('Multipliers') : localize('Options'), value: 'options' },
     { text: localize('CFDs'), value: 'cfd' },
 ];

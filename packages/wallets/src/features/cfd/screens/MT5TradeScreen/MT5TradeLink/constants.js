@@ -1,9 +1,9 @@
+import { OSDetectionUtils } from '@deriv-com/utils';
 import { DESKTOP_PLATFORMS, MOBILE_PLATFORMS } from '../../../constants';
-import { mobileOSDetectAsync, OSDetect } from './mobileOsDetect';
 import { whiteLabelLinks } from './urlConfig';
 
 export const getPlatformMt5DownloadLink = platform => {
-    switch (platform || OSDetect()) {
+    switch (platform) {
         case DESKTOP_PLATFORMS.LINUX:
             return whiteLabelLinks?.linux;
         case DESKTOP_PLATFORMS.MACOS:
@@ -16,7 +16,7 @@ export const getPlatformMt5DownloadLink = platform => {
 };
 
 export const getMobileAppInstallerURL = async ({ mt5TradeAccount }) => {
-    const os = await mobileOSDetectAsync();
+    const os = await OSDetectionUtils();
 
     if (os === 'iOS') {
         return mt5TradeAccount?.white_label_links?.ios;
@@ -81,7 +81,7 @@ export const getDeeplinkUrl = ({ mt5TradeAccount }) => {
 };
 
 export const getMobileAppInstallerUrl = async ({ mt5TradeAccount }) => {
-    const os = await mobileOSDetectAsync();
+    const os = await OSDetectionUtils();
     if (os === 'iOS') {
         return mt5TradeAccount?.white_label_links?.ios;
     } else if (os === 'huawei') {

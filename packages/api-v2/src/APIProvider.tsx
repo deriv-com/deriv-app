@@ -176,7 +176,7 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
 
     useEffect(() => {
         const interval_id: ReturnType<typeof setInterval> = setInterval(() => {
-            if (wsClientRef.current) {
+            if (wsClientRef.current && wsClientRef.current?.ws?.readyState == 1) {
                 wsClientRef.current.request('ping');
             }
         }, 10000);

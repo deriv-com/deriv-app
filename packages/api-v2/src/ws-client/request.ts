@@ -26,17 +26,13 @@ function request<T extends TSocketSubscribableEndpointNames>(
     const promise: Promise<TSocketResponseData<T>> = new Promise((resolve, reject) => {
         const timeout: NodeJS.Timeout = setTimeout(() => {
             ws.removeEventListener('message', receive);
-            reject(new Error('Request timeout'));
+            reject(new Error(`Request timeout, request: ${name}, payload: ${JSON.stringify(payload)}`));
         }, REQ_TIMEOUT);
 
         function receive(messageEvent: MessageEvent) {
             const data = JSON.parse(messageEvent.data);
             if (data.req_id !== req_id) {
                 return;
-            }
-
-            if (data.error) {
-                throw data.error;
             }
 
             ws.removeEventListener('message', receive);

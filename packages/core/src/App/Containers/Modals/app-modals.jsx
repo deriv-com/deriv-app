@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 import { useWalletMigration } from '@deriv/hooks';
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
@@ -136,9 +137,7 @@ const AppModals = observer(() => {
 
     const { is_migrated } = useWalletMigration();
 
-    const should_show_wallets_upgrade_completed_modal = localStorage.getItem(
-        'should_show_wallets_upgrade_completed_modal'
-    );
+    const should_show_wallets_upgrade_completed_modal = Cookies.get('recent_wallets_migration');
 
     React.useEffect(() => {
         if (is_logged_in && is_authorize) {

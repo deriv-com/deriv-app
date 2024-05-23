@@ -1815,6 +1815,7 @@ export default class ClientStore extends BaseStore {
             ?.join('');
         setTimeout(() => {
             Analytics.setAttributes({
+                user_id: this.user_id,
                 account_type: broker === 'null' ? 'unlogged' : broker,
                 app_id: String(getAppId()),
                 device_type: isMobile() ? 'mobile' : 'desktop',
@@ -2191,9 +2192,8 @@ export default class ClientStore extends BaseStore {
             this.setIsLoggingIn(true);
 
             const redirect_url = sessionStorage.getItem('redirect_url');
-            const is_next_wallet_enabled = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
 
-            const target_url = is_next_wallet_enabled ? routes.wallets : routes.traders_hub;
+            const target_url = this.has_wallet ? routes.wallets : routes.traders_hub;
 
             if (
                 (redirect_url?.endsWith('/') ||

@@ -3,24 +3,14 @@ import { Localize } from '@deriv/translations';
 import { Tab } from '@deriv-com/quill-ui';
 import PositionsContent from './positions-content';
 
-type TPositionsProps = {
-    onRedirectToTrade?: () => void;
-};
-
-const Positions = ({ onRedirectToTrade }: TPositionsProps) => {
+const Positions = () => {
     const [hasButtonsDemo, setHasButtonsDemo] = React.useState(true);
 
     const tabs = [
         {
             id: 'open',
             title: <Localize i18n_default_text='Open' />,
-            content: (
-                <PositionsContent
-                    onRedirectToTrade={onRedirectToTrade}
-                    hasButtonsDemo={hasButtonsDemo}
-                    setHasButtonsDemo={setHasButtonsDemo}
-                />
-            ),
+            content: <PositionsContent hasButtonsDemo={hasButtonsDemo} setHasButtonsDemo={setHasButtonsDemo} />,
         },
         {
             id: 'closed',

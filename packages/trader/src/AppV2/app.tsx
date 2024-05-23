@@ -35,7 +35,7 @@ const App = ({ passthrough }: Apptypes) => {
                     <BottomNav selectedItemIdx={currentPageIdx} setSelectedItemIdx={setCurrentPageIdx}>
                         <Trade />
                         <Markets />
-                        <Positions onRedirectToTrade={() => setCurrentPageIdx(0)} />
+                        <Positions />
                         <Menu />
                     </BottomNav>
                 </ModulesProvider>

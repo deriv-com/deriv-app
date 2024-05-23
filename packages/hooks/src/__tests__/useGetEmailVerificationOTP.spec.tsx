@@ -11,7 +11,8 @@ jest.mock('@deriv/api', () => ({
 
 const mock_response = {
     data: {
-        phone_number_verification: 1,
+        verify_email: 1,
+        msg_type: 'verify_email',
     },
     mutate: jest.fn(),
 };
@@ -34,6 +35,6 @@ describe('useGetEmailVerificationOTP', () => {
 
         result.current.requestEmailVerificationOTP();
 
-        expect(result.current.mutate).toHaveBeenCalledWith(mock_called_value);
+        expect(result.current.verifyEmail).toHaveBeenCalledWith(mock_called_value);
     });
 });

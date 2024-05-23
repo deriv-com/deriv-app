@@ -35,13 +35,15 @@ $TABS_HEIGHT: 4.8rem;
             }
         }
     }
-
     &__filter {
         &__wrapper {
             padding: var(--core-spacing-400);
             display: flex;
             gap: var(--core-spacing-400);
         }
+    }
+    .initial-loader {
+        height: 100%;
     }
 }
 

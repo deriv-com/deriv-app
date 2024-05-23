@@ -4,7 +4,7 @@ import { ActionSheet, Checkbox } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 
 type TContractTypeFilter = {
-    setContractTypeFilter: React.Dispatch<React.SetStateAction<string[]>>;
+    setContractTypeFilter: (filterValues: string[]) => void;
     contractTypeFilter: string[] | [];
 };
 

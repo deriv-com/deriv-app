@@ -18,18 +18,19 @@ import {
 import { ContractCardDuration, TContractCardDurationProps } from './contract-card-duration';
 import { BinaryLink } from 'App/Components/Routes';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
+import { TRootStore } from 'Types';
 
 type TContractCardProps = TContractCardDurationProps & {
     className?: string;
     contractInfo: TContractInfo | TClosedPosition['contract_info'];
     currency?: string;
     hasActionButtons?: boolean;
-    id?: number | null;
     isSellRequested?: boolean;
     onClick?: (e?: React.MouseEvent<HTMLAnchorElement>) => void;
     onCancel?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
     onClose?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
     redirectTo?: string;
+    serverTime: TRootStore['common']['server_time'];
 };
 
 const DIRECTION = {
@@ -52,6 +53,7 @@ const ContractCard = ({
     onClick,
     onClose,
     redirectTo,
+    serverTime,
 }: TContractCardProps) => {
     const [isDeleted, setIsDeleted] = React.useState(false);
     const [shouldShowButtons, setShouldShowButtons] = React.useState(false);
@@ -91,6 +93,7 @@ const ContractCard = ({
         shouldCancel ? onCancel?.(e) : onClose?.(e);
     };
 
+    if (!contract_type) return null;
     return (
         <div className={classNames('contract-card-wrapper', { deleted: isDeleted })}>
             <BinaryLink
@@ -127,6 +130,7 @@ const ContractCard = ({
                             <ContractCardDuration
                                 currentTick={currentTick}
                                 hasNoAutoExpiry={isMultiplier}
+                                serverTime={serverTime}
                                 {...contractInfo}
                             />
                         )}
@@ -162,4 +166,4 @@ const ContractCard = ({
     );
 };
 
-export default ContractCard;
+export default React.memo(ContractCard);

@@ -45,7 +45,7 @@ const WalletClipboard = ({
         >
             <button className='wallets-clipboard' onClick={onClick} ref={hoverRef}>
                 {isCopied ? (
-                    <LegacyWonIcon data-testid='dt_legacy_won_icon' fill='#4BB4B3 iconSize='xs' />
+                    <LegacyWonIcon data-testid='dt_legacy_won_icon' fill='#4BB4B3' iconSize='xs' />
                 ) : (
                     <LegacyCopy1pxIcon data-testid='dt_legacy_copy_icon' iconSize='xs' />
                 )}

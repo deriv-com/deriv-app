@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCopyToClipboard, useHover } from 'usehooks-ts';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import useDevice from '../../../../hooks/useDevice';
 import WalletClipboard from '../WalletClipboard';
@@ -18,6 +18,7 @@ jest.mock('../../../../hooks/useDevice', () => ({
 describe('WalletClipboard', () => {
     let mockCopy: jest.Mock;
     const mockUseDevice = useDevice as jest.Mock;
+    const renderComponent = () => render(<WalletClipboard textCopy='Sample text to copy' />);
 
     beforeEach(() => {
         mockCopy = jest.fn();
@@ -30,73 +31,98 @@ describe('WalletClipboard', () => {
         jest.clearAllMocks();
     });
 
-    it('should render the button with copy icon initially', () => {
-        render(<WalletClipboard textCopy='Sample text to copy' />);
-        const button = screen.getByRole('button');
+    it('renders the button with copy icon initially', async () => {
+        renderComponent();
 
-        expect(button).toBeInTheDocument();
-        expect(screen.getByTestId('dt_legacy_copy_icon')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.queryByRole('button')).toBeInTheDocument();
+            expect(screen.queryByTestId('dt_legacy_copy_icon')).toBeInTheDocument();
+        });
     });
-    it('should render the button with won icon when copied', async () => {
-        render(<WalletClipboard textCopy='Sample text to copy' />);
-        const button = screen.getByRole('button');
-        await userEvent.click(button);
 
-        expect(screen.getByTestId('dt_legacy_won_icon')).toBeInTheDocument();
+    describe('when hovered', () => {
+        it('shows tooltip with "Copy" message', async () => {
+            (useHover as jest.Mock).mockReturnValue(true);
+            renderComponent();
+
+            await waitFor(() => {
+                expect(screen.queryByText('Copy')).toBeInTheDocument();
+            });
+        });
     });
-    it('should call copy function with textCopy when button is clicked', async () => {
-        render(<WalletClipboard textCopy='Sample text to copy' />);
-        const button = screen.getByRole('button');
-        await userEvent.click(button);
 
-        expect(mockCopy).toHaveBeenCalledWith('Sample text to copy');
-    });
-    it('should show tooltip with "Copy" message when hovered', () => {
-        (useHover as jest.Mock).mockReturnValue(true);
-        render(<WalletClipboard textCopy='Sample text to copy' />);
+    describe('when hovered and clicked', () => {
+        it('renders the button with won icon', async () => {
+            (useHover as jest.Mock).mockReturnValue(true);
+            renderComponent();
+            const button = await screen.findByRole('button');
+            await userEvent.click(button);
 
-        expect(screen.getByText('Copy')).toBeInTheDocument();
-    });
-    it('should show tooltip with "Copied!" message when clicked and hovered', async () => {
-        (useHover as jest.Mock).mockReturnValue(true);
-        render(<WalletClipboard textCopy='Sample text to copy' />);
-        const button = screen.getByRole('button');
-        await userEvent.click(button);
+            await waitFor(() => {
+                expect(screen.queryByTestId('dt_legacy_won_icon')).toBeInTheDocument();
+            });
+        });
+        it('calls copy function with textCopy', async () => {
+            (useHover as jest.Mock).mockReturnValue(true);
+            renderComponent();
+            const button = await screen.findByRole('button');
+            await userEvent.click(button);
 
-        expect(screen.getByText('Copied!')).toBeInTheDocument();
-    });
-    it('should clear timeout on unmount', async () => {
-        jest.useFakeTimers();
-        const { unmount } = render(<WalletClipboard textCopy='Sample text to copy' />);
-        await userEvent.click(screen.getByRole('button'));
-        unmount();
+            expect(mockCopy).toHaveBeenCalledWith('Sample text to copy');
+        });
+        it('shows tooltip with "Copied!" message', async () => {
+            (useHover as jest.Mock).mockReturnValue(true);
+            renderComponent();
+            const button = await screen.findByRole('button');
+            await userEvent.click(button);
 
-        jest.runAllTimers();
-        expect(clearTimeout).toHaveBeenCalled();
-    });
-    it('should not show tooltip on mobile', async () => {
-        mockUseDevice.mockReturnValue({ isMobile: true });
-        render(<WalletClipboard textCopy='Sample text to copy' />);
-        const button = screen.getByRole('button');
-        await userEvent.click(button);
+            await waitFor(() => {
+                expect(screen.queryByText('Copied!')).toBeInTheDocument();
+            });
+        });
+        it('clears timeout on unmount', async () => {
+            jest.useFakeTimers();
+            const { unmount } = renderComponent();
+            const button = await screen.findByRole('button');
+            await userEvent.click(button);
+            unmount();
 
-        expect(screen.queryByText('Copy')).not.toBeInTheDocument();
-        expect(screen.queryByText('Copied!')).not.toBeInTheDocument();
-    });
-    it('should reset the icon and message after 2 seconds', async () => {
-        jest.useFakeTimers();
-        (useHover as jest.Mock).mockReturnValue(true);
-        render(<WalletClipboard textCopy='Sample text to copy' />);
-        const button = screen.getByRole('button');
+            jest.runAllTimers();
 
-        await userEvent.click(button);
+            expect(clearTimeout).toHaveBeenCalled();
+        });
+        it("doesn't show tooltip on mobile", async () => {
+            mockUseDevice.mockReturnValue({ isMobile: true });
+            renderComponent();
+            const button = await screen.findByRole('button');
+            await userEvent.click(button);
 
-        expect(screen.getByText('Copied!')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_legacy_won_icon')).toBeInTheDocument();
+            await waitFor(() => {
+                expect(screen.queryByText('Copy')).not.toBeInTheDocument();
+                expect(screen.queryByText('Copied!')).not.toBeInTheDocument();
+            });
+        });
+        it('resets the icon and message after 2 seconds', async () => {
+            jest.useFakeTimers();
+            (useHover as jest.Mock).mockReturnValue(true);
+            renderComponent();
+            const button = await screen.findByRole('button');
 
-        jest.advanceTimersByTime(2000);
+            await userEvent.click(button);
 
-        expect(screen.queryByText('Copied!')).not.toBeInTheDocument();
-        expect(screen.getByTestId('dt_legacy_copy_icon')).toBeInTheDocument();
+            await waitFor(() => {
+                expect(screen.queryByText('Copied!')).toBeInTheDocument();
+                expect(screen.queryByTestId('dt_legacy_won_icon')).toBeInTheDocument();
+            });
+
+            act(() => {
+                jest.advanceTimersByTime(2000);
+            });
+
+            await waitFor(() => {
+                expect(screen.queryByText('Copied!')).not.toBeInTheDocument();
+                expect(screen.queryByTestId('dt_legacy_copy_icon')).toBeInTheDocument();
+            });
+        });
     });
 });

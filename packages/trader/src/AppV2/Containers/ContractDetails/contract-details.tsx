@@ -6,12 +6,8 @@ import ChartPlaceholder from '../Chart';
 import { Localize } from '@deriv/translations';
 import RiskManagementItem from 'AppV2/Components/RiskManagementItem';
 import CardWrapper from 'AppV2/Components/CardWrapper';
-// import useContractDetails from 'AppV2/Hooks/useContractDetails';
 
 const ContractDetails = () => {
-    // const { contract_info } = useContractDetails();
-
-    // if (!contract_info.underlying) return null;
     return (
         <div className='contract-details'>
             <div className='placeholder'>

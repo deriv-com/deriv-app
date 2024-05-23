@@ -4,6 +4,7 @@ import { Text } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { Input } from '@deriv/components';
+import { useGetEmailVerificationOTP } from '@deriv/hooks';
 import { convertPhoneTypeDisplay } from 'Helpers/utils';
 import ResendCodeTimer from './resend-code-timer';
 import DidntGetTheCodeModal from './didnt-get-the-code-modal';
@@ -15,12 +16,19 @@ type TOTPVerification = {
 
 const OTPVerification = observer(({ phone_verification_type, setOtpVerification }: TOTPVerification) => {
     const { client, ui } = useStore();
-    const { account_settings } = client;
-    const { email, phone } = account_settings;
+    const { account_settings, email } = client;
+    const { phone } = account_settings;
     const [should_show_didnt_get_the_code_modal, setShouldShowDidntGetTheCodeModal] = React.useState(false);
     const [start_timer, setStartTimer] = React.useState(true);
+    const { requestEmailVerificationOTP } = useGetEmailVerificationOTP();
     //TODO: this shall be replace by BE API call when it's ready
     const { should_show_phone_number_otp } = ui;
+
+    React.useEffect(() => {
+        if (!should_show_phone_number_otp) {
+            requestEmailVerificationOTP();
+        }
+    }, [should_show_phone_number_otp, requestEmailVerificationOTP]);
 
     return (
         <PhoneVerificationCard is_small_card>

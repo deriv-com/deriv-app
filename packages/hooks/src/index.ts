@@ -24,6 +24,7 @@ export { default as useFileUploader } from './useFileUploader';
 export { default as useGetMFAccountStatus } from './useGetMFAccountStatus';
 export { default as useGetPasskeysList } from './useGetPasskeysList';
 export { default as useGetPhoneNumberOTP } from './useGetPhoneNumberOTP';
+export { default as useGetEmailVerificationOTP } from './useGetEmailVerificationOTP';
 export { default as useHasActiveRealAccount } from './useHasActiveRealAccount';
 export { default as useHasCryptoCurrency } from './useHasCryptoCurrency';
 export { default as useHasFiatCurrency } from './useHasFiatCurrency';

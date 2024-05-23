@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, CaptionText } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
+import { useGetEmailVerificationOTP } from '@deriv/hooks';
 
 type TResendCodeTimer = {
     resend_code_text: string;
@@ -22,6 +23,7 @@ const ResendCodeTimer = ({
     const initial_timer_title =
         resend_code_text === 'Resend code' ? `Resend code in ${timer}s` : `Didn’t get the code? (${timer}s)`;
     const [timer_title, setTimerTitle] = React.useState(initial_timer_title);
+    const { requestEmailVerificationOTP } = useGetEmailVerificationOTP();
 
     const setTitle = (timer: number, text: string) => {
         const title = text === 'Resend code' ? `Resend code in ${timer}s` : `Didn’t get the code? (${timer}s)`;
@@ -47,6 +49,7 @@ const ResendCodeTimer = ({
         if (resend_code_text !== 'Resend code') {
             setShouldShowDidntGetTheCodeModal(true);
         } else {
+            requestEmailVerificationOTP();
             setTimer(count_from);
             setStartTimer(true);
         }

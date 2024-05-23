@@ -91,8 +91,9 @@ const Dropzone: React.FC<TProps> = ({
         }
     }, [file]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const removeFile = useCallback(() => {
+    const removeFile = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         setFile(null);
+        e.stopPropagation();
     }, []);
 
     return (

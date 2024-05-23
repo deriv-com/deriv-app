@@ -1815,6 +1815,7 @@ export default class ClientStore extends BaseStore {
             ?.join('');
         setTimeout(() => {
             Analytics.setAttributes({
+                user_id: this.user_id,
                 account_type: broker === 'null' ? 'unlogged' : broker,
                 app_id: String(getAppId()),
                 device_type: isMobile() ? 'mobile' : 'desktop',

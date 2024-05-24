@@ -9,9 +9,9 @@ import Markets from './Containers/Markets';
 import Positions from './Containers/Positions';
 import Menu from './Containers/Menu';
 import { NotificationsProvider } from '@deriv-com/quill-ui';
-import Notifications from './Containers/Notifications/notifications';
 import 'Sass/app.scss';
 import '@deriv-com/quill-tokens/dist/quill.css';
+import Notifications from './Containers/Notifications';
 
 type Apptypes = {
     passthrough: {

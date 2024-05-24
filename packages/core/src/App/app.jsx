@@ -23,7 +23,6 @@ import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import AppContent from './AppContent';
 import initHotjar from '../Utils/Hotjar';
 import 'Sass/app.scss';
-import '@deriv-com/quill-ui/quill.css';
 
 const AppWithoutTranslation = ({ root_store }) => {
     const l = window.location;

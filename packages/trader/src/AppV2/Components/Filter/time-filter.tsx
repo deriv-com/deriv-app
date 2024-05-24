@@ -115,12 +115,7 @@ const TimeFilter = ({
                             className='filter__item--radio'
                         >
                             {timeFilterList.map(({ value, label }) => (
-                                <RadioGroup.Item
-                                    value={value}
-                                    label={label.props.i18n_default_text}
-                                    key={value}
-                                    radioButtonPosition='right'
-                                />
+                                <RadioGroup.Item value={value} label={label} key={value} radioButtonPosition='right' />
                             ))}
                         </RadioGroup>
                         <CustomDateFilterButton

@@ -18,11 +18,9 @@ const getReminderModalContent = () => {
     return (
         <ul>
             {reminder_tips.map(tip => (
-                <li key={tip.key}>
-                    <Text size='xxs' line_height='l'>
-                        {tip}
-                    </Text>
-                </li>
+                <Text as='li' key={tip.key} size='xxs' line_height='l'>
+                    {tip}
+                </Text>
             ))}
         </ul>
     );

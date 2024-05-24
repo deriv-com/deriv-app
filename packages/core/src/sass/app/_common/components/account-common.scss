@@ -472,16 +472,16 @@
             }
         }
 
-        @include desktop {
-            padding-left: 16px;
-            padding-right: 16px;
+        @include desktop-screen {
+            padding-inline-start: 16px;
+            padding-inline-end: 16px;
         }
         @include tablet-screen {
+            height: unset;
             padding-inline-start: 0;
             padding-inline-end: 0;
         }
-
-        @include mobile {
+        @include mobile-screen {
             height: unset;
             padding-top: unset;
             padding-bottom: unset;

@@ -8,9 +8,7 @@ import { Localize } from '@deriv/translations';
 
 const TradersHubOnboarding = observer(() => {
     const history = useHistory();
-    const { client, traders_hub, ui } = useStore();
-    const { has_wallet } = client;
-    const { setIsFirstTimeVisit, toggleIsTourOpen, is_tour_open } = traders_hub;
+    const { ui } = useStore();
     const { is_dark_mode_on, is_mobile } = ui;
     const [, setWalletsOnboarding] = useLocalStorage('walletsOnboarding', '');
 

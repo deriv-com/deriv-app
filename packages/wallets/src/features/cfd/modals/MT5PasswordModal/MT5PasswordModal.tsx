@@ -9,7 +9,7 @@ import {
     useTradingPlatformPasswordChange,
     useVerifyEmail,
 } from '@deriv/api-v2';
-import { SentEmailContent, WalletError, WalletSuccessResetMT5Password } from '../../../../components';
+import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
@@ -43,7 +43,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const {
         error: tradingPasswordChangeError,
         isLoading: tradingPlatformPasswordChangeLoading,
-        isSuccess: tradingPasswordChangeSuccess,
         mutateAsync: tradingPasswordChangeMutateAsync,
     } = useTradingPlatformPasswordChange();
     const { data: accountStatusData } = useAccountStatus();
@@ -56,7 +55,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     } = useVerifyEmail();
     const { data: mt5AccountsData } = useMT5AccountsList();
     const { isMobile } = useDevice();
-    const { getModalState, hide, show } = useModal();
+    const { getModalState, hide } = useModal();
     const { data: settingsData } = useSettings();
 
     const { email } = settingsData;
@@ -283,20 +282,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
             <ModalWrapper isFullscreen={isMobile}>
                 <SentEmailContent platform={CFD_PLATFORMS.MT5} />
             </ModalWrapper>
-        );
-    }
-
-    if (tradingPasswordChangeSuccess) {
-        return (
-            <WalletSuccessResetMT5Password
-                onClickSuccess={async () => {
-                    await onSubmit();
-                    show(
-                        <MT5AccountAdded account={createMT5AccountData} marketType={marketType} platform={platform} />
-                    );
-                }}
-                title={mt5Title}
-            />
         );
     }
 

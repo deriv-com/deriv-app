@@ -42,9 +42,9 @@ describe('ConfirmPhoneNumber', () => {
         expect(resend_button).toBeDisabled();
     });
 
-    it('should trigger send button after its clicked', () => {
+    it('should trigger mockSend and mockSetStartTimer when send button is clicked', () => {
         const mockSend = jest.fn();
-        (useVerifyEmail as jest.Mock).mockReturnValueOnce({
+        (useVerifyEmail as jest.Mock).mockReturnValue({
             send: mockSend,
         });
         const mockSetStartTimer = jest.fn();

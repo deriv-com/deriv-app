@@ -14,5 +14,9 @@
             align-items: center;
             gap: var(--semantic-spacing-gap-sm);
         }
+
+        .icon {
+            fill: var(--core-color-solid-slate-200);
+        }
     }
 }

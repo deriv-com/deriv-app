@@ -1,0 +1,15 @@
+.date-picker__action-sheet {
+    padding: 0;
+
+    .react-calendar__month-view__days {
+        font-size: var(--core-fontSize-100);
+    }
+    //TODO: temporary CSS
+    .react-calendar__tile--now:after {
+        display: none;
+    }
+}
+
+.quill-date-picker__wrapper--fixed-width {
+    margin: auto;
+}

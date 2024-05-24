@@ -1,15 +1,9 @@
 import React from 'react';
-import { StandaloneChevronDownRegularIcon } from '@deriv/quill-icons';
+import { LabelPairedChevronDownSmRegularIcon } from '@deriv/quill-icons';
 import './chip.scss';
 import clsx from 'clsx';
-import { CaptionText, Text } from '@deriv-com/quill-ui';
+import { Text } from '@deriv-com/quill-ui';
 import { TRegularSizes } from '@deriv-com/quill-ui/dist/types';
-
-export const LabelTextSizes: Record<TRegularSizes, JSX.Element> = {
-    sm: <CaptionText />,
-    md: <Text />,
-    lg: <Text />,
-};
 
 type BaseChipProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'label'> & {
     label?: React.ReactNode;
@@ -25,24 +19,14 @@ const Chip = React.forwardRef<HTMLButtonElement, BaseChipProps>(
     ({ size = 'md', label, dropdown = false, className, selected, isDropdownOpen = false, onClick, ...rest }, ref) => (
         <button
             onClick={onClick}
-            className={clsx(
-                'quill-chip',
-                `quill-chip__size--${size}`,
-                dropdown && `quill-chip__custom-right-padding__size--${size}`,
-                className
-            )}
+            className={clsx('quill-chip', dropdown && 'quill-chip__custom-right-padding', className)}
             data-state={selected ? 'selected' : ''}
             ref={ref}
             {...rest}
         >
-            {label &&
-                React.cloneElement(LabelTextSizes[size], {
-                    children: label,
-                })}
+            {label && <Text size={size}>{label}</Text>}
             {dropdown && (
-                <StandaloneChevronDownRegularIcon
-                    width={24}
-                    height={24}
+                <LabelPairedChevronDownSmRegularIcon
                     data-state={isDropdownOpen ? 'open' : 'close'}
                     className='rotate'
                 />

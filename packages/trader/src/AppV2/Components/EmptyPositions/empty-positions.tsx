@@ -14,7 +14,7 @@ const EmptyPositions = ({ isClosedTab, noMatchesFound }: TEmptyPositionsProps) =
     return (
         <div className={`empty-positions__${isClosedTab ? 'closed' : 'open'}`}>
             <div className='icon' data-testid='dt_empty_state_icon'>
-                <Icon iconSize='2xl' fill='var(--core-color-solid-slate-200)' />
+                <Icon iconSize='2xl' />
             </div>
             <div className='message'>
                 {/* There is an issue with tokens: the 'lg' size should give 18px but it's giving 20px, it's being discussed. */}

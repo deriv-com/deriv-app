@@ -7,6 +7,9 @@
     border-color: var(--component-chip-border-color);
     border-radius: var(--component-chip-border-radius);
     background-color: var(--core-color-solid-slate-50);
+    padding-inline: var(--component-chip-spacing-padding-lg);
+    height: var(--component-chip-height-md);
+    gap: var(--component-chip-spacing-padding-sm);
 
     &:hover {
         background-color: var(--component-chip-bg-hover);
@@ -67,48 +70,8 @@
         }
     }
 
-    &__disabled {
-        &--true {
-            & > svg {
-                fill: var(--component-chip-icon-disabled) !important;
-            }
-
-            & > p {
-                color: var(--component-chip-label-color-disabled) !important;
-            }
-        }
-    }
-
-    &__size {
-        &--sm {
-            padding-inline: var(--component-chip-spacing-padding-md);
-            height: var(--component-chip-height-sm);
-            gap: var(--component-chip-spacing-padding-xs);
-        }
-        &--md {
-            padding-inline: var(--component-chip-spacing-padding-lg);
-            height: var(--component-chip-height-md);
-            gap: var(--component-chip-spacing-padding-sm);
-        }
-        &--lg {
-            padding-inline: var(--component-chip-spacing-padding-xl);
-            height: var(--component-chip-height-lg);
-            gap: var(--component-chip-spacing-padding-md);
-        }
-    }
-
     &__custom-right-padding {
-        &__size {
-            &--sm {
-                padding-inline: var(--component-chip-spacing-padding-md) var(--component-chip-spacing-padding-xs);
-            }
-            &--md {
-                padding-inline: var(--component-chip-spacing-padding-lg) var(--component-chip-spacing-padding-sm);
-            }
-            &--lg {
-                padding-inline: var(--component-chip-spacing-padding-xl) var(--component-chip-spacing-padding-md);
-            }
-        }
+        padding-inline: var(--component-chip-spacing-padding-lg) var(--component-chip-spacing-padding-sm);
     }
 }
 

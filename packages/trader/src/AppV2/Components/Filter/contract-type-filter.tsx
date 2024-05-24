@@ -57,6 +57,7 @@ const ContractTypeFilter = ({ setContractTypeFilter, contractTypeFilter }: TCont
                 isDropdownOpen={isDropdownOpen}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 selected={!!changedOptions.length}
+                size='sm'
             />
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={onActionSheetClose} position='left'>
                 <ActionSheet.Portal>
@@ -80,8 +81,7 @@ const ContractTypeFilter = ({ setContractTypeFilter, contractTypeFilter }: TCont
                         secondaryAction={{ content: 'Clear All', onAction: () => setChangedOptions([]) }}
                         alignment='vertical'
                         shouldCloseOnSecondaryButtonClick={false}
-                        // TODO: replace className with disabling props after Quill library updates
-                        className={`${changedOptions.length ? '' : 'disabled'}`}
+                        isSecondaryButtonDisabled={!changedOptions.length}
                     />
                 </ActionSheet.Portal>
             </ActionSheet.Root>

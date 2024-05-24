@@ -37,20 +37,14 @@ $TABS_HEIGHT: 4.8rem;
     }
     &__filter {
         &__wrapper {
-            padding: var(--core-spacing-400);
+            padding-block: var(--core-spacing-400);
+            padding-inline-start: var(--core-spacing-400);
             display: flex;
             gap: var(--core-spacing-400);
+            flex-wrap: wrap;
         }
     }
     .initial-loader {
         height: 100%;
-    }
-}
-
-// TODO: Temporary style, waiting for new Quill version
-.disabled {
-    .quill__color--secondary-black {
-        pointer-events: none;
-        opacity: 0.1;
     }
 }

@@ -59,6 +59,7 @@ describe('CTraderAddAccountSuccessModal', () => {
     it('should show the MT5TradeModal when "Transfer now" button is clicked', () => {
         render(<CTraderAddAccountSuccessModal />, { wrapper });
         fireEvent.click(screen.getByText('Transfer now'));
+        mockHideModal();
 
         expect(mockPush).toHaveBeenCalledWith('/wallets/cashier/transfer');
     });

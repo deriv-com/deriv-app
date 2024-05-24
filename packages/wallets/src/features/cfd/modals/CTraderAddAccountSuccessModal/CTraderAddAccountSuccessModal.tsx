@@ -9,6 +9,7 @@ const CTraderAddAccountSuccessModal = () => {
     const history = useHistory();
     const { hide } = useModal();
     const onClickTransferNow = () => {
+        hide();
         history.push('/wallets/cashier/transfer');
     };
     return (

@@ -12,29 +12,33 @@
         height: 100%;
         padding: 1.6rem;
 
-        &__content {
-            min-height: 47.2rem;
-            display: flex;
-            justify-content: center;
-
-            &-overlay {
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-
-                & > .wallets-inline-message {
-                    position: absolute;
-                }
-            }
-        }
-
         // stylelint-disable-next-line selector-class-pattern
         & .onfido-sdk-ui-Modal-inner {
             margin-inline: 3.9rem;
             width: 32.8rem;
             min-height: 38.2rem;
             height: 60%; // height from figma is too small so make it relative
+        }
+    }
+
+    &__content {
+        &-overlay {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            & .wallets-inline-message {
+                position: absolute;
+                top: 1.6rem;
+            }
+        }
+
+        @include mobile {
+            min-height: 47.2rem;
+            display: flex;
+            justify-content: center;
         }
     }
 

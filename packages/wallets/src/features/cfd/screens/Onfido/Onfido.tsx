@@ -33,13 +33,14 @@ const Onfido = () => {
                 <div className='wallets-onfido__content'>
                     {!formValues.verifiedDocumentDetails && <DocumentUploadDetailsService />}
                     <div className='wallets-onfido__content-overlay'>
+                        <div id={onfidoContainerId} />
                         {!formValues.verifiedDocumentDetails && (
                             <InlineMessage
                                 message='Hit the checkbox above to choose your document.'
+                                size='sm'
                                 type='information'
                             />
                         )}
-                        <div id={onfidoContainerId} />
                     </div>
                 </div>
             )}

@@ -164,7 +164,7 @@ const useOnfido = (country?: string, selectedDocument?: string) => {
             document.body.appendChild(linkNode);
 
             scriptNode.addEventListener('load', () => {
-                initOnfido(); 
+                initOnfido();
                 setIsOnfidoLoading(false);
             });
         }

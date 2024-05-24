@@ -52,6 +52,9 @@ describe('<AddressDetails/>', () => {
     const address_state = 'State/Province';
     const address_town = 'Town/City';
     const address_town_marked = 'Town/City*';
+    const use_address_info = /only use an address for which you have proof of residence/i;
+    const verification_info =
+        'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.';
 
     let modal_root_el: HTMLDivElement;
     const mock_props: React.ComponentProps<typeof AddressDetails> = {
@@ -84,6 +87,7 @@ describe('<AddressDetails/>', () => {
         expect(screen.getByLabelText(address_postcode)).toBeInTheDocument();
         expect(screen.getByLabelText(address_state)).toBeInTheDocument();
         expect(screen.getByLabelText(address_town_marked)).toBeInTheDocument();
+        expect(screen.getByText(use_address_info)).toBeInTheDocument();
 
         expect(screen.queryByLabelText(address_line_1)).not.toBeInTheDocument();
         expect(screen.queryByLabelText(address_line_2_marked)).not.toBeInTheDocument();
@@ -129,8 +133,7 @@ describe('<AddressDetails/>', () => {
         await waitFor(() => {
             svgCommonRenderCheck();
         });
-
-        expect(screen.getByText('Complete your address details')).toBeInTheDocument();
+        expect(screen.queryByText(verification_info)).not.toBeInTheDocument();
 
         const inputs: HTMLTextAreaElement[] = screen.getAllByRole('textbox');
         expect(inputs).toHaveLength(5);
@@ -154,6 +157,7 @@ describe('<AddressDetails/>', () => {
         await waitFor(() => {
             svgCommonRenderCheck();
         });
+        expect(screen.queryByText(verification_info)).not.toBeInTheDocument();
 
         const inputs: HTMLTextAreaElement[] = screen.getAllByRole('textbox');
         expect(inputs).toHaveLength(5);

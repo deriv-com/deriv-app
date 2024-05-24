@@ -45,10 +45,10 @@ const WalletTourGuide = () => {
     const allWalletsAreAdded = Boolean(availableWallets?.every(wallet => wallet.is_added));
 
     useEffect(() => {
-        if (needToStart) {
+        if (needToStart && modal.isOpen) {
             modal.hide();
         }
-    }, [needToStart, modal.hide]);
+    }, [needToStart, modal]);
 
     useEffect(() => {
         const switchAccountAndRun = async () => {

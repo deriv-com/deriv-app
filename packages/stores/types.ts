@@ -531,7 +531,6 @@ type TClientStore = {
     landing_companies: LandingCompany;
     getChangeableFields: () => string[];
     landing_company: LandingCompany;
-    isAccountOfTypeDisabled: (account: Record<string, DetailsOfEachMT5Loginid>) => boolean;
     is_mt5_allowed: boolean;
     mt5_disabled_signup_types: {
         real: boolean;
@@ -542,10 +541,6 @@ type TClientStore = {
         demo: boolean;
     };
     dxtrade_accounts_list_error: null;
-    has_account_error_in_mt5_real_list: boolean;
-    has_account_error_in_mt5_demo_list: boolean;
-    has_account_error_in_dxtrade_real_list: boolean;
-    has_account_error_in_dxtrade_demo_list: boolean;
     has_fiat: boolean;
     is_fully_authenticated: boolean;
     updateMt5LoginList: () => Promise<void>;
@@ -995,6 +990,7 @@ type TTradersHubStore = {
     content_flag: 'low_risk_cr_eu' | 'low_risk_cr_non_eu' | 'high_risk_cr' | 'cr_demo' | 'eu_demo' | 'eu_real' | '';
     combined_cfd_mt5_accounts: DetailsOfEachMT5Loginid &
         {
+            tracking_name: string;
             short_code_and_region: string;
             login: string;
             sub_title: string;
@@ -1056,8 +1052,6 @@ type TTradersHubStore = {
     available_cfd_accounts: TAvailableCFDAccounts[];
     available_dxtrade_accounts: TAvailableCFDAccounts[];
     available_ctrader_accounts: TAvailableCFDAccounts[];
-    toggleIsTourOpen: (is_tour_open: boolean) => void;
-    is_tour_open: boolean;
     is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;
     setMT5NotificationModal: (value: boolean) => void;

@@ -14,7 +14,7 @@ import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
 import { calculateTotalBalance } from '../../../../utils/ctrader';
-import { sortAccountList } from '../../../../utils/sort-account-list';
+import { sortArrayByKey } from '../../../../utils/sort-array-by-key';
 import {
     CFD_PLATFORMS,
     MARKET_TYPE,
@@ -94,7 +94,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
 
     const sortedCtraderAccountList = useMemo(() => {
         if (ctraderAccountsList) {
-            return sortAccountList(ctraderAccountsList);
+            return sortArrayByKey(ctraderAccountsList, 'login');
         }
         return ctraderAccountsList;
     }, [ctraderAccountsList]);

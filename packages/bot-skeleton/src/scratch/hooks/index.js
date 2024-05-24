@@ -5,7 +5,6 @@ import './constant';
 import './contextmenu';
 import './data_category';
 import './field';
-import './field_image';
 import './flyout_base';
 import './gesture';
 import './icon';

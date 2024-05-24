@@ -1,6 +1,5 @@
 import { localize } from '@deriv/translations';
 import { plusIconLight } from '../../images';
-import { isDarkRgbColour } from '../../../utils';
 
 Blockly.Blocks.procedures_defnoreturn = {
     init() {
@@ -18,9 +17,7 @@ Blockly.Blocks.procedures_defnoreturn = {
         // Render a ➕-icon for adding parameters
         const fieldImage = new Blockly.FieldImage(plusIconLight, 24, 24, '+', () => this.onAddClick());
 
-        const dropdown_path =
-            this.workspace.options.pathToMedia +
-            (isDarkRgbColour(this.getColour()) ? 'dropdown-arrow.svg' : 'dropdown-arrow-dark.svg');
+        const dropdown_path = `${this.workspace.options.pathToMedia  }dropdown-arrow.svg`;
         // Render a v-icon for adding parameters
         const fieldImageCollapse = new Blockly.FieldImage(
             dropdown_path,
@@ -106,7 +103,7 @@ Blockly.Blocks.procedures_defnoreturn = {
         // Wrap in setTimeout so block doesn't stick to mouse (Blockly.Events.END_DRAG event isn't blocked).
         this.timeout_id = setTimeout(() => {
             const promptMessage = localize('Specify a parameter name:');
-            Blockly.prompt(promptMessage, '', paramName => {
+            Blockly.dialog.prompt(promptMessage, '', paramName => {
                 if (paramName) {
                     const variable = Blockly.Variables.getOrCreateVariablePackage(this.workspace, null, paramName, '');
                     if (variable) {

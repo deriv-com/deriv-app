@@ -90,7 +90,7 @@ Blockly.Blocks.trade_definition_market = {
         const is_allowed_event =
             allowed_events.findIndex(event_name => event.type === Blockly.Events[event_name]) !== -1;
 
-        if (!this.workspace || this.workspace.isDragging() || !is_allowed_event) {
+        if (!this.workspace || Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging() || !is_allowed_event) {
             return;
         }
 
@@ -134,7 +134,12 @@ Blockly.Blocks.trade_definition_market = {
                     event_group: event.group,
                 });
             }
-        } else if (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart && !event.isStart && event.blockId === this.getRootBlock().id) {
+        } else if (
+            event.type === Blockly.Events.BLOCK_DRAG &&
+            !event.isStart &&
+            !event.isStart &&
+            event.blockId === this.getRootBlock().id
+        ) {
             if (market_dropdown.isEmpty() || submarket_dropdown.isEmpty() || symbol_dropdown.isEmpty()) {
                 populateMarketDropdown();
             }
@@ -164,4 +169,4 @@ Blockly.Blocks.trade_definition_market = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['trade_definition_market'] = () => { };
+Blockly.JavaScript.javascriptGenerator.forBlock['trade_definition_market'] = () => {};

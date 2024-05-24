@@ -28,6 +28,7 @@ Blockly.Blocks.text_join = {
                     name: 'STACK',
                 },
             ],
+            inputsInline: true,
             colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary: Blockly.Colours.Base.colourTertiary,
@@ -55,13 +56,13 @@ Blockly.Blocks.text_join = {
             text_block.required_parent_id = this.id;
             text_block.setMovable(true);
             text_block.initSvg();
-            //text_block.render();
+            text_block.render();
 
             const shadow_block = this.workspace.newBlock('text');
             shadow_block.setShadow(true);
             shadow_block.setFieldValue('', 'TEXT');
             shadow_block.initSvg();
-            //shadow_block.render();
+            shadow_block.render();
 
             const text_input = text_block.getInput('TEXT');
             text_input.connection.connect(shadow_block.outputConnection);

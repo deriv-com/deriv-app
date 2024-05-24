@@ -1,12 +1,11 @@
 import { localize } from '@deriv/translations';
 import DBotStore from '../dbot-store';
-import { save, isDarkRgbColour } from '../utils';
+import { save } from '../utils';
 import debounce from 'lodash.debounce';
 
 /**
  * Select this block.  Highlight it visually.
  */
-
 const addClass = (element, className) => {
     const classNames = className.split(' ');
     if (classNames.every(name => element.classList.contains(name))) {
@@ -289,9 +288,7 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
             })
         );
 
-        const dropdown_path =
-            this.workspace.options.pathToMedia +
-            (isDarkRgbColour(this.getColour()) ? 'dropdown-arrow.svg' : 'dropdown-arrow-dark.svg');
+        const dropdown_path = `${this.workspace.options.pathToMedia  }dropdown-arrow.svg`;
         const field_expand_icon = new Blockly.FieldImage(dropdown_path, 16, 16, localize('Expand'), () =>
             this.toggleCollapseWithDelay(false)
         );

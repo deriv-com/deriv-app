@@ -85,19 +85,22 @@ const AppWrapper = observer(() => {
     }, [active_tab]);
 
     React.useEffect(() => {
-        if (active_tab === BOT_BUILDER && Blockly?.derivWorkspace?.trashcan) {
-            const trashcanY = 648;
-            let trashcanX;
-            if (is_drawer_open) {
-                trashcanX = isDbotRTL() ? 380 : window.innerWidth - 460;
-            } else {
-                trashcanX = isDbotRTL() ? 20 : window.innerWidth - 100;
+        const trashcan_init_id = setTimeout(() => {
+            if (active_tab === BOT_BUILDER && Blockly?.derivWorkspace?.trashcan) {
+                const trashcanY = 648;
+                let trashcanX;
+                if (is_drawer_open) {
+                    trashcanX = isDbotRTL() ? 380 : window.innerWidth - 460;
+                } else {
+                    trashcanX = isDbotRTL() ? 20 : window.innerWidth - 100;
+                }
+                Blockly?.derivWorkspace?.trashcan?.setTrashcanPosition(trashcanX, trashcanY);
             }
-            Blockly?.derivWorkspace?.trashcan?.setTrashcanPosition(trashcanX, trashcanY);
-        }
-        setTimeout(() => {
-            window.dispatchEvent(new Event('resize')); // make the trash can work again after resize
-        }, 500);
+        }, 100);
+
+        return () => {
+            clearTimeout(trashcan_init_id); // Clear the timeout on unmount
+        };
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active_tab, is_drawer_open]);
 

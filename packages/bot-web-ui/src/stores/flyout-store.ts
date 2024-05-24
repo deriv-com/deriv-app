@@ -109,6 +109,7 @@ export default class FlyoutStore implements IFlyoutStore {
             parentWorkspace: workspace,
             rtl: workspace.RTL,
             horizontalLayout: true,
+            theme: Blockly.Themes.zelos_renderer,
         });
 
         if (workspace.horizontalLayout) {

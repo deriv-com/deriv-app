@@ -18,7 +18,7 @@ export const getSelectedTradeType = (workspace = Blockly.derivWorkspace) => {
 };
 
 export const matchTranslateAttribute = translateString => {
-    const match = translateString.match(/translate\((-?\d*\.?\d+),(-?\d*\.?\d+)\)/);
+    const match = translateString.match(/translate\((-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)\)/);
     if (match && match.length > 2) {
         const x = parseFloat(match[1]);
         const y = parseFloat(match[2]);

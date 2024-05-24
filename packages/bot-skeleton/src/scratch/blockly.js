@@ -15,7 +15,7 @@ export const loadBlockly = async isDarkMode => {
     };
     window.Blockly.JavaScript = BlocklyJavaScriptGenerator;
     window.Blockly.Themes.zelos_renderer = Blockly.Theme.defineTheme('zelos_renderer', {
-        base: Blockly.Themes.Classic,
+        base: Blockly.Themes.Zelos,
         componentStyles: {},
     });
     setColors(isDarkMode);

@@ -8,7 +8,6 @@ Blockly.Blocks.controls_if = {
         this.else_statement_connection = null;
         this.else_if_count = 0;
         this.else_count = 0;
-
         this.jsonInit(this.definition());
         this.updateShape();
     },
@@ -16,6 +15,7 @@ Blockly.Blocks.controls_if = {
         return {
             message0: localize('if {{ condition }} then', { condition: '%1' }),
             message1: '%1',
+            message2: '%1',
             args0: [
                 {
                     type: 'input_value',
@@ -25,10 +25,19 @@ Blockly.Blocks.controls_if = {
             ],
             args1: [
                 {
+                    type: 'field_image',
+                    src: ' ', // this is here to add extra padding
+                    width: 150,
+                    height: 1,
+                },
+            ],
+            args2: [
+                {
                     type: 'input_statement',
                     name: 'DO0',
                 },
             ],
+            inputsInline: true,
             outputShape: Blockly.OUTPUT_SHAPE_ROUND,
             colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
@@ -133,7 +142,7 @@ Blockly.Blocks.controls_if = {
         }
 
         if (this.rendered) {
-            //this.render();
+            this.render();
         }
 
         Blockly.Events.setGroup(false);

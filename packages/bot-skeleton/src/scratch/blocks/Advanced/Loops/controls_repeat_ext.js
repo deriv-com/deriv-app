@@ -21,6 +21,8 @@ Blockly.Blocks.controls_repeat_ext = {
                     name: 'DO',
                 },
             ],
+            outputShape: Blockly.OUTPUT_SHAPE_ROUND,
+            inputsInline: true,
             colour: Blockly.Colours.Base.colour,
             colourSecondary: Blockly.Colours.Base.colourSecondary,
             colourTertiary: Blockly.Colours.Base.colourTertiary,

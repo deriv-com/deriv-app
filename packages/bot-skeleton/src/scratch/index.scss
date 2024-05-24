@@ -32,7 +32,7 @@ $colour_toolboxSelected: $black;
 }
 
 .zelos-renderer.zelos_renderer-theme,
-.flyout,
+.flyout .zelos-renderer.classic-theme,
 .gtm-search-results,
 .load-strategy__container {
     @keyframes blinkEffect {
@@ -317,7 +317,7 @@ $colour_toolboxSelected: $black;
     }
 
     .blocklyPath {
-        stroke-width: 0.3px;
+        stroke-width: 0.4px;
     }
 
     .blocklySelected > .blocklyPath {
@@ -386,7 +386,7 @@ $colour_toolboxSelected: $black;
     .blocklyText {
         fill: #333333;
         font-family: inherit;
-        font-size: var(--text-size-s);
+        font-size: 1.7rem;
         font-weight: normal;
         font-stretch: normal;
         font-style: normal;
@@ -418,6 +418,7 @@ $colour_toolboxSelected: $black;
 
     .blocklyDropdownText {
         fill: var(--text-prominent) !important;
+        font-size: 1.6rem;
     }
 
     .blocklyBubbleText {
@@ -1185,5 +1186,6 @@ drag a block and selected text moves instead.
         width: 17rem !important;
         color: #fff;
         fill: #ffffff;
+        font-size: 1.9rem;
     }
 }

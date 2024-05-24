@@ -22,7 +22,7 @@ const DocumentSubmission: React.FC = () => {
     return (
         <div className='wallets-poa__document'>
             <div className='wallets-poa__document__title'>
-                <WalletText weight='bold'>{t('Document Submission')}</WalletText>
+                <WalletText weight='bold'>{t('Document submission')}</WalletText>
                 <div className='wallets-poa__document__title__divider' />
             </div>
             <div className='wallets-poa__document__container'>
@@ -41,9 +41,24 @@ const DocumentSubmission: React.FC = () => {
                         ))}
                     </ul>
                 </div>
+                <div className='wallets-poa__document__container__common-mistakes'>
+                    <WalletText size='sm' weight='bold'>
+                        {t('Common mistakes')}
+                    </WalletText>
+
+                    <div className='wallets-common-mistakes__content'>
+                        {getExampleImagesConfig().map(config => (
+                            <CommonMistakesExamples
+                                description={config.description}
+                                image={<config.image />}
+                                key={`common-mistake-${config.description}`}
+                            />
+                        ))}
+                    </div>
+                </div>
                 <div className='wallets-poa__document__container__upload'>
                     <WalletText size='sm' weight='bold'>
-                        {t('Upload File')}
+                        {t('Upload file')}
                     </WalletText>
                     <Dropzone
                         description={t(
@@ -64,21 +79,6 @@ const DocumentSubmission: React.FC = () => {
                             {t('Supported formats : JPEG, JPG, PNG, PDF, and GIF only')}
                         </WalletText>
                         <WalletText size={isMobile ? 'xs' : 'sm'}>{t('Maximum size : 8MB')}</WalletText>
-                    </div>
-                </div>
-                <div className='wallets-poa__document__container__common-mistakes'>
-                    <WalletText size='sm' weight='bold'>
-                        {t('Common Mistakes')}
-                    </WalletText>
-
-                    <div className='wallets-common-mistakes__content'>
-                        {getExampleImagesConfig().map(config => (
-                            <CommonMistakesExamples
-                                description={config.description}
-                                image={<config.image />}
-                                key={`common-mistake-${config.description}`}
-                            />
-                        ))}
                     </div>
                 </div>
             </div>

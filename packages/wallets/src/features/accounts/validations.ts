@@ -62,10 +62,7 @@ export const addressSecondLineValidator = Yup.string()
 export const cityValidator = Yup.string()
     .required('Town/City is required.')
     .max(70, 'Should be less than 70.')
-    .matches(
-        /^[A-Za-z]+(?:[.' -]*[A-Za-z]+){1,70}$/,
-        'Only letters, space, hyphen, period, and apostrophe are allowed.'
-    );
+    .matches(/^[a-zA-Z\s\-.'']+$/, 'Only letters, space, hyphen, period, and apostrophe are allowed.');
 
 export const postcodeValidator = Yup.string()
     .max(20, 'Please enter a Postal/ZIP code under 20 characters.')

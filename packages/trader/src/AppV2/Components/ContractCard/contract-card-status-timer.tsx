@@ -7,35 +7,36 @@ import { getCardLabels } from '@deriv/shared';
 import { RemainingTime } from '@deriv/components';
 import { TRootStore } from 'Types';
 
-export type TContractCardDurationProps = Pick<TPortfolioPosition['contract_info'], 'expiry_time' | 'tick_count'> & {
+export type TContractCardStatusTimerProps = Pick<TPortfolioPosition['contract_info'], 'date_expiry' | 'tick_count'> & {
     currentTick?: number | null;
     hasNoAutoExpiry?: boolean;
+    isSold?: boolean;
     serverTime: TRootStore['common']['server_time'];
 };
 
-export const ContractCardDuration = ({
+export const ContractCardStatusTimer = ({
     currentTick,
-    expiry_time,
+    date_expiry,
     hasNoAutoExpiry,
+    isSold,
     serverTime,
     tick_count,
-}: TContractCardDurationProps) => {
+}: TContractCardStatusTimerProps) => {
     const getDisplayedDuration = () => {
         if (hasNoAutoExpiry) return <Localize i18n_default_text='Ongoing' />;
         if (tick_count) {
             return `${currentTick ?? 0}/${tick_count} ${getCardLabels().TICKS.toLowerCase()}`;
         }
-        return <RemainingTime end_time={expiry_time} getCardLabels={getCardLabels} start_time={serverTime} />;
+        return <RemainingTime end_time={date_expiry} getCardLabels={getCardLabels} start_time={serverTime} />;
     };
-
-    if (!expiry_time) return null;
+    if (!date_expiry || serverTime.unix() > +date_expiry || isSold) {
+        return <CaptionText className='status'>{getCardLabels().CLOSED}</CaptionText>;
+    }
     return (
         // TODO: when <Tag /> is exported from quill-ui, use it instead
-        <div className='contract-card-duration'>
+        <div className='timer'>
             <LabelPairedStopwatchCaptionRegularIcon />
-            <CaptionText as='div' className='duration'>
-                {getDisplayedDuration()}
-            </CaptionText>
+            <CaptionText as='div'>{getDisplayedDuration()}</CaptionText>
         </div>
     );
 };

@@ -3,15 +3,14 @@ import moment from 'moment';
 import { TContractInfo } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import EmptyMessage from 'AppV2/Components/EmptyMessage';
-import { TEmptyMessageProps } from 'AppV2/Components/EmptyMessage/empty-message';
+import { EmptyPositions, TEmptyPositionsProps } from 'AppV2/Components/EmptyPositions';
 import { TPortfolioPosition } from '@deriv/stores/types';
 import { ContractCardList } from 'AppV2/Components/ContractCard';
 import { ContractTypeFilter, TimeFilter } from 'AppV2/Components/Filter';
 import { filterPositions } from '../../Utils/positions-utils';
 import { TReportsStore, useReportsStore } from '../../../../../reports/src/Stores/useReportsStores';
 
-type TPositionsContentProps = Omit<TEmptyMessageProps, 'noMatchesFound'> & {
+type TPositionsContentProps = Omit<TEmptyPositionsProps, 'noMatchesFound'> & {
     hasButtonsDemo?: boolean;
     setHasButtonsDemo?: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -87,7 +86,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
                 )}
             </div>
             {shouldShowEmptyMessage ? (
-                <EmptyMessage isClosedTab={isClosedTab} noMatchesFound={noMatchesFound} />
+                <EmptyPositions isClosedTab={isClosedTab} noMatchesFound={noMatchesFound} />
             ) : (
                 shouldShowContractCards && (
                     <ContractCardList

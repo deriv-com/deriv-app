@@ -3,16 +3,16 @@ import { Text } from '@deriv-com/quill-ui';
 import { StandaloneBriefcaseFillIcon, StandaloneSearchFillIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 
-export type TEmptyMessageProps = {
+export type TEmptyPositionsProps = {
     isClosedTab?: boolean;
     noMatchesFound?: boolean;
 };
 
-const EmptyMessage = ({ isClosedTab, noMatchesFound }: TEmptyMessageProps) => {
+const EmptyPositions = ({ isClosedTab, noMatchesFound }: TEmptyPositionsProps) => {
     const Icon = noMatchesFound ? StandaloneSearchFillIcon : StandaloneBriefcaseFillIcon;
 
     return (
-        <div className={`empty-message__${isClosedTab ? 'closed' : 'open'}`}>
+        <div className={`empty-positions__${isClosedTab ? 'closed' : 'open'}`}>
             <div className='icon' data-testid='dt_empty_state_icon'>
                 <Icon iconSize='2xl' fill='var(--core-color-solid-slate-200)' />
             </div>
@@ -22,9 +22,9 @@ const EmptyMessage = ({ isClosedTab, noMatchesFound }: TEmptyMessageProps) => {
                     {noMatchesFound && <Localize i18n_default_text='No matches found' />}
                     {!noMatchesFound &&
                         (isClosedTab ? (
-                            <Localize i18n_default_text='No closed positions' />
+                            <Localize i18n_default_text='No closed trades' />
                         ) : (
-                            <Localize i18n_default_text='No open positions' />
+                            <Localize i18n_default_text='No open trades' />
                         ))}
                 </Text>
                 <Text size='sm' centered color='quill-typography__color--subtle'>
@@ -33,7 +33,7 @@ const EmptyMessage = ({ isClosedTab, noMatchesFound }: TEmptyMessageProps) => {
                     )}
                     {!noMatchesFound &&
                         (isClosedTab ? (
-                            <Localize i18n_default_text='Your completed trades will appear here.' />
+                            <Localize i18n_default_text='Your closed trades will be shown here.' />
                         ) : (
                             <Localize i18n_default_text='Your open trades will appear here.' />
                         ))}
@@ -43,4 +43,4 @@ const EmptyMessage = ({ isClosedTab, noMatchesFound }: TEmptyMessageProps) => {
     );
 };
 
-export default EmptyMessage;
+export default EmptyPositions;

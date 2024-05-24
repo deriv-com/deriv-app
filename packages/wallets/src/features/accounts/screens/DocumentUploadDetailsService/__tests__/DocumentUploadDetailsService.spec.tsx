@@ -2,8 +2,8 @@ import React from 'react';
 import moment from 'moment';
 import { useSettings } from '@deriv/api-v2';
 import { act, fireEvent, render, screen } from '@testing-library/react';
-import { FlowProvider, FlowTextField } from '../../../../../../../components';
-import IDVDocumentUploadDetails from '../IDVDocumentUploadDetails';
+import { FlowProvider, FlowTextField } from '../../../../../components';
+import DocumentUploadDetailsService from '../DocumentUploadDetailsService';
 
 jest.mock('@deriv/api-v2', () => ({
     useSettings: jest.fn(),
@@ -32,7 +32,7 @@ describe('IDVDocumentUploadDetails', () => {
                     }}
                 >
                     {() => {
-                        return <IDVDocumentUploadDetails />;
+                        return <DocumentUploadDetailsService />;
                     }}
                 </FlowProvider>
             );
@@ -66,7 +66,7 @@ describe('IDVDocumentUploadDetails', () => {
                     }}
                 >
                     {() => {
-                        return <IDVDocumentUploadDetails />;
+                        return <DocumentUploadDetailsService />;
                     }}
                 </FlowProvider>
             );
@@ -94,7 +94,7 @@ describe('IDVDocumentUploadDetails', () => {
                     }}
                 >
                     {() => {
-                        return <IDVDocumentUploadDetails />;
+                        return <DocumentUploadDetailsService />;
                     }}
                 </FlowProvider>
             );

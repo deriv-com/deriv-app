@@ -4,12 +4,12 @@ import { Field, useFormikContext } from 'formik';
 import moment from 'moment';
 import { useSettings } from '@deriv/api-v2';
 import { DerivLightDobPoiIcon } from '@deriv/quill-icons';
-import { DatePicker, FlowTextField, InlineMessage, useFlow, WalletText } from '../../../../../../components';
-import unixToDateString from '../../../../../../utils/utils';
-import { dateOfBirthValidator, firstNameValidator, lastNameValidator } from '../../../../validations';
-import './IDVDocumentUploadDetails.scss';
+import { DatePicker, FlowTextField, InlineMessage, useFlow, WalletText } from '../../../../components';
+import unixToDateString from '../../../../utils/utils';
+import { dateOfBirthValidator, firstNameValidator, lastNameValidator } from '../../validations';
+import './DocumentUploadDetailsService.scss';
 
-const IDVDocumentUploadDetails = () => {
+const DocumentUploadDetailsService = () => {
     const { data: getSettings } = useSettings();
     const { errors, formValues, setFormValues } = useFlow();
     const { validateForm } = useFormikContext();
@@ -111,4 +111,4 @@ const IDVDocumentUploadDetails = () => {
     );
 };
 
-export default IDVDocumentUploadDetails;
+export default DocumentUploadDetailsService;

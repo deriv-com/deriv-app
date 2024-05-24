@@ -4,6 +4,7 @@ import { useOnfido } from '@deriv/api-v2';
 import { useFlow } from '../../../../components/FlowProvider';
 import { WalletsActionScreen } from '../../../../components/WalletsActionScreen';
 import POISubmittedIcon from '../../../../public/images/accounts/ic-poi-submitted.svg';
+import { DocumentUploadDetailsService } from '../../../accounts';
 import './Onfido.scss';
 
 const Onfido = () => {
@@ -27,7 +28,12 @@ const Onfido = () => {
                 'wallets-onfido--success': hasAlreadySubmitted,
             })}
         >
-            {!hasAlreadySubmitted && <div id={onfidoContainerId} />}
+            {!hasAlreadySubmitted && (
+                <>
+                    <DocumentUploadDetailsService />
+                    <div id={onfidoContainerId} />
+                </>
+            )}
             {hasAlreadySubmitted && (
                 <WalletsActionScreen
                     description='We’ll review your documents and notify you of its status within 5 minutes.'

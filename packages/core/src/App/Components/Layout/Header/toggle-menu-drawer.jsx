@@ -310,7 +310,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 <Div100vhContainer height_offset='40px'>
                     <div className='header__menu-mobile-body-wrapper'>
                         <React.Fragment>
-                            {!is_trading_hub_category && (
+                            {
                                 <MobileDrawer.SubHeader
                                     className={classNames({
                                         'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
@@ -328,12 +328,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         setTogglePlatformType={setTogglePlatformType}
                                     />
                                 </MobileDrawer.SubHeader>
-                            )}
-                            <MobileDrawer.Body
-                                className={classNames({
-                                    'header__menu-mobile-traders-hub': is_trading_hub_category,
-                                })}
-                            >
+                            }
+                            <MobileDrawer.Body>
                                 <div className='header__menu-mobile-platform-switcher' id='mobile_platform_switcher' />
                                 <MobileDrawer.Item>
                                     <MenuLink
@@ -350,19 +346,21 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                             icon={TradersHubIcon}
                                             text={localize("Trader's Hub")}
                                             onClickLink={toggleDrawer}
+                                            is_active={route === routes.traders_hub}
                                         />
                                     </MobileDrawer.Item>
                                 )}
-                                {!is_trading_hub_category && (
+                                {
                                     <MobileDrawer.Item>
                                         <MenuLink
                                             link_to={routes.trade}
                                             icon='IcTrade'
                                             text={localize('Trade')}
                                             onClickLink={toggleDrawer}
+                                            is_active={route === routes.trade}
                                         />
                                     </MobileDrawer.Item>
-                                )}
+                                }
                                 {primary_routes_config.map((route_config, idx) =>
                                     getRoutesWithSubMenu(route_config, idx)
                                 )}

@@ -134,7 +134,7 @@ const MenuLink = observer(
                         className={is_trade_text ? '' : 'header__menu-mobile-link-text'}
                         as='h3'
                         size='xs'
-                        weight={window.location.pathname === '/' && is_trade_text ? 'bold' : undefined}
+                        weight={window.location.pathname === routes.trade && is_trade_text ? 'bold' : undefined}
                     >
                         {text}
                     </Text>
@@ -150,7 +150,6 @@ const MenuLink = observer(
                     'header__menu-mobile-link--disabled': is_disabled,
                     'header__menu-mobile-link--active': is_active,
                 })}
-                active_class='header__menu-mobile-link--active'
                 onClick={onClickLink}
                 data-testid={data_testid}
             >

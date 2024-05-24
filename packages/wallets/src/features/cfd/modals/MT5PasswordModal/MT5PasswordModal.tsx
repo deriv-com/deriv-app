@@ -243,6 +243,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
             <EnterPassword
                 isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                 marketType={marketType}
+                modalTitle='Enter your Deriv MT5 password'
                 onPasswordChange={e => setPassword(e.target.value)}
                 onPrimaryClick={onSubmit}
                 onSecondaryClick={() => sendEmailVerification()}

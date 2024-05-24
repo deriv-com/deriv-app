@@ -195,10 +195,21 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     !formValues.placeOfBirth ||
                     !formValues.taxResidence ||
                     !formValues.accountOpeningReason ||
-                    !formValues.taxIdentificationNumber
+                    !formValues.taxIdentificationNumber ||
+                    !!errors.taxIdentificationNumber
                 );
             case 'poaScreen':
-                return !formValues.townCityLine || !formValues.firstLine || !formValues.poaDocument || isUploadLoading;
+                return (
+                    !formValues.townCityLine ||
+                    !formValues.firstLine ||
+                    !formValues.poaDocument ||
+                    !!errors.townCityLine ||
+                    !!errors.firstLine ||
+                    !!errors.secondLine ||
+                    !!errors.zipCodeLine ||
+                    !!errors.poaDocument ||
+                    isUploadLoading
+                );
             case 'duplicateUploadErrorScreen':
                 return true;
             default:

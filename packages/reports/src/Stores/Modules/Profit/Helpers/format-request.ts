@@ -3,7 +3,7 @@ import { epochToMoment, toMoment } from '@deriv/shared';
 type TDateToOrFrom = number | null;
 type TPartialFetchTime = boolean | number;
 
-const getDateTo = (partial_fetch_time: TPartialFetchTime, date_to: TDateToOrFrom) => {
+const getDateTo = (date_to: TDateToOrFrom) => {
     const today = toMoment().startOf('day').unix();
     if (date_to && today > date_to) {
         return date_to;
@@ -47,7 +47,7 @@ const getDateBoundaries = (
     ...(shouldSendDateFrom(date_from, should_load_partially, partial_fetch_time, date_to) && {
         date_from: getDateFrom(should_load_partially, partial_fetch_time, date_from, date_to),
     }),
-    ...((date_to || should_load_partially) && { date_to: getDateTo(partial_fetch_time, date_to) }),
+    ...((date_to || should_load_partially) && { date_to: getDateTo(date_to) }),
 });
 
 export default getDateBoundaries;

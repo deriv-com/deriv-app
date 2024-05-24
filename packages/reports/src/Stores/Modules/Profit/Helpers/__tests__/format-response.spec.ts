@@ -24,25 +24,13 @@ describe('formatProfitTableTransactions', () => {
 
     it('should return correct formatted object', () => {
         const currency = 'USD';
-        const active_symbols: ActiveSymbols = [];
-        const returnValue = formatProfitTableTransactions(mockProfitTableTransactionData, currency, active_symbols);
+        const returnValue = formatProfitTableTransactions(mockProfitTableTransactionData, currency);
         expect(returnValue).toEqual({
-            app_id: 11780,
-            buy_price: 1,
-            contract_id: 55113405821,
-            contract_type: 'CALL',
+            ...mockProfitTableTransactionData,
             display_name: '',
-            duration_type: 'minutes',
-            longcode:
-                'Win payout if Volatility 100 (1s) Index is strictly higher than entry spot at 15 minutes after contract start time.',
-            payout: 1.96,
             purchase_time: '21 Nov 2023 04:07:41',
             purchase_time_unix: 1700539661,
-            sell_price: 0.61,
             sell_time: '21 Nov 2023 04:10:16',
-            shortcode: 'CALL_1HZ100V_1.96_1700539661_1700540561_S0P_0',
-            transaction_id: 111189668101,
-            underlying_symbol: '1HZ100V',
             profit_loss: '-0.39',
         });
     });
@@ -50,8 +38,7 @@ describe('formatProfitTableTransactions', () => {
     it('should not return purchase time if purchase time is not available', () => {
         mockProfitTableTransactionData.purchase_time = undefined;
         const currency = 'USD';
-        const active_symbols: ActiveSymbols = [];
-        const returnValue = formatProfitTableTransactions(mockProfitTableTransactionData, currency, active_symbols);
+        const returnValue = formatProfitTableTransactions(mockProfitTableTransactionData, currency);
         expect(returnValue.purchase_time).toBeUndefined();
     });
 
@@ -59,8 +46,7 @@ describe('formatProfitTableTransactions', () => {
         mockProfitTableTransactionData.buy_price = 0.0001;
         mockProfitTableTransactionData.sell_price = 0.0002;
         const currency = 'BTC';
-        const active_symbols: ActiveSymbols = [];
-        const returnValue = formatProfitTableTransactions(mockProfitTableTransactionData, currency, active_symbols);
+        const returnValue = formatProfitTableTransactions(mockProfitTableTransactionData, currency);
         expect(returnValue.profit_loss).toEqual('0.00010000');
     });
 
@@ -68,14 +54,13 @@ describe('formatProfitTableTransactions', () => {
         mockProfitTableTransactionData.sell_price = 1;
         mockProfitTableTransactionData.buy_price = 0.5;
         const currency = 'USD';
-        const active_symbols: ActiveSymbols = [];
-        const returnValue = formatProfitTableTransactions(mockProfitTableTransactionData, currency, active_symbols);
+        const returnValue = formatProfitTableTransactions(mockProfitTableTransactionData, currency);
         expect(returnValue.profit_loss).toEqual('0.50');
     });
 
     it('should return display name if active symbols are available', () => {
         const currency = 'USD';
-        const active_symbols: ActiveSymbols = [
+        const activeSymbols: ActiveSymbols = [
             {
                 allow_forward_starting: 1,
                 display_name: 'Volatility 100 (1s) Index',
@@ -93,7 +78,7 @@ describe('formatProfitTableTransactions', () => {
                 symbol_type: 'stockindex',
             },
         ];
-        const returnValue = formatProfitTableTransactions(mockProfitTableTransactionData, currency, active_symbols);
+        const returnValue = formatProfitTableTransactions(mockProfitTableTransactionData, currency, activeSymbols);
         expect(returnValue.display_name).toEqual('Volatility 100 (1s) Index');
     });
 });

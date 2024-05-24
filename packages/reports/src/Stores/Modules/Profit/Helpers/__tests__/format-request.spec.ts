@@ -8,8 +8,8 @@ describe('getDateBoundaries', () => {
         const should_load_partially = false;
         const returnValue = getDateBoundaries(date_from, date_to, partial_fetch_time, should_load_partially);
         expect(returnValue).toEqual({
-            date_from: 1635724800,
-            date_to: 1635811200,
+            date_from,
+            date_to,
         });
     });
 
@@ -21,7 +21,7 @@ describe('getDateBoundaries', () => {
         const should_load_partially = true;
         const returnValue = getDateBoundaries(date_from, date_to, partial_fetch_time, should_load_partially);
         expect(returnValue).toEqual({
-            date_from: 1635724800,
+            date_from: partial_fetch_time,
             date_to: 1635811199,
         });
         jest.useRealTimers();
@@ -34,7 +34,7 @@ describe('getDateBoundaries', () => {
         const should_load_partially = false;
         const returnValue = getDateBoundaries(date_from, date_to, partial_fetch_time, should_load_partially);
         expect(returnValue).toEqual({
-            date_to: 1635724900,
+            date_to,
         });
     });
 });

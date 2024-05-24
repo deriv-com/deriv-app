@@ -3,7 +3,6 @@ import PhoneVerificationCard from './phone-verification-card';
 import { Text, InputGroupButton } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { Input } from '@deriv/components';
 import { convertPhoneTypeDisplay } from 'Helpers/utils';
 import ResendCodeTimer from './resend-code-timer';
 import DidntGetTheCodeModal from './didnt-get-the-code-modal';
@@ -19,8 +18,17 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     const { email, phone } = account_settings;
     const [should_show_didnt_get_the_code_modal, setShouldShowDidntGetTheCodeModal] = React.useState(false);
     const [start_timer, setStartTimer] = React.useState(true);
+    const [otp, setOtp] = React.useState('');
     //TODO: this shall be replace by BE API call when it's ready
     const { should_show_phone_number_otp } = ui;
+
+    const handleGetOtpValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setOtp(e.target.value);
+    };
+
+    const handleVerifyOTP = () => {
+        //TODO: inplement function to verify OTP when BE API is ready
+    };
 
     return (
         <PhoneVerificationCard is_small_card>
@@ -65,8 +73,12 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                 )}
             </div>
             <div className='phone-verification__card--email-verification-otp-container'>
-                <InputGroupButton buttonLabel={localize('Verify')} label={localize('OTP code')} />
-                <Input id='otp_code' type='text' name='otp_code' label={localize('OTP code')} data-lpignore='true' />
+                <InputGroupButton
+                    buttonLabel={localize('Verify')}
+                    label={localize('OTP code')}
+                    buttonCallback={handleVerifyOTP}
+                    onChange={handleGetOtpValue}
+                />
                 <ResendCodeTimer
                     resend_code_text={should_show_phone_number_otp ? "Didn't get the code?" : 'Resend code'}
                     count_from={60}

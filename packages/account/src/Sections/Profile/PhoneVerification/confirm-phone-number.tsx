@@ -1,6 +1,6 @@
 import React from 'react';
 import PhoneVerificationCard from './phone-verification-card';
-import { Button, Text } from '@deriv-com/quill-ui';
+import { Button, Text, TextField } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { Input } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
@@ -28,7 +28,9 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
             <Text bold>
                 <Localize i18n_default_text='Confirm your phone number' />
             </Text>
-            <Input label={localize('Phone number')} value={phone_number} />
+            <div className='phone-verification__card--inputfield'>
+                <TextField label={localize('Phone number')} value={phone_number} />
+            </div>
             <div className='phone-verification__card--buttons_container'>
                 <Button
                     variant='secondary'

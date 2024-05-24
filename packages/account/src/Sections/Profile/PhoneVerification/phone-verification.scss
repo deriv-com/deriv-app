@@ -57,9 +57,14 @@
             height: 40rem;
         }
 
-        .dc-input {
+        &--inputfield {
             width: 60%;
-            margin-top: 2.4rem;
+            margin-block-start: 2.4rem;
+            margin-bottom: 4.4rem;
+            @include mobile {
+                width: 100%;
+                margin-block-start: 3.2rem;
+            }
         }
 
         &--buttons_container {
@@ -86,8 +91,13 @@
             }
 
             &-otp-container {
+                display: flex;
+                flex-direction: column;
+                gap: 1.6rem;
                 width: 60%;
-                .dc-input {
+                margin-block-start: 1.6rem;
+                align-items: flex-start;
+                @include mobile {
                     width: 100%;
                 }
             }

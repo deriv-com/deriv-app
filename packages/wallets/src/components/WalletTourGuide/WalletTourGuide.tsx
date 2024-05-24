@@ -48,7 +48,7 @@ const WalletTourGuide = () => {
         if (needToStart && modal.isOpen) {
             modal.hide();
         }
-    }, [needToStart, modal]);
+    }, [needToStart, modal.isOpen]);
 
     useEffect(() => {
         const switchAccountAndRun = async () => {

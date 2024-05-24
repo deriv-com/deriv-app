@@ -14,9 +14,9 @@ const WalletWithdrawal = () => {
     const isBalanceLoading = isLoading || isRefetching;
 
     useEffect(() => {
-        if (balanceData) refetch();
+        refetch();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [balanceData]);
+    }, []);
 
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);

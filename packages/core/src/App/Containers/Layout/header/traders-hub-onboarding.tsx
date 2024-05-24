@@ -14,19 +14,12 @@ const TradersHubOnboarding = observer(() => {
     const { is_dark_mode_on, is_mobile } = ui;
     const [, setWalletsOnboarding] = useLocalStorage('walletsOnboarding', '');
 
-    const onClickHandler = has_wallet
-        ? () => {
-              setWalletsOnboarding('started');
-              if (history.location.pathname !== routes.wallets) {
-                  history.push(routes.wallets);
-              }
-          }
-        : () => {
-              if (!is_tour_open) {
-                  toggleIsTourOpen(true);
-              }
-              setIsFirstTimeVisit(false);
-          };
+    const onClickHandler = () => {
+        setWalletsOnboarding('started');
+        if (history.location.pathname !== routes.wallets) {
+            history.push(routes.wallets);
+        }
+    };
 
     return (
         <div data-testid='dt_traders_hub_onboarding'>

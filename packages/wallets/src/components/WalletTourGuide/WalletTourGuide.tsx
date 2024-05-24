@@ -3,6 +3,7 @@ import Joyride, { CallBackProps, STATUS } from 'react-joyride';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import {
     useActiveWalletAccount,
+    useAllWalletAccounts,
     useAuthorize,
     useCtraderAccountsList,
     useDxtradeAccountsList,
@@ -33,6 +34,7 @@ const WalletTourGuide = () => {
     const { isFetching: ctraderIsLoading } = useCtraderAccountsList();
     const { isFetching: dxtradeIsLoading } = useDxtradeAccountsList();
     const { isFetching: sortedAccountsIsLoading } = useSortedMT5Accounts();
+    const { data: availableWallets } = useAllWalletAccounts();
 
     const needToStart = walletsOnboarding === START_VALUE;
     const activeWalletLoginId = activeWallet?.loginid;
@@ -40,6 +42,7 @@ const WalletTourGuide = () => {
     const activeFiatWalletLoginId = fiatWalletLoginId == activeWalletLoginId;
     const isEverythingLoaded =
         !isLoading && !isFetching && isSuccess && !ctraderIsLoading && !dxtradeIsLoading && !sortedAccountsIsLoading;
+    const allWalletsAreAdded = Boolean(availableWallets?.every(wallet => wallet.is_added));
 
     useEffect(() => {
         if (needToStart) {
@@ -89,7 +92,7 @@ const WalletTourGuide = () => {
             floaterProps={{ disableAnimation: true }}
             run={run}
             scrollOffset={isMobile ? 100 : 80}
-            steps={isMobile ? mobileStepTourGuide : desktopStepTourGuide}
+            steps={isMobile ? mobileStepTourGuide(allWalletsAreAdded) : desktopStepTourGuide(allWalletsAreAdded)}
             tooltipComponent={TooltipComponent}
         />
     );

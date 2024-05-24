@@ -4,6 +4,7 @@ import { Text } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { Input } from '@deriv/components';
+import { useVerifyEmail } from '@deriv/hooks';
 import { convertPhoneTypeDisplay } from 'Helpers/utils';
 import ResendCodeTimer from './resend-code-timer';
 import DidntGetTheCodeModal from './didnt-get-the-code-modal';
@@ -15,12 +16,19 @@ type TOTPVerification = {
 
 const OTPVerification = observer(({ phone_verification_type, setOtpVerification }: TOTPVerification) => {
     const { client, ui } = useStore();
-    const { account_settings } = client;
-    const { email, phone } = account_settings;
+    const { account_settings, email } = client;
+    const { phone } = account_settings;
     const [should_show_didnt_get_the_code_modal, setShouldShowDidntGetTheCodeModal] = React.useState(false);
     const [start_timer, setStartTimer] = React.useState(true);
+    const { send } = useVerifyEmail('phone_number_verification');
     //TODO: this shall be replace by BE API call when it's ready
     const { should_show_phone_number_otp } = ui;
+
+    React.useEffect(() => {
+        if (!should_show_phone_number_otp) {
+            send();
+        }
+    }, [should_show_phone_number_otp, send]);
 
     return (
         <PhoneVerificationCard is_small_card>
@@ -68,6 +76,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                 <Input id='otp_code' type='text' name='otp_code' label={localize('OTP code')} data-lpignore='true' />
                 <ResendCodeTimer
                     resend_code_text={should_show_phone_number_otp ? "Didn't get the code?" : 'Resend code'}
+                    //TODOS: replace hardcoded timer when timestamp BE API is ready
                     count_from={60}
                     setShouldShowDidntGetTheCodeModal={setShouldShowDidntGetTheCodeModal}
                     start_timer={start_timer}

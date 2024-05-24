@@ -27,7 +27,7 @@ type TProps = {
     icon: ReactNode;
     maxSize?: NonNullable<Parameters<typeof useDropzone>[0]>['maxSize'];
     noClick?: NonNullable<Parameters<typeof useDropzone>[0]>['noClick'];
-    onFileChange?: (file: File) => void;
+    onFileChange?: (file?: File) => void;
     title?: ReactNode;
     titleType?: ComponentProps<typeof WalletText>['weight'];
 };
@@ -86,8 +86,8 @@ const Dropzone: React.FC<TProps> = ({
     });
 
     useEffect(() => {
-        if (file && onFileChange) {
-            onFileChange(file.file);
+        if (onFileChange) {
+            onFileChange(file?.file);
         }
     }, [file]); // eslint-disable-line react-hooks/exhaustive-deps
 

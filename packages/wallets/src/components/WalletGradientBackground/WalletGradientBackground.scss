@@ -1,6 +1,7 @@
 .wallets-gradient {
     position: relative;
     display: inline-block;
+    border-radius: 0.8rem;
 
     &__content {
         position: relative;
@@ -28,9 +29,9 @@
         }
     }
 
-    &[class*='desktop-card'],
-    &[class*='mobile-card'] {
-        border-radius: 0.8rem;
+    &[class*='desktop-header'],
+    &[class*='mobile-header'] {
+        border-radius: unset;
     }
 
     &--USD {

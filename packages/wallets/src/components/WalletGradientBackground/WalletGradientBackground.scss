@@ -31,7 +31,7 @@
 
     &[class*='desktop-header'],
     &[class*='mobile-header'] {
-        border-radius: 0;
+        border-radius: unset;
     }
 
     &--USD {

@@ -1,20 +1,32 @@
 .wallets-onfido {
     width: 99.6rem;
-    min-height: 47.2rem;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 1.6rem 0;
-    overflow-y: auto;
+    overflow-y: hidden;
 
     @include mobile {
         width: auto;
         height: 100%;
         padding: 1.6rem;
 
-        & > :first-child {
+        &__content {
+            min-height: 47.2rem;
             display: flex;
             justify-content: center;
+
+            &-overlay {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                & > .wallets-inline-message {
+                    position: absolute;
+                }
+            }
         }
 
         // stylelint-disable-next-line selector-class-pattern

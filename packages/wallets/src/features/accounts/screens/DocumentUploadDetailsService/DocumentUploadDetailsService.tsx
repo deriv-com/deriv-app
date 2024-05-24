@@ -10,7 +10,7 @@ import { dateOfBirthValidator, firstNameValidator, lastNameValidator } from '../
 import './DocumentUploadDetailsService.scss';
 
 const DocumentUploadDetailsService = () => {
-    const { data: getSettings } = useSettings();
+    const { data: getSettings, update } = useSettings();
     const { errors, formValues, setFormValues } = useFlow();
     const { validateForm } = useFormikContext();
 
@@ -45,6 +45,31 @@ const DocumentUploadDetailsService = () => {
         getSettings?.last_name,
     ]);
 
+    useEffect(() => {
+        if (
+            formValues.verifiedDocumentDetails &&
+            isValid &&
+            (getSettings.first_name !== formValues.firstName ||
+                getSettings.last_name !== formValues.lastName ||
+                getSettings.date_of_birth !== formValues.dateOfBirth)
+        )
+            update({
+                date_of_birth: formValues.dateOfBirth,
+                first_name: formValues.firstName,
+                last_name: formValues.lastName,
+            });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+        formValues.dateOfBirth,
+        formValues.firstName,
+        formValues.lastName,
+        formValues.verifiedDocumentDetails,
+        getSettings.date_of_birth,
+        getSettings.first_name,
+        getSettings.last_name,
+        isValid,
+    ]);
+
     return (
         <div className='wallets-idv-document-details'>
             <InlineMessage>
@@ -57,17 +82,16 @@ const DocumentUploadDetailsService = () => {
                 <div className='wallets-idv-document-details__content'>
                     <FlowTextField
                         defaultValue={firstName}
-                        disabled={formValues.verifiedIdvDetails}
+                        disabled={formValues.verifiedDocumentDetails}
                         label='First name*'
                         message='Your first name as in your identity document'
                         name='firstName'
                         showMessage
                         validationSchema={firstNameValidator}
                     />
-
                     <FlowTextField
                         defaultValue={lastName}
-                        disabled={formValues.verifiedIdvDetails}
+                        disabled={formValues.verifiedDocumentDetails}
                         label='Last name*'
                         message='Your last name as in your identity document'
                         name='lastName'
@@ -76,7 +100,7 @@ const DocumentUploadDetailsService = () => {
                     />
                     <DatePicker
                         defaultValue={unixToDateString(formattedDateOfBirth)}
-                        disabled={formValues.verifiedIdvDetails}
+                        disabled={formValues.verifiedDocumentDetails}
                         label='Date of birth*'
                         maxDate={moment().subtract(18, 'years').toDate()}
                         message='Your date of birth as in your identity document'
@@ -100,7 +124,7 @@ const DocumentUploadDetailsService = () => {
                     'wallets-idv-document-details__checkbox--disabled': !isValid,
                 })}
             >
-                <Field disabled={!isValid} id='idv-checkbox' name='verifiedIdvDetails' type='checkbox' />
+                <Field disabled={!isValid} id='idv-checkbox' name='verifiedDocumentDetails' type='checkbox' />
                 <label htmlFor='idv-checkbox'>
                     <WalletText lineHeight='2xs' size='sm'>
                         I confirm that the name and date of birth above match my chosen identity document

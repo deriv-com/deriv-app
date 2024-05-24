@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { useOnfido } from '@deriv/api-v2';
+import { InlineMessage } from '../../../../components';
 import { useFlow } from '../../../../components/FlowProvider';
 import { WalletsActionScreen } from '../../../../components/WalletsActionScreen';
 import POISubmittedIcon from '../../../../public/images/accounts/ic-poi-submitted.svg';
@@ -29,10 +30,18 @@ const Onfido = () => {
             })}
         >
             {!hasAlreadySubmitted && (
-                <>
-                    <DocumentUploadDetailsService />
-                    <div id={onfidoContainerId} />
-                </>
+                <div className='wallets-onfido__content'>
+                    {!formValues.verifiedDocumentDetails && <DocumentUploadDetailsService />}
+                    <div className='wallets-onfido__content-overlay'>
+                        {!formValues.verifiedDocumentDetails && (
+                            <InlineMessage
+                                message='Hit the checkbox above to choose your document.'
+                                type='information'
+                            />
+                        )}
+                        <div id={onfidoContainerId} />
+                    </div>
+                </div>
             )}
             {hasAlreadySubmitted && (
                 <WalletsActionScreen

@@ -66,6 +66,12 @@
     }
 
     &__body {
+        height: 100%;
+
+        @include desktop {
+            max-height: calc(var(--wallets-vh, 1vh) * 100 - 10rem);
+        }
+
         @include mobile {
             overflow-y: scroll;
         }

@@ -76,6 +76,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                 <Input id='otp_code' type='text' name='otp_code' label={localize('OTP code')} data-lpignore='true' />
                 <ResendCodeTimer
                     resend_code_text={should_show_phone_number_otp ? "Didn't get the code?" : 'Resend code'}
+                    //TODOS: replace hardcoded timer when timestamp BE API is ready
                     count_from={60}
                     setShouldShowDidntGetTheCodeModal={setShouldShowDidntGetTheCodeModal}
                     start_timer={start_timer}

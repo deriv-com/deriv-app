@@ -13,7 +13,6 @@ jest.mock('@deriv/hooks', () => ({
 }));
 
 describe('ConfirmPhoneNumber', () => {
-    const mockRequestEmailVerificationOTP = jest.fn();
     beforeEach(() => {
         jest.useFakeTimers();
     });
@@ -44,25 +43,26 @@ describe('ConfirmPhoneNumber', () => {
     });
 
     it('should trigger requestEmailVerificationOTP button after its clicked', () => {
+        const mockRequestEmailVerificationOTP = jest.fn();
         (useGetEmailVerificationOTP as jest.Mock).mockReturnValueOnce({
             requestEmailVerificationOTP: mockRequestEmailVerificationOTP,
         });
-        const mockSetStartTimer = jest.fn();
         render(
             <StoreProvider store={mock_store}>
                 <ResendCodeTimer
                     resend_code_text='Resend code'
                     count_from={0}
-                    setStartTimer={mockSetStartTimer}
-                    start_timer
+                    setStartTimer={jest.fn()}
+                    start_timer={false}
                     setShouldShowDidntGetTheCodeModal={jest.fn()}
                 />
             </StoreProvider>
         );
         const resend_button = screen.getByRole('button', { name: 'Resend code' });
+        expect(resend_button).toBeEnabled();
 
         userEvent.click(resend_button);
-        expect(mockSetStartTimer).toHaveBeenCalled();
+        expect(mockRequestEmailVerificationOTP).toBeCalled();
     });
 
     it('should display correct title if value of resend_code_text is Resend code', () => {

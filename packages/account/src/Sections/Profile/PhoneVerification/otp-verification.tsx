@@ -1,6 +1,6 @@
 import React from 'react';
 import PhoneVerificationCard from './phone-verification-card';
-import { Text } from '@deriv-com/quill-ui';
+import { Text, InputGroupButton } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { Input } from '@deriv/components';
@@ -65,6 +65,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                 )}
             </div>
             <div className='phone-verification__card--email-verification-otp-container'>
+                <InputGroupButton buttonLabel={localize('Verify')} label={localize('OTP code')} />
                 <Input id='otp_code' type='text' name='otp_code' label={localize('OTP code')} data-lpignore='true' />
                 <ResendCodeTimer
                     resend_code_text={should_show_phone_number_otp ? "Didn't get the code?" : 'Resend code'}

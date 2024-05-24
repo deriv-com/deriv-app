@@ -382,7 +382,7 @@ export default class TradersHubStore extends BaseStore {
         const all_available_accounts = [
             ...getCFDAvailableAccount(),
             {
-                name: !this.is_eu_user || this.is_demo_low_risk ? localize('Financial') : localize('CFDs'),
+                name: !this.is_eu_user || this.is_demo_low_risk ? 'Financial' : 'CFDs',
                 description: getAccountDesc(),
                 platform: CFD_PLATFORMS.MT5,
                 market_type: 'financial',
@@ -390,7 +390,7 @@ export default class TradersHubStore extends BaseStore {
                 availability: 'All',
             },
             {
-                name: localize('Swap-Free'),
+                name: 'Swap-Free',
                 description: getSwapFreeAccountDesc(),
                 platform: CFD_PLATFORMS.MT5,
                 market_type: 'all',
@@ -402,6 +402,9 @@ export default class TradersHubStore extends BaseStore {
             return {
                 ...account,
                 description: account.description,
+                //tracking name need not be localised,so added the localization here for the account name.
+                tracking_name: account.name,
+                name: localize(account.name),
             };
         });
         this.getAvailableDxtradeAccounts();
@@ -682,6 +685,7 @@ export default class TradersHubStore extends BaseStore {
                             action_type: 'multi-action',
                             availability: this.selected_region,
                             market_type: account.market_type,
+                            tracking_name: account.tracking_name,
                         },
                     ];
                 });
@@ -697,6 +701,7 @@ export default class TradersHubStore extends BaseStore {
                         action_type: 'get',
                         availability: this.selected_region,
                         market_type: account.market_type,
+                        tracking_name: account.tracking_name,
                     },
                 ];
             }

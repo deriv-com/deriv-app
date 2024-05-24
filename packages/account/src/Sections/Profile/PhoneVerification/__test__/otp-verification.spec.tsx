@@ -2,12 +2,12 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import OTPVerification from '../otp-verification';
-import { useGetEmailVerificationOTP } from '@deriv/hooks';
+import { useVerifyEmail } from '@deriv/hooks';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
-    useGetEmailVerificationOTP: jest.fn(() => ({
-        requestEmailVerificationOTP: jest.fn(),
+    useVerifyEmail: jest.fn(() => ({
+        send: jest.fn(),
     })),
 }));
 
@@ -22,7 +22,7 @@ describe('ConfirmPhoneNumber', () => {
     });
     let phone_verification_type = 'sms';
     const mockSetOtpVerification = jest.fn();
-    const mockRequestEmailVerificationOTP = jest.fn();
+    const mockSend = jest.fn();
     const renderComponent = () => {
         render(
             <StoreProvider store={store}>
@@ -35,8 +35,8 @@ describe('ConfirmPhoneNumber', () => {
     };
 
     it('should render ConfirmYourEmail in OTP Verification', () => {
-        (useGetEmailVerificationOTP as jest.Mock).mockReturnValueOnce({
-            requestEmailVerificationOTP: mockRequestEmailVerificationOTP,
+        (useVerifyEmail as jest.Mock).mockReturnValueOnce({
+            send: mockSend,
         });
         renderComponent();
         expect(screen.getByText(/Confirm it's you/)).toBeInTheDocument();
@@ -47,7 +47,7 @@ describe('ConfirmPhoneNumber', () => {
         ).toBeInTheDocument();
         expect(screen.getByRole('textbox', { name: /OTP code/ })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Resend code/ })).toBeInTheDocument();
-        expect(mockRequestEmailVerificationOTP).toHaveBeenCalled();
+        expect(mockSend).toHaveBeenCalled();
     });
 
     it('should render Verify your number in OTP Verification', () => {

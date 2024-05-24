@@ -3,12 +3,12 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import ResendCodeTimer from '../resend-code-timer';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { useGetEmailVerificationOTP } from '@deriv/hooks';
+import { useVerifyEmail } from '@deriv/hooks';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
-    useGetEmailVerificationOTP: jest.fn(() => ({
-        requestEmailVerificationOTP: jest.fn(),
+    useVerifyEmail: jest.fn(() => ({
+        send: jest.fn(),
     })),
 }));
 
@@ -42,17 +42,18 @@ describe('ConfirmPhoneNumber', () => {
         expect(resend_button).toBeDisabled();
     });
 
-    it('should trigger requestEmailVerificationOTP button after its clicked', () => {
-        const mockRequestEmailVerificationOTP = jest.fn();
-        (useGetEmailVerificationOTP as jest.Mock).mockReturnValueOnce({
-            requestEmailVerificationOTP: mockRequestEmailVerificationOTP,
+    it('should trigger send button after its clicked', () => {
+        const mockSend = jest.fn();
+        (useVerifyEmail as jest.Mock).mockReturnValueOnce({
+            send: mockSend,
         });
+        const mockSetStartTimer = jest.fn();
         render(
             <StoreProvider store={mock_store}>
                 <ResendCodeTimer
                     resend_code_text='Resend code'
                     count_from={0}
-                    setStartTimer={jest.fn()}
+                    setStartTimer={mockSetStartTimer}
                     start_timer={false}
                     setShouldShowDidntGetTheCodeModal={jest.fn()}
                 />
@@ -62,7 +63,8 @@ describe('ConfirmPhoneNumber', () => {
         expect(resend_button).toBeEnabled();
 
         userEvent.click(resend_button);
-        expect(mockRequestEmailVerificationOTP).toBeCalled();
+        expect(mockSetStartTimer).toBeCalledWith(true);
+        expect(mockSend).toBeCalled();
     });
 
     it('should display correct title if value of resend_code_text is Resend code', () => {

@@ -18,19 +18,17 @@ import Routes from './Containers/Routes/routes.jsx';
 import Devtools from './Devtools';
 import initDatadog from '../Utils/Datadog';
 import { ThemeProvider } from '@deriv-com/quill-ui';
-import { useGrowthbookFeatureFlag } from '@deriv/hooks';
+import { useGrowthbookIsOn } from '@deriv/hooks';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
     const { has_wallet } = store.client;
 
-    const [isWebPasskeysFFEnabled, isGBLoaded] = useGrowthbookFeatureFlag({
+    const [isWebPasskeysFFEnabled, isGBLoaded] = useGrowthbookIsOn({
         featureFlag: 'web_passkeys',
-        defaultValue: false,
     });
-    const [isServicePasskeysFFEnabled] = useGrowthbookFeatureFlag({
+    const [isServicePasskeysFFEnabled] = useGrowthbookIsOn({
         featureFlag: 'service_passkeys',
-        defaultValue: false,
     });
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());

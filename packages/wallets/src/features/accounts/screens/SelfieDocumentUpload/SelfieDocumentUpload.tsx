@@ -20,7 +20,7 @@ const SelfieDocumentUpload = () => {
                 hasFrame={isDesktop}
                 icon={<SelfieIcon />}
                 noClick
-                onFileChange={(file: File) => setFormValues('selfie', file)}
+                onFileChange={(file?: File) => setFormValues('selfie', file)}
             />
             <WalletText color={isDesktop ? 'less-prominent' : 'general'}>
                 Face forward and remove your glasses if necessary. Make sure your eyes are clearly visible and your face

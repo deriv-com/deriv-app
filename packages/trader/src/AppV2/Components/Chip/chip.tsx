@@ -29,6 +29,7 @@ const Chip = React.forwardRef<HTMLButtonElement, BaseChipProps>(
                 <LabelPairedChevronDownSmRegularIcon
                     data-state={isDropdownOpen ? 'open' : 'close'}
                     className='rotate'
+                    data-testid='dt_chevron'
                 />
             )}
         </button>

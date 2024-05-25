@@ -6,15 +6,15 @@ import { Localize } from '@deriv/translations';
 type TDateRangePicker = {
     isOpen?: boolean;
     onClose: () => void;
-    setSelectedDateRangeString: React.Dispatch<React.SetStateAction<string | undefined>>;
+    setCustomTimeRangeFilter: (newCustomTimeFilter?: string | undefined) => void;
     handleDateChange: (values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean }) => void;
 };
-const DateRangePicker = ({ isOpen, onClose, setSelectedDateRangeString, handleDateChange }: TDateRangePicker) => {
+const DateRangePicker = ({ isOpen, onClose, setCustomTimeRangeFilter, handleDateChange }: TDateRangePicker) => {
     const [chosenRangeString, setChosenRangeString] = React.useState<string>();
     const [chosenRange, setChosenRange] = React.useState<(string | null | Date)[] | null | Date>([]);
 
     const onApply = () => {
-        setSelectedDateRangeString(chosenRangeString);
+        setCustomTimeRangeFilter(chosenRangeString);
         if (Array.isArray(chosenRange) && chosenRange.length)
             handleDateChange({ from: toMoment(chosenRange[0]), to: toMoment(chosenRange[1]) });
         onClose();

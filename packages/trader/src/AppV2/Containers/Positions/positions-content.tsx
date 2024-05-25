@@ -9,6 +9,8 @@ import { ContractCardList } from 'AppV2/Components/ContractCard';
 import { ContractTypeFilter, TimeFilter } from 'AppV2/Components/Filter';
 import { filterPositions } from '../../Utils/positions-utils';
 import { TReportsStore, useReportsStore } from '../../../../../reports/src/Stores/useReportsStores';
+import useTradeTypeFilter from 'AppV2/Hooks/useTradeTypeFilter';
+import useTimeFilter from 'AppV2/Hooks/useTimeFilter';
 
 type TPositionsContentProps = Omit<TEmptyPositionsProps, 'noMatchesFound'> & {
     hasButtonsDemo?: boolean;
@@ -20,10 +22,9 @@ export type TClosedPosition = {
 };
 
 const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsDemo }: TPositionsContentProps) => {
-    const [contractTypeFilter, setContractTypeFilter] = React.useState<string[]>([]);
-    const [chosenTimeFilter, setChosenTimeFilter] = React.useState<string>();
+    const { contractTypeFilter, setContractTypeFilter } = useTradeTypeFilter({ isClosedTab });
+    const { timeFilter, setTimeFilter, customTimeRangeFilter, setCustomTimeRangeFilter } = useTimeFilter();
     const [filteredPositions, setFilteredPositions] = React.useState<(TPortfolioPosition | TClosedPosition)[]>([]);
-    const [selectedRangeDateString, setSelectedDateRangeString] = React.useState<string>();
     const [noMatchesFound, setNoMatchesFound] = React.useState(false);
 
     const { common, client, portfolio } = useStore();
@@ -42,7 +43,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
         () => (isClosedTab ? closedPositions : active_positions),
         [active_positions, isClosedTab, closedPositions]
     );
-    const hasNoPositions = isClosedTab ? is_empty && !chosenTimeFilter && !selectedRangeDateString : is_active_empty;
+    const hasNoPositions = isClosedTab ? is_empty && !timeFilter && !customTimeRangeFilter : is_active_empty;
     const shouldShowEmptyMessage = hasNoPositions || noMatchesFound;
     const shouldShowContractCards =
         isClosedTab || (filteredPositions.length && (filteredPositions[0]?.contract_info as TContractInfo)?.status);
@@ -67,12 +68,13 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     };
 
     React.useEffect(() => {
-        if (!positions.length && isClosedTab && (selectedRangeDateString || chosenTimeFilter)) {
+        if (!positions.length && isClosedTab && (customTimeRangeFilter || timeFilter)) {
             setNoMatchesFound(true);
         } else {
             setNoMatchesFound(false);
         }
-    }, [selectedRangeDateString, chosenTimeFilter, positions, isClosedTab]);
+        handleTradeTypeFilterChange(contractTypeFilter);
+    }, [customTimeRangeFilter, timeFilter, positions, isClosedTab]);
 
     if (isLoading || (!shouldShowContractCards && !shouldShowEmptyMessage)) return <Loading />;
     return (
@@ -82,11 +84,11 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
                     <div className='positions-page__filter__wrapper'>
                         {isClosedTab && (
                             <TimeFilter
-                                chosenTimeFilter={chosenTimeFilter}
-                                setChosenTimeFilter={setChosenTimeFilter}
+                                timeFilter={timeFilter}
+                                setTimeFilter={setTimeFilter}
                                 handleDateChange={handleDateChange}
-                                selectedRangeDateString={selectedRangeDateString}
-                                setSelectedDateRangeString={setSelectedDateRangeString}
+                                customTimeRangeFilter={customTimeRangeFilter}
+                                setCustomTimeRangeFilter={setCustomTimeRangeFilter}
                                 setNoMatchesFound={setNoMatchesFound}
                             />
                         )}

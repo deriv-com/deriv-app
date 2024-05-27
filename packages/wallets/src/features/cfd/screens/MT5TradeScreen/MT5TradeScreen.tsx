@@ -104,8 +104,12 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                     <div className='wallets-mt5-trade-screen__details-description__details'>
                         <div className='wallets-mt5-trade-screen__label'>
                             <WalletText lineHeight='3xs' size={isDesktop ? 'sm' : 'md'}>
-                                {platform === mt5Platform ? marketTypeTitle : platformTitle}{' '}
-                                {!activeWalletData?.is_virtual && details?.landing_company_short?.toUpperCase()}
+                                <div className='wallets-mt5-trade-screen__label-title'>
+                                    {platform === mt5Platform ? marketTypeTitle : platformTitle}{' '}
+                                    <span className='wallets-mt5-trade-screen__label-title-landing-company'>
+                                        {!activeWalletData?.is_virtual && details?.landing_company_short?.toUpperCase()}
+                                    </span>
+                                </div>
                             </WalletText>
                             {activeWalletData?.is_virtual && <WalletListCardBadge isDemo label='virtual' />}
                         </div>

@@ -63,7 +63,7 @@ export const getJurisdictionBviContents = (): TJurisdictionCardItems => ({
         ],
         synthetic: [
             {
-                description: 'Synthetics, Baskets and Derived FX',
+                description: 'Synthetics, Baskets and Standard FX',
                 key: 'assets',
                 title: 'Assets',
                 titleIndicators: {

@@ -90,11 +90,11 @@ export const MT5MarketTypeDetails: Record<TMarketTypes.All, TMT5MarketTypeDetail
     },
     synthetic: {
         icon: {
-            dark: 'IcWalletMt5Derived',
-            light: 'IcWalletMt5Derived',
+            dark: 'IcWalletMt5Standard',
+            light: 'IcWalletMt5Standard',
         },
         name: 'synthetic',
-        title: 'MT5 Derived',
+        title: 'MT5 Standard',
     },
 } as const;
 

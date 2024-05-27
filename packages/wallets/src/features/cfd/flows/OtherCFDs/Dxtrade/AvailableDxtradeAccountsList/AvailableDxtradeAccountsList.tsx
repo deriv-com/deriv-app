@@ -27,7 +27,7 @@ const AvailableDxtradeAccountsList: React.FC = () => {
                     <WalletText size='sm'>{t('Deriv X')}</WalletText>
                 </p>
                 <WalletText size='xs'>
-                    {t('CFDs on financial and derived instruments via a customisable platform.')}
+                    {t('CFDs on financial and derived instruments via a customisable platform')}
                 </WalletText>
             </div>
         </TradingAccountCard>

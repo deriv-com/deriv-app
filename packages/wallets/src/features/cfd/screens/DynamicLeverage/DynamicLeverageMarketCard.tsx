@@ -24,9 +24,9 @@ export const DynamicLeverageMarketCard: FC<TDynamicLeverageMarketCardProps> = ({
             <WalletText align='center' data-testid='market_title' size='sm' weight='bold'>
                 {displayName}
             </WalletText>
-            {!!instruments.length && (
+            {!!instrumentslength && (
                 <WalletText align='center' data-testid='description_title' fontStyle='italic' size='2xs'>
-                    {`(${instruments.join(', ')})`}
+                    {`(${instrumentsjoin(', ')})`}
                 </WalletText>
             )}
             <WalletText align='center' color='error' data-testid='leverage_title' size='xs'>

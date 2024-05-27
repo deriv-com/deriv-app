@@ -6,8 +6,8 @@ import {
     AccountsDerivCtraderIcon,
     AccountsDerivXIcon,
     AccountsDmt5CfdsIcon,
-    AccountsDmt5DerivedIcon,
     AccountsDmt5FinancialIcon,
+    AccountsDmt5StandardIcon,
     AccountsDmt5SwfIcon,
     PaymentMethodDerivP2pBrandDarkIcon,
     PaymentMethodDerivP2pBrandIcon,
@@ -17,7 +17,7 @@ import { TIconTypes } from '../../types';
 const MT5MarketIcons: TIconTypes = {
     IcWalletMt5All: AccountsDmt5SwfIcon,
     IcWalletMt5CFDs: AccountsDmt5CfdsIcon,
-    IcWalletMt5Derived: AccountsDmt5DerivedIcon,
+    IcWalletMt5Standard: AccountsDmt5StandardIcon,
     IcWalletMt5Financial: AccountsDmt5FinancialIcon,
 };
 

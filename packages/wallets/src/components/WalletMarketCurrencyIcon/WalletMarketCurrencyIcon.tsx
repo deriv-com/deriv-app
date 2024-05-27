@@ -8,7 +8,7 @@ import './WalletMarketCurrencyIcon.scss';
 const mt5MarketTypeIcon = {
     all: 'IcWalletMt5All',
     financial: 'IcWalletMt5Financial',
-    synthetic: 'IcWalletMt5Derived',
+    synthetic: 'IcWalletMt5Standard',
 };
 
 const cfdPlatformIcon = {

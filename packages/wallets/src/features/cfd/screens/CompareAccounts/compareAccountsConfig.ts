@@ -46,7 +46,7 @@ const getHighlightedIconLabel = (
                 { highlighted: false, icon: 'ETF', text: 'ETFs' },
                 { highlighted: true, icon: 'Synthetics', text: 'Synthetic indices' },
                 { highlighted: true, icon: 'Baskets', text: 'Basket indices' },
-                { highlighted: true, icon: 'DerivedFX', text: 'Derived FX' },
+                { highlighted: true, icon: 'StandardFX', text: 'Standard FX' },
             ];
         case MARKET_TYPE.FINANCIAL:
             switch (shortCode) {
@@ -69,7 +69,7 @@ const getHighlightedIconLabel = (
                         { highlighted: false, icon: 'ETF', text: 'ETFs' },
                         { highlighted: false, icon: 'Synthetics', text: 'Synthetic indices' },
                         { highlighted: false, icon: 'Baskets', text: 'Basket indices' },
-                        { highlighted: false, icon: 'DerivedFX', text: 'Derived FX' },
+                        { highlighted: false, icon: 'StandardFX', text: 'Standard FX' },
                     ];
                 default:
                     return [
@@ -81,7 +81,7 @@ const getHighlightedIconLabel = (
                         { highlighted: true, icon: 'ETF', text: 'ETFs' },
                         { highlighted: false, icon: 'Synthetics', text: 'Synthetic indices' },
                         { highlighted: false, icon: 'Baskets', text: 'Basket indices' },
-                        { highlighted: false, icon: 'DerivedFX', text: 'Derived FX' },
+                        { highlighted: false, icon: 'StandardFX', text: 'Standard FX' },
                     ];
             }
         case MARKET_TYPE.ALL:
@@ -96,7 +96,7 @@ const getHighlightedIconLabel = (
                     { highlighted: true, icon: 'ETF', text: 'ETFs' },
                     { highlighted: true, icon: 'Synthetics', text: 'Synthetics indices' },
                     { highlighted: false, icon: 'Baskets', text: 'Basket indices' },
-                    { highlighted: false, icon: 'DerivedFX', text: 'Derived FX' },
+                    { highlighted: false, icon: 'StandardFX', text: 'Standard FX' },
                 ];
             }
             return [
@@ -108,7 +108,7 @@ const getHighlightedIconLabel = (
                 { highlighted: true, icon: 'ETF', text: 'ETFs' },
                 { highlighted: true, icon: 'Synthetics', text: 'Synthetic indices' },
                 { highlighted: true, icon: 'Baskets', text: 'Basket indices' },
-                { highlighted: true, icon: 'DerivedFX', text: 'Derived FX' },
+                { highlighted: true, icon: 'StandardFX', text: 'Standard FX' },
             ];
     }
 };

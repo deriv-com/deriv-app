@@ -67,9 +67,9 @@ export type TInstrumentsIcon = {
         | 'Baskets'
         | 'Commodities'
         | 'Cryptocurrencies'
-        | 'DerivedFX'
         | 'ETF'
         | 'Forex'
+        | 'StandardFX'
         | 'StockIndices'
         | 'Stocks'
         | 'Synthetics';

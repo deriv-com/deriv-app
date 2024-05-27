@@ -13,10 +13,10 @@ export const formatProfitTableTransactions = (
         transaction.purchase_time && `${toMoment(Number(transaction.purchase_time)).format(format_string)}`;
     const purchase_time_unix = transaction.purchase_time;
     const sell_time = transaction.sell_time && `${toMoment(Number(transaction.sell_time)).format(format_string)}`;
-    const payout = transaction.payout;
-    const sell_price = transaction.sell_price;
-    const buy_price = transaction.buy_price;
-    const profit_loss = formatMoney(currency, sell_price && buy_price ? Number(sell_price - buy_price) : 0, true);
+    const payout = transaction.payout ?? NaN;
+    const sell_price = transaction.sell_price ?? NaN;
+    const buy_price = transaction.buy_price ?? NaN;
+    const profit_loss = formatMoney(currency, Number(sell_price - buy_price), true);
     const display_name = getSymbolDisplayName(
         active_symbols,
         getMarketInformation(transaction.shortcode ?? '').underlying

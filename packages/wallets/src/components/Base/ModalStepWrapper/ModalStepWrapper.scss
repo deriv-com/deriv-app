@@ -5,7 +5,6 @@
 
     @include desktop {
         max-height: calc(var(--wallets-vh, 1vh) * 100 - 10rem);
-        overflow: auto;
     }
 
     @include mobile {
@@ -48,7 +47,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: var(--general-main-2, #ffffff);
         z-index: 1;
 
         &-close-icon {

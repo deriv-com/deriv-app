@@ -13,7 +13,6 @@ const IdentityCardDocumentUpload = () => {
     const handleDateChange = (formattedDate: string | null) => {
         setFormValues('identityCardExpiryDate', formattedDate);
     };
-
     return (
         <div className='wallets-identity-card-document-upload' data-testid='dt_identity-card-document-upload'>
             <WalletText>First, enter your Identity card number and the expiry date.</WalletText>
@@ -45,7 +44,8 @@ const IdentityCardDocumentUpload = () => {
                         fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
                         icon={<IdentityCardFront />}
                         maxSize={8388608}
-                        onFileChange={(file: File) => setFormValues('identityCardFront', file)}
+                        noClick
+                        onFileChange={(file?: File) => setFormValues('identityCardFront', file)}
                     />
                     <Dropzone
                         buttonText='Drop file or click here to upload'
@@ -54,7 +54,8 @@ const IdentityCardDocumentUpload = () => {
                         fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
                         icon={<IdentityCardBack />}
                         maxSize={8388608}
-                        onFileChange={(file: File) => setFormValues('identityCardBack', file)}
+                        noClick
+                        onFileChange={(file?: File) => setFormValues('identityCardBack', file)}
                     />
                 </div>
                 <DocumentRuleHints docType='identityCard' />

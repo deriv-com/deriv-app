@@ -7,28 +7,24 @@
     padding: 16px;
     border-radius: 10px;
 
-    .title {
-        margin-bottom: 16px;
-    }
-
-    .table {
+    &__table {
         display: flex;
         justify-content: space-between;
         flex-direction: column;
 
-        .row {
+        &-row {
             display: flex;
             justify-content: space-between;
             width: 100%;
             border-bottom: 1px solid rgba(246, 247, 248, 1);
             margin: 8px 0;
+        }
 
-            .cell {
-                display: flex;
-                justify-content: space-between;
-                flex-direction: column;
-                text-align: end;
-            }
+        &-cell {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            text-align: end;
         }
     }
 }

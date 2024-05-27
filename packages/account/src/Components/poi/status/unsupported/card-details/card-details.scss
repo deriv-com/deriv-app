@@ -59,7 +59,10 @@
     &__uploaders-wrap {
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
+
+        @include tablet-screen {
+            flex-wrap: nowrap;
+        }
 
         .dc-file-dropzone__message {
             width: 100%;
@@ -70,7 +73,7 @@
     &__uploader {
         position: relative;
         width: 100%;
-        max-width: 32.4rem;
+        max-width: 100%;
         height: 25rem;
         margin-bottom: 1.6rem;
 

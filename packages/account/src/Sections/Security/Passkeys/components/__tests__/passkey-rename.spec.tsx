@@ -2,20 +2,22 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { PasskeyRename } from '../passkey-rename';
+import { PasskeysStatusContainer } from '../passkeys-status-container';
 
 describe('PasskeyRename', () => {
     const init_passkey_name = 'init passkey_name';
     const new_passkey_name = 'new passkey name';
+    const mock_current_managed_passkey: React.ComponentProps<
+        typeof PasskeysStatusContainer
+    >['current_managed_passkey'] = { id: 777, name: init_passkey_name };
     const validation_error = 'Only 3-30 characters allowed.';
     const mockOnPrimaryButtonClick = jest.fn();
     const mockOnSecondaryButtonClick = jest.fn();
 
-    // TODO: extend testcases after renaming flow implementation
-
     it('renders PasskeyRename form correctly and the name is changed', async () => {
         render(
             <PasskeyRename
-                passkey_name={init_passkey_name}
+                current_managed_passkey={mock_current_managed_passkey}
                 onPrimaryButtonClick={mockOnPrimaryButtonClick}
                 onSecondaryButtonClick={mockOnSecondaryButtonClick}
             />
@@ -34,16 +36,19 @@ describe('PasskeyRename', () => {
         expect(input).not.toHaveValue(init_passkey_name);
 
         userEvent.click(screen.getByRole('button', { name: /save changes/i }));
-        userEvent.click(screen.getByRole('button', { name: /back/i }));
 
-        expect(mockOnPrimaryButtonClick).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(mockOnPrimaryButtonClick).toHaveBeenCalled();
+        });
+
+        userEvent.click(screen.getByRole('button', { name: /back/i }));
         expect(mockOnSecondaryButtonClick).toHaveBeenCalled();
     });
 
     it('renders PasskeyRename form correctly and check the validation for name', async () => {
         render(
             <PasskeyRename
-                passkey_name={init_passkey_name}
+                current_managed_passkey={mock_current_managed_passkey}
                 onPrimaryButtonClick={mockOnPrimaryButtonClick}
                 onSecondaryButtonClick={mockOnSecondaryButtonClick}
             />

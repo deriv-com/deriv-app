@@ -155,7 +155,7 @@ describe('Passkeys', () => {
         expect(Analytics.trackEvent).not.toHaveBeenCalled();
     });
 
-    it('renders existed passkeys correctly and triggers new passkey creation', async () => {
+    it('renders existed passkeys correctly and triggers new passkey creation', () => {
         (useGetPasskeysList as jest.Mock).mockReturnValue({
             passkeys_list: mock_passkeys_list,
         });

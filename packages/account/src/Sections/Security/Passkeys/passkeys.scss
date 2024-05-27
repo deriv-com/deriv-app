@@ -41,7 +41,10 @@
 
         &__description {
             &-back-button {
-                margin: 2.4rem 0 0 2.4rem;
+                margin-top: 2.4rem;
+                margin-inline-start: 2.4rem;
+                margin-inline-end: 0;
+                margin-bottom: 0;
             }
 
             &-card {
@@ -52,10 +55,10 @@
 
                 ul {
                     list-style: disc;
-                    padding-left: 1.2rem;
+                    padding-inline-start: 1.2rem;
 
                     li {
-                        margin-left: 0.8rem;
+                        margin-inline-start: 0.8rem;
 
                         &::marker {
                             font-size: 1.2rem;
@@ -92,10 +95,10 @@
 
                     ul {
                         list-style: disc;
-                        padding-left: 1.2rem;
+                        padding-inline-start: 1.2rem;
 
                         li {
-                            margin-left: 0.8rem;
+                            margin-inline-start: 0.8rem;
 
                             &::marker {
                                 font-size: 1rem;
@@ -136,6 +139,7 @@
 
         & > .dc-icon:first-child {
             margin-top: 0.4rem;
+            min-width: fit-content;
         }
 
         & > .dc-icon:last-child {
@@ -146,9 +150,59 @@
             border-bottom: none;
         }
 
-        &__passkey-type-icon {
-            margin-top: 0.4rem;
+        &__passkey {
+            &-type-icon {
+                margin-top: 0.4rem;
+            }
+
+            &-name {
+                word-break: break-word;
+            }
         }
+
+        .dc-dropdown-container {
+            min-width: unset;
+            margin-inline-start: auto;
+
+            .dc-dropdown__list {
+                inset-inline-start: -120px;
+
+                .dc-list {
+                    padding-top: 8px;
+                    padding-bottom: 8px;
+
+                    &--has-suffix-icon {
+                        width: 16.8rem;
+                    }
+
+                    &__item {
+                        padding-top: 8px;
+                        height: 4.8rem;
+
+                        &-text {
+                            padding-inline-start: 1.6rem;
+                        }
+
+                        &--disabled {
+                            display: none;
+                        }
+                    }
+                }
+            }
+
+            .dc-dropdown__display {
+                border: unset;
+            }
+        }
+    }
+
+    &-snackbar__container {
+        position: absolute;
+        bottom: 8.2rem;
+        margin-inline: auto;
+        left: 0;
+        right: 0;
+        max-width: 34.4rem;
     }
 }
 
@@ -171,7 +225,7 @@
 
         ul {
             list-style: disc;
-            padding-left: 1.6rem;
+            padding-inline-start: 1.6rem;
         }
     }
 }

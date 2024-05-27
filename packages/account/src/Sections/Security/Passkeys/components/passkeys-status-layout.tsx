@@ -1,11 +1,12 @@
 import React, { Fragment } from 'react';
 import classNames from 'classnames';
 import { Button, Text } from '@deriv/components';
+import { TCurrentManagedPasskey } from '../passkeys';
 import FormBody from '../../../../Components/form-body';
 import FormFooter from '../../../../Components/form-footer';
 
 export type TPasskeysButtonOnClicks = {
-    onPrimaryButtonClick: () => void;
+    onPrimaryButtonClick: (passkey_data?: Partial<TCurrentManagedPasskey>) => void;
     onSecondaryButtonClick?: () => void;
 };
 
@@ -13,9 +14,9 @@ type TPasskeysStatusLayout = {
     className?: string;
     description?: React.ReactNode;
     icon?: React.ReactElement;
-
     primary_button_disabled?: boolean;
     primary_button_text: React.ReactElement;
+    primary_button_type?: 'button' | 'submit';
     scroll_offset?: string;
     secondary_button_text?: React.ReactElement;
     title?: React.ReactElement;
@@ -30,6 +31,7 @@ export const PasskeysStatusLayout = ({
     onSecondaryButtonClick,
     primary_button_disabled = false,
     primary_button_text,
+    primary_button_type = 'button',
     scroll_offset = '22rem',
     secondary_button_text,
     title,
@@ -56,10 +58,10 @@ export const PasskeysStatusLayout = ({
                 </Button>
             )}
             <Button
-                type='button'
+                type={primary_button_type}
                 has_effect
                 primary
-                onClick={onPrimaryButtonClick}
+                onClick={primary_button_type === 'button' ? () => onPrimaryButtonClick?.() : undefined}
                 is_disabled={primary_button_disabled}
             >
                 {primary_button_text}

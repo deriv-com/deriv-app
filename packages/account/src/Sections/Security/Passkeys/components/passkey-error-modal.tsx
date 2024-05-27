@@ -5,7 +5,6 @@ import { TPasskeyError } from '../passkeys-configs';
 import { TServerError } from '../../../../Types';
 
 type TPasskeyErrorModal = {
-    // TODO: fix types for TServerError and TSocketError
     error: TPasskeyError;
     onButtonClick: () => void;
     is_modal_open: boolean;

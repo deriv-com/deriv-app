@@ -1,25 +1,27 @@
 import React from 'react';
-import { Formik } from 'formik';
+import { Form, Formik } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import { DerivLightIcEditPasskeyIcon } from '@deriv/quill-icons';
+import { TCurrentManagedPasskey } from '../passkeys';
 import { getPasskeyRenameValidationSchema } from '../passkeys-configs';
 import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status-layout';
 import FormInputField from '../../../../Components/forms/form-fields/form-input-field';
 
-// TODO: check the props for renaming
-type TPasskeyRename = { id?: number; passkey_name?: string } & TPasskeysButtonOnClicks;
+type TPasskeyRename = { current_managed_passkey: TCurrentManagedPasskey } & TPasskeysButtonOnClicks;
 
 type TInitialValues = { passkey_rename: string };
 
-export const PasskeyRename = ({ onPrimaryButtonClick, onSecondaryButtonClick, passkey_name = '' }: TPasskeyRename) => {
+export const PasskeyRename = ({
+    onPrimaryButtonClick,
+    onSecondaryButtonClick,
+    current_managed_passkey,
+}: TPasskeyRename) => {
     const form_initial_values: TInitialValues = {
-        passkey_rename: passkey_name,
+        passkey_rename: current_managed_passkey.name,
     };
 
-    // TODO: add api call for renaming passkey
-
-    const onSubmitValues = () => {
-        onPrimaryButtonClick();
+    const onSubmitValues = (values: TInitialValues) => {
+        onPrimaryButtonClick({ name: values.passkey_rename });
     };
 
     return (
@@ -28,19 +30,22 @@ export const PasskeyRename = ({ onPrimaryButtonClick, onSecondaryButtonClick, pa
             onSubmit={onSubmitValues}
             validationSchema={getPasskeyRenameValidationSchema()}
         >
-            {({ dirty, isValid }) => (
+            {({ dirty, isValid, values }) => (
                 <div className='passkeys'>
-                    <PasskeysStatusLayout
-                        icon={<DerivLightIcEditPasskeyIcon height='96px' width='96px' />}
-                        title={<Localize i18n_default_text='Edit passkey' />}
-                        onPrimaryButtonClick={onPrimaryButtonClick}
-                        onSecondaryButtonClick={onSecondaryButtonClick}
-                        primary_button_text={<Localize i18n_default_text='Save changes' />}
-                        secondary_button_text={<Localize i18n_default_text='Back' />}
-                        primary_button_disabled={!dirty || !isValid}
-                    >
-                        <FormInputField label={localize('Passkey rename')} name='passkey_rename' />
-                    </PasskeysStatusLayout>
+                    <Form>
+                        <PasskeysStatusLayout
+                            icon={<DerivLightIcEditPasskeyIcon height='96px' width='96px' />}
+                            title={<Localize i18n_default_text='Edit passkey' />}
+                            onPrimaryButtonClick={onPrimaryButtonClick}
+                            onSecondaryButtonClick={onSecondaryButtonClick}
+                            primary_button_text={<Localize i18n_default_text='Save changes' />}
+                            secondary_button_text={<Localize i18n_default_text='Back' />}
+                            primary_button_disabled={!dirty || !isValid}
+                            primary_button_type='submit'
+                        >
+                            <FormInputField autoFocus label={localize('Passkey rename')} name='passkey_rename' />
+                        </PasskeysStatusLayout>
+                    </Form>
                 </div>
             )}
         </Formik>

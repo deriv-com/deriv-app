@@ -441,13 +441,13 @@ export default class ClientStore extends BaseStore {
         );
 
         reaction(
-            () => [this.is_logged_in, this.is_authorize, this.is_passkey_supported, this.root_store.ui.is_mobile],
+            () => [this.is_logged_in, this.is_authorize, this.is_passkey_supported, this.root_store.ui?.is_mobile],
             () => {
                 if (
                     this.is_logged_in &&
                     this.is_authorize &&
                     this.is_passkey_supported &&
-                    this.root_store.ui.is_mobile
+                    this.root_store.ui?.is_mobile
                 ) {
                     this.fetchShouldShowEffortlessLoginModal();
                 }

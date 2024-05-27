@@ -21,15 +21,21 @@ jest.mock('../passkey-rename', () => ({
 
 describe('PasskeysStatusContainer', () => {
     const mockOnPrimaryButtonClick = jest.fn();
+    const mockOnonPasskeyMenuClick = jest.fn();
     const mockOnSecondaryButtonClick = jest.fn();
+    const mock_current_managed_passkey: React.ComponentProps<
+        typeof PasskeysStatusContainer
+    >['current_managed_passkey'] = { id: 777, name: 'test passkey name' };
 
     const renderComponent = (passkey_status: TPasskeysStatus) => {
         render(
             <PasskeysStatusContainer
+                current_managed_passkey={mock_current_managed_passkey}
                 passkey_status={passkey_status}
                 passkeys_list={[]}
                 onPrimaryButtonClick={mockOnPrimaryButtonClick}
                 onSecondaryButtonClick={mockOnSecondaryButtonClick}
+                onPasskeyMenuClick={mockOnonPasskeyMenuClick}
             />
         );
     };

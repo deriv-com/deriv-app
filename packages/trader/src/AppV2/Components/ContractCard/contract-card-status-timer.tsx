@@ -11,7 +11,7 @@ export type TContractCardStatusTimerProps = Pick<TPortfolioPosition['contract_in
     currentTick?: number | null;
     hasNoAutoExpiry?: boolean;
     isSold?: boolean;
-    serverTime: TRootStore['common']['server_time'];
+    serverTime?: TRootStore['common']['server_time'];
 };
 
 export const ContractCardStatusTimer = ({
@@ -27,9 +27,15 @@ export const ContractCardStatusTimer = ({
         if (tick_count) {
             return `${currentTick ?? 0}/${tick_count} ${getCardLabels().TICKS.toLowerCase()}`;
         }
-        return <RemainingTime end_time={date_expiry} getCardLabels={getCardLabels} start_time={serverTime} />;
+        return (
+            <RemainingTime
+                end_time={date_expiry}
+                getCardLabels={getCardLabels}
+                start_time={serverTime as moment.Moment}
+            />
+        );
     };
-    if (!date_expiry || serverTime.unix() > +date_expiry || isSold) {
+    if (!date_expiry || (serverTime as moment.Moment).unix() > +date_expiry || isSold) {
         return <CaptionText className='status'>{getCardLabels().CLOSED}</CaptionText>;
     }
     return (

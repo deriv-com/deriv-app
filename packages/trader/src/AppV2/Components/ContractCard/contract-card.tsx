@@ -31,7 +31,7 @@ type TContractCardProps = TContractCardStatusTimerProps & {
     onCancel?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
     onClose?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
     redirectTo?: string;
-    serverTime: TRootStore['common']['server_time'];
+    serverTime?: TRootStore['common']['server_time'];
 };
 
 const DIRECTION = {

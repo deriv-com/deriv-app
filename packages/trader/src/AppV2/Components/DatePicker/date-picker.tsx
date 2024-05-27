@@ -2,6 +2,7 @@ import React from 'react';
 import { ActionSheet, DatePicker } from '@deriv-com/quill-ui';
 import { toMoment } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { DEFAULT_DATE_FORMATTING_CONFIG } from 'AppV2/Utils/positions-utils';
 
 type TDateRangePicker = {
     handleDateChange: (values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean }) => void;
@@ -27,14 +28,11 @@ const DateRangePicker = ({ handleDateChange, isOpen, onClose, setCustomTimeRange
                 <ActionSheet.Content>
                     <DatePicker
                         className='date-picker__action-sheet'
+                        locale='en-GB'
                         selectRange
                         onFormattedDate={value => setChosenRangeString(value)}
                         onChange={value => setChosenRange(value)}
-                        optionsConfig={{
-                            day: '2-digit',
-                            month: 'short',
-                            year: 'numeric',
-                        }}
+                        optionsConfig={DEFAULT_DATE_FORMATTING_CONFIG}
                         tileDisabled={({ date }) => Date.parse(date.toDateString()) > Date.parse(toMoment().toString())}
                     />
                 </ActionSheet.Content>

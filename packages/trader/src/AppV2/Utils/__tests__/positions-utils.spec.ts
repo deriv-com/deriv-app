@@ -1,5 +1,5 @@
 import { TPortfolioPosition } from '@deriv/stores/types';
-import { filterPositions } from '../positions-utils';
+import { filterPositions, formatDate } from '../positions-utils';
 
 const mockedActivePositions = [
     {
@@ -274,5 +274,31 @@ describe('filterPositions', () => {
         ]);
 
         expect(filterPositions(mockedActivePositions, ['Turbos'])).toEqual([]);
+    });
+});
+
+describe('formatDate', () => {
+    it('should format passed date as per default config if nothing else was passed', () => {
+        expect(formatDate({ time: '15 May 2024 09:38:34' })).toEqual('15 May 2024');
+        expect(formatDate({ time: '2022-03-25' })).toEqual('25 Mar 2022');
+        expect(formatDate({ time: 'October 13, 2014 11:13:00' })).toEqual('13 Oct 2014');
+    });
+
+    it('should format passed date according to passed locale', () => {
+        const locale = 'en-US';
+        expect(formatDate({ time: '15 May 2024 09:38:34', locale })).toEqual('May 15, 2024');
+        expect(formatDate({ time: '2022-02-27', locale })).toEqual('Feb 27, 2022');
+        expect(formatDate({ time: 'September 3, 2014 12:13:00', locale })).toEqual('Sep 03, 2014');
+    });
+
+    it('should format passed date according to passed config', () => {
+        const dateFormattingConfig = {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        };
+        expect(formatDate({ time: '15 May 2024 09:38:34', dateFormattingConfig })).toEqual('15/05/2024');
+        expect(formatDate({ time: '2020-02-01', dateFormattingConfig })).toEqual('01/02/2020');
+        expect(formatDate({ time: 'May 1, 2014 12:13:00', dateFormattingConfig })).toEqual('01/05/2014');
     });
 });

@@ -161,6 +161,7 @@
 
         @include tablet-screen {
             max-width: 60rem;
+            padding: 0.8rem 0;
         }
     }
     &__stop-button,

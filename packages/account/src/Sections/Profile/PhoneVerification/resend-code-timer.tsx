@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, CaptionText } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
+import { useVerifyEmail } from '@deriv/hooks';
 
 type TResendCodeTimer = {
     resend_code_text: string;
@@ -19,6 +20,7 @@ const ResendCodeTimer = ({
     // TODO: calculate count_from and time units(secs or mins) using timestamp once mockApi is finalised
     // TODO: revist start timer logic and localizing the title
     const [timer, setTimer] = React.useState(count_from);
+    const { send } = useVerifyEmail('phone_number_verification');
     const initial_timer_title =
         resend_code_text === 'Resend code' ? `Resend code in ${timer}s` : `Didn’t get the code? (${timer}s)`;
     const [timer_title, setTimerTitle] = React.useState(initial_timer_title);
@@ -47,6 +49,7 @@ const ResendCodeTimer = ({
         if (resend_code_text !== 'Resend code') {
             setShouldShowDidntGetTheCodeModal(true);
         } else {
+            send();
             setTimer(count_from);
             setStartTimer(true);
         }

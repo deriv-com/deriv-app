@@ -131,7 +131,11 @@ const Redirect = observer(() => {
         }
         case 'payment_deposit': {
             if (has_wallet) {
-                history.push(routes.wallets_deposit);
+                if (client.loginid) {
+                    history.push(`${routes.wallets_deposit}?${client.loginid ? `&loginid=${client.loginid}` : ''}`);
+                } else {
+                    history.push(routes.wallets_deposit);
+                }
             } else {
                 history.push(routes.cashier_deposit);
             }
@@ -153,6 +157,8 @@ const Redirect = observer(() => {
                             client.loginid ? `&loginid=${client.loginid}` : ''
                         }`
                     );
+                } else if (client.loginid) {
+                    history.push(`${routes.wallets_withdrawal}?${client.loginid ? `&loginid=${client.loginid}` : ''}`);
                 } else {
                     history.push(routes.wallets_withdrawal);
                 }
@@ -164,7 +170,11 @@ const Redirect = observer(() => {
         }
         case 'payment_transfer': {
             if (has_wallet) {
-                history.push(routes.wallets_transfer);
+                if (client.loginid) {
+                    history.push(`${routes.wallets_transfer}?${client.loginid ? `&loginid=${client.loginid}` : ''}`);
+                } else {
+                    history.push(routes.wallets_transfer);
+                }
             } else {
                 history.push(routes.cashier_acc_transfer);
             }
@@ -173,7 +183,13 @@ const Redirect = observer(() => {
         }
         case 'payment_transactions': {
             if (has_wallet) {
-                history.push(routes.wallets_transactions);
+                if (client.loginid) {
+                    history.push(
+                        `${routes.wallets_transactions}?${client.loginid ? `&loginid=${client.loginid}` : ''}`
+                    );
+                } else {
+                    history.push(routes.wallets_transactions);
+                }
             } else {
                 history.push(routes.statement);
             }

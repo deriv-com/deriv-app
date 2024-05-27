@@ -8,7 +8,7 @@ import {
 } from '@deriv/quill-icons';
 import { WalletText } from '../../../../../components/Base';
 import { getDeeplinkUrl, getMobileAppInstallerUrl, getWebtraderUrl } from './constants';
-import './mt5-mobile-redirect-option.scss';
+import './MT5MobileRedirectOption.scss';
 
 type TMT5MobileRedirectOptionProps = {
     mt5TradeAccount: THooks.MT5AccountsList;

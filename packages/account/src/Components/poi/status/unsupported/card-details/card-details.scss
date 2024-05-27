@@ -18,6 +18,12 @@
         .account-form__footer {
             max-width: 68rem;
         }
+        @include mobile-or-tablet-screen {
+            .account-form__footer {
+                max-width: 100%;
+                align-items: center;
+            }
+        }
     }
     &__fields-content {
         flex: auto;
@@ -195,9 +201,19 @@
         .dc-btn:not(:last-of-type) {
             margin-right: 0.8rem;
         }
-        @include mobile-or-tablet-screen {
+
+        @include tablet-screen {
             height: auto;
             padding-bottom: unset;
+            width: 568px;
+            .dc-btn {
+                width: 50%;
+            }
+        }
+        @include mobile-screen {
+            height: auto;
+            padding-bottom: unset;
+            width: 100%;
 
             .dc-btn {
                 width: 50%;

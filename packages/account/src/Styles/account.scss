@@ -6,6 +6,9 @@ $MIN_HEIGHT_FLOATING: calc(
 
 .account {
     margin: 0 16px;
+    @include mobile-or-tablet-screen {
+        height: 100%;
+    }
 
     .dc-page-overlay__content {
         @include mobile-or-tablet-screen {
@@ -14,6 +17,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         @include tablet-screen {
             width: 60rem;
+            height: 100%;
         }
     }
 
@@ -74,6 +78,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     width: 68.5rem;
                     margin-inline-start: 6rem;
                     padding-top: 0;
+                    height: 100%;
                 }
             }
 
@@ -304,6 +309,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 .dc-list {
                     .dc-themed-scrollbars__autohide {
                         top: 1px;
+                        height: 100%;
                     }
                 }
             }
@@ -402,7 +408,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
 
         &__personal-details {
-            @include desktop {
+            @include desktop-screen {
                 .account__scrollbars_container {
                     padding-top: 2.4rem;
                     padding-bottom: 2.4rem;
@@ -769,7 +775,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
         &-leave-confirm,
         &-submit-success {
-            @include desktop {
+            @include desktop-screen {
                 .dc-btn--primary {
                     width: 13rem;
                     margin-left: 0.8rem;
@@ -1110,7 +1116,7 @@ $MIN_HEIGHT_FLOATING: calc(
             overflow-y: hidden;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             height: 100%;
         }
     }
@@ -1563,7 +1569,8 @@ $MIN_HEIGHT_FLOATING: calc(
 
     &,
     .account-form__footer {
-        max-width: 68rem;
+        max-width: 100%;
+        align-items: center;
     }
 
     .account__scrollbars_container {

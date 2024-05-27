@@ -13,7 +13,7 @@
         min-width: 32.8rem;
         min-height: 50rem;
         margin: auto;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             height: 100%;
         }
     }
@@ -161,6 +161,7 @@
 
                 @include mobile-or-tablet-screen {
                     padding-inline: 0;
+                    height: 100%;
                 }
 
                 &--exit {
@@ -316,15 +317,14 @@
                 flex-direction: row;
                 justify-content: center;
                 width: 100%;
-                // width:60rem;
                 left: 0;
+                align-items: center;
             }
 
             .back-btn {
                 margin-left: 8px;
 
                 @include tablet-screen {
-                    margin-left: 1.6rem;
                     width: 568px;
                 }
 
@@ -393,6 +393,7 @@
                         justify-content: space-between;
                     }
                 }
+
                 @include tablet-screen {
                     width: 100%;
                 }
@@ -738,6 +739,7 @@
         padding-bottom: 1.6rem;
 
         @include mobile-or-tablet-screen {
+            // min-height: unset;
             overflow-y: scroll;
             padding: 0 1.6rem;
 
@@ -759,11 +761,12 @@
             .proof-of-identity__submit-button {
                 @include mobile-or-tablet-screen {
                     width: 100%;
+                    // margin-inline: 1.6rem;
                 }
             }
 
             .form-body {
-                @include desktop-screen {
+                @include desktop {
                     z-index: 5;
                 }
             }
@@ -778,7 +781,7 @@
             height: 128px;
             margin-bottom: 2.6rem;
 
-            @include desktop-screen {
+            @include desktop {
                 margin-top: 5.2rem;
             }
 
@@ -851,7 +854,7 @@
         align-items: center;
         width: 100%;
 
-        @include mobile-or-tablet-screen {
+        @include mobile {
             flex-direction: column;
         }
     }
@@ -912,6 +915,7 @@
 
         .country-dropdown {
             height: 100%;
+            // min-height: 35.2rem;
         }
     }
 
@@ -990,13 +994,13 @@
         height: 100%;
 
         .idv-form {
-            @include desktop-screen {
+            @include desktop {
                 margin-bottom: 1.6rem;
             }
         }
 
         .account__scrollbars_container {
-            @include desktop-screen {
+            @include desktop {
                 padding-top: 0;
             }
         }

@@ -34,17 +34,19 @@
     }
 
     &__button {
+        min-width: 20rem;
         padding: 1.2rem 1.6rem;
         border-radius: $BORDER_RADIUS * 3;
 
         @include mobile {
+            min-width: 6.4rem;
             padding: 0.5rem 1.2rem;
         }
     }
 
     &__image {
         position: absolute;
-        right: 0;
+        inset-inline-end: 0;
         margin-inline-end: 1.2rem;
 
         @include mobile {

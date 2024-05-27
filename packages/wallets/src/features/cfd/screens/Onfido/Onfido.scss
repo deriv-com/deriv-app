@@ -6,7 +6,10 @@
     align-items: center;
     padding: 1.6rem 0;
     overflow-y: scroll;
-    max-height: calc(var(--wallets-vh, 1vh) * 100 - 23.5rem);
+
+    @include desktop {
+        max-height: calc(var(--wallets-vh, 1vh) * 100 - 23.5rem);
+    }
 
     @include mobile {
         width: auto;
@@ -23,9 +26,11 @@
     }
 
     &__content {
+        display: flex;
+        flex-direction: column;
+
         @include mobile {
             min-height: 47.2rem;
-            display: flex;
             justify-content: center;
         }
     }
@@ -33,6 +38,7 @@
     &__wrapper {
         position: relative;
         width: 100%;
+        min-height: 38.2rem;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -56,7 +62,7 @@
                 animation-name: animate-verified-message;
                 animation-duration: 200ms;
                 animation-fill-mode: forwards;
-                animation-delay: 2s;
+                animation-delay: 2.5s;
             }
         }
     }

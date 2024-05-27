@@ -5,7 +5,7 @@ import { InlineMessage } from '../../../../components';
 import { useFlow } from '../../../../components/FlowProvider';
 import { WalletsActionScreen } from '../../../../components/WalletsActionScreen';
 import POISubmittedIcon from '../../../../public/images/accounts/ic-poi-submitted.svg';
-import { DocumentUploadDetailsService } from '../../../accounts';
+import { VerifyDocumentDetails } from '../../../accounts';
 import './Onfido.scss';
 
 const Onfido = () => {
@@ -31,7 +31,7 @@ const Onfido = () => {
         >
             {!hasAlreadySubmitted && (
                 <div className='wallets-onfido__content'>
-                    <DocumentUploadDetailsService />
+                    <VerifyDocumentDetails />
                     <div
                         className={classNames('wallets-onfido__wrapper', {
                             'wallets-onfido__wrapper--animate': formValues.verifiedDocumentDetails,

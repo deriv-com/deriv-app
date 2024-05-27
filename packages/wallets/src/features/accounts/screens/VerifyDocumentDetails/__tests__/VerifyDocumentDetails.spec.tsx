@@ -3,7 +3,7 @@ import moment from 'moment';
 import { useSettings } from '@deriv/api-v2';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { FlowProvider, FlowTextField } from '../../../../../components';
-import DocumentUploadDetailsService from '../DocumentUploadDetailsService';
+import VerifyDocumentDetails from '../VerifyDocumentDetails';
 
 jest.mock('@deriv/api-v2', () => ({
     useSettings: jest.fn(),
@@ -32,7 +32,7 @@ describe('IDVDocumentUploadDetails', () => {
                     }}
                 >
                     {() => {
-                        return <DocumentUploadDetailsService />;
+                        return <VerifyDocumentDetails />;
                     }}
                 </FlowProvider>
             );
@@ -66,7 +66,7 @@ describe('IDVDocumentUploadDetails', () => {
                     }}
                 >
                     {() => {
-                        return <DocumentUploadDetailsService />;
+                        return <VerifyDocumentDetails />;
                     }}
                 </FlowProvider>
             );
@@ -94,7 +94,7 @@ describe('IDVDocumentUploadDetails', () => {
                     }}
                 >
                     {() => {
-                        return <DocumentUploadDetailsService />;
+                        return <VerifyDocumentDetails />;
                     }}
                 </FlowProvider>
             );

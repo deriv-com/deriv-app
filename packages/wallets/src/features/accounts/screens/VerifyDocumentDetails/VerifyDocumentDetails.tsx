@@ -7,9 +7,9 @@ import { DerivLightDobPoiIcon } from '@deriv/quill-icons';
 import { DatePicker, FlowTextField, InlineMessage, useFlow, WalletText } from '../../../../components';
 import unixToDateString from '../../../../utils/utils';
 import { dateOfBirthValidator, firstNameValidator, lastNameValidator } from '../../validations';
-import './DocumentUploadDetailsService.scss';
+import './VerifyDocumentDetails.scss';
 
-const DocumentUploadDetailsService = () => {
+const VerifyDocumentDetails = () => {
     const { data: getSettings, update } = useSettings();
     const { errors, formValues, setFormValues } = useFlow();
     const { dirty, validateForm } = useFormikContext();
@@ -22,12 +22,6 @@ const DocumentUploadDetailsService = () => {
     const formattedDateOfBirth = new Date(dateOfBirth * 1000);
     const firstName = getSettings?.first_name;
     const lastName = getSettings?.last_name;
-
-    // useEffect(() => {
-    //     return () => {
-    //         console.log('unmounted');
-    //     };
-    // }, []);
 
     useEffect(() => {
         setFormValues('firstName', getSettings?.first_name);
@@ -53,7 +47,6 @@ const DocumentUploadDetailsService = () => {
 
     useEffect(() => {
         if (formValues.verifiedDocumentDetails && dirty && isValid) {
-            // console.log('updating');
             update({
                 date_of_birth: formValues.dateOfBirth,
                 first_name: formValues.firstName,
@@ -72,22 +65,18 @@ const DocumentUploadDetailsService = () => {
         isValid,
     ]);
 
-    // useEffect(() => {
-    //     console.log(formValues);
-    // }, [formValues]);
-
-    if (formValues.verifiedDocumentDetails) return null;
+    if (formValues.verifiedDocumentDetails) return <div className='wallets-verify-document-details__dummy' />;
 
     return (
-        <div className='wallets-idv-document-details'>
+        <div className='wallets-verify-document-details'>
             <InlineMessage>
                 <WalletText size='sm'>
                     To avoid delays, enter your <strong>name</strong> and <strong>date of birth</strong> exactly as it
                     appears on your identity document.
                 </WalletText>
             </InlineMessage>
-            <div className='wallets-idv-document-details__body'>
-                <div className='wallets-idv-document-details__content'>
+            <div className='wallets-verify-document-details__body'>
+                <div className='wallets-verify-document-details__content'>
                     <FlowTextField
                         defaultValue={firstName}
                         disabled={formValues.verifiedDocumentDetails}
@@ -120,7 +109,7 @@ const DocumentUploadDetailsService = () => {
                         validationSchema={dateOfBirthValidator}
                     />
                 </div>
-                <div className='wallets-idv-document-details__sidenote'>
+                <div className='wallets-verify-document-details__sidenote'>
                     <WalletText size='xs' weight='bold'>
                         Example
                     </WalletText>
@@ -128,8 +117,8 @@ const DocumentUploadDetailsService = () => {
                 </div>
             </div>
             <div
-                className={classNames('wallets-idv-document-details__checkbox', {
-                    'wallets-idv-document-details__checkbox--disabled': !isValid,
+                className={classNames('wallets-verify-document-details__checkbox', {
+                    'wallets-verify-document-details__checkbox--disabled': !isValid,
                 })}
             >
                 <Field disabled={!isValid} id='idv-checkbox' name='verifiedDocumentDetails' type='checkbox' />
@@ -143,4 +132,4 @@ const DocumentUploadDetailsService = () => {
     );
 };
 
-export default DocumentUploadDetailsService;
+export default VerifyDocumentDetails;

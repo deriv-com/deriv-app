@@ -7,7 +7,7 @@ import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
 import { statusCodes } from '../../constants';
 import { requiredValidator } from '../../validations';
-import { DocumentUploadDetailsService } from '../DocumentUploadDetailsService';
+import { VerifyDocumentDetails } from '../VerifyDocumentDetails';
 import './IDVDocumentUpload.scss';
 
 type TErrorMessageProps = Exclude<THooks.POI['current']['status'], undefined>;
@@ -145,7 +145,7 @@ const IDVDocumentUpload = () => {
                 <div className='wallets-idv-document-upload__title'>
                     <WalletText weight='bold'>Details</WalletText>
                 </div>
-                <DocumentUploadDetailsService />
+                <VerifyDocumentDetails />
             </div>
         </div>
     );

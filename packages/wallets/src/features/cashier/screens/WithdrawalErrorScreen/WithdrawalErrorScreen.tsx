@@ -1,14 +1,15 @@
 import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
+import { useHistory } from 'react-router-dom';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { TSocketError } from '@deriv/api-v2/types';
 import { WalletButton, WalletsErrorScreen } from '../../../../components';
 import { CryptoWithdrawalErrorCodes } from '../../../../constants/errorCodes';
 
 type TProps = {
-    currency?: string;
     error: TSocketError<'cashier'>['error'];
-    resetError: VoidFunction;
-    setResendEmail: React.Dispatch<React.SetStateAction<boolean>>;
+    resetError?: VoidFunction;
+    setResendEmail?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type TErrorContent = {
@@ -22,7 +23,11 @@ type TErrorContent = {
 
 type TErrorCodeHandlers = Record<string, TErrorContent>;
 
-const WithdrawalErrorScreen: React.FC<TProps> = ({ currency, error, resetError, setResendEmail }) => {
+const WithdrawalErrorScreen: React.FC<TProps> = ({ error, resetError, setResendEmail }) => {
+    const history = useHistory();
+    const { data } = useActiveWalletAccount();
+    const currency = data?.currency;
+
     const defaultContent: TErrorContent = {
         buttonText: 'Try again',
         buttonVariant: 'ghost',
@@ -38,14 +43,24 @@ const WithdrawalErrorScreen: React.FC<TProps> = ({ currency, error, resetError, 
             buttonVariant: 'contained',
             message: 'The verification link you used is invalid or expired. Please request for a new one.',
             onClick: () => {
-                resetError();
-                setResendEmail(true);
+                resetError?.();
+                setResendEmail?.(true);
             },
             title: 'Email verification failed',
         },
         [CryptoWithdrawalErrorCodes.CryptoInvalidAddress]: {
             ...defaultContent,
             onClick: resetError,
+            title: 'Error',
+        },
+        [CryptoWithdrawalErrorCodes.CryptoLimitAgeVerified]: {
+            ...defaultContent,
+            buttonText: 'Verify identity',
+            buttonVariant: 'contained',
+            onClick: () => {
+                // @ts-expect-error the following link is not part of wallets routes config
+                history.push('/account/proof-of-identity');
+            },
             title: 'Error',
         },
         [CryptoWithdrawalErrorCodes.SuspendedCurrency]: {

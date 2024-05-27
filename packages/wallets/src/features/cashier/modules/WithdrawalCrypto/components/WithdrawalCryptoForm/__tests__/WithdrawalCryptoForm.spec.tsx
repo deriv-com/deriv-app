@@ -54,6 +54,7 @@ const mockValues = {
     isClientVerified: false,
     requestCryptoWithdrawal: jest.fn(),
     serverTime: 123456789,
+    setCurrencyCode: jest.fn(),
 };
 
 describe('WithdrawalCryptoForm', () => {

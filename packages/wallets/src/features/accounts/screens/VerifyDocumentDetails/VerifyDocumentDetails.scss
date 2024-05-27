@@ -58,9 +58,25 @@
         flex: 1;
         gap: 1.6rem;
 
-        & > .wallets-textfield {
-            max-width: 35.9rem;
+        @include mobile {
+            align-items: center;
         }
+
+        & .wallets-textfield {
+            max-width: 35.9rem;
+
+            @include mobile {
+                max-width: 100%;
+            }
+        }
+
+        // & > .wallets-datepicker {
+        //     max-width: 35.9rem;
+
+        //     @include mobile {
+        //         max-width: 100%;
+        //     }
+        // }
     }
 
     &__sidenote {

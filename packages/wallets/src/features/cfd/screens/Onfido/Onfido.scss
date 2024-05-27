@@ -5,33 +5,23 @@
     flex-direction: column;
     align-items: center;
     padding: 1.6rem 0;
-    overflow-y: scroll;
 
     @include desktop {
         max-height: calc(var(--wallets-vh, 1vh) * 100 - 23.5rem);
     }
 
     @include mobile {
-        width: auto;
-        height: 100%;
+        width: 100%;
         padding: 1.6rem;
-
-        // stylelint-disable-next-line selector-class-pattern
-        & .onfido-sdk-ui-Modal-inner {
-            margin-inline: 3.9rem;
-            width: 32.8rem;
-            min-height: 38.2rem;
-            height: 60%; // height from figma is too small so make it relative
-        }
     }
 
     &__content {
+        width: 100%;
         display: flex;
         flex-direction: column;
 
         @include mobile {
             min-height: 47.2rem;
-            justify-content: center;
         }
     }
 
@@ -45,8 +35,18 @@
         transition: all 1s ease;
 
         &-overlay {
+            position: relative;
+            width: 100%;
+
             &--disabled {
                 opacity: 0.5;
+            }
+
+            // stylelint-disable-next-line selector-class-pattern
+            & .onfido-sdk-ui-Modal-inner {
+                border-radius: 8px;
+                min-height: 62rem;
+                height: 60%; // height from figma is too small so make it relative
             }
         }
 

@@ -85,6 +85,7 @@ const VerifyDocumentDetails = () => {
                         name='firstName'
                         showMessage
                         validationSchema={firstNameValidator}
+                        width='100%'
                     />
                     <FlowTextField
                         defaultValue={lastName}
@@ -94,6 +95,7 @@ const VerifyDocumentDetails = () => {
                         name='lastName'
                         showMessage
                         validationSchema={lastNameValidator}
+                        width='100%'
                     />
                     <DatePicker
                         defaultValue={unixToDateString(formattedDateOfBirth)}

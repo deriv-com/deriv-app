@@ -6,10 +6,11 @@ import { formatDate } from 'AppV2/Utils/positions-utils';
 import ContractCardList from './contract-card-list';
 
 type TContractCardsSections = {
+    onScroll?: (e: React.UIEvent<HTMLDivElement>) => void;
     positions?: (TClosedPosition | TPortfolioPosition)[];
 };
 
-const ContractCardsSections = ({ positions }: TContractCardsSections) => {
+const ContractCardsSections = ({ onScroll, positions }: TContractCardsSections) => {
     const dates = positions?.map(element => {
         const sellTime = element.contract_info.sell_time;
         return sellTime && formatDate({ time: sellTime });
@@ -19,7 +20,7 @@ const ContractCardsSections = ({ positions }: TContractCardsSections) => {
 
     if (!positions?.length) return null;
     return (
-        <div className='contract-cards-sections'>
+        <div className='contract-cards-sections' onScroll={onScroll}>
             {uniqueDates.map(date => (
                 <div className='contract-cards-section' key={date}>
                     <Text as='p' className='contract-cards-section__title' bold size='sm'>

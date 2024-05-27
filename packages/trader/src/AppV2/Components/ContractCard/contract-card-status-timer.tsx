@@ -1,7 +1,7 @@
 import React from 'react';
 import { TPortfolioPosition } from '@deriv/stores/types';
 import { Localize } from '@deriv/translations';
-import { CaptionText } from '@deriv-com/quill-ui';
+import { Tag } from '@deriv-com/quill-ui';
 import { LabelPairedStopwatchCaptionRegularIcon } from '@deriv/quill-icons';
 import { getCardLabels } from '@deriv/shared';
 import { RemainingTime } from '@deriv/components';
@@ -29,6 +29,7 @@ export const ContractCardStatusTimer = ({
         }
         return (
             <RemainingTime
+                as='span'
                 end_time={date_expiry}
                 getCardLabels={getCardLabels}
                 start_time={serverTime as moment.Moment}
@@ -36,13 +37,16 @@ export const ContractCardStatusTimer = ({
         );
     };
     if (!date_expiry || (serverTime as moment.Moment).unix() > +date_expiry || isSold) {
-        return <CaptionText className='status'>{getCardLabels().CLOSED}</CaptionText>;
+        return <Tag className='status' label={getCardLabels().CLOSED} variant='custom' color='custom' size='sm' />;
     }
     return (
-        // TODO: when <Tag /> is exported from quill-ui, use it instead
-        <div className='timer'>
-            <LabelPairedStopwatchCaptionRegularIcon />
-            <CaptionText as='div'>{getDisplayedDuration()}</CaptionText>
-        </div>
+        <Tag
+            className='timer'
+            icon={LabelPairedStopwatchCaptionRegularIcon}
+            label={getDisplayedDuration()}
+            variant='custom'
+            color='custom'
+            size='sm'
+        />
     );
 };

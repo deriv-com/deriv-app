@@ -8,7 +8,6 @@ import {
     getCardLabels,
     getCurrentTick,
     getMarketName,
-    getTotalProfit,
     getTradeTypeName,
     isEnded,
     isHighLow,
@@ -20,6 +19,7 @@ import { ContractCardStatusTimer, TContractCardStatusTimerProps } from './contra
 import { BinaryLink } from 'App/Components/Routes';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 import { TRootStore } from 'Types';
+import { getProfit } from 'AppV2/Utils/positions-utils';
 
 type TContractCardProps = TContractCardStatusTimerProps & {
     className?: string;
@@ -45,7 +45,7 @@ const swipeConfig = {
 };
 
 const ContractCard = ({
-    className,
+    className = 'contract-card',
     contractInfo,
     currency,
     hasActionButtons,
@@ -57,6 +57,8 @@ const ContractCard = ({
     serverTime,
 }: TContractCardProps) => {
     const [isDeleted, setIsDeleted] = React.useState(false);
+    const [isClosing, setIsClosing] = React.useState(false);
+    const [isCanceling, setIsCanceling] = React.useState(false);
     const [shouldShowButtons, setShouldShowButtons] = React.useState(false);
     const { buy_price, contract_type, display_name, sell_time, shortcode } = contractInfo;
     const contract_main_title = getTradeTypeName(contract_type ?? '', {
@@ -70,12 +72,8 @@ const ContractCard = ({
     const symbolName =
         'underlying_symbol' in contractInfo ? getMarketName(contractInfo.underlying_symbol ?? '') : display_name;
     const isMultiplier = isMultiplierContract(contract_type);
-    const isSold = isEnded(contractInfo as TContractInfo);
-    const totalProfit =
-        (contractInfo as TClosedPosition['contract_info']).profit_loss ??
-        (isMultiplierContract(contract_type)
-            ? getTotalProfit(contractInfo as TContractInfo)
-            : (contractInfo as TContractInfo).profit);
+    const isSold = !!sell_time || isEnded(contractInfo as TContractInfo);
+    const totalProfit = getProfit(contractInfo);
     const validToCancel = isValidToCancel(contractInfo as TContractInfo);
     const validToSell = isValidToSell(contractInfo as TContractInfo) && !isSellRequested;
 
@@ -93,7 +91,13 @@ const ContractCard = ({
     const handleClose = (e: React.MouseEvent<HTMLButtonElement>, shouldCancel?: boolean) => {
         e.preventDefault();
         e.stopPropagation();
-        shouldCancel ? onCancel?.(e) : onClose?.(e);
+        if (shouldCancel) {
+            onCancel?.(e);
+            setIsCanceling(true);
+        } else {
+            onClose?.(e);
+            setIsClosing(true);
+        }
     };
 
     React.useEffect(() => {
@@ -104,10 +108,10 @@ const ContractCard = ({
 
     if (!contract_type) return null;
     return (
-        <div className={classNames('contract-card-wrapper', { deleted: isDeleted })}>
+        <div className={classNames(`${className}-wrapper`, { deleted: isDeleted })}>
             <BinaryLink
                 {...(hasActionButtons ? swipeHandlers : {})}
-                className={classNames('contract-card', className, {
+                className={classNames(className, {
                     'show-buttons': shouldShowButtons,
                     'has-cancel-button': validToCancel,
                     lost: Number(totalProfit) < 0,
@@ -117,10 +121,10 @@ const ContractCard = ({
                 onDragStart={e => e.preventDefault()}
                 to={redirectTo}
             >
-                <div className='body'>
-                    <div className='details'>
-                        <IconTradeTypes className='trade-type__icon' type={contract_type ?? ''} size={32} />
-                        <div className='title'>
+                <div className={`${className}__body`}>
+                    <div className={`${className}__details`}>
+                        <IconTradeTypes className='trade-type-icon' type={contract_type ?? ''} size={32} />
+                        <div className={`${className}__title`}>
                             <Text className='trade-type' size='sm'>
                                 {tradeTypeName}
                             </Text>
@@ -136,11 +140,11 @@ const ContractCard = ({
                         <ContractCardStatusTimer
                             currentTick={currentTick}
                             hasNoAutoExpiry={isMultiplier}
-                            isSold={!!sell_time || isSold}
+                            isSold={isSold}
                             serverTime={serverTime}
                             {...contractInfo}
                         />
-                        <Text className='total-profit' size='sm'>
+                        <Text className='profit' size='sm'>
                             <Money amount={totalProfit} currency={currency} has_sign show_currency />
                         </Text>
                     </div>
@@ -149,25 +153,31 @@ const ContractCard = ({
                     <div className='buttons'>
                         {validToCancel && (
                             <button
-                                className={classNames('icon', 'cancel', { loading: isSellRequested })}
-                                aria-label='cancel'
-                                disabled={Number(totalProfit) >= 0}
+                                className={classNames({ loading: isSellRequested && isCanceling })}
+                                disabled={Number((contractInfo as TContractInfo).profit) >= 0}
                                 onClick={e => handleClose(e, true)}
                             >
-                                <CaptionText bold as='div'>
-                                    {isSellRequested ? <div className='circle-loader' /> : getCardLabels().CANCEL}
-                                </CaptionText>
+                                {isSellRequested && isCanceling ? (
+                                    <div className='circle-loader' />
+                                ) : (
+                                    <CaptionText bold as='div' className='label'>
+                                        {getCardLabels().CANCEL}
+                                    </CaptionText>
+                                )}
                             </button>
                         )}
                         <button
-                            className={classNames('icon', 'close', { loading: isSellRequested })}
-                            aria-label='close'
+                            className={classNames({ loading: isSellRequested && isClosing })}
                             disabled={!validToSell}
                             onClick={handleClose}
                         >
-                            <CaptionText bold as='div'>
-                                {isSellRequested ? <div className='circle-loader' /> : getCardLabels().CLOSE}
-                            </CaptionText>
+                            {isSellRequested && isClosing ? (
+                                <div className='circle-loader' />
+                            ) : (
+                                <CaptionText bold as='div' className='label'>
+                                    {getCardLabels().CLOSE}
+                                </CaptionText>
+                            )}
                         </button>
                     </div>
                 )}

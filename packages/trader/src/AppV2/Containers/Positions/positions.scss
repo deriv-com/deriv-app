@@ -4,6 +4,7 @@ $TABS_HEIGHT: 4.8rem;
 .positions-page {
     height: 100%;
     background-color: var(--core-color-solid-slate-75);
+    position: relative;
 
     .tab-list--container {
         display: block;
@@ -46,5 +47,29 @@ $TABS_HEIGHT: 4.8rem;
     }
     .initial-loader {
         height: 100%;
+    }
+    .total-profit-loss {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        padding: var(--core-spacing-400) var(--core-spacing-800) 0 var(--core-spacing-800);
+
+        &.bottom {
+            position: absolute;
+            inset-inline-start: 0;
+            inset-block-end: 0;
+            z-index: 1;
+            background-color: var(--component-modal-bg);
+            box-shadow: var(--core-elevation-shadow-210);
+            padding: var(--core-spacing-400) var(--core-spacing-800);
+        }
+        &__amount {
+            &.positive {
+                color: var(--core-color-solid-green-600);
+            }
+            &.negative {
+                color: var(--core-color-solid-red-600);
+            }
+        }
     }
 }

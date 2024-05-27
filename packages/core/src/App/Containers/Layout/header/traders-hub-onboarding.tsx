@@ -14,8 +14,8 @@ const TradersHubOnboarding = observer(() => {
 
     const onClickHandler = () => {
         setWalletsOnboarding('started');
-        if (history.location.pathname !== routes.wallets) {
-            history.push(routes.wallets);
+        if (history.location.pathname !== routes.traders_hub) {
+            history.push(routes.traders_hub);
         }
     };
 

@@ -50,9 +50,9 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
 
     const { location } = useHistory();
     const toAccountLoginId =
-        location.pathname === '/wallets/cashier/transfer' ? location.state?.toAccountLoginId : undefined;
+        location.pathname === '/wallet/account-transfer' ? location.state?.toAccountLoginId : undefined;
     const shouldDefaultUSDWallet =
-        location.pathname === '/wallets/cashier/transfer' ? location.state?.shouldSelectDefaultWallet : false;
+        location.pathname === '/wallet/account-transfer' ? location.state?.shouldSelectDefaultWallet : false;
 
     const toDefaultAccount = useMemo(
         () => toAccountList.walletAccounts.find(wallet => wallet.currency === 'USD'),

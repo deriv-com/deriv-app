@@ -13,7 +13,7 @@ export type TContractCardListProps = {
     onClickSell?: (contractId: number) => void;
     positions?: (TPortfolioPosition | TClosedPosition)[];
     setHasButtonsDemo?: React.Dispatch<React.SetStateAction<boolean>>;
-    serverTime: TRootStore['common']['server_time'];
+    serverTime?: TRootStore['common']['server_time'];
 };
 
 const ContractCardList = ({

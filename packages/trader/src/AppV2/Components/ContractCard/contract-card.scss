@@ -224,3 +224,15 @@
         }
     }
 }
+
+.contract-cards {
+    &-sections {
+        padding-top: var(--core-spacing-400);
+    }
+
+    &-section {
+        &__title {
+            padding-inline: var(--core-spacing-800);
+        }
+    }
+}

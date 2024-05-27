@@ -5,7 +5,7 @@ import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { EmptyPositions, TEmptyPositionsProps } from 'AppV2/Components/EmptyPositions';
 import { TPortfolioPosition } from '@deriv/stores/types';
-import { ContractCardList } from 'AppV2/Components/ContractCard';
+import { ContractCardList, ContractCardsSections } from 'AppV2/Components/ContractCard';
 import { ContractTypeFilter, TimeFilter } from 'AppV2/Components/Filter';
 import { filterPositions } from '../../Utils/positions-utils';
 import { TReportsStore, useReportsStore } from '../../../../../reports/src/Stores/useReportsStores';
@@ -83,7 +83,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     if (isLoading || (!shouldShowContractCards && !shouldShowEmptyMessage)) return <Loading />;
     return (
         <div className={`positions-page__${isClosedTab ? 'closed' : 'open'}`}>
-            <div className='positions-page__container'>
+            <React.Fragment>
                 {!hasNoPositions && (
                     <div className='positions-page__filter__wrapper'>
                         {isClosedTab && (
@@ -102,11 +102,14 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
                         />
                     </div>
                 )}
-            </div>
+            </React.Fragment>
             {shouldShowEmptyMessage ? (
                 <EmptyPositions isClosedTab={isClosedTab} noMatchesFound={noMatchesFound} />
             ) : (
-                shouldShowContractCards && (
+                shouldShowContractCards &&
+                (isClosedTab ? (
+                    <ContractCardsSections positions={filteredPositions} />
+                ) : (
                     <ContractCardList
                         currency={currency}
                         hasButtonsDemo={hasButtonsDemo}
@@ -116,7 +119,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
                         setHasButtonsDemo={setHasButtonsDemo}
                         serverTime={server_time}
                     />
-                )
+                ))
             )}
         </div>
     );

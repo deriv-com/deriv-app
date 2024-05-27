@@ -24,7 +24,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const history = useHistory();
     const { client, common, ui } = useStore();
     const { is_mobile } = ui;
-    const { has_wallet, logout } = client;
+    const { logout } = client;
     const { is_from_derivgo } = common;
 
     const passkeysMenuCloseActionEventTrack = React.useCallback(() => {
@@ -47,8 +47,8 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
             passkeysMenuCloseActionEventTrack();
         }
 
-        has_wallet ? history.push(shared_routes.wallets) : history.push(shared_routes.traders_hub);
-    }, [history, has_wallet]);
+        history.push(shared_routes.traders_hub);
+    }, [history]);
 
     //@ts-expect-error as component type conflicts with VerticalTab type
     const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });

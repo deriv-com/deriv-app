@@ -22,7 +22,7 @@ const WalletsUpgradeLogoutModal = observer(() => {
                     secure: true,
                 });
                 logout().then(() => {
-                    window.location.href = routes.wallets;
+                    window.location.href = routes.traders_hub;
                     redirectToLogin(false, getLanguage());
                 });
             }}

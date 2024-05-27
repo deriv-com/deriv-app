@@ -20,12 +20,6 @@
             background-color: var(--system-light-6-hover-background, #e6e9e9);
             border-radius: 0.8rem;
         }
-
-        &--disabled {
-            &:hover {
-                cursor: not-allowed;
-            }
-        }
     }
 
     @include mobile {

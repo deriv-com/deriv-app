@@ -81,7 +81,8 @@ export const getDeeplinkUrl = ({ mt5TradeAccount }) => {
 };
 
 export const getMobileAppInstallerUrl = async ({ mt5TradeAccount }) => {
-    const os = await OSDetectionUtils();
+    const os = await OSDetectionUtils.mobileOSDetectAsync();
+
     if (os === 'iOS') {
         return mt5TradeAccount?.white_label_links?.ios;
     } else if (os === 'huawei') {

@@ -189,7 +189,7 @@
         flex-direction: column;
         gap: var(--core-spacing-400);
         width: inherit;
-        padding: var(--core-spacing-400);
+        padding-inline: var(--core-spacing-400);
         overflow-y: scroll;
 
         &--has-buttons-demo {
@@ -228,13 +228,16 @@
 
 .contract-cards {
     &-sections {
-        padding-top: var(--core-spacing-400);
         overflow-y: scroll;
     }
 
     &-section {
         &__title {
-            padding-inline: var(--core-spacing-800);
+            padding: var(--core-spacing-400) var(--core-spacing-800);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background-color: var(--core-color-solid-slate-75);
         }
     }
 }

@@ -1,4 +1,5 @@
 import React, { ComponentProps } from 'react';
+import classNames from 'classnames';
 import './TradingAccountCard.scss';
 
 type TProps = {
@@ -17,7 +18,9 @@ const TradingAccountCard: React.FC<React.PropsWithChildren<TProps>> = ({
 }) => {
     return (
         <button
-            className='wallets-trading-account-card'
+            className={classNames('wallets-trading-account-card', {
+                'wallets-trading-account-card--disabled': disabled,
+            })}
             data-testid='dt_wallets_trading_account_card'
             disabled={disabled}
             onClick={onClick}

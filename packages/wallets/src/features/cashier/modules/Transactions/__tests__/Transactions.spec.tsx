@@ -55,7 +55,7 @@ describe('Transactions', () => {
         });
         (useCurrencyConfig as jest.Mock).mockReturnValue({ isLoading: false });
         (useHistory as jest.Mock).mockReturnValue({
-            location: { pathname: '/wallets/cashier/transactions' },
+            location: { pathname: '/wallet/transactions' },
         });
         render(<Transactions />);
 
@@ -70,7 +70,7 @@ describe('Transactions', () => {
         });
         (useCurrencyConfig as jest.Mock).mockReturnValue({ isLoading: false });
         (useHistory as jest.Mock).mockReturnValue({
-            location: { pathname: '/wallets/cashier/transactions', state: { showPending: true } },
+            location: { pathname: '/wallet/transactions', state: { showPending: true } },
         });
         render(<Transactions />);
 
@@ -125,7 +125,7 @@ describe('Transactions', () => {
         (useCurrencyConfig as jest.Mock).mockReturnValue({ isLoading: false });
         (useHistory as jest.Mock).mockReturnValue({
             location: {
-                pathname: '/wallets/cashier/transactions',
+                pathname: '/wallet/transactions',
                 state: { showPending: true, transactionType: 'invalidFilter' },
             },
         });
@@ -146,7 +146,7 @@ describe('Transactions', () => {
         (useCurrencyConfig as jest.Mock).mockReturnValue({ isLoading: false });
         (useHistory as jest.Mock).mockReturnValue({
             location: {
-                pathname: '/wallets/cashier/transactions',
+                pathname: '/wallet/transactions',
                 state: { showPending: false, transactionType: 'invalidFilter' },
             },
         });

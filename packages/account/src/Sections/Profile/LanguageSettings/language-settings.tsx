@@ -1,17 +1,16 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { localize, getAllowedLanguages } from '@deriv/translations';
-import { useStoreWalletAccountsList } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { localize, getAllowedLanguages } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import LanguageRadioButton from 'Components/language-settings';
 import { useDevice } from '@deriv-com/ui';
 
 const LanguageSettings = observer(() => {
-    const { common } = useStore();
+    const { client, common } = useStore();
+    const { has_wallet } = client;
     const { changeSelectedLanguage, current_language } = common;
-    const { has_wallet } = useStoreWalletAccountsList();
     const { isDesktop } = useDevice();
 
     if (!isDesktop || has_wallet) {

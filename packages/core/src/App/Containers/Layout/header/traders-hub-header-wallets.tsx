@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, StaticUrl } from '@deriv/components';
 import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
-import { routes, platforms, formatMoney } from '@deriv/shared';
+import { routes, platforms, formatMoney, isTabletOs } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { MenuLinks } from 'App/Components/Layout/Header';
@@ -25,17 +25,8 @@ type TPlatforms = typeof platforms;
 
 const TradersHubHeaderWallets = observer(() => {
     const { client, common, traders_hub, ui } = useStore();
-    const {
-        account_type,
-        balance,
-        country_standpoint,
-        currency,
-        has_any_real_account,
-        is_eu,
-        is_logged_in,
-        is_mt5_allowed,
-        is_virtual,
-    } = client;
+    const { account_type, balance, currency, has_any_real_account, is_eu, is_logged_in, is_mt5_allowed, is_virtual } =
+        client;
     const { platform } = common;
     const { modal_data } = traders_hub;
     const {
@@ -53,6 +44,12 @@ const TradersHubHeaderWallets = observer(() => {
     const cashier_routes = pathname.startsWith(routes.cashier);
     const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
     const account_balance = formatMoney(currency, balance ?? '', true);
+
+    const accountSettings = (
+        <BinaryLink className='traders-hub-header__setting' to={routes.personal_details}>
+            <Icon icon='IcUserOutline' size={20} />
+        </BinaryLink>
+    );
 
     const filterPlatformsForClients = (payload: TPlatformConfig) =>
         payload.filter(config => {
@@ -122,24 +119,25 @@ const TradersHubHeaderWallets = observer(() => {
                         <div className='traders-hub-header__menu-right--items--notifications'>
                             <ShowNotifications />
                         </div>
-                        <Popover
-                            classNameBubble='account-settings-toggle__tooltip'
-                            alignment='bottom'
-                            message={<Localize i18n_default_text='Manage account settings' />}
-                            should_disable_pointer_events
-                            zIndex={'9999'}
-                        >
-                            <BinaryLink className='traders-hub-header__setting' to={routes.personal_details}>
-                                <Icon icon='IcUserOutline' size={20} />
-                            </BinaryLink>
-                        </Popover>
+                        {isTabletOs ? (
+                            accountSettings
+                        ) : (
+                            <Popover
+                                classNameBubble='account-settings-toggle__tooltip'
+                                alignment='bottom'
+                                message={<Localize i18n_default_text='Manage account settings' />}
+                                should_disable_pointer_events
+                                zIndex='9999'
+                            >
+                                {accountSettings}
+                            </Popover>
+                        )}
                         {cashier_routes && (
                             <div className='traders-hub-header__menu-right--items--account-toggle'>
                                 <AccountInfo
                                     acc_switcher_disabled_message={account_switcher_disabled_message}
                                     account_type={account_type}
                                     balance={account_balance}
-                                    country_standpoint={country_standpoint}
                                     currency={currency}
                                     is_dialog_on={is_accounts_switcher_on}
                                     is_disabled={false}
@@ -166,7 +164,6 @@ const TradersHubHeaderWallets = observer(() => {
                                         acc_switcher_disabled_message={account_switcher_disabled_message}
                                         account_type={account_type}
                                         balance={account_balance}
-                                        country_standpoint={country_standpoint}
                                         currency={currency}
                                         is_dialog_on={is_accounts_switcher_on}
                                         is_disabled={false}

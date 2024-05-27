@@ -21,7 +21,6 @@ export const ConnectedAppsTable = ({ connectedApps, handleToggleModal }: TConnec
         <Table
             columns={CONNECTED_APPS_HEADER}
             data={connectedAppsRows ?? []}
-            isFetching={false}
             loadMoreFunction={() => {
                 //[TODO]: Add load more function
             }}

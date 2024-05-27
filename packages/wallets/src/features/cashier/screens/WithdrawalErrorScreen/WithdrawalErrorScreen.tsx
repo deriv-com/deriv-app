@@ -1,5 +1,6 @@
 import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
+import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { TSocketError } from '@deriv/api-v2/types';
 import { WalletButton, WalletsErrorScreen } from '../../../../components';
@@ -23,6 +24,7 @@ type TErrorContent = {
 type TErrorCodeHandlers = Record<string, TErrorContent>;
 
 const WithdrawalErrorScreen: React.FC<TProps> = ({ error, resetError, setResendEmail }) => {
+    const history = useHistory();
     const { data } = useActiveWalletAccount();
     const currency = data?.currency;
 
@@ -49,6 +51,16 @@ const WithdrawalErrorScreen: React.FC<TProps> = ({ error, resetError, setResendE
         [CryptoWithdrawalErrorCodes.CryptoInvalidAddress]: {
             ...defaultContent,
             onClick: resetError,
+            title: 'Error',
+        },
+        [CryptoWithdrawalErrorCodes.CryptoLimitAgeVerified]: {
+            ...defaultContent,
+            buttonText: 'Verify identity',
+            buttonVariant: 'contained',
+            onClick: () => {
+                // @ts-expect-error the following link is not part of wallets routes config
+                history.push('/account/proof-of-identity');
+            },
             title: 'Error',
         },
         [CryptoWithdrawalErrorCodes.SuspendedCurrency]: {

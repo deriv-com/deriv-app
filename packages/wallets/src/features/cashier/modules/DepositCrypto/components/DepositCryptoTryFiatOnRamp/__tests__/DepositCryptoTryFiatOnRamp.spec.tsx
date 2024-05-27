@@ -18,13 +18,13 @@ describe('DepositCryptoTryFiatOnRamp', () => {
         expect(screen.getByText('Try Fiat onramp')).toBeInTheDocument();
     });
 
-    it('should navigate to /wallets/cashier/on-ramp when the link is clicked', () => {
+    it('should navigate to /wallet/on-ramp when the link is clicked', () => {
         const mockPush = jest.fn();
         (useHistory as jest.Mock).mockReturnValue({ push: mockPush });
 
         render(<DepositCryptoTryFiatOnRamp />);
 
         fireEvent.click(screen.getByText('Try Fiat onramp'));
-        expect(mockPush).toHaveBeenCalledWith('/wallets/cashier/on-ramp');
+        expect(mockPush).toHaveBeenCalledWith('/wallet/on-ramp');
     });
 });

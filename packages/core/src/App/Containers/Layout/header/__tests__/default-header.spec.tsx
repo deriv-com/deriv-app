@@ -12,6 +12,7 @@ jest.mock('App/Components/Layout/Header/toggle-menu-drawer.jsx', () =>
     jest.fn(() => <div>Mocked Toggle Menu Drawer</div>)
 );
 jest.mock('../header-account-actions', () => jest.fn(() => <div>Mocked Header Account Action</div>));
+jest.mock('../deriv-short-logo', () => jest.fn(() => <div>Deriv Short Logo</div>));
 
 describe('DefaultHeader', () => {
     const mock_store = mockStore({ ui: { is_desktop: true, is_real_acc_signup_on: true } });

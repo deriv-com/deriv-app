@@ -26,9 +26,7 @@ const TradersHubHomeButton = observer(() => {
     }
 
     const redirectRoutes = () => {
-        if (has_wallet) {
-            return routes.wallets;
-        } else if (is_next_tradershub_enabled) {
+        if (is_next_tradershub_enabled) {
             return routes.traders_hub_v2;
         }
         return routes.traders_hub;
@@ -39,9 +37,7 @@ const TradersHubHomeButton = observer(() => {
             data-testid='dt_traders_hub_home_button'
             className={classNames('traders-hub-header__tradershub', {
                 'traders-hub-header__tradershub--active':
-                    pathname === routes.traders_hub ||
-                    pathname === routes.traders_hub_v2 ||
-                    pathname === routes.wallets,
+                    pathname === routes.traders_hub || pathname === routes.traders_hub_v2,
             })}
             onClick={() => history.push(redirectRoutes())}
         >

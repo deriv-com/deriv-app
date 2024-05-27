@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Dropdown, Icon, Text, Tooltip } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
-import { hours_list } from 'Constants/business-hour-times';
+import { getHoursList } from 'Constants/business-hour-times';
 import SeparatorContainerLine from 'Components/separator-container-line';
 import './business-hour-modal-edit.scss';
 
@@ -97,7 +97,7 @@ const BusinessHourModalEdit = ({ data }: TBusinessHourModalEditProps) => {
                                     >
                                         <Dropdown
                                             is_align_text_left
-                                            list={hours_list}
+                                            list={getHoursList()}
                                             onChange={onSelectTime}
                                             should_animate_suffix_icon
                                             suffix_icon='IcArrowDropDown'
@@ -108,7 +108,7 @@ const BusinessHourModalEdit = ({ data }: TBusinessHourModalEditProps) => {
                                         </Text>
                                         <Dropdown
                                             is_align_text_left
-                                            list={hours_list}
+                                            list={getHoursList()}
                                             onChange={onSelectTime}
                                             should_animate_suffix_icon
                                             suffix_icon='IcArrowDropDown'

@@ -38,6 +38,7 @@ export type TWithdrawalCryptoContext = {
     isWithdrawalSuccess: ReturnType<typeof useCryptoWithdrawal>['isSuccess'];
     requestCryptoWithdrawal: (values: Parameters<THooks.CryptoWithdrawal>[0]) => void;
     serverTime: ReturnType<typeof useCryptoEstimations>['serverTime'];
+    setCurrencyCode: ReturnType<typeof useCryptoEstimations>['setCurrencyCode'];
     setError: React.Dispatch<
         React.SetStateAction<
             | {
@@ -85,6 +86,7 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
         getCryptoEstimations,
         isLoading: isLoadingCryptoEstimationFee,
         serverTime,
+        setCurrencyCode,
     } = useCryptoEstimations();
     const { getConfig } = useCurrencyConfig();
     const [error, setError] = useState<TSocketError<'cashier'>['error'] | undefined>();
@@ -194,6 +196,7 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
         isWithdrawalSuccess,
         requestCryptoWithdrawal,
         serverTime,
+        setCurrencyCode,
         setError,
         withdrawalReceipt,
     };

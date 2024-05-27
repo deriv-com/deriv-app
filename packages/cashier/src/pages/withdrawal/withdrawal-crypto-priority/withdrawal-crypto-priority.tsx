@@ -22,6 +22,7 @@ const WithdrawalCryptoPriority = observer(() => {
         crypto_estimations_fee_unique_id,
         count_down,
         server_time,
+        setCurrencyCode,
     } = useCryptoEstimations();
     const [priority_withdrawal_checkbox, setPriorityWithdrawalCheckbox] = React.useState(false);
     const decimal_places = getDecimalPlaces(currency);
@@ -37,12 +38,10 @@ const WithdrawalCryptoPriority = observer(() => {
     React.useEffect(() => {
         if (!priority_withdrawal_checkbox) {
             setCryptoEstimationsFeeUniqueId('');
+        } else if (crypto_estimations_fee_unique_id) {
+            setCryptoEstimationsFeeUniqueId(crypto_estimations_fee_unique_id);
         }
-    }, [priority_withdrawal_checkbox, setCryptoEstimationsFeeUniqueId]);
-
-    React.useEffect(() => {
-        setCryptoEstimationsFeeUniqueId(crypto_estimations_fee_unique_id);
-    }, [crypto_estimations_fee_unique_id, setCryptoEstimationsFeeUniqueId]);
+    }, [priority_withdrawal_checkbox, crypto_estimations_fee_unique_id, setCryptoEstimationsFeeUniqueId]);
 
     return (
         <>
@@ -51,7 +50,12 @@ const WithdrawalCryptoPriority = observer(() => {
                     name='priority_withdrawal'
                     onChange={() => {
                         if (!priority_withdrawal_checkbox) {
-                            getCryptoEstimations(currency);
+                            setCurrencyCode(currency);
+                            getCryptoEstimations({
+                                payload: {
+                                    currency_code: currency,
+                                },
+                            });
                         }
                         setPriorityWithdrawalCheckbox(!priority_withdrawal_checkbox);
                     }}

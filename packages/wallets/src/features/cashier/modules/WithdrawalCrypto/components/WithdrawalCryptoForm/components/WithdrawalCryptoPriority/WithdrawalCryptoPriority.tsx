@@ -13,8 +13,14 @@ const WithdrawalCryptoPriority = () => {
         priorityWithdrawal: boolean;
     }>();
 
-    const { activeWallet, cryptoEstimationsError, getCryptoEstimations, isLoadingCryptoEstimationFee, setError } =
-        useWithdrawalCryptoContext();
+    const {
+        activeWallet,
+        cryptoEstimationsError,
+        getCryptoEstimations,
+        isLoadingCryptoEstimationFee,
+        setCurrencyCode,
+        setError,
+    } = useWithdrawalCryptoContext();
 
     const hoverRef = useRef(null);
     const isHovered = useHover(hoverRef);
@@ -35,7 +41,12 @@ const WithdrawalCryptoPriority = () => {
                     name='priorityWithdrawal'
                     onChange={e => {
                         if (!values.priorityWithdrawal) {
-                            getCryptoEstimations(activeWallet?.currency ?? '');
+                            setCurrencyCode(activeWallet?.currency ?? '');
+                            getCryptoEstimations({
+                                payload: {
+                                    currency_code: activeWallet?.currency ?? '',
+                                },
+                            });
                         }
                         handleChange(e);
                     }}

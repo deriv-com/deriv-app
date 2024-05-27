@@ -1,89 +1,74 @@
-import { useCallback, useEffect, useState } from 'react';
-import useMutation from '../useMutation';
+import { useEffect, useRef, useState } from 'react';
+import { epochToMoment, toMoment } from '@deriv/utils';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { CryptoEstimations } from '@deriv/api-types';
 import { TSocketError } from '../../types';
-import { epochToMoment } from '@deriv/utils';
+import useSubscription from '../useSubscription';
 
 /** A custom hook that returns the crypto_estimations fee for given currency code along with count_down and an unique_id */
 const useCryptoEstimations = () => {
-    const { mutateAsync: mutateAsyncCryptoEstimation, isLoading } = useMutation('crypto_estimations');
-    const { mutateAsync: mutateAsyncTime } = useMutation('time');
-    const [cryptoEstimationsFeeExpiryTime, setCryptoEstimationsFeeExpiryTime] = useState<number>(0);
-    const [cryptoEstimationsFee, setCryptoEstimationsFee] = useState<number>(0);
-    const [cryptoEstimationsFeeUniqueId, setCryptoEstimationsFeeUniqueId] = useState<string>('');
+    const { subscribe, data, error: subscription_error, isLoading } = useSubscription('crypto_estimations');
+    const [cryptoEstimationsFeeDetails, setCryptoEstimationsFeeDetails] = useState<
+        CryptoEstimations['k']['withdrawal_fee']
+    >({});
+    const [cryptoEstimationsFeeDetailsLatest, setCryptoEstimationsFeeDetailsLatest] = useState<
+        CryptoEstimations['k']['withdrawal_fee']
+    >({});
     const [currencyCode, setCurrencyCode] = useState<string>('BTC');
     const [error, setError] = useState<TSocketError<'crypto_estimations'>['error']>();
     const [countDown, setCountDown] = useState<number>(0);
     const [serverTime, setServerTime] = useState<string>('');
+    const timer = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
-        let timer: NodeJS.Timeout | undefined;
-        if (cryptoEstimationsFeeExpiryTime && !timer && countDown >= 0) {
-            timer = setTimeout(() => {
-                if (countDown === 0) {
-                    clearTimeout(timer);
-                    getCryptoEstimations(currencyCode);
-                    return;
-                }
-                setCountDown(prevTime => prevTime - 1);
-            }, 1000);
+        if (data?.crypto_estimations?.[currencyCode].withdrawal_fee?.expiry_time) {
+            setCryptoEstimationsFeeDetailsLatest(data?.crypto_estimations?.[currencyCode].withdrawal_fee ?? {});
         }
+    }, [currencyCode, data]);
+
+    useEffect(() => {
+        if (subscription_error) setError(subscription_error as unknown as TSocketError<'crypto_estimations'>['error']);
+    }, [subscription_error]);
+
+    useEffect(() => {
+        if (cryptoEstimationsFeeDetailsLatest?.expiry_time && countDown === 0) {
+            setCryptoEstimationsFeeDetails(cryptoEstimationsFeeDetailsLatest);
+            const currentTime = toMoment();
+            setServerTime(`${currentTime.utc().format('HH:mm:ss')} GMT`);
+            const expiryTime =
+                epochToMoment(cryptoEstimationsFeeDetailsLatest?.expiry_time ?? 0).diff(currentTime, 'seconds') - 1;
+            setCountDown(expiryTime);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [countDown, cryptoEstimationsFeeDetailsLatest?.expiry_time]);
+
+    useEffect(() => {
+        timer.current = setTimeout(() => {
+            if (countDown === 1) {
+                clearTimeout(timer.current as NodeJS.Timeout);
+                setCountDown(prevTime => prevTime - 1);
+            } else if (countDown > 0) {
+                setCountDown(prevTime => prevTime - 1);
+            }
+        }, 1000);
 
         return () => {
             if (timer) {
-                clearTimeout(timer);
+                clearInterval(timer.current as NodeJS.Timeout);
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [cryptoEstimationsFeeExpiryTime, countDown]);
-
-    const getCryptoEstimations = useCallback(
-        async (currencyCode: string) => {
-            setCurrencyCode(currencyCode);
-            try {
-                const { crypto_estimations } = await mutateAsyncCryptoEstimation({
-                    payload: {
-                        currency_code: currencyCode,
-                    },
-                });
-
-                const { time } = await mutateAsyncTime();
-                setServerTime(
-                    epochToMoment(time ?? 0)
-                        .utc()
-                        .format('HH:mm:ss')
-                );
-
-                if (crypto_estimations?.[currencyCode].withdrawal_fee?.expiry_time && time) {
-                    const expiry_time =
-                        epochToMoment(crypto_estimations?.[currencyCode]?.withdrawal_fee?.expiry_time ?? 0).diff(
-                            epochToMoment(time),
-                            'seconds'
-                        ) - 1;
-                    setCountDown(expiry_time);
-                    setCryptoEstimationsFee(crypto_estimations?.[currencyCode]?.withdrawal_fee?.value || 0);
-                    setCryptoEstimationsFeeUniqueId(
-                        crypto_estimations?.[currencyCode]?.withdrawal_fee?.unique_id || ''
-                    );
-                    setCryptoEstimationsFeeExpiryTime(
-                        crypto_estimations?.[currencyCode]?.withdrawal_fee?.expiry_time ?? 0
-                    );
-                }
-            } catch (error: unknown) {
-                setError((error as TSocketError<'crypto_estimations'>).error);
-            }
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [cryptoEstimationsFeeExpiryTime]
-    );
+    }, [countDown]);
 
     return {
         countDown,
-        cryptoEstimationsFee,
-        cryptoEstimationsFeeUniqueId,
-        cryptoEstimationsFeeExpiryTime,
+        cryptoEstimationsFee: cryptoEstimationsFeeDetails?.value ?? 0,
+        cryptoEstimationsFeeUniqueId: cryptoEstimationsFeeDetails?.unique_id ?? '',
+        cryptoEstimationsFeeExpiryTime: cryptoEstimationsFeeDetails?.expiry_time ?? 0,
         error,
-        getCryptoEstimations,
+        getCryptoEstimations: subscribe,
         isLoading,
+        setCurrencyCode,
         serverTime,
     };
 };

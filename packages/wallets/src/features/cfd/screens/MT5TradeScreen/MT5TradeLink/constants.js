@@ -15,17 +15,6 @@ export const getPlatformMt5DownloadLink = platform => {
     }
 };
 
-export const getMobileAppInstallerURL = async ({ mt5TradeAccount }) => {
-    const os = await OSDetectionUtils();
-
-    if (os === 'iOS') {
-        return mt5TradeAccount?.white_label_links?.ios;
-    } else if (os === 'huawei') {
-        return getPlatformMt5DownloadLink('huawei');
-    }
-    return mt5TradeAccount?.white_label_links?.android;
-};
-
 export const getDesktopDownloadOptions = ({ mt5TradeAccount }) => {
     const downloadOptions = [
         {
@@ -81,7 +70,8 @@ export const getDeeplinkUrl = ({ mt5TradeAccount }) => {
 };
 
 export const getMobileAppInstallerUrl = async ({ mt5TradeAccount }) => {
-    const os = await OSDetectionUtils();
+    const os = await OSDetectionUtils.mobileOSDetectAsync();
+
     if (os === 'iOS') {
         return mt5TradeAccount?.white_label_links?.ios;
     } else if (os === 'huawei') {

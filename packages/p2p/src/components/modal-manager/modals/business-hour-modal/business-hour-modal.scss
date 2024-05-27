@@ -5,32 +5,14 @@
         gap: 1.6rem;
         padding-top: 0;
 
-        .separator-container-line {
-            flex: unset;
-            margin: 0;
-        }
-
-        &__days {
-            display: flex;
-            flex-direction: column;
-            gap: 1.6rem;
-
-            &-hours {
-                display: flex;
-
-                &-day {
-                    width: 12rem;
-                }
-            }
+        @include mobile {
+            padding: 1.6rem;
+            height: calc(100vh - 21rem);
         }
     }
 
     &__footer {
         padding: 0 2.4rem 2.4rem;
-
-        &-buttons {
-            padding-top: 2.4rem;
-        }
     }
 }
 
@@ -40,4 +22,9 @@
 
 .dc-modal__container {
     overflow: unset;
+}
+
+.separator-container-line {
+    flex: unset;
+    margin: 0;
 }

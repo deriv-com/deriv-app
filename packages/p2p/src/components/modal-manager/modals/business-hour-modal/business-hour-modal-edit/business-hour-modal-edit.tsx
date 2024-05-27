@@ -1,89 +1,61 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Dropdown, Icon, Text } from '@deriv/components';
+import { Dropdown, Icon, Text, Tooltip } from '@deriv/components';
 import { Localize, localize } from 'Components/i18next';
+import { hours_list } from 'Constants/business-hour-times';
 import SeparatorContainerLine from 'Components/separator-container-line';
 import './business-hour-modal-edit.scss';
-
-const hours_list = [
-    { text: '12:00 am', value: '12:00 am' },
-    { text: '12:30 am', value: '12:30 am' },
-    { text: '01:00 am', value: '01:00 am' },
-    { text: '01:30 am', value: '01:30 am' },
-    { text: '02:00 am', value: '02:00 am' },
-    { text: '02:30 am', value: '02:30 am' },
-    { text: '03:00 am', value: '03:00 am' },
-    { text: '03:30 am', value: '03:30 am' },
-    { text: '04:00 am', value: '04:00 am' },
-    { text: '04:30 am', value: '04:30 am' },
-    { text: '05:00 am', value: '05:00 am' },
-    { text: '05:30 am', value: '05:30 am' },
-    { text: '06:00 am', value: '06:00 am' },
-    { text: '06:30 am', value: '06:30 am' },
-    { text: '07:00 am', value: '07:00 am' },
-    { text: '07:30 am', value: '07:30 am' },
-    { text: '08:00 am', value: '08:00 am' },
-    { text: '08:30 am', value: '08:30 am' },
-    { text: '09:00 am', value: '09:00 am' },
-    { text: '09:30 am', value: '09:30 am' },
-    { text: '10:00 am', value: '10:00 am' },
-    { text: '10:30 am', value: '10:30 am' },
-    { text: '11:00 am', value: '11:00 am' },
-    { text: '11:30 am', value: '11:30 am' },
-    { text: '12:00 pm', value: '12:00 pm' },
-    { text: '12:30 pm', value: '12:30 pm' },
-    { text: '01:00 pm', value: '01:00 pm' },
-    { text: '01:30 pm', value: '01:30 pm' },
-    { text: '02:00 pm', value: '02:00 pm' },
-    { text: '02:30 pm', value: '02:30 pm' },
-    { text: '03:00 pm', value: '03:00 pm' },
-    { text: '03:30 pm', value: '03:30 pm' },
-    { text: '04:00 pm', value: '04:00 pm' },
-    { text: '04:30 pm', value: '04:30 pm' },
-    { text: '05:00 pm', value: '05:00 pm' },
-    { text: '05:30 pm', value: '05:30 pm' },
-    { text: '06:00 pm', value: '06:00 pm' },
-    { text: '06:30 pm', value: '06:30 pm' },
-    { text: '07:00 pm', value: '07:00 pm' },
-    { text: '07:30 pm', value: '07:30 pm' },
-    { text: '08:00 pm', value: '08:00 pm' },
-    { text: '08:30 pm', value: '08:30 pm' },
-    { text: '09:00 pm', value: '09:00 pm' },
-    { text: '09:30 pm', value: '09:30 pm' },
-    { text: '10:00 pm', value: '10:00 pm' },
-    { text: '10:30 pm', value: '10:30 pm' },
-    { text: '11:00 pm', value: '11:00 pm' },
-    { text: '11:30 pm', value: '11:30 pm' },
-];
 
 type TBusinessHourModalEditProps = {
     data: {
         day: JSX.Element;
         short_day: JSX.Element;
         time: JSX.Element;
-        start_time?: string;
-        end_time?: string;
+        start_time?: string | null;
+        end_time?: string | null;
         value: string;
     }[];
 };
 
 const BusinessHourModalEdit = ({ data }: TBusinessHourModalEditProps) => {
+    const [selected_days, setSelectedDays] = React.useState<string[]>([]);
     const today = new Date().getDay();
+
+    React.useEffect(() => {
+        const filteredDays = data
+            .filter(day => day.start_time !== undefined && day.end_time !== undefined)
+            .map(day => day.value);
+
+        setSelectedDays(filteredDays);
+    }, []);
+
+    const onSelectTime = () => {
+        // TODO: implement on select time when implementing BE
+    };
+
+    const onClickDay = () => {
+        // TODO: implement on select day when implementing BE
+    };
+
+    const onReset = () => {
+        // TODO: implement on reset when implementing BE
+    };
 
     return (
         <div className='business-hour-modal-edit'>
             <div className='business-hour-modal-edit__days'>
                 {data.map(day => {
-                    const has_no_times = !day.start_time && !day.end_time;
+                    const includes_day = selected_days.includes(day.value);
 
                     return (
                         <Text
                             as='button'
                             className={classNames('business-hour-modal-edit__days-circle', {
-                                'business-hour-modal-edit__days-circle--unselected': has_no_times,
+                                'business-hour-modal-edit__days-circle--unselected': !includes_day,
                             })}
-                            color={has_no_times ? 'general' : 'colored-background'}
+                            color={includes_day ? 'colored-background' : 'general'}
                             key={day.value}
+                            onClick={onClickDay}
                         >
                             {day.short_day}
                         </Text>
@@ -94,12 +66,15 @@ const BusinessHourModalEdit = ({ data }: TBusinessHourModalEditProps) => {
             <div className='business-hour-modal-edit__selector'>
                 {data.map((day, idx) => {
                     const text_weight = idx === today - 1 ? 'bold' : 'normal';
-                    const has_times = day.start_time && day.end_time;
+                    const includes_day = selected_days.includes(day.value);
+                    const are_times_undefined = day.start_time === undefined && day.end_time === undefined;
+                    const are_times_null = day.start_time === null && day.end_time === null;
 
                     return (
                         <div className='business-hour-modal-edit__selector-item' key={`${day.value}_${day.start_time}`}>
                             <Text
                                 className='business-hour-modal-edit__selector-item-text'
+                                color={includes_day ? 'general' : 'less-prominent'}
                                 size='xxs'
                                 weight={text_weight}
                             >
@@ -107,10 +82,10 @@ const BusinessHourModalEdit = ({ data }: TBusinessHourModalEditProps) => {
                             </Text>
                             <div
                                 className={classNames('business-hour-modal-edit__selector-item__dropdown', {
-                                    'business-hour-modal-edit__selector-item__dropdown--single': !has_times,
+                                    'business-hour-modal-edit__selector-item__dropdown--single': !includes_day,
                                 })}
                             >
-                                {has_times ? (
+                                {includes_day && !are_times_null ? (
                                     <div
                                         className={classNames(
                                             'business-hour-modal-edit__selector-item__dropdown-group',
@@ -123,9 +98,10 @@ const BusinessHourModalEdit = ({ data }: TBusinessHourModalEditProps) => {
                                         <Dropdown
                                             is_align_text_left
                                             list={hours_list}
+                                            onChange={onSelectTime}
                                             should_animate_suffix_icon
                                             suffix_icon='IcArrowDropDown'
-                                            value={day.start_time}
+                                            value={day.start_time!}
                                         />
                                         <Text size='xxs'>
                                             <Localize i18n_default_text='to' />
@@ -133,25 +109,31 @@ const BusinessHourModalEdit = ({ data }: TBusinessHourModalEditProps) => {
                                         <Dropdown
                                             is_align_text_left
                                             list={hours_list}
+                                            onChange={onSelectTime}
                                             should_animate_suffix_icon
                                             suffix_icon='IcArrowDropDown'
-                                            value={day.end_time}
+                                            value={day.end_time!}
                                         />
                                     </div>
                                 ) : (
-                                    <Dropdown
-                                        disabled
-                                        list={[
-                                            { text: localize('Open 24 hours'), value: localize('Open 24 hours') },
-                                            { text: localize('Open 24 hours'), value: localize('Open 24 hours') },
-                                        ]}
-                                        should_animate_suffix_icon
-                                        suffix_icon='IcArrowDropDown'
-                                        value={localize('Open 24 hours')}
-                                    />
+                                    <div className='business-hour-modal-edit__selector-item__dropdown__open-text'>
+                                        <Text color={are_times_null ? 'general' : 'less-prominent'} size='xxs'>
+                                            <Localize i18n_default_text='Open 24 hours' />
+                                        </Text>
+                                        <Icon icon='IcArrowDropDown' />
+                                    </div>
                                 )}
                             </div>
-                            <Icon icon='IcResetTime' />
+                            <Tooltip alignment='top' message={localize('Reset')}>
+                                <Icon
+                                    className={classNames('business-hour-modal-edit__selector-item__icon', {
+                                        'business-hour-modal-edit__selector-item__icon--disabled':
+                                            !includes_day && are_times_undefined,
+                                    })}
+                                    icon='IcResetTime'
+                                    onClick={onReset}
+                                />
+                            </Tooltip>
                         </div>
                     );
                 })}

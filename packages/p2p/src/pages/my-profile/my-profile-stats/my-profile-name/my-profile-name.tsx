@@ -1,8 +1,8 @@
 import React from 'react';
-import { DesktopWrapper, Icon, MobileWrapper, Text, Tooltip } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { daysSince } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from 'Components/i18next';
+import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import BlockUserCount from 'Pages/advertiser-page/block-user/block-user-count';
 import RecommendedBy from 'Components/recommended-by';
@@ -13,6 +13,7 @@ import { document_status_codes, identity_status_codes } from 'Constants/account-
 import { useStores } from 'Stores';
 import { getIconSize, getTextSize } from 'Utils/responsive';
 import MyProfilePrivacy from '../my-profile-privacy';
+import MyProfileNameBusinessHours from './my-profile-name-business-hours';
 
 const MyProfileName = () => {
     const { showModal } = useModalManagerContext();
@@ -136,22 +137,9 @@ const MyProfileName = () => {
                                     <BlockUserCount />
                                 </div>
                                 <div className='my-profile-name__rating__row'>
-                                    <Tooltip
-                                        alignment='top'
-                                        className='my-profile-name__rating__row-tooltip'
-                                        message={localize('Business hour')}
+                                    <MyProfileNameBusinessHours
                                         onClickMessage={() => showModal({ key: 'BusinessHourModal', props: {} })}
-                                    >
-                                        <Icon icon='IcClockOutline' />
-                                        <Text
-                                            className='my-profile-name__rating__row-tooltip-text'
-                                            line_height='xxs'
-                                            size='xs'
-                                            weight='bold'
-                                        >
-                                            <Localize i18n_default_text='Open' />
-                                        </Text>
-                                    </Tooltip>
+                                    />
                                 </div>
                             </DesktopWrapper>
                         </div>
@@ -159,6 +147,11 @@ const MyProfileName = () => {
                             <div className='my-profile-name__row'>
                                 <div className='my-profile-name__rating__row'>
                                     <BlockUserCount />
+                                </div>
+                                <div className='my-profile-name__rating__row'>
+                                    <MyProfileNameBusinessHours
+                                        onClickMessage={() => showModal({ key: 'BusinessHourModal', props: {} })}
+                                    />
                                 </div>
                             </div>
                         </MobileWrapper>

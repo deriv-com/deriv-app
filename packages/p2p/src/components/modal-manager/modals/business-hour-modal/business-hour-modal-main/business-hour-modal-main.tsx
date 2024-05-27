@@ -29,7 +29,7 @@ const BusinessHourModalMain = ({ business_days }: TBusinessHourModalMain) => {
                     const text_weight = idx === today - 1 ? 'bold' : 'normal';
 
                     return (
-                        <div key={idx} className='business-hour-modal-main__days__hours'>
+                        <div key={day.value} className='business-hour-modal-main__days__hours'>
                             <Text
                                 as='p'
                                 className='business-hour-modal-main__days__hours-text'

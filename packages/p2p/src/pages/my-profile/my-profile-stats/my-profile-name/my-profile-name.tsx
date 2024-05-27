@@ -3,7 +3,6 @@ import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { daysSince } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import BlockUserCount from 'Pages/advertiser-page/block-user/block-user-count';
 import RecommendedBy from 'Components/recommended-by';
 import StarRating from 'Components/star-rating';
@@ -13,10 +12,8 @@ import { document_status_codes, identity_status_codes } from 'Constants/account-
 import { useStores } from 'Stores';
 import { getIconSize, getTextSize } from 'Utils/responsive';
 import MyProfilePrivacy from '../my-profile-privacy';
-import MyProfileNameBusinessHours from './my-profile-name-business-hours';
 
 const MyProfileName = () => {
-    const { showModal } = useModalManagerContext();
     const { general_store } = useStores();
     const { client } = useStore();
     const {
@@ -136,11 +133,12 @@ const MyProfileName = () => {
                                 <div className='my-profile-name__rating__row'>
                                     <BlockUserCount />
                                 </div>
-                                <div className='my-profile-name__rating__row'>
+                                {/* TODO: uncomment when implementing business hours feature */}
+                                {/* <div className='my-profile-name__rating__row'>
                                     <MyProfileNameBusinessHours
                                         onClickMessage={() => showModal({ key: 'BusinessHourModal', props: {} })}
                                     />
-                                </div>
+                                </div> */}
                             </DesktopWrapper>
                         </div>
                         <MobileWrapper>
@@ -148,11 +146,12 @@ const MyProfileName = () => {
                                 <div className='my-profile-name__rating__row'>
                                     <BlockUserCount />
                                 </div>
-                                <div className='my-profile-name__rating__row'>
+                                {/* TODO: uncomment when implementing business hours feature */}
+                                {/* <div className='my-profile-name__rating__row'>
                                     <MyProfileNameBusinessHours
                                         onClickMessage={() => showModal({ key: 'BusinessHourModal', props: {} })}
                                     />
-                                </div>
+                                </div> */}
                             </div>
                         </MobileWrapper>
                         <div className='my-profile-name__row'>

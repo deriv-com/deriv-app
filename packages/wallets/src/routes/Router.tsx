@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Loader } from '../components/Loader';
+import { Page404 } from '../components/Page404';
 
 const LazyWalletsListingRoute = lazy(
     () => import(/* webpackChunkName: "wallets-listing-route" */ './WalletsListingRoute/WalletsListingRoute')
@@ -8,36 +9,33 @@ const LazyWalletsListingRoute = lazy(
 const LazyCashierModalRoute = lazy(
     () => import(/* webpackChunkName: "cashier-modal-route" */ './CashierModalRoute/CashierModalRoute')
 );
-
 const LazyCompareAccountsRoute = lazy(
     () => import(/* webpackChunkName: "compare-accounts-route" */ './CompareAccountsRoute/CompareAccountsRoute')
 );
 
-const walletsPrefix = '/wallets';
-
 type TWalletsRoute =
-    | ''
-    | '/cashier'
-    | '/cashier/deposit'
-    | '/cashier/on-ramp'
-    | '/cashier/reset-balance'
-    | '/cashier/transactions'
-    | '/cashier/transfer'
-    | '/cashier/withdraw'
-    | '/compare-accounts';
+    | '/'
+    | '/compare-accounts'
+    | '/wallet'
+    | '/wallet/account-transfer'
+    | '/wallet/deposit'
+    | '/wallet/on-ramp'
+    | '/wallet/reset-balance'
+    | '/wallet/transactions'
+    | '/wallet/withdrawal';
 
-export type TRoute = '/endpoint' | `?${string}` | `${typeof walletsPrefix}${TWalletsRoute}`;
+export type TRoute = '/endpoint' | `?${string}` | `${TWalletsRoute}`;
 
 // wallets routes which have their states
 interface WalletsRouteState {
-    '/cashier/transactions': { showPending: boolean; transactionType: 'deposit' | 'withdrawal' };
-    '/cashier/transfer': { shouldSelectDefaultWallet: boolean; toAccountLoginId: string };
+    '/wallet/account-transfer': { shouldSelectDefaultWallet: boolean; toAccountLoginId: string };
+    '/wallet/transactions': { showPending: boolean; transactionType: 'deposit' | 'withdrawal' };
 }
 
-type TStatefulRoute = TRoute & `${typeof walletsPrefix}${keyof WalletsRouteState}`;
+type TStatefulRoute = TRoute & `${keyof WalletsRouteState}`;
 
 type TRouteState = {
-    [T in TStatefulRoute]: T extends `${typeof walletsPrefix}${infer R extends keyof WalletsRouteState}`
+    [T in TStatefulRoute]: T extends `${infer R extends keyof WalletsRouteState}`
         ? Partial<WalletsRouteState[R]>
         : never;
 };
@@ -65,7 +63,8 @@ const Router: React.FC = () => {
     return (
         <Switch>
             <Route
-                path={`${walletsPrefix}/compare-accounts`}
+                exact
+                path={'/compare-accounts'}
                 render={() => (
                     <React.Suspense fallback={<Loader />}>
                         <LazyCompareAccountsRoute />
@@ -73,7 +72,7 @@ const Router: React.FC = () => {
                 )}
             />
             <Route
-                path={`${walletsPrefix}/cashier`}
+                path={'/wallet'}
                 render={() => (
                     <React.Suspense fallback={<Loader />}>
                         <LazyCashierModalRoute />
@@ -81,13 +80,15 @@ const Router: React.FC = () => {
                 )}
             />
             <Route
-                path={walletsPrefix}
+                exact
+                path={'/'}
                 render={() => (
                     <React.Suspense fallback={<Loader />}>
                         <LazyWalletsListingRoute />
                     </React.Suspense>
                 )}
             />
+            <Route render={() => <Page404 />} />
         </Switch>
     );
 };

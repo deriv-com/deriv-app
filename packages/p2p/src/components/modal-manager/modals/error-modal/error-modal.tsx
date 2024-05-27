@@ -6,7 +6,7 @@ import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 type TErrorModalProps = {
-    error_message: string;
+    error_message: React.ReactNode;
     error_modal_button_text?: string;
     error_modal_title?: string;
     has_close_icon?: boolean;
@@ -16,7 +16,7 @@ type TErrorModalProps = {
 
 const ErrorModal = ({
     error_message,
-    error_modal_button_text = 'Ok',
+    error_modal_button_text = 'OK',
     error_modal_title,
     has_close_icon,
     onClose,

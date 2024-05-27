@@ -313,6 +313,10 @@
             border-top: 1px solid var(--general-section-1);
             background-color: var(--general-main-1);
 
+            @include desktop-screen {
+                max-width: 68rem;
+            }
+
             @include mobile-or-tablet-screen {
                 flex-direction: row;
                 justify-content: center;
@@ -716,7 +720,10 @@
     height: 100%;
 
     &__main-container {
-        max-width: 100%;
+        @include mobile-or-tablet-screen {
+            max-width: 100%;
+        }
+        max-width: 68.2rem;
         height: 100%;
     }
 
@@ -879,10 +886,8 @@
 
     &__footer {
         display: flex;
-
         align-items: center;
         justify-content: flex-end;
-        position: fixed;
         bottom: 0;
 
         @include mobile-or-tablet-screen {

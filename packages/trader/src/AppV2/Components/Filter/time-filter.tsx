@@ -84,7 +84,7 @@ const TimeFilter = ({
             });
         } else {
             handleDateChange({
-                from: Number(value) ? toMoment().startOf('day').subtract(Number(value), 'day').add(1, 's') : undefined,
+                from: toMoment().startOf('day').subtract(Number(value), 'day').add(1, 's'),
                 to: toMoment().endOf('day'),
                 is_batch: true,
             });

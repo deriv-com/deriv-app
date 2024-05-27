@@ -8,7 +8,6 @@ type TContractTypeFilter = {
     setContractTypeFilter: (filterValues: string[]) => void;
 };
 
-// TODO: Replace mockAvailableContractsList with real data when BE will be ready (send list of all available contracts based on account)
 const mockAvailableContractsList = [
     { tradeType: <Localize i18n_default_text='Accumulators' />, id: 'Accumulators' },
     { tradeType: <Localize i18n_default_text='Vanillas' />, id: 'Vanillas' },

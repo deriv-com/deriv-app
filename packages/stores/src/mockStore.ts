@@ -638,6 +638,16 @@ const mock = (): TStores & { is_mock: boolean } => {
                 setAccountType: jest.fn(),
                 setMigratedMT5Accounts: jest.fn(),
             },
+            positions: {
+                openContractTypeFilter: [],
+                closedContractTypeFilter: [],
+                timeFilter: '',
+                customTimeRangeFilter: '',
+                setClosedContractTypeFilter: jest.fn(),
+                setOpenContractTypeFilter: jest.fn(),
+                setTimeFilter: jest.fn(),
+                setCustomTimeRangeFilter: jest.fn(),
+            },
             trade: {
                 accumulator_range_list: [],
                 active_symbols: [],

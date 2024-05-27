@@ -22,7 +22,6 @@ export const filterPositions = (positions: (TPortfolioPosition | TClosedPosition
     // Split contract type names with '/' (e.g. Rise/Fall)
     const splittedFilter = filter.map(option => (option.includes('/') ? option.split('/') : option)).flat();
 
-    //TODO: Create own config instead of getSupportedContracts
     return positions.filter(({ contract_info }) => {
         const config = getSupportedContracts(isHighLow({ shortcode: contract_info.shortcode }))[
             contract_info.contract_type as keyof ReturnType<typeof getSupportedContracts>

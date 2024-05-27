@@ -172,7 +172,7 @@
         position: relative;
         width: inherit;
         overflow: hidden;
-        max-height: 10.4rem; // equal to __item's height of 104px, must be an exact value for for item deletion transition to work
+        min-height: 10.4rem; // equal to __item's height of 104px, must be an exact value for item deletion transition to work
         box-shadow: var(--core-elevation-shadow-130);
         border-radius: var(--semantic-borderRadius-md);
 
@@ -190,6 +190,7 @@
         gap: var(--core-spacing-400);
         width: inherit;
         padding: var(--core-spacing-400);
+        overflow-y: scroll;
 
         &--has-buttons-demo {
             .contract-card-wrapper:first-child {
@@ -228,6 +229,7 @@
 .contract-cards {
     &-sections {
         padding-top: var(--core-spacing-400);
+        overflow-y: scroll;
     }
 
     &-section {

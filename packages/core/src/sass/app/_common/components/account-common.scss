@@ -322,7 +322,7 @@
             }
 
             .back-btn {
-                margin-left: 8px;
+                margin-inline-start: 8px;
 
                 @include tablet-screen {
                     width: 568px;
@@ -333,7 +333,7 @@
                 }
 
                 .back-btn-icon {
-                    margin-right: 0.8rem;
+                    margin-inline-end: 0.8rem;
                 }
 
                 span {
@@ -894,7 +894,7 @@
         .proof-of-identity__submit-button {
             @include mobile-or-tablet-screen {
                 width: 568px;
-                margin-right: 8px;
+                margin-inline-end: 8px;
                 align-items: center;
                 justify-content: center;
             }

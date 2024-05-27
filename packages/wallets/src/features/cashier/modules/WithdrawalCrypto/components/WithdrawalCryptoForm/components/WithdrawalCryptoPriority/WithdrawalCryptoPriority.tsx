@@ -20,6 +20,7 @@ const WithdrawalCryptoPriority = () => {
         isLoadingCryptoEstimationFee,
         setCurrencyCode,
         setError,
+        unsubscribeCryptoEstimations,
     } = useWithdrawalCryptoContext();
 
     const hoverRef = useRef(null);
@@ -31,6 +32,14 @@ const WithdrawalCryptoPriority = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cryptoEstimationsError]);
+
+    useEffect(() => {
+        return () => {
+            unsubscribeCryptoEstimations();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <>
             <div className='wallets-crypto-form-checkbox'>

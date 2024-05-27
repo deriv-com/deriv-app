@@ -28,6 +28,7 @@ describe('<WithdrawalCryptoForm />', () => {
         crypto_estimations_fee_unique_id: 'unique_id',
         getCryptoEstimations: jest.fn(),
         server_time: 123456789,
+        setCurrencyCode: jest.fn(),
     });
     let mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {

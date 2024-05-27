@@ -23,6 +23,7 @@ const WithdrawalCryptoPriority = observer(() => {
         count_down,
         server_time,
         setCurrencyCode,
+        unsubscribeCryptoEstimations,
     } = useCryptoEstimations();
     const [priority_withdrawal_checkbox, setPriorityWithdrawalCheckbox] = React.useState(false);
     const decimal_places = getDecimalPlaces(currency);
@@ -42,6 +43,13 @@ const WithdrawalCryptoPriority = observer(() => {
             setCryptoEstimationsFeeUniqueId(crypto_estimations_fee_unique_id);
         }
     }, [priority_withdrawal_checkbox, crypto_estimations_fee_unique_id, setCryptoEstimationsFeeUniqueId]);
+
+    React.useEffect(() => {
+        return () => {
+            unsubscribeCryptoEstimations();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <>

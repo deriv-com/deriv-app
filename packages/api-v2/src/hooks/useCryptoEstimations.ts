@@ -7,7 +7,13 @@ import useSubscription from '../useSubscription';
 
 /** A custom hook that returns the crypto_estimations fee for given currency code along with count_down and an unique_id */
 const useCryptoEstimations = () => {
-    const { subscribe, data, error: subscription_error, isLoading } = useSubscription('crypto_estimations');
+    const {
+        subscribe,
+        data,
+        error: subscription_error,
+        isLoading,
+        unsubscribe,
+    } = useSubscription('crypto_estimations');
     const [cryptoEstimationsFeeDetails, setCryptoEstimationsFeeDetails] = useState<
         CryptoEstimations['k']['withdrawal_fee']
     >({});
@@ -70,6 +76,7 @@ const useCryptoEstimations = () => {
         isLoading,
         setCurrencyCode,
         serverTime,
+        unsubscribeCryptoEstimations: unsubscribe,
     };
 };
 

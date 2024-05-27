@@ -1,10 +1,6 @@
 /** @define dc-modal; weak */
 .dc-modal {
     &__container {
-        @include tablet-screen {
-            width: unset !important;
-            right: 0;
-        }
         display: flex;
         flex-direction: column;
         position: relative;

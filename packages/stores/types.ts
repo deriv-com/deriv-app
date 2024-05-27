@@ -211,14 +211,7 @@ type TAccountsList = {
     mt5_login_list?: DetailsOfEachMT5Loginid[];
     title?: string;
 }[];
-type TRealAccount = {
-    active_modal_index: number;
-    current_currency: string;
-    error_message: string;
-    previous_currency: string;
-    success_message: string;
-    error_code: number;
-};
+
 // balance is missing in @deriv/api-types
 type TActiveAccount = TAccount & {
     balance?: string | number;
@@ -339,16 +332,6 @@ export type TNotificationMessage = {
     timeoutMessage?: (remaining: number | string) => string;
     type: string;
 };
-type TCommonVariables = {
-    language: string;
-    visitorId?: string;
-    currency?: string;
-    userId?: string;
-    email?: string;
-    loggedIn: boolean;
-    theme: string;
-    platform: string;
-};
 
 type TNotification =
     | TNotificationMessage
@@ -395,13 +378,6 @@ type RealAccountSignupSettings = {
     previous_currency: string;
     success_message: string;
 };
-type TCountryStandpoint = {
-    is_belgium: boolean;
-    is_france: boolean;
-    is_other_eu: boolean;
-    is_rest_of_eu: boolean;
-    is_united_kingdom: boolean;
-};
 
 type TClientStore = {
     fetchStatesList: () => Promise<StatesList>;
@@ -426,7 +402,6 @@ type TClientStore = {
     clients_country: string;
     cfd_score: number;
     setCFDScore: (score: number) => void;
-    country_standpoint: TCountryStandpoint;
     currency: string;
     ctrader_total_balance: number;
     currencies_list: { text: string; value: string; has_tool_tip?: boolean }[];
@@ -457,7 +432,6 @@ type TClientStore = {
     is_dxtrade_allowed: boolean;
     is_eu_country: boolean;
     is_eu: boolean;
-    is_uk: boolean;
     is_unwelcome: boolean;
     is_single_currency: boolean;
     is_social_signup: boolean;
@@ -549,7 +523,6 @@ type TClientStore = {
     residence_list: ResidenceList;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
-    should_show_eu_content: boolean;
     updateMT5Status: () => Promise<void>;
     fetchAccountSettings: () => Promise<void>;
     setAccountSettings: (get_settings_response: GetSettings) => void;
@@ -609,6 +582,10 @@ type TClientStore = {
     real_account_signup_form_step: number;
     setRealAccountSignupFormData: (data: Array<Record<string, unknown>>) => void;
     setRealAccountSignupFormStep: (step: number) => void;
+    wallet_migration_state?: 'ineligible' | 'eligible' | 'in_progress' | 'migrated' | 'failed';
+    startWalletMigration: () => void;
+    resetWalletMigration: () => void;
+    is_wallet_migration_request_is_in_progress: boolean;
     is_passkey_supported: boolean;
     setIsPasskeySupported: (value: boolean) => void;
     should_show_effortless_login_modal: boolean;
@@ -810,6 +787,7 @@ type TUiStore = {
     toggleAdditionalKycInfoModal: () => void;
     toggleKycInformationSubmittedModal: () => void;
     setAccountSwitcherDisabledMessage: (message?: string) => void;
+    is_set_currency_modal_visible: boolean;
 };
 
 type TPortfolioStore = {

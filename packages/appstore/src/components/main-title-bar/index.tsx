@@ -3,8 +3,8 @@ import { Text, Tabs, Icon, Loading } from '@deriv/components';
 import { ContentFlag, makeLazyLoader, moduleLoader } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { useWalletMigration } from '@deriv/hooks';
 import { useDevice } from '@deriv-com/ui';
+import { useFeatureFlags, useWalletMigration } from '@deriv/hooks';
 import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
 import BookBanner from 'Components/banners/book-banner';
 import AccountTypeDropdown from './account-type-dropdown';
@@ -23,12 +23,15 @@ const WalletsBanner = makeLazyLoader(
 const MainTitleBar = () => {
     const { isDesktop } = useDevice();
     const { traders_hub, client } = useStore();
+    const { is_landing_company_loaded, is_switching } = client;
     const { state: wallet_migration_state } = useWalletMigration();
     const { selected_region, handleTabItemClick, toggleRegulatorsCompareModal, content_flag } = traders_hub;
-    const { is_landing_company_loaded, is_switching } = client;
+    const { is_next_wallet_enabled } = useFeatureFlags();
+
     const is_low_risk_cr_real_account =
         content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
-    const show_wallets_banner = wallet_migration_state && wallet_migration_state !== 'ineligible';
+    const show_wallets_banner =
+        is_next_wallet_enabled && wallet_migration_state && wallet_migration_state !== 'ineligible';
 
     const [active_index, setActiveIndex] = React.useState(0);
     React.useEffect(() => {

@@ -2,6 +2,7 @@ import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { ToggleNotifications } from 'App/Components/Layout/Header';
+import { isTabletOs } from '@deriv/shared';
 
 const ShowNotifications = observer(() => {
     const { notifications: notifications_store } = useStore();
@@ -14,6 +15,7 @@ const ShowNotifications = observer(() => {
                 is_visible={is_notifications_visible}
                 toggleDialog={toggleNotificationsModal}
                 tooltip_message={<Localize i18n_default_text='View notifications' />}
+                showPopover={!isTabletOs}
             />
         </div>
     );

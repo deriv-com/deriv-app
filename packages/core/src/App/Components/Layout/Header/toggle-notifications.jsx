@@ -11,6 +11,7 @@ const ToggleNotificationsDrawer = ({
     toggleDialog,
     tooltip_message,
     should_disable_pointer_events = false,
+    showPopover = true,
 }) => {
     const { isMobile } = useDevice();
     const notifications_toggler_el = (
@@ -44,15 +45,19 @@ const ToggleNotificationsDrawer = ({
                 'notifications-toggle--active': is_visible,
             })}
         >
-            <Popover
-                classNameBubble='notifications-toggle__tooltip'
-                alignment='bottom'
-                message={tooltip_message}
-                should_disable_pointer_events={should_disable_pointer_events}
-                zIndex='9999'
-            >
-                {notifications_toggler_el}
-            </Popover>
+            {showPopover ? (
+                <Popover
+                    classNameBubble='notifications-toggle__tooltip'
+                    alignment='bottom'
+                    message={tooltip_message}
+                    should_disable_pointer_events={should_disable_pointer_events}
+                    zIndex='9999'
+                >
+                    {notifications_toggler_el}
+                </Popover>
+            ) : (
+                notifications_toggler_el
+            )}
             <NotificationsDialog is_visible={is_visible} toggleDialog={toggleDialog} />
         </div>
     );

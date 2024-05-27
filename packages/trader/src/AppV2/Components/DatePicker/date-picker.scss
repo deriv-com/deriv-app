@@ -1,12 +1,30 @@
 .date-picker__action-sheet {
     padding: 0;
 
-    .react-calendar__month-view__days {
-        font-size: var(--core-fontSize-100);
-    }
-    //TODO: temporary CSS
-    .react-calendar__tile--now:after {
-        display: none;
+    .react-calendar {
+        &__tile {
+            font-size: var(--core-fontSize-100);
+
+            &--now:after {
+                display: none;
+            }
+
+            &--range {
+                background-color: var(--semantic-color-monochrome-surface-normal-low);
+                color: var(--component-dropdownItem-label-color-default);
+            }
+
+            &--rangeStart,
+            &--rangeEnd {
+                background-color: var(--component-dropdownItem-bg-selected);
+                color: var(--component-dropdownItem-label-color-selectedWhite);
+            }
+
+            &:disabled {
+                background-color: unset;
+                color: var(--component-textIcon-normal-disabled);
+            }
+        }
     }
 }
 

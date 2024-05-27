@@ -4,12 +4,12 @@ import { toMoment } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
 type TDateRangePicker = {
+    handleDateChange: (values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean }) => void;
     isOpen?: boolean;
     onClose: () => void;
     setCustomTimeRangeFilter: (newCustomTimeFilter?: string | undefined) => void;
-    handleDateChange: (values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean }) => void;
 };
-const DateRangePicker = ({ isOpen, onClose, setCustomTimeRangeFilter, handleDateChange }: TDateRangePicker) => {
+const DateRangePicker = ({ handleDateChange, isOpen, onClose, setCustomTimeRangeFilter }: TDateRangePicker) => {
     const [chosenRangeString, setChosenRangeString] = React.useState<string>();
     const [chosenRange, setChosenRange] = React.useState<(string | null | Date)[] | null | Date>([]);
 
@@ -26,24 +26,25 @@ const DateRangePicker = ({ isOpen, onClose, setCustomTimeRangeFilter, handleDate
                 <ActionSheet.Header title={<Localize i18n_default_text='Choose a date range' />} />
                 <ActionSheet.Content>
                     <DatePicker
+                        className='date-picker__action-sheet'
                         selectRange
                         onFormattedDate={value => setChosenRangeString(value)}
-                        className='date-picker__action-sheet'
                         onChange={value => setChosenRange(value)}
                         optionsConfig={{
                             day: '2-digit',
                             month: 'short',
                             year: 'numeric',
                         }}
+                        tileDisabled={({ date }) => Date.parse(date.toDateString()) > Date.parse(toMoment().toString())}
                     />
                 </ActionSheet.Content>
                 <ActionSheet.Footer
+                    alignment='vertical'
+                    isPrimaryButtonDisabled={!chosenRangeString}
                     primaryAction={{
                         content: 'Apply',
                         onAction: onApply,
                     }}
-                    alignment='vertical'
-                    isPrimaryButtonDisabled={!chosenRangeString}
                 />
             </ActionSheet.Portal>
         </ActionSheet.Root>

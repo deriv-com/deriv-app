@@ -68,13 +68,17 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     };
 
     React.useEffect(() => {
-        if (!positions.length && isClosedTab && (customTimeRangeFilter || timeFilter)) {
-            setNoMatchesFound(true);
-        } else {
-            setNoMatchesFound(false);
+        if (isClosedTab) {
+            setNoMatchesFound(!positions.length && !!(timeFilter || customTimeRangeFilter));
+
+            // For cases with 2 filters: when time filter was reset and we received new positions, we need to filter them by contract type
+            if (contractTypeFilter.length && positions.length && !timeFilter && !customTimeRangeFilter) {
+                const result = filterPositions(positions, contractTypeFilter);
+                setNoMatchesFound(!result.length);
+                setFilteredPositions(result);
+            }
         }
-        handleTradeTypeFilterChange(contractTypeFilter);
-    }, [customTimeRangeFilter, timeFilter, positions, isClosedTab]);
+    }, [customTimeRangeFilter, timeFilter, isClosedTab, positions, contractTypeFilter]);
 
     if (isLoading || (!shouldShowContractCards && !shouldShowEmptyMessage)) return <Loading />;
     return (

@@ -4,8 +4,8 @@ import { ActionSheet, Checkbox } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 
 type TContractTypeFilter = {
-    setContractTypeFilter: (filterValues: string[]) => void;
     contractTypeFilter: string[] | [];
+    setContractTypeFilter: (filterValues: string[]) => void;
 };
 
 // TODO: Replace mockAvailableContractsList with real data when BE will be ready (send list of all available contracts based on account)
@@ -22,7 +22,7 @@ const mockAvailableContractsList = [
     { tradeType: <Localize i18n_default_text='Over/Under' />, id: 'Over/Under' },
 ];
 
-const ContractTypeFilter = ({ setContractTypeFilter, contractTypeFilter }: TContractTypeFilter) => {
+const ContractTypeFilter = ({ contractTypeFilter, setContractTypeFilter }: TContractTypeFilter) => {
     const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
     const [changedOptions, setChangedOptions] = React.useState<string[]>(contractTypeFilter);
 
@@ -52,9 +52,9 @@ const ContractTypeFilter = ({ setContractTypeFilter, contractTypeFilter }: TCont
     return (
         <React.Fragment>
             <Chip
-                label={chipLabelFormatting()}
                 dropdown
                 isDropdownOpen={isDropdownOpen}
+                label={chipLabelFormatting()}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 selected={!!changedOptions.length}
                 size='sm'
@@ -65,23 +65,24 @@ const ContractTypeFilter = ({ setContractTypeFilter, contractTypeFilter }: TCont
                     <ActionSheet.Content className='filter__item__wrapper'>
                         {mockAvailableContractsList.map(({ tradeType, id }) => (
                             <Checkbox
-                                label={tradeType}
-                                className='filter__item'
-                                key={id}
-                                onChange={onChange}
-                                id={id}
                                 checked={changedOptions.includes(id)}
-                                size='md'
                                 checkboxPosition='right'
+                                className='filter__item'
+                                id={id}
+                                key={id}
+                                label={tradeType}
+                                onChange={onChange}
+                                size='md'
                             />
                         ))}
                     </ActionSheet.Content>
                     <ActionSheet.Footer
+                        alignment='vertical'
+                        isSecondaryButtonDisabled={!changedOptions.length}
+                        // TODO: Replace btn name with localize after quill type updates
                         primaryAction={{ content: 'Apply', onAction: () => setContractTypeFilter(changedOptions) }}
                         secondaryAction={{ content: 'Clear All', onAction: () => setChangedOptions([]) }}
-                        alignment='vertical'
                         shouldCloseOnSecondaryButtonClick={false}
-                        isSecondaryButtonDisabled={!changedOptions.length}
                     />
                 </ActionSheet.Portal>
             </ActionSheet.Root>

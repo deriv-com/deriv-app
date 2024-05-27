@@ -27,7 +27,7 @@ const App = ({ passthrough }: Apptypes) => {
 
     return (
         <TraderProviders store={root_store}>
-            <BottomNav className='bottom-nav'>
+            <BottomNav>
                 <Trade />
                 <Markets />
                 <Positions />

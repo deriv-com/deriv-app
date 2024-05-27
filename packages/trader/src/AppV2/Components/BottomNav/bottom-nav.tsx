@@ -9,6 +9,7 @@ import {
 } from '@deriv/quill-icons';
 import BottomNavItem from './bottom-nav-item';
 import { Badge } from '@deriv-com/quill-ui';
+import ContractDetailsFooter from '../ContractDetailsFooter';
 
 type BottomNavProps = {
     className?: string;
@@ -58,6 +59,7 @@ const BottomNav = ({ className, children }: BottomNavProps) => {
     return (
         <div className={classNames('bottom-nav', className)}>
             <div className='bottom-nav-selection'>{children[selectedIndex]}</div>
+            {selectedIndex === 4 && <ContractDetailsFooter />}
             <div className='bottom-nav-container'>
                 {bottomNavItems.map((item, index) => (
                     <BottomNavItem

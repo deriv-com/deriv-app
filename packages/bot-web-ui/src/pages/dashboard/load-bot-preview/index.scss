@@ -265,7 +265,7 @@
 }
 
 .dc-dialog {
-    @include mobile {
+    @include mobile-or-tablet-screen {
         &__wrapper--preview {
             top: 6.5rem;
 

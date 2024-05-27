@@ -17,10 +17,13 @@
             border-radius: 0;
             position: relative;
             z-index: 1;
-            @include mobile-or-tablet-screen {
+            @include mobile-screen {
                 width: 94%;
                 height: auto;
                 max-height: 80%;
+            }
+            @include tablet-screen {
+                height: 40vh;
             }
         }
 

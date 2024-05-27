@@ -12,7 +12,7 @@ import './DocumentUploadDetailsService.scss';
 const DocumentUploadDetailsService = () => {
     const { data: getSettings, update } = useSettings();
     const { errors, formValues, setFormValues } = useFlow();
-    const { validateForm } = useFormikContext();
+    const { dirty, validateForm } = useFormikContext();
 
     const handleDateChange = (formattedDate: string | null) => {
         setFormValues('dateOfBirth', formattedDate);
@@ -22,6 +22,12 @@ const DocumentUploadDetailsService = () => {
     const formattedDateOfBirth = new Date(dateOfBirth * 1000);
     const firstName = getSettings?.first_name;
     const lastName = getSettings?.last_name;
+
+    // useEffect(() => {
+    //     return () => {
+    //         console.log('unmounted');
+    //     };
+    // }, []);
 
     useEffect(() => {
         setFormValues('firstName', getSettings?.first_name);
@@ -46,18 +52,14 @@ const DocumentUploadDetailsService = () => {
     ]);
 
     useEffect(() => {
-        if (
-            formValues.verifiedDocumentDetails &&
-            isValid &&
-            (getSettings.first_name !== formValues.firstName ||
-                getSettings.last_name !== formValues.lastName ||
-                getSettings.date_of_birth !== formValues.dateOfBirth)
-        )
+        if (formValues.verifiedDocumentDetails && dirty && isValid) {
+            // console.log('updating');
             update({
                 date_of_birth: formValues.dateOfBirth,
                 first_name: formValues.firstName,
                 last_name: formValues.lastName,
             });
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         formValues.dateOfBirth,
@@ -69,6 +71,12 @@ const DocumentUploadDetailsService = () => {
         getSettings.last_name,
         isValid,
     ]);
+
+    // useEffect(() => {
+    //     console.log(formValues);
+    // }, [formValues]);
+
+    if (formValues.verifiedDocumentDetails) return null;
 
     return (
         <div className='wallets-idv-document-details'>

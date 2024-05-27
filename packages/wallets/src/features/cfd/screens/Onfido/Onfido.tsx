@@ -31,16 +31,38 @@ const Onfido = () => {
         >
             {!hasAlreadySubmitted && (
                 <div className='wallets-onfido__content'>
-                    {!formValues.verifiedDocumentDetails && <DocumentUploadDetailsService />}
-                    <div className='wallets-onfido__content-overlay'>
-                        <div id={onfidoContainerId} />
-                        {!formValues.verifiedDocumentDetails && (
-                            <InlineMessage
-                                message='Hit the checkbox above to choose your document.'
-                                size='sm'
-                                type='information'
-                            />
-                        )}
+                    <DocumentUploadDetailsService />
+                    <div
+                        className={classNames('wallets-onfido__wrapper', {
+                            'wallets-onfido__wrapper--animate': formValues.verifiedDocumentDetails,
+                        })}
+                    >
+                        <div
+                            className={classNames('wallets-onfido__wrapper-overlay', {
+                                'wallets-onfido__wrapper-overlay--disabled': !formValues.verifiedDocumentDetails,
+                            })}
+                        >
+                            <div id={onfidoContainerId} />
+                        </div>
+                        <div
+                            className={classNames('wallets-onfido__wrapper-message', {
+                                'wallets-onfido__wrapper-message--verified': formValues.verifiedDocumentDetails,
+                            })}
+                        >
+                            {!formValues.verifiedDocumentDetails ? (
+                                <InlineMessage
+                                    message='Hit the checkbox above to choose your document.'
+                                    size='sm'
+                                    type='information'
+                                />
+                            ) : (
+                                <InlineMessage
+                                    message='Your personal details have been saved successfully.'
+                                    size='sm'
+                                    type='announcement'
+                                />
+                            )}
+                        </div>
                     </div>
                 </div>
             )}

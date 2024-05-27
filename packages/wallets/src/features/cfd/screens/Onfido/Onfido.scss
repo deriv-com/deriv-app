@@ -5,7 +5,8 @@
     flex-direction: column;
     align-items: center;
     padding: 1.6rem 0;
-    overflow-y: hidden;
+    overflow-y: scroll;
+    max-height: calc(var(--wallets-vh, 1vh) * 100 - 23.5rem);
 
     @include mobile {
         width: auto;
@@ -22,19 +23,6 @@
     }
 
     &__content {
-        &-overlay {
-            position: relative;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
-            & .wallets-inline-message {
-                position: absolute;
-                top: 1.6rem;
-            }
-        }
-
         @include mobile {
             min-height: 47.2rem;
             display: flex;
@@ -42,9 +30,47 @@
         }
     }
 
+    &__wrapper {
+        position: relative;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: all 1s ease;
+
+        &-overlay {
+            &--disabled {
+                opacity: 0.5;
+            }
+        }
+
+        &-message {
+            position: absolute;
+            top: 1.6rem;
+
+            &--verified {
+                width: 100%;
+                top: 0.4rem;
+                transition: opacity 1s ease;
+
+                animation-name: animate-verified-message;
+                animation-duration: 200ms;
+                animation-fill-mode: forwards;
+                animation-delay: 2s;
+            }
+        }
+    }
+
     &--success {
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+}
+
+@keyframes animate-verified-message {
+    to {
+        display: none;
+        opacity: 0;
     }
 }

@@ -353,7 +353,10 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                           </WalletButton>
                       );
 
-                const renderFooter = context.currentScreenId === 'poiPoaDocsSubmitted' ? undefined : footer;
+                const renderFooter =
+                    context.currentScreenId === 'poiPoaDocsSubmitted' || context.currentScreenId === 'onfidoScreen'
+                        ? undefined
+                        : footer;
 
                 return (
                     <ModalStepWrapper

@@ -8,6 +8,7 @@ const WalletWithdrawal = () => {
     const { switchAccount } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
     const [verificationCode, setVerificationCode] = useState('');
+    const [resendEmail, setResendEmail] = useState(false);
 
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
@@ -40,9 +41,8 @@ const WalletWithdrawal = () => {
     if (activeWallet?.currency && verificationCode) {
         return isCrypto ? (
             <WithdrawalCryptoModule
-                onClose={() => {
-                    setVerificationCode('');
-                }}
+                setResendEmail={setResendEmail}
+                setVerificationCode={setVerificationCode}
                 verificationCode={verificationCode}
             />
         ) : (
@@ -50,7 +50,7 @@ const WalletWithdrawal = () => {
         );
     }
 
-    return <WithdrawalVerificationModule />;
+    return <WithdrawalVerificationModule resendEmail={resendEmail} />;
 };
 
 export default WalletWithdrawal;

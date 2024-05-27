@@ -12,6 +12,7 @@ import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.js
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import TradersHubHomeButton from './traders-hub-home-button';
 import HeaderAccountActions from './header-account-actions';
+import DerivShortLogo from './deriv-short-logo';
 
 const DTraderHeader = observer(() => {
     const { client, common, ui, notifications, traders_hub } = useStore();
@@ -86,23 +87,26 @@ const DTraderHeader = observer(() => {
         >
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
-                    {!is_mobile && (
-                        <PlatformSwitcher
-                            app_routing_history={app_routing_history}
-                            platform_config={filterPlatformsForClients(platform_config)}
-                            setTogglePlatformType={setTogglePlatformType}
-                            current_language={current_language}
-                        />
-                    )}
-                    {is_mobile && (
+                    {is_mobile ? (
                         <React.Fragment>
                             <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
                             {header_extension && is_logged_in && (
                                 <div className='header__menu-left-extensions'>{header_extension}</div>
                             )}
                         </React.Fragment>
+                    ) : (
+                        <React.Fragment>
+                            <DerivShortLogo />
+                            <div className='header__divider' />
+                            <PlatformSwitcher
+                                app_routing_history={app_routing_history}
+                                platform_config={filterPlatformsForClients(platform_config)}
+                                setTogglePlatformType={setTogglePlatformType}
+                                current_language={current_language}
+                            />
+                            <TradersHubHomeButton />
+                        </React.Fragment>
                     )}
-                    {!is_mobile && <TradersHubHomeButton />}
                     <MenuLinks />
                 </div>
 

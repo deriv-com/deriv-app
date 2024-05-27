@@ -235,7 +235,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             landing_company: {},
             upgradeable_currencies: [],
             getChangeableFields: jest.fn(),
-            isAccountOfTypeDisabled: jest.fn(),
             is_mt5_allowed: false,
             mt5_disabled_signup_types: {
                 real: false,
@@ -246,10 +245,6 @@ const mock = (): TStores & { is_mock: boolean } => {
                 demo: false,
             },
             dxtrade_accounts_list_error: null,
-            has_account_error_in_mt5_demo_list: false,
-            has_account_error_in_mt5_real_list: false,
-            has_account_error_in_dxtrade_demo_list: false,
-            has_account_error_in_dxtrade_real_list: false,
             website_status: {
                 dx_trade_status: {
                     all: 0,
@@ -345,6 +340,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_account_settings_visible: false,
             is_account_switcher_disabled: false,
             is_advanced_duration: false,
+            is_history_tab_active: false,
             is_loading: false,
             is_cashier_visible: false,
             is_wallet_modal_visible: false,
@@ -541,8 +537,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             active_modal_wallet_id: '',
             setWalletModalActiveWalletID: jest.fn(),
             available_ctrader_accounts: [],
-            toggleIsTourOpen: jest.fn(),
-            is_tour_open: false,
             is_mt5_notification_modal_visible: false,
             setMT5NotificationModal: jest.fn(),
             has_any_real_account: false,

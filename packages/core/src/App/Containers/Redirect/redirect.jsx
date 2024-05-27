@@ -32,8 +32,6 @@ const Redirect = observer(() => {
     const is_next_wallet = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
     const { is_appstore } = React.useContext(PlatformContext);
 
-    console.log('==>', window.location);
-
     const redirectToExternalPlatform = url => {
         history.push(`${routes.root}?ext_platform_url=${url}`);
         redirected_to_route = true;
@@ -140,12 +138,6 @@ const Redirect = observer(() => {
                     redirected_to_route = true;
                 }
             }
-
-            console.log(
-                '==>',
-                { redirect_to, dd: window.location.pathname !== routes.wallets },
-                redirect_to !== '10' && redirect_to !== '11' && !routes.wallets
-            );
 
             if (redirect_to !== '10' && redirect_to !== '11' && window.location.pathname !== routes.wallets) {
                 setResetTradingPasswordModalOpen(true);

@@ -47,9 +47,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: var(--general-main-2, #ffffff);
         z-index: 1;
-        border-radius: 0.8rem 0.8rem 0 0;
 
         &-close-icon {
             cursor: pointer;

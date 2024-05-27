@@ -19,6 +19,8 @@ jest.mock('../show-notifications', () =>
     jest.fn(() => <div data-testid='dt_show_notifications'>MockedShowNotifications</div>)
 );
 
+jest.mock('../traders-hub-onboarding', () => jest.fn(() => <div>MockedTradersHubOnboarding</div>));
+
 describe('DefaultMobileLinks', () => {
     let history: BrowserHistory, mock_store: ReturnType<typeof mockStore>;
 
@@ -41,12 +43,20 @@ describe('DefaultMobileLinks', () => {
         );
     };
 
-    it('should render "DefaultMobileLinks" with Notifications & link to Account Settings', () => {
+    it('should render "DefaultMobileLinks" with Onboarding, Notifications & link to Account Settings for wallet', () => {
+        mock_store.client.has_wallet = true;
         render(<DefaultMobileLinks />, { wrapper });
+        expect(screen.getByText('MockedTradersHubOnboarding')).toBeInTheDocument();
         expect(screen.getByText('MockedShowNotifications')).toBeInTheDocument();
         expect(screen.getByText('MockedBinaryLink to Account Settings')).toBeInTheDocument();
     });
 
+    it('should render "DefaultMobileLinks" with Notifications & link to Account Settings for non wallet path', () => {
+        render(<DefaultMobileLinks />, { wrapper });
+        expect(screen.queryByText('MockedTradersHubOnboarding')).not.toBeInTheDocument();
+        expect(screen.getByText('MockedShowNotifications')).toBeInTheDocument();
+        expect(screen.getByText('MockedBinaryLink to Account Settings')).toBeInTheDocument();
+    });
     it('should display the cashier button', () => {
         render(<DefaultMobileLinks />, { wrapper });
         expect(screen.getByRole('button', { name: 'Cashier' })).toBeInTheDocument();

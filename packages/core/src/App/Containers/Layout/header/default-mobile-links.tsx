@@ -7,6 +7,8 @@ import { Localize } from '@deriv/translations';
 
 import { BinaryLink } from 'App/Components/Routes';
 import ShowNotifications from './show-notifications';
+import { useLocation } from 'react-router-dom';
+import TradersHubOnboarding from './traders-hub-onboarding';
 
 type TDefaultMobileLinks = {
     handleClickCashier: () => void;
@@ -15,9 +17,16 @@ type TDefaultMobileLinks = {
 const DefaultMobileLinks = React.memo(({ handleClickCashier }: TDefaultMobileLinks) => {
     const { client } = useStore();
     const { has_wallet } = client;
+    const location = useLocation();
+    const walletRoute = location.pathname === routes.wallets;
 
     return (
         <React.Fragment>
+            {walletRoute && (
+                <div className='traders-hub-header__menu-right--items--onboarding'>
+                    <TradersHubOnboarding />
+                </div>
+            )}
             <div className='traders-hub-header__menu-right--items--notifications'>
                 <ShowNotifications />
             </div>

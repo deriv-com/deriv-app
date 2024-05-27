@@ -113,7 +113,7 @@
     &__wrapper {
         margin: 3rem 5rem 1rem;
         display: flex;
-        @include desktop {
+        @include desktop-screen {
             justify-content: center;
         }
         gap: 1.6rem;
@@ -1075,7 +1075,7 @@
             justify-content: center;
         }
 
-        @include desktop() {
+        @include desktop-screen {
             .onfido-container {
                 padding-top: 1.6rem;
             }

@@ -10,22 +10,24 @@ type TMyProfileBusinessHoursProps = {
 
 const MyProfileNameBusinessHours = ({ onClickMessage }: TMyProfileBusinessHoursProps) => {
     return (
-        <Tooltip
-            alignment='top'
-            className='my-profile-name-business-hours__tooltip'
-            message={localize('Business hour')}
-            onClickMessage={onClickMessage}
-        >
-            <Icon icon='IcClockOutline' />
-            <Text
-                className='my-profile-name-business-hours__tooltip-text'
-                line_height='xxs'
-                size={getTextSize('xxxs', 'xs')}
-                weight='bold'
+        <div className='my-profile-name-business-hours'>
+            <Tooltip
+                alignment='top'
+                className='my-profile-name-business-hours__tooltip'
+                message={localize('Business hour')}
+                onClickMessage={onClickMessage}
             >
-                <Localize i18n_default_text='Open' />
-            </Text>
-        </Tooltip>
+                <Icon icon='IcClockOutline' />
+                <Text
+                    className='my-profile-name-business-hours__tooltip-text'
+                    line_height='xxs'
+                    size={getTextSize('xxxs', 'xs')}
+                    weight='bold'
+                >
+                    <Localize i18n_default_text='Open' />
+                </Text>
+            </Tooltip>
+        </div>
     );
 };
 

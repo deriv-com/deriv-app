@@ -1,9 +1,8 @@
 import React from 'react';
 import PhoneVerificationCard from './phone-verification-card';
-import { Text } from '@deriv-com/quill-ui';
+import { Text, InputGroupButton } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { Input } from '@deriv/components';
 import { useVerifyEmail } from '@deriv/hooks';
 import { convertPhoneTypeDisplay } from 'Helpers/utils';
 import ResendCodeTimer from './resend-code-timer';
@@ -20,6 +19,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     const { phone } = account_settings;
     const [should_show_didnt_get_the_code_modal, setShouldShowDidntGetTheCodeModal] = React.useState(false);
     const [start_timer, setStartTimer] = React.useState(true);
+    const [otp, setOtp] = React.useState('');
     const { send } = useVerifyEmail('phone_number_verification');
     //TODO: this shall be replace by BE API call when it's ready
     const { should_show_phone_number_otp } = ui;
@@ -29,6 +29,14 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
             send();
         }
     }, [should_show_phone_number_otp, send]);
+
+    const handleGetOtpValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setOtp(e.target.value);
+    };
+
+    const handleVerifyOTP = () => {
+        //TODO: inplement function to verify OTP when BE API is ready
+    };
 
     return (
         <PhoneVerificationCard is_small_card>
@@ -73,7 +81,12 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                 )}
             </div>
             <div className='phone-verification__card--email-verification-otp-container'>
-                <Input id='otp_code' type='text' name='otp_code' label={localize('OTP code')} data-lpignore='true' />
+                <InputGroupButton
+                    buttonLabel={localize('Verify')}
+                    label={localize('OTP code')}
+                    buttonCallback={handleVerifyOTP}
+                    onChange={handleGetOtpValue}
+                />
                 <ResendCodeTimer
                     resend_code_text={should_show_phone_number_otp ? "Didn't get the code?" : 'Resend code'}
                     //TODOS: replace hardcoded timer when timestamp BE API is ready

@@ -127,7 +127,7 @@
             padding: 1.6rem;
             margin-top: 4.8rem;
             &--listed {
-                margin-top: 0.6rem;
+                margin-top: 2.4rem;
             }
             @include mobile {
                 height: auto;
@@ -144,9 +144,10 @@
                 text-align: center;
                 margin-top: 1.6rem;
                 &__has-list {
-                    margin-top: 0;
-                    text-align: start;
+                    text-align: center;
                     @include mobile {
+                        text-align: start;
+                        margin-top: 0;
                         width: 85%;
                     }
                 }
@@ -194,34 +195,6 @@
 
             &--minimized {
                 height: 3.6rem;
-            }
-        }
-
-        &__centered {
-            @include flex-center;
-            flex-direction: column;
-
-            @include tablet {
-                width: 100%;
-            }
-
-            @include mobile {
-                width: 100%;
-                padding: 0 1rem;
-            }
-
-            &--not-listed {
-                @include desktop {
-                    width: 100%;
-                    margin-top: 4.8rem;
-                }
-            }
-
-            &--listed {
-                align-items: initial;
-                justify-content: flex-start;
-                padding: 0.4rem 2.4rem;
-                height: 100%;
             }
         }
 
@@ -325,6 +298,7 @@
 
             &--minimized {
                 width: 100%;
+                padding: 0 1rem;
             }
 
             &__tiles {
@@ -332,9 +306,11 @@
                 word-wrap: break-word;
                 font-size: 1.3rem;
                 text-align: center;
+                margin-top: 1.6rem;
 
                 @include mobile {
                     flex-wrap: wrap;
+                    margin-top: 0;
                 }
 
                 &--minimized {
@@ -357,7 +333,7 @@
             &__block {
                 @include flex-center;
                 flex-direction: column;
-                padding-inline-end: 2.4rem;
+                padding-inline-end: 4rem;
 
                 @include mobile {
                     padding: 1rem;
@@ -407,9 +383,14 @@
 
 .user-guide {
     position: absolute;
-    inset-inline-end: 1.6rem;
+    inset-inline-end: 2.4rem;
     top: 1.8rem;
     z-index: 1;
+
+    @include mobile {
+        inset-inline-end: 1.6rem;
+    }
+
     &__button {
         @include flex-center;
         padding: 0.8rem 1.4rem;

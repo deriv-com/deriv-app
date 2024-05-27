@@ -5,7 +5,6 @@ import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import OnboardTourHandler from '../tutorials/dbot-tours/onboarding-tour';
-import Local from './load-bot-preview/local';
 import Cards from './cards';
 import InfoPanel from './info-panel';
 import UserGuide from './user-guide';
@@ -20,7 +19,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
     const { dashboard_strategies } = load_modal;
     const { setActiveTabTutorial, active_tab, active_tour } = dashboard;
     const has_dashboard_strategies = !!dashboard_strategies?.length;
-    const { is_mobile } = ui;
+    const { is_mobile, is_desktop } = ui;
 
     return (
         <React.Fragment>
@@ -41,18 +40,20 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                                 'tab__dashboard__header--listed': !is_mobile && has_dashboard_strategies,
                             })}
                         >
-                            {!has_dashboard_strategies && (
-                                <Text
-                                    className='title'
-                                    as='h2'
-                                    color='prominent'
-                                    size={is_mobile ? 's' : 'sm'}
-                                    line_height='xxl'
-                                    weight='bold'
-                                >
-                                    {localize('Load or build your bot')}
-                                </Text>
-                            )}
+                            {(!has_dashboard_strategies && is_mobile) ||
+                                (is_desktop && (
+                                    <Text
+                                        className='title'
+                                        as='h2'
+                                        color='prominent'
+                                        size={is_mobile ? 's' : 'sm'}
+                                        line_height='xxl'
+                                        weight='bold'
+                                    >
+                                        {localize('Load or build your bot')}
+                                    </Text>
+                                ))}
+
                             <Text
                                 as='p'
                                 color='prominent'
@@ -65,22 +66,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                                 )}
                             </Text>
                         </div>
-                        <div
-                            className={classNames('tab__dashboard__centered', {
-                                'tab__dashboard__centered--listed': !is_mobile && has_dashboard_strategies,
-                                'tab__dashboard__centered--not-listed': !has_dashboard_strategies,
-                            })}
-                        >
-                            <Cards has_dashboard_strategies={has_dashboard_strategies} is_mobile={is_mobile} />
-                        </div>
-                        {is_mobile && <Local />}
-                    </div>
-                    <div className={classNames('preview-panel', { 'preview-panel--active': has_dashboard_strategies })}>
-                        {has_dashboard_strategies && !is_mobile && (
-                            <div className='tab__dashboard__preview'>
-                                <Local />
-                            </div>
-                        )}
+                        <Cards has_dashboard_strategies={has_dashboard_strategies} is_mobile={is_mobile} />
                     </div>
                 </div>
             </div>

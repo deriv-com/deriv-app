@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 //@ts-nocheck [TODO] - Need to fix typescript errors in Autocomplete List items and TItems
 
-import React from 'react';
+import { RefObject, useState, Fragment } from 'react';
 import clsx from 'clsx';
 import { Formik, Field, FormikProps, FormikHelpers, FormikHandlers, FormikState, FieldProps } from 'formik';
 import { StatesList } from '@deriv/api-types';
@@ -48,7 +48,7 @@ type TAddressDetails = {
         action: (isSubmitting: boolean) => void,
         next_step: () => void
     ) => void;
-    selected_step_ref?: React.RefObject<FormikProps<TAddressDetailFormProps>>;
+    selected_step_ref?: RefObject<FormikProps<TAddressDetailFormProps>>;
     value: TAddressDetailFormProps;
     has_real_account: boolean;
 };
@@ -89,7 +89,7 @@ const AddressDetails = observer(
         has_real_account,
         ...props
     }: TAddressDetails) => {
-        const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
+        const [address_state_to_display, setAddressStateToDisplay] = useState('');
 
         const {
             ui,
@@ -194,7 +194,7 @@ const AddressDetails = observer(
                                             {states_list?.length > 0 ? (
                                                 <Field name='address_state'>
                                                     {({ field }: FieldProps) => (
-                                                        <React.Fragment>
+                                                        <Fragment>
                                                             <DesktopWrapper>
                                                                 <Autocomplete
                                                                     {...field}
@@ -249,7 +249,7 @@ const AddressDetails = observer(
                                                                     }
                                                                 />
                                                             </MobileWrapper>
-                                                        </React.Fragment>
+                                                        </Fragment>
                                                     )}
                                                 </Field>
                                             ) : (

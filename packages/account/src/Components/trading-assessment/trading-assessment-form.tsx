@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect, ChangeEvent, Fragment } from 'react';
 import clsx from 'clsx';
 import { observer, useStore } from '@deriv/stores';
 import { Formik, Form, FormikErrors, FormikHelpers } from 'formik';
@@ -44,12 +44,12 @@ const TradingAssessmentForm = observer(
         const { is_eu_user } = traders_hub;
         const assessment_questions = getTradingAssessmentQuestions();
         const stored_items = parseInt(localStorage.getItem('current_question_index') ?? '0');
-        const [is_section_filled, setIsSectionFilled] = React.useState(false);
-        const [current_question_details, setCurrentQuestionDetails] = React.useState({
+        const [is_section_filled, setIsSectionFilled] = useState(false);
+        const [current_question_details, setCurrentQuestionDetails] = useState({
             current_question_index: 0,
             current_question: assessment_questions[stored_items],
         });
-        const [form_data, setFormData] = React.useState<TTradingAssessmentForm>({ ...form_value });
+        const [form_data, setFormData] = useState<TTradingAssessmentForm>({ ...form_value });
         const last_question_index = assessment_questions.length - 1;
         const should_display_previous_button = is_independent_section
             ? current_question_details.current_question_index !== 0
@@ -57,7 +57,7 @@ const TradingAssessmentForm = observer(
 
         type TField = keyof typeof form_value;
 
-        React.useEffect(() => {
+        useEffect(() => {
             setCurrentQuestionDetails(prevState => {
                 return {
                     ...prevState,
@@ -73,7 +73,7 @@ const TradingAssessmentForm = observer(
             setFormData(form_value);
         }, []);
 
-        React.useEffect(() => {
+        useEffect(() => {
             if (should_move_to_next) displayNextPage();
         }, [should_move_to_next]);
 
@@ -121,7 +121,7 @@ const TradingAssessmentForm = observer(
         };
 
         const handleValueSelection = (
-            e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>,
+            e: ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLInputElement>,
             form_control: keyof TTradingAssessmentForm,
             callBackFn: (form_control: keyof TTradingAssessmentForm, value: string) => void
         ) => {
@@ -221,7 +221,7 @@ const TradingAssessmentForm = observer(
                         );
 
                         return (
-                            <React.Fragment>
+                            <Fragment>
                                 <Text weight='bold' size='xs' className='trading-assessment__question-counter'>
                                     <Localize
                                         i18n_default_text='Question {{ current }} of {{ total }}'
@@ -301,7 +301,7 @@ const TradingAssessmentForm = observer(
                                         </Modal.Footer>
                                     </Form>
                                 </section>
-                            </React.Fragment>
+                            </Fragment>
                         );
                     }}
                 </Formik>

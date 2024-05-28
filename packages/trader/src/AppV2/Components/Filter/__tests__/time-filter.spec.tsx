@@ -24,10 +24,10 @@ describe('TimeFilter', () => {
         render(<TimeFilter {...mockProps} />);
 
         const dropdownChevron = screen.getByTestId('dt_chevron');
-        expect(dropdownChevron).toHaveAttribute('data-state', 'close');
+        expect(dropdownChevron).toHaveClass('rotate--close');
 
         userEvent.click(dropdownChevron);
-        expect(dropdownChevron).toHaveAttribute('data-state', 'open');
+        expect(dropdownChevron).toHaveClass('rotate--open');
     });
 
     it('should render correct chip name if user have not chosen anything else', () => {

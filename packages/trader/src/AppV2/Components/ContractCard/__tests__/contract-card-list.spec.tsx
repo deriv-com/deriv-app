@@ -14,10 +14,8 @@ jest.mock('../contract-card', () =>
     jest.fn(({ onCancel, onClose }: React.ComponentProps<typeof ContractCard>) => (
         <div>
             {contractCard}
-            <>
-                <button onClick={onCancel}>{cancelButton}</button>
-                <button onClick={onClose}>{closeButton}</button>
-            </>
+            <button onClick={onCancel}>{cancelButton}</button>
+            <button onClick={onClose}>{closeButton}</button>
         </div>
     ))
 );

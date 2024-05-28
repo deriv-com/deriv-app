@@ -1,9 +1,9 @@
 import React from 'react';
-import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 import { Text } from '@deriv-com/quill-ui';
 import { Loading } from '@deriv/components';
-import ContractCardList from './contract-card-list';
 import { toMoment } from '@deriv/shared';
+import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
+import ContractCardList from './contract-card-list';
 
 type TContractCardsSections = {
     isLoadingMore?: boolean;

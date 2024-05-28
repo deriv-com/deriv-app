@@ -1,7 +1,7 @@
 import React from 'react';
+import clsx from 'clsx';
 import { getContractPath } from '@deriv/shared';
 import { TPortfolioPosition } from '@deriv/stores/types';
-import classNames from 'classnames';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 import { TRootStore } from 'Types';
 import ContractCard from './contract-card';
@@ -38,7 +38,7 @@ const ContractCardList = ({
     if (!positions.length) return null;
     return (
         <div
-            className={classNames('contract-card-list', {
+            className={clsx('contract-card-list', {
                 'contract-card-list--has-buttons-demo': hasButtonsDemo && !positions[0].contract_info.sell_time,
             })}
         >

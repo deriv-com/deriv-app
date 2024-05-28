@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { CaptionText, Text } from '@deriv-com/quill-ui';
 import { useSwipeable } from 'react-swipeable';
 import { IconTradeTypes, Money } from '@deriv/components';
@@ -76,6 +76,8 @@ const ContractCard = ({
     const totalProfit = getProfit(contractInfo);
     const validToCancel = isValidToCancel(contractInfo as TContractInfo);
     const validToSell = isValidToSell(contractInfo as TContractInfo) && !isSellRequested;
+    const isCancelButtonPressed = isSellRequested && isCanceling;
+    const isCloseButtonPressed = isSellRequested && isClosing;
 
     const handleSwipe = (direction: string) => {
         const isLeft = direction === DIRECTION.LEFT;
@@ -108,10 +110,10 @@ const ContractCard = ({
 
     if (!contract_type) return null;
     return (
-        <div className={classNames(`${className}-wrapper`, { deleted: isDeleted })}>
+        <div className={clsx(`${className}-wrapper`, isDeleted && 'deleted')}>
             <BinaryLink
                 {...(hasActionButtons ? swipeHandlers : {})}
-                className={classNames(className, {
+                className={clsx(className, {
                     'show-buttons': shouldShowButtons,
                     'has-cancel-button': validToCancel,
                     lost: Number(totalProfit) < 0,
@@ -153,11 +155,11 @@ const ContractCard = ({
                     <div className='buttons'>
                         {validToCancel && (
                             <button
-                                className={classNames({ loading: isSellRequested && isCanceling })}
+                                className={clsx(isCancelButtonPressed && 'loading')}
                                 disabled={Number((contractInfo as TContractInfo).profit) >= 0 || isSellRequested}
                                 onClick={e => handleClose(e, true)}
                             >
-                                {isSellRequested && isCanceling ? (
+                                {isCancelButtonPressed ? (
                                     <div className='circle-loader' data-testid='dt_button_loader' />
                                 ) : (
                                     <CaptionText bold as='div' className='label'>
@@ -167,11 +169,11 @@ const ContractCard = ({
                             </button>
                         )}
                         <button
-                            className={classNames({ loading: isSellRequested && isClosing })}
+                            className={clsx(isCloseButtonPressed && 'loading')}
                             disabled={!validToSell}
                             onClick={handleClose}
                         >
-                            {isSellRequested && isClosing ? (
+                            {isCloseButtonPressed ? (
                                 <div className='circle-loader' data-testid='dt_button_loader' />
                             ) : (
                                 <CaptionText bold as='div' className='label'>

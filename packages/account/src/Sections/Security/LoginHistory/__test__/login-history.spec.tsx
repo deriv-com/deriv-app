@@ -2,8 +2,14 @@ import React from 'react';
 import { screen, render, waitFor } from '@testing-library/react';
 import { WS } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import LoginHistory from '../login-history';
 import { getLoginHistoryFormattedData } from '../../../../../../utils/src/getLoginHistoryFormattedData';
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -63,18 +69,11 @@ describe('<LoginHistory />', () => {
                 is_switching: false,
                 is_authorize: true,
             },
-            ui: {
-                is_mobile: false,
-            },
         });
     });
 
-    it('should render Login History List when is_mobile is true', async () => {
-        mock_store.ui.is_mobile = true;
-        renderComponent();
-        await waitFor(() => {
-            expect(screen.getByText(/date and time/i)).toHaveClass('dc-text login-history__list__row__cell--title');
-        });
+    afterEach(() => {
+        jest.clearAllMocks();
     });
 
     it('should render Login History Table', async () => {
@@ -151,6 +150,14 @@ describe('<LoginHistory />', () => {
         renderComponent();
         await waitFor(() => {
             expect(screen.getByText(/failed/i)).toBeInTheDocument();
+        });
+    });
+
+    it('should render Login History List when is_mobile is true', async () => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
+        renderComponent();
+        await waitFor(() => {
+            expect(screen.getByText(/date and time/i)).toHaveClass('dc-text login-history__list__row__cell--title');
         });
     });
 

@@ -186,7 +186,10 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                     <>
                         <ul className='wallets-mt5-trade-screen__ctrader-account-list'>
                             {sortedCtraderAccountList?.map(account => (
-                                <li className='wallets-mt5-trade-screen__ctrader-account-list-item' key={account.login}>
+                                <li
+                                    className='wallets-mt5-trade-screen__ctrader-account-list__item'
+                                    key={account.login}
+                                >
                                     <WalletText size='sm'>{account.login}</WalletText>
                                     <WalletText size='sm' weight='bold'>
                                         {account.formatted_balance}
@@ -201,7 +204,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                                     onClick={onClickCtraderGetMoreButton}
                                     type='button'
                                 >
-                                    <span className='wallets-mt5-trade-screen__ctrader-get-more-button-icon'>
+                                    <span className='wallets-mt5-trade-screen__ctrader-get-more-button__icon'>
                                         <LabelPairedPlusMdFillIcon fill='#000000' />
                                     </span>
                                     <WalletText size='xs'>Get another cTrader cTrader account</WalletText>
@@ -209,38 +212,38 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                             )}
                         <Accordion
                             className='wallets-mt5-trade-screen__accordion'
-                            headerClassName='wallets-mt5-trade-screen__accordion-header'
+                            headerClassName='wallets-mt5-trade-screen__accordion__header'
                             title='See important notes'
                             variant='bordered'
                         >
                             <ol className='wallets-mt5-trade-screen__notes'>
-                                <li className='wallets-mt5-trade-screen__notes-item'>
+                                <li className='wallets-mt5-trade-screen__notes__item'>
                                     Use your Deriv account email and password to log in to cTrader.
                                 </li>
-                                <li className='wallets-mt5-trade-screen__notes-item'>
+                                <li className='wallets-mt5-trade-screen__notes__item'>
                                     Manage up to 5 Deriv cTrader accounts. While you can convert any of your Deriv
                                     cTrader accounts into a strategy account, please take note of the following:
-                                    <ul className='wallets-mt5-trade-screen__notes-inner-list'>
-                                        <li className='wallets-mt5-trade-screen__notes-item wallets-mt5-trade-screen__notes-inner-item'>
+                                    <ul className='wallets-mt5-trade-screen__notes__inner-list'>
+                                        <li className='wallets-mt5-trade-screen__notes__item wallets-mt5-trade-screen__notes__inner-item'>
                                             When setting up a strategy, you have the option to impose fees.
                                         </li>
-                                        <li className='wallets-mt5-trade-screen__notes-item wallets-mt5-trade-screen__notes-inner-item'>
+                                        <li className='wallets-mt5-trade-screen__notes__item wallets-mt5-trade-screen__notes__inner-item'>
                                             For strategies where you impose fees, you must assign one of your existing
                                             accounts to process these fees. The same ‘Account For Fees’ can support
                                             multiple fee-based strategies.
                                         </li>
-                                        <li className='wallets-mt5-trade-screen__notes-item wallets-mt5-trade-screen__notes-inner-item'>
+                                        <li className='wallets-mt5-trade-screen__notes__item wallets-mt5-trade-screen__notes__inner-item'>
                                             Free strategies do not require an ‘Account For Fees’.
                                         </li>
-                                        <li className='wallets-mt5-trade-screen__notes-item wallets-mt5-trade-screen__notes-inner-item'>
+                                        <li className='wallets-mt5-trade-screen__notes__item wallets-mt5-trade-screen__notes__inner-item'>
                                             An account designated as a strategy provider is irreversible unless it
                                             remains inactive for 30 days.
                                         </li>
-                                        <li className='wallets-mt5-trade-screen__notes-item wallets-mt5-trade-screen__notes-inner-item'>
+                                        <li className='wallets-mt5-trade-screen__notes__item wallets-mt5-trade-screen__notes__inner-item'>
                                             An account cannot simultaneously be a strategy provider and serve as an
                                             ‘Account For Fees’.
                                         </li>
-                                        <li className='wallets-mt5-trade-screen__notes-item wallets-mt5-trade-screen__notes-inner-item'>
+                                        <li className='wallets-mt5-trade-screen__notes__item wallets-mt5-trade-screen__notes__inner-item'>
                                             To ensure you can always create and manage strategies with fees,{' '}
                                             <strong>
                                                 keep at least one account free from being a strategy provider

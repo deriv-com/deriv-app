@@ -101,7 +101,7 @@ describe('APIMiddleware', () => {
         expect(spydefineMeasure).toHaveBeenCalledWith('authorize');
     });
 
-    it('Should invoke the method sendWillBeCalled()', async () => {
+    it('Should invoke the method sendWillBeCalled() ', async () => {
         const spysendWillBeCalled = jest.spyOn(api_middleware, 'sendWillBeCalled');
 
         await api_middleware.sendWillBeCalled({ args: [{ buy: 1 }] });

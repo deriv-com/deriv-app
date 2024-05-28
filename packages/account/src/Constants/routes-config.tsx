@@ -5,8 +5,6 @@ import React from 'react';
 import { routes, moduleLoader, makeLazyLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
-    AccountLimits,
-    Passwords,
     Passkeys,
     PersonalDetails,
     TradingAssessment,
@@ -34,6 +32,17 @@ const Page404 = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')),
     () => <Loading />
 )();
+
+const Passwords = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/Passwords')),
+    () => <Loading />
+)();
+
+const AccountLimits = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/AccountLimits')),
+    () => <Loading />
+)();
+
 export type TPage404 = typeof Page404;
 
 // Order matters

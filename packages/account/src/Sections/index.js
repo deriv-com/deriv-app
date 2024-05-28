@@ -1,6 +1,4 @@
 import Passkeys from 'Sections/Security/Passkeys';
-import Passwords from 'Sections/Security/Passwords';
-import AccountLimits from 'Sections/Security/AccountLimits';
 import PersonalDetails from 'Sections/Profile/PersonalDetails';
 import TradingAssessment from 'Sections/Assessment/TradingAssessment';
 import FinancialAssessment from 'Sections/Assessment/FinancialAssessment';
@@ -20,9 +18,7 @@ import DeactivateAccount from 'Sections/Security/DeactivateAccount'; // TODO: Re
 import LanguageSettings from 'Sections/Profile/LanguageSettings';
 
 export {
-    AccountLimits,
     Passkeys,
-    Passwords,
     PersonalDetails,
     TradingAssessment,
     FinancialAssessment,

@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useActiveWalletAccount } from '@deriv/api-v2';
+import { useActiveWalletAccount, useBalanceSubscription } from '@deriv/api-v2';
+import { displayMoney } from '@deriv/api-v2/src/utils';
 import {
     LegacyClose2pxIcon,
     LegacyDepositIcon,
@@ -28,12 +29,12 @@ const realAccountTabs = [
     },
     {
         icon: <LegacyWithdrawalIcon iconSize='xs' />,
-        path: 'withdraw',
+        path: 'withdrawal',
         text: i18n.t('Withdraw'),
     },
     {
         icon: <LegacyTransferIcon iconSize='xs' />,
-        path: 'transfer',
+        path: 'account-transfer',
         text: i18n.t('Transfer'),
     },
     {
@@ -45,14 +46,14 @@ const realAccountTabs = [
 
 const virtualAccountTabs = [
     {
-        icon: <LegacyTransferIcon iconSize='xs' />,
-        path: 'transfer',
-        text: i18n.t('Transfer'),
-    },
-    {
         icon: <LegacyPlus1pxIcon iconSize='xs' />,
         path: 'reset-balance',
         text: i18n.t('Reset Balance'),
+    },
+    {
+        icon: <LegacyTransferIcon iconSize='xs' />,
+        path: 'account-transfer',
+        text: i18n.t('Transfer'),
     },
     {
         icon: <LegacyStatementIcon iconSize='xs' />,
@@ -63,6 +64,7 @@ const virtualAccountTabs = [
 
 const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const { data: activeWallet } = useActiveWalletAccount();
+    const { data: balanceData, subscribe, unsubscribe } = useBalanceSubscription();
     const { isMobile } = useDevice();
     const activeTabRef = useRef<HTMLButtonElement>(null);
     const history = useHistory();
@@ -75,6 +77,15 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
             activeTabRef.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'center' });
         }
     }, [location.pathname, isMobile]);
+
+    useEffect(() => {
+        subscribe({
+            loginid: activeWallet?.loginid,
+        });
+        return () => {
+            unsubscribe();
+        };
+    }, [activeWallet?.loginid, subscribe, unsubscribe]);
 
     return (
         <WalletGradientBackground
@@ -106,7 +117,9 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                             )}
                         </div>
                         <WalletText color={activeWallet?.is_virtual ? 'white' : 'general'} size='xl' weight='bold'>
-                            {activeWallet?.display_balance}
+                            {displayMoney?.(balanceData?.balance ?? 0, activeWallet?.currency || '', {
+                                fractional_digits: activeWallet?.currency_config?.fractional_digits,
+                            })}
                         </WalletText>
                     </div>
                     <div className='wallets-cashier-header__top-right-info'>
@@ -131,23 +144,23 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                                 'wallets-cashier-header__close-icon--white': activeWallet?.is_virtual,
                             })}
                             iconSize='xs'
-                            onClick={() => history.push('/wallets')}
+                            onClick={() => history.push('/')}
                         />
                     </div>
                 </section>
                 <section className='wallets-cashier-header__tabs'>
                     {tabs.map(tab => {
                         const isActiveTab =
-                            location.pathname === `/wallets/cashier/on-ramp`
+                            location.pathname === `/wallet/on-ramp`
                                 ? tab.path === 'deposit'
-                                : location.pathname === `/wallets/cashier/${tab.path}`;
+                                : location.pathname === `/wallet/${tab.path}`;
                         return (
                             <button
                                 className={`wallets-cashier-header__tab ${
                                     isActiveTab ? 'wallets-cashier-header__tab--active' : ''
                                 }`}
                                 key={`cashier-tab-${tab.path}`}
-                                onClick={() => history.push(`/wallets/cashier/${tab.path}`)}
+                                onClick={() => history.push(`/wallet/${tab.path}`)}
                                 ref={isActiveTab ? activeTabRef : null}
                             >
                                 <div

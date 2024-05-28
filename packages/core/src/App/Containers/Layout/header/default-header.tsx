@@ -91,15 +91,6 @@ const DefaultHeader = observer(() => {
                         <React.Fragment>
                             <DerivShortLogo />
                             <div className='header__divider' />
-                            <PlatformSwitcher
-                                app_routing_history={app_routing_history}
-                                is_landing_company_loaded={is_landing_company_loaded}
-                                is_logged_in={is_logged_in}
-                                is_logging_in={is_logging_in}
-                                platform_config={filterPlatformsForClients(platform_config)}
-                                setTogglePlatformType={setTogglePlatformType}
-                                current_language={current_language}
-                            />
                         </React.Fragment>
                     )}
                     <MenuLinks />

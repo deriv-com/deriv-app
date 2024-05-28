@@ -310,7 +310,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 <Div100vhContainer height_offset='40px'>
                     <div className='header__menu-mobile-body-wrapper'>
                         <React.Fragment>
-                            {
+                            {is_logged_in && (
                                 <MobileDrawer.SubHeader
                                     className={classNames({
                                         'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
@@ -328,8 +328,9 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         setTogglePlatformType={setTogglePlatformType}
                                     />
                                 </MobileDrawer.SubHeader>
-                            }
-                            <MobileDrawer.Body>
+                            )}
+
+                            <MobileDrawer.Body className={!is_logged_in ? 'no-padding' : ''}>
                                 <div className='header__menu-mobile-platform-switcher' id='mobile_platform_switcher' />
                                 <MobileDrawer.Item>
                                     <MenuLink
@@ -339,7 +340,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         onClickLink={toggleDrawer}
                                     />
                                 </MobileDrawer.Item>
-                                {is_logged_in && (
+                                {
                                     <MobileDrawer.Item>
                                         <MenuLink
                                             link_to={routes.traders_hub}
@@ -349,7 +350,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                             is_active={route === routes.traders_hub}
                                         />
                                     </MobileDrawer.Item>
-                                )}
+                                }
                                 {
                                     <MobileDrawer.Item>
                                         <MenuLink

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { Field, useFormikContext } from 'formik';
 import moment from 'moment';
@@ -11,14 +11,16 @@ import './VerifyDocumentDetails.scss';
 
 const VerifyDocumentDetails = () => {
     const { data: getSettings, update } = useSettings();
-    const { errors, formValues, setFormValues } = useFlow();
-    const { dirty, validateForm } = useFormikContext();
+    const { currentScreenId, formValues, setFormValues } = useFlow();
+    const { isValid, validateForm } = useFormikContext();
+
+    const isOnfido = currentScreenId === 'onfidoScreen';
 
     const handleDateChange = (formattedDate: string | null) => {
         setFormValues('dateOfBirth', formattedDate);
     };
 
-    const dateOfBirth = getSettings?.date_of_birth || 0;
+    const dateOfBirth = getSettings?.date_of_birth ?? 0;
     const formattedDateOfBirth = new Date(dateOfBirth * 1000);
     const firstName = getSettings?.first_name;
     const lastName = getSettings?.last_name;
@@ -29,24 +31,8 @@ const VerifyDocumentDetails = () => {
         validateForm();
     }, [getSettings?.first_name, getSettings?.last_name, setFormValues, validateForm]);
 
-    const isValid = useMemo(() => {
-        return (
-            getSettings?.first_name &&
-            getSettings?.last_name &&
-            getSettings?.date_of_birth &&
-            !(errors.firstName || errors.lastName || errors.dateOfBirth)
-        );
-    }, [
-        errors.dateOfBirth,
-        errors.firstName,
-        errors.lastName,
-        getSettings?.date_of_birth,
-        getSettings?.first_name,
-        getSettings?.last_name,
-    ]);
-
     useEffect(() => {
-        if (formValues.verifiedDocumentDetails && dirty && isValid) {
+        if (formValues.verifiedDocumentDetails && isOnfido && isValid) {
             update({
                 date_of_birth: formValues.dateOfBirth,
                 first_name: formValues.firstName,
@@ -59,13 +45,12 @@ const VerifyDocumentDetails = () => {
         formValues.firstName,
         formValues.lastName,
         formValues.verifiedDocumentDetails,
-        getSettings.date_of_birth,
-        getSettings.first_name,
-        getSettings.last_name,
+        isOnfido,
         isValid,
     ]);
 
-    if (formValues.verifiedDocumentDetails) return <div className='wallets-verify-document-details__dummy' />;
+    if (formValues.verifiedDocumentDetails && isOnfido)
+        return <div className='wallets-verify-document-details__dummy' />;
 
     return (
         <div className='wallets-verify-document-details'>

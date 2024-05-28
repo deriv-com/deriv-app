@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { useSettings } from '@deriv/api-v2';
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { FlowProvider, FlowTextField } from '../../../../../components';
 import VerifyDocumentDetails from '../VerifyDocumentDetails';
 
@@ -17,6 +17,7 @@ describe('IDVDocumentUploadDetails', () => {
                 first_name: 'John',
                 last_name: 'Doe',
             },
+            update: jest.fn(),
         });
     });
 
@@ -82,15 +83,26 @@ describe('IDVDocumentUploadDetails', () => {
         ).toBeInTheDocument();
     });
 
-    test('should handle checkbox and fields change correctly when checkbox is checked', async () => {
+    test('check if set_settings call was made with correct values', async () => {
+        const mockUpdate = jest.fn();
+        (useSettings as jest.Mock).mockReturnValue({
+            data: {
+                date_of_birth: 0,
+                first_name: 'John',
+                last_name: 'Doe',
+            },
+            update: mockUpdate,
+        });
+
         await act(async () => {
             render(
                 <FlowProvider
+                    initialScreenId='onfidoScreen'
                     initialValues={{
                         test: 'default',
                     }}
                     screens={{
-                        test: <FlowTextField name='test' />,
+                        onfidoScreen: <FlowTextField name='onfido' />,
                     }}
                 >
                     {() => {
@@ -108,20 +120,12 @@ describe('IDVDocumentUploadDetails', () => {
             );
         });
 
-        expect(screen.getByLabelText('First name*')).toBeDisabled();
-        expect(screen.getByLabelText('Last name*')).toBeDisabled();
-        expect(screen.getByLabelText('Date of birth*')).toBeDisabled();
-
-        await act(async () => {
-            fireEvent.click(
-                screen.getByLabelText(
-                    /I confirm that the name and date of birth above match my chosen identity document/
-                )
-            );
+        await waitFor(() => {
+            expect(mockUpdate).toBeCalledWith({
+                date_of_birth: '1970-01-01',
+                first_name: 'John',
+                last_name: 'Doe',
+            });
         });
-
-        expect(screen.getByLabelText('First name*')).toBeEnabled();
-        expect(screen.getByLabelText('Last name*')).toBeEnabled();
-        expect(screen.getByLabelText('Date of birth*')).toBeEnabled();
     });
 });

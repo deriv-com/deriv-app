@@ -2,14 +2,14 @@ import React, { PropsWithChildren } from 'react';
 import { useCtraderAccountsList } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ModalProvider, TModalContext, useModal } from '../../../../../../components/ModalProvider';
-import { calculateTotalBalance } from '../../../../../../utils/ctrader';
+import { calculateTotalByKey } from '../../../../../../utils/calculate-total-by-key';
 import { PlatformDetails } from '../../../../constants';
 import { MT5TradeModal } from '../../../../modals';
 import AddedCTraderAccountsList from '../AddedCTraderAccountsList';
 
 jest.mock('@deriv/api-v2');
-jest.mock('../../../../../../utils/ctrader', () => ({
-    calculateTotalBalance: jest.fn(),
+jest.mock('../../../../../../utils/calculate-total-by-key', () => ({
+    calculateTotalByKey: jest.fn(),
 }));
 const mockModalShow = jest.fn();
 jest.mock('../../../../../../components/ModalProvider', () => ({
@@ -27,7 +27,7 @@ const wrapper = ({ children }: PropsWithChildren) => <ModalProvider>{children}</
 describe('AddedCTraderAccountsList', () => {
     const mockUseCtraderAccountsList = useCtraderAccountsList as jest.Mock;
     const mockUseModal = useModal as jest.MockedFunction<() => TModalContext>;
-    const mockCalculateTotalBalance = calculateTotalBalance as jest.MockedFunction<typeof calculateTotalBalance>;
+    const mockCalculateTotalBalance = calculateTotalByKey as jest.MockedFunction<typeof calculateTotalByKey>;
     const mockShowModal = jest.fn();
 
     beforeEach(() => {

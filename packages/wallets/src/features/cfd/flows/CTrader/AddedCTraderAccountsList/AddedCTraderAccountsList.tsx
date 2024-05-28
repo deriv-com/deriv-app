@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useCtraderAccountsList } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { TradingAccountCard } from '../../../../../components';
 import { WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
-import { ArrayElementType } from '../../../../../types';
-import { calculateTotalBalance } from '../../../../../utils/ctrader';
+import { calculateTotalByKey } from '../../../../../utils/calculate-total-by-key';
 import { PlatformDetails } from '../../../constants';
 import { MT5TradeModal } from '../../../modals';
 import './AddedCTraderAccountsList.scss';
@@ -15,8 +14,12 @@ const AddedCTraderAccountsList: React.FC = () => {
     const account = cTraderAccounts?.[0];
     const { show } = useModal();
 
-    const totalBalance =
-        cTraderAccounts && calculateTotalBalance<ArrayElementType<typeof cTraderAccounts>>(cTraderAccounts);
+    const totalBalance = useMemo(() => {
+        if (cTraderAccounts) {
+            return calculateTotalByKey(cTraderAccounts, 'display_balance');
+        }
+        return 0;
+    }, [cTraderAccounts]);
 
     return (
         <React.Fragment>

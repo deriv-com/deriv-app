@@ -13,7 +13,7 @@ import { InlineMessage, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
-import { calculateTotalBalance } from '../../../../utils/ctrader';
+import { calculateTotalByKey } from '../../../../utils/calculate-total-by-key';
 import { sortArrayByKey } from '../../../../utils/sort-array-by-key';
 import {
     CFD_PLATFORMS,
@@ -87,7 +87,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
 
     const ctraderTotalBalance = useMemo(() => {
         if (ctraderAccountsList) {
-            return calculateTotalBalance(ctraderAccountsList);
+            return calculateTotalByKey(ctraderAccountsList, 'display_balance');
         }
         return 0;
     }, [ctraderAccountsList]);

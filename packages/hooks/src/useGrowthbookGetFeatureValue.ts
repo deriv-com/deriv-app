@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Analytics } from '@deriv-com/analytics';
-import { useRemoteConfig } from '@deriv/api';
 import useIsGrowthbookIsLoaded from './useIsGrowthbookLoaded';
 
 interface UseGrowthbookGetFeatureValueArgs<T> {
@@ -17,10 +16,9 @@ const useGrowthbookGetFeatureValue = <T extends string | boolean>({
         Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue) ?? resolvedDefaultValue
     );
     const isGBLoaded = useIsGrowthbookIsLoaded();
-    const { data } = useRemoteConfig();
 
     useEffect(() => {
-        if (data?.marketing_growthbook && isGBLoaded) {
+        if (isGBLoaded) {
             if (Analytics?.getInstances()?.ab) {
                 const setFeatureValue = () => {
                     const value = Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue);
@@ -33,7 +31,7 @@ const useGrowthbookGetFeatureValue = <T extends string | boolean>({
                 });
             }
         }
-    }, [isGBLoaded, data.marketing_growthbook, resolvedDefaultValue, featureFlag]);
+    }, [isGBLoaded, resolvedDefaultValue, featureFlag]);
 
     return [featureFlagValue, isGBLoaded];
 };

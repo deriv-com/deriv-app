@@ -70,13 +70,9 @@
             }
         }
 
-        // & > .wallets-datepicker {
-        //     max-width: 35.9rem;
-
-        //     @include mobile {
-        //         max-width: 100%;
-        //     }
-        // }
+        & > .wallets-datepicker {
+            width: 100%;
+        }
     }
 
     &__sidenote {

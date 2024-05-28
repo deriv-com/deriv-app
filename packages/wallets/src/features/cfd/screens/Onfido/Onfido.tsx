@@ -34,43 +34,30 @@ const Onfido = () => {
             {!hasAlreadySubmitted && (
                 <div className='wallets-onfido__content'>
                     <VerifyDocumentDetails />
-                    <div
-                        className={classNames('wallets-onfido__wrapper', {
-                            'wallets-onfido__wrapper--animate': formValues.verifiedDocumentDetails,
-                        })}
-                    >
-                        {!isServiceTokenLoading && (
-                            <>
-                                <div
-                                    className={classNames('wallets-onfido__wrapper-overlay', {
-                                        'wallets-onfido__wrapper-overlay--disabled':
-                                            !formValues.verifiedDocumentDetails,
-                                    })}
-                                >
-                                    <div id={onfidoContainerId} />
+                    {!isServiceTokenLoading && (
+                        <div
+                            className={classNames('wallets-onfido__wrapper', {
+                                'wallets-onfido__wrapper--animate': formValues.verifiedDocumentDetails,
+                            })}
+                        >
+                            <div className='wallets-onfido__wrapper-onfido-container' id={onfidoContainerId} />
+                            {!formValues.verifiedDocumentDetails ? (
+                                <div className='wallets-onfido__wrapper-overlay'>
+                                    <InlineMessage
+                                        message='Hit the checkbox above to choose your document.'
+                                        size='sm'
+                                        type='information'
+                                    />
                                 </div>
-                                <div
-                                    className={classNames('wallets-onfido__wrapper-message', {
-                                        'wallets-onfido__wrapper-message--verified': formValues.verifiedDocumentDetails,
-                                    })}
-                                >
-                                    {!formValues.verifiedDocumentDetails ? (
-                                        <InlineMessage
-                                            message='Hit the checkbox above to choose your document.'
-                                            size='sm'
-                                            type='information'
-                                        />
-                                    ) : (
-                                        <InlineMessage
-                                            message='Your personal details have been saved successfully.'
-                                            size='sm'
-                                            type='announcement'
-                                        />
-                                    )}
-                                </div>
-                            </>
-                        )}
-                    </div>
+                            ) : (
+                                <InlineMessage
+                                    message='Your personal details have been saved successfully.'
+                                    size='sm'
+                                    type='announcement'
+                                />
+                            )}
+                        </div>
+                    )}
                 </div>
             )}
         </div>

@@ -10,6 +10,7 @@ import CardWrapper from 'AppV2/Components/CardWrapper';
 import { observer } from '@deriv/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import { isValidToCancel } from '@deriv/shared';
+import OrderDetails from 'AppV2/Components/OrderDetails';
 
 const ContractDetails = observer(() => {
     const { contract_info, is_loading } = useContractDetails();
@@ -61,6 +62,17 @@ const ContractDetails = observer(() => {
                     />
                 </CardWrapper>
             )}
+            <div className='placeholder'>
+                <OrderDetails contract_info={contract_info} />
+            </div>
+            <CardWrapper>
+                <RiskManagementItem
+                    label={<Localize i18n_default_text='Deal cancellation' />}
+                    modal_body_content={<Localize i18n_default_text='Whatever you desire' />}
+                    validation_message='hello'
+                    is_deal_cancellation
+                />
+            </CardWrapper>
             <CardWrapper>
                 <RiskManagementItem
                     label={<Localize i18n_default_text='Take profit' />}
@@ -73,9 +85,6 @@ const ContractDetails = observer(() => {
                     validation_message='hello'
                 />
             </CardWrapper>
-            <div className='placeholder'>
-                <Text size='sm'>Order details</Text>
-            </div>
             <PayoutInfo />
             <EntryExitDetails />
             <TakeProfitHistory history={historyData} />

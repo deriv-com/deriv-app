@@ -7,8 +7,14 @@ import ChartPlaceholder from '../Chart';
 import { Localize } from '@deriv/translations';
 import RiskManagementItem from 'AppV2/Components/RiskManagementItem';
 import CardWrapper from 'AppV2/Components/CardWrapper';
+import { observer } from '@deriv/stores';
+import useContractDetails from 'AppV2/Hooks/useContractDetails';
+import { isValidToCancel } from '@deriv/shared';
 
-const ContractDetails = () => {
+const ContractDetails = observer(() => {
+    const { contract_info, is_loading } = useContractDetails();
+    if (is_loading) return <></>;
+    const is_valid_to_cancel = isValidToCancel(contract_info);
     const historyData = [
         { date: '01 Jan 2024', time: '12:00:00 GMT', action: 'Take profit', amount: '5.00 USD' },
         { date: '02 Jan 2024', time: '13:00:00 GMT', action: 'Take profit', amount: '10.00 USD' },
@@ -45,14 +51,16 @@ const ContractDetails = () => {
             <div className='placeholder'>
                 <ChartPlaceholder />
             </div>
-            <CardWrapper>
-                <RiskManagementItem
-                    label={<Localize i18n_default_text='Deal cancellation' />}
-                    modal_body_content={<Localize i18n_default_text='Whatever you desire' />}
-                    validation_message='hello'
-                    is_deal_cancellation
-                />
-            </CardWrapper>
+            {is_valid_to_cancel && (
+                <CardWrapper>
+                    <RiskManagementItem
+                        label={<Localize i18n_default_text='Deal cancellation' />}
+                        modal_body_content={<Localize i18n_default_text='Whatever you desire' />}
+                        validation_message='hello'
+                        is_deal_cancellation
+                    />
+                </CardWrapper>
+            )}
             <CardWrapper>
                 <RiskManagementItem
                     label={<Localize i18n_default_text='Take profit' />}
@@ -73,6 +81,6 @@ const ContractDetails = () => {
             <TakeProfitHistory history={historyData} />
         </div>
     );
-};
+});
 
 export default ContractDetails;

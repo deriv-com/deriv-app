@@ -54,7 +54,7 @@ const bottomNavItems = [
 ];
 
 const BottomNav = ({ className, children }: BottomNavProps) => {
-    const [selectedIndex, setSelectedIndex] = React.useState(0);
+    const [selectedIndex, setSelectedIndex] = React.useState(4);
 
     return (
         <div className={classNames('bottom-nav', className)}>

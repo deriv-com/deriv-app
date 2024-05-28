@@ -26,6 +26,7 @@ import { CTraderAddAccountSuccessModal } from '../../modals/CTraderAddAccountSuc
 import { MT5TradeDetailsItem } from './MT5TradeDetailsItem';
 import { MT5TradeLink } from './MT5TradeLink';
 import './MT5TradeScreen.scss';
+import { displayMoney } from '@deriv/api-v2/src/utils';
 
 type MT5TradeScreenProps = {
     mt5Account?: THooks.MT5AccountsList;
@@ -91,6 +92,10 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
         }
         return 0;
     }, [ctraderAccountsList]);
+
+    const cTraderDisplayBalance = displayMoney(ctraderTotalBalance, activeWalletData?.currency || 'USD', {
+        fractional_digits: activeWalletData?.currency_config?.fractional_digits,
+    });
 
     const sortedCtraderAccountList = useMemo(() => {
         if (ctraderAccountsList) {
@@ -173,9 +178,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                                 <WalletText as='p' lineHeight='3xs' size={isDesktop ? 'sm' : 'md'}>
                                     Total balance:
                                 </WalletText>
-                                <WalletText weight='bold'>
-                                    {ctraderTotalBalance} {activeWalletData?.currency}
-                                </WalletText>
+                                <WalletText weight='bold'>{cTraderDisplayBalance}</WalletText>
                             </div>
                         )}
                         {migrationMessage}

@@ -183,7 +183,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                 </div>
 
                 {platform === ctraderPlatform && (
-                    <>
+                    <Fragment>
                         <ul className='wallets-mt5-trade-screen__ctrader-account-list'>
                             {sortedCtraderAccountList?.map(account => (
                                 <li
@@ -255,7 +255,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                                 </li>
                             </ol>
                         </Accordion>
-                    </>
+                    </Fragment>
                 )}
 
                 <div className='wallets-mt5-trade-screen__details-clipboards'>

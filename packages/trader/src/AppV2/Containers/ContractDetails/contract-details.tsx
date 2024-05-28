@@ -9,6 +9,14 @@ import RiskManagementItem from 'AppV2/Components/RiskManagementItem';
 import CardWrapper from 'AppV2/Components/CardWrapper';
 
 const ContractDetails = () => {
+    const historyData = [
+        { date: '01 Jan 2024', time: '12:00:00 GMT', action: 'Take profit', amount: '5.00 USD' },
+        { date: '02 Jan 2024', time: '13:00:00 GMT', action: 'Take profit', amount: '10.00 USD' },
+        { date: '03 Jan 2024', time: '12:00:00 GMT', action: 'Stop loss', amount: '5.00 USD' },
+        { date: '04 Jan 2024', time: '13:00:00 GMT', action: 'Take profit', amount: '10.00 USD' },
+        { date: '05 Jan 2024', time: '12:00:00 GMT', action: 'Take profit', amount: '5.00 USD' },
+        { date: '06 Jan 2024', time: '13:00:00 GMT', action: 'Take profit', amount: '10.00 USD' },
+    ];
     return (
         <div className='contract-details'>
             {/* TODO: remove temp contract card */}
@@ -62,7 +70,7 @@ const ContractDetails = () => {
             </div>
             <PayoutInfo />
             <EntryExitDetails />
-            <TakeProfitHistory />
+            <TakeProfitHistory history={historyData} />
         </div>
     );
 };

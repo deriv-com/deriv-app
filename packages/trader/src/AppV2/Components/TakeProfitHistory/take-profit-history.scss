@@ -30,5 +30,10 @@
                 text-align: start;
             }
         }
+
+        &--fixed-height {
+            min-height: 244px;
+            justify-content: start;
+        }
     }
 }

@@ -1,7 +1,38 @@
+import React from 'react';
+import { Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { getCardLabels, getContractPath, toMoment } from '@deriv/shared';
 import { TPortfolioPosition } from '@deriv/stores/types';
-import { filterPositions, getProfit, getTotalPositionsProfit } from '../positions-utils';
+import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
+import ContractCard from '../contract-card';
 
-const mockedActivePositions = [
+const closedPositions = [
+    {
+        contract_info: {
+            app_id: 16929,
+            buy_price: 10,
+            contract_id: 243585717228,
+            contract_type: 'TURBOSLONG',
+            duration_type: 'minutes',
+            longcode:
+                'You will receive a payout at expiry if the spot price never breaches the barrier. The payout is equal to the payout per point multiplied by the distance between the final price and the barrier.',
+            payout: 0,
+            purchase_time: '27 May 2024 09:41:00',
+            sell_price: 0,
+            sell_time: '27 May 2024 09:43:36',
+            shortcode: 'TURBOSLONG_1HZ100V_10.00_1716802860_1716804660_S-237P_3.971435_1716802860',
+            transaction_id: 485824148848,
+            underlying_symbol: '1HZ100V',
+            profit_loss: '-10.00',
+            display_name: '',
+            purchase_time_unix: 1716802860,
+        },
+    },
+] as TClosedPosition[];
+
+const openPositions = [
     {
         contract_info: {
             account_id: 112905368,
@@ -15,8 +46,8 @@ const mockedActivePositions = [
             current_spot: 681.76,
             current_spot_display_value: '681.76',
             current_spot_time: 1716220628,
-            date_expiry: 1716221100,
-            date_settlement: 1716221100,
+            date_expiry: Date.now() / 1000 + 1000,
+            date_settlement: Date.now() / 1000 + 1000,
             date_start: 1716220562,
             display_name: 'Volatility 100 (1s) Index',
             entry_spot: 682.6,
@@ -24,7 +55,7 @@ const mockedActivePositions = [
             entry_tick: 682.6,
             entry_tick_display_value: '682.60',
             entry_tick_time: 1716220563,
-            expiry_time: 1716221100,
+            expiry_time: Date.now() / 1000 + 1000,
             id: '917d1b48-305b-a2f4-5b9c-7fb1f2c6c145',
             is_expired: 0,
             is_forward_starting: 0,
@@ -40,7 +71,7 @@ const mockedActivePositions = [
             profit: -2.62,
             profit_percentage: -29.11,
             purchase_time: 1716220562,
-            shortcode: 'CALL_1HZ100V_17.61_1716220562_1716221100F_S0P_0',
+            shortcode: `CALL_1HZ100V_17.61_1716220562_${Date.now() / 1000 + 1000}F_S0P_0`,
             status: 'open',
             transaction_ids: {
                 buy: 484286139408,
@@ -79,8 +110,8 @@ const mockedActivePositions = [
             current_spot: 681.71,
             current_spot_display_value: '681.71',
             current_spot_time: 1716220672,
-            date_expiry: 4869849599,
-            date_settlement: 4869849600,
+            date_expiry: Date.now() / 1000 + 1000,
+            date_settlement: Date.now() / 1000 + 1000,
             date_start: 1716220583,
             display_name: 'Volatility 100 (1s) Index',
             entry_spot: 682.23,
@@ -88,7 +119,7 @@ const mockedActivePositions = [
             entry_tick: 682.23,
             entry_tick_display_value: '682.23',
             entry_tick_time: 1716220584,
-            expiry_time: 4869849599,
+            expiry_time: Date.now() / 1000 + 1000,
             id: '917d1b48-305b-a2f4-5b9c-7fb1f2c6c145',
             is_expired: 0,
             is_forward_starting: 0,
@@ -112,7 +143,7 @@ const mockedActivePositions = [
             profit: -0.1,
             profit_percentage: -1.11,
             purchase_time: 1716220583,
-            shortcode: 'MULTUP_1HZ100V_9.00_10_1716220583_4869849599_60m_0.00_N1',
+            shortcode: `MULTUP_1HZ100V_9.00_10_1716220583_${Date.now() / 1000 + 1000}_60m_0.00_N1`,
             status: 'open',
             transaction_ids: {
                 buy: 484286215128,
@@ -158,8 +189,8 @@ const mockedActivePositions = [
             current_spot_high_barrier: '683.016',
             current_spot_low_barrier: '682.424',
             current_spot_time: 1716220720,
-            date_expiry: 1747785599,
-            date_settlement: 1747785600,
+            date_expiry: Date.now() / 1000 + 1000,
+            date_settlement: Date.now() / 1000 + 1000,
             date_start: 1716220710,
             display_name: 'Volatility 100 (1s) Index',
             entry_spot: 682.58,
@@ -167,7 +198,7 @@ const mockedActivePositions = [
             entry_tick: 682.58,
             entry_tick_display_value: '682.58',
             entry_tick_time: 1716220711,
-            expiry_time: 1747785599,
+            expiry_time: Date.now() / 1000 + 1000,
             growth_rate: 0.01,
             high_barrier: '683.046',
             id: '917d1b48-305b-a2f4-5b9c-7fb1f2c6c145',
@@ -262,54 +293,144 @@ const mockedActivePositions = [
         high_barrier: 683.046,
         low_barrier: 682.454,
     },
-    {
-        contract_info: {
-            app_id: 16929,
-            buy_price: 10,
-            contract_id: 243585717228,
-            contract_type: 'TURBOSLONG',
-            duration_type: 'minutes',
-            longcode:
-                'You will receive a payout at expiry if the spot price never breaches the barrier. The payout is equal to the payout per point multiplied by the distance between the final price and the barrier.',
-            payout: 0,
-            purchase_time: '27 May 2024 09:41:00',
-            sell_price: 0,
-            sell_time: '27 May 2024 09:43:36',
-            shortcode: 'TURBOSLONG_1HZ100V_10.00_1716802860_1716804660_S-237P_3.971435_1716802860',
-            transaction_id: 485824148848,
-            underlying_symbol: '1HZ100V',
-            profit_loss: '-10.00',
-            display_name: '',
-            purchase_time_unix: 1716802860,
-        },
-    },
 ] as TPortfolioPosition[];
 
-describe('filterPositions', () => {
-    it('should filter positions based on passed filter array', () => {
-        expect(filterPositions(mockedActivePositions, ['Multipliers'])).toEqual([mockedActivePositions[1]]);
+const buttonLoaderId = 'dt_button_loader';
+const symbolName = 'Volatility 100 (1s) Index';
 
-        expect(filterPositions(mockedActivePositions, ['Multipliers', 'Rise/Fall'])).toEqual([
-            mockedActivePositions[0],
-            mockedActivePositions[1],
-        ]);
+describe('ContractCard', () => {
+    const { CANCEL, CLOSE, CLOSED } = getCardLabels();
+    const history = createBrowserHistory();
+    const mockProps: React.ComponentProps<typeof ContractCard> = {
+        contractInfo: openPositions[0].contract_info,
+        currency: 'USD',
+        hasActionButtons: true,
+        isSellRequested: false,
+        serverTime: toMoment(Date.now() / 1000),
+    };
+    const mockedContractCard = (props = mockProps) => (
+        <Router history={history}>
+            <ContractCard {...props} />
+        </Router>
+    );
 
-        expect(filterPositions(mockedActivePositions, ['Turbos'])).toEqual([mockedActivePositions[3]]);
-        expect(filterPositions(mockedActivePositions, ['Even/Odd'])).toEqual([]);
+    it('should not render component if contractInfo prop is empty/missing contract_type', () => {
+        const { container } = render(mockedContractCard({ contractInfo: {} }));
+
+        expect(container).toBeEmptyDOMElement();
     });
-});
-
-describe('getProfit', () => {
-    it('should return correct profit, based on contract_info', () => {
-        expect(getProfit(mockedActivePositions[0].contract_info)).toEqual(-2.62);
-        expect(getProfit(mockedActivePositions[1].contract_info)).toEqual(-0.4900000000000002);
-        expect(getProfit(mockedActivePositions[2].contract_info)).toEqual(0.84);
-        expect(getProfit(mockedActivePositions[3].contract_info)).toEqual('-10.00');
+    it('should render a card for an open Rise position with a Close button only and with remaining time', () => {
+        render(mockedContractCard());
+        expect(screen.getByText('Rise')).toBeInTheDocument();
+        expect(screen.getByText(symbolName)).toBeInTheDocument();
+        expect(screen.getByText('9.00 USD')).toBeInTheDocument();
+        expect(screen.getByText('00:16:40')).toBeInTheDocument();
+        expect(screen.getByText('2.62 USD')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: CLOSE })).toBeEnabled();
+        expect(screen.queryByRole('button', { name: CANCEL })).not.toBeInTheDocument();
     });
-});
+    it('should render a card for an open Multiplier position with Cancel & Close buttons and with Ongoing status instead of remaining time', () => {
+        render(
+            mockedContractCard({
+                ...mockProps,
+                contractInfo: openPositions[1].contract_info,
+            })
+        );
+        expect(screen.getByText('Multipliers Up')).toBeInTheDocument();
+        expect(screen.getByText(symbolName)).toBeInTheDocument();
+        expect(screen.getByText('9.39 USD')).toBeInTheDocument();
+        expect(screen.getByText('Ongoing')).toBeInTheDocument();
+        expect(screen.getByText('0.49 USD')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: CANCEL })).toBeEnabled();
+        expect(screen.getByRole('button', { name: CLOSE })).toBeDisabled();
+    });
+    it('should render a card for an open Accumulators position with a Close button only and remaining number of ticks', () => {
+        render(
+            mockedContractCard({
+                ...mockProps,
+                contractInfo: openPositions[2].contract_info,
+            })
+        );
+        expect(screen.getByText('Accumulators')).toBeInTheDocument();
+        expect(screen.getByText(symbolName)).toBeInTheDocument();
+        expect(screen.getByText('9.00 USD')).toBeInTheDocument();
+        expect(screen.getByText('9/230 ticks')).toBeInTheDocument();
+        expect(screen.getByText('0.84 USD')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: CLOSE })).toBeEnabled();
+        expect(screen.queryByRole('button', { name: CANCEL })).not.toBeInTheDocument();
+    });
+    it('should show loader when a Close button is clicked and isSellRequested === true', () => {
+        const mockedOnClose = jest.fn();
+        const { rerender } = render(
+            mockedContractCard({
+                ...mockProps,
+                contractInfo: openPositions[2].contract_info,
+                onClose: mockedOnClose,
+            })
+        );
+        const closeButton = screen.getByRole('button', { name: getCardLabels().CLOSE });
+        userEvent.click(closeButton);
+        expect(mockedOnClose).toHaveBeenCalledTimes(1);
 
-describe('getTotalPositionsProfit', () => {
-    it('should return correct total profit, based on all positions', () => {
-        expect(getTotalPositionsProfit(mockedActivePositions)).toEqual(-12.27);
+        rerender(
+            mockedContractCard({
+                ...mockProps,
+                contractInfo: openPositions[2].contract_info,
+                isSellRequested: true,
+            })
+        );
+        expect(screen.getByTestId(buttonLoaderId)).toBeInTheDocument();
+        expect(closeButton).toBeDisabled();
+    });
+    it('should show loader when a Cancel button is clicked and isSellRequested === true', () => {
+        const mockedOnCancel = jest.fn();
+        const { rerender } = render(
+            mockedContractCard({
+                ...mockProps,
+                contractInfo: openPositions[1].contract_info,
+                onCancel: mockedOnCancel,
+            })
+        );
+        const cancelButton = screen.getByRole('button', { name: CANCEL });
+        userEvent.click(cancelButton);
+        expect(mockedOnCancel).toHaveBeenCalledTimes(1);
+
+        rerender(
+            mockedContractCard({
+                ...mockProps,
+                contractInfo: openPositions[1].contract_info,
+                isSellRequested: true,
+            })
+        );
+        expect(screen.getByTestId(buttonLoaderId)).toBeInTheDocument();
+        expect(cancelButton).toBeDisabled();
+    });
+    it('should render a card for a closed position with Closed status and with no buttons if hasActionButtons === false', () => {
+        render(
+            mockedContractCard({
+                ...mockProps,
+                contractInfo: closedPositions[0].contract_info,
+                hasActionButtons: false,
+            })
+        );
+        expect(screen.getByText(CLOSED)).toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: CLOSE })).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: CANCEL })).not.toBeInTheDocument();
+    });
+    it('should call onClick when a card is clicked, and should redirect to a correct route if redirectTo is passed', () => {
+        const mockedOnClick = jest.fn();
+        const redirectTo = getContractPath(Number(closedPositions[0].contract_info.contract_id));
+        render(
+            mockedContractCard({
+                ...mockProps,
+                contractInfo: closedPositions[0].contract_info,
+                onClick: mockedOnClick,
+                redirectTo,
+            })
+        );
+        const card = screen.getByText('Turbos Up');
+        userEvent.click(card);
+        expect(mockedOnClick).toHaveBeenCalledTimes(1);
+        expect(history.location.pathname).toBe(redirectTo);
     });
 });

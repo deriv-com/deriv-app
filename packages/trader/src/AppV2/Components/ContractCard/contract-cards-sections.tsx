@@ -1,28 +1,26 @@
 import React from 'react';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
-import { TPortfolioPosition } from '@deriv/stores/types';
 import { Text } from '@deriv-com/quill-ui';
 import { Loading } from '@deriv/components';
-import { formatDate } from 'AppV2/Utils/positions-utils';
 import ContractCardList from './contract-card-list';
+import { toMoment } from '@deriv/shared';
 
 type TContractCardsSections = {
     isLoadingMore?: boolean;
-    onScroll?: (e: React.UIEvent<HTMLDivElement>) => void;
-    positions?: (TClosedPosition | TPortfolioPosition)[];
+    positions?: TClosedPosition[];
 };
 
-const ContractCardsSections = ({ isLoadingMore, onScroll, positions }: TContractCardsSections) => {
+const ContractCardsSections = ({ isLoadingMore, positions }: TContractCardsSections) => {
     const dates = positions?.map(element => {
-        const sellTime = element.contract_info.sell_time;
-        return sellTime && formatDate({ time: sellTime });
+        const purchaseTime = element.contract_info.purchase_time_unix;
+        return purchaseTime && toMoment(purchaseTime).format('DD MMM YYYY');
     });
 
     const uniqueDates = [...new Set(dates)];
 
     if (!positions?.length) return null;
     return (
-        <div className='contract-cards-sections' onScroll={onScroll}>
+        <div className='contract-cards-sections'>
             {uniqueDates.map(date => (
                 <div className='contract-cards-section' key={date}>
                     <Text as='p' className='contract-cards-section__title' bold size='sm'>
@@ -30,8 +28,8 @@ const ContractCardsSections = ({ isLoadingMore, onScroll, positions }: TContract
                     </Text>
                     <ContractCardList
                         positions={positions.filter(position => {
-                            const sellTime = position.contract_info.sell_time;
-                            return sellTime && formatDate({ time: sellTime }) === date;
+                            const purchaseTime = position.contract_info.purchase_time_unix;
+                            return purchaseTime && toMoment(purchaseTime).format('DD MMM YYYY') === date;
                         })}
                     />
                     {isLoadingMore && <Loading is_fullscreen={false} />}

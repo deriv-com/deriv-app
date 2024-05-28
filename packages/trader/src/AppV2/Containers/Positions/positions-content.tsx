@@ -73,8 +73,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
 
     const contractCards = isClosedTab ? (
         <ContractCardsSections
-            positions={filteredPositions}
-            onScroll={onScroll}
+            positions={filteredPositions as TClosedPosition[]}
             isLoadingMore={isFetchingClosedPositions}
         />
     ) : (
@@ -115,7 +114,10 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
 
     if (!shouldShowContractCards && !shouldShowEmptyMessage) return <Loading />;
     return (
-        <div className={`positions-page__${isClosedTab ? 'closed' : 'open'}`}>
+        <div
+            className={`positions-page__${isClosedTab ? 'closed' : 'open'}`}
+            onScroll={isClosedTab ? onScroll : undefined}
+        >
             {!hasNoPositions && (
                 <div className='positions-page__filter__wrapper'>
                     {isClosedTab && (
@@ -132,14 +134,14 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
                         setContractTypeFilter={filterValues => handleTradeTypeFilterChange(filterValues)}
                         contractTypeFilter={contractTypeFilter}
                     />
-                    {shouldShowContractCards && (
-                        <TotalProfitLoss
-                            currency={currency}
-                            hasBottomAlignment={isClosedTab}
-                            totalProfitLoss={getTotalPositionsProfit(filteredPositions)}
-                        />
-                    )}
                 </div>
+            )}
+            {shouldShowContractCards && (
+                <TotalProfitLoss
+                    currency={currency}
+                    hasBottomAlignment={isClosedTab}
+                    totalProfitLoss={getTotalPositionsProfit(filteredPositions)}
+                />
             )}
             {shouldShowEmptyMessage ? (
                 <EmptyPositions isClosedTab={isClosedTab} noMatchesFound={noMatchesFound} />

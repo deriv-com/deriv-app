@@ -2,16 +2,6 @@ import { getSupportedContracts, getTotalProfit, isHighLow, isMultiplierContract 
 import { TPortfolioPosition } from '@deriv/stores/types';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 
-type TFormatDate = ({
-    time,
-    locale,
-    dateFormattingConfig,
-}: {
-    time: string | number | Date;
-    locale?: string;
-    dateFormattingConfig?: Record<string, string>;
-}) => string;
-
 export const DEFAULT_DATE_FORMATTING_CONFIG = {
     day: '2-digit',
     month: 'short',
@@ -30,12 +20,6 @@ export const filterPositions = (positions: (TPortfolioPosition | TClosedPosition
         return splittedFilter.includes('main_title' in config ? config.main_title : config.name);
     });
 };
-
-export const formatDate: TFormatDate = ({
-    time,
-    locale = 'en-GB',
-    dateFormattingConfig = DEFAULT_DATE_FORMATTING_CONFIG,
-}) => new Date(time).toLocaleDateString(locale, dateFormattingConfig);
 
 export const getProfit = (
     contract_info: TPortfolioPosition['contract_info'] | TClosedPosition['contract_info']

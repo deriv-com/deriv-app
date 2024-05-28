@@ -188,7 +188,6 @@
         gap: var(--core-spacing-400);
         width: inherit;
         padding-inline: var(--core-spacing-400);
-        overflow-y: scroll;
 
         &--has-buttons-demo {
             .contract-card-wrapper:first-child {
@@ -231,10 +230,6 @@
 }
 
 .contract-cards {
-    &-sections {
-        overflow-y: scroll;
-    }
-
     &-section {
         &__title {
             padding: var(--core-spacing-400) var(--core-spacing-800);

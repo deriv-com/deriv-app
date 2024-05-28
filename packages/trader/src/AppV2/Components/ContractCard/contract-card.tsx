@@ -154,11 +154,11 @@ const ContractCard = ({
                         {validToCancel && (
                             <button
                                 className={classNames({ loading: isSellRequested && isCanceling })}
-                                disabled={Number((contractInfo as TContractInfo).profit) >= 0}
+                                disabled={Number((contractInfo as TContractInfo).profit) >= 0 || isSellRequested}
                                 onClick={e => handleClose(e, true)}
                             >
                                 {isSellRequested && isCanceling ? (
-                                    <div className='circle-loader' />
+                                    <div className='circle-loader' data-testid='dt_button_loader' />
                                 ) : (
                                     <CaptionText bold as='div' className='label'>
                                         {getCardLabels().CANCEL}
@@ -172,7 +172,7 @@ const ContractCard = ({
                             onClick={handleClose}
                         >
                             {isSellRequested && isClosing ? (
-                                <div className='circle-loader' />
+                                <div className='circle-loader' data-testid='dt_button_loader' />
                             ) : (
                                 <CaptionText bold as='div' className='label'>
                                     {getCardLabels().CLOSE}

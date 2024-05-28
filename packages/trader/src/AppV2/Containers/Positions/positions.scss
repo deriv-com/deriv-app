@@ -1,5 +1,4 @@
-// TODO: Utilize tokens from "@deriv-com/quill-ui/quill.css";
-$TABS_HEIGHT: 4.8rem;
+$TABS_HEIGHT: var(--core-size-2400);
 
 .positions-page {
     height: 100%;
@@ -31,6 +30,7 @@ $TABS_HEIGHT: 4.8rem;
                         height: 100%;
                         display: flex;
                         flex-direction: column;
+                        overflow-y: scroll;
                     }
                 }
             }

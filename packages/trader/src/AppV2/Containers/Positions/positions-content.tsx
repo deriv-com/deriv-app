@@ -136,17 +136,19 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
                     />
                 </div>
             )}
-            {shouldShowContractCards && (
-                <TotalProfitLoss
-                    currency={currency}
-                    hasBottomAlignment={isClosedTab}
-                    totalProfitLoss={getTotalPositionsProfit(filteredPositions)}
-                />
-            )}
             {shouldShowEmptyMessage ? (
                 <EmptyPositions isClosedTab={isClosedTab} noMatchesFound={noMatchesFound} />
             ) : (
-                shouldShowContractCards && contractCards
+                shouldShowContractCards && (
+                    <React.Fragment>
+                        <TotalProfitLoss
+                            currency={currency}
+                            hasBottomAlignment={isClosedTab}
+                            totalProfitLoss={getTotalPositionsProfit(filteredPositions)}
+                        />
+                        {contractCards}
+                    </React.Fragment>
+                )
             )}
         </div>
     );

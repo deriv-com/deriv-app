@@ -20,7 +20,7 @@
         "@deriv/integration": "^1.0.0",
         "@deriv/quill-icons": "^1.22.8",
         "@deriv/utils": "^1.0.0",
-        "clsx": "^2.0.0",
+        "clsx": "^2.1.1",
         "formik": "^2.1.4",
         "i18next": "^22.4.6",
         "lodash.debounce": "^4.0.8",

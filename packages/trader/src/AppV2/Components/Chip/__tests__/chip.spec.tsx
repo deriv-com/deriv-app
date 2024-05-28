@@ -38,7 +38,7 @@ describe('Chip', () => {
 
         const dropdown = screen.getByRole('img');
         expect(dropdown).toBeInTheDocument();
-        expect(dropdown).toHaveAttribute('data-state', 'close');
+        expect(dropdown).toHaveClass('rotate--close');
     });
 
     it('should render component with specific className if it was passed', () => {
@@ -49,18 +49,18 @@ describe('Chip', () => {
         expect(chipButton).toHaveClass(className);
     });
 
-    it('should render component data-state === selected if selected was passed', () => {
+    it('should render component with specific className if selected was passed', () => {
         render(<Chip {...mockProps} selected />);
 
         const chipButton = screen.getByRole('button');
-        expect(chipButton).toHaveAttribute('data-state', 'selected');
+        expect(chipButton).toHaveClass('quill-chip--selected');
     });
 
-    it('should render component with dropdown data-state === open if dropdown and isDropdownOpen are true', () => {
+    it('should render component with dropdown with specific className if dropdown and isDropdownOpen are true', () => {
         render(<Chip {...mockProps} dropdown isDropdownOpen />);
 
         const dropdown = screen.getByRole('img');
         expect(dropdown).toBeInTheDocument();
-        expect(dropdown).toHaveAttribute('data-state', 'open');
+        expect(dropdown).toHaveClass('rotate--open');
     });
 });

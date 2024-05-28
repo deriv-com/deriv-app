@@ -23,15 +23,7 @@
         fill: var(--component-chip-icon-default);
     }
 
-    &[data-state='selected']:hover {
-        background-color: var(--component-chip-bg-selectedHover);
-    }
-
-    &[data-state='selected']:active {
-        background-color: var(--component-chip-bg-selectedActive);
-    }
-
-    &[data-state='selected'] {
+    &--selected {
         background-color: var(--component-chip-bg-selected);
 
         & > p {
@@ -42,8 +34,16 @@
             fill: var(--component-chip-icon-selected);
         }
 
-        &:has(.rotate[data-state='open']) {
+        &:has(.rotate--open) {
             background-color: var(--component-chip-bg-selectedExpand);
+        }
+
+        &:hover {
+            background-color: var(--component-chip-bg-selectedHover);
+        }
+
+        &:active {
+            background-color: var(--component-chip-bg-selectedActive);
         }
     }
 
@@ -59,7 +59,7 @@
             fill: var(--component-chip-icon-disabled);
         }
 
-        &[data-state='selected'] {
+        &--selected {
             background-color: var(--component-chip-bg-selectedDisabled);
 
             & > p,
@@ -81,7 +81,7 @@
     transition-duration: var(--core-motion-duration-200);
     transform: rotate(0);
 
-    &[data-state='open'] {
+    &--open {
         transform: rotate(180deg);
     }
 }

@@ -19,16 +19,19 @@ const Chip = React.forwardRef<HTMLButtonElement, BaseChipProps>(
     ({ size = 'md', label, dropdown = false, className, selected, isDropdownOpen = false, onClick, ...rest }, ref) => (
         <button
             onClick={onClick}
-            className={clsx('quill-chip', dropdown && 'quill-chip__custom-right-padding', className)}
-            data-state={selected ? 'selected' : ''}
+            className={clsx(
+                'quill-chip',
+                dropdown && 'quill-chip__custom-right-padding',
+                selected && 'quill-chip--selected',
+                className
+            )}
             ref={ref}
             {...rest}
         >
             {label && <Text size={size}>{label}</Text>}
             {dropdown && (
                 <LabelPairedChevronDownSmRegularIcon
-                    data-state={isDropdownOpen ? 'open' : 'close'}
-                    className='rotate'
+                    className={clsx('rotate', `rotate--${isDropdownOpen ? 'open' : 'close'}`)}
                     data-testid='dt_chevron'
                 />
             )}

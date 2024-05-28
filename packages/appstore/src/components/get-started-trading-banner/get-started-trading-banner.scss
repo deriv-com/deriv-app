@@ -49,6 +49,11 @@
         inset-inline-end: 0;
         margin-inline-end: 1.2rem;
 
+        @include rtl {
+            -webkit-transform: scaleX(-1);
+            transform: scaleX(-1);
+        }
+
         @include mobile {
             margin-inline-end: 0;
             align-self: flex-end;

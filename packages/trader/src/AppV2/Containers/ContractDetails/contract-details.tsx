@@ -6,8 +6,15 @@ import ChartPlaceholder from '../Chart';
 import { Localize } from '@deriv/translations';
 import RiskManagementItem from 'AppV2/Components/RiskManagementItem';
 import CardWrapper from 'AppV2/Components/CardWrapper';
+import { observer } from '@deriv/stores';
+import useContractDetails from 'AppV2/Hooks/useContractDetails';
+import { isValidToCancel } from '@deriv/shared';
 
-const ContractDetails = () => {
+const ContractDetails = observer(() => {
+    const { contract_info, is_loading } = useContractDetails();
+    if (is_loading) return <></>;
+    const is_valid_to_cancel = isValidToCancel(contract_info);
+
     return (
         <div className='contract-details'>
             <div className='placeholder'>
@@ -24,14 +31,16 @@ const ContractDetails = () => {
             <div className='placeholder'>
                 <ChartPlaceholder />
             </div>
-            <CardWrapper>
-                <RiskManagementItem
-                    label={<Localize i18n_default_text='Deal cancellation' />}
-                    modal_body_content={<Localize i18n_default_text='Whatever you desire' />}
-                    validation_message='hello'
-                    is_deal_cancellation
-                />
-            </CardWrapper>
+            {is_valid_to_cancel && (
+                <CardWrapper>
+                    <RiskManagementItem
+                        label={<Localize i18n_default_text='Deal cancellation' />}
+                        modal_body_content={<Localize i18n_default_text='Whatever you desire' />}
+                        validation_message='hello'
+                        is_deal_cancellation
+                    />
+                </CardWrapper>
+            )}
             <CardWrapper>
                 <RiskManagementItem
                     label={<Localize i18n_default_text='Take profit' />}
@@ -50,6 +59,6 @@ const ContractDetails = () => {
             <EntryExitDetails />
         </div>
     );
-};
+});
 
 export default ContractDetails;

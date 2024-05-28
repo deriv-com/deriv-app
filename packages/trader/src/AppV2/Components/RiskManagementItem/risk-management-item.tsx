@@ -1,8 +1,8 @@
 import React from 'react';
-import { ActionSheet, Tag, Text, TextField, ToggleSwitch } from '@deriv-com/quill-ui';
+import { ActionSheet, Text, TextField, ToggleSwitch } from '@deriv-com/quill-ui';
 import { localize } from '@deriv/translations';
 import RiskManagementInfoModal from '../RiskManagementInfoModal/risk-management-info-modal';
-import { LabelPairedStopwatchCaptionRegularIcon } from '@deriv/quill-icons';
+import DealCancellationRemainingTime from '../DealCancellationRemainingTime/deal-cancellation-remaining-time';
 
 type RiskManagementItemProps = {
     label: React.ReactNode;
@@ -28,18 +28,8 @@ const RiskManagementItem = ({
                     <Text size='sm'>{label}</Text>
                     <RiskManagementInfoModal header_content={label} body_content={modal_body_content} />
                 </span>
-                {dummy_boolean && !is_deal_cancellation && <span>5 USD</span>}
-                {/* {is_deal_cancellation && <div>For now</div>} */}
-                {is_deal_cancellation && (
-                    <Tag
-                        variant='custom'
-                        label='59:59'
-                        icon={LabelPairedStopwatchCaptionRegularIcon}
-                        size='sm'
-                        color='custom'
-                        className='deal-cancellation-badge'
-                    />
-                )}
+                {dummy_boolean && !is_deal_cancellation && <Text size='sm'>5 USD</Text>}
+                {is_deal_cancellation && <DealCancellationRemainingTime />}
                 {!dummy_boolean && !is_deal_cancellation && (
                     <ToggleSwitch checked={toggle} onChange={() => setToggle(!toggle)} />
                 )}
@@ -79,5 +69,4 @@ const RiskManagementItem = ({
         </div>
     );
 };
-
 export default RiskManagementItem;

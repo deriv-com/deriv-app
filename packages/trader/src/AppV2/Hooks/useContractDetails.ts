@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router';
 import { useStore } from '@deriv/stores';
 
@@ -10,17 +10,18 @@ const useContractDetails = () => {
     const { contract_info } = contract_store;
 
     useEffect(() => {
-        const url_array = /[^/]*$/.exec(location.pathname);
-        const url_contract_id = url_array ? +url_array[0] : undefined;
-        onMount(url_contract_id);
+        if (!contract_info.contract_id) {
+            const url_array = /[^/]*$/.exec(location.pathname);
+            const url_contract_id = url_array ? +url_array[0] : undefined;
+            onMount(url_contract_id);
+        }
 
-        return () => {
-            onUnmount();
-        };
-    }, [location, onMount, onUnmount]);
+        // TODO: need to unmount whenever pathname changes
+    }, [location.pathname, onMount, contract_info.contract_id]);
 
     return {
         contract_info,
+        is_loading: !contract_info.contract_id,
     };
 };
 

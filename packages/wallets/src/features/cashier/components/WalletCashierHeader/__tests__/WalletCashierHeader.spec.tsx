@@ -18,7 +18,7 @@ jest.mock('@deriv/api-v2', () => ({
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: () => ({ history: {} }),
-    useLocation: () => ({ pathname: '/wallets' }),
+    useLocation: () => ({ pathname: '/' }),
 }));
 
 const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => (

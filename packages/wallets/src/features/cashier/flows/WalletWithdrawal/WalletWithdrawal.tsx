@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useActiveWalletAccount, useAuthorize } from '@deriv/api-v2';
+import { useActiveWalletAccount, useAuthorize, useBalance } from '@deriv/api-v2';
 import { Loader } from '../../../../components';
 import { WithdrawalCryptoModule, WithdrawalFiatModule, WithdrawalVerificationModule } from '../../modules';
 import { WithdrawalNoBalance } from '../../screens';
@@ -7,8 +7,16 @@ import { WithdrawalNoBalance } from '../../screens';
 const WalletWithdrawal = () => {
     const { switchAccount } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
+    const { data: balanceData, isLoading, isRefetching, refetch } = useBalance();
     const [verificationCode, setVerificationCode] = useState('');
     const [resendEmail, setResendEmail] = useState(false);
+
+    const isBalanceLoading = isLoading || isRefetching;
+
+    useEffect(() => {
+        refetch();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
@@ -34,11 +42,19 @@ const WalletWithdrawal = () => {
 
     const isCrypto = activeWallet?.currency_config?.is_crypto;
 
-    if (!activeWallet) return <Loader />;
+    if (!activeWallet || isBalanceLoading) {
+        return <Loader />;
+    }
 
-    if (activeWallet.balance <= 0) return <WithdrawalNoBalance activeWallet={activeWallet} />;
+    if (
+        balanceData.accounts &&
+        !isBalanceLoading &&
+        balanceData.accounts[activeWallet?.loginid ?? 'USD'].balance <= 0
+    ) {
+        return <WithdrawalNoBalance activeWallet={activeWallet} />;
+    }
 
-    if (activeWallet?.currency && verificationCode) {
+    if (activeWallet?.currency && verificationCode && !isBalanceLoading) {
         return isCrypto ? (
             <WithdrawalCryptoModule
                 setResendEmail={setResendEmail}

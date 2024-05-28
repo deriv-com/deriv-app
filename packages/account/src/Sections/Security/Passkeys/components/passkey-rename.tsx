@@ -2,10 +2,10 @@ import React from 'react';
 import { Form, Formik } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import { DerivLightIcEditPasskeyIcon } from '@deriv/quill-icons';
+import { FormInputField } from 'Components/forms/form-fields';
 import { TCurrentManagedPasskey } from '../passkeys';
 import { getPasskeyRenameValidationSchema } from '../passkeys-configs';
 import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status-layout';
-import FormInputField from '../../../../Components/forms/form-fields/form-input-field';
 
 type TPasskeyRename = { current_managed_passkey: TCurrentManagedPasskey } & TPasskeysButtonOnClicks;
 
@@ -30,7 +30,7 @@ export const PasskeyRename = ({
             onSubmit={onSubmitValues}
             validationSchema={getPasskeyRenameValidationSchema()}
         >
-            {({ dirty, isValid, values }) => (
+            {({ dirty, isValid }) => (
                 <div className='passkeys'>
                     <Form>
                         <PasskeysStatusLayout

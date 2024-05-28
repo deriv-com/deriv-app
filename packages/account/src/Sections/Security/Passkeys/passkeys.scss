@@ -200,8 +200,8 @@
         position: absolute;
         bottom: 8.2rem;
         margin-inline: auto;
-        left: 0;
-        right: 0;
+        inset-inline-start: 0;
+        inset-inline-end: 0;
         max-width: 34.4rem;
     }
 }

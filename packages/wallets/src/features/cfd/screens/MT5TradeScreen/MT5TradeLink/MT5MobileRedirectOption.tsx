@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { Trans } from 'react-i18next';
-import { THooks } from 'src/types';
 import {
     LabelPairedChevronRightLgFillIcon,
     StandaloneLaptopRegularIcon,
     StandaloneMobileNotchRegularIcon,
 } from '@deriv/quill-icons';
 import { WalletText } from '../../../../../components/Base';
+import { THooks } from '../../../../../types';
 import { getDeeplinkUrl, getMobileAppInstallerUrl, getWebtraderUrl } from './constants';
 import './MT5MobileRedirectOption.scss';
 

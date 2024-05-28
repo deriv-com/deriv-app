@@ -104,3 +104,18 @@ export type TMT5LandingCompanyName = THooks.MT5AccountsList['landing_company_sho
 export type TWalletCarouselItem = Omit<THooks.AllWalletAccounts, 'landing_company_name'>;
 
 export type TIconTypes = Record<string, IconTypes>;
+
+export type TMt5TradeAccountProp = {
+    mt5TradeAccount: THooks.MT5AccountsList & {
+        // eslint-disable-next-line camelcase
+        display_login: string;
+        // eslint-disable-next-line camelcase
+        white_label_links: {
+            android: string;
+            ios: string;
+            // eslint-disable-next-line camelcase
+            webtrader_url: string;
+            windows: string;
+        };
+    };
+};

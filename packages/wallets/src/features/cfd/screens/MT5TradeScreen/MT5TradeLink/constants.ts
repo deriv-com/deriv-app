@@ -1,8 +1,11 @@
+import { TMt5TradeAccountProp } from 'src/types';
 import { OSDetectionUtils } from '@deriv-com/utils';
 import { DESKTOP_PLATFORMS, MOBILE_PLATFORMS } from '../../../constants';
 import { whiteLabelLinks } from './urlConfig';
 
-export const getPlatformMt5DownloadLink = platform => {
+const { mobileOSDetectAsync } = OSDetectionUtils;
+
+export const getPlatformMt5DownloadLink = (platform: string) => {
     switch (platform) {
         case DESKTOP_PLATFORMS.LINUX:
             return whiteLabelLinks?.linux;
@@ -15,8 +18,8 @@ export const getPlatformMt5DownloadLink = platform => {
     }
 };
 
-export const getMobileAppInstallerURL = async ({ mt5TradeAccount }) => {
-    const os = await OSDetectionUtils();
+export const getMobileAppInstallerURL = async ({ mt5TradeAccount }: TMt5TradeAccountProp) => {
+    const os = await mobileOSDetectAsync();
 
     if (os === 'iOS') {
         return mt5TradeAccount?.white_label_links?.ios;
@@ -26,7 +29,7 @@ export const getMobileAppInstallerURL = async ({ mt5TradeAccount }) => {
     return mt5TradeAccount?.white_label_links?.android;
 };
 
-export const getDesktopDownloadOptions = ({ mt5TradeAccount }) => {
+export const getDesktopDownloadOptions = ({ mt5TradeAccount }: TMt5TradeAccountProp) => {
     const downloadOptions = [
         {
             button_text: 'Open',
@@ -57,7 +60,7 @@ export const getDesktopDownloadOptions = ({ mt5TradeAccount }) => {
     return downloadOptions;
 };
 
-export const getMobileDownloadOptions = ({ mt5TradeAccount }) => [
+export const getMobileDownloadOptions = ({ mt5TradeAccount }: TMt5TradeAccountProp) => [
     {
         href: mt5TradeAccount?.white_label_links?.ios,
         icon: 'IcInstallationApple',
@@ -72,16 +75,16 @@ export const getMobileDownloadOptions = ({ mt5TradeAccount }) => [
     },
 ];
 
-export const getWebtraderUrl = ({ mt5TradeAccount }) => {
+export const getWebtraderUrl = ({ mt5TradeAccount }: TMt5TradeAccountProp) => {
     return `${mt5TradeAccount?.white_label_links?.webtrader_url}?login=${mt5TradeAccount?.display_login}&server=${mt5TradeAccount?.server_info?.environment}`;
 };
 
-export const getDeeplinkUrl = ({ mt5TradeAccount }) => {
+export const getDeeplinkUrl = ({ mt5TradeAccount }: TMt5TradeAccountProp) => {
     return `metatrader5://account?login=${mt5TradeAccount?.display_login}&server=${mt5TradeAccount?.server_info?.environment}`;
 };
 
-export const getMobileAppInstallerUrl = async ({ mt5TradeAccount }) => {
-    const os = await OSDetectionUtils.mobileOSDetectAsync();
+export const getMobileAppInstallerUrl = async ({ mt5TradeAccount }: TMt5TradeAccountProp) => {
+    const os = await mobileOSDetectAsync();
 
     if (os === 'iOS') {
         return mt5TradeAccount?.white_label_links?.ios;

@@ -13,7 +13,9 @@ jest.mock('@deriv/hooks', () => ({
     useSendOTPVerificationCode: jest.fn(),
 }));
 
-describe('ConfirmPhoneNumber', () => {
+jest.mock('../phone-number-verified-modal', () => jest.fn(() => <div>Phone Number Verified Modal</div>));
+
+describe('OTPVerification', () => {
     const store = mockStore({
         client: {
             email: 'johndoe@regentmarkets.com',
@@ -126,5 +128,15 @@ describe('ConfirmPhoneNumber', () => {
         const otp_textfield = screen.getByRole('textbox');
         userEvent.type(otp_textfield, '123456');
         expect(mockSetPhoneOtpErrorMessage).toBeCalled();
+    });
+
+    it('should display Phone Number Verified Modal when API returns phone_number_verified is true', () => {
+        store.ui.should_show_phone_number_otp = true;
+        (useSendOTPVerificationCode as jest.Mock).mockReturnValue({
+            sendPhoneOTPVerification: mockSendPhoneOTPVerification,
+            phone_number_verified: true,
+        });
+        renderComponent();
+        expect(screen.getByText(/Phone Number Verified Modal/)).toBeInTheDocument();
     });
 });

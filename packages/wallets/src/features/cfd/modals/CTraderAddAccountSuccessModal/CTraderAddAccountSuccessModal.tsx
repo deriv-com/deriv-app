@@ -10,7 +10,7 @@ const CTraderAddAccountSuccessModal = () => {
     const { hide } = useModal();
     const onClickTransferNow = () => {
         hide();
-        history.push('/wallets/cashier/transfer');
+        history.push('/wallet/withdrawal');
     };
     return (
         <ModalWrapper>

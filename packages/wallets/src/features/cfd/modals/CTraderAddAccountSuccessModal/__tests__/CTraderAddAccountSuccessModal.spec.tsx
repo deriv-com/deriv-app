@@ -61,6 +61,6 @@ describe('CTraderAddAccountSuccessModal', () => {
         fireEvent.click(screen.getByText('Transfer now'));
         mockHideModal();
 
-        expect(mockPush).toHaveBeenCalledWith('/wallets/cashier/transfer');
+        expect(mockPush).toHaveBeenCalledWith('/wallet/withdrawal');
     });
 });

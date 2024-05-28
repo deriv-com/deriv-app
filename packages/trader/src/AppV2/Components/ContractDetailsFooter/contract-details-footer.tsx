@@ -4,8 +4,7 @@ import React from 'react';
 const ContractDetailsFooter = () => {
     return (
         <div className='contract-details-footer--container'>
-            <Button variant='secondary' label='just a simple button' color='black' fullWidth />
-            <Button variant='secondary' label='just a simple button' color='black' fullWidth />
+            <Button variant='secondary' label='Close @ 9.00 USD' color='black' size='lg' fullWidth />
         </div>
     );
 };

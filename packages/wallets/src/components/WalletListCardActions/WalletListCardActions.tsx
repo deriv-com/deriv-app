@@ -25,7 +25,7 @@ const getWalletHeaderButtons = (isDemo?: boolean) => {
             className: 'wallets-mobile-actions-content-icon',
             color: 'white',
             icon: <LabelPairedMinusMdBoldIcon />,
-            name: 'withdraw',
+            name: 'withdrawal',
             text: 'Withdraw',
             variant: 'outlined',
         },
@@ -33,22 +33,16 @@ const getWalletHeaderButtons = (isDemo?: boolean) => {
             className: 'wallets-mobile-actions-content-icon',
             color: 'white',
             icon: <LabelPairedArrowUpArrowDownMdBoldIcon />,
-            name: 'transfer',
+            name: 'account-transfer',
             text: 'Transfer',
             variant: 'outlined',
         },
     ] as const;
 
     // Filter out the "Withdraw" button when is_demo is true
-    const filteredButtons = isDemo ? buttons.filter(button => button.name !== 'withdraw') : buttons;
+    const filteredButtons = isDemo ? buttons.filter(button => button.name !== 'withdrawal') : buttons;
 
-    const orderForDemo = ['reset-balance', 'transfer'];
-
-    const sortedButtons = isDemo
-        ? [...filteredButtons].sort((a, b) => orderForDemo.indexOf(a.name) - orderForDemo.indexOf(b.name))
-        : filteredButtons;
-
-    return sortedButtons;
+    return filteredButtons;
 };
 
 const WalletListCardActions = () => {
@@ -71,7 +65,7 @@ const WalletListCardActions = () => {
                                 color={button.color}
                                 icon={button.icon}
                                 onClick={() => {
-                                    history.push(`/wallets/cashier/${button.name}`);
+                                    history.push(`/wallet/${button.name}`);
                                 }}
                                 size='lg'
                             />
@@ -92,7 +86,7 @@ const WalletListCardActions = () => {
                     icon={button.icon}
                     key={button.name}
                     onClick={() => {
-                        history.push(`/wallets/cashier/${button.name}`);
+                        history.push(`/wallet/${button.name}`);
                     }}
                     rounded='lg'
                     variant={button.variant}

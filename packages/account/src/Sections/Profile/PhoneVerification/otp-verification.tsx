@@ -102,7 +102,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                     label={localize('OTP code')}
                     buttonCallback={handleVerifyOTP}
                     onChange={handleGetOtpValue}
-                    message={localize(phone_otp_error_message)}
+                    message={phone_otp_error_message && localize(phone_otp_error_message)}
                     maxLength={6}
                 />
                 <ResendCodeTimer

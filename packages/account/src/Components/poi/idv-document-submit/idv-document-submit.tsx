@@ -206,7 +206,7 @@ const IdvDocumentSubmit = observer(
                                     />
                                 </div>
                             )}
-                            <FormBody className='form-body' scroll_offset={!isDesktop ? '180px' : '80px'}>
+                            <FormBody className='form-body' scroll_offset={isDesktop ? '80px' : '180px'}>
                                 <FormSubHeader title={localize('Identity verification')} />
                                 <IDVForm selected_country={selected_country} class_name='idv-layout' />
                                 {!shouldSkipIdv(values?.document_type?.id) && (

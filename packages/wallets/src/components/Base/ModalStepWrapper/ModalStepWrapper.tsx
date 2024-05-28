@@ -7,6 +7,7 @@ import { WalletText } from '../WalletText';
 import './ModalStepWrapper.scss';
 
 type TModalStepWrapperProps = {
+    disableScroll?: boolean;
     renderFooter?: () => ReactNode;
     shouldFixedFooter?: boolean;
     shouldHideDerivAppHeader?: boolean;
@@ -18,6 +19,7 @@ type TModalStepWrapperProps = {
 
 const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     children,
+    disableScroll = false,
     renderFooter,
     shouldFixedFooter = true,
     shouldHideDerivAppHeader = false,
@@ -53,6 +55,7 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     return (
         <div
             className={classNames('wallets-modal-step-wrapper', {
+                'wallets-modal-step-wrapper--disable-scroll': disableScroll,
                 'wallets-modal-step-wrapper--fixed-footer': fixedFooter && !shouldHideHeader,
                 'wallets-modal-step-wrapper--hide-deriv-app-header': shouldHideDerivAppHeader,
                 'wallets-modal-step-wrapper--no-footer': shouldHideFooter,

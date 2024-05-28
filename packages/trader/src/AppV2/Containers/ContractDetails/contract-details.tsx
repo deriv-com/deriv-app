@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text } from '@deriv-com/quill-ui';
+import { CaptionText, Text } from '@deriv-com/quill-ui';
 import EntryExitDetails from 'AppV2/Components/EntryExitDetails';
+import TakeProfitHistory from 'AppV2/Components/TakeProfitHistory';
 import PayoutInfo from 'AppV2/Components/PayoutInfo';
 import ChartPlaceholder from '../Chart';
 import { Localize } from '@deriv/translations';
@@ -10,12 +11,29 @@ import CardWrapper from 'AppV2/Components/CardWrapper';
 const ContractDetails = () => {
     return (
         <div className='contract-details'>
-            <div className='placeholder'>
-                <Text size='sm'>Contract Details</Text>
+            {/* TODO: remove temp contract card */}
+            <div className='contract-card'>
+                <div className='row first-row'>
+                    <div className='title'>
+                        <Text size='sm'>Accumulators</Text>
+                    </div>
+                </div>
+                <div className='row'>
+                    <CaptionText>Volatility 75 Index</CaptionText>
+                    <CaptionText size='sm'>10.00 USD</CaptionText>
+                </div>
+                <div className='row last-row'>
+                    <div className='column'>
+                        <Text size='sm'>2/150 ticks</Text>
+                    </div>
+                    <div className='column'>
+                        <Text size='sm' className='red'>
+                            -1.00 USD
+                        </Text>
+                    </div>
+                </div>
             </div>
-            <div className='placeholder'>
-                <Text size='sm'>Contract card</Text>
-            </div>
+            {/* END OF CONTRACT CARD */}
             <div className='placeholder'>
                 <ChartPlaceholder />
             </div>
@@ -44,6 +62,7 @@ const ContractDetails = () => {
             </div>
             <PayoutInfo />
             <EntryExitDetails />
+            <TakeProfitHistory />
         </div>
     );
 };

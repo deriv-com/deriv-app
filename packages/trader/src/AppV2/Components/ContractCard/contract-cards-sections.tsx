@@ -2,15 +2,17 @@ import React from 'react';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 import { TPortfolioPosition } from '@deriv/stores/types';
 import { Text } from '@deriv-com/quill-ui';
+import { Loading } from '@deriv/components';
 import { formatDate } from 'AppV2/Utils/positions-utils';
 import ContractCardList from './contract-card-list';
 
 type TContractCardsSections = {
+    isLoadingMore?: boolean;
     onScroll?: (e: React.UIEvent<HTMLDivElement>) => void;
     positions?: (TClosedPosition | TPortfolioPosition)[];
 };
 
-const ContractCardsSections = ({ onScroll, positions }: TContractCardsSections) => {
+const ContractCardsSections = ({ isLoadingMore, onScroll, positions }: TContractCardsSections) => {
     const dates = positions?.map(element => {
         const sellTime = element.contract_info.sell_time;
         return sellTime && formatDate({ time: sellTime });
@@ -32,10 +34,11 @@ const ContractCardsSections = ({ onScroll, positions }: TContractCardsSections) 
                             return sellTime && formatDate({ time: sellTime }) === date;
                         })}
                     />
+                    {isLoadingMore && <Loading is_fullscreen={false} />}
                 </div>
             ))}
         </div>
     );
 };
 
-export default ContractCardsSections;
+export default React.memo(ContractCardsSections);

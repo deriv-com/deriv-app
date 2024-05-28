@@ -69,4 +69,11 @@ describe('ContractCardsSections', () => {
         expect(dateSeparator).toBeInTheDocument();
         expect(screen.getAllByText(ContractCard)).toHaveLength(2);
     });
+
+    it('should render Loading when isLoading true', () => {
+        render(<ContractCardsSections {...mockProps} isLoadingMore />);
+
+        const loader = screen.getByTestId('dt_initial_loader');
+        expect(loader).toBeInTheDocument();
+    });
 });

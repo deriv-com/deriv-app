@@ -36,7 +36,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
         data,
         handleScroll,
         is_empty,
-        is_loading: isLoading,
+        is_loading: isFetchingClosedPositions,
         onMount: onClosedTabMount,
         onUnmount: onClosedTabUnmount,
         handleDateChange,
@@ -49,7 +49,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     const hasNoPositions = isClosedTab ? is_empty && !timeFilter && !customTimeRangeFilter : is_active_empty;
     const shouldShowEmptyMessage = hasNoPositions || noMatchesFound;
     const shouldShowContractCards =
-        isClosedTab || (filteredPositions.length && (filteredPositions[0]?.contract_info as TContractInfo)?.status);
+        filteredPositions.length && (isClosedTab || (filteredPositions[0]?.contract_info as TContractInfo)?.status);
 
     const handleTradeTypeFilterChange = (filterValues: string[]) => {
         setContractTypeFilter(filterValues);
@@ -63,8 +63,21 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
         }
     };
 
+    const onScroll = React.useCallback(
+        (e: React.UIEvent<HTMLDivElement>) => {
+            if (isClosedTab) {
+                handleScroll(e);
+            }
+        },
+        [handleScroll, isClosedTab]
+    );
+
     const contractCards = isClosedTab ? (
-        <ContractCardsSections positions={filteredPositions} onScroll={handleScroll} />
+        <ContractCardsSections
+            positions={filteredPositions}
+            onScroll={onScroll}
+            isLoadingMore={isFetchingClosedPositions}
+        />
     ) : (
         <ContractCardList
             currency={currency}
@@ -101,7 +114,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
 
     React.useEffect(() => setFilteredPositions(positions), [positions]);
 
-    if (isLoading || (!shouldShowContractCards && !shouldShowEmptyMessage)) return <Loading />;
+    if (!shouldShowContractCards && !shouldShowEmptyMessage) return <Loading />;
     return (
         <div className={`positions-page__${isClosedTab ? 'closed' : 'open'}`}>
             {!hasNoPositions && (

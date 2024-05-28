@@ -16,6 +16,7 @@
         background: var(--general-main-1, #ffffff);
         width: fit-content;
         padding: 0;
+        z-index: 11;
     }
 
     &__row {

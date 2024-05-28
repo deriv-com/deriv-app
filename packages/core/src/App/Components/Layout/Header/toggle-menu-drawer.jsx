@@ -65,7 +65,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { pathname: route } = useLocation();
 
     const is_trading_hub_category =
-        route.startsWith(routes.traders_hub) || route.startsWith(routes.cashier) || route.startsWith(routes.account);
+        route === routes.traders_hub || route.startsWith(routes.cashier) || route.startsWith(routes.account);
 
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());
@@ -105,9 +105,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             const routes_config = getRoutesConfig();
             let primary_routes = [];
 
-            const location = window.location.pathname;
-
-            if (location === is_trading_hub_category) {
+            if (is_trading_hub_category) {
                 primary_routes = has_wallet ? [routes.reports, routes.account] : [routes.account, routes.cashier];
             } else {
                 primary_routes = [routes.reports, routes.account, routes.cashier];

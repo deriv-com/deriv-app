@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
-import useGrowthbookFeatureFlag from '../useGrowthbookFeatureFlag';
 import { Analytics } from '@deriv-com/analytics';
 import { useRemoteConfig } from '@deriv/api';
+import useGrowthbookGetFeatureValue from '../useGrowthbookGetFeatureValue';
 
 jest.mock('@deriv/api');
 jest.mock('@tanstack/react-query');
@@ -18,7 +18,7 @@ describe('useGrowthbookFeatureFlag', () => {
             data: mockData,
         }));
         const { result } = renderHook(() =>
-            useGrowthbookFeatureFlag({
+            useGrowthbookGetFeatureValue({
                 defaultValue: false,
                 featureFlag: 'dummy-feature-flag',
             })
@@ -35,7 +35,7 @@ describe('useGrowthbookFeatureFlag', () => {
             data: mockData,
         }));
         renderHook(() =>
-            useGrowthbookFeatureFlag({
+            useGrowthbookGetFeatureValue({
                 defaultValue: true,
                 featureFlag: 'dummy-feature-flag-1',
             })

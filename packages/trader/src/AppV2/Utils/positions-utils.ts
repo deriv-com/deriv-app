@@ -37,7 +37,9 @@ export const formatDate: TFormatDate = ({
     dateFormattingConfig = DEFAULT_DATE_FORMATTING_CONFIG,
 }) => new Date(time).toLocaleDateString(locale, dateFormattingConfig);
 
-export const getProfit = (contract_info: TPortfolioPosition['contract_info'] | TClosedPosition['contract_info']) => {
+export const getProfit = (
+    contract_info: TPortfolioPosition['contract_info'] | TClosedPosition['contract_info']
+): string | number => {
     return (
         (contract_info as TClosedPosition['contract_info']).profit_loss ??
         (isMultiplierContract(contract_info.contract_type)

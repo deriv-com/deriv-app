@@ -11,7 +11,7 @@ type TTotalProfitLossProps = {
 };
 
 const TotalProfitLoss = ({ currency, hasBottomAlignment, totalProfitLoss }: TTotalProfitLossProps) => (
-    <div className={classNames('total-profit-loss', { bottom: hasBottomAlignment })}>
+    <div className={classNames('total-profit-loss', { bottom: hasBottomAlignment })} data-testid='dt_total_profit_loss'>
         <Text bold size='sm'>
             {getCardLabels().TOTAL_PROFIT_LOSS}
         </Text>

@@ -1,5 +1,5 @@
 import { TPortfolioPosition } from '@deriv/stores/types';
-import { filterPositions, formatDate } from '../positions-utils';
+import { filterPositions, formatDate, getProfit, getTotalPositionsProfit } from '../positions-utils';
 
 const mockedActivePositions = [
     {
@@ -262,6 +262,27 @@ const mockedActivePositions = [
         high_barrier: 683.046,
         low_barrier: 682.454,
     },
+    {
+        contract_info: {
+            app_id: 16929,
+            buy_price: 10,
+            contract_id: 243585717228,
+            contract_type: 'TURBOSLONG',
+            duration_type: 'minutes',
+            longcode:
+                'You will receive a payout at expiry if the spot price never breaches the barrier. The payout is equal to the payout per point multiplied by the distance between the final price and the barrier.',
+            payout: 0,
+            purchase_time: '27 May 2024 09:41:00',
+            sell_price: 0,
+            sell_time: '27 May 2024 09:43:36',
+            shortcode: 'TURBOSLONG_1HZ100V_10.00_1716802860_1716804660_S-237P_3.971435_1716802860',
+            transaction_id: 485824148848,
+            underlying_symbol: '1HZ100V',
+            profit_loss: '-10.00',
+            display_name: '',
+            purchase_time_unix: 1716802860,
+        },
+    },
 ] as TPortfolioPosition[];
 
 describe('filterPositions', () => {
@@ -273,7 +294,8 @@ describe('filterPositions', () => {
             mockedActivePositions[1],
         ]);
 
-        expect(filterPositions(mockedActivePositions, ['Turbos'])).toEqual([]);
+        expect(filterPositions(mockedActivePositions, ['Turbos'])).toEqual([mockedActivePositions[3]]);
+        expect(filterPositions(mockedActivePositions, ['Even/Odd'])).toEqual([]);
     });
 });
 
@@ -300,5 +322,20 @@ describe('formatDate', () => {
         expect(formatDate({ time: '15 May 2024 09:38:34', dateFormattingConfig })).toEqual('15/05/2024');
         expect(formatDate({ time: '2020-02-01', dateFormattingConfig })).toEqual('01/02/2020');
         expect(formatDate({ time: 'May 1, 2014 12:13:00', dateFormattingConfig })).toEqual('01/05/2014');
+    });
+});
+
+describe('getProfit', () => {
+    it('should return correct profit, based on contract_info', () => {
+        expect(getProfit(mockedActivePositions[0].contract_info)).toEqual(-2.62);
+        expect(getProfit(mockedActivePositions[1].contract_info)).toEqual(-0.4900000000000002);
+        expect(getProfit(mockedActivePositions[2].contract_info)).toEqual(0.84);
+        expect(getProfit(mockedActivePositions[3].contract_info)).toEqual('-10.00');
+    });
+});
+
+describe('getTotalPositionsProfit', () => {
+    it('should return correct total profit, based on all positions', () => {
+        expect(getTotalPositionsProfit(mockedActivePositions)).toEqual(-12.27);
     });
 });

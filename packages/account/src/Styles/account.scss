@@ -1015,7 +1015,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             &__list {
                 width: 90%;
                 margin: 1rem auto;
@@ -1604,7 +1604,7 @@ $MIN_HEIGHT_FLOATING: calc(
             margin: 0.5rem 0 0.8rem;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             &:first-child {
                 & > p {
                     padding-top: 2.4rem;
@@ -1619,11 +1619,11 @@ $MIN_HEIGHT_FLOATING: calc(
         line-height: 1.43;
 
         & > ul {
-            padding-left: 3%;
+            padding-inline-start: 3%;
             list-style-type: disc;
 
-            @include mobile {
-                padding-left: 5%;
+            @include mobile-or-tablet-screen {
+                padding-inline-start: 5%;
             }
 
             @include rtl {
@@ -1651,7 +1651,7 @@ $MIN_HEIGHT_FLOATING: calc(
         align-self: flex-end;
         background-color: transparent;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             align-self: center;
         }
     }
@@ -1660,20 +1660,20 @@ $MIN_HEIGHT_FLOATING: calc(
         &--cancel {
             margin-top: 2.4rem;
             margin-inline-end: 10px;
-            float: right;
+            float: inline-end;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin-top: -8px;
                 margin-inline-end: 10px;
-                float: right;
+                float: inline-end;
             }
         }
 
         &--close-account {
             margin-top: 2.4rem;
-            float: right;
+            float: inline-end;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 float: none;
                 margin: 2.4rem auto 3.2rem;
             }
@@ -1718,7 +1718,7 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-top: 0.8rem;
 
             &-wrapper {
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     margin-bottom: 5.6rem;
                 }
             }
@@ -1735,7 +1735,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         width: calc(100% - 3rem);
         margin: 0 auto;
 
@@ -1748,7 +1748,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     margin: 0.8rem 0;
                     background-color: var(--general-main-1);
 
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         position: fixed;
                         bottom: 0;
                         left: 0;
@@ -1772,7 +1772,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
 /* stylelint-disable */
 .dc-modal__container_closing-account-reasons {
-    @include mobile {
+    @include mobile-or-tablet-screen {
         max-height: 70vh;
     }
 
@@ -1790,7 +1790,7 @@ $MIN_HEIGHT_FLOATING: calc(
         padding: 3.2rem;
         width: 440px;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: unset;
         }
 
@@ -1802,7 +1802,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 width: 10.3rem;
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 background: unset;
             }
         }
@@ -1888,7 +1888,7 @@ $MIN_HEIGHT_FLOATING: calc(
             margin: 1.6rem 2.4rem;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             &__button {
                 margin: 1.6rem;
             }

@@ -29,6 +29,7 @@ const Redirect = observer(() => {
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
     const ext_platform_url = url_params.get('ext_platform_url');
+    const is_wallet_account = client.loginid && client.loginid.startsWith('CRW');
 
     const redirectToExternalPlatform = url => {
         history.push(`${routes.traders_hub}?ext_platform_url=${url}`);
@@ -131,7 +132,7 @@ const Redirect = observer(() => {
         }
         case 'payment_deposit': {
             if (has_wallet) {
-                if (client.loginid && client.loginid.startsWith('CRW')) {
+                if (is_wallet_account) {
                     history.push(`${routes.wallets_deposit}?${client.loginid ? `&loginid=${client.loginid}` : ''}`);
                 } else {
                     history.push(routes.wallets_deposit);
@@ -157,7 +158,7 @@ const Redirect = observer(() => {
                             client.loginid ? `&loginid=${client.loginid}` : ''
                         }`
                     );
-                } else if (client.loginid && client.loginid.startsWith('CRW')) {
+                } else if (is_wallet_account) {
                     history.push(`${routes.wallets_withdrawal}?${client.loginid ? `&loginid=${client.loginid}` : ''}`);
                 } else {
                     history.push(routes.wallets_withdrawal);
@@ -170,7 +171,7 @@ const Redirect = observer(() => {
         }
         case 'payment_transfer': {
             if (has_wallet) {
-                if (client.loginid && client.loginid.startsWith('CRW')) {
+                if (is_wallet_account) {
                     history.push(`${routes.wallets_transfer}?${client.loginid ? `&loginid=${client.loginid}` : ''}`);
                 } else {
                     history.push(routes.wallets_transfer);
@@ -183,7 +184,7 @@ const Redirect = observer(() => {
         }
         case 'payment_transactions': {
             if (has_wallet) {
-                if (client.loginid && client.loginid.startsWith('CRW')) {
+                if (is_wallet_account) {
                     history.push(
                         `${routes.wallets_transactions}?${client.loginid ? `&loginid=${client.loginid}` : ''}`
                     );

@@ -53,10 +53,12 @@
             gap: 0.5rem;
 
             &--floating {
-                position: fixed;
+                position: absolute;
 
-                @include mobile {
-                    position: absolute;
+                &:hover {
+                    @include desktop {
+                        position: fixed;
+                    }
                 }
             }
 

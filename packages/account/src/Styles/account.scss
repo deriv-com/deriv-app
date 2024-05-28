@@ -1432,7 +1432,7 @@ $MIN_HEIGHT_FLOATING: calc(
             font-weight: bold;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             &:not(:first-child):not(:last-child) {
                 margin: 0;
             }
@@ -1448,7 +1448,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         display: grid;
         grid-gap: 2.4rem;
         grid-template-columns: 1fr 1fr 1fr;

@@ -340,17 +340,17 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         onClickLink={toggleDrawer}
                                     />
                                 </MobileDrawer.Item>
-
-                                <MobileDrawer.Item>
-                                    <MenuLink
-                                        link_to={routes.traders_hub}
-                                        icon={TradersHubIcon}
-                                        text={localize("Trader's Hub")}
-                                        onClickLink={toggleDrawer}
-                                        is_active={route === routes.traders_hub}
-                                    />
-                                </MobileDrawer.Item>
-
+                                {is_logged_in && (
+                                    <MobileDrawer.Item>
+                                        <MenuLink
+                                            link_to={routes.traders_hub}
+                                            icon={TradersHubIcon}
+                                            text={localize("Trader's Hub")}
+                                            onClickLink={toggleDrawer}
+                                            is_active={route === routes.traders_hub}
+                                        />
+                                    </MobileDrawer.Item>
+                                )}
                                 {
                                     <MobileDrawer.Item>
                                         <MenuLink

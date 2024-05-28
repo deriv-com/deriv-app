@@ -24,7 +24,7 @@
     border-radius: $BORDER_RADIUS * 2;
     min-width: 51.4rem;
 
-    @include mobile-or-tablet-screen {
+    @include mobile-screen {
         position: absolute;
         top: -4.8rem;
         left: -0.8rem;
@@ -32,10 +32,6 @@
         width: calc(100vw - 1.6rem);
         min-width: unset;
         padding-right: 3rem;
-    }
-
-    @include tablet-screen {
-        width: unset;
     }
 
     /* Screen height fixes due to UI space restrictions */
@@ -221,7 +217,7 @@
         width: 56.3rem;
         height: 44.8rem;
 
-        @include mobile-or-tablet-screen {
+        @include mobile-screen {
             width: 29.6rem;
             height: 30.3rem;
         }
@@ -229,7 +225,7 @@
             transform: scale(1);
         }
     }
-    @include mobile-or-tablet-screen {
+    @include mobile-screen {
         height: calc(100% - 5.2rem);
     }
 }

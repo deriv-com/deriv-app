@@ -134,7 +134,7 @@ describe('OTPVerification', () => {
         store.ui.should_show_phone_number_otp = true;
         (useSendOTPVerificationCode as jest.Mock).mockReturnValue({
             sendPhoneOTPVerification: mockSendPhoneOTPVerification,
-            phone_number_verified: true,
+            is_phone_number_verified: true,
         });
         renderComponent();
         expect(screen.getByText(/Phone Number Verified Modal/)).toBeInTheDocument();

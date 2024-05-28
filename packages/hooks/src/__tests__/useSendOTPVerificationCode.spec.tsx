@@ -26,7 +26,7 @@ describe('useSendOTPVerificationCode', () => {
         expect(result.current.data).toBe(null);
         expect(result.current.phone_otp_error).toStrictEqual({});
         expect(result.current.phone_otp_error_message).toBe(undefined);
-        expect(result.current.phone_number_verified).toBe(false);
+        expect(result.current.is_phone_number_verified).toBe(false);
     });
 
     it('should handle successful OTP submission', () => {
@@ -40,7 +40,7 @@ describe('useSendOTPVerificationCode', () => {
 
         expect(mockMutate).toHaveBeenCalledWith({ payload: { otp: '123456' } });
 
-        expect(result.current.phone_number_verified).toBe(true);
+        expect(result.current.is_phone_number_verified).toBe(true);
     });
 
     it('should handle ExpiredCode error', () => {

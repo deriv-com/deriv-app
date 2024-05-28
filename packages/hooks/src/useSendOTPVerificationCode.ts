@@ -9,7 +9,7 @@ const useSendOTPVerificationCode = () => {
         data,
         mutate,
         error: phone_otp_error,
-        isSuccess: phone_number_verified,
+        isSuccess: is_phone_number_verified,
         ...rest
     } = useMutation('phone_number_verify');
 
@@ -46,7 +46,7 @@ const useSendOTPVerificationCode = () => {
         phone_otp_error,
         phone_otp_error_message,
         setPhoneOtpErrorMessage,
-        phone_number_verified,
+        is_phone_number_verified,
         mutate,
         ...rest,
     };

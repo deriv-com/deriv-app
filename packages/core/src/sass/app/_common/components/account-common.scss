@@ -13,7 +13,7 @@
         min-width: 32.8rem;
         min-height: 50rem;
         margin: auto;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             height: 100%;
         }
     }
@@ -161,6 +161,7 @@
 
                 @include mobile-or-tablet-screen {
                     padding-inline: 0;
+                    height: 100%;
                 }
 
                 &--exit {
@@ -311,15 +312,32 @@
             border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
             border-top: 1px solid var(--general-section-1);
             background-color: var(--general-main-1);
-            .back-btn {
-                margin-right: 8px;
 
-                @include mobile-or-tablet-screen {
+            @include desktop-screen {
+                max-width: 68rem;
+            }
+
+            @include mobile-or-tablet-screen {
+                flex-direction: row;
+                justify-content: center;
+                width: 100%;
+                left: 0;
+                align-items: center;
+            }
+
+            .back-btn {
+                margin-inline-start: 0.8rem;
+
+                @include tablet-screen {
+                    width: 56.8rem;
+                }
+
+                @include mobile-screen {
                     width: 100%;
                 }
 
                 .back-btn-icon {
-                    margin-right: 0.8rem;
+                    margin-inline-end: 0.8rem;
                 }
 
                 span {
@@ -379,11 +397,12 @@
                         justify-content: space-between;
                     }
                 }
+
                 @include tablet-screen {
                     width: 100%;
                 }
 
-                @include mobile-or-tablet-screen {
+                @include mobile-screen {
                     &--has-bottom-margin {
                         margin-bottom: 1.6rem;
                     }
@@ -480,10 +499,15 @@
             padding-inline-start: 16px;
             padding-inline-end: 16px;
         }
-        @include mobile-or-tablet-screen {
-            height: unset;
+        @include tablet-screen {
             padding-inline-start: 0;
             padding-inline-end: 0;
+        }
+
+        @include mobile-screen {
+            height: unset;
+            padding-top: unset;
+            padding-bottom: unset;
         }
     }
 
@@ -696,7 +720,9 @@
     height: 100%;
 
     &__main-container {
-        position: relative;
+        @include mobile-or-tablet-screen {
+            max-width: 100%;
+        }
         max-width: 68.2rem;
         height: 100%;
     }
@@ -720,7 +746,6 @@
         padding-bottom: 1.6rem;
 
         @include mobile-or-tablet-screen {
-            min-height: unset;
             overflow-y: scroll;
             padding: 0 1.6rem;
 
@@ -741,9 +766,7 @@
 
             .proof-of-identity__submit-button {
                 @include mobile-or-tablet-screen {
-                    margin: unset;
                     width: 100%;
-                    margin-inline: 1.6rem;
                 }
             }
 
@@ -809,6 +832,7 @@
 
                     .proof-of-identity__dropdown-container {
                         margin-top: 0;
+                        overflow: visible;
                     }
                 }
             }
@@ -859,16 +883,23 @@
     }
 
     &__footer {
-        @include mobile-or-tablet-screen {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: flex-end;
-            position: fixed;
-            bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        bottom: 0;
 
-            .proof-of-identity__submit-button {
-                width: 100%;
+        @include mobile-or-tablet-screen {
+            flex-direction: row;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .proof-of-identity__submit-button {
+            @include mobile-or-tablet-screen {
+                width: 56.8rem;
+                margin-inline-end: 0.8rem;
+                align-items: center;
+                justify-content: center;
             }
         }
     }
@@ -886,7 +917,7 @@
         }
 
         .country-dropdown {
-            min-height: 35.2rem;
+            height: 100%;
         }
     }
 
@@ -926,7 +957,7 @@
     &__image-container {
         width: fit-content;
         height: fit-content;
-        padding: 8px;
+        padding: 0.8rem;
         border-radius: 4px;
         background-color: $color-grey-2;
     }

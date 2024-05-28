@@ -7,7 +7,6 @@ jest.mock('../otp-verification.tsx', () => jest.fn(() => <div>Confirm Your Email
 jest.mock('../confirm-phone-number.tsx', () => jest.fn(() => <div>Confirm Phone Number</div>));
 jest.mock('../cancel-phone-verification-modal', () => jest.fn(() => <div>Cancel Phone Verification Modal</div>));
 jest.mock('../verification-link-expired-modal', () => jest.fn(() => <div>Verification Link Expired Modal</div>));
-jest.mock('../phone-number-verified-modal', () => jest.fn(() => <div>Phone Number Verified Modal</div>));
 
 describe('ConfirmPhoneNumber', () => {
     it('should render ConfirmPhoneNumber', () => {

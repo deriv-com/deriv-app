@@ -3,10 +3,11 @@ import PhoneVerificationCard from './phone-verification-card';
 import { Text, InputGroupButton } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { useVerifyEmail } from '@deriv/hooks';
+import { useSendOTPVerificationCode, useVerifyEmail } from '@deriv/hooks';
 import { convertPhoneTypeDisplay } from 'Helpers/utils';
 import ResendCodeTimer from './resend-code-timer';
 import DidntGetTheCodeModal from './didnt-get-the-code-modal';
+import PhoneNumberVerifiedModal from './phone-number-verified-modal';
 
 type TOTPVerification = {
     phone_verification_type: string;
@@ -17,29 +18,43 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     const { client, ui } = useStore();
     const { account_settings, email } = client;
     const { phone } = account_settings;
+    const [should_show_phone_number_verified_modal, setShouldShowPhoneNumberVerifiedModal] = React.useState(false);
     const [should_show_didnt_get_the_code_modal, setShouldShowDidntGetTheCodeModal] = React.useState(false);
     const [start_timer, setStartTimer] = React.useState(true);
     const [otp, setOtp] = React.useState('');
+
     const { send } = useVerifyEmail('phone_number_verification');
+    const { sendPhoneOTPVerification, phone_otp_error_message, setPhoneOtpErrorMessage, phone_number_verified } =
+        useSendOTPVerificationCode();
     //TODO: this shall be replace by BE API call when it's ready
     const { should_show_phone_number_otp } = ui;
 
     React.useEffect(() => {
         if (!should_show_phone_number_otp) {
             send();
+        } else if (phone_number_verified) {
+            setShouldShowPhoneNumberVerifiedModal(true);
         }
-    }, [should_show_phone_number_otp, send]);
+    }, [should_show_phone_number_otp, send, phone_number_verified, setShouldShowPhoneNumberVerifiedModal]);
 
     const handleGetOtpValue = (e: React.ChangeEvent<HTMLInputElement>) => {
         setOtp(e.target.value);
+        setPhoneOtpErrorMessage('');
     };
 
     const handleVerifyOTP = () => {
         //TODO: inplement function to verify OTP when BE API is ready
+        if (should_show_phone_number_otp) {
+            sendPhoneOTPVerification(otp);
+        }
     };
 
     return (
         <PhoneVerificationCard is_small_card>
+            <PhoneNumberVerifiedModal
+                should_show_phone_number_verified_modal={should_show_phone_number_verified_modal}
+                setShouldShowPhoneNumberVerifiedModal={setShouldShowPhoneNumberVerifiedModal}
+            />
             <DidntGetTheCodeModal
                 should_show_didnt_get_the_code_modal={should_show_didnt_get_the_code_modal}
                 setShouldShowDidntGetTheCodeModal={setShouldShowDidntGetTheCodeModal}
@@ -82,10 +97,13 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
             </div>
             <div className='phone-verification__card--email-verification-otp-container'>
                 <InputGroupButton
+                    status={phone_otp_error_message ? 'error' : 'neutral'}
                     buttonLabel={localize('Verify')}
                     label={localize('OTP code')}
                     buttonCallback={handleVerifyOTP}
                     onChange={handleGetOtpValue}
+                    message={localize(phone_otp_error_message)}
+                    maxLength={6}
                 />
                 <ResendCodeTimer
                     resend_code_text={should_show_phone_number_otp ? "Didn't get the code?" : 'Resend code'}

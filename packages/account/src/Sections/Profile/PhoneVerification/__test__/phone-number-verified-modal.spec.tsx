@@ -1,8 +1,10 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import PhoneNumberVerifiedModal from '../phone-number-verified-modal';
+import userEvent from '@testing-library/user-event';
+import { routes } from '@deriv/shared';
 
 const mockHistoryPush = jest.fn();
 
@@ -31,11 +33,16 @@ describe('PhoneNumberVerifiedModal', () => {
         document.body.removeChild(modal_root_el);
     });
 
+    const mockSetShouldShowPhoneNumberVerifiedModal = jest.fn();
+
     const renderModal = () => {
         render(
             <MemoryRouter>
                 <StoreProvider store={mock_store}>
-                    <PhoneNumberVerifiedModal />
+                    <PhoneNumberVerifiedModal
+                        should_show_phone_number_verified_modal
+                        setShouldShowPhoneNumberVerifiedModal={mockSetShouldShowPhoneNumberVerifiedModal}
+                    />
                 </StoreProvider>
             </MemoryRouter>
         );
@@ -43,16 +50,15 @@ describe('PhoneNumberVerifiedModal', () => {
 
     it('it should render PhoneNumberVerifiedModal', () => {
         renderModal();
-        //TODOS: edit test case when API is implemented
-        // expect(screen.getByText(/Verification successful/)).toBeInTheDocument();
-        // expect(screen.getByText(/That's it! Your number is verified./)).toBeInTheDocument();
+        expect(screen.getByText(/Verification successful/)).toBeInTheDocument();
+        expect(screen.getByText(/That's it! Your number is verified./)).toBeInTheDocument();
     });
 
     it('it should close PhoneNumberVerifiedModal and navigate to PersonalDetails section when done is clicked', () => {
         renderModal();
-        //TODOS: edit test case when API is implemented
-        // const doneButton = screen.getByRole('button', { name: /Done/ });
-        // userEvent.click(doneButton);
-        // expect(mockHistoryPush).toHaveBeenCalledWith(routes.personal_details);
+        const doneButton = screen.getByRole('button', { name: /Done/ });
+        userEvent.click(doneButton);
+        expect(mockSetShouldShowPhoneNumberVerifiedModal).toHaveBeenCalledTimes(1);
+        expect(mockHistoryPush).toHaveBeenCalledWith(routes.personal_details);
     });
 });

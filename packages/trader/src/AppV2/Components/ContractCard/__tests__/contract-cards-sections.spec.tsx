@@ -7,7 +7,6 @@ const ContractCard = 'Contract Card';
 jest.mock('../contract-card', () => jest.fn(() => <div>{ContractCard}</div>));
 
 const mockProps = {
-    onScroll: jest.fn(),
     positions: [
         {
             contract_info: {

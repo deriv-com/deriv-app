@@ -8,7 +8,7 @@ type TContractTypeFilter = {
     setContractTypeFilter: (filterValues: string[]) => void;
 };
 
-const mockAvailableContractsList = [
+const availableContracts = [
     { tradeType: <Localize i18n_default_text='Accumulators' />, id: 'Accumulators' },
     { tradeType: <Localize i18n_default_text='Vanillas' />, id: 'Vanillas' },
     { tradeType: <Localize i18n_default_text='Turbos' />, id: 'Turbos' },
@@ -43,8 +43,7 @@ const ContractTypeFilter = ({ contractTypeFilter, setContractTypeFilter }: TCont
     const chipLabelFormatting = () => {
         const arrayLength = contractTypeFilter.length;
         if (!arrayLength) return <Localize i18n_default_text='All trade types' />;
-        if (arrayLength === 1)
-            return mockAvailableContractsList.find(type => type.id === contractTypeFilter[0])?.tradeType;
+        if (arrayLength === 1) return availableContracts.find(type => type.id === contractTypeFilter[0])?.tradeType;
         return <Localize i18n_default_text='{{amount}} trade types' values={{ amount: arrayLength }} />;
     };
 
@@ -62,7 +61,7 @@ const ContractTypeFilter = ({ contractTypeFilter, setContractTypeFilter }: TCont
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Filter by trade types' />} />
                     <ActionSheet.Content className='filter__item__wrapper'>
-                        {mockAvailableContractsList.map(({ tradeType, id }) => (
+                        {availableContracts.map(({ tradeType, id }) => (
                             <Checkbox
                                 checked={changedOptions.includes(id)}
                                 checkboxPosition='right'

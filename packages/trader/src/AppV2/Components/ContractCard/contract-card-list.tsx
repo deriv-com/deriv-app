@@ -17,16 +17,18 @@ export type TContractCardListProps = {
 };
 
 const ContractCardList = ({
-    currency,
     hasButtonsDemo,
     onClickCancel,
     onClickSell,
     positions = [],
-    serverTime,
     setHasButtonsDemo,
+    ...rest
 }: TContractCardListProps) => {
     React.useEffect(() => {
-        const demoTimeout = setTimeout(() => setHasButtonsDemo?.(false), 720); // 720 is the length of demo animation
+        let demoTimeout: ReturnType<typeof setTimeout>;
+        if (hasButtonsDemo && setHasButtonsDemo) {
+            demoTimeout = setTimeout(() => setHasButtonsDemo(false), 720); // 720 is the length of demo animation
+        }
         return () => {
             if (demoTimeout) clearTimeout(demoTimeout);
         };
@@ -46,13 +48,12 @@ const ContractCardList = ({
                     <ContractCard
                         key={id}
                         contractInfo={position.contract_info}
-                        currency={currency}
                         hasActionButtons={!!onClickSell}
                         isSellRequested={(position as TPortfolioPosition).is_sell_requested}
                         onCancel={() => id && onClickCancel?.(id)}
                         onClose={() => id && onClickSell?.(id)}
-                        redirectTo={id ? getContractPath(id) : undefined}
-                        serverTime={serverTime}
+                        redirectTo={getContractPath(Number(id))}
+                        {...rest}
                     />
                 );
             })}

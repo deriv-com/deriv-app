@@ -306,6 +306,7 @@ describe('ContractCard', () => {
         currency: 'USD',
         hasActionButtons: true,
         isSellRequested: false,
+        redirectTo: getContractPath(openPositions[0].contract_info.contract_id),
         serverTime: toMoment(Date.now() / 1000),
     };
     const mockedContractCard = (props = mockProps) => (
@@ -315,7 +316,7 @@ describe('ContractCard', () => {
     );
 
     it('should not render component if contractInfo prop is empty/missing contract_type', () => {
-        const { container } = render(mockedContractCard({ contractInfo: {} }));
+        const { container } = render(mockedContractCard({ ...mockProps, contractInfo: {} }));
 
         expect(container).toBeEmptyDOMElement();
     });
@@ -344,7 +345,7 @@ describe('ContractCard', () => {
         expect(screen.getByRole('button', { name: CANCEL })).toBeEnabled();
         expect(screen.getByRole('button', { name: CLOSE })).toBeDisabled();
     });
-    it('should render a card for an open Accumulators position with a Close button only and remaining number of ticks', () => {
+    it('should render a card for an open Accumulators position with a Close button only and ticks progress', () => {
         render(
             mockedContractCard({
                 ...mockProps,

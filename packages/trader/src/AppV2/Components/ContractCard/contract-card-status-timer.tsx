@@ -27,25 +27,30 @@ export const ContractCardStatusTimer = ({
         if (tick_count) {
             return `${currentTick ?? 0}/${tick_count} ${getCardLabels().TICKS.toLowerCase()}`;
         }
-        return (
-            <RemainingTime
-                as='span'
-                end_time={date_expiry}
-                getCardLabels={getCardLabels}
-                start_time={serverTime as moment.Moment}
-            />
-        );
+        if (date_expiry && serverTime) {
+            return (
+                <RemainingTime
+                    as='span'
+                    end_time={date_expiry}
+                    getCardLabels={getCardLabels}
+                    start_time={serverTime as moment.Moment}
+                />
+            );
+        }
+        return null;
     };
-    if (!date_expiry || (serverTime as moment.Moment).unix() > +date_expiry || isSold) {
+    const displayedDuration = getDisplayedDuration();
+
+    if (!date_expiry || (serverTime as moment.Moment)?.unix() > +date_expiry || isSold) {
         return <Tag className='status' label={getCardLabels().CLOSED} variant='custom' color='custom' size='sm' />;
     }
-    return (
+    return displayedDuration ? (
         <Tag
             className='timer'
             icon={<LabelPairedStopwatchCaptionRegularIcon />}
-            label={getDisplayedDuration()}
+            label={displayedDuration}
             variant='custom'
             size='sm'
         />
-    );
+    ) : null;
 };

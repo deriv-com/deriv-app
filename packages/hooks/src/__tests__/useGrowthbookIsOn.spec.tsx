@@ -1,5 +1,4 @@
-import { renderHook, act } from '@testing-library/react-hooks';
-import { useState } from 'react';
+import { renderHook } from '@testing-library/react-hooks';
 import { Analytics } from '@deriv-com/analytics';
 import { useRemoteConfig } from '@deriv/api';
 import useIsGrowthbookIsLoaded from '../useIsGrowthbookLoaded';
@@ -17,8 +16,8 @@ describe('useGrowthbookIsOn', () => {
     });
 
     it('should return initial state correctly', () => {
-        useRemoteConfig.mockReturnValue({ data: {} });
-        useIsGrowthbookIsLoaded.mockReturnValue(false);
+        (useRemoteConfig as jest.Mock).mockReturnValue({ data: {} });
+        (useIsGrowthbookIsLoaded as jest.Mock).mockReturnValue(false);
         Analytics.isFeatureOn = jest.fn(() => false);
 
         const { result } = renderHook(() => useGrowthbookIsOn({ featureFlag: mockFeatureFlag }));
@@ -28,8 +27,8 @@ describe('useGrowthbookIsOn', () => {
     });
 
     it('should update state when data.marketing_growthbook and isGBLoaded change', () => {
-        useRemoteConfig.mockReturnValue({ data: { marketing_growthbook: true } });
-        useIsGrowthbookIsLoaded.mockReturnValue(true);
+        (useRemoteConfig as jest.Mock).mockReturnValue({ data: { marketing_growthbook: true } });
+        (useIsGrowthbookIsLoaded as jest.Mock).mockReturnValue(true);
         Analytics.isFeatureOn = jest.fn(() => true);
         Analytics.getInstances = jest.fn(
             () =>
@@ -50,8 +49,8 @@ describe('useGrowthbookIsOn', () => {
     });
 
     it('should set feature value when Analytics instances are available', () => {
-        useRemoteConfig.mockReturnValue({ data: { marketing_growthbook: true } });
-        useIsGrowthbookIsLoaded.mockReturnValue(true);
+        (useRemoteConfig as jest.Mock).mockReturnValue({ data: { marketing_growthbook: true } });
+        (useIsGrowthbookIsLoaded as jest.Mock).mockReturnValue(true);
         Analytics.isFeatureOn = jest.fn(() => false);
         const setRendererMock = jest.fn();
 

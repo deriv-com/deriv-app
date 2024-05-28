@@ -12,7 +12,7 @@ describe('useIsGrowthbookIsLoaded', () => {
     });
 
     it('should return initial state correctly', () => {
-        useRemoteConfig.mockReturnValue({ data: {} });
+        (useRemoteConfig as jest.Mock).mockReturnValue({ data: {} });
 
         const { result } = renderHook(() => useIsGrowthbookIsLoaded());
 
@@ -21,7 +21,7 @@ describe('useIsGrowthbookIsLoaded', () => {
 
     it('should update state when data.marketing_growthbook is true and Analytics instance is available', () => {
         jest.useFakeTimers();
-        useRemoteConfig.mockReturnValue({ data: { marketing_growthbook: true } });
+        (useIsGrowthbookIsLoaded as jest.Mock)({ data: { marketing_growthbook: true } });
         Analytics.getInstances = jest.fn(
             () =>
                 ({
@@ -38,7 +38,7 @@ describe('useIsGrowthbookIsLoaded', () => {
         expect(result.current).toBe(false); // isGBLoaded initially false
 
         act(() => {
-            Analytics.getInstances.mockReturnValueOnce({ ab: true });
+            (Analytics.getInstances as jest.Mock).mockReturnValueOnce({ ab: true });
 
             jest.advanceTimersByTime(500); // Move timer forward by 500ms
             rerender();
@@ -49,7 +49,7 @@ describe('useIsGrowthbookIsLoaded', () => {
 
     it('should clear interval after 10 seconds if Analytics instance is not available', () => {
         jest.useFakeTimers();
-        useRemoteConfig.mockReturnValue({ data: { marketing_growthbook: true } });
+        (useRemoteConfig as jest.Mock).mockReturnValue({ data: { marketing_growthbook: true } });
         Analytics.getInstances = jest.fn(
             () =>
                 ({
@@ -76,7 +76,7 @@ describe('useIsGrowthbookIsLoaded', () => {
 
     it('should clear interval on unmount', () => {
         jest.useFakeTimers();
-        useRemoteConfig.mockReturnValue({ data: { marketing_growthbook: true } });
+        (useRemoteConfig as jest.Mock).mockReturnValue({ data: { marketing_growthbook: true } });
 
         const { unmount } = renderHook(() => useIsGrowthbookIsLoaded());
 

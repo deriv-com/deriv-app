@@ -20,6 +20,7 @@ import { CFD_PLATFORMS, PlatformDetails } from '../../constants';
 import { CreatePassword, EnterPassword, MT5ResetPasswordModal } from '../../screens';
 import MT5AccountAdded from '../MT5AccountAdded/MT5AccountAdded';
 import { MT5PasswordModalFooter, SuccessModalFooter } from './MT5PasswordModalFooters';
+import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
 
 type TProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
@@ -288,7 +289,13 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     if (createMT5AccountSuccess && !isMT5PasswordNotSet) {
         return <MT5AccountAdded account={createMT5AccountData} marketType={marketType} platform={platform} />;
     }
-
+    if (
+        createMT5AccountStatus === 'error' &&
+        createMT5AccountError?.error?.code === 'PasswordReset' &&
+        !updateMT5Password
+    ) {
+        return <PasswordLimitExceededModal onPrimaryClick={hide} onSecondaryClick={() => sendEmailVerification()} />;
+    }
     if (
         createMT5AccountStatus === 'error' &&
         createMT5AccountError?.error?.code !== 'PasswordError' &&

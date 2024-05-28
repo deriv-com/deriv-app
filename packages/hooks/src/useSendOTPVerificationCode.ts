@@ -14,7 +14,7 @@ const useSendOTPVerificationCode = () => {
         ...rest
     } = useMutation('phone_number_verify');
 
-    const handleError = (error: TSocketError<TSocketEndpointNames>['error']) => {
+    const handleError = (error: TSocketError<'phone_number_verify'>['error']) => {
         switch (error.code) {
             case 'ExpiredCode':
                 setPhoneOtpErrorMessage(localize('Code expired. Please get a new one.'));
@@ -33,7 +33,7 @@ const useSendOTPVerificationCode = () => {
 
     React.useEffect(() => {
         if (phone_otp_error) {
-            handleError(phone_otp_error);
+            handleError(phone_otp_error.error);
         }
     }, [phone_otp_error]);
 

@@ -13,9 +13,7 @@ import Account from 'Containers/Account/account';
 import ClosingAccount from 'Sections/Security/ClosingAccount';
 import ConnectedApps from 'Sections/Security/ConnectedApps';
 import LoginHistory from 'Sections/Security/LoginHistory';
-import AccountClosed from 'Sections/Security/AccountClosed';
 import DeactivateAccount from 'Sections/Security/DeactivateAccount'; // TODO: Remove once mobile team has changed this link
-import LanguageSettings from 'Sections/Profile/LanguageSettings';
 
 export {
     Passkeys,
@@ -34,7 +32,5 @@ export {
     ClosingAccount,
     ConnectedApps,
     LoginHistory,
-    AccountClosed,
     DeactivateAccount,
-    LanguageSettings,
 };

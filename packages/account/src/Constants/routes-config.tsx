@@ -19,9 +19,7 @@ import {
     ClosingAccount,
     ConnectedApps,
     LoginHistory,
-    AccountClosed,
     DeactivateAccount,
-    LanguageSettings,
     ProofOfIncome,
 } from '../Sections';
 
@@ -40,6 +38,16 @@ const Passwords = makeLazyLoader(
 
 const AccountLimits = makeLazyLoader(
     () => moduleLoader(() => import('../Sections/Security/AccountLimits')),
+    () => <Loading />
+)();
+
+const AccountClosed = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/AccountClosed')),
+    () => <Loading />
+)();
+
+const LanguageSettings = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Profile/LanguageSettings')),
     () => <Loading />
 )();
 

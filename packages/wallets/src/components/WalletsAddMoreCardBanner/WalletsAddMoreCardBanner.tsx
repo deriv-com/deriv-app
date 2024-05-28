@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useCreateWallet } from '@deriv/api-v2';
 import { LabelPairedCheckMdFillIcon, LabelPairedPlusMdFillIcon } from '@deriv/quill-icons';
@@ -24,18 +24,6 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
     const history = useHistory();
     const modal = useModal();
     const { addWalletAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
-
-    const renderButtons = useCallback(
-        () => (
-            <div className='wallets-add-more__success-footer'>
-                <WalletButton color='black' onClick={() => modal.hide()} variant='outlined'>
-                    Maybe later
-                </WalletButton>
-                <WalletButton onClick={() => history.push('/wallet/deposit')}>Deposit now</WalletButton>
-            </div>
-        ),
-        [history] // eslint-disable-line react-hooks/exhaustive-deps
-    );
 
     useEffect(() => {
         if (data && isMutateSuccess) {
@@ -66,15 +54,7 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [
-            data?.currency,
-            data?.display_balance,
-            data?.landing_company_shortcode,
-            error?.error.message,
-            isMobile,
-            renderButtons,
-            status,
-        ]
+        [data?.currency, data?.display_balance, data?.landing_company_shortcode, error?.error.message, isMobile, status]
     );
 
     return (

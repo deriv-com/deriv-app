@@ -849,14 +849,6 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 
-    .dashboard__message-content {
-        margin-top: 8rem;
-
-        @include mobile-screen {
-            margin-top: 4rem;
-        }
-    }
-
     .two-factor {
         height: 100%;
         width: 100%;

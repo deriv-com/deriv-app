@@ -62,6 +62,8 @@ jest.mock('@deriv/shared', () => ({
 describe('Passkeys', () => {
     let mock_store: ReturnType<typeof mockStore>, modal_root_el: HTMLElement;
     const create_passkey = 'Create passkey';
+    const error_message = 'We’re experiencing a temporary issue in processing your request. Please try again later.';
+    const error_title = 'Unable to process your request';
 
     const tracking_event = 'ce_passkey_account_settings_form';
     const getAnalyticsParams = (
@@ -297,9 +299,8 @@ describe('Passkeys', () => {
     });
 
     it('renders passkeys registration error modal and triggers closing', async () => {
-        const mock_error = 'registration test error';
         (useRegisterPasskey as jest.Mock).mockReturnValue({
-            passkey_registration_error: { message: mock_error },
+            passkey_registration_error: { message: 'error' },
             clearPasskeyRegistrationError: mockClearPasskeyRegistrationError,
         });
 
@@ -309,23 +310,23 @@ describe('Passkeys', () => {
             </RenderWrapper>
         );
 
-        const try_again_button = screen.getByRole('button', { name: /try again/i });
-        expect(screen.getByText(mock_error)).toBeInTheDocument();
-        userEvent.click(try_again_button);
+        const ok_button = screen.getByRole('button', { name: /ok/i });
+        expect(screen.getByText(error_message)).toBeInTheDocument();
+        expect(screen.getByText(error_title)).toBeInTheDocument();
+        userEvent.click(ok_button);
         await waitFor(() => {
             expect(mockClearPasskeyRegistrationError).toBeCalledTimes(1);
+            expect(mockHistoryPush).toHaveBeenCalledWith(routes.traders_hub);
         });
     });
 
     it('renders passkeys list error modal and triggers closing', async () => {
-        const mock_error = 'list test error';
-
         (useRegisterPasskey as jest.Mock).mockReturnValue({
             passkey_registration_error: null,
         });
 
         (useGetPasskeysList as jest.Mock).mockReturnValue({
-            passkeys_list_error: { message: mock_error },
+            passkeys_list_error: { message: 'error' },
             reloadPasskeysList: mockReloadPasskeysList,
         });
 
@@ -335,11 +336,10 @@ describe('Passkeys', () => {
             </RenderWrapper>
         );
 
-        const try_again_button = screen.getByRole('button', { name: /try again/i });
-        expect(screen.getByText(mock_error)).toBeInTheDocument();
-        userEvent.click(try_again_button);
-        await waitFor(() => {
-            expect(mockReloadPasskeysList).toBeCalledTimes(1);
-        });
+        const ok_button = screen.getByRole('button', { name: /ok/i });
+        expect(screen.getByText(error_message)).toBeInTheDocument();
+        expect(screen.getByText(error_title)).toBeInTheDocument();
+        userEvent.click(ok_button);
+        expect(mockHistoryPush).toHaveBeenCalledWith(routes.traders_hub);
     });
 });

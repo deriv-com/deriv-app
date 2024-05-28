@@ -5,6 +5,7 @@ import {
     useCreateOtherCFDAccount,
     useCryptoWithdrawal,
     useCurrencyConfig,
+    useExchangeRateSubscription,
     useMT5AccountsList,
     useMutation,
     usePaymentAgentList,
@@ -16,9 +17,11 @@ import {
 export namespace THooks {
     export type Accounts = NonNullable<ReturnType<typeof useAllAccountsList>['data']>;
     export type AccountLimits = NonNullable<ReturnType<typeof useAccountLimits>['data']>;
+    export type AccountLimitsRefetch = NonNullable<ReturnType<typeof useAccountLimits>['refetch']>;
     export type ActiveAccount = NonNullable<ReturnType<typeof useActiveAccount>['data']>;
     export type CryptoWithdrawal = NonNullable<ReturnType<typeof useCryptoWithdrawal>['mutateAsync']>;
     export type CurrencyConfig = NonNullable<ReturnType<typeof useCurrencyConfig>['data']>[string];
+    export type ExchangeRatesSubscribable = NonNullable<ReturnType<typeof useExchangeRateSubscription>['data']>;
     export type GetCurrencyConfig = NonNullable<ReturnType<typeof useCurrencyConfig>['getConfig']>;
     export type MT5AccountsList = NonNullable<ReturnType<typeof useMT5AccountsList>['data']>[number];
     export type PaymentAgentList = NonNullable<ReturnType<typeof usePaymentAgentList>['data']>;
@@ -29,6 +32,7 @@ export namespace THooks {
     export type TransferAccounts = NonNullable<
         NonNullable<ReturnType<typeof useTransferBetweenAccounts>['data']>['accounts']
     >;
+    export type TransferBetweenAccounts = NonNullable<NonNullable<ReturnType<typeof useTransferBetweenAccounts>>>;
 }
 
 // eslint-disable-next-line  @typescript-eslint/no-namespace

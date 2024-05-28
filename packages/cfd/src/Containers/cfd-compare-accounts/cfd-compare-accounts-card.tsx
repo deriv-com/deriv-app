@@ -5,7 +5,6 @@ import { CFD_PLATFORMS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { TCompareAccountsCard } from 'Components/props.types';
 
-import CFDCompareAccountsButton from './cfd-compare-accounts-button';
 import CFDCompareAccountsDescription from './cfd-compare-accounts-description';
 import CFDCompareAccountsPlatformLabel from './cfd-compare-accounts-platform-label';
 import CFDCompareAccountsTitleIcon from './cfd-compare-accounts-title-icon';
@@ -40,7 +39,6 @@ const CFDCompareAccountsCard = ({ trading_platforms, is_eu_user, is_demo }: TCom
                         </Text>
                     </div>
                 )}
-                <CFDCompareAccountsButton trading_platforms={trading_platforms} is_demo={is_demo} />
             </div>
         </div>
     );

@@ -4,33 +4,34 @@ import { Field, FieldProps, useFormikContext } from 'formik';
 import { InferType } from 'yup';
 import { StandaloneArrowDownBoldIcon } from '@deriv/quill-icons';
 import { Input, Text, useDevice } from '@deriv-com/ui';
+import { THooks } from '../../hooks/types';
 import { PercentageSelector } from '../PercentageSelector';
 import { getCryptoFiatConverterValidationSchema, TGetCryptoFiatConverterValidationSchema } from './utils';
 import styles from './CryptoFiatConverter.module.scss';
 
 type TContext = InferType<ReturnType<typeof getCryptoFiatConverterValidationSchema>>;
 
+type TCryptoFiatConverter = TGetCryptoFiatConverterValidationSchema & {
+    exchangeRates?: THooks.ExchangeRatesSubscribable;
+};
+
 type TGetConvertedAmountParams =
     | TGetCryptoFiatConverterValidationSchema['fromAccount']
     | TGetCryptoFiatConverterValidationSchema['toAccount'];
 
-const getConvertedAmount = (amount: string, source: TGetConvertedAmountParams, target: TGetConvertedAmountParams) => {
+const getConvertedAmount = (amount: string, target: TGetConvertedAmountParams, rate?: number) => {
     const value = Number(amount);
 
-    if (!value) return '';
-
-    // TODO: replace these temporary values with exchange rate
-    const fromRate = 1;
-    const toRate = 0.5;
+    if (!value || !rate) return '';
 
     const convertedValue =
         // eslint-disable-next-line sonarjs/prefer-immediate-return
-        ((value * toRate) / fromRate).toFixed(target.fractionalDigits);
+        (value * rate).toFixed(target.fractionalDigits);
 
     return convertedValue;
 };
 
-const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = ({ fromAccount, toAccount }) => {
+const CryptoFiatConverter: React.FC<TCryptoFiatConverter> = ({ exchangeRates, fromAccount, toAccount }) => {
     const { isMobile } = useDevice();
     const [isFromInputField, setIsFromInputField] = useState<boolean>(true);
     const { errors, setFieldValue, setValues, values } = useFormikContext<TContext>();
@@ -38,6 +39,8 @@ const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = (
         fromAccount.balance && Number(values.fromAmount) && !errors.fromAmount
             ? Math.round((Number(values.fromAmount) * 100) / fromAccount.balance)
             : 0;
+    const fromRate = exchangeRates?.rates ? exchangeRates?.rates[toAccount.currency] : 0;
+    const toRate = exchangeRates?.rates ? 1 / exchangeRates?.rates[toAccount.currency] : 0;
 
     const isDifferentCurrency = fromAccount.currency !== toAccount.currency;
 
@@ -57,7 +60,8 @@ const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = (
         (per: number) => {
             const computedAmount =
                 ((Number(fromAccount.balance) * per) / 100).toFixed(fromAccount.fractionalDigits) ?? 0;
-            const convertedAmount = getConvertedAmount(computedAmount, fromAccount, toAccount);
+            // Here we take value of fromAmount field for conversion.
+            const convertedAmount = getConvertedAmount(computedAmount, toAccount, fromRate);
 
             setValues(currentValues => ({
                 ...currentValues,
@@ -65,11 +69,11 @@ const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = (
                 toAmount: convertedAmount,
             }));
         },
-        [fromAccount, setValues, toAccount]
+        [fromAccount.balance, fromAccount.fractionalDigits, fromRate, setValues, toAccount]
     );
 
     const handleFromAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const convertedValue = getConvertedAmount(e.target.value, fromAccount, toAccount);
+        const convertedValue = getConvertedAmount(e.target.value, toAccount, fromRate);
         setValues(currentValues => ({
             ...currentValues,
             fromAmount: e.target.value,
@@ -78,7 +82,7 @@ const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = (
     };
 
     const handleToAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const convertedValue = getConvertedAmount(e.target.value, toAccount, fromAccount);
+        const convertedValue = getConvertedAmount(e.target.value, fromAccount, toRate);
 
         setValues(currentValues => ({
             ...currentValues,
@@ -142,7 +146,7 @@ const CryptoFiatConverter: React.FC<TGetCryptoFiatConverterValidationSchema> = (
                                     error={Boolean(errors.toAmount)}
                                     isFullWidth
                                     label={`Amount (${toAccount.currency})`}
-                                    message={errors.toAmount}
+                                    message={errors.toAmount ?? 'Approximate value'}
                                     onChange={handleToAmountChange}
                                     onFocus={() => {
                                         setIsFromInputField(false);

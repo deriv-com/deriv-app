@@ -5,18 +5,9 @@ import APIProvider from '../APIProvider';
 import AuthProvider from '../AuthProvider';
 import useQuery from '../useQuery';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    useWS: () => ({
-        send: jest.fn(() =>
-            Promise.resolve<TSocketResponse<'ping'>>({
-                msg_type: 'ping',
-                ping: 'pong',
-                echo_req: {},
-            })
-        ),
-        subscribe: jest.fn(),
-    }),
+// mock the useAPI hook
+jest.mock('../useAPI', () => () => ({
+    send: async () => ({ ping: 'pong' } as TSocketResponse<'ping'>),
 }));
 
 describe('useQuery', () => {

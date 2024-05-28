@@ -13,7 +13,7 @@ const TransferAccountIcon: React.FC<React.PropsWithChildren<TProps>> = ({ accoun
 
     if (account.account_type === 'dxtrade') return <TradingAppIcon name='DERIVX' size={size} />;
 
-    if (account.account_type === 'mt5') return <div>MT5</div>;
+    if (account.account_type === 'mt5') return <TradingAppIcon name='DMT5_DERIVED' size={size} />;
 
     return null;
 };

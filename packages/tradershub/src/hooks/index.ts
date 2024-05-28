@@ -9,4 +9,5 @@ export { default as usePlatformAssets } from './usePlatformAssets';
 export { default as useQueryParams } from './useQueryParams';
 export { default as useRegulationFlags } from './useRegulationFlags';
 export { default as useRegulationSwitcher } from './useRegulationSwitcher';
+export { default as useHandleSendEmail } from './useSendEmailHandler';
 export { default as useTotalAssets } from './useTotalAssets';

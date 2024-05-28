@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useMemo } from 'react';
 import * as Yup from 'yup';
 import { useResidenceList, useSettings } from '@deriv/api-v2';
-import { FlowTextField, Loader, useFlow, WalletDropdown, WalletText } from '../../../../components';
+import { FlowTextField, InlineMessage, Loader, useFlow, WalletDropdown, WalletText } from '../../../../components';
 import { accountOpeningReasonList } from './constants';
 import './PersonalDetails.scss';
 
@@ -62,6 +62,20 @@ const PersonalDetails = () => {
                         <WalletText align='center' size='xs'>
                             Any information you provide is confidential and will be used for verification purposes only.
                         </WalletText>
+                    </div>
+                    <div className='wallets-personal-details__inline'>
+                        <InlineMessage type='information' variant='contained'>
+                            <WalletText size='xs'>
+                                Need help with tax info? Let us know via{' '}
+                                <button
+                                    className='wallets-link wallets-link__variant--bold'
+                                    onClick={() => window.LC_API.open_chat_window()}
+                                >
+                                    live chat
+                                </button>
+                                .
+                            </WalletText>
+                        </InlineMessage>
                     </div>
                     <div className='wallets-personal-details__form'>
                         <WalletDropdown

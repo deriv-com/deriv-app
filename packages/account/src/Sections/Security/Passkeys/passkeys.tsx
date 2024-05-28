@@ -85,9 +85,6 @@ const Passkeys = observer(() => {
     };
 
     const onCloseError = () => {
-        if (passkeys_list_error) {
-            reloadPasskeysList();
-        }
         if (passkey_registration_error) {
             clearPasskeyRegistrationError();
         }
@@ -95,9 +92,7 @@ const Passkeys = observer(() => {
     const onModalButtonClick = () => {
         if (error) {
             onCloseModal(onCloseError);
-            if ((error as TServerError).name === NOT_SUPPORTED_ERROR_NAME) {
-                history.push(routes.traders_hub);
-            }
+            history.push(routes.traders_hub);
         } else {
             passkeysMenuActionEventTrack('create_passkey_reminder_passed');
             createPasskey();

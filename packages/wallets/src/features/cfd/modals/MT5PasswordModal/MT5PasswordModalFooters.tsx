@@ -19,7 +19,7 @@ export const SuccessModalFooter = ({ isDemo }: Pick<TProps, 'isDemo'>) => {
 
     const handleOnClickReal = () => {
         hide();
-        history.push('/wallets/cashier/transfer');
+        history.push('/wallet/account-transfer');
     };
 
     if (isDemo) {

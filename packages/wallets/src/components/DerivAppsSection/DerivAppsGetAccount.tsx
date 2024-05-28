@@ -5,13 +5,13 @@ import {
     useCreateNewRealAccount,
     useSettings,
 } from '@deriv/api-v2';
-import { AccountsDerivAccountLightIcon } from '@deriv/quill-icons';
 import { toMoment } from '@deriv/utils';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
 import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import { ModalStepWrapper, WalletButton, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';
+import { WalletMarketIcon } from '../WalletMarketIcon';
 import { DerivAppsSuccessFooter } from './DerivAppsSuccessFooter';
 
 const DerivAppsGetAccount: React.FC = () => {
@@ -75,16 +75,14 @@ const DerivAppsGetAccount: React.FC = () => {
     return (
         <div className='wallets-deriv-apps-section wallets-deriv-apps-section__get-account'>
             <div className='wallets-deriv-apps-section__icon'>
-                <AccountsDerivAccountLightIcon iconSize='lg' />
+                <WalletMarketIcon icon='IcWalletOptionsLight' size='lg' />
             </div>
             <div className='wallets-deriv-apps-section__get-content'>
                 <div className='wallets-deriv-apps-section__details'>
                     <WalletText size='sm' weight='bold'>
                         Options
                     </WalletText>
-                    <WalletText size={isDesktop ? '2xs' : 'xs'}>
-                        Trade options on multiple platforms with a single account.
-                    </WalletText>
+                    <WalletText size={isDesktop ? '2xs' : 'xs'}>One options account for all platforms.</WalletText>
                 </div>
                 <WalletButton color='primary-light' onClick={createTradingAccount}>
                     Get

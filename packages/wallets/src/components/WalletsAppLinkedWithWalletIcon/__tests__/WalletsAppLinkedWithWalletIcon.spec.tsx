@@ -4,33 +4,30 @@ import WalletsAppLinkedWithWalletIcon from '../WalletsAppLinkedWithWalletIcon';
 
 describe('<WalletsAppLinkedWithWalletIcon/>', () => {
     it('renders', () => {
-        render(<WalletsAppLinkedWithWalletIcon appIcon='IcWalletOptionsLight' currency='LTC' size='large' />);
+        render(
+            <WalletsAppLinkedWithWalletIcon appIcon='IcWalletOptionsLight' currency='USD' isDemo size={undefined} />
+        );
 
-        const divElement = screen.getByTestId('wallets-app-linked-with-wallet-icon');
+        const divElement = screen.getByTestId('dt_wallets_app_linked_with_wallet_icon');
 
         expect(divElement).toBeInTheDocument();
     });
 
     it('renders both icons', () => {
         render(<WalletsAppLinkedWithWalletIcon appIcon='IcWalletOptionsLight' currency='LTC' size='large' />);
+        const mockAppIconSvgElement = screen.getByTestId('dt_wallet_icon');
 
-        const divElement = screen.getByTestId('wallets-app-linked-with-wallet-icon');
-
-        // eslint-disable-next-line testing-library/no-node-access
-        const mockAppIconSvgElement = divElement.querySelector(
-            '.wallets-app-linked-with-wallet-icon__app-icon file-mock-stub'
-        );
         // eslint-disable-next-line testing-library/no-node-access
         const mockWalletIconSvgElement = screen.getByTestId('dt_wallet_currency_icon');
 
-        expect(mockAppIconSvgElement).not.toBeNull();
+        expect(mockAppIconSvgElement).toBeInTheDocument();
         expect(mockWalletIconSvgElement).toBeInTheDocument();
     });
 
     it('applies correct size', () => {
         render(<WalletsAppLinkedWithWalletIcon appIcon='IcWalletOptionsLight' currency='LTC' size='large' />);
 
-        const divElement = screen.getByTestId('wallets-app-linked-with-wallet-icon');
+        const divElement = screen.getByTestId('dt_wallets_app_linked_with_wallet_icon');
 
         expect(divElement).toHaveClass('wallets-app-linked-with-wallet-icon--large');
     });

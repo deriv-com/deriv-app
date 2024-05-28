@@ -5,7 +5,7 @@ import { LabelPairedArrowsRotateSmBoldIcon, LabelPairedArrowUpArrowDownSmBoldIco
 import useDevice from '../../hooks/useDevice';
 import { WalletText } from '../Base';
 import { WalletListCardBadge } from '../WalletListCardBadge';
-import { WalletResponsiveSvg } from '../WalletResponsiveSvg';
+import { WalletMarketIcon } from '../WalletMarketIcon';
 
 const DerivAppsTradingAccount: React.FC = () => {
     const { isMobile } = useDevice();
@@ -17,7 +17,7 @@ const DerivAppsTradingAccount: React.FC = () => {
     return (
         <div className='wallets-deriv-apps-section wallets-deriv-apps-section__border'>
             <div className={isMobile ? 'wallets-deriv-apps-section__icon-small' : 'wallets-deriv-apps-section__icon'}>
-                <WalletResponsiveSvg icon='IcWalletOptionsLight' />
+                <WalletMarketIcon icon='IcWalletOptionsLight' size={isMobile ? 'md' : 'lg'} />
             </div>
             <div className='wallets-deriv-apps-section__details'>
                 <div className='wallets-deriv-apps-section__title-and-badge'>
@@ -39,8 +39,8 @@ const DerivAppsTradingAccount: React.FC = () => {
                 className='wallets-deriv-apps-section__button'
                 onClick={() => {
                     activeWallet?.is_virtual
-                        ? history.push('/wallets/cashier/reset-balance')
-                        : history.push('/wallets/cashier/transfer', {
+                        ? history.push('/wallet/reset-balance')
+                        : history.push('/wallet/account-transfer', {
                               toAccountLoginId: activeLinkedToTradingAccount?.loginid,
                           });
                 }}

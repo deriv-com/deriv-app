@@ -1,7 +1,7 @@
 import React from 'react';
 import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
-import { WalletResponsiveSvg } from '../WalletResponsiveSvg';
+import { WalletMarketIcon } from '../WalletMarketIcon';
 import './WalletsAppLinkedWithWalletIcon.scss';
 
 type TAppIconProps = {
@@ -15,7 +15,7 @@ const WalletsAppLinkedWithWalletIcon = ({ appIcon, currency, isDemo = false, siz
     return (
         <div
             className={`wallets-app-linked-with-wallet-icon wallets-app-linked-with-wallet-icon--${size}`}
-            data-testid='wallets-app-linked-with-wallet-icon'
+            data-testid='dt_wallets_app_linked_with_wallet_icon'
         >
             {/* Wallet Icon */}
             <div className='wallets-app-linked-with-wallet-icon__wallet-icon'>
@@ -25,7 +25,7 @@ const WalletsAppLinkedWithWalletIcon = ({ appIcon, currency, isDemo = false, siz
             </div>
             {/* App Icon */}
             <div className='wallets-app-linked-with-wallet-icon__app-icon'>
-                <WalletResponsiveSvg icon={appIcon} />
+                <WalletMarketIcon icon={appIcon} size='xs' />
             </div>
         </div>
     );

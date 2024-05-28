@@ -99,7 +99,7 @@ export const getPaymentMethodsConfig = () => ({
 
 type TPaymentMethodIcon = Record<TPaymentMethod, { dark: IconTypes; light: IconTypes }>;
 
-export const getPaymentMethodIcon: TPaymentMethodIcon = {
+export const getPaymentMethodIcon = (): TPaymentMethodIcon => ({
     advcash: {
         dark: PaymentMethodAdvcashBrandDarkIcon,
         light: PaymentMethodAdvcashBrandIcon,
@@ -164,4 +164,11 @@ export const getPaymentMethodIcon: TPaymentMethodIcon = {
         dark: DerivLightWalletIcon,
         light: DerivLightWalletIcon,
     },
+});
+
+export const CARD_NUMBER = {
+    maxLength: 19,
+    minLength: 16,
 };
+
+export const MAX_FILE_SIZE = 8000; // 8MB

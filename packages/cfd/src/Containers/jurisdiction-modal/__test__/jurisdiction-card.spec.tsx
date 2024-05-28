@@ -97,7 +97,7 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:1000')).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
-        expect(screen.getByText('0.6 pips')).toBeInTheDocument();
+        expect(screen.getByText('0.5 pips')).toBeInTheDocument();
         expect(screen.getByText('Verifications')).toBeInTheDocument();
         expect(
             screen.getByText('You will need to submit proof of identity and address once you reach certain thresholds.')
@@ -181,7 +181,7 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:100')).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
-        expect(screen.getByText('0.6 pips')).toBeInTheDocument();
+        expect(screen.getByText('1.4 pips')).toBeInTheDocument();
         expect(screen.getByText('Verifications')).toBeInTheDocument();
         expect(screen.getByText('Learn more')).toBeInTheDocument();
         expect(screen.getByText('about verifications needed.')).toBeInTheDocument();

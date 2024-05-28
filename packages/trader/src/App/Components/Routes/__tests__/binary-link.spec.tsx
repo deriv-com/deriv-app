@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { BinaryLink } from '../index';
 import userEvent from '@testing-library/user-event';
+import { routes } from '@deriv/shared';
 
 type TMockBinaryLink = {
     to?: string;
@@ -18,19 +19,19 @@ const MockBinaryLink = ({ to }: TMockBinaryLink) => (
 
 describe('BinaryLink component', () => {
     it('should render "children" when passed in', () => {
-        render(<MockBinaryLink to='/dtrader' />);
+        render(<MockBinaryLink to={routes.trade} />);
         expect(screen.getByTestId('dt_child')).toBeInTheDocument();
     });
 
     it('should have "active_class" when passed in', () => {
-        render(<MockBinaryLink to='/dtrader' />);
+        render(<MockBinaryLink to={routes.trade} />);
         userEvent.click(screen.getByTestId('dt_binary_link'));
         const link = screen.getByTestId('dt_binary_link');
         expect(link).toHaveClass('active_class');
     });
 
     it('should render "NavLink" when valid "to" property is passed', () => {
-        render(<MockBinaryLink to='/dtrader' />);
+        render(<MockBinaryLink to={routes.trade} />);
         expect(screen.getByTestId('dt_binary_link')).toBeInTheDocument();
     });
 

@@ -16,11 +16,11 @@ import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
-import { CFD_PLATFORMS, PlatformDetails } from '../../constants';
+import { CFD_PLATFORMS, JURISDICTION, MARKET_TYPE, PlatformDetails } from '../../constants';
 import { CreatePassword, EnterPassword, MT5ResetPasswordModal } from '../../screens';
 import MT5AccountAdded from '../MT5AccountAdded/MT5AccountAdded';
-import { MT5PasswordModalFooter, SuccessModalFooter } from './MT5PasswordModalFooters';
 import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
+import { MT5PasswordModalFooter, SuccessModalFooter } from './MT5PasswordModalFooters';
 
 type TProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
@@ -66,7 +66,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const isMT5PasswordNotSet = accountStatusData?.is_mt5_password_not_set;
     const hasMT5Account = mt5AccountsData?.find(account => account.login);
     const isDemo = activeWalletData?.is_virtual;
-    const selectedJurisdiction = getModalState('selectedJurisdiction');
+    const selectedJurisdiction = isDemo ? JURISDICTION.SVG : getModalState('selectedJurisdiction');
     const { platform: mt5Platform, title: mt5Title } = PlatformDetails.mt5;
 
     const updateMT5Password =
@@ -75,8 +75,8 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
             createMT5AccountError?.error?.code === 'IncorrectMT5PasswordFormat');
 
     const onSubmit = useCallback(async () => {
-        const accountType = marketType === 'synthetic' ? 'gaming' : marketType;
-        const categoryAccountType = activeWalletData?.is_virtual ? 'demo' : accountType;
+        const accountType = marketType === MARKET_TYPE.SYNTHETIC ? 'gaming' : marketType;
+        const categoryAccountType = isDemo ? 'demo' : accountType;
 
         // ====== Create MT5 Account ======
         // In order to create account, we need to set a password through trading_platform_password_change endpoint first,
@@ -119,9 +119,9 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
             },
         });
     }, [
-        activeWalletData?.is_virtual,
         availableMT5AccountsData,
         createMT5AccountMutate,
+        isDemo,
         isMT5PasswordNotSet,
         marketType,
         mt5Platform,

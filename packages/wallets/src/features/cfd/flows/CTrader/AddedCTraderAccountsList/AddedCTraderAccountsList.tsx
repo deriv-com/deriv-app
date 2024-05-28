@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { useCtraderAccountsList } from '@deriv/api-v2';
+import { displayMoney } from '@deriv/api-v2/src/utils';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { TradingAccountCard } from '../../../../../components';
 import { WalletText } from '../../../../../components/Base';
@@ -21,6 +22,10 @@ const AddedCTraderAccountsList: React.FC = () => {
         return 0;
     }, [cTraderAccounts]);
 
+    const displayBalance = displayMoney(totalBalance, account?.currency || 'USD', {
+        fractional_digits: account?.currency_config?.fractional_digits,
+    });
+
     return (
         <React.Fragment>
             {account && (
@@ -40,7 +45,7 @@ const AddedCTraderAccountsList: React.FC = () => {
                         <WalletText size='sm'>{PlatformDetails.ctrader.title}</WalletText>
                         {totalBalance !== undefined && (
                             <WalletText size='sm' weight='bold'>
-                                {totalBalance} {account.currency}
+                                {displayBalance}
                             </WalletText>
                         )}
                     </div>

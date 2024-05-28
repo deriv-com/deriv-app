@@ -1,4 +1,5 @@
 .wallets-jurisdiction-card-back {
+    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     height: 100%;
     transform: rotateY(180deg);

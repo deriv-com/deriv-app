@@ -452,7 +452,7 @@
                 height: auto;
                 align-items: initial;
                 border-top: 2px solid var(--general-section-1);
-                gap: 16px;
+                width: 100vw;
             }
 
             @include tablet-screen {

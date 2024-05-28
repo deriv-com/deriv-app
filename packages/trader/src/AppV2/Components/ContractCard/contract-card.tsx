@@ -110,7 +110,7 @@ const ContractCard = ({
 
     if (!contract_type) return null;
     return (
-        <div className={clsx(`${className}-wrapper`, isDeleted && 'deleted')}>
+        <div className={clsx(`${className}-wrapper`, { deleted: isDeleted })}>
             <BinaryLink
                 {...(hasActionButtons ? swipeHandlers : {})}
                 className={clsx(className, {
@@ -155,7 +155,7 @@ const ContractCard = ({
                     <div className='buttons'>
                         {validToCancel && (
                             <button
-                                className={clsx(isCancelButtonPressed && 'loading')}
+                                className={clsx({ loading: isCancelButtonPressed })}
                                 disabled={Number((contractInfo as TContractInfo).profit) >= 0 || isSellRequested}
                                 onClick={e => handleClose(e, true)}
                             >
@@ -169,7 +169,7 @@ const ContractCard = ({
                             </button>
                         )}
                         <button
-                            className={clsx(isCloseButtonPressed && 'loading')}
+                            className={clsx({ loading: isCloseButtonPressed })}
                             disabled={!validToSell}
                             onClick={handleClose}
                         >

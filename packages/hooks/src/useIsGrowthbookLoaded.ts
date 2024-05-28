@@ -9,15 +9,15 @@ const useIsGrowthbookIsLoaded = () => {
     useEffect(() => {
         let analytics_interval: NodeJS.Timeout;
         if (data?.marketing_growthbook) {
-            let timeout = 0;
+            let checksCounter = 0;
             analytics_interval = setInterval(() => {
                 // Check if the analytics instance is available for 10 seconds before setting the feature flag value
-                if (timeout > 20) {
+                if (checksCounter > 20) {
                     // If the analytics instance is not available after 10 seconds, clear the interval
                     clearInterval(analytics_interval);
                     return;
                 }
-                timeout += 1;
+                checksCounter += 1;
                 if (Analytics?.getInstances()?.ab) {
                     setIsGBLoaded(true);
                     clearInterval(analytics_interval);

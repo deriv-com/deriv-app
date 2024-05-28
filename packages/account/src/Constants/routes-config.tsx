@@ -1,7 +1,6 @@
 // /* eslint-disable @typescript-eslint/ban-ts-comment */
 // // @ts-nocheck [TODO] - Need to update the types of routes
 
-import React from 'react';
 import { routes, moduleLoader, makeLazyLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
@@ -17,8 +16,6 @@ import {
     SelfExclusion,
     Account,
     ClosingAccount,
-    ConnectedApps,
-    LoginHistory,
     DeactivateAccount,
     ProofOfIncome,
 } from '../Sections';
@@ -48,6 +45,16 @@ const AccountClosed = makeLazyLoader(
 
 const LanguageSettings = makeLazyLoader(
     () => moduleLoader(() => import('../Sections/Profile/LanguageSettings')),
+    () => <Loading />
+)();
+
+const LoginHistory = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/LoginHistory')),
+    () => <Loading />
+)();
+
+const ConnectedApps = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/ConnectedApps')),
     () => <Loading />
 )();
 

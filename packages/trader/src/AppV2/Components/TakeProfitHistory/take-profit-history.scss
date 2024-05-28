@@ -1,4 +1,4 @@
-.entry-exit-details {
+.take-profit-history {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -22,9 +22,18 @@
 
         &-cell {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             flex-direction: column;
             text-align: end;
+
+            &--left {
+                text-align: start;
+            }
+        }
+
+        &--fixed-height {
+            min-height: 244px;
+            justify-content: start;
         }
     }
 }

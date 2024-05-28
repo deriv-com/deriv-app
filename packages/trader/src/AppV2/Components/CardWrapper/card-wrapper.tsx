@@ -1,9 +1,18 @@
 import { Text } from '@deriv-com/quill-ui';
 import React from 'react';
+import clsx from 'clsx';
 
-const CardWrapper = ({ title, children }: { title?: string; children: React.ReactNode }) => {
+const CardWrapper = ({
+    title,
+    children,
+    className,
+}: {
+    title?: string;
+    children: React.ReactNode;
+    className?: string;
+}) => {
     return (
-        <div className='card-wrapper'>
+        <div className={clsx('card-wrapper', className)}>
             {title && (
                 <Text size='sm' bold className='title'>
                     {title}

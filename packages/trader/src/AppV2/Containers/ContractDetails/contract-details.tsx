@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text } from '@deriv-com/quill-ui';
+import { CaptionText, Text } from '@deriv-com/quill-ui';
 import EntryExitDetails from 'AppV2/Components/EntryExitDetails';
-import PayoutInfoModal from 'AppV2/Components/PayoutInfoModal';
+import TakeProfitHistory from 'AppV2/Components/TakeProfitHistory';
+import PayoutInfo from 'AppV2/Components/PayoutInfo';
 import ChartPlaceholder from '../Chart';
 import { Localize } from '@deriv/translations';
 import RiskManagementItem from 'AppV2/Components/RiskManagementItem';
@@ -14,20 +15,39 @@ const ContractDetails = observer(() => {
     const { contract_info, is_loading } = useContractDetails();
     if (is_loading) return <></>;
     const is_valid_to_cancel = isValidToCancel(contract_info);
-
+    const historyData = [
+        { date: '01 Jan 2024', time: '12:00:00 GMT', action: 'Take profit', amount: '5.00 USD' },
+        { date: '02 Jan 2024', time: '13:00:00 GMT', action: 'Take profit', amount: '10.00 USD' },
+        { date: '03 Jan 2024', time: '12:00:00 GMT', action: 'Stop loss', amount: '5.00 USD' },
+        { date: '04 Jan 2024', time: '13:00:00 GMT', action: 'Take profit', amount: '10.00 USD' },
+        { date: '05 Jan 2024', time: '12:00:00 GMT', action: 'Take profit', amount: '5.00 USD' },
+        { date: '06 Jan 2024', time: '13:00:00 GMT', action: 'Take profit', amount: '10.00 USD' },
+    ];
     return (
         <div className='contract-details'>
-            <div className='placeholder'>
-                <Text size='sm'>Contract Details</Text>
+            {/* TODO: remove temp contract card */}
+            <div className='contract-card'>
+                <div className='row first-row'>
+                    <div className='title'>
+                        <Text size='sm'>Accumulators</Text>
+                    </div>
+                </div>
+                <div className='row'>
+                    <CaptionText>Volatility 75 Index</CaptionText>
+                    <CaptionText size='sm'>10.00 USD</CaptionText>
+                </div>
+                <div className='row last-row'>
+                    <div className='column'>
+                        <Text size='sm'>2/150 ticks</Text>
+                    </div>
+                    <div className='column'>
+                        <Text size='sm' className='red'>
+                            -1.00 USD
+                        </Text>
+                    </div>
+                </div>
             </div>
-            <PayoutInfoModal
-                body_content={
-                    <Localize i18n_default_text='After the entry spot tick, your stake will grow continuously by 1% for every tick that the spot price remains within the ± 0.06444% from the previous spot price.' />
-                }
-            />
-            <div className='placeholder'>
-                <Text size='sm'>Contract card</Text>
-            </div>
+            {/* END OF CONTRACT CARD */}
             <div className='placeholder'>
                 <ChartPlaceholder />
             </div>
@@ -56,7 +76,9 @@ const ContractDetails = observer(() => {
             <div className='placeholder'>
                 <Text size='sm'>Order details</Text>
             </div>
+            <PayoutInfo />
             <EntryExitDetails />
+            <TakeProfitHistory history={historyData} />
         </div>
     );
 });

@@ -1,9 +1,37 @@
 .contract-details {
-    background-color: rgba(0, 0, 0, 0.48);
+    background-color: rgb(245, 247, 249);
     padding: 8px;
 }
 .placeholder {
     min-height: 100px;
-    margin: 4px 8px;
+    margin: 4px 0;
     background-color: #fff;
+}
+
+.contract-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 16px;
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+    }
+
+    .last-row {
+        margin-top: 8px;
+
+        .red {
+            color: var(--core-color-solid-coral-600);
+        }
+    }
 }

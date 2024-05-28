@@ -5,7 +5,7 @@ import { useStore } from '@deriv/stores';
 const useContractDetails = () => {
     const store = useStore();
     const { contract_replay } = store;
-    const { contract_store, onMount, onUnmount } = contract_replay;
+    const { contract_store, onMount } = contract_replay;
     const location = useLocation();
     const { contract_info } = contract_store;
 
@@ -16,7 +16,7 @@ const useContractDetails = () => {
             onMount(url_contract_id);
         }
 
-        // TODO: need to unmount whenever pathname changes
+        // TODO: need to add onUnmount from contract_replay store whenever pathname changes
     }, [location.pathname, onMount, contract_info.contract_id]);
 
     return {

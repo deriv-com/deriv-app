@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Analytics } from '@deriv-com/analytics';
 import { useRemoteConfig } from '@deriv/api';
+import useIsGrowthbookIsLoaded from './useIsGrowthbookLoaded';
 
 interface UseGrowthbookFeatureFlagArgs<T> {
     featureFlag: string;
@@ -15,7 +16,7 @@ const useGrowthbookFeatureFlag = <T extends string | boolean>({
     const [featureFlagValue, setFeatureFlagValue] = useState(
         Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue) ?? resolvedDefaultValue
     );
-    const [isGBLoaded, setIsGBLoaded] = useState(false);
+    const isGBLoaded = useIsGrowthbookIsLoaded();
     const { data } = useRemoteConfig();
 
     useEffect(() => {
@@ -31,7 +32,6 @@ const useGrowthbookFeatureFlag = <T extends string | boolean>({
                 }
                 timeout += 1;
                 if (Analytics?.getInstances()?.ab) {
-                    setIsGBLoaded(true);
                     const setFeatureValue = () => {
                         const value = Analytics?.getFeatureValue(featureFlag, resolvedDefaultValue);
                         setFeatureFlagValue(value);

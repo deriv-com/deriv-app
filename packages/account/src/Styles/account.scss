@@ -695,7 +695,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     @include mobile-or-tablet-screen {
                         padding: 1.6rem;
                         width: 56.8rem;
-                        margin: 0 0 0 1.6rem;
                     }
                 }
             }
@@ -1567,7 +1566,6 @@ $MIN_HEIGHT_FLOATING: calc(
 .proof-of-income {
     width: 100%;
 
-    &,
     .account-form__footer {
         max-width: 100%;
         align-items: center;

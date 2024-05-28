@@ -40,14 +40,15 @@ const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, ve
     if (verificationDocs)
         return (
             <div className='wallets-jurisdiction-card-back'>
-                <LegacyArrowLeft2pxIcon
+                <button
                     className='wallets-jurisdiction-card-back__icon'
-                    iconSize='xs'
                     onClick={e => {
                         e.stopPropagation();
                         setIsFlipped(false);
                     }}
-                />
+                >
+                    <LegacyArrowLeft2pxIcon iconSize='xs' />
+                </button>
                 <WalletText size='xs'>{verificationContents.shortDescription}</WalletText>
                 {verificationDocs.map((verificationDocument: TJurisdictionCardItemVerificationItem, i) => {
                     return (

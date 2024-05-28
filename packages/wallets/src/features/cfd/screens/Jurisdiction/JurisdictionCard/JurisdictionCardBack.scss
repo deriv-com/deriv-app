@@ -11,6 +11,11 @@
 
     &__icon {
         cursor: pointer;
+        border: none;
+        outline: none;
+        background: var(--general-main-1, #ffffff);
+        width: fit-content;
+        padding: 0;
     }
 
     &__row {

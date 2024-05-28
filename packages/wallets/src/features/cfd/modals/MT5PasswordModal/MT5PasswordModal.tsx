@@ -4,11 +4,12 @@ import {
     useActiveWalletAccount,
     useAvailableMT5Accounts,
     useCreateMT5Account,
+    useMT5AccountsList,
     useSettings,
     useTradingPlatformPasswordChange,
     useVerifyEmail,
 } from '@deriv/api-v2';
-import { SentEmailContent, WalletError, WalletSuccessResetMT5Password } from '../../../../components';
+import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
@@ -19,6 +20,7 @@ import { CFD_PLATFORMS, PlatformDetails } from '../../constants';
 import { CreatePassword, EnterPassword, MT5ResetPasswordModal } from '../../screens';
 import MT5AccountAdded from '../MT5AccountAdded/MT5AccountAdded';
 import { MT5PasswordModalFooter, SuccessModalFooter } from './MT5PasswordModalFooters';
+import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
 
 type TProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
@@ -42,7 +44,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const {
         error: tradingPasswordChangeError,
         isLoading: tradingPlatformPasswordChangeLoading,
-        isSuccess: tradingPasswordChangeSuccess,
         mutateAsync: tradingPasswordChangeMutateAsync,
     } = useTradingPlatformPasswordChange();
     const { data: accountStatusData } = useAccountStatus();
@@ -53,9 +54,9 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         mutate: emailVerificationMutate,
         status: emailVerificationStatus,
     } = useVerifyEmail();
-    const { data: accountStatus } = useAccountStatus();
+    const { data: mt5AccountsData } = useMT5AccountsList();
     const { isMobile } = useDevice();
-    const { getModalState, hide, show } = useModal();
+    const { getModalState, hide } = useModal();
     const { data: settingsData } = useSettings();
 
     const { email } = settingsData;
@@ -63,7 +64,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const [password, setPassword] = useState('');
 
     const isMT5PasswordNotSet = accountStatusData?.is_mt5_password_not_set;
-    const hasMT5Account = accountStatus?.is_mt5_password_not_set;
+    const hasMT5Account = mt5AccountsData?.find(account => account.login);
     const isDemo = activeWalletData?.is_virtual;
     const selectedJurisdiction = getModalState('selectedJurisdiction');
     const { platform: mt5Platform, title: mt5Title } = PlatformDetails.mt5;
@@ -242,6 +243,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
             <EnterPassword
                 isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                 marketType={marketType}
+                modalTitle='Enter your Deriv MT5 password'
                 onPasswordChange={e => setPassword(e.target.value)}
                 onPrimaryClick={onSubmit}
                 onSecondaryClick={() => sendEmailVerification()}
@@ -284,6 +286,16 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         );
     }
 
+    if (createMT5AccountSuccess && !isMT5PasswordNotSet) {
+        return <MT5AccountAdded account={createMT5AccountData} marketType={marketType} platform={platform} />;
+    }
+    if (
+        createMT5AccountStatus === 'error' &&
+        createMT5AccountError?.error?.code === 'PasswordReset' &&
+        !updateMT5Password
+    ) {
+        return <PasswordLimitExceededModal onPrimaryClick={hide} onSecondaryClick={() => sendEmailVerification()} />;
+    }
     if (
         createMT5AccountStatus === 'error' &&
         createMT5AccountError?.error?.code !== 'PasswordError' &&
@@ -294,24 +306,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                 errorMessage={createMT5AccountError?.error.message}
                 onClick={hide}
                 title={createMT5AccountError?.error?.code}
-            />
-        );
-    }
-
-    if (createMT5AccountSuccess) {
-        return <MT5AccountAdded account={createMT5AccountData} marketType={marketType} platform={platform} />;
-    }
-
-    if (tradingPasswordChangeSuccess) {
-        return (
-            <WalletSuccessResetMT5Password
-                onClickSuccess={async () => {
-                    await onSubmit();
-                    show(
-                        <MT5AccountAdded account={createMT5AccountData} marketType={marketType} platform={platform} />
-                    );
-                }}
-                title={mt5Title}
             />
         );
     }

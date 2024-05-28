@@ -4,7 +4,7 @@ import { observer } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 type FlyoutBlockProps = {
-    block_node: React.ReactNode;
+    block_node: Element;
     should_hide_display_name?: boolean;
 };
 

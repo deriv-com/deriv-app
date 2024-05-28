@@ -105,6 +105,7 @@ export default class LoadModalStore implements ILoadModalStore {
             resetBotBuilderStrategy: action.bound,
             setDashboardStrategies: action.bound,
             updateListStrategies: action.bound,
+            onToggleDeleteDialog: action,
         });
 
         this.root_store = root_store;
@@ -409,7 +410,7 @@ export default class LoadModalStore implements ILoadModalStore {
             return;
         }
         if (this.tab_name !== tabs_title.TAB_LOCAL && this.recent_workspace) {
-            clearInjectionDiv('store', ref);
+            clearInjectionDiv(ref);
             this.recent_workspace.dispose();
             this.recent_workspace = null;
         }

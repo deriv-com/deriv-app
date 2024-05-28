@@ -18,7 +18,7 @@ const OptionsDescription = ({ is_eu_user }: TOptionsDescription) => {
         <div>
             <Text size='xs'>
                 <Localize
-                    i18n_default_text='Buy or sell at a specific time for a specific price. <0>Learn more</0>'
+                    i18n_default_text='Earn potential profits when the market aligns with your prediction, with risks capped at your initial stake. <0>Learn more</0>'
                     components={[
                         <StaticUrl
                             key={0}

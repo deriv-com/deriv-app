@@ -6,7 +6,6 @@ import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import React from 'react';
 
 type DealCancellationRemainingTimeProps = {
-    end_time?: number;
     format?: string;
 };
 
@@ -21,8 +20,6 @@ const DealCancellationRemainingTime = observer(({ format = 'mm:ss' }: DealCancel
     }
 
     const { timestamp } = formatDuration(getDiffDuration(start_time.unix(), end_time), format);
-
-    const is_zeroes = /^00:00$/.test(timestamp);
 
     return (
         <React.Fragment>

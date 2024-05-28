@@ -10,7 +10,6 @@ type TTooltip = {
     has_error?: boolean;
     icon?: string;
     message?: string | null;
-    onClickMessage?: () => void;
 };
 
 const Tooltip = ({
@@ -21,7 +20,6 @@ const Tooltip = ({
     has_error,
     icon, // only question, info and dot accepted
     message,
-    onClickMessage,
 }: React.PropsWithChildren<TTooltip>) => {
     const [hover_ref, show_tooltip_balloon_icon_on_hover] = useHover<SVGSVGElement>();
 
@@ -32,7 +30,6 @@ const Tooltip = ({
             className={classNames(className, 'dc-tooltip', { 'dc-tooltip--error': has_error })}
             data-tooltip={message || undefined}
             data-tooltip-pos={alignment}
-            onClick={onClickMessage}
         >
             {icon === 'info' && (
                 <React.Fragment>

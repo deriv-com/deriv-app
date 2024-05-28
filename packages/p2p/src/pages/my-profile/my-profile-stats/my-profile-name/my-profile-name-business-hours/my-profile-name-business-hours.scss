@@ -2,7 +2,6 @@
     .dc-tooltip[data-tooltip]:before {
         width: max-content;
         color: var(--text-general);
-        cursor: pointer;
     }
 
     &__tooltip {
@@ -13,6 +12,7 @@
 
         &-text {
             text-decoration: underline;
+            cursor: pointer;
         }
     }
 }

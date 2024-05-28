@@ -135,9 +135,7 @@ const MyProfileName = () => {
                                 </div>
                                 {/* TODO: uncomment when implementing business hours feature */}
                                 {/* <div className='my-profile-name__rating__row'>
-                                    <MyProfileNameBusinessHours
-                                        onClickMessage={() => showModal({ key: 'BusinessHourModal', props: {} })}
-                                    />
+                                    <MyProfileNameBusinessHours />
                                 </div> */}
                             </DesktopWrapper>
                         </div>
@@ -148,9 +146,7 @@ const MyProfileName = () => {
                                 </div>
                                 {/* TODO: uncomment when implementing business hours feature */}
                                 {/* <div className='my-profile-name__rating__row'>
-                                    <MyProfileNameBusinessHours
-                                        onClickMessage={() => showModal({ key: 'BusinessHourModal', props: {} })}
-                                    />
+                                    <MyProfileNameBusinessHours />
                                 </div> */}
                             </div>
                         </MobileWrapper>

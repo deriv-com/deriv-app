@@ -116,7 +116,7 @@ const TimeFilter = ({
                 size='sm'
             />
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={() => setIsDropdownOpen(false)} position='left'>
-                <ActionSheet.Portal>
+                <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Filter by trade types' />} />
                     <ActionSheet.Content className='filter__item__wrapper'>
                         <RadioGroup
@@ -136,9 +136,8 @@ const TimeFilter = ({
                     </ActionSheet.Content>
                     <ActionSheet.Footer
                         alignment='vertical'
-                        // TODO: Replace btn name with localize after quill type updates
                         secondaryAction={{
-                            content: 'Reset',
+                            content: <Localize i18n_default_text='Reset' />,
                             onAction: onReset,
                         }}
                         shouldCloseOnSecondaryButtonClick={false}

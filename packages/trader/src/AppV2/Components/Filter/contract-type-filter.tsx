@@ -59,7 +59,7 @@ const ContractTypeFilter = ({ contractTypeFilter, setContractTypeFilter }: TCont
                 size='sm'
             />
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={onActionSheetClose} position='left'>
-                <ActionSheet.Portal>
+                <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Filter by trade types' />} />
                     <ActionSheet.Content className='filter__item__wrapper'>
                         {mockAvailableContractsList.map(({ tradeType, id }) => (
@@ -78,9 +78,14 @@ const ContractTypeFilter = ({ contractTypeFilter, setContractTypeFilter }: TCont
                     <ActionSheet.Footer
                         alignment='vertical'
                         isSecondaryButtonDisabled={!changedOptions.length}
-                        // TODO: Replace btn name with localize after quill type updates
-                        primaryAction={{ content: 'Apply', onAction: () => setContractTypeFilter(changedOptions) }}
-                        secondaryAction={{ content: 'Clear All', onAction: () => setChangedOptions([]) }}
+                        primaryAction={{
+                            content: <Localize i18n_default_text='Apply' />,
+                            onAction: () => setContractTypeFilter(changedOptions),
+                        }}
+                        secondaryAction={{
+                            content: <Localize i18n_default_text='Clear All' />,
+                            onAction: () => setChangedOptions([]),
+                        }}
                         shouldCloseOnSecondaryButtonClick={false}
                     />
                 </ActionSheet.Portal>

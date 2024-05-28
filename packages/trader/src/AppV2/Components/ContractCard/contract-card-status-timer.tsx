@@ -42,10 +42,9 @@ export const ContractCardStatusTimer = ({
     return (
         <Tag
             className='timer'
-            icon={LabelPairedStopwatchCaptionRegularIcon}
+            icon={<LabelPairedStopwatchCaptionRegularIcon />}
             label={getDisplayedDuration()}
             variant='custom'
-            color='custom'
             size='sm'
         />
     );

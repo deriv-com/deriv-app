@@ -23,7 +23,7 @@ const DateRangePicker = ({ handleDateChange, isOpen, onClose, setCustomTimeRange
 
     return (
         <ActionSheet.Root isOpen={isOpen} onClose={onClose} position='left'>
-            <ActionSheet.Portal>
+            <ActionSheet.Portal shouldCloseOnDrag>
                 <ActionSheet.Header title={<Localize i18n_default_text='Choose a date range' />} />
                 <ActionSheet.Content>
                     <DatePicker
@@ -40,7 +40,7 @@ const DateRangePicker = ({ handleDateChange, isOpen, onClose, setCustomTimeRange
                     alignment='vertical'
                     isPrimaryButtonDisabled={!chosenRangeString}
                     primaryAction={{
-                        content: 'Apply',
+                        content: <Localize i18n_default_text='Apply' />,
                         onAction: onApply,
                     }}
                 />

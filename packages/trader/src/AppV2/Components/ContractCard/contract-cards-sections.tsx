@@ -11,9 +11,11 @@ type TContractCardsSections = {
 };
 
 const ContractCardsSections = ({ isLoadingMore, positions }: TContractCardsSections) => {
+    const formatTime = (time: number) => toMoment(time).format('DD MMM YYYY');
+
     const dates = positions?.map(element => {
         const purchaseTime = element.contract_info.purchase_time_unix;
-        return purchaseTime && toMoment(purchaseTime).format('DD MMM YYYY');
+        return purchaseTime && formatTime(purchaseTime);
     });
 
     const uniqueDates = [...new Set(dates)];
@@ -29,7 +31,7 @@ const ContractCardsSections = ({ isLoadingMore, positions }: TContractCardsSecti
                     <ContractCardList
                         positions={positions.filter(position => {
                             const purchaseTime = position.contract_info.purchase_time_unix;
-                            return purchaseTime && toMoment(purchaseTime).format('DD MMM YYYY') === date;
+                            return purchaseTime && formatTime(purchaseTime) === date;
                         })}
                     />
                     {isLoadingMore && <Loading is_fullscreen={false} />}

@@ -62,26 +62,28 @@ const DashboardBotList = observer(() => {
     if (!dashboard_strategies?.length) return null;
     return (
         <div className='bot-list__container'>
-            <div className='bot-list__title'>
-                <Text size={is_mobile ? 'xs' : 's'} weight='bold'>
-                    <Localize i18n_default_text='Your bots:' />
-                </Text>
-            </div>
-            <div className='bot-list__header'>
-                {HEADERS.map(({ label, className }) => {
-                    return (
-                        <div className={className} key={label}>
-                            <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
-                                {label}
-                            </Text>
-                        </div>
-                    );
-                })}
-            </div>
             <div className='bot-list__wrapper'>
-                {dashboard_strategies.map((workspace, index) => {
-                    return <RecentWorkspace key={workspace.id} workspace={workspace} index={index} />;
-                })}
+                <div className='bot-list__title'>
+                    <Text size={is_mobile ? 'xs' : 's'} weight='bold'>
+                        <Localize i18n_default_text='Your bots:' />
+                    </Text>
+                </div>
+                <div className='bot-list__header'>
+                    {HEADERS.map(({ label, className }) => {
+                        return (
+                            <div className={className} key={label}>
+                                <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
+                                    {label}
+                                </Text>
+                            </div>
+                        );
+                    })}
+                </div>
+                <div className='bot-list__table'>
+                    {dashboard_strategies.map((workspace, index) => {
+                        return <RecentWorkspace key={workspace.id} workspace={workspace} index={index} />;
+                    })}
+                </div>
             </div>
             <DeleteDialog setStrategies={setDashboardStrategies} />
             <MobileWrapper>

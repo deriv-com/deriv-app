@@ -15,6 +15,10 @@ const WalletDeposit = () => {
         if (loginidQueryParam && loginidQueryParam !== activeWallet?.loginid) {
             switchAccount(loginidQueryParam);
         }
+
+        const url = new URL(window.location.href);
+        url.searchParams.delete('loginid');
+        window.history.replaceState({}, document.title, url.toString());
     }, [activeWallet?.loginid, switchAccount]);
 
     return isCrypto ? <DepositCryptoModule /> : <DepositFiatModule />;

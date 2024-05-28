@@ -59,7 +59,7 @@ describe('useGrowthbookIsOn', () => {
                 ({
                     ab: {
                         GrowthBook: {
-                            setRenderer: jest.fn(),
+                            setRenderer: setRendererMock,
                         },
                     },
                     tracking: {},

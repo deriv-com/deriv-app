@@ -495,7 +495,6 @@ const Dropdown = ({
                                     'suffix-icon--flip': is_list_visible && should_animate_suffix_icon,
                                 })}
                                 icon={suffix_icon}
-                                size={16}
                             />
                         )}
                         <DisplayText

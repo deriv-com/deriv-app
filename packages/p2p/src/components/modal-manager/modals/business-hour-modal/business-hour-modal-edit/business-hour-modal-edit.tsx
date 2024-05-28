@@ -22,11 +22,11 @@ const BusinessHourModalEdit = ({ data }: TBusinessHourModalEditProps) => {
     const today = new Date().getDay();
 
     React.useEffect(() => {
-        const filteredDays = data
+        const filtered_days = data
             .filter(day => day.start_time !== undefined && day.end_time !== undefined)
             .map(day => day.value);
 
-        setSelectedDays(filteredDays);
+        setSelectedDays(filtered_days);
     }, []);
 
     const onSelectTime = () => {

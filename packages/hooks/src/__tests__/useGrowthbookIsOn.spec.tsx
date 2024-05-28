@@ -31,13 +31,17 @@ describe('useGrowthbookIsOn', () => {
         useRemoteConfig.mockReturnValue({ data: { marketing_growthbook: true } });
         useIsGrowthbookIsLoaded.mockReturnValue(true);
         Analytics.isFeatureOn = jest.fn(() => true);
-        Analytics.getInstances = jest.fn(() => ({
-            ab: {
-                GrowthBook: {
-                    setRenderer: jest.fn(),
-                },
-            },
-        }));
+        Analytics.getInstances = jest.fn(
+            () =>
+                ({
+                    ab: {
+                        GrowthBook: {
+                            setRenderer: jest.fn(),
+                        },
+                    },
+                    tracking: {},
+                } as any)
+        );
 
         const { result } = renderHook(() => useGrowthbookIsOn({ featureFlag: mockFeatureFlag }));
 
@@ -51,13 +55,17 @@ describe('useGrowthbookIsOn', () => {
         Analytics.isFeatureOn = jest.fn(() => false);
         const setRendererMock = jest.fn();
 
-        Analytics.getInstances = jest.fn(() => ({
-            ab: {
-                GrowthBook: {
-                    setRenderer: setRendererMock,
-                },
-            },
-        }));
+        Analytics.getInstances = jest.fn(
+            () =>
+                ({
+                    ab: {
+                        GrowthBook: {
+                            setRenderer: jest.fn(),
+                        },
+                    },
+                    tracking: {},
+                } as any)
+        );
 
         const { result } = renderHook(() => useGrowthbookIsOn({ featureFlag: mockFeatureFlag }));
 

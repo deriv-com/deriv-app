@@ -22,8 +22,17 @@ describe('useIsGrowthbookIsLoaded', () => {
     it('should update state when data.marketing_growthbook is true and Analytics instance is available', () => {
         jest.useFakeTimers();
         useRemoteConfig.mockReturnValue({ data: { marketing_growthbook: true } });
-        Analytics.getInstances = jest.fn(() => ({}));
-
+        Analytics.getInstances = jest.fn(
+            () =>
+                ({
+                    ab: {
+                        GrowthBook: {
+                            setRenderer: jest.fn(),
+                        },
+                    },
+                    tracking: {},
+                } as any)
+        );
         const { result, rerender } = renderHook(() => useIsGrowthbookIsLoaded());
 
         expect(result.current).toBe(false); // isGBLoaded initially false
@@ -41,7 +50,17 @@ describe('useIsGrowthbookIsLoaded', () => {
     it('should clear interval after 10 seconds if Analytics instance is not available', () => {
         jest.useFakeTimers();
         useRemoteConfig.mockReturnValue({ data: { marketing_growthbook: true } });
-        Analytics.getInstances = jest.fn(() => ({}));
+        Analytics.getInstances = jest.fn(
+            () =>
+                ({
+                    ab: {
+                        GrowthBook: {
+                            setRenderer: jest.fn(),
+                        },
+                    },
+                    tracking: {},
+                } as any)
+        );
 
         const { result } = renderHook(() => useIsGrowthbookIsLoaded());
 

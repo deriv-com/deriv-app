@@ -9,6 +9,9 @@ const contractUpdateForm = 'ContractUpdateForm';
 
 jest.mock('../contract-update-form', () => jest.fn(() => <div>ContractUpdateForm</div>));
 jest.mock('../../../icon', () => jest.fn((props: { icon: string }) => <div>{props.icon}</div>));
+jest.mock('@deriv-com/ui', () => ({
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
 describe('ToggleCardDialog', () => {
     const mockProps = {

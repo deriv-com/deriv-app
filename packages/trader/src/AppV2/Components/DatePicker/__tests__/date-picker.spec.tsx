@@ -41,4 +41,17 @@ describe('DateRangePicker', () => {
         expect(mockProps.handleDateChange).toBeCalled();
         expect(mockProps.onClose).toBeCalled();
     });
+
+    it('should call setCustomTimeRangeFilter, handleDateChange and onClose if user choses a single date and clicks on Apply button', () => {
+        render(<DateRangePicker {...mockProps} />);
+
+        const fromDate = screen.getByText('1');
+        const applyButton = screen.getByText(footer);
+        userEvent.click(fromDate);
+        userEvent.click(applyButton);
+
+        expect(mockProps.setCustomTimeRangeFilter).toBeCalled();
+        expect(mockProps.handleDateChange).toBeCalled();
+        expect(mockProps.onClose).toBeCalled();
+    });
 });

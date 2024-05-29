@@ -145,7 +145,6 @@
                     text-align: center;
                     @include mobile {
                         text-align: start;
-                        margin-top: 0;
                         width: 85%;
                     }
                 }
@@ -291,10 +290,6 @@
         }
 
         &__table {
-            @include mobile-tablet-mix {
-                width: calc(100% - 9.3rem);
-            }
-
             &--minimized {
                 width: 100%;
             }

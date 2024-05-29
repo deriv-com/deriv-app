@@ -19,7 +19,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
     const { dashboard_strategies } = load_modal;
     const { setActiveTabTutorial, active_tab, active_tour } = dashboard;
     const has_dashboard_strategies = !!dashboard_strategies?.length;
-    const { is_mobile, is_desktop } = ui;
+    const { is_mobile } = ui;
 
     return (
         <React.Fragment>
@@ -40,20 +40,18 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                                 'tab__dashboard__header--listed': !is_mobile && has_dashboard_strategies,
                             })}
                         >
-                            {(!has_dashboard_strategies && is_mobile) ||
-                                (is_desktop && (
-                                    <Text
-                                        className='title'
-                                        as='h2'
-                                        color='prominent'
-                                        size={is_mobile ? 's' : 'sm'}
-                                        line_height='xxl'
-                                        weight='bold'
-                                    >
-                                        {localize('Load or build your bot')}
-                                    </Text>
-                                ))}
-
+                            {!has_dashboard_strategies && (
+                                <Text
+                                    className='title'
+                                    as='h2'
+                                    color='prominent'
+                                    size={is_mobile ? 's' : 'sm'}
+                                    line_height='xxl'
+                                    weight='bold'
+                                >
+                                    {localize('Load or build your bot')}
+                                </Text>
+                            )}
                             <Text
                                 as='p'
                                 color='prominent'

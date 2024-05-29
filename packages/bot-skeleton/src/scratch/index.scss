@@ -128,13 +128,6 @@ $colour_toolboxSelected: $black;
         cursor: pointer;
     }
 
-    // .blocklyNonSelectable {
-    //     user-select: none;
-    //     -moz-user-select: none;
-    //     -webkit-user-select: none;
-    //     -ms-user-select: none;
-    // }
-
     .blocklyWsDragSurface {
         display: none;
         position: absolute;
@@ -149,17 +142,6 @@ $colour_toolboxSelected: $black;
         overflow: visible;
     }
 
-    // .blocklyBlockDragSurface {
-    //     display: none;
-    //     position: absolute;
-    //     top: 0;
-    //     left: 0;
-    //     right: 0;
-    //     bottom: 0;
-    //     overflow: visible !important;
-    //     z-index: 50; /* Display above the toolbox */
-    // }
-
     .blocklyTooltipDiv {
         min-height: 34px;
         background-color: #d6dadb;
@@ -167,7 +149,7 @@ $colour_toolboxSelected: $black;
         color: #333333;
         padding: 8px;
         font-size: 12px;
-        font-family: 'IBM Plex Sans';
+        font-family: 'IBM Plex Sans', sans-serif;
         line-height: 1.5;
         letter-spacing: normal;
         position: absolute;
@@ -365,9 +347,6 @@ $colour_toolboxSelected: $black;
     .blocklyDragging > .blocklyPathLight {
         fill-opacity: 1;
         stroke-opacity: 1;
-    }
-
-    .blocklyDragging > .blocklyPath {
     }
 
     .blocklyDisabled > .blocklyPath {
@@ -1136,9 +1115,6 @@ drag a block and selected text moves instead.
         margin: 3px;
     }
 
-    .scratchCategoryMenuRow {
-    }
-
     .scratchCategoryMenuItem {
         padding: 0.375rem 0px;
         cursor: pointer;
@@ -1174,7 +1150,6 @@ drag a block and selected text moves instead.
 
     rect.blocklyFieldRect.blocklyDropdownRect {
         fill: #ffffff !important;
-        /* border-radius: 108px; */
         rx: 16px;
         ry: 32;
     }

@@ -5,7 +5,6 @@ import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import WorkspaceWrapper from '../workspace-wrapper';
-import { util } from 'prettier';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 jest.mock('../../dashboard/load-bot-preview/stop-bot-modal', () => jest.fn(() => <div>StopBotModal</div>));

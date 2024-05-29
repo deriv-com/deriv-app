@@ -360,6 +360,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
 
                 return (
                     <ModalStepWrapper
+                        disableScroll={context.currentScreenId === 'personalDetailsScreen'}
                         renderFooter={renderFooter}
                         title={
                             context.currentScreenId === 'duplicateUploadErrorScreen'

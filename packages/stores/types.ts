@@ -67,6 +67,7 @@ type TRoutes =
     | '/reports/profit'
     | '/reports'
     | '/'
+    | '/dtrader'
     | '/redirect'
     | '/settings'
     | '/reports/statement'
@@ -88,7 +89,14 @@ type TRoutes =
     | '/appstore'
     | '/appstore/traders-hub'
     | '/appstore/onboarding'
-    | '/wallets';
+    | '/wallet'
+    | '/wallet/deposit'
+    | '/wallet/withdrawal'
+    | '/wallet/account-transfer'
+    | '/wallet/reset-balance'
+    | '/wallet/transactions'
+    | '/wallet/on-ramp'
+    | '/compare-accounts';
 
 type TPopulateSettingsExtensionsMenuItem = {
     icon: string;
@@ -396,7 +404,7 @@ type TClientStore = {
     getSelfExclusion: () => Promise<Partial<GetSelfExclusion>>;
     account_status: Omit<GetAccountStatus, 'status' | 'p2p_poa_required'> &
         Partial<Pick<GetAccountStatus, 'status'>> & { p2p_poa_required: number };
-    available_crypto_currencies: Array<WebsiteStatus['currencies_config']>;
+    available_crypto_currencies: Array<WebsiteStatus['currencies_config'][string] & {value:string}>;
     balance?: string | number;
     can_change_fiat_currency: boolean;
     clients_country: string;

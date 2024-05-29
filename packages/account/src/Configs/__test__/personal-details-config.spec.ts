@@ -1,4 +1,4 @@
-import { personal_details_config } from 'Configs/personal-details-config';
+import { personal_details_config } from '../personal-details-config';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),

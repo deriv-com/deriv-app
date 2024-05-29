@@ -16,7 +16,7 @@ const WalletsUpgradeCompletedModal = observer(() => {
     const handleClose = () => {
         setIsOpen(false);
         Cookies.remove('recent_wallets_migration');
-        history.push(routes.wallets);
+        history.push(routes.traders_hub);
     };
 
     const Wrapper = ({ children, footer }: React.PropsWithChildren & { footer: React.ReactNode }) =>

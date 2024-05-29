@@ -74,6 +74,7 @@ describe('<AddressDetails/>', () => {
         validate: jest.fn(),
         disabled_items: [],
         has_real_account: false,
+        states_list: [],
     };
 
     const store = mockStore({});

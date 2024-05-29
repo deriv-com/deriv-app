@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Trans } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useActiveLinkedToTradingAccount } from '@deriv/api-v2';
@@ -80,12 +79,7 @@ const OptionsAndMultipliersListing: React.FC = () => {
                 </div>
                 <DerivAppsSection />
             </section>
-            <div
-                className={classNames('wallets-options-and-multipliers-listing__content', {
-                    'wallets-options-and-multipliers-listing__content--without-trading-account':
-                        !activeLinkedToTradingAccount?.loginid,
-                })}
-            >
+            <div className='wallets-options-and-multipliers-listing__content'>
                 {optionsAndMultipliersContent.map(account => {
                     const { description, title } = account;
 
@@ -94,16 +88,7 @@ const OptionsAndMultipliersListing: React.FC = () => {
                             {...account}
                             disabled={!activeLinkedToTradingAccount?.loginid}
                             key={`trading-account-card-${title}`}
-                            leading={
-                                <LinkTitle
-                                    icon={
-                                        activeLinkedToTradingAccount?.loginid || !isMobile
-                                            ? account.icon
-                                            : account.smallIcon
-                                    }
-                                    title={title}
-                                />
-                            }
+                            leading={<LinkTitle icon={account.icon} title={title} />}
                             onClick={() => {
                                 account.isExternal
                                     ? window.open(account.redirect, '_blank')

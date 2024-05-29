@@ -16,7 +16,7 @@ export const filterPositions = (positions: (TPortfolioPosition | TClosedPosition
         const config = getSupportedContracts(isHighLow({ shortcode: contract_info.shortcode }))[
             contract_info.contract_type as keyof ReturnType<typeof getSupportedContracts>
         ];
-
+        if (!config) return false;
         return splittedFilter.includes('main_title' in config ? config.main_title : config.name);
     });
 };

@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
 import { ReportsStoreProvider } from '../../../../../../reports/src/Stores/useReportsStores';
 import TraderProviders from '../../../../trader-providers';
@@ -99,14 +98,7 @@ jest.mock('AppV2/Components/EmptyPositions', () => ({
 
 jest.mock('AppV2/Components/Filter', () => ({
     ...jest.requireActual('AppV2/Components/Filter'),
-    ContractTypeFilter: jest.fn(({ setContractTypeFilter }) => (
-        <div>
-            {contractTypeFilter}
-            <button onClick={() => setContractTypeFilter(['Accumulator'])}>Accumulator</button>
-            <button onClick={() => setContractTypeFilter(['Multipliers'])}>Multipliers</button>
-            <button onClick={() => setContractTypeFilter([])}>Reset</button>
-        </div>
-    )),
+    ContractTypeFilter: jest.fn(() => <div>{contractTypeFilter}</div>),
     TimeFilter: jest.fn(() => <div>TimeFilter</div>),
 }));
 
@@ -267,6 +259,16 @@ describe('PositionsContent', () => {
                     onUnmount: jest.fn(),
                     handleDateChange: jest.fn(),
                 },
+                positions: {
+                    openContractTypeFilter: [],
+                    closedContractTypeFilter: [],
+                    timeFilter: '',
+                    customTimeRangeFilter: '',
+                    setClosedContractTypeFilter: jest.fn(),
+                    setOpenContractTypeFilter: jest.fn(),
+                    setTimeFilter: jest.fn(),
+                    setCustomTimeRangeFilter: jest.fn(),
+                },
             },
         });
     });
@@ -290,14 +292,14 @@ describe('PositionsContent', () => {
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
     });
 
-    it('should render EmptyPositions if data was loaded but user have no open positions', () => {
+    it('should render EmptyPositions if data has loaded but user has no open positions', () => {
         defaultMockStore = mockStore({ portfolio: { active_positions: [], is_active_empty: true } });
         render(mockPositionsContent());
 
         expect(screen.getByText(emptyPositions)).toBeInTheDocument();
     });
 
-    it('should render EmptyPositions if data was loaded but user have no close positions', () => {
+    it('should render EmptyPositions if data has loaded but user has no closed positions', () => {
         render(mockPositionsContent(true));
 
         expect(screen.getByText(emptyPositions)).toBeInTheDocument();
@@ -312,28 +314,52 @@ describe('PositionsContent', () => {
         expect(screen.getByText(contractCardList)).toBeInTheDocument();
     });
 
-    it('should show EmptyPositions component if user chose contract type filter and such contracts are absent in positions', () => {
+    it('should show EmptyPositions component if user chose contract type filter and such contracts are absent from positions', () => {
+        defaultMockStore = mockStore({
+            modules: {
+                ...defaultMockStore.modules,
+                positions: {
+                    ...defaultMockStore.modules.positions,
+                    openContractTypeFilter: ['Accumulators'],
+                },
+            },
+            portfolio: defaultMockStore.portfolio,
+        });
         render(mockPositionsContent());
-
-        userEvent.click(screen.getByText('Accumulator'));
 
         expect(screen.getByText(emptyPositions)).toBeInTheDocument();
     });
 
     it('should show filtered cards if user chose contract type filter and such contracts are present in positions', () => {
+        defaultMockStore = mockStore({
+            modules: {
+                ...defaultMockStore.modules,
+                positions: {
+                    ...defaultMockStore.modules.positions,
+                    openContractTypeFilter: ['Multipliers'],
+                },
+            },
+            portfolio: defaultMockStore.portfolio,
+        });
         render(mockPositionsContent());
-
-        userEvent.click(screen.getByText('Multipliers'));
 
         expect(screen.queryByText(emptyPositions)).not.toBeInTheDocument();
         expect(screen.queryByText('TURBOSLONG')).not.toBeInTheDocument();
         expect(screen.getByText('MULTUP')).toBeInTheDocument();
     });
 
-    it('should show all cards if user reset filter', () => {
+    it('should show all cards if a user has reset the filter', () => {
+        defaultMockStore = mockStore({
+            modules: {
+                ...defaultMockStore.modules,
+                positions: {
+                    ...defaultMockStore.modules.positions,
+                    openContractTypeFilter: [],
+                },
+            },
+            portfolio: defaultMockStore.portfolio,
+        });
         render(mockPositionsContent());
-
-        userEvent.click(screen.getByText('Reset'));
 
         expect(screen.queryByText(emptyPositions)).not.toBeInTheDocument();
         expect(screen.getByText('MULTUP')).toBeInTheDocument();

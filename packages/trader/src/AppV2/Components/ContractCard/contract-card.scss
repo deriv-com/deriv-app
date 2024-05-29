@@ -230,6 +230,9 @@
 }
 
 .contract-cards {
+    &-sections {
+        margin-block-end: var(--core-size-1900);
+    }
     &-section {
         &__title {
             padding: var(--core-spacing-400) var(--core-spacing-800);

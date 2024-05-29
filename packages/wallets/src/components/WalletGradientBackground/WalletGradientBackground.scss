@@ -29,6 +29,11 @@
         }
     }
 
+    &[class*='desktop-header'],
+    &[class*='mobile-header'] {
+        border-radius: unset;
+    }
+
     &--USD {
         &-desktop {
             &-card {

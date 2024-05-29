@@ -13,6 +13,7 @@ jest.mock('App/Components/Layout/Header/toggle-menu-drawer.jsx', () =>
 );
 jest.mock('../header-account-actions', () => jest.fn(() => <div>Mocked Header Account Action</div>));
 jest.mock('../traders-hub-home-button', () => jest.fn(() => <div>Mocked Traders Home Button</div>));
+jest.mock('../deriv-short-logo', () => jest.fn(() => <div>Deriv Short Logo</div>));
 
 describe('DTraderHeader', () => {
     const mock_store = mockStore({ ui: { is_desktop: true, is_real_acc_signup_on: true } });

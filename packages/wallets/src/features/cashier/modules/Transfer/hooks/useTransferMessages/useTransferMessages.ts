@@ -4,6 +4,7 @@ import { displayMoney as displayMoney_ } from '@deriv/api-v2/src/utils';
 import { THooks } from '../../../../../../types';
 import { TAccount, TInitialTransferFormValues, TMessageFnProps, TTransferMessage } from '../../types';
 import {
+    countLimitMessageFn,
     cumulativeAccountLimitsMessageFn,
     insufficientBalanceMessageFn,
     lifetimeAccountLimitsBetweenWalletsMessageFn,
@@ -56,6 +57,7 @@ const useTransferMessages = ({
         const messages: TTransferMessage[] = [];
 
         messageFns.push(insufficientBalanceMessageFn);
+        messageFns.push(countLimitMessageFn);
 
         if (!isAccountVerified && isTransferBetweenWallets) {
             messageFns.push(lifetimeAccountLimitsBetweenWalletsMessageFn);

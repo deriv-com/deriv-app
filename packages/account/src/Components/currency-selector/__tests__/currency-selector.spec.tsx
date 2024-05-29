@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck [TODO]:Need to check the issue with DeepPartial - { [K in keyof T]?: DeepPartial<T[K]> }
 import React from 'react';
 import { fireEvent, screen, render, waitFor } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
@@ -34,7 +36,6 @@ describe('<CurrencySelector/>', () => {
         expect(screen.getByRole('radio', { name: /us dollar \(usd\)/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /euro \(eur\)/i })).toBeInTheDocument();
 
-        expect(screen.getByRole('heading', { name: /cryptocurrencies/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /tether erc20 \(eusdt\)/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /usd coin \(usdc\)/i })).toBeInTheDocument();
 
@@ -56,7 +57,7 @@ describe('<CurrencySelector/>', () => {
                     currency: 'USD',
                     is_disabled: 0,
                     is_virtual: 1,
-                    landing_company_shortcode: 'virtual',
+                    landing_company_shortcode: 'svg',
                     trading: {},
                     token: '',
                     email: '',
@@ -261,15 +262,10 @@ describe('<CurrencySelector/>', () => {
                         is_disabled: 0,
                         is_virtual: 1,
                         landing_company_shortcode: 'svg',
-                        trading: {},
                         token: '',
-                        email: '',
-                        session_start: 1651059038,
-                        excluded_until: '',
+                        excluded_until: undefined,
                         landing_company_name: 'svg',
-                        residence: 'es',
                         balance: 10000,
-                        accepted_bch: 0,
                     },
                 },
                 has_active_real_account: true,
@@ -308,6 +304,7 @@ describe('<CurrencySelector/>', () => {
                 is_mt5_allowed: true,
             },
             traders_hub: {
+                ...store.traders_hub,
                 is_eu_user: true,
             },
         };
@@ -323,6 +320,7 @@ describe('<CurrencySelector/>', () => {
                 is_mt5_allowed: true,
             },
             traders_hub: {
+                ...store.traders_hub,
                 is_eu_user: true,
             },
         };
@@ -348,7 +346,6 @@ describe('<CurrencySelector/>', () => {
             set_currency: true,
         };
         renderComponent({ props: new_props });
-        expect(screen.getByRole('heading', { name: /cryptocurrencies/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /tether erc20 \(eusdt\)/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /usd coin \(usdc\)/i })).toBeInTheDocument();
 

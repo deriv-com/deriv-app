@@ -49,7 +49,7 @@ const TradingAppCard = ({
     const { is_eu_user, is_real, selected_account_type } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;
-    const { account_status: { authentication } = {} } = client;
+    const { account_status: { authentication } = {}, is_logged_in } = client;
 
     const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
     const available_platforms = getAvailablePlatforms();

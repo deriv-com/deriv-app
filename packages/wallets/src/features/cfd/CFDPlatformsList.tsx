@@ -8,11 +8,7 @@ import CFDPlatformsListEmptyState from './CFDPlatformsListEmptyState';
 import { CFDPlatformsListAccounts } from './components';
 import './CFDPlatformsList.scss';
 
-type TProps = {
-    onMT5PlatformListLoaded?: (value: boolean) => void;
-};
-
-const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
+const CFDPlatformsList: React.FC = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const { t } = useTranslation();
@@ -34,12 +30,12 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                                         target='_blank'
                                     />,
                                 ]}
-                                defaults='Trade bigger positions with less capital. <0>Learn more</0>'
+                                defaults='Trade bigger positions with less capital across diverse financial and derived instruments. <0>Learn more</0>'
                             />
                         </WalletText>
                         <WalletButton
                             onClick={() => {
-                                history.push('/wallets/compare-accounts');
+                                history.push('/compare-accounts');
                             }}
                             size='sm'
                             textSize='sm'
@@ -56,7 +52,7 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                             </WalletText>
                             <WalletButton
                                 onClick={() => {
-                                    history.push('/wallets/compare-accounts');
+                                    history.push('/compare-accounts');
                                 }}
                                 size='sm'
                                 variant='ghost'
@@ -67,17 +63,13 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                         <WalletText size='md'>
                             <Trans
                                 components={[<WalletLink key={0} staticUrl='/trade-types/cfds/' />]}
-                                defaults='Trade bigger positions with less capital. <0>Learn more</0>'
+                                defaults='Trade bigger positions with less capital across diverse financial and derived instruments. <0>Learn more</0>'
                             />
                         </WalletText>
                     </div>
                 )}
             </section>
-            {activeWallet?.currency_config?.is_crypto ? (
-                <CFDPlatformsListEmptyState />
-            ) : (
-                <CFDPlatformsListAccounts onMT5PlatformListLoaded={onMT5PlatformListLoaded} />
-            )}
+            {activeWallet?.currency_config?.is_crypto ? <CFDPlatformsListEmptyState /> : <CFDPlatformsListAccounts />}
         </div>
     );
 };

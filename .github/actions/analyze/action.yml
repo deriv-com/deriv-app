@@ -76,11 +76,11 @@ runs:
       echo "API Response: $RESPONSE"
 
       # Extracting the artifact URL using jq
-      ARTIFACT_URL=$(echo $RESPONSE | jq -r '.artifacts | map(select(.workflow_run.head_branch == "master" and (.name | startswith("reports-")))) | .[0] | .archive_download_url')
+      ARTIFACT_URL=$(echo $RESPONSE | jq -r '.artifacts | map(select(.workflow_run.head_branch == "master" and (.name | startswith("analyse")))) | .[0] | .archive_download_url')
 
       # Check if the artifact URL is empty
       if [[ -z "$ARTIFACT_URL" ]]; then
-        echo "Error: No artifact URL found for the master branch with prefix 'reports-'."
+        echo "Error: No artifact URL found for the master branch with prefix 'analyse'."
         exit 1
       else
         echo "Artifact URL: $ARTIFACT_URL"
@@ -103,7 +103,7 @@ runs:
         -o artifact.zip
       unzip artifact.zip -d old
       cd old
-      unzip reports.zip
+      unzip analyse.zip
 
   - name: Analyze all packages
     env:
@@ -161,11 +161,11 @@ runs:
   - name: Zip all report.json files
     shell: bash
     run: |
-      zip -r reports.zip packages/*/report.json
+      zip -r analyse.zip packages/*/report.json
 
-  - name: Upload reports.zip
+  - name: Upload analyse.zip
     uses: actions/upload-artifact@v4
     with:
-      name: reports-${{ github.sha }}
-      path: reports.zip
+      name: analyse
+      path: analyse.zip
       retention-days: 5

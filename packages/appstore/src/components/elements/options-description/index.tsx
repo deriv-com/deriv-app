@@ -1,3 +1,3 @@
-import OptionsTitle from './options-description';
+import OptionsDescription from './options-description';
 
-export default OptionsTitle;
+export default OptionsDescription;

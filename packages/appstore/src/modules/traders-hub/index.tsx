@@ -12,7 +12,7 @@ import { useContentFlag, useGrowthbookFeatureFlag } from '@deriv/hooks';
 import classNames from 'classnames';
 import './traders-hub.scss';
 
-const DerivRealAccountBanner = lazy(() => import('Components/real-account-creation-banner'));
+const RealAccountCreationBanner = lazy(() => import('Components/real-account-creation-banner'));
 
 const TradersHub = observer(() => {
     const { traders_hub, client, ui } = useStore();
@@ -152,7 +152,7 @@ const TradersHub = observer(() => {
                         is_cr_demo &&
                         is_landing_company_loaded && (
                             <Suspense fallback={<div />}>
-                                <DerivRealAccountBanner />
+                                <RealAccountCreationBanner />
                             </Suspense>
                         )}
 

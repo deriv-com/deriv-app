@@ -12,7 +12,7 @@ const RealAccountCreationBanner = observer(() => {
     } = useStore();
 
     const { ui } = useStore();
-    const { openRealAccountSignup } = ui;
+    const { openRealAccountSignup, is_dark_mode_on } = ui;
     const device = is_mobile ? 'mobile' : 'desktop';
 
     const handleClick = () => {
@@ -36,7 +36,9 @@ const RealAccountCreationBanner = observer(() => {
         <div className='real-account-creation-banner'>
             <img
                 alt='Deriv real account banner'
-                src={getUrlBase(`/public/images/common/real-account-banner-${device}.png`)}
+                src={getUrlBase(
+                    `/public/images/common/real-account-banner-${device}-${is_dark_mode_on ? 'dark' : 'light'}.png`
+                )}
             />
 
             <div className='real-account-creation-banner__content'>

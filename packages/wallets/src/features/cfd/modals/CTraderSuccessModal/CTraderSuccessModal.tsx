@@ -18,7 +18,7 @@ const CTraderSuccessModal = ({ createdAccount, isDemo, walletCurrencyType }: TCT
     const { data: cTraderAccounts } = useCtraderAccountsList();
     const { isMobile } = useDevice();
     const { hide } = useModal();
-    const cTraderBalance = cTraderAccounts?.find(account => account.login)?.formatted_balance;
+    const cTraderBalance = cTraderAccounts?.find(account => account.login)?.display_balance;
 
     const description = isDemo
         ? `Let's practise trading with ${cTraderBalance} virtual funds.`

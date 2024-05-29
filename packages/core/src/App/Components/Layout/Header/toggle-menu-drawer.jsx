@@ -66,7 +66,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const location = useLocation();
 
     const is_trading_hub_category =
-        route.startsWith(routes.traders_hub) || route.startsWith(routes.cashier) || route.startsWith(routes.account);
+        route === routes.traders_hub || route.startsWith(routes.cashier) || route.startsWith(routes.account);
 
     const should_hide_platform_switcher = location.pathname === routes.traders_hub;
 
@@ -108,12 +108,12 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             const routes_config = getRoutesConfig();
             let primary_routes = [];
 
-            const location = window.location.pathname;
-
-            if (location === is_trading_hub_category) {
+            if (is_trading_hub_category) {
                 primary_routes = has_wallet ? [routes.reports, routes.account] : [routes.account, routes.cashier];
             } else {
-                primary_routes = [routes.reports, routes.account, routes.cashier];
+                primary_routes = has_wallet
+                    ? [routes.reports, routes.account]
+                    : [routes.reports, routes.account, routes.cashier];
             }
             setPrimaryRoutesConfig(getFilteredRoutesConfig(routes_config, primary_routes));
         };
@@ -354,7 +354,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         />
                                     </MobileDrawer.Item>
                                 )}
-                                {
+                                {route !== routes.traders_hub && (
                                     <MobileDrawer.Item>
                                         <MenuLink
                                             link_to={routes.trade}
@@ -364,7 +364,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                             is_active={route === routes.trade}
                                         />
                                     </MobileDrawer.Item>
-                                }
+                                )}
                                 {primary_routes_config.map((route_config, idx) =>
                                     getRoutesWithSubMenu(route_config, idx)
                                 )}

@@ -137,7 +137,6 @@ Blockly.Blocks.trade_definition_market = {
         } else if (
             event.type === Blockly.Events.BLOCK_DRAG &&
             !event.isStart &&
-            !event.isStart &&
             event.blockId === this.getRootBlock().id
         ) {
             if (market_dropdown.isEmpty() || submarket_dropdown.isEmpty() || symbol_dropdown.isEmpty()) {
@@ -169,4 +168,4 @@ Blockly.Blocks.trade_definition_market = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['trade_definition_market'] = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition_market = () => {};

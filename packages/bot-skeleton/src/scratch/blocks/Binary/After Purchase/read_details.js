@@ -33,7 +33,7 @@ Blockly.Blocks.read_details = {
     restricted_parents: ['after_purchase'],
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['read_details'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.read_details = block => {
     const detailIndex = block.getFieldValue('DETAIL_INDEX');
 
     const code = `Bot.readDetails(${detailIndex})`;

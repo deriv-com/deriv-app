@@ -46,7 +46,6 @@ const ReactJoyrideWrapper: React.FC<IReactJoyrideWrapperProps> = ({ steps, style
                     insetInlineEnd: '0px',
                     right: 'unset',
                 },
-               
                 ...styles,
             }}
         />

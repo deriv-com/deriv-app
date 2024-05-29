@@ -1,5 +1,6 @@
 import { localize } from '@deriv/translations';
 import { plusIconLight } from '../../images';
+import { removeExtraInput } from '../../../utils';
 
 Blockly.Blocks.procedures_defnoreturn = {
     init() {
@@ -7,7 +8,6 @@ Blockly.Blocks.procedures_defnoreturn = {
         this.argument_var_models = [];
         this.is_adding = false;
         this.timeout_id;
-
         this.jsonInit(this.definition());
 
         // Enforce unique procedure names
@@ -17,7 +17,7 @@ Blockly.Blocks.procedures_defnoreturn = {
         // Render a ➕-icon for adding parameters
         const fieldImage = new Blockly.FieldImage(plusIconLight, 24, 24, '+', () => this.onAddClick());
 
-        const dropdown_path = `${this.workspace.options.pathToMedia  }dropdown-arrow.svg`;
+        const dropdown_path = `${this.workspace.options.pathToMedia}dropdown-arrow.svg`;
         // Render a v-icon for adding parameters
         const fieldImageCollapse = new Blockly.FieldImage(
             dropdown_path,
@@ -86,6 +86,7 @@ Blockly.Blocks.procedures_defnoreturn = {
                     block.setFieldValue(event.newValue, 'NAME');
                 });
             }
+            removeExtraInput(this);
         }
     },
     /**
@@ -116,7 +117,7 @@ Blockly.Blocks.procedures_defnoreturn = {
                         this.getProcedureCallers().forEach(block => {
                             block.setProcedureParameters(this.arguments);
                             block.initSvg();
-                            //block.render(false);
+                            block.render();
                         });
                     }
                 }

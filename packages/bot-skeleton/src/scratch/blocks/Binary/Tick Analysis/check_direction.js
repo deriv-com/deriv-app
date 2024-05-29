@@ -34,7 +34,7 @@ Blockly.Blocks.check_direction = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['check_direction'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.check_direction = block => {
     const checkWith = block.getFieldValue('CHECK_DIRECTION');
 
     const code = `Bot.checkDirection('${checkWith}')`;

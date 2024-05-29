@@ -52,11 +52,14 @@ Blockly.Blocks.console = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['console'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.console = block => {
     const console_type = block.getFieldValue('CONSOLE_TYPE') || 'log';
     const message =
-        Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'MESSAGE', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC) ||
-        `"${localize('<empty message>')}"`;
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'MESSAGE',
+            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+        ) || `"${localize('<empty message>')}"`;
 
     const code = `Bot.console({ type: '${console_type}', message: ${message}});\n`;
     return code;

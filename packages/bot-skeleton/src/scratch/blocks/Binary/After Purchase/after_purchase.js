@@ -1,5 +1,6 @@
 import { localize } from '@deriv/translations';
 import { finishSign } from '../../images';
+import { removeExtraInput } from '../../../utils';
 
 Blockly.Blocks.after_purchase = {
     init() {
@@ -54,6 +55,14 @@ Blockly.Blocks.after_purchase = {
             display_name: localize('Restart trading conditions'),
             description: localize('Here is where you can decide if your bot should continue trading.'),
         };
+    },
+    onchange(event) {
+        if (
+            event.type === Blockly.Events.BLOCK_CHANGE ||
+            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
+        ) {
+            removeExtraInput(this);
+        }
     },
 };
 

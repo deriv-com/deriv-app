@@ -52,10 +52,14 @@ Blockly.Blocks.math_round = {
     },
 };
 
-
-Blockly.JavaScript.javascriptGenerator.forBlock['math_round'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.math_round = block => {
     const operation = block.getFieldValue('OP');
-    const argument0 = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'NUM', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC) || '0';
+    const argument0 =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'NUM',
+            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+        ) || '0';
 
     let code;
 

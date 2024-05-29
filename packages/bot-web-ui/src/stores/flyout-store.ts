@@ -51,7 +51,7 @@ export default class FlyoutStore implements IFlyoutStore {
         move: { scrollbars: false, drag: true, wheel: false },
         zoom: { startScale: config.workspaces.flyoutWorkspacesStartScale },
         sounds: false,
-        theme: window.Blockly.Themes?.zelos_renderer,
+        theme: window?.Blockly?.Themes?.zelos_renderer,
     };
 
     is_help_content = false;
@@ -109,7 +109,7 @@ export default class FlyoutStore implements IFlyoutStore {
             parentWorkspace: workspace,
             rtl: workspace.RTL,
             horizontalLayout: true,
-            theme: Blockly.Themes.zelos_renderer,
+            theme: window?.Blockly?.Themes?.zelos_renderer,
         });
 
         if (workspace.horizontalLayout) {
@@ -157,15 +157,15 @@ export default class FlyoutStore implements IFlyoutStore {
         const block_svg_root = block.getSvgRoot();
 
         this.block_listeners.push(
-            window.Blockly.browserEvents.conditionalBind(block_svg_root, 'mousedown', null, event => {
+            window?.Blockly?.browserEvents?.conditionalBind(block_svg_root, 'mousedown', null, event => {
                 GTM.pushDataLayer({
                     event: 'dbot_drag_block',
                     block_type: block.type,
                 });
                 this.flyout.blockMouseDown(block)(event as Blockly.Events.UiBase);
             }),
-            window.Blockly.browserEvents.bind(block_svg_root, 'mouseout', block, block.removeSelect),
-            window.Blockly.browserEvents.bind(block_svg_root, 'mouseover', block, block.addSelect)
+            window?.Blockly?.browserEvents?.bind(block_svg_root, 'mouseout', block, block.removeSelect),
+            window?.Blockly?.browserEvents?.bind(block_svg_root, 'mouseover', block, block.addSelect)
         );
 
         this.block_workspaces.push(workspace);

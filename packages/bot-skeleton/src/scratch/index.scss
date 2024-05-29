@@ -25,10 +25,6 @@ $colour_toolboxSelected: $black;
     .zelos-renderer.zelos_renderer-theme .blocklyNonEditableText > image {
         filter: unset;
     }
-
-    .zelos-renderer.zelos_renderer-theme .blocklySvg text {
-        fill: #fff;
-    }
 }
 
 .zelos-renderer.zelos_renderer-theme,
@@ -386,7 +382,7 @@ $colour_toolboxSelected: $black;
     .blocklyText {
         fill: #333333;
         font-family: inherit;
-        font-size: 1.7rem;
+        font-size: 1.63rem;
         font-weight: normal;
         font-stretch: normal;
         font-style: normal;

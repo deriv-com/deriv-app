@@ -37,8 +37,13 @@ Blockly.Blocks.text_isEmpty = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['text_isEmpty'] = block => {
-    const text = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'VALUE', Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER) || "''";
+Blockly.JavaScript.javascriptGenerator.forBlock.text_isEmpty = block => {
+    const text =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'VALUE',
+            Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+        ) || "''";
     const isVariable = block.workspace.getAllVariables().findIndex(variable => variable.name === text) !== -1;
 
     const code = isVariable ? `!${text} || !${text}.length` : `!${text}.length`;

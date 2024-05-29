@@ -8,16 +8,6 @@ import DBotStore from '../dbot-store';
  * @param {!Event} e Mouse down event.
  * @private
  */
-// Blockly.WorkspaceSvg.prototype.onMouseDown_ = function (e) {
-//     // Bubble mousedown event up for some Core elements to react correctly.
-//     if (e instanceof MouseEvent) {
-//         Blockly.derivWorkspace.cachedParentSvg.dispatchEvent(new e.constructor(e.type, e));
-//     }
-//     const gesture = this.getGesture(e);
-//     if (gesture) {
-//         gesture.handleWsStart(e, this);
-//     }
-// };
 
 /**
  * Scroll the workspace to center on the given block.
@@ -332,116 +322,6 @@ Blockly.WorkspaceSvg.prototype.paste = function (xml_block) {
  * @param {!Event} e Mouse event.
  * @private
  */
-Blockly.WorkspaceSvg.prototype.showContextMenu_ = function (e) {
-    if (this.options.readOnly || Blockly.derivWorkspace.isFlyout_) {
-        return;
-    }
-    const menu_options = [];
-    const top_blocks = this.getTopBlocks(true);
-    const all_blocks = this.getAllBlocks(true);
-
-    // Options to undo/redo previous action.
-    menu_options.push(Blockly.ContextMenu.wsUndoOption(this));
-    menu_options.push(Blockly.ContextMenu.wsRedoOption(this));
-
-    // Option to clean up blocks.
-    if (this.scrollbar) {
-        menu_options.push(Blockly.ContextMenu.wsCleanupOption(this, top_blocks.length));
-    }
-
-    if (this.options.collapse) {
-        const has_collapsed_blocks = all_blocks.some(block => block.isCollapsed());
-        const has_expanded_blocks = all_blocks.some(block => !block.isCollapsed());
-
-        menu_options.push(Blockly.ContextMenu.wsExpandOption(has_collapsed_blocks, all_blocks));
-        menu_options.push(Blockly.ContextMenu.wsCollapseOption(has_expanded_blocks, all_blocks));
-    }
-
-    // Option to add a workspace comment.
-    if (this.options.comments) {
-        menu_options.push(Blockly.ContextMenu.workspaceCommentOption(this, e));
-    }
-
-    menu_options.push(Blockly.ContextMenu.wsDeleteOption(this, top_blocks));
-
-    Blockly.ContextMenu.show(e, menu_options, this.RTL);
-};
-
-/**
- * Dispose of this workspace.
- * Unlink from all DOM elements to prevent memory leaks.
- */
-// kept this code commented since this is not used anymore
-// Blockly.WorkspaceSvg.prototype.dispose = function () {
-// const disposeFn = () => {
-//     // Stop rerendering.
-//     this.rendered = false;
-//     if (this.currentGesture_) {
-//         this.currentGesture_.cancel();
-//     }
-//     //new Blockly.WorkspaceSvg.constructor.call(this);
-//     console.log(this)
-//     if (this.svgGroup_) {
-//         goog.dom.removeNode(this.svgGroup_);
-//         this.svgGroup_ = null;
-//     }
-//     this.svgBlockCanvas_ = null;
-//     this.svgBubbleCanvas_ = null;
-//     if (this.toolbox_) {
-//         this.toolbox_.dispose();
-//         this.toolbox_ = null;
-//     }
-//     if (this.flyout) {
-//         this.flyout.dispose();
-//         this.flyout = null;
-//     }
-//     if (this.trashcan) {
-//         this.trashcan.dispose();
-//         this.trashcan = null;
-//     }
-//     if (this.scrollbar) {
-//         this.scrollbar.dispose();
-//         this.scrollbar = null;
-//     }
-//     if (this.zoomControls_) {
-//         this.zoomControls_.dispose();
-//         this.zoomControls_ = null;
-//     }
-//     if (this.audioManager) {
-//         this.audioManager.dispose();
-//         this.audioManager = null;
-//     }
-//     if (this.grid) {
-//         this.grid.dispose();
-//         this.grid = null;
-//     }
-//     if (this.toolboxCategoryCallbacks) {
-//         this.toolboxCategoryCallbacks = null;
-//     }
-//     if (this.flyoutButtonCallbacks) {
-//         this.flyoutButtonCallbacks = null;
-//     }
-//     if (!this.options.parentWorkspace) {
-//         // Top-most workspace.  Dispose of the div that the
-//         // SVG is injected into (i.e. injectionDiv).
-//         goog.dom.removeNode(this.getParentSvg().parentNode);
-//     }
-//     if (this.resizeHandlerWrapper) {
-//         Blockly.utils.browserEvents.unbind(this.resizeHandlerWrapper);
-//         this.resizeHandlerWrapper = null;
-//     }
-// };
-// if (should_show_loading) {
-//     const { setLoading } = DBotStore.instance;
-//     setLoading(true);
-//     setTimeout(() => {
-//         disposeFn();
-//         setLoading(false);
-//     }, 50);
-// } else {
-//     disposeFn();
-// }
-// };
 
 /**
  * Dispose of all blocks in workspace, with an optimization to prevent resizes.

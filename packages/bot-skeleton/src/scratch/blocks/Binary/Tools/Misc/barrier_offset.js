@@ -25,4 +25,4 @@ Blockly.Blocks.barrier_offset = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['barrier_offset'] = () => {};
+Blockly.JavaScript.javascriptGenerator.forBlock.barrier_offset = () => {};

@@ -44,9 +44,14 @@ Blockly.Blocks.read_ohlc_obj = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['read_ohlc_obj'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.read_ohlc_obj = block => {
     const ohlcField = block.getFieldValue('OHLCFIELD_LIST');
-    const ohlcObj = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'OHLCOBJ', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC) || '{}';
+    const ohlcObj =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'OHLCOBJ',
+            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+        ) || '{}';
 
     const code = `Bot.candleField(${ohlcObj}, '${ohlcField}')`;
     return [code, Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];

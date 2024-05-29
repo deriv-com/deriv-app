@@ -4,7 +4,6 @@ Blockly.Blocks.procedures_callreturn = {
     init() {
         this.arguments = [];
         this.previousDisabledState = false;
-
         this.jsonInit(this.definition());
     },
     definition() {
@@ -26,7 +25,7 @@ Blockly.Blocks.procedures_callreturn = {
             colour: Blockly.Colours.Special2.colour,
             colourSecondary: Blockly.Colours.Special2.colourSecondary,
             colourTertiary: Blockly.Colours.Special2.colourTertiary,
-            tooltip: localize('Custom function call 2'),
+            tooltip: localize('Custom function'),
             category: Blockly.Categories.Functions,
             inputsInline: true,
         };

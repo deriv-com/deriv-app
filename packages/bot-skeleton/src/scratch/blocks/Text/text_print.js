@@ -38,8 +38,13 @@ Blockly.Blocks.text_print = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['text_print'] = block => {
-    const msg = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'TEXT', Blockly.JavaScript.javascriptGenerator.ORDER_NONE) || "''";
+Blockly.JavaScript.javascriptGenerator.forBlock.text_print = block => {
+    const msg =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'TEXT',
+            Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+        ) || "''";
     const code = `window.alert(${msg});\n`;
     return code;
 };

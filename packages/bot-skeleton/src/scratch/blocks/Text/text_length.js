@@ -38,8 +38,13 @@ Blockly.Blocks.text_length = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['text_length'] = block => {
-    const text = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'VALUE', Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL) || "''";
+Blockly.JavaScript.javascriptGenerator.forBlock.text_length = block => {
+    const text =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'VALUE',
+            Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL
+        ) || "''";
 
     const code = `${text}.length`;
     return [code, Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER];

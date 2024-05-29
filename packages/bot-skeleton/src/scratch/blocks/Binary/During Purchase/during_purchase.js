@@ -1,5 +1,6 @@
 import { localize } from '@deriv/translations';
 import { sellContract } from '../../images';
+import { removeExtraInput } from '../../../utils';
 
 Blockly.Blocks.during_purchase = {
     init() {
@@ -56,6 +57,14 @@ Blockly.Blocks.during_purchase = {
                 'Here is where you can decide to sell your contract before it expires. Only one copy of this block is allowed.'
             ),
         };
+    },
+    onchange(event) {
+        if (
+            event.type === Blockly.Events.BLOCK_CHANGE ||
+            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
+        ) {
+            removeExtraInput(this);
+        }
     },
 };
 

@@ -7,7 +7,6 @@ Blockly.Blocks.procedures_defreturn = {
         this.argument_var_models = [];
 
         this.jsonInit(this.definition());
-
         // Enforce unique procedure names
         const nameField = this.getField('NAME');
         nameField.setValidator(Blockly.Procedures.rename);
@@ -15,7 +14,7 @@ Blockly.Blocks.procedures_defreturn = {
         // Render a ➕-icon for adding parameters
         const fieldImage = new Blockly.FieldImage(plusIconDark, 24, 24, '+', () => this.onAddClick());
 
-        const dropdown_path = `${this.workspace.options.pathToMedia  }dropdown-arrow.svg`;
+        const dropdown_path = `${this.workspace.options.pathToMedia}dropdown-arrow.svg`;
         // Render a v-icon for adding parameters
         const fieldImageCollapse = new Blockly.FieldImage(
             dropdown_path,

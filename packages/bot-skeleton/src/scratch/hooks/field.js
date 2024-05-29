@@ -5,10 +5,6 @@ import { localize } from '@deriv/translations';
  * @returns {Blockly.FieldImage} A Blockly.FieldImage pretending to be a checkbox.
  */
 
-Blockly.Field.prototype.setText = function (e) {
-    // eslint-disable-next-line no-param-reassign
-    e !== null && (e = String(e)) !== this.text_ && ((this.text_ = e), this.forceRerender());
-};
 const FieldCheckbox = () => {
     const getAltText = is_checked => (is_checked ? localize('Y') : localize('N'));
     const onCheckboxClick = function () {

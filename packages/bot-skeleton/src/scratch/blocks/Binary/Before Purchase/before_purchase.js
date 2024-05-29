@@ -1,5 +1,6 @@
 import { localize } from '@deriv/translations';
 import { purchase } from '../../images';
+import { removeExtraInput } from '../../../utils';
 
 Blockly.Blocks.before_purchase = {
     init() {
@@ -49,6 +50,14 @@ Blockly.Blocks.before_purchase = {
             tooltip: localize('Specify contract type and purchase conditions.'),
             category: Blockly.Categories.Before_Purchase,
         };
+    },
+    onchange(event) {
+        if (
+            event.type === Blockly.Events.BLOCK_CHANGE ||
+            (event.type === Blockly.Events.BLOCK_DRAG && !event.isStart)
+        ) {
+            removeExtraInput(this);
+        }
     },
     meta() {
         return {

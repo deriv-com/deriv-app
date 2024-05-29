@@ -1,6 +1,5 @@
 import { localize } from '@deriv/translations';
 import DBotStore from '../dbot-store';
-import { save } from '../utils';
 import debounce from 'lodash.debounce';
 
 /**
@@ -14,6 +13,7 @@ const addClass = (element, className) => {
     element.classList.add(...classNames);
     return true;
 };
+
 Blockly.BlockSvg.prototype.addSelect = function () {
     if (!Blockly.derivWorkspace.isFlyout_) {
         const { flyout } = DBotStore.instance;
@@ -31,11 +31,8 @@ Blockly.BlockSvg.prototype.addSelect = function () {
  * @deriv/bot: Call updateDisabled() when setDisabled is called.
  */
 Blockly.BlockSvg.prototype.setDisabled = function (disabled) {
-    if (this.disabled !== disabled) {
-        if (this.rendered) {
-            this.updateDisabled();
-        }
-    }
+    this.disabled = disabled;
+    this.updateDisabled();
 };
 
 /**
@@ -56,123 +53,6 @@ Blockly.BlockSvg.prototype.updateDisabled = function () {
 
     const children = this.getChildren(false);
     children.forEach(child => child.updateDisabled());
-};
-
-/**
- * Show the context menu for this block.
- * @param {!Event} e Mouse event.
- * @private
- * @deriv/bot: Restore contextMenu options from Blockly unavailable in Scratch
- */
-Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
-    if (this.workspace.options.readOnly || !this.contextMenu) {
-        return;
-    }
-
-    // Save the current block in a variable for use in closures.
-    const block = this;
-    const menu_options = [];
-
-    if (this.isDeletable() && this.isMovable() && !block.isInFlyout) {
-        menu_options.push(Blockly.ContextMenu.blockDuplicateOption(block, e));
-        menu_options.push(Blockly.ContextMenu.blockDetachOption(block, e));
-        if (this.isEditable() && this.workspace.options.comments) {
-            menu_options.push(Blockly.ContextMenu.blockCommentOption(block));
-        }
-
-        menu_options.push(Blockly.ContextMenu.blockDeleteOption(block));
-    } else if (this.parentBlock_ && this.isShadow_) {
-        this.parentBlock_.showContextMenu_(e);
-        return;
-    }
-
-    // Option to collapse/expand block.
-    if (this.workspace.options.collapse) {
-        if (this.collapsed_) {
-            const expand_option = { enabled: true };
-            expand_option.text = localize('Expand Block');
-            expand_option.callback = () => block.setCollapsed(false);
-            menu_options.push(expand_option);
-        } else {
-            const collapse_option = { enabled: true };
-            collapse_option.text = localize('Collapse Block');
-            collapse_option.callback = () => block.setCollapsed(true);
-            menu_options.push(collapse_option);
-        }
-    }
-
-    // Option to disable/enable block.
-    if (this.workspace.options.disable) {
-        const restricted_parents = block.restricted_parents || [];
-        const is_trade_parameter = this.type.includes('trade_definition_') && !this.isMovable();
-
-        const disable_option = {
-            text: this.disabled ? localize('Enable Block') : localize('Disable Block'),
-            enabled:
-                !is_trade_parameter &&
-                (!this.disabled ||
-                    restricted_parents.length === 0 ||
-                    restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent))),
-            callback: () => {
-                const group = Blockly.Events.getGroup();
-                if (!group) {
-                    Blockly.Events.setGroup(true);
-                }
-
-                block.setDisabled(!block.disabled);
-
-                if (!group) {
-                    Blockly.Events.setGroup(false);
-                }
-            },
-        };
-        menu_options.push(disable_option);
-    }
-
-    // Option to download block.
-    if (this.isMovable()) {
-        const has_next_block = block.nextConnection && block.nextConnection.isConnected();
-        const downloadBlock = should_delete_next => {
-            const xml = Blockly.Xml.textToDom('<xml/>');
-            const block_xml = Blockly.Xml.blockToDom(block);
-            const file_name = should_delete_next ? block.type : `${block.type}_${localize('stack')}`;
-
-            if (should_delete_next) {
-                Blockly.Xml.deleteNext(block_xml);
-            }
-
-            xml.appendChild(block_xml);
-            save(file_name, /* collection */ true, xml);
-        };
-
-        menu_options.push({
-            text: localize('Download block'),
-            enabled: true,
-            callback: () => downloadBlock(true),
-        });
-
-        if (has_next_block) {
-            menu_options.push({
-                text: localize('Download stack'),
-                enabled: true,
-                callback: () => downloadBlock(false),
-            });
-        }
-    }
-
-    // Disable/Enable stack buttons. If target - last block in stack buttons will be hidden.
-    if (block.nextConnection?.targetConnection) {
-        menu_options.push(Blockly.ContextMenu.blockEnableOption(block, e));
-        menu_options.push(Blockly.ContextMenu.blockDisableOption(block, e));
-    }
-
-    // Allow the block to add or modify menu_options.
-    if (this.customContextMenu) {
-        this.customContextMenu(menu_options);
-    }
-
-    Blockly.ContextMenu.show(e, menu_options, this.RTL);
-    Blockly.ContextMenu.currentBlock = this;
 };
 
 /**
@@ -241,88 +121,6 @@ Blockly.BlockSvg.prototype.blink = function () {
  * Set whether the block is collapsed or not.
  * @param {boolean} collapsed True if collapsed.
  */
-Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
-    //removed this to fix collaspe
-    // if (this.collapsed_ === collapsed) {
-    //     return;
-    // }
-
-    // Firefox fix for Blockly widthcache bug
-    if (navigator.userAgent.search('Firefox') > 0) {
-        setTimeout(() => {
-            this.workspace.getAllFields().forEach(field => field.forceRerender());
-        }, 0); /* Time duration must be 0. We need this function
-        asynchronous for proper rerender after block resizing. */
-    }
-
-    const render_list = [];
-    const COLLAPSED_INPUT_NAME = '_TEMP_COLLAPSED_INPUT';
-
-    // Show/hide the inputs.
-    this.inputList.forEach(input => {
-        render_list.push(...input.setVisible(!collapsed));
-        // Hide empty rounded inputs
-        if (collapsed && input.type === 1 && !input.connection.targetConnection && input.outlinePath)
-            input.outlinePath.style.visibility = 'hidden';
-    });
-
-    if (collapsed) {
-        this.getIcons()
-            // Never hide ScratchBlockComments!
-            .filter(icon => !(icon instanceof Blockly.WorkspaceComment))
-            .forEach(icon => icon.setVisible(false));
-
-        // Ensure class persists through collapse. Falls back to first
-        // field that has a class. Doesn't work when multiple
-        // field_labels on a block have different classes. So far we
-        // don't have a situation like that, so it works. 👍
-        let field_class = null;
-
-        this.inputList.some(input =>
-            input.fieldRow.some(field => {
-                if (field.class_) {
-                    field_class = field.class_;
-                    return true;
-                }
-                return false;
-            })
-        );
-
-        const dropdown_path = `${this.workspace.options.pathToMedia  }dropdown-arrow.svg`;
-        const field_expand_icon = new Blockly.FieldImage(dropdown_path, 16, 16, localize('Expand'), () =>
-            this.toggleCollapseWithDelay(false)
-        );
-
-        if (this.type === 'procedures_defreturn' || this.type === 'procedures_defnoreturn') {
-            const function_name = this.getFieldValue('NAME');
-            const args = ` (${this.arguments.join(', ')})`;
-
-            this.appendDummyInput(COLLAPSED_INPUT_NAME)
-                .appendField(new Blockly.FieldLabel(localize('function'), field_class))
-                .appendField(new Blockly.FieldLabel(function_name + args, 'header__title'))
-                .appendField(field_expand_icon)
-                .init();
-        } else {
-            const text = this.toString(Blockly.COLLAPSE_CHARS);
-            const field_label = new Blockly.FieldLabel(text, field_class);
-
-            this.appendDummyInput(COLLAPSED_INPUT_NAME).appendField(field_label).appendField(field_expand_icon).init();
-        }
-    } else {
-        this.inputList.forEach(input => {
-            if (input.name === COLLAPSED_INPUT_NAME) {
-                input.sourceBlock.removeInput(COLLAPSED_INPUT_NAME, true);
-            }
-        });
-        this.setWarningText(null); // Clear any warnings inherited from enclosed blocks.
-    }
-
-    if (!render_list.length) {
-        render_list.push(this); // No child blocks, just render this block.
-    }
-    // Check whether the collapsed block needs to be highlighted.
-    this.setErrorHighlighted(collapsed && this.hasErrorHighlightedDescendant());
-};
 
 /**
  * Toggles the collapse state of the block after a short delay to prevent workspace freezing.

@@ -90,7 +90,9 @@ const FlyoutContent = (props: TFlyoutContent) => {
 
                                 return (
                                     <FlyoutBlockGroup
-                                        key={`${node.getAttribute('type')}${Blockly.utils.idGenerator.genUid()}`}
+                                        key={`${node.getAttribute(
+                                            'type'
+                                        )}${window?.Blockly?.utils?.idGenerator?.genUid()}`}
                                         id={`flyout__item-workspace--${index}`}
                                         block_node={node}
                                         should_hide_display_name={

@@ -48,9 +48,14 @@ Blockly.Blocks.timeout = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['timeout'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.timeout = block => {
     const stack = Blockly.JavaScript.javascriptGenerator.statementToCode(block, 'TIMEOUTSTACK');
-    const seconds = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'SECONDS', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC) || '1';
+    const seconds =
+        Blockly.JavaScript.javascriptGenerator.valueToCode(
+            block,
+            'SECONDS',
+            Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+        ) || '1';
 
     const code = `sleep(${seconds});\n${stack}\n`;
     return code;

@@ -5,7 +5,6 @@ Blockly.Blocks.procedures_callnoreturn = {
         this.arguments = [];
         this.argument_var_models = [];
         this.previousDisabledState = false;
-
         this.jsonInit(this.definition());
     },
     /**

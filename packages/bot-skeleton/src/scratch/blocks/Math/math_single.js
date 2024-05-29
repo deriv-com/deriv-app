@@ -48,14 +48,19 @@ Blockly.Blocks.math_single = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['math_single'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.math_single = block => {
     const operator = block.getFieldValue('OP');
 
     let code, arg;
 
     if (operator === 'NEG') {
         // Negation is a special case given its different operator precedence.
-        arg = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'NUM', Blockly.JavaScript.javascriptGenerator.ORDER_UNARY_NEGATION) || '0';
+        arg =
+            Blockly.JavaScript.javascriptGenerator.valueToCode(
+                block,
+                'NUM',
+                Blockly.JavaScript.javascriptGenerator.ORDER_UNARY_NEGATION
+            ) || '0';
         if (arg[0] === '-') {
             // --3 is not legal in JS
             arg = ` ${arg}`;
@@ -65,9 +70,19 @@ Blockly.JavaScript.javascriptGenerator.forBlock['math_single'] = block => {
     }
 
     if (['SIN', 'COS', 'TAN'].includes(operator)) {
-        arg = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'NUM', Blockly.JavaScript.javascriptGenerator.ORDER_DIVISION) || '0';
+        arg =
+            Blockly.JavaScript.javascriptGenerator.valueToCode(
+                block,
+                'NUM',
+                Blockly.JavaScript.javascriptGenerator.ORDER_DIVISION
+            ) || '0';
     } else {
-        arg = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'NUM', Blockly.JavaScript.javascriptGenerator.ORDER_NONE) || '0';
+        arg =
+            Blockly.JavaScript.javascriptGenerator.valueToCode(
+                block,
+                'NUM',
+                Blockly.JavaScript.javascriptGenerator.ORDER_NONE
+            ) || '0';
     }
 
     // First, handle cases which generate values that don't need parentheses

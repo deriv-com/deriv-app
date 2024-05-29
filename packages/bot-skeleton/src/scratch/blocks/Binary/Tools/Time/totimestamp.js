@@ -44,8 +44,12 @@ Blockly.Blocks.totimestamp = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['totimestamp'] = block => {
-    const datetime_string = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'DATETIME', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC);
+Blockly.JavaScript.javascriptGenerator.forBlock.totimestamp = block => {
+    const datetime_string = Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'DATETIME',
+        Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+    );
     const code = `Bot.dateTimeStringToTimestamp(${datetime_string})`;
     return [code, Blockly.JavaScript.javascriptGenerator.ORDER_FUNCTION_CALL];
 };

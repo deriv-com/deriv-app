@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 // import { defineContract } from '../../images';
 import DBotStore from '../../../dbot-store';
-import { runIrreversibleEvents } from '../../../utils';
+import { runIrreversibleEvents, removeExtraInput } from '../../../utils';
 import { removeErrorHandlingEventListener, initErrorHandlingListener } from '../../../../utils';
 import { config } from '../../../../constants/config';
 
@@ -11,7 +11,7 @@ import { config } from '../../../../constants/config';
  */
 function randomColour() {
     const num = Math.floor(Math.random() * Math.pow(2, 24));
-    return `#${  (`00000${  num.toString(16)}`).substr(-6)}`;
+    return `#${`00000${num.toString(16)}`.substr(-6)}`;
 }
 
 Blockly.Blocks.colour_picker = {
@@ -19,7 +19,7 @@ Blockly.Blocks.colour_picker = {
      * Block for colour picker.
      * @this Blockly.Block
      */
-    init () {
+    init() {
         this.jsonInit({
             message0: '%1',
             args0: [
@@ -40,7 +40,7 @@ Blockly.Blocks.math_number = {
      * Block for generic numeric value.
      * @this Blockly.Block
      */
-    init () {
+    init() {
         this.jsonInit({
             message0: '%1',
             args0: [
@@ -65,7 +65,7 @@ Blockly.Blocks.math_integer = {
      * Block for integer value (no decimal, + or -).
      * @this Blockly.Block
      */
-    init () {
+    init() {
         this.jsonInit({
             message0: '%1',
             args0: [
@@ -90,7 +90,7 @@ Blockly.Blocks.math_whole_number = {
      * Block for whole number value, no negatives or decimals.
      * @this Blockly.Block
      */
-    init () {
+    init() {
         this.jsonInit({
             message0: '%1',
             args0: [
@@ -116,7 +116,7 @@ Blockly.Blocks.math_positive_number = {
      * Block for positive number value, with decimal.
      * @this Blockly.Block
      */
-    init () {
+    init() {
         this.jsonInit({
             message0: '%1',
             args0: [
@@ -141,7 +141,7 @@ Blockly.Blocks.math_angle = {
      * Block for angle picker.
      * @this Blockly.Block
      */
-    init () {
+    init() {
         this.jsonInit({
             message0: '%1',
             args0: [
@@ -328,6 +328,7 @@ const trade_definition_block = {
                 });
             }
         }
+        removeExtraInput(this);
     },
 };
 

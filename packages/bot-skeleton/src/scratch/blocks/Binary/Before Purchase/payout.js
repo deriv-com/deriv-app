@@ -36,8 +36,7 @@ Blockly.Blocks.payout = {
     enforceLimitations: Blockly.Blocks.purchase.enforceLimitations,
 };
 
-
-Blockly.JavaScript.javascriptGenerator.forBlock['payout'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.payout = block => {
     const purchaseList = block.getFieldValue('PURCHASE_LIST');
 
     const code = `Bot.getPayout('${purchaseList}')`;

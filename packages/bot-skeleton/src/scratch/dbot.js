@@ -612,7 +612,7 @@ class DBot {
                     block.removeSelect();
                 }
 
-                // block.setErrorHighlighted(should_highlight, block.error_message || undefined);
+                block.setErrorHighlighted(should_highlight, block.error_message || undefined);
 
                 // Automatically expand blocks that have been highlighted.
                 if (force_check && (block.is_error_highlighted || block.hasErrorHighlightedDescendant())) {

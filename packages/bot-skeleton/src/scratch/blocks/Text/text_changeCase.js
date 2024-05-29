@@ -50,14 +50,16 @@ Blockly.Blocks.text_changeCase = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['text_changeCase'] = block => {
+Blockly.JavaScript.javascriptGenerator.forBlock.text_changeCase = block => {
     const operators = {
         UPPERCASE: '.toUpperCase()',
         LOWERCASE: '.toLowerCase()',
         TITLECASE: null,
     };
     const operator = operators[block.getFieldValue('CASE')];
-    const textOrder = operator ? Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER : Blockly.JavaScript.javascriptGenerator.ORDER_NONE;
+    const textOrder = operator
+        ? Blockly.JavaScript.javascriptGenerator.ORDER_MEMBER
+        : Blockly.JavaScript.javascriptGenerator.ORDER_NONE;
     const text = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'TEXT', textOrder) || "''";
 
     let code;

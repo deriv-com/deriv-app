@@ -7,7 +7,6 @@ import { localize } from '@deriv/translations';
 Blockly.Blocks.procedures_ifreturn = {
     init() {
         this.hasReturnValue = true;
-
         this.jsonInit(this.definition());
     },
     definition() {
@@ -64,7 +63,7 @@ Blockly.Blocks.procedures_ifreturn = {
             this.removeInput('VALUE');
             this.appendDummyInput('VALUE').appendField(localize('return'));
             this.initSvg();
-            //this.render();
+            this.render();
         }
     },
     /**
@@ -93,7 +92,7 @@ Blockly.Blocks.procedures_ifreturn = {
         if (legal) {
             const rerender = () => {
                 this.initSvg();
-                //this.render();
+                this.render();
             };
 
             // If needed, toggle whether this block has a return value.

@@ -561,3 +561,38 @@ export const isDarkRgbColour = string_rgb => {
     return luma < 160;
 };
 /* eslint-enable */
+
+export const removeExtraInput = instance => {
+    const collapsed_input = instance.getInput('_TEMP_COLLAPSED_INPUT');
+    const procedures_array = ['procedures_defreturn', 'procedures_defnoreturn'];
+    if (collapsed_input && instance.collapsed_ && !collapsed_input.icon_added) {
+        collapsed_input.icon_added = true;
+        const dropdown_path = `${instance.workspace.options.pathToMedia}dropdown-arrow.svg`;
+        const field_expand_icon = new Blockly.FieldImage(dropdown_path, 16, 16, localize('Expand'), () =>
+            instance.setCollapsed(false)
+        );
+        const function_name = instance.getFieldValue('NAME');
+        const args = ` (${instance?.arguments?.join(', ')})`;
+
+        if (procedures_array.includes(instance.type)) {
+            collapsed_input
+                .appendField(new Blockly.FieldLabel(localize('function'), ''))
+                .appendField(new Blockly.FieldLabel(function_name + args, 'header__title'))
+                .appendField(field_expand_icon);
+        } else {
+            collapsed_input.appendField(field_expand_icon);
+        }
+
+        const remove_last_input = dummy_input => {
+            const tmp_array = dummy_input.fieldRow;
+
+            const value_input = procedures_array.includes(instance.type) ? 0 : 2;
+            if (!procedures_array.includes(instance.type)) {
+                tmp_array[0]?.setClass('blocklyTextRootBlockHeader');
+            }
+            tmp_array[value_input]?.setVisible(false);
+            tmp_array[value_input]?.forceRerender();
+        };
+        remove_last_input(collapsed_input);
+    }
+};

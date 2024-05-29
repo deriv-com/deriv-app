@@ -27,4 +27,7 @@ Blockly.Blocks.total_runs = {
     onchange: Blockly.Blocks.total_profit.onchange,
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['total_runs'] = () => ['Bot.getTotalRuns()', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+Blockly.JavaScript.javascriptGenerator.forBlock.total_runs = () => [
+    'Bot.getTotalRuns()',
+    Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+];

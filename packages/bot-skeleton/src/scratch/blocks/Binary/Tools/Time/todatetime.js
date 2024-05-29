@@ -47,8 +47,12 @@ Blockly.Blocks.todatetime = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['todatetime'] = block => {
-    const timestamp = Blockly.JavaScript.javascriptGenerator.valueToCode(block, 'TIMESTAMP', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC);
+Blockly.JavaScript.javascriptGenerator.forBlock.todatetime = block => {
+    const timestamp = Blockly.JavaScript.javascriptGenerator.valueToCode(
+        block,
+        'TIMESTAMP',
+        Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC
+    );
     const invalid_timestamp = `${localize('Invalid timestamp')}:`;
 
     // eslint-disable-next-line no-underscore-dangle

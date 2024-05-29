@@ -24,4 +24,7 @@ Blockly.Blocks.epoch = {
     },
 };
 
-Blockly.JavaScript.javascriptGenerator.forBlock['epoch'] = () => ['Bot.getTime()', Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC];
+Blockly.JavaScript.javascriptGenerator.forBlock.epoch = () => [
+    'Bot.getTime()',
+    Blockly.JavaScript.javascriptGenerator.ORDER_ATOMIC,
+];

@@ -247,6 +247,12 @@ export default class TradersHubStore extends BaseStore {
             this.root_store.client;
 
         if (account_type === 'demo') {
+            const is_low_risk_cr_real_account =
+                this.content_flag === ContentFlag.LOW_RISK_CR_NON_EU ||
+                this.content_flag === ContentFlag.LOW_RISK_CR_EU;
+            if (is_low_risk_cr_real_account) {
+                localStorage.removeItem('is_eu_user');
+            }
             await switchAccount(account_list.find(acc => acc.is_virtual && !acc.is_disabled)?.loginid);
         } else if (account_type === 'real') {
             if (!has_active_real_account && this.content_flag === ContentFlag.EU_DEMO) {

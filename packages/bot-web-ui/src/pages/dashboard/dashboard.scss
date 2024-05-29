@@ -143,6 +143,7 @@
                 margin-top: 1.6rem;
                 &__has-list {
                     text-align: center;
+                    margin-top: 0;
                     @include mobile {
                         text-align: start;
                         width: 85%;

@@ -368,7 +368,7 @@
         }
     }
     &__table {
-        height: calc(100vh - 58rem);
+        height: calc(100vh - 57rem);
         overflow: auto;
     }
     &__title {
@@ -391,7 +391,7 @@
 
         &__label {
             padding: 0.8rem 1.6rem;
-            width: 34%;
+            width: 35%;
             @include mobile {
                 width: 40%;
                 padding: 0;

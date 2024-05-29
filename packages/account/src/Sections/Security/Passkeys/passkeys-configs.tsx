@@ -1,6 +1,6 @@
 import React from 'react';
 import { TSocketError } from '@deriv/api/types';
-import { Analytics, TEvents } from '@deriv-com/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { Text } from '@deriv/components';
 import { getOSNameWithUAParser } from '@deriv/shared';
 import { Localize } from '@deriv/translations';

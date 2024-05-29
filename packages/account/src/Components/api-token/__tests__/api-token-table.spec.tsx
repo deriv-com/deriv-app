@@ -1,9 +1,15 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
+import { useDevice } from '@deriv-com/ui';
 import ApiTokenContext from '../api-token-context';
 import ApiTokenTable from '../api-token-table';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { TApiContext } from 'Types';
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
 describe('ApiTokenTable', () => {
     const mock_props: TApiContext = {
@@ -56,7 +62,8 @@ describe('ApiTokenTable', () => {
         });
     });
 
-    it('should render in mobile view', () => {
+    it('should render in responsive view', () => {
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
         const mock_store = mockStore({
             ui: {
                 is_mobile: true,

@@ -4,6 +4,12 @@ import SelfExclusionArticle from '../self-exclusion-article';
 import { selfExclusionArticleItems } from 'Components/self-exclusion/self-exclusion-article-content';
 import SelfExclusionContext from '../self-exclusion-context';
 import { mockStore, StoreProvider } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
 jest.mock('Components/self-exclusion/self-exclusion-article-content', () => ({
     ...jest.requireActual('Components/self-exclusion/self-exclusion-article-content'),
@@ -19,6 +25,8 @@ describe('<SelfExclusionArticle />', () => {
         toggleArticle: jest.fn(),
         handleSubmit: jest.fn(),
     };
+
+    const store = mockStore({});
 
     const eu_item =
         /these trading limits and self-exclusion help you control the amount of money and time you spend on deriv.com and exercise/i;
@@ -37,17 +45,11 @@ describe('<SelfExclusionArticle />', () => {
     });
 
     it('should render SelfExclusionArticle desktop component with selfExclusionArticleItems', () => {
-        const new_store = mockStore({
-            ui: {
-                is_desktop: true,
-                is_mobile: true,
-            },
-        });
-
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: true });
         (selfExclusionArticleItems as jest.Mock).mockImplementation(() => ['Self Exclusion Article Items']);
 
         render(
-            <StoreProvider store={new_store}>
+            <StoreProvider store={store}>
                 <SelfExclusionContext.Provider value={mock_self_exclusion_context}>
                     <SelfExclusionArticle />
                 </SelfExclusionContext.Provider>
@@ -60,16 +62,11 @@ describe('<SelfExclusionArticle />', () => {
     });
 
     it('should render SelfExclusionArticle desktop component without is_appstore for EU items', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: true });
         mock_self_exclusion_context.is_eu = true;
-        const new_store = mockStore({
-            ui: {
-                is_desktop: false,
-                is_mobile: true,
-            },
-        });
 
         render(
-            <StoreProvider store={new_store}>
+            <StoreProvider store={store}>
                 <SelfExclusionContext.Provider value={mock_self_exclusion_context}>
                     <SelfExclusionArticle />
                 </SelfExclusionContext.Provider>
@@ -82,15 +79,10 @@ describe('<SelfExclusionArticle />', () => {
     });
 
     it('should render SelfExclusionArticle desktop component for non EU items', () => {
-        const new_store = mockStore({
-            ui: {
-                is_desktop: false,
-                is_mobile: false,
-            },
-        });
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: true });
 
         render(
-            <StoreProvider store={new_store}>
+            <StoreProvider store={store}>
                 <SelfExclusionContext.Provider value={mock_self_exclusion_context}>
                     <SelfExclusionArticle />
                 </SelfExclusionContext.Provider>
@@ -103,16 +95,11 @@ describe('<SelfExclusionArticle />', () => {
     });
 
     it('should render SelfExclusionArticle mobile component and trigger click', () => {
-        const new_store = mockStore({
-            ui: {
-                is_desktop: false,
-                is_mobile: true,
-            },
-        });
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         const mockToggleArticle = mock_self_exclusion_context.toggleArticle;
 
         render(
-            <StoreProvider store={new_store}>
+            <StoreProvider store={store}>
                 <SelfExclusionContext.Provider value={mock_self_exclusion_context}>
                     <SelfExclusionArticle />
                 </SelfExclusionContext.Provider>

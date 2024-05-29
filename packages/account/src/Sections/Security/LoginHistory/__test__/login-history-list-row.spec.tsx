@@ -47,7 +47,7 @@ describe('LoginHistoryListRow', () => {
     });
 
     it('should not render Status if is not desktop', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         renderComponent();
         expect(screen.queryByText('status')).not.toBeInTheDocument();
         expect(screen.queryByText('successful')).not.toBeInTheDocument();

@@ -43,21 +43,27 @@ const BottomNav = observer(({ children, className, selectedItemIdx = 0, setSelec
             label: <Localize i18n_default_text='Markets' />,
         },
         {
-            icon: (
-                <Badge
-                    variant='notification'
-                    position='top-right'
-                    label={active_positions_count.toString()}
-                    color='danger'
-                    size='sm'
-                    contentSize='sm'
-                >
+            icon:
+                active_positions_count > 0 ? (
+                    <Badge
+                        variant='notification'
+                        position='top-right'
+                        label={active_positions_count.toString()}
+                        color='danger'
+                        size='sm'
+                        contentSize='sm'
+                    >
+                        <StandaloneClockThreeRegularIcon
+                            iconSize='sm'
+                            fill='var(--semantic-color-monochrome-textIcon-normal-high)'
+                        />
+                    </Badge>
+                ) : (
                     <StandaloneClockThreeRegularIcon
                         iconSize='sm'
                         fill='var(--semantic-color-monochrome-textIcon-normal-high)'
                     />
-                </Badge>
-            ),
+                ),
             label: <Localize i18n_default_text='Positions' />,
         },
         {

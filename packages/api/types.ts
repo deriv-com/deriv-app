@@ -2284,6 +2284,40 @@ type PhoneNumberChallengeResponse = {
     [k: string]: unknown;
 };
 
+// TODO: remove these mock phone number challenge types after implementing them inside api-types
+type PhoneNumberVerifyRequest = {
+    /**
+     * Must be `1`
+     */
+    phone_number_verify: 1;
+    /**
+     * The carrier sending the OTP.
+     */
+    otp: string;
+    /**
+     * [Optional] Used to map request to response.
+     */
+    req_id?: number;
+};
+
+type PhoneNumberVerifyResponse = {
+    /**
+     * Echo of the request made.
+     */
+    echo_req: {
+        [k: string]: unknown;
+    };
+    /**
+     * Action name of the request made.
+     */
+    msg_type: 'phone_number_verify';
+    /**
+     * Optional field sent in request to map to response, present only when request contains `req_id`.
+     */
+    req_id?: number;
+    [k: string]: unknown;
+};
+
 type TSocketEndpoints = {
     active_symbols: {
         request: ActiveSymbolsRequest;
@@ -2628,6 +2662,10 @@ type TSocketEndpoints = {
     phone_number_challenge: {
         request: PhoneNumberChallengeRequest;
         response: PhoneNumberChallengeResponse;
+    };
+    phone_number_verify: {
+        request: PhoneNumberVerifyRequest;
+        response: PhoneNumberVerifyResponse;
     };
     ping: {
         request: PingRequest;

@@ -6,7 +6,6 @@ import { Localize } from '@deriv/translations';
 import ConfirmPhoneNumber from './confirm-phone-number';
 import OTPVerification from './otp-verification';
 import CancelPhoneVerificationModal from './cancel-phone-verification-modal';
-import PhoneNumberVerifiedModal from './phone-number-verified-modal';
 import VerificationLinkExpiredModal from './verification-link-expired-modal';
 
 const PhoneVerificationPage = () => {
@@ -27,7 +26,6 @@ const PhoneVerificationPage = () => {
                 should_show_verification_link_expired_modal={should_show_verification_link_expired_modal}
                 setShouldShowVerificationLinkExpiredModal={setShouldShowVerificationLinkExpiredModal}
             />
-            <PhoneNumberVerifiedModal />
             <CancelPhoneVerificationModal
                 should_show_cancel_verification_modal={should_show_cancel_verification_modal}
                 setShouldShowCancelVerificationModal={setShouldShowCancelVerificationModal}

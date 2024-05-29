@@ -2,7 +2,6 @@ import React from 'react';
 import PhoneVerificationCard from './phone-verification-card';
 import { Button, Text, TextField } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
-import { Input } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { useGetPhoneNumberOTP } from '@deriv/hooks';
 import { VERIFICATION_SERVICES } from '@deriv/shared';

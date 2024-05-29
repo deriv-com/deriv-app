@@ -3,8 +3,10 @@ import { render, screen } from '@testing-library/react';
 import { getCardLabels, toMoment } from '@deriv/shared';
 import { ContractCardStatusTimer } from '../contract-card-status-timer';
 
+const mockedNow = Math.floor(Date.now() / 1000);
+
 describe('ContractCardStatusTimer', () => {
-    const mockProps = { date_expiry: Date.now() / 1000 + 1000 };
+    const mockProps = { date_expiry: mockedNow + 1000 };
     it('should render Closed status if date_expiry is not passed', () => {
         render(<ContractCardStatusTimer />);
 
@@ -16,7 +18,7 @@ describe('ContractCardStatusTimer', () => {
         expect(container).toBeEmptyDOMElement();
     });
     it('should render remaining time if date_expiry and serverTime are passed', () => {
-        render(<ContractCardStatusTimer {...mockProps} serverTime={toMoment(Date.now() / 1000)} />);
+        render(<ContractCardStatusTimer {...mockProps} serverTime={toMoment(mockedNow)} />);
 
         expect(screen.getByText('00:16:40')).toBeInTheDocument();
     });

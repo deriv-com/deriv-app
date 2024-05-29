@@ -8,6 +8,8 @@ import { TPortfolioPosition } from '@deriv/stores/types';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 import ContractCard from '../contract-card';
 
+const mockedNow = Math.floor(Date.now() / 1000);
+
 const closedPositions = [
     {
         contract_info: {
@@ -46,8 +48,8 @@ const openPositions = [
             current_spot: 681.76,
             current_spot_display_value: '681.76',
             current_spot_time: 1716220628,
-            date_expiry: Date.now() / 1000 + 1000,
-            date_settlement: Date.now() / 1000 + 1000,
+            date_expiry: mockedNow + 1000,
+            date_settlement: mockedNow + 1000,
             date_start: 1716220562,
             display_name: 'Volatility 100 (1s) Index',
             entry_spot: 682.6,
@@ -55,7 +57,7 @@ const openPositions = [
             entry_tick: 682.6,
             entry_tick_display_value: '682.60',
             entry_tick_time: 1716220563,
-            expiry_time: Date.now() / 1000 + 1000,
+            expiry_time: mockedNow + 1000,
             id: '917d1b48-305b-a2f4-5b9c-7fb1f2c6c145',
             is_expired: 0,
             is_forward_starting: 0,
@@ -71,7 +73,7 @@ const openPositions = [
             profit: -2.62,
             profit_percentage: -29.11,
             purchase_time: 1716220562,
-            shortcode: `CALL_1HZ100V_17.61_1716220562_${Date.now() / 1000 + 1000}F_S0P_0`,
+            shortcode: `CALL_1HZ100V_17.61_1716220562_${mockedNow + 1000}F_S0P_0`,
             status: 'open',
             transaction_ids: {
                 buy: 484286139408,
@@ -110,8 +112,8 @@ const openPositions = [
             current_spot: 681.71,
             current_spot_display_value: '681.71',
             current_spot_time: 1716220672,
-            date_expiry: Date.now() / 1000 + 1000,
-            date_settlement: Date.now() / 1000 + 1000,
+            date_expiry: mockedNow + 1000,
+            date_settlement: mockedNow + 1000,
             date_start: 1716220583,
             display_name: 'Volatility 100 (1s) Index',
             entry_spot: 682.23,
@@ -119,7 +121,7 @@ const openPositions = [
             entry_tick: 682.23,
             entry_tick_display_value: '682.23',
             entry_tick_time: 1716220584,
-            expiry_time: Date.now() / 1000 + 1000,
+            expiry_time: mockedNow + 1000,
             id: '917d1b48-305b-a2f4-5b9c-7fb1f2c6c145',
             is_expired: 0,
             is_forward_starting: 0,
@@ -143,7 +145,7 @@ const openPositions = [
             profit: -0.1,
             profit_percentage: -1.11,
             purchase_time: 1716220583,
-            shortcode: `MULTUP_1HZ100V_9.00_10_1716220583_${Date.now() / 1000 + 1000}_60m_0.00_N1`,
+            shortcode: `MULTUP_1HZ100V_9.00_10_1716220583_${mockedNow + 1000}_60m_0.00_N1`,
             status: 'open',
             transaction_ids: {
                 buy: 484286215128,
@@ -189,8 +191,8 @@ const openPositions = [
             current_spot_high_barrier: '683.016',
             current_spot_low_barrier: '682.424',
             current_spot_time: 1716220720,
-            date_expiry: Date.now() / 1000 + 1000,
-            date_settlement: Date.now() / 1000 + 1000,
+            date_expiry: mockedNow + 1000,
+            date_settlement: mockedNow + 1000,
             date_start: 1716220710,
             display_name: 'Volatility 100 (1s) Index',
             entry_spot: 682.58,
@@ -198,7 +200,7 @@ const openPositions = [
             entry_tick: 682.58,
             entry_tick_display_value: '682.58',
             entry_tick_time: 1716220711,
-            expiry_time: Date.now() / 1000 + 1000,
+            expiry_time: mockedNow + 1000,
             growth_rate: 0.01,
             high_barrier: '683.046',
             id: '917d1b48-305b-a2f4-5b9c-7fb1f2c6c145',
@@ -306,15 +308,16 @@ describe('ContractCard', () => {
         currency: 'USD',
         hasActionButtons: true,
         isSellRequested: false,
-        redirectTo: getContractPath(openPositions[0].contract_info.contract_id),
-        serverTime: toMoment(Date.now() / 1000),
+        serverTime: toMoment(mockedNow),
     };
     const mockedContractCard = (props = mockProps) => (
         <Router history={history}>
             <ContractCard {...props} />
         </Router>
     );
-
+    beforeEach(() => {
+        history.push('/');
+    });
     it('should not render component if contractInfo prop is empty/missing contract_type', () => {
         const { container } = render(mockedContractCard({ ...mockProps, contractInfo: {} }));
 
@@ -433,5 +436,20 @@ describe('ContractCard', () => {
         userEvent.click(card);
         expect(mockedOnClick).toHaveBeenCalledTimes(1);
         expect(history.location.pathname).toBe(redirectTo);
+    });
+    it('should call onClick when a card is clicked, but should not redirect anywhere if redirectTo prop is missing', () => {
+        const mockedOnClick = jest.fn();
+        const redirectTo = getContractPath(Number(closedPositions[0].contract_info.contract_id));
+        render(
+            mockedContractCard({
+                ...mockProps,
+                contractInfo: closedPositions[0].contract_info,
+                onClick: mockedOnClick,
+            })
+        );
+        const card = screen.getByText('Turbos Up');
+        userEvent.click(card);
+        expect(mockedOnClick).toHaveBeenCalledTimes(1);
+        expect(history.location.pathname).not.toBe(redirectTo);
     });
 });

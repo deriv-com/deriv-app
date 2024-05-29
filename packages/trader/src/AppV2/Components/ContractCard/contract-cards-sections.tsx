@@ -24,24 +24,29 @@ const ContractCardsSections = ({ isLoadingMore, hasBottomMargin, positions }: TC
 
     if (!positions?.length) return null;
     return (
-        <div
-            className={clsx('contract-cards-sections', hasBottomMargin && 'contract-cards-sections--has-bottom-margin')}
-        >
-            {uniqueDates.map(date => (
-                <div className='contract-cards-section' key={date}>
-                    <Text as='p' className='contract-cards-section__title' bold size='sm'>
-                        {date}
-                    </Text>
-                    <ContractCardList
-                        positions={positions.filter(position => {
-                            const purchaseTime = position.contract_info.purchase_time_unix;
-                            return purchaseTime && formatTime(purchaseTime) === date;
-                        })}
-                    />
-                    {isLoadingMore && <Loading is_fullscreen={false} />}
-                </div>
-            ))}
-        </div>
+        <React.Fragment>
+            <div
+                className={clsx(
+                    'contract-cards-sections',
+                    hasBottomMargin && 'contract-cards-sections--has-bottom-margin'
+                )}
+            >
+                {uniqueDates.map(date => (
+                    <div className='contract-cards-section' key={date}>
+                        <Text as='p' className='contract-cards-section__title' bold size='sm'>
+                            {date}
+                        </Text>
+                        <ContractCardList
+                            positions={positions.filter(position => {
+                                const purchaseTime = position.contract_info.purchase_time_unix;
+                                return purchaseTime && formatTime(purchaseTime) === date;
+                            })}
+                        />
+                    </div>
+                ))}
+            </div>
+            {isLoadingMore && <Loading is_fullscreen={false} />}
+        </React.Fragment>
     );
 };
 

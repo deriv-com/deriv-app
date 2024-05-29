@@ -27,10 +27,10 @@ type TContractCardProps = TContractCardStatusTimerProps & {
     currency?: string;
     hasActionButtons?: boolean;
     isSellRequested?: boolean;
-    onClick?: (e?: React.MouseEvent<HTMLAnchorElement>) => void;
+    onClick?: (e?: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>) => void;
     onCancel?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
     onClose?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
-    redirectTo: string;
+    redirectTo?: string;
     serverTime?: TRootStore['common']['server_time'];
 };
 
@@ -78,6 +78,7 @@ const ContractCard = ({
     const validToSell = isValidToSell(contractInfo as TContractInfo) && !isSellRequested;
     const isCancelButtonPressed = isSellRequested && isCanceling;
     const isCloseButtonPressed = isSellRequested && isClosing;
+    const Component = redirectTo ? BinaryLink : 'div';
 
     const handleSwipe = (direction: string) => {
         const isLeft = direction === DIRECTION.LEFT;
@@ -111,7 +112,7 @@ const ContractCard = ({
     if (!contract_type) return null;
     return (
         <div className={clsx(`${className}-wrapper`, { deleted: isDeleted })}>
-            <BinaryLink
+            <Component
                 {...(hasActionButtons ? swipeHandlers : {})}
                 className={clsx(className, {
                     'show-buttons': shouldShowButtons,
@@ -183,7 +184,7 @@ const ContractCard = ({
                         </button>
                     </div>
                 )}
-            </BinaryLink>
+            </Component>
         </div>
     );
 };

@@ -42,7 +42,20 @@ $TABS_HEIGHT: var(--core-size-2400);
             padding-inline-start: var(--core-spacing-400);
             display: flex;
             gap: var(--core-spacing-400);
-            flex-wrap: wrap;
+            overflow-x: auto;
+            min-height: var(--core-spacing-2400);
+            white-space: nowrap;
+
+            -ms-overflow-style: none; /* Internet Explorer 10+ */
+            scrollbar-width: none; /* Firefox */
+
+            &::-webkit-scrollbar {
+                display: none; /* Safari and Chrome */
+            }
+
+            .quill-chip {
+                display: inline-flex;
+            }
         }
     }
     .initial-loader {

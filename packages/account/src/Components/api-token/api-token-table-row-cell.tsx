@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Text } from '@deriv/components';
 
 type TApiTokenTableRowCell = {
@@ -13,11 +13,11 @@ const ApiTokenTableRowCell = ({
     should_bypass_text,
 }: React.PropsWithChildren<Partial<TApiTokenTableRowCell>>) => {
     if (should_bypass_text) {
-        return <td className={classNames('da-api-token__table-cell', className)}>{children}</td>;
+        return <td className={clsx('da-api-token__table-cell', className)}>{children}</td>;
     }
 
     return (
-        <td className={classNames('da-api-token__table-cell', className)}>
+        <td className={clsx('da-api-token__table-cell', className)}>
             <Text color='prominent ' size='xs' line_height='m'>
                 {children}
             </Text>

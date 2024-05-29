@@ -1,8 +1,6 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, useHistory } from 'react-router-dom';
-import { useStoreWalletAccountsList } from '@deriv/hooks';
-import { loginUrl, routes, redirectToLogin, SessionStore, PlatformContext } from '@deriv/shared';
+import { loginUrl, routes, redirectToLogin, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
@@ -11,9 +9,9 @@ import { Analytics } from '@deriv-com/analytics';
 const Redirect = observer(() => {
     const history = useHistory();
     const { client, ui } = useStore();
-    const { has_wallet } = useStoreWalletAccountsList();
 
-    const { currency, is_logged_in, is_logging_in, setNewEmail, setVerificationCode, verification_code } = client;
+    const { currency, has_wallet, is_logged_in, is_logging_in, setNewEmail, setVerificationCode, verification_code } =
+        client;
 
     const {
         openRealAccountSignup,
@@ -31,10 +29,9 @@ const Redirect = observer(() => {
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
     const ext_platform_url = url_params.get('ext_platform_url');
-    const { is_appstore } = React.useContext(PlatformContext);
 
     const redirectToExternalPlatform = url => {
-        history.push(`${routes.root}?ext_platform_url=${url}`);
+        history.push(`${routes.traders_hub}?ext_platform_url=${url}`);
         redirected_to_route = true;
     };
     setVerificationCode(code_param, action_param);
@@ -42,13 +39,11 @@ const Redirect = observer(() => {
 
     switch (action_param) {
         case 'signup': {
-            if (!is_appstore) {
-                Analytics.trackEvent('ce_virtual_signup_form', {
-                    action: 'email_confirmed',
-                    form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
-                    email: url_params.get('email'),
-                });
-            }
+            Analytics.trackEvent('ce_virtual_signup_form', {
+                action: 'email_confirmed',
+                form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                email: url_params.get('email'),
+            });
             if (url_params?.get('utm_content')) {
                 SessionStore.set('show_book', url_params?.get('utm_content'));
             }
@@ -99,28 +94,19 @@ const Redirect = observer(() => {
             if (redirect_to) {
                 let pathname = '';
                 let hash = '';
-                const main_screen_route = has_wallet ? routes.wallets : routes.traders_hub;
                 switch (redirect_to) {
                     case '1':
-                        pathname = routes.traders_hub;
-                        break;
-                    case '10':
-                        pathname = main_screen_route;
-                        hash = 'real';
-                        break;
-                    case '11':
-                        pathname = main_screen_route;
-                        hash = 'demo';
-                        break;
                     case '2':
                         pathname = routes.traders_hub;
                         break;
+                    case '10':
                     case '20':
-                        pathname = main_screen_route;
+                        pathname = routes.traders_hub;
                         hash = 'real';
                         break;
+                    case '11':
                     case '21':
-                        pathname = main_screen_route;
+                        pathname = routes.traders_hub;
                         hash = 'demo';
                         break;
                     case '3':
@@ -236,7 +222,7 @@ const Redirect = observer(() => {
             const is_demo = localStorage.getItem('cfd_reset_password_intent')?.includes('demo');
             if (has_wallet) {
                 history.push({
-                    pathname: routes.wallets,
+                    pathname: routes.traders_hub,
                     search: url_query_string,
                 });
             } else {
@@ -258,9 +244,9 @@ const Redirect = observer(() => {
             break;
     }
 
-    if (!redirected_to_route && history.location.pathname !== routes.root) {
+    if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
         history.push({
-            pathname: routes.root,
+            pathname: routes.traders_hub,
             search: url_query_string,
         });
     }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormikValues } from 'formik';
-import classNames from 'classnames';
-import { formatMoney, isDesktop, isMobile, useIsMounted, PlatformContext } from '@deriv/shared';
+import clsx from 'clsx';
+import { formatMoney, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
@@ -14,7 +14,7 @@ import AccountLimitsFooter from './account-limits-footer';
 import AccountLimitsOverlay from './account-limits-overlay';
 import AccountLimitsTableCell from './account-limits-table-cell';
 import AccountLimitsTableHeader from './account-limits-table-header';
-import AccountLimitsTurnoverLimitRow from './account-limits-turnover-limit-row';
+import AccountLimitsTurnoverLimitRow, { TAccountLimitsCollection } from './account-limits-turnover-limit-row';
 import WithdrawalLimitsTable from './withdrawal-limits-table';
 
 type TAccountLimits = {
@@ -37,19 +37,10 @@ const AccountLimits = observer(
         should_show_article = true,
     }: TAccountLimits) => {
         const { client } = useStore();
-        const {
-            account_limits,
-            account_status,
-            currency,
-            getLimits,
-            is_fully_authenticated,
-            is_virtual,
-            is_switching,
-        } = client;
+        const { account_limits, account_status, currency, getLimits, is_virtual, is_switching } = client;
         const isMounted = useIsMounted();
         const [is_loading, setLoading] = React.useState(true);
         const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
-        const { is_appstore } = React.useContext(PlatformContext);
 
         const handleGetLimitsResponse = () => {
             if (isMounted()) setLoading(false);
@@ -84,13 +75,8 @@ const AccountLimits = observer(
 
         if (is_virtual) {
             return (
-                <div
-                    data-testid='dt_account_demo_message_wrapper'
-                    className={classNames('account__demo-message-wrapper', {
-                        'account__demo-message-wrapper-dashboard': is_appstore,
-                    })}
-                >
-                    <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />
+                <div data-testid='dt_account_demo_message_wrapper' className='account__demo-message-wrapper'>
+                    <DemoMessage />
                 </div>
             );
         }
@@ -110,7 +96,7 @@ const AccountLimits = observer(
             return <LoadErrorMessage error_message={api_initial_load_error} />;
         }
 
-        const { commodities, forex, indices, synthetic_index } = { ...market_specific };
+        const { commodities, forex, indices, synthetic_index } = market_specific ?? {};
         const forex_ordered = forex?.slice().sort((a: FormikValues, b: FormikValues) => a.name.localeCompare(b.name));
         const derived_ordered = synthetic_index
             ?.slice()
@@ -127,7 +113,7 @@ const AccountLimits = observer(
             <AccountLimitsContext.Provider value={context_value}>
                 <section className='da-account-limits__wrapper' data-testid='account_limits_data'>
                     <div
-                        className={classNames('da-account-limits', {
+                        className={clsx('da-account-limits', {
                             'da-account-limits--app-settings': is_app_settings,
                         })}
                     >
@@ -196,7 +182,7 @@ const AccountLimits = observer(
                                                 <Localize i18n_default_text='Maximum aggregate payouts on open positions' />
                                             </AccountLimitsTableCell>
                                             <AccountLimitsTableCell align='right'>
-                                                {formatMoney(currency, payout, true)}
+                                                {formatMoney(currency, payout as number, true)}
                                             </AccountLimitsTableCell>
                                         </tr>
                                         <tr>
@@ -227,17 +213,24 @@ const AccountLimits = observer(
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <AccountLimitsTurnoverLimitRow collection={commodities} />
-                                        <AccountLimitsTurnoverLimitRow collection={forex_ordered} />
-                                        <AccountLimitsTurnoverLimitRow collection={indices} />
-                                        <AccountLimitsTurnoverLimitRow collection={derived_ordered} />
+                                        <AccountLimitsTurnoverLimitRow
+                                            collection={commodities as TAccountLimitsCollection[]}
+                                        />
+                                        <AccountLimitsTurnoverLimitRow
+                                            collection={forex_ordered as TAccountLimitsCollection[]}
+                                        />
+                                        <AccountLimitsTurnoverLimitRow
+                                            collection={indices as TAccountLimitsCollection[]}
+                                        />
+                                        <AccountLimitsTurnoverLimitRow
+                                            collection={derived_ordered as TAccountLimitsCollection[]}
+                                        />
                                     </tbody>
                                 </table>
                                 {/* We only show "Withdrawal Limits" on account-wide settings pages. */}
 
                                 {!is_app_settings && (
                                     <WithdrawalLimitsTable
-                                        is_appstore={is_appstore}
                                         num_of_days_limit={num_of_days_limit}
                                         remainder={remainder}
                                         withdrawal_since_inception_monetary={withdrawal_since_inception_monetary}

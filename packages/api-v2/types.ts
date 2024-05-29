@@ -2221,7 +2221,7 @@ type TPrivateSocketEndpoints = {
 
 // Need this because deriv-api-types is assigning the response of MT5LoginList to another type called DetailsOfEachMT5Loginid which is not updated automatically by BE
 // Need to manualy update the type here after BE updates the response
-type TExtendedMT5AccounListType = {
+type TWhiteLabelLinks = {
     white_label_links: {
         android: string;
         ios: string;
@@ -2230,8 +2230,12 @@ type TExtendedMT5AccounListType = {
     };
 };
 
-type MT5AccountListResponse = NonNullable<MT5AccountsListResponse['mt5_login_list']>[number] & {
-    white_label_links: TExtendedMT5AccounListType['white_label_links'];
+type TExtendedMT5AccounListType = NonNullable<MT5AccountsListResponse['mt5_login_list']>[number] & {
+    white_label_links: TWhiteLabelLinks['white_label_links'];
+};
+
+type MT5AccountListResponse = {
+    mt5_login_list?: TExtendedMT5AccounListType[];
 };
 
 type TAccountList = NonNullable<AccountListResponse['account_list']>[number] & { excluded_until: Date };

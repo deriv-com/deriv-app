@@ -1,4 +1,5 @@
 import {
+    CONTRACT_TYPES,
     TContractInfo,
     addComma,
     getDurationPeriod,
@@ -123,23 +124,23 @@ const transformVanillaData = (data: TContractInfo) => {
 
 // Map of contract types to their respective transform functions
 const transformFunctionMap: Record<string, (data: TContractInfo) => Record<string, any>> = {
-    TURBOSLONG: transformTurbosData,
-    TURBOSSHORT: transformTurbosData,
-    MULTDOWN: transformMultiplierData,
-    MULTUP: transformMultiplierData,
-    DIGITMATCH: transformMatcherData,
-    DIGITDIFF: transformMatcherData,
-    DIGITEVEN: transformMatcherData,
-    DIGITODD: transformMatcherData,
-    DIGITOVER: transformMatcherData,
-    DIGITUNDER: transformMatcherData,
-    CALL: transformRiseData,
-    PUT: transformRiseData,
-    ONETOUCH: transformRiseData,
-    NOTOUCH: transformRiseData,
-    ACCU: transformAccumulatorData,
-    VANILLALONGCALL: transformVanillaData,
-    VANILLALONGPUT: transformVanillaData,
+    [CONTRACT_TYPES.TURBOS.LONG]: transformTurbosData,
+    [CONTRACT_TYPES.TURBOS.SHORT]: transformTurbosData,
+    [CONTRACT_TYPES.MULTIPLIER.DOWN]: transformMultiplierData,
+    [CONTRACT_TYPES.MULTIPLIER.UP]: transformMultiplierData,
+    [CONTRACT_TYPES.MATCH_DIFF.MATCH]: transformMatcherData,
+    [CONTRACT_TYPES.MATCH_DIFF.DIFF]: transformMatcherData,
+    [CONTRACT_TYPES.EVEN_ODD.EVEN]: transformMatcherData,
+    [CONTRACT_TYPES.EVEN_ODD.ODD]: transformMatcherData,
+    [CONTRACT_TYPES.OVER_UNDER.OVER]: transformMatcherData,
+    [CONTRACT_TYPES.OVER_UNDER.UNDER]: transformMatcherData,
+    [CONTRACT_TYPES.RESET.CALL]: transformRiseData,
+    [CONTRACT_TYPES.PUT]: transformRiseData,
+    [CONTRACT_TYPES.TOUCH.ONE_TOUCH]: transformRiseData,
+    [CONTRACT_TYPES.TOUCH.NO_TOUCH]: transformRiseData,
+    [CONTRACT_TYPES.ACCUMULATOR]: transformAccumulatorData,
+    [CONTRACT_TYPES.VANILLA.CALL]: transformVanillaData,
+    [CONTRACT_TYPES.VANILLA.PUT]: transformVanillaData,
 };
 
 const useOrderDetails = (contract_info: TContractInfo) => {

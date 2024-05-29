@@ -16,14 +16,15 @@ const VerifyDocumentDetails = () => {
 
     const isOnfido = currentScreenId === 'onfidoScreen';
 
-    const handleDateChange = (formattedDate: string | null) => {
-        setFormValues('dateOfBirth', formattedDate);
-    };
-
     const dateOfBirth = getSettings?.date_of_birth ?? 0;
     const formattedDateOfBirth = new Date(dateOfBirth * 1000);
     const firstName = getSettings?.first_name;
     const lastName = getSettings?.last_name;
+
+    const isFormDirty =
+        formValues.firstName !== getSettings.first_name ||
+        formValues.lastName !== getSettings.last_name ||
+        formValues.dateOfBirth !== unixToDateString(new Date(dateOfBirth * 1000));
 
     useEffect(() => {
         setFormValues('firstName', getSettings?.first_name);
@@ -31,26 +32,27 @@ const VerifyDocumentDetails = () => {
         validateForm();
     }, [getSettings?.first_name, getSettings?.last_name, setFormValues, validateForm]);
 
-    useEffect(() => {
-        if (formValues.verifiedDocumentDetails && isOnfido && isValid) {
+    const handleDateChange = (formattedDate: string | null) => {
+        setFormValues('dateOfBirth', formattedDate);
+    };
+
+    const handleTNCChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.checked && isFormDirty && isOnfido && isValid) {
             update({
                 date_of_birth: formValues.dateOfBirth,
                 first_name: formValues.firstName,
                 last_name: formValues.lastName,
             });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [
-        formValues.dateOfBirth,
-        formValues.firstName,
-        formValues.lastName,
-        formValues.verifiedDocumentDetails,
-        isOnfido,
-        isValid,
-    ]);
+    };
 
     if (formValues.verifiedDocumentDetails && isOnfido)
-        return <div className='wallets-verify-document-details__placeholder' />;
+        return (
+            <div
+                className='wallets-verify-document-details__placeholder'
+                data-testid='dt_wallets_verify_document_details__placeholder'
+            />
+        );
 
     return (
         <div className='wallets-verify-document-details'>
@@ -109,7 +111,13 @@ const VerifyDocumentDetails = () => {
                     'wallets-verify-document-details__checkbox--disabled': !isValid,
                 })}
             >
-                <Field disabled={!isValid} id='idv-checkbox' name='verifiedDocumentDetails' type='checkbox' />
+                <Field
+                    disabled={!isValid}
+                    id='idv-checkbox'
+                    name='verifiedDocumentDetails'
+                    onClick={handleTNCChecked}
+                    type='checkbox'
+                />
                 <label htmlFor='idv-checkbox'>
                     <WalletText lineHeight='2xs' size='sm'>
                         I confirm that the name and date of birth above match my chosen identity document

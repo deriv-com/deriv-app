@@ -83,7 +83,7 @@ describe('IDVDocumentUploadDetails', () => {
         ).toBeInTheDocument();
     });
 
-    test('check if set_settings call was made with correct values', async () => {
+    test('check if set_settings call is not made if the form is not edited', async () => {
         const mockUpdate = jest.fn();
         (useSettings as jest.Mock).mockReturnValue({
             data: {
@@ -121,9 +121,61 @@ describe('IDVDocumentUploadDetails', () => {
         });
 
         await waitFor(() => {
-            expect(mockUpdate).toBeCalledWith({
+            expect(screen.getByTestId('dt_wallets_verify_document_details__placeholder')).toBeInTheDocument();
+            expect(mockUpdate).not.toBeCalledWith({
                 date_of_birth: '1970-01-01',
                 first_name: 'John',
+                last_name: 'Doe',
+            });
+        });
+    });
+
+    test('check if set_settings call made with the correct data is form is edited', async () => {
+        const mockUpdate = jest.fn();
+        (useSettings as jest.Mock).mockReturnValue({
+            data: {
+                date_of_birth: 0,
+                first_name: 'John',
+                last_name: 'Doe',
+            },
+            update: mockUpdate,
+        });
+
+        await act(async () => {
+            render(
+                <FlowProvider
+                    initialScreenId='onfidoScreen'
+                    initialValues={{
+                        test: 'default',
+                    }}
+                    screens={{
+                        onfidoScreen: <FlowTextField name='onfido' />,
+                    }}
+                >
+                    {() => {
+                        return <VerifyDocumentDetails />;
+                    }}
+                </FlowProvider>
+            );
+        });
+
+        act(() => {
+            fireEvent.change(screen.getByPlaceholderText('First name*'), { target: { value: 'Bill' } });
+        });
+
+        act(() => {
+            fireEvent.click(
+                screen.getByLabelText(
+                    /I confirm that the name and date of birth above match my chosen identity document/
+                )
+            );
+        });
+
+        await waitFor(() => {
+            expect(screen.getByTestId('dt_wallets_verify_document_details__placeholder')).toBeInTheDocument();
+            expect(mockUpdate).toBeCalledWith({
+                date_of_birth: '1970-01-01',
+                first_name: 'Bill',
                 last_name: 'Doe',
             });
         });

@@ -133,7 +133,7 @@ const Redirect = observer(() => {
         case 'payment_deposit': {
             if (has_wallet) {
                 if (is_wallet_account) {
-                    history.push(`${routes.wallets_deposit}?${client.loginid ? `&loginid=${client.loginid}` : ''}`);
+                    history.push(`${routes.wallets_deposit}${client.loginid ? `?loginid=${client.loginid}` : ''}`);
                 } else {
                     history.push(routes.wallets_deposit);
                 }
@@ -159,7 +159,7 @@ const Redirect = observer(() => {
                         }`
                     );
                 } else if (is_wallet_account) {
-                    history.push(`${routes.wallets_withdrawal}?${client.loginid ? `&loginid=${client.loginid}` : ''}`);
+                    history.push(`${routes.wallets_withdrawal}${client.loginid ? `?loginid=${client.loginid}` : ''}`);
                 } else {
                     history.push(routes.wallets_withdrawal);
                 }
@@ -172,7 +172,7 @@ const Redirect = observer(() => {
         case 'payment_transfer': {
             if (has_wallet) {
                 if (is_wallet_account) {
-                    history.push(`${routes.wallets_transfer}?${client.loginid ? `&loginid=${client.loginid}` : ''}`);
+                    history.push(`${routes.wallets_transfer}${client.loginid ? `?loginid=${client.loginid}` : ''}`);
                 } else {
                     history.push(routes.wallets_transfer);
                 }
@@ -185,9 +185,7 @@ const Redirect = observer(() => {
         case 'payment_transactions': {
             if (has_wallet) {
                 if (is_wallet_account) {
-                    history.push(
-                        `${routes.wallets_transactions}?${client.loginid ? `&loginid=${client.loginid}` : ''}`
-                    );
+                    history.push(`${routes.wallets_transactions}${client.loginid ? `?loginid=${client.loginid}` : ''}`);
                 } else {
                     history.push(routes.wallets_transactions);
                 }

@@ -148,7 +148,10 @@ const TimeFilter = ({
                 <DateRangePicker
                     handleDateChange={handleDateChange}
                     isOpen={showDatePicker}
-                    onClose={() => setShowDatePicker(false)}
+                    onClose={() => {
+                        setShowDatePicker(false);
+                        setIsDropdownOpen(false);
+                    }}
                     setCustomTimeRangeFilter={setCustomTimeRangeFilter}
                 />
             )}

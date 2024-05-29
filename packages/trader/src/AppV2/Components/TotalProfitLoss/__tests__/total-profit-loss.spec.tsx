@@ -23,9 +23,16 @@ describe('TotalProfitLoss', () => {
         expect(screen.getByText(/BYN/i)).toBeInTheDocument();
     });
 
-    it('should render component with specific className if hasBottomAlignment is true', () => {
+    it('should render component with another text and with specific className if hasBottomAlignment is true', () => {
         render(<TotalProfitLoss {...mockProps} hasBottomAlignment />);
 
         expect(screen.getByTestId('dt_total_profit_loss')).toHaveClass('total-profit-loss bottom');
+        expect(screen.getByText(/Last contracts:/)).toBeInTheDocument();
+    });
+
+    it('should reflect correct amount of contracts in text if hasBottomAlignment is true and positionsCount was passed', () => {
+        render(<TotalProfitLoss {...mockProps} hasBottomAlignment positionsCount={50} />);
+
+        expect(screen.getByText(/Last 50 contracts:/)).toBeInTheDocument();
     });
 });

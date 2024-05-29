@@ -314,7 +314,7 @@
             background-color: var(--general-main-1);
 
             @include desktop-screen {
-                max-width: 68rem;
+                max-width: 100%;
             }
 
             @include mobile-or-tablet-screen {

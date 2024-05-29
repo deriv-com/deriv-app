@@ -3,12 +3,12 @@ import CardWrapper from '../CardWrapper';
 import React, { useState } from 'react';
 import clsx from 'classnames';
 
-const TakeProfitHistory = ({ history }) => {
+const TakeProfitHistory = ({ history }: any) => {
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 4;
     const totalPages = Math.ceil(history.length / itemsPerPage);
 
-    const handlePageChange = pagination => {
+    const handlePageChange = (pagination: any) => {
         setCurrentPage(pagination.currentPage - 1);
     };
 
@@ -21,7 +21,7 @@ const TakeProfitHistory = ({ history }) => {
                     'take-profit-history__table--fixed-height': history.length > itemsPerPage,
                 })}
             >
-                {currentItems.map((item, index: number) => (
+                {currentItems.map((item: any, index: number) => (
                     <div key={index} className='take-profit-history__table-row'>
                         <div
                             className={clsx('take-profit-history__table-cell', 'take-profit-history__table-cell--left')}

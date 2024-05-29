@@ -78,7 +78,6 @@ const Dropzone: React.FC<TProps> = ({
             }
         },
         onDropAccepted() {
-            // setErrorMessage(null);
             setShowErrorMessage(false);
         },
         onDropRejected(fileRejections) {

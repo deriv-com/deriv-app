@@ -79,6 +79,7 @@
                 align-self: stretch;
                 height: 16rem;
                 border-radius: 0.8rem;
+                border: 0.1rem dashed var(--system-light-5-active-background, #d6dadb);
                 cursor: pointer;
             }
 
@@ -98,7 +99,9 @@
                 align-self: stretch;
 
                 & > .wallets-text {
-                    max-width: 18rem;
+                    @include mobile {
+                        max-width: 18rem;
+                    }
                 }
             }
         }

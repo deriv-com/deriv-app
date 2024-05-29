@@ -22,10 +22,9 @@ Blockly.Blocks.lists_getIndex = {
         this.appendValueInput('VALUE').setCheck('Array').appendField(localize('in list'));
         this.appendDummyInput().appendField(modeMenu, 'MODE');
         this.appendDummyInput('AT');
-        // eslint-disable-next-line no-underscore-dangle
-        this.setColour(Blockly.Colours.Base.colour);
-
-        this.setColour(Blockly.Colours.Base.colour);
+        const block_color =
+            Blockly.Colours.Base.colour || Blockly.Colours.Base.colourSecondary || Blockly.Colours.Base.colourTertiary;
+        this.setColour(block_color);
         this.setTooltip(
             'This block gives you the value of a specific item in a list, given the position of the item. It can also remove the item from the list.'
         );

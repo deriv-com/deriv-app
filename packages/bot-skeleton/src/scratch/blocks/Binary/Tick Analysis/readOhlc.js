@@ -7,7 +7,7 @@ Blockly.Blocks.read_ohlc = {
     },
     definition() {
         return {
-            message0: localize('In candles list read {{ candle_property }} # from end here 1{{ input_number }}', {
+            message0: localize('In candles list read {{ candle_property }} # from end {{ input_number }}', {
                 candle_property: '%1',
                 input_number: '%2',
             }),

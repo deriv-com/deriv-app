@@ -2,18 +2,6 @@ import { localize } from '@deriv/translations';
 import DBotStore from '../dbot-store';
 import debounce from 'lodash.debounce';
 
-/**
- * Select this block.  Highlight it visually.
- */
-const addClass = (element, className) => {
-    const classNames = className.split(' ');
-    if (classNames.every(name => element.classList.contains(name))) {
-        return false;
-    }
-    element.classList.add(...classNames);
-    return true;
-};
-
 Blockly.BlockSvg.prototype.addSelect = function () {
     if (!Blockly.derivWorkspace.isFlyout_) {
         const { flyout } = DBotStore.instance;
@@ -21,7 +9,7 @@ Blockly.BlockSvg.prototype.addSelect = function () {
             flyout.setVisibility(false);
         }
 
-        addClass(/** @type {!Element} */ (this.svgGroup_), 'blocklySelected');
+        Blockly.utils.dom.addClass(/** @type {!Element} */ (this.svgGroup_), 'blocklySelected');
     }
 };
 
@@ -41,7 +29,7 @@ Blockly.BlockSvg.prototype.setDisabled = function (disabled) {
  */
 Blockly.BlockSvg.prototype.updateDisabled = function () {
     if (this.disabled || this.getInheritedDisabled()) {
-        addClass(this.svgGroup_, 'blocklyDisabled');
+        Blockly.utils.dom.addClass(this.svgGroup_, 'blocklyDisabled');
 
         const fill = `url(#${this.workspace.options.disabledPatternId})`;
         if (this.svgGroup_.getAttribute('fill') !== fill) {
@@ -73,7 +61,7 @@ Blockly.BlockSvg.prototype.setErrorHighlighted = function (
 
     if (should_be_error_highlighted) {
         // Below function does its own checks to check if class already exists.
-        addClass(this.svgGroup_, highlight_class);
+        Blockly.utils.dom.addClass(this.svgGroup_, highlight_class);
     } else {
         Blockly.utils.dom.removeClass(this.svgGroup_, highlight_class);
     }
@@ -85,17 +73,8 @@ Blockly.BlockSvg.prototype.setErrorHighlighted = function (
 // Highlight the block that is being executed
 Blockly.BlockSvg.prototype.highlightExecutedBlock = function () {
     const highlight_block_class = 'block--execution-highlighted';
-    const hasClass = (element, className) => element.classList.contains(className);
-    const addClass = (element, className) => {
-        const classNames = className.split(' ');
-        if (classNames.every(name => element.classList.contains(name))) {
-            return false;
-        }
-        element.classList.add(...classNames);
-        return true;
-    };
-    if (!hasClass(this.svgGroup_, highlight_block_class)) {
-        addClass(this.svgGroup_, highlight_block_class);
+    if (!Blockly.utils.dom.hasClass(this.svgGroup_, highlight_block_class)) {
+        Blockly.utils.dom.addClass(this.svgGroup_, highlight_block_class);
         setTimeout(() => {
             if (this.svgGroup_) {
                 Blockly.utils.dom.removeClass(this.svgGroup_, highlight_block_class);
@@ -110,7 +89,7 @@ Blockly.BlockSvg.prototype.highlightExecutedBlock = function () {
 
 Blockly.BlockSvg.prototype.blink = function () {
     const blink_class = 'block--blink';
-    addClass(this.svgGroup_, blink_class);
+    Blockly.utils.dom.addClass(this.svgGroup_, blink_class);
 
     setTimeout(() => {
         Blockly.utils.dom.removeClass(this.svgGroup_, blink_class);

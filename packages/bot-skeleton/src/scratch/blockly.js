@@ -19,6 +19,6 @@ export const loadBlockly = async isDarkMode => {
         componentStyles: {},
     });
     setColors(isDarkMode);
-    await import('./blocks');
     await import('./hooks');
+    await import('./blocks');
 };

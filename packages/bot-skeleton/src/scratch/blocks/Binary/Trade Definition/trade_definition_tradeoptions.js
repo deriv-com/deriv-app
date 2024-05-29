@@ -5,15 +5,6 @@ import { runIrreversibleEvents, runGroupedEvents } from '../../../utils';
 import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
 
-Blockly.Block.prototype.getChildByType = function (type) {
-    return this.getDescendants().find(child => child.type === type);
-};
-
-Blockly.Field.prototype.setText = function (e) {
-    // eslint-disable-next-line no-param-reassign
-    e !== null && (e = String(e)) !== this.text_ && ((this.text_ = e), this.forceRerender());
-};
-
 Blockly.Blocks.trade_definition_tradeoptions = {
     durations: [],
     init() {
@@ -200,7 +191,8 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 shadow_block.setFieldValue(prediction_range[0], 'NUM');
                 shadow_block.outputConnection.connect(prediction_input.connection);
                 shadow_block.initSvg();
-                // shadow_block.render(true);
+                // this breaks the loading of quick strategy and Backward compatibility
+                //shadow_block.render(true);
             }
         });
     },

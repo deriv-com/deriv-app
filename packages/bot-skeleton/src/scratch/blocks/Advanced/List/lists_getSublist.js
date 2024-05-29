@@ -18,7 +18,9 @@ Blockly.Blocks.lists_getSublist = {
         this.appendDummyInput('AT2');
 
         // eslint-disable-next-line no-underscore-dangle
-        this.setColour(Blockly.Colours.Base.colour);
+        const block_color =
+            Blockly.Colours.Base.colour || Blockly.Colours.Base.colourSecondary || Blockly.Colours.Base.colourTertiary;
+        this.setColour(block_color);
 
         this.setOutput(true, null);
         this.setOutputShape(Blockly.OUTPUT_SHAPE_ROUND);
@@ -80,6 +82,7 @@ Blockly.Blocks.lists_getSublist = {
         }
 
         this.initSvg();
+        //commented this line breaks the backward compatibility
         //this.render(false);
     },
 };

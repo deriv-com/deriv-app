@@ -52,17 +52,8 @@ const getToolsInterface = tradeEngine => {
             const block = Blockly.derivWorkspace.getBlockById(block_id);
             Blockly.BlockSvg.prototype.highlightExecutedBlock = function () {
                 const highlight_block_class = 'block--execution-highlighted';
-                const hasClass = (element, className) => element.classList.contains(className);
-                const addClass = (element, className) => {
-                    const classNames = className.split(' ');
-                    if (classNames.every(name => element.classList.contains(name))) {
-                        return false;
-                    }
-                    element.classList.add(...classNames);
-                    return true;
-                };
-                if (!hasClass(this.svgGroup_, highlight_block_class)) {
-                    addClass(this.svgGroup_, highlight_block_class);
+                if (!Blockly.utils.dom.hasClass(this.svgGroup_, highlight_block_class)) {
+                    Blockly.utils.dom.addClass(this.svgGroup_, highlight_block_class);
                     setTimeout(() => {
                         if (this.svgGroup_) {
                             Blockly.utils.dom.removeClass(this.svgGroup_, highlight_block_class);

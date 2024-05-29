@@ -46,6 +46,9 @@ const ReactJoyrideWrapper: React.FC<IReactJoyrideWrapperProps> = ({ steps, style
                     insetInlineEnd: '0px',
                     right: 'unset',
                 },
+                overlay: {
+                    height: '100%',
+                },
                 ...styles,
             }}
         />

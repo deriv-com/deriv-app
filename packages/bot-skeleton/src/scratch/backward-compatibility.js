@@ -238,6 +238,7 @@ export default class BlockConversion {
 
                 Object.keys(block_fields).forEach(child_block_name => {
                     const child_block = this.workspace.newBlock(child_block_name);
+
                     block_fields[child_block_name].forEach(field_name => {
                         child_block.setFieldValue(this.getFieldValue(block_node, field_name), field_name);
                     });
@@ -283,15 +284,6 @@ export default class BlockConversion {
 
     // eslint-disable-next-line class-methods-use-this
     createWorkspace() {
-        Blockly.createVirtualWorkspace_ = function (fragment, options, blockDragSurface, workspaceDragSurface) {
-            options.parentWorkspace = null;
-            const mainWorkspace = new Blockly.WorkspaceSvg(options, blockDragSurface, workspaceDragSurface);
-            mainWorkspace.scale = options.zoomOptions.startScale;
-            fragment.appendChild(mainWorkspace.createDom('blocklyMainBackground'));
-
-            return mainWorkspace;
-        };
-
         const options = new Blockly.Options({ media: `${__webpack_public_path__}media/` });
         const el_injection_div = new DocumentFragment();
         const workspace = Blockly.createVirtualWorkspace_(el_injection_div, options, false, false);
@@ -541,9 +533,12 @@ export default class BlockConversion {
 
         const is_collapsed =
             (el_block.getAttribute('collapsed') && el_block.getAttribute('collapsed') === 'true') || false;
-        const is_immovable = el_block.getAttribute('movable') && el_block.getAttribute('movable') === 'false';
-        const is_undeletable = el_block.getAttribute('deletable') && el_block.getAttribute('deletable') === 'false';
-        const is_disabled = el_block.getAttribute('disabled') && el_block.getAttribute('disabled') === 'true';
+        const is_immovable =
+            (el_block.getAttribute('movable') && el_block.getAttribute('movable') === 'false') || false;
+        const is_undeletable =
+            (el_block.getAttribute('deletable') && el_block.getAttribute('deletable') === 'false') || false;
+        const is_disabled =
+            (el_block.getAttribute('disabled') && el_block.getAttribute('disabled') === 'true') || false;
 
         const setBlockAttributes = b => {
             b.setCollapsed(is_collapsed);

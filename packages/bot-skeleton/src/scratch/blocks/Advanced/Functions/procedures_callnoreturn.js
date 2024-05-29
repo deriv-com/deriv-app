@@ -33,7 +33,7 @@ Blockly.Blocks.procedures_callnoreturn = {
             colourTertiary: Blockly.Colours.Special2.colourTertiary,
             previousStatement: null,
             nextStatement: null,
-            tooltip: localize('Custom function call 1'),
+            tooltip: localize('Custom function'),
             category: Blockly.Categories.Functions,
         };
     },

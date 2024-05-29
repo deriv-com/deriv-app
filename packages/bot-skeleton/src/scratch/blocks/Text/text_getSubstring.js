@@ -128,6 +128,7 @@ Blockly.Blocks.text_getSubstring = {
         }
 
         this.initSvg();
+        //commented this line breaks the backward compatibility
         //this.render(false);
     },
     getRequiredValueInputs() {

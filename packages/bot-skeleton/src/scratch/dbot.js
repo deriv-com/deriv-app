@@ -410,22 +410,10 @@ class DBot {
         return true;
     }
 
-    // getDiv() {
-    //     return null;
-    // }
-    // setDisabled(isDisabled) {
-    //     this.isDisabled_ = isDisabled;
-    //     this.getDiv().setAttribute('disabled', `${isDisabled}`);
-    //     isDisabled
-    //         ? this.getDiv().setAttribute('disabled', 'true')
-    //         : this.getDiv().removeAttribute('disabled');
-    // }
-
     /**
      * Disable blocks and their optional children.
      */
     disableBlocksRecursively(block) {
-        //this.setDisabled(true);
         if (block.nextConnection?.targetConnection) {
             this.disableBlocksRecursively(block.nextConnection.targetConnection.sourceBlock_);
         }

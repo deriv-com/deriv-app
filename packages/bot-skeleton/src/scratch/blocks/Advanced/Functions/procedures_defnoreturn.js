@@ -112,7 +112,7 @@ Blockly.Blocks.procedures_defnoreturn = {
                         this.argument_var_models.push(variable);
 
                         const paramField = this.getField('PARAMS');
-                        paramField.setText(`${localize('with here 1: ')} ${this.arguments.join(', ')}`);
+                        paramField.setText(`${localize('with: ')} ${this.arguments.join(', ')}`);
 
                         this.getProcedureCallers().forEach(block => {
                             block.setProcedureParameters(this.arguments);

@@ -5,7 +5,7 @@
     height: calc(100vh - 8.4rem);
     overflow: hidden;
 
-    @include mobile-or-tablet-screen {
+    @include mobile-screen {
         height: calc(100vh - 3.4rem);
     }
 

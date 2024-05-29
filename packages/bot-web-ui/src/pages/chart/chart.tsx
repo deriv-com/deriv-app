@@ -25,7 +25,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
         wsSubscribe,
     } = chart_store;
     const {
-        ui: { is_desktop },
+        ui: { is_desktop, is_mobile },
     } = useStore();
     const { is_drawer_open } = run_panel;
     const { is_chart_modal_visible } = dashboard;
@@ -62,7 +62,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                     />
                 )}
                 chartType={chart_type}
-                isMobile={!is_desktop}
+                isMobile={is_mobile}
                 enabledNavigationWidget={is_desktop}
                 granularity={granularity}
                 requestAPI={wsSendRequest}

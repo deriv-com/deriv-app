@@ -7,7 +7,7 @@ import { WalletPasswordFieldLazy, WalletTextField } from '../../../../../compone
 import PasswordViewerIcon from '../../../../../components/Base/WalletPasswordField/PasswordViewerIcon';
 import { useModal } from '../../../../../components/ModalProvider';
 import useDevice from '../../../../../hooks/useDevice';
-import { validPassword } from '../../../../../utils/password';
+import { validPasswordMT5 } from '../../../../../utils/password-validation';
 import { PlatformDetails } from '../../../constants';
 
 type TFormInitialValues = {
@@ -110,6 +110,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                     message={t(
                                         'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
                                     )}
+                                    mt5Policy
                                     name='newPassword'
                                     onChange={handleChange}
                                     password={values.newPassword}
@@ -118,7 +119,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                             </div>
                             <div className='wallets-change-investor-password-screens__form-buttons'>
                                 <WalletButton
-                                    disabled={!values.currentPassword || !validPassword(values.newPassword)}
+                                    disabled={!values.currentPassword || !validPasswordMT5(values.newPassword)}
                                     isLoading={changeInvestorPasswordStatus === 'loading'}
                                     size={isMobile ? 'lg' : 'md'}
                                     type='submit'

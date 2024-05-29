@@ -6,7 +6,6 @@ import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS } from '../../constants';
 import { ACCOUNT_ICONS, MARKET_TYPE_SHORTCODE } from './constants';
-import TradingPlatformIcons from './tradingPlatformIcons';
 import './CompareAccountsTitleIcon.scss';
 
 type TMarketType = THooks.AvailableMT5Accounts['market_type'];
@@ -69,12 +68,10 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
     const labuanJurisdictionMessage =
         'Choosing this jurisdiction will give you a Financial STP account. Your trades will go directly to the market and have tighter spreads.';
 
-    const TradingPlatformIcon = TradingPlatformIcons[jurisdictionCardIcon];
-
     return (
         <React.Fragment>
-            <div className={'wallets-compare-accounts-title-icon'}>
-                <TradingPlatformIcon height={48} width={48} />
+            <div className='wallets-compare-accounts-title-icon'>
+                {jurisdictionCardIcon}
                 <div className='wallets-compare-accounts-title-icon__separator'>
                     <WalletText align='center' as='h1' size='sm' weight='bold'>
                         {jurisdictionCardTitle}

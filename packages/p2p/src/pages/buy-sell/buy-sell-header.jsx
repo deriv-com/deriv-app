@@ -1,6 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { ButtonToggle, Icon, SearchBox } from '@deriv/components';
+import { useP2PSettings } from '@deriv/hooks';
 import { isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
@@ -26,7 +27,8 @@ const getBuySellFilters = () => [
 
 const BuySellHeader = ({ table_type }) => {
     const { buy_sell_store, general_store } = useStores();
-    const is_currency_selector_visible = general_store.feature_level >= 2;
+    const { p2p_settings } = useP2PSettings();
+    const is_currency_selector_visible = p2p_settings?.feature_level >= 2;
 
     const onClear = () => {
         buy_sell_store.setSearchTerm('');
@@ -36,21 +38,10 @@ const BuySellHeader = ({ table_type }) => {
         buy_sell_store.setSearchTerm(search.trim());
     };
 
-    React.useEffect(
-        () => {
-            buy_sell_store.setSearchTerm('');
-
-            const interval = setInterval(() => {
-                buy_sell_store.getWebsiteStatus();
-            }, 60000);
-
-            return () => {
-                if (interval) clearInterval(interval);
-            };
-        },
+    React.useEffect(() => {
+        buy_sell_store.setSearchTerm('');
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        []
-    );
+    }, []);
 
     const { isError } = useP2PRenderedAdverts();
 

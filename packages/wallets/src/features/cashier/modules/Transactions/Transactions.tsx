@@ -2,9 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
+import { LegacyFilter1pxIcon } from '@deriv/quill-icons';
 import { ToggleSwitch, WalletDropdown, WalletText } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
-import FilterIcon from '../../../../public/images/filter.svg';
 import { TransactionsCompleted, TransactionsCompletedDemoResetBalance, TransactionsPending } from './components';
 import './Transactions.scss';
 
@@ -35,10 +35,10 @@ const Transactions = () => {
 
     const { location } = useHistory();
     const initialShowPending = Boolean(
-        location.pathname === '/wallets/cashier/transactions' ? location.state?.showPending : false
+        location.pathname === '/wallet/transactions' ? location.state?.showPending : false
     );
     const initialTransactionType =
-        (location.pathname === '/wallets/cashier/transactions' ? location.state?.transactionType : undefined) ?? 'all';
+        (location.pathname === '/wallet/transactions' ? location.state?.transactionType : undefined) ?? 'all';
 
     const [isPendingActive, setIsPendingActive] = useState(initialShowPending);
     const [filterValue, setFilterValue] = useState(initialTransactionType);
@@ -59,10 +59,10 @@ const Transactions = () => {
     );
 
     useEffect(() => {
-        if (!isLoading && !wallet?.currency_config?.is_crypto && isPendingActive) {
+        if (!isLoading && !wallet?.is_crypto && isPendingActive) {
             setIsPendingActive(false);
         }
-    }, [isLoading, wallet?.currency_config?.is_crypto, isPendingActive]);
+    }, [isLoading, wallet?.is_crypto, isPendingActive]);
 
     useEffect(() => {
         if (isPendingActive && !Object.keys(filtersMapper.pending).includes(filterValue)) {
@@ -80,14 +80,14 @@ const Transactions = () => {
             })}
         >
             <div className='wallets-transactions__header'>
-                {wallet?.currency_config?.is_crypto && (
+                {wallet?.is_crypto && (
                     <div className='wallets-transactions__toggle'>
                         <WalletText size='sm'>Pending Transactions</WalletText>
                         <ToggleSwitch onChange={() => setIsPendingActive(!isPendingActive)} value={isPendingActive} />
                     </div>
                 )}
                 <WalletDropdown
-                    icon={<FilterIcon />}
+                    icon={<LegacyFilter1pxIcon iconSize='xs' />}
                     label='Filter'
                     list={filterOptionsList}
                     name='wallets-transactions__dropdown'

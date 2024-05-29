@@ -2,7 +2,7 @@ import React from 'react';
 import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { Button, Icon, Modal, Money, StatusBadge, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getCurrencyName } from '@deriv/shared';
+import { getCurrencyName, startPerformanceEventTimer } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import CurrencyIcon from './currency';
 import { AccountListDetail } from './types';
@@ -25,7 +25,7 @@ const CurrencySelectionModal = observer(({ is_visible }: CurrencySelectionModalP
     } = client;
     const { closeModal, selected_region, openFailedVerificationModal } = traders_hub;
     const { openRealAccountSignup, toggleSetCurrencyModal } = ui;
-    const { authentication } = account_status;
+    const { authentication } = account_status || {};
 
     const mf_account_status = useMFAccountStatus();
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
@@ -66,6 +66,7 @@ const CurrencySelectionModal = observer(({ is_visible }: CurrencySelectionModalP
                                 })}
                                 onClick={async () => {
                                     if (loginid !== current_loginid) {
+                                        startPerformanceEventTimer('switch_currency_accounts_time');
                                         await switchAccount(loginid);
                                     }
                                     closeModal();

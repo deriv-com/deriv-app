@@ -11,19 +11,22 @@ import {
     GetFinancialAssessment,
     SetFinancialAssessmentRequest,
     IdentityVerificationAddDocumentResponse,
+    ApiToken,
 } from '@deriv/api-types';
 import { AUTH_STATUS_CODES, CFD_PLATFORMS, MT5_ACCOUNT_STATUS, Platforms } from '@deriv/shared';
 
-export type TToken = {
+export type TToken = NonNullable<ApiToken['tokens']>[0];
+
+export type TFormattedToken = Partial<{
     display_name: string;
+    formatted_scopes: string[];
     last_used: string;
-    scopes: string[];
     token: string;
-};
+}>;
 
 export type TPoaStatusProps = {
-    needs_poi: boolean;
-    redirect_button: React.ReactNode;
+    needs_poi?: boolean;
+    redirect_button?: React.ReactNode;
 };
 
 export type TAuthAccountInfo = NonNullable<Authorize['account_list']>[0] & {
@@ -79,6 +82,7 @@ export type TRoute = {
     component?: ((props?: RouteProps['component']) => JSX.Element) | Partial<typeof Redirect> | TPage404;
     getTitle?: () => string;
     is_disabled?: boolean;
+    is_hidden?: boolean;
     subroutes?: TRoute[];
 };
 
@@ -139,8 +143,9 @@ export type TIDVFormValues = {
 export type TPlatforms = typeof Platforms[keyof typeof Platforms];
 
 export type TServerError = {
-    code: string;
+    code?: string;
     message: string;
+    name?: string;
     details?: { [key: string]: string };
     fields?: string[];
 };
@@ -284,4 +289,16 @@ export type TQuestion = {
     form_control: keyof TTradingAssessmentForm;
     answer_options: { text: string; value: string }[];
     field_type?: string;
+};
+
+// Type for the list of items in a dropdown or select
+export type TListItem = {
+    /**
+     * The text of the item (e.g. 'United Kingdom', 'Germany', etc.)
+     */
+    text?: string;
+    /**
+     * The value of the item
+     */
+    value?: string;
 };

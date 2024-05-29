@@ -27,15 +27,15 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, vari
         >
             {variant !== 'info' && (
                 <React.Fragment>
-                    <WalletText color='less-prominent' size='sm'>
+                    <WalletText color='less-prominent' size={isDesktop ? 'xs' : 'sm'}>
                         {label}
                     </WalletText>
                     <div className='wallets-mt5-trade-details-item__values'>
-                        <WalletText size='sm' weight='bold'>
+                        <WalletText size={isDesktop ? 'xs' : 'sm'} weight='bold'>
                             {value}
                         </WalletText>
                         {variant === 'clipboard' && (
-                            <WalletClipboard popoverAlignment='right' successMessage='' textCopy={value} />
+                            <WalletClipboard popoverAlignment='left' successMessage='' textCopy={value} />
                         )}
                         {variant === 'password' && (
                             <Tooltip alignment='left' isVisible={isHovered && isDesktop} message='Change password'>
@@ -51,7 +51,7 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, vari
                 </React.Fragment>
             )}
             {variant === 'info' && (
-                <WalletText color='less-prominent' size={isDesktop ? 'sm' : 'md'}>
+                <WalletText color='less-prominent' size={isDesktop ? 'xs' : 'sm'}>
                     {value}
                 </WalletText>
             )}

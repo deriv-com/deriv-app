@@ -1,6 +1,5 @@
 import React from 'react';
-import { getUrlSmartTrader, getStaticUrl } from '@deriv/shared';
-import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
+import { getUrlSmartTrader } from '@deriv/shared';
 import MarketUnavailableModal from 'App/Components/Elements/Modals/MarketUnavailableModal';
 import ServicesErrorModal from 'App/Components/Elements/Modals/ServicesErrorModal';
 import AccountVerificationPendingModal from 'App/Components/Elements/Modals/AccountVerificationPendingModal';
@@ -18,7 +17,6 @@ const TradeModals = observer(() => {
         is_mf_verification_pending_modal_visible,
         setHasOnlyForwardingContracts,
         toggleServicesErrorModal,
-        toggleUnsupportedContractModal,
         setIsMFVericationPendingModal,
     } = ui;
     const resetToPreviousMarket = () => {
@@ -43,19 +41,8 @@ const TradeModals = observer(() => {
         }
     };
 
-    const unsupportedContractOnConfirm = () => {
-        toggleUnsupportedContractModal(false);
-    };
-
-    const unsupportedContractOnClose = () => {
-        window.open(getStaticUrl('/'));
-        unsupportedContractOnConfirm();
-    };
-
     return (
         <React.Fragment>
-            <UnsupportedContractModal onConfirm={unsupportedContractOnConfirm} onClose={unsupportedContractOnClose} />
-
             <MarketUnavailableModal onConfirm={marketUnavailableOnConfirm} onCancel={marketUnavailableOnCancel} />
 
             <ServicesErrorModal

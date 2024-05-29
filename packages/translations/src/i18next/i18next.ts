@@ -8,8 +8,10 @@ const LANGUAGE_KEY = 'i18n_language';
 const DEFAULT_LANGUAGE = 'EN';
 const ALL_LANGUAGES = Object.freeze({
     ACH: 'Translations',
+    AR: 'العربية',
     EN: 'English',
     ES: 'Español',
+    BN: 'বাংলা',
     DE: 'Deutsch',
     FR: 'Français',
     ID: 'Indonesian',
@@ -18,6 +20,7 @@ const ALL_LANGUAGES = Object.freeze({
     PL: 'Polish',
     PT: 'Português',
     RU: 'Русский',
+    SI: 'සිංහල',
     TR: 'Türkçe',
     VI: 'Tiếng Việt',
     ZH_CN: '简体中文',
@@ -28,7 +31,9 @@ const ALL_LANGUAGES = Object.freeze({
 export const getAllowedLanguages = () => {
     const allowed_languages = {
         EN: 'English',
+        AR: 'العربية',
         ES: 'Español',
+        BN: 'বাংলা',
         DE: 'Deutsch',
         KO: '한국어',
         PT: 'Português',
@@ -36,6 +41,7 @@ export const getAllowedLanguages = () => {
         RU: 'Русский',
         FR: 'Français',
         IT: 'Italiano',
+        SI: 'සිංහල',
         TH: 'ไทย',
         TR: 'Türkçe',
         VI: 'Tiếng Việt',

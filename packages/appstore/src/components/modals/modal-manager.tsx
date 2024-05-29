@@ -1,20 +1,15 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { useFeatureFlags, useWalletMigration } from '@deriv/hooks';
 import { makeLazyLoader, moduleLoader } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { useWalletMigration } from '@deriv/hooks';
 
 const RealWalletsUpgrade = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "modal_real-wallets-upgrade" */ './real-wallets-upgrade')),
-    () => <Loading />
-)();
-
-const MT5AccountTypeModal = makeLazyLoader(
-    () => moduleLoader(() => import(/* webpackChunkName: "modal_account-type-modal" */ './account-type-modal')),
     () => <Loading />
 )();
 
@@ -166,15 +161,34 @@ const ResetTradingPasswordModal = makeLazyLoader(
     () => <Loading />
 )();
 
+const CTraderTransferModal = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "modal_cfd_ctrader-transfer-modal" */ '@deriv/cfd/src/Containers/ctrader-transfer-modal'
+                )
+        ),
+    () => <Loading />
+)();
+
 type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
 };
 
 const ModalManager = () => {
-    const { is_eligible } = useWalletMigration();
+    const { is_eligible, is_in_progress } = useWalletMigration();
+    const { is_next_wallet_enabled } = useFeatureFlags();
     const store = useStores();
-    const { common, client, modules, traders_hub, ui, is_wallet_migration_eligible } = store;
-    const { is_logged_in, is_eu, is_eu_country, is_populating_mt5_account_list, verification_code } = client;
+    const { common, client, modules, traders_hub, ui } = store;
+    const {
+        is_logged_in,
+        is_eu,
+        is_eu_country,
+        is_populating_mt5_account_list,
+        verification_code,
+        should_show_effortless_login_modal,
+    } = client;
     const { platform } = common;
     const {
         current_list,
@@ -193,6 +207,7 @@ const ModalManager = () => {
         is_cfd_password_modal_enabled,
         is_cfd_success_dialog_enabled,
         is_sent_email_modal_enabled,
+        is_ctrader_transfer_modal_visible,
     } = modules.cfd;
     const {
         enableApp,
@@ -287,7 +302,8 @@ const ModalManager = () => {
             {is_jurisdiction_modal_visible && <JurisdictionModal openPasswordModal={openRealPasswordModal} />}
             {should_show_cfd_password_modal && <CFDPasswordModal platform={platform} />}
             {is_cfd_verification_modal_visible && <CFDDbviOnBoarding />}
-            {is_cfd_reset_password_modal_enabled && <CFDResetPasswordModal platform={platform} />}
+            <CFDResetPasswordModal platform={platform} /> {/* a new condition for this hotfix needs to be found */}
+            {is_ctrader_transfer_modal_visible && <CTraderTransferModal />}
             {has_cfd_error && <CFDServerErrorDialog />}
             {(is_top_up_virtual_open || is_top_up_virtual_success) && <CFDTopUpDemoModal platform={platform} />}
             {is_mt5_trade_modal_visible && (
@@ -321,7 +337,6 @@ const ModalManager = () => {
                     verification_code={trading_platform_dxtrade_password_reset || trading_platform_mt5_password_reset}
                 />
             )}
-            {is_account_type_modal_visible && <MT5AccountTypeModal />}
             {(is_mt5_migration_modal_open || !!mt5_migration_error) && <MT5MigrationModal />}
             {is_regulators_compare_modal_visible && <RegulatorsCompareModal />}
             {is_account_transfer_modal_open && (
@@ -331,9 +346,13 @@ const ModalManager = () => {
                 />
             )}
             {is_failed_verification_modal_visible && <FailedVerificationModal />}
-            {is_real_wallets_upgrade_on && <RealWalletsUpgrade />}
-            {is_wallet_migration_failed && <WalletsMigrationFailed />}
-            {is_eligible && <WalletsUpgradeModal />}
+            {is_next_wallet_enabled && !should_show_effortless_login_modal && (
+                <React.Fragment>
+                    {(is_real_wallets_upgrade_on || is_in_progress) && <RealWalletsUpgrade />}
+                    {is_wallet_migration_failed && <WalletsMigrationFailed />}
+                    {is_eligible && <WalletsUpgradeModal />}
+                </React.Fragment>
+            )}
         </React.Fragment>
     );
 };

@@ -14,6 +14,10 @@ jest.mock('../DocumentSubmission', () => ({
     DocumentSubmission: () => <div>DocumentSubmission</div>,
 }));
 
+jest.mock('src/components/LeaveConfirm', () => ({
+    LeaveConfirm: () => <div>LeaveConfirm</div>,
+}));
+
 const updateSettings = jest.fn();
 const mockUploadDocument = jest.fn();
 const mockDefaultSettings = {

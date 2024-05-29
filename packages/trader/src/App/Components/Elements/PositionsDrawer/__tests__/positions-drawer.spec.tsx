@@ -19,6 +19,8 @@ const mocked_store = {
 };
 const empty_portfolio_message = 'EmptyPortfolioMessage';
 const position_drawer_card = 'PositionsDrawerCard';
+const recent_positions = 'Recent positions';
+const go_to_reports = 'Go to Reports';
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -53,9 +55,25 @@ describe('<PositionsDrawer />', () => {
     it('should render Recent positions with empty portfolio message if there is no open positions', () => {
         render(mockPositionsDrawer(mockStore(mocked_store)));
 
-        expect(screen.getByText('Recent positions')).toBeInTheDocument();
+        expect(screen.getByText(recent_positions)).toBeInTheDocument();
         expect(screen.getByText(empty_portfolio_message)).toBeInTheDocument();
-        expect(screen.getByText('Go to Reports')).toBeInTheDocument();
+        expect(screen.getByText(go_to_reports)).toBeInTheDocument();
+    });
+
+    it('should render Recent positions with empty portfolio message if there is opened forward starting contract, which has not started yet (current_spot_time is less or equal to date_start)', () => {
+        render(mockPositionsDrawer(mockStore(mocked_store)));
+        mocked_store.portfolio.all_positions = [
+            {
+                contract_info: mockContractInfo({
+                    current_spot_time: 1700481935,
+                    date_start: 1700481935,
+                }),
+            },
+        ] as TAllPositions;
+
+        expect(screen.getByText(recent_positions)).toBeInTheDocument();
+        expect(screen.getByText(empty_portfolio_message)).toBeInTheDocument();
+        expect(screen.getByText(go_to_reports)).toBeInTheDocument();
     });
     it('should render Recent positions with empty portfolio message if there is an error in portfolio even though there is match in open position', () => {
         mocked_store.portfolio.error = 'Some error';
@@ -70,9 +88,9 @@ describe('<PositionsDrawer />', () => {
         ] as TAllPositions;
         render(mockPositionsDrawer(mockStore(mocked_store)));
 
-        expect(screen.getByText('Recent positions')).toBeInTheDocument();
+        expect(screen.getByText(recent_positions)).toBeInTheDocument();
         expect(screen.getByText(empty_portfolio_message)).toBeInTheDocument();
-        expect(screen.getByText('Go to Reports')).toBeInTheDocument();
+        expect(screen.getByText(go_to_reports)).toBeInTheDocument();
     });
     it('should render PositionsDrawerCard if portfolio is not empty and there is no error', () => {
         mocked_store.portfolio.error = '';

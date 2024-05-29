@@ -1,39 +1,36 @@
 import React, { memo, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { PaymentMethodLabel, PopoverDropdown } from '@/components';
-import { ADVERT_TYPE, RATE_TYPE } from '@/constants';
-import { useDevice } from '@/hooks';
-import { formatMoney, generateEffectiveRate, shouldShowTooltipIcon } from '@/utils';
+import { AD_ACTION, ADVERT_TYPE, RATE_TYPE } from '@/constants';
+import { useFloatingRate } from '@/hooks';
+import { generateEffectiveRate, shouldShowTooltipIcon } from '@/utils';
 import { useExchangeRateSubscription } from '@deriv/api-v2';
-import { Button, Text, Tooltip } from '@deriv-com/ui';
-//TODO: Replace with quill icons once available
-import DeactivateIcon from '../../../../../public/ic-archive.svg';
-import DeleteIcon from '../../../../../public/ic-delete.svg';
-import EditIcon from '../../../../../public/ic-edit.svg';
-import ShareIcon from '../../../../../public/ic-share.svg';
-import ActivateIcon from '../../../../../public/ic-unarchive.svg';
+import { Text, useDevice } from '@deriv-com/ui';
+import { FormatUtils } from '@deriv-com/utils';
 import { AdStatus, AdType, AlertComponent, ProgressIndicator } from '../../../components';
 import { TMyAdsTableRowRendererProps } from '../MyAdsTable/MyAdsTable';
 import './MyAdsTableRow.scss';
 
 const BASE_CURRENCY = 'USD';
-//TODO: to be modified after design is updated.
-const list = [
+
+const getList = (isActive = false) => [
     { label: 'Edit', value: 'edit' },
-    { label: 'Delete', value: 'delete' },
-    { label: 'Duplicate', value: 'duplicate' },
+    { label: 'Copy', value: 'copy' },
     { label: 'Share', value: 'share' },
-    { label: 'Deactivate', value: 'deactivate' },
+    { label: `${isActive ? 'Deactivate' : 'Activate'}`, value: `${isActive ? 'deactivate' : 'activate'}` },
+    { label: 'Delete', value: 'delete' },
 ];
 
 type TProps = {
-    setIsModalOpen: (value: boolean) => void;
+    currentRateType: ReturnType<typeof useFloatingRate>['rateType'];
+    onClickIcon: (value: string) => void;
+    showModal: (value: string) => void;
 };
 
 type TMyAdsTableProps = Omit<TMyAdsTableRowRendererProps, 'balanceAvailable' | 'dailyBuyLimit' | 'dailySellLimit'> &
     TProps;
 
-const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
+const MyAdsTableRow = ({ currentRateType, showModal, ...rest }: TMyAdsTableProps) => {
     const { isMobile } = useDevice();
     const { data: exchangeRateValue, subscribe } = useExchangeRateSubscription();
 
@@ -63,13 +60,14 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
     const isFloatingRate = rateType === RATE_TYPE.FLOAT;
 
     useEffect(() => {
-        subscribe({
-            base_currency: BASE_CURRENCY,
-            target_currency: localCurrency,
-        });
+        if (localCurrency) {
+            subscribe({
+                base_currency: BASE_CURRENCY,
+                target_currency: localCurrency,
+            });
+        }
     }, [localCurrency, subscribe]);
 
-    const [isActionsVisible, setIsActionsVisible] = useState(false);
     const [showAlertIcon, setShowAlertIcon] = useState(false);
     const isAdvertListed = isListed && !isBarred;
     const adPauseColor = isAdvertListed ? 'general' : 'less-prominent';
@@ -78,10 +76,8 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
     const isRowDisabled = !isActive || isBarred || !isListed;
     const isAdActive = !!isActive && !isBarred;
 
-    const exchangeRate = exchangeRateValue?.rates?.[localCurrency];
-    //TODO: get the floating rate configs after completion of floating rate hook.
-    // check for rate type and if it is different from the current rate type then enable the action point.
-    const enableActionPoint = false;
+    const exchangeRate = exchangeRateValue?.rates?.[localCurrency ?? ''];
+    const enableActionPoint = currentRateType !== rateType;
 
     useEffect(() => {
         setShowAlertIcon(enableActionPoint || shouldShowTooltipIcon(visibilityStatus) || !isListed);
@@ -96,12 +92,16 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
         rateType,
     });
 
-    //TODO: get the floating rate configs after integration with usep2psettings to handle disabled case.
-
     const advertType = type === 'buy' ? ADVERT_TYPE.BUY : ADVERT_TYPE.SELL;
 
-    const onClickActionItem = (value: string) => {
-        onClickIcon(id, value);
+    const handleClick = (action: string) => {
+        if (action === AD_ACTION.EDIT || action === AD_ACTION.COPY) {
+            if (enableActionPoint && rateType !== currentRateType) {
+                showModal('AdRateSwitchModal');
+                return;
+            }
+        }
+        onClickIcon(action);
     };
 
     if (isMobile) {
@@ -120,17 +120,18 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
                     </Text>
                     <div className='p2p-v2-my-ads-table-row__line__type-and-status__wrapper'>
                         <AdStatus isActive={isAdActive} />
-                        {showAlertIcon && <AlertComponent setIsModalOpen={setIsModalOpen} />}
+                        {showAlertIcon && <AlertComponent onClick={() => showModal('AdErrorTooltipModal')} />}
                         <PopoverDropdown
-                            dataTestId='dt_p2p_v2_actions_menu'
-                            dropdownList={list}
-                            onClick={value => onClickActionItem(value)}
+                            dropdownList={getList(isAdActive)}
+                            onClick={handleClick}
+                            tooltipMessage='Manage ad'
                         />
                     </div>
                 </div>
                 <div className='p2p-v2-my-ads-table-row__line-details'>
                     <Text color='success' size='sm'>
-                        {`${formatMoney(accountCurrency, amountDealt, true)}`} {accountCurrency}&nbsp;
+                        {`${FormatUtils.formatMoney(amountDealt, { currency: accountCurrency })}`} {accountCurrency}
+                        &nbsp;
                         {advertType === 'Buy' ? 'Bought' : 'Sold'}
                     </Text>
                     <Text color='less-prominent' size='sm'>
@@ -180,8 +181,6 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
             className={clsx('p2p-v2-my-ads-table-row__line', {
                 'p2p-v2-my-ads-table-row__line-disabled': isRowDisabled,
             })}
-            onMouseEnter={() => setIsActionsVisible(true)}
-            onMouseLeave={() => setIsActionsVisible(false)}
         >
             <Text size='sm'>
                 {advertType} {id}
@@ -212,37 +211,9 @@ const MyAdsTableRow = ({ setIsModalOpen, ...rest }: TMyAdsTableProps) => {
                 ))}
             </div>
             <div className='p2p-v2-my-ads-table-row__actions'>
-                {isActionsVisible ? (
-                    <div className='p2p-v2-my-ads-table-row__actions-popovers'>
-                        <Button
-                            color='white'
-                            onClick={() => onClickActionItem(isActive ? 'deactivate' : 'activate')}
-                            variant='contained'
-                        >
-                            <Tooltip message={isActive ? 'Deactivate' : 'Activate'} position='bottom'>
-                                {isActive ? <DeactivateIcon /> : <ActivateIcon />}
-                            </Tooltip>
-                        </Button>
-                        <Button color='white' onClick={() => onClickActionItem('edit')} variant='contained'>
-                            <Tooltip message='Edit' position='bottom'>
-                                <EditIcon />
-                            </Tooltip>
-                        </Button>
-                        <Button color='white' onClick={() => onClickActionItem('delete')} variant='contained'>
-                            <Tooltip message='Delete' position='bottom'>
-                                <DeleteIcon />
-                            </Tooltip>
-                        </Button>
-                        <Button color='white' onClick={() => onClickActionItem('share')} variant='contained'>
-                            <Tooltip message='Share' position='bottom'>
-                                <ShareIcon />
-                            </Tooltip>
-                        </Button>
-                    </div>
-                ) : (
-                    <AdStatus isActive={isAdActive} />
-                )}
-                {showAlertIcon && <AlertComponent setIsModalOpen={setIsModalOpen} />}
+                <AdStatus isActive={isAdActive} />
+                <PopoverDropdown dropdownList={getList(isAdActive)} onClick={handleClick} tooltipMessage='Manage ad' />
+                {showAlertIcon && <AlertComponent onClick={() => showModal('AdErrorTooltipModal')} />}
             </div>
         </div>
     );

@@ -1,12 +1,14 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
+import { useWalletMigration } from '@deriv/hooks';
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
-import { observer, useStore } from '@deriv/stores';
 
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
 import ReadyToVerifyModal from './ready-to-verify-modal';
@@ -15,6 +17,9 @@ import MT5Notification from './mt5-notification';
 import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
+import WalletsUpgradeLogoutModal from './wallets-upgrade-logout-modal';
+import WalletsUpgradeCompletedModal from './wallets-upgrade-completed-modal';
+import EffortlessLoginModal from '../EffortlessLoginModal';
 
 const TradingAssessmentExistingUser = React.lazy(() =>
     moduleLoader(() =>
@@ -80,8 +85,9 @@ const InformationSubmittedModal = React.lazy(() =>
 );
 
 const AppModals = observer(() => {
-    const { client, ui, traders_hub } = useStore();
+    const { client, ui, traders_hub, common } = useStore();
     const {
+        has_wallet,
         is_authorize,
         is_logged_in,
         fetchFinancialAssessment,
@@ -89,8 +95,10 @@ const AppModals = observer(() => {
         landing_company_shortcode: active_account_landing_company,
         is_trading_experience_incomplete,
         mt5_login_list,
+        should_show_effortless_login_modal,
     } = client;
     const { content_flag } = traders_hub;
+    const { is_from_derivgo } = common;
     const {
         is_account_needed_modal_on,
         is_closing_create_real_account_modal,
@@ -111,6 +119,10 @@ const AppModals = observer(() => {
         isUrlUnavailableModalVisible,
         should_show_one_time_deposit_modal,
         should_show_account_success_modal,
+        should_show_appropriateness_warning_modal,
+        should_show_risk_warning_modal,
+        is_real_acc_signup_on,
+        is_from_signup_account,
     } = ui;
     const temp_session_signup_params = SessionStore.get('signup_query_param');
     const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
@@ -123,6 +135,10 @@ const AppModals = observer(() => {
             ? mt5_login_list.find(login => login)?.white_label?.notification ?? true
             : false;
 
+    const { is_migrated } = useWalletMigration();
+
+    const should_show_wallets_upgrade_completed_modal = Cookies.get('recent_wallets_migration');
+
     React.useEffect(() => {
         if (is_logged_in && is_authorize) {
             fetchFinancialAssessment().then(response => {
@@ -130,7 +146,19 @@ const AppModals = observer(() => {
             });
         }
     }, [is_logged_in, is_authorize]);
-    if (temp_session_signup_params && window.location.href.includes(routes.onboarding)) {
+
+    const is_onboarding = window.location.href.includes(routes.onboarding);
+
+    const should_show_passkeys_info_modal =
+        should_show_effortless_login_modal &&
+        !is_from_derivgo &&
+        !is_onboarding &&
+        !should_show_appropriateness_warning_modal &&
+        !should_show_risk_warning_modal &&
+        !is_from_signup_account &&
+        !is_real_acc_signup_on;
+
+    if (temp_session_signup_params && is_onboarding) {
         toggleAccountSignupModal(true);
     } else {
         SessionStore.remove('signup_query_param');
@@ -192,6 +220,19 @@ const AppModals = observer(() => {
     } else if (isUrlUnavailableModalVisible) {
         ComponentToLoad = <UrlUnavailableModal />;
     }
+
+    if (has_wallet && should_show_wallets_upgrade_completed_modal) {
+        ComponentToLoad = <WalletsUpgradeCompletedModal />;
+    }
+
+    if (!has_wallet && is_migrated && is_logged_in) {
+        ComponentToLoad = <WalletsUpgradeLogoutModal />;
+    }
+
+    if (should_show_passkeys_info_modal) {
+        ComponentToLoad = <EffortlessLoginModal />;
+    }
+
     if (is_ready_to_deposit_modal_visible) {
         ComponentToLoad = <ReadyToDepositModal />;
     }

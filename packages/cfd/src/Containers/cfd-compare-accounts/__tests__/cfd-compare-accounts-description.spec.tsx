@@ -97,7 +97,7 @@ describe('<CFDCompareAccountsDescription />', () => {
         mocked_props.trading_platforms.shortcode = 'labuan';
 
         render(<CFDCompareAccountsDescription {...mocked_props} />, { wrapper });
-        assertContent('Maximum leverage', '0.5 pips', 'Spreads from', 'Counterparty company', 'Jurisdiction');
+        assertContent('Maximum leverage', '1.4 pips', 'Spreads from', 'Counterparty company', 'Jurisdiction');
         expect(screen.getByText('Up to 1:100')).toBeInTheDocument();
         expect(screen.getByText('Deriv (FX) Ltd')).toBeInTheDocument();
         expect(screen.getByText('Labuan')).toBeInTheDocument();

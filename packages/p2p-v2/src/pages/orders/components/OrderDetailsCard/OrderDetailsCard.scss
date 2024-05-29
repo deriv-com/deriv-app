@@ -1,0 +1,14 @@
+.p2p-v2-order-details-card {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border: 8px solid #f2f3f4;
+    border-radius: 8px;
+    width: 45.6rem;
+    height: fit-content;
+
+    @include mobile {
+        width: 100%;
+        border: none;
+    }
+}

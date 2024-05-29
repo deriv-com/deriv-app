@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { mockStore, StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useTotalAccountBalance from '../useTotalAccountBalance';
 
@@ -8,9 +8,7 @@ describe('useTotalAccountBalance', () => {
         const mock = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>
-                <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
-            </StoreProvider>
+            <StoreProvider store={mock}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useTotalAccountBalance(mock.client.active_accounts), { wrapper });
 
@@ -27,13 +25,12 @@ describe('useTotalAccountBalance', () => {
                         account_type: 'real',
                     },
                 ],
+                getExchangeRate: () => 1,
             },
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>
-                <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
-            </StoreProvider>
+            <StoreProvider store={mock}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useTotalAccountBalance(mock.client.active_accounts), { wrapper });
         expect(result.current.balance).toBe(10000);
@@ -54,13 +51,12 @@ describe('useTotalAccountBalance', () => {
                         account_type: 'demo',
                     },
                 ],
+                getExchangeRate: () => 1,
             },
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>
-                <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
-            </StoreProvider>
+            <StoreProvider store={mock}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useTotalAccountBalance(mock.client.active_accounts), { wrapper });
         expect(result.current.balance).toBe(20000);

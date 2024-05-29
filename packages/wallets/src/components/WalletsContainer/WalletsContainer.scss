@@ -1,0 +1,69 @@
+.wallets-container {
+    max-width: 123.2rem;
+    background: var(--system-light-8-primary-background, #fff);
+    border-radius: 1.6rem;
+    position: relative;
+
+    &__header {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        padding: 2.4rem;
+        gap: 2.4rem;
+        border-radius: 1.6rem;
+        position: relative;
+    }
+
+    &__content {
+        animation: hide-card-content 0.3s ease;
+        transform: translateY(-3rem);
+        opacity: 0;
+        display: none;
+
+        &--visible {
+            animation: show-card-content 0.3s ease;
+            transform: translateY(0);
+            opacity: 1;
+            display: block;
+            padding-inline: 2.4rem;
+            padding-bottom: 2.4rem;
+        }
+    }
+
+    &__dropdown {
+        transition: all 0.3s ease;
+        cursor: pointer;
+        z-index: 10;
+        display: inline-block;
+        position: relative;
+        padding: 2em;
+        margin: -2em;
+
+        &--open {
+            transform: rotate(180deg);
+            transition: all 0.3s ease;
+        }
+    }
+
+    @keyframes show-card-content {
+        from {
+            transform: translateY(-3rem);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes hide-card-content {
+        from {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateY(-3rem);
+            opacity: 0;
+        }
+    }
+}

@@ -29,8 +29,10 @@ export type TAdvertProps = {
     description: string;
     effective_rate: number;
     effective_rate_display: string;
+    eligibility_status: string[];
     id: string;
     is_active: number;
+    is_eligible: number;
     is_visible: number;
     local_currency: string;
     max_order_amount: number;
@@ -41,8 +43,10 @@ export type TAdvertProps = {
     min_order_amount_display: string;
     min_order_amount_limit: number;
     min_order_amount_limit_display: string;
+    order_expiry_period: number;
     payment_info: string;
     payment_method: null | string;
+    payment_method_details: object;
     payment_method_names: string[];
     price: number;
     price_display: string;
@@ -53,4 +57,8 @@ export type TAdvertProps = {
     remaining_amount_display: string;
     type: string;
     visibility_status: string[];
+};
+
+export type TCountryListProps = {
+    [key: string]: { country_name: string };
 };

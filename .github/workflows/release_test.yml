@@ -19,7 +19,7 @@ jobs:
     - name: Build
       uses: "./.github/actions/build"
       with:
-        NODE_ENV: staging
+        NODE_ENV: production
         CROWDIN_WALLETS_API_KEY: ${{ secrets.CROWDIN_WALLETS_API_KEY }}
         DATADOG_APPLICATION_ID: ${{ vars.DATADOG_APPLICATION_ID }}
         IS_GROWTHBOOK_ENABLED: ${{ vars.IS_GROWTHBOOK_ENABLED }}

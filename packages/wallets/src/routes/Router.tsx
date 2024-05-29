@@ -1,36 +1,41 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { useWalletAccountsList } from '@deriv/api-v2';
-import { WalletNoWalletFoundState } from '../components';
-import { CashierModalRoute } from './CashierModalRoute';
-import { CompareAccountsRoute } from './CompareAccountsRoute';
-import { WalletsListingRoute } from './WalletsListingRoute';
+import { Loader } from '../components/Loader';
+import { Page404 } from '../components/Page404';
 
-const walletsPrefix = '/wallets';
+const LazyWalletsListingRoute = lazy(
+    () => import(/* webpackChunkName: "wallets-listing-route" */ './WalletsListingRoute/WalletsListingRoute')
+);
+const LazyCashierModalRoute = lazy(
+    () => import(/* webpackChunkName: "cashier-modal-route" */ './CashierModalRoute/CashierModalRoute')
+);
+const LazyCompareAccountsRoute = lazy(
+    () => import(/* webpackChunkName: "compare-accounts-route" */ './CompareAccountsRoute/CompareAccountsRoute')
+);
 
 type TWalletsRoute =
-    | ''
-    | '/cashier'
-    | '/cashier/deposit'
-    | '/cashier/on-ramp'
-    | '/cashier/reset-balance'
-    | '/cashier/transactions'
-    | '/cashier/transfer'
-    | '/cashier/withdraw'
-    | '/compare-accounts';
+    | '/'
+    | '/compare-accounts'
+    | '/wallet'
+    | '/wallet/account-transfer'
+    | '/wallet/deposit'
+    | '/wallet/on-ramp'
+    | '/wallet/reset-balance'
+    | '/wallet/transactions'
+    | '/wallet/withdrawal';
 
-export type TRoute = '/endpoint' | `?${string}` | `${typeof walletsPrefix}${TWalletsRoute}`;
+export type TRoute = '/endpoint' | `?${string}` | `${TWalletsRoute}`;
 
 // wallets routes which have their states
 interface WalletsRouteState {
-    '/cashier/transactions': { showPending: boolean; transactionType: 'deposit' | 'withdrawal' };
-    '/cashier/transfer': { toAccountLoginId: string };
+    '/wallet/account-transfer': { shouldSelectDefaultWallet: boolean; toAccountLoginId: string };
+    '/wallet/transactions': { showPending: boolean; transactionType: 'deposit' | 'withdrawal' };
 }
 
-type TStatefulRoute = TRoute & `${typeof walletsPrefix}${keyof WalletsRouteState}`;
+type TStatefulRoute = TRoute & `${keyof WalletsRouteState}`;
 
 type TRouteState = {
-    [T in TStatefulRoute]: T extends `${typeof walletsPrefix}${infer R extends keyof WalletsRouteState}`
+    [T in TStatefulRoute]: T extends `${infer R extends keyof WalletsRouteState}`
         ? Partial<WalletsRouteState[R]>
         : never;
 };
@@ -55,16 +60,35 @@ declare module 'react-router-dom' {
 }
 
 const Router: React.FC = () => {
-    const { data: walletAccounts, isLoading } = useWalletAccountsList();
-
-    if ((!walletAccounts || !walletAccounts.length) && !isLoading)
-        return <Route component={WalletNoWalletFoundState} path={walletsPrefix} />;
-
     return (
         <Switch>
-            <Route component={CompareAccountsRoute} path={`${walletsPrefix}/compare-accounts`} />
-            <Route component={CashierModalRoute} path={`${walletsPrefix}/cashier`} />
-            <Route component={WalletsListingRoute} path={walletsPrefix} />
+            <Route
+                exact
+                path={'/compare-accounts'}
+                render={() => (
+                    <React.Suspense fallback={<Loader />}>
+                        <LazyCompareAccountsRoute />
+                    </React.Suspense>
+                )}
+            />
+            <Route
+                path={'/wallet'}
+                render={() => (
+                    <React.Suspense fallback={<Loader />}>
+                        <LazyCashierModalRoute />
+                    </React.Suspense>
+                )}
+            />
+            <Route
+                exact
+                path={'/'}
+                render={() => (
+                    <React.Suspense fallback={<Loader />}>
+                        <LazyWalletsListingRoute />
+                    </React.Suspense>
+                )}
+            />
+            <Route render={() => <Page404 />} />
         </Switch>
     );
 };

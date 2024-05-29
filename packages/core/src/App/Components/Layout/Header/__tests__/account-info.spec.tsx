@@ -82,21 +82,4 @@ describe('AccountInfo component', () => {
         expect(text).toBeInTheDocument();
         expect(screen.queryByText(/no currency assigned/i)).not.toBeInTheDocument();
     });
-
-    it('should render proper "AccountType" base on the passed properties', () => {
-        const { rerender } = render(<AccountInfo account_type='financial' />);
-        expect(screen.getByText(/multipliers/i)).toBeInTheDocument();
-
-        rerender(<AccountInfo account_type='gaming' country_standpoint={{ is_united_kingdom: true }} />);
-        expect(screen.getByText(/gaming/i)).toBeInTheDocument();
-
-        rerender(<AccountInfo account_type='gaming' country_standpoint={{ is_belgium: true }} />);
-        expect(screen.getByText(/options/i)).toBeInTheDocument();
-
-        rerender(<AccountInfo account_type='gaming' country_standpoint={{ is_isle_of_man: false }} is_eu />);
-        expect(screen.getByText(/options/i)).toBeInTheDocument();
-
-        rerender(<AccountInfo account_type='gaming' country_standpoint={{ is_isle_of_man: false }} />);
-        expect(screen.getByText(/derived/i)).toBeInTheDocument();
-    });
 });

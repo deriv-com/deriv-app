@@ -9,6 +9,7 @@ export type TInitialTransferFormValues = {
     activeAmountFieldName?: 'fromAmount' | 'toAmount';
     fromAccount?: TAccount;
     fromAmount: number;
+    isError?: boolean;
     toAccount?: TToAccount;
     toAmount: number;
 };

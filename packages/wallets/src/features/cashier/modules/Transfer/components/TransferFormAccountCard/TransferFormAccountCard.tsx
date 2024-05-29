@@ -8,7 +8,7 @@ import {
 } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
 import { TWalletLandingCompanyName } from '../../../../../../types';
-import { getTradingAppIcon, getWalletIcon } from '../../../../helpers';
+import { getTradingAppIcon } from '../../../../helpers';
 import type { TAccount } from '../../types';
 import './TransferFormAccountCard.scss';
 
@@ -18,7 +18,7 @@ type TProps = {
     type?: 'input' | 'modal';
 };
 
-const WalletTransferFormAccountCard: React.FC<TProps> = ({ account, activeWallet, type = 'modal' }) => {
+const TransferFormAccountCard: React.FC<TProps> = ({ account, activeWallet, type = 'modal' }) => {
     const { isMobile } = useDevice();
     const isInput = type === 'input';
     const isModal = type === 'modal';
@@ -28,7 +28,6 @@ const WalletTransferFormAccountCard: React.FC<TProps> = ({ account, activeWallet
         activeWallet?.landingCompanyName as TWalletLandingCompanyName,
         account?.mt5_group
     );
-    const walletIcon = getWalletIcon(activeWallet?.currency ?? 'USD', Boolean(activeWallet?.demo_account));
 
     return (
         <div
@@ -51,7 +50,6 @@ const WalletTransferFormAccountCard: React.FC<TProps> = ({ account, activeWallet
                             currency={activeWallet?.currency ?? ''}
                             isDemo={Boolean(account?.demo_account)}
                             size='small'
-                            walletIcon={walletIcon}
                         />
                     )}
                 </div>
@@ -76,4 +74,4 @@ const WalletTransferFormAccountCard: React.FC<TProps> = ({ account, activeWallet
     );
 };
 
-export default WalletTransferFormAccountCard;
+export default TransferFormAccountCard;

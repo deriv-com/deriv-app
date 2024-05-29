@@ -25,7 +25,7 @@ jobs:
                   preview_url_regexp: \[Visit Preview\]\((.*?.sx)\)
             - name: Generate Deriv App ID for deployment Preview URL
               id: generate_app_id
-              uses: binary-com/deriv-app-id-action@v1
+              uses: deriv-com/deriv-app-id-action@v1
               with:
                   DERIV_API_TOKEN: ${{ secrets.DERIV_API_TOKEN }}
                   DERIV_APP_ID: ${{ secrets.DERIV_APP_ID }}

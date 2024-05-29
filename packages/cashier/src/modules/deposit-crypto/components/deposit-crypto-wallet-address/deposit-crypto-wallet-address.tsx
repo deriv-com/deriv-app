@@ -3,6 +3,7 @@ import { Button, Clipboard, InlineMessage, Loading, Text } from '@deriv/componen
 import { useDepositCryptoAddress } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { setPerformanceValue } from '@deriv/shared';
 import QRCode from 'qrcode.react';
 import { DepositCryptoDisclaimers } from '../deposit-crypto-disclaimers';
 import './deposit-crypto-wallet-address.scss';
@@ -13,6 +14,8 @@ const DepositCryptoWalletAddress: React.FC = observer(() => {
     const { data: deposit_crypto_address, isLoading, error, resend } = useDepositCryptoAddress();
 
     if (isLoading) return <Loading is_fullscreen={false} />;
+
+    setPerformanceValue('load_crypto_deposit_cashier_time');
 
     if (error) {
         return (

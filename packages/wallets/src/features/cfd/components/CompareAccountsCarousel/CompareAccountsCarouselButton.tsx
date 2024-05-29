@@ -1,8 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
+import { LabelPairedChevronLeftLgFillIcon, LabelPairedChevronRightLgFillIcon } from '@deriv/quill-icons';
 import { IconButton } from '../../../../components/Base';
-import LeftArrow from '../../../../public/images/left-arrow.svg';
-import RightArrow from '../../../../public/images/right-arrow.svg';
 import './CompareAccountsCarouselButton.scss';
 
 type TPrevNextButtonProps = {
@@ -11,22 +10,25 @@ type TPrevNextButtonProps = {
     onClick: () => void;
 };
 
-const CFDCompareAccountsCarouselButton = (props: TPrevNextButtonProps) => {
-    const { enabled, isNext, onClick } = props;
+const CFDCompareAccountsCarouselButton = ({ enabled, isNext, onClick }: TPrevNextButtonProps) => (
+    <IconButton
+        className={classNames('wallets-compare-accounts-carousel-button', {
+            'wallets-compare-accounts-carousel-button--next': isNext,
+            'wallets-compare-accounts-carousel-button--prev': !isNext,
+        })}
+        color='white'
+        disabled={!enabled}
+        icon={
+            isNext ? (
+                <LabelPairedChevronRightLgFillIcon fill='#333333' />
+            ) : (
+                <LabelPairedChevronLeftLgFillIcon fill='#333333' />
+            )
+        }
+        isRound
+        onClick={onClick}
+        size='md'
+    />
+);
 
-    return (
-        <IconButton
-            className={classNames('wallets-compare-accounts-carousel-button', {
-                'wallets-compare-accounts-carousel-button--next': isNext,
-                'wallets-compare-accounts-carousel-button--prev': !isNext,
-            })}
-            color='white'
-            disabled={!enabled}
-            icon={isNext ? <RightArrow /> : <LeftArrow />}
-            isRound
-            onClick={onClick}
-            size='md'
-        />
-    );
-};
 export default CFDCompareAccountsCarouselButton;

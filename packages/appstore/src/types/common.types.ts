@@ -1,6 +1,5 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { useStore } from '@deriv/stores';
-
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { RegionAvailability } from 'Constants/platform-config';
 
@@ -27,7 +26,7 @@ export type TMarketType = 'financial' | 'synthetic' | 'all';
 export type TVisibilityChecker = (platform: TPlatform) => boolean;
 
 export type TMissingRealAccount = {
-    onClickSignup: () => void;
+    onClickSignup: VoidFunction;
 };
 
 export type TMt5StatusServerType = Record<'all' | 'platform' | 'server_number', number>;
@@ -42,8 +41,6 @@ export type TOpenAccountTransferMeta = {
 export type TStandPoint = {
     financial_company: string;
     gaming_company: string;
-    iom: boolean;
-    malta: boolean;
     maltainvest: boolean;
     svg: boolean;
 };
@@ -84,6 +81,8 @@ export type TTradingPlatformAvailableAccount = {
     };
     shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
     sub_account_type: string;
+    max_count?: number;
+    available_count?: number;
 };
 
 export type TCFDAccountsProps = {
@@ -221,15 +220,14 @@ export type TWalletButton = {
     name: Parameters<ReturnType<typeof useStore>['traders_hub']['setWalletModalActiveTab']>[0];
     text: string;
     icon: string;
-    action: () => void;
+    action: VoidFunction;
 };
 
 export type TWalletSteps = {
-    handleBack: () => void;
-    handleClose: () => void;
-    handleNext: () => void;
-    is_disabled: boolean;
-    toggleCheckbox: () => void;
+    handleBack: VoidFunction;
+    handleClose: VoidFunction;
+    handleNext: VoidFunction;
+    is_migrating: boolean;
     upgradeToWallets: (value: boolean) => void;
 };
 
@@ -237,4 +235,11 @@ export type TRealWalletsUpgradeSteps = {
     wallet_upgrade_steps: TWalletSteps & {
         current_step: number;
     };
+};
+
+export type TTrustpilotWidgetData = {
+    stars: number;
+    trustScore: number;
+    numberOfReviews: string;
+    error?: string;
 };

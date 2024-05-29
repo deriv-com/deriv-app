@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { P2PSettingsProvider, StoreProvider, mockStore } from '@deriv/stores';
 import ToggleMenuDrawer from '../toggle-menu-drawer';
 
 jest.mock('@deriv/components', () => {
@@ -12,10 +12,6 @@ jest.mock('@deriv/components', () => {
         MobileDrawer,
     };
 });
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useFeatureFlags: jest.fn(() => ({ is_next_wallet_enabled: true })),
-}));
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useLocation: jest.fn(() => ({ pathname: '/appstore/traders-hub' })),
@@ -39,7 +35,9 @@ describe('<ToggleMenuDrawer />', () => {
                     },
                 })}
             >
-                <ToggleMenuDrawer />
+                <P2PSettingsProvider>
+                    <ToggleMenuDrawer />
+                </P2PSettingsProvider>
             </StoreProvider>
         );
     };

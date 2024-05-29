@@ -20,6 +20,7 @@ const mockProps = {
     currency: 'usd',
     label: 'label',
     name: 'name',
+    triggerValidationFunction: jest.fn(),
 };
 
 describe('AdFormInput', () => {
@@ -33,6 +34,7 @@ describe('AdFormInput', () => {
         expect(input).toBeInTheDocument();
         expect(input).toHaveValue('');
         userEvent.type(input, 'test');
+        expect(mockProps.triggerValidationFunction).toHaveBeenCalled();
         expect(input).toHaveValue('test');
     });
 });

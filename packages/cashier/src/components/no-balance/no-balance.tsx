@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Button, Icon, Text } from '@deriv/components';
 import { useDepositLocked } from '@deriv/hooks';
-import { routes, getCurrencyDisplayCode } from '@deriv/shared';
+import { routes, getCurrencyDisplayCode, startPerformanceEventTimer } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
@@ -19,6 +19,7 @@ const NoBalance = observer(({ history, onClickDeposit }: TNoBalanceProps) => {
     const is_deposit_locked = useDepositLocked();
 
     const onClickDepositHandler = () => {
+        startPerformanceEventTimer('load_cashier_time');
         if (onClickDeposit) {
             onClickDeposit();
         } else {

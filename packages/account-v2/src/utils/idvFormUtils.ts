@@ -1,8 +1,9 @@
 import { FormikValues } from 'formik';
 import * as Yup from 'yup';
 import { AnyObject } from 'yup/lib/object';
+import { IDV_ERROR_CODES } from '../constants';
 import { getIDVDocumentExampleFormat, TIDVDocumentConfig } from '../constants/idvDocumentConfig';
-import { TSupportedDocuments } from '../types';
+import { TIDVErrorStatusCode, TSupportedDocuments } from '../types';
 
 export const getExampleFormat = (exampleFormat?: string) => (exampleFormat ? `Example: ${exampleFormat}` : '');
 
@@ -75,26 +76,26 @@ const validateAdditionalDocumentNumber = (
 
 export const getIDVFormValidationSchema = (countryCode: string, list: TSupportedDocuments, formData: FormikValues) => {
     return Yup.object({
-        additionalDocument: Yup.string().test({
-            name: 'testAdditionalDocumentNumber',
-            test: (value, context) => {
-                const documentConfig = getSelectedDocumentConfigData(countryCode, formData.documentType, list);
-                return validateAdditionalDocumentNumber(documentConfig, value, context);
-            },
-        }),
-        documentNumber: Yup.string().test({
-            name: 'testDocumentNumber',
-            test: (value, context) => {
-                const documentConfig = getSelectedDocumentConfigData(countryCode, formData.documentType, list);
-                return validateDocumentNumber(documentConfig, value as string, context);
-            },
-        }),
+        additionalDocument: Yup.string()
+            .test({
+                name: 'testAdditionalDocumentNumber',
+                test: (value, context) => {
+                    const documentConfig = getSelectedDocumentConfigData(countryCode, formData.documentType, list);
+                    return validateAdditionalDocumentNumber(documentConfig, value, context);
+                },
+            })
+            .default(''),
+        documentNumber: Yup.string()
+            .test({
+                name: 'testDocumentNumber',
+                test: (value, context) => {
+                    const documentConfig = getSelectedDocumentConfigData(countryCode, formData.documentType, list);
+                    return validateDocumentNumber(documentConfig, value as string, context);
+                },
+            })
+            .default(''),
         documentType: Yup.string().required('Please select a document type.'),
-    }).default(() => ({
-        additionalDocument: '',
-        documentNumber: '',
-        documentType: '',
-    }));
+    });
 };
 
 export const getSelectedDocumentConfigData = (
@@ -140,3 +141,16 @@ export const generatePlaceholderText = (selected_doc: string): string => {
             return 'Enter your document number';
     }
 };
+
+export const generateIDVPayloadData = (values: Yup.InferType<ReturnType<typeof getIDVFormValidationSchema>>) => ({
+    document_additional: values.additionalDocument,
+    document_number: values.documentType === 'none' ? 'none' : values.documentNumber,
+    document_type: values.documentType,
+});
+
+export const getButtonText = (errorCode: TIDVErrorStatusCode | null) =>
+    errorCode === IDV_ERROR_CODES.nameMismatch.code ||
+    errorCode === IDV_ERROR_CODES.dobMismatch.code ||
+    errorCode === IDV_ERROR_CODES.nameDobMismatch.code
+        ? 'Update profile'
+        : 'Verify';

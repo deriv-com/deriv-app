@@ -6,7 +6,7 @@ import { mockProposalOpenContract } from './mocks/mockProposalOpenContract';
 import mockWalletsAuthorize, { DEFAULT_WALLET_ACCOUNTS } from './mocks/mockWalletsAuthorize';
 import mockWalletsLoggedIn from './mocks/mockWalletsLoggedIn';
 
-const CAROUSEL_SELECTOR = '.wallets-carousel-content__container .wallets-card:nth-child(1)';
+const CAROUSEL_SELECTOR = '.wallets-carousel-content__cards .wallets-card:nth-child(1)';
 
 // swipe function
 async function swipeLeft(mobilePage: Page) {
@@ -56,30 +56,30 @@ test.describe('Wallets - Mobile carousel', () => {
         });
     });
 
-    test.skip('renders cards for all wallets', async ({ baseURL }) => {
-        await mobilePage.goto(`${baseURL}/wallets`);
+    test('renders cards for all wallets', async ({ baseURL }) => {
+        await mobilePage.goto(`${baseURL}/`);
 
         // Ensure the carousel is loaded and visible
         await mobilePage.waitForSelector(CAROUSEL_SELECTOR);
 
         const card1text = await mobilePage
             .locator(
-                '.wallets-carousel-content__container .wallets-card:nth-child(1) .wallets-card__details__bottom span:last-child'
+                '.wallets-carousel-content__cards .wallets-card:nth-child(1) .wallets-card__details-bottom span:last-child'
             )
             .innerText();
         const card2text = await mobilePage
             .locator(
-                '.wallets-carousel-content__container .wallets-card:nth-child(2) .wallets-card__details__bottom span:last-child'
+                '.wallets-carousel-content__cards .wallets-card:nth-child(2) .wallets-card__details-bottom span:last-child'
             )
             .innerText();
         const card3text = await mobilePage
             .locator(
-                '.wallets-carousel-content__container .wallets-card:nth-child(3) .wallets-card__details__bottom span:last-child'
+                '.wallets-carousel-content__cards .wallets-card:nth-child(3) .wallets-card__details-bottom span:last-child'
             )
             .innerText();
         const card4text = await mobilePage
             .locator(
-                '.wallets-carousel-content__container .wallets-card:nth-child(4) .wallets-card__details__bottom span:last-child'
+                '.wallets-carousel-content__cards .wallets-card:nth-child(4) .wallets-card__details-bottom span:last-child'
             )
             .innerText();
 
@@ -89,8 +89,8 @@ test.describe('Wallets - Mobile carousel', () => {
         expect(card4text).toBe('0.00 USD');
     });
 
-    test.skip('renders progress bar with active item and updates it when swiping', async ({ baseURL }) => {
-        await mobilePage.goto(`${baseURL}/wallets`);
+    test('renders progress bar with active item and updates it when swiping', async ({ baseURL }) => {
+        await mobilePage.goto(`${baseURL}/`);
         const activeProgressBarItem = mobilePage.locator('.wallets-progress-bar div:nth-child(1)');
         const progressBarItemClass = await activeProgressBarItem.getAttribute('class');
 
@@ -115,9 +115,9 @@ test.describe('Wallets - Mobile carousel', () => {
         expect(progressBarItemClass3).toContain('wallets-progress-bar-active');
     });
 
-    test.skip('switches account when clicking on progress bar', async ({ baseURL }) => {
+    test('switches account when clicking on progress bar', async ({ baseURL }) => {
         // given
-        await mobilePage.goto(`${baseURL}/wallets`);
+        await mobilePage.goto(`${baseURL}/`);
 
         const progressBarItem = mobilePage.locator('.wallets-progress-bar div:nth-child(3)');
 

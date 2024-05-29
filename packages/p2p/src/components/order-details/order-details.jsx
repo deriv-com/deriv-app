@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Icon, InlineMessage, Text, ThemedScrollbars } from '@deriv/components';
+import { useP2PSettings } from '@deriv/hooks';
 import { formatMoney, isDesktop, isMobile, routes } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
@@ -31,6 +32,8 @@ const OrderDetails = observer(() => {
         notifications: { removeNotificationByKey, removeNotificationMessage, setP2POrderProps },
     } = useStore();
     const { hideModal, isCurrentModal, showModal, useRegisterModalProps } = useModalManagerContext();
+
+    const { p2p_settings } = useP2PSettings();
 
     const {
         account_currency,
@@ -92,7 +95,6 @@ const OrderDetails = observer(() => {
         const disposeListeners = sendbird_store.registerEventListeners();
         const disposeReactions = sendbird_store.registerMobXReactions();
 
-        order_store.getWebsiteStatus();
         order_store.setRatingValue(0);
         order_store.setIsRecommended(undefined);
         my_profile_store.getPaymentMethodsList();
@@ -160,11 +162,11 @@ const OrderDetails = observer(() => {
 
     React.useEffect(() => {
         if (completion_time) {
-            setRemainingReviewTime(getDateAfterHours(completion_time, general_store.review_period));
+            setRemainingReviewTime(getDateAfterHours(completion_time, p2p_settings.review_period));
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [completion_time]);
+    }, [completion_time, p2p_settings.review_period]);
 
     useRegisterModalProps({
         key: 'RatingModal',

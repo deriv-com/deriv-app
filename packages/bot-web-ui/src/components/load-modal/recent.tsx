@@ -33,10 +33,9 @@ const RecentComponent = observer(() => {
             </div>
         );
     }
-
     return (
         <div className='load-strategy__container'>
-            <div className='load-strategy__recent__empty'>
+            <div className='load-strategy__recent__empty' data-testid='dt-load-strategy__recent__empty'>
                 <Icon icon='IcEmptyFolder' className='load-strategy__recent__empty-icon' size={128} />
                 <div className='load-strategy__recent__empty-title'>
                     <Localize i18n_default_text='You do not have any recent bots' />
@@ -47,6 +46,7 @@ const RecentComponent = observer(() => {
                 <div
                     tabIndex={0}
                     className='load-strategy__recent__empty-expand'
+                    data-testid='dt-load-strategy__recent__empty-expand'
                     onClick={toggleExplanationExpand}
                     onKeyDown={(e: React.KeyboardEvent) => {
                         if (e.key === 'Enter') toggleExplanationExpand();
@@ -55,6 +55,9 @@ const RecentComponent = observer(() => {
                     <Localize i18n_default_text="Why can't I see my recent bots?" />
                 </div>
                 <div
+                    data-testid={
+                        is_explanation_expand ? 'dt-empty-explanation-list--open' : 'dt-empty-explanation-list--close'
+                    }
                     className={classnames('load-strategy__recent__empty-explanation', {
                         'load-strategy__recent__empty-explanation--show': is_explanation_expand,
                     })}

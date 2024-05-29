@@ -18,7 +18,7 @@ const CashierOnboardingOnrampCard: React.FC = observer(() => {
 
     const onClick = () => {
         setDepositTarget('/cashier/on-ramp');
-        if (currency_config.is_crypto || has_crypto_account) {
+        if (currency_config?.is_crypto || has_crypto_account) {
             openRealAccountSignup('choose');
             shouldNavigateAfterChooseCrypto('/cashier/on-ramp');
         } else {
@@ -29,7 +29,7 @@ const CashierOnboardingOnrampCard: React.FC = observer(() => {
     return (
         <CashierOnboardingCard
             title={
-                currency_config.is_crypto
+                currency_config?.is_crypto
                     ? localize('Buy cryptocurrencies')
                     : localize('Buy cryptocurrencies via fiat onramp')
             }

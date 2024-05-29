@@ -9,9 +9,6 @@ describe('withdrawalCryptoValidator', () => {
     const mockActiveAccount = {
         balance: 10,
         currency: 'BTC',
-        currency_config: {
-            minimum_withdrawal: 1,
-        },
     } as THooks.ActiveAccount;
 
     const mockFractionalDigits = {
@@ -19,6 +16,7 @@ describe('withdrawalCryptoValidator', () => {
         fiat: 2,
     };
     const mockRemainder = 9;
+    const mockMinimumWithdrawal = 1;
 
     it('should check if no errors are returned when valid inputs are provided for crypto address', () => {
         const cryptoAddressMessages = validateCryptoAddress(mockCryptoAddress);
@@ -32,7 +30,8 @@ describe('withdrawalCryptoValidator', () => {
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
-            mockValue
+            mockValue,
+            mockMinimumWithdrawal
         );
 
         expect(cryptoAmountMessages).toEqual(undefined);
@@ -65,7 +64,8 @@ describe('withdrawalCryptoValidator', () => {
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
-            mockValue
+            mockValue,
+            mockMinimumWithdrawal
         );
 
         expect(cryptoAmountMessages).toEqual('Should be a valid number.');
@@ -76,7 +76,8 @@ describe('withdrawalCryptoValidator', () => {
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
-            mockValue
+            mockValue,
+            mockMinimumWithdrawal
         );
 
         expect(cryptoAmountMessages).toEqual('Should be a valid number.');
@@ -87,7 +88,8 @@ describe('withdrawalCryptoValidator', () => {
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
-            mockValue
+            mockValue,
+            mockMinimumWithdrawal
         );
 
         expect(cryptoAmountMessages).toEqual('Should be a valid number.');
@@ -98,7 +100,8 @@ describe('withdrawalCryptoValidator', () => {
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
-            mockValue
+            mockValue,
+            mockMinimumWithdrawal
         );
 
         expect(cryptoAmountMessages).toEqual('Should be a valid number.');
@@ -134,7 +137,8 @@ describe('withdrawalCryptoValidator', () => {
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
-            mockValue
+            mockValue,
+            mockMinimumWithdrawal
         );
 
         expect(cryptoAmountMessages).toEqual('Insufficient funds');
@@ -146,7 +150,8 @@ describe('withdrawalCryptoValidator', () => {
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
-            mockValue
+            mockValue,
+            mockMinimumWithdrawal
         );
 
         expect(cryptoAmountMessages).toEqual('Insufficient funds');
@@ -161,7 +166,8 @@ describe('withdrawalCryptoValidator', () => {
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
-            mockValue
+            mockValue,
+            mockMinimumWithdrawal
         );
 
         expect(cryptoAmountMessages).toEqual('The current allowed withdraw amount is 1.0000000 to 10.0000000 BTC.');
@@ -176,7 +182,8 @@ describe('withdrawalCryptoValidator', () => {
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
-            mockValue
+            mockValue,
+            mockMinimumWithdrawal
         );
 
         expect(cryptoAmountMessages).toEqual(undefined);
@@ -191,7 +198,8 @@ describe('withdrawalCryptoValidator', () => {
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
-            mockValue
+            mockValue,
+            mockMinimumWithdrawal
         );
 
         expect(cryptoAmountMessages).toEqual(undefined);
@@ -206,7 +214,8 @@ describe('withdrawalCryptoValidator', () => {
             mockFractionalDigits,
             mockIsClientVerified,
             mockRemainder,
-            mockValue
+            mockValue,
+            mockMinimumWithdrawal
         );
 
         expect(cryptoAmountMessages).toEqual('The current allowed withdraw amount is 1.0000000 to 9.0000000 BTC.');

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useFormikContext } from 'formik';
 import { Trans } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { TInitialTransferFormValues } from '../../types';
 import './TransferMessages.scss';
 
 const TransferMessages: React.FC = () => {
-    const { values } = useFormikContext<TInitialTransferFormValues>();
+    const { setFieldValue, values } = useFormikContext<TInitialTransferFormValues>();
 
     const { USDExchangeRates, accountLimits, activeWalletExchangeRates } = useTransfer();
 
@@ -21,6 +21,11 @@ const TransferMessages: React.FC = () => {
         toAccount: values.toAccount,
         USDExchangeRates,
     });
+
+    useEffect(() => {
+        const hasErrorMessage = messages.some(message => message.type === 'error');
+        setFieldValue('isError', hasErrorMessage);
+    }, [messages, setFieldValue]);
 
     return (
         <FadedAnimatedList className='wallets-transfer-messages'>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { isSafariBrowser, mobileOSDetect } from '@deriv/shared';
+import { isSafariBrowser, mobileOSDetect, mobileOSDetectAsync } from '@deriv/shared';
 import MT5MobileRedirectOption from '../mt5-mobile-redirect-option';
 import { DEEP_LINK, getMobileAppInstallerURL, getPlatformMt5DownloadLink } from '../../../src/Helpers/constants';
 
@@ -17,14 +17,12 @@ describe('<MT5MobileRedirectOption/>', () => {
             server_info: {
                 environment: 'DerivSVG-Server',
             },
-            webtrader_url: 'https://mt5-dev-real-web.regentmarkets.com/terminal',
-            white_label: {
-                download_links: {
-                    android: `https://download.mql5.com/cdn/mobile/mt5/android?server=DerivSVG-Demo,DerivSVG-Server,DerivSVG-Server-02,DerivSVG-Server-03`,
-                    ios: 'https://download.mql5.com/cdn/mobile/mt5/ios?server=DerivSVG-Demo,DerivSVG-Server,DerivSVG-Server-02,DerivSVG-Server-03',
-                    windows: 'https://download.mql5.com/cdn/web/22698/mt5/derivsvg5setup.exe',
-                },
-                notification: false,
+            white_label_links: {
+                webtrader_url: 'https://mt5-real01-web.deriv.com/terminal',
+                android:
+                    'https://download.mql5.com/cdn/mobile/mt5/android?server=DerivSVG-Demo,DerivSVG-Server,DerivSVG-Server-02,DerivSVG-Server-03',
+                ios: 'https://download.mql5.com/cdn/mobile/mt5/ios?server=DerivSVG-Demo,DerivSVG-Server,DerivSVG-Server-02,DerivSVG-Server-03',
+                windows: 'https://download.mql5.com/cdn/web/22698/mt5/derivsvg5setup.exe',
             },
         },
     };
@@ -55,7 +53,7 @@ describe('<MT5MobileRedirectOption/>', () => {
         const link = await findByText('MetaTrader5 web terminal');
         expect(isSafariBrowser()).toBe(false);
         expect(link.closest('a').getAttribute('href')).toBe(
-            `${mock_props.mt5_trade_account.webtrader_url}&login=${mock_props.mt5_trade_account.display_login}&server=${mock_props.mt5_trade_account.server_info.environment}`
+            `${mock_props.mt5_trade_account.white_label_links.webtrader_url}?login=${mock_props.mt5_trade_account.display_login}&server=${mock_props.mt5_trade_account.server_info.environment}`
         );
     });
 
@@ -65,11 +63,12 @@ describe('<MT5MobileRedirectOption/>', () => {
             configurable: true,
         });
 
-        expect(mobileOSDetect()).toBe('iOS');
+        const os = await mobileOSDetectAsync();
+        expect(os).toBe('iOS');
         expect(isSafariBrowser()).toBe(true);
 
-        const expectedUrl = getMobileAppInstallerURL({ mt5_trade_account: mock_props.mt5_trade_account });
-        expect(expectedUrl).toBe(mock_props.mt5_trade_account.white_label.download_links.ios);
+        const expectedUrl = await getMobileAppInstallerURL({ mt5_trade_account: mock_props.mt5_trade_account });
+        expect(expectedUrl).toBe(mock_props.mt5_trade_account.white_label_links.ios);
     });
 
     it('should open MT5 download page on Google Play Store when Android user not have the app installed', async () => {
@@ -77,11 +76,12 @@ describe('<MT5MobileRedirectOption/>', () => {
             value: 'Mozilla/5.0 (Linux; Android 10; SM-A205U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.105 Mobile Safari/537.36',
             configurable: true,
         });
-        expect(mobileOSDetect()).toBe('Android');
+        const os = await mobileOSDetectAsync();
+        expect(os).toBe('Android');
         expect(isSafariBrowser()).toBe(false);
 
-        const expectedUrl = getMobileAppInstallerURL({ mt5_trade_account: mock_props.mt5_trade_account });
-        expect(expectedUrl).toBe(mock_props.mt5_trade_account.white_label.download_links.android);
+        const expectedUrl = await getMobileAppInstallerURL({ mt5_trade_account: mock_props.mt5_trade_account });
+        expect(expectedUrl).toBe(mock_props.mt5_trade_account.white_label_links.android);
     });
 
     it('should open MT5 download page on Huawei App Gallery when Huawei user do not have the app installed', async () => {
@@ -89,10 +89,11 @@ describe('<MT5MobileRedirectOption/>', () => {
             value: 'Mozilla/5.0 (Linux; Android 10; ELE-L29) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.105 Mobile Safari/537.36',
             configurable: true,
         });
-        expect(mobileOSDetect()).toBe('huawei');
+        const os = await mobileOSDetectAsync();
+        expect(os).toBe('huawei');
         expect(isSafariBrowser()).toBe(false);
 
-        const expectedUrl = getMobileAppInstallerURL({ mt5_trade_account: mock_props.mt5_trade_account });
+        const expectedUrl = await getMobileAppInstallerURL({ mt5_trade_account: mock_props.mt5_trade_account });
         expect(expectedUrl).toBe(getPlatformMt5DownloadLink('huawei'));
     });
 

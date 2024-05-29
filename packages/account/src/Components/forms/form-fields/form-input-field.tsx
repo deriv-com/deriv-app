@@ -24,16 +24,22 @@ type TFormInputFieldHelpers<T> = {
  */
 const FormInputField = ({ name, warn, ...rest }: FormInputFieldProps) => (
     <Field name={name}>
-        {({ field, form: { errors, touched } }: TFormInputFieldHelpers<Record<string, string>>) => (
-            <Input
-                {...field}
-                {...rest}
-                type='text'
-                autoComplete='off'
-                error={touched[field.name] && errors[field.name] ? errors[field.name] : undefined}
-                warn={warn}
-            />
-        )}
+        {({ field, form: { errors, touched, setFieldTouched } }: TFormInputFieldHelpers<Record<string, string>>) => {
+            return (
+                <Input
+                    {...field}
+                    {...rest}
+                    type='text'
+                    autoComplete='off'
+                    error={touched[field.name] && errors[field.name] ? errors[field.name] : undefined}
+                    warn={warn}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        !touched[field.name] && setFieldTouched(field.name);
+                        field.onChange(e);
+                    }}
+                />
+            );
+        }}
     </Field>
 );
 

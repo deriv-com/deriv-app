@@ -12,7 +12,7 @@ const wrapper = ({ children }: { children: JSX.Element }) => (
 const mockProps = {
     advertiserInfo: {
         fullName: 'Jane Doe',
-        show_name: 0,
+        should_show_name: false,
     },
     onToggle: jest.fn(),
 };

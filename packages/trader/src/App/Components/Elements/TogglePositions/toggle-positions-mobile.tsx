@@ -30,7 +30,7 @@ const TogglePositionsMobile = observer(
         onClickSell,
         onClickCancel,
     }: TTogglePositionsMobile) => {
-        const { togglePositionsDrawer, toggleUnsupportedContractModal, is_positions_drawer_on } = useStore().ui;
+        const { togglePositionsDrawer, is_positions_drawer_on } = useStore().ui;
         const [hidden_positions_ids, setHiddenPositionsIds] = React.useState<THiddenPositionsId[]>([]);
         const displayed_positions = filtered_positions
             .filter(p =>
@@ -68,7 +68,6 @@ const TogglePositionsMobile = observer(
                                 onClickCancel={onClickCancel}
                                 key={portfolio_position.id}
                                 currency={currency}
-                                toggleUnsupportedContractModal={toggleUnsupportedContractModal}
                                 togglePositions={togglePositionsDrawer}
                                 {...portfolio_position}
                             />

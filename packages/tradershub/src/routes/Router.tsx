@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { TradersHub } from '@/components';
 import { CompareAccountsScreen } from '@cfd/screens';
 
@@ -19,8 +19,9 @@ declare module 'react-router-dom' {
 const Router = () => {
     return (
         <Switch>
-            <Route component={CompareAccountsScreen} path={`${prefix}/compare-accounts`} />
-            <Route component={TradersHub} path={prefix} />
+            <Route component={CompareAccountsScreen} exact path={`${prefix}/compare-accounts`} />
+            <Route component={TradersHub} exact path={prefix} />
+            <Route component={() => <Redirect to='/404' />} />
         </Switch>
     );
 };

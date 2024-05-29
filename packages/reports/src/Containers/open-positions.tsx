@@ -30,6 +30,7 @@ import {
     getGrowthRatePercentage,
     getCardLabels,
     toMoment,
+    hasContractStarted,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
@@ -65,7 +66,6 @@ type TUiStore = Pick<
     | 'setCurrentFocus'
     | 'should_show_cancellation_warning'
     | 'toggleCancellationWarning'
-    | 'toggleUnsupportedContractModal'
 >;
 
 type TMobileRowRenderer = TUiStore & {
@@ -318,19 +318,27 @@ export const OpenPositionsTable = ({
     );
 };
 
-const getRowAction: TDataList['getRowAction'] = row_obj =>
-    row_obj.is_unsupported
+const getRowAction: TDataList['getRowAction'] = row_obj => {
+    const unsupportedContractConfig = getUnsupportedContracts()[row_obj.type as TUnsupportedContractType];
+    let action = unsupportedContractConfig
         ? {
               component: (
                   <Localize
                       i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
                       values={{
-                          trade_type_name: getUnsupportedContracts()[row_obj.type as TUnsupportedContractType]?.name,
+                          trade_type_name: unsupportedContractConfig?.name,
                       }}
                   />
               ),
           }
         : getContractPath(row_obj.id || 0);
+    if (!hasContractStarted(row_obj?.contract_info))
+        action = {
+            component: <Localize i18n_default_text="You'll see these details once the contract starts." />,
+        };
+
+    return action;
+};
 
 /*
  * After refactoring transactionHandler for creating positions,
@@ -459,7 +467,6 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         setCurrentFocus,
         should_show_cancellation_warning,
         toggleCancellationWarning,
-        toggleUnsupportedContractModal,
     } = ui;
     const { server_time } = common;
     const { getContractById } = contract_trade;
@@ -474,7 +481,6 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         setCurrentFocus,
         should_show_cancellation_warning,
         toggleCancellationWarning,
-        toggleUnsupportedContractModal,
         getContractById,
     };
 

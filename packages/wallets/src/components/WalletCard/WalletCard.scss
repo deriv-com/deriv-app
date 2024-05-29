@@ -1,6 +1,12 @@
 @import '../../components/SkeletonLoader/SkeletonLoader.scss';
 
 .wallets-card {
+    // Removes styling for button
+    background: none;
+    color: inherit;
+    border: none;
+    outline: inherit;
+
     &__carousel-content {
         background-color: transparent;
         margin: 0 -0.4rem;

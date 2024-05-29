@@ -10,7 +10,14 @@ const BuySellFormFooter = ({ isDisabled, onClickCancel, onSubmit }: TBuySellForm
     const { isMobile } = useDevice();
     return (
         <div className='flex justify-end gap-[1rem]'>
-            <Button onClick={onClickCancel} size='lg' textSize={isMobile ? 'md' : 'sm'} variant='outlined'>
+            <Button
+                className='border-2'
+                color='black'
+                onClick={onClickCancel}
+                size='lg'
+                textSize={isMobile ? 'md' : 'sm'}
+                variant='outlined'
+            >
                 Cancel
             </Button>
             <Button

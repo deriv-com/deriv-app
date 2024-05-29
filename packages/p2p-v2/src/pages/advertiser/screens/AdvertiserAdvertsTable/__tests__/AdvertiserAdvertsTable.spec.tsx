@@ -10,6 +10,11 @@ let mockApiValues = {
     loadMoreAdverts: jest.fn(),
 };
 
+jest.mock('use-query-params', () => ({
+    ...jest.requireActual('use-query-params'),
+    useQueryParams: jest.fn().mockReturnValue([{}, jest.fn()]),
+}));
+
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({ isMobile: false })),

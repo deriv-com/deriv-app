@@ -1,14 +1,22 @@
 import { toast, ToastPosition, TypeOptions } from 'react-toastify';
+import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { localize } from '@deriv/translations';
+
+const getToastPosition = () => {
+    const is_RTL = isDbotRTL();
+    if (is_RTL) return toast.POSITION.BOTTOM_RIGHT;
+    return toast.POSITION.BOTTOM_LEFT;
+};
 
 export type TNotificationContent = {
     message: string;
     primary_action?: TAction;
+    closeToast?: () => void;
 };
 
 export type TAction = {
     label: string;
-    onClick: () => void;
+    onClick: (closeToast?: () => void) => void;
 };
 
 export type TNotificationStyle = {
@@ -29,13 +37,14 @@ export enum NOTIFICATION_TYPE {
 export const notification_message = {
     bot_stop: localize('You’ve just stopped the bot. Any open contracts can be viewed on the Reports page.'),
     workspace_change: localize('Changes you make will not affect your running bot.'),
+    block_delete: localize('You’ve just deleted a block.'),
     [NOTIFICATION_TYPE.BOT_IMPORT]: localize('You’ve successfully imported a bot.'),
     [NOTIFICATION_TYPE.BOT_DELETE]: localize('You’ve successfully deleted a bot.'),
 };
 
 export const notification_style = {
     type: toast.TYPE.DEFAULT,
-    position: toast.POSITION.BOTTOM_LEFT,
+    position: getToastPosition(),
     autoClose: 6000,
     hideProgressBar: true,
     closeOnClick: false,

@@ -7,14 +7,13 @@ import { WalletsAppLinkedWithWalletIcon } from '../WalletsAppLinkedWithWalletIco
 import './AppCard.scss';
 
 type TProps = {
-    activeWalletCurrency: THooks.ActiveWalletAccount['currency'];
+    activeWalletCurrency?: THooks.ActiveWalletAccount['currency'];
     appIcon: React.ComponentProps<typeof WalletsAppLinkedWithWalletIcon>['appIcon'];
     appName?: string;
     balance?: string;
     cardSize: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     device: 'desktop' | 'mobile';
     isDemoWallet?: THooks.ActiveWalletAccount['is_virtual'];
-    walletIcon: string;
     walletName?: string;
 };
 
@@ -26,11 +25,13 @@ const AppCard: React.FC<TProps> = ({
     cardSize = 'md',
     device = 'desktop',
     isDemoWallet = false,
-    walletIcon,
     walletName,
 }) => {
     return (
-        <div className={`wallets-app-card wallets-app-card--border-radius--${cardSize}`}>
+        <div
+            className={`wallets-app-card wallets-app-card--border-radius--${cardSize}`}
+            data-testid='dt_wallets_app_card'
+        >
             <WalletGradientBackground currency='' hasShine theme='grey'>
                 {cardSize !== 'sm' && (
                     <div className='wallets-app-card__badge'>
@@ -44,7 +45,6 @@ const AppCard: React.FC<TProps> = ({
                             currency={activeWalletCurrency ?? ''}
                             isDemo={isDemoWallet}
                             size='small'
-                            walletIcon={walletIcon}
                         />
                     </div>
                     {cardSize !== 'sm' && (

@@ -15,6 +15,7 @@ import type {
     LogOutResponse,
     Portfolio1,
     ProposalOpenContract,
+    ResidenceList,
     SetFinancialAssessmentRequest,
     SetFinancialAssessmentResponse,
     StatesList,
@@ -40,6 +41,7 @@ type TRoutes =
     | '/account/proof-of-ownership'
     | '/account/proof-of-income'
     | '/account/passwords'
+    | '/account/passkeys'
     | '/account/closing-account'
     | '/account/deactivate-account'
     | '/account-closed'
@@ -65,6 +67,7 @@ type TRoutes =
     | '/reports/profit'
     | '/reports'
     | '/'
+    | '/dtrader'
     | '/redirect'
     | '/settings'
     | '/reports/statement'
@@ -86,7 +89,14 @@ type TRoutes =
     | '/appstore'
     | '/appstore/traders-hub'
     | '/appstore/onboarding'
-    | '/wallets';
+    | '/wallet'
+    | '/wallet/deposit'
+    | '/wallet/withdrawal'
+    | '/wallet/account-transfer'
+    | '/wallet/reset-balance'
+    | '/wallet/transactions'
+    | '/wallet/on-ramp'
+    | '/compare-accounts';
 
 type TPopulateSettingsExtensionsMenuItem = {
     icon: string;
@@ -141,7 +151,7 @@ type BrandConfig = {
     is_deriv_platform?: boolean;
 };
 
-type TPortfolioPosition = {
+export type TPortfolioPosition = {
     contract_info: ProposalOpenContract &
         Portfolio1 & {
             contract_update?: ContractUpdate;
@@ -170,7 +180,7 @@ type TAppRoutingHistory = {
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: number;
-    landing_company_shortcode?: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
+    landing_company_shortcode?: 'svg' | 'costarica' | 'maltainvest';
     is_virtual: number;
     account_category?: 'wallet' | 'trading';
 };
@@ -209,18 +219,11 @@ type TAccountsList = {
     mt5_login_list?: DetailsOfEachMT5Loginid[];
     title?: string;
 }[];
-type TRealAccount = {
-    active_modal_index: number;
-    current_currency: string;
-    error_message: string;
-    previous_currency: string;
-    success_message: string;
-    error_code: number;
-};
+
 // balance is missing in @deriv/api-types
 type TActiveAccount = TAccount & {
     balance?: string | number;
-    landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
+    landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest';
     is_virtual: number;
     account_category?: 'wallet' | 'trading';
     linked_to?: { loginid: string; platform: string }[];
@@ -242,6 +245,8 @@ type TTradingPlatformAvailableAccount = {
     };
     shortcode?: DetailsOfEachMT5Loginid['landing_company_short'];
     sub_account_type: string;
+    max_count?: number;
+    available_count?: number;
 };
 
 type TAvailableCFDAccounts = {
@@ -335,16 +340,6 @@ export type TNotificationMessage = {
     timeoutMessage?: (remaining: number | string) => string;
     type: string;
 };
-type TCommonVariables = {
-    language: string;
-    visitorId?: string;
-    currency?: string;
-    userId?: string;
-    email?: string;
-    loggedIn: boolean;
-    theme: string;
-    platform: string;
-};
 
 type TNotification =
     | TNotificationMessage
@@ -366,8 +361,6 @@ type LoginURLParams<N extends number> = LoginParams & IncrementedProperties<N>;
 type TStandPoint = {
     financial_company: string;
     gaming_company: string;
-    iom: boolean;
-    malta: boolean;
     maltainvest: boolean;
     svg: boolean;
 };
@@ -393,14 +386,6 @@ type RealAccountSignupSettings = {
     previous_currency: string;
     success_message: string;
 };
-type TCountryStandpoint = {
-    is_belgium: boolean;
-    is_france: boolean;
-    is_isle_of_man: boolean;
-    is_other_eu: boolean;
-    is_rest_of_eu: boolean;
-    is_united_kingdom: boolean;
-};
 
 type TClientStore = {
     fetchStatesList: () => Promise<StatesList>;
@@ -409,6 +394,7 @@ type TClientStore = {
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
+    ctrader_trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     account_limits: Partial<AccountLimitsResponse['get_limits']> & {
         is_loading?: boolean;
         api_initial_load_error?: string;
@@ -418,14 +404,14 @@ type TClientStore = {
     getSelfExclusion: () => Promise<Partial<GetSelfExclusion>>;
     account_status: Omit<GetAccountStatus, 'status' | 'p2p_poa_required'> &
         Partial<Pick<GetAccountStatus, 'status'>> & { p2p_poa_required: number };
-    available_crypto_currencies: Array<WebsiteStatus['currencies_config']>;
+    available_crypto_currencies: Array<WebsiteStatus['currencies_config'][string] & { value: string }>;
     balance?: string | number;
     can_change_fiat_currency: boolean;
     clients_country: string;
     cfd_score: number;
     setCFDScore: (score: number) => void;
-    country_standpoint: TCountryStandpoint;
     currency: string;
+    ctrader_total_balance: number;
     currencies_list: { text: string; value: string; has_tool_tip?: boolean }[];
     current_currency_type?: string;
     current_fiat_currency?: string;
@@ -454,11 +440,11 @@ type TClientStore = {
     is_dxtrade_allowed: boolean;
     is_eu_country: boolean;
     is_eu: boolean;
-    is_uk: boolean;
     is_unwelcome: boolean;
     is_single_currency: boolean;
     is_social_signup: boolean;
     has_residence: boolean;
+    has_wallet: boolean;
     is_authorize: boolean;
     is_dxtrade_password_not_set: boolean;
     is_financial_account: boolean;
@@ -542,10 +528,9 @@ type TClientStore = {
         upload_file?: string;
         poi_state?: string;
     };
-    residence_list: TResidenceList; // TODO: replace this with ResidenceList from @deriv/api-types once account_opening_self_declaration_required is available
+    residence_list: ResidenceList;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
-    should_show_eu_content: boolean;
     updateMT5Status: () => Promise<void>;
     fetchAccountSettings: () => Promise<void>;
     setAccountSettings: (get_settings_response: GetSettings) => void;
@@ -554,7 +539,6 @@ type TClientStore = {
     landing_companies: LandingCompany;
     getChangeableFields: () => string[];
     landing_company: LandingCompany;
-    isAccountOfTypeDisabled: (account: Record<string, DetailsOfEachMT5Loginid>) => boolean;
     is_mt5_allowed: boolean;
     mt5_disabled_signup_types: {
         real: boolean;
@@ -565,10 +549,6 @@ type TClientStore = {
         demo: boolean;
     };
     dxtrade_accounts_list_error: null;
-    has_account_error_in_mt5_real_list: boolean;
-    has_account_error_in_mt5_demo_list: boolean;
-    has_account_error_in_dxtrade_real_list: boolean;
-    has_account_error_in_dxtrade_demo_list: boolean;
     has_fiat: boolean;
     is_fully_authenticated: boolean;
     updateMt5LoginList: () => Promise<void>;
@@ -600,6 +580,7 @@ type TClientStore = {
     setAccounts: (accounts: Record<string, TActiveAccount>) => void;
     should_show_eu_error: boolean;
     is_options_blocked: boolean;
+    setIsP2PEnabled: (is_p2p_enabled: boolean) => void;
     real_account_signup_form_data: Array<Record<string, unknown>>;
     real_account_signup_form_step: number;
     setRealAccountSignupFormData: (data: Array<Record<string, unknown>>) => void;
@@ -607,45 +588,18 @@ type TClientStore = {
     wallet_migration_state?: 'ineligible' | 'eligible' | 'in_progress' | 'migrated' | 'failed';
     startWalletMigration: () => void;
     resetWalletMigration: () => void;
+    is_wallet_migration_request_is_in_progress: boolean;
+    is_passkey_supported: boolean;
+    setIsPasskeySupported: (value: boolean) => void;
+    should_show_effortless_login_modal: boolean;
+    setShouldShowEffortlessLoginModal: (value: boolean) => void;
+    fetchShouldShowEffortlessLoginModal: () => void;
+    exchange_rates: Record<string, Record<string, number>>;
+    getExchangeRate: (base_currency: string, target_currency: string) => number;
+    subscribeToExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
+    unsubscribeFromExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
+    unsubscribeFromAllExchangeRates: () => void;
 };
-
-// TODO: This is a temporary type. It should be replaced with the actual type from deriv/api-types
-type TResidenceList = {
-    account_opening_self_declaration_required?: boolean;
-    disabled?: string;
-    identity?: {
-        services?: {
-            idv?: {
-                documents_supported?: {
-                    [k: string]: {
-                        additional?: {
-                            display_name?: string;
-                            format?: string;
-                        };
-                        display_name?: string;
-                        format?: string;
-                    };
-                };
-                has_visual_sample?: 0 | 1;
-                is_country_supported?: 0 | 1;
-            };
-            onfido?: {
-                documents_supported?: {
-                    [k: string]: {
-                        display_name?: string;
-                        format?: string;
-                    };
-                };
-                is_country_supported?: 0 | 1;
-            };
-        };
-    };
-    phone_idd?: null | string;
-    selected?: string;
-    text?: string;
-    tin_format?: string[];
-    value?: string;
-}[];
 
 type TCommonStoreError = {
     header?: string | JSX.Element;
@@ -710,6 +664,7 @@ type TUiStore = {
     is_additional_kyc_info_modal_open: boolean;
     is_advanced_duration: boolean;
     is_cashier_visible: boolean;
+    is_history_tab_active: boolean;
     is_wallet_modal_visible: boolean;
     is_chart_asset_info_visible?: boolean;
     is_chart_layout_default: boolean;
@@ -734,7 +689,6 @@ type TUiStore = {
     is_positions_drawer_on: boolean;
     is_services_error_visible: boolean;
     is_trading_assessment_for_existing_user_enabled: boolean;
-    is_unsupported_contract_modal_visible: boolean;
     isUrlUnavailableModalVisible: boolean;
     onChangeUiStore: ({ name, value }: { name: string; value: unknown }) => void;
     openPositionsDrawer: () => void;
@@ -798,7 +752,6 @@ type TUiStore = {
     should_show_account_success_modal: boolean;
     should_trigger_tour_guide: boolean;
     toggleCancellationWarning: (state_change?: boolean) => void;
-    toggleUnsupportedContractModal: (state_change: boolean) => void;
     toggleReports: (is_visible: boolean) => void;
     is_real_acc_signup_on: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
@@ -1045,6 +998,7 @@ type TTradersHubStore = {
     content_flag: 'low_risk_cr_eu' | 'low_risk_cr_non_eu' | 'high_risk_cr' | 'cr_demo' | 'eu_demo' | 'eu_real' | '';
     combined_cfd_mt5_accounts: DetailsOfEachMT5Loginid &
         {
+            tracking_name: string;
             short_code_and_region: string;
             login: string;
             sub_title: string;
@@ -1099,7 +1053,6 @@ type TTradersHubStore = {
     available_platforms: BrandConfig[];
     selected_region: TRegionAvailability;
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
-    toggleAccountTypeModalVisibility: () => void;
     active_modal_tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions';
     setWalletModalActiveTab: (tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions') => void;
     active_modal_wallet_id?: string;
@@ -1107,8 +1060,6 @@ type TTradersHubStore = {
     available_cfd_accounts: TAvailableCFDAccounts[];
     available_dxtrade_accounts: TAvailableCFDAccounts[];
     available_ctrader_accounts: TAvailableCFDAccounts[];
-    toggleIsTourOpen: (is_tour_open: boolean) => void;
-    is_tour_open: boolean;
     is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;
     setMT5NotificationModal: (value: boolean) => void;

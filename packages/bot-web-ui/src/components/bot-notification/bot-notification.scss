@@ -51,7 +51,7 @@
         svg {
             fill: var(--general-main-1);
             height: 2.2rem;
-            width: unset;
+            width: 16px;
 
             @include mobile {
                 height: 1.6rem;
@@ -80,7 +80,6 @@
         @include mobile {
             font-size: 1.2rem;
             margin-inline-start: 1.2rem;
-            margin-bottom: 0.6rem;
         }
     }
 }

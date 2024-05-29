@@ -1,16 +1,15 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useCreateWallet } from '@deriv/api-v2';
+import { LabelPairedCheckMdFillIcon, LabelPairedPlusMdFillIcon } from '@deriv/quill-icons';
 import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
-import CheckIcon from '../../public/images/check.svg';
-import PlusIcon from '../../public/images/plus.svg';
 import { TWalletCarouselItem } from '../../types';
 import { WalletButton } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletAddedSuccess } from '../WalletAddedSuccess';
-import WalletAddMoreCurrencyIcon from '../WalletAddMoreCurrencyIcon';
+import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import { WalletError } from '../WalletError';
 
 const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
@@ -25,18 +24,6 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
     const history = useHistory();
     const modal = useModal();
     const { addWalletAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
-
-    const renderButtons = useCallback(
-        () => (
-            <div className='wallets-add-more__success-footer'>
-                <WalletButton color='black' onClick={() => modal.hide()} variant='outlined'>
-                    Maybe later
-                </WalletButton>
-                <WalletButton onClick={() => history.push('/wallets/cashier/deposit')}>Deposit now</WalletButton>
-            </div>
-        ),
-        [history] // eslint-disable-line react-hooks/exhaustive-deps
-    );
 
     useEffect(() => {
         if (data && isMutateSuccess) {
@@ -58,7 +45,7 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
                         displayBalance={data?.display_balance ?? `0.00 ${data?.currency}`}
                         landingCompany={data?.landing_company_shortcode}
                         onPrimaryButtonClick={() => {
-                            history.push('/wallets/cashier/deposit');
+                            history.push('/wallet/deposit');
                             modal.hide();
                         }}
                         onSecondaryButtonClick={() => modal.hide()}
@@ -67,32 +54,23 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [
-            data?.currency,
-            data?.display_balance,
-            data?.landing_company_shortcode,
-            error?.error.message,
-            isMobile,
-            renderButtons,
-            status,
-        ]
+        [data?.currency, data?.display_balance, data?.landing_company_shortcode, error?.error.message, isMobile, status]
     );
 
     return (
         <div className='wallets-add-more__banner'>
             <div className='wallets-add-more__banner-header'>
-                <span className='wallets-add-more__banner-logo'>
-                    <WalletAddMoreCurrencyIcon currency={currency ? currency.toLowerCase() : ''} />
-                </span>
+                <WalletCurrencyIcon currency={currency ?? 'USD'} size={isMobile ? 'xs' : 'sm'} />
             </div>
             <WalletButton
                 color='white'
                 disabled={isAdded}
                 icon={
+                    // TODO: Replace hex colors with values from Deriv UI
                     isAdded ? (
-                        <CheckIcon className='wallets-add-more__banner-button-icon' width={16} />
+                        <LabelPairedCheckMdFillIcon fill='#333333' />
                     ) : (
-                        <PlusIcon className='wallets-add-more__banner-button-icon' width={16} />
+                        <LabelPairedPlusMdFillIcon fill='#333333' />
                     )
                 }
                 onClick={e => {

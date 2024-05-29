@@ -24,7 +24,7 @@ const mocked_props = {
     selected_digit: 1,
     tick: {
         pip_size: 2,
-        ask: 102.23,
+        quote: 102.23,
     },
 };
 describe('<LastDigitPrediction />', () => {

@@ -6,23 +6,22 @@ import {
     extractInfoFromShortcode,
     formatDate,
     getContractPath,
-    getSupportedContracts,
     getUnsupportedContracts,
     isForwardStarting,
+    hasForwardContractStarted,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component';
-import AccountStatistics from '../Components/account-statistics';
 import FilterComponent from '../Components/filter-component';
 import { ReportsMeta } from '../Components/reports-meta';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
 import { observer, useStore } from '@deriv/stores';
 import { useReportsStore } from 'Stores/useReportsStores';
-import { TSupportedContractType, TUnsupportedContractType } from 'Types';
-import { TSource } from '@deriv/components/src/components/data-table/data-table';
+import { TUnsupportedContractType } from 'Types';
+import { TSource } from '@deriv/components/src/components/data-table/table-row';
 import { TRow } from '@deriv/components/src/components/types/common.types';
 
 type TGetStatementTableColumnsTemplate = ReturnType<typeof getStatementTableColumnsTemplate>;
@@ -85,43 +84,53 @@ type TGetRowAction = TDataList['getRowAction'] | React.ComponentProps<typeof Dat
 
 const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
     let action: TAction = {};
-    if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
-        const contract_type = extractInfoFromShortcode(row_obj.shortcode)?.category?.toUpperCase();
-        action =
-            getSupportedContracts()[contract_type as TSupportedContractType] &&
-            !isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time)
-                ? getContractPath(row_obj.id)
-                : {
-                      message: '',
-                      component: (
-                          <Localize
-                              i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
-                              values={{
-                                  trade_type_name:
-                                      getUnsupportedContracts()[contract_type as TUnsupportedContractType]?.name,
-                              }}
-                          />
-                      ),
-                  };
-    } else if (row_obj.action_type === 'withdrawal') {
-        if (row_obj.withdrawal_details && row_obj.longcode) {
+    const { action_type, desc, id, is_sold, longcode, purchase_time, shortcode, transaction_time, withdrawal_details } =
+        row_obj;
+    if (id && ['buy', 'sell'].includes(action_type)) {
+        const contract_type = extractInfoFromShortcode(shortcode)?.category?.toUpperCase();
+        const unsupportedContractConfig = getUnsupportedContracts()[contract_type as TUnsupportedContractType];
+        const shouldShowForwardStartingNotification =
+            isForwardStarting(shortcode, purchase_time || transaction_time) &&
+            !hasForwardContractStarted(shortcode) &&
+            action_type !== 'sell' &&
+            !is_sold;
+        action = unsupportedContractConfig
+            ? {
+                  message: '',
+                  component: (
+                      <Localize
+                          i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
+                          values={{
+                              trade_type_name: unsupportedContractConfig?.name,
+                          }}
+                      />
+                  ),
+              }
+            : getContractPath(id);
+        if (shouldShowForwardStartingNotification)
             action = {
-                message: `${row_obj.withdrawal_details} ${row_obj.longcode}`,
+                message: '',
+                component: <Localize i18n_default_text="You'll see these details once the contract starts." />,
+            };
+    } else if (action_type === 'withdrawal') {
+        if (withdrawal_details && longcode) {
+            action = {
+                message: `${withdrawal_details} ${longcode}`,
             };
         } else {
             action = {
-                message: row_obj.desc,
+                message: desc,
             };
         }
-    } else if (row_obj.desc && ['deposit', 'transfer', 'adjustment', 'hold', 'release'].includes(row_obj.action_type)) {
+    } else if (desc && ['deposit', 'transfer', 'adjustment', 'hold', 'release'].includes(action_type)) {
         action = {
-            message: row_obj.desc,
+            message: desc,
         };
     }
 
     // add typeof check because action can be object or string
     if (typeof action === 'object' && action?.message) {
-        action.component = <DetailsComponent message={action.message} action_type={row_obj.action_type} />;
+        action.component = <DetailsComponent message={action.message} action_type={action_type} />;
     }
 
     return action;
@@ -130,7 +139,7 @@ const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
 const Statement = observer(({ component_icon }: TStatement) => {
     const { client } = useStore();
     const { statement } = useReportsStore();
-    const { currency, standpoint, is_switching, is_virtual } = client;
+    const { currency, is_switching, is_virtual } = client;
     const {
         action_type,
         data,
@@ -144,7 +153,6 @@ const Statement = observer(({ component_icon }: TStatement) => {
         onMount,
         onUnmount,
     } = statement;
-    const is_mx_mlt = standpoint.iom || standpoint.malta;
     const prev_action_type = usePrevious(action_type);
     const prev_date_from = usePrevious(date_from);
     const prev_date_to = usePrevious(date_to);
@@ -239,12 +247,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
     // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='l'>I am Statement for DTrader 2.0.</Text>;
     return (
         <React.Fragment>
-            <ReportsMeta
-                className={is_mx_mlt ? undefined : 'reports__meta--statement'}
-                filter_component={<FilterComponent />}
-                is_statement
-                optional_component={!is_switching && is_mx_mlt && <AccountStatistics />}
-            />
+            <ReportsMeta className='reports__meta--statement' filter_component={<FilterComponent />} is_statement />
             {is_switching ? (
                 <PlaceholderComponent is_loading />
             ) : (

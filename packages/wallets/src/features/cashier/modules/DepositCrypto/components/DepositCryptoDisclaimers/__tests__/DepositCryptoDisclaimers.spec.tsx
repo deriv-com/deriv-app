@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api-v2';
+import { useActiveWalletAccount, useCryptoConfig } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import DepositCryptoDisclaimers from '../DepositCryptoDisclaimers';
 
@@ -11,7 +11,6 @@ describe('DepositCryptoDisclaimers', () => {
         currency_config: {
             fractional_digits: 2,
             is_tUSDT: false,
-            minimum_deposit: 10,
         },
     };
 
@@ -21,6 +20,7 @@ describe('DepositCryptoDisclaimers', () => {
 
     it('should render with default disclaimer', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: {} });
+        (useCryptoConfig as jest.Mock).mockReturnValue({ data: {} });
 
         render(<DepositCryptoDisclaimers />);
 
@@ -37,6 +37,7 @@ describe('DepositCryptoDisclaimers', () => {
 
     it('should render with minimum deposit disclaimer for active currency', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: mockData });
+        (useCryptoConfig as jest.Mock).mockReturnValue({ data: { minimum_deposit: 10 } });
 
         render(<DepositCryptoDisclaimers />);
 
@@ -62,6 +63,7 @@ describe('DepositCryptoDisclaimers', () => {
         };
 
         (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: tUSDTData });
+        (useCryptoConfig as jest.Mock).mockReturnValue({ data: { minimum_deposit: 10 } });
 
         render(<DepositCryptoDisclaimers />);
 

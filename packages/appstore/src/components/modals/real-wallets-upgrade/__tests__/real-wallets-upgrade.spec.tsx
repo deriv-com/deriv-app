@@ -14,7 +14,7 @@ describe('<RealWalletsUpgrade />', () => {
         const mock = mockStore({
             traders_hub: {
                 is_real_wallets_upgrade_on: true,
-                toggleWalletsUpgrade: true,
+                toggleWalletsUpgrade: jest.fn(),
             },
         });
 
@@ -27,7 +27,7 @@ describe('<RealWalletsUpgrade />', () => {
         const mock = mockStore({
             traders_hub: {
                 is_real_wallets_upgrade_on: false,
-                toggleWalletsUpgrade: false,
+                toggleWalletsUpgrade: jest.fn(),
             },
         });
 

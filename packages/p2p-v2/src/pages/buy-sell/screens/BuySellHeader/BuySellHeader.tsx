@@ -12,7 +12,7 @@ type TBuySellHeaderProps = {
     activeTab: string;
     selectedCurrency: string;
     selectedPaymentMethods: string[];
-    setActiveTab: (tab: string) => void;
+    setActiveTab: (tab: number) => void;
     setIsFilterModalOpen: (value: boolean) => void;
     setSearchValue: (value: string) => void;
     setSelectedCurrency: (value: string) => void;
@@ -45,7 +45,7 @@ const BuySellHeader = ({
             <Tabs
                 TitleFontSize='sm'
                 activeTab={activeTab}
-                onChange={(index: number) => setActiveTab(index === 0 ? 'Buy' : 'Sell')}
+                onChange={setActiveTab}
                 variant='primary'
                 wrapperClassName='p2p-v2-buy-sell-header__tabs'
             >

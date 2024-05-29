@@ -37,9 +37,7 @@ const DMT5TradeModal = observer(
     ({ mt5_trade_account, show_eu_related_content, onPasswordManager, toggleModal }: TMT5TradeModalProps) => {
         const { ui, client } = useStore();
         const { is_mobile } = ui;
-        const {
-            account_status: { authentication },
-        } = client;
+        const { account_status: { authentication } = {} } = client;
         const is_eligible_to_migrate = mt5_trade_account.eligible_to_migrate;
         const getCompanyShortcode = () => {
             if (

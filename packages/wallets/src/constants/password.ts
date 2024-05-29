@@ -1,23 +1,40 @@
-import { passwordKeys } from '../utils/password';
+import { ValidationConstants } from '@deriv-com/utils';
+import { passwordKeys } from '../utils/password-validation';
+
+const {
+    between8and16Characters,
+    between8and25Characters,
+    lowercase,
+    number,
+    password,
+    specialCharacter,
+    tradingPlatformInvestorPassword,
+    uppercase,
+} = ValidationConstants.patterns;
 
 export const passwordRegex = {
-    hasLowerCase: /[a-z]/,
-    hasNumber: /\d/,
-    hasSymbol: /\W/,
-    hasUpperCase: /[A-Z]/,
-    isLengthValid: /^.{8,25}$/,
-    isPasswordValid: /^(?=.*[a-z])(?=.*\d)(?=.*[A-Z])[!-~]{8,25}$/,
+    hasLowerCase: lowercase,
+    hasNumber: number,
+    hasSymbol: specialCharacter,
+    hasUpperCase: uppercase,
+    isLengthValid: between8and25Characters,
+    isMT5LengthValid: between8and16Characters,
+    isMT5PasswordValid: tradingPlatformInvestorPassword,
+    isPasswordValid: password,
 };
 
 export const passwordValues = {
     longPassword: 12,
     maxLength: 25,
+    maxLengthMT5: 16,
     minLength: 8,
 };
 
 export const passwordErrorMessage = {
-    invalidLength: 'You should enter 8-25 characters.',
+    invalidLength: `You should enter ${passwordValues.minLength}-${passwordValues.maxLength} characters.`,
+    invalidLengthMT5: `You should enter ${passwordValues.minLength}-${passwordValues.maxLengthMT5} characters.`,
     missingCharacter: 'Password should have lower and uppercase English letters with numbers.',
+    missingCharacterMT5: 'Please include at least 1 special character such as ( _ @ ? ! / # ) in your password.',
     PasswordError: 'That password is incorrect. Please try again.',
 };
 
@@ -39,3 +56,12 @@ export const warningMessages: Record<passwordKeys, string> = {
     userInputs: 'There should not be any personal or page related data.',
     wordByItself: 'Single words are easy to guess.',
 };
+
+// Display on MT5 Password Reset Modal for new password requirements
+export const passwordRequirements = [
+    '8 to 16 characters',
+    'A special character such as ( _ @ ? ! / # )',
+    'An uppercase letter',
+    'A lowercase letter',
+    'A number',
+];

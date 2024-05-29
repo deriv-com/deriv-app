@@ -1,8 +1,8 @@
 import React from 'react';
 import { useActiveAccount } from '@deriv/api-v2';
+import { IconMarquee } from '../../../../components';
 import { onboardingFiatCardIcons } from '../../constants/icons';
 import { CashierOnboardingCard } from '../CashierOnboardingCard';
-import { CashierOnboardingIconMarquee } from '../CashierOnboardingIconMarquee';
 
 type TProps = {
     setIsDeposit: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,7 +23,7 @@ const CashierOnboardingFiatCard: React.FC<TProps> = ({ setIsDeposit }) => {
             onClick={onClickHandler}
             title='Deposit via bank wire, credit card, and e-wallet'
         >
-            <CashierOnboardingIconMarquee icons={onboardingFiatCardIcons.light} />
+            <IconMarquee iconHeight={45} iconWidth={72} icons={onboardingFiatCardIcons.light} />
         </CashierOnboardingCard>
     );
 };

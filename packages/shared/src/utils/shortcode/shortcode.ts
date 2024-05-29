@@ -85,9 +85,18 @@ export const isHighLow = ({ shortcode = '', shortcode_info }: TIsHighLow) => {
     return info_from_shortcode && info_from_shortcode.barrier_1 ? !/^S0P$/.test(info_from_shortcode.barrier_1) : false;
 };
 
-export const isForwardStarting = (shortcode: string, purchase_time?: number) => {
+const getStartTime = (shortcode: string) => {
     const shortcode_info = extractInfoFromShortcode(shortcode);
     if (shortcode_info?.multiplier) return false;
-    const start_time: string = shortcode_info?.start_time || '';
+    return shortcode_info?.start_time || '';
+};
+
+export const isForwardStarting = (shortcode: string, purchase_time?: number) => {
+    const start_time = getStartTime(shortcode);
     return start_time && purchase_time && /f$/gi.test(start_time);
+};
+
+export const hasForwardContractStarted = (shortcode: string) => {
+    const start_time = getStartTime(shortcode);
+    return start_time && Date.now() / 1000 > Number(start_time.slice(0, -1));
 };

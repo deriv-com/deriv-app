@@ -3,6 +3,7 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 
 import { StaticUrl } from '@deriv/components';
 import {
+    checkServerMaintenance,
     daysSince,
     extractInfoFromShortcode,
     formatDate,
@@ -20,8 +21,6 @@ import {
     isHighLow,
     isMobile,
     isMultiplierContract,
-    checkServerMaintenance,
-    isTurbosContract,
     LocalStore,
     routes,
     unique,
@@ -201,11 +200,17 @@ export default class NotificationStore extends BaseStore {
         } = contract_info;
         const id = `${contract_id}_${status}`;
         if (this.trade_notifications.some(({ id: notification_id }) => notification_id === id)) return;
+        const contract_main_title = getTradeTypeName(contract_type, {
+            isHighLow: isHighLow({ shortcode }),
+            showMainTitle: true,
+        });
         this.trade_notifications.push({
             id,
             buy_price,
             contract_id,
-            contract_type: getTradeTypeName(contract_type, isHighLow({ shortcode }), isTurbosContract(contract_type)),
+            contract_type: `${contract_main_title} ${getTradeTypeName(contract_type, {
+                isHighLow: isHighLow({ shortcode }),
+            })}`.trim(),
             currency,
             profit: isMultiplierContract(contract_type) && !isNaN(profit) ? getTotalProfit(contract_info) : profit,
             status,
@@ -313,6 +318,7 @@ export default class NotificationStore extends BaseStore {
             website_status,
             has_enabled_two_fa,
             has_changed_two_fa,
+            has_wallet,
             is_poi_dob_mismatch,
             is_financial_assessment_needed,
             is_financial_information_incomplete,
@@ -332,9 +338,6 @@ export default class NotificationStore extends BaseStore {
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.trustpilot?.key
         );
-        const has_flutter_chart_notification = LocalStore.getObject('notification_messages')[loginid]?.includes(
-            this.client_notifications.flutter_chart?.key
-        );
 
         let has_missing_required_field;
 
@@ -349,7 +352,7 @@ export default class NotificationStore extends BaseStore {
         if (is_logged_in) {
             if (isEmptyObject(account_status)) return;
             const {
-                authentication: { document, identity, income, needs_verification, ownership },
+                authentication: { document, identity, income, needs_verification, ownership } = {},
                 status,
                 cashier_validation,
             } = account_status;
@@ -365,9 +368,7 @@ export default class NotificationStore extends BaseStore {
             } = getStatusValidations(status || []);
 
             this.handlePOAAddressMismatchNotifications();
-            if (!has_flutter_chart_notification) {
-                this.addNotificationMessage(this.client_notifications.flutter_chart);
-            }
+
             if (status?.includes('mt5_additional_kyc_required'))
                 this.addNotificationMessage(this.client_notifications.additional_kyc_info);
 
@@ -429,7 +430,6 @@ export default class NotificationStore extends BaseStore {
                     ASK_TIN_INFORMATION,
                     ASK_UK_FUNDS_PROTECTION,
                 } = cashier_validation ? getCashierValidations(cashier_validation) : {};
-
                 const needs_poa =
                     is_10k_withdrawal_limit_reached &&
                     (needs_verification.includes('document') || document?.status !== 'verified');
@@ -506,7 +506,7 @@ export default class NotificationStore extends BaseStore {
                         this.addNotificationMessage(
                             this.client_notifications.required_fields(withdrawal_locked, deposit_locked)
                         );
-                    } else {
+                    } else if (!has_wallet) {
                         this.addNotificationMessage(this.client_notifications.cashier_locked);
                     }
                 } else {
@@ -924,18 +924,6 @@ export default class NotificationStore extends BaseStore {
                 img_src: getUrlBase('/public/images/common/dp2p_banner.png'),
                 img_alt: 'Deriv P2P',
                 type: 'news',
-            },
-            flutter_chart: {
-                key: 'flutter_chart',
-                header: localize('Trade Smarter with Deriv Trader Chart v2.0:'),
-                message: localize('Get real-time data, advanced charting tools, and customisable views.'),
-                action: {
-                    onClick: () => {
-                        window.open('https://blog.deriv.com/posts/new-charts-on-the-deriv-trader-app/', '_blank');
-                    },
-                    text: localize('Learn more'),
-                },
-                type: 'announce',
             },
             identity: {
                 key: 'identity',

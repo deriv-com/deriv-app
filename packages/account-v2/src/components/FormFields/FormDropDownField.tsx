@@ -38,7 +38,6 @@ export const FormDropDownField = ({ handleSelect, name, validationSchema, ...res
                     aria-label={rest.label}
                     dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
                     errorMessage={touched && error ? error : ''}
-                    isRequired={touched && !!error}
                     onSearch={field.onChange}
                     onSelect={
                         handleSelect ? value => handleSelect(value as string) : value => form.setFieldValue(name, value)

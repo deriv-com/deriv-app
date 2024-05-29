@@ -1,31 +1,28 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { TSocketResponse } from '../../types';
 import APIProvider from '../APIProvider';
 import AuthProvider from '../AuthProvider';
 import usePaginatedFetch from '../usePaginatedFetch';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    useWS: () => ({
-        send: jest.fn(() =>
-            Promise.resolve<TSocketResponse<'p2p_advert_list'>>({
-                p2p_advert_list: {
-                    list: [
-                        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-                        {
-                            account_currency: 'USD',
-                            amount: 50,
-                            amount_display: '50.00',
-                        },
-                    ],
-                },
-                echo_req: {},
-                msg_type: 'p2p_advert_list',
-                req_id: 1,
-            })
-        ),
-    }),
+jest.mock('./../useAPI', () => ({
+    __esModule: true,
+    default() {
+        return {
+            send: async () => {
+                return {
+                    p2p_advert_list: {
+                        list: [
+                            {
+                                amount: 50,
+                                account_currency: 'USD',
+                                amount_display: '50.00',
+                            },
+                        ],
+                    },
+                } as any;
+            },
+        };
+    },
 }));
 
 describe('usePaginatedFetch', () => {

@@ -8,11 +8,9 @@ import { api_error_codes } from '../constants/api-error-codes';
 export default class OrderStore {
     constructor(root_store) {
         makeObservable(this, {
+            action_param: observable,
             active_order: observable,
             api_error_message: observable,
-            cancellation_block_duration: observable,
-            cancellation_count_period: observable,
-            cancellation_limit: observable,
             date_from: observable,
             date_to: observable,
             error_code: observable,
@@ -39,7 +37,6 @@ export default class OrderStore {
             confirmOrderRequest: action.bound,
             confirmOrder: action.bound,
             getP2POrderList: action.bound,
-            getWebsiteStatus: action.bound,
             handleDateChange: action.bound,
             handleRating: action.bound,
             hideDetails: action.bound,
@@ -48,15 +45,13 @@ export default class OrderStore {
             onOrdersUpdate: action.bound,
             onPageReturn: action.bound,
             onUnmount: action.bound,
+            setActionParam: action.bound,
             setActiveOrder: action.bound,
             setDateTo: action.bound,
             setForceRerenderOrders: action.bound,
             setShouldNavigateToBuySell: action.bound,
             setShouldNavigateToOrderDetails: action.bound,
             setApiErrorMessage: action.bound,
-            setCancellationBlockDuration: action.bound,
-            setCancellationCountPeriod: action.bound,
-            setCancellationLimit: action.bound,
             setErrorCode: action.bound,
             setErrorMessage: action.bound,
             setHasMoreItemsToLoad: action.bound,
@@ -90,11 +85,9 @@ export default class OrderStore {
         );
     }
 
+    action_param = null;
     active_order = null;
     api_error_message = '';
-    cancellation_block_duration = 0;
-    cancellation_count_period = 0;
-    cancellation_limit = 0;
     date_from = null;
     date_to = null;
     error_code = '';
@@ -178,6 +171,8 @@ export default class OrderStore {
                 }
 
                 localStorage.removeItem('verification_code.p2p_order_confirm');
+                this.setVerificationCode('');
+                this.setActionParam(null);
             }
         });
     }
@@ -234,22 +229,6 @@ export default class OrderStore {
                     }
                 }
             }
-        });
-    }
-
-    getWebsiteStatus(should_show_cancel_modal) {
-        requestWS({ website_status: 1 }).then(response => {
-            if (response.error) {
-                this.setErrorMessage(response.error.message);
-            } else {
-                const { p2p_config } = response.website_status;
-                this.setCancellationBlockDuration(p2p_config.cancellation_block_duration);
-                this.setCancellationCountPeriod(p2p_config.cancellation_count_period);
-                this.setCancellationLimit(p2p_config.cancellation_limit);
-            }
-
-            if (should_show_cancel_modal)
-                this.root_store.general_store.showModal({ key: 'OrderDetailsCancelModal', props: {} });
         });
     }
 
@@ -540,7 +519,7 @@ export default class OrderStore {
                             }, 750);
                         } else if (
                             code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES &&
-                            !order_store?.order_information.is_buy_order_for_user
+                            !order_store?.order_information?.is_buy_order_for_user
                         ) {
                             if (general_store.isCurrentModal('InvalidVerificationLinkModal')) {
                                 general_store.hideModal();
@@ -553,6 +532,8 @@ export default class OrderStore {
                                 },
                             });
                         }
+                        this.setVerificationCode('');
+                        this.setActionParam(null);
                     }
                     localStorage.removeItem('verification_code.p2p_order_confirm');
                 }
@@ -560,20 +541,12 @@ export default class OrderStore {
         }
     }
 
+    setActionParam(action_param) {
+        this.action_param = action_param;
+    }
+
     setApiErrorMessage(api_error_message) {
         this.api_error_message = api_error_message;
-    }
-
-    setCancellationBlockDuration(cancellation_block_duration) {
-        this.cancellation_block_duration = cancellation_block_duration;
-    }
-
-    setCancellationCountPeriod(cancellation_count_period) {
-        this.cancellation_count_period = cancellation_count_period;
-    }
-
-    setCancellationLimit(cancellation_limit) {
-        this.cancellation_limit = cancellation_limit;
     }
 
     setShouldNavigateToBuySell(should_navigate_to_buy_sell) {

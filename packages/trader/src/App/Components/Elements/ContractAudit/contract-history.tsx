@@ -25,7 +25,7 @@ const ContractHistory = ({ currency, history = [] }: TContractHistory) => {
             <div className='contract-audit__tabs-content'>
                 {history.map((item, key) => (
                     <ContractAuditItem
-                        key={item.order_date}
+                        key={`${key}-${item.order_date}`}
                         id={`dt_history_label_${key}`}
                         label={item.display_name}
                         timestamp={Number(item?.order_date)}

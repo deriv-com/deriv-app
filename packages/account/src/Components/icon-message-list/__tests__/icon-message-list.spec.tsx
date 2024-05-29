@@ -67,7 +67,9 @@ describe('<IconMessageList/>', () => {
         renderComponent({ props: new_props });
         const upload_btn = screen.queryByRole('button', { name: /verify again/i });
         expect(upload_btn).toBeInTheDocument();
-        userEvent.click(upload_btn);
+        if (upload_btn) {
+            userEvent.click(upload_btn);
+        }
         expect(onContinuefn).toHaveBeenCalled();
     });
 });

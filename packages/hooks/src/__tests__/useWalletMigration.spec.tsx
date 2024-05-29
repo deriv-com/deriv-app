@@ -25,7 +25,7 @@ describe('useWalletMigration', () => {
 
         const { result } = renderHook(() => useWalletMigration(), { wrapper: wrapper(mock) });
 
-        result.current.start_migration();
+        result.current.startMigration();
 
         expect(startWalletMigration).toBeCalled();
     });
@@ -36,7 +36,7 @@ describe('useWalletMigration', () => {
 
         const { result } = renderHook(() => useWalletMigration(), { wrapper: wrapper(mock) });
 
-        result.current.reset_migration();
+        result.current.resetMigration();
 
         expect(resetWalletMigration).toBeCalled();
     });

@@ -1,6 +1,7 @@
 import React from 'react';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { config, getSavedWorkspaces, load, removeExistingWorkspace, save_types, setColors } from '@deriv/bot-skeleton';
+import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
 import { clearInjectionDiv, tabs_title } from 'Constants/load-modal';
@@ -104,6 +105,7 @@ export default class LoadModalStore implements ILoadModalStore {
             resetBotBuilderStrategy: action.bound,
             setDashboardStrategies: action.bound,
             updateListStrategies: action.bound,
+            onToggleDeleteDialog: action,
         });
 
         this.root_store = root_store;
@@ -240,6 +242,9 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     refreshStrategiesTheme = async () => {
+        if (this.recent_workspace) {
+            (this.recent_workspace as any).RTL = isDbotRTL();
+        }
         await load({
             block_string: this.selected_strategy?.xml,
             drop_event: {},
@@ -265,7 +270,7 @@ export default class LoadModalStore implements ILoadModalStore {
 
         removeExistingWorkspace(this.selected_strategy.id);
         await load({
-            block_string: this.selected_strategy.xml,
+            block_string: this.selected_strategy?.xml,
             strategy_id: this.selected_strategy.id,
             file_name: this.selected_strategy.name,
             workspace: window.Blockly.derivWorkspace,
@@ -288,7 +293,6 @@ export default class LoadModalStore implements ILoadModalStore {
         if (this.loaded_local_file) {
             this.readFile(false, {} as DragEvent, this.loaded_local_file);
         }
-        this.is_open_button_loading = false;
     };
 
     onActiveIndexChange = (): void => {
@@ -406,7 +410,7 @@ export default class LoadModalStore implements ILoadModalStore {
             return;
         }
         if (this.tab_name !== tabs_title.TAB_LOCAL && this.recent_workspace) {
-            clearInjectionDiv('store', ref);
+            clearInjectionDiv(ref);
             this.recent_workspace.dispose();
             this.recent_workspace = null;
         }
@@ -497,7 +501,7 @@ export default class LoadModalStore implements ILoadModalStore {
     readFile = (is_preview: boolean, drop_event: DragEvent, file: File): void => {
         const file_name = file?.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
-        reader.onload = action(e => {
+        reader.onload = action(async e => {
             const load_options = {
                 block_string: e?.target?.result,
                 drop_event,
@@ -507,7 +511,7 @@ export default class LoadModalStore implements ILoadModalStore {
                 strategy_id: '',
                 showIncompatibleStrategyDialog: false,
             };
-            const ref = document.getElementById('load-strategy__blockly-container');
+            const ref = document?.getElementById('load-strategy__blockly-container');
             if (is_preview && ref) {
                 this.local_workspace = Blockly.inject(ref, {
                     media: `${__webpack_public_path__}media/`, // eslint-disable-line
@@ -519,11 +523,15 @@ export default class LoadModalStore implements ILoadModalStore {
                     scrollbars: true,
                 });
                 load_options.workspace = this.local_workspace;
+                if (load_options.workspace) {
+                    (load_options.workspace as any).RTL = isDbotRTL();
+                }
             } else {
                 load_options.workspace = window.Blockly.derivWorkspace;
                 load_options.file_name = file_name;
             }
-            load(load_options);
+            await load(load_options);
+            this.is_open_button_loading = false;
         });
         reader.readAsText(file);
     };

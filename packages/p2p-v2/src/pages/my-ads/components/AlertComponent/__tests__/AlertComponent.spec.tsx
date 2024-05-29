@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import AlertComponent from '../AlertComponent';
 
 const mockProps = {
-    setIsModalOpen: jest.fn(),
+    onClick: jest.fn(),
 };
 describe('AlertComponent', () => {
     it('should render the component as expected', () => {
@@ -21,6 +21,6 @@ describe('AlertComponent', () => {
         render(<AlertComponent {...mockProps} />);
         const button = screen.getByRole('button');
         userEvent.click(button);
-        expect(mockProps.setIsModalOpen).toBeCalledTimes(1);
+        expect(mockProps.onClick).toBeCalledTimes(1);
     });
 });

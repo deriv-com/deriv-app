@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Field, useFormikContext } from 'formik';
 import {
     Autocomplete,
@@ -56,6 +56,15 @@ const PersonalDetailsForm = props => {
 
     const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched } = useFormikContext();
 
+    const handleToolTipStatus = React.useCallback(() => {
+        if (is_tax_residence_popover_open) {
+            setIsTaxResidencePopoverOpen(false);
+        }
+        if (is_tin_popover_open) {
+            setIsTinPopoverOpen(false);
+        }
+    }, [is_tax_residence_popover_open, is_tin_popover_open]);
+
     React.useEffect(() => {
         if (should_close_tooltip) {
             handleToolTipStatus();
@@ -91,15 +100,6 @@ const PersonalDetailsForm = props => {
             />
         );
 
-    const handleToolTipStatus = React.useCallback(() => {
-        if (is_tax_residence_popover_open) {
-            setIsTaxResidencePopoverOpen(false);
-        }
-        if (is_tin_popover_open) {
-            setIsTinPopoverOpen(false);
-        }
-    }, [is_tax_residence_popover_open, is_tin_popover_open]);
-
     const handleSalutationSelection = event => {
         if (event.target?.type === 'radio') {
             setFieldValue('salutation', event.target?.value);
@@ -118,7 +118,7 @@ const PersonalDetailsForm = props => {
     return (
         <React.Fragment>
             <div
-                className={classNames(class_name, {
+                className={clsx(class_name, {
                     'account-form__poi-confirm-example': is_rendered_for_idv,
                 })}
             >
@@ -250,7 +250,6 @@ const PersonalDetailsForm = props => {
                                 type='text'
                                 maxLength={70}
                                 required
-                                onChange={handleChange}
                                 onBlur={handleBlur}
                                 error={touched.address_line_1 && errors.address_line_1}
                                 value={values.address_line_1}
@@ -266,7 +265,6 @@ const PersonalDetailsForm = props => {
                                 data-lpignore='true'
                                 type='text'
                                 maxLength={70}
-                                onChange={handleChange}
                                 onBlur={handleBlur}
                                 error={touched.address_line_2 && errors.address_line_2}
                                 value={values.address_line_2}
@@ -283,7 +281,6 @@ const PersonalDetailsForm = props => {
                                 type='text'
                                 maxLength={70}
                                 required
-                                onChange={handleChange}
                                 onBlur={handleBlur}
                                 error={touched.address_city && errors.address_city}
                                 value={values.address_city}
@@ -331,7 +328,6 @@ const PersonalDetailsForm = props => {
                                     label={localize('State/Province')}
                                     value={values.address_state}
                                     error={touched.address_state && errors.address_state}
-                                    onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
                             ))}
@@ -345,7 +341,6 @@ const PersonalDetailsForm = props => {
                                 data-lpignore='true'
                                 type='text'
                                 maxLength={70}
-                                onChange={handleChange}
                                 onBlur={handleBlur}
                                 error={touched.address_postcode && errors.address_postcode}
                                 value={values.address_postcode}
@@ -446,7 +441,7 @@ const PersonalDetailsForm = props => {
                                     />
                                 )}
                                 {'employment_status' in values && (
-                                    <fieldset className={classNames('account-form__fieldset', 'emp-status')}>
+                                    <fieldset className={clsx('account-form__fieldset', 'emp-status')}>
                                         <DesktopWrapper>
                                             <Dropdown
                                                 placeholder={

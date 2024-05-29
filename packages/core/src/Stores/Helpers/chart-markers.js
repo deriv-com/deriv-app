@@ -346,7 +346,7 @@ export function calculateMarker(contract_info, is_dark_theme, is_last_contract) 
             epoch: date_start,
             quote: is_digit_contract ? undefined : price,
             type: 'activeStart',
-            text: localize('Start\nTime'),
+            text: `${localize('Start')}\n${localize('Time')}`,
         });
     }
 

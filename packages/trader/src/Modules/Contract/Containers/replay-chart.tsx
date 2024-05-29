@@ -1,6 +1,13 @@
 import React from 'react';
 import { usePrevious } from '@deriv/components';
-import { getDurationPeriod, getDurationUnitText, getEndTime, getPlatformRedirect, isDesktop } from '@deriv/shared';
+import {
+    getDurationPeriod,
+    getDurationUnitText,
+    getEndTime,
+    getPlatformRedirect,
+    isDesktop,
+    hasContractStarted,
+} from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ChartBottomWidgets, ChartTopWidgets } from './contract-replay-widget';
@@ -29,7 +36,8 @@ const ReplayChart = observer(
         const { is_chart_layout_default, is_chart_countdown_visible, is_mobile } = ui;
         const { end_epoch, chart_type, start_epoch, granularity } = contract_config || {};
         const is_dark_theme = is_dark_theme_prop || ui.is_dark_mode_on;
-
+        const is_sold_before_started =
+            !!contract_info?.is_forward_starting && !hasContractStarted(contract_info) && !!contract_info.is_sold;
         /**
          * TODO: remove forcing light theme once DBot supports dark theme
          * DBot does not support for dark theme since till now,
@@ -91,7 +99,7 @@ const ReplayChart = observer(
                 maxTick={is_mobile ? 8 : undefined}
                 requestSubscribe={wsSubscribe}
                 settings={settings}
-                startEpoch={start_epoch}
+                startEpoch={is_sold_before_started ? contract_info.purchase_time : start_epoch}
                 scrollToEpoch={scroll_to_epoch}
                 stateChangeListener={chartStateChange}
                 symbol={symbol}

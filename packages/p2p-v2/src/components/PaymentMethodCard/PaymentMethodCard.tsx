@@ -8,6 +8,7 @@ import { PaymentMethodCardHeader } from './PaymentMethodCardHeader';
 import './PaymentMethodCard.scss';
 
 type TPaymentMethodCardProps = HTMLAttributes<HTMLDivElement> & {
+    isDisabled?: boolean;
     isEditable?: boolean;
     medium?: boolean;
     onClickAdd?: (paymentMethod: TPaymentMethod) => void;
@@ -20,6 +21,7 @@ type TPaymentMethodCardProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 const PaymentMethodCard = ({
+    isDisabled = false,
     isEditable = false,
     medium = false,
     onClickAdd,
@@ -58,6 +60,7 @@ const PaymentMethodCard = ({
             ) : (
                 <>
                     <PaymentMethodCardHeader
+                        isDisabled={isDisabled}
                         isEditable={isEditable}
                         isSelectable={!isEditable && toAdd}
                         isSelected={isSelected}

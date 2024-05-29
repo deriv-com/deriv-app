@@ -35,7 +35,7 @@ const Cashier: React.FC<TRouteTypes.TRouteComponent> = ({ routes }) => {
                         const { path, title } = route;
                         return (
                             <Route exact key={path} path={path}>
-                                <route.component path={path} title={title} />
+                                <route.component path={path} routes={routes} title={title} />
                             </Route>
                         );
                     })}

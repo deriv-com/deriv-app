@@ -1,5 +1,8 @@
+// /* eslint-disable @typescript-eslint/ban-ts-comment */
+// // @ts-nocheck [TODO] - Need to update the types of routes
+
 import React from 'react';
-import { routes, moduleLoader } from '@deriv/shared';
+import { routes, moduleLoader, makeLazyLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
     AccountLimits,
@@ -26,8 +29,12 @@ import {
 } from '../Sections';
 
 import { TRoute, TRouteConfig } from '../Types';
+import { Loading } from '@deriv/components';
 // Error Routes
-const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
+const Page404 = makeLazyLoader(
+    () => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')),
+    () => <Loading />
+)();
 export type TPage404 = typeof Page404;
 
 // Order matters
@@ -181,7 +188,7 @@ const route_default: TRoute = { component: Page404, getTitle: () => localize('Er
 
 const getRoutesConfig = (): TRouteConfig[] => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig();
+        routesConfig = initRoutesConfig() as TRouteConfig[];
         routesConfig.push(route_default);
     }
     return routesConfig;

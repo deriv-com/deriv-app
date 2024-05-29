@@ -1,5 +1,5 @@
-import React from 'react';
-import classNames from 'classnames';
+import { useState, useRef, useEffect, Fragment } from 'react';
+import clsx from 'clsx';
 import { Formik, Form, FormikHelpers } from 'formik';
 import { BrowserHistory } from 'history';
 import { withRouter } from 'react-router';
@@ -42,10 +42,10 @@ type TRestState = {
 };
 
 export const PersonalDetailsForm = observer(({ history }: { history: BrowserHistory }) => {
-    const [is_loading, setIsLoading] = React.useState(true);
-    const [is_state_loading, setIsStateLoading] = React.useState(false);
-    const [is_btn_loading, setIsBtnLoading] = React.useState(false);
-    const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
+    const [is_loading, setIsLoading] = useState(true);
+    const [is_state_loading, setIsStateLoading] = useState(false);
+    const [is_btn_loading, setIsBtnLoading] = useState(false);
+    const [is_submit_success, setIsSubmitSuccess] = useState(false);
 
     const {
         client,
@@ -77,14 +77,14 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
 
     const { is_mobile } = ui;
     const has_poa_address_mismatch = account_status?.status?.includes('poa_address_mismatch');
-    const [rest_state, setRestState] = React.useState<TRestState>({
+    const [rest_state, setRestState] = useState<TRestState>({
         show_form: true,
         form_initial_values: {},
     });
 
-    const notification_timeout = React.useRef<NodeJS.Timeout>();
+    const notification_timeout = useRef<NodeJS.Timeout>();
 
-    const [start_on_submit_timeout, setStartOnSubmitTimeout] = React.useState<{
+    const [start_on_submit_timeout, setStartOnSubmitTimeout] = useState<{
         is_timeout_started: boolean;
         timeout_callback: () => void;
     }>({
@@ -94,7 +94,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
 
     const isMounted = useIsMounted();
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (isMounted()) {
             const getSettings = async () => {
                 // waits for residence to be populated
@@ -165,9 +165,9 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
         }
     };
 
-    React.useEffect(() => () => clearTimeout(notification_timeout.current), []);
+    useEffect(() => () => clearTimeout(notification_timeout.current), []);
 
-    React.useEffect(() => {
+    useEffect(() => {
         let timeout_id: NodeJS.Timeout;
         if (start_on_submit_timeout.is_timeout_started) {
             timeout_id = setTimeout(() => {
@@ -238,7 +238,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                 setFieldTouched,
                 dirty,
             }) => (
-                <React.Fragment>
+                <Fragment>
                     <LeaveConfirm onDirty={is_mobile ? showForm : undefined} />
                     {show_form && (
                         <Form
@@ -250,7 +250,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                             <FormBody scroll_offset={is_mobile ? '199px' : '80px'}>
                                 <FormSubHeader title={localize('Details')} />
                                 {!is_virtual && (
-                                    <React.Fragment>
+                                    <Fragment>
                                         <DesktopWrapper>
                                             <InputGroup className='account-form__fieldset--2-cols'>
                                                 <Input
@@ -348,7 +348,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                 />
                                             </fieldset>
                                         )}
-                                    </React.Fragment>
+                                    </Fragment>
                                 )}
                                 <fieldset className='account-form__fieldset'>
                                     <Input
@@ -393,9 +393,9 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                         <VerifyButton />
                                     </fieldset>
                                 )}
-                                <React.Fragment>
+                                <Fragment>
                                     {'tax_residence' in values && (
-                                        <React.Fragment>
+                                        <Fragment>
                                             <FormSubHeader title={localize('Tax information')} />
                                             {'tax_residence' in values && (
                                                 <fieldset className='account-form__fieldset'>
@@ -464,10 +464,10 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                     </MobileWrapper>
                                                 </fieldset>
                                             )}
-                                        </React.Fragment>
+                                        </Fragment>
                                     )}
                                     {!is_virtual && (
-                                        <React.Fragment>
+                                        <Fragment>
                                             {has_poa_address_mismatch && <POAAddressMismatchHintBox />}
                                             <FormSubHeader title={localize('Address')} />
                                             <div className='account-address__details-section'>
@@ -563,11 +563,11 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                     />
                                                 </fieldset>
                                             </div>
-                                        </React.Fragment>
+                                        </Fragment>
                                     )}
-                                </React.Fragment>
+                                </Fragment>
                                 {!!current_landing_company?.support_professional_client && (
-                                    <React.Fragment>
+                                    <Fragment>
                                         <div className='account-form__divider' />
                                         <div className='pro-client'>
                                             <FormSubHeader title={localize('Professional Client')} />
@@ -639,12 +639,12 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                             </fieldset>
                                         </div>
                                         <div className='account-form__divider' />
-                                    </React.Fragment>
+                                    </Fragment>
                                 )}
                                 <FormSubHeader title={localize('Email preference')} />
-                                <React.Fragment>
+                                <Fragment>
                                     <fieldset
-                                        className={classNames(
+                                        className={clsx(
                                             'account-form__fieldset',
                                             'account-form__fieldset--email-consent'
                                         )}
@@ -662,7 +662,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                             disabled={isFieldDisabled('email_consent') && !is_virtual}
                                         />
                                     </fieldset>
-                                </React.Fragment>
+                                </Fragment>
                             </FormBody>
                             <FormFooter>
                                 {status?.msg && <FormSubmitErrorMessage message={status?.msg} />}
@@ -679,7 +679,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                     </Text>
                                 )}
                                 <Button
-                                    className={classNames('account-form__footer-btn', {
+                                    className={clsx('account-form__footer-btn', {
                                         'dc-btn--green': is_submit_success,
                                     })}
                                     type='submit'
@@ -696,7 +696,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                             </FormFooter>
                         </Form>
                     )}
-                </React.Fragment>
+                </Fragment>
             )}
         </Formik>
     );

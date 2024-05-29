@@ -142,6 +142,7 @@ runs:
             issue_number: issueNumber,
             body: `${diffOutput}`
           });
+          console.log(`Commented on PR with diff output`);
         } catch (error) {
           console.log(`Failed to create comment: ${error}`);
         }

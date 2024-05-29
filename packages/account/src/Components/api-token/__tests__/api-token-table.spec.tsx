@@ -64,13 +64,8 @@ describe('ApiTokenTable', () => {
 
     it('should render in responsive view', () => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
-        const mock_store = mockStore({
-            ui: {
-                is_mobile: true,
-            },
-        });
         expectedTexts.push('Last Used');
-        renderComponent({ store_config: mock_store });
+        renderComponent({});
         expect(screen.getByText('Token 1')).toHaveClass('da-api-token__scope-item--name');
         expectedTexts.forEach(text => {
             expect(screen.getByText(text)).toBeInTheDocument();

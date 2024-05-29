@@ -13,9 +13,9 @@ const EmptyPositions = ({ isClosedTab, noMatchesFound }: TEmptyPositionsProps) =
     const [showLoader, setShowLoader] = React.useState(true);
 
     React.useEffect(() => {
-        const demoTimeout = setTimeout(() => setShowLoader(false), 500);
+        const timeout = setTimeout(() => setShowLoader(false), 500);
         return () => {
-            clearTimeout(demoTimeout);
+            clearTimeout(timeout);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

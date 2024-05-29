@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormikValues } from 'formik';
 import classNames from 'classnames';
-import { formatMoney, useIsMounted, PlatformContext } from '@deriv/shared';
+import { formatMoney, useIsMounted } from '@deriv/shared';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
 import { Localize, localize } from '@deriv/translations';
@@ -38,19 +38,10 @@ const AccountLimits = observer(
         should_show_article = true,
     }: TAccountLimits) => {
         const { client } = useStore();
-        const {
-            account_limits,
-            account_status,
-            currency,
-            getLimits,
-            is_fully_authenticated,
-            is_virtual,
-            is_switching,
-        } = client;
+        const { account_limits, account_status, currency, getLimits, is_virtual, is_switching } = client;
         const isMounted = useIsMounted();
         const [is_loading, setLoading] = React.useState(true);
         const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
-        const { is_appstore } = React.useContext(PlatformContext);
         const { isDesktop } = useDevice();
 
         const handleGetLimitsResponse = () => {
@@ -86,13 +77,8 @@ const AccountLimits = observer(
 
         if (is_virtual) {
             return (
-                <div
-                    data-testid='dt_account_demo_message_wrapper'
-                    className={classNames('account__demo-message-wrapper', {
-                        'account__demo-message-wrapper-dashboard': is_appstore,
-                    })}
-                >
-                    <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />
+                <div data-testid='dt_account_demo_message_wrapper' className='account__demo-message-wrapper'>
+                    <DemoMessage />
                 </div>
             );
         }
@@ -239,7 +225,6 @@ const AccountLimits = observer(
 
                                 {!is_app_settings && (
                                     <WithdrawalLimitsTable
-                                        is_appstore={is_appstore}
                                         num_of_days_limit={num_of_days_limit}
                                         remainder={remainder}
                                         withdrawal_since_inception_monetary={withdrawal_since_inception_monetary}

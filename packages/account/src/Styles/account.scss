@@ -6,6 +6,9 @@ $MIN_HEIGHT_FLOATING: calc(
 
 .account {
     margin: 0 16px;
+    @include mobile-or-tablet-screen {
+        height: 100%;
+    }
 
     .dc-page-overlay__content {
         @include mobile-or-tablet-screen {
@@ -14,6 +17,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         @include tablet-screen {
             width: 60rem;
+            height: 100%;
         }
     }
 
@@ -74,6 +78,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     width: 68.5rem;
                     margin-inline-start: 6rem;
                     padding-top: 0;
+                    height: 100%;
                 }
             }
 
@@ -165,7 +170,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
 
-        @include desktop {
+        @include desktop-screen {
             & .da-self-exclusion__wrapper {
                 width: calc(100vw - 33rem);
             }
@@ -175,7 +180,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
 
-        @include desktop {
+        @include desktop-screen {
             grid-template-rows: 5.2rem calc(100vh - 4.8rem - 3.6rem - 5.2rem);
             overflow: hidden;
         }
@@ -208,7 +213,7 @@ $MIN_HEIGHT_FLOATING: calc(
         height: 100%;
         width: 100%;
 
-        @include desktop {
+        @include desktop-screen {
             &__financial-assessment {
                 .account-form__fieldset {
                     margin-top: 0.8rem;
@@ -257,7 +262,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 width: 100%;
                 margin-top: 0.3rem;
 
-                @include mobile {
+                @include mobile-screen {
                     border-top-color: var(--general-disabled);
                 }
             }
@@ -291,7 +296,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 1.6rem;
                 max-width: 67.2rem;
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     margin-bottom: 2.4rem;
                 }
             }
@@ -304,6 +309,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 .dc-list {
                     .dc-themed-scrollbars__autohide {
                         top: 1px;
+                        height: 100%;
                     }
                 }
             }
@@ -363,7 +369,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 top: 1rem;
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 .dc-checkbox {
                     &__box,
                     & .dc-icon {
@@ -402,14 +408,14 @@ $MIN_HEIGHT_FLOATING: calc(
         }
 
         &__personal-details {
-            @include desktop {
+            @include desktop-screen {
                 .account__scrollbars_container {
                     padding-top: 2.4rem;
                     padding-bottom: 2.4rem;
                 }
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 .account__scrollbars_container {
                     &--grid-layout {
                         display: flex;
@@ -454,7 +460,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     }
                 }
 
-                @include desktop {
+                @include desktop-screen {
                     padding-bottom: 0;
                 }
             }
@@ -489,7 +495,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 flex-wrap: wrap;
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 flex-wrap: wrap;
                 margin-bottom: 2.4rem;
             }
@@ -521,9 +527,9 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 100%;
-            margin-right: unset;
+            margin-inline-end: unset;
             margin-bottom: 2.4rem;
         }
 
@@ -563,7 +569,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             height: fit-content;
             width: 100%;
             padding: 2.4rem 1.8rem 2rem;
@@ -578,13 +584,13 @@ $MIN_HEIGHT_FLOATING: calc(
                     display: flex;
                     grid-column-gap: 0.8rem;
 
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         margin-bottom: 2.4rem;
                         flex-direction: column;
                     }
 
                     &__fieldset {
-                        @include mobile {
+                        @include mobile-or-tablet-screen {
                             width: inherit;
                             max-width: 40rem;
 
@@ -614,7 +620,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
     &__password-wrapper {
         & .account__scrollbars_container--grid-layout {
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 display: flex;
                 flex-direction: column;
             }
@@ -687,8 +693,8 @@ $MIN_HEIGHT_FLOATING: calc(
                     margin-top: 3.2rem;
 
                     @include mobile-or-tablet-screen {
-                        margin: 1.6rem 0;
                         padding: 1.6rem;
+                        width: 56.8rem;
                     }
                 }
             }
@@ -840,14 +846,6 @@ $MIN_HEIGHT_FLOATING: calc(
             @include desktop-screen {
                 max-width: 54.6rem;
             }
-        }
-    }
-
-    .dashboard__message-content {
-        margin-top: 8rem;
-
-        @include mobile {
-            margin-top: 4rem;
         }
     }
 
@@ -1009,7 +1007,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             &__list {
                 width: 90%;
                 margin: 1rem auto;
@@ -1058,7 +1056,7 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 
     .leave-confirm {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             &__message-icon {
                 width: 93px;
             }
@@ -1076,7 +1074,7 @@ $MIN_HEIGHT_FLOATING: calc(
     .submit-success {
         margin-top: 100px;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             &__message-icon {
                 width: 96px;
                 height: 90px;
@@ -1109,7 +1107,7 @@ $MIN_HEIGHT_FLOATING: calc(
             overflow-y: hidden;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             height: 100%;
         }
     }
@@ -1146,7 +1144,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         height: 100%;
         margin: 0;
     }
@@ -1180,7 +1178,7 @@ $MIN_HEIGHT_FLOATING: calc(
             &-dashboard {
                 width: calc(100vw - 33rem);
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     width: 100%;
 
                     button {
@@ -1194,7 +1192,7 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-top: 2.4rem;
             align-self: center;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 100%;
             }
         }
@@ -1215,7 +1213,7 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-right: 0.5em;
             flex: 1;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin-bottom: 2.4rem;
             }
         }
@@ -1229,7 +1227,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 4em; // The gap for the error message is dependent on the font-size, better to be `em` instead of `rem`
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 min-width: 100%;
             }
         }
@@ -1426,7 +1424,7 @@ $MIN_HEIGHT_FLOATING: calc(
             font-weight: bold;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             &:not(:first-child):not(:last-child) {
                 margin: 0;
             }
@@ -1442,7 +1440,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         display: grid;
         grid-gap: 2.4rem;
         grid-template-columns: 1fr 1fr 1fr;
@@ -1490,7 +1488,7 @@ $MIN_HEIGHT_FLOATING: calc(
 }
 
 .dc-modal__container_sent-email__modal {
-    @include mobile {
+    @include mobile-or-tablet-screen {
         height: 42rem !important;
         overflow-y: scroll !important;
     }
@@ -1548,7 +1546,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 @include typeface(--paragraph-center-bold-red, none);
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 300px;
                 height: 272px;
             }
@@ -1559,6 +1557,11 @@ $MIN_HEIGHT_FLOATING: calc(
 
 .proof-of-income {
     width: 100%;
+
+    .account-form__footer {
+        max-width: 100%;
+        align-items: center;
+    }
 
     .account__scrollbars_container {
         padding: 0;
@@ -1593,7 +1596,7 @@ $MIN_HEIGHT_FLOATING: calc(
             margin: 0.5rem 0 0.8rem;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             &:first-child {
                 & > p {
                     padding-top: 2.4rem;
@@ -1608,11 +1611,11 @@ $MIN_HEIGHT_FLOATING: calc(
         line-height: 1.43;
 
         & > ul {
-            padding-left: 3%;
+            padding-inline-start: 3%;
             list-style-type: disc;
 
-            @include mobile {
-                padding-left: 5%;
+            @include mobile-or-tablet-screen {
+                padding-inline-start: 5%;
             }
 
             @include rtl {
@@ -1640,7 +1643,7 @@ $MIN_HEIGHT_FLOATING: calc(
         align-self: flex-end;
         background-color: transparent;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             align-self: center;
         }
     }
@@ -1649,20 +1652,20 @@ $MIN_HEIGHT_FLOATING: calc(
         &--cancel {
             margin-top: 2.4rem;
             margin-inline-end: 10px;
-            float: right;
+            float: inline-end;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin-top: -8px;
                 margin-inline-end: 10px;
-                float: right;
+                float: inline-end;
             }
         }
 
         &--close-account {
             margin-top: 2.4rem;
-            float: right;
+            float: inline-end;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 float: none;
                 margin: 2.4rem auto 3.2rem;
             }
@@ -1707,7 +1710,7 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-top: 0.8rem;
 
             &-wrapper {
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     margin-bottom: 5.6rem;
                 }
             }
@@ -1724,7 +1727,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         width: calc(100% - 3rem);
         margin: 0 auto;
 
@@ -1737,7 +1740,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     margin: 0.8rem 0;
                     background-color: var(--general-main-1);
 
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         position: fixed;
                         bottom: 0;
                         left: 0;
@@ -1761,7 +1764,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
 /* stylelint-disable */
 .dc-modal__container_closing-account-reasons {
-    @include mobile {
+    @include mobile-or-tablet-screen {
         max-height: 70vh;
     }
 
@@ -1779,7 +1782,7 @@ $MIN_HEIGHT_FLOATING: calc(
         padding: 3.2rem;
         width: 440px;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: unset;
         }
 
@@ -1791,7 +1794,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 width: 10.3rem;
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 background: unset;
             }
         }
@@ -1877,7 +1880,7 @@ $MIN_HEIGHT_FLOATING: calc(
             margin: 1.6rem 2.4rem;
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             &__button {
                 margin: 1.6rem;
             }
@@ -1897,7 +1900,7 @@ $MIN_HEIGHT_FLOATING: calc(
         position: absolute;
         width: 87%;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 70%;
         }
     }
@@ -2156,7 +2159,7 @@ $MIN_HEIGHT_FLOATING: calc(
     &-img {
         padding: 2.4rem 0;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 100%;
             height: auto;
         }
@@ -2190,7 +2193,7 @@ $MIN_HEIGHT_FLOATING: calc(
     position: relaitve;
     background-color: var(--status-warning-transparent);
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         width: 32.8rem;
         margin: 1rem;
     }

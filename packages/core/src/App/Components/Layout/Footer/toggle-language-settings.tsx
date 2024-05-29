@@ -6,7 +6,7 @@ import { Localize, localize } from '@deriv/translations';
 import 'Sass/app/modules/settings.scss';
 import LanguageSettings from '../../../Containers/SettingsModal/settings-language';
 
-const ToggleLanguageSettings = observer(() => {
+const ToggleLanguageSettings = observer(({ showPopover }: { showPopover?: boolean }) => {
     const { common, ui } = useStore();
     const { is_language_settings_modal_on, toggleLanguageSettingsModal } = ui;
     const { current_language, is_language_changing } = common;
@@ -15,6 +15,20 @@ const ToggleLanguageSettings = observer(() => {
         'ic-settings--active': is_language_settings_modal_on,
         'ic-settings--disabled': is_language_changing,
     });
+    const content = (
+        <React.Fragment>
+            <Icon
+                icon={`IcFlag${current_language.replace('_', '-')}`}
+                data_testid='dt_icon'
+                className='ic-settings-language__icon'
+                size={18}
+            />
+            <Text weight='bold' size='xxs'>
+                <Localize i18n_default_text={current_language} />
+            </Text>
+        </React.Fragment>
+    );
+
     return (
         <React.Fragment>
             <a
@@ -23,17 +37,13 @@ const ToggleLanguageSettings = observer(() => {
                 onClick={toggleLanguageSettingsModal}
                 className={toggle_settings_class}
             >
-                <Popover alignment='top' message={localize('Language')} zIndex='9999'>
-                    <Icon
-                        icon={`IcFlag${current_language.replace('_', '-')}`}
-                        data_testid='dt_icon'
-                        className='ic-settings-language__icon'
-                        size={18}
-                    />
-                    <Text weight='bold' size='xxs'>
-                        <Localize i18n_default_text={current_language} />
-                    </Text>
-                </Popover>
+                {showPopover ? (
+                    <Popover alignment='top' message={localize('Language')} zIndex='9999'>
+                        {content}
+                    </Popover>
+                ) : (
+                    content
+                )}
             </a>
             <Modal
                 id='dt_settings_modal'

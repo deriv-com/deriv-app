@@ -91,15 +91,15 @@
         }
     }
 
-    &__dummy {
+    &__placeholder {
         min-height: 64.2rem;
-        animation-name: animate-dummy;
+        animation-name: animate-placeholder;
         animation-duration: 0.5s;
         animation-fill-mode: forwards;
     }
 }
 
-@keyframes animate-dummy {
+@keyframes animate-placeholder {
     to {
         min-height: 0;
     }

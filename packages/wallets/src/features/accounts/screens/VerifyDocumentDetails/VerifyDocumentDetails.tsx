@@ -50,7 +50,7 @@ const VerifyDocumentDetails = () => {
     ]);
 
     if (formValues.verifiedDocumentDetails && isOnfido)
-        return <div className='wallets-verify-document-details__dummy' />;
+        return <div className='wallets-verify-document-details__placeholder' />;
 
     return (
         <div className='wallets-verify-document-details'>
@@ -63,6 +63,7 @@ const VerifyDocumentDetails = () => {
             <div className='wallets-verify-document-details__body'>
                 <div className='wallets-verify-document-details__content'>
                     <FlowTextField
+                        autoFocus={isOnfido}
                         defaultValue={firstName}
                         disabled={formValues.verifiedDocumentDetails}
                         label='First name*'

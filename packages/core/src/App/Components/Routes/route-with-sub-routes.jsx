@@ -21,7 +21,7 @@ const RouteWithSubRoutes = observer(route => {
                     ? routes.p2p_buy_sell
                     : cashier_subroutes?.routes.find(({ path }) => pathname === path);
 
-            return route.path === pathname || !!p2p_subroutes
+            return route.path === pathname || !!p2p_subroutes;
         } else if (pathname.includes(routes.cashier_v2) && !is_next_cashier_enabled) {
             return false;
         } else if (

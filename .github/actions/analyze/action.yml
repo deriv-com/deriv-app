@@ -72,11 +72,13 @@ runs:
     run: |
       # Fetching the artifacts and storing response for debugging
       RESPONSE=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
-        "https://api.github.com/repos/${{ github.repository }}/actions/artifacts")
-      echo "API Response: $RESPONSE"
+        "https://api.github.com/repos/${{ github.repository }}/actions/artifacts?name=analyse")
+
+      # uncomment for debugging purposes
+      # echo "API Response: $RESPONSE"
 
       # Extracting the artifact URL using jq
-      ARTIFACT_URL=$(echo $RESPONSE | jq -r '.artifacts | map(select(.workflow_run.head_branch == "master" and (.name | startswith("analyse")))) | .[0] | .archive_download_url')
+      ARTIFACT_URL=$(echo $RESPONSE | jq -r '.artifacts[0].archive_download_url')
 
       # Check if the artifact URL is empty
       if [[ -z "$ARTIFACT_URL" ]]; then
@@ -89,7 +91,6 @@ runs:
       # Output artifact URL for other steps
       echo "artifact_url=$ARTIFACT_URL" >> $GITHUB_OUTPUT
       echo "artifact_url=$ARTIFACT_URL"
-
 
   - name: Download artifact
     if: steps.get_artifact_url.outputs.artifact_url != 'null'
@@ -163,9 +164,20 @@ runs:
     run: |
       zip -r analyse.zip packages/*/report.json
 
-  - name: Upload analyse.zip
+  # Step for the master branch
+  - name: Upload analyse.zip for Master Branch
+    if: github.ref == 'refs/heads/master'
     uses: actions/upload-artifact@v4
     with:
       name: analyse
+      path: analyse.zip
+      retention-days: 5
+
+  # Step for non-master branches
+  - name: Upload analyse.zip for Feature Branches
+    if: github.ref != 'refs/heads/master'
+    uses: actions/upload-artifact@v4
+    with:
+      name: analyse-${{ github.ref_name }}
       path: analyse.zip
       retention-days: 5

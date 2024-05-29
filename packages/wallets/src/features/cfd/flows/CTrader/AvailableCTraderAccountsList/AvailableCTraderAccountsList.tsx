@@ -15,6 +15,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
         data: createdAccount,
         error,
         isLoading: isCFDAccountCreationLoading,
+        isSuccess: isCFDAccountCreationSuccess,
         mutate,
         status,
     } = useCreateOtherCFDAccount();
@@ -57,11 +58,9 @@ const AvailableCTraderAccountsList: React.FC = () => {
 
     return (
         <TradingAccountCard
-            disabled={isCFDAccountCreationLoading}
+            disabled={isCFDAccountCreationLoading || isCFDAccountCreationSuccess}
             leading={<div className='wallets-available-ctrader__icon'>{PlatformDetails.ctrader.icon}</div>}
-            onClick={() => {
-                onSubmit();
-            }}
+            onClick={onSubmit}
             trailing={
                 <div className='wallets-available-ctrader__icon'>
                     <LabelPairedChevronRightCaptionRegularIcon width={16} />

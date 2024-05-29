@@ -58,7 +58,7 @@ const ContractTypeFilter = ({ contractTypeFilter, setContractTypeFilter }: TCont
                 size='sm'
             />
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={onActionSheetClose} position='left'>
-                <ActionSheet.Portal shouldCloseOnDrag>
+                <ActionSheet.Portal>
                     <ActionSheet.Header title={<Localize i18n_default_text='Filter by trade types' />} />
                     <ActionSheet.Content className='filter__item__wrapper'>
                         {availableContracts.map(({ tradeType, id }) => (

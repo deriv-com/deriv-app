@@ -170,10 +170,11 @@ export const getModalContent = ({ error, is_passkey_registration_started }: TGet
 };
 
 export const passkeysMenuActionEventTrack = (
-    action: TEvents['ce_passkey_account_settings_form']['action'],
+    action: string,
     additional_data: { error_message?: string; subform_name?: string } = {}
 ) => {
     Analytics.trackEvent('ce_passkey_account_settings_form', {
+        //@ts-expect-error [TODO] type not found in @deriv-analytics
         action,
         form_name: 'ce_passkey_account_settings_form',
         operating_system: getOSNameWithUAParser(),

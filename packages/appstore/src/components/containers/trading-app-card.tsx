@@ -8,6 +8,7 @@ import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import {
     BrandConfig,
     DERIV_PLATFORM_NAMES,
+    PlatformConfig,
     getAppstorePlatforms,
     getMFAppstorePlatforms,
 } from 'Constants/platform-config';
@@ -49,14 +50,20 @@ const TradingAppCard = ({
     const { is_eu_user, is_real, selected_account_type } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;
-    const { account_status: { authentication } = {}, is_logged_in } = client;
+    const { account_status: { authentication } = {} } = client;
 
     const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
     const available_platforms = getAvailablePlatforms();
 
     const demo_label = localize('Demo');
 
-    const app_platform = available_platforms.includes('options') ? getAppstorePlatforms() : getMFAppstorePlatforms();
+    let app_platform: PlatformConfig[] = [];
+
+    if (available_platforms.length) {
+        app_platform = available_platforms.includes('options') ? getAppstorePlatforms() : getMFAppstorePlatforms();
+    } else {
+        app_platform = getAppstorePlatforms();
+    }
 
     const { app_desc, link_to, is_external, new_tab } = app_platform.find(config => config.name === name) || {
         app_desc: description,

@@ -1,4 +1,3 @@
-import React from 'react';
 import clsx from 'clsx';
 import { TLoginHistoryItems } from '../../../Types';
 import { Table } from '@deriv/components';

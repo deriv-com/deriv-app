@@ -31,6 +31,7 @@ import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
+import { useDevice } from '@deriv-com/ui';
 
 type TRestState = {
     show_form: boolean;
@@ -45,6 +46,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
     const [is_state_loading, setIsStateLoading] = React.useState(false);
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
+    const { isDesktop } = useDevice();
 
     const {
         client,
@@ -74,7 +76,6 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
         showPOAAddressMismatchFailureNotification,
     } = notifications;
 
-    const { is_mobile } = ui;
     const has_poa_address_mismatch = account_status?.status?.includes('poa_address_mismatch');
     const [rest_state, setRestState] = React.useState<TRestState>({
         show_form: true,
@@ -238,7 +239,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                 dirty,
             }) => (
                 <React.Fragment>
-                    <LeaveConfirm onDirty={is_mobile ? showForm : undefined} />
+                    <LeaveConfirm onDirty={isDesktop ? undefined : showForm} />
                     {show_form && (
                         <Form
                             noValidate
@@ -246,7 +247,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                             onSubmit={handleSubmit}
                             data-testid='dt_account_personal_details_section'
                         >
-                            <FormBody scroll_offset={is_mobile ? '199px' : '80px'}>
+                            <FormBody scroll_offset={isDesktop ? '80px' : '199px'}>
                                 <FormSubHeader title={localize('Details')} />
                                 {!is_virtual && (
                                     <React.Fragment>
@@ -661,7 +662,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                         className='account-form__footer-note'
                                         size='xxs'
                                         color='prominent'
-                                        align={is_mobile ? 'center' : 'right'}
+                                        align={isDesktop ? 'right' : 'center'}
                                     >
                                         {localize(
                                             'Please make sure your information is correct or it may affect your trading experience.'

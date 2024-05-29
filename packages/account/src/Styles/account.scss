@@ -262,7 +262,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 width: 100%;
                 margin-top: 0.3rem;
 
-                @include mobile {
+                @include mobile-screen {
                     border-top-color: var(--general-disabled);
                 }
             }
@@ -296,7 +296,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 1.6rem;
                 max-width: 67.2rem;
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     margin-bottom: 2.4rem;
                 }
             }
@@ -369,7 +369,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 top: 1rem;
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 .dc-checkbox {
                     &__box,
                     & .dc-icon {
@@ -415,7 +415,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 .account__scrollbars_container {
                     &--grid-layout {
                         display: flex;
@@ -460,7 +460,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     }
                 }
 
-                @include desktop {
+                @include desktop-screen {
                     padding-bottom: 0;
                 }
             }
@@ -849,14 +849,6 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 
-    .dashboard__message-content {
-        margin-top: 8rem;
-
-        @include mobile {
-            margin-top: 4rem;
-        }
-    }
-
     .two-factor {
         height: 100%;
         width: 100%;
@@ -1064,7 +1056,7 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 
     .leave-confirm {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             &__message-icon {
                 width: 93px;
             }
@@ -1082,7 +1074,7 @@ $MIN_HEIGHT_FLOATING: calc(
     .submit-success {
         margin-top: 100px;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             &__message-icon {
                 width: 96px;
                 height: 90px;
@@ -1152,7 +1144,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         height: 100%;
         margin: 0;
     }
@@ -1186,7 +1178,7 @@ $MIN_HEIGHT_FLOATING: calc(
             &-dashboard {
                 width: calc(100vw - 33rem);
 
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     width: 100%;
 
                     button {
@@ -1200,7 +1192,7 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-top: 2.4rem;
             align-self: center;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 100%;
             }
         }
@@ -1221,7 +1213,7 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-right: 0.5em;
             flex: 1;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 margin-bottom: 2.4rem;
             }
         }
@@ -1235,7 +1227,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-bottom: 4em; // The gap for the error message is dependent on the font-size, better to be `em` instead of `rem`
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 min-width: 100%;
             }
         }
@@ -1496,7 +1488,7 @@ $MIN_HEIGHT_FLOATING: calc(
 }
 
 .dc-modal__container_sent-email__modal {
-    @include mobile {
+    @include mobile-or-tablet-screen {
         height: 42rem !important;
         overflow-y: scroll !important;
     }
@@ -1554,7 +1546,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 @include typeface(--paragraph-center-bold-red, none);
             }
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 300px;
                 height: 272px;
             }
@@ -2167,7 +2159,7 @@ $MIN_HEIGHT_FLOATING: calc(
     &-img {
         padding: 2.4rem 0;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: 100%;
             height: auto;
         }
@@ -2201,7 +2193,7 @@ $MIN_HEIGHT_FLOATING: calc(
     position: relaitve;
     background-color: var(--status-warning-transparent);
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         width: 32.8rem;
         margin: 1rem;
     }

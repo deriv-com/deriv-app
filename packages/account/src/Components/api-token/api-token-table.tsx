@@ -14,7 +14,6 @@ import { useStore } from '@deriv/stores';
 
 const ApiTokenTable = () => {
     const { api_tokens } = React.useContext<TApiContext>(ApiTokenContext);
-    const { ui } = useStore();
     const { isDesktop } = useDevice();
 
     const formatTokenScopes = (str: string) => {

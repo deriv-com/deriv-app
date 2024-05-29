@@ -1,7 +1,7 @@
 import React, { CSSProperties, forwardRef, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { TGenericSizes } from 'src/types';
-import IconCheckMark from '../../../public/images/ic-checkmark.svg';
+import { LegacyCheckboxOnIcon } from '@deriv/quill-icons';
 import { WalletText } from '../WalletText';
 import './WalletCheckbox.scss';
 
@@ -86,7 +86,13 @@ const WalletCheckbox = forwardRef<HTMLInputElement, TCheckBoxProps>(
                         role='checkbox'
                         tabIndex={withTabIndex}
                     >
-                        {!!checked && <IconCheckMark />}
+                        {!!checked && (
+                            <LegacyCheckboxOnIcon
+                                className='wallets-checkbox__box--fill'
+                                fill='var(--brand-red-coral)'
+                                iconSize='xs'
+                            />
+                        )}
                     </span>
                 </span>
                 <WalletText lineHeight={labelLineHeight} size={labelFontSize} weight={labelFontWeight}>

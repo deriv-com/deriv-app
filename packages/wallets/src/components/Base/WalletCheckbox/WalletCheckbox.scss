@@ -23,14 +23,18 @@
         border: 0.2rem solid var(--text-less-prominent);
         outline: none;
 
+        &--fill {
+            path {
+                fill: #ffffff;
+            }
+        }
+
         &--active {
             border: none;
-            background-color: var(--brand-red-coral);
         }
     }
     &--active {
         border: none;
-        background-color: var(--brand-red-coral);
     }
     &--disabled {
         opacity: 0.5;

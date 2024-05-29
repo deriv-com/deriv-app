@@ -98,7 +98,7 @@ const BuySellModal = () => {
                     submitForm,
                     values: {
                         currency: buy_sell_store.account_currency,
-                        input_amount: buy_sell_store.form_props.input_amount.toFixed(2),
+                        input_amount: Number(buy_sell_store.form_props.input_amount).toFixed(2),
                         local_currency: buy_sell_store?.advert?.local_currency,
                         received_amount: buy_sell_store?.receive_amount.toFixed(2),
                     },

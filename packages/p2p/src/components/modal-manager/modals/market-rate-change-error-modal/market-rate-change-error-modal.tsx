@@ -9,7 +9,7 @@ type TMarketRateChangeErrorModal = {
     submitForm: () => void;
     values: {
         currency: string;
-        input_amount: number;
+        input_amount: string;
         local_currency: string;
         received_amount: number;
     };

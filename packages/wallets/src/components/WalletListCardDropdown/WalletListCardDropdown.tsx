@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ComponentProps, useCallback, useEffect, useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useActiveWalletAccount, useBalanceSubscription, useWalletAccountsList } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
@@ -7,6 +7,8 @@ import { THooks } from '../../types';
 import { WalletDropdown, WalletText } from '../Base';
 import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import './WalletListCardDropdown.scss';
+
+type WalletList = ComponentProps<typeof WalletDropdown>['list'] | undefined;
 
 const WalletListCardDropdown = () => {
     const { data: wallets } = useWalletAccountsList();
@@ -42,7 +44,7 @@ const WalletListCardDropdown = () => {
         };
     }, [balanceData, subscribe, unsubscribe]);
 
-    const walletList = useMemo(() => {
+    const walletList: WalletList = useMemo(() => {
         return wallets
             ?.filter(wallet => !wallet.is_virtual)
             ?.map(wallet => ({
@@ -54,13 +56,15 @@ const WalletListCardDropdown = () => {
                                 <Trans defaults={`${wallet.currency} Wallet`} />
                             </WalletText>
                             <WalletText size='sm' weight='bold'>
-                                {displayMoney?.(
-                                    balanceData?.accounts?.[wallet.loginid]?.balance ?? 0,
-                                    wallet?.currency || '',
-                                    {
-                                        fractional_digits: wallet?.currency_config?.fractional_digits,
-                                    }
-                                )}
+                                <Trans
+                                    defaults={displayMoney?.(
+                                        balanceData?.accounts?.[wallet.loginid]?.balance ?? 0,
+                                        wallet?.currency || '',
+                                        {
+                                            fractional_digits: wallet?.currency_config?.fractional_digits,
+                                        }
+                                    )}
+                                />
                             </WalletText>
                         </div>
                     </div>
@@ -75,7 +79,7 @@ const WalletListCardDropdown = () => {
             {wallets && (
                 <WalletDropdown
                     inputWidth={inputWidth}
-                    list={walletList}
+                    list={walletList ?? []}
                     listHeader={
                         <WalletText size='sm' weight='bold'>
                             <Trans defaults='Select Wallet' />

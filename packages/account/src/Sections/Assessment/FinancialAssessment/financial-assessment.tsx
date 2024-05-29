@@ -14,7 +14,7 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
-import { routes, platforms, WS, shouldHideOccupationField, isTablet } from '@deriv/shared';
+import { routes, platforms, WS, shouldHideOccupationField } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import LeaveConfirm from 'Components/leave-confirm';

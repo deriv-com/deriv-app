@@ -7,8 +7,10 @@ import {
     StandaloneChartCandlestickRegularIcon,
     StandaloneClockThreeRegularIcon,
 } from '@deriv/quill-icons';
-import BottomNavItem from './bottom-nav-item';
 import { Badge } from '@deriv-com/quill-ui';
+import { observer } from 'mobx-react';
+import { useStore } from '@deriv/stores';
+import BottomNavItem from './bottom-nav-item';
 
 type BottomNavProps = {
     children: React.ReactNode[];
@@ -17,41 +19,54 @@ type BottomNavProps = {
     setSelectedItemIdx?: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const bottomNavItems = [
-    {
-        icon: (
-            <StandaloneChartCandlestickRegularIcon
-                iconSize='sm'
-                fill='var(--semantic-color-monochrome-textIcon-normal-high)'
-            />
-        ),
-        label: <Localize i18n_default_text='Trade' />,
-    },
-    {
-        icon: (
-            <LegacyMarketBasketIndicesIcon iconSize='sm' fill='var(--semantic-color-monochrome-textIcon-normal-high)' />
-        ),
-        label: <Localize i18n_default_text='Markets' />,
-    },
-    {
-        icon: (
-            <Badge variant='notification' position='top-right' label='10' color='danger' size='sm' contentSize='sm'>
-                <StandaloneClockThreeRegularIcon
+const BottomNav = observer(({ children, className, selectedItemIdx = 0, setSelectedItemIdx }: BottomNavProps) => {
+    const [selectedIndex, setSelectedIndex] = React.useState(selectedItemIdx);
+    const { active_positions_count } = useStore().portfolio;
+
+    const bottomNavItems = [
+        {
+            icon: (
+                <StandaloneChartCandlestickRegularIcon
                     iconSize='sm'
                     fill='var(--semantic-color-monochrome-textIcon-normal-high)'
                 />
-            </Badge>
-        ),
-        label: <Localize i18n_default_text='Positions' />,
-    },
-    {
-        icon: <StandaloneBarsRegularIcon iconSize='sm' fill='var(--semantic-color-monochrome-textIcon-normal-high)' />,
-        label: <Localize i18n_default_text='Menu' />,
-    },
-];
-
-const BottomNav = ({ children, className, selectedItemIdx = 0, setSelectedItemIdx }: BottomNavProps) => {
-    const [selectedIndex, setSelectedIndex] = React.useState(selectedItemIdx);
+            ),
+            label: <Localize i18n_default_text='Trade' />,
+        },
+        {
+            icon: (
+                <LegacyMarketBasketIndicesIcon
+                    iconSize='sm'
+                    fill='var(--semantic-color-monochrome-textIcon-normal-high)'
+                />
+            ),
+            label: <Localize i18n_default_text='Markets' />,
+        },
+        {
+            icon: (
+                <Badge
+                    variant='notification'
+                    position='top-right'
+                    label={active_positions_count.toString()}
+                    color='danger'
+                    size='sm'
+                    contentSize='sm'
+                >
+                    <StandaloneClockThreeRegularIcon
+                        iconSize='sm'
+                        fill='var(--semantic-color-monochrome-textIcon-normal-high)'
+                    />
+                </Badge>
+            ),
+            label: <Localize i18n_default_text='Positions' />,
+        },
+        {
+            icon: (
+                <StandaloneBarsRegularIcon iconSize='sm' fill='var(--semantic-color-monochrome-textIcon-normal-high)' />
+            ),
+            label: <Localize i18n_default_text='Menu' />,
+        },
+    ];
 
     const handleSelect = (index: number) => {
         setSelectedIndex(index);
@@ -79,6 +94,6 @@ const BottomNav = ({ children, className, selectedItemIdx = 0, setSelectedItemId
             </div>
         </div>
     );
-};
+});
 
 export default BottomNav;

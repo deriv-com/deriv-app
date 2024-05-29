@@ -64,18 +64,32 @@ inputs:
 runs:
   using: composite
   steps:
-
   - name: Get artifact URL
     id: get_artifact_url
     env:
       GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
     shell: bash
     run: |
-      ARTIFACT_URL=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
-        "https://api.github.com/repos/${{ github.repository }}/actions/artifacts" | \
-        jq -r '.artifacts | map(select(.workflow_run.head_branch == "master" and (.name | startswith("reports-")))) | .[0] | .archive_download_url')
+      # Fetching the artifacts and storing response for debugging
+      RESPONSE=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+        "https://api.github.com/repos/${{ github.repository }}/actions/artifacts")
+      echo "API Response: $RESPONSE"
+
+      # Extracting the artifact URL using jq
+      ARTIFACT_URL=$(echo $RESPONSE | jq -r '.artifacts | map(select(.workflow_run.head_branch == "master" and (.name | startswith("reports-")))) | .[0] | .archive_download_url')
+
+      # Check if the artifact URL is empty
+      if [[ -z "$ARTIFACT_URL" ]]; then
+        echo "Error: No artifact URL found for the master branch with prefix 'reports-'."
+        exit 1
+      else
+        echo "Artifact URL: $ARTIFACT_URL"
+      fi
+
+      # Output artifact URL for other steps
       echo "artifact_url=$ARTIFACT_URL" >> $GITHUB_OUTPUT
       echo "artifact_url=$ARTIFACT_URL"
+
 
   - name: Download artifact
     if: steps.get_artifact_url.outputs.artifact_url != 'null'

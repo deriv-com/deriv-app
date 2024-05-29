@@ -85,7 +85,7 @@ const ContractDetails = observer(() => {
                     validation_message='hello'
                 />
             </CardWrapper>
-            <PayoutInfo />
+            <PayoutInfo contract_info={contract_info} />
             <EntryExitDetails />
             <TakeProfitHistory history={historyData} />
         </div>

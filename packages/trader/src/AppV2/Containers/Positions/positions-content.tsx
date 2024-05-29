@@ -46,7 +46,9 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
         () => (isClosedTab ? closedPositions : active_positions),
         [active_positions, isClosedTab, closedPositions]
     );
-    const hasNoActiveFilters = !timeFilter && !customTimeRangeFilter && !contractTypeFilter.length;
+    const hasNoActiveFilters = isClosedTab
+        ? !timeFilter && !customTimeRangeFilter && !contractTypeFilter.length
+        : !contractTypeFilter.length;
     const hasNoPositions = hasNoActiveFilters && (isClosedTab ? is_empty : is_active_empty);
     const shouldShowEmptyMessage = hasNoPositions || noMatchesFound;
     const shouldShowContractCards =

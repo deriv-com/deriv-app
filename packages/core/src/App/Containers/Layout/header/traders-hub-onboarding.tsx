@@ -1,26 +1,23 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
 import { Icon, Popover } from '@deriv/components';
+import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 
 const TradersHubOnboarding = observer(() => {
-    const { client, traders_hub, ui } = useStore();
-    const { has_wallet } = client;
-    const { setIsFirstTimeVisit, toggleIsTourOpen, is_tour_open } = traders_hub;
+    const history = useHistory();
+    const { ui } = useStore();
     const { is_dark_mode_on, is_mobile } = ui;
     const [, setWalletsOnboarding] = useLocalStorage('walletsOnboarding', '');
 
-    const onClickHandler = has_wallet
-        ? () => {
-              setWalletsOnboarding('started');
-          }
-        : () => {
-              if (!is_tour_open) {
-                  toggleIsTourOpen(true);
-              }
-              setIsFirstTimeVisit(false);
-          };
+    const onClickHandler = () => {
+        setWalletsOnboarding('started');
+        if (history.location.pathname !== routes.traders_hub) {
+            history.push(routes.traders_hub);
+        }
+    };
 
     return (
         <div data-testid='dt_traders_hub_onboarding'>

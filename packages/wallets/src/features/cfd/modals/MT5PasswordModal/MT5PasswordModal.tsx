@@ -8,7 +8,7 @@ import {
     useTradingPlatformPasswordChange,
     useVerifyEmail,
 } from '@deriv/api-v2';
-import { SentEmailContent, WalletError, WalletSuccessResetMT5Password } from '../../../../components';
+import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
@@ -16,9 +16,10 @@ import useMT5AccountHandler from '../../../../hooks/useMT5AccountHandler';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
 import { validPassword, validPasswordMT5 } from '../../../../utils/password-validation';
-import { CATEGORY, CFD_PLATFORMS, PlatformDetails } from '../../constants';
+import {CATEGORY, CFD_PLATFORMS, JURISDICTION, MARKET_TYPE, PlatformDetails } from '../../constants';
 import { CreatePassword, EnterPassword, MT5ResetPasswordModal } from '../../screens';
 import MT5AccountAdded from '../MT5AccountAdded/MT5AccountAdded';
+import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
 import { MT5PasswordModalFooter, SuccessModalFooter } from './MT5PasswordModalFooters';
 
 type TProps = {
@@ -42,7 +43,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const {
         error: tradingPasswordChangeError,
         isLoading: tradingPlatformPasswordChangeLoading,
-        isSuccess: tradingPasswordChangeSuccess,
         mutateAsync: tradingPasswordChangeMutateAsync,
     } = useTradingPlatformPasswordChange();
     const { data: accountStatusData } = useAccountStatus();
@@ -54,7 +54,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     } = useVerifyEmail();
     const { data: mt5AccountsData } = useMT5AccountsList();
     const { isMobile } = useDevice();
-    const { getModalState, hide, show } = useModal();
+    const { getModalState, hide } = useModal();
     const { data: settingsData } = useSettings();
 
     const { email } = settingsData;
@@ -65,10 +65,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const hasMT5Account = mt5AccountsData?.find(account => account.login);
     const isDemo = activeWalletData?.is_virtual;
 
-    const selectedJurisdiction = getModalState('selectedJurisdiction');
-    const formttedMarketType = marketType === 'synthetic' ? 'gaming' : marketType; // marketType 'synthetic' must be converted to 'gaming' as payload to BE
-    const selectedMarketType = isDemo ? CATEGORY.DEMO : formttedMarketType;
-
     const { platform: mt5Platform, title: mt5Title } = PlatformDetails.mt5;
 
     const { onSubmit } = useMT5AccountHandler(selectedJurisdiction, selectedMarketType);
@@ -77,6 +73,73 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         createMT5AccountStatus === 'error' &&
         (createMT5AccountError?.error?.code === 'InvalidTradingPlatformPasswordFormat' ||
             createMT5AccountError?.error?.code === 'IncorrectMT5PasswordFormat');
+
+    const onSubmit = useCallback(async () => {
+        // ====== Create MT5 Account ======
+        // In order to create account, we need to set a password through trading_platform_password_change endpoint first,
+        // then only mt5_create_account can be called, otherwise it will response an error for password required.
+        // =================================
+
+        const selectedJurisdiction = isDemo ? JURISDICTION.SVG : getModalState('selectedJurisdiction');
+        const accountType = marketType === MARKET_TYPE.SYNTHETIC ? 'gaming' : marketType;
+        const categoryAccountType = isDemo ? CATEGORY.DEMO : accountType;
+
+        if (isMT5PasswordNotSet) {
+            await tradingPasswordChangeMutateAsync({
+                new_password: password,
+                platform: mt5Platform,
+            });
+        }
+
+        createMT5AccountMutate({
+            payload: {
+                account_type: categoryAccountType,
+                address: settingsData?.address_line_1 ?? '',
+                city: settingsData?.address_city ?? '',
+                company: selectedJurisdiction,
+                country: settingsData?.country_code ?? '',
+                email: settingsData?.email ?? '',
+                leverage: availableMT5AccountsData?.find(acc => acc.market_type === marketType)?.leverage ?? 500,
+                mainPassword: password,
+                ...(marketType === MARKET_TYPE.FINANCIAL && { mt5_account_type: MARKET_TYPE.FINANCIAL }),
+                ...(selectedJurisdiction &&
+                    (selectedJurisdiction !== JURISDICTION.LABUAN
+                        ? {
+                              account_type: categoryAccountType,
+                              ...(selectedJurisdiction === MARKET_TYPE.FINANCIAL && {
+                                  mt5_account_type: MARKET_TYPE.FINANCIAL,
+                              }),
+                          }
+                        : {
+                              account_type: MARKET_TYPE.FINANCIAL,
+                              mt5_account_type: 'financial_stp',
+                          })),
+                ...(marketType === MARKET_TYPE.ALL && { sub_account_category: 'swap_free' }),
+                name: settingsData?.first_name ?? '',
+                phone: settingsData?.phone ?? '',
+                state: settingsData?.address_state ?? '',
+                zipCode: settingsData?.address_postcode ?? '',
+            },
+        });
+    }, [
+        availableMT5AccountsData,
+        createMT5AccountMutate,
+        getModalState,
+        isDemo,
+        isMT5PasswordNotSet,
+        marketType,
+        mt5Platform,
+        password,
+        settingsData?.address_city,
+        settingsData?.address_line_1,
+        settingsData?.address_postcode,
+        settingsData?.address_state,
+        settingsData?.country_code,
+        settingsData?.email,
+        settingsData?.first_name,
+        settingsData?.phone,
+        tradingPasswordChangeMutateAsync,
+    ]);
 
     const sendEmailVerification = useCallback(() => {
         if (email) {
@@ -183,6 +246,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
             <EnterPassword
                 isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                 marketType={marketType}
+                modalTitle='Enter your Deriv MT5 password'
                 onPasswordChange={e => setPassword(e.target.value)}
                 onPrimaryClick={() => onSubmit(password)}
                 onSecondaryClick={() => sendEmailVerification()}
@@ -225,7 +289,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         );
     }
 
-    if (tradingPasswordChangeSuccess) {
+<!--     if (tradingPasswordChangeSuccess) {
         return (
             <WalletSuccessResetMT5Password
                 onClickSuccess={async () => {
@@ -237,12 +301,18 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                 title={mt5Title}
             />
         );
-    }
+    } -->
 
     if (createMT5AccountSuccess && !isMT5PasswordNotSet) {
         return <MT5AccountAdded account={createMT5AccountData} marketType={marketType} platform={platform} />;
     }
-
+    if (
+        createMT5AccountStatus === 'error' &&
+        createMT5AccountError?.error?.code === 'PasswordReset' &&
+        !updateMT5Password
+    ) {
+        return <PasswordLimitExceededModal onPrimaryClick={hide} onSecondaryClick={() => sendEmailVerification()} />;
+    }
     if (
         createMT5AccountStatus === 'error' &&
         createMT5AccountError?.error?.code !== 'PasswordError' &&

@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const IgnorePlugin = require('webpack').IgnorePlugin;
 const TerserPlugin = require('terser-webpack-plugin');
 // const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
 //TODO: Uncomment this line when type script migrations on all packages done
 //const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
@@ -39,7 +39,7 @@ const svg_loaders = [
 // TODO: Uncomment this line when type script migrations on all packages done
 // const default_plugins = [new CleanWebpackPlugin(), new ForkTsCheckerWebpackPlugin()];
 const default_plugins = [
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
     new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
     new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
 ];

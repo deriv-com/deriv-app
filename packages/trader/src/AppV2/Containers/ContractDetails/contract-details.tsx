@@ -86,7 +86,7 @@ const ContractDetails = observer(() => {
                 <OrderDetails contract_info={contract_info} />
             </div>
             <PayoutInfo />
-            <EntryExitDetails />
+            <EntryExitDetails contract_info={contract_info} />
             {is_tp_history_visible && <TakeProfitHistory history={historyData} />}
         </div>
     );

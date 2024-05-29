@@ -42,7 +42,7 @@ const WalletListCardDropdown = () => {
         return () => {
             unsubscribe();
         };
-    }, [balanceData, subscribe, unsubscribe]);
+    }, [subscribe, unsubscribe]);
 
     const walletList: WalletList = useMemo(() => {
         return wallets

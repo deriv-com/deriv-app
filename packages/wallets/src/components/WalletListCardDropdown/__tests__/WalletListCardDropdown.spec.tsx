@@ -13,6 +13,11 @@ jest.mock('@deriv/api-v2', () => ({
     useAuthorize: jest.fn(() => ({
         switchAccount: mockSwitchAccount,
     })),
+    useBalanceSubscription: jest.fn(() => ({
+        data: {},
+        subscribe: jest.fn(),
+        unsubscribe: jest.fn(),
+    })),
     useWalletAccountsList: jest.fn(() => ({
         data: [
             {

@@ -102,7 +102,7 @@ const TimeFilter = ({
         setNoMatchesFound(false);
     };
 
-    const chipLabelFormatting = () =>
+    const getChipLabel = () =>
         customTimeRangeFilter || timeFilterList.find(item => item.value === (timeFilter || defaultCheckedTime))?.label;
 
     return (
@@ -110,7 +110,7 @@ const TimeFilter = ({
             <Chip
                 dropdown
                 isDropdownOpen={isDropdownOpen}
-                label={chipLabelFormatting()}
+                label={getChipLabel()}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 selected={isChipSelected}
                 size='sm'

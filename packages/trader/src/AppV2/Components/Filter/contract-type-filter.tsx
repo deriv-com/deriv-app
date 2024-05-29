@@ -40,7 +40,7 @@ const ContractTypeFilter = ({ contractTypeFilter, setContractTypeFilter }: TCont
         }
     };
 
-    const chipLabelFormatting = () => {
+    const getChipLabel = () => {
         const arrayLength = contractTypeFilter.length;
         if (!arrayLength) return <Localize i18n_default_text='All trade types' />;
         if (arrayLength === 1) return availableContracts.find(type => type.id === contractTypeFilter[0])?.tradeType;
@@ -52,7 +52,7 @@ const ContractTypeFilter = ({ contractTypeFilter, setContractTypeFilter }: TCont
             <Chip
                 dropdown
                 isDropdownOpen={isDropdownOpen}
-                label={chipLabelFormatting()}
+                label={getChipLabel()}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 selected={!!changedOptions.length}
                 size='sm'

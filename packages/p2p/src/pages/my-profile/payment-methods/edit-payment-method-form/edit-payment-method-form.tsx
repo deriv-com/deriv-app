@@ -19,7 +19,7 @@ const EditPaymentMethodForm = () => {
     } = useStore();
     const { showModal } = useModalManagerContext();
     const { mutation, update } = useP2PAdvertiserPaymentMethods();
-    const { error: mutation_error, status: mutation_status } = mutation;
+    const { error: mutation_error, reset, status: mutation_status } = mutation;
     const {
         payment_method_to_edit,
         setPaymentMethodToEdit,
@@ -59,8 +59,10 @@ const EditPaymentMethodForm = () => {
         } else if (mutation_status === 'error') {
             my_profile_store.setAddPaymentMethodErrorMessage(mutation_error.message);
             showModal({ key: 'AddPaymentMethodErrorModal', props: {} });
+            general_store.formik_ref.setSubmitting(false);
+            reset();
         }
-    }, [mutation_error, mutation_status]);
+    }, [mutation_error, mutation_status, reset, general_store.formik_ref]);
 
     if (isEmptyObject(payment_method_to_edit)) {
         return <Loading is_fullscreen={false} />;

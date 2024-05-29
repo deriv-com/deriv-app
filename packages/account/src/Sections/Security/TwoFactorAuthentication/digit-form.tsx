@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Formik, Form, Field, FormikProps, FormikHelpers, FieldProps } from 'formik';
 import { Input, Button } from '@deriv/components';
 import { getPropertyValue, WS } from '@deriv/shared';
@@ -100,7 +100,7 @@ const DigitForm = observer(() => {
                             )}
                         </Field>
                         <Button
-                            className={classNames('two-factor__button', {
+                            className={clsx('two-factor__button', {
                                 'two-factor__button--success': is_success,
                             })}
                             type='submit'

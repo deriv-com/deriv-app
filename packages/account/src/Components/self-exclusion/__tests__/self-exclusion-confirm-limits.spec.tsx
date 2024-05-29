@@ -8,12 +8,14 @@ import { FormikValues } from 'formik';
 const mockUseFormikContext = jest.spyOn(formik, 'useFormikContext') as jest.Mock;
 
 describe('<SelfExclusionConfirmLimits />', () => {
-    let mock_context = {};
+    const mock_context = {
+        currency: '',
+        handleSubmit: () => null,
+        backToReview: jest.fn(),
+        overlay_ref: document.createElement('div'),
+    };
 
     beforeEach(() => {
-        mock_context = {
-            backToReview: jest.fn(),
-        };
         mockUseFormikContext.mockReturnValue({
             handleSubmit: jest.fn(),
             isSubmitting: false,

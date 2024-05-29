@@ -1,6 +1,9 @@
 .contract-details {
     background-color: rgb(245, 247, 249);
     padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--semantic-spacing-general-sm);
 }
 .placeholder {
     min-height: 100px;

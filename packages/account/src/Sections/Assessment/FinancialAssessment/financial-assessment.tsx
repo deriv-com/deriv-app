@@ -14,7 +14,7 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
-import { routes, platforms, WS, shouldHideOccupationField } from '@deriv/shared';
+import { routes, platforms, WS, shouldHideOccupationField, isTablet } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import LeaveConfirm from 'Components/leave-confirm';
@@ -47,6 +47,7 @@ import type { TCoreStores } from '@deriv/stores/types';
 import { GetFinancialAssessment, GetFinancialAssessmentResponse } from '@deriv/api-types';
 import { getFormattedOccupationList } from 'Configs/financial-details-config';
 import { TFinancialInformationForm } from 'Types';
+import { useDevice } from '@deriv-com/ui';
 
 type TConfirmationPage = {
     toggleModal: (prop: boolean) => void;
@@ -198,6 +199,7 @@ const FinancialAssessment = observer(() => {
         is_authentication_needed,
         is_financial_information_incomplete,
     } = client;
+    const { isMobile, isTablet } = useDevice();
     const { platform, routeBackInApp } = common;
     const { refreshNotifications } = notifications;
     const { is_mobile, is_desktop } = ui;
@@ -345,9 +347,10 @@ const FinancialAssessment = observer(() => {
 
     const getScrollOffset = () => {
         if (is_mf) {
-            if (is_mobile && is_financial_information_incomplete) return '22rem';
+            if (isMobile && is_financial_information_incomplete) return '22rem';
             return is_financial_information_incomplete && !is_submit_success ? '16.5rem' : '16rem';
-        } else if (is_mobile) return '20rem';
+        } else if (isMobile) return '22rem';
+        else if (isTablet) return '20rem';
         return '8rem';
     };
 
@@ -1030,7 +1033,7 @@ const FinancialAssessment = observer(() => {
                             </FormBody>
                             <FormFooter>
                                 {status?.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                {is_mobile && !is_mf && (
+                                {isMobile && !is_mf && (
                                     <Text
                                         align='center'
                                         size='xxs'

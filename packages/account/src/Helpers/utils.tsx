@@ -169,16 +169,16 @@ export const isDocumentNumberValid = (document_number: string, document_type: Fo
         const example_format = getExampleFormat(document_type.example_format);
         switch (document_type.id) {
             case 'drivers_license':
-                document_name = 'Driver License Reference number';
+                document_name = localize('Driver License Reference number');
                 break;
             case 'ssnit':
-                document_name = 'SSNIT number';
+                document_name = localize('SSNIT number');
                 break;
             case 'national_id_no_photo':
-                document_name = 'NIN';
+                document_name = localize('NIN');
                 break;
             default:
-                document_name = 'document number';
+                document_name = localize('document number');
                 break;
         }
         return localize('Please enter your {{document_name}}. {{example_format}}', { document_name, example_format });

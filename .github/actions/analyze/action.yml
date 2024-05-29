@@ -155,6 +155,8 @@ runs:
           issue_number: issueNumber,
           body: `${diffOutput}`
         });
+      fail-on-error: false
+      continue-on-error: true
 
   - name: Zip all report.json files
     shell: bash

@@ -100,6 +100,7 @@ module.exports = function (env) {
                         priority: -5,
                         idHint: 'common',
                         enforce: true,
+                        minChunks: 2,
                     },
                 },
                 chunks: 'all',

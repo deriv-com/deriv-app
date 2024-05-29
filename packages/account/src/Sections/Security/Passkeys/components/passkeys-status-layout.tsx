@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Button, Text } from '@deriv/components';
 import { TCurrentManagedPasskey } from '../passkeys';
 import FormBody from '../../../../Components/form-body';
@@ -37,7 +37,7 @@ export const PasskeysStatusLayout = ({
     title,
 }: React.PropsWithChildren<TPasskeysStatusLayout>) => (
     <Fragment>
-        <FormBody scroll_offset={scroll_offset} className={classNames('passkeys-status__wrapper', className)}>
+        <FormBody scroll_offset={scroll_offset} className={clsx('passkeys-status__wrapper', className)}>
             {icon}
             {title && (
                 <Text as='div' weight='bold' align='center' className='passkeys-status__title'>

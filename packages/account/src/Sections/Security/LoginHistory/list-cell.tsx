@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+
 import { Text } from '@deriv/components';
 
 type TListCell = {
@@ -15,7 +15,7 @@ const ListCell = ({ title, text, className, align = 'left' }: TListCell) => (
             {title}
         </Text>
         <Text
-            className={classNames(className, { 'login-history__list__row__cell--right': align === 'right' })}
+            className={clsx(className, { 'login-history__list__row__cell--right': align === 'right' })}
             line_height='xs'
             size='xs'
             align={align}

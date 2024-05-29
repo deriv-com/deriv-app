@@ -41,8 +41,7 @@ export const passkeysMenuActionEventTrack = (
     action: string,
     additional_data: { error_message?: string; subform_name?: string } = {}
 ) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error [TODO]: Update @deriv/analytics types
     Analytics.trackEvent('ce_passkey_account_settings_form', {
         action,
         form_name: 'ce_passkey_account_settings_form',

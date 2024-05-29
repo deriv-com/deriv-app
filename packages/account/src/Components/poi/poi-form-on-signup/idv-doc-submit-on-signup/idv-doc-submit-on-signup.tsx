@@ -22,16 +22,19 @@ import {
     validate,
     validateName,
 } from '../../../../Helpers/utils';
+import { TIDVFormValues, TPersonalDetailsForm } from '../../../../Types';
 
 type TIdvDocSubmitOnSignup = {
     citizen_data: FormikValues;
-    onPrevious: (values: FormikValues) => void;
-    onNext: (values: FormikValues, action: FormikHelpers<FormikValues>) => void;
-    value: FormikValues;
+    onPrevious: (values: TIDVDocFormType) => void;
+    onNext: (values: TIDVDocFormType, action: FormikHelpers<TIDVDocFormType>) => void;
+    value: TIDVDocFormType;
     account_settings: GetSettings;
     getChangeableFields: () => string[];
     residence_list: ResidenceList;
 };
+
+type TIDVDocFormType = TIDVFormValues & TPersonalDetailsForm;
 
 export const IdvDocSubmitOnSignup = ({
     citizen_data,
@@ -41,8 +44,8 @@ export const IdvDocSubmitOnSignup = ({
     residence_list,
 }: TIdvDocSubmitOnSignup) => {
     const side_note_image = <PoiNameDobExample />;
-    const validateFields = (values: FormikValues) => {
-        const errors: FormikErrors<FormikValues> = {};
+    const validateFields = (values: TIDVDocFormType) => {
+        const errors: FormikErrors<Omit<TIDVDocFormType, 'document_type'> & { document_type?: string }> = {};
         const { document_type, document_number, document_additional } = values;
 
         if (shouldSkipIdv(document_type.id)) {
@@ -101,11 +104,9 @@ export const IdvDocSubmitOnSignup = ({
 
     return (
         <Formik
-            initialValues={initial_values}
+            initialValues={initial_values as TIDVDocFormType}
             validate={validateFields}
-            onSubmit={(values, actions) => {
-                onNext(values, actions);
-            }}
+            onSubmit={onNext}
             validateOnMount
             validateOnChange
             validateOnBlur

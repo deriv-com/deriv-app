@@ -170,25 +170,18 @@ runs:
     with:
       name: analyse
       path: analyse.zip
-      retention-days: 5
+      retention-days: 20
 
   - name: Set sanitized branch name
     id: sanitize
-    run: echo "::set-output name=branch_name::${{ github.ref_name.replace(/[^a-zA-Z0-9]/g, '-') }}"
+    run: |
+      SANITIZED_REF_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g')
+      echo "SANITIZED_REF_NAME=${SANITIZED_REF_NAME}" >> $GITHUB_ENV
 
   - name: Upload analyse.zip for Feature Branches
     if: github.ref != 'refs/heads/master'
     uses: actions/upload-artifact@v4
     with:
-      name: analyse-${{ steps.sanitize.outputs.branch_name }}
-      path: analyse.zip
-      retention-days: 5
- 
-  # Step for non-master branches
-  - name: Upload analyse.zip for Feature Branches
-    if: github.ref != 'refs/heads/master'
-    uses: actions/upload-artifact@v4
-    with:
-      name: analyse-${{ github.ref_name }}
+      name: analyse-${{ env.SANITIZED_REF_NAME }}
       path: analyse.zip
       retention-days: 5

@@ -142,11 +142,16 @@ export default class TradersHubStore extends BaseStore {
 
                 if (
                     this.root_store.client.is_landing_company_loaded &&
-                    (low_risk_cr_non_eu || high_risk_cr || cr_demo)
+                    (low_risk_cr_non_eu || high_risk_cr || cr_demo || this.selected_region === 'Non-EU')
                 ) {
                     platforms.push('options');
                 }
-                localStorage.setItem('th_platforms', JSON.stringify(platforms));
+                this.root_store.client.is_landing_company_loaded &&
+                    localStorage.setItem('th_platforms', JSON.stringify(platforms));
+
+                if (this.selected_region !== 'EU' && localStorage.getItem('is_eu_user')) {
+                    localStorage.removeItem('is_eu_user');
+                }
             }
         );
 
@@ -166,18 +171,31 @@ export default class TradersHubStore extends BaseStore {
         reaction(
             () => [this.root_store.client.loginid, this.root_store.client.residence],
             () => {
-                const residence = this.root_store.client.residence;
-                const active_demo = /^VRT|VRW/.test(this.root_store.client.loginid);
-                const active_real_mf = /^MF|MFW/.test(this.root_store.client.loginid);
+                const loginid = localStorage.getItem('active_loginid');
+                const is_eu_user = localStorage.getItem('is_eu_user') === 'true';
+
+                const active_demo = /^VRT|VRW/.test(loginid);
+                const active_real_mf = /^MF|MFW/.test(loginid);
+                const active_real_cr = /^CR/.test(loginid);
+
                 const default_region = () => {
-                    if (((active_demo || active_real_mf) && isEuCountry(residence)) || active_real_mf) {
+                    if (active_real_cr) {
+                        return 'Non-EU';
+                    }
+
+                    if (active_real_mf || is_eu_user) {
                         // store the user's region in localStorage to remember the user's region selection on page refresh
                         localStorage.setItem('is_eu_user', true);
                         return 'EU';
                     }
+
+                    if (active_demo) {
+                        return 'Non-EU';
+                    }
+
                     return 'Non-EU';
                 };
-                this.selected_account_type = !/^VRT|VRW/.test(this.root_store.client.loginid) ? 'real' : 'demo';
+                this.selected_account_type = !active_demo ? 'real' : 'demo';
                 this.selected_region = default_region();
             }
         );
@@ -265,9 +283,6 @@ export default class TradersHubStore extends BaseStore {
 
         this.selected_account_type = 'real';
         this.selected_region = 'Non-EU';
-
-        // remove the user's region selection from localStorage to reset the user's region selection
-        localStorage.removeItem('is_eu_user');
     }
 
     selectAccountTypeCard(account_type_card) {
@@ -275,6 +290,7 @@ export default class TradersHubStore extends BaseStore {
     }
 
     selectRegion(region) {
+        region === 'EU' ? localStorage.setItem('is_eu_user', 'true') : localStorage.removeItem('is_eu_user');
         this.selected_region = region;
     }
 

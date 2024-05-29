@@ -14,9 +14,7 @@ type TListingContainerProps = {
 type TOptionsProps = Pick<TListingContainerProps, 'title' | 'description' | 'is_deriv_platform'>;
 type TSwitcherProps = Pick<TListingContainerProps, 'is_deriv_platform'>;
 
-const Options = ({ title, description, is_deriv_platform }: TOptionsProps) => {
-    if (!is_deriv_platform) return null;
-
+const Options = ({ title, description }: TOptionsProps) => {
     return (
         <div className='listing-container__title'>
             {title}

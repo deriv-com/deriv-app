@@ -12,6 +12,31 @@ import classNames from 'classnames';
 import './traders-hub.scss';
 import { useContentFlag, useGrowthbookFeatureFlag } from '@deriv/hooks';
 
+type OrderedPlatformSectionsProps = {
+    is_cfd_visible?: boolean;
+    is_options_and_multipliers_visible?: boolean;
+};
+
+const OrderedPlatformSections = observer(
+    ({ is_cfd_visible = true, is_options_and_multipliers_visible = true }: OrderedPlatformSectionsProps) => {
+        const {
+            traders_hub: { selected_region, is_eu_user },
+        } = useStore();
+
+        return (
+            <div
+                data-testid='dt_traders_hub'
+                className={classNames('traders-hub__main-container', {
+                    'traders-hub__main-container-reversed': is_eu_user || selected_region === 'EU',
+                })}
+            >
+                {is_options_and_multipliers_visible && <OptionsAndMultipliersListing />}
+                {is_cfd_visible && <CFDsListing />}
+            </div>
+        );
+    }
+);
+
 const TradersHub = observer(() => {
     const { traders_hub, client, ui } = useStore();
     const {
@@ -96,20 +121,6 @@ const TradersHub = observer(() => {
         setTogglePlatformType(event.target.value);
     };
     if (!is_logged_in) return null;
-
-    const OrderedPlatformSections = ({ is_cfd_visible = true, is_options_and_multipliers_visible = true }) => {
-        return (
-            <div
-                data-testid='dt_traders_hub'
-                className={classNames('traders-hub__main-container', {
-                    'traders-hub__main-container-reversed': is_eu_user,
-                })}
-            >
-                {is_options_and_multipliers_visible && <OptionsAndMultipliersListing />}
-                {is_cfd_visible && <CFDsListing />}
-            </div>
-        );
-    };
 
     const getOrderedPlatformSections = () => {
         if (is_mt5_allowed) {

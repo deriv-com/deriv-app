@@ -1,7 +1,6 @@
 import React from 'react';
 import { useMutation } from '@deriv/api';
-import { TSocketEndpointNames, TSocketError } from '@deriv/api/types';
-import { localize } from '@deriv/translations';
+import { TSocketError } from '@deriv/api/types';
 
 /** A hook for requesting OTP which is sent on whatsapp or sms platforms */
 const useSendOTPVerificationCode = () => {
@@ -17,13 +16,13 @@ const useSendOTPVerificationCode = () => {
     const handleError = (error: TSocketError<'phone_number_verify'>['error']) => {
         switch (error.code) {
             case 'ExpiredCode':
-                setPhoneOtpErrorMessage(localize('Code expired. Please get a new one.'));
+                setPhoneOtpErrorMessage('Code expired. Please get a new one.');
                 break;
             case 'InvalidOTP':
-                setPhoneOtpErrorMessage(localize('Invalid code. Please try again.'));
+                setPhoneOtpErrorMessage('Invalid code. Please try again.');
                 break;
             case 'NoAttemptsLeft':
-                setPhoneOtpErrorMessage(localize('Invalid code. OTP limit reached.'));
+                setPhoneOtpErrorMessage('Invalid code. OTP limit reached.');
                 break;
             default:
                 setPhoneOtpErrorMessage(error.message);
@@ -33,7 +32,8 @@ const useSendOTPVerificationCode = () => {
 
     React.useEffect(() => {
         if (phone_otp_error) {
-            handleError(phone_otp_error.error);
+            // @ts-expect-error will remove once solved
+            handleError(phone_otp_error);
         }
     }, [phone_otp_error]);
 

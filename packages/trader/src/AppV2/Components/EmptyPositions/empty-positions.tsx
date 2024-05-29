@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv-com/quill-ui';
+import { Loading } from '@deriv/components';
 import { StandaloneBriefcaseFillIcon, StandaloneSearchFillIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 
@@ -9,8 +10,19 @@ export type TEmptyPositionsProps = {
 };
 
 const EmptyPositions = ({ isClosedTab, noMatchesFound }: TEmptyPositionsProps) => {
+    const [showLoader, setShowLoader] = React.useState(true);
+
+    React.useEffect(() => {
+        const demoTimeout = setTimeout(() => setShowLoader(false), 500);
+        return () => {
+            clearTimeout(demoTimeout);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const Icon = noMatchesFound ? StandaloneSearchFillIcon : StandaloneBriefcaseFillIcon;
 
+    if (showLoader) return <Loading />;
     return (
         <div className={`empty-positions__${isClosedTab ? 'closed' : 'open'}`}>
             <div className='icon' data-testid='dt_empty_state_icon'>

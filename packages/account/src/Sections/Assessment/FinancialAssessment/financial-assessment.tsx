@@ -47,6 +47,7 @@ import type { TCoreStores } from '@deriv/stores/types';
 import { GetFinancialAssessment, GetFinancialAssessmentResponse } from '@deriv/api-types';
 import { getFormattedOccupationList } from 'Configs/financial-details-config';
 import { TFinancialInformationForm } from 'Types';
+import { useDevice } from '@deriv-com/ui';
 
 type TConfirmationPage = {
     toggleModal: (prop: boolean) => void;
@@ -186,7 +187,7 @@ const SubmittedPage = ({ platform, routeBackInApp }: TSubmittedPage) => {
 };
 
 const FinancialAssessment = observer(() => {
-    const { client, common, notifications, ui } = useStore();
+    const { client, common, notifications } = useStore();
     const {
         landing_company_shortcode,
         is_virtual,
@@ -198,9 +199,9 @@ const FinancialAssessment = observer(() => {
         is_authentication_needed,
         is_financial_information_incomplete,
     } = client;
+    const { isMobile, isTablet, isDesktop } = useDevice();
     const { platform, routeBackInApp } = common;
     const { refreshNotifications } = notifications;
-    const { is_mobile, is_desktop } = ui;
     const is_mf = landing_company_shortcode === 'maltainvest';
 
     const history = useHistory();
@@ -298,7 +299,7 @@ const FinancialAssessment = observer(() => {
                 setIsSubmitSuccess(true);
                 setIsBtnLoading(false);
 
-                if (is_desktop) {
+                if (isDesktop) {
                     setTimeout(() => setIsSubmitSuccess(false), 10000);
                 }
             });
@@ -328,7 +329,7 @@ const FinancialAssessment = observer(() => {
 
     const toggleConfirmationModal = (value: boolean) => {
         setIsConfirmationVisible(value);
-        if (is_mobile) {
+        if (isMobile) {
             setIsFormVisible(!value);
         }
     };
@@ -345,16 +346,17 @@ const FinancialAssessment = observer(() => {
 
     const getScrollOffset = () => {
         if (is_mf) {
-            if (is_mobile && is_financial_information_incomplete) return '22rem';
+            if (isMobile && is_financial_information_incomplete) return '22rem';
             return is_financial_information_incomplete && !is_submit_success ? '16.5rem' : '16rem';
-        } else if (is_mobile) return '20rem';
+        } else if (isMobile) return '22rem';
+        else if (isTablet) return '20rem';
         return '8rem';
     };
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
     if (is_virtual) return <DemoMessage />;
-    if (is_mobile && is_authentication_needed && !is_mf && is_submit_success)
+    if (isMobile && is_authentication_needed && !is_mf && is_submit_success)
         return <SubmittedPage platform={platform} routeBackInApp={routeBackInApp} />;
 
     const setInitialFormData = () => {
@@ -408,17 +410,17 @@ const FinancialAssessment = observer(() => {
                 isValid,
             }) => (
                 <React.Fragment>
-                    {is_mobile && is_confirmation_visible && (
+                    {isMobile && is_confirmation_visible && (
                         <ConfirmationPage toggleModal={toggleConfirmationModal} onSubmit={handleSubmit} />
                     )}
-                    {is_desktop && (
+                    {isDesktop && (
                         <ConfirmationModal
                             is_visible={is_confirmation_visible}
                             toggleModal={toggleConfirmationModal}
                             onSubmit={handleSubmit}
                         />
                     )}
-                    <LeaveConfirm onDirty={is_mobile ? showForm : () => undefined} />
+                    <LeaveConfirm onDirty={isMobile ? showForm : () => undefined} />
                     {is_form_visible && (
                         <form className='account-form account-form__financial-assessment' onSubmit={handleSubmit}>
                             {is_mf && is_financial_information_incomplete && !is_submit_success && (
@@ -426,7 +428,7 @@ const FinancialAssessment = observer(() => {
                                     <div className='financial-banner__frame'>
                                         <div className='financial-banner__container'>
                                             <Icon icon='IcAlertWarning' />
-                                            {is_mobile ? (
+                                            {isMobile ? (
                                                 <Text size='xxxs' line_height='s'>
                                                     <Localize i18n_default_text='To enable withdrawals, please complete your financial assessment.' />
                                                 </Text>
@@ -1030,7 +1032,7 @@ const FinancialAssessment = observer(() => {
                             </FormBody>
                             <FormFooter>
                                 {status?.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                {is_mobile && !is_mf && (
+                                {isMobile && !is_mf && (
                                     <Text
                                         align='center'
                                         size='xxs'

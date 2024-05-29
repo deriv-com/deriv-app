@@ -53,6 +53,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     const shouldShowEmptyMessage = hasNoPositions || noMatchesFound;
     const shouldShowContractCards =
         !!filteredPositions.length && (isClosedTab || (filteredPositions[0]?.contract_info as TContractInfo)?.status);
+    const shouldShowTakeProfit = !isClosedTab || !!(timeFilter || customTimeRangeFilter);
 
     const onScroll = React.useCallback(
         (e: React.UIEvent<HTMLDivElement>) => {
@@ -67,6 +68,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
         <ContractCardsSections
             positions={filteredPositions as TClosedPosition[]}
             isLoadingMore={isFetchingClosedPositions}
+            hasBottomMargin={shouldShowTakeProfit}
         />
     ) : (
         <ContractCardList
@@ -92,8 +94,9 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
             setNoMatchesFound(false);
             setFilteredPositions(positions);
         }
+        if (isClosedTab) setNoMatchesFound(!positions.length && !!(timeFilter || customTimeRangeFilter));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isClosedTab, positions, contractTypeFilter]);
+    }, [isClosedTab, positions, contractTypeFilter, timeFilter, customTimeRangeFilter]);
 
     React.useEffect(() => {
         isClosedTab ? onClosedTabMount() : onOpenTabMount();
@@ -133,11 +136,14 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
             ) : (
                 shouldShowContractCards && (
                     <React.Fragment>
-                        <TotalProfitLoss
-                            currency={currency}
-                            hasBottomAlignment={isClosedTab}
-                            totalProfitLoss={getTotalPositionsProfit(filteredPositions)}
-                        />
+                        {shouldShowTakeProfit && (
+                            <TotalProfitLoss
+                                positionsCount={filteredPositions.length}
+                                currency={currency}
+                                hasBottomAlignment={isClosedTab}
+                                totalProfitLoss={getTotalPositionsProfit(filteredPositions)}
+                            />
+                        )}
                         {contractCards}
                     </React.Fragment>
                 )

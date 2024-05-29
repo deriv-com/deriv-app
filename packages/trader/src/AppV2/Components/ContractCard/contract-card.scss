@@ -231,7 +231,9 @@
 
 .contract-cards {
     &-sections {
-        margin-block-end: var(--core-size-1900);
+        &--has-bottom-margin {
+            margin-block-end: var(--core-size-1900);
+        }
     }
     &-section {
         &__title {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { TSocketError } from '@deriv/api/types';
-import { Analytics } from '@deriv-com/analytics';
+import { Analytics, TEvents } from '@deriv-com/analytics';
 import { Text } from '@deriv/components';
 import { getOSNameWithUAParser } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
@@ -170,10 +170,9 @@ export const getModalContent = ({ error, is_passkey_registration_started }: TGet
 };
 
 export const passkeysMenuActionEventTrack = (
-    action: string,
+    action: TEvents['ce_passkey_account_settings_form']['action'],
     additional_data: { error_message?: string; subform_name?: string } = {}
 ) => {
-    // @ts-expect-error [TODO]: Update @deriv/analytics types
     Analytics.trackEvent('ce_passkey_account_settings_form', {
         action,
         form_name: 'ce_passkey_account_settings_form',

@@ -112,7 +112,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                     ? [routes.reports, routes.account]
                     : [routes.reports, routes.account, routes.cashier];
             }
-            primary_routes = [routes.reports, routes.account, routes.cashier];
+            // primary_routes = [routes.reports, routes.account, routes.cashier];
             setPrimaryRoutesConfig(getFilteredRoutesConfig(routes_config, primary_routes));
         };
 
@@ -351,7 +351,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         />
                                     </MobileDrawer.Item>
                                 )}
-                                {
+                                {route !== routes.traders_hub && (
                                     <MobileDrawer.Item>
                                         <MenuLink
                                             link_to={routes.trade}
@@ -361,7 +361,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                             is_active={route === routes.trade}
                                         />
                                     </MobileDrawer.Item>
-                                }
+                                )}
                                 {primary_routes_config.map((route_config, idx) =>
                                     getRoutesWithSubMenu(route_config, idx)
                                 )}

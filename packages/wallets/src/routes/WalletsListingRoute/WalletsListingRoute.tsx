@@ -9,7 +9,6 @@ import {
 } from '../../components';
 import ResetMT5PasswordHandler from '../../features/cfd/ResetMT5PasswordHandler';
 import useDevice from '../../hooks/useDevice';
-import { TSubscribedBalance } from '../../types';
 import './WalletsListingRoute.scss';
 
 const WalletsListingRoute: React.FC = () => {
@@ -29,11 +28,7 @@ const WalletsListingRoute: React.FC = () => {
     return (
         <div className='wallets-listing-route'>
             <WalletListHeader />
-            {isMobile ? (
-                <WalletsCarousel balance={{ ...rest } as unknown as TSubscribedBalance['balance']} />
-            ) : (
-                <DesktopWalletsList balance={{ ...rest } as unknown as TSubscribedBalance['balance']} />
-            )}
+            {isMobile ? <WalletsCarousel balance={{ ...rest }} /> : <DesktopWalletsList balance={{ ...rest }} />}
             <WalletsAddMoreCarousel />
             <ResetMT5PasswordHandler />
             <WalletTourGuide />

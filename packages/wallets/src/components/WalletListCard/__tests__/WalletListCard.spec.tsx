@@ -34,8 +34,6 @@ const mockedData = {
     isIdle: false,
     isLoading: false,
     isSubscribed: false,
-    subscribe: jest.fn(),
-    unsubscribe: jest.fn(),
 };
 
 describe('WalletListCard', () => {

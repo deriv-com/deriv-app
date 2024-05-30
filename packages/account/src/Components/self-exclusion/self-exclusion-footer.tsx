@@ -1,13 +1,13 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
-import { useFormikContext } from 'formik';
+import { FormikValues, useFormikContext } from 'formik';
 import { Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import SelfExclusionContext from './self-exclusion-context';
 
 const SelfExclusionFooter = () => {
     const { footer_ref, goToConfirm, toggleArticle } = React.useContext(SelfExclusionContext);
-    const { dirty, isSubmitting, isValid, values } = useFormikContext();
+    const { dirty, isSubmitting, isValid, values } = useFormikContext<FormikValues>();
 
     if (footer_ref) {
         return createPortal(

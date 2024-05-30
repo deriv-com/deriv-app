@@ -10,8 +10,10 @@ import Markets from './Containers/Markets';
 import Positions from './Containers/Positions';
 import Menu from './Containers/Menu';
 import { ReportsStoreProvider } from '../../../reports/src/Stores/useReportsStores';
+import { NotificationsProvider } from '@deriv-com/quill-ui';
 import 'Sass/app.scss';
 import '@deriv-com/quill-tokens/dist/quill.css';
+import Notifications from './Containers/Notifications';
 
 type Apptypes = {
     passthrough: {
@@ -32,12 +34,15 @@ const App = ({ passthrough }: Apptypes) => {
         <TraderProviders store={root_store}>
             <ReportsStoreProvider>
                 <ModulesProvider store={root_store}>
-                    <BottomNav selectedItemIdx={currentPageIdx} setSelectedItemIdx={setCurrentPageIdx}>
-                        <Trade />
-                        <Markets />
-                        <Positions />
-                        <Menu />
-                    </BottomNav>
+                    <NotificationsProvider>
+                        <Notifications />
+                        <BottomNav selectedItemIdx={currentPageIdx} setSelectedItemIdx={setCurrentPageIdx}>
+                            <Trade />
+                            <Markets />
+                            <Positions />
+                            <Menu />
+                        </BottomNav>
+                    </NotificationsProvider>
                 </ModulesProvider>
             </ReportsStoreProvider>
         </TraderProviders>

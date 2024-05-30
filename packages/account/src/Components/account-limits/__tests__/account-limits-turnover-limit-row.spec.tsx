@@ -8,8 +8,8 @@ jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     formatMoney: jest.fn(),
 }));
-const AccountLimitsTurnoverLimitRowComponent = props => (
-    <AccountLimitsContext.Provider value={{ currency: 'AUD' }}>
+const AccountLimitsTurnoverLimitRowComponent = (props: React.ComponentProps<typeof AccountLimitsTurnoverLimitRow>) => (
+    <AccountLimitsContext.Provider value={{ currency: 'AUD', overlay_ref: document.createElement('div') }}>
         <AccountLimitsTurnoverLimitRow {...props} />
     </AccountLimitsContext.Provider>
 );
@@ -26,7 +26,10 @@ describe('<AccountLimitsTurnoverLimitRow/>', () => {
     });
 
     it('should return null if collection is empty array', () => {
-        render(<AccountLimitsTurnoverLimitRowComponent />, {
+        const props = {
+            collection: [],
+        };
+        render(<AccountLimitsTurnoverLimitRowComponent {...props} />, {
             container: document.body.appendChild(document.createElement('tbody')),
         });
         expect(screen.queryByTestId('account-limits-turnover-limit-row')).not.toBeInTheDocument();

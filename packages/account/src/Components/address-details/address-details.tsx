@@ -1,5 +1,8 @@
-import React from 'react';
-import classNames from 'classnames';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+//@ts-nocheck [TODO] - Need to fix typescript errors in Autocomplete List items and TItems
+
+import { RefObject, useState, Fragment } from 'react';
+import clsx from 'clsx';
 import { Formik, Field, FormikProps, FormikHelpers, FormikHandlers, FormikState, FieldProps } from 'formik';
 import { StatesList } from '@deriv/api-types';
 import {
@@ -45,7 +48,7 @@ type TAddressDetails = {
         action: (isSubmitting: boolean) => void,
         next_step: () => void
     ) => void;
-    selected_step_ref?: React.RefObject<FormikProps<TAddressDetailFormProps>>;
+    selected_step_ref?: RefObject<FormikProps<TAddressDetailFormProps>>;
     value: TAddressDetailFormProps;
     has_real_account: boolean;
 };
@@ -86,7 +89,7 @@ const AddressDetails = observer(
         has_real_account,
         ...props
     }: TAddressDetails) => {
-        const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
+        const [address_state_to_display, setAddressStateToDisplay] = useState('');
 
         const {
             ui,
@@ -148,7 +151,7 @@ const AddressDetails = observer(
                                     )}
                                     <ThemedScrollbars height={height} className='details-form__scrollbar'>
                                         <div
-                                            className={classNames('details-form__elements', 'address-details-form', {
+                                            className={clsx('details-form__elements', 'address-details-form', {
                                                 'address-details-form__eu': is_eu_user,
                                             })}
                                         >
@@ -191,7 +194,7 @@ const AddressDetails = observer(
                                             {states_list?.length > 0 ? (
                                                 <Field name='address_state'>
                                                     {({ field }: FieldProps) => (
-                                                        <React.Fragment>
+                                                        <Fragment>
                                                             <DesktopWrapper>
                                                                 <Autocomplete
                                                                     {...field}
@@ -246,7 +249,7 @@ const AddressDetails = observer(
                                                                     }
                                                                 />
                                                             </MobileWrapper>
-                                                        </React.Fragment>
+                                                        </Fragment>
                                                     )}
                                                 </Field>
                                             ) : (

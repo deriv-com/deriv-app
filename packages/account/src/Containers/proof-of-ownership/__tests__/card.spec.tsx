@@ -24,7 +24,6 @@ describe('Card', () => {
             is_generic_pm: false,
             documents_required: 1,
         },
-        index: 0,
     };
 
     it('should render payment method card', () => {

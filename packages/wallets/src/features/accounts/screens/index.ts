@@ -8,3 +8,4 @@ export * from './PoaScreen';
 export * from './PoiPoaDocsSubmitted';
 export * from './PoiUploadError';
 export * from './SelfieDocumentUpload';
+export * from './VerifyDocumentDetails';

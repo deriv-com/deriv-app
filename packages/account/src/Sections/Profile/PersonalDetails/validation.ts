@@ -63,7 +63,7 @@ export const getPersonalDetailsInitialValues = (
     account_settings: GetSettings,
     residence_list: ResidenceList,
     states_list: StatesList,
-    is_virtual: boolean
+    is_virtual?: boolean
 ): GetSettings => {
     const virtualAccountInitialValues: GetSettings = {
         email_consent: account_settings.email_consent ?? 0,
@@ -163,7 +163,7 @@ export const makeSettingsRequest = (
     return request;
 };
 
-export const getPersonalDetailsValidationSchema = (is_eu: boolean, is_virtual: boolean) => {
+export const getPersonalDetailsValidationSchema = (is_eu: boolean, is_virtual?: boolean) => {
     if (is_virtual) return Yup.object();
     if (!is_eu) return getBaseSchema();
     return getBaseSchema().concat(

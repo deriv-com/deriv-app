@@ -2,7 +2,12 @@ import React from 'react';
 import { useSettings, useStatesList } from '@deriv/api-v2';
 import { FlowTextField, useFlow } from '../../../../components';
 import { InlineMessage, WalletDropdown, WalletText } from '../../../../components/Base';
-import { letterRequiredValidator, requiredValidator } from '../../validations';
+import {
+    addressFirstLineValidator,
+    addressSecondLineValidator,
+    cityValidator,
+    postcodeValidator,
+} from '../../validations';
 import './AddressSection.scss';
 
 const AddressSection: React.FC = () => {
@@ -30,18 +35,19 @@ const AddressSection: React.FC = () => {
                     defaultValue={getSettings?.address_line_1 ?? ''}
                     label='First line of address*'
                     name='firstLine'
-                    validationSchema={requiredValidator}
+                    validationSchema={addressFirstLineValidator}
                 />
                 <FlowTextField
                     defaultValue={getSettings?.address_line_2 ?? ''}
-                    label='Second line of address'
+                    label='Second line of address (optional)'
                     name='secondLine'
+                    validationSchema={addressSecondLineValidator}
                 />
                 <FlowTextField
                     defaultValue={getSettings?.address_city ?? ''}
                     label='Town/City*'
                     name='townCityLine'
-                    validationSchema={letterRequiredValidator}
+                    validationSchema={cityValidator}
                 />
                 <WalletDropdown
                     label='State/Province'
@@ -53,8 +59,9 @@ const AddressSection: React.FC = () => {
                 />
                 <FlowTextField
                     defaultValue={getSettings?.address_postcode ?? ''}
-                    label='Postal/ZIP Code'
+                    label='Postal/ZIP code'
                     name='zipCodeLine'
+                    validationSchema={postcodeValidator}
                 />
             </div>
         </div>

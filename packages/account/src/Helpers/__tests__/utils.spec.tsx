@@ -57,10 +57,17 @@ describe('documentAdditionalError', () => {
     });
 });
 
+type TShouldShowIdentityInformation = Parameters<typeof shouldShowIdentityInformation>[number];
+
 describe('shouldShowIdentityInformation', () => {
-    const mock_data = {
+    const mock_data: TShouldShowIdentityInformation = {
         account_status: {
             status: ['skip_idv'],
+            currency_config: {},
+            p2p_poa_required: 0,
+            p2p_status: 'none',
+            prompt_client_to_authenticate: 0,
+            risk_classification: '',
         },
         citizen: 'test',
         residence_list: [
@@ -69,7 +76,7 @@ describe('shouldShowIdentityInformation', () => {
                 identity: {
                     services: {
                         idv: {
-                            is_country_supported: true,
+                            is_country_supported: 1,
                         },
                     },
                 },
@@ -83,7 +90,7 @@ describe('shouldShowIdentityInformation', () => {
     });
 
     it("should not show IDV if the country dosen't support it", () => {
-        const new_mock_data = {
+        const new_mock_data: TShouldShowIdentityInformation = {
             ...mock_data,
             residence_list: [
                 {
@@ -91,7 +98,7 @@ describe('shouldShowIdentityInformation', () => {
                     identity: {
                         services: {
                             idv: {
-                                is_country_supported: false,
+                                is_country_supported: 0,
                             },
                         },
                     },
@@ -103,10 +110,15 @@ describe('shouldShowIdentityInformation', () => {
     });
 
     it('should show IDV if the country is not maltainvest and supports idv', () => {
-        const new_mock_data = {
+        const new_mock_data: TShouldShowIdentityInformation = {
             ...mock_data,
             account_status: {
                 status: [],
+                currency_config: {},
+                p2p_poa_required: 0,
+                p2p_status: 'none',
+                prompt_client_to_authenticate: 0,
+                risk_classification: '',
             },
             real_account_signup_target: 'svg',
         };
@@ -157,7 +169,7 @@ describe('preventEmptyClipboardPaste', () => {
                 getData: jest.fn(() => ''),
             },
             preventDefault: jest.fn(),
-        };
+        } as unknown as React.ClipboardEvent<HTMLInputElement>; // Typecasting the set props to required type
         preventEmptyClipboardPaste(event);
         expect(event.preventDefault).toHaveBeenCalled();
     });
@@ -168,7 +180,7 @@ describe('preventEmptyClipboardPaste', () => {
                 getData: jest.fn(() => 'test string'),
             },
             preventDefault: jest.fn(),
-        };
+        } as unknown as React.ClipboardEvent<HTMLInputElement>; // Typecasting the set props to required type
         preventEmptyClipboardPaste(event);
         expect(event.preventDefault).not.toHaveBeenCalled();
     });

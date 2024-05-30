@@ -10,7 +10,6 @@ import ApiTokenTableRowHeader from './api-token-table-row-header';
 import ApiTokenTableRowScopesCell from './api-token-table-row-scopes-cell';
 import ApiTokenTableRowTokenCell from './api-token-table-row-token-cell';
 import { TApiContext, TToken } from 'Types';
-import { useStore } from '@deriv/stores';
 
 const ApiTokenTable = () => {
     const { api_tokens } = React.useContext<TApiContext>(ApiTokenContext);

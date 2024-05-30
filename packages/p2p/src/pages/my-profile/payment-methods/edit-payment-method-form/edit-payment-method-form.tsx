@@ -63,7 +63,7 @@ const EditPaymentMethodForm = () => {
             general_store.formik_ref.setSubmitting(false);
             reset();
         }
-    }, [mutation_error, mutation_status]);
+    }, [mutation_error, mutation_status, reset]);
 
     if (isEmptyObject(payment_method_to_edit)) {
         return <Loading is_fullscreen={false} />;

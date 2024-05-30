@@ -3,7 +3,7 @@ import { BARRIER_LINE_STYLES, CONTRACT_SHADES, DEFAULT_SHADES } from '@deriv/sha
 import { barriersToString } from './Helpers/barriers';
 
 type TOnChartBarrierChange = null | ((barrier_1: string, barrier_2?: string) => void);
-type TOnChangeParams = { high: string | number; low?: string | number };
+type TOnChangeParams = { high: string | number; low?: string | number; title?: string };
 type TChartBarrierStoreOptions =
     | {
           color: string;
@@ -75,12 +75,13 @@ export class ChartBarrierStore {
         this.hidePriceLines = !has_barrier;
     }
 
-    updateBarriers(high: string | number, low?: string | number, isFromChart = false) {
+    updateBarriers(high: string | number, low?: string | number, title?: string, isFromChart = false) {
         if (!isFromChart) {
             this.relative = /^[+-]/.test(high.toString());
         }
         this.high = high || undefined;
         this.low = low || undefined;
+        this.title = title;
     }
 
     updateBarrierShade(should_display: boolean, contract_type: string) {
@@ -88,8 +89,8 @@ export class ChartBarrierStore {
             (should_display && CONTRACT_SHADES[contract_type as keyof typeof CONTRACT_SHADES]) || this.default_shade;
     }
 
-    onBarrierChange({ high, low }: TOnChangeParams) {
-        this.updateBarriers(high, low, true);
+    onBarrierChange({ high, low, title }: TOnChangeParams) {
+        this.updateBarriers(high, low, title, true);
         this.onChartBarrierChange?.(...(barriersToString(this.relative, high, low) as [string, string | undefined]));
     }
 

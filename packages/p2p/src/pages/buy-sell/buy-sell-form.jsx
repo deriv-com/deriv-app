@@ -99,7 +99,6 @@ const BuySellForm = props => {
             buy_sell_store.setInitialReceiveAmount(calculated_rate);
 
             return () => {
-                buy_sell_store.payment_method_ids = [];
                 disposeReceiveAmountReaction();
             };
         },
@@ -149,7 +148,7 @@ const BuySellForm = props => {
             validateOnMount: !should_disable_field,
             initialValues: {
                 amount: min_order_amount_limit,
-                contact_info: general_store.contact_info,
+                contact_info: buy_sell_store.temp_contact_info || general_store.contact_info,
                 payment_info: general_store.payment_info,
                 rate: is_float ? default_effective_rate : null,
             },
@@ -477,6 +476,7 @@ const BuySellForm = props => {
                                     initial_character_count={general_store.contact_info.length}
                                     max_characters={300}
                                     disabled={should_disable_field}
+                                    onChange={event => buy_sell_store.setTempContactInfo(event.target.value)}
                                 />
                             </div>
                         </React.Fragment>

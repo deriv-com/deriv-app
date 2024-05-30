@@ -65,6 +65,8 @@ describe('<BuySellModal />', () => {
                 },
                 is_buy_advert: true,
                 setFormErrorCode: jest.fn(),
+                setTempContactInfo: jest.fn(),
+                temp_contact_info: null,
                 unsubscribeAdvertInfo: jest.fn(),
             },
             floating_rate_store: {

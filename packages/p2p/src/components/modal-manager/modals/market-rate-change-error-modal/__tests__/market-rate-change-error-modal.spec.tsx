@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores/index';
 import MarketRateChangeErrorModal from '../market-rate-change-error-modal';
@@ -9,6 +10,7 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
         form_props: {
             setIsMarketRateErrorModalOpen: jest.fn(),
         },
+        setTempContactInfo: jest.fn(),
     },
 };
 
@@ -28,6 +30,10 @@ jest.mock('Stores', () => ({
 }));
 
 const el_modal = document.createElement('div');
+
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <StoreProvider store={mockStore({ ui: { is_desktop: true } })}>{children}</StoreProvider>
+);
 
 const mock_props = {
     submitForm: jest.fn(),
@@ -50,7 +56,7 @@ describe('<MarketRateChangeErrorModal />', () => {
     });
 
     it('should render MarketRateChangeErrorModal', () => {
-        render(<MarketRateChangeErrorModal {...mock_props} />);
+        render(<MarketRateChangeErrorModal {...mock_props} />, { wrapper });
 
         expect(screen.getByText('Attention: Rate fluctuation')).toBeInTheDocument();
         expect(screen.queryByText(/You are creating an order to buy/)).toBeInTheDocument();
@@ -70,12 +76,13 @@ describe('<MarketRateChangeErrorModal />', () => {
     });
 
     it('should call hideModal and setIsMarketRateErrorModalOpen when clicking Cancel', () => {
-        render(<MarketRateChangeErrorModal {...mock_props} />);
+        render(<MarketRateChangeErrorModal {...mock_props} />, { wrapper });
 
         const cancel_button = screen.getByRole('button', { name: 'Cancel' });
         cancel_button.click();
 
         expect(mock_modal_manager.hideModal).toHaveBeenCalled();
         expect(mock_store.buy_sell_store.form_props.setIsMarketRateErrorModalOpen).toHaveBeenCalledWith(false);
+        expect(mock_store.buy_sell_store.setTempContactInfo).toHaveBeenCalledWith(null);
     });
 });

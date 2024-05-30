@@ -37,6 +37,7 @@ export default class BuySellStore extends BaseStore {
     sort_by = 'rate';
     submitForm = null;
     table_type = buy_sell.BUY;
+    temp_contact_info = null;
     form_props = {};
     is_create_order_subscribed = false;
 
@@ -77,6 +78,7 @@ export default class BuySellStore extends BaseStore {
             sort_by: observable,
             submitForm: observable,
             table_type: observable,
+            temp_contact_info: observable,
             form_props: observable,
             is_create_order_subscribed: observable,
             account_currency: computed,
@@ -121,6 +123,7 @@ export default class BuySellStore extends BaseStore {
             setSortBy: action.bound,
             setSubmitForm: action.bound,
             setTableType: action.bound,
+            setTempContactInfo: action.bound,
             setSelectedAdvert: action.bound,
             showAdvertiserPage: action.bound,
             showVerification: action.bound,
@@ -399,6 +402,10 @@ export default class BuySellStore extends BaseStore {
 
     setTableType(table_type) {
         this.table_type = table_type;
+    }
+
+    setTempContactInfo(temp_contact_info) {
+        this.temp_contact_info = temp_contact_info;
     }
 
     setSelectedAdvert(selected_advert) {

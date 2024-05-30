@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
+import { useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
@@ -18,6 +19,9 @@ type TMarketRateChangeErrorModal = {
 const MarketRateChangeErrorModal = ({ submitForm, values }: TMarketRateChangeErrorModal) => {
     const { is_modal_open, hideModal } = useModalManagerContext();
     const { buy_sell_store } = useStores();
+    const {
+        ui: { is_desktop },
+    } = useStore();
 
     React.useEffect(() => {
         buy_sell_store.form_props.setIsMarketRateErrorModalOpen(true);
@@ -61,6 +65,7 @@ const MarketRateChangeErrorModal = ({ submitForm, values }: TMarketRateChangeErr
                         onClick={() => {
                             hideModal();
                             buy_sell_store.form_props.setIsMarketRateErrorModalOpen(false);
+                            if (is_desktop) buy_sell_store.setTempContactInfo(null);
                         }}
                         text={localize('Cancel')}
                         secondary

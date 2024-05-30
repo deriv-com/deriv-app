@@ -10,6 +10,7 @@ const DepositFiat: React.FC = observer(() => {
     const { common, traders_hub } = useStore();
     const { is_from_derivgo } = common;
     const { is_low_risk_cr_eu_real } = traders_hub;
+    const onClickHandler = () => window.LC_API?.open_chat_window?.();
 
     return (
         <PageContainer
@@ -26,10 +27,11 @@ const DepositFiat: React.FC = observer(() => {
                                     is_from_derivgo ? (
                                         <span />
                                     ) : (
-                                        <a
+                                        <span
                                             key={0}
                                             className='link link--orange'
-                                            onClick={() => window.LC_API.open_chat_window()}
+                                            onClick={onClickHandler}
+                                            onKeyDown={onClickHandler}
                                         />
                                     ),
                                 ]}

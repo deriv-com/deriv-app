@@ -1,7 +1,6 @@
 import React from 'react';
-import { Accordion, SideNote, Text } from '@deriv/components';
+import { Accordion, SideNote, StaticUrl, Text } from '@deriv/components';
 import { LegacyChevronDown1pxIcon, LegacyChevronUp1pxIcon } from '@deriv/quill-icons';
-import { getStaticUrl } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import './side-note-faq.scss';
 
@@ -11,6 +10,8 @@ type TSideNoteFAQProps = {
 };
 
 const SideNoteFAQ = ({ is_deposit = false, is_withdraw = false }: TSideNoteFAQProps) => {
+    const onClickHandler = () => window.LC_API?.open_chat_window?.();
+
     return (
         <SideNote
             description={
@@ -34,7 +35,8 @@ const SideNoteFAQ = ({ is_deposit = false, is_withdraw = false }: TSideNoteFAQPr
                                         <span
                                             key={0}
                                             className='link link--orange'
-                                            onClick={() => window.LC_API.open_chat_window()}
+                                            onClick={onClickHandler}
+                                            onKeyDown={onClickHandler}
                                         />,
                                     ]}
                                 />
@@ -49,7 +51,8 @@ const SideNoteFAQ = ({ is_deposit = false, is_withdraw = false }: TSideNoteFAQPr
                                         <span
                                             key={0}
                                             className='link link--orange'
-                                            onClick={() => window.LC_API.open_chat_window()}
+                                            onClick={onClickHandler}
+                                            onKeyDown={onClickHandler}
                                         />,
                                     ]}
                                 />
@@ -104,7 +107,8 @@ const SideNoteFAQ = ({ is_deposit = false, is_withdraw = false }: TSideNoteFAQPr
                                         <span
                                             key={0}
                                             className='link link--orange'
-                                            onClick={() => window.LC_API.open_chat_window()}
+                                            onClick={onClickHandler}
+                                            onKeyDown={onClickHandler}
                                         />,
                                     ]}
                                 />
@@ -136,7 +140,8 @@ const SideNoteFAQ = ({ is_deposit = false, is_withdraw = false }: TSideNoteFAQPr
                                         <span
                                             key={0}
                                             className='link link--orange'
-                                            onClick={() => window.LC_API.open_chat_window()}
+                                            onClick={onClickHandler}
+                                            onKeyDown={onClickHandler}
                                         />,
                                     ]}
                                 />
@@ -160,15 +165,7 @@ const SideNoteFAQ = ({ is_deposit = false, is_withdraw = false }: TSideNoteFAQPr
             <Text size='xxs'>
                 <Localize
                     i18n_default_text='<0>View more</0>'
-                    components={[
-                        <a
-                            key={0}
-                            className='link link--orange'
-                            href={getStaticUrl('/help-centre')}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                        />,
-                    ]}
+                    components={[<StaticUrl key={0} className='link' href='help-centre' is_document={false} />]}
                 />
             </Text>
         </SideNote>

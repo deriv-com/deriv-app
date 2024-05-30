@@ -105,7 +105,6 @@ const Dropzone: React.FC<TProps> = ({
         <div {...getRootProps()} className='wallets-dropzone__container' ref={rootRef as RefObject<HTMLDivElement>}>
             <input
                 {...(getInputProps() as DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>)}
-                className=''
                 data-testid='dt_dropzone-input'
             />
             <div

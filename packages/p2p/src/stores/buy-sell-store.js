@@ -193,7 +193,7 @@ export default class BuySellStore extends BaseStore {
     }
 
     handleResponse = async order => {
-        const { sendbird_store, order_store, general_store } = this.root_store;
+        const { buy_sell_store, sendbird_store, order_store, general_store } = this.root_store;
         const { setErrorMessage, handleConfirm, handleClose } = this.form_props;
         const { error, p2p_order_create, p2p_order_info, subscription } = order || {};
 
@@ -217,6 +217,7 @@ export default class BuySellStore extends BaseStore {
                             general_store.showModal({
                                 key: 'BuySellModal',
                             });
+                            buy_sell_store.payment_method_ids = [];
                         },
                         text_size: 'xs',
                     },

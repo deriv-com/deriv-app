@@ -1,4 +1,3 @@
-import React from 'react';
 import { Dropdown, Icon, Text } from '@deriv/components';
 import { getLongDate } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -15,7 +14,7 @@ export const PasskeyCard = ({ name, last_used, stored_on, id, icon, onPasskeyMen
                 name,
             });
             passkeysMenuActionEventTrack('passkey_rename_open');
-        } else if (event.target.value === 'revoke') {
+        } else if (event.target.value === 'remove') {
             // TODO: add action for revoke passkey
         }
     };
@@ -50,15 +49,9 @@ export const PasskeyCard = ({ name, last_used, stored_on, id, icon, onPasskeyMen
                         value: 'rename',
                     },
                     {
-                        text: localize(''),
-                        value: '',
-                        disabled: true,
+                        text: localize('Remove'),
+                        value: 'remove',
                     },
-                    // TODO: remove empty option when 'revoke' is implemented. Empty option is needed for proper working dropdown
-                    // {
-                    //     text: localize('Revoke'),
-                    //     value: 'revoke',
-                    // },
                 ]}
                 onChange={handleManagePasskey}
                 suffix_icon='IcMenuDots'

@@ -2,6 +2,7 @@ import { observer, useStore } from '@deriv/stores';
 import React from 'react';
 import { TTradingAssessmentForm } from 'Types';
 import TradingAssessmentForm from './trading-assessment-form';
+import { useDevice } from '@deriv-com/ui';
 
 type TradingAssessmentNewUserProps = {
     disabled_items: string[];
@@ -33,8 +34,7 @@ const TradingAssessmentNewUser = observer(
         value,
         setSubSectionIndex,
     }: TradingAssessmentNewUserProps) => {
-        const { ui } = useStore();
-        const { is_mobile } = ui;
+        const { isDesktop } = useDevice();
         const handleCancel = (values: TTradingAssessmentForm) => {
             const current_step = getCurrentStep() - 1;
             onSave(current_step, values);
@@ -70,7 +70,7 @@ const TradingAssessmentNewUser = observer(
                 disabled_items={disabled_items}
                 should_move_to_next={false}
                 is_independent_section={false}
-                is_mobile={is_mobile}
+                is_mobile={!isDesktop}
             />
         );
     }

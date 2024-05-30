@@ -8,7 +8,6 @@ import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import {
     BrandConfig,
     DERIV_PLATFORM_NAMES,
-    PlatformConfig,
     getAppstorePlatforms,
     getMFAppstorePlatforms,
 } from 'Constants/platform-config';
@@ -17,7 +16,6 @@ import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import { observer, useStore } from '@deriv/stores';
 import { CFD_PLATFORMS, getStaticUrl, getUrlSmartTrader, getUrlBinaryBot, MT5_ACCOUNT_STATUS } from '@deriv/shared';
 import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
-import { getAvailablePlatforms } from '../../helpers';
 import './trading-app-card.scss';
 
 const TradingAppCard = ({

@@ -18,7 +18,7 @@ const DesktopWalletsList: React.FC<TSubscribedBalance> = ({ balance }) => {
                     key={activeWallet && `wallets-card-${activeWallet?.loginid}`}
                     renderHeader={() => <WalletListCard balance={balance} />}
                 >
-                    <AccountsList />
+                    <AccountsList balance={balance} />
                 </WalletsContainer>
             )}
         </div>

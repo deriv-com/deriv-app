@@ -54,7 +54,7 @@ const WalletsCarousel: React.FC<TSubscribedBalance> = ({ balance }) => {
             <div className='wallets-carousel__header'>
                 {!isActiveWalletLoading && (
                     <WalletsCarouselHeader
-                        balance={displayedBalance as unknown as string}
+                        balance={displayedBalance}
                         currency={activeWallet?.currency || 'USD'}
                         hidden={hideWalletsCarouselHeader}
                         isDemo={activeWallet?.is_virtual}
@@ -65,7 +65,7 @@ const WalletsCarousel: React.FC<TSubscribedBalance> = ({ balance }) => {
                     <WalletsCarouselContent />
                 </div>
             </div>
-            <AccountsList />
+            <AccountsList balance={balance} />
         </div>
     );
 };

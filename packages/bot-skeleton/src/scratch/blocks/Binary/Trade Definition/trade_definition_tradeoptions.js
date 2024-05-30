@@ -193,7 +193,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 shadow_block.outputConnection.connect(prediction_input.connection);
                 shadow_block.initSvg();
                 // this breaks the loading of quick strategy and Backward compatibility
-                //shadow_block.render(true);
+                shadow_block.renderEfficiently();
             }
         });
     },

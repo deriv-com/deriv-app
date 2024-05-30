@@ -19,7 +19,9 @@ Blockly.Blocks.lists_setIndex = {
         this.appendDummyInput('AT');
         this.appendValueInput('TO').appendField(localize('as'));
 
-        this.setColour(Blockly.Colours.Base.colour);
+        const block_color =
+            Blockly.Colours.Base.colour || Blockly.Colours.Base.colourSecondary || Blockly.Colours.Base.colourTertiary;
+        this.setColour(block_color);
 
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
@@ -72,6 +74,7 @@ Blockly.Blocks.lists_setIndex = {
         this.moveInputBefore('AT', 'TO');
         this.getInput('AT').appendField(menu, 'WHERE');
         this.initSvg();
+        // kept this commented to fix backward compatibility issue
         //this.render(false);
     },
 };

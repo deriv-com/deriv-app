@@ -5,7 +5,7 @@ import { runIrreversibleEvents, removeExtraInput } from '../../../utils';
 import { removeErrorHandlingEventListener, initErrorHandlingListener } from '../../../../utils';
 import { config } from '../../../../constants/config';
 
-const trade_definition_block = {
+Blockly.Blocks.trade_definition = {
     init() {
         this.jsonInit(this.definition());
         this.setDeletable(false);
@@ -197,5 +197,3 @@ Blockly.JavaScript.javascriptGenerator.forBlock.trade_definition = block => {
       };\n`;
     return code;
 };
-Blockly.Blocks.trade_definition = trade_definition_block;
-export default trade_definition_block;

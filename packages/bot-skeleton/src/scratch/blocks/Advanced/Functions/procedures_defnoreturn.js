@@ -117,7 +117,7 @@ Blockly.Blocks.procedures_defnoreturn = {
                         this.getProcedureCallers().forEach(block => {
                             block.setProcedureParameters(this.arguments);
                             block.initSvg();
-                            block.render();
+                            block.renderEfficiently();
                         });
                     }
                 }

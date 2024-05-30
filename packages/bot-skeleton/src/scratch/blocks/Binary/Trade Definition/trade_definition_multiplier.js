@@ -215,7 +215,9 @@ Blockly.Blocks.trade_definition_multiplier = {
 
                     const duration_block = this.workspace.newBlock('trade_definition_tradeoptions');
                     duration_block.initSvg();
-                    //duration_block.render();
+                    // kept this commented to fix backward compatibility issue
+                    // need to fix this for mutliplier block
+                    duration_block.renderEfficiently();
 
                     const trade_definition_block = this.workspace.getTradeDefinitionBlock();
                     const parent_connection = trade_definition_block.getInput('SUBMARKET').connection;
@@ -228,6 +230,8 @@ Blockly.Blocks.trade_definition_multiplier = {
                     duration_shadow_block.setShadow(true);
                     duration_shadow_block.outputConnection.connect(duration_input.connection);
                     duration_shadow_block.initSvg();
+                    // kept this commented to fix backward compatibility issue
+                    // need to fix this for mutliplier block
                     //duration_shadow_block.render(true);
 
                     const stake_input = duration_block.getInput('AMOUNT');
@@ -237,6 +241,8 @@ Blockly.Blocks.trade_definition_multiplier = {
                     stake_shadow_block.setFieldValue(1, 'NUM');
                     stake_shadow_block.outputConnection.connect(stake_input.connection);
                     stake_shadow_block.initSvg();
+                    // kept this commented to fix backward compatibility issue
+                    // need to fix this for mutliplier block
                     // stake_shadow_block.render(true);
 
                     this.dispose();

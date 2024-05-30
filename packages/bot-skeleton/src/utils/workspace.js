@@ -15,6 +15,7 @@ export const hasAllRequiredBlocks = () => {
 export const onWorkspaceResize = () => {
     const workspace = Blockly.derivWorkspace;
     if (workspace) {
+        // kept this commented to fix slow rendering issue
         //workspace.getAllFields().forEach(field => field.forceRerender());
 
         const el_scratch_div = document.getElementById('scratch_div');

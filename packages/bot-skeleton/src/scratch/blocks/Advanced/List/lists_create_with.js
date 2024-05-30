@@ -54,7 +54,7 @@ Blockly.Blocks.lists_create_with = {
             statement_block.required_parent_id = this.id;
             statement_block.setMovable(false);
             statement_block.initSvg();
-            statement_block.render();
+            statement_block.renderEfficiently();
 
             const connection = this.getLastConnectionInStatement('STACK');
             connection.connect(statement_block.previousConnection);

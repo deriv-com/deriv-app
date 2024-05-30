@@ -142,7 +142,7 @@ Blockly.Blocks.controls_if = {
         }
 
         if (this.rendered) {
-            this.render();
+            this.renderEfficiently();
         }
 
         Blockly.Events.setGroup(false);
@@ -219,7 +219,9 @@ Blockly.Blocks.controls_if = {
         );
 
         this.initSvg();
-        //this.render();
+        // kept this commented to fix backward compatibility issue
+        // need to fix this for mutliplier block
+        this.renderEfficiently();
     },
     storeConnections(arg = 0) {
         this.value_connections = [null];

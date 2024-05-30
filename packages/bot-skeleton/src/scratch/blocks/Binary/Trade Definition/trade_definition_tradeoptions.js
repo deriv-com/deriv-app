@@ -187,6 +187,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 const prediction_input = this.appendValueInput('PREDICTION');
                 const shadow_block = this.workspace.newBlock('math_number_positive');
 
+                shadow_block.setInputsInline(true);
                 shadow_block.setShadow(true);
                 shadow_block.setFieldValue(prediction_range[0], 'NUM');
                 shadow_block.outputConnection.connect(prediction_input.connection);
@@ -213,11 +214,14 @@ Blockly.Blocks.trade_definition_tradeoptions = {
 
                     const shadow_block = this.workspace.newBlock('math_number_positive');
 
+                    shadow_block.setInputsInline(true);
                     shadow_block.setShadow(true);
                     shadow_block.setFieldValue(barriers.values[i], 'NUM');
                     shadow_block.outputConnection.connect(input.connection);
                     shadow_block.initSvg();
-                    //shadow_block.render(true);
+                    // kept this commented to fix backward compatibility issue
+                    // need to fix this for mutliplier block
+                    shadow_block.renderEfficiently();
                 }
             }
 
@@ -263,7 +267,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 runGroupedEvents(false, () => {
                     const multiplier_block = this.workspace.newBlock('trade_definition_multiplier');
                     multiplier_block.initSvg();
-                    //multiplier_block.render();
+                    multiplier_block.renderEfficiently();
 
                     const trade_definition_block = this.workspace.getTradeDefinitionBlock();
                     const parent_connection = trade_definition_block.getInput('SUBMARKET').connection;
@@ -273,43 +277,46 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     const stake_input = multiplier_block.getInput('AMOUNT');
 
                     const stake_shadow_block = this.workspace.newBlock('math_number_positive');
+                    stake_shadow_block.setInputsInline(true);
                     stake_shadow_block.setShadow(true);
                     stake_shadow_block.setFieldValue(1, 'NUM');
                     stake_shadow_block.outputConnection.connect(stake_input.connection);
                     stake_shadow_block.initSvg();
-                    //stake_shadow_block.render();
+                    stake_shadow_block.renderEfficiently();
 
                     const take_profit_block = this.workspace.newBlock('multiplier_take_profit');
                     const take_profit_input = take_profit_block.getInput('AMOUNT');
 
                     const take_profit_shadow_block = this.workspace.newBlock('math_number_positive');
+                    take_profit_shadow_block.setInputsInline(true);
                     take_profit_shadow_block.setShadow(true);
                     take_profit_shadow_block.setFieldValue(0, 'NUM');
                     take_profit_shadow_block.outputConnection.connect(take_profit_input.connection);
                     take_profit_shadow_block.initSvg();
-                    //take_profit_shadow_block.render();
+                    take_profit_shadow_block.renderEfficiently();
 
                     multiplier_block
                         .getLastConnectionInStatement('MULTIPLIER_PARAMS')
                         .connect(take_profit_block.previousConnection);
                     take_profit_block.initSvg();
-                    //take_profit_block.render();
+                    take_profit_block.renderEfficiently();
 
                     const stop_loss_block = this.workspace.newBlock('multiplier_stop_loss');
                     const stop_loss_input = stop_loss_block.getInput('AMOUNT');
 
                     const stop_loss_shadow_block = this.workspace.newBlock('math_number_positive');
+                    stop_loss_shadow_block.setInputsInline(true);
                     stop_loss_shadow_block.setShadow(true);
                     stop_loss_shadow_block.setFieldValue(0, 'NUM');
                     stop_loss_shadow_block.outputConnection.connect(stop_loss_input.connection);
                     stop_loss_shadow_block.initSvg();
-                    //stop_loss_shadow_block.render();
+                    stop_loss_shadow_block.renderEfficiently();
 
                     multiplier_block
                         .getLastConnectionInStatement('MULTIPLIER_PARAMS')
                         .connect(stop_loss_block.previousConnection);
                     stop_loss_block.initSvg();
-                    //stop_loss_block.render();
+                    stop_loss_block.renderEfficiently();
 
                     this.dispose();
                 });

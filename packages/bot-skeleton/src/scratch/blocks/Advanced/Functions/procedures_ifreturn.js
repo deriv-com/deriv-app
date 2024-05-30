@@ -63,7 +63,7 @@ Blockly.Blocks.procedures_ifreturn = {
             this.removeInput('VALUE');
             this.appendDummyInput('VALUE').appendField(localize('return'));
             this.initSvg();
-            this.render();
+            this.renderEfficiently();
         }
     },
     /**
@@ -92,7 +92,7 @@ Blockly.Blocks.procedures_ifreturn = {
         if (legal) {
             const rerender = () => {
                 this.initSvg();
-                this.render();
+                this.renderEfficiently();
             };
 
             // If needed, toggle whether this block has a return value.

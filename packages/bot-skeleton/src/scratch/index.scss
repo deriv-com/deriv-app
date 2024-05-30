@@ -972,6 +972,9 @@ drag a block and selected text moves instead.
         color: #000;
         font: normal 13px 'Helvetica Neue', sans-serif;
     }
+    .blocklyMenuItemContent.goog-menuitem-content {
+        color: #000;
+    }
 
     .blocklyWidgetDiv .goog-menuitem-disabled .goog-menuitem-accel,
     .blocklyWidgetDiv .goog-menuitem-disabled .goog-menuitem-content,

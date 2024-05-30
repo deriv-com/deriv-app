@@ -12,6 +12,7 @@ Blockly.Blocks.balance = {
                 this.setOutput(true, 'Number');
             }
             this.initSvg();
+            // kept this commented to fix backward compatibility issue
             //this.render(false);
             return undefined;
         });

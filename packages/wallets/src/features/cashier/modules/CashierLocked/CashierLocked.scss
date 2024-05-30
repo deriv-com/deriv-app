@@ -1,7 +1,7 @@
 .wallets-cashier-locked {
-    margin-top: 3.2rem; // 4.8rem + 3.2rem = 8rem
+    margin-top: 3.2rem; // 80px - 48px
 
     @include mobile {
-        margin-top: unset;
+        margin-top: unset; // 24px
     }
 }

@@ -1,7 +1,7 @@
 .wallets-withdrawal-locked {
-    margin-top: 9.2rem; //140px - 48px from cashier content
+    margin-top: 3.2rem; // 80px - 48px
 
     @include mobile {
-        margin-top: 1.6rem; //40px - 16px from cashier content
+        margin-top: unset; // 24px
     }
 }

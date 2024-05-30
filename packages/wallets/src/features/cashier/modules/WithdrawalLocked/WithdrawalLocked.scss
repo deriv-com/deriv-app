@@ -1,7 +1,5 @@
 .wallets-withdrawal-locked {
-    margin-top: 3.2rem; // 80px - 48px
-
-    @include mobile {
-        margin-top: unset; // 24px
+    @include desktop {
+        margin-top: 3.2rem; // 48px + 32px = 80px
     }
 }

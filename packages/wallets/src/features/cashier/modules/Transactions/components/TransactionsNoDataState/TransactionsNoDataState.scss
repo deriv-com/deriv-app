@@ -1,3 +1,5 @@
 .wallets-transactions-no-data-state {
-    margin-top: 3.2rem;
+    @include desktop {
+        margin-top: 3.2rem; // 48px + 32px = 80px
+    }
 }

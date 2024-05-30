@@ -12,10 +12,9 @@ type TMT5TradeLinkProps = {
     app?: keyof typeof AppToContentMapper;
     isDemo?: THooks.ActiveWalletAccount['is_virtual'];
     platform?: TPlatforms.All;
-    webtraderUrl?: THooks.MT5AccountsList['webtrader_url'];
 };
 
-const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, platform, webtraderUrl = '' }) => {
+const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, platform }) => {
     const { mutateAsync: requestToken } = useCtraderServiceToken();
     const { t } = useTranslation();
     const { icon, link, text, title } = AppToContentMapper[app];
@@ -72,11 +71,7 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
                 )}
             </div>
             {(platform === CFD_PLATFORMS.MT5 || app === CFD_PLATFORMS.CTRADER) && (
-                <WalletButton
-                    onClick={() => window.open(app === 'web' ? webtraderUrl : link)}
-                    size='sm'
-                    variant='outlined'
-                >
+                <WalletButton onClick={() => window.open(link)} size='sm' variant='outlined'>
                     {text}
                 </WalletButton>
             )}

@@ -83,6 +83,11 @@ const TradersHub = observer(() => {
         startPerformanceEventTimer('option_multiplier_section_loading_time');
     }, []);
 
+    const should_show_banner = useGrowthbookFeatureFlag({
+        featureFlag: 'traders-hub-real-account-banner',
+        defaultValue: false,
+    });
+
     const eu_title = is_eu_demo || is_eu_real || is_eu_user;
     const getPlatformToggleOptions = () => [
         { text: eu_title ? localize('Multipliers') : localize('Options'), value: 'options' },
@@ -128,11 +133,6 @@ const TradersHub = observer(() => {
         }
         return <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />;
     };
-
-    const should_show_banner = useGrowthbookFeatureFlag({
-        featureFlag: 'traders-hub-real-account-banner',
-        defaultValue: false,
-    });
 
     return (
         <React.Fragment>

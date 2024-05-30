@@ -16,8 +16,6 @@ jest.mock('@deriv/api-v2', () => ({
     })),
     useBalanceSubscription: jest.fn(() => ({
         data: {},
-        subscribe: jest.fn(),
-        unsubscribe: jest.fn(),
     })),
     useWalletAccountsList: jest.fn(() => ({
         data: [
@@ -63,8 +61,6 @@ const mockBalanceData: TSubscribedBalance['balance'] = {
     isIdle: false,
     isLoading: false,
     isSubscribed: false,
-    subscribe: jest.fn(),
-    unsubscribe: jest.fn(),
 };
 
 describe('WalletListCardDropdown', () => {

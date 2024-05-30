@@ -35,10 +35,10 @@ const Transactions = () => {
 
     const { location } = useHistory();
     const initialShowPending = Boolean(
-        location.pathname === '/wallets/cashier/transactions' ? location.state?.showPending : false
+        location.pathname === '/wallet/transactions' ? location.state?.showPending : false
     );
     const initialTransactionType =
-        (location.pathname === '/wallets/cashier/transactions' ? location.state?.transactionType : undefined) ?? 'all';
+        (location.pathname === '/wallet/transactions' ? location.state?.transactionType : undefined) ?? 'all';
 
     const [isPendingActive, setIsPendingActive] = useState(initialShowPending);
     const [filterValue, setFilterValue] = useState(initialTransactionType);

@@ -13,6 +13,7 @@ const AccountLimitsFooterPortalComponent = ({ onClick }: any) => {
                     currency: 'USD',
                     footer_ref: footer,
                     toggleOverlay: onClick,
+                    overlay_ref: document.createElement('div'),
                 }}
             >
                 <AccountLimitsFooterPortal />
@@ -38,7 +39,7 @@ describe('<AccountLimitsFooterPortal/>', () => {
     });
     it('should render anchor tag', () => {
         render(<AccountLimitsFooterPortalComponent />);
-        expect(screen.getAllByTestId('dt_footer_text').length).toBe(1);
+        expect(screen.getByTestId('dt_footer_text')).toBeInTheDocument();
     });
     it('should trigger toggleOverlay', async () => {
         const toggleOverlay = jest.fn();

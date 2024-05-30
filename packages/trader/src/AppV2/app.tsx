@@ -8,8 +8,10 @@ import Trade from './Containers/Trade';
 import Markets from './Containers/Markets';
 import Positions from './Containers/Positions';
 import Menu from './Containers/Menu';
+import { NotificationsProvider } from '@deriv-com/quill-ui';
 import 'Sass/app.scss';
 import '@deriv-com/quill-tokens/dist/quill.css';
+import Notifications from './Containers/Notifications';
 
 type Apptypes = {
     passthrough: {
@@ -26,12 +28,15 @@ const App = ({ passthrough }: Apptypes) => {
 
     return (
         <TraderProviders store={root_store}>
-            <BottomNav>
-                <Trade />
-                <Markets />
-                <Positions />
-                <Menu />
-            </BottomNav>
+            <NotificationsProvider>
+                <Notifications />
+                <BottomNav>
+                    <Trade />
+                    <Markets />
+                    <Positions />
+                    <Menu />
+                </BottomNav>
+            </NotificationsProvider>
         </TraderProviders>
     );
 };

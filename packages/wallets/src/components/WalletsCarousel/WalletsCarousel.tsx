@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { TSubscribedBalance } from '../../types';
@@ -8,14 +8,13 @@ import { WalletsCarouselHeader } from '../WalletsCarouselHeader';
 import './WalletsCarousel.scss';
 
 const WalletsCarousel: React.FC<TSubscribedBalance> = ({ balance }) => {
-    const { data: activeWallet, isInitializing: isActiveWalletInitializing } = useActiveWalletAccount();
+    const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
     const [hideWalletsCarouselHeader, setHideWalletsCarouselHeader] = useState(true);
     const contentRef = useRef(null);
 
     const { data: balanceData, isLoading: isBalanceLoading } = balance;
-    const showLoader = isBalanceLoading || isActiveWalletInitializing;
 
-    const displayedBalance = () => {
+    const displayedBalance = useMemo(() => {
         return displayMoney?.(
             balanceData?.accounts?.[activeWallet?.loginid ?? '']?.balance ?? 0,
             activeWallet?.currency || '',
@@ -23,7 +22,7 @@ const WalletsCarousel: React.FC<TSubscribedBalance> = ({ balance }) => {
                 fractional_digits: activeWallet?.currency_config?.fractional_digits,
             }
         );
-    };
+    }, [balanceData, activeWallet]);
 
     // useEffect hook to handle event for hiding/displaying WalletsCarouselHeader
     // walletsCarouselHeader will be displayed when WalletsCarouselContent is almost out of viewport
@@ -53,12 +52,13 @@ const WalletsCarousel: React.FC<TSubscribedBalance> = ({ balance }) => {
     return (
         <div className='wallets-carousel'>
             <div className='wallets-carousel__header'>
-                {!showLoader && (
+                {!isActiveWalletLoading && (
                     <WalletsCarouselHeader
                         balance={displayedBalance as unknown as string}
                         currency={activeWallet?.currency || 'USD'}
                         hidden={hideWalletsCarouselHeader}
                         isDemo={activeWallet?.is_virtual}
+                        isLoading={isBalanceLoading}
                     />
                 )}
                 <div ref={contentRef}>

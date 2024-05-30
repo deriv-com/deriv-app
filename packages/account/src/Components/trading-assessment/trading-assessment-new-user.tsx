@@ -1,4 +1,4 @@
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import React from 'react';
 import { TTradingAssessmentForm } from 'Types';
 import TradingAssessmentForm from './trading-assessment-form';
@@ -70,7 +70,7 @@ const TradingAssessmentNewUser = observer(
                 disabled_items={disabled_items}
                 should_move_to_next={false}
                 is_independent_section={false}
-                is_mobile={!isDesktop}
+                is_responsive={!isDesktop}
             />
         );
     }

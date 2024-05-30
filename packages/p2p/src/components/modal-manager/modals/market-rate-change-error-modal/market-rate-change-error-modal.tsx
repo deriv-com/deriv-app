@@ -65,7 +65,10 @@ const MarketRateChangeErrorModal = ({ submitForm, values }: TMarketRateChangeErr
                         onClick={() => {
                             hideModal();
                             buy_sell_store.form_props.setIsMarketRateErrorModalOpen(false);
-                            if (is_desktop) buy_sell_store.setTempContactInfo(null);
+                            if (is_desktop) {
+                                buy_sell_store.setTempContactInfo(null);
+                                buy_sell_store.payment_method_ids = [];
+                            }
                         }}
                         text={localize('Cancel')}
                         secondary

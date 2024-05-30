@@ -11,6 +11,7 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
             setIsMarketRateErrorModalOpen: jest.fn(),
         },
         setTempContactInfo: jest.fn(),
+        payment_method_ids: [],
     },
 };
 

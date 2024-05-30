@@ -85,7 +85,12 @@ const ToggleCardDialog = ({
         if (isMobile() && should_show_cancellation_warning && is_valid_to_cancel) {
             addToast({
                 key: 'deal_cancellation_active',
-                content: getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE,
+                content:
+                    getCardLabels()[
+                        passthrough_props.is_accumulator
+                            ? 'TAKE_PROFIT_IS_NOT_AVAILABLE'
+                            : 'TAKE_PROFIT_LOSS_NOT_AVAILABLE'
+                    ],
                 type: 'error',
             });
         }
@@ -118,7 +123,13 @@ const ToggleCardDialog = ({
                     is_bubble_hover_enabled
                     margin={2}
                     zIndex='2'
-                    message={getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE}
+                    message={
+                        getCardLabels()[
+                            passthrough_props.is_accumulator
+                                ? 'TAKE_PROFIT_IS_NOT_AVAILABLE'
+                                : 'TAKE_PROFIT_LOSS_NOT_AVAILABLE'
+                        ]
+                    }
                     onBubbleClose={onPopoverClose}
                 >
                     <button
@@ -131,7 +142,14 @@ const ToggleCardDialog = ({
                     </button>
                 </Popover>
             ) : (
-                <button ref={toggle_ref} className='dc-contract-card-dialog-toggle' onClick={toggleDialogWrapper}>
+                <button
+                    ref={toggle_ref}
+                    className={classNames('dc-contract-card-dialog-toggle', {
+                        'dc-contract-card-dialog-toggle--disabled':
+                            is_valid_to_cancel && should_show_cancellation_warning,
+                    })}
+                    onClick={toggleDialogWrapper}
+                >
                     {edit_icon}
                 </button>
             )}

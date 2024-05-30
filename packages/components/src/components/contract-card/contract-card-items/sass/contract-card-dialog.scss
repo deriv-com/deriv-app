@@ -139,7 +139,8 @@
         float: right;
         margin: 3px;
     }
-    &:hover:not(:disabled) {
+
+    &:hover:not(:disabled):not(:is(.dc-contract-card-dialog-toggle--disabled)) {
         cursor: pointer;
         border-color: var(--button-secondary-default);
     }

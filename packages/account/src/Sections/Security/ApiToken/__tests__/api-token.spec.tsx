@@ -125,6 +125,60 @@ describe('<ApiToken/>', () => {
         expect(screen.queryByText(learn_more_title)).not.toBeInTheDocument();
     });
 
+    it('should render created tokens and trigger delete', async () => {
+        (getPropertyValue as jest.Mock).mockReturnValue([
+            {
+                display_name: 'First test token',
+                last_used: '',
+                scopes: ['Read', 'Trade'],
+                token: 'GBjsG2kM1uxtJtk',
+                valid_for_ip: '',
+            },
+            {
+                display_name: 'Second test token',
+                last_used: '',
+                scopes: ['Read', 'Payments', 'Trade'],
+                token: 'GHjaD2f4gDg5gSE',
+                valid_for_ip: '',
+            },
+        ]);
+
+        renderComponent({});
+
+        expect(await screen.findByText('First test token')).toBeInTheDocument();
+        expect(await screen.findByText('Last used')).toBeInTheDocument();
+        expect(await screen.findByText('Name')).toBeInTheDocument();
+        expect(await screen.findByText('Token')).toBeInTheDocument();
+        expect(await screen.findByText('Scopes')).toBeInTheDocument();
+        expect(await screen.findByText('Second test token')).toBeInTheDocument();
+
+        const delete_btns_1 = screen.getAllByTestId('dt_token_delete_icon');
+        expect(delete_btns_1).toHaveLength(2);
+
+        userEvent.click(delete_btns_1[0]);
+        const no_btn_1 = screen.getByRole('button', { name: /cancel/i });
+        expect(no_btn_1).toBeInTheDocument();
+
+        userEvent.click(no_btn_1);
+        await waitFor(() => {
+            expect(no_btn_1).not.toBeInTheDocument();
+        });
+
+        const delete_btns_2 = await screen.findAllByTestId('dt_token_delete_icon');
+        expect(delete_btns_2).toHaveLength(2);
+
+        userEvent.click(delete_btns_2[0]);
+        const yes_btn_1 = screen.getByRole('button', { name: /yes, delete/i });
+        expect(yes_btn_1).toBeInTheDocument();
+
+        userEvent.click(yes_btn_1);
+        const deleteToken = WS.authorized.apiToken;
+        expect(deleteToken).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(yes_btn_1).not.toBeInTheDocument();
+        });
+    });
+
     it('should not render ApiToken component if data is still loading', async () => {
         const new_store = mockStore({
             client: {
@@ -197,60 +251,6 @@ describe('<ApiToken/>', () => {
 
         const createToken = WS.apiToken;
         expect(createToken).toHaveBeenCalledTimes(1);
-    });
-
-    it('should render created tokens and trigger delete', async () => {
-        (getPropertyValue as jest.Mock).mockReturnValue([
-            {
-                display_name: 'First test token',
-                last_used: '',
-                scopes: ['Read', 'Trade'],
-                token: 'GBjsG2kM1uxtJtk',
-                valid_for_ip: '',
-            },
-            {
-                display_name: 'Second test token',
-                last_used: '',
-                scopes: ['Read', 'Payments', 'Trade'],
-                token: 'GHjaD2f4gDg5gSE',
-                valid_for_ip: '',
-            },
-        ]);
-
-        renderComponent({});
-
-        expect(await screen.findByText('First test token')).toBeInTheDocument();
-        expect(await screen.findByText('Last used')).toBeInTheDocument();
-        expect(await screen.findByText('Name')).toBeInTheDocument();
-        expect(await screen.findByText('Token')).toBeInTheDocument();
-        expect(await screen.findByText('Scopes')).toBeInTheDocument();
-        expect(await screen.findByText('Second test token')).toBeInTheDocument();
-
-        const delete_btns_1 = screen.getAllByTestId('dt_token_delete_icon');
-        expect(delete_btns_1).toHaveLength(2);
-
-        userEvent.click(delete_btns_1[0]);
-        const no_btn_1 = screen.getByRole('button', { name: /cancel/i });
-        expect(no_btn_1).toBeInTheDocument();
-
-        userEvent.click(no_btn_1);
-        await waitFor(() => {
-            expect(no_btn_1).not.toBeInTheDocument();
-        });
-
-        const delete_btns_2 = await screen.findAllByTestId('dt_token_delete_icon');
-        expect(delete_btns_2).toHaveLength(2);
-
-        userEvent.click(delete_btns_2[0]);
-        const yes_btn_1 = screen.getByRole('button', { name: /yes, delete/i });
-        expect(yes_btn_1).toBeInTheDocument();
-
-        userEvent.click(yes_btn_1);
-        const deleteToken = WS.authorized.apiToken;
-        expect(deleteToken).toHaveBeenCalled();
-        await waitFor(() => {
-            expect(yes_btn_1).not.toBeInTheDocument();
-        });
     });
 
     it('should trigger hide/unhide icon and trigger copy icon, should show dialog only for admin scope', async () => {

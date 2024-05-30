@@ -42,6 +42,7 @@ describe('getPersonalDetailsValidationSchema', () => {
         try {
             await validationSchema.isValid(non_eu_invalid_data);
         } catch (error) {
+            // @ts-expect-error [TODO]: Fix type for error
             expect(error.errors.length).toBeGreaterThan(0);
         }
     });

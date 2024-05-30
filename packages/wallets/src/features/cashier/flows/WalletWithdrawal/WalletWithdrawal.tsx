@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useActiveWalletAccount, useAuthorize } from '@deriv/api-v2';
-import type { TSocketError } from '@deriv/api-v2/types';
+import { useActiveWalletAccount, useAuthorize, useBalance } from '@deriv/api-v2';
 import { Loader } from '../../../../components';
-import { isServerError } from '../../../../utils/utils';
 import { WithdrawalCryptoModule, WithdrawalFiatModule, WithdrawalVerificationModule } from '../../modules';
-import { WithdrawalErrorScreen, WithdrawalNoBalance } from '../../screens';
+import { WithdrawalNoBalance } from '../../screens';
 
 const WalletWithdrawal = () => {
     const { switchAccount } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
+    const { data: balanceData, isLoading, isRefetching, refetch } = useBalance();
     const [verificationCode, setVerificationCode] = useState('');
     const [resendEmail, setResendEmail] = useState(false);
-    const [error, setError] = useState<TSocketError<'cashier'>['error'] | undefined>();
+
+    const isBalanceLoading = isLoading || isRefetching;
+
+    useEffect(() => {
+        refetch();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
@@ -36,41 +41,28 @@ const WalletWithdrawal = () => {
     }, [activeWallet?.loginid, switchAccount]);
 
     const isCrypto = activeWallet?.currency_config?.is_crypto;
-    const currency = activeWallet?.currency;
 
-    const onCloseHandler = () => setVerificationCode('');
-
-    const resetError = () => {
-        onCloseHandler();
-        setError(undefined);
-    };
-
-    if (isServerError(error)) {
-        return (
-            <WithdrawalErrorScreen
-                currency={currency}
-                error={error}
-                resetError={resetError}
-                setResendEmail={setResendEmail}
-            />
-        );
+    if (!activeWallet || isBalanceLoading) {
+        return <Loader />;
     }
 
-    if (!activeWallet) return <Loader />;
+    if (
+        balanceData.accounts &&
+        !isBalanceLoading &&
+        balanceData.accounts[activeWallet?.loginid ?? 'USD'].balance <= 0
+    ) {
+        return <WithdrawalNoBalance activeWallet={activeWallet} />;
+    }
 
-    if (activeWallet.balance <= 0) return <WithdrawalNoBalance activeWallet={activeWallet} />;
-
-    if (activeWallet?.currency && verificationCode) {
+    if (activeWallet?.currency && verificationCode && !isBalanceLoading) {
         return isCrypto ? (
             <WithdrawalCryptoModule
-                onClose={() => {
-                    setVerificationCode('');
-                }}
-                setError={setError}
+                setResendEmail={setResendEmail}
+                setVerificationCode={setVerificationCode}
                 verificationCode={verificationCode}
             />
         ) : (
-            <WithdrawalFiatModule setError={setError} verificationCode={verificationCode} />
+            <WithdrawalFiatModule verificationCode={verificationCode} />
         );
     }
 

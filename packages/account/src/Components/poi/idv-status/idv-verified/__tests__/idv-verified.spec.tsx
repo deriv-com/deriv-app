@@ -20,7 +20,7 @@ describe('<IdvVerified />', () => {
     const submit_text = /submit proof of address/i;
 
     const history = createBrowserHistory();
-    const renderWithRouter = component => render(<Router history={history}>{component}</Router>);
+    const renderWithRouter = (component: React.ReactElement) => render(<Router history={history}>{component}</Router>);
 
     it('should render the IdvVerified component when needs_poa is true and is_from_external is false in desktop', () => {
         renderWithRouter(<IdvVerified needs_poa />);

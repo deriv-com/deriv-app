@@ -33,9 +33,11 @@ const Accordion = ({ className, icon_close, icon_open, list }: TAccordionProps) 
                     <div className='dc-accordion__item-header' onClick={() => onClick(idx)}>
                         {item.header}
                         <div className='dc-accordion__item-header-icon-wrapper'>
-                            {open_idx === idx
-                                ? icon_open || <Icon icon='IcMinus' className='dc-accordion__item-header-icon' />
-                                : icon_close || <Icon icon='IcAdd' className='dc-accordion__item-header-icon' />}
+                            {open_idx === idx ? (
+                                <Icon icon={icon_open || 'IcMinus'} className='dc-accordion__item-header-icon' />
+                            ) : (
+                                <Icon icon={icon_close || 'IcAdd'} className='dc-accordion__item-header-icon' />
+                            )}
                         </div>
                     </div>
                     <div className='dc-accordion__item-content'>{item.content}</div>

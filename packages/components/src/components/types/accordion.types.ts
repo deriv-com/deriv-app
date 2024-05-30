@@ -5,7 +5,7 @@ export type TAccordionItem = Array<{
 
 export type TAccordionProps = {
     className?: string;
-    icon_close?: React.ReactNode;
-    icon_open?: React.ReactNode;
+    icon_close?: string;
+    icon_open?: string;
     list: TAccordionItem;
 };

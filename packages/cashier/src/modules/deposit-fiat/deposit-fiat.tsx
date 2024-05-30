@@ -29,7 +29,7 @@ const DepositFiat: React.FC = observer(() => {
                                     ) : (
                                         <span
                                             key={0}
-                                            className='link link--orange'
+                                            className='link'
                                             onClick={onClickHandler}
                                             onKeyDown={onClickHandler}
                                         />

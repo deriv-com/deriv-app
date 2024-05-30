@@ -1,6 +1,5 @@
 import React from 'react';
 import { Accordion, SideNote, StaticUrl, Text } from '@deriv/components';
-import { LegacyChevronDown1pxIcon, LegacyChevronUp1pxIcon } from '@deriv/quill-icons';
 import { localize, Localize } from '@deriv/translations';
 import './side-note-faq.scss';
 
@@ -23,8 +22,8 @@ const SideNoteFAQ = ({ is_deposit = false, is_withdraw = false }: TSideNoteFAQPr
             {is_deposit && (
                 <Accordion
                     className='side-note-faq__accordion'
-                    icon_close={<LegacyChevronDown1pxIcon iconSize='xs' />}
-                    icon_open={<LegacyChevronUp1pxIcon iconSize='xs' />}
+                    icon_close='IcChevronDown'
+                    icon_open='IcCashierChevronUp'
                     list={[
                         {
                             header: localize("Why can't I see deposited funds in my Deriv account?"),
@@ -34,7 +33,7 @@ const SideNoteFAQ = ({ is_deposit = false, is_withdraw = false }: TSideNoteFAQPr
                                     components={[
                                         <span
                                             key={0}
-                                            className='link link--orange'
+                                            className='link'
                                             onClick={onClickHandler}
                                             onKeyDown={onClickHandler}
                                         />,
@@ -50,7 +49,7 @@ const SideNoteFAQ = ({ is_deposit = false, is_withdraw = false }: TSideNoteFAQPr
                                     components={[
                                         <span
                                             key={0}
-                                            className='link link--orange'
+                                            className='link'
                                             onClick={onClickHandler}
                                             onKeyDown={onClickHandler}
                                         />,
@@ -106,7 +105,7 @@ const SideNoteFAQ = ({ is_deposit = false, is_withdraw = false }: TSideNoteFAQPr
                                     components={[
                                         <span
                                             key={0}
-                                            className='link link--orange'
+                                            className='link'
                                             onClick={onClickHandler}
                                             onKeyDown={onClickHandler}
                                         />,
@@ -120,8 +119,8 @@ const SideNoteFAQ = ({ is_deposit = false, is_withdraw = false }: TSideNoteFAQPr
             {is_withdraw && (
                 <Accordion
                     className='side-note-faq__accordion'
-                    icon_close={<LegacyChevronDown1pxIcon iconSize='xs' />}
-                    icon_open={<LegacyChevronUp1pxIcon iconSize='xs' />}
+                    icon_close='IcChevronDown'
+                    icon_open='IcCashierChevronUp'
                     list={[
                         {
                             header: localize(
@@ -139,7 +138,7 @@ const SideNoteFAQ = ({ is_deposit = false, is_withdraw = false }: TSideNoteFAQPr
                                     components={[
                                         <span
                                             key={0}
-                                            className='link link--orange'
+                                            className='link'
                                             onClick={onClickHandler}
                                             onKeyDown={onClickHandler}
                                         />,

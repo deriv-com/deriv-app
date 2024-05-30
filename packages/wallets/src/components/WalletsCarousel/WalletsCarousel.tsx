@@ -1,14 +1,29 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
+import { displayMoney } from '@deriv/api-v2/src/utils';
+import { TSubscribedBalance } from '../../types';
 import { AccountsList } from '../AccountsList';
 import { WalletsCarouselContent } from '../WalletsCarouselContent';
 import { WalletsCarouselHeader } from '../WalletsCarouselHeader';
 import './WalletsCarousel.scss';
 
-const WalletsCarousel: React.FC = () => {
+const WalletsCarousel: React.FC<TSubscribedBalance> = ({ balance }) => {
+    const { data: activeWallet, isInitializing: isActiveWalletInitializing } = useActiveWalletAccount();
     const [hideWalletsCarouselHeader, setHideWalletsCarouselHeader] = useState(true);
     const contentRef = useRef(null);
-    const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
+
+    const { data: balanceData, isLoading: isBalanceLoading } = balance;
+    const showLoader = isBalanceLoading || isActiveWalletInitializing;
+
+    const displayedBalance = () => {
+        return displayMoney?.(
+            balanceData?.accounts?.[activeWallet?.loginid ?? '']?.balance ?? 0,
+            activeWallet?.currency || '',
+            {
+                fractional_digits: activeWallet?.currency_config?.fractional_digits,
+            }
+        );
+    };
 
     // useEffect hook to handle event for hiding/displaying WalletsCarouselHeader
     // walletsCarouselHeader will be displayed when WalletsCarouselContent is almost out of viewport
@@ -38,9 +53,9 @@ const WalletsCarousel: React.FC = () => {
     return (
         <div className='wallets-carousel'>
             <div className='wallets-carousel__header'>
-                {!isActiveWalletLoading && (
+                {!showLoader && (
                     <WalletsCarouselHeader
-                        balance={activeWallet?.display_balance}
+                        balance={displayedBalance as unknown as string}
                         currency={activeWallet?.currency || 'USD'}
                         hidden={hideWalletsCarouselHeader}
                         isDemo={activeWallet?.is_virtual}

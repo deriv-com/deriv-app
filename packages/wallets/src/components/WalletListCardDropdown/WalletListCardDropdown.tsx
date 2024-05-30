@@ -1,21 +1,21 @@
 import React, { ComponentProps, useCallback, useEffect, useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { useActiveWalletAccount, useBalanceSubscription, useWalletAccountsList } from '@deriv/api-v2';
+import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
-import { THooks } from '../../types';
+import { THooks, TSubscribedBalance } from '../../types';
 import { WalletDropdown, WalletText } from '../Base';
 import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import './WalletListCardDropdown.scss';
 
 type WalletList = ComponentProps<typeof WalletDropdown>['list'] | undefined;
 
-const WalletListCardDropdown = () => {
+const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
     const { data: wallets } = useWalletAccountsList();
-    const { data: balanceData, subscribe, unsubscribe } = useBalanceSubscription();
     const { data: activeWallet } = useActiveWalletAccount();
     const switchWalletAccount = useWalletAccountSwitcher();
     const { t } = useTranslation();
+    const { data: balanceData } = balance;
 
     const [inputWidth, setInputWidth] = useState('auto');
     const loginId = activeWallet?.loginid;
@@ -34,15 +34,6 @@ const WalletListCardDropdown = () => {
             setInputWidth(`${selectedTextWidth * 10 - 20}px`);
         }
     }, [generateTitleText, wallets, loginId]);
-
-    useEffect(() => {
-        subscribe({
-            account: 'all',
-        });
-        return () => {
-            unsubscribe();
-        };
-    }, [subscribe, unsubscribe]);
 
     const walletList: WalletList = useMemo(() => {
         return wallets

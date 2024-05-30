@@ -88,6 +88,7 @@ const VerifyDocumentDetails = () => {
                     <DatePicker
                         defaultValue={unixToDateString(formattedDateOfBirth)}
                         disabled={formValues.verifiedDocumentDetails}
+                        displayFormat='DD-MM-YYYY'
                         label='Date of birth*'
                         maxDate={moment().subtract(18, 'years').toDate()}
                         message='Your date of birth as in your identity document'

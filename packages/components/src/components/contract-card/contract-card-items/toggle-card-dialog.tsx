@@ -9,6 +9,7 @@ import MobileWrapper from '../../mobile-wrapper';
 import Popover from '../../popover';
 import Div100vhContainer from '../../div100vh-container';
 import './sass/contract-card-dialog.scss';
+import classNames from 'classnames';
 
 export type TToggleCardDialogProps = Pick<
     TGeneralContractCardBodyProps,
@@ -111,14 +112,21 @@ const ToggleCardDialog = ({
                 <Popover
                     alignment='right'
                     classNameBubble='dc-contract-card-dialog__popover-bubble'
-                    className='dc-contract-card-dialog__popover'
+                    className={classNames('dc-contract-card-dialog__popover', {
+                        'dc-contract-card-dialog__popover--accumulator': passthrough_props.is_accumulator,
+                    })}
                     is_bubble_hover_enabled
                     margin={2}
                     zIndex='2'
                     message={getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE}
                     onBubbleClose={onPopoverClose}
                 >
-                    <button ref={toggle_ref} className='dc-contract-card-dialog-toggle' onClick={toggleDialogWrapper}>
+                    <button
+                        ref={toggle_ref}
+                        className='dc-contract-card-dialog-toggle'
+                        onClick={toggleDialogWrapper}
+                        disabled={is_valid_to_cancel}
+                    >
                         {edit_icon}
                     </button>
                 </Popover>

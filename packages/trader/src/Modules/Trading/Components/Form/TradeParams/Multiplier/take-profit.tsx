@@ -69,7 +69,11 @@ const TakeProfit = observer((props: TTakeProfitProps) => {
                 onChange={changeValue}
                 setCurrentFocus={setCurrentFocus}
                 tooltip_label={
-                    <Localize i18n_default_text='When your profit reaches or exceeds this amount, your trade will be closed automatically.' />
+                    is_accumulator ? (
+                        <Localize i18n_default_text="When your profit reaches or exceeds this amount, your trade will be closed automatically. Take profit can't be adjusted after your contract starts." />
+                    ) : (
+                        <Localize i18n_default_text='When your profit reaches or exceeds this amount, your trade will be closed automatically.' />
+                    )
                 }
                 tooltip_alignment='left'
                 error_message_alignment='left'

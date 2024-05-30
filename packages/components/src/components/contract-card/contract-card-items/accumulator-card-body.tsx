@@ -27,6 +27,7 @@ type TAccumulatorCardBody = {
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (value: string | null) => void;
     totalProfit: number;
+    toggleCancellationWarning?: () => void;
     is_positions?: boolean;
 };
 
@@ -38,6 +39,7 @@ const AccumulatorCardBody = ({
     indicative,
     is_sold,
     is_positions,
+    toggleCancellationWarning,
     ...toggle_card_dialog_props
 }: TAccumulatorCardBody) => {
     const { buy_price, profit, limit_order, sell_price } = contract_info;
@@ -81,17 +83,22 @@ const AccumulatorCardBody = ({
                     <Money amount={profit} currency={currency} />
                     {!is_sold && <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />}
                 </ContractCardItem>
-                <ContractCardItem header={TAKE_PROFIT} className='dc-contract-card__take-profit'>
-                    {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
-                    {is_valid_to_sell && (
+                <div className='dc-contract-card__take-profit'>
+                    <ContractCardItem header={TAKE_PROFIT}>
+                        {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
+                    </ContractCardItem>
+                    {(is_valid_to_sell || !is_sold) && (
                         <ToggleCardDialog
                             contract_id={contract_info.contract_id}
                             getCardLabels={getCardLabels}
+                            is_valid_to_cancel={true}
+                            should_show_cancellation_warning={true}
+                            toggleCancellationWarning={toggleCancellationWarning}
                             is_accumulator
                             {...toggle_card_dialog_props}
                         />
                     )}
-                </ContractCardItem>
+                </div>
             </div>
             {!!is_sold && (
                 <MobileWrapper>

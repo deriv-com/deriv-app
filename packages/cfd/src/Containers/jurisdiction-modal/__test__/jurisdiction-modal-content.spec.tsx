@@ -203,7 +203,7 @@ describe('JurisdictionModalContent', () => {
         expect(screen.getAllByText('Assets')).toHaveLength(3);
         expect(
             screen.getAllByText(
-                'Synthetic indices, basket indices, and derived FX, Forex (standard), commodities, stock indices, cryptocurrencies'
+                'Forex (standard), stock indices, commodities, cryptocurrencies, synthetic indices, basket indices and derived FX'
             )
         ).toHaveLength(3);
         expect(screen.getAllByText('40+')).toHaveLength(3);
@@ -356,7 +356,7 @@ describe('JurisdictionModalContent', () => {
         expect(screen.getByText('40+')).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Synthetic indices, basket indices, and derived FX, Forex (standard), commodities, stock indices, cryptocurrencies'
+                'Forex (standard), stock indices, commodities, cryptocurrencies, synthetic indices, basket indices and derived FX'
             )
         ).toBeInTheDocument();
     });

@@ -69,20 +69,21 @@ export class ChartBarrierStore {
         this.hidePriceLines = !has_barrier;
     }
 
-    updateBarriers(high, low, isFromChart = false) {
+    updateBarriers(high, low, title, isFromChart = false) {
         if (!isFromChart) {
             this.relative = /^[+-]/.test(high);
         }
         this.high = high || undefined;
         this.low = low || undefined;
+        this.title = title;
     }
 
     updateBarrierShade(should_display, contract_type) {
         this.shade = (should_display && CONTRACT_SHADES[contract_type]) || this.default_shade;
     }
 
-    onBarrierChange({ high, low }) {
-        this.updateBarriers(high, low, true);
+    onBarrierChange({ high, low, title }) {
+        this.updateBarriers(high, low, title, true);
         this.onChartBarrierChange(...barriersToString(this.relative, high, low));
     }
 

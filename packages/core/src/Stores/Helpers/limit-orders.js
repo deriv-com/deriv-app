@@ -28,17 +28,16 @@ export const setLimitOrderBarriers = ({ barriers, contract_type, contract_info =
             let barrier = barriers.find(b => b.key === key);
 
             if (barrier) {
-                if (barrier.high === +obj_limit_order.value) {
-                    return;
+                if (barrier.high !== +obj_limit_order.value || barrier.title !== obj_limit_order.display_name) {
+                    barrier.onChange({
+                        high: obj_limit_order.value,
+                        title: obj_limit_order.display_name,
+                    });
                 }
-
-                barrier.onChange({
-                    high: obj_limit_order.value,
-                });
             } else {
                 const obj_barrier = {
                     key,
-                    title: `${obj_limit_order.display_name}`,
+                    title: obj_limit_order.display_name,
                     color: key === LIMIT_ORDER_TYPES.TAKE_PROFIT ? BARRIER_COLORS.GREEN : BARRIER_COLORS.ORANGE,
                     draggable: false,
                     lineStyle:

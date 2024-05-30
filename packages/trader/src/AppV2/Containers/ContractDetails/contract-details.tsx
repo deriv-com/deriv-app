@@ -86,7 +86,7 @@ const ContractDetails = observer(() => {
                 />
             </CardWrapper>
             <PayoutInfo contract_info={contract_info} />
-            <EntryExitDetails />
+            <EntryExitDetails contract_info={contract_info} />
             <TakeProfitHistory history={historyData} />
         </div>
     );

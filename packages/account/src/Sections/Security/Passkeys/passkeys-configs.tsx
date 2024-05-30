@@ -41,8 +41,8 @@ export const passkeysMenuActionEventTrack = (
     action: string,
     additional_data: { error_message?: string; subform_name?: string } = {}
 ) => {
-    // @ts-expect-error [TODO]: Update @deriv/analytics types
     Analytics.trackEvent('ce_passkey_account_settings_form', {
+        //@ts-expect-error [TODO] type not found in @deriv-analytics
         action,
         form_name: 'ce_passkey_account_settings_form',
         operating_system: getOSNameWithUAParser(),

@@ -28,7 +28,6 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const { is_from_derivgo } = common;
 
     const passkeysMenuCloseActionEventTrack = React.useCallback(() => {
-        // @ts-expect-error [TODO]: Update @deriv/analytics types
         Analytics.trackEvent('ce_passkey_account_settings_form', {
             action: 'close',
             form_name: 'ce_passkey_account_settings_form',

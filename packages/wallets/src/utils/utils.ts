@@ -1,7 +1,7 @@
 import moment from 'moment';
 
-export default function unixToDateString(date: Date) {
-    const formattedDate = moment(date).format('YYYY-MM-DD');
+export default function unixToDateString(date: Date, format = 'YYYY-MM-DD') {
+    const formattedDate = moment(date).format(format);
 
     return formattedDate;
 }

@@ -40,6 +40,10 @@ describe('ConfirmPhoneNumber', () => {
 
     const mockSetOtp = jest.fn();
 
+    beforeEach(() => {
+        (WS.authorized.setSettings as jest.Mock).mockReturnValue({});
+    });
+
     it('should render ConfirmPhoneNumber', () => {
         render(
             <StoreProvider store={store}>
@@ -84,7 +88,7 @@ describe('ConfirmPhoneNumber', () => {
         expect(screen.getByText(/This is an error message/)).toBeInTheDocument();
     });
 
-    it('should render handleError function when WS returns error promises', () => {
+    it('should render handleError function when WS returns error promises', async () => {
         const mock_handle_error = jest.fn();
         (WS.authorized.setSettings as jest.Mock).mockReturnValue({
             error: { code: 'SomeErrorCode', message: 'SomeErrorMessage' },
@@ -100,14 +104,14 @@ describe('ConfirmPhoneNumber', () => {
             </StoreProvider>
         );
         const whatsapp_btn = screen.getByRole('button', { name: 'Get code via WhatsApp' });
-        userEvent.click(whatsapp_btn);
+        await userEvent.click(whatsapp_btn);
         expect(mock_handle_error).toBeCalledTimes(1);
     });
 
-    it('should call requestOnWhatsApp when Whatsapp button is clicked', () => {
+    it('should call requestOnWhatsApp when Whatsapp button is clicked', async () => {
         const mockWhatsappButtonClick = jest.fn();
 
-        (useGetPhoneNumberOTP as jest.Mock).mockReturnValueOnce({
+        (useGetPhoneNumberOTP as jest.Mock).mockReturnValue({
             requestOnWhatsApp: mockWhatsappButtonClick,
             handleError: jest.fn(),
         });
@@ -117,11 +121,11 @@ describe('ConfirmPhoneNumber', () => {
             </StoreProvider>
         );
         const whatsapp_btn = screen.getByRole('button', { name: 'Get code via WhatsApp' });
-        userEvent.click(whatsapp_btn);
+        await userEvent.click(whatsapp_btn);
         expect(mockWhatsappButtonClick).toHaveBeenCalled();
     });
 
-    it('should call requestOnSMS when SMS button is clicked', () => {
+    it('should call requestOnSMS when SMS button is clicked', async () => {
         const mockSmsButtonClick = jest.fn();
 
         (useGetPhoneNumberOTP as jest.Mock).mockReturnValue({
@@ -134,7 +138,7 @@ describe('ConfirmPhoneNumber', () => {
             </StoreProvider>
         );
         const sms_btn = screen.getByRole('button', { name: 'Get code via SMS' });
-        userEvent.click(sms_btn);
+        await userEvent.click(sms_btn);
         expect(mockSmsButtonClick).toHaveBeenCalled();
     });
 });

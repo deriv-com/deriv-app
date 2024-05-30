@@ -4,7 +4,7 @@ import SideNoteFAQ from '../side-note-faq';
 
 describe('SideNoteFAQ', () => {
     it('should render faq regarding deposit', () => {
-        render(<SideNoteFAQ is_deposit />);
+        render(<SideNoteFAQ transaction_type='deposit' />);
 
         expect(screen.getByText("Why can't I see deposited funds in my Deriv account?")).toBeInTheDocument();
         expect(screen.getByText('What do I do if I have reached my deposit limit?')).toBeInTheDocument();
@@ -13,7 +13,7 @@ describe('SideNoteFAQ', () => {
     });
 
     it('should render faq regarding withdrawal', () => {
-        render(<SideNoteFAQ is_withdraw />);
+        render(<SideNoteFAQ transaction_type='withdraw' />);
 
         expect(
             screen.getByText("Why can't I see the funds on my card/e-wallet balance after I've made a withdrawal?")

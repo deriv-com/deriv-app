@@ -4,11 +4,10 @@ import { localize, Localize } from '@deriv/translations';
 import './side-note-faq.scss';
 
 type TSideNoteFAQProps = {
-    is_deposit?: boolean;
-    is_withdraw?: boolean;
+    transaction_type?: 'deposit' | 'withdraw';
 };
 
-const SideNoteFAQ = ({ is_deposit = false, is_withdraw = false }: TSideNoteFAQProps) => {
+const SideNoteFAQ = ({ transaction_type }: TSideNoteFAQProps) => {
     const onClickHandler = () => window.LC_API?.open_chat_window?.();
 
     return (
@@ -19,7 +18,7 @@ const SideNoteFAQ = ({ is_deposit = false, is_withdraw = false }: TSideNoteFAQPr
                 </Text>
             }
         >
-            {is_deposit && (
+            {transaction_type === 'deposit' && (
                 <Accordion
                     className='side-note-faq__accordion'
                     icon_close='IcChevronDown'
@@ -116,7 +115,7 @@ const SideNoteFAQ = ({ is_deposit = false, is_withdraw = false }: TSideNoteFAQPr
                     ]}
                 />
             )}
-            {is_withdraw && (
+            {transaction_type === 'withdraw' && (
                 <Accordion
                     className='side-note-faq__accordion'
                     icon_close='IcChevronDown'

@@ -24,7 +24,7 @@ const WithdrawalSideNotes = observer(() => {
     return (
         <>
             <DepositCryptoSideNotes />
-            {verification_code && <SideNoteFAQ is_withdraw />}
+            {verification_code && <SideNoteFAQ transaction_type='withdraw' />}
         </>
     );
 });
@@ -41,7 +41,7 @@ const WithdrawalPageContent = observer(() => {
 
     if (!!currency_config && !currency_config?.is_crypto && (verification_code || iframe_url))
         return (
-            <PageContainer hide_breadcrumb right={<SideNoteFAQ is_withdraw />}>
+            <PageContainer hide_breadcrumb right={<SideNoteFAQ transaction_type='withdraw' />}>
                 <WithdrawalFiat />
             </PageContainer>
         );

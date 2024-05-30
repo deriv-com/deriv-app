@@ -18,7 +18,7 @@ const DepositFiat: React.FC = observer(() => {
             hide_breadcrumb={is_low_risk_cr_eu_real}
             right={
                 <>
-                    <SideNoteFAQ is_deposit />
+                    <SideNoteFAQ transaction_type='deposit' />
                     <SideNote
                         description={
                             <Localize

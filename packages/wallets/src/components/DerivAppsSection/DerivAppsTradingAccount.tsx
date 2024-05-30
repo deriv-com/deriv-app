@@ -39,8 +39,8 @@ const DerivAppsTradingAccount: React.FC = () => {
                 className='wallets-deriv-apps-section__button'
                 onClick={() => {
                     activeWallet?.is_virtual
-                        ? history.push('/wallets/cashier/reset-balance')
-                        : history.push('/wallets/cashier/transfer', {
+                        ? history.push('/wallet/reset-balance')
+                        : history.push('/wallet/account-transfer', {
                               toAccountLoginId: activeLinkedToTradingAccount?.loginid,
                           });
                 }}

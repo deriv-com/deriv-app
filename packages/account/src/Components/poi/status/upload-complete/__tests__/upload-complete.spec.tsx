@@ -22,7 +22,7 @@ describe('<UploadComplete />', () => {
     const redirect_button = <Button>Lorem Ipsom</Button>;
     const needs_poa_extra_submit_message = /you must also submit a proof of address./i;
 
-    const renderWithRouter = component => render(<BrowserRouter>{component}</BrowserRouter>);
+    const renderWithRouter = (component: React.ReactElement) => render(<BrowserRouter>{component}</BrowserRouter>);
 
     it('should render <UploadComplete /> component for manual upload', () => {
         renderWithRouter(<UploadComplete is_manual_upload />);

@@ -1,6 +1,5 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { useStore } from '@deriv/stores';
-
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { RegionAvailability } from 'Constants/platform-config';
 
@@ -236,4 +235,11 @@ export type TRealWalletsUpgradeSteps = {
     wallet_upgrade_steps: TWalletSteps & {
         current_step: number;
     };
+};
+
+export type TTrustpilotWidgetData = {
+    stars: number;
+    trustScore: number;
+    numberOfReviews: string;
+    error?: string;
 };

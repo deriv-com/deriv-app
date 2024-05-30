@@ -43,7 +43,8 @@ const PassportDocumentUpload = () => {
                     fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
                     icon={<PassportPlaceholder />}
                     maxSize={8388608}
-                    onFileChange={(file: File) => setFormValues('passportCard', file)}
+                    noClick
+                    onFileChange={(file?: File) => setFormValues('passportCard', file)}
                 />
                 <DocumentRuleHints docType='passport' />
             </div>

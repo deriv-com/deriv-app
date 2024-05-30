@@ -1,6 +1,10 @@
 .wallets-added-mt5 {
     &__icon {
         width: fit-content;
+
+        &--pending {
+            opacity: 0.5;
+        }
     }
 
     &__actions {

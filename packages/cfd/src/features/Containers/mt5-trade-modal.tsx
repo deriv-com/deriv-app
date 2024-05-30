@@ -11,7 +11,7 @@ import {
     isMobile,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { WEBTRADER_URL, getPlatformMt5DownloadLink } from '../../Helpers/constants';
+import { getWebtraderUrl, getPlatformMt5DownloadLink } from '../../Helpers/constants';
 import SpecBox from '../../Components/specbox';
 import PasswordBox from '../../Components/passwordbox';
 import TradingPlatformIcon from '../../Assets/svgs/trading-platform';
@@ -161,7 +161,7 @@ const DMT5TradeModal = ({
                     <a
                         className='dc-btn cfd-trade-modal__download-center-app--option-link'
                         type='button'
-                        href={WEBTRADER_URL({ mt5_trade_account })}
+                        href={getWebtraderUrl({ mt5_trade_account })}
                         target='_blank'
                         rel='noopener noreferrer'
                     >

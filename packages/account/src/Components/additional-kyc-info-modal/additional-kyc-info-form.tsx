@@ -2,7 +2,7 @@ import { Button, Loading, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Form, Formik } from 'formik';
 import React from 'react';
 import { useSettings } from '@deriv/api';
@@ -10,7 +10,8 @@ import { OECD_TIN_FORMAT_URL } from '../../Constants/external-urls';
 import FormFieldInfo from '../form-field-info';
 import { FormInputField } from '../forms/form-fields';
 import FormSelectField from '../forms/form-select-field';
-import { TListItem, getFormConfig } from './form-config';
+import { getFormConfig } from './form-config';
+import { TListItem } from 'Types';
 
 const FormTitle = () => (
     <Text
@@ -99,7 +100,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                 <FormSelectField {...fields.place_of_birth} />
                             </fieldset>
                             <fieldset
-                                className={classNames(
+                                className={clsx(
                                     'additional-kyc-info-modal__form-field',
                                     'additional-kyc-info-modal__form-field--info'
                                 )}
@@ -112,6 +113,7 @@ export const AdditionalKycInfoForm = observer(({ setError }: TAdditionalKycInfoF
                                 />
                             </fieldset>
                             <fieldset className='additional-kyc-info-modal__form-field--info'>
+                                {/* @ts-expect-error Label type of Input field is string instead of ReactNode */}
                                 <FormInputField
                                     {...fields.tax_identification_number}
                                     data_testId='dt_tax_identification_number'

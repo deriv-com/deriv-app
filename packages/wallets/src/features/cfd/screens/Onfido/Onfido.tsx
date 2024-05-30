@@ -24,8 +24,6 @@ const Onfido = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [hasSubmitted, setFormValues, onfidoRef]);
 
-    if (hasSubmitted) return null;
-
     return (
         <div className='wallets-onfido'>
             <VerifyDocumentDetails />

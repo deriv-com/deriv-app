@@ -107,7 +107,7 @@ jobs:
         if [[ "${{ job.status }}" == "success" ]]; then
           echo "msg=:rocket: Smoke test run (${{ matrix.containers }}) passed successfully!" >> $GITHUB_OUTPUT
         else
-          echo "msg=:x: Smoke test run (${{ matrix.containers }}) failed. See logs for details: [Visit Action](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}})" >> $GITHUB_OUTPUT
+          # echo "msg=:x: Smoke test run (${{ matrix.containers }}) failed. See logs for details: [Visit Action](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}})" >> $GITHUB_OUTPUT
         fi
         
     - name: Leave comment

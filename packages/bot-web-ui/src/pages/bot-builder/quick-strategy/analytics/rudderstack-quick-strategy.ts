@@ -80,7 +80,7 @@ export const rudderStackSendSelectQsStrategyGuideEvent = ({ selected_strategy }:
 
 export const rudderStackSendRunBotEvent = () => {
     Analytics.trackEvent('ce_bot_form', {
-        action: ACTION.SELECT_QUICK_STRATEGY_GUIDE,
+        action: ACTION.RUN_BOT,
         form_name,
         subpage_name: getSubpageName(),
     });

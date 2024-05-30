@@ -25,6 +25,7 @@ export const CFD_text: { [key: string]: string } = {
     all: 'Swap-Free',
     all_demo: 'Swap-Free Demo',
     all_svg: 'Swap-Free SVG',
+    all_bvi: 'Zero spread BVI',
 } as const;
 
 export const getMT5Title = (account_type: string) => {

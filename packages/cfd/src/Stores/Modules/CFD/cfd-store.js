@@ -20,6 +20,7 @@ export default class CFDStore extends BaseStore {
     jurisdiction_selected_shortcode = '';
     is_compare_accounts_visible = false;
     is_mt5_trade_modal_visible = false;
+    product = '';
 
     account_type = {
         category: '',
@@ -86,6 +87,7 @@ export default class CFDStore extends BaseStore {
             current_account: observable,
             is_cfd_verification_modal_visible: observable,
             error_type: observable,
+            product: observable,
             dxtrade_tokens: observable,
             ctrader_tokens: observable,
             migrated_mt5_accounts: observable,
@@ -112,6 +114,7 @@ export default class CFDStore extends BaseStore {
             beginRealSignupForMt5: action.bound,
             enableMt5FinancialStpModal: action.bound,
             setAccountType: action.bound,
+            setProduct: action.bound,
             setCurrentAccount: action.bound,
             setMT5TradeAccount: action.bound,
             setIsAccountBeingCreated: action.bound,
@@ -458,7 +461,11 @@ export default class CFDStore extends BaseStore {
             phone,
             state: address_state,
             zipCode: address_postcode,
-            ...(this.account_type.type === 'all' ? { sub_account_category: 'swap_free' } : {}),
+            ...(this.account_type.type === 'all'
+                ? this.product === 'swap_free'
+                    ? { product: 'swap_free' }
+                    : { product: 'zero_spread' }
+                : {}),
             ...(values.server ? { server: values.server } : {}),
             ...(this.jurisdiction_selected_shortcode ? { company: this.jurisdiction_selected_shortcode } : {}),
             ...(this.jurisdiction_selected_shortcode !== Jurisdiction.LABUAN
@@ -516,6 +523,10 @@ export default class CFDStore extends BaseStore {
 
     setAccountType(account_type) {
         this.account_type = account_type;
+    }
+
+    setProduct(product) {
+        this.product = product;
     }
 
     setCurrentAccount(data, meta) {

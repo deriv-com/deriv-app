@@ -18,6 +18,11 @@ export const MARKET_TYPE = {
     ALL: 'all',
 } as const;
 
+export const PRODUCT = {
+    SWAPFREE: 'swap_free',
+    ZEROSPREAD: 'zero_spread',
+};
+
 export const MOBILE_PLATFORMS = {
     IOS: 'ios',
     HAUWEI: 'huawei',
@@ -54,6 +59,7 @@ export const MARKET_TYPE_SHORTCODE = {
     FINANCIAL_LABUAN: 'financial_labuan',
     FINANCIAL_MALTA_INVEST: 'financial_maltainvest',
     ALL_SVG: 'all_svg',
+    ALL_BVI: 'all_bvi',
     ALL_DXTRADE: 'all_',
 } as const;
 

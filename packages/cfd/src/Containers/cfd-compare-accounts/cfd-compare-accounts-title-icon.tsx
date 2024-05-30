@@ -12,7 +12,7 @@ const CFDCompareAccountsTitleIcon = ({ trading_platforms, is_eu_user, is_demo }:
     const jurisdiction_card_icon =
         trading_platforms.platform === CFD_PLATFORMS.DXTRADE || trading_platforms.platform === CFD_PLATFORMS.CTRADER
             ? getAccountIcon(trading_platforms.platform)
-            : getAccountIcon(market_type);
+            : getAccountIcon(market_type, trading_platforms.product);
     const jurisdiction_card_title =
         trading_platforms.platform === CFD_PLATFORMS.DXTRADE || trading_platforms.platform === CFD_PLATFORMS.CTRADER
             ? getAccountCardTitle(trading_platforms.platform, is_demo)

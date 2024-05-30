@@ -582,6 +582,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         submitMt5Password,
         submitCFDPassword,
         new_account_response,
+        product,
         setMigratedMT5Accounts,
         is_mt5_password_changed_modal_visible,
         is_mt5_password_invalid_format_modal_visible,
@@ -809,10 +810,9 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         let type_label = '';
         switch (platform) {
             case CFD_PLATFORMS.MT5:
-                type_label =
-                    getMtCompanies(show_eu_related_content)[category as keyof TMtCompanies][
-                        type as keyof TMtCompanies['demo' | 'real']
-                    ].short_title;
+                type_label = getMtCompanies(show_eu_related_content, product)[category as keyof TMtCompanies][
+                    type as keyof TMtCompanies['demo' | 'real']
+                ].short_title;
                 break;
             case CFD_PLATFORMS.DXTRADE:
                 type_label =

@@ -239,6 +239,7 @@ type TTradingPlatformAvailableAccount = {
     sub_account_type: string;
     max_count?: number;
     available_count?: number;
+    product: 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx';
 };
 
 type TAvailableCFDAccounts = {
@@ -1008,6 +1009,7 @@ type TTradersHubStore = {
             availability?: TRegionAvailability;
             description?: string;
             market_type?: 'all' | 'financial' | 'synthetic';
+            product: string;
         }[];
     openModal: (modal_id: string, props?: unknown) => void;
     selected_account: {

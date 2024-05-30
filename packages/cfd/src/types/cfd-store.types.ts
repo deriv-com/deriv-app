@@ -9,6 +9,7 @@ export type TCFDStore = {
     toggleCFDVerificationModal: () => void;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     setAccountType: (account_type: { category: string; type?: string }) => void;
+    product: 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx';
     dxtrade_tokens: {
         demo: string;
         real: string;

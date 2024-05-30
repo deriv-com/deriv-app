@@ -97,6 +97,7 @@ export type TTradingPlatformAvailableAccount = {
 export type TModifiedTradingPlatformAvailableAccount = Omit<TTradingPlatformAvailableAccount, 'market_type'> & {
     platform?: 'mt5' | 'dxtrade' | 'ctrader';
     market_type: TTradingPlatformAvailableAccount['market_type'] | 'synthetic';
+    product: 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx';
 };
 
 export type TCardFlipStatus = {

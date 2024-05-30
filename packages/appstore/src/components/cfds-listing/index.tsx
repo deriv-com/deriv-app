@@ -65,7 +65,7 @@ const CFDsListing = observer(() => {
         financial_restricted_countries,
     } = traders_hub;
 
-    const { setAccountType, toggleCTraderTransferModal } = cfd;
+    const { setAccountType, toggleCTraderTransferModal, setProduct } = cfd;
     const {
         account_status,
         is_landing_company_loaded,
@@ -261,6 +261,7 @@ const CFDsListing = observer(() => {
                                                 category: selected_account_type,
                                                 type: existing_account.market_type,
                                             });
+                                            setProduct(existing_account.product);
                                             setAppstorePlatform(existing_account.platform);
                                             getAccount();
                                         }

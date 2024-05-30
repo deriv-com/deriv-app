@@ -1,6 +1,14 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 
-import { CFD_PLATFORMS, ContentFlag, formatMoney, getAppstorePlatforms, getCFDAvailableAccount } from '@deriv/shared';
+import {
+    CFD_PLATFORMS,
+    ContentFlag,
+    formatMoney,
+    isPOARequiredForMT5,
+    getAppstorePlatforms,
+    getCFDAvailableAccount,
+    getAuthenticationStatusInfo,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import BaseStore from './base-store';
 import { isEuCountry } from '_common/utility';
@@ -378,6 +386,9 @@ export default class TradersHubStore extends BaseStore {
         const getSwapFreeAccountDesc = () => {
             return localize('Swap-free CFDs on selected financial and derived instruments.');
         };
+        const getZeroSpreadAccountDesc = () => {
+            return localize('Zero spread CFDs on selected financial and derived instruments');
+        };
 
         const all_available_accounts = [
             ...getCFDAvailableAccount(),
@@ -386,6 +397,7 @@ export default class TradersHubStore extends BaseStore {
                 description: getAccountDesc(),
                 platform: CFD_PLATFORMS.MT5,
                 market_type: 'financial',
+                product: 'financial',
                 icon: !this.is_eu_user || this.is_demo_low_risk ? 'Financial' : 'CFDs',
                 availability: 'All',
             },
@@ -394,7 +406,17 @@ export default class TradersHubStore extends BaseStore {
                 description: getSwapFreeAccountDesc(),
                 platform: CFD_PLATFORMS.MT5,
                 market_type: 'all',
+                product: 'swap_free',
                 icon: 'SwapFree',
+                availability: 'Non-EU',
+            },
+            {
+                name: localize('Zero Spread'),
+                description: getZeroSpreadAccountDesc(),
+                platform: CFD_PLATFORMS.MT5,
+                market_type: 'all',
+                product: 'zero_spread',
+                icon: 'ZeroSpread',
                 availability: 'Non-EU',
             },
         ];
@@ -566,12 +588,46 @@ export default class TradersHubStore extends BaseStore {
         }
     }
 
+    openRealPasswordModal = account_type => {
+        const { modules } = this.root_store;
+        const { enableCFDPasswordModal, setAccountType } = modules.cfd;
+        setAccountType(account_type);
+        enableCFDPasswordModal();
+    };
+
     async openRealAccount(account_type, platform) {
         const { client, modules } = this.root_store;
-        const { has_active_real_account } = client;
-        const { createCFDAccount, enableCFDPasswordModal, toggleJurisdictionModal } = modules.cfd;
+        const { has_active_real_account, account_status, should_restrict_bvi_account_creation } = client;
+        const {
+            createCFDAccount,
+            enableCFDPasswordModal,
+            toggleJurisdictionModal,
+            product,
+            toggleCFDVerificationModal,
+            has_submitted_cfd_personal_details,
+        } = modules.cfd;
+        const { poi_or_poa_not_submitted, poi_acknowledged_for_bvi_labuan_vanuatu, poa_acknowledged } =
+            getAuthenticationStatusInfo(account_status);
+        const is_poa_required_for_zero_spread = isPOARequiredForMT5(account_status, 'bvi');
         if (has_active_real_account && platform === CFD_PLATFORMS.MT5) {
-            toggleJurisdictionModal();
+            if (product !== 'zero_spread' && product !== 'swap_free') {
+                toggleJurisdictionModal();
+            } else if (product === 'swap_free') {
+                enableCFDPasswordModal();
+            } else if (product === 'zero_spread') {
+                if (
+                    poi_acknowledged_for_bvi_labuan_vanuatu &&
+                    !poi_or_poa_not_submitted &&
+                    !should_restrict_bvi_account_creation &&
+                    poa_acknowledged &&
+                    has_submitted_cfd_personal_details &&
+                    !is_poa_required_for_zero_spread
+                ) {
+                    this.openPasswordModal(account_type);
+                } else {
+                    toggleCFDVerificationModal();
+                }
+            }
         } else if (platform === CFD_PLATFORMS.DXTRADE) {
             enableCFDPasswordModal();
         } else {
@@ -662,7 +718,7 @@ export default class TradersHubStore extends BaseStore {
     setCombinedCFDMT5Accounts() {
         this.combined_cfd_mt5_accounts = [];
         this.available_mt5_accounts?.forEach(account => {
-            const existing_accounts = this.getExistingAccounts(account.platform, account.market_type);
+            const existing_accounts = this.getExistingAccounts(account.platform, account.market_type, account.product);
             const has_existing_accounts = existing_accounts.length > 0;
             if (has_existing_accounts) {
                 existing_accounts.forEach(existing_account => {
@@ -682,6 +738,7 @@ export default class TradersHubStore extends BaseStore {
                             action_type: 'multi-action',
                             availability: this.selected_region,
                             market_type: account.market_type,
+                            product: account.product,
                         },
                     ];
                 });
@@ -697,6 +754,7 @@ export default class TradersHubStore extends BaseStore {
                         action_type: 'get',
                         availability: this.selected_region,
                         market_type: account.market_type,
+                        product: account.product,
                     },
                 ];
             }

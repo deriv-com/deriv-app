@@ -3,7 +3,7 @@ import { Trans } from 'react-i18next';
 import { THooks } from 'src/types';
 import {
     LabelPairedChevronRightLgFillIcon,
-    StandaloneLaptopRegularIcon,
+    LegacyMonitorIcon,
     StandaloneMobileNotchRegularIcon,
 } from '@deriv/quill-icons';
 import { WalletText } from '../../../../../components/Base';
@@ -46,7 +46,7 @@ const MT5MobileRedirectOption: FC<TMT5MobileRedirectOptionProps> = ({ mt5TradeAc
                 rel='noopener noreferrer'
                 target='_blank'
             >
-                <StandaloneLaptopRegularIcon />
+                <LegacyMonitorIcon iconSize='sm' />
                 <div className='wallets-mobile-redirect-option__button__content'>
                     <WalletText align='left' size='xs' weight='bold'>
                         <Trans defaults={`MetaTrader5 web terminal`} />

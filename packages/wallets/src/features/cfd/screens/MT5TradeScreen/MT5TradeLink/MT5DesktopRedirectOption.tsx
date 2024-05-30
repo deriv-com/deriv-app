@@ -4,7 +4,7 @@ import MT5TradeLink from './MT5TradeLink';
 import './MT5TradeLink.scss';
 
 const MT5DesktopRedirectOption = () => {
-    const apps: (keyof typeof AppToContentMapper)[] = ['windows', 'macos', 'linux'];
+    const apps: (keyof typeof AppToContentMapper)[] = ['web', 'windows', 'macos', 'linux'];
     return (
         <Fragment>
             {apps.map(app => (

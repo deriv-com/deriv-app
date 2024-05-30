@@ -1,6 +1,8 @@
 .card-wrapper {
+    display: flex;
+    flex-direction: column;
     background-color: var(--core-color-solid-slate-50);
-    padding: 1rem;
+    padding: var(--semantic-spacing-general-md);
     border-radius: 0.625rem;
     gap: var(--semantic-spacing-gap-lg);
 }

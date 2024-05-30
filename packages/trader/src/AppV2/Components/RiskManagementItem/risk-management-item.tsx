@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActionSheet, Text, TextField, ToggleSwitch } from '@deriv-com/quill-ui';
 import { localize } from '@deriv/translations';
-import RiskManagementInfoModal from '../RiskManagementInfoModal/risk-management-info-modal';
+import RiskManagementInfoModal from '../RiskManagementInfoModal';
 import DealCancellationRemainingTime from '../DealCancellationRemainingTime/deal-cancellation-remaining-time';
 
 type RiskManagementItemProps = {
@@ -19,14 +19,18 @@ const RiskManagementItem = ({
 }: RiskManagementItemProps) => {
     const [toggle, setToggle] = React.useState(false);
     const [isOpen, setIsOpen] = React.useState(false);
-    const dummy_boolean = true; // This will be flag from backend
+    const dummy_boolean = false; // This will be flag from backend
 
     return (
         <div className='risk-management-item--container'>
             <div className='risk-management-item'>
                 <span className='risk-management-item--title'>
                     <Text size='sm'>{label}</Text>
-                    <RiskManagementInfoModal header_content={label} body_content={modal_body_content} />
+                    <RiskManagementInfoModal
+                        header_content={label}
+                        body_content={modal_body_content}
+                        info_message='lorem lorem lorem ipsum'
+                    />
                 </span>
                 {dummy_boolean && !is_deal_cancellation && <Text size='sm'>5 USD</Text>}
                 {is_deal_cancellation && <DealCancellationRemainingTime />}

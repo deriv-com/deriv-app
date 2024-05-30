@@ -53,17 +53,10 @@ const TradingAppCard = ({
     const { account_status: { authentication } = {} } = client;
 
     const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
-    const available_platforms = getAvailablePlatforms();
 
     const demo_label = localize('Demo');
 
-    let app_platform: PlatformConfig[] = [];
-
-    if (available_platforms.length) {
-        app_platform = available_platforms.includes('options') ? getAppstorePlatforms() : getMFAppstorePlatforms();
-    } else {
-        app_platform = getAppstorePlatforms();
-    }
+    const app_platform = is_eu_user ? getMFAppstorePlatforms() : getAppstorePlatforms();
 
     const { app_desc, link_to, is_external, new_tab } = app_platform.find(config => config.name === name) || {
         app_desc: description,

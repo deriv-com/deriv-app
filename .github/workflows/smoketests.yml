@@ -34,7 +34,7 @@ jobs:
 
     - name: Cypress run
       # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action
-      if: ${{ contains(github.event.issue.draft, 'false') && contains(github.event.issue.labels.*.name, 'Wallets') }}
+      if: ${{ github.event.issue.draft == false && contains(github.event.issue.labels.*.name, 'Wallets') }}
       uses: cypress-io/github-action@97d526c9027e1b1eedde4f37196aebe8834005ef
       with:
         # Records to Cypress Cloud 
@@ -101,17 +101,17 @@ jobs:
 
     - name: Set comments message
       id: set_msg 
-      if: always() && ${{ contains(github.event.issue.draft, 'false') && contains(github.event.issue.labels.*.name, 'Wallets') }}
+      if: always() && ${{ github.event.issue.draft == false && contains(github.event.issue.labels.*.name, 'Wallets') }}
       run: |
         # Using shell script to conditionally set the message
         if [[ "${{ job.status }}" == "success" ]]; then
           echo "msg=:rocket: Smoke test run (${{ matrix.containers }}) passed successfully!" >> $GITHUB_OUTPUT
         else
-          # echo "msg=:x: Smoke test run (${{ matrix.containers }}) failed. See logs for details: [Visit Action](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}})" >> $GITHUB_OUTPUT
+          echo "msg=:x: Smoke test run (${{ matrix.containers }}) failed. See logs for details: [Visit Action](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}})" >> $GITHUB_OUTPUT
         fi
         
     - name: Leave comment
-      if: always() && ${{ contains(github.event.issue.draft, 'false') && contains(github.event.issue.labels.*.name, 'Wallets') }}
+      if: always() && ${{ github.event.issue.draft == false && contains(github.event.issue.labels.*.name, 'Wallets') }}
       uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31
       with:
         header: Smoke tests status update

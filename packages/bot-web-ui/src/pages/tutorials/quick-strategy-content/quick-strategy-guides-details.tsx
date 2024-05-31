@@ -3,6 +3,7 @@ import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { rudderStackSendSelectQsStrategyGuideEvent } from '../../bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
 import { STRATEGIES } from '../../bot-builder/quick-strategy/config';
 import StrategyTabContent from '../../bot-builder/quick-strategy/form-wrappers/strategy-tab-content';
 
@@ -32,7 +33,10 @@ const QuickStrategyGuidesDetail = observer(
                             <div
                                 className='tutorials-quick-strategy__placeholder'
                                 key={type}
-                                onClick={() => setTutorialSelectedStrategy(qs_name)}
+                                onClick={() => {
+                                    setTutorialSelectedStrategy(qs_name);
+                                    rudderStackSendSelectQsStrategyGuideEvent({ selected_strategy: qs_name });
+                                }}
                                 tabIndex={index}
                                 data-testid={'dt_quick_strategy_guides_details'}
                                 onKeyDown={(e: KeyboardEvent) => {

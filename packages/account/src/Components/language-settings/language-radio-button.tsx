@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Icon } from '@deriv/components';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { getAllowedLanguages } from '@deriv/translations';
 
 export type TLanguageRadioButton = {
@@ -15,7 +15,7 @@ const LanguageRadioButton = ({ is_current_language, id, language_code, name, onC
     const allowed_languages: Record<string, string> = getAllowedLanguages();
     return (
         <div
-            className={classNames('settings-language__language-link', {
+            className={clsx('settings-language__language-link', {
                 'settings-language__language-link--active': is_current_language,
             })}
             id={`dt_settings_${language_code}_button`}
@@ -39,7 +39,7 @@ const LanguageRadioButton = ({ is_current_language, id, language_code, name, onC
                 <div>
                     <Text
                         size='xs'
-                        className={classNames('settings-language__language-name', {
+                        className={clsx('settings-language__language-name', {
                             'settings-language__language-name--active': is_current_language,
                         })}
                     >

@@ -3,9 +3,9 @@ import { getDefaultFields, isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { GetSettings } from '@deriv/api-types';
 
-type TTermsOfConfigSettings = GetSettings & { fatca_declaration: number };
+type TTermsOfConfigSettings = GetSettings & { fatca_declaration?: number };
 
-const getTermsOfUseConfig = (account_settings: Partial<TTermsOfConfigSettings>) => ({
+const getTermsOfUseConfig = (account_settings: TTermsOfConfigSettings) => ({
     agreed_tos: {
         supported_in: ['svg', 'maltainvest'],
         default_value: false,
@@ -29,7 +29,7 @@ const termsOfUseConfig = (
         real_account_signup_target,
         account_settings,
         residence,
-    }: { real_account_signup_target: string; account_settings: TTermsOfConfigSettings; residence: string },
+    }: { real_account_signup_target: string; account_settings: TTermsOfConfigSettings; residence?: string },
     TermsOfUse: React.Component
 ) => {
     const active_title = localize('Terms of use');

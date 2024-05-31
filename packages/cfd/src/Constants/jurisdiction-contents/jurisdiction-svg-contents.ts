@@ -15,7 +15,7 @@ export const getJurisdictionSvgContents = ({
             ),
             title_indicators: {
                 type: 'displayText',
-                display_text: localize('40+'),
+                display_text: localize('210+'),
                 display_text_skin_color: 'red-darker',
             },
         },

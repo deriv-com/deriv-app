@@ -16,18 +16,6 @@ const WalletsAuthProvider = ({ children, ...rest }: Omit<ComponentProps<typeof A
                 return isWallet && isFiat;
             })[0];
 
-            const queryParams = new URLSearchParams(location.search);
-            const loginidQueryParam = queryParams.get('loginid');
-
-            if (loginidQueryParam) {
-                const selectedWalletAccount = loginIds.filter(loginid => loginid === loginidQueryParam)[0];
-                const url = new URL(window.location.href);
-                url.searchParams.delete('loginid');
-                window.history.replaceState({}, document.title, url.toString());
-
-                return selectedWalletAccount;
-            }
-
             if (!defaultFiatWallet) {
                 const defaultWallet = loginIds.filter((loginId: string) => {
                     const { account_category: accountCategory } = accountsObject[loginId];

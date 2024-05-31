@@ -194,7 +194,7 @@ describe('JurisdictionCard', () => {
         render(<JurisdictionCard {...mock_props} />);
         expect(screen.getByText('St. Vincent & Grenadines')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
-        expect(screen.getByText('40+')).toBeInTheDocument();
+        expect(screen.getByText('210+')).toBeInTheDocument();
         expect(
             screen.getByText(
                 'Forex (standard), stock indices, commodities, cryptocurrencies, synthetic indices, basket indices and derived FX'

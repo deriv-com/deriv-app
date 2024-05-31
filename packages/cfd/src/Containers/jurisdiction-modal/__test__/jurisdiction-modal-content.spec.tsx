@@ -206,7 +206,7 @@ describe('JurisdictionModalContent', () => {
                 'Forex (standard), stock indices, commodities, cryptocurrencies, synthetic indices, basket indices and derived FX'
             )
         ).toHaveLength(3);
-        expect(screen.getAllByText('40+')).toHaveLength(3);
+        expect(screen.getAllByText('210+')).toHaveLength(3);
         expect(screen.getAllByText('Leverage')).toHaveLength(3);
         expect(screen.getAllByText('1:1000')).toHaveLength(3);
         expect(screen.getAllByText('Verifications')).toHaveLength(3);
@@ -353,7 +353,7 @@ describe('JurisdictionModalContent', () => {
         ).toBeInTheDocument();
         expect(screen.getByText('Regulator/EDR')).toBeInTheDocument();
         expect(screen.getByText('Deriv (SVG) LLC (company no. 273 LLC 2020)')).toBeInTheDocument();
-        expect(screen.getByText('40+')).toBeInTheDocument();
+        expect(screen.getByText('210+')).toBeInTheDocument();
         expect(
             screen.getByText(
                 'Forex (standard), stock indices, commodities, cryptocurrencies, synthetic indices, basket indices and derived FX'

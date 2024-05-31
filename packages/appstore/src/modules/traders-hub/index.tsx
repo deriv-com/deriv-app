@@ -40,17 +40,18 @@ const TradersHub = observer(() => {
         (!is_switching && !is_logging_in && is_account_setting_loaded && is_landing_company_loaded) ||
         checkServerMaintenance(website_status);
 
-    const [direct_to_real_account_creation] = useGrowthbookGetFeatureValue({
-        featureFlag: 'direct-real-account-creation-flow',
-        defaultValue: false,
-    });
+    // const [direct_to_real_account_creation] = useGrowthbookGetFeatureValue({
+    //     featureFlag: 'direct-real-account-creation-flow',
+    //     defaultValue: false,
+    // });
 
     React.useEffect(() => {
         if (is_eu_user) {
             setTogglePlatformType('cfd');
         }
         if (!has_active_real_account && is_from_signup_account && is_logged_in) {
-            if (direct_to_real_account_creation && is_cr_demo) {
+            // if (direct_to_real_account_creation && is_cr_demo) {
+            if (is_cr_demo) {
                 openRealAccountSignup('svg');
                 setIsFromSignupAccount(false);
             } else if (is_eu_demo) {
@@ -65,7 +66,7 @@ const TradersHub = observer(() => {
         is_eu_user,
         is_from_signup_account,
         is_logged_in,
-        direct_to_real_account_creation,
+        // direct_to_real_account_creation,
         openRealAccountSignup,
         setIsFromSignupAccount,
         setTogglePlatformType,

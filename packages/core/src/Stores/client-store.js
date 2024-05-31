@@ -2766,7 +2766,6 @@ export default class ClientStore extends BaseStore {
 
                 if (data?.passkeys_list) {
                     const should_show_effortless_login_modal =
-                        this.root_store.ui.is_mobile &&
                         !data?.passkeys_list?.length &&
                         this.is_passkey_supported &&
                         show_effortless_login_modal &&

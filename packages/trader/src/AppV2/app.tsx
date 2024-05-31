@@ -11,6 +11,7 @@ import Menu from './Containers/Menu';
 import 'Sass/app.scss';
 import ContractDetails from './Containers/ContractDetails';
 import '@deriv-com/quill-tokens/dist/quill.css';
+import { useLocation } from 'react-router';
 
 type Apptypes = {
     passthrough: {
@@ -24,16 +25,19 @@ const App = ({ passthrough }: Apptypes) => {
     React.useEffect(() => {
         return () => root_store.ui.setPromptHandler(false);
     }, [root_store]);
-
+    const location = useLocation();
     return (
         <TraderProviders store={root_store}>
-            <BottomNav>
-                <Trade />
-                <Markets />
-                <Positions />
-                <Menu />
+            {location.pathname.includes('/contract/') ? (
                 <ContractDetails />
-            </BottomNav>
+            ) : (
+                <BottomNav>
+                    <Trade />
+                    <Markets />
+                    <Positions />
+                    <Menu />
+                </BottomNav>
+            )}
         </TraderProviders>
     );
 };

@@ -136,6 +136,7 @@ const transformFunctionMap: Record<string, (data: TContractInfo) => Record<strin
     [CONTRACT_TYPES.OVER_UNDER.UNDER]: transformMatcherData,
     [CONTRACT_TYPES.RESET.CALL]: transformRiseData,
     [CONTRACT_TYPES.PUT]: transformRiseData,
+    [CONTRACT_TYPES.CALL]: transformRiseData,
     [CONTRACT_TYPES.TOUCH.ONE_TOUCH]: transformRiseData,
     [CONTRACT_TYPES.TOUCH.NO_TOUCH]: transformRiseData,
     [CONTRACT_TYPES.ACCUMULATOR]: transformAccumulatorData,

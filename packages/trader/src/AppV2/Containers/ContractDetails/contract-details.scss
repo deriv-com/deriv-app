@@ -3,7 +3,16 @@
     padding: 8px;
     display: flex;
     flex-direction: column;
+    overflow: auto;
+    height: 100vh;
     gap: var(--semantic-spacing-general-sm);
+    &--two-buttons {
+        padding-bottom: 180px;
+    }
+
+    &--one-button {
+        padding-bottom: 90px;
+    }
 }
 .placeholder {
     min-height: 100px;

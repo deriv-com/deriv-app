@@ -9,5 +9,7 @@
         gap: var(--semantic-spacing-gap-md);
         width: 100%;
         box-shadow: var(--core-elevation-shadow-210);
+        position: fixed;
+        bottom: 0;
     }
 }

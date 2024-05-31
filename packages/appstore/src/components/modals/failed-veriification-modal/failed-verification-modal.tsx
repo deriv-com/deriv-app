@@ -1,10 +1,10 @@
 import { Fragment } from 'react';
-import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { useHistory } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
 import { Text, Dialog } from '@deriv/components';
 import { isMobile, getAuthenticationStatusInfo, routes, Jurisdiction } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import './failed-verification-modal.scss';
 
 type TFailedVerificationModal = {
@@ -63,7 +63,7 @@ const FailedVerificationModalContent = ({
     );
 };
 
-const FailedVerificationModal = () => {
+const FailedVerificationModal = observer(() => {
     const {
         traders_hub,
         ui,
@@ -145,6 +145,6 @@ const FailedVerificationModal = () => {
             />
         </Dialog>
     );
-};
+});
 
-export default observer(FailedVerificationModal);
+export default FailedVerificationModal;

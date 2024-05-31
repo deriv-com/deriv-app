@@ -1,5 +1,4 @@
 import { useState, Fragment } from 'react';
-import { observer } from 'mobx-react-lite';
 import { useWalletMigration } from '@deriv/hooks';
 import { makeLazyLoader, moduleLoader } from '@deriv/shared';
 import { Loading } from '@deriv/components';
@@ -7,6 +6,7 @@ import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { observer } from '@deriv/stores';
 
 const RealWalletsUpgrade = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "modal_real-wallets-upgrade" */ './real-wallets-upgrade')),
@@ -176,7 +176,7 @@ type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
 };
 
-const ModalManager = () => {
+const ModalManager = observer(() => {
     const { is_eligible, is_in_progress } = useWalletMigration();
     const store = useStores();
     const { common, client, modules, traders_hub, ui } = store;
@@ -213,7 +213,6 @@ const ModalManager = () => {
         disableApp,
         is_reset_trading_password_modal_visible,
         setResetTradingPasswordModalOpen,
-        is_cfd_reset_password_modal_enabled,
         is_top_up_virtual_open,
         is_top_up_virtual_success,
         is_mt5_migration_modal_open,
@@ -223,7 +222,6 @@ const ModalManager = () => {
         is_account_transfer_modal_open,
         toggleAccountTransferModal,
         is_real_wallets_upgrade_on,
-        is_account_type_modal_visible,
         is_failed_verification_modal_visible,
         is_regulators_compare_modal_visible,
         is_wallet_migration_failed,
@@ -354,6 +352,6 @@ const ModalManager = () => {
             )}
         </Fragment>
     );
-};
+});
 
-export default observer(ModalManager);
+export default ModalManager;

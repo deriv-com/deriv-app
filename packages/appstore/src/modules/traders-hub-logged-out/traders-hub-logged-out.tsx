@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { observer, useStore } from '@deriv/stores';
 import { Div100vhContainer, DesktopWrapper, MobileWrapper, Loading, Text } from '@deriv/components';
 import { isEuCountry } from '@deriv/shared';
@@ -31,7 +31,7 @@ const TradersHubLoggedOut = observer(() => {
     return (
         <Div100vhContainer className='traders-hub-logged-out__mobile' height_offset='50px' is_disabled={is_desktop}>
             <div
-                className={classNames('traders-hub-logged-out', {
+                className={clsx('traders-hub-logged-out', {
                     'traders-hub-logged-out__eu-user': is_eu_user,
                 })}
             >

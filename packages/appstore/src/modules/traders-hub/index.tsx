@@ -8,7 +8,7 @@ import ModalManager from 'Components/modals/modal-manager';
 import MainTitleBar from 'Components/main-title-bar';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import './traders-hub.scss';
 import { useContentFlag, useGrowthbookFeatureFlag } from '@deriv/hooks';
 
@@ -101,7 +101,7 @@ const TradersHub = observer(() => {
         return (
             <div
                 data-testid='dt_traders_hub'
-                className={classNames('traders-hub__main-container', {
+                className={clsx('traders-hub__main-container', {
                     'traders-hub__main-container-reversed': is_eu_user,
                 })}
             >
@@ -131,7 +131,7 @@ const TradersHub = observer(() => {
                 {can_show_notify && <Notifications />}
                 <div
                     id='traders-hub'
-                    className={classNames('traders-hub', {
+                    className={clsx('traders-hub', {
                         'traders-hub--eu-user': is_eu_user && is_mt5_allowed,
                         'traders-hub--eu-user-without-mt5': is_eu_user && !is_mt5_allowed,
                     })}

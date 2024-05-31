@@ -134,7 +134,7 @@ class DBot {
                     if (event.type === 'drag' && !event.isStart && !is_mobile) validateErrorOnBlockDelete();
                     if (event.type == Blockly.Events.BLOCK_CHANGE) {
                         const block = this.workspace.getBlockById(event.blockId);
-                        if (block && event.element == 'collapsed') {
+                        if (is_mobile && block && event.element == 'collapsed') {
                             block.contextMenu = false;
                         }
                     }
@@ -178,7 +178,7 @@ class DBot {
                 const { save_modal } = DBotStore.instance;
 
                 save_modal.updateBotName(file_name);
-                //this.workspace.cleanUp(0, is_mobile ? 60 : 56);
+                this.workspace.cleanUp(0, is_mobile ? 60 : 56);
                 this.workspace.clearUndo();
 
                 window.dispatchEvent(new Event('resize'));

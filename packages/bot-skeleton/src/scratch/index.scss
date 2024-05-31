@@ -976,6 +976,12 @@ drag a block and selected text moves instead.
         color: #000;
     }
 
+    .header__title {
+        color: var(--text-prominent);
+        display: inline-block;
+        font-weight: 700;
+    }
+
     .blocklyWidgetDiv .goog-menuitem-disabled .goog-menuitem-accel,
     .blocklyWidgetDiv .goog-menuitem-disabled .goog-menuitem-content,
     .blocklyDropDownDiv .goog-menuitem-disabled .goog-menuitem-accel,

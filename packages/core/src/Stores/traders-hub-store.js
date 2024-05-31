@@ -616,16 +616,15 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getServerName = account => {
-        if (account) {
-            const server_region = account.server_info?.geolocation?.region;
-            if (server_region) {
-                return `${server_region} ${
-                    account?.server_info?.geolocation?.sequence === 1 ? '' : account?.server_info?.geolocation?.sequence
-                }`;
-            }
+        const server_region = account.server_info?.geolocation?.region;
+
+        if (server_region) {
+            return `${server_region} ${
+                account?.server_info?.geolocation?.sequence === 1 ? '' : account?.server_info?.geolocation?.sequence
+            }`;
         }
-        return '';
     };
+
     hasMultipleSVGAccounts = () => {
         const all_svg_acc = [];
         this.combined_cfd_mt5_accounts.map(acc => {
@@ -640,11 +639,12 @@ export default class TradersHubStore extends BaseStore {
                 }
             }
         });
-        return all_svg_acc.length > 1;
+        return all_svg_acc.length > 0;
     };
 
     getShortCodeAndRegion(account) {
         let short_code_and_region;
+        this.getServerName(account);
         if (this.is_real && !this.is_eu_user && account.landing_company_short) {
             const short_code =
                 account.landing_company_short === 'svg' || account.landing_company_short === 'bvi'

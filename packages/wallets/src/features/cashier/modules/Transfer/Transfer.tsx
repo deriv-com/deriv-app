@@ -1,8 +1,8 @@
 import React from 'react';
-import { WalletsErrorScreen } from '../../../../components';
 import type { THooks } from '../../../../types';
 import { TransferForm, TransferReceipt } from './components';
 import { TransferProvider, useTransfer } from './provider';
+import { TransferErrorScreen } from '../../screens/TransferErrorScreen';
 
 type TProps = {
     accounts: THooks.TransferAccount[];
@@ -17,18 +17,10 @@ const TransferModule: React.FC<TProps> = ({ accounts }) => {
 };
 
 const Transfer: React.FC = () => {
-    const { error: transferError, receipt, resetTransfer } = useTransfer();
-    const errorMessage = transferError?.error.message;
+    const { error, receipt, resetTransfer } = useTransfer();
+    const transferError = error?.error;
 
-    if (errorMessage)
-        return (
-            <WalletsErrorScreen
-                buttonText={'Make another transfer'}
-                message={errorMessage}
-                onClick={() => resetTransfer()}
-                title='Error'
-            />
-        );
+    if (transferError) return <TransferErrorScreen error={transferError} resetError={resetTransfer} />;
 
     if (receipt) return <TransferReceipt />;
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActionSheet, Text, TextField, ToggleSwitch } from '@deriv-com/quill-ui';
+import { ActionSheet, Text, TextField, TextFieldWithSteppers, ToggleSwitch } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import RiskManagementInfoModal from '../RiskManagementInfoModal';
 import DealCancellationRemainingTime from '../DealCancellationRemainingTime/deal-cancellation-remaining-time';
@@ -22,7 +22,7 @@ const RiskManagementItem = observer(
         const dummy_boolean = false; // This will be flag from backend
         const { has_take_profit } = useTraderStore();
         const { contract_info } = useContractDetails();
-        const { contract_type } = contract_info;
+        const { contract_type, currency } = contract_info;
         const is_valid_to_cancel = isValidToCancel(contract_info);
         const is_accumulator = isAccumulatorContract(contract_type);
 
@@ -71,11 +71,13 @@ const RiskManagementItem = observer(
                     <ActionSheet.Portal>
                         <ActionSheet.Header title={label} />
                         <ActionSheet.Content>
-                            <TextField
+                            <TextFieldWithSteppers
                                 variant='fill'
                                 inputSize='md'
                                 textAlignment='center'
-                                value='5.00 USD'
+                                status='neutral'
+                                unit={currency}
+                                unitPlacement='right'
                                 message={validation_message}
                             />
                         </ActionSheet.Content>

@@ -32,4 +32,12 @@
             gap: 1.6rem;
         }
     }
+
+    & .wallets-dropzone__container {
+        min-height: 18.6rem;
+
+        @include mobile {
+            min-height: 25rem;
+        }
+    }
 }

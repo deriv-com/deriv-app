@@ -1,10 +1,48 @@
-import { isMultiplierContract, BARRIER_COLORS, BARRIER_LINE_STYLES } from '@deriv/shared';
-import { ChartBarrierStore } from '../../SmartChart/chart-barrier-store';
-import { removeBarrier } from '../../SmartChart/Helpers/barriers';
-import { useStore } from '@deriv/stores';
-import { getProposalInfo } from './proposal';
+import { Proposal } from '@deriv/api-types';
+import { ChartBarrierStore } from './chart-barrier-store';
+import { removeBarrier } from './barriers';
+import { TContractStore, isMultiplierContract } from '../contract';
+import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../constants';
 
-const isLimitOrderBarrierSupported = (contract_type: string, contract_info: ReturnType<typeof getProposalInfo>) =>
+type TProposalInfo = {
+    barrier?: string | undefined;
+    barrier_spot_distance?: string;
+    cancellation?: { ask_price?: number; date_expiry?: number };
+    commission?: number | null;
+    error_code?: string;
+    error_field?: string;
+    id: string;
+    has_error: boolean;
+    has_error_details: boolean;
+    high_barrier?: string;
+    last_tick_epoch?: number;
+    limit_order: Proposal['limit_order'] | Record<string, never>;
+    message?: string;
+    obj_contract_basis: {
+        text: string;
+        value: string | number;
+    };
+    payout: number;
+    profit: string;
+    returns: string;
+    stake: string;
+    spot: number;
+    maximum_stake?: string;
+    minimum_stake?: string;
+    growth_rate: number;
+    spot_time: number;
+};
+
+type TBarrier = ChartBarrierStore & { key?: string };
+
+type TSetLimitOrderBarriers = {
+    barriers: TBarrier[];
+    contract_type?: string;
+    contract_info?: TProposalInfo;
+    is_over: boolean;
+};
+
+const isLimitOrderBarrierSupported = (contract_type: string, contract_info: TProposalInfo) =>
     isMultiplierContract(contract_type) && contract_info.limit_order;
 
 export const LIMIT_ORDER_TYPES = {
@@ -13,18 +51,10 @@ export const LIMIT_ORDER_TYPES = {
     STOP_LOSS: 'stop_loss',
 } as const;
 
-type TBarrier = ChartBarrierStore & { key?: string };
-
-type TSetLimitOrderBarriers = {
-    barriers: TBarrier[];
-    contract_type?: string;
-    contract_info?: ReturnType<typeof getProposalInfo>;
-    is_over: boolean;
-};
 export const setLimitOrderBarriers = ({
     barriers,
     contract_type = '',
-    contract_info = {} as ReturnType<typeof getProposalInfo>,
+    contract_info = {} as TProposalInfo,
     is_over,
 }: TSetLimitOrderBarriers) => {
     if (is_over && isLimitOrderBarrierSupported(contract_type, contract_info)) {
@@ -82,16 +112,7 @@ export const setLimitOrderBarriers = ({
  * Get limit_order for contract_update API
  * @param {object} contract_update - contract_update input & checkbox values
  */
-export const getLimitOrder = (
-    contract_update: Pick<
-        ReturnType<typeof useStore>['contract_trade']['contracts'][number],
-        | 'has_contract_update_stop_loss'
-        | 'has_contract_update_take_profit'
-        | 'contract_update_stop_loss'
-        | 'contract_update_take_profit'
-        | 'contract_info'
-    >
-) => {
+export const getLimitOrder = (contract_update: TContractStore) => {
     const {
         has_contract_update_stop_loss,
         has_contract_update_take_profit,

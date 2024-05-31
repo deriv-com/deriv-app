@@ -1,6 +1,7 @@
 import * as Symbol from './Actions/symbol';
 import {
     WS,
+    ChartBarrierStore,
     cloneObject,
     convertDurationLimit,
     extractInfoFromShortcode,
@@ -23,6 +24,7 @@ import {
     isVanillaContract,
     pickDefaultSymbol,
     resetEndTimeOnVolatilityIndices,
+    setLimitOrderBarriers,
     showDigitalOptionsUnavailableError,
     showUnavailableLocationError,
     getCurrencyDisplayCode,
@@ -51,9 +53,7 @@ import { createProposalRequests, getProposalErrorField, getProposalInfo } from '
 import { getHoveredColor } from './Helpers/barrier-utils';
 import BaseStore from '../../base-store';
 import { TTextValueNumber, TTextValueStrings } from 'Types';
-import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import debounce from 'lodash.debounce';
-import { setLimitOrderBarriers } from './Helpers/limit-orders';
 import type { TCoreStores } from '@deriv/stores/types';
 import {
     ActiveSymbols,

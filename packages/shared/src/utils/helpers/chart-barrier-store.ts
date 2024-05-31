@@ -1,14 +1,16 @@
 import { action, computed, observable, makeObservable } from 'mobx';
-import { BARRIER_LINE_STYLES, CONTRACT_SHADES, DEFAULT_SHADES } from '@deriv/shared';
-import { barriersToString } from './Helpers/barriers';
+import { BARRIER_LINE_STYLES, CONTRACT_SHADES, DEFAULT_SHADES } from '../constants';
+import { barriersToString } from './barriers';
 
 type TOnChartBarrierChange = null | ((barrier_1: string, barrier_2?: string) => void);
 type TOnChangeParams = { high: string | number; low?: string | number; title?: string };
 type TChartBarrierStoreOptions =
     | {
           color: string;
+          hideBarrierLine?: boolean;
           line_style?: string;
           not_draggable?: boolean;
+          shade?: string;
       }
     | Record<string, never>;
 
@@ -32,7 +34,7 @@ export class ChartBarrierStore {
         high_barrier?: string | number,
         low_barrier?: string | number,
         onChartBarrierChange: TOnChartBarrierChange = null,
-        { color, line_style, not_draggable }: TChartBarrierStoreOptions = {}
+        { color, hideBarrierLine, line_style, not_draggable, shade }: TChartBarrierStoreOptions = {}
     ) {
         makeObservable(this, {
             color: observable,
@@ -55,6 +57,7 @@ export class ChartBarrierStore {
         });
 
         this.color = color;
+        this.hideBarrierLine = hideBarrierLine;
         this.lineStyle = line_style || BARRIER_LINE_STYLES.SOLID;
         this.onChange = this.onBarrierChange;
 
@@ -67,7 +70,7 @@ export class ChartBarrierStore {
             this.low = low_barrier;
         }
 
-        this.shade = this.default_shade;
+        this.shade = shade ?? this.default_shade;
 
         const has_barrier = !!high_barrier;
         this.relative = !has_barrier || /^[+-]/.test(high_barrier.toString());

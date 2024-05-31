@@ -1,3 +1,4 @@
+import { TContractStore } from '../../contract';
 import { getLimitOrder, LIMIT_ORDER_TYPES, setLimitOrderBarriers } from '../limit-orders';
 
 describe('getLimitOrder', () => {
@@ -17,7 +18,7 @@ describe('getLimitOrder', () => {
                     },
                 },
             },
-        };
+        } as TContractStore;
         const result = getLimitOrder(contract_update);
         expect(result).toEqual({
             take_profit: 100,
@@ -40,7 +41,7 @@ describe('getLimitOrder', () => {
                     },
                 },
             },
-        };
+        } as TContractStore;
         const result = getLimitOrder(contract_update);
         expect(result).toEqual({ stop_loss: null, take_profit: null });
     });

@@ -664,12 +664,22 @@ $side-padding: 1.2em;
                 align-items: center;
                 padding: 0;
 
+                @include tablet-screen {
+                    display: flex;
+                    justify-content: center;
+                }
+
                 /* postcss-bem-linter: ignore */
                 &--content {
                     flex: 1;
                     padding: 0.8rem 1.6rem 0;
                     display: flex;
                     justify-content: space-between;
+
+                    @include tablet-screen {
+                        max-width: 568px;
+                        padding: 0;
+                    }
 
                     /* postcss-bem-linter: ignore */
                     .profit {
@@ -696,6 +706,11 @@ $side-padding: 1.2em;
             align-items: flex-start;
             padding: 0.8rem 4rem 0 1rem;
 
+            @include tablet-screen {
+                display: flex;
+                justify-content: center;
+            }
+
             &--title {
                 font-size: 1.4rem;
                 font-weight: bold;
@@ -706,6 +721,11 @@ $side-padding: 1.2em;
                 padding: 0.8rem 1.6rem 0;
                 display: flex;
                 justify-content: space-between;
+
+                @include tablet-screen {
+                    max-width: 568px;
+                    padding-inline: 0;
+                }
 
                 .purchase,
                 .indicative {

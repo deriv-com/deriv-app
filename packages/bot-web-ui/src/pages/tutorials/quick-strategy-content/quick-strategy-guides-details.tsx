@@ -1,4 +1,4 @@
-import { KeyboardEvent } from 'react';
+import React, { KeyboardEvent } from 'react';
 import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';

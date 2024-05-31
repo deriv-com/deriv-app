@@ -67,7 +67,10 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const is_trading_hub_category =
         route === routes.traders_hub || route.startsWith(routes.cashier) || route.startsWith(routes.account);
 
-    const should_hide_platform_switcher = route === routes.traders_hub || route.startsWith(routes.wallets);
+    const should_hide_platform_switcher =
+        route === routes.traders_hub ||
+        route.startsWith(routes.wallets) ||
+        route.startsWith(routes.wallets_compare_accounts);
 
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());

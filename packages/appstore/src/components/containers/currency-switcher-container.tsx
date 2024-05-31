@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import classNames from 'classnames';
 import { Icon } from '@deriv/components';
 import { Jurisdiction } from '@deriv/shared';

@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { useHistory } from 'react-router-dom';
@@ -23,7 +23,7 @@ const FailedVerificationModalContent = ({
     has_mf_mt5_account,
 }: TFailedVerificationModal) => {
     return (
-        <React.Fragment>
+        <Fragment>
             <Text size={isMobile() ? 'xxs' : 'xs'}>
                 <Localize i18n_default_text='The following documents you submitted did not pass our checks:' />
             </Text>
@@ -59,7 +59,7 @@ const FailedVerificationModalContent = ({
                     />
                 </Text>
             )}
-        </React.Fragment>
+        </Fragment>
     );
 };
 

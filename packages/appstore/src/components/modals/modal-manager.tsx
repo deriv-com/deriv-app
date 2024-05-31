@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, Fragment } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useFeatureFlags, useWalletMigration } from '@deriv/hooks';
 import { makeLazyLoader, moduleLoader } from '@deriv/shared';
@@ -230,7 +230,7 @@ const ModalManager = () => {
         is_wallet_migration_failed,
     } = traders_hub;
 
-    const [password_manager, setPasswordManager] = React.useState<{
+    const [password_manager, setPasswordManager] = useState<{
         is_visible: boolean;
         selected_login: string;
         selected_account: string;
@@ -298,7 +298,7 @@ const ModalManager = () => {
         is_sent_email_modal_enabled;
 
     return (
-        <React.Fragment>
+        <Fragment>
             {is_jurisdiction_modal_visible && <JurisdictionModal openPasswordModal={openRealPasswordModal} />}
             {should_show_cfd_password_modal && <CFDPasswordModal platform={platform} />}
             {is_cfd_verification_modal_visible && <CFDDbviOnBoarding />}
@@ -347,13 +347,13 @@ const ModalManager = () => {
             )}
             {is_failed_verification_modal_visible && <FailedVerificationModal />}
             {is_next_wallet_enabled && !should_show_effortless_login_modal && (
-                <React.Fragment>
+                <Fragment>
                     {(is_real_wallets_upgrade_on || is_in_progress) && <RealWalletsUpgrade />}
                     {is_wallet_migration_failed && <WalletsMigrationFailed />}
                     {is_eligible && <WalletsUpgradeModal />}
-                </React.Fragment>
+                </Fragment>
             )}
-        </React.Fragment>
+        </Fragment>
     );
 };
 

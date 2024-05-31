@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import { Div100vhContainer, DesktopWrapper, MobileWrapper, Loading, Text } from '@deriv/components';
@@ -15,7 +15,7 @@ const TradersHubLoggedOut = observer(() => {
     const { clients_country } = client;
     const { setTogglePlatformType, selectRegion, is_eu_user } = traders_hub;
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (clients_country) {
             if (isEuCountry(clients_country)) {
                 setTogglePlatformType('cfd');

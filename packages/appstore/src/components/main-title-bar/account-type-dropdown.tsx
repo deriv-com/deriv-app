@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import classNames from 'classnames';
 import { Dropdown } from '@deriv/components';
 import { Analytics } from '@deriv-com/analytics';

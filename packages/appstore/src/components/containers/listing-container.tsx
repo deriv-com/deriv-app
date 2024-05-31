@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, ReactNode } from 'react';
+import { HTMLAttributes, ReactNode } from 'react';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import CurrencySwitcherCard from 'Components/currency-switcher-card';

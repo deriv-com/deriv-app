@@ -1,4 +1,3 @@
-import React from 'react';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import OptionsAndMultipliersListingLoggedOut from 'Components/options-multipliers-listing-logged-out';

@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import classNames from 'classnames';
 import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { Text, StatusBadge } from '@deriv/components';
@@ -57,7 +57,7 @@ const TradingAppCard = ({
     const { is_account_being_created } = cfd;
     const { account_status: { authentication } = {}, is_logged_in } = client;
 
-    const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
+    const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = useState(false);
     const demo_label = localize('Demo');
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;

@@ -1,7 +1,7 @@
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import TradeButton from 'Components/trade-button/trade-button';
-import React from 'react';
+import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import MultiActionButtonGroup from 'Components/multi-action-button-group';
 

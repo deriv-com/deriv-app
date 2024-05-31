@@ -5,7 +5,7 @@ import { TContractStore, isMultiplierContract } from '../contract';
 import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../constants';
 
 type TProposalInfo = {
-    barrier?: string | undefined;
+    barrier?: string;
     barrier_spot_distance?: string;
     cancellation?: { ask_price?: number; date_expiry?: number };
     commission?: number | null;
@@ -68,7 +68,7 @@ export const setLimitOrderBarriers = ({
         limit_orders.forEach(key => {
             const obj_limit_order = contract_info.limit_order?.[key];
 
-            if (!obj_limit_order || !obj_limit_order.value) {
+            if (!obj_limit_order?.value) {
                 removeBarrier(barriers, key);
                 return;
             }

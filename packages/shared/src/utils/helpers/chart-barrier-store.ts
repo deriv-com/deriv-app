@@ -6,7 +6,7 @@ type TOnChartBarrierChange = null | ((barrier_1: string, barrier_2?: string) => 
 type TOnChangeParams = { high: string | number; low?: string | number; title?: string };
 type TChartBarrierStoreOptions =
     | {
-          color: string;
+          color?: string;
           hideBarrierLine?: boolean;
           line_style?: string;
           not_draggable?: boolean;
@@ -15,7 +15,7 @@ type TChartBarrierStoreOptions =
     | Record<string, never>;
 
 export class ChartBarrierStore {
-    color: string;
+    color?: string;
     lineStyle: string;
     shade?: string;
     shadeColor?: string;
@@ -84,7 +84,7 @@ export class ChartBarrierStore {
         }
         this.high = high || undefined;
         this.low = low || undefined;
-        this.title = title;
+        this.title = title ?? this.title;
     }
 
     updateBarrierShade(should_display: boolean, contract_type: string) {

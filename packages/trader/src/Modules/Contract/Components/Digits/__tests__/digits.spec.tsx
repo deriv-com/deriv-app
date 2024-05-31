@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockContractInfo, TRADE_TYPES } from '@deriv/shared';
+import { isDesktop, mockContractInfo, TRADE_TYPES } from '@deriv/shared';
 import Digits from '../digits';
 import { useDevice } from '@deriv-com/ui';
 
@@ -44,7 +44,7 @@ jest.mock('@deriv/shared', () => ({
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
-    useDevice: jest.fn(() => ({ isMobile: false })),
+    useDevice: jest.fn(() => ({ isMobile: false, isDesktop: true })),
 }));
 
 describe('<Digits />', () => {

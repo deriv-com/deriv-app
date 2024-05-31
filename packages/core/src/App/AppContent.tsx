@@ -8,6 +8,7 @@ import { getLanguage } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 import BinaryBotIFrame from 'Modules/BinaryBotIFrame';
+import P2PIFrame from 'Modules/P2PIFrame';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import AppToastMessages from './Containers/app-toast-messages.jsx';
@@ -104,6 +105,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             </ErrorBoundary>
             <SmartTraderIFrame />
             <BinaryBotIFrame />
+            <P2PIFrame />
             <AppToastMessages />
             <Devtools />
         </ThemeProvider>

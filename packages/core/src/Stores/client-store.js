@@ -30,6 +30,7 @@ import {
     sortApiData,
     urlForLanguage,
     getAppId,
+    getUrlP2PStandalone,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
@@ -2487,11 +2488,14 @@ export default class ClientStore extends BaseStore {
     syncWithLegacyPlatforms(active_loginid, client_accounts) {
         const smartTrader = {};
         const binaryBot = {};
+        const P2PStandalone = {};
 
         smartTrader.iframe = document.getElementById('localstorage-sync');
         binaryBot.iframe = document.getElementById('localstorage-sync__bot');
+        P2PStandalone.iframe = document.getElementById('localstorage-sync__p2p');
         smartTrader.origin = getUrlSmartTrader();
         binaryBot.origin = getUrlBinaryBot(false);
+        P2PStandalone.origin = getUrlP2PStandalone();
 
         [smartTrader, binaryBot].forEach(platform => {
             if (platform.iframe) {

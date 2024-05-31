@@ -21,7 +21,7 @@ const WalletsBanner = makeLazyLoader(
 
 const MainTitleBar = () => {
     const { traders_hub, client } = useStore();
-    const { is_landing_company_loaded, is_switching } = client;
+    const { is_landing_company_loaded, is_switching, has_maltainvest_account } = client;
     const { state: wallet_migration_state } = useWalletMigration();
     const { selected_region, handleTabItemClick, toggleRegulatorsCompareModal, content_flag } = traders_hub;
     const { is_next_wallet_enabled } = useFeatureFlags();
@@ -48,7 +48,9 @@ const MainTitleBar = () => {
                         </Text>
                         <AccountTypeDropdown />
                     </div>
-                    {is_low_risk_cr_real_account && is_landing_company_loaded && <RegulatorSwitcher />}
+                    {is_low_risk_cr_real_account && has_maltainvest_account && is_landing_company_loaded && (
+                        <RegulatorSwitcher />
+                    )}
                     <AssetSummary />
                 </div>
             </DesktopWrapper>
@@ -60,7 +62,7 @@ const MainTitleBar = () => {
                     <div className='main-title-bar-mobile--account-type-dropdown'>
                         <AccountTypeDropdown />
                     </div>
-                    {is_low_risk_cr_real_account && is_landing_company_loaded ? (
+                    {is_low_risk_cr_real_account && has_maltainvest_account && is_landing_company_loaded ? (
                         <div className='main-title-bar-mobile--regulator'>
                             {!is_switching ? (
                                 <>

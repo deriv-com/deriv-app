@@ -112,7 +112,6 @@
         "@deriv/deriv-charts": "^2.1.18",
         "@deriv/hooks": "^1.0.0",
         "@deriv/p2p": "^0.7.3",
-        "@deriv/p2p-v2": "^1.0.0",
         "@deriv/quill-design": "^1.3.2",
         "@deriv/quill-icons": "^1.22.10",
         "@deriv/reports": "^1.0.0",

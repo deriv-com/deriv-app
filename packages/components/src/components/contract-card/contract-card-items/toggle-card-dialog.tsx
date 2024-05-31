@@ -24,10 +24,10 @@ export type TToggleCardDialogProps = Pick<
 > & {
     contract_id?: number;
     is_adding_disabled?: boolean;
-    should_show_warning?: boolean;
-    toggleCancellationWarning?: () => void;
     is_accumulator?: boolean;
     is_turbos?: boolean;
+    should_show_warning?: boolean;
+    toggleCancellationWarning?: () => void;
     totalProfit: number;
 };
 
@@ -37,9 +37,9 @@ const ToggleCardDialog = ({
     getCardLabels,
     getContractById,
     is_adding_disabled,
+    is_accumulator,
     should_show_warning,
     toggleCancellationWarning,
-    is_accumulator,
     ...passthrough_props
 }: TToggleCardDialogProps) => {
     const [is_visible, setIsVisible] = React.useState(false);
@@ -50,7 +50,7 @@ const ToggleCardDialog = ({
     const dialog_ref = React.useRef<HTMLDivElement>(null);
     const contract = getContractById(Number(contract_id));
 
-    const risk_management_is_disabled = should_show_warning && is_adding_disabled;
+    const is_risk_management_disabled = should_show_warning && is_adding_disabled;
 
     React.useEffect(() => {
         if (is_visible && toggle_ref?.current && dialog_ref?.current) {
@@ -88,7 +88,8 @@ const ToggleCardDialog = ({
     const toggleDialog = (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
-        if (isMobile() && risk_management_is_disabled) {
+
+        if (isMobile() && is_risk_management_disabled) {
             addToast({
                 key: 'risk_management_is_disabled',
                 content: notificationText,
@@ -96,7 +97,7 @@ const ToggleCardDialog = ({
             });
         }
 
-        if (risk_management_is_disabled) return;
+        if (is_adding_disabled) return;
 
         setIsVisible(!is_visible);
     };
@@ -107,14 +108,14 @@ const ToggleCardDialog = ({
         <Icon
             className='dc-contract-card-dialog-toggle__icon'
             icon='IcEdit'
-            color={risk_management_is_disabled ? 'disabled' : ''}
+            color={is_adding_disabled ? 'disabled' : ''}
             size={12}
         />
     );
 
     return (
         <div onClick={handleClick}>
-            {risk_management_is_disabled && isDesktop() ? (
+            {is_risk_management_disabled && isDesktop() ? (
                 <Popover
                     alignment='right'
                     classNameBubble='dc-contract-card-dialog__popover-bubble'
@@ -131,7 +132,7 @@ const ToggleCardDialog = ({
                         ref={toggle_ref}
                         className='dc-contract-card-dialog-toggle'
                         onClick={toggleDialogWrapper}
-                        disabled={risk_management_is_disabled}
+                        disabled={is_risk_management_disabled}
                     >
                         {edit_icon}
                     </button>
@@ -140,7 +141,7 @@ const ToggleCardDialog = ({
                 <button
                     ref={toggle_ref}
                     className={classNames('dc-contract-card-dialog-toggle', {
-                        'dc-contract-card-dialog-toggle--disabled': risk_management_is_disabled,
+                        'dc-contract-card-dialog-toggle--disabled': is_risk_management_disabled,
                     })}
                     onClick={toggleDialogWrapper}
                 >

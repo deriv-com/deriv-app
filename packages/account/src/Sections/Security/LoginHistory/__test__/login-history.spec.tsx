@@ -153,7 +153,7 @@ describe('<LoginHistory />', () => {
         });
     });
 
-    it('should render Login History List when is_mobile is true', async () => {
+    it('should render Login History List for responsive screen', async () => {
         (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
         renderComponent();
         await waitFor(() => {

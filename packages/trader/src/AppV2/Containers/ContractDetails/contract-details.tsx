@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { CaptionText, Text } from '@deriv-com/quill-ui';
 import EntryExitDetails from 'AppV2/Components/EntryExitDetails';
 import TakeProfitHistory from 'AppV2/Components/TakeProfitHistory';
@@ -14,8 +14,6 @@ import StopLoss from 'AppV2/Components/StopLoss/stop-loss';
 import DealCancellation from 'AppV2/Components/DealCancellation/deal-cancellation';
 import { hasContractStarted, isForwardStarting, isMultiplierContract, isOpen, isValidToCancel } from '@deriv/shared';
 import classNames from 'classnames';
-import RiskManagementItem from 'AppV2/Components/RiskManagementItem';
-import { Localize } from '../../../../../translations/src/i18next/i18next';
 import ContractDetailsFooter from 'AppV2/Components/ContractDetailsFooter';
 
 const ContractDetails = observer(() => {
@@ -35,9 +33,7 @@ const ContractDetails = observer(() => {
         (hasContractStarted(contract_info) ||
             isForwardStarting(contract_info?.shortcode ?? '', contract_info.purchase_time)) &&
         isOpen(contract_info);
-    const { is_tp_history_visible, is_stop_loss_visible, is_take_profit_visible } = getContractDetailsConfig(
-        contract_info.contract_type ?? ''
-    );
+    const { is_tp_history_visible } = getContractDetailsConfig(contract_info.contract_type ?? '');
     const show_cancel_button = is_multiplier && is_valid_to_cancel;
     return (
         <div

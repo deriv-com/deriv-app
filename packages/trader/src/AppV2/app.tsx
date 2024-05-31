@@ -13,7 +13,7 @@ import 'Sass/app.scss';
 import ContractDetails from './Containers/ContractDetails';
 import '@deriv-com/quill-tokens/dist/quill.css';
 import { useLocation } from 'react-router';
-import { Notification } from '@deriv-com/quill-ui/dist/components/Notification/base';
+import Notifications from './Containers/Notifications';
 
 type Apptypes = {
     passthrough: {
@@ -31,7 +31,7 @@ const App = ({ passthrough }: Apptypes) => {
     return (
         <TraderProviders store={root_store}>
             <NotificationsProvider>
-                <Notification />
+                <Notifications />
                 {location.pathname.includes('/contract/') ? (
                     <ContractDetails />
                 ) : (

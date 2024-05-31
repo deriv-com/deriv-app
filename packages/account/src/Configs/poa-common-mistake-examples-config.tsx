@@ -7,8 +7,8 @@ import {
     DerivLightIcDocumentNameMismatchIcon,
     DerivLightIcEnvelopeIcon,
     DerivLightIcOldIssuedDocumentMoreThan6Icon,
+    DerivLightIcOldIssuedDocumentMoreThan12Icon,
 } from '@deriv/quill-icons';
-import Ic12MonthsIssuedDocument from '../Assets/ic-12-months-expiry.svg';
 
 type TExampleImageConfig = {
     image: React.ComponentType<React.SVGAttributes<SVGElement>>;
@@ -38,7 +38,7 @@ export const getExampleImagesConfig = (is_eu: boolean): Array<TExampleImageConfi
                   ref: 'old_6_month_issued_document',
               }
             : {
-                  image: Ic12MonthsIssuedDocument,
+                  image: DerivLightIcOldIssuedDocumentMoreThan12Icon,
                   description: <Localize i18n_default_text='Document issued more than 12-months ago.' />,
                   ref: 'old_12_month_issued_document',
               }),

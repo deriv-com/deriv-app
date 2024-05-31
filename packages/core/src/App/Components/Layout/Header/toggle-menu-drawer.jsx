@@ -63,12 +63,11 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { is_p2p_enabled } = useIsP2PEnabled();
 
     const { pathname: route } = useLocation();
-    const location = useLocation();
 
     const is_trading_hub_category =
         route === routes.traders_hub || route.startsWith(routes.cashier) || route.startsWith(routes.account);
 
-    const should_hide_platform_switcher = location.pathname === routes.traders_hub;
+    const should_hide_platform_switcher = route === routes.traders_hub || route.startsWith(routes.wallets);
 
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());

@@ -37,7 +37,7 @@ const TopUpModal = () => {
 
     const balance =
         platform === CFDPlatforms.CTRADER
-            ? (account as THooks.CtraderAccountsList)?.formatted_balance
+            ? (account as THooks.CtraderAccountsList)?.display_balance
             : account?.display_balance;
 
     return (

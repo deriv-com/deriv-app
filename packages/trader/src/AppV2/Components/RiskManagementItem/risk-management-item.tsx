@@ -63,6 +63,7 @@ const RiskManagementItem = observer(
                         inputSize='md'
                         textAlignment='center'
                         value='5.00 USD'
+                        onClick={() => setIsOpen(true)}
                         onFocus={() => setIsOpen(true)}
                     />
                 )}

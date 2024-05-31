@@ -9,6 +9,7 @@ import 'react-calendar/dist/Calendar.css';
 import './DatePicker.scss';
 
 interface TDatePickerProps extends TFlowFieldProps {
+    displayFormat?: string;
     maxDate?: Date;
     minDate?: Date;
     mobileAlignment?: 'above' | 'below';
@@ -18,6 +19,7 @@ interface TDatePickerProps extends TFlowFieldProps {
 const DatePicker = ({
     defaultValue,
     disabled,
+    displayFormat = 'YYYY-MM-DD',
     label,
     maxDate,
     message,
@@ -77,7 +79,7 @@ const DatePicker = ({
                 showMessage
                 type='text'
                 validationSchema={validationSchema}
-                value={selectedDate !== null ? unixToDateString(selectedDate) : ''}
+                value={selectedDate !== null ? unixToDateString(selectedDate, displayFormat) : ''}
             />
             {isCalendarOpen && (
                 <div

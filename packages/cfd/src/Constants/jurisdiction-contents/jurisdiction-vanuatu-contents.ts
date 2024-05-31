@@ -87,7 +87,7 @@ export const getJurisdictionVanuatuContents = ({
             title_indicators: { type: 'displayIcons' },
             clickable_description: [
                 { type: 'link', text: localize('Learn more') },
-                { type: 'text', text: localize('about verifications needed.') },
+                { type: 'text', text: localize('about required verifications.') },
             ],
         },
         {

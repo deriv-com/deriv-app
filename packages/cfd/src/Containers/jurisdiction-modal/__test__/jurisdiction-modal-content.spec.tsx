@@ -214,7 +214,7 @@ describe('JurisdictionModalContent', () => {
             screen.getByText('You will need to submit proof of identity and address once you reach certain thresholds.')
         ).toBeInTheDocument();
         expect(screen.getAllByText('Learn more')).toHaveLength(2);
-        expect(screen.getAllByText('about verifications needed.')).toHaveLength(2);
+        expect(screen.getAllByText('about required verifications.')).toHaveLength(2);
         expect(screen.getAllByText('Regulator/EDR')).toHaveLength(3);
         expect(screen.getByText('Deriv (SVG) LLC (company no. 273 LLC 2020)')).toBeInTheDocument();
         expect(
@@ -255,7 +255,7 @@ describe('JurisdictionModalContent', () => {
             screen.getByText('You will need to submit proof of identity and address once you reach certain thresholds.')
         ).toBeInTheDocument();
         expect(screen.getAllByText('Learn more')).toHaveLength(3);
-        expect(screen.getAllByText('about verifications needed.')).toHaveLength(3);
+        expect(screen.getAllByText('about required verifications.')).toHaveLength(3);
         expect(screen.getAllByText('Regulator/EDR')).toHaveLength(4);
         expect(screen.getByText('Deriv (SVG) LLC (company no. 273 LLC 2020)')).toBeInTheDocument();
         expect(
@@ -290,7 +290,7 @@ describe('JurisdictionModalContent', () => {
         expect(screen.getByText('0.5 pips')).toBeInTheDocument();
         expect(screen.getByText('Verifications')).toBeInTheDocument();
         expect(screen.getByText('Learn more')).toBeInTheDocument();
-        expect(screen.getByText('about verifications needed.')).toBeInTheDocument();
+        expect(screen.getByText('about required verifications.')).toBeInTheDocument();
         expect(screen.getByText('Regulator/EDR')).toBeInTheDocument();
         expect(
             screen.getByText('Malta Financial Services Authority (MFSA) (licence no. IS/70156)')

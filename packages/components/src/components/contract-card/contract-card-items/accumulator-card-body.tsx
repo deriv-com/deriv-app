@@ -91,7 +91,7 @@ const AccumulatorCardBody = ({
                         <ToggleCardDialog
                             contract_id={contract_info.contract_id}
                             getCardLabels={getCardLabels}
-                            is_adding_disabled
+                            is_risk_management_edition_disabled
                             should_show_warning
                             toggleCancellationWarning={toggleCancellationWarning}
                             is_accumulator

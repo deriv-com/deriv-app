@@ -23,7 +23,7 @@ export type TToggleCardDialogProps = Pick<
     | 'setCurrentFocus'
 > & {
     contract_id?: number;
-    is_adding_disabled?: boolean;
+    is_risk_management_edition_disabled?: boolean;
     is_accumulator?: boolean;
     is_turbos?: boolean;
     should_show_warning?: boolean;
@@ -36,7 +36,7 @@ const ToggleCardDialog = ({
     contract_id,
     getCardLabels,
     getContractById,
-    is_adding_disabled,
+    is_risk_management_edition_disabled,
     is_accumulator,
     should_show_warning,
     toggleCancellationWarning,
@@ -50,7 +50,7 @@ const ToggleCardDialog = ({
     const dialog_ref = React.useRef<HTMLDivElement>(null);
     const contract = getContractById(Number(contract_id));
 
-    const is_risk_management_disabled = should_show_warning && is_adding_disabled;
+    const is_risk_management_disabled = should_show_warning && is_risk_management_edition_disabled;
 
     React.useEffect(() => {
         if (is_visible && toggle_ref?.current && dialog_ref?.current) {
@@ -97,7 +97,7 @@ const ToggleCardDialog = ({
             });
         }
 
-        if (is_adding_disabled) return;
+        if (is_risk_management_edition_disabled) return;
 
         setIsVisible(!is_visible);
     };
@@ -108,7 +108,7 @@ const ToggleCardDialog = ({
         <Icon
             className='dc-contract-card-dialog-toggle__icon'
             icon='IcEdit'
-            color={is_adding_disabled ? 'disabled' : ''}
+            color={is_risk_management_edition_disabled ? 'disabled' : ''}
             size={12}
         />
     );

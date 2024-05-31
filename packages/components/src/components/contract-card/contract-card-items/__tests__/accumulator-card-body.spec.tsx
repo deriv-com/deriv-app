@@ -63,7 +63,7 @@ describe('<AccumulatorCardBody />', () => {
         expect(screen.queryByTestId('dt_arrow_indicator')).not.toBeInTheDocument();
     });
 
-    it('should render two arrow indicator if the contract was not sold (is_sold === false)', () => {
+    it('should render two arrow indicators if the contract was not sold (is_sold === false)', () => {
         render(<AccumulatorCardBody {...mock_props} is_sold={false} />);
 
         expect(screen.getAllByTestId('dt_arrow_indicator')).toHaveLength(2);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import TransferErrorScreen from '../TransferErrorScreen';
 
 jest.mock('@deriv/api-v2', () => ({

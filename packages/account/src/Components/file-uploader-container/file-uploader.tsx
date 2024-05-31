@@ -14,14 +14,14 @@ type TFileUploaderProps = {
 };
 
 const UploadMessage = () => {
-    const { isMobile } = useDevice();
+    const { isDesktop, isMobile } = useDevice();
 
     return (
         <React.Fragment>
             <Icon icon='IcUpload' className='dc-file-dropzone__message-icon' size={30} />
             <div className='dc-file-dropzone__message-subtitle'>
                 <Text size='xxs' align='center' weight='bold' color='less-prominent'>
-                    {isMobile ? (
+                    {!isDesktop ? (
                         <Localize i18n_default_text='Click here to browse your files.' />
                     ) : (
                         <Localize i18n_default_text='Drag and drop a file or click to browse your files.' />

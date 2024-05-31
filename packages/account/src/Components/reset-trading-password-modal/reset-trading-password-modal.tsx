@@ -182,7 +182,12 @@ const ResetTradingPassword = ({
                                         <PasswordMeter
                                             input={values.password}
                                             has_error={!!(touched.password && errors.password)}
-                                            custom_feedback_messages={getErrorMessages().password_warnings}
+                                            custom_feedback_messages={
+                                                getErrorMessages().password_warnings as unknown as Record<
+                                                    string,
+                                                    string
+                                                >
+                                            }
                                         >
                                             <PasswordInput
                                                 autoComplete='new-password'

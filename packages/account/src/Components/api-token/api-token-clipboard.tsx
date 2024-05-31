@@ -5,8 +5,8 @@ import { Localize } from '@deriv/translations';
 import { TPopoverAlignment } from 'Types';
 
 type TApiTokenClipboard = {
-    scopes: string[];
-    text_copy: string;
+    scopes?: string[];
+    text_copy?: string;
     info_message: string | JSX.Element;
     success_message: string | JSX.Element;
     popover_alignment?: TPopoverAlignment;
@@ -52,7 +52,7 @@ const ApiTokenClipboard = ({
     const [is_popover_open, setIsPopoverOpen] = React.useState(false);
     const isMounted = useIsMounted();
     let timeout_clipboard: NodeJS.Timeout | undefined, timeout_clipboard_2: NodeJS.Timeout | undefined;
-    const has_admin_scope = scopes.includes('Admin');
+    const has_admin_scope = scopes?.includes('Admin');
 
     const onMouseEnterHandler = () => {
         if (!is_copied) setIsPopoverOpen(true);
@@ -67,7 +67,7 @@ const ApiTokenClipboard = ({
     */
     const onClick = () => {
         setIsModalOpen(false);
-        copyToClipboard(text_copy);
+        copyToClipboard(text_copy ?? '');
         setIsPopoverOpen(true);
         timeout_clipboard = setTimeout(() => {
             if (isMounted()) {

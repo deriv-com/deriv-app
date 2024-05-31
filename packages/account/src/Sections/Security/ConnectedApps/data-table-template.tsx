@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { OauthApps } from '@deriv/api-types';
 import { Button, Text } from '@deriv/components';
 import { toMoment } from '@deriv/shared';
@@ -15,7 +15,7 @@ const DataTableTemplate = ({ connected_apps, handleToggleModal }: TDataTableTemp
                 size='xs'
                 weight='bold'
                 key={column_name.key}
-                className={classNames('connected-apps__tabular--cell connected-apps__tabular--header', {
+                className={clsx('connected-apps__tabular--cell connected-apps__tabular--header', {
                     'connected-apps__tabular--skip-left-padding': index === 0,
                 })}
             >

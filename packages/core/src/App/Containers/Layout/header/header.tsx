@@ -50,7 +50,7 @@ const Header = observer(() => {
     const { pathname } = useLocation();
     const { is_mobile } = useDevice();
 
-    const is_wallets_cashier_route = pathname.includes(routes.wallets_cashier);
+    const is_wallets_cashier_route = pathname.includes(routes.wallets);
 
     const traders_hub_routes =
         [
@@ -58,7 +58,6 @@ const Header = observer(() => {
             routes.traders_hub_v2,
             routes.account,
             routes.cashier,
-            routes.wallets,
             routes.wallets_compare_accounts,
             routes.compare_accounts,
             routes.compare_cfds,

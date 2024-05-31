@@ -16,6 +16,7 @@ describe('<RadioButton />', () => {
     const props: TRadioButton = {
         field: { name: 'test_radio', value: 'test_value', onChange: jest.fn(), onBlur: jest.fn() },
         id: 'test_radio_button',
+        label: 'test',
     };
 
     const ust_msg =

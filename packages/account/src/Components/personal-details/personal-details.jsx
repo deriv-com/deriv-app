@@ -1,4 +1,4 @@
-// [TODO] - Convert this to TypeScript
+// [TODO] - Convert this to TypeScript and then remove React
 
 import React, { useState, Fragment, useCallback, useMemo, useEffect } from 'react';
 import clsx from 'clsx';
@@ -14,7 +14,7 @@ import {
     isDocumentTypeValid,
     shouldShowIdentityInformation,
 } from '../../Helpers/utils';
-import PoiNameDobExample from '../../Assets/ic-poi-name-dob-example.svg';
+import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import FormSubHeader from '../form-sub-header';
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
@@ -47,8 +47,6 @@ const PersonalDetails = observer(
         const { account_status, account_settings, residence, real_account_signup_target } = props;
         const [should_close_tooltip, setShouldCloseTooltip] = useState(false);
         const [no_confirmation_needed, setNoConfirmationNeeded] = useState(false);
-
-        const PoiNameDobExampleIcon = PoiNameDobExample;
 
         const handleCancel = values => {
             const current_step = getCurrentStep() - 1;
@@ -212,7 +210,7 @@ const PersonalDetails = observer(
                                                 is_virtual={is_virtual}
                                                 is_svg={is_svg}
                                                 is_eu_user={is_eu_user}
-                                                side_note={<PoiNameDobExampleIcon />}
+                                                side_note={<DerivLightNameDobPoiIcon height='200px' />}
                                                 is_rendered_for_idv={is_rendered_for_idv}
                                                 editable_fields={getEditableFields(
                                                     values.confirmation_checkbox,

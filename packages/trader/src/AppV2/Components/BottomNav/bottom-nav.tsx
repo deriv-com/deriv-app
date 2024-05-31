@@ -46,10 +46,6 @@ const bottomNavItems = [
         icon: <StandaloneBarsRegularIcon iconSize='sm' fill='var(--semantic-color-monochrome-textIcon-normal-high)' />,
         label: <Localize i18n_default_text='Menu' />,
     },
-    // {
-    //     icon: <StandaloneBarsRegularIcon iconSize='sm' fill='var(--semantic-color-monochrome-textIcon-normal-high)' />,
-    //     label: <Localize i18n_default_text='Details' />,
-    // },
 ];
 
 const BottomNav = ({ className, children }: BottomNavProps) => {

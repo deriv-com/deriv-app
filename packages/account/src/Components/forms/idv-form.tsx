@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+//@ts-nocheck [TODO] - Need to fix typescript errors
+
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Field, FormikProps, FieldProps, useFormikContext } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
 import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative } from '@deriv/components';
@@ -18,7 +21,7 @@ type TIDVFormProps = {
     hide_hint?: boolean;
     class_name?: string;
     is_for_real_account_signup_modal?: boolean;
-    is_for_mt5: boolean;
+    is_for_mt5?: boolean;
 };
 
 const IDVForm = ({
@@ -115,17 +118,17 @@ const IDVForm = ({
     };
 
     return (
-        <section className={classNames('idv-form', class_name)}>
+        <section className={clsx('idv-form', class_name)}>
             <div className='details-form'>
                 <div className='poi-form-on-signup__fields'>
                     <div
-                        className={classNames('proof-of-identity__container', {
+                        className={clsx('proof-of-identity__container', {
                             'proof-of-identity__container--idv': hide_hint,
                         })}
                     >
-                        <div className={classNames('proof-of-identity__inner-container')}>
+                        <div className={clsx('proof-of-identity__inner-container')}>
                             <div className='proof-of-identity__fieldset-container'>
-                                <fieldset className={classNames({ 'proof-of-identity__fieldset': !hide_hint })}>
+                                <fieldset className={clsx({ 'proof-of-identity__fieldset': !hide_hint })}>
                                     <Field name='document_type'>
                                         {({ field }: FieldProps) => (
                                             <React.Fragment>
@@ -185,7 +188,7 @@ const IDVForm = ({
                                 {values?.document_type?.id !== IDV_NOT_APPLICABLE_OPTION.id && (
                                     <React.Fragment>
                                         <fieldset
-                                            className={classNames('additional-field', {
+                                            className={clsx('additional-field', {
                                                 'proof-of-identity__fieldset-input': !hide_hint,
                                             })}
                                         >

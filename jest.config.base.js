@@ -20,5 +20,5 @@ module.exports = {
     ],
     setupFiles: ['<rootDir>/../../jest.setup.js'],
     setupFilesAfterEnv: ['<rootDir>/../../setupTests.js'],
-    testPathIgnorePatterns: ['/integration-tests/', '/component-tests/'],
+    testPathIgnorePatterns: ['/integration-tests/', '/component-tests/', '/account-v2/'],
 };

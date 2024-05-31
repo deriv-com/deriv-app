@@ -34,6 +34,7 @@ const ALIASES = {
     'react/jsx-runtime': 'react/jsx-runtime.js',
     _common: path.resolve(__dirname, '../src/_common'),
     App: path.resolve(__dirname, '../src/App'),
+    AppV2: path.resolve(__dirname, '../src/AppV2'),
     Assets: path.resolve(__dirname, '../src/Assets'),
     Constants: path.resolve(__dirname, '../src/Constants'),
     Fonts: path.resolve(__dirname, '../src/public/fonts'),

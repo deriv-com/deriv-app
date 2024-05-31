@@ -292,7 +292,7 @@ export default class ContractStore extends BaseStore {
                     barriers: this.barriers_array,
                     contract_info,
                     contract_type,
-                    is_over: true,
+                    is_over: !contract_info.sell_time,
                 });
             }
         }

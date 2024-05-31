@@ -58,7 +58,7 @@ const Dropzone: React.FC<TProps> = ({
         defaultFile ? { file: defaultFile, name: defaultFile.name, preview: URL.createObjectURL(defaultFile) } : null
     );
     const [showHoverMessage, setShowHoverMessage] = useState(false);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
     const { getInputProps, getRootProps, open, rootRef } = useDropzone({
         accept: fileFormats,
         maxSize,
@@ -78,10 +78,10 @@ const Dropzone: React.FC<TProps> = ({
             }
         },
         onDropAccepted() {
-            setErrorMessage(null);
+            setShowErrorMessage(false);
         },
         onDropRejected(fileRejections) {
-            setErrorMessage(fileRejections?.[0]?.errors?.[0].message);
+            if (fileRejections?.[0]?.errors?.[0].message) setShowErrorMessage(true);
         },
     });
 
@@ -96,6 +96,11 @@ const Dropzone: React.FC<TProps> = ({
         e.stopPropagation();
     }, []);
 
+    const resetError = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        setShowErrorMessage(false);
+        e.stopPropagation();
+    }, []);
+
     return (
         <div {...getRootProps()} className='wallets-dropzone__container' ref={rootRef as RefObject<HTMLDivElement>}>
             <input
@@ -106,12 +111,13 @@ const Dropzone: React.FC<TProps> = ({
                 className={classNames(
                     'wallets-dropzone',
                     { 'wallets-dropzone--hover': showHoverMessage },
-                    { 'wallets-dropzone--active': file }
+                    { 'wallets-dropzone--active': file },
+                    { 'wallets-dropzone--error': showErrorMessage }
                 )}
             >
                 <div className='wallets-dropzone__content'>
                     {showHoverMessage && <WalletText size='sm'>{hoverMessage}</WalletText>}
-                    {!showHoverMessage && !file && (
+                    {!showHoverMessage && !showErrorMessage && !file && (
                         <div className='wallets-dropzone__placeholder'>
                             <div className='wallets-dropzone__placeholder-icon'>{icon}</div>
                             {title && (
@@ -128,11 +134,6 @@ const Dropzone: React.FC<TProps> = ({
                                         {buttonText}
                                     </WalletButton>
                                 </div>
-                            )}
-                            {errorMessage && (
-                                <WalletText align='center' color='red' size='2xs'>
-                                    {errorMessage}
-                                </WalletText>
                             )}
                         </div>
                     )}
@@ -176,6 +177,20 @@ const Dropzone: React.FC<TProps> = ({
                                 </WalletText>
                             )}
                         </React.Fragment>
+                    )}
+                    {showErrorMessage && (
+                        <div className='wallets-dropzone__error'>
+                            <IconButton
+                                className='wallets-dropzone__remove-file'
+                                data-testid='dt_remove-button'
+                                icon={<LegacyClose2pxIcon iconSize='xs' width={12} />}
+                                onClick={resetError}
+                                size='sm'
+                            />
+                            <WalletText align='center' color='red'>
+                                File uploaded is not supported
+                            </WalletText>
+                        </div>
                     )}
                 </div>
             </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { useFeatureFlags, useWalletMigration } from '@deriv/hooks';
+import { useWalletMigration } from '@deriv/hooks';
 import { makeLazyLoader, moduleLoader } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
@@ -178,10 +178,16 @@ type TCurrentList = DetailsOfEachMT5Loginid & {
 
 const ModalManager = () => {
     const { is_eligible, is_in_progress } = useWalletMigration();
-    const { is_next_wallet_enabled } = useFeatureFlags();
     const store = useStores();
     const { common, client, modules, traders_hub, ui } = store;
-    const { is_logged_in, is_eu, is_eu_country, is_populating_mt5_account_list, verification_code } = client;
+    const {
+        is_logged_in,
+        is_eu,
+        is_eu_country,
+        is_populating_mt5_account_list,
+        verification_code,
+        should_show_effortless_login_modal,
+    } = client;
     const { platform } = common;
     const {
         current_list,
@@ -339,11 +345,11 @@ const ModalManager = () => {
                 />
             )}
             {is_failed_verification_modal_visible && <FailedVerificationModal />}
-            {is_next_wallet_enabled && (
+            {!should_show_effortless_login_modal && (
                 <React.Fragment>
                     {(is_real_wallets_upgrade_on || is_in_progress) && <RealWalletsUpgrade />}
                     {is_wallet_migration_failed && <WalletsMigrationFailed />}
-                    {is_eligible && <WalletsUpgradeModal />}{' '}
+                    {is_eligible && <WalletsUpgradeModal />}
                 </React.Fragment>
             )}
         </React.Fragment>

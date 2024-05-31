@@ -4,41 +4,41 @@ import EntryExitDetails from 'AppV2/Components/EntryExitDetails';
 import TakeProfitHistory from 'AppV2/Components/TakeProfitHistory';
 import PayoutInfo from 'AppV2/Components/PayoutInfo';
 import ChartPlaceholder from '../Chart';
-import { Localize } from '@deriv/translations';
-import RiskManagementItem from 'AppV2/Components/RiskManagementItem';
 import CardWrapper from 'AppV2/Components/CardWrapper';
 import { observer } from '@deriv/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
-import { hasContractStarted, isForwardStarting, isMultiplierContract, isOpen, isValidToCancel } from '@deriv/shared';
 import OrderDetails from 'AppV2/Components/OrderDetails';
 import { getContractDetailsConfig } from 'AppV2/Utils/contract-details-config';
-import ContractDetailsFooter from 'AppV2/Components/ContractDetailsFooter';
+import TakeProfit from 'AppV2/Components/TakeProfit/take-profit';
+import StopLoss from 'AppV2/Components/StopLoss/stop-loss';
+import DealCancellation from 'AppV2/Components/DealCancellation/deal-cancellation';
+import { hasContractStarted, isForwardStarting, isMultiplierContract, isOpen, isValidToCancel } from '@deriv/shared';
 import classNames from 'classnames';
-
-const historyData = [
-    { date: '01 Jan 2024', time: '12:00:00 GMT', action: 'Take profit', amount: '5.00 USD' },
-    { date: '02 Jan 2024', time: '13:00:00 GMT', action: 'Take profit', amount: '10.00 USD' },
-    { date: '03 Jan 2024', time: '12:00:00 GMT', action: 'Stop loss', amount: '5.00 USD' },
-    { date: '04 Jan 2024', time: '13:00:00 GMT', action: 'Take profit', amount: '10.00 USD' },
-    { date: '05 Jan 2024', time: '12:00:00 GMT', action: 'Take profit', amount: '5.00 USD' },
-    { date: '06 Jan 2024', time: '13:00:00 GMT', action: 'Take profit', amount: '10.00 USD' },
-];
+import RiskManagementItem from 'AppV2/Components/RiskManagementItem';
+import { Localize } from '../../../../../translations/src/i18next/i18next';
+import ContractDetailsFooter from 'AppV2/Components/ContractDetailsFooter';
 
 const ContractDetails = observer(() => {
     const { contract_info, is_loading } = useContractDetails();
     if (is_loading) return <></>;
+    const historyData = [
+        { date: '01 Jan 2024', time: '12:00:00 GMT', action: 'Take profit', amount: '5.00 USD' },
+        { date: '02 Jan 2024', time: '13:00:00 GMT', action: 'Take profit', amount: '10.00 USD' },
+        { date: '03 Jan 2024', time: '12:00:00 GMT', action: 'Stop loss', amount: '5.00 USD' },
+        { date: '04 Jan 2024', time: '13:00:00 GMT', action: 'Take profit', amount: '10.00 USD' },
+        { date: '05 Jan 2024', time: '12:00:00 GMT', action: 'Take profit', amount: '5.00 USD' },
+        { date: '06 Jan 2024', time: '13:00:00 GMT', action: 'Take profit', amount: '10.00 USD' },
+    ];
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
     const is_valid_to_cancel = isValidToCancel(contract_info);
-    const { is_deal_cancellation_visible, is_stop_loss_visible, is_take_profit_visible, is_tp_history_visible } =
-        getContractDetailsConfig(contract_info.contract_type ?? '');
-
     const should_show_sell =
         (hasContractStarted(contract_info) ||
             isForwardStarting(contract_info?.shortcode ?? '', contract_info.purchase_time)) &&
         isOpen(contract_info);
-
+    const { is_tp_history_visible, is_stop_loss_visible, is_take_profit_visible } = getContractDetailsConfig(
+        contract_info.contract_type ?? ''
+    );
     const show_cancel_button = is_multiplier && is_valid_to_cancel;
-
     return (
         <div
             className={classNames('contract-details', {
@@ -69,34 +69,16 @@ const ContractDetails = observer(() => {
                 </div>
             </div>
             {/* END OF CONTRACT CARD */}
-
-            <ChartPlaceholder />
-            {is_valid_to_cancel && is_deal_cancellation_visible && (
+            <div className='placeholder'>
+                <ChartPlaceholder />
+            </div>
+            <DealCancellation />
+            {isOpen(contract_info) && (
                 <CardWrapper>
-                    <RiskManagementItem
-                        label={<Localize i18n_default_text='Deal cancellation' />}
-                        modal_body_content={<Localize i18n_default_text='Whatever you desire' />}
-                        validation_message='hello'
-                        is_deal_cancellation
-                    />
+                    <TakeProfit />
+                    <StopLoss />
                 </CardWrapper>
             )}
-            <CardWrapper>
-                {is_take_profit_visible && (
-                    <RiskManagementItem
-                        label={<Localize i18n_default_text='Take profit' />}
-                        modal_body_content={<Localize i18n_default_text='Whatever you desire' />}
-                        validation_message='hello'
-                    />
-                )}
-                {is_stop_loss_visible && (
-                    <RiskManagementItem
-                        label={<Localize i18n_default_text='Stop Loss' />}
-                        modal_body_content={<Localize i18n_default_text='Whatever you desire' />}
-                        validation_message='hello'
-                    />
-                )}
-            </CardWrapper>
             <CardWrapper title='Order Details'>
                 <OrderDetails contract_info={contract_info} />
             </CardWrapper>

@@ -7,15 +7,9 @@ type RiskManagementInfoModalProps = {
     header_content: React.ReactNode;
     body_content: React.ReactNode;
     info_message?: React.ReactNode;
-    is_deal_cancellation_enabled?: boolean;
 };
 
-const RiskManagementInfoModal = ({
-    header_content,
-    body_content,
-    info_message,
-    is_deal_cancellation_enabled = false,
-}: RiskManagementInfoModalProps) => {
+const RiskManagementInfoModal = ({ header_content, body_content, info_message }: RiskManagementInfoModalProps) => {
     const [isVisible, setIsVisible] = React.useState(false);
     return (
         <>
@@ -34,7 +28,7 @@ const RiskManagementInfoModal = ({
                 <Modal.Body>
                     <div className='risk-management-info-modal--container'>
                         <Text size='md'>{body_content}</Text>
-                        <SectionMessage message={info_message} size='sm' status='info' title={''} />
+                        {info_message && <SectionMessage message={info_message} size='sm' status='info' title={''} />}
                     </div>
                 </Modal.Body>
             </Modal>

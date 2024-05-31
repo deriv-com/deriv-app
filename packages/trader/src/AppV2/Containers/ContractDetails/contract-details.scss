@@ -6,6 +6,7 @@
     overflow: auto;
     height: 100vh;
     gap: var(--semantic-spacing-general-sm);
+    padding-bottom: 20px;
     &--two-buttons {
         padding-bottom: 180px;
     }
@@ -15,7 +16,6 @@
     }
 }
 .placeholder {
-    min-height: 100px;
     margin: 4px 0;
     background-color: #fff;
 }

@@ -23,8 +23,8 @@ export type TToggleCardDialogProps = Pick<
     | 'setCurrentFocus'
 > & {
     contract_id?: number;
-    is_valid_to_cancel?: boolean;
-    should_show_cancellation_warning?: boolean;
+    is_adding_disabled?: boolean;
+    should_show_warning?: boolean;
     toggleCancellationWarning?: () => void;
     is_accumulator?: boolean;
     is_turbos?: boolean;
@@ -36,9 +36,10 @@ const ToggleCardDialog = ({
     contract_id,
     getCardLabels,
     getContractById,
-    is_valid_to_cancel,
-    should_show_cancellation_warning,
+    is_adding_disabled,
+    should_show_warning,
     toggleCancellationWarning,
+    is_accumulator,
     ...passthrough_props
 }: TToggleCardDialogProps) => {
     const [is_visible, setIsVisible] = React.useState(false);
@@ -48,6 +49,8 @@ const ToggleCardDialog = ({
     const toggle_ref = React.useRef<HTMLButtonElement>(null);
     const dialog_ref = React.useRef<HTMLDivElement>(null);
     const contract = getContractById(Number(contract_id));
+
+    const risk_management_is_disabled = should_show_warning && is_adding_disabled;
 
     React.useEffect(() => {
         if (is_visible && toggle_ref?.current && dialog_ref?.current) {
@@ -79,23 +82,21 @@ const ToggleCardDialog = ({
         toggleCancellationWarning?.();
     };
 
+    const notificationText =
+        getCardLabels()[is_accumulator ? 'TAKE_PROFIT_IS_NOT_AVAILABLE' : 'TAKE_PROFIT_LOSS_NOT_AVAILABLE'];
+
     const toggleDialog = (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
-        if (isMobile() && should_show_cancellation_warning && is_valid_to_cancel) {
+        if (isMobile() && risk_management_is_disabled) {
             addToast({
-                key: 'deal_cancellation_active',
-                content:
-                    getCardLabels()[
-                        passthrough_props.is_accumulator
-                            ? 'TAKE_PROFIT_IS_NOT_AVAILABLE'
-                            : 'TAKE_PROFIT_LOSS_NOT_AVAILABLE'
-                    ],
+                key: 'risk_management_is_disabled',
+                content: notificationText,
                 type: 'error',
             });
         }
 
-        if (is_valid_to_cancel) return;
+        if (risk_management_is_disabled) return;
 
         setIsVisible(!is_visible);
     };
@@ -106,37 +107,31 @@ const ToggleCardDialog = ({
         <Icon
             className='dc-contract-card-dialog-toggle__icon'
             icon='IcEdit'
-            color={is_valid_to_cancel ? 'disabled' : ''}
+            color={risk_management_is_disabled ? 'disabled' : ''}
             size={12}
         />
     );
 
     return (
         <div onClick={handleClick}>
-            {is_valid_to_cancel && should_show_cancellation_warning && isDesktop() ? (
+            {risk_management_is_disabled && isDesktop() ? (
                 <Popover
                     alignment='right'
                     classNameBubble='dc-contract-card-dialog__popover-bubble'
                     className={classNames('dc-contract-card-dialog__popover', {
-                        'dc-contract-card-dialog__popover--accumulator': passthrough_props.is_accumulator,
+                        'dc-contract-card-dialog__popover--accumulator': is_accumulator,
                     })}
                     is_bubble_hover_enabled
                     margin={2}
                     zIndex='2'
-                    message={
-                        getCardLabels()[
-                            passthrough_props.is_accumulator
-                                ? 'TAKE_PROFIT_IS_NOT_AVAILABLE'
-                                : 'TAKE_PROFIT_LOSS_NOT_AVAILABLE'
-                        ]
-                    }
+                    message={notificationText}
                     onBubbleClose={onPopoverClose}
                 >
                     <button
                         ref={toggle_ref}
                         className='dc-contract-card-dialog-toggle'
                         onClick={toggleDialogWrapper}
-                        disabled={is_valid_to_cancel}
+                        disabled={risk_management_is_disabled}
                     >
                         {edit_icon}
                     </button>
@@ -145,8 +140,7 @@ const ToggleCardDialog = ({
                 <button
                     ref={toggle_ref}
                     className={classNames('dc-contract-card-dialog-toggle', {
-                        'dc-contract-card-dialog-toggle--disabled':
-                            is_valid_to_cancel && should_show_cancellation_warning,
+                        'dc-contract-card-dialog-toggle--disabled': risk_management_is_disabled,
                     })}
                     onClick={toggleDialogWrapper}
                 >

@@ -87,12 +87,12 @@ const AccumulatorCardBody = ({
                     <ContractCardItem header={TAKE_PROFIT}>
                         {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
                     </ContractCardItem>
-                    {(is_valid_to_sell || !is_sold) && (
+                    {is_valid_to_sell && (
                         <ToggleCardDialog
                             contract_id={contract_info.contract_id}
                             getCardLabels={getCardLabels}
-                            is_valid_to_cancel={true}
-                            should_show_cancellation_warning={true}
+                            is_adding_disabled
+                            should_show_warning
                             toggleCancellationWarning={toggleCancellationWarning}
                             is_accumulator
                             {...toggle_card_dialog_props}

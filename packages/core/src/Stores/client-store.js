@@ -2020,8 +2020,8 @@ export default class ClientStore extends BaseStore {
             landing_company_name: 'landing_company_shortcode',
         };
         const client_object = {};
-        const selected_account = obj_params.selected_acct;
-        const is_wallets_selected = selected_account.startsWith('CRW');
+        const selected_account = obj_params?.selected_acct;
+        const is_wallets_selected = selected_account?.startsWith('CRW');
         let active_loginid;
         let active_wallet_loginid;
 

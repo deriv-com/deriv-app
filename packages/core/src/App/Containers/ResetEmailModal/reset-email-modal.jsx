@@ -14,7 +14,7 @@ const ResetEmailModal = observer(() => {
     const verification_code = client.verification_code.request_email;
     const [is_confirm_email_modal_open, setIsConfirmResetEmailModal] = React.useState(false);
     const [email_error_msg, setEmailErrorMsg] = React.useState(null);
-    const [email_value, setEmailValue] = React.useState(null);
+    const [email_value, setEmailValue] = React.useState('');
 
     const handleSubmit = values => {
         setEmailValue(values.email);

@@ -4,8 +4,8 @@ import { Localize } from '@deriv/translations';
 import ApiTokenClipboard from './api-token-clipboard';
 
 type TApiTokenTableRowTokenCell = {
-    token: string;
-    scopes: string[];
+    token?: string;
+    scopes?: string[];
 };
 
 const HiddenPasswordDots = () => (

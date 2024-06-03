@@ -150,11 +150,14 @@ describe('<FinancialDetails />', () => {
 
         const select_inputs = screen.getAllByRole('combobox');
 
-        const income_source_select = select_inputs.find((option: FormikValues) => option.name === 'income_source');
+        const income_source_select = select_inputs.find(
+            (option: FormikValues) => option.name === 'income_source'
+        ) as HTMLSelectElement;
 
         userEvent.selectOptions(income_source_select as HTMLElement, 'Salaried Employee');
 
-        expect(screen.getByRole('option', { name: 'Salaried Employee' }).selected).toBe(true);
+        const selectedOption = screen.getByRole('option', { name: 'Salaried Employee' }) as HTMLOptionElement;
+        expect(selectedOption.selected).toBe(true);
     });
 
     it('should show "Unemployed" in occupation list if employment status is not "Employed"', async () => {

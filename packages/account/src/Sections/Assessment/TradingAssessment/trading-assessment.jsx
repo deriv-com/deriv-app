@@ -4,21 +4,13 @@ import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
 import { RiskToleranceWarningModal, TestWarningModal } from 'Components/trading-assessment';
 import { getTradingAssessmentQuestions } from 'Constants/trading-assessment-questions';
-import {
-    DesktopWrapper,
-    Dropdown,
-    MobileWrapper,
-    SelectNative,
-    Text,
-    FormSubmitButton,
-    Button,
-    Loading,
-} from '@deriv/components';
+import { Dropdown, SelectNative, Text, FormSubmitButton, Button, Loading } from '@deriv/components';
 import FormFooter from 'Components/form-footer';
 import { isMobile, routes, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useHistory, withRouter } from 'react-router';
 import { Formik, Form } from 'formik';
+import { useDevice } from '@deriv-com/ui';
 
 const populateData = form_data => {
     return {
@@ -34,8 +26,8 @@ const populateData = form_data => {
         required_initial_margin: form_data.required_initial_margin,
     };
 };
-
 const TradingAssessment = observer(() => {
+    const { isDesktop } = useDevice();
     const { client } = useStore();
     const { is_virtual, setFinancialAndTradingAssessment } = client;
     const history = useHistory();
@@ -174,44 +166,48 @@ const TradingAssessment = observer(() => {
                                 if (item.field_type === 'radio') {
                                     return (
                                         <fieldset className='account-form__question' key={form_control}>
-                                            <DesktopWrapper>
-                                                <Text
-                                                    as='h1'
-                                                    color='prominent'
-                                                    weight='bold'
-                                                    size='xs'
-                                                    className='account-form__question--text'
-                                                >
-                                                    {item.question_text}
-                                                </Text>
-                                                <Dropdown
-                                                    is_align_text_left
-                                                    name={form_control}
-                                                    value={values[form_control]}
-                                                    list={item?.answer_options}
-                                                    onChange={handleChange}
-                                                    handleBlur={handleBlur}
-                                                />
-                                            </DesktopWrapper>
-                                            <MobileWrapper>
-                                                <Text
-                                                    as='h1'
-                                                    color='prominent'
-                                                    weight='bold'
-                                                    size='xs'
-                                                    line_height='xl'
-                                                    className='account-form__question--text'
-                                                >
-                                                    {item?.question_text}
-                                                </Text>
-                                                <SelectNative
-                                                    value={values[form_control]}
-                                                    name={form_control}
-                                                    list_items={item?.answer_options}
-                                                    onChange={e => handleChange(e)}
-                                                    should_show_empty_option={false}
-                                                />
-                                            </MobileWrapper>
+                                            {isDesktop ? (
+                                                <div>
+                                                    <Text
+                                                        as='h1'
+                                                        color='prominent'
+                                                        weight='bold'
+                                                        size='xs'
+                                                        className='account-form__question--text'
+                                                    >
+                                                        {item.question_text}
+                                                    </Text>
+                                                    <Dropdown
+                                                        is_align_text_left
+                                                        name={form_control}
+                                                        value={values[form_control]}
+                                                        list={item?.answer_options}
+                                                        onChange={handleChange}
+                                                        handleBlur={handleBlur}
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <div>
+                                                    <Text
+                                                        as='h1'
+                                                        color='prominent'
+                                                        weight='bold'
+                                                        size='xs'
+                                                        line_height='xl'
+                                                        className='account-form__question--text'
+                                                    >
+                                                        {item?.question_text}
+                                                    </Text>
+                                                    <SelectNative
+                                                        value={values[form_control]}
+                                                        name={form_control}
+                                                        list_items={item?.answer_options}
+                                                        onChange={e => handleChange(e)}
+                                                        should_show_empty_option={false}
+                                                    />
+                                                </div>
+                                            )}
+                                            ;
                                         </fieldset>
                                     );
                                     // eslint-disable-next-line no-else-return
@@ -222,44 +218,48 @@ const TradingAssessment = observer(() => {
                                                 const sub_form_control = items.form_control;
                                                 return (
                                                     <fieldset key={sub_form_control} className='account-form__question'>
-                                                        <DesktopWrapper>
-                                                            <Text
-                                                                as='h1'
-                                                                color='prominent'
-                                                                weight='bold'
-                                                                size='xs'
-                                                                className='account-form__question--text'
-                                                            >
-                                                                {items.question_text}
-                                                            </Text>
-                                                            <Dropdown
-                                                                is_align_text_left
-                                                                name={sub_form_control}
-                                                                value={values[sub_form_control]}
-                                                                list={items?.answer_options}
-                                                                onChange={handleChange}
-                                                                handleBlur={handleBlur}
-                                                            />
-                                                        </DesktopWrapper>
-                                                        <MobileWrapper>
-                                                            <Text
-                                                                as='h1'
-                                                                color='prominent'
-                                                                weight='bold'
-                                                                size='xs'
-                                                                line_height='xl'
-                                                                className='account-form__question--text'
-                                                            >
-                                                                {items?.question_text}
-                                                            </Text>
-                                                            <SelectNative
-                                                                value={values[sub_form_control]}
-                                                                name={sub_form_control}
-                                                                list_items={items?.answer_options}
-                                                                onChange={e => handleChange(e)}
-                                                                should_show_empty_option={false}
-                                                            />
-                                                        </MobileWrapper>
+                                                        {isDesktop ? (
+                                                            <div>
+                                                                <Text
+                                                                    as='h1'
+                                                                    color='prominent'
+                                                                    weight='bold'
+                                                                    size='xs'
+                                                                    className='account-form__question--text'
+                                                                >
+                                                                    {items.question_text}
+                                                                </Text>
+                                                                <Dropdown
+                                                                    is_align_text_left
+                                                                    name={sub_form_control}
+                                                                    value={values[sub_form_control]}
+                                                                    list={items?.answer_options}
+                                                                    onChange={handleChange}
+                                                                    handleBlur={handleBlur}
+                                                                />
+                                                            </div>
+                                                        ) : (
+                                                            <div>
+                                                                <Text
+                                                                    as='h1'
+                                                                    color='prominent'
+                                                                    weight='bold'
+                                                                    size='xs'
+                                                                    line_height='xl'
+                                                                    className='account-form__question--text'
+                                                                >
+                                                                    {items?.question_text}
+                                                                </Text>
+                                                                <SelectNative
+                                                                    value={values[sub_form_control]}
+                                                                    name={sub_form_control}
+                                                                    list_items={items?.answer_options}
+                                                                    onChange={e => handleChange(e)}
+                                                                    should_show_empty_option={false}
+                                                                />
+                                                            </div>
+                                                        )}
+                                                        ;
                                                     </fieldset>
                                                 );
                                             })}

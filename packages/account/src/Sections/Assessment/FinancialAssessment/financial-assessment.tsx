@@ -2,18 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Formik, FormikHelpers } from 'formik';
 import { useHistory, withRouter } from 'react-router';
-import {
-    FormSubmitErrorMessage,
-    Loading,
-    Button,
-    Dropdown,
-    Modal,
-    Icon,
-    DesktopWrapper,
-    MobileWrapper,
-    SelectNative,
-    Text,
-} from '@deriv/components';
+import { FormSubmitErrorMessage, Loading, Button, Dropdown, Modal, Icon, SelectNative, Text } from '@deriv/components';
 import { routes, platforms, WS, shouldHideOccupationField } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
@@ -450,7 +439,7 @@ const FinancialAssessment = observer(() => {
                                     side_note={localize('We’re legally obliged to ask for your financial information.')}
                                 >
                                     <fieldset className='account-form__fieldset'>
-                                        <DesktopWrapper>
+                                        {isDesktop ? (
                                             <Dropdown
                                                 placeholder={localize('Source of income')}
                                                 is_align_text_left
@@ -461,8 +450,7 @@ const FinancialAssessment = observer(() => {
                                                 handleBlur={handleBlur}
                                                 error={touched.income_source && errors.income_source}
                                             />
-                                        </DesktopWrapper>
-                                        <MobileWrapper>
+                                        ) : (
                                             <SelectNative
                                                 placeholder={localize('Please select')}
                                                 name='income_source'
@@ -475,11 +463,12 @@ const FinancialAssessment = observer(() => {
                                                     handleChange(e);
                                                 }}
                                             />
-                                        </MobileWrapper>
+                                        )}
+                                        ;
                                     </fieldset>
                                     {!is_mf && (
                                         <fieldset className='account-form__fieldset'>
-                                            <DesktopWrapper>
+                                            {isDesktop ? (
                                                 <Dropdown
                                                     placeholder={localize('Employment status')}
                                                     is_align_text_left
@@ -497,8 +486,7 @@ const FinancialAssessment = observer(() => {
                                                     handleBlur={handleBlur}
                                                     error={touched.employment_status && errors.employment_status}
                                                 />
-                                            </DesktopWrapper>
-                                            <MobileWrapper>
+                                            ) : (
                                                 <SelectNative
                                                     placeholder={localize('Please select')}
                                                     name='employment_status'
@@ -518,11 +506,12 @@ const FinancialAssessment = observer(() => {
                                                         handleChange(e);
                                                     }}
                                                 />
-                                            </MobileWrapper>
+                                            )}
+                                            ;
                                         </fieldset>
                                     )}
                                     <fieldset className='account-form__fieldset'>
-                                        <DesktopWrapper>
+                                        {isDesktop ? (
                                             <Dropdown
                                                 placeholder={localize('Industry of employment')}
                                                 is_align_text_left
@@ -533,8 +522,7 @@ const FinancialAssessment = observer(() => {
                                                 handleBlur={handleBlur}
                                                 error={touched.employment_industry && errors.employment_industry}
                                             />
-                                        </DesktopWrapper>
-                                        <MobileWrapper>
+                                        ) : (
                                             <SelectNative
                                                 placeholder={localize('Please select')}
                                                 name='employment_industry'
@@ -549,11 +537,12 @@ const FinancialAssessment = observer(() => {
                                                     handleChange(e);
                                                 }}
                                             />
-                                        </MobileWrapper>
+                                        )}
+                                        ;
                                     </fieldset>
                                     {!shouldHideOccupationField(values.employment_status || employment_status) && (
                                         <fieldset className='account-form__fieldset'>
-                                            <DesktopWrapper>
+                                            {isDesktop ? (
                                                 <Dropdown
                                                     className='account-form__occupation'
                                                     placeholder={localize('Occupation')}
@@ -568,8 +557,7 @@ const FinancialAssessment = observer(() => {
                                                     error={touched.occupation && errors.occupation}
                                                     test_id='occupation'
                                                 />
-                                            </DesktopWrapper>
-                                            <MobileWrapper>
+                                            ) : (
                                                 <SelectNative
                                                     placeholder={localize('Please select')}
                                                     name='occupation'
@@ -585,11 +573,12 @@ const FinancialAssessment = observer(() => {
                                                     }}
                                                     data_testid='occupation'
                                                 />
-                                            </MobileWrapper>
+                                            )}
+                                            ;
                                         </fieldset>
                                     )}
                                     <fieldset className='account-form__fieldset'>
-                                        <DesktopWrapper>
+                                        {isDesktop ? (
                                             <Dropdown
                                                 placeholder={localize('Source of wealth')}
                                                 is_align_text_left
@@ -600,8 +589,7 @@ const FinancialAssessment = observer(() => {
                                                 handleBlur={handleBlur}
                                                 error={touched.source_of_wealth && errors.source_of_wealth}
                                             />
-                                        </DesktopWrapper>
-                                        <MobileWrapper>
+                                        ) : (
                                             <SelectNative
                                                 placeholder={localize('Please select')}
                                                 name='source_of_wealth'
@@ -614,10 +602,11 @@ const FinancialAssessment = observer(() => {
                                                     handleChange(e);
                                                 }}
                                             />
-                                        </MobileWrapper>
+                                        )}
+                                        ;
                                     </fieldset>
                                     <fieldset className='account-form__fieldset'>
-                                        <DesktopWrapper>
+                                        {isDesktop ? (
                                             <Dropdown
                                                 placeholder={localize('Level of education')}
                                                 is_align_text_left
@@ -628,8 +617,7 @@ const FinancialAssessment = observer(() => {
                                                 handleBlur={handleBlur}
                                                 error={touched.education_level && errors.education_level}
                                             />
-                                        </DesktopWrapper>
-                                        <MobileWrapper>
+                                        ) : (
                                             <SelectNative
                                                 placeholder={localize('Please select')}
                                                 name='education_level'
@@ -642,10 +630,11 @@ const FinancialAssessment = observer(() => {
                                                     handleChange(e);
                                                 }}
                                             />
-                                        </MobileWrapper>
+                                        )}
+                                        ;
                                     </fieldset>
                                     <fieldset className='account-form__fieldset'>
-                                        <DesktopWrapper>
+                                        {isDesktop ? (
                                             <Dropdown
                                                 placeholder={localize('Net annual income')}
                                                 is_align_text_left
@@ -656,8 +645,7 @@ const FinancialAssessment = observer(() => {
                                                 handleBlur={handleBlur}
                                                 error={touched.net_income && errors.net_income}
                                             />
-                                        </DesktopWrapper>
-                                        <MobileWrapper>
+                                        ) : (
                                             <SelectNative
                                                 placeholder={localize('Please select')}
                                                 name='net_income'
@@ -670,10 +658,11 @@ const FinancialAssessment = observer(() => {
                                                     handleChange(e);
                                                 }}
                                             />
-                                        </MobileWrapper>
+                                        )}
+                                        ;
                                     </fieldset>
                                     <fieldset className='account-form__fieldset'>
-                                        <DesktopWrapper>
+                                        {isDesktop ? (
                                             <Dropdown
                                                 placeholder={localize('Estimated net worth')}
                                                 is_alignment_top
@@ -685,8 +674,7 @@ const FinancialAssessment = observer(() => {
                                                 handleBlur={handleBlur}
                                                 error={touched.estimated_worth && errors.estimated_worth}
                                             />
-                                        </DesktopWrapper>
-                                        <MobileWrapper>
+                                        ) : (
                                             <SelectNative
                                                 placeholder={localize('Please select')}
                                                 name='estimated_worth'
@@ -699,10 +687,11 @@ const FinancialAssessment = observer(() => {
                                                     handleChange(e);
                                                 }}
                                             />
-                                        </MobileWrapper>
+                                        )}
+                                        ;
                                     </fieldset>
                                     <fieldset className='account-form__fieldset'>
-                                        <DesktopWrapper>
+                                        {isDesktop ? (
                                             <Dropdown
                                                 placeholder={localize('Anticipated account turnover')}
                                                 is_alignment_top
@@ -714,8 +703,7 @@ const FinancialAssessment = observer(() => {
                                                 handleBlur={handleBlur}
                                                 error={touched.account_turnover && errors.account_turnover}
                                             />
-                                        </DesktopWrapper>
-                                        <MobileWrapper>
+                                        ) : (
                                             <SelectNative
                                                 placeholder={localize('Please select')}
                                                 name='account_turnover'
@@ -728,7 +716,8 @@ const FinancialAssessment = observer(() => {
                                                     handleChange(e);
                                                 }}
                                             />
-                                        </MobileWrapper>
+                                        )}
+                                        ;
                                     </fieldset>
                                     {/* Trading experience fieldset */}
                                 </FormBodySection>
@@ -740,7 +729,7 @@ const FinancialAssessment = observer(() => {
                                         />
                                         <FormBodySection side_note={localize('Tell us about your trading experience.')}>
                                             <fieldset className='account-form__fieldset'>
-                                                <DesktopWrapper>
+                                                {isDesktop ? (
                                                     <Dropdown
                                                         placeholder={localize('Forex trading experience')}
                                                         is_align_text_left
@@ -754,8 +743,7 @@ const FinancialAssessment = observer(() => {
                                                             errors.forex_trading_experience
                                                         }
                                                     />
-                                                </DesktopWrapper>
-                                                <MobileWrapper>
+                                                ) : (
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         name='forex_trading_experience'
@@ -772,10 +760,11 @@ const FinancialAssessment = observer(() => {
                                                             handleChange(e);
                                                         }}
                                                     />
-                                                </MobileWrapper>
+                                                )}
+                                                ;
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
-                                                <DesktopWrapper>
+                                                {isDesktop ? (
                                                     <Dropdown
                                                         placeholder={localize('Forex trading frequency')}
                                                         is_align_text_left
@@ -789,8 +778,7 @@ const FinancialAssessment = observer(() => {
                                                             errors.forex_trading_frequency
                                                         }
                                                     />
-                                                </DesktopWrapper>
-                                                <MobileWrapper>
+                                                ) : (
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         name='forex_trading_frequency'
@@ -807,10 +795,11 @@ const FinancialAssessment = observer(() => {
                                                             handleChange(e);
                                                         }}
                                                     />
-                                                </MobileWrapper>
+                                                )}
+                                                ;
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
-                                                <DesktopWrapper>
+                                                {isDesktop ? (
                                                     <Dropdown
                                                         placeholder={localize('Binary options trading experience')}
                                                         is_align_text_left
@@ -824,8 +813,7 @@ const FinancialAssessment = observer(() => {
                                                             errors.binary_options_trading_experience
                                                         }
                                                     />
-                                                </DesktopWrapper>
-                                                <MobileWrapper>
+                                                ) : (
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         name='binary_options_trading_experience'
@@ -842,10 +830,11 @@ const FinancialAssessment = observer(() => {
                                                             handleChange(e);
                                                         }}
                                                     />
-                                                </MobileWrapper>
+                                                )}
+                                                ;
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
-                                                <DesktopWrapper>
+                                                {isDesktop ? (
                                                     <Dropdown
                                                         placeholder={localize('Binary options trading frequency')}
                                                         is_align_text_left
@@ -859,8 +848,7 @@ const FinancialAssessment = observer(() => {
                                                             errors.binary_options_trading_frequency
                                                         }
                                                     />
-                                                </DesktopWrapper>
-                                                <MobileWrapper>
+                                                ) : (
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         name='binary_options_trading_frequency'
@@ -877,10 +865,11 @@ const FinancialAssessment = observer(() => {
                                                             handleChange(e);
                                                         }}
                                                     />
-                                                </MobileWrapper>
+                                                )}
+                                                ;
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
-                                                <DesktopWrapper>
+                                                {isDesktop ? (
                                                     <Dropdown
                                                         placeholder={localize('CFD trading experience')}
                                                         is_align_text_left
@@ -894,8 +883,7 @@ const FinancialAssessment = observer(() => {
                                                             errors.cfd_trading_experience
                                                         }
                                                     />
-                                                </DesktopWrapper>
-                                                <MobileWrapper>
+                                                ) : (
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         name='cfd_trading_experience'
@@ -912,10 +900,11 @@ const FinancialAssessment = observer(() => {
                                                             handleChange(e);
                                                         }}
                                                     />
-                                                </MobileWrapper>
+                                                )}
+                                                ;
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
-                                                <DesktopWrapper>
+                                                {isDesktop ? (
                                                     <Dropdown
                                                         placeholder={localize('CFD trading frequency')}
                                                         is_align_text_left
@@ -929,8 +918,7 @@ const FinancialAssessment = observer(() => {
                                                             errors.cfd_trading_frequency
                                                         }
                                                     />
-                                                </DesktopWrapper>
-                                                <MobileWrapper>
+                                                ) : (
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         name='cfd_trading_frequency'
@@ -947,10 +935,11 @@ const FinancialAssessment = observer(() => {
                                                             handleChange(e);
                                                         }}
                                                     />
-                                                </MobileWrapper>
+                                                )}
+                                                ;
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
-                                                <DesktopWrapper>
+                                                {isDesktop ? (
                                                     <Dropdown
                                                         placeholder={localize('Other trading instruments experience')}
                                                         is_align_text_left
@@ -964,8 +953,7 @@ const FinancialAssessment = observer(() => {
                                                             errors.other_instruments_trading_experience
                                                         }
                                                     />
-                                                </DesktopWrapper>
-                                                <MobileWrapper>
+                                                ) : (
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         name='other_instruments_trading_experience'
@@ -985,10 +973,11 @@ const FinancialAssessment = observer(() => {
                                                             handleChange(e);
                                                         }}
                                                     />
-                                                </MobileWrapper>
+                                                )}
+                                                ;
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
-                                                <DesktopWrapper>
+                                                {isDesktop ? (
                                                     <Dropdown
                                                         placeholder={localize('Other trading instruments frequency')}
                                                         is_alignment_top
@@ -1003,8 +992,7 @@ const FinancialAssessment = observer(() => {
                                                             errors.other_instruments_trading_frequency
                                                         }
                                                     />
-                                                </DesktopWrapper>
-                                                <MobileWrapper>
+                                                ) : (
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
                                                         name='other_instruments_trading_frequency'
@@ -1024,7 +1012,8 @@ const FinancialAssessment = observer(() => {
                                                             handleChange(e);
                                                         }}
                                                     />
-                                                </MobileWrapper>
+                                                )}
+                                                ;
                                             </fieldset>
                                         </FormBodySection>
                                     </>

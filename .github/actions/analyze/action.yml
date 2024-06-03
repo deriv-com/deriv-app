@@ -152,7 +152,7 @@ runs:
     id: sticky_comment_on_pr
     uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31
     with:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
       header: deriv-app-id-action
       number: ${{github.event.issue.number}}
       message: |

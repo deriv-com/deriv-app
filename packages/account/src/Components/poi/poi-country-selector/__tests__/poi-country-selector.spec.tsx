@@ -103,7 +103,7 @@ describe('<CountrySelector/>', () => {
     });
 
     it('should trigger selection functions and next button', async () => {
-        (useDevice as jest.Mock).mockReturnValue({ IsMobile: true, isDesktop: false });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
 
         const new_poi_context_config = {
             ...poi_context_config,

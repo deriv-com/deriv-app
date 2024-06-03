@@ -14,10 +14,6 @@ function readJsonFile(filePath) {
     return null;
 }
 
-function calculateDiff(oldSize, newSize) {
-    return newSize - oldSize;
-}
-
 function calculatePercentage(oldSize, newSize) {
     if (oldSize === 0) {
         return newSize === 0 ? 0 : 100;
@@ -44,9 +40,10 @@ for (const pkg of packages) {
     const oldReport = readJsonFile(path.join(oldPackagesDir, pkg, 'report.json'));
     const newReport = readJsonFile(path.join(packagesDir, pkg, 'report.json'));
 
-    const oldSize = oldReport ? oldReport[0].gzipSize : null;
-    const newSize = newReport ? newReport[0].gzipSize : null;
-    let diff = oldSize && newSize ? calculateDiff(oldSize, newSize) : null;
+    const oldSize = oldReport ? oldReport.reduce((acc, item) => acc + item.gzipSize, 0) : null;
+    const newSize = newReport ? newReport.reduce((acc, item) => acc + item.gzipSize, 0) : null;
+
+    let diff = oldSize && newSize ? newSize - oldSize : null;
 
     if (oldSize === null) {
         diff = newSize;

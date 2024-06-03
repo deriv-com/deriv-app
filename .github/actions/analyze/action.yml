@@ -134,12 +134,37 @@ runs:
     if: steps.get_artifact_url.outputs.artifact_url != 'null'
     shell: bash
     run: |
-      DIFF_OUTPUT_HTML=$(node .github/actions/analyze/compareReports.js --format=html | base64)
-      DIFF_OUTPUT_CONSOLE=$(node .github/actions/analyze/compareReports.js --format=raw | base64)
-      ABOVE_THRESHOLD=$(node .github/actions/analyze/compareReports.js --format=boolean)
+      set -eo pipefail
+
+      # Run comparison for HTML format and encode in base64, with logging
+      echo "Starting HTML format comparison..."
+      DIFF_OUTPUT_HTML=$(node .github/actions/analyze/compareReports.js --format=html | base64) || { echo "HTML comparison failed"; exit 1; }
+      echo "HTML comparison completed successfully."
+
+      # Log output for debugging
+      echo "HTML output (base64 encoded): $DIFF_OUTPUT_HTML"
+
+      # Run comparison for raw format and encode in base64, with logging
+      echo "Starting raw format comparison..."
+      DIFF_OUTPUT_CONSOLE=$(node .github/actions/analyze/compareReports.js --format=raw | base64) || { echo "Raw comparison failed"; exit 1; }
+      echo "Raw comparison completed successfully."
+
+      # Log output for debugging
+      echo "Console output (base64 encoded): $DIFF_OUTPUT_CONSOLE"
+
+      # Threshold check with logging
+      echo "Checking if above threshold..."
+      ABOVE_THRESHOLD=$(node .github/actions/analyze/compareReports.js --format=boolean) || { echo "Threshold check failed"; exit 1; }
+      echo "Threshold check completed. Result: $ABOVE_THRESHOLD"
+
+      # Output results to GITHUB_OUTPUT
       echo "diff_output_html=$DIFF_OUTPUT_HTML" >> $GITHUB_OUTPUT
       echo "diff_output_console=$DIFF_OUTPUT_CONSOLE" >> $GITHUB_OUTPUT
       echo "above_threshold=$ABOVE_THRESHOLD" >> $GITHUB_OUTPUT
+
+      # Final confirmation message
+      echo "All operations completed successfully."
+
 
   # - name: Comment on PR with Diff Output
   #   if: steps.get_artifact_url.outputs.artifact_url != 'null' && inputs.ISSUE_NUMBER

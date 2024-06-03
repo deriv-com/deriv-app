@@ -1109,6 +1109,9 @@ $MIN_HEIGHT_FLOATING: calc(
         @include mobile-screen {
             height: 100%;
         }
+        @include tablet-screen {
+            height: 100%;
+        }
     }
 
     &__confirmation-page {

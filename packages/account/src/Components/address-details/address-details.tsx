@@ -2,14 +2,13 @@ import React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, FormikProps, FormikHelpers, FormikHandlers, FormikState, FieldProps } from 'formik';
 import { StatesList } from '@deriv/api-types';
+import { useDevice } from '@deriv-com/ui';
 import {
     Autocomplete,
     AutoHeightWrapper,
-    DesktopWrapper,
     Div100vhContainer,
     FormSubmitButton,
     Loading,
-    MobileWrapper,
     Modal,
     SelectNative,
     Text,
@@ -74,6 +73,7 @@ type TAutoComplete = {
  * @param has_real_account - has real account
  * @returns react node
  */
+
 const AddressDetails = observer(
     ({
         getCurrentStep,
@@ -91,12 +91,10 @@ const AddressDetails = observer(
         const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
 
         const {
-            ui,
             client: { residence, account_settings },
             traders_hub: { is_eu_user },
         } = useStore();
 
-        const { is_desktop, is_mobile } = ui;
         const { data: states_list, isFetched } = useStatesList(residence);
 
         const handleCancel = (values: TAddressDetailFormProps) => {
@@ -117,6 +115,7 @@ const AddressDetails = observer(
             onSubmit((getCurrentStep?.() || 1) - 1, values, actions.setSubmitting, goToNextStep);
         };
 
+        const { isDesktop } = useDevice();
         return (
             <Formik initialValues={props.value} validate={handleValidate} validateOnMount onSubmit={handleSubmitData}>
                 {({
@@ -127,7 +126,7 @@ const AddressDetails = observer(
                     handleChange,
                     setFieldTouched,
                 }: FormikHandlers & FormikHelpers<TAddressDetailFormProps> & FormikState<TAddressDetailFormProps>) => (
-                    <AutoHeightWrapper default_height={350} height_offset={is_desktop ? 80 : null}>
+                    <AutoHeightWrapper default_height={350} height_offset={isDesktop ? 80 : null}>
                         {({
                             setRef,
                             height,
@@ -140,7 +139,7 @@ const AddressDetails = observer(
                                 <Div100vhContainer
                                     className='details-form'
                                     height_offset='90px'
-                                    is_disabled={is_desktop}
+                                    is_disabled={isDesktop}
                                 >
                                     <ScrollToFieldWithError />
                                     {is_eu_user ? (
@@ -214,7 +213,7 @@ const AddressDetails = observer(
                                                 <Field name='address_state'>
                                                     {({ field }: FieldProps) => (
                                                         <React.Fragment>
-                                                            <DesktopWrapper>
+                                                            {isDesktop ? (
                                                                 <Autocomplete
                                                                     {...field}
                                                                     {...(address_state_to_display && {
@@ -243,8 +242,7 @@ const AddressDetails = observer(
                                                                             has_real_account)
                                                                     }
                                                                 />
-                                                            </DesktopWrapper>
-                                                            <MobileWrapper>
+                                                            ) : (
                                                                 <SelectNative
                                                                     placeholder={localize('Please select')}
                                                                     label={localize('State/Province')}
@@ -267,7 +265,7 @@ const AddressDetails = observer(
                                                                             has_real_account)
                                                                     }
                                                                 />
-                                                            </MobileWrapper>
+                                                            )}
                                                         </React.Fragment>
                                                     )}
                                                 </Field>
@@ -299,11 +297,11 @@ const AddressDetails = observer(
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer has_separator is_bypassed={is_mobile}>
+                                <Modal.Footer has_separator is_bypassed={!isDesktop}>
                                     <FormSubmitButton
                                         is_disabled={isSubmitting}
                                         label={localize('Next')}
-                                        is_absolute={is_mobile}
+                                        is_absolute={!isDesktop}
                                         has_cancel
                                         cancel_label={localize('Previous')}
                                         onCancel={() => handleCancel(values)}

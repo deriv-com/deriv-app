@@ -1,10 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field } from 'formik';
-import { DesktopWrapper, Dropdown, MobileWrapper, Text, SelectNative } from '@deriv/components';
+import { Dropdown, Text, SelectNative } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { TTradingAssessmentForm, TQuestion } from 'Types';
 import { MAX_QUESTION_TEXT_LENGTH } from '../../Constants/trading-assessment';
+import { useDevice } from '@deriv-com/ui';
 
 type TradingAssessmentDropdownProps = {
     disabled_items: string[];
@@ -43,6 +44,8 @@ const TradingAssessmentDropdown = ({
         checkIfAllFieldsFilled();
     }, [values]);
 
+    const { isDesktop } = useDevice();
+
     const checkIfAllFieldsFilled = () => {
         if (values) {
             setEnableNextSection(
@@ -67,7 +70,7 @@ const TradingAssessmentDropdown = ({
 
                         return (
                             <React.Fragment>
-                                <DesktopWrapper>
+                                {isDesktop ? (
                                     <Dropdown
                                         {...field}
                                         classNameDisplay={classNames({
@@ -88,26 +91,28 @@ const TradingAssessmentDropdown = ({
                                         disabled={disabled_items.includes(question.form_control)}
                                         error={meta.touched && meta.error}
                                     />
-                                </DesktopWrapper>
-                                <MobileWrapper>
-                                    <Text as='h1' color='prominent' weight='bold' size='xs'>
-                                        {question?.question_text}
-                                    </Text>
-                                    <SelectNative
-                                        {...field}
-                                        placeholder={localize('Please select')}
-                                        label={localize('Please select')}
-                                        name={question?.form_control}
-                                        list_items={question?.answer_options}
-                                        onChange={e => {
-                                            onChange(e, question.form_control, setFieldValue);
-                                        }}
-                                        value={values[question.form_control]}
-                                        hide_top_placeholder
-                                        disabled={disabled_items.includes(question.form_control)}
-                                        error={meta.touched && meta.error}
-                                    />
-                                </MobileWrapper>
+                                ) : (
+                                    <div>
+                                        <Text as='h1' color='prominent' weight='bold' size='xs'>
+                                            {question?.question_text}
+                                        </Text>
+                                        <SelectNative
+                                            {...field}
+                                            placeholder={localize('Please select')}
+                                            label={localize('Please select')}
+                                            name={question?.form_control}
+                                            list_items={question?.answer_options}
+                                            onChange={e => {
+                                                onChange(e, question.form_control, setFieldValue);
+                                            }}
+                                            value={values[question.form_control]}
+                                            hide_top_placeholder
+                                            disabled={disabled_items.includes(question.form_control)}
+                                            error={meta.touched && meta.error}
+                                        />
+                                    </div>
+                                )}
+                                ;
                             </React.Fragment>
                         );
                     }}

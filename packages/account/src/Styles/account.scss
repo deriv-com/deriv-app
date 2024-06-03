@@ -1781,7 +1781,7 @@ $MIN_HEIGHT_FLOATING: calc(
         padding: 3.2rem;
         width: 440px;
 
-        @include mobile-or-tablet-screen {
+        @include mobile-screen {
             width: unset;
         }
 
@@ -1793,7 +1793,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 width: 10.3rem;
             }
 
-            @include mobile-or-tablet-screen {
+            @include mobile-screen {
                 background: unset;
             }
         }

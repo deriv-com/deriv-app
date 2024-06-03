@@ -1,10 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik';
-import { Autocomplete, Button, DesktopWrapper, HintBox, MobileWrapper, Text, SelectNative } from '@deriv/components';
+import { Autocomplete, Button, HintBox, Text, SelectNative } from '@deriv/components';
 import { IDV_ERROR_STATUS, isMobile, TIDVErrorStatus, POIContext } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import FormFooter from '../../form-footer';
+import { useDevice } from '@deriv-com/ui';
 import { useResidenceList } from '@deriv/api';
 
 type TCountrySelector = {
@@ -33,6 +34,7 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
 
         return errors;
     };
+    const { isDesktop } = useDevice();
 
     const updateSelectedCountry = (country_name: string) => {
         const matching_country = country_list?.find((c: FormikValues) => c.text === country_name);
@@ -98,7 +100,7 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
                             <Field name='country_input'>
                                 {({ field }: FormikValues) => (
                                     <React.Fragment>
-                                        <DesktopWrapper>
+                                        {isDesktop ? (
                                             <Autocomplete
                                                 className={classNames({ 'external-dropdown': is_from_external })}
                                                 {...field}
@@ -132,8 +134,7 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
                                                 }}
                                                 required
                                             />
-                                        </DesktopWrapper>
-                                        <MobileWrapper>
+                                        ) : (
                                             <div className='proof-of-identity__dropdown-container'>
                                                 <SelectNative
                                                     {...field}
@@ -151,7 +152,8 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
                                                     required
                                                 />
                                             </div>
-                                        </MobileWrapper>
+                                        )}
+                                        ;
                                     </React.Fragment>
                                 )}
                             </Field>

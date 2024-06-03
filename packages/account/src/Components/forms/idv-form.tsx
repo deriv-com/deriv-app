@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, FormikProps, FieldProps, useFormikContext } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
-import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative } from '@deriv/components';
+import { Autocomplete, Input, SelectNative } from '@deriv/components';
 import { formatInput, getIDVNotApplicableOption } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
@@ -12,6 +12,7 @@ import {
     getExampleFormat,
 } from '../../Helpers/utils';
 import { TDocument, TIDVFormValues } from '../../Types';
+import { useDevice } from '@deriv-com/ui';
 
 type TIDVFormProps = {
     selected_country: ResidenceList[0];
@@ -30,6 +31,7 @@ const IDVForm = ({
 }: TIDVFormProps) => {
     const [document_list, setDocumentList] = React.useState<Array<TDocument>>([]);
     const [selected_doc, setSelectedDoc] = React.useState('');
+    const { isDesktop } = useDevice();
 
     const { documents_supported: document_data } = selected_country?.identity?.services?.idv ?? {};
 
@@ -113,7 +115,6 @@ const IDVForm = ({
             setFieldValue('document_additional', '', false);
         }
     };
-
     return (
         <section className={classNames('idv-form', class_name)}>
             <div className='details-form'>
@@ -129,7 +130,7 @@ const IDVForm = ({
                                     <Field name='document_type'>
                                         {({ field }: FieldProps) => (
                                             <React.Fragment>
-                                                <DesktopWrapper>
+                                                {isDesktop ? (
                                                     <Autocomplete
                                                         {...field}
                                                         data-lpignore='true'
@@ -156,8 +157,7 @@ const IDVForm = ({
                                                         }}
                                                         required
                                                     />
-                                                </DesktopWrapper>
-                                                <MobileWrapper>
+                                                ) : (
                                                     <SelectNative
                                                         {...field}
                                                         name='document_type'
@@ -177,7 +177,8 @@ const IDVForm = ({
                                                         use_text={true}
                                                         required
                                                     />
-                                                </MobileWrapper>
+                                                )}
+                                                ;
                                             </React.Fragment>
                                         )}
                                     </Field>

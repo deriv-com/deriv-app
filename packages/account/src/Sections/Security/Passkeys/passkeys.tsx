@@ -3,6 +3,7 @@ import { Redirect, useHistory } from 'react-router-dom';
 import { Loading } from '@deriv/components';
 import { useGetPasskeysList, useRegisterPasskey } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
 import PasskeysStatusContainer from './components/passkeys-status-container';
 import PasskeysList from './components/passkeys-list';
@@ -18,8 +19,8 @@ import './passkeys.scss';
 import { TServerError } from '../../../Types/common.type';
 
 const Passkeys = observer(() => {
-    const { ui, client, common } = useStore();
-    const { is_mobile } = ui;
+    const { client, common } = useStore();
+    const { isMobile } = useDevice();
     const { is_passkey_supported } = client;
     let timeout: ReturnType<typeof setTimeout>;
     const history = useHistory();
@@ -37,7 +38,7 @@ const Passkeys = observer(() => {
         passkey_registration_error,
     } = useRegisterPasskey();
 
-    const should_show_passkeys = is_passkey_supported && is_mobile;
+    const should_show_passkeys = is_passkey_supported && isMobile;
     const error = passkeys_list_error || passkey_registration_error;
     const modal_content = getModalContent({
         error,

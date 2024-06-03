@@ -190,7 +190,11 @@ const Passkeys = observer(() => {
             />
             {is_snackbar_open && (
                 <div className='passkeys-snackbar__container'>
-                    <InlineMessage message={<Localize i18n_default_text='Changes saved.' />} type='information' />
+                    <InlineMessage
+                        size='sm'
+                        message={<Localize i18n_default_text='Changes saved.' />}
+                        type='information'
+                    />
                 </div>
             )}
             <PasskeyReminderModal

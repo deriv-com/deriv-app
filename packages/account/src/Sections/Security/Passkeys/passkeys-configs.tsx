@@ -26,7 +26,7 @@ export type TPasskeyError =
 
 export const getPasskeyRenameValidationSchema = () =>
     Yup.object().shape({
-        passkey_rename: Yup.string()
+        passkey_name: Yup.string()
             .required('Only 3-30 characters allowed.')
             .min(3, localize('Only 3-30 characters allowed.'))
             .max(30, localize('Only 3-30 characters allowed.'))

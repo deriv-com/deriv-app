@@ -1,4 +1,4 @@
-import React from 'react';
+import { PropsWithChildren, Fragment } from 'react';
 import { ScrollbarsContainer } from '../scrollbars-container/scrollbars-container';
 import { Div100vhContainer, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import clsx from 'clsx';
@@ -8,8 +8,8 @@ type TFormBody = {
     className?: string;
 };
 
-export const FormBody = ({ children, scroll_offset, className }: React.PropsWithChildren<TFormBody>) => (
-    <React.Fragment>
+export const FormBody = ({ children, scroll_offset, className }: PropsWithChildren<TFormBody>) => (
+    <Fragment>
         <DesktopWrapper>
             <ScrollbarsContainer
                 className={clsx('account__scrollbars_container--grid-layout', className)}
@@ -26,5 +26,5 @@ export const FormBody = ({ children, scroll_offset, className }: React.PropsWith
                 {children}
             </Div100vhContainer>
         </MobileWrapper>
-    </React.Fragment>
+    </Fragment>
 );

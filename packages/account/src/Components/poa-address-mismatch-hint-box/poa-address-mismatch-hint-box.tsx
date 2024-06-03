@@ -1,12 +1,12 @@
-import React from 'react';
+import { useRef, useEffect } from 'react';
 import { Text, HintBox } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import './poa-address-mismatch-hint-box.scss';
 
 const POAAddressMismatchHintBox = () => {
-    const ref = React.useRef<HTMLDivElement | null>(null);
+    const ref = useRef<HTMLDivElement | null>(null);
 
-    React.useEffect(() => {
+    useEffect(() => {
         // To make scrolling work on mobile we need to add a delay.
         setTimeout(() => ref?.current?.scrollIntoView(), 0);
     }, []);

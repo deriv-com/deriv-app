@@ -2,13 +2,13 @@ import { Redirect } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTranslations } from '@deriv-com/translations';
-import { localize, getAllowedLanguages } from '@deriv/translations';
+import { getAllowedLanguages } from '@deriv/translations';
 import FormSubHeader from '../../../Components/form-sub-header';
 import LanguageRadioButton from '../../../Components/language-settings';
 
 const LanguageSettings = observer(() => {
     const { client, common, ui } = useStore();
-    const { switchLanguage, currentLang } = useTranslations();
+    const { switchLanguage, currentLang, localize } = useTranslations();
     const { has_wallet } = client;
     const { changeSelectedLanguage } = common;
     const { is_mobile } = ui;

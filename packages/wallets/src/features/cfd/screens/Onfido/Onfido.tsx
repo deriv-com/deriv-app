@@ -14,7 +14,6 @@ const Onfido = () => {
     const { switchScreen } = useFlow();
     const { formValues, setFormValues } = useFlow();
     // if the user goes back and already submitted Onfido, check the form store first
-    const hasAlreadySubmitted = formValues?.hasSubmittedOnfido || hasSubmitted;
 
     useEffect(() => {
         if (hasSubmitted) {
@@ -26,37 +25,29 @@ const Onfido = () => {
     }, [hasSubmitted, setFormValues, onfidoRef]);
 
     return (
-        <div
-            className={classNames('wallets-onfido', {
-                'wallets-onfido--success': hasAlreadySubmitted,
-            })}
-        >
-            {!hasAlreadySubmitted && (
-                <div className='wallets-onfido__content'>
-                    <VerifyDocumentDetails />
-                    {!isServiceTokenLoading && (
-                        <div
-                            className={classNames('wallets-onfido__wrapper', {
-                                'wallets-onfido__wrapper--animate': formValues.verifiedDocumentDetails,
-                            })}
-                        >
-                            <div className='wallets-onfido__wrapper-onfido-container' id={onfidoContainerId} />
-                            {!formValues.verifiedDocumentDetails ? (
-                                <div className='wallets-onfido__wrapper-overlay'>
-                                    <InlineMessage
-                                        message='Hit the checkbox above to choose your document.'
-                                        size='sm'
-                                        type='information'
-                                    />
-                                </div>
-                            ) : (
-                                <InlineMessage
-                                    message='Your personal details have been saved successfully.'
-                                    size='sm'
-                                    type='announcement'
-                                />
-                            )}
+        <div className='wallets-onfido'>
+            <VerifyDocumentDetails />
+            {!isServiceTokenLoading && (
+                <div
+                    className={classNames('wallets-onfido__wrapper', {
+                        'wallets-onfido__wrapper--animate': formValues.verifiedDocumentDetails,
+                    })}
+                >
+                    <div className='wallets-onfido__wrapper-onfido-container' id={onfidoContainerId} />
+                    {!formValues.verifiedDocumentDetails ? (
+                        <div className='wallets-onfido__wrapper-overlay'>
+                            <InlineMessage
+                                message='Hit the checkbox above to choose your document.'
+                                size='sm'
+                                type='information'
+                            />
                         </div>
+                    ) : (
+                        <InlineMessage
+                            message='Your personal details have been saved successfully.'
+                            size='sm'
+                            type='announcement'
+                        />
                     )}
                 </div>
             )}

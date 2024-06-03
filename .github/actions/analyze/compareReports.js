@@ -97,7 +97,9 @@ function formatToTable(sizes) {
         <tbody>
             ${tableRows}
         </tbody>
-    </table>`.replace(/[\n\t]/g, '');
+    </table>`
+        .replace(/[\n\t]/g, '')
+        .trim();
 }
 
 function formatToConsole(sizes) {

@@ -109,7 +109,8 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const shouldSubmitPOA = useMemo(() => {
         if (poaStatus?.is_pending) return false;
         // @ts-expect-error as the prop verified_jurisdiction is not yet present in GetAccountStatusResponse type
-        return selectedJurisdiction ? !poaStatus?.verified_jurisdiction?.[selectedJurisdiction] : false;
+        const val = selectedJurisdiction ? !poaStatus?.verified_jurisdiction?.[selectedJurisdiction] : false;
+        return val;
     }, [selectedJurisdiction, poaStatus]);
 
     const shouldFillPersonalDetails = useMemo(
@@ -252,6 +253,10 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                         first_name: formValues.firstName,
                         last_name: formValues.lastName,
                     });
+                } else if (currentScreenId === 'onfidoScreen') {
+                    if (shouldSubmitPOA) {
+                        switchScreen('poaScreen');
+                    }
                 } else if (currentScreenId === 'selfieScreen') {
                     await uploadDocument(formValues);
                     await upload({

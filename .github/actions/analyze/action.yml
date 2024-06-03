@@ -148,12 +148,20 @@ runs:
   #     echo "$DIFF_OUTPUT" >> $GITHUB_OUTPUT
   #     echo "EOF" >> $GITHUB_OUTPUT
   #     echo $DIFF_OUTPUT
-
+  - name: Comment on pull request with App ID and URLs
+    id: sticky_comment_on_pr
+    uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31
+    with:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        header: deriv-app-id-action
+        number: ${{github.event.issue.number}}
+        message: |
+          Another test comment
+    continue-on-error: true
+                      
   - name: Comment on PR with Diff Output
     # if: steps.get_artifact_url.outputs.artifact_url != 'null' && inputs.ISSUE_NUMBER
     uses: actions/github-script@v5
-    permissions:
-      pull-requests: write
     env:
       DIFF_OUTPUT: ${{ steps.diff.outputs.diff_output }}
       ISSUE_NUMBER: ${{ inputs.ISSUE_NUMBER }}

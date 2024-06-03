@@ -5,10 +5,8 @@ import { Field, useFormikContext } from 'formik';
 import {
     Autocomplete,
     Checkbox,
-    DesktopWrapper,
     Dropdown,
     InlineMessage,
-    MobileWrapper,
     Popover,
     RadioGroup,
     SelectNative,
@@ -22,6 +20,7 @@ import FormBodySection from '../form-body-section';
 import { DateOfBirthField, FormInputField } from './form-fields';
 import FormSubHeader from '../form-sub-header';
 import InlineNoteWithIcon from '../inline-note-with-icon';
+import { useDevice } from '@deriv-com/ui';
 
 const PersonalDetailsForm = props => {
     const {
@@ -55,6 +54,7 @@ const PersonalDetailsForm = props => {
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
 
     const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched } = useFormikContext();
+    const { isDesktop } = useDevice();
 
     React.useEffect(() => {
         if (should_close_tooltip) {
@@ -289,7 +289,7 @@ const PersonalDetailsForm = props => {
                         {'address_state' in values &&
                             (states_list?.length ? (
                                 <React.Fragment>
-                                    <DesktopWrapper>
+                                    {isDesktop ? (
                                         <Field name='address_state'>
                                             {({ field }) => (
                                                 <Autocomplete
@@ -306,8 +306,7 @@ const PersonalDetailsForm = props => {
                                                 />
                                             )}
                                         </Field>
-                                    </DesktopWrapper>
-                                    <MobileWrapper>
+                                    ) : (
                                         <SelectNative
                                             placeholder={localize('Please select')}
                                             label={localize('State/Province')}
@@ -317,7 +316,7 @@ const PersonalDetailsForm = props => {
                                             use_text
                                             onChange={e => setFieldValue('address_state', e.target.value, true)}
                                         />
-                                    </MobileWrapper>
+                                    )}
                                 </React.Fragment>
                             ) : (
                                 <FormInputField
@@ -359,7 +358,7 @@ const PersonalDetailsForm = props => {
                             <Field name='citizen'>
                                 {({ field }) => (
                                     <React.Fragment>
-                                        <DesktopWrapper>
+                                        {isDesktop ? (
                                             <Autocomplete
                                                 {...field}
                                                 data-lpignore='true'
@@ -380,8 +379,7 @@ const PersonalDetailsForm = props => {
                                                 required
                                                 data-testid='citizenship'
                                             />
-                                        </DesktopWrapper>
-                                        <MobileWrapper>
+                                        ) : (
                                             <SelectNative
                                                 placeholder={localize('Citizenship')}
                                                 name={field.name}
@@ -404,7 +402,7 @@ const PersonalDetailsForm = props => {
                                                 should_hide_disabled_options={false}
                                                 data_testid='citizenship_mobile'
                                             />
-                                        </MobileWrapper>
+                                        )}
                                     </React.Fragment>
                                 )}
                             </Field>
@@ -442,7 +440,7 @@ const PersonalDetailsForm = props => {
                                 )}
                                 {'employment_status' in values && (
                                     <fieldset className={classNames('account-form__fieldset', 'emp-status')}>
-                                        <DesktopWrapper>
+                                        {isDesktop ? (
                                             <Dropdown
                                                 placeholder={
                                                     is_eu_user
@@ -461,8 +459,7 @@ const PersonalDetailsForm = props => {
                                                 error={touched.employment_status && errors.employment_status}
                                                 disabled={isFieldImmutable('employment_status', editable_fields)}
                                             />
-                                        </DesktopWrapper>
-                                        <MobileWrapper>
+                                        ) : (
                                             <SelectNative
                                                 placeholder={localize('Please select')}
                                                 name='employment_status'
@@ -481,7 +478,7 @@ const PersonalDetailsForm = props => {
                                                 }}
                                                 disabled={isFieldImmutable('employment_status', editable_fields)}
                                             />
-                                        </MobileWrapper>
+                                        )}
                                     </fieldset>
                                 )}
                                 {'tax_identification_confirm' in values && (
@@ -634,7 +631,7 @@ const PlaceOfBirthField = ({ handleChange, setFieldValue, disabled, residence_li
     <Field name='place_of_birth'>
         {({ field, meta }) => (
             <React.Fragment>
-                <DesktopWrapper>
+                {isDesktop ? (
                     <Autocomplete
                         {...field}
                         disabled={disabled}
@@ -648,8 +645,7 @@ const PlaceOfBirthField = ({ handleChange, setFieldValue, disabled, residence_li
                         required
                         data-testid='place_of_birth'
                     />
-                </DesktopWrapper>
-                <MobileWrapper>
+                ) : (
                     <SelectNative
                         placeholder={required ? localize('Place of birth') : localize('Place of birth')}
                         name={field.name}
@@ -669,7 +665,7 @@ const PlaceOfBirthField = ({ handleChange, setFieldValue, disabled, residence_li
                         should_hide_disabled_options={false}
                         data_testid='place_of_birth_mobile'
                     />
-                </MobileWrapper>
+                )}
             </React.Fragment>
         )}
     </Field>
@@ -687,7 +683,7 @@ const TaxResidenceField = ({
     <Field name='tax_residence'>
         {({ field, meta }) => (
             <div className='details-form__tax'>
-                <DesktopWrapper>
+                {isDesktop ? (
                     <Autocomplete
                         {...field}
                         data-lpignore='true'
@@ -702,8 +698,7 @@ const TaxResidenceField = ({
                         disabled={disabled}
                         required={required}
                     />
-                </DesktopWrapper>
-                <MobileWrapper>
+                ) : (
                     <SelectNative
                         placeholder={required ? localize('Tax residence*') : localize('Tax residence')}
                         name={field.name}
@@ -721,7 +716,7 @@ const TaxResidenceField = ({
                         data_testid='tax_residence_mobile'
                         disabled={disabled}
                     />
-                </MobileWrapper>
+                )}
                 <div
                     data-testid='tax_residence_pop_over'
                     onClick={e => {
@@ -803,7 +798,7 @@ const AccountOpeningReasonField = ({ no_header, required, account_opening_reason
         <Field name='account_opening_reason'>
             {({ field, meta }) => (
                 <React.Fragment>
-                    <DesktopWrapper>
+                    {isDesktop ? (
                         <Dropdown
                             placeholder={
                                 required ? localize('Account opening reason*') : localize('Account opening reason')
@@ -817,8 +812,7 @@ const AccountOpeningReasonField = ({ no_header, required, account_opening_reason
                             list_portal_id='modal_root'
                             required
                         />
-                    </DesktopWrapper>
-                    <MobileWrapper>
+                    ) : (
                         <SelectNative
                             placeholder={localize('Please select')}
                             name={field.name}
@@ -834,7 +828,7 @@ const AccountOpeningReasonField = ({ no_header, required, account_opening_reason
                             data_testid='account_opening_reason_mobile'
                             disabled={disabled}
                         />
-                    </MobileWrapper>
+                    )}
                 </React.Fragment>
             )}
         </Field>

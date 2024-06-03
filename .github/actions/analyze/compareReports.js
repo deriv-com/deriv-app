@@ -1,43 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-function roundUpToDecimals(num, decimals) {
-    const factor = Math.pow(10, decimals);
-    return Math.ceil(num * factor) / factor;
-}
-
-function readJsonFile(filePath) {
-    if (fs.existsSync(filePath)) {
-        const data = fs.readFileSync(filePath, 'utf-8');
-        return JSON.parse(data);
-    }
-    return null;
-}
-
-function calculatePercentage(oldSize, newSize) {
-    if (oldSize === 0) {
-        return newSize === 0 ? 0 : 100;
-    }
-    return ((newSize - oldSize) / oldSize) * 100;
-}
-
-function formatSize(size) {
-    if (size === null) {
-        return 'n/a';
-    }
-
-    const formattedSize = roundUpToDecimals(size / 1024, 2) + 'kb';
-    return formattedSize;
-}
-
-function formatDiff(size) {
-    if (size === null) {
-        return 'n/a';
-    }
-
-    const sign = size > 0 ? '+' : '-';
-    return `${sign}${formatSize(size, true)}`;
-}
+const RED_THRESHOLD = 5;
 
 const packagesDir = './packages';
 const oldPackagesDir = './old/packages';
@@ -49,57 +13,34 @@ for (const pkg of packages) {
     const oldReport = readJsonFile(path.join(oldPackagesDir, pkg, 'report.json'));
     const newReport = readJsonFile(path.join(packagesDir, pkg, 'report.json'));
 
+    if (!newReport) {
+        continue;
+    }
+
     const oldSize = oldReport ? oldReport.reduce((acc, item) => acc + item.gzipSize, 0) : null;
     const newSize = newReport ? newReport.reduce((acc, item) => acc + item.gzipSize, 0) : null;
 
-    let diff = oldSize && newSize ? newSize - oldSize : null;
-
-    if (oldSize === null) {
-        diff = newSize;
-    }
-
-    if (newSize === null) {
-        diff = oldSize;
-    }
-
-    let diffText = formatDiff(diff);
-
+    let diff = oldSize && newSize ? newSize - oldSize : oldSize || newSize;
     let percentage = oldSize && newSize ? calculatePercentage(oldSize, newSize) : null;
 
-    if (oldSize === null) {
-        percentage = 100;
-    }
+    let formattedPercentage = formatPercentageWithSign(diff);
 
-    if (newSize === null) {
-        percentage = -100;
-    }
-
-    let percentageText = '-';
-    let percentageEmoji;
-
-    if (percentage === 0) {
-        percentageEmoji = '';
-    } else if (percentage < 0) {
-        percentageEmoji = '🟢'; // green for decrease
-    } else if (percentage >= 0 && percentage <= 5) {
-        percentageEmoji = '🟡'; // yellow for small increase
+    let lightSign = '';
+    if (percentage <= 0) {
+        lightSign = '🟢';
+    } else if (percentage > 0 && percentage <= 5) {
+        lightSign = '🟡';
     } else {
-        percentageEmoji = '🔴'; // red for larger increase
-    }
-
-    if (percentage !== 0) {
-        percentageText = percentage.toFixed(2) + '%';
-    } else {
-        percentageText = '0%';
+        lightSign = '🔴';
     }
 
     tableRows += `
     <tr>
       <td>${pkg}</td>
-      <td>${formatSize(oldSize)}</td>
-      <td>${formatSize(newSize)}</td>
-      <td>${diffText}</td>
-      <td>${percentageText} ${percentageEmoji}</td>
+      <td>${formatBytes(oldSize)}</td>
+      <td>${formatBytes(newSize)}</td>
+      <td>${formatBytes(newSize - oldSize, true)}</td>
+      <td>${formattedPercentage}</td>
     </tr>
   `.trim();
 }
@@ -112,7 +53,7 @@ console.log(
     <th>old</th>
     <th>new</th>
     <th>diff</th>
-    <th>percentage</th>
+    <th>pct change</th>
   </thead>
   <tbody>
     ${tableRows}
@@ -120,3 +61,56 @@ console.log(
 </table>
 `.trim()
 );
+
+function readJsonFile(filePath) {
+    if (fs.existsSync(filePath)) {
+        const data = fs.readFileSync(filePath, 'utf-8');
+        return JSON.parse(data);
+    }
+    return null;
+}
+
+function calculatePercentage(oldSize, newSize) {
+    return ((newSize - oldSize) / oldSize) * 100;
+}
+
+function formatBytes(bytes, sign = false) {
+    if (input === null || isNaN(input)) {
+        return 'n/a';
+    }
+
+    let formattedValue = '';
+
+    if (bytes < 1024) {
+        formattedValue = bytes + ' B'; // Bytes
+    } else if (bytes < 1048576) {
+        formattedValue = Math.round(bytes / 1024) + ' KB'; // Kilobytes
+    } else {
+        formattedValue = (bytes / 1048576).toFixed(1) + ' MB'; // Megabytes
+    }
+
+    if (sign) {
+        if (bytes === 0) {
+            return '0 B';
+        }
+        formattedValue = bytes >= 0 ? '+' + formattedValue : '-' + formattedValue;
+    }
+
+    return formattedValue;
+}
+
+function formatPercentageWithSign(percentage) {
+    if (percentage === null || isNaN(percentage)) {
+        return 'n/a';
+    }
+
+    const absPercentage = Math.abs(percentage);
+    const decimalPoints = absPercentage < 10 ? 1 : 2;
+    let formattedValue = percentage.toFixed(decimalPoints) + '%';
+
+    if (percentage === 0) {
+        return '0%';
+    }
+
+    return percentage >= 0 ? '+' + formattedValue : '−' + formattedValue;
+}

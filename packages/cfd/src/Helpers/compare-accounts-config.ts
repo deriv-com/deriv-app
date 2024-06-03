@@ -16,7 +16,8 @@ const getHighlightedIconLabel = (
             return localize('Forex: standard/exotic');
         } else if (
             (trading_platforms.platform === CFD_PLATFORMS.MT5 &&
-                market_type_shortcode === MARKET_TYPE_SHORTCODE.ALL_SVG) ||
+                market_type_shortcode === MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG) ||
+            market_type_shortcode === MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI ||
             trading_platforms.platform === CFD_PLATFORMS.CTRADER
         ) {
             return localize('Forex: major/minor');
@@ -139,9 +140,9 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
             return localize('Financial - Vanuatu');
         case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
             return localize('Financial - Labuan');
-        case MARKET_TYPE_SHORTCODE.ALL_SVG:
+        case MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG:
             return is_demo ? localize('Swap-Free Demo') : localize('Swap-Free - SVG');
-        case MARKET_TYPE_SHORTCODE.ALL_BVI:
+        case MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI:
             return is_demo ? localize('Zero Spread Demo') : localize('Zero Spread - BVI');
         case CFD_PLATFORMS.DXTRADE:
             return is_demo ? localize('Deriv X Demo') : localize('Deriv X');
@@ -289,7 +290,7 @@ const getJuridisctionDescription = (shortcode: string) => {
                 '',
                 '1:30'
             );
-        case MARKET_TYPE_SHORTCODE.ALL_BVI:
+        case MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI:
             return createDescription(
                 'Deriv (BVI) Ltd',
                 'British Virgin Islands',
@@ -299,7 +300,7 @@ const getJuridisctionDescription = (shortcode: string) => {
             );
         // Dxtrade
         case MARKET_TYPE_SHORTCODE.ALL_DXTRADE:
-        case MARKET_TYPE_SHORTCODE.ALL_SVG:
+        case MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG:
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_SVG:
         case MARKET_TYPE_SHORTCODE.FINANCIAL_SVG:
         default:

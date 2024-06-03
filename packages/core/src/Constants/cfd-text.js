@@ -19,5 +19,6 @@ export const CFD_TEXT = {
     financial_svg: () => localize('Financial SVG'),
     all: () => localize('Swap-Free'),
     all_demo: () => localize('Swap-Free Demo'),
-    all_svg: () => localize('Swap-Free SVG'),
+    all_swap_free_svg: () => localize('Swap-Free SVG'),
+    all_zero_spread_bvi: () => localize('Zero spread BVI'),
 };

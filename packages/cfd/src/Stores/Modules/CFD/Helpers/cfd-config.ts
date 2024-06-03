@@ -126,13 +126,13 @@ export const getMtCompanies = (is_eu: boolean, product?: string) => {
                 title: product === 'swap_free' ? localize('Demo Swap-Free') : localize('Demo Zero spread'),
                 short_title: all_config.short_title,
             },
-            all_svg: {
+            all_swap_free_svg: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
                 title: localize('Demo Swap-Free SVG'),
                 short_title: localize('Swap-Free SVG'),
             },
-            all_bvi: {
+            all_zero_spread_bvi: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
                 title: localize('Demo Zero spread BVI'),
@@ -189,10 +189,16 @@ export const getMtCompanies = (is_eu: boolean, product?: string) => {
                 title: localize('Swap-Free'),
                 short_title: all_config.short_title,
             },
-            all_svg: {
+            all_swap_free_svg: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
                 title: localize('Swap-Free SVG'),
+                short_title: all_config.short_title,
+            },
+            all_zero_spread_bvi: {
+                mt5_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('Zero spread BVI'),
                 short_title: all_config.short_title,
             },
             ctrader: {

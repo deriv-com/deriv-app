@@ -427,6 +427,7 @@ export default class TradersHubStore extends BaseStore {
                 //tracking name need not be localised,so added the localization here for the account name.
                 tracking_name: account.name,
                 name: localize(account.name),
+                product: account.product,
             };
         });
         this.getAvailableDxtradeAccounts();
@@ -515,7 +516,7 @@ export default class TradersHubStore extends BaseStore {
         );
     }
 
-    getExistingAccounts(platform, market_type) {
+    getExistingAccounts(platform, market_type, product) {
         const { residence } = this.root_store.client;
         const current_list = this.root_store.modules?.cfd?.current_list || [];
         const current_list_keys = Object.keys(current_list);
@@ -524,11 +525,16 @@ export default class TradersHubStore extends BaseStore {
             .filter(key => {
                 const maltainvest_account = current_list[key].landing_company_short === 'maltainvest';
 
-                if (platform === CFD_PLATFORMS.MT5 && !this.is_eu_user && !maltainvest_account) {
+                if (
+                    platform === CFD_PLATFORMS.MT5 &&
+                    market_type !== 'all' &&
+                    !this.is_eu_user &&
+                    !maltainvest_account
+                ) {
                     return key.startsWith(`${platform}.${selected_account_type}.${market_type}`);
                 }
                 if (platform === CFD_PLATFORMS.MT5 && market_type === 'all') {
-                    return key.startsWith(`${platform}.${selected_account_type}.${platform}@${market_type}`);
+                    return key.startsWith(`${platform}.${selected_account_type}.${market_type}_${product}`);
                 }
                 if (platform === CFD_PLATFORMS.DXTRADE && market_type === 'all') {
                     return key.startsWith(`${platform}.${selected_account_type}.${platform}@${market_type}`);
@@ -741,7 +747,6 @@ export default class TradersHubStore extends BaseStore {
                             action_type: 'multi-action',
                             availability: this.selected_region,
                             market_type: account.market_type,
-                            product: account.product,
                             tracking_name: account.tracking_name,
                         },
                     ];
@@ -758,7 +763,6 @@ export default class TradersHubStore extends BaseStore {
                         action_type: 'get',
                         availability: this.selected_region,
                         market_type: account.market_type,
-                        product: account.product,
                         tracking_name: account.tracking_name,
                     },
                 ];

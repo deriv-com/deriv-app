@@ -192,7 +192,6 @@ export default class CFDStore extends BaseStore {
                 ...account,
             };
         });
-
         return list;
     }
 

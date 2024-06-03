@@ -24,8 +24,8 @@ export const CFD_text: { [key: string]: string } = {
     financial_svg: 'Financial SVG',
     all: 'Swap-Free',
     all_demo: 'Swap-Free Demo',
-    all_svg: 'Swap-Free SVG',
-    all_bvi: 'Zero spread BVI',
+    all_swap_free_svg: 'Swap-Free SVG',
+    all_zero_spread_bvi: 'Zero spread BVI',
 } as const;
 
 export const getMT5Title = (account_type: string) => {
@@ -48,6 +48,7 @@ type TGetAccount = {
 };
 type TGetCFDAccountKey = TGetAccount & {
     shortcode?: TShortcode;
+    product?: string;
 };
 
 // * mt5_login_list returns these:
@@ -56,12 +57,19 @@ type TGetCFDAccountKey = TGetAccount & {
 // *
 // sub_account_type financial_stp only happens in "financial" market_type
 // dxrade and swap_free both have market_type "all" so check for platform is neccessary
-export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shortcode }: TGetCFDAccountKey) => {
+export const getCFDAccountKey = ({
+    market_type,
+    sub_account_type,
+    platform,
+    shortcode,
+    product,
+}: TGetCFDAccountKey) => {
     if (platform === CFD_PLATFORMS.MT5 && market_type === 'all') {
-        // currently we are only supporting SVG for SwapFree
-        switch (shortcode) {
-            case 'svg':
-                return 'all_svg';
+        switch (product) {
+            case 'swap_free':
+                return 'all_swap_free_svg';
+            case 'zero_spread':
+                return 'all_zero_spread_bvi';
             default:
                 return 'all_demo';
         }
@@ -178,11 +186,12 @@ export const getCFDAccountDisplay = ({
     sub_account_type,
     platform,
     is_eu,
+    product,
     shortcode,
     is_mt5_trade_modal,
     is_transfer_form = false,
 }: TGetCFDAccountDisplay) => {
-    const cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, shortcode });
+    const cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, shortcode, product });
     if (!cfd_account_key) return undefined;
 
     if (is_mt5_trade_modal && is_eu) {
@@ -245,13 +254,14 @@ export const setSharedCFDText = (all_shared_CFD_text: { [key: string]: () => voi
     CFD_text_translated = all_shared_CFD_text;
 };
 
-type TAccount = DetailsOfEachMT5Loginid & { platform: string };
+type TAccount = DetailsOfEachMT5Loginid & { platform: string; product?: string };
 export const getAccountListKey = (account: TAccount, platform: TPlatform, shortcode?: TShortcode) => {
     return `${account.platform || platform}.${account.account_type}.${getCFDAccountKey({
         market_type: account.market_type,
         sub_account_type: account.sub_account_type,
         platform,
         shortcode,
+        product: account.product,
     })}@${
         platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER ? account.market_type : account.server
     }`;

@@ -58,8 +58,8 @@ export const MARKET_TYPE_SHORTCODE = {
     FINANCIAL_VANUATU: 'financial_vanuatu',
     FINANCIAL_LABUAN: 'financial_labuan',
     FINANCIAL_MALTA_INVEST: 'financial_maltainvest',
-    ALL_SVG: 'all_svg',
-    ALL_BVI: 'all_bvi',
+    ALL_SWAP_FREE_SVG: 'all_swap_free_svg',
+    ALL_ZERO_SPREAD_BVI: 'all_zero_spread_bvi',
     ALL_DXTRADE: 'all_',
 } as const;
 

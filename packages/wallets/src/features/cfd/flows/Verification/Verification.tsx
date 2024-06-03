@@ -109,8 +109,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const shouldSubmitPOA = useMemo(() => {
         if (poaStatus?.is_pending) return false;
         // @ts-expect-error as the prop verified_jurisdiction is not yet present in GetAccountStatusResponse type
-        const val = selectedJurisdiction ? !poaStatus?.verified_jurisdiction?.[selectedJurisdiction] : false;
-        return val;
+        return selectedJurisdiction ? !poaStatus?.verified_jurisdiction?.[selectedJurisdiction] : false;
     }, [selectedJurisdiction, poaStatus]);
 
     const shouldFillPersonalDetails = useMemo(
@@ -333,6 +332,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             initialValues={{
                 hasSubmittedOnfido: false,
                 selectedJurisdiction,
+                service: poiStatus?.current?.service as keyof THooks.POI['services'],
             }}
             screens={screens}
         >

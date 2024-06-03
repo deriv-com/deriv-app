@@ -133,7 +133,7 @@ const TradingAssessmentExistingUser = observer(() => {
                             setSubSectionIndex={setSubSectionIndex}
                             class_name='trading-assessment--existing-user'
                             should_move_to_next={should_move_to_next}
-                            is_mobile={!isDesktop}
+                            is_responsive={!isDesktop}
                         />
                     </MobileDialog>
                 )}

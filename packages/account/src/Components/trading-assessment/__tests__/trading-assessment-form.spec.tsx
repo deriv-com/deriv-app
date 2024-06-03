@@ -30,7 +30,7 @@ describe('TradingAssessmentForm', () => {
         should_move_to_next: false,
         setSubSectionIndex: mockSetSubSectionIndex,
         is_independent_section: false,
-        is_mobile: false,
+        is_responsive: false,
     };
 
     afterEach(() => {

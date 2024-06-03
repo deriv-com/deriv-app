@@ -161,6 +161,7 @@ runs:
 
   - name: Print out differences to the console
     if: steps.get_artifact_url.outputs.artifact_url != 'null'
+    shell: bash
     run: |
       echo "Differences in console format:"
       echo "${{ steps.diff.outputs.diff_output_console }}"

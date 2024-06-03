@@ -1,66 +1,113 @@
 const fs = require('fs');
 const path = require('path');
 
-const RED_THRESHOLD = 5;
+// read and use parameters from command line
+const args = process.argv.slice(2); // Skip the first two elements
+let format = args.find(arg => arg.startsWith('--format='))?.split('=')[1] || 'html';
+let threshold = +(args.find(arg => arg.startsWith('--threshold='))?.split('=')[1] || 5);
 
-const packagesDir = './packages';
-const oldPackagesDir = './old/packages';
-const packages = [...new Set([...fs.readdirSync(packagesDir), ...fs.readdirSync(oldPackagesDir)])];
+// main function execution
+main();
 
-let tableRows = '';
+function main() {
+    // format: [package]: { oldSize, newSize, diff, percentage }
+    const sizes = analyse();
 
-for (const pkg of packages) {
-    const oldReport = readJsonFile(path.join(oldPackagesDir, pkg, 'report.json'));
-    const newReport = readJsonFile(path.join(packagesDir, pkg, 'report.json'));
-
-    if (!newReport) {
-        continue;
+    // format to different output based on the format parameter
+    // nice table in html if its for comment, nice table in console if its for console, or just true/false if its just to check validity
+    if (format === 'html') {
+        let formattedOutput = formatToTable(sizes);
+        console.log(formattedOutput);
+    } else if (format === 'console') {
+        let formattedOutput = formatToConsole(sizes);
+        console.table(formattedOutput, ['oldSize', 'newSize', 'diff', 'percentage', 'color']);
+    } else if (format === 'boolean') {
+        const aboveThreshold = Object.values(sizes).some(pkg => pkg.percentage > threshold);
+        if (aboveThreshold) {
+            console.log('true');
+        } else {
+            console.log('false');
+        }
     }
-
-    const oldSize = oldReport ? oldReport.reduce((acc, item) => acc + item.gzipSize, 0) : null;
-    const newSize = newReport ? newReport.reduce((acc, item) => acc + item.gzipSize, 0) : null;
-
-    let diff = oldSize && newSize ? newSize - oldSize : oldSize || newSize;
-    let percentage = oldSize && newSize ? calculatePercentage(oldSize, newSize) : null;
-
-    let formattedPercentage = formatPercentageWithSign(diff);
-
-    let lightSign = '';
-    if (percentage <= 0) {
-        lightSign = '🟢';
-    } else if (percentage > 0 && percentage <= 5) {
-        lightSign = '🟡';
-    } else {
-        lightSign = '🔴';
-    }
-
-    tableRows += `
-    <tr>
-      <td>${pkg}</td>
-      <td>${formatBytes(oldSize)}</td>
-      <td>${formatBytes(newSize)}</td>
-      <td>${formatBytes(newSize - oldSize, true)}</td>
-      <td>${formattedPercentage} ${lightSign}</td>
-    </tr>
-  `.trim();
 }
 
-console.log(
-    `
-<table>
-  <thead>
-    <th>package</th>
-    <th>old</th>
-    <th>new</th>
-    <th>diff</th>
-    <th>pct change</th>
-  </thead>
-  <tbody>
-    ${tableRows}
-  </tbody>
-</table>
-`.trim()
-);
+function analyse() {
+    const packagesDir = './packages';
+    const oldPackagesDir = './old/packages';
+
+    const packages = [...new Set([...fs.readdirSync(packagesDir), ...fs.readdirSync(oldPackagesDir)])];
+
+    const result = {};
+
+    for (const pkg of packages) {
+        const oldReport = readJsonFile(path.join(oldPackagesDir, pkg, 'report.json'));
+        const newReport = readJsonFile(path.join(packagesDir, pkg, 'report.json'));
+
+        if (!newReport) {
+            continue;
+        }
+
+        const oldSize = oldReport ? oldReport.reduce((acc, item) => acc + item.gzipSize, 0) : null;
+        const newSize = newReport ? newReport.reduce((acc, item) => acc + item.gzipSize, 0) : null;
+
+        let diff = oldSize && newSize ? newSize - oldSize : oldSize || newSize;
+        let percentage = oldSize && newSize ? calculatePercentage(oldSize, newSize) : null;
+
+        result[pkg] = {
+            oldSize,
+            newSize,
+            diff,
+            percentage,
+        };
+    }
+
+    return result;
+}
+
+function formatToTable(sizes) {
+    const GREEN_SIGN = '🟢';
+    const YELLOW_SIGN = '🟡';
+    const RED_SIGN = '🔴';
+
+    let tableRows = '';
+    for (const [pkg, { oldSize, newSize, diff, percentage }] of Object.entries(sizes)) {
+        const formattedPercentage = formatPercentageWithSign(percentage);
+        const lightSign = percentage <= 0 ? GREEN_SIGN : percentage < threshold ? YELLOW_SIGN : RED_SIGN;
+
+        tableRows += `
+        <tr>
+          <td>${pkg}</td>
+          <td>${formatBytes(oldSize)}</td>
+          <td>${formatBytes(newSize)}</td>
+          <td>${formatBytes(diff, true)}</td>
+          <td>${formattedPercentage} ${lightSign}</td>
+        </tr>
+      `.trim();
+    }
+
+    return `
+    <table>
+        <thead>
+            <th>package</th>
+            <th>old</th>
+            <th>new</th>
+            <th>diff</th>
+            <th>pct change</th>
+        </thead>
+        <tbody>
+            ${tableRows}
+        </tbody>
+    </table>`.trim();
+}
+
+function formatToConsole(sizes) {
+    Object.keys(sizes).forEach(key => {
+        const pkg = sizes[key];
+        const color = pkg.percentage > threshold ? '\x1b[31m' : pkg.percentage < 0 ? '\x1b[32m' : '\x1b[33m';
+        pkg.color = color;
+    });
+    return sizes;
+}
 
 function readJsonFile(filePath) {
     if (fs.existsSync(filePath)) {

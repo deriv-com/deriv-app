@@ -103,8 +103,11 @@ function formatToTable(sizes) {
 function formatToConsole(sizes) {
     Object.keys(sizes).forEach(key => {
         const pkg = sizes[key];
-        const color = pkg.percentage > threshold ? '\x1b[31m' : pkg.percentage < 0 ? '\x1b[32m' : '\x1b[33m';
-        pkg.color = color;
+        pkg.oldSize = formatBytes(pkg.oldSize);
+        pkg.newSize = formatBytes(pkg.newSize);
+        pkg.diff = formatBytes(pkg.diff, true);
+        pkg.alert = pkg.percentage > threshold ? 'FAIL' : pkg.percentage < 0 ? 'OK' : 'WARN';
+        pkg.percentage = formatPercentageWithSign(pkg.percentage);
     });
     return sizes;
 }

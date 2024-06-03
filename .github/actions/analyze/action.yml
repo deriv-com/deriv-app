@@ -187,7 +187,7 @@ runs:
     uses: actions/github-script@v5
     with:
       script: |
-        core.setFailed('Size changes exceed the defined threshold.');
+        core.setFailed('Size changes exceed the defined threshold. Check above logs for details.');
 
   - name: Zip all report.json files
     shell: bash
@@ -214,6 +214,7 @@ runs:
     if: github.ref != 'refs/heads/master'
     uses: actions/upload-artifact@v4
     with:
-      name: analyse-${{ env.SANITIZED_REF_NAME }}
+      # name: analyse-${{ env.SANITIZED_REF_NAME }}
+      name: analyse
       path: analyse.zip
       retention-days: 5

@@ -75,7 +75,7 @@ function calculatePercentage(oldSize, newSize) {
 }
 
 function formatBytes(bytes, sign = false) {
-    if (input === null || isNaN(input)) {
+    if (bytes === null || isNaN(bytes)) {
         return 'n/a';
     }
 

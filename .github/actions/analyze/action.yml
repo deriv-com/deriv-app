@@ -2,8 +2,12 @@ name: analyze
 description: Analyze all packages
 
 permissions:
+  actions: write
+  checks: write
+  contents: write
+  deployments: write
   pull-requests: write
-  issues: write
+  statuses: write
 
 inputs:
   REF_NAME:
@@ -148,6 +152,8 @@ runs:
   - name: Comment on PR with Diff Output
     # if: steps.get_artifact_url.outputs.artifact_url != 'null' && inputs.ISSUE_NUMBER
     uses: actions/github-script@v5
+    permissions:
+      pull-requests: write
     env:
       DIFF_OUTPUT: ${{ steps.diff.outputs.diff_output }}
       ISSUE_NUMBER: ${{ inputs.ISSUE_NUMBER }}

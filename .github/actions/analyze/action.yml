@@ -69,125 +69,124 @@ inputs:
 runs:
   using: composite
   steps:
-  - name: Get artifact URL
-    id: get_artifact_url
-    env:
-      GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-    shell: bash
-    run: |
-      # Fetching the artifacts and storing response for debugging
-      RESPONSE=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
-        "https://api.github.com/repos/${{ github.repository }}/actions/artifacts?name=analyse")
+  # - name: Get artifact URL
+  #   id: get_artifact_url
+  #   env:
+  #     GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+  #   shell: bash
+  #   run: |
+  #     # Fetching the artifacts and storing response for debugging
+  #     RESPONSE=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+  #       "https://api.github.com/repos/${{ github.repository }}/actions/artifacts?name=analyse")
 
-      # uncomment for debugging purposes
-      # echo "API Response: $RESPONSE"
+  #     # uncomment for debugging purposes
+  #     # echo "API Response: $RESPONSE"
 
-      # Extracting the artifact URL using jq
-      ARTIFACT_URL=$(echo $RESPONSE | jq -r '.artifacts[0].archive_download_url')
+  #     # Extracting the artifact URL using jq
+  #     ARTIFACT_URL=$(echo $RESPONSE | jq -r '.artifacts[0].archive_download_url')
 
-      # Check if the artifact URL is empty
-      if [[ -z "$ARTIFACT_URL" ]]; then
-        echo "Error: No artifact URL found for the master branch with prefix 'analyse'."
-        exit 1
-      else
-        echo "Artifact URL: $ARTIFACT_URL"
-      fi
+  #     # Check if the artifact URL is empty
+  #     if [[ -z "$ARTIFACT_URL" ]]; then
+  #       echo "Error: No artifact URL found for the master branch with prefix 'analyse'."
+  #       exit 1
+  #     else
+  #       echo "Artifact URL: $ARTIFACT_URL"
+  #     fi
 
-      # Output artifact URL for other steps
-      echo "artifact_url=$ARTIFACT_URL" >> $GITHUB_OUTPUT
-      echo "artifact_url=$ARTIFACT_URL"
+  #     # Output artifact URL for other steps
+  #     echo "artifact_url=$ARTIFACT_URL" >> $GITHUB_OUTPUT
+  #     echo "artifact_url=$ARTIFACT_URL"
 
-  - name: Download artifact
-    if: steps.get_artifact_url.outputs.artifact_url != 'null'
-    env:
-      ARTIFACT_URL: ${{ steps.get_artifact_url.outputs.artifact_url }}
-      GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-    shell: bash
-    run: |
-      curl -L -H "Authorization: Bearer $GITHUB_TOKEN" \
-        "$ARTIFACT_URL" \
-        -o artifact.zip
-      unzip artifact.zip -d old
-      cd old
-      unzip analyse.zip
+  # - name: Download artifact
+  #   if: steps.get_artifact_url.outputs.artifact_url != 'null'
+  #   env:
+  #     ARTIFACT_URL: ${{ steps.get_artifact_url.outputs.artifact_url }}
+  #     GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+  #   shell: bash
+  #   run: |
+  #     curl -L -H "Authorization: Bearer $GITHUB_TOKEN" \
+  #       "$ARTIFACT_URL" \
+  #       -o artifact.zip
+  #     unzip artifact.zip -d old
+  #     cd old
+  #     unzip analyse.zip
 
-  - name: Analyze all packages
-    env:
-      NODE_ENV: ${{ inputs.NODE_ENV }}
-      CROWDIN_WALLETS_API_KEY: ${{ inputs.CROWDIN_WALLETS_API_KEY }}
-      DATADOG_APPLICATION_ID: ${{ inputs.DATADOG_APPLICATION_ID }}
-      DATADOG_CLIENT_TOKEN: ${{ inputs.DATADOG_CLIENT_TOKEN }}
-      DATADOG_CLIENT_TOKEN_LOGS: ${{ inputs.DATADOG_CLIENT_TOKEN_LOGS }}
-      DATADOG_SESSION_REPLAY_SAMPLE_RATE: ${{ inputs.DATADOG_SESSION_REPLAY_SAMPLE_RATE }}
-      DATADOG_SESSION_SAMPLE_RATE: ${{ inputs.DATADOG_SESSION_SAMPLE_RATE }}
-      DATADOG_SESSION_SAMPLE_RATE_LOGS: ${{ inputs.DATADOG_SESSION_SAMPLE_RATE_LOGS }}
-      IS_GROWTHBOOK_ENABLED: ${{ inputs.IS_GROWTHBOOK_ENABLED }}
-      GD_API_KEY: ${{ inputs.GD_API_KEY }}
-      GD_APP_ID: ${{ inputs.GD_APP_ID }}
-      GD_CLIENT_ID: ${{ inputs.GD_CLIENT_ID }}
-      RUDDERSTACK_KEY: ${{ inputs.RUDDERSTACK_KEY }}
-      GROWTHBOOK_CLIENT_KEY: ${{ inputs.GROWTHBOOK_CLIENT_KEY }}
-      GROWTHBOOK_DECRYPTION_KEY: ${{ inputs.GROWTHBOOK_DECRYPTION_KEY }}
-      REF_NAME: ${{ inputs.REF_NAME }}
-      REMOTE_CONFIG_URL: ${{ inputs.REMOTE_CONFIG_URL }}
-      NODE_OPTIONS: "--max_old_space_size=4096"
-    shell: bash
-    run: npm run build:prod && npm run analyze:stats && npm run analyze:build
+  # - name: Analyze all packages
+  #   env:
+  #     NODE_ENV: ${{ inputs.NODE_ENV }}
+  #     CROWDIN_WALLETS_API_KEY: ${{ inputs.CROWDIN_WALLETS_API_KEY }}
+  #     DATADOG_APPLICATION_ID: ${{ inputs.DATADOG_APPLICATION_ID }}
+  #     DATADOG_CLIENT_TOKEN: ${{ inputs.DATADOG_CLIENT_TOKEN }}
+  #     DATADOG_CLIENT_TOKEN_LOGS: ${{ inputs.DATADOG_CLIENT_TOKEN_LOGS }}
+  #     DATADOG_SESSION_REPLAY_SAMPLE_RATE: ${{ inputs.DATADOG_SESSION_REPLAY_SAMPLE_RATE }}
+  #     DATADOG_SESSION_SAMPLE_RATE: ${{ inputs.DATADOG_SESSION_SAMPLE_RATE }}
+  #     DATADOG_SESSION_SAMPLE_RATE_LOGS: ${{ inputs.DATADOG_SESSION_SAMPLE_RATE_LOGS }}
+  #     IS_GROWTHBOOK_ENABLED: ${{ inputs.IS_GROWTHBOOK_ENABLED }}
+  #     GD_API_KEY: ${{ inputs.GD_API_KEY }}
+  #     GD_APP_ID: ${{ inputs.GD_APP_ID }}
+  #     GD_CLIENT_ID: ${{ inputs.GD_CLIENT_ID }}
+  #     RUDDERSTACK_KEY: ${{ inputs.RUDDERSTACK_KEY }}
+  #     GROWTHBOOK_CLIENT_KEY: ${{ inputs.GROWTHBOOK_CLIENT_KEY }}
+  #     GROWTHBOOK_DECRYPTION_KEY: ${{ inputs.GROWTHBOOK_DECRYPTION_KEY }}
+  #     REF_NAME: ${{ inputs.REF_NAME }}
+  #     REMOTE_CONFIG_URL: ${{ inputs.REMOTE_CONFIG_URL }}
+  #     NODE_OPTIONS: "--max_old_space_size=4096"
+  #   shell: bash
+  #   run: npm run build:prod && npm run analyze:stats && npm run analyze:build
 
-  - name: Compare report to master
-    id: diff
-    if: steps.get_artifact_url.outputs.artifact_url != 'null'
-    shell: bash
-    run: |
-      DIFF_OUTPUT=$(node .github/actions/analyze/compareReports.js)
-      echo "diff_output<<EOF" >> $GITHUB_OUTPUT
-      echo "$DIFF_OUTPUT" >> $GITHUB_OUTPUT
-      echo "EOF" >> $GITHUB_OUTPUT
-      echo $DIFF_OUTPUT
+  # - name: Compare report to master
+  #   id: diff
+  #   if: steps.get_artifact_url.outputs.artifact_url != 'null'
+  #   shell: bash
+  #   run: |
+  #     DIFF_OUTPUT=$(node .github/actions/analyze/compareReports.js)
+  #     echo "diff_output<<EOF" >> $GITHUB_OUTPUT
+  #     echo "$DIFF_OUTPUT" >> $GITHUB_OUTPUT
+  #     echo "EOF" >> $GITHUB_OUTPUT
+  #     echo $DIFF_OUTPUT
 
   - name: Comment on PR with Diff Output
-    if: steps.get_artifact_url.outputs.artifact_url != 'null' && inputs.ISSUE_NUMBER
+    # if: steps.get_artifact_url.outputs.artifact_url != 'null' && inputs.ISSUE_NUMBER
     uses: actions/github-script@v5
     env:
       DIFF_OUTPUT: ${{ steps.diff.outputs.diff_output }}
       ISSUE_NUMBER: ${{ inputs.ISSUE_NUMBER }}
     with:
       script: |
-        const diffOutput = process.env.DIFF_OUTPUT;
         const issueNumber = process.env.ISSUE_NUMBER;
         github.rest.issues.createComment({
           owner: context.repo.owner,
           repo: context.repo.repo,
           issue_number: issueNumber,
-          body: `${diffOutput}`
+          body: `hey thats a test`
         });
     continue-on-error: true
 
-  - name: Zip all report.json files
-    shell: bash
-    run: |
-      zip -r analyse.zip packages/*/report.json
+  # - name: Zip all report.json files
+  #   shell: bash
+  #   run: |
+  #     zip -r analyse.zip packages/*/report.json
 
-  # Step for the master branch
-  - name: Upload analyse.zip for Master Branch
-    if: github.ref == 'refs/heads/master'
-    uses: actions/upload-artifact@v4
-    with:
-      name: analyse
-      path: analyse.zip
-      retention-days: 20
+  # # Step for the master branch
+  # - name: Upload analyse.zip for Master Branch
+  #   if: github.ref == 'refs/heads/master'
+  #   uses: actions/upload-artifact@v4
+  #   with:
+  #     name: analyse
+  #     path: analyse.zip
+  #     retention-days: 20
 
-  - name: Set sanitized branch name
-    id: sanitize
-    shell: bash
-    run: |
-      SANITIZED_REF_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g')
-      echo "SANITIZED_REF_NAME=${SANITIZED_REF_NAME}" >> $GITHUB_ENV
+  # - name: Set sanitized branch name
+  #   id: sanitize
+  #   shell: bash
+  #   run: |
+  #     SANITIZED_REF_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g')
+  #     echo "SANITIZED_REF_NAME=${SANITIZED_REF_NAME}" >> $GITHUB_ENV
 
-  - name: Upload analyse.zip for Feature Branches
-    if: github.ref != 'refs/heads/master'
-    uses: actions/upload-artifact@v4
-    with:
-      name: analyse-${{ env.SANITIZED_REF_NAME }}
-      path: analyse.zip
-      retention-days: 5
+  # - name: Upload analyse.zip for Feature Branches
+  #   if: github.ref != 'refs/heads/master'
+  #   uses: actions/upload-artifact@v4
+  #   with:
+  #     name: analyse-${{ env.SANITIZED_REF_NAME }}
+  #     path: analyse.zip
+  #     retention-days: 5

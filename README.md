@@ -260,11 +260,3 @@ If preferable to use manual deployment, you can use [gh-pages](https://pages.git
 
     1. use `lerna exec` with the `--scope` argument as the package you want to run the command on, as such `lerna exec --scope=trader -- npm ci`.
     2. `cd` into `packages/PACKAGE-NAME` and run `npm ci`, as such `cd packages/trader && npm ci`
-
-4. My build(s) fail and I can see it related to Node Sass (`node-sass`), what do I do?
-
-    **A.** This issue happens when your `node-sass` has its `binding.node` set to a version of node different from the current projects' one. Please try the following in order:
-
-    1. First run `npx lerna exec -- npm rebuild node-sass` and try building your packages again.
-    2. If that doesn't work, try `npm cache clean --force`, followed by `npm run clean`, and then `npm run bootstrap`.
-    3. And finally, if that doesn't work then you can read deeper into this [StackOverflow post](https://stackoverflow.com/questions/37986800).

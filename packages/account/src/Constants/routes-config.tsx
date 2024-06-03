@@ -1,9 +1,9 @@
-import React from 'react';
-import { routes, moduleLoader } from '@deriv/shared';
+// /* eslint-disable @typescript-eslint/ban-ts-comment */
+// // @ts-nocheck [TODO] - Need to update the types of routes
+
+import { routes, moduleLoader, makeLazyLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
-    AccountLimits,
-    Passwords,
     Passkeys,
     PersonalDetails,
     TradingAssessment,
@@ -16,17 +16,48 @@ import {
     SelfExclusion,
     Account,
     ClosingAccount,
-    ConnectedApps,
-    LoginHistory,
-    AccountClosed,
     DeactivateAccount,
-    LanguageSettings,
     ProofOfIncome,
 } from '../Sections';
 
 import { TRoute, TRouteConfig } from '../Types';
+import { Loading } from '@deriv/components';
 // Error Routes
-const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
+const Page404 = makeLazyLoader(
+    () => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')),
+    () => <Loading />
+)();
+
+const Passwords = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/Passwords')),
+    () => <Loading />
+)();
+
+const AccountLimits = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/AccountLimits')),
+    () => <Loading />
+)();
+
+const AccountClosed = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/AccountClosed')),
+    () => <Loading />
+)();
+
+const LanguageSettings = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Profile/LanguageSettings')),
+    () => <Loading />
+)();
+
+const LoginHistory = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/LoginHistory')),
+    () => <Loading />
+)();
+
+const ConnectedApps = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/ConnectedApps')),
+    () => <Loading />
+)();
+
 export type TPage404 = typeof Page404;
 
 // Order matters
@@ -174,7 +205,7 @@ const route_default: TRoute = { component: Page404, getTitle: () => localize('Er
 
 const getRoutesConfig = (): TRouteConfig[] => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig();
+        routesConfig = initRoutesConfig() as TRouteConfig[];
         routesConfig.push(route_default);
     }
     return routesConfig;

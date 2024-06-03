@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+//@ts-nocheck [TODO] - Need to fix typescript errors
+
 import React from 'react';
 
 import { fireEvent, render, screen } from '@testing-library/react';

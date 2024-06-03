@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Button, Icon, Text } from '@deriv/components';
 import ExpandedCard from './expanded-card';
 import { TPaymentMethodInfo } from '../../Types';
@@ -17,7 +17,7 @@ type TCardProps = {
 const ExpansionIcon = ({ is_open }: { is_open: boolean }) => (
     <Icon
         icon='IcChevronUpBold'
-        className={classNames('proof-of-ownership__card-item-icon', {
+        className={clsx('proof-of-ownership__card-item-icon', {
             'proof-of-ownership__card-item-icon--invert': !is_open,
         })}
     />
@@ -38,7 +38,7 @@ const Card = ({ details }: TCardProps) => {
 
     return (
         <div
-            className={classNames('proof-of-ownership__card', { 'proof-of-ownership__card-open': is_open })}
+            className={clsx('proof-of-ownership__card', { 'proof-of-ownership__card-open': is_open })}
             data-testid={details?.payment_method}
         >
             <div className='proof-of-ownership__card-item' onClick={onClickHandler} onKeyDown={onClickHandler}>

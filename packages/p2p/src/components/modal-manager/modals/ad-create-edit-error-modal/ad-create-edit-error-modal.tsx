@@ -32,7 +32,7 @@ const AdCreateEditErrorModal = ({ ad_type = ads.CREATE, onUpdateAd }: TAdCreateE
         >
             <Modal.Body>
                 <Text as='p' color='prominent' size='xs'>
-                    {generateErrorDialogBody(error_code, error_message)}
+                    {error_message ?? generateErrorDialogBody(error_code)}
                 </Text>
             </Modal.Body>
             <Modal.Footer>

@@ -137,7 +137,7 @@ describe('<IdvDocumentSubmit/>', () => {
     });
 
     it('should change inputs, check document_number validation and trigger "Verify" button after rendering IdvDocumentSubmit component', async () => {
-        (useDevice as jest.Mock).mockReturnValue({ IsMobile: true, isDesktop: false });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
 
         renderComponent();
 

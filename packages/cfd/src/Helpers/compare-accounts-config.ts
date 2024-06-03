@@ -20,8 +20,10 @@ const getHighlightedIconLabel = (
             trading_platforms.platform === CFD_PLATFORMS.CTRADER
         ) {
             return localize('Forex: major/minor');
+        } else if (market_type === MARKET_TYPE.SYNTHETIC) {
+            return localize('Forex: standard');
         }
-        return localize('Forex: standard');
+        return localize('Forex: standard/micro');
     };
 
     switch (trading_platforms.market_type) {

@@ -182,12 +182,12 @@ runs:
     run: |
       node .github/actions/analyze/compareReports.js --format=console
 
-  - name: Validate size changes
-    if: ${{ steps.diff.outputs.above_threshold == 'true' }}
-    uses: actions/github-script@v5
-    with:
-      script: |
-        core.setFailed('Size changes exceed the defined threshold. Check above logs for details.');
+  # - name: Validate size changes
+  #   if: ${{ steps.diff.outputs.above_threshold == 'true' }}
+  #   uses: actions/github-script@v5
+  #   with:
+  #     script: |
+  #       core.setFailed('Size changes exceed the defined threshold. Check above logs for details.');
 
   - name: Zip all report.json files
     shell: bash

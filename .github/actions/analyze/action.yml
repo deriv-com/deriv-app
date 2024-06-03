@@ -166,63 +166,63 @@ runs:
       echo "All operations completed successfully."
 
 
-  # - name: Comment on PR with Diff Output
-  #   if: steps.get_artifact_url.outputs.artifact_url != 'null' && inputs.ISSUE_NUMBER
-  #   uses: actions/github-script@v5
-  #   env:
-  #     DIFF_OUTPUT_HTML: ${{ steps.diff.outputs.diff_output_html }}
-  #     ISSUE_NUMBER: ${{ inputs.ISSUE_NUMBER }}
-  #   with:
-  #     script: |
-  #       const diffOutputHtml = Buffer.from(process.env.DIFF_OUTPUT_HTML, 'base64').toString('utf-8');
-  #       const issueNumber = process.env.ISSUE_NUMBER;
-  #       github.rest.issues.createComment({
-  #         owner: context.repo.owner,
-  #         repo: context.repo.repo,
-  #         issue_number: issueNumber,
-  #         body: `${diffOutputHtml}`
-  #       });
-  #   continue-on-error: true
+  - name: Comment on PR with Diff Output
+    if: steps.get_artifact_url.outputs.artifact_url != 'null' && inputs.ISSUE_NUMBER
+    uses: actions/github-script@v5
+    env:
+      DIFF_OUTPUT_HTML: ${{ steps.diff.outputs.diff_output_html }}
+      ISSUE_NUMBER: ${{ inputs.ISSUE_NUMBER }}
+    with:
+      script: |
+        const diffOutputHtml = Buffer.from(process.env.DIFF_OUTPUT_HTML, 'base64').toString('utf-8');
+        const issueNumber = process.env.ISSUE_NUMBER;
+        github.rest.issues.createComment({
+          owner: context.repo.owner,
+          repo: context.repo.repo,
+          issue_number: issueNumber,
+          body: `${diffOutputHtml}`
+        });
+    continue-on-error: true
 
-  # - name: Print out differences to the console
-  #   if: steps.get_artifact_url.outputs.artifact_url != 'null'
-  #   shell: bash
-  #   run: |
-  #     echo "Differences in console format:"
-  #     echo "${{ steps.diff.outputs.diff_output_console }}" | base64 --decode
+  - name: Print out differences to the console
+    if: steps.get_artifact_url.outputs.artifact_url != 'null'
+    shell: bash
+    run: |
+      echo "Differences in console format:"
+      echo "${{ steps.diff.outputs.diff_output_console }}" | base64 --decode
 
-  # - name: Validate size changes
-  #   if: ${{ steps.diff.outputs.above_threshold == 'true' }}
-  #   uses: actions/github-script@v5
-  #   with:
-  #     script: |
-  #       core.setFailed('Size changes exceed the defined threshold.');
+  - name: Validate size changes
+    if: ${{ steps.diff.outputs.above_threshold == 'true' }}
+    uses: actions/github-script@v5
+    with:
+      script: |
+        core.setFailed('Size changes exceed the defined threshold.');
 
-  # - name: Zip all report.json files
-  #   shell: bash
-  #   run: |
-  #     zip -r analyse.zip packages/*/report.json
+  - name: Zip all report.json files
+    shell: bash
+    run: |
+      zip -r analyse.zip packages/*/report.json
 
-  # # Step for the master branch
-  # - name: Upload analyse.zip for Master Branch
-  #   if: github.ref == 'refs/heads/master'
-  #   uses: actions/upload-artifact@v4
-  #   with:
-  #     name: analyse
-  #     path: analyse.zip
-  #     retention-days: 20
+  # Step for the master branch
+  - name: Upload analyse.zip for Master Branch
+    if: github.ref == 'refs/heads/master'
+    uses: actions/upload-artifact@v4
+    with:
+      name: analyse
+      path: analyse.zip
+      retention-days: 20
 
-  # - name: Set sanitized branch name
-  #   id: sanitize
-  #   shell: bash
-  #   run: |
-  #     SANITIZED_REF_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g')
-  #     echo "SANITIZED_REF_NAME=${SANITIZED_REF_NAME}" >> $GITHUB_ENV
+  - name: Set sanitized branch name
+    id: sanitize
+    shell: bash
+    run: |
+      SANITIZED_REF_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g')
+      echo "SANITIZED_REF_NAME=${SANITIZED_REF_NAME}" >> $GITHUB_ENV
 
-  # - name: Upload analyse.zip for Feature Branches
-  #   if: github.ref != 'refs/heads/master'
-  #   uses: actions/upload-artifact@v4
-  #   with:
-  #     name: analyse-${{ env.SANITIZED_REF_NAME }}
-  #     path: analyse.zip
-  #     retention-days: 5
+  - name: Upload analyse.zip for Feature Branches
+    if: github.ref != 'refs/heads/master'
+    uses: actions/upload-artifact@v4
+    with:
+      name: analyse-${{ env.SANITIZED_REF_NAME }}
+      path: analyse.zip
+      retention-days: 5

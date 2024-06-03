@@ -1,5 +1,12 @@
 import React, { FC, useCallback, useMemo } from 'react';
-import { useDocumentUpload, useIdentityDocumentVerificationAdd, usePOA, usePOI, useSettings } from '@deriv/api-v2';
+import {
+    useDocumentUpload,
+    useIdentityDocumentVerificationAdd,
+    useMT5AccountsList,
+    usePOA,
+    usePOI,
+    useSettings,
+} from '@deriv/api-v2';
 import { ModalStepWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
 import { Loader } from '../../../../components/Loader';
@@ -8,14 +15,15 @@ import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
 import { ErrorCode } from '../../../accounts/constants';
 import {
+    IDVDocumentUpload,
     ManualDocumentUpload,
+    PersonalDetails,
     PoaScreen,
+    PoiPoaDocsSubmitted,
+    PoiUploadError,
     SelfieDocumentUpload,
     useHandleManualDocumentUpload,
 } from '../../../accounts/screens';
-import { IDVDocumentUpload } from '../../../accounts/screens/IDVDocumentUpload';
-import { PersonalDetails } from '../../../accounts/screens/PersonalDetails';
-import { PoiUploadError } from '../../../accounts/screens/PoiUploadError';
 import { PlatformDetails } from '../../constants';
 import { MT5PasswordModal } from '../../modals';
 import { Onfido } from '../../screens';
@@ -36,6 +44,7 @@ const screens = {
     onfidoScreen: <Onfido />,
     personalDetailsScreen: <PersonalDetails />,
     poaScreen: <PoaScreen />,
+    poiPoaDocsSubmitted: <PoiPoaDocsSubmitted />,
     selfieScreen: <SelfieDocumentUpload />,
 };
 
@@ -78,6 +87,7 @@ const getManualVerificationFooter = ({
 };
 
 const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
+    const { data: mt5AccountsList } = useMT5AccountsList();
     const { data: poiStatus, isSuccess: isSuccessPOIStatus } = usePOI();
     const { data: poaStatus, isSuccess: isSuccessPOAStatus } = usePOA();
     const { isLoading: isUploadLoading, upload } = useDocumentUpload();
@@ -94,6 +104,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
 
     const selectedMarketType = getModalState('marketType') ?? 'all';
     const platform = getModalState('platform') ?? PlatformDetails.mt5.platform;
+    const hasCreatedMT5Accounts = mt5AccountsList?.some(account => account.account_type === 'real');
 
     const shouldSubmitPOA = useMemo(() => {
         if (poaStatus?.is_pending) return false;
@@ -151,7 +162,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     !formValues.firstName ||
                     !formValues.lastName ||
                     !formValues.dateOfBirth ||
-                    !formValues.verifiedIdvDetails ||
+                    !formValues.verifiedDocumentDetails ||
                     !!errors.documentNumber ||
                     !!errors.firstName ||
                     !!errors.lastName ||
@@ -195,10 +206,21 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     !formValues.placeOfBirth ||
                     !formValues.taxResidence ||
                     !formValues.accountOpeningReason ||
-                    !formValues.taxIdentificationNumber
+                    !formValues.taxIdentificationNumber ||
+                    !!errors.taxIdentificationNumber
                 );
             case 'poaScreen':
-                return !formValues.townCityLine || !formValues.firstLine || !formValues.poaDocument || isUploadLoading;
+                return (
+                    !formValues.townCityLine ||
+                    !formValues.firstLine ||
+                    !formValues.poaDocument ||
+                    !!errors.townCityLine ||
+                    !!errors.firstLine ||
+                    !!errors.secondLine ||
+                    !!errors.zipCodeLine ||
+                    !!errors.poaDocument ||
+                    isUploadLoading
+                );
             case 'duplicateUploadErrorScreen':
                 return true;
             default:
@@ -245,6 +267,8 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     switchScreen('poaScreen');
                 } else if (shouldFillPersonalDetails) {
                     switchScreen('personalDetailsScreen');
+                } else if (hasCreatedMT5Accounts) {
+                    switchScreen('poiPoaDocsSubmitted');
                 } else {
                     show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
                 }
@@ -282,6 +306,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             }
         },
         [
+            hasCreatedMT5Accounts,
             hide,
             platform,
             selectedMarketType,
@@ -307,30 +332,36 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             screens={screens}
         >
             {context => {
+                const footer = ['duplicateUploadErrorScreen', 'manualScreen', 'selfieScreen'].includes(
+                    context.currentScreenId
+                )
+                    ? getManualVerificationFooter({
+                          context,
+                          isNextDisabled: isNextDisabled(context),
+                          isNextLoading: isNextLoading(context),
+                          nextFlowHandler: () => nextFlowHandler(context),
+                      })
+                    : () => (
+                          <WalletButton
+                              disabled={isNextDisabled(context)}
+                              isFullWidth={isMobile}
+                              isLoading={isNextLoading(context)}
+                              onClick={() => nextFlowHandler(context)}
+                              size='lg'
+                          >
+                              Next
+                          </WalletButton>
+                      );
+
+                const renderFooter =
+                    context.currentScreenId === 'poiPoaDocsSubmitted' || context.currentScreenId === 'onfidoScreen'
+                        ? undefined
+                        : footer;
+
                 return (
                     <ModalStepWrapper
-                        renderFooter={
-                            ['duplicateUploadErrorScreen', 'manualScreen', 'selfieScreen'].includes(
-                                context.currentScreenId
-                            )
-                                ? getManualVerificationFooter({
-                                      context,
-                                      isNextDisabled: isNextDisabled(context),
-                                      isNextLoading: isNextLoading(context),
-                                      nextFlowHandler: () => nextFlowHandler(context),
-                                  })
-                                : () => (
-                                      <WalletButton
-                                          disabled={isNextDisabled(context)}
-                                          isFullWidth={isMobile}
-                                          isLoading={isNextLoading(context)}
-                                          onClick={() => nextFlowHandler(context)}
-                                          size='lg'
-                                      >
-                                          Next
-                                      </WalletButton>
-                                  )
-                        }
+                        disableScroll={context.currentScreenId === 'personalDetailsScreen'}
+                        renderFooter={renderFooter}
                         title={
                             context.currentScreenId === 'duplicateUploadErrorScreen'
                                 ? 'Submit your proof of identity'

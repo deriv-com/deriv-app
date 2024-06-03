@@ -44,7 +44,7 @@ const PassportDocumentUpload = () => {
                     icon={<PassportPlaceholder />}
                     maxSize={8388608}
                     noClick
-                    onFileChange={(file: File) => setFormValues('passportCard', file)}
+                    onFileChange={(file?: File) => setFormValues('passportCard', file)}
                 />
                 <DocumentRuleHints docType='passport' />
             </div>

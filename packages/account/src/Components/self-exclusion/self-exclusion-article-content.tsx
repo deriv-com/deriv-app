@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import React from 'react';
 import { getStaticUrl } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -136,7 +136,7 @@ const SelfExclusionArticleContent = ({ is_in_overlay }: Partial<TSelfExclusionAr
 
     return (
         <div
-            className={classNames('da-self-exclusion-article__content', {
+            className={clsx('da-self-exclusion-article__content', {
                 'da-self-exclusion-article__content--is-in-modal': !is_in_overlay,
             })}
         >

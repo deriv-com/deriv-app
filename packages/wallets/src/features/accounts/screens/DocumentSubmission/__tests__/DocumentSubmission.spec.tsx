@@ -43,7 +43,7 @@ describe('DocumentSubmission', () => {
                 {() => <DocumentSubmission />}
             </FlowProvider>
         );
-        expect(screen.getByText('Document Submission')).toBeInTheDocument();
+        expect(screen.getByText('Document submission')).toBeInTheDocument();
         expect(
             screen.getByText(
                 'We accept only these types of documents as proof of address. The document must be recent (issued within last 12 months) and include your name and address:'
@@ -56,14 +56,14 @@ describe('DocumentSubmission', () => {
             )
         ).toBeInTheDocument();
         expect(screen.getByText('Home rental agreement: valid and current agreement.')).toBeInTheDocument();
-        expect(screen.getByText('Upload File')).toBeInTheDocument();
+        expect(screen.getByText('Upload file')).toBeInTheDocument();
         expect(
             screen.getByText('Remember, selfies, pictures of houses, or non-related images will be rejected.')
         ).toBeInTheDocument();
         expect(screen.getByText('Drag and drop a file or click to browse your files.')).toBeInTheDocument();
         expect(screen.getByText('Supported formats : JPEG, JPG, PNG, PDF, and GIF only')).toBeInTheDocument();
         expect(screen.getByText('Maximum size : 8MB')).toBeInTheDocument();
-        expect(screen.getByText('Common Mistakes')).toBeInTheDocument();
+        expect(screen.getByText('Common mistakes')).toBeInTheDocument();
         expect(screen.getByText('Name in document doesn’t match your Deriv profile.')).toBeInTheDocument();
         expect(screen.getByText('Address in document doesn’t match address you entered above.')).toBeInTheDocument();
         expect(screen.getByText('Document issued more than 12-months ago.')).toBeInTheDocument();

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Icon } from '@deriv/components';
 import { isNavigationFromP2P, isNavigationFromDerivGO } from '@deriv/shared';
 import { localize } from '@deriv/translations';

@@ -1459,6 +1459,11 @@ export default class ClientStore extends BaseStore {
             '_filteredParams',
         ];
 
+        // redirect to the DTrader of there is needed query params
+        if (!window.location.pathname.endsWith(routes.trade) && /chart_type|interval|symbol|trade_type/.test(search)) {
+            window.history.replaceState({}, document.title, routes.trade + search);
+        }
+
         const authorize_response = await this.setUserLogin(login_new_user);
 
         if (action_param === 'signup') {
@@ -1733,11 +1738,12 @@ export default class ClientStore extends BaseStore {
                 language: getLanguage(),
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
-                country: Cookies.get('clients_country') || Cookies?.getJSON('website_status'),
+                country: Cookies.get('clients_country') || Cookies?.getJSON('website_status')?.clients_country,
                 utm_source: ppc_campaign_cookies?.utm_source,
                 utm_medium: ppc_campaign_cookies?.utm_medium,
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,
                 utm_content: ppc_campaign_cookies?.utm_content,
+                domain: window.location.hostname,
             });
         }, 4);
 
@@ -1859,7 +1865,7 @@ export default class ClientStore extends BaseStore {
             }
 
             //temporary workaround to sync this.loginid with selected wallet loginid
-            if (window.location.pathname.includes(routes.wallets_cashier)) {
+            if (window.location.pathname.includes(routes.wallets)) {
                 this.resetLocalStorageValues(localStorage.getItem('active_loginid') ?? this.loginid);
                 return;
             }
@@ -2104,10 +2110,10 @@ export default class ClientStore extends BaseStore {
 
             const redirect_url = sessionStorage.getItem('redirect_url');
 
-            const target_url = this.has_wallet ? routes.wallets : routes.traders_hub;
+            const target_url = routes.traders_hub;
 
             if (
-                (redirect_url?.endsWith('/') ||
+                (redirect_url?.endsWith(routes.trade) ||
                     redirect_url?.endsWith(routes.bot) ||
                     /chart_type|interval|symbol|trade_type/.test(redirect_url)) &&
                 (isTestLink() || isProduction() || isLocal() || isStaging() || isTestDerivApp())

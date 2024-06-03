@@ -176,7 +176,7 @@ runs:
     continue-on-error: true
 
   - name: Print out differences on console
-    id: diff
+    id: print_diff
     if: steps.get_artifact_url.outputs.artifact_url != 'null'
     shell: bash
     run: |

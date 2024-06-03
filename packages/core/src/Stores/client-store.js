@@ -1440,11 +1440,8 @@ export default class ClientStore extends BaseStore {
         const search = SessionStore.get('signup_query_param') || window.location.search;
         const search_params = new URLSearchParams(search);
         const redirect_url = search_params?.get('redirect_url');
+        const code_param = search_params?.get('code');
         const action_param = search_params?.get('action');
-        const code_param =
-            search_params?.get('code') ?? action_param === 'request_email'
-                ? LocalStore.get(`verification_code.${action_param}`)
-                : '';
         const loginid_param = search_params?.get('loginid');
         const unused_params = [
             'type',
@@ -1507,8 +1504,12 @@ export default class ClientStore extends BaseStore {
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
-        if (action_param === 'request_email' && code_param) {
-            this.root_store.ui.toggleResetEmailModal(true);
+        if (action_param === 'request_email') {
+            const request_email_code = code_param ?? LocalStore.get(`verification_code.${action_param}`) ?? '';
+            if (request_email_code) {
+                this.setVerificationCode(request_email_code, action_param);
+                this.root_store.ui.toggleResetEmailModal(true);
+            }
         }
         const client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login

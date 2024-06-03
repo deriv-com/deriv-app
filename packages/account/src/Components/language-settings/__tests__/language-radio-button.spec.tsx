@@ -23,7 +23,7 @@ describe('LanguageRadioButton', () => {
     const mock_props: TLanguageRadioButton = {
         is_current_language: true,
         id: 'test id',
-        language_code: 'lang_1',
+        language_text: 'lang_1',
         name: 'Test Language',
         onChange: jest.fn(),
     };

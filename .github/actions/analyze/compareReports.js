@@ -21,13 +21,22 @@ function calculatePercentage(oldSize, newSize) {
     return ((newSize - oldSize) / oldSize) * 100;
 }
 
-function formatSize(size, roundUp) {
+function formatSize(size) {
     if (size === null) {
-        return '-';
+        return 'n/a';
     }
 
-    const formattedSize = roundUp ? roundUpToDecimals(size / 1024, 2) + 'kb' : (size / 1024).toFixed(2) + 'kb';
+    const formattedSize = roundUpToDecimals(size / 1024, 2) + 'kb';
     return formattedSize;
+}
+
+function formatDiff(size) {
+    if (size === null) {
+        return 'n/a';
+    }
+
+    const sign = size > 0 ? '+' : '-';
+    return `${sign}${formatSize(size, true)}`;
 }
 
 const packagesDir = './packages';
@@ -53,13 +62,7 @@ for (const pkg of packages) {
         diff = oldSize;
     }
 
-    let diffText = '-';
-
-    if (diff !== 0) {
-        diffText = diff < 0 ? '-' : '+' + formatSize(diff, true);
-    } else {
-        diffText = '+0kb';
-    }
+    let diffText = formatDiff(diff);
 
     let percentage = oldSize && newSize ? calculatePercentage(oldSize, newSize) : null;
 

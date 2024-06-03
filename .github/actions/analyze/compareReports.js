@@ -40,7 +40,7 @@ for (const pkg of packages) {
       <td>${formatBytes(oldSize)}</td>
       <td>${formatBytes(newSize)}</td>
       <td>${formatBytes(newSize - oldSize, true)}</td>
-      <td>${formattedPercentage}</td>
+      <td>${formattedPercentage} ${lightSign}</td>
     </tr>
   `.trim();
 }

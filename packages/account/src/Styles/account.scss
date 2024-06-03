@@ -1643,7 +1643,7 @@ $MIN_HEIGHT_FLOATING: calc(
         background-color: transparent;
 
         @include mobile-or-tablet-screen {
-            align-self: center;
+            align-self: flex-start;
         }
     }
 

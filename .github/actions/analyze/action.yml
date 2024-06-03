@@ -137,10 +137,9 @@ runs:
       DIFF_OUTPUT_HTML=$(node .github/actions/analyze/compareReports.js --format=html)
       DIFF_OUTPUT_CONSOLE=$(node .github/actions/analyze/compareReports.js --format=raw)
       ABOVE_THRESHOLD=$(node .github/actions/analyze/compareReports.js --format=boolean)
-      echo "::set-output name=diff_output_html::$DIFF_OUTPUT_HTML"
-      echo "::set-output name=diff_output_console::$DIFF_OUTPUT_CONSOLE"
-      echo "::set-output name=above_threshold::$ABOVE_THRESHOLD"
-
+      echo "diff_output_html=$DIFF_OUTPUT_HTML" >> $GITHUB_OUTPUT
+      echo "diff_output_console=$DIFF_OUTPUT_CONSOLE" >> $GITHUB_OUTPUT
+      echo "above_threshold=$ABOVE_THRESHOLD" >> $GITHUB_OUTPUT
 
   - name: Comment on PR with Diff Output
     if: steps.get_artifact_url.outputs.artifact_url != 'null' && inputs.ISSUE_NUMBER
@@ -160,6 +159,11 @@ runs:
         });
     continue-on-error: true
 
+  - name: Print out differences to the console
+    if: steps.get_artifact_url.outputs.artifact_url != 'null'
+    run: |
+      echo "Differences in console format:"
+      echo "${{ steps.diff.outputs.diff_output_console }}"
 
   - name: Validate size changes
     if: ${{ steps.diff.outputs.above_threshold == 'true' }}

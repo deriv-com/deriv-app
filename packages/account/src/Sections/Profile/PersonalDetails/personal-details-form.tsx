@@ -6,13 +6,11 @@ import { withRouter } from 'react-router';
 import {
     Button,
     Checkbox,
-    DesktopWrapper,
     Dropdown,
     FormSubmitErrorMessage,
     HintBox,
     Input,
     Loading,
-    MobileWrapper,
     SelectNative,
     Text,
 } from '@deriv/components';
@@ -251,7 +249,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                 <FormSubHeader title={localize('Details')} />
                                 {!is_virtual && (
                                     <React.Fragment>
-                                        <DesktopWrapper>
+                                        {isDesktop ? (
                                             <InputGroup className='account-form__fieldset--2-cols'>
                                                 <Input
                                                     data-lpignore='true'
@@ -282,41 +280,42 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                     data-testid='dt_last_name'
                                                 />
                                             </InputGroup>
-                                        </DesktopWrapper>
-                                        <MobileWrapper>
-                                            <fieldset className='account-form__fieldset'>
-                                                <Input
-                                                    data-lpignore='true'
-                                                    type='text'
-                                                    name='first_name'
-                                                    id='first_name_mobile'
-                                                    label={localize('First name*')}
-                                                    value={values.first_name}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    required
-                                                    disabled={isFieldDisabled('first_name')}
-                                                    error={errors.first_name}
-                                                    data-testid='dt_first_name'
-                                                />
-                                            </fieldset>
-                                            <fieldset className='account-form__fieldset'>
-                                                <Input
-                                                    data-lpignore='true'
-                                                    type='text'
-                                                    name='last_name'
-                                                    id='last_name_mobile'
-                                                    label={localize('Last name*')}
-                                                    value={values.last_name}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    required
-                                                    disabled={isFieldDisabled('last_name')}
-                                                    error={errors.last_name}
-                                                    data-testid='dt_last_name'
-                                                />
-                                            </fieldset>
-                                        </MobileWrapper>
+                                        ) : (
+                                            <div>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        name='first_name'
+                                                        id='first_name_mobile'
+                                                        label={localize('First name*')}
+                                                        value={values.first_name}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        disabled={isFieldDisabled('first_name')}
+                                                        error={errors.first_name}
+                                                        data-testid='dt_first_name'
+                                                    />
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        name='last_name'
+                                                        id='last_name_mobile'
+                                                        label={localize('Last name*')}
+                                                        value={values.last_name}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        disabled={isFieldDisabled('last_name')}
+                                                        error={errors.last_name}
+                                                        data-testid='dt_last_name'
+                                                    />
+                                                </fieldset>
+                                            </div>
+                                        )}
                                         {'place_of_birth' in values && (
                                             <fieldset className='account-form__fieldset'>
                                                 <FormSelectField
@@ -418,7 +417,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                             )}
                                             {'employment_status' in values && (
                                                 <fieldset className='account-form__fieldset'>
-                                                    <DesktopWrapper>
+                                                    {isDesktop ? (
                                                         <Dropdown
                                                             placeholder={localize('Employment status')}
                                                             is_align_text_left
@@ -433,8 +432,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                                     : undefined
                                                             }
                                                         />
-                                                    </DesktopWrapper>
-                                                    <MobileWrapper>
+                                                    ) : (
                                                         <SelectNative
                                                             className={'emp-status'}
                                                             placeholder={localize('Please select')}
@@ -452,7 +450,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                                 handleChange(e);
                                                             }}
                                                         />
-                                                    </MobileWrapper>
+                                                    )}
                                                 </fieldset>
                                             )}
                                         </React.Fragment>

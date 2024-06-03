@@ -138,7 +138,7 @@ runs:
 
       # Run comparison for HTML format and encode in base64, with logging
       echo "Starting HTML format comparison..."
-      DIFF_OUTPUT_HTML=$(node .github/actions/analyze/compareReports.js --format=html | base64) || { echo "HTML comparison failed"; exit 1; }
+      DIFF_OUTPUT_HTML=$(node .github/actions/analyze/compareReports.js --format=html | base64 -w 0) || { echo "HTML comparison failed"; exit 1; }
       echo "HTML comparison completed successfully."
 
       # Log output for debugging
@@ -146,7 +146,7 @@ runs:
 
       # Run comparison for raw format and encode in base64, with logging
       echo "Starting raw format comparison..."
-      DIFF_OUTPUT_CONSOLE=$(node .github/actions/analyze/compareReports.js --format=raw | base64) || { echo "Raw comparison failed"; exit 1; }
+      DIFF_OUTPUT_CONSOLE=$(node .github/actions/analyze/compareReports.js --format=raw | base64 -w 0) || { echo "Raw comparison failed"; exit 1; }
       echo "Raw comparison completed successfully."
 
       # Log output for debugging

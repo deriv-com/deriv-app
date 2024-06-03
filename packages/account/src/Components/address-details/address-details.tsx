@@ -91,7 +91,6 @@ const AddressDetails = observer(
         const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
 
         const {
-            ui,
             client: { residence, account_settings },
             traders_hub: { is_eu_user },
         } = useStore();
@@ -116,7 +115,7 @@ const AddressDetails = observer(
             onSubmit((getCurrentStep?.() || 1) - 1, values, actions.setSubmitting, goToNextStep);
         };
 
-        const { isDesktop, isMobile } = useDevice();
+        const { isDesktop } = useDevice();
         return (
             <Formik initialValues={props.value} validate={handleValidate} validateOnMount onSubmit={handleSubmitData}>
                 {({
@@ -298,11 +297,11 @@ const AddressDetails = observer(
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer has_separator is_bypassed={isMobile}>
+                                <Modal.Footer has_separator is_bypassed={!isDesktop}>
                                     <FormSubmitButton
                                         is_disabled={isSubmitting}
                                         label={localize('Next')}
-                                        is_absolute={isMobile}
+                                        is_absolute={!isDesktop}
                                         has_cancel
                                         cancel_label={localize('Previous')}
                                         onCancel={() => handleCancel(values)}

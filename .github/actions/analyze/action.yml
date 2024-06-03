@@ -1,5 +1,10 @@
 name: analyze
 description: Analyze all packages
+
+permissions:
+  pull-requests: write
+  issues: write
+
 inputs:
   REF_NAME:
     description: 'Git ref name'

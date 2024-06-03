@@ -31,4 +31,5 @@ playwright-report/
 playwright/.cache/
 .nx
 packages/*/stats.json
+packages/*/report.html
 packages/*/analyzed.html

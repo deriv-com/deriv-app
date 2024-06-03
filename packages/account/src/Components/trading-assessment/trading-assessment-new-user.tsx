@@ -70,7 +70,7 @@ const TradingAssessmentNewUser = observer(
                 disabled_items={disabled_items}
                 should_move_to_next={false}
                 is_independent_section={false}
-                is_mobile={is_mobile}
+                is_responsive={is_mobile}
             />
         );
     }

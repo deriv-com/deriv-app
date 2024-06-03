@@ -33,10 +33,7 @@ import FormSelectField from 'Components/forms/form-select-field';
 
 type TRestState = {
     show_form: boolean;
-    // errors?: boolean;
     api_error?: string;
-    // changeable_fields?: string[];
-    // form_initial_values?: Record<string, any>;
 };
 
 export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponentProps>) => {
@@ -77,7 +74,6 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
     const has_poa_address_mismatch = account_status?.status?.includes('poa_address_mismatch');
     const [rest_state, setRestState] = useState<TRestState>({
         show_form: true,
-        // form_initial_values: {},
     });
 
     const notification_timeout = useRef<NodeJS.Timeout>();
@@ -142,7 +138,6 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
             }
             // Fetches the status of the account after update
             updateAccountStatus();
-            // setRestState({ ...rest_state, ...response.get_settings });
             setIsLoading(false);
             refreshNotifications();
             setIsBtnLoading(false);

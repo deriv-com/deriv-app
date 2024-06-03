@@ -1,4 +1,5 @@
-import { Fragment } from 'react';
+// [TODO] - To be removed once CFD is configured to use the new form-body component
+import React, { Fragment } from 'react';
 import clsx from 'clsx';
 import { Text } from '@deriv/components';
 

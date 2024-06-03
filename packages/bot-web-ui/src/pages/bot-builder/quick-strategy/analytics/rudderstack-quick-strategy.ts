@@ -73,14 +73,14 @@ export const rudderStackSendSelectQsStrategyGuideEvent = ({ selected_strategy }:
     Analytics.trackEvent('ce_bot_form', {
         action: ACTION.SELECT_QUICK_STRATEGY_GUIDE,
         form_name,
-        subform_name: 'quick_strategy',
+        subpage_name: 'tutorials',
         strategy_name: getRsStrategyType(selected_strategy),
     });
 };
 
 export const rudderStackSendRunBotEvent = () => {
     Analytics.trackEvent('ce_bot_form', {
-        action: ACTION.SELECT_QUICK_STRATEGY_GUIDE,
+        action: ACTION.RUN_BOT,
         form_name,
         subpage_name: getSubpageName(),
     });

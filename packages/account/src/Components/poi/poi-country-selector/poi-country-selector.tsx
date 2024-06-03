@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik';
-import { Autocomplete, Button, DesktopWrapper, HintBox, MobileWrapper, Text, SelectNative } from '@deriv/components';
+import { Autocomplete, Button, HintBox, Text, SelectNative } from '@deriv/components';
 import { IDV_ERROR_STATUS, isMobile, TIDVErrorStatus, POIContext } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import FormFooter from '../../form-footer';

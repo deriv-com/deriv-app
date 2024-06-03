@@ -39,7 +39,7 @@ type TRestState = {
     // form_initial_values?: Record<string, any>;
 };
 
-export const PersonalDetailsForm = observer(({ history }: RouteComponentProps) => {
+export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponentProps>) => {
     const [is_loading, setIsLoading] = useState(true);
     const [is_state_loading, setIsStateLoading] = useState(false);
     const [is_btn_loading, setIsBtnLoading] = useState(false);

@@ -143,13 +143,6 @@ runs:
       # Log output for debugging
       echo "HTML output: $DIFF_OUTPUT_HTML"
 
-      # Run comparison for raw format and encode, with logging
-      echo "Starting raw format comparison..."
-      DIFF_OUTPUT_CONSOLE=$(node .github/actions/analyze/compareReports.js --format=raw) || { echo "Raw comparison failed"; exit 1; }
-      echo "Raw comparison completed successfully."
-
-      # Log output for debugging
-      echo "Console output: $DIFF_OUTPUT_CONSOLE"
 
       # Threshold check with logging
       echo "Checking if above threshold..."
@@ -182,12 +175,12 @@ runs:
         });
     continue-on-error: true
 
-  - name: Print out differences to the console
+  - name: Print out differences on console
+    id: diff
     if: steps.get_artifact_url.outputs.artifact_url != 'null'
     shell: bash
     run: |
-      echo "Differences in console format:"
-      echo "${{ steps.diff.outputs.diff_output_console }}"
+      node .github/actions/analyze/compareReports.js --format=console
 
   - name: Validate size changes
     if: ${{ steps.diff.outputs.above_threshold == 'true' }}

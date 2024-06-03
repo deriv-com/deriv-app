@@ -1623,6 +1623,10 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
+
+        @include mobile-or-tablet-screen {
+            margin-top: 0.8rem;
+        }
     }
 
     &__title {

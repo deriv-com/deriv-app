@@ -6,11 +6,6 @@ import { APIProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 
-// jest.mock('@deriv/shared', () => ({
-//     ...jest.requireActual('@deriv/shared'),
-//     isDesktop: jest.fn(() => true),
-//     isMobile: jest.fn(() => false),
-// }));
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({ isDesktop: true })),

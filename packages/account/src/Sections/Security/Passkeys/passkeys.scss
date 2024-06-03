@@ -199,10 +199,10 @@
     &-snackbar__container {
         position: absolute;
         bottom: 8.2rem;
-        margin-inline: auto;
+        margin-inline: 1.6rem;
         inset-inline-start: 0;
         inset-inline-end: 0;
-        max-width: 34.4rem;
+        background: inherit;
     }
 }
 

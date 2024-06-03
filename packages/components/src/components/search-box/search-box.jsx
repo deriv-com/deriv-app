@@ -6,6 +6,7 @@ import Icon from '../icon';
 import Input from '../input';
 
 const SearchBox = ({ className, onClear, onSearch, placeholder }) => {
+    let typing_timer;
     const onSearchClear = setFieldValue => {
         setFieldValue('search', '');
 
@@ -17,7 +18,7 @@ const SearchBox = ({ className, onClear, onSearch, placeholder }) => {
     const onSearchKeyUpDown = submitForm => {
         clearTimeout(typing_timer);
 
-        const typing_timer = setTimeout(() => {
+        typing_timer = setTimeout(() => {
             submitForm();
         }, 500);
     };

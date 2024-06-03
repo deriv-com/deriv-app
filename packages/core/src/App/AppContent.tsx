@@ -1,6 +1,7 @@
 import React from 'react';
 import Cookies from 'js-cookie';
 import { useRemoteConfig } from '@deriv/api';
+import { useDevice } from '@deriv-com/ui';
 import { getAppId, LocalStore, useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
@@ -24,6 +25,7 @@ import initDatadog from '../Utils/Datadog';
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
     const { has_wallet } = store.client;
+    const { isMobile } = useDevice();
 
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());
@@ -69,8 +71,8 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     }, [data.marketing_growthbook, tracking_rudderstack]);
 
     React.useEffect(() => {
-        store.client.setIsPasskeySupported(is_passkeys_supported && passkeys);
-    }, [passkeys, is_passkeys_supported, store.client]);
+        store.client.setIsPasskeySupported(is_passkeys_supported && passkeys && isMobile);
+    }, [passkeys, is_passkeys_supported, isMobile, store.client]);
 
     React.useEffect(() => {
         initDatadog(tracking_datadog);

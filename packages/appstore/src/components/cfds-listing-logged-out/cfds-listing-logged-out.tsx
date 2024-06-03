@@ -2,7 +2,7 @@ import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { Text } from '@deriv/components';
 import { redirectToLogin } from '@deriv/shared';
-import { getLanguage, localize } from '@deriv/translations';
+import { getLanguage, Localize } from '@deriv/translations';
 import { getHasDivider } from 'Constants/utils';
 import ListingContainer from 'Components/containers/listing-container';
 import TradingAppCard from 'Components/containers/trading-app-card';
@@ -24,7 +24,7 @@ const CFDsListingLoggedOut = observer(() => {
         <ListingContainer title={<CFDsTitle />} description={<CFDsDescription />}>
             <div className='cfds-listing-logged-out__cfd-full-row'>
                 <Text line_height='m' weight='bold' color='prominent'>
-                    {localize('Deriv MT5')}
+                    <Localize i18n_default_text='Deriv MT5' />
                 </Text>
             </div>
             {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
@@ -54,7 +54,9 @@ const CFDsListingLoggedOut = observer(() => {
             )}
             {!is_eu_user && (
                 <div className='cfds-listing-logged-out__cfd-full-row'>
-                    <Text weight='bold'>{localize('Deriv cTrader')}</Text>
+                    <Text weight='bold'>
+                        <Localize i18n_default_text='Deriv cTrader' />{' '}
+                    </Text>
                 </div>
             )}
             {available_ctrader_accounts.map(account => (
@@ -79,7 +81,7 @@ const CFDsListingLoggedOut = observer(() => {
 
                     <div className='cfds-listing-logged-out__cfd-full-row'>
                         <Text line_height='m' weight='bold' color='prominent'>
-                            {localize('Deriv X')}
+                            <Localize i18n_default_text='Deriv X' />
                         </Text>
                     </div>
                 </React.Fragment>

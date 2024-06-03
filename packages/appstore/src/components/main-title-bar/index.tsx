@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, DesktopWrapper, MobileWrapper, Tabs, Icon, Loading } from '@deriv/components';
 import { ContentFlag, makeLazyLoader, moduleLoader } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { useFeatureFlags, useWalletMigration } from '@deriv/hooks';
 import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
 import BookBanner from 'Components/banners/book-banner';
@@ -80,8 +80,8 @@ const MainTitleBar = () => {
                                         is_scrollable
                                         is_overflow_hidden
                                     >
-                                        <div label={localize('Non-EU')} />
-                                        <div label={localize('EU')} />
+                                        <div label={<Localize i18n_default_text='Non-EU' />} />
+                                        <div label={<Localize i18n_default_text='EU' />} />
                                     </Tabs>
                                 </>
                             ) : (

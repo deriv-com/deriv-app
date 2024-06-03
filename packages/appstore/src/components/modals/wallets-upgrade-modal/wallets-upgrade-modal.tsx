@@ -2,7 +2,7 @@ import React from 'react';
 import { useWalletMigration } from '@deriv/hooks';
 import { Button, Icon, Text, Modal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import './wallets-upgrade-modal.scss';
 
 const MODAL_TRANSITION_TIMEOUT_MS = 250; // matching the default one
@@ -57,8 +57,9 @@ const WalletsUpgradeModal = observer(() => {
                             setTimeout(() => toggleWalletsUpgrade(true), MODAL_TRANSITION_TIMEOUT_MS);
                         }}
                         primary
-                        text={localize('Enable now')}
-                    />
+                    >
+                        <Localize i18n_default_text='Enable now' />
+                    </Button>
                 </div>
             </Modal.Body>
         </Modal>

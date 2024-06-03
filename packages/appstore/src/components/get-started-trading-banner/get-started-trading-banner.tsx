@@ -1,5 +1,5 @@
 import React from 'react';
-import { getLanguage, Localize } from '@deriv/translations';
+import { getLanguage, Localize, localize } from '@deriv/translations';
 import { Button, Text, Icon } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
 import { redirectToLogin } from '@deriv/shared';
@@ -29,7 +29,8 @@ const GetStartedTradingBanner = observer(() => {
                         large
                         onClick={() => redirectToLogin(false, getLanguage())}
                     >
-                        <Localize i18n_default_text='Get Started' />
+                        {/* <Localize i18n_default_text='Get Started' /> */}
+                        {localize('Get Started')}
                     </Button>
                 </div>
                 <Icon

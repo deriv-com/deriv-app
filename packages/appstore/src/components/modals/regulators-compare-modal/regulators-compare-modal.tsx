@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import RegulatorsCompareModalContent from './regulators-compare-modal-content';
 import { Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader } from '@deriv/components';
 import './regulators-compare-modal.scss';
@@ -20,7 +20,7 @@ const RegulatorsCompareModal = () => {
                     disableApp={disableApp}
                     enableApp={enableApp}
                     is_open={is_regulators_compare_modal_visible}
-                    title={localize('Non-EU and EU regulation')}
+                    title={<Localize i18n_default_text='Non-EU and EU regulation' />}
                     toggleModal={closeModal}
                     height='792px'
                     width='792px'
@@ -31,7 +31,7 @@ const RegulatorsCompareModal = () => {
             <MobileWrapper>
                 <MobileDialog
                     portal_element_id='deriv_app'
-                    title={localize('Non-EU and EU regulation')}
+                    title={<Localize i18n_default_text='Non-EU and EU regulation' />}
                     visible={is_regulators_compare_modal_visible}
                     onClose={closeModal}
                 >

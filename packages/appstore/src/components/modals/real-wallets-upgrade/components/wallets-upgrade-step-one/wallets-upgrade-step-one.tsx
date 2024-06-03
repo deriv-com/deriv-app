@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Modal, Text } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { useStore } from '@deriv/stores';
 import './wallets-upgrade-step-one.scss';
 
@@ -14,9 +14,9 @@ const WalletsUpgradeStepOneBullets = () => {
     const { is_mobile } = ui;
 
     const bullets = [
-        localize('Better funds segregation'),
-        localize('Instant transfers between Wallets and trading accounts'),
-        localize('Multiple currency support'),
+        'Better funds segregation',
+        'Instant transfers between Wallets and trading accounts',
+        'Multiple currency support',
     ];
 
     return (
@@ -37,7 +37,7 @@ const WalletsUpgradeStepOneBullets = () => {
                             size={is_mobile ? 'xs' : 's'}
                             line_height={is_mobile ? 's' : 'm'}
                         >
-                            {bullet}
+                            <Localize i18n_default_text={bullet} />
                         </Text>
                     </div>
                 </div>

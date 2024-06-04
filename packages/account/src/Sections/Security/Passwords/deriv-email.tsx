@@ -4,9 +4,9 @@ import { useVerifyEmail } from '@deriv/api';
 import { toTitleCase } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import FormSubHeader from 'Components/form-sub-header';
-import SentEmailModal from 'Components/sent-email-modal';
-import UnlinkAccountModal from 'Components/unlink-account-modal';
+import FormSubHeader from '../../../Components/form-sub-header';
+import SentEmailModal from '../../../Components/sent-email-modal';
+import UnlinkAccountModal from '../../../Components/unlink-account-modal';
 
 type TVerifyEmailPayload = Parameters<ReturnType<typeof useVerifyEmail>['mutate']>[0];
 

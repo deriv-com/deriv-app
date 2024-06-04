@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
-import { TPaymentMethodInfo } from 'Types';
 import ExpandedCard from '../expanded-card';
+import { TPaymentMethodInfo } from '../../../Types';
 
 const grouped_payment_method_data: Record<string, TPaymentMethodInfo> = {
     visa: {
@@ -13,6 +13,7 @@ const grouped_payment_method_data: Record<string, TPaymentMethodInfo> = {
                 id: 4,
                 payment_method: 'visa',
                 documents_required: 1,
+                creation_time: '1626265200',
             },
         ],
         instructions: ['mock instruction 1'],
@@ -29,6 +30,7 @@ const grouped_payment_method_data: Record<string, TPaymentMethodInfo> = {
                 id: 9,
                 payment_method: 'onlinenaira',
                 documents_required: 2,
+                creation_time: '1626265200',
             },
         ],
         instructions: [

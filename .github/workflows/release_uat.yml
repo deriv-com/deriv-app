@@ -41,6 +41,7 @@ jobs:
         GROWTHBOOK_DECRYPTION_KEY: ${{ vars.GROWTHBOOK_DECRYPTION_KEY }}
         REF_NAME: ${{ github.ref_name }}
         REMOTE_CONFIG_URL: ${{ vars.REMOTE_CONFIG_URL }}
+        TRUSTPILOT_API_KEY: ${{ secrets.TRUSTPILOT_API_KEY }}
     - name: Versioning
       uses: "./.github/actions/versioning"
       with:

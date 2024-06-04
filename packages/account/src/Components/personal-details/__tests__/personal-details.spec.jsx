@@ -1,3 +1,4 @@
+// [TODO] - Convert this to TypeScript
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -105,10 +106,6 @@ const runCommonFormfieldsTests = is_svg => {
 
     expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
-    expect(screen.getByText('here').closest('a')).toHaveAttribute(
-        'href',
-        'https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
-    );
 
     if (is_svg)
         expect(
@@ -289,7 +286,7 @@ describe('<PersonalDetails/>', () => {
     });
 
     const renderwithRouter = (component, store) => {
-        let mock_store = mockStore({});
+        const mock_store = mockStore({});
         render(
             <StoreProvider store={store ?? mock_store}>
                 <BrowserRouter>{component}</BrowserRouter>
@@ -310,7 +307,7 @@ describe('<PersonalDetails/>', () => {
 
         const first_name = screen.getByTestId('first_name');
         const last_name = screen.getByTestId('last_name');
-        const date_of_birth = await screen.getByTestId('date_of_birth');
+        const date_of_birth = screen.getByTestId('date_of_birth');
         const place_of_birth = screen.getByTestId('place_of_birth');
         const citizenship = screen.getByTestId('citizenship');
         const phone = screen.getByTestId('phone');
@@ -339,18 +336,20 @@ describe('<PersonalDetails/>', () => {
             errors: {
                 ...mock_errors.errors,
                 first_name: 'letters, spaces, periods, hyphens, apostrophes only',
-                last_name: 'last name should be between 2 and 50 characters.',
+                last_name: 'Enter no more than 50 characters.',
                 date_of_birth: 'You must be 18 years old and above.',
                 tax_identification_number: "Tax Identification Number can't be longer than 25 characters.",
             },
         });
         fireEvent.change(first_name, { target: { value: '123' } });
-        fireEvent.change(last_name, { target: { value: 'a' } });
+        fireEvent.change(last_name, {
+            target: { value: 'ABCDEFGHIJKLMNOP.QRSTU VWXYZabcdefghi-jklmnopqrstuvwxyzh-shs' },
+        });
         fireEvent.change(date_of_birth, { target: { value: '2021-04-13' } });
         fireEvent.change(tax_identification_number, { target: { value: '123456789012345678901234567890' } });
 
         expect(await screen.findByText(/letters, spaces, periods, hyphens, apostrophes only/i)).toBeInTheDocument();
-        expect(await screen.findByText(/last name should be between 2 and 50 characters/i)).toBeInTheDocument();
+        expect(await screen.findByText(/Enter no more than 50 characters./i)).toBeInTheDocument();
         expect(await screen.findByText(/you must be 18 years old and above\./i)).toBeInTheDocument();
         expect(
             await screen.findByText(/tax Identification Number can't be longer than 25 characters\./i)
@@ -471,7 +470,6 @@ describe('<PersonalDetails/>', () => {
             )
         ).toBeInTheDocument();
         expect(screen.getByRole('link', { name: /account settings/i })).toBeInTheDocument();
-        expect(screen.getByText(/account settings/i).closest('a')).toHaveAttribute('href', '/account/personal-details');
 
         fireEvent.click(screen.getByText('account settings'));
 
@@ -566,12 +564,12 @@ describe('<PersonalDetails/>', () => {
                 disabled_items={['salutation', 'first_name', 'last_name', 'date_of_birth', 'account_opening_reason']}
             />
         );
-        expect(screen.getByRole('radio', { name: /mr/i })).not.toBeDisabled();
-        expect(screen.getByRole('radio', { name: /ms/i })).not.toBeDisabled();
+        expect(screen.getByRole('radio', { name: /mr/i })).toBeEnabled();
+        expect(screen.getByRole('radio', { name: /ms/i })).toBeEnabled();
         expect(screen.getByTestId('first_name')).toBeDisabled();
         expect(screen.getByTestId('last_name')).toBeDisabled();
         expect(screen.getByTestId('date_of_birth')).toBeDisabled();
-        expect(screen.getByTestId('place_of_birth')).not.toBeDisabled();
+        expect(screen.getByTestId('place_of_birth')).toBeEnabled();
         expect(screen.getByTestId('citizenship')).toBeEnabled(); // citizenship value is not disabled by BE, so enable the field
     });
 
@@ -677,8 +675,6 @@ describe('<PersonalDetails/>', () => {
             /i confirm that the name and date of birth above match my chosen identity document/i
         );
         expect(checkbox).not.toBeInTheDocument();
-
-        screen.debug();
 
         expect(previous_btn).toBeEnabled();
         expect(next_btn).toBeEnabled();

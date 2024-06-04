@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import React from 'react';
 import { Text } from '@deriv/components';
 
@@ -15,7 +15,7 @@ export const FormSubHeader = ({ description, subtitle, title, title_text_size = 
     return (
         <React.Fragment>
             <div
-                className={classNames('account-form__header', title_as_class, {
+                className={clsx('account-form__header', title_as_class, {
                     'account-form__header--has-description': !!description,
                 })}
                 data-testid='form-sub-header'

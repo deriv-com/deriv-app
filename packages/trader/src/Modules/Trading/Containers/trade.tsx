@@ -38,6 +38,7 @@ const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }: TBottomWidget
 };
 
 const Trade = observer(() => {
+    // for deploying a test link
     const { client, common, ui } = useStore();
     const {
         contract_type,

@@ -20,13 +20,14 @@ const GetStartedTradingBanner = observer(() => {
         <div className='get-started-trading-banner'>
             <div className='get-started-trading-banner__content'>
                 <div className='get-started-trading-banner__description'>
-                    <Text key={0} size={is_mobile ? 'xs' : 'xm'} color='prominent'>
+                    <Text size={is_mobile ? 'xs' : 'xm'} color='prominent'>
                         <Localize i18n_default_text='Join over 2.5 million traders' />
                     </Text>
                     <Button
                         className='get-started-trading-banner__button'
                         text={localize('Get Started')}
                         black
+                        large
                         onClick={() => redirectToLogin(false, getLanguage())}
                     />
                 </div>

@@ -21,10 +21,10 @@ const uploadFile = (file: File, getSocket: () => WebSocket, settings: TSettings)
         let is_file_error = false;
 
         compressImageFiles([file])
-            .then((files_to_process: File[]) => {
+            .then((files_to_process: Blob[]) => {
                 readFiles(files_to_process, fileReadErrorMessage, settings)
-                    .then((processed_files: TProcessedFile[]) => {
-                        processed_files.forEach((item: TProcessedFile) => {
+                    .then(processed_files => {
+                        processed_files.forEach(item => {
                             if (item.message) {
                                 is_file_error = true;
                                 reject(item);

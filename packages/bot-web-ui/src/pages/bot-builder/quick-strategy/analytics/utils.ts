@@ -19,16 +19,14 @@ export const getQsActiveTabString = (tab: string) => (tab === 'TRADE_PARAMETERS'
 
 export const getSubpageName = () => {
     const pathname = window.location.hash;
-    switch (pathname) {
-        case 'dashboard':
-            return 'dashboard';
-        case 'charts':
-            return 'charts';
-        case 'tutorials':
-            return 'tutorials';
-        default:
-            return 'bot_builder';
+    if (pathname.includes('dashboard')) {
+        return 'dashboard';
+    } else if (pathname.includes('chart')) {
+        return 'chart';
+    } else if (pathname.includes('tutorial')) {
+        return 'tutorial';
     }
+    return 'bot_builder';
 };
 
 export const getTradeParameterData = ({ form_values }: TFormStrategy) => {

@@ -613,25 +613,26 @@ export default class TradersHubStore extends BaseStore {
             toggleJurisdictionModal,
             product,
             toggleCFDVerificationModal,
+            setJurisdictionSelectedShortcode,
             has_submitted_cfd_personal_details,
         } = modules.cfd;
         const { poi_or_poa_not_submitted, poi_acknowledged_for_bvi_labuan_vanuatu, poa_acknowledged } =
             getAuthenticationStatusInfo(account_status);
-        const is_poa_required_for_zero_spread = isPOARequiredForMT5(account_status, 'bvi');
+        const is_poa_required_for_mt5 = isPOARequiredForMT5(account_status, 'bvi');
         if (has_active_real_account && platform === CFD_PLATFORMS.MT5) {
             if (product !== 'zero_spread' && product !== 'swap_free') {
                 toggleJurisdictionModal();
-                // here
             } else if (product === 'swap_free') {
                 enableCFDPasswordModal();
             } else if (product === 'zero_spread') {
+                setJurisdictionSelectedShortcode('bvi');
                 if (
                     poi_acknowledged_for_bvi_labuan_vanuatu &&
                     !poi_or_poa_not_submitted &&
                     !should_restrict_bvi_account_creation &&
                     poa_acknowledged &&
                     has_submitted_cfd_personal_details &&
-                    !is_poa_required_for_zero_spread
+                    !is_poa_required_for_mt5
                 ) {
                     this.openRealPasswordModal(account_type);
                 } else {

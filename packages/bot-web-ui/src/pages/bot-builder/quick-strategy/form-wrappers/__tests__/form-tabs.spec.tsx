@@ -1,16 +1,13 @@
 import React from 'react';
-import { Formik } from 'formik';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import FormTabs from '../form-tabs';
 
-jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
-jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
 const onChangeMock = jest.fn();
 const mock_props = {
@@ -31,9 +28,7 @@ describe('<FormTabs />', () => {
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
                 <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
-                    <Formik initialValues={initial_value} onSubmit={mock_onSubmit}>
-                        {children}
-                    </Formik>
+                    {children}
                 </DBotStoreProvider>
             </StoreProvider>
         );

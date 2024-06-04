@@ -8,7 +8,7 @@ import ModalManager from 'Components/modals/modal-manager';
 import MainTitleBar from 'Components/main-title-bar';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
-import { useContentFlag, useGrowthbookFeatureFlag } from '@deriv/hooks';
+import { useContentFlag, useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import classNames from 'classnames';
 import './traders-hub.scss';
 
@@ -44,7 +44,7 @@ const TradersHub = observer(() => {
         (!is_switching && !is_logging_in && is_account_setting_loaded && is_landing_company_loaded) ||
         checkServerMaintenance(website_status);
 
-    const [direct_to_real_account_creation] = useGrowthbookGetFeatureFlag({
+    const direct_to_real_account_creation = useGrowthbookGetFeatureValue({
         featureFlag: 'direct-real-account-creation-flow',
         defaultValue: false,
     });
@@ -83,7 +83,7 @@ const TradersHub = observer(() => {
         startPerformanceEventTimer('option_multiplier_section_loading_time');
     }, []);
 
-    const should_show_banner = useGrowthbookFeatureFlag({
+    const should_show_banner = useGrowthbookGetFeatureValue({
         featureFlag: 'traders-hub-real-account-banner',
         defaultValue: false,
     });

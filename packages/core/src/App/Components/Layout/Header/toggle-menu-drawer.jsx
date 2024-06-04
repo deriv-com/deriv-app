@@ -69,6 +69,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         route === routes.traders_hub || route.startsWith(routes.cashier) || route.startsWith(routes.account);
 
     const should_hide_platform_switcher = location.pathname === routes.traders_hub;
+    const should_show_regulatory_information = is_eu && show_eu_related_content && !is_virtual;
 
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());
@@ -343,17 +344,15 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         onClickLink={toggleDrawer}
                                     />
                                 </MobileDrawer.Item>
-                                {is_logged_in && (
-                                    <MobileDrawer.Item>
-                                        <MenuLink
-                                            link_to={routes.traders_hub}
-                                            icon={TradersHubIcon}
-                                            text={localize("Trader's Hub")}
-                                            onClickLink={toggleDrawer}
-                                            is_active={route === routes.traders_hub}
-                                        />
-                                    </MobileDrawer.Item>
-                                )}
+                                <MobileDrawer.Item>
+                                    <MenuLink
+                                        link_to={routes.traders_hub}
+                                        icon={TradersHubIcon}
+                                        text={localize("Trader's Hub")}
+                                        onClickLink={toggleDrawer}
+                                        is_active={route === routes.traders_hub}
+                                    />
+                                </MobileDrawer.Item>
                                 {route !== routes.traders_hub && (
                                     <MobileDrawer.Item>
                                         <MenuLink
@@ -390,7 +389,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     </MobileDrawer.Item>
                                 )}
                                 {HelpCentreRoute()}
-                                {is_logged_in && (
+                                {is_logged_in ? (
                                     <React.Fragment>
                                         <MobileDrawer.Item>
                                             <MenuLink
@@ -400,7 +399,13 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                 onClickLink={toggleDrawer}
                                             />
                                         </MobileDrawer.Item>
-                                        <MobileDrawer.Item>
+                                        <MobileDrawer.Item
+                                            className={
+                                                should_show_regulatory_information
+                                                    ? ''
+                                                    : 'header__menu-mobile-theme--trader-hub'
+                                            }
+                                        >
                                             <MenuLink
                                                 link_to={getStaticUrl('/responsible')}
                                                 icon='IcVerification'
@@ -408,8 +413,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                 onClickLink={toggleDrawer}
                                             />
                                         </MobileDrawer.Item>
-                                        {is_eu && show_eu_related_content && !is_virtual && (
-                                            <MobileDrawer.Item>
+                                        {should_show_regulatory_information && (
+                                            <MobileDrawer.Item className='header__menu-mobile-theme--trader-hub'>
                                                 <MenuLink
                                                     link_to={getStaticUrl('/regulatory')}
                                                     icon='IcRegulatoryInformation'
@@ -418,15 +423,16 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                 />
                                             </MobileDrawer.Item>
                                         )}
-                                        <MobileDrawer.Item className='header__menu-mobile-theme--trader-hub'>
-                                            <MenuLink
-                                                link_to={getStaticUrl('/')}
-                                                icon='IcDerivOutline'
-                                                text={localize('Go to Deriv.com')}
-                                                onClickLink={toggleDrawer}
-                                            />
-                                        </MobileDrawer.Item>
                                     </React.Fragment>
+                                ) : (
+                                    <MobileDrawer.Item className='header__menu-mobile-theme--trader-hub'>
+                                        <MenuLink
+                                            link_to={getStaticUrl('/responsible')}
+                                            icon='IcVerification'
+                                            text={localize('Responsible trading')}
+                                            onClickLink={toggleDrawer}
+                                        />
+                                    </MobileDrawer.Item>
                                 )}
                                 {liveChat.isReady && cs_chat_whatsapp && (
                                     <MobileDrawer.Item className='header__menu-mobile-whatsapp'>

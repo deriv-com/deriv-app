@@ -1,5 +1,5 @@
 import React, { ComponentProps } from 'react';
-import classNames from 'classnames';
+import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { TSocketError } from '@deriv/api-v2/types';
 import { WalletButton, WalletsErrorScreen } from '../../../../components';
@@ -16,13 +16,13 @@ type TErrorContent = {
     buttonVariant?: ComponentProps<typeof WalletButton>['variant'];
     message?: string;
     onClick?: () => void;
-    showIcon?: boolean;
     title?: string;
 };
 
 type TErrorCodeHandlers = Record<string, TErrorContent>;
 
 const WithdrawalErrorScreen: React.FC<TProps> = ({ error, resetError, setResendEmail }) => {
+    const history = useHistory();
     const { data } = useActiveWalletAccount();
     const currency = data?.currency;
 
@@ -31,7 +31,6 @@ const WithdrawalErrorScreen: React.FC<TProps> = ({ error, resetError, setResendE
         buttonVariant: 'ghost',
         message: error.message,
         onClick: () => window.location.reload(),
-        showIcon: true,
     };
 
     const withdrawalErrorCodeHandlers: TErrorCodeHandlers = {
@@ -51,18 +50,26 @@ const WithdrawalErrorScreen: React.FC<TProps> = ({ error, resetError, setResendE
             onClick: resetError,
             title: 'Error',
         },
+        [CryptoWithdrawalErrorCodes.CryptoLimitAgeVerified]: {
+            ...defaultContent,
+            buttonText: 'Verify identity',
+            buttonVariant: 'contained',
+            onClick: () => {
+                // @ts-expect-error the following link is not part of wallets routes config
+                history.push('/account/proof-of-identity');
+            },
+            title: 'Error',
+        },
         [CryptoWithdrawalErrorCodes.SuspendedCurrency]: {
             ...defaultContent,
             buttonText: undefined,
             message: `Due to system maintenance, withdrawals with your ${currency} Wallet are unavailable at the moment. Please try again later.`,
-            showIcon: false,
             title: `${currency} Wallet withdrawals are temporarily unavailable`,
         },
         [CryptoWithdrawalErrorCodes.SuspendedWithdrawal]: {
             ...defaultContent,
             buttonText: undefined,
             message: `Due to system maintenance, withdrawals with your ${currency} Wallet are unavailable at the moment. Please try again later.`,
-            showIcon: false,
             title: `${currency} Wallet withdrawals are temporarily unavailable`,
         },
         [CryptoWithdrawalErrorCodes.CryptoConnectionError]: {
@@ -74,15 +81,7 @@ const WithdrawalErrorScreen: React.FC<TProps> = ({ error, resetError, setResendE
 
     const content = withdrawalErrorCodeHandlers[error.code] || defaultContent;
 
-    return (
-        <div
-            className={classNames('wallets-withdrawal-error-screen', {
-                'wallets-withdrawal-error-screen__no-icon': !content.showIcon,
-            })}
-        >
-            <WalletsErrorScreen {...content} />
-        </div>
-    );
+    return <WalletsErrorScreen {...content} />;
 };
 
 export default WithdrawalErrorScreen;

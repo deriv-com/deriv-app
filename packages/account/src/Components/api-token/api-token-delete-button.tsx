@@ -3,11 +3,11 @@ import { Button, Icon, Modal, Text, Popover } from '@deriv/components';
 import { isDesktop, useIsMounted } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import ApiTokenContext from './api-token-context';
-import { TPopoverAlignment, TToken, TApiContext } from 'Types';
+import { TPopoverAlignment, TFormattedToken, TApiContext } from 'Types';
 
 type TApiTokenDeleteButton = {
     popover_alignment?: TPopoverAlignment;
-    token: TToken;
+    token: TFormattedToken;
 };
 
 const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDeleteButton) => {
@@ -34,7 +34,7 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDe
 
     const onSubmit = async () => {
         setIsLoading(true);
-        await deleteToken(token.token);
+        await deleteToken(token.token ?? '');
         if (isMounted()) {
             setIsLoading(false);
             setIsDeleting(false);

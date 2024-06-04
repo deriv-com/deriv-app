@@ -241,7 +241,6 @@ export default class ClientStore extends BaseStore {
             has_active_real_account: computed,
             has_maltainvest_account: computed,
             has_any_real_account: computed,
-            first_switchable_real_loginid: computed,
             can_change_fiat_currency: computed,
             legal_allowed_currencies: computed,
             upgradeable_currencies: computed,
@@ -253,10 +252,6 @@ export default class ClientStore extends BaseStore {
             account_list: computed,
             has_real_mt5_login: computed,
             has_real_dxtrade_login: computed,
-            has_account_error_in_mt5_real_list: computed,
-            has_account_error_in_mt5_demo_list: computed,
-            has_account_error_in_dxtrade_real_list: computed,
-            has_account_error_in_dxtrade_demo_list: computed,
             active_accounts: computed,
             all_loginids: computed,
             account_title: computed,
@@ -265,7 +260,6 @@ export default class ClientStore extends BaseStore {
             default_currency: computed,
             should_allow_authentication: computed,
             should_allow_poinc_authentication: computed,
-            is_financial_assessment_incomplete: computed,
             is_financial_assessment_needed: computed,
             is_authentication_needed: computed,
             is_identity_verification_needed: computed,
@@ -287,9 +281,7 @@ export default class ClientStore extends BaseStore {
             social_identity_provider: computed,
             is_from_restricted_country: computed,
             is_fully_authenticated: computed,
-            is_pending_authentication: computed,
             is_financial_account: computed,
-            is_age_verified: computed,
             landing_company_shortcode: computed,
             landing_company: computed,
             is_logged_in: computed,
@@ -335,7 +327,6 @@ export default class ClientStore extends BaseStore {
             createCryptoAccount: action.bound,
             residence: computed,
             email_address: computed,
-            is_website_status_ready: computed,
             updateAccountList: action.bound,
             switchAccount: action.bound,
             resetVirtualBalance: action.bound,
@@ -402,7 +393,6 @@ export default class ClientStore extends BaseStore {
             is_eu_or_multipliers_only: computed,
             getTwoFAStatus: action.bound,
             updateMT5Status: action.bound,
-            isEuropeCountry: action.bound,
             setPrevRealAccountLoginid: action.bound,
             setPrevAccountType: action.bound,
             setIsAlreadyAttempted: action.bound,
@@ -519,13 +509,6 @@ export default class ClientStore extends BaseStore {
         return Object.values(this.accounts).some(account => account.account_category === 'wallet');
     }
 
-    get first_switchable_real_loginid() {
-        const result = this.active_accounts.find(
-            acc => acc.is_virtual === 0 && acc.landing_company_shortcode === 'svg'
-        );
-        return result.loginid || undefined;
-    }
-
     get can_change_fiat_currency() {
         const has_no_mt5 = !this.has_real_mt5_login;
         const has_no_dxtrade = !this.has_real_dxtrade_login;
@@ -640,42 +623,6 @@ export default class ClientStore extends BaseStore {
         return this.dxtrade_accounts_list.some(account => account.account_type === 'real');
     }
 
-    get has_real_ctrader_login() {
-        return this.ctrader_accounts_list.some(account => account.account_type === 'real');
-    }
-
-    hasAccountErrorInCFDList = (platform, account_type) => {
-        if (!this.is_logged_in) return false;
-        let list;
-        switch (platform) {
-            case CFD_PLATFORMS.MT5:
-                list = this.mt5_login_list;
-                break;
-            case CFD_PLATFORMS.DXTRADE:
-                list = this.dxtrade_accounts_list;
-                break;
-            default:
-                return false;
-        }
-        return list?.some(account => !!account.has_error && account.account_type === account_type);
-    };
-
-    get has_account_error_in_mt5_real_list() {
-        return this.hasAccountErrorInCFDList(CFD_PLATFORMS.MT5, 'real');
-    }
-
-    get has_account_error_in_mt5_demo_list() {
-        return this.hasAccountErrorInCFDList(CFD_PLATFORMS.MT5, 'demo');
-    }
-
-    get has_account_error_in_dxtrade_real_list() {
-        return this.hasAccountErrorInCFDList(CFD_PLATFORMS.DXTRADE, 'real');
-    }
-
-    get has_account_error_in_dxtrade_demo_list() {
-        return this.hasAccountErrorInCFDList(CFD_PLATFORMS.DXTRADE, 'demo');
-    }
-
     get active_accounts() {
         return this.accounts instanceof Object
             ? Object.values(this.accounts).filter(account => !account.is_disabled)
@@ -725,10 +672,6 @@ export default class ClientStore extends BaseStore {
         return (
             this.is_fully_authenticated && this.account_status?.authentication?.needs_verification?.includes('income')
         );
-    }
-
-    get is_financial_assessment_incomplete() {
-        return this.account_status?.status?.includes('financial_assessment_not_complete');
     }
 
     get is_financial_assessment_needed() {
@@ -807,17 +750,9 @@ export default class ClientStore extends BaseStore {
         return this.account_status?.status?.some(status => status === 'authenticated');
     }
 
-    get is_pending_authentication() {
-        return this.account_status?.status?.some(status => status === 'document_under_review');
-    }
-
     get is_financial_account() {
         if (!this.landing_companies) return false;
         return this.account_type === 'financial';
-    }
-
-    get is_age_verified() {
-        return this.account_status?.status?.some(status => status === 'age_verification');
     }
 
     get landing_company_shortcode() {
@@ -1035,10 +970,6 @@ export default class ClientStore extends BaseStore {
         const country = this.website_status.clients_country;
         if (country) return isEuCountry(country);
         return false;
-    }
-
-    isEuropeCountry() {
-        return this.is_eu_country || this.is_eu;
     }
 
     get is_options_blocked() {
@@ -1434,15 +1365,6 @@ export default class ClientStore extends BaseStore {
         return '';
     }
 
-    get is_website_status_ready() {
-        return this.website_status && !BinarySocket.getAvailability().is_down;
-    }
-
-    isEuCountrySelected = selected_country => {
-        if (selected_country) return isEuCountry(selected_country);
-        return false;
-    };
-
     isAccountOfType = type => {
         const client_account_type = getClientAccountType(this.loginid);
 
@@ -1452,17 +1374,6 @@ export default class ClientStore extends BaseStore {
                 type === client_account_type) &&
             !this.isDisabled()
         );
-    };
-
-    isAccountOfTypeDisabled = type => {
-        const filtered_list = this.account_list.filter(acc => getClientAccountType(acc.loginid) === type);
-        return filtered_list.length > 0 && filtered_list.every(acc => acc.is_disabled);
-    };
-
-    shouldCompleteTax = () => {
-        if (!this.isAccountOfType('financial')) return false;
-
-        return !/crs_tin_information/.test((this.account_status || {})?.status);
     };
 
     updateAccountList(account_list) {
@@ -1548,6 +1459,11 @@ export default class ClientStore extends BaseStore {
             '_filteredParams',
         ];
 
+        // redirect to the DTrader of there is needed query params
+        if (!window.location.pathname.endsWith(routes.trade) && /chart_type|interval|symbol|trade_type/.test(search)) {
+            window.history.replaceState({}, document.title, routes.trade + search);
+        }
+
         const authorize_response = await this.setUserLogin(login_new_user);
 
         if (action_param === 'signup') {
@@ -1594,7 +1510,7 @@ export default class ClientStore extends BaseStore {
             // If this fails, it means the landing company check failed
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
-                Analytics.identifyEvent();
+                Analytics.identifyEvent(this.user_id);
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',
@@ -1822,11 +1738,12 @@ export default class ClientStore extends BaseStore {
                 language: getLanguage(),
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
-                country: Cookies.get('clients_country') || Cookies?.getJSON('website_status'),
+                country: Cookies.get('clients_country') || Cookies?.getJSON('website_status')?.clients_country,
                 utm_source: ppc_campaign_cookies?.utm_source,
                 utm_medium: ppc_campaign_cookies?.utm_medium,
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,
                 utm_content: ppc_campaign_cookies?.utm_content,
+                domain: window.location.hostname,
             });
         }, 4);
 
@@ -1948,7 +1865,7 @@ export default class ClientStore extends BaseStore {
             }
 
             //temporary workaround to sync this.loginid with selected wallet loginid
-            if (window.location.pathname.includes(routes.wallets_cashier)) {
+            if (window.location.pathname.includes(routes.wallets)) {
                 this.resetLocalStorageValues(localStorage.getItem('active_loginid') ?? this.loginid);
                 return;
             }
@@ -2193,10 +2110,10 @@ export default class ClientStore extends BaseStore {
 
             const redirect_url = sessionStorage.getItem('redirect_url');
 
-            const target_url = this.has_wallet ? routes.wallets : routes.traders_hub;
+            const target_url = routes.traders_hub;
 
             if (
-                (redirect_url?.endsWith('/') ||
+                (redirect_url?.endsWith(routes.trade) ||
                     redirect_url?.endsWith(routes.bot) ||
                     /chart_type|interval|symbol|trade_type/.test(redirect_url)) &&
                 (isTestLink() || isProduction() || isLocal() || isStaging() || isTestDerivApp())

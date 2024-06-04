@@ -6,6 +6,7 @@ export const STORED_ITEM_NOT_FOUND = 'No results found';
 export enum ACTION {
     OPEN = 'open',
     CLOSE = 'close',
+    RUN_BOT = 'run_bot',
     RUN_QUICK_STRATEGY = 'run_quick_strategy',
     EDIT_QUICK_STRATEGY = 'edit_quick_strategy',
     SELECT_QUICK_STRATEGY_GUIDE = 'select_quick_strategy_guide',

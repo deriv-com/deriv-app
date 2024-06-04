@@ -2497,7 +2497,7 @@ export default class ClientStore extends BaseStore {
         binaryBot.origin = getUrlBinaryBot(false);
         P2PStandalone.origin = getUrlP2PStandalone();
 
-        [smartTrader, binaryBot].forEach(platform => {
+        [smartTrader, binaryBot, P2PStandalone].forEach(platform => {
             if (platform.iframe) {
                 // Keep client.accounts in sync (in case user wasn't logged in).
                 platform.iframe.contentWindow.postMessage(

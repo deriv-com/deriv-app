@@ -20,7 +20,7 @@ function main() {
         console.log(formattedOutput);
     } else if (format === 'console') {
         let formattedOutput = formatToConsole(sizes);
-        console.table(formattedOutput, ['oldSize', 'newSize', 'diff', 'percentage', 'color']);
+        console.table(formattedOutput, ['oldSize', 'newSize', 'diff', 'percentage']);
     } else if (format === 'boolean') {
         const aboveThreshold = Object.values(sizes).some(pkg => pkg.percentage > threshold);
         if (aboveThreshold) {

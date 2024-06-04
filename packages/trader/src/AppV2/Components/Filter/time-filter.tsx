@@ -1,7 +1,6 @@
 import React from 'react';
-import Chip from 'AppV2/Components/Chip';
 import { toMoment } from '@deriv/shared';
-import { ActionSheet, RadioGroup } from '@deriv-com/quill-ui';
+import { ActionSheet, Chip, RadioGroup } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import CustomDateFilterButton from './custom-time-filter-button';
 import DateRangePicker from 'AppV2/Components/DatePicker';
@@ -107,13 +106,14 @@ const TimeFilter = ({
 
     return (
         <React.Fragment>
-            <Chip
+            <Chip.Standard
+                className='filter__chip'
                 dropdown
                 isDropdownOpen={isDropdownOpen}
                 label={getChipLabel()}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 selected={isChipSelected}
-                size='sm'
+                size='md'
             />
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={() => setIsDropdownOpen(false)} position='left'>
                 <ActionSheet.Portal shouldCloseOnDrag>

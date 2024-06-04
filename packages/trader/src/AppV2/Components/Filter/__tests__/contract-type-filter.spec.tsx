@@ -20,11 +20,11 @@ describe('ContractTypeFilter', () => {
     it('should change data-state of the dropdown if user clicks on the filter', () => {
         render(<ContractTypeFilter {...mockProps} />);
 
-        const dropdownChevron = screen.getByTestId('dt_chevron');
-        expect(dropdownChevron).toHaveClass('rotate--close');
+        const dropdownChevron = screen.getAllByRole('img')[0];
+        expect(dropdownChevron).toHaveAttribute('data-state', 'close');
 
         userEvent.click(screen.getByText(defaultFilterName));
-        expect(dropdownChevron).toHaveClass('rotate--open');
+        expect(dropdownChevron).toHaveAttribute('data-state', 'open');
     });
 
     it('should render correct chip name if contractTypeFilter is with single item', () => {

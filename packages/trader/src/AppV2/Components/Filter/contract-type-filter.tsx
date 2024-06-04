@@ -1,6 +1,5 @@
 import React from 'react';
-import Chip from 'AppV2/Components/Chip';
-import { ActionSheet, Checkbox } from '@deriv-com/quill-ui';
+import { ActionSheet, Checkbox, Chip } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 
 type TContractTypeFilter = {
@@ -49,13 +48,14 @@ const ContractTypeFilter = ({ contractTypeFilter, setContractTypeFilter }: TCont
 
     return (
         <React.Fragment>
-            <Chip
+            <Chip.Standard
+                className='filter__chip'
                 dropdown
                 isDropdownOpen={isDropdownOpen}
                 label={getChipLabel()}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 selected={!!changedOptions.length}
-                size='sm'
+                size='md'
             />
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={onActionSheetClose} position='left'>
                 <ActionSheet.Portal shouldCloseOnDrag>

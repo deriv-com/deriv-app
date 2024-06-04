@@ -8,14 +8,14 @@ import { Localize } from 'Components/i18next';
 import ChatMessageReceipt from 'Pages/orders/chat/chat-message-receipt.jsx';
 import ChatMessageText from 'Pages/orders/chat/chat-message-text.jsx';
 import { useStores } from 'Stores';
-import ChatMessage, { admin_message } from 'Utils/chat-message';
+import ChatMessage from 'Utils/chat-message';
 import { convertToMB, isImageType, isPDFType } from 'Utils/file-uploader';
 import './chat-messages.scss';
 
 const AdminMessage = () => (
     <div className='chat-messages-item chat-messages-item--admin'>
         <ChatMessageText color='general' type='admin'>
-            <Localize i18n_default_text={admin_message} />
+            <Localize i18n_default_text="Hello! This is where you can chat with the counterparty to confirm the order details.<br />Note: In case of a dispute, we'll use this chat as a reference." />
         </ChatMessageText>
     </div>
 );

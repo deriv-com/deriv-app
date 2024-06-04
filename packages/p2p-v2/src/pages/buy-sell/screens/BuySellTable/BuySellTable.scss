@@ -1,0 +1,32 @@
+.p2p-v2-buy-sell-table {
+    & .p2p-v2-table {
+        &__header {
+            padding: 1.6rem;
+            border-bottom: 1px solid #f2f3f4;
+            grid-template-columns: 2fr 1.4fr 1.4fr 2.4fr 0.8fr;
+        }
+        &__content {
+            overflow: auto;
+
+            @include mobile {
+                // stylelint-disable-next-line declaration-no-important
+                height: calc(100vh - 21rem) !important;
+            }
+        }
+    }
+
+    &__tabs {
+        & .derivs-primary-tabs {
+            height: 4rem;
+            width: 18rem;
+            margin: 2.4rem 0;
+            border-radius: 0.6rem;
+            padding: 0.5rem;
+        }
+
+        & .derivs-primary-tabs__btn--active {
+            border-radius: 0.4rem;
+            padding: 0.8rem 0.6rem;
+        }
+    }
+}

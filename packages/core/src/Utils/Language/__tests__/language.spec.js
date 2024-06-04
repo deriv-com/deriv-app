@@ -1,8 +1,10 @@
 import { getAllowedLanguages } from '@deriv/translations';
 
 const languages = {
+    AR: 'العربية',
     EN: 'English',
     ES: 'Español',
+    BN: 'বাংলা',
     DE: 'Deutsch',
     FR: 'Français',
     ID: 'Indonesian',
@@ -10,7 +12,9 @@ const languages = {
     KO: '한국어',
     PL: 'Polish',
     PT: 'Português',
+    SW: 'Kiswahili',
     RU: 'Русский',
+    SI: 'සිංහල',
     TR: 'Türkçe',
     VI: 'Tiếng Việt',
     ZH_CN: '简体中文',

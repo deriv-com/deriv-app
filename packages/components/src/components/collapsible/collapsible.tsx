@@ -9,10 +9,12 @@ type TCollapsible = {
     position?: 'top' | 'bottom';
     onClick: (state: boolean) => void;
     title?: string;
+    handle_button?: boolean;
+    is_non_interactive?: boolean;
 };
 
 const swipe_config = {
-    delta: 100,
+    delta: 10,
     trackTouch: true,
     trackMouse: true,
 };
@@ -24,11 +26,14 @@ const Collapsible = ({
     children,
     onClick,
     title,
+    handle_button,
+    is_non_interactive = false,
 }: React.PropsWithChildren<TCollapsible>) => {
     const [is_open, expand] = React.useState(!is_collapsed);
     const [should_show_collapsible, setShouldShowCollapsible] = React.useState(false);
 
     const toggleExpand = () => {
+        if (is_non_interactive) return;
         const new_state = !is_open;
         expand(new_state);
         if (typeof onClick === 'function') {
@@ -46,19 +51,27 @@ const Collapsible = ({
     React.useEffect(
         () =>
             setShouldShowCollapsible(
-                React.Children.toArray(children).some(({ props }: any) => 'data-collapsible' in props)
+                React.Children.toArray(children).some(({ props }: any) => 'data-collapsible' in props) ||
+                    is_non_interactive
             ),
-        [children]
+        [children, is_non_interactive]
     );
 
     const swipe_handlers = useSwipeable({
-        onSwipedUp: () => !is_open && should_show_collapsible && expand(true),
-        onSwipedDown: () => is_open && should_show_collapsible && expand(false),
+        onSwipedUp: () => !is_open && should_show_collapsible && toggleExpand(),
+        onSwipedDown: () => is_open && should_show_collapsible && toggleExpand(),
         ...swipe_config,
     });
 
     const arrow_button = (
-        <ArrowButton is_collapsed={!is_open} position={position} onClick={toggleExpand} title={title} />
+        <ArrowButton
+            is_collapsed={!is_open}
+            position={position}
+            onClick={toggleExpand}
+            title={title}
+            handle_button={handle_button}
+            show_collapsible_button={!is_non_interactive}
+        />
     );
     const CustomTag = as || 'div';
     return (
@@ -70,6 +83,7 @@ const Collapsible = ({
                 'dc-collapsible--has-collapsible-btn': should_show_collapsible,
                 'dc-collapsible--has-title': title,
             })}
+            data-testid='dt_collapsible'
         >
             {should_show_collapsible && position === 'top' && arrow_button}
             <div className='dc-collapsible__content'>

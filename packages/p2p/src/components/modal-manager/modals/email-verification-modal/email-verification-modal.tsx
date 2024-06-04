@@ -21,21 +21,15 @@ const EmailVerificationModal = () => {
         >
             <Modal.Body className='email-verification-modal__body'>
                 <Icon icon='IcEmailSentP2p' size='128' />
-                <Text
-                    align='center'
-                    className='email-verification-modal--email__title'
-                    color='prominent'
-                    size='m'
-                    weight='bold'
-                >
-                    <Localize i18n_default_text='Check your email' />
-                </Text>
                 <Text align='center' className='email-verification-modal--email__text' color='prominent' weight='bold'>
-                    <Localize i18n_default_text='Hit the link in the email we sent you to authorise this transaction.' />
+                    <Localize i18n_default_text='Has the buyer paid you?' />
                 </Text>
                 <Text align='center' color='prominent'>
                     {/* TODO: Uncomment when time is available in BE response */}
-                    <Localize i18n_default_text='The link will expire in 10 minutes.' />
+                    <Localize
+                        i18n_default_text='Releasing funds before receiving payment may result in losses. Check your email and follow the instructions <0>within 10 minutes</0> to release the funds.'
+                        components={[<strong key={0} />]}
+                    />
                 </Text>
                 <Text
                     className='email-verification-modal__receive_email_text'
@@ -44,7 +38,7 @@ const EmailVerificationModal = () => {
                     size='xs'
                     weight='bold'
                 >
-                    <Localize i18n_default_text="Didn't receive the email?" />
+                    <Localize i18n_default_text='I didn’t receive the email' />
                 </Text>
                 {should_show_reasons_if_no_email && (
                     <React.Fragment>

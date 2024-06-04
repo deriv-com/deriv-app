@@ -39,9 +39,6 @@ type TNewMockedProps = typeof default_mock_store &
 jest.mock('Modules/Trading/Components/Elements/purchase-fieldset', () =>
     jest.fn(() => <div>PurchaseField component</div>)
 );
-jest.mock('Modules/Trading/Components/Elements/purchase-buttons-overlay.jsx', () =>
-    jest.fn(() => <div>PurchaseButtonsOverlay component</div>)
-);
 jest.mock('Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-sell-button', () =>
     jest.fn(() => <div>Accu sell button</div>)
 );

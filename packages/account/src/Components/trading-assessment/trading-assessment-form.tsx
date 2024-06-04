@@ -1,7 +1,7 @@
-import classNames from 'classnames';
-import React from 'react';
+import { useState, useEffect, ChangeEvent, Fragment } from 'react';
+import clsx from 'clsx';
 import { observer, useStore } from '@deriv/stores';
-import { Formik, Form, FormikErrors } from 'formik';
+import { Formik, Form, FormikErrors, FormikHelpers } from 'formik';
 import { Button, Modal, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import TradingAssessmentRadioButton from './trading-assessment-radio-buttons';
@@ -16,8 +16,10 @@ type TradingAssessmentFormProps = {
     class_name?: string;
     disabled_items: string[];
     form_value: TTradingAssessmentForm;
-    onSubmit: (values?: TTradingAssessmentForm, action?: React.ReactNode, should_override?: boolean) => void;
+    getCurrentStep?: () => number;
+    onSubmit: (values?: TTradingAssessmentForm, should_override?: boolean) => void;
     onCancel: (form_data: TTradingAssessmentForm) => void;
+    onSave?: (current_step: number, values: TTradingAssessmentForm) => void;
     should_move_to_next: boolean;
     setSubSectionIndex: (index: number) => void;
     is_independent_section: boolean;
@@ -29,8 +31,10 @@ const TradingAssessmentForm = observer(
         class_name,
         disabled_items,
         form_value,
+        getCurrentStep,
         onSubmit,
         onCancel,
+        onSave,
         should_move_to_next,
         setSubSectionIndex,
         is_independent_section,
@@ -40,18 +44,20 @@ const TradingAssessmentForm = observer(
         const { is_eu_user } = traders_hub;
         const assessment_questions = getTradingAssessmentQuestions();
         const stored_items = parseInt(localStorage.getItem('current_question_index') ?? '0');
-        const [is_section_filled, setIsSectionFilled] = React.useState(false);
-        const [current_question_details, setCurrentQuestionDetails] = React.useState({
+        const [is_section_filled, setIsSectionFilled] = useState(false);
+        const [current_question_details, setCurrentQuestionDetails] = useState({
             current_question_index: 0,
             current_question: assessment_questions[stored_items],
         });
-        const [form_data, setFormData] = React.useState({ ...form_value });
+        const [form_data, setFormData] = useState<TTradingAssessmentForm>({ ...form_value });
         const last_question_index = assessment_questions.length - 1;
         const should_display_previous_button = is_independent_section
             ? current_question_details.current_question_index !== 0
             : true;
 
-        React.useEffect(() => {
+        type TField = keyof typeof form_value;
+
+        useEffect(() => {
             setCurrentQuestionDetails(prevState => {
                 return {
                     ...prevState,
@@ -67,14 +73,14 @@ const TradingAssessmentForm = observer(
             setFormData(form_value);
         }, []);
 
-        React.useEffect(() => {
+        useEffect(() => {
             if (should_move_to_next) displayNextPage();
         }, [should_move_to_next]);
 
         const displayNextPage = () => {
             if (form_data.risk_tolerance === 'No') {
-                // onSubmit hold reference to a function that takes 3 params - values, action and should_override
-                onSubmit(form_data, null, true);
+                // onSubmit hold reference to a function that takes 2 params - values, should_override
+                onSubmit(form_data, true);
             } else {
                 const next_question = current_question_details.current_question_index + 1;
 
@@ -115,7 +121,7 @@ const TradingAssessmentForm = observer(
         };
 
         const handleValueSelection = (
-            e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>,
+            e: ChangeEvent<HTMLSelectElement> | ChangeEvent<HTMLInputElement>,
             form_control: keyof TTradingAssessmentForm,
             callBackFn: (form_control: keyof TTradingAssessmentForm, value: string) => void
         ) => {
@@ -127,7 +133,10 @@ const TradingAssessmentForm = observer(
         const isAssessmentCompleted = (answers: TTradingAssessmentForm) =>
             Object.values(answers).every(answer => Boolean(answer));
 
-        const nextButtonHandler = (values: TTradingAssessmentForm, { setTouched }) => {
+        const nextButtonHandler = (
+            values: TTradingAssessmentForm,
+            { setTouched }: FormikHelpers<TTradingAssessmentForm>
+        ) => {
             if (is_section_filled) {
                 if (isAssessmentCompleted(values) && stored_items === last_question_index) {
                     onSubmit(values);
@@ -139,6 +148,9 @@ const TradingAssessmentForm = observer(
         };
 
         const handleValidate = (values: TTradingAssessmentForm) => {
+            const current_step = (getCurrentStep?.() || 1) - 1;
+            onSave?.(current_step, values);
+
             const errors: FormikErrors<TTradingAssessmentForm> = {};
 
             if (!values.risk_tolerance && current_question_details.current_question.section === 'risk_tolerance') {
@@ -181,7 +193,7 @@ const TradingAssessmentForm = observer(
         };
 
         return (
-            <div className={classNames('trading-assessment', class_name)}>
+            <div className={clsx('trading-assessment', class_name)}>
                 {is_eu_user ? (
                     <div className='details-form__banner-container'>
                         <InlineNoteWithIcon
@@ -205,11 +217,11 @@ const TradingAssessmentForm = observer(
                             question => question.question_text.length > MAX_QUESTION_TEXT_LENGTH
                         );
                         const is_section_required = Object.keys(values).some(
-                            field => !!errors[field] && !!touched[field]
+                            field => !!errors[field as TField] && !!touched[field as TField]
                         );
 
                         return (
-                            <React.Fragment>
+                            <Fragment>
                                 <Text weight='bold' size='xs' className='trading-assessment__question-counter'>
                                     <Localize
                                         i18n_default_text='Question {{ current }} of {{ total }}'
@@ -226,7 +238,7 @@ const TradingAssessmentForm = observer(
                                     <Form noValidate className='trading-assessment__form--layout'>
                                         <ScrollToFieldWithError should_recollect_inputs_names={is_section_filled} />
                                         <div
-                                            className={classNames('trading-assessment__form--fields', {
+                                            className={clsx('trading-assessment__form--fields', {
                                                 'field-layout': has_long_question,
                                             })}
                                         >
@@ -289,7 +301,7 @@ const TradingAssessmentForm = observer(
                                         </Modal.Footer>
                                     </Form>
                                 </section>
-                            </React.Fragment>
+                            </Fragment>
                         );
                     }}
                 </Formik>

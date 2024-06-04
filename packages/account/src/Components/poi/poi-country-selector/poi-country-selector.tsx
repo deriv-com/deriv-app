@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik';
 import { Autocomplete, Button, DesktopWrapper, HintBox, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { IDV_ERROR_STATUS, isMobile, TIDVErrorStatus, POIContext } from '@deriv/shared';
@@ -8,7 +8,7 @@ import FormFooter from '../../form-footer';
 import { useResidenceList } from '@deriv/api';
 
 type TCountrySelector = {
-    handleSelectionNext: () => void;
+    handleSelectionNext?: () => void;
     is_from_external: boolean;
     mismatch_status?: TIDVErrorStatus;
 };
@@ -65,7 +65,7 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
             }) => (
                 <React.Fragment>
                     <div
-                        className={classNames('proof-of-identity__container', {
+                        className={clsx('proof-of-identity__container proof-of-identity__country-container', {
                             'min-height': !is_from_external,
                         })}
                     >
@@ -75,7 +75,7 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
                                     <Localize i18n_default_text='Your identity verification failed because:' />
                                 </Text>
                                 <HintBox
-                                    className={classNames('proof-of-identity__failed-message', 'hint-box-layout')}
+                                    className={clsx('proof-of-identity__failed-message', 'hint-box-layout')}
                                     icon='IcAlertDanger'
                                     message={
                                         <Text as='p' size={isMobile() ? 'xxs' : 'xs'}>
@@ -100,7 +100,7 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
                                     <React.Fragment>
                                         <DesktopWrapper>
                                             <Autocomplete
-                                                className={classNames({ 'external-dropdown': is_from_external })}
+                                                className={clsx({ 'external-dropdown': is_from_external })}
                                                 {...field}
                                                 data_testid='dt_external_dropdown'
                                                 name='country_input'
@@ -157,9 +157,7 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
                             </Field>
                         </fieldset>
                     </div>
-                    <FormFooter
-                        className={classNames('proof-of-identity__footer', { 'external-footer': is_from_external })}
-                    >
+                    <FormFooter className={clsx('proof-of-identity__footer', { 'external-footer': is_from_external })}>
                         <Button
                             className='proof-of-identity__submit-button'
                             type='submit'

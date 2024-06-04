@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Field, FormikValues } from 'formik';
 import { DatePicker, Input } from '@deriv/components';
 import { toMoment } from '@deriv/shared';
@@ -33,7 +32,6 @@ const InputField = ({ data }: FormikValues) => {
                             display_format='DD-MM-YYYY'
                             start_date={min_date}
                             min_date={min_date}
-                            should_show_today={false}
                             name={data.name}
                             label={`${data.label}${data.required ? '*' : ''}`}
                             error={touched[field.name] && errors[field.name]}
@@ -45,10 +43,6 @@ const InputField = ({ data }: FormikValues) => {
         default:
             return null;
     }
-};
-
-InputField.propTypes = {
-    data: PropTypes.object,
 };
 
 export default InputField;

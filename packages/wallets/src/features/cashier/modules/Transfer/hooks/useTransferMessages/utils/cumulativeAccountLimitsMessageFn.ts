@@ -11,13 +11,15 @@ const cumulativeAccountLimitsMessageFn = ({
     sourceAmount,
     targetAccount,
 }: TMessageFnProps) => {
+    if (!targetAccount) return null;
+
     const isTransferBetweenWallets =
         sourceAccount.account_category === 'wallet' && targetAccount.account_category === 'wallet';
 
     const isDemoTransfer = activeWallet?.is_virtual;
 
     const keyAccountType =
-        [sourceAccount, targetAccount].find(acc => acc.account_category !== 'wallet')?.account_type ?? 'wallets';
+        [sourceAccount, targetAccount].find(acc => acc.account_category !== 'wallet')?.account_type ?? 'internal';
 
     const platformKey = keyAccountType === 'standard' ? 'dtrade' : keyAccountType;
 
@@ -37,7 +39,9 @@ const cumulativeAccountLimitsMessageFn = ({
         !sourceAccount.currency ||
         !targetAccount.currency ||
         !sourceAccount.currencyConfig ||
-        !targetAccount.currencyConfig
+        !targetAccount.currencyConfig ||
+        !allowedSumUSD ||
+        !availableSumUSD
     )
         return null;
 
@@ -76,9 +80,17 @@ const cumulativeAccountLimitsMessageFn = ({
     )
         return null;
 
-    const sourceCurrencyLimit = allowedSumUSD * (activeWalletExchangeRates?.rates?.[sourceAccount.currency] ?? 1);
+    const USDToSourceRate =
+        activeWallet.currency === sourceAccount.currency
+            ? 1 / (activeWalletExchangeRates?.rates?.USD ?? 1)
+            : // if the source ("from") account is not the active wallet,
+              // compute USD -> sourceCurrency rate as activeWalletCurrency -> sourceCurrency rate,
+              // divided by activeWalletCurrency -> USD rate
+              (activeWalletExchangeRates?.rates?.[sourceAccount.currency] ?? 1) /
+              (activeWalletExchangeRates?.rates?.USD ?? 1);
 
-    const sourceCurrencyRemainder = availableSumUSD * (activeWalletExchangeRates?.rates?.[sourceAccount.currency] ?? 1);
+    const sourceCurrencyLimit = allowedSumUSD * USDToSourceRate;
+    const sourceCurrencyRemainder = availableSumUSD * USDToSourceRate;
 
     const formattedSourceCurrencyLimit = displayMoney?.(
         sourceCurrencyLimit,

@@ -16,7 +16,7 @@ describe('<MigrationSuccessModal />', () => {
     const props: React.ComponentProps<typeof MigrationSuccessModalContent> = {
         has_open_positions: false,
         icon: 'icon',
-        eligible_account_migrate: 'SVG',
+        eligible_account_to_migrate: 'BVI',
         directToCashier: jest.fn(),
     };
     it('component should be rendered', () => {

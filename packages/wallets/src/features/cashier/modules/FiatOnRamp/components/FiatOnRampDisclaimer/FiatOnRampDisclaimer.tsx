@@ -1,5 +1,5 @@
 import React, { MouseEventHandler, useCallback, useEffect } from 'react';
-import { useMutation } from '@deriv/api';
+import { useMutation } from '@deriv/api-v2';
 import { WalletButton, WalletText } from '../../../../../../components';
 import './FiatOnRampDisclaimer.scss';
 

@@ -54,7 +54,6 @@ const default_mocked_props: React.ComponentProps<typeof TogglePositionsMobile> =
 const default_mock_store = {
     ui: {
         togglePositionsDrawer: jest.fn(),
-        toggleUnsupportedContractModal: jest.fn(),
         is_positions_drawer_on: false,
     },
 };

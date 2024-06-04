@@ -118,7 +118,6 @@
         @include mobile {
             height: 4rem;
             min-width: 7.2rem;
-            padding-inline: 2.4rem;
         }
 
         &--active {
@@ -128,6 +127,8 @@
     }
 
     &__tab-icon {
+        width: 1.6rem;
+        height: 1.6rem;
         &--system-dark-2-general-text {
             path {
                 fill: var(--system-dark-2-general-text, #c2c2c2);

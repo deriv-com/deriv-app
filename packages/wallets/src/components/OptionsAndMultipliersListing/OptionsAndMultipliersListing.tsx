@@ -1,25 +1,21 @@
-import React, { useEffect } from 'react';
-import classNames from 'classnames';
+import React from 'react';
+import { Trans } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useActiveLinkedToTradingAccount } from '@deriv/api-v2';
+import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { optionsAndMultipliersContent } from '../../constants/constants';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../helpers/urls';
 import useDevice from '../../hooks/useDevice';
-import { WalletButton, WalletText } from '../Base';
+import { TRoute } from '../../routes/Router';
+import { WalletLink, WalletText } from '../Base';
 import { DerivAppsSection } from '../DerivAppsSection';
 import { TradingAccountCard } from '../TradingAccountCard';
 import './OptionsAndMultipliersListing.scss';
 
-type TShowButtonProps = Pick<typeof optionsAndMultipliersContent[number], 'isExternal' | 'redirect'>;
-
 type TLinkTitleProps = Pick<typeof optionsAndMultipliersContent[number], 'icon' | 'title'>;
 
-type TOptionsAndMultipliersListingProps = {
-    onOptionsAndMultipliersLoaded?: (value: boolean) => void;
-};
-
 const LinkTitle: React.FC<TLinkTitleProps> = ({ icon, title }) => {
-    const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const handleClick = (event: React.KeyboardEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
         event.persist();
         switch (title) {
             case 'Deriv Trader':
@@ -43,112 +39,76 @@ const LinkTitle: React.FC<TLinkTitleProps> = ({ icon, title }) => {
     };
 
     return (
-        <div className='wallets-options-and-multipliers-listing__content__icon' onClick={handleClick}>
+        <div
+            className='wallets-options-and-multipliers-listing__content__icon'
+            onClick={handleClick}
+            // Fix sonarcloud issue
+            onKeyDown={(event: React.KeyboardEvent<HTMLDivElement>) => {
+                if (event.key === 'Enter') {
+                    handleClick(event);
+                }
+            }}
+        >
             {icon}
         </div>
     );
 };
 
-const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
-    const history = useHistory();
-    const { data } = useActiveWalletAccount();
-    if (data?.dtrade_loginid) {
-        return (
-            <WalletButton
-                onClick={() => {
-                    if (isExternal) {
-                        window.open(redirect, '_blank');
-                    } else {
-                        history.push(redirect);
-                    }
-                }}
-            >
-                Open
-            </WalletButton>
-        );
-    }
-    return null;
-};
-
-const OptionsAndMultipliersListing: React.FC<TOptionsAndMultipliersListingProps> = ({
-    onOptionsAndMultipliersLoaded,
-}) => {
+const OptionsAndMultipliersListing: React.FC = () => {
     const { isMobile } = useDevice();
-    const { data } = useActiveWalletAccount();
-
-    useEffect(() => {
-        onOptionsAndMultipliersLoaded?.(true);
-        return () => onOptionsAndMultipliersLoaded?.(false);
-    }, [onOptionsAndMultipliersLoaded]);
+    const history = useHistory();
+    const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
 
     return (
-        <div
-            className={classNames('wallets-options-and-multipliers-listing', {
-                'wallets-options-and-multipliers-listing--border': data?.is_crypto,
-            })}
-        >
+        <div className='wallets-options-and-multipliers-listing'>
             <section className='wallets-options-and-multipliers-listing__header'>
                 <div className='wallets-options-and-multipliers-listing__header-title'>
                     {!isMobile && (
                         <WalletText align='center' size='xl' weight='bold'>
-                            Options & Multipliers
+                            <Trans defaults='Options' />
                         </WalletText>
                     )}
-                    <div>
-                        <WalletText size={isMobile ? 'sm' : 'md'}>
-                            Earn a range of payouts by correctly predicting market price movements with{' '}
-                            <a
-                                className='wallets-options-and-multipliers-listing__header-subtitle__link'
-                                href='https://deriv.com/trade-types/options/digital-options/up-and-down/'
-                                key={0}
-                                rel='noopener noreferrer'
-                                target='_blank'
-                            >
-                                options
-                            </a>
-                            , or get the upside of CFDs without risking more than your initial stake with{' '}
-                            <a
-                                className='wallets-options-and-multipliers-listing__header-subtitle__link'
-                                href='https://deriv.com/trade-types/multiplier/'
-                                key={1}
-                                rel='noopener noreferrer'
-                                target='_blank'
-                            >
-                                multipliers
-                            </a>
-                            .
-                        </WalletText>
-                    </div>
+                    <WalletText size={isMobile ? 'sm' : 'md'}>
+                        <Trans
+                            components={[
+                                <WalletLink key={0} staticUrl='/trade-types/options/digital-options/up-and-down/' />,
+                            ]}
+                            defaults='Buy or sell at a specific time for a specific price. <0>Learn more</0>'
+                        />
+                    </WalletText>
                 </div>
                 <DerivAppsSection />
             </section>
-            <div
-                className={classNames('wallets-options-and-multipliers-listing__content', {
-                    'wallets-options-and-multipliers-listing__content--without-trading-account': !data?.dtrade_loginid,
-                })}
-            >
+            <div className='wallets-options-and-multipliers-listing__content'>
                 {optionsAndMultipliersContent.map(account => {
-                    const title = account.title;
+                    const { description, title } = account;
+
                     return (
                         <TradingAccountCard
                             {...account}
-                            key={`trading-account-card-${account.title}`}
-                            leading={() => (
-                                <LinkTitle
-                                    icon={data?.dtrade_loginid || !isMobile ? account.icon : account.smallIcon}
-                                    title={title}
-                                />
-                            )}
-                            trailing={() => (
-                                <ShowOpenButton isExternal={account.isExternal} redirect={account.redirect} />
-                            )}
+                            disabled={!activeLinkedToTradingAccount?.loginid}
+                            key={`trading-account-card-${title}`}
+                            leading={<LinkTitle icon={account.icon} title={title} />}
+                            onClick={() => {
+                                account.isExternal
+                                    ? window.open(account.redirect, '_blank')
+                                    : history.push(account.redirect as TRoute);
+                            }}
+                            trailing={
+                                activeLinkedToTradingAccount?.loginid ? (
+                                    <div className='wallets-options-and-multipliers-listing__icon'>
+                                        <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                                    </div>
+                                ) : null
+                            }
                         >
                             <div className='wallets-options-and-multipliers-listing__content__details'>
-                                <WalletText size='sm' weight='bold'>
-                                    {account.title}
+                                <WalletText size='sm'>
+                                    <Trans defaults={title} />
                                 </WalletText>
-
-                                <WalletText size='xs'>{account.description}</WalletText>
+                                <WalletText size='xs'>
+                                    <Trans defaults={description} />
+                                </WalletText>
                             </div>
                         </TradingAccountCard>
                     );

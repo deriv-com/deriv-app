@@ -31,7 +31,11 @@ const LocalComponent = observer(() => {
                     <div className='load-strategy__preview-workspace'>
                         <div id='load-strategy__blockly-container' style={{ height: '100%' }}>
                             <div className='load-strategy__local-preview-close'>
-                                <Icon icon='IcCross' onClick={() => setLoadedLocalFile(null)} />
+                                <Icon
+                                    data_testid='dt_load-strategy__local-preview-close'
+                                    icon='IcCross'
+                                    onClick={() => setLoadedLocalFile(null)}
+                                />
                             </div>
                             <WorkspaceControl />
                         </div>
@@ -55,8 +59,10 @@ const LocalComponent = observer(() => {
                     accept='application/xml, text/xml'
                     style={{ display: 'none' }}
                     onChange={e => setIsFileSupported(handleFileChange(e, false))}
+                    data-testid='dt-load-strategy-file-input'
                 />
                 <div
+                    data-testid='dt__local-dropzone-area'
                     className='load-strategy__local-dropzone-area'
                     onDrop={e => {
                         handleFileChange(e, false);
@@ -81,6 +87,7 @@ const LocalComponent = observer(() => {
                                 ? localize('Select an XML file from your device')
                                 : localize('Please upload an XML file')
                         }
+                        data-testid='dt_load-strategy__local-upload'
                         onClick={() => file_input_ref?.current?.click()}
                         has_effect
                         primary

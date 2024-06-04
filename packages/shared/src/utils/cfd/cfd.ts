@@ -1,8 +1,7 @@
 import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
-
 import { CFD_PLATFORMS } from '../platform';
-import { Jurisdiction, JURISDICTION_MARKET_TYPES } from '../constants/jurisdictions-config';
+import { AUTH_STATUS_CODES, Jurisdiction, JURISDICTION_MARKET_TYPES } from '../constants';
 
 let CFD_text_translated: { [key: string]: () => void };
 
@@ -40,7 +39,7 @@ export const getMT5Title = (account_type: string) => {
 
 type TPlatform = 'dxtrade' | 'mt5' | 'ctrader';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
-type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'maltainvest';
+type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'malta' | 'maltainvest';
 type TGetAccount = {
     market_type: TMarketType;
     sub_account_type?: TAccount['sub_account_type'];
@@ -332,7 +331,6 @@ type TAuthenticationStatusInfo = {
     poi_resubmit_for_maltainvest: boolean;
     poi_resubmit_for_bvi_labuan_vanuatu: boolean;
     poa_pending: boolean;
-    poa_resubmit_for_labuan: boolean;
     is_idv_revoked: boolean;
 };
 
@@ -349,7 +347,6 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
         manual: { status: manual_status } = {},
     } = services;
 
-    const is_authenticated_with_idv_photoid = account_status?.status?.includes('authenticated_with_idv_photoid');
     const is_idv_revoked = account_status?.status?.includes('idv_revoked');
 
     const acknowledged_status: string[] = ['pending', 'verified'];
@@ -419,7 +416,6 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
         !poi_verified_for_bvi_labuan_vanuatu;
 
     const poi_poa_verified_for_bvi_labuan_vanuatu: boolean = poi_verified_for_bvi_labuan_vanuatu && poa_verified;
-    const poa_resubmit_for_labuan = is_authenticated_with_idv_photoid;
 
     return {
         poa_status,
@@ -450,13 +446,14 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
         poi_resubmit_for_maltainvest,
         poi_resubmit_for_bvi_labuan_vanuatu,
         poa_pending,
-        poa_resubmit_for_labuan,
         is_idv_revoked,
     };
 };
 
 export const mt5_community_url =
-    'https://community.deriv.com/t/log-in-using-mt5-pc-or-mobile-app-application-guideline/49622';
+    'https://community.deriv.com/t/mt5-new-server-name-and-mobile-app-re-login-guide/70617';
+
+export const mt5_help_centre_url = '/help-centre/dmt5/#log-in-to-my-Deriv-MT5-account';
 
 export const getFormattedJurisdictionCode = (jurisdiction_code?: typeof Jurisdiction[keyof typeof Jurisdiction]) => {
     let formatted_label = '';
@@ -506,8 +503,19 @@ type TGetMT5AccountTitle = {
     account_type: typeof JURISDICTION_MARKET_TYPES[keyof typeof JURISDICTION_MARKET_TYPES];
     jurisdiction: typeof Jurisdiction[keyof typeof Jurisdiction];
 };
+
+//returns the title for the MT5 account - e.g.  MT5 Financial Vanuatu
 export const getMT5AccountTitle = ({ account_type, jurisdiction }: TGetMT5AccountTitle) => {
     return `${getCFDPlatformNames(CFD_PLATFORMS.MT5)} ${getFormattedJurisdictionMarketTypes(
         account_type
     )} ${getFormattedJurisdictionCode(jurisdiction)}`;
+};
+
+export const isPOARequiredForMT5 = (account_status: GetAccountStatus, jurisdiction_shortcode: string) => {
+    const { document } = account_status?.authentication || {};
+    if (document?.status === AUTH_STATUS_CODES.PENDING) {
+        return false;
+    }
+    // @ts-expect-error as the prop verified_jurisdiction is not yet present in GetAccountStatu
+    return !document?.verified_jurisdiction[jurisdiction_shortcode];
 };

@@ -283,11 +283,26 @@ export default class TicksService {
         });
     }
 
-    forget = subscription_id => {
+    forget = () => {
         return new Promise((resolve, reject) => {
-            if (subscription_id) {
+            if (api_base?.api) {
                 api_base.api
-                    .forget(subscription_id)
+                    .forgetAll('ticks')
+                    .then(() => {
+                        resolve();
+                    })
+                    .catch(reject);
+            } else {
+                resolve();
+            }
+        });
+    };
+
+    forgetCandleSubscription = () => {
+        return new Promise((resolve, reject) => {
+            if (api_base?.api) {
+                api_base.api
+                    .forgetAll('candles')
                     .then(() => {
                         resolve();
                     })
@@ -300,37 +315,16 @@ export default class TicksService {
 
     unsubscribeFromTicksService() {
         return new Promise((resolve, reject) => {
-            if (this.ticks_history_promise) {
-                const { stringified_options } = this.ticks_history_promise;
-                const { symbol = '' } = JSON.parse(stringified_options);
-                if (symbol) {
-                    this.forget(this.subscriptions.getIn(['tick', symbol]))
-                        .then(res => {
-                            resolve(res);
+            this.forget()
+                .then(() => {
+                    this.forgetCandleSubscription()
+                        .then(() => {
+                            resolve();
                         })
                         .catch(reject);
-                } else {
-                    resolve();
-                }
-            }
+                })
+                .catch(reject);
             this.ticks_history_promise = null;
-            if (this.candles_promise) {
-                const { stringified_options } = this.candles_promise;
-                const { symbol = '' } = JSON.parse(stringified_options);
-                if (symbol) {
-                    this.forget(this.subscriptions.getIn(['candle', symbol]))
-                        .then(res => {
-                            resolve(res);
-                        })
-                        .catch(reject);
-                } else {
-                    resolve();
-                }
-            }
-
-            if (!this.ticks_history_promise && !this.candles_promise) {
-                resolve();
-            }
         });
     }
 }

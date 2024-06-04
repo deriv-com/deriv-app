@@ -1,6 +1,5 @@
 import React from 'react';
-import { mockStore, StoreProvider, useStore } from '@deriv/stores';
-// eslint-disable-next-line import/no-extraneous-dependencies
+import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';

@@ -8,6 +8,8 @@ import TraderProviders from '../../../../../../../trader-providers';
 describe('<TakeProfit />', () => {
     let default_mocked_store: ReturnType<typeof mockStore>,
         default_mocked_props: React.ComponentProps<typeof TakeProfit>;
+    const popoverTestid = 'dt_popover_wrapper';
+    const takeProfitTooltipText = /When your profit reaches/i;
 
     beforeEach(() => {
         default_mocked_store = {
@@ -85,19 +87,19 @@ describe('<TakeProfit />', () => {
     it('should render correct text of the tooltip for Multipliers', () => {
         render(mockTakeProfit());
 
-        expect(screen.queryByText(/When your profit reaches/i)).not.toBeInTheDocument();
-        userEvent.hover(screen.getByTestId('dt_popover_wrapper'));
+        expect(screen.queryByText(takeProfitTooltipText)).not.toBeInTheDocument();
+        userEvent.hover(screen.getByTestId(popoverTestid));
 
-        expect(screen.getByText(/When your profit reaches/i)).toBeInTheDocument();
+        expect(screen.getByText(takeProfitTooltipText)).toBeInTheDocument();
     });
     it('should render correct text of the tooltip for Accumulators', () => {
         default_mocked_store.modules.trade.is_accumulator = true;
         default_mocked_store.modules.trade.is_multiplier = false;
         render(mockTakeProfit());
 
-        expect(screen.queryByText(/Your contract will be closed/i)).not.toBeInTheDocument();
-        userEvent.hover(screen.getByTestId('dt_popover_wrapper'));
+        expect(screen.queryByText(takeProfitTooltipText)).not.toBeInTheDocument();
+        userEvent.hover(screen.getByTestId(popoverTestid));
 
-        expect(screen.getByText(/Your contract will be closed/i)).toBeInTheDocument();
+        expect(screen.getByText(takeProfitTooltipText)).toBeInTheDocument();
     });
 });

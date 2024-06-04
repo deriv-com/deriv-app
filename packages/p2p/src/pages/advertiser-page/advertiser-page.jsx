@@ -5,7 +5,7 @@ import { useP2PAdvertiserAdverts } from 'Hooks';
 import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
 import { useP2PAdvertInfo } from '@deriv/hooks';
-import { daysSince, isDesktop, isEmptyObject, isMobile, routes } from '@deriv/shared';
+import { daysSince, isEmptyObject, isMobile, routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 
 import { Localize, localize } from 'Components/i18next';
@@ -18,9 +18,9 @@ import TradeBadge from 'Components/trade-badge';
 import UserAvatar from 'Components/user/user-avatar';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
-import { getErrorMessage, getErrorModalTitle, getWidth } from 'Utils/block-user';
 import { useStores } from 'Stores';
-
+import { getEligibilityMessage } from 'Utils/adverts';
+import { getErrorMessage, getErrorModalTitle, getWidth } from 'Utils/block-user';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
@@ -39,9 +39,11 @@ const AdvertiserPage = () => {
         setCounterpartyAdvertiserId,
     } = general_store;
     const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
-    const { advertiser_details_name, advertiser_details_id, counterparty_advertiser_info } = advertiser_page_store;
+    const { advertiser_details_name, counterparty_advertiser_info } = advertiser_page_store;
+    const { id: counterparty_details_id } = counterparty_advertiser_info;
 
-    const is_my_advert = advertiser_details_id === advertiser_id;
+    const is_my_advert =
+        !!counterparty_details_id && !!advertiser_id ? counterparty_details_id === advertiser_id : null;
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
     const info = is_my_advert ? advertiser_info : counterparty_advertiser_info;
 
@@ -71,22 +73,24 @@ const AdvertiserPage = () => {
     // rating_average_decimal converts rating_average to 1 d.p number
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
 
-    const {
-        data: p2p_advert_info,
-        isFetching,
-        isSuccess: has_p2p_advert_info,
-    } = useP2PAdvertInfo(counterparty_advert_id, {
-        enabled: !!counterparty_advert_id,
-    });
+    const { data: p2p_advert_info } = useP2PAdvertInfo(counterparty_advert_id);
 
-    const showErrorModal = () => {
+    const showErrorModal = eligibility_status => {
+        let error_message = localize("It's either deleted or no longer active.");
+        let error_modal_title = localize('This ad is unavailable');
+
+        if (eligibility_status?.length > 0) {
+            error_modal_title = '';
+            error_message = getEligibilityMessage(eligibility_status);
+        }
+
         setCounterpartyAdvertId('');
         showModal({
             key: 'ErrorModal',
             props: {
-                error_message: "It's either deleted or no longer active.",
+                error_message,
                 error_modal_button_text: 'OK',
-                error_modal_title: 'This ad is unavailable',
+                error_modal_title,
                 onClose: () => {
                     hideModal({ should_hide_all_modals: true });
                 },
@@ -97,36 +101,28 @@ const AdvertiserPage = () => {
 
     const setShowAdvertInfo = React.useCallback(
         () => {
-            const { is_active, is_buy, is_visible } = p2p_advert_info || {};
-            if (has_p2p_advert_info) {
+            if (p2p_advert_info) {
+                const { eligibility_status, is_active, is_buy, is_eligible, is_visible } = p2p_advert_info || {};
                 const advert_type = is_buy ? 1 : 0;
 
-                if (is_active && is_visible) {
+                if (is_active && is_visible && is_eligible) {
                     advertiser_page_store.setActiveIndex(advert_type);
                     advertiser_page_store.handleTabItemClick(advert_type);
                     buy_sell_store.setSelectedAdState(p2p_advert_info);
                     showModal({ key: 'BuySellModal' });
                 } else {
-                    showErrorModal();
+                    showErrorModal(eligibility_status);
                 }
-            } else {
-                showErrorModal();
             }
         },
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [has_p2p_advert_info, p2p_advert_info]
+        [p2p_advert_info]
     );
 
     React.useEffect(() => {
-        if (is_advertiser && !is_barred) {
-            if (isFetching && isDesktop()) {
-                showModal({ key: 'LoadingModal' });
-            } else if (counterparty_advert_id) {
-                setShowAdvertInfo();
-            }
-        }
-    }, [counterparty_advert_id, isFetching, setShowAdvertInfo]);
+        if (is_advertiser && !is_barred && is_my_advert !== null && !is_my_advert) setShowAdvertInfo();
+    }, [counterparty_advert_id, setShowAdvertInfo, is_my_advert]);
 
     React.useEffect(() => {
         if (location.search || counterparty_advertiser_id) {
@@ -147,8 +143,6 @@ const AdvertiserPage = () => {
 
                     if (is_barred) {
                         history.push(routes.p2p_buy_sell);
-                    } else if (!is_advertiser) {
-                        history.push(routes.p2p_my_ads);
                     }
 
                     // Need to set active index to 0 when users navigate to advertiser page via url,
@@ -248,6 +242,7 @@ const AdvertiserPage = () => {
                             my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
                         history.push(general_store.active_tab_route);
                         setCounterpartyAdvertiserId(null);
+                        setCounterpartyAdvertId('');
                     }}
                     page_title={localize("Advertiser's page")}
                 />

@@ -14,8 +14,6 @@ import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.js
 import AccountsInfoLoaderWallets from 'App/Components/Layout/Header/wallets/accounts-info-loader-wallets';
 import TradersHubHomeButton from './traders-hub-home-button';
 
-const Divider = () => <div className='header__menu--dtrader--separator' />;
-
 const MenuLeft = observer(() => {
     const { client, common, ui, traders_hub } = useStore();
     const { is_bot_allowed, is_logged_in, is_mt5_allowed, is_dxtrade_allowed } = client;
@@ -44,6 +42,8 @@ const MenuLeft = observer(() => {
     return (
         <div className='header__menu-left'>
             <DesktopWrapper>
+                <TradersHubHomeButton />
+                <div className='traders-hub-header__divider traders-hub-header__divider--wallets' />
                 <PlatformSwitcher
                     app_routing_history={app_routing_history}
                     platform_config={filterPlatformsForClients(platform_config)}
@@ -57,9 +57,6 @@ const MenuLeft = observer(() => {
                     <div className='header__menu-left-extensions'>{header_extension}</div>
                 )}
             </MobileWrapper>
-            <DesktopWrapper>
-                <TradersHubHomeButton />
-            </DesktopWrapper>
             <MenuLinks />
         </div>
     );
@@ -79,11 +76,6 @@ const MenuRight = observer(() => {
                 'header__menu-right--hidden': is_mobile && is_logging_in,
             })}
         >
-            <DesktopWrapper>
-                <div className='header__menu--dtrader--separator--account'>
-                    <Divider />
-                </div>
-            </DesktopWrapper>
             {(is_logging_in || is_switching) && (
                 <div
                     id='dt_core_header_acc-info-preloader'

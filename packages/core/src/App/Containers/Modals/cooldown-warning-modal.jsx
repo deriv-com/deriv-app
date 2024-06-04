@@ -1,14 +1,13 @@
 import React from 'react';
-import { connect } from 'Stores/connect';
 import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { formatDate, formatTime, isMobile } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 
-const CooldownWarningModal = ({
-    should_show_cooldown_modal,
-    setShouldShowCooldownModal,
-    real_account_creation_unlock_date,
-}) => {
+const CooldownWarningModal = observer(() => {
+    const { client, ui } = useStore();
+    const { real_account_creation_unlock_date } = client;
+    const { should_show_cooldown_modal, setShouldShowCooldownModal } = ui;
     const unblock_date = formatDate(real_account_creation_unlock_date, 'DD MMMM');
     const unblock_time = formatTime(real_account_creation_unlock_date, 'hh:mm [GMT]');
     const real_account_unblock_date = localize('{{unblock_date}} at {{unblock_time}}', { unblock_date, unblock_time });
@@ -53,10 +52,6 @@ const CooldownWarningModal = ({
             </Modal.Footer>
         </Modal>
     );
-};
+});
 
-export default connect(({ client, ui }) => ({
-    real_account_creation_unlock_date: client.real_account_creation_unlock_date,
-    should_show_cooldown_modal: ui.should_show_cooldown_modal,
-    setShouldShowCooldownModal: ui.setShouldShowCooldownModal,
-}))(CooldownWarningModal);
+export default CooldownWarningModal;

@@ -12,12 +12,14 @@ import { localize } from '@deriv/translations';
 import { MAX_STRATEGIES } from 'Constants/bot-contents';
 import { button_status } from 'Constants/button-status';
 import { TStrategy } from 'Types';
+import RootStore from './root-store';
 
 type IOnConfirmProps = {
     is_local: boolean;
     save_as_collection: boolean;
     bot_name: string;
 };
+
 interface ISaveModalStore {
     is_save_modal_open: boolean;
     button_status: { [key: string]: string } | number;
@@ -32,9 +34,9 @@ interface ISaveModalStore {
 const Blockly = window.Blockly;
 
 export default class SaveModalStore implements ISaveModalStore {
-    root_store: any;
+    root_store: RootStore;
 
-    constructor(root_store: any) {
+    constructor(root_store: RootStore) {
         makeObservable(this, {
             is_save_modal_open: observable,
             button_status: observable,
@@ -128,7 +130,7 @@ export default class SaveModalStore implements ISaveModalStore {
         }
     };
 
-    async onConfirmSave({ is_local, save_as_collection, bot_name }: IOnConfirmProps) {
+    onConfirmSave = async ({ is_local, save_as_collection, bot_name }: IOnConfirmProps) => {
         const { load_modal, dashboard, google_drive } = this.root_store;
         const { loadStrategyToBuilder, selected_strategy } = load_modal;
         const { active_tab } = dashboard;
@@ -169,13 +171,13 @@ export default class SaveModalStore implements ISaveModalStore {
             await saveWorkspaceToRecent(xml, is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
         }
         this.toggleSaveModal();
-    }
+    };
 
     updateBotName = (bot_name: string): void => {
         this.bot_name = bot_name;
     };
 
-    async onDriveConnect() {
+    onDriveConnect = async () => {
         const { google_drive } = this.root_store;
 
         if (google_drive.is_authorised) {
@@ -183,9 +185,9 @@ export default class SaveModalStore implements ISaveModalStore {
         } else {
             google_drive.signIn();
         }
-    }
+    };
 
-    setButtonStatus = (status: { [key: string]: string } | string | number): void => {
+    setButtonStatus = (status: { [key: string]: string } | string | number) => {
         this.button_status = status;
     };
 }

@@ -4,7 +4,7 @@ import Text from '../text';
 
 type TFooterProps = {
     clear_text?: string;
-    footer: string;
+    footer?: string;
     has_clear_btn?: boolean;
     has_today_btn?: boolean;
     onClick?: React.MouseEventHandler<HTMLSpanElement>;

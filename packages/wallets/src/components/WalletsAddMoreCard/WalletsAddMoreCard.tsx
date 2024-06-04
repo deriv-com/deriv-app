@@ -1,26 +1,14 @@
 import React from 'react';
-import { THooks } from '../../types';
+import { TWalletCarouselItem } from '../../types';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import WalletsAddMoreCardBanner from '../WalletsAddMoreCardBanner';
 import WalletsAddMoreCardContent from '../WalletsAddMoreCardContent';
 
-type TProps = THooks.AllWalletAccounts;
-
-const WalletsAddMoreCard: React.FC<TProps> = ({
-    currency,
-    is_added: isAdded,
-    is_crypto: isCrypto,
-    landing_company_name: landingCompanyName,
-}) => {
+const WalletsAddMoreCard: React.FC<TWalletCarouselItem> = ({ currency, is_added: isAdded, is_crypto: isCrypto }) => {
     return (
         <div className='wallets-add-more__card'>
             <WalletGradientBackground currency={currency || 'USD'} device='mobile' hasShine type='card'>
-                <WalletsAddMoreCardBanner
-                    currency={currency || 'USD'}
-                    is_added={isAdded}
-                    is_crypto={isCrypto}
-                    landing_company_name={landingCompanyName ?? ''}
-                />
+                <WalletsAddMoreCardBanner currency={currency || 'USD'} is_added={isAdded} is_crypto={isCrypto} />
             </WalletGradientBackground>
             <WalletsAddMoreCardContent currency={currency ?? ''} />
         </div>

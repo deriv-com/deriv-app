@@ -143,3 +143,20 @@ describe('convertDurationLimit', () => {
         expect(Duration.convertDurationLimit(86400, 'd')).toEqual(1);
     });
 });
+
+describe('formatDurationTime', () => {
+    it('should return dummy duration if time was not passed', () => {
+        expect(Duration.formatDurationTime()).toBe('00:00');
+    });
+
+    it('should return dummy duration if time is equal to 0', () => {
+        expect(Duration.formatDurationTime(0)).toBe('00:00');
+    });
+
+    it('should return correct duration', () => {
+        expect(Duration.formatDurationTime(3)).toBe('00:03');
+        expect(Duration.formatDurationTime(33)).toBe('00:33');
+        expect(Duration.formatDurationTime(60)).toBe('01:00');
+        expect(Duration.formatDurationTime(130)).toBe('02:10');
+    });
+});

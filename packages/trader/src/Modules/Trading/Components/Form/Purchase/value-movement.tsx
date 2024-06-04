@@ -1,13 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Icon, Money } from '@deriv/components';
+import { ArrowIndicator, Money } from '@deriv/components';
 import ContractInfo from './contract-info';
 
 type TValueMovement = Partial<
-    Pick<
-        React.ComponentProps<typeof ContractInfo>,
-        'is_turbos' | 'is_vanilla' | 'currency' | 'has_increased' | 'proposal_info'
-    >
+    Pick<React.ComponentProps<typeof ContractInfo>, 'is_turbos' | 'is_vanilla' | 'currency' | 'proposal_info'>
 > & {
     has_error_or_not_loaded: boolean;
     value?: number | string;
@@ -17,7 +14,6 @@ const ValueMovement = ({
     has_error_or_not_loaded,
     proposal_info,
     currency,
-    has_increased,
     is_turbos = false,
     is_vanilla = false,
     value,
@@ -37,13 +33,10 @@ const ValueMovement = ({
                 />
             )}
         </div>
-        <div className='trade-container__price-info-movement'>
-            {!has_error_or_not_loaded && has_increased !== null && has_increased ? (
-                <Icon icon='IcProfit' />
-            ) : (
-                <Icon icon='IcLoss' />
-            )}
-        </div>
+        <ArrowIndicator
+            className='trade-container__price-info-movement'
+            value={proposal_info?.obj_contract_basis?.value || value}
+        />
     </div>
 );
 

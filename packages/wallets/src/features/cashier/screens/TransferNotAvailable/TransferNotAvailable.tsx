@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { WalletsActionScreen } from '../../../../components';
 import type { THooks } from '../../../../types';
 import getMessage from './TransferNotAvailableProvider';

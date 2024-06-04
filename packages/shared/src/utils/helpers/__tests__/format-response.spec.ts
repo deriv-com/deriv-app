@@ -115,7 +115,6 @@ describe('format-response', () => {
             display_name: 'Volatility 25 Index',
             id: 1234,
             indicative: 0,
-            is_unsupported: false,
             payout: 3500.1,
             contract_update: undefined,
             purchase: 2500.5,
@@ -190,6 +189,18 @@ describe('format-response', () => {
             );
         });
 
+        it('should return ReportNotAvailable error code if errors array contains DobMismatch or NameMismatchand and is_report_not_available  ', () => {
+            expect(formatIDVError(['DobMismatch', 'NameMismatch'], STATUS_CODES.REJECTED, undefined, true)).toBe(
+                IDV_ERROR_STATUS.ReportNotAvailable.code
+            );
+        });
+
+        it('should return DobMismatch error code if errors array contains DobMismatch and is_report_not_available is false', () => {
+            expect(formatIDVError(['DobMismatch'], STATUS_CODES.REJECTED, undefined, false)).toBe(
+                IDV_ERROR_STATUS.DobMismatch.code
+            );
+        });
+
         it('should return Failed error code if errors array contains DobMismatch and Failed', () => {
             expect(formatIDVError(['DobMismatch', 'Failed'], STATUS_CODES.REJECTED)).toBe(IDV_ERROR_STATUS.Failed.code);
         });
@@ -216,6 +227,10 @@ describe('format-response', () => {
                     'DataValidationExpiryDate',
                 ])
             ).toHaveLength(3);
+        });
+
+        it('should return the rest of error codes if status is not Expired', () => {
+            expect(formatOnfidoError(STATUS_CODES.REJECTED, ['DuplicatedDocument'])).toHaveLength(1);
         });
     });
 });

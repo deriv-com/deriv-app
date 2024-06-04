@@ -18,7 +18,6 @@ const mock_proposal_info: TProposalTypeInfo = {
     has_error_details: false,
     error_code: '',
     error_field: '',
-    has_increased: false,
     limit_order: undefined,
     message: '',
     obj_contract_basis: { text: 'mock text', value: 'mock value' },

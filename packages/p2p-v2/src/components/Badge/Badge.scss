@@ -1,0 +1,40 @@
+.p2p-v2-badge {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.2rem;
+    width: fit-content;
+    padding: 0.2rem 0.6rem;
+    border-radius: 3.4rem;
+    color: #ffffff;
+
+    &--general {
+        background-image: linear-gradient(#e6e9e9, #f2f3f4);
+    }
+
+    &--gold {
+        background: linear-gradient(90deg, #f7931a 0%, #ffc71b 104.41%);
+    }
+
+    &--green {
+        background: linear-gradient(90deg, #1db193 0%, #09da7a 104.41%);
+    }
+
+    &--success {
+        background-image: linear-gradient(90deg, #00a8af 0%, #04cfd8 104.41%);
+    }
+
+    &--warning {
+        background-image: linear-gradient(#f7931a, #ffc71b);
+    }
+
+    &__label {
+        font-size: 1rem;
+        line-height: 1.4rem;
+    }
+
+    &__status {
+        font-size: 1rem;
+        line-height: 1.4rem;
+    }
+}

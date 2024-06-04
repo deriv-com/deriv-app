@@ -10,4 +10,11 @@
         text-decoration: none;
         color: inherit;
     }
+
+    &__action-button {
+        display: flex;
+        align-items: center;
+        padding-block: 0.8rem;
+        margin-left: 0.8rem;
+    }
 }

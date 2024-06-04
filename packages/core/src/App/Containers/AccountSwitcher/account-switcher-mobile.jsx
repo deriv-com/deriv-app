@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Div100vhContainer, Modal } from '@deriv/components';
-import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
+import AccountSwitcher from 'App/Containers/AccountSwitcher';
 
 const AccountSwitcherMobile = props => {
     const { disableApp, enableApp, is_visible, is_upgrade_enabled, toggle } = props;

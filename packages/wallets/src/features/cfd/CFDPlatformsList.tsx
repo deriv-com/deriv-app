@@ -1,20 +1,17 @@
 import React from 'react';
-import { Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount } from '@deriv/api';
-import { WalletButton, WalletText } from '../../components/Base';
+import { useActiveWalletAccount } from '@deriv/api-v2';
+import { WalletButton, WalletLink, WalletText } from '../../components/Base';
 import useDevice from '../../hooks/useDevice';
 import CFDPlatformsListEmptyState from './CFDPlatformsListEmptyState';
-import { CTraderList, MT5PlatformsList, OtherCFDPlatformsList } from './components';
+import { CFDPlatformsListAccounts } from './components';
 import './CFDPlatformsList.scss';
 
-type TProps = {
-    onMT5PlatformListLoaded?: (value: boolean) => void;
-};
-
-const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
+const CFDPlatformsList: React.FC = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
+    const { t } = useTranslation();
     const history = useHistory();
 
     return (
@@ -33,12 +30,12 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                                         target='_blank'
                                     />,
                                 ]}
-                                defaults='Trade with leverage and tight spreads for better returns on trades. <0>Learn more</0>'
+                                defaults='Trade bigger positions with less capital across diverse financial and derived instruments. <0>Learn more</0>'
                             />
                         </WalletText>
                         <WalletButton
                             onClick={() => {
-                                history.push('/wallets/compare-accounts');
+                                history.push('/compare-accounts');
                             }}
                             size='sm'
                             textSize='sm'
@@ -51,44 +48,28 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                     <div>
                         <div className='wallets-cfd-list__header-compare-accounts'>
                             <WalletText size='xl' weight='bold'>
-                                CFDs
+                                {t('CFDs')}
                             </WalletText>
                             <WalletButton
                                 onClick={() => {
-                                    history.push('/wallets/compare-accounts');
+                                    history.push('/compare-accounts');
                                 }}
                                 size='sm'
                                 variant='ghost'
                             >
-                                Compare accounts
+                                {t('Compare accounts')}
                             </WalletButton>
                         </div>
                         <WalletText size='md'>
                             <Trans
-                                components={[
-                                    <a
-                                        className='wallets-cfd-list__header-description__link'
-                                        href='https://deriv.com/trade-types/cfds/'
-                                        key={0}
-                                        rel='noopener noreferrer'
-                                        target='_blank'
-                                    />,
-                                ]}
-                                defaults='Trade with leverage and tight spreads for better returns on trades. <0>Learn more</0>'
+                                components={[<WalletLink key={0} staticUrl='/trade-types/cfds/' />]}
+                                defaults='Trade bigger positions with less capital across diverse financial and derived instruments. <0>Learn more</0>'
                             />
                         </WalletText>
                     </div>
                 )}
             </section>
-            {activeWallet?.currency_config?.is_crypto ? (
-                <CFDPlatformsListEmptyState />
-            ) : (
-                <React.Fragment>
-                    <MT5PlatformsList onMT5PlatformListLoaded={onMT5PlatformListLoaded} />
-                    <CTraderList />
-                    <OtherCFDPlatformsList />
-                </React.Fragment>
-            )}
+            {activeWallet?.currency_config?.is_crypto ? <CFDPlatformsListEmptyState /> : <CFDPlatformsListAccounts />}
         </div>
     );
 };

@@ -13,7 +13,7 @@ type TWizard = {
 const Wizard = ({
     children = [],
     className,
-    initial_step = 1,
+    initial_step = 0,
     onStepChange,
     nav = null,
     selected_step_ref,
@@ -23,10 +23,9 @@ const Wizard = ({
     const getSteps = React.useCallback(() => React.Children.toArray(children), [children]);
 
     React.useEffect(() => {
-        const local_initial_step = initial_step - 1;
         const local_children = getSteps();
 
-        if (local_initial_step && local_children[local_initial_step]) {
+        if (initial_step > 0 && local_children[initial_step]) {
             setActiveStep(initial_step);
         }
     }, [initial_step, getSteps]);

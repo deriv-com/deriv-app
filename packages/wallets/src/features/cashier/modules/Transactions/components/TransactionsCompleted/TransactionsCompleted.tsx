@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import moment from 'moment';
-import { useActiveWalletAccount, useAllAccountsList, useInfiniteTransactions } from '@deriv/api';
-import { TSocketRequestPayload } from '@deriv/api/types';
+import { useActiveWalletAccount, useAllAccountsList, useInfiniteTransactions } from '@deriv/api-v2';
+import { TSocketRequestPayload } from '@deriv/api-v2/types';
 import { Loader } from '../../../../../../components';
 import { WalletText } from '../../../../../../components/Base';
 import { useCashierScroll } from '../../../../context';
@@ -45,9 +45,9 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
     );
 
     useEffect(() => {
-        if (fetchMoreOnBottomReached) setOnCashierScroll(() => fetchMoreOnBottomReached);
+        if (Number(transactions?.length) > 0) setOnCashierScroll(() => fetchMoreOnBottomReached);
         return () => setOnCashierScroll(null);
-    }, [fetchMoreOnBottomReached, setOnCashierScroll]);
+    }, [fetchMoreOnBottomReached, setOnCashierScroll, transactions?.length]);
 
     useEffect(() => {
         setFilter(filter);

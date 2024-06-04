@@ -18,12 +18,17 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     order_store: {
         order_information: {
+            advertiser_details: {
+                name: 'John Doe',
+            },
             amount_display: 100,
             is_buy_order_for_user: true,
             local_currency: 'USD',
             rate: 1.2,
         },
         confirmOrder: jest.fn(),
+        setActionParam: jest.fn(),
+        setVerificationCode: jest.fn(),
     },
 };
 
@@ -47,10 +52,10 @@ describe('<EmailLinkVerifiedModal />', () => {
     it('should render EmailLinkVerifiedModal', () => {
         render(<EmailLinkVerifiedModal />);
 
-        expect(screen.getByText("We've verified your order")).toBeInTheDocument();
+        expect(screen.getByText('One last step before we close this order')).toBeInTheDocument();
         expect(
             screen.getByText(
-                "Please ensure you've received 120.00 USD in your account and hit Confirm to complete the transaction."
+                'If you’ve received 120.00 USD from John Doe in your bank account or e-wallet, hit the button below to complete the order.'
             )
         ).toBeInTheDocument();
     });
@@ -61,5 +66,7 @@ describe('<EmailLinkVerifiedModal />', () => {
         userEvent.click(confirm_button);
         expect(mock_modal_manager.hideModal).toHaveBeenCalledWith({ should_hide_all_modals: true });
         expect(mock_store.order_store.confirmOrder).toHaveBeenCalledWith(true);
+        expect(mock_store.order_store.setVerificationCode).toHaveBeenCalledWith('');
+        expect(mock_store.order_store.setActionParam).toHaveBeenCalledWith(null);
     });
 });

@@ -22,6 +22,14 @@
         margin: 0;
     }
 
+    .crypto-fiat-converter {
+        grid-gap: 2.4rem;
+
+        @include mobile {
+            grid-gap: 0.8rem;
+        }
+    }
+
     &__wrapper {
         text-align: center;
         display: flex;

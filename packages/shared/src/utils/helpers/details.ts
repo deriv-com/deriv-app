@@ -79,6 +79,24 @@ export const getDurationUnitText = (obj_duration: moment.Duration, should_ignore
     return unit_map.s.name;
 };
 
+export const formatResetDuration = (contract_info: TContractInfo) => {
+    const time_duration = getUnitMap();
+    const duration_ms = getDurationPeriod(contract_info).asMilliseconds() / TIME.SECOND / 2;
+    const reset_hours =
+        duration_ms === TIME.HOUR ? `h [${time_duration.h.name_singular}] ` : `h [${time_duration.h.name_plural}] `;
+    const reset_minutes =
+        duration_ms === TIME.MINUTE ? `m [${time_duration.m.name_singular}] ` : `m [${time_duration.m.name_plural}] `;
+    const reset_seconds = duration_ms % TIME.MINUTE === 0 ? '' : `s [${time_duration.s.name}]`;
+
+    return moment
+        .utc(moment.duration(duration_ms, 'milliseconds').asMilliseconds())
+        .format(
+            `${duration_ms >= TIME.HOUR ? reset_hours : ''}${
+                duration_ms >= TIME.MINUTE && duration_ms % TIME.HOUR !== 0 ? reset_minutes : ''
+            }${reset_seconds}`.trim()
+        );
+};
+
 export const getDurationPeriod = (contract_info: TContractInfo) =>
     getDiffDuration(
         +epochToMoment(contract_info.date_start || contract_info.purchase_time || 0),

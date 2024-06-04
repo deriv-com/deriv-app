@@ -2,6 +2,7 @@ import React from 'react';
 import MT5MigrationAccountIcons from '../mt5-migration-account-icons';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -10,39 +11,72 @@ jest.mock('@deriv/hooks', () => ({
 
 const mock_store = mockStore({});
 
+const mockUseMT5SVGEligibleToMigrate = useMT5SVGEligibleToMigrate as jest.MockedFunction<
+    typeof useMT5SVGEligibleToMigrate
+>;
+
 describe('MT5MigrationAccountIcons', () => {
-    type TMT5MigrationAccountIconsProps = React.ComponentProps<typeof MT5MigrationAccountIcons>;
-    const renderComponent = (
-        to: TMT5MigrationAccountIconsProps['to'],
-        type: TMT5MigrationAccountIconsProps['type']
-    ) => {
+    let response: ReturnType<typeof useMT5SVGEligibleToMigrate>;
+
+    const renderComponent = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>{children}</StoreProvider>
         );
-        render(<MT5MigrationAccountIcons to={to} type={type} />, { wrapper });
+        mockUseMT5SVGEligibleToMigrate.mockReturnValue(response);
+        render(<MT5MigrationAccountIcons />, { wrapper });
     };
 
+    beforeEach(() => {
+        response = {
+            eligible_account_to_migrate_label: 'bvi',
+            eligible_svg_to_bvi_derived_accounts: false,
+            eligible_svg_to_bvi_financial_accounts: false,
+            eligible_svg_to_vanuatu_derived_accounts: false,
+            eligible_svg_to_vanuatu_financial_accounts: false,
+            getEligibleAccountToMigrate: jest.fn(),
+            has_derived_and_financial_mt5: false,
+            has_derived_mt5_to_migrate: false,
+            has_svg_accounts_to_migrate: false,
+            no_of_svg_accounts_to_migrate: 0,
+            svg_accounts_to_migrate: [],
+        };
+    });
+
     it('should render MT5MigrationAccountIcons for derived bvi account', () => {
-        renderComponent('bvi', 'derived');
+        response.eligible_svg_to_bvi_derived_accounts = true;
+        renderComponent();
         expect(screen.getByTestId('dt_migrate_from_svg_derived')).toBeInTheDocument();
         expect(screen.getByTestId('dt_migrate_to_bvi_derived')).toBeInTheDocument();
     });
 
     it('should render MT5MigrationAccountIcons for financial bvi account', () => {
-        renderComponent('bvi', 'financial');
+        response.eligible_svg_to_bvi_financial_accounts = true;
+        renderComponent();
         expect(screen.getByTestId('dt_migrate_from_svg_financial')).toBeInTheDocument();
         expect(screen.getByTestId('dt_migrate_to_bvi_financial')).toBeInTheDocument();
     });
 
     it('should render MT5MigrationAccountIcons for derived vanuatu account', () => {
-        renderComponent('vanuatu', 'derived');
+        response.eligible_svg_to_vanuatu_derived_accounts = true;
+        renderComponent();
         expect(screen.getByTestId('dt_migrate_from_svg_derived')).toBeInTheDocument();
         expect(screen.getByTestId('dt_migrate_to_vanuatu_derived')).toBeInTheDocument();
     });
 
     it('should render MT5MigrationAccountIcons for financial vanuatu account', () => {
-        renderComponent('vanuatu', 'financial');
+        response.eligible_svg_to_vanuatu_financial_accounts = true;
+        renderComponent();
         expect(screen.getByTestId('dt_migrate_from_svg_financial')).toBeInTheDocument();
         expect(screen.getByTestId('dt_migrate_to_vanuatu_financial')).toBeInTheDocument();
+    });
+
+    it('should render MT5MigrationAccountIcons for svg to bvi derived account and svg to bvi financial account', () => {
+        response.eligible_svg_to_bvi_derived_accounts = true;
+        response.eligible_svg_to_bvi_financial_accounts = true;
+        renderComponent();
+        expect(screen.getByTestId('dt_migrate_from_svg_derived')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_migrate_to_bvi_derived')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_migrate_from_svg_financial')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_migrate_to_bvi_financial')).toBeInTheDocument();
     });
 });

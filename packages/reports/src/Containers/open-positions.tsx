@@ -19,6 +19,7 @@ import {
     isMultiplierContract,
     isVanillaContract,
     isTurbosContract,
+    getContractDurationType,
     getTimePercentage,
     getUnsupportedContracts,
     getTotalProfit,
@@ -29,11 +30,11 @@ import {
     getGrowthRatePercentage,
     getCardLabels,
     toMoment,
+    hasContractStarted,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
-import { getContractDurationType } from '../Helpers/market-underlying';
 
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
 import {
@@ -65,7 +66,6 @@ type TUiStore = Pick<
     | 'setCurrentFocus'
     | 'should_show_cancellation_warning'
     | 'toggleCancellationWarning'
-    | 'toggleUnsupportedContractModal'
 >;
 
 type TMobileRowRenderer = TUiStore & {
@@ -174,11 +174,11 @@ const MobileRowRenderer = ({
     }
 
     const { contract_info, contract_update, type, is_sell_requested } = row as TPortfolioStore['active_positions'][0];
-    const { currency, status, date_expiry, date_start, tick_count, purchase_time } = contract_info;
+    const { currency, date_expiry, date_start, tick_count, purchase_time } = contract_info;
     const current_tick = tick_count ? getCurrentTick(contract_info) : null;
     const turbos_duration_unit = tick_count ? 'ticks' : getDurationUnitText(getDurationPeriod(contract_info), true);
     const duration_type = getContractDurationType(
-        isTurbosContract(contract_info.contract_type) ? turbos_duration_unit : contract_info.longcode || ''
+        (isTurbosContract(contract_info.contract_type) ? turbos_duration_unit : contract_info.longcode) || ''
     );
     const progress_value = (getTimePercentage(server_time, date_start ?? 0, date_expiry ?? 0) /
         100) as TRangeFloatZeroToOne;
@@ -193,7 +193,6 @@ const MobileRowRenderer = ({
                 onClickCancel={onClickCancel}
                 onClickSell={onClickSell}
                 server_time={server_time}
-                status={status ?? ''}
                 {...props}
             />
         );
@@ -319,19 +318,27 @@ export const OpenPositionsTable = ({
     );
 };
 
-const getRowAction: TDataList['getRowAction'] = row_obj =>
-    row_obj.is_unsupported
+const getRowAction: TDataList['getRowAction'] = row_obj => {
+    const unsupportedContractConfig = getUnsupportedContracts()[row_obj.type as TUnsupportedContractType];
+    let action = unsupportedContractConfig
         ? {
               component: (
                   <Localize
                       i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
                       values={{
-                          trade_type_name: getUnsupportedContracts()[row_obj.type as TUnsupportedContractType]?.name,
+                          trade_type_name: unsupportedContractConfig?.name,
                       }}
                   />
               ),
           }
         : getContractPath(row_obj.id || 0);
+    if (!hasContractStarted(row_obj?.contract_info))
+        action = {
+            component: <Localize i18n_default_text="You'll see these details once the contract starts." />,
+        };
+
+    return action;
+};
 
 /*
  * After refactoring transactionHandler for creating positions,
@@ -460,7 +467,6 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         setCurrentFocus,
         should_show_cancellation_warning,
         toggleCancellationWarning,
-        toggleUnsupportedContractModal,
     } = ui;
     const { server_time } = common;
     const { getContractById } = contract_trade;
@@ -475,7 +481,6 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         setCurrentFocus,
         should_show_cancellation_warning,
         toggleCancellationWarning,
-        toggleUnsupportedContractModal,
         getContractById,
     };
 
@@ -650,7 +655,8 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
             />
         );
     };
-
+    // TODO: Uncomment and update this when DTrader 2.0 development starts:
+    // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='l'>I am Open positions for DTrader 2.0.</Text>;
     return (
         <React.Fragment>
             <NotificationMessages />

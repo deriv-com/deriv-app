@@ -1,11 +1,10 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Field, Formik, FormikHandlers, FormikState } from 'formik';
-import { WebsiteStatus } from '@deriv/api-types';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
-import { getPlatformSettings, reorderCurrencies, getAddressDetailsFields, CURRENCY_TYPE } from '@deriv/shared';
+import { reorderCurrencies, getAddressDetailsFields, CURRENCY_TYPE } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import RadioButton from './radio-button';
 import RadioButtonGroup from './radio-button-group';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
@@ -72,20 +71,16 @@ const CurrencySelector = observer(
         has_wallet_account,
         value,
     }: TCurrencySelector) => {
-        const { client, ui, traders_hub } = useStore();
+        const { client, ui } = useStore();
 
         const {
             currency,
             has_active_real_account: has_real_account,
             upgradeable_currencies: legal_allowed_currencies,
             available_crypto_currencies,
-            is_dxtrade_allowed,
-            is_mt5_allowed,
             has_fiat,
             accounts,
         } = client;
-
-        const { is_eu_user } = traders_hub;
 
         const has_currency = Boolean(currency);
 
@@ -114,6 +109,9 @@ const CurrencySelector = observer(
         };
 
         const handleValidate = (values: TCurrencySelectorFormProps) => {
+            const current_step = (getCurrentStep?.() || 1) - 1;
+            onSave(current_step, values);
+
             const { errors } = splitValidationResultTypes(validate(values));
             return errors;
         };
@@ -158,38 +156,6 @@ const CurrencySelector = observer(
             return localize('Next');
         };
 
-        const description = React.useMemo(() => {
-            const dmt5_label = is_eu_user ? localize('CFDs') : localize('Deriv MT5');
-            const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
-
-            if (is_eu_user && is_mt5_allowed) {
-                return (
-                    <Localize
-                        i18n_default_text="Enjoy a seamless trading experience with the selected fiat account. Please note that once you've made your first deposit or created a real {{dmt5_label}} account, your account currency cannot be changed."
-                        values={{ dmt5_label }}
-                    />
-                );
-            } else if (is_dxtrade_allowed && is_mt5_allowed) {
-                return (
-                    <Localize
-                        i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} or {{platform_name_dxtrade}} account.'
-                        values={{ dmt5_label, platform_name_dxtrade }}
-                    />
-                );
-            } else if (!is_dxtrade_allowed && is_mt5_allowed) {
-                return (
-                    <Localize
-                        i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} account.'
-                        values={{ dmt5_label }}
-                    />
-                );
-            }
-
-            return (
-                <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit.' />
-            );
-        }, [is_eu_user, is_dxtrade_allowed, is_mt5_allowed]);
-
         return (
             <Formik
                 initialValues={value}
@@ -214,7 +180,7 @@ const CurrencySelector = observer(
                                 data-testid='currency_selector_form'
                             >
                                 <Div100vhContainer
-                                    className={classNames('currency-selector__container', {
+                                    className={clsx('currency-selector__container', {
                                         'currency-selector__container--no-top-margin':
                                             !has_currency && has_real_account && is_mobile,
                                     })}
@@ -226,14 +192,11 @@ const CurrencySelector = observer(
                                             <React.Fragment>
                                                 <RadioButtonGroup
                                                     className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                                                    label={localize('Fiat currencies')}
                                                     is_fiat
                                                     item_count={fiat.length}
-                                                    description={description}
-                                                    has_fiat={should_disable_fiat && has_fiat}
                                                 >
-                                                    {reorderCurrencies(fiat).map(
-                                                        (avbl_currency: WebsiteStatus['currencies_config']) => (
+                                                    {reorderCurrencies(fiat as keyof typeof reorderCurrencies).map(
+                                                        avbl_currency => (
                                                             <Field
                                                                 key={avbl_currency.value}
                                                                 component={RadioButton}
@@ -245,24 +208,33 @@ const CurrencySelector = observer(
                                                         )
                                                     )}
                                                 </RadioButtonGroup>
-                                                {!!reorderCurrencies(crypto, 'crypto')?.length && <Hr />}
+                                                {!!reorderCurrencies(crypto as keyof typeof reorderCurrencies, 'crypto')
+                                                    ?.length && <Hr />}
                                             </React.Fragment>
                                         )}
-                                        {!!reorderCurrencies(crypto, 'crypto')?.length && (
+                                        {!!reorderCurrencies(crypto as keyof typeof reorderCurrencies, 'crypto')
+                                            ?.length && (
                                             <React.Fragment>
                                                 <RadioButtonGroup
+                                                    is_title_enabled={false}
                                                     className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                                                    label={localize('Cryptocurrencies')}
-                                                    item_count={reorderCurrencies(crypto, 'crypto').length}
-                                                    description={description}
+                                                    item_count={
+                                                        reorderCurrencies(
+                                                            crypto as keyof typeof reorderCurrencies,
+                                                            'crypto'
+                                                        ).length
+                                                    }
                                                 >
-                                                    {reorderCurrencies(crypto, 'crypto').map(avbl_currency => (
+                                                    {reorderCurrencies(
+                                                        crypto as keyof typeof reorderCurrencies,
+                                                        'crypto'
+                                                    ).map(avbl_currency => (
                                                         <Field
                                                             key={avbl_currency.value}
                                                             component={RadioButton}
                                                             selected={
                                                                 available_crypto_currencies?.filter(
-                                                                    (crypto_data: WebsiteStatus['currencies_config']) =>
+                                                                    crypto_data =>
                                                                         crypto_data.value === avbl_currency.value
                                                                 )?.length === 0
                                                             }

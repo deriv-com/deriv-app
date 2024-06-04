@@ -30,6 +30,11 @@
         padding: 1.6rem 0.8rem;
         justify-content: space-between;
         pointer-events: none;
+
+        &-elevated {
+            bottom: 9rem;
+        }
+
         svg {
             z-index: 3;
         }

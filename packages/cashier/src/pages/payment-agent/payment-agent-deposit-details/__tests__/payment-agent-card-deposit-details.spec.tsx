@@ -26,11 +26,8 @@ describe('<PaymentAgentDepositDetails />', () => {
         expect(screen.getByText('Phone number')).toBeInTheDocument();
         expect(screen.getByText('+12345678,')).toBeInTheDocument();
         expect(screen.getByText('+87654321')).toBeInTheDocument();
-        expect(screen.getByText('Email')).toBeInTheDocument();
-        expect(screen.getByText('pa@example.com')).toBeInTheDocument();
-        expect(screen.getByText('Minimum withdrawal')).toBeInTheDocument();
+        expect(screen.getByText('Transfer limit')).toBeInTheDocument();
         expect(screen.getByText('10.00 USD')).toBeInTheDocument();
-        expect(screen.getByText('Maximum withdrawal')).toBeInTheDocument();
         expect(screen.getByText('2,000.00 USD')).toBeInTheDocument();
         expect(screen.getByText('Commission on deposits')).toBeInTheDocument();
         expect(screen.getByText('10%')).toBeInTheDocument();

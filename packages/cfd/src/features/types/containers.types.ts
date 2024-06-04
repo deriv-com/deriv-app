@@ -254,7 +254,8 @@ export type TJurisdictionModalTitleProps = {
     show_eu_related_content: boolean;
 };
 
-type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
+type TAccountStatus = Omit<GetAccountStatus, 'status' | 'p2p_poa_required'> &
+    Partial<Pick<GetAccountStatus, 'status'>> & { p2p_poa_required: number };
 
 export type TJurisdictionModalFootNoteProps = {
     account_type: TAccountCategory;
@@ -282,7 +283,6 @@ export type TCompareAccountRowProps = TCompareAccountContentProps & {
     pre_appstore_class: string;
     is_high_risk_for_mt5: boolean;
     available_accounts_count: number;
-    is_pre_appstore_setting: boolean;
     CFDs_restricted_countries: boolean;
     financial_restricted_countries: boolean;
     classname_for_demo_and_eu: string | null;
@@ -303,7 +303,6 @@ export type TDMT5CompareModalContentProps = {
     is_logged_in: boolean;
     is_real_enabled: boolean;
     should_show_derivx: boolean;
-    is_pre_appstore_setting: boolean;
     show_eu_related_content: boolean;
     toggleCompareAccounts: () => void;
     is_preappstore_cr_demo_account: boolean;

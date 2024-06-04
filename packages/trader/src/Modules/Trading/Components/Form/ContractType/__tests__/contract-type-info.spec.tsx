@@ -3,6 +3,7 @@ import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
 import Info from '../ContractTypeInfo/contract-type-info';
+import { TContractCategory } from '../types';
 import { TRADE_TYPES } from '@deriv/shared';
 import TraderProviders from '../../../../../../trader-providers';
 
@@ -13,6 +14,10 @@ jest.mock('../../../../Helpers/contract-type', () => ({
     ...jest.requireActual('../../../../Helpers/contract-type'),
     isMajorPairsSymbol: jest.fn(() => true),
 }));
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Dropdown: jest.fn(() => <div>Dropdown</div>),
+}));
 
 const mocked_props: React.ComponentProps<typeof Info> = {
     handleSelect: jest.fn(),
@@ -20,6 +25,8 @@ const mocked_props: React.ComponentProps<typeof Info> = {
         text: 'Multipliers',
         value: TRADE_TYPES.MULTIPLIER,
     },
+    selected_value: TRADE_TYPES.MULTIPLIER,
+    info_banner: <div>Info banner</div>,
     list: [
         {
             contract_categories: [
@@ -307,6 +314,7 @@ describe('<Info />', () => {
     it('Should render toggle buttons if TRADE_TYPES.VANILLA.CALL info page is open', () => {
         mocked_props.item.text = 'Call/Put';
         mocked_props.item.value = TRADE_TYPES.VANILLA.CALL;
+        mocked_props.selected_value = TRADE_TYPES.VANILLA.CALL;
         render(mockInfoProvider());
 
         expect(screen.getByText(description)).toBeInTheDocument();
@@ -316,10 +324,22 @@ describe('<Info />', () => {
     it('Should render toggle buttons if TRADE_TYPES.MULTIPLIER info page is open', () => {
         mocked_props.item.text = 'Multipliers';
         mocked_props.item.value = TRADE_TYPES.MULTIPLIER;
+        mocked_props.selected_value = TRADE_TYPES.MULTIPLIER;
+
         render(mockInfoProvider());
 
         expect(screen.getByText(description)).toBeInTheDocument();
         expect(screen.getByText(glossary)).toBeInTheDocument();
         expect(screen.getByText(choose_multipliers)).toBeInTheDocument();
+    });
+    it('Should render Dropdown component if contract_types.length > 1', () => {
+        render(mockInfoProvider());
+        expect(screen.getByText('Dropdown')).toBeInTheDocument();
+    });
+    it('Should render info_banner if selected contract type is unavailable', () => {
+        (mocked_props.list[0].contract_categories as TContractCategory[])[0].is_unavailable = true;
+        render(mockInfoProvider());
+
+        expect(screen.getByText('Info banner')).toBeInTheDocument();
     });
 });

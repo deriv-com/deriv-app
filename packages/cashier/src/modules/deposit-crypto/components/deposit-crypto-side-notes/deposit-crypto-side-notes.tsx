@@ -11,8 +11,8 @@ const DepositCryptoSideNotes: React.FC = observer(() => {
     return (
         <>
             <TransactionsCryptoTransactionStatusSideNote />
-            {currency_config.is_USDT && <DepositCryptoSideNoteUSDT currency='USDT' />}
-            {currency_config.is_eUSDT && <DepositCryptoSideNoteUSDT currency='eUSDT' />}
+            {currency_config?.is_USDT && <DepositCryptoSideNoteUSDT currency='USDT' />}
+            {currency_config?.is_eUSDT && <DepositCryptoSideNoteUSDT currency='eUSDT' />}
         </>
     );
 });

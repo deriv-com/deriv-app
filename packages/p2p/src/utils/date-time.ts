@@ -8,7 +8,12 @@
  * @param {boolean} has_seconds - Whether to include seconds in the time.
  * @returns {String} The formatted date string.
  */
-export const getFormattedDateString = (date_obj: Date, is_local = false, has_seconds = false): string => {
+export const getFormattedDateString = (
+    date_obj: Date,
+    is_local = false,
+    has_seconds = false,
+    only_date = false
+): string => {
     const date_string = is_local ? date_obj.toString().split(' ') : date_obj.toUTCString().split(' ');
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, day, month, year, time] = date_string;
@@ -17,6 +22,10 @@ export const getFormattedDateString = (date_obj: Date, is_local = false, has_sec
     // Return time in the format "HH:mm:ss". e.g.: "01 Jan 1970 21:01:11"
     if (!has_seconds) {
         times.pop();
+    }
+
+    if (only_date) {
+        return `${month} ${day} ${year}`;
     }
 
     const time_without_sec = times.join(':');
@@ -67,19 +76,4 @@ export const millisecondsToTimer = (distance: number): string => {
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
     return `${toDoubleDigits(hours)}:${toDoubleDigits(minutes)}:${toDoubleDigits(seconds)}`;
-};
-
-/**
- * Calculate the difference in hours between the current time and a given time.
- *
- * @param {string} time_set - The time to compare against.
- * @returns {number|undefined} The difference in hours between the current time and the given time. Returns `undefined` if the input is invalid.
- */
-export const getHoursDifference = (time_set: string): number | undefined => {
-    if (!time_set) return undefined;
-    const current_time = new Date();
-    const updated_time = new Date(time_set);
-    const difference = current_time.getTime() - updated_time.getTime();
-    const hours_difference = Math.floor(difference / 1000 / 60 / 60);
-    return hours_difference;
 };

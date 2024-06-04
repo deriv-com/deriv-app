@@ -8,7 +8,11 @@
         align-items: center;
         display: flex;
         flex-direction: column;
-        padding: 1rem 2.4rem 2.4rem;
+        padding: 1rem 2rem 2.4rem;
+
+        @include mobile {
+            padding-bottom: 1rem;
+        }
     }
 
     &--email {

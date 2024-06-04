@@ -8,7 +8,6 @@ const verifyPOIAction = {
     shouldOpenInNewTab: true,
 };
 
-// this function should work once BE WALL-1440 is delivered
 const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
     activeWallet,
     activeWalletExchangeRates,

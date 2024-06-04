@@ -1,0 +1,33 @@
+@import '../skeletonLoader.scss';
+
+.title-skeleton-loader {
+    display: flex;
+    align-items: center;
+    gap: $BORDER_RADIUS_2;
+
+    @include mobile {
+        flex-direction: column;
+        align-self: flex-start;
+        align-items: flex-start;
+    }
+
+    &__title {
+        height: 4.6rem;
+        border-radius: $BORDER_RADIUS_2;
+        width: 14.5rem;
+        @include mobile {
+            width: 10.9rem;
+            height: 2.6rem;
+        }
+    }
+
+    &__description {
+        height: 2.8rem;
+        border-radius: $BORDER_RADIUS;
+        width: 7.9rem;
+        @include mobile {
+            width: 7.3rem;
+            height: 2.4rem;
+        }
+    }
+}

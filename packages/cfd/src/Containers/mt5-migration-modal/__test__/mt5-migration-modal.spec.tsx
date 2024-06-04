@@ -25,6 +25,11 @@ const mock_store = mockStore({
     ui: {
         is_mt5_migration_modal_open: true,
     },
+    modules: {
+        cfd: {
+            setIsFromMt5MigrationModal: jest.fn(),
+        },
+    },
 });
 
 const mockUseMT5SVGEligibleToMigrate = useMT5SVGEligibleToMigrate as jest.MockedFunction<
@@ -36,7 +41,10 @@ describe('MT5MigrationModal', () => {
     const renderComponent = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <MT5MigrationModalContext.Provider
-                value={{ show_modal_front_side: true, setShowModalFrontSide: () => null }}
+                value={{
+                    show_modal_front_side: true,
+                    setShowModalFrontSide: () => null,
+                }}
             >
                 <StoreProvider store={mock_store}>
                     <CFDStoreProvider>{children}</CFDStoreProvider>
@@ -66,7 +74,7 @@ describe('MT5MigrationModal', () => {
     it('should render MT5MigrationModal', () => {
         renderComponent();
         expect(screen.getByText(/MT5Content/)).toBeInTheDocument();
-        expect(screen.getByText(/Enhancing your trading experience/)).toBeInTheDocument();
+        expect(screen.getByText(/Upgrade your MT5 account/)).toBeInTheDocument();
         expect(screen.getByRole('button')).toBeInTheDocument();
     });
 
@@ -76,5 +84,6 @@ describe('MT5MigrationModal', () => {
         userEvent.click(close_button);
         expect(mock_store.ui.setMT5MigrationModalEnabled).toBeCalled();
         expect(mock_store.ui.toggleMT5MigrationModal).toBeCalled();
+        expect(mock_store.modules.cfd.setIsFromMt5MigrationModal).toBeCalled();
     });
 });

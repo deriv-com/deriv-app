@@ -18,7 +18,7 @@ const AccountNeedsVerification = observer(() => {
     const account = account_list?.find((acc: { loginid?: string }) => loginid === acc?.loginid);
     const icon_title = account?.title;
 
-    const { authentication } = account_status;
+    const { authentication } = account_status || {};
 
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         mf_account_status,

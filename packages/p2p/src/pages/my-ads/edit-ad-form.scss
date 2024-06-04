@@ -11,9 +11,6 @@
     }
 
     .dc-input__wrapper {
-        max-width: 67.2rem; // TODO: Kill these fixed widths.
-        margin-top: 2.1rem;
-
         @include mobile {
             max-width: 90vw;
 
@@ -79,6 +76,7 @@
                 .dc-input {
                     &__wrapper {
                         margin-top: 2.1rem;
+                        margin-bottom: 3rem;
                     }
                     &__hint {
                         margin-top: 0;
@@ -234,6 +232,12 @@
             .dc-modal-header {
                 padding-bottom: 1rem;
             }
+        }
+    }
+
+    &__dropdown {
+        &-display {
+            height: 4rem;
         }
     }
 }

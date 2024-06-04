@@ -1,7 +1,7 @@
-import * as React from 'react';
-import classNames from 'classnames';
-import { Button, DatePicker, Icon, Input, Text } from '@deriv/components';
-import { getBrandWebsiteName, epochToMoment, toMoment, PlatformContext, isMobile } from '@deriv/shared';
+import React from 'react';
+import clsx from 'clsx';
+import { Button, DatePicker, Input, Text } from '@deriv/components';
+import { epochToMoment, toMoment, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import {
     Field,
@@ -38,7 +38,7 @@ const SectionTitle = ({ title, has_border_line }: TSectionTitle) => {
             as='h2'
             weight='bold'
             size={isMobile() ? 'xxs' : 'xs'}
-            className={classNames('da-self-exclusion__header', {
+            className={clsx('da-self-exclusion__header', {
                 'da-self-exclusion__header-border': has_border_line,
             })}
         >
@@ -189,17 +189,13 @@ const StakeLossAndLimitsInputs = () => {
 };
 
 const SessionAndLoginLimitsInputs = () => {
-    const { is_mlt, is_mx, is_tablet, session_duration_digits } = React.useContext(SelfExclusionContext);
+    const { is_tablet, session_duration_digits } = React.useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, setFieldValue, values }: TFormikContext =
         useFormikContext<TFormikContext>();
-    const { is_appstore } = React.useContext(PlatformContext);
 
     return (
         <React.Fragment>
-            <SectionTitle
-                title={<Localize i18n_default_text='Your session and login limits' />}
-                has_border_line={is_appstore}
-            />
+            <SectionTitle title={<Localize i18n_default_text='Your session and login limits' />} />
             <div className='da-self-exclusion__item-wrapper'>
                 <div className='da-self-exclusion__item'>
                     <Text as='p' size='xs' className='da-self-exclusion__item-field'>
@@ -279,62 +275,6 @@ const SessionAndLoginLimitsInputs = () => {
                     </Field>
                 </div>
             </div>
-            {values.exclude_until && (is_mlt || is_mx) && (
-                <div className='da-self-exclusion__warning'>
-                    <Icon icon='IcAlertWarning' className='da-self-exclusion__warning-icon' />
-                    <div className='da-self-exclusion__warning-textbox'>
-                        <Text as='p' size='xxxs'>
-                            <Localize
-                                i18n_default_text='Self-exclusion on the website only applies to your {{brand_website_name}} account and does not include other companies or websites.'
-                                values={{ brand_website_name: getBrandWebsiteName() }}
-                            />
-                        </Text>
-                        <Text as='p' size='xxxs'>
-                            {is_mlt ? (
-                                <Localize
-                                    i18n_default_text='If you are a UK resident, to self-exclude from all online gambling companies licensed in Great Britain, go to <0>www.gamstop.co.uk</0>.'
-                                    components={[
-                                        <a
-                                            key={0}
-                                            className='da-self-exclusion__warning-link'
-                                            rel='noopener noreferrer'
-                                            target='_blank'
-                                            href='https://www.gamstop.co.uk'
-                                        />,
-                                    ]}
-                                />
-                            ) : (
-                                <Localize
-                                    i18n_default_text='To self-exclude from all online gambling companies licensed in Great Britain, go to <0>www.gamstop.co.uk</0>.'
-                                    components={[
-                                        <a
-                                            key={0}
-                                            className='da-self-exclusion__warning-link'
-                                            rel='noopener noreferrer'
-                                            target='_blank'
-                                            href='https://www.gamstop.co.uk'
-                                        />,
-                                    ]}
-                                />
-                            )}
-                        </Text>
-                        <Text as='p' size='xxxs'>
-                            <Localize
-                                i18n_default_text='For more information and assistance to counselling and support services, please visit <0>begambleaware.org</0>.'
-                                components={[
-                                    <a
-                                        key={0}
-                                        className='da-self-exclusion__warning-link'
-                                        rel='noopener noreferrer'
-                                        target='_blank'
-                                        href='https://www.begambleaware.org'
-                                    />,
-                                ]}
-                            />
-                        </Text>
-                    </div>
-                </div>
-            )}
         </React.Fragment>
     );
 };
@@ -342,14 +282,10 @@ const SessionAndLoginLimitsInputs = () => {
 const MaximumAccountBalanceAndOpenPositionsInputs = () => {
     const { currency_display, getMaxLength } = React.useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, values }: TFormikContext = useFormikContext<TFormikContext>();
-    const { is_appstore } = React.useContext(PlatformContext);
 
     return (
         <React.Fragment>
-            <SectionTitle
-                title={<Localize i18n_default_text='Your maximum account balance and open positions' />}
-                has_border_line={is_appstore}
-            />
+            <SectionTitle title={<Localize i18n_default_text='Your maximum account balance and open positions' />} />
             <div className='da-self-exclusion__item-wrapper'>
                 <div className='da-self-exclusion__item'>
                     <Text as='p' size='xs' className='da-self-exclusion__item-field'>
@@ -399,21 +335,16 @@ const MaximumAccountBalanceAndOpenPositionsInputs = () => {
 };
 
 const MaximumDepositLimitInputs = () => {
-    const { currency, is_mlt, is_mf, is_mx, getMaxLength } = React.useContext(SelfExclusionContext);
+    const { currency, is_mf, getMaxLength } = React.useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, values }: TFormikContext = useFormikContext<TFormikContext>();
-    const { is_appstore } = React.useContext(PlatformContext);
-    const should_render = is_mlt || is_mf || is_mx;
 
-    if (!should_render) {
+    if (!is_mf) {
         return null;
     }
 
     return (
         <React.Fragment>
-            <SectionTitle
-                title={<Localize i18n_default_text='Your maximum deposit limit' />}
-                has_border_line={is_appstore}
-            />
+            <SectionTitle title={<Localize i18n_default_text='Your maximum deposit limit' />} />
             <div className='da-self-exclusion__item-wrapper'>
                 <div className='da-self-exclusion__item'>
                     <h3 className='da-self-exclusion__item-title'>
@@ -493,19 +424,9 @@ const MaximumDepositLimitInputs = () => {
 };
 
 const SelfExclusionInputs = () => {
-    const { is_appstore } = React.useContext(PlatformContext);
     const { footer_ref, goToConfirm, is_app_settings } = React.useContext(SelfExclusionContext);
     const { dirty, isSubmitting, isValid, values }: TFormikContext = useFormikContext<TFormikContext>();
     const versions: Record<string, { condition: boolean; components: Array<React.FunctionComponent> }> = {
-        // Global settings for account for DWallet.
-        dwallet: {
-            condition: !!is_appstore,
-            components: [
-                SessionAndLoginLimitsInputs,
-                MaximumAccountBalanceAndOpenPositionsInputs,
-                MaximumDepositLimitInputs,
-            ],
-        },
         // App-specific settings, i.e. user accessing app settings from App Store or
         // through DWallet App header.
         app_settings: {
@@ -514,7 +435,7 @@ const SelfExclusionInputs = () => {
         },
         // Legacy Deriv.app, i.e. non-DWallet user accessing app.deriv.com/account/self-exclusion.
         deriv_app: {
-            condition: !!(!is_appstore && !is_app_settings),
+            condition: !is_app_settings,
             components: [
                 StakeLossAndLimitsInputs,
                 SessionAndLoginLimitsInputs,

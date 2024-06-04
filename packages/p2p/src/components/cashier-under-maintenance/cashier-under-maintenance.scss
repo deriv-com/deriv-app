@@ -1,0 +1,18 @@
+.cashier-under-maintenance {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    max-width: 65rem;
+
+    @include mobile {
+        padding: 1.6rem;
+    }
+
+    &__icon {
+        margin-bottom: 2.4rem;
+    }
+
+    &__title {
+        margin-bottom: 0.8rem;
+    }
+}

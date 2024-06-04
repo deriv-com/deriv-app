@@ -1,0 +1,19 @@
+.p2p-v2-filter-modal-payment-methods {
+    .deriv-input {
+        border: none;
+        border-bottom: 1px solid #f2f3f4;
+        border-radius: 0;
+        // stylelint-disable-next-line declaration-no-important
+        padding: 1.5rem !important;
+
+        @include mobile {
+            // stylelint-disable-next-line declaration-no-important
+            padding: 2.5rem 1.5rem !important;
+        }
+
+        &__label {
+            // stylelint-disable-next-line declaration-no-important
+            left: 4rem !important;
+        }
+    }
+}

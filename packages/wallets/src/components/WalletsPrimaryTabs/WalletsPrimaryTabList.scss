@@ -5,7 +5,7 @@
         position: relative;
         background-color: #f2f3f4;
         height: 5rem;
-        border-radius: 0.7rem;
+        border-radius: 0.6rem;
 
         &-item {
             background: inherit;
@@ -15,18 +15,19 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            font-size: 1.6rem;
+            font-size: 1.4rem;
 
             &--active {
                 font-weight: bold;
                 background-color: #ffffff;
-                margin: 0.6rem;
-                border-radius: 0.5rem;
+                margin: 0.4rem;
+                border-radius: 0.4rem;
                 color: var(--system-light-1-prominent-text, #333);
             }
 
             &--disabled {
                 color: #999999;
+                border-radius: 0.6rem;
             }
         }
     }

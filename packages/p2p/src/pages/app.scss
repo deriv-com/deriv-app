@@ -61,6 +61,10 @@
         }
     }
 
+    &__loading {
+        height: 80vh;
+    }
+
     @include mobile {
         .dc-autocomplete__field {
             border: none;

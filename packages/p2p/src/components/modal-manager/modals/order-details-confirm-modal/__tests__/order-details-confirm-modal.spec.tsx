@@ -8,6 +8,10 @@ import OrderDetailsConfirmModal from '../order-details-confirm-modal';
 
 const el_modal = document.createElement('div');
 
+const wrapper = ({ children }: React.PropsWithChildren) => (
+    <StoreProvider store={mockStore({})}>{children}</StoreProvider>
+);
+
 jest.mock('Utils/websocket', () => ({
     ...jest.requireActual('Utils/websocket'),
     requestWS: jest.fn().mockResolvedValue({ error: { message: 'P2P Error' } }),
@@ -53,9 +57,7 @@ describe('<OrderDetailsConfirmModal/>', () => {
     });
 
     it('should render the modal', () => {
-        render(<OrderDetailsConfirmModal />, {
-            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
-        });
+        render(<OrderDetailsConfirmModal />, { wrapper });
 
         expect(screen.getByText('Payment confirmation')).toBeInTheDocument();
         expect(
@@ -66,13 +68,14 @@ describe('<OrderDetailsConfirmModal/>', () => {
         expect(screen.getByText('Confirm')).toBeInTheDocument();
         expect(screen.getByText('Go Back')).toBeInTheDocument();
         expect(screen.getByText('We accept JPG, PDF, or PNG (up to 5MB).')).toBeInTheDocument();
+        expect(
+            screen.getByText('Sending forged documents will result in an immediate and permanent ban.')
+        ).toBeInTheDocument();
     });
     it('should handle GoBack Click', () => {
         const { hideModal } = useModalManagerContext();
 
-        render(<OrderDetailsConfirmModal />, {
-            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
-        });
+        render(<OrderDetailsConfirmModal />, { wrapper });
 
         const cancel_button = screen.getByRole('button', { name: 'Go Back' });
         expect(cancel_button).toBeInTheDocument();
@@ -84,9 +87,8 @@ describe('<OrderDetailsConfirmModal/>', () => {
         const { hideModal } = useModalManagerContext();
         const { confirmOrderRequest, order_information } = order_store;
 
-        render(<OrderDetailsConfirmModal />, {
-            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
-        });
+        render(<OrderDetailsConfirmModal />, { wrapper });
+
         const file = new File(['hello'], 'hello.png', { type: 'image/png' });
         const input: HTMLInputElement = screen.getByTestId('dt_file_upload_input');
         userEvent.upload(input, file);
@@ -104,5 +106,19 @@ describe('<OrderDetailsConfirmModal/>', () => {
             expect(confirmOrderRequest).toHaveBeenCalledWith(order_information.id, true);
             expect(hideModal).toHaveBeenCalled();
         });
+    });
+
+    it('should call hideModal when clicking the close icon', () => {
+        const { hideModal } = useModalManagerContext();
+
+        render(<OrderDetailsConfirmModal />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
+
+        const close_icon = screen.getByTestId('dt_modal_close_icon');
+
+        userEvent.click(close_icon);
+
+        expect(hideModal).toHaveBeenCalled();
     });
 });

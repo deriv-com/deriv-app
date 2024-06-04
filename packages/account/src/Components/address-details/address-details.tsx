@@ -1,5 +1,8 @@
-import React from 'react';
-import classNames from 'classnames';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+//@ts-nocheck [TODO] - Need to fix typescript errors in Autocomplete List items and TItems
+
+import { RefObject, useState, Fragment } from 'react';
+import clsx from 'clsx';
 import { Formik, Field, FormikProps, FormikHelpers, FormikHandlers, FormikState, FieldProps } from 'formik';
 import { StatesList } from '@deriv/api-types';
 import {
@@ -16,10 +19,8 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { useStatesList } from '@deriv/hooks';
-import { getLocation } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
-import InlineNoteWithIcon from '../inline-note-with-icon';
 import { FormInputField } from '../forms/form-fields';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
@@ -47,13 +48,13 @@ type TAddressDetails = {
         action: (isSubmitting: boolean) => void,
         next_step: () => void
     ) => void;
-    selected_step_ref?: React.RefObject<FormikProps<TAddressDetailFormProps>>;
+    selected_step_ref?: RefObject<FormikProps<TAddressDetailFormProps>>;
     value: TAddressDetailFormProps;
     has_real_account: boolean;
 };
 
 type TAutoComplete = {
-    value: boolean;
+    value: string;
     text: string;
 };
 
@@ -88,11 +89,11 @@ const AddressDetails = observer(
         has_real_account,
         ...props
     }: TAddressDetails) => {
-        const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
+        const [address_state_to_display, setAddressStateToDisplay] = useState('');
 
         const {
             ui,
-            client: { residence },
+            client: { residence, account_settings },
             traders_hub: { is_eu_user },
         } = useStore();
 
@@ -106,16 +107,14 @@ const AddressDetails = observer(
         };
 
         const handleValidate = (values: TAddressDetailFormProps) => {
+            const current_step = (getCurrentStep?.() || 1) - 1;
+            onSave(current_step, values);
+
             const { errors } = splitValidationResultTypes(validate(values));
             return errors;
         };
 
         const handleSubmitData = (values: TAddressDetailFormProps, actions: FormikHelpers<TAddressDetailFormProps>) => {
-            if (values.address_state && states_list.length) {
-                values.address_state = address_state_to_display
-                    ? getLocation(states_list, address_state_to_display, 'value')
-                    : getLocation(states_list, values.address_state, 'value');
-            }
             onSubmit((getCurrentStep?.() || 1) - 1, values, actions.setSubmitting, goToNextStep);
         };
 
@@ -145,34 +144,14 @@ const AddressDetails = observer(
                                     is_disabled={is_desktop}
                                 >
                                     <ScrollToFieldWithError />
-                                    {is_eu_user ? (
-                                        <div className='details-form__banner-container'>
-                                            <InlineNoteWithIcon
-                                                icon='IcAlertWarning'
-                                                message={
-                                                    <Localize i18n_default_text='For verification purposes as required by regulation. It’s your responsibility to provide accurate and complete answers. You can update personal details at any time in your account settings.' />
-                                                }
-                                                title={localize('Why do we collect this?')}
-                                            />
-                                        </div>
-                                    ) : (
-                                        <Text
-                                            as='p'
-                                            align='left'
-                                            size='xxs'
-                                            line_height='l'
-                                            className='details-form__description'
-                                        >
-                                            <strong>
-                                                <Localize i18n_default_text='Only use an address for which you have proof of residence - ' />
-                                            </strong>
-                                            <Localize i18n_default_text='a recent utility bill (e.g. electricity, water, gas, landline, or internet), bank statement, or government-issued letter with your name and this address.' />
+                                    {is_mobile && (
+                                        <Text size='xs' weight='bold' className='details-form__heading'>
+                                            <Localize i18n_default_text='Complete your address details' />
                                         </Text>
                                     )}
-
                                     <ThemedScrollbars height={height} className='details-form__scrollbar'>
                                         <div
-                                            className={classNames('details-form__elements', 'address-details-form', {
+                                            className={clsx('details-form__elements', 'address-details-form', {
                                                 'address-details-form__eu': is_eu_user,
                                             })}
                                         >
@@ -184,7 +163,7 @@ const AddressDetails = observer(
                                                 placeholder={localize('First line of address')}
                                                 disabled={
                                                     disabled_items.includes('address_line_1') ||
-                                                    (!!props.value?.address_line_1 && has_real_account)
+                                                    (!!account_settings?.address_line_1 && has_real_account)
                                                 }
                                             />
                                             <FormInputField
@@ -194,7 +173,7 @@ const AddressDetails = observer(
                                                 placeholder={localize('Second line of address')}
                                                 disabled={
                                                     disabled_items.includes('address_line_2') ||
-                                                    (!!props.value?.address_line_2 && has_real_account)
+                                                    (!!account_settings?.address_line_2 && has_real_account)
                                                 }
                                             />
                                             <FormInputField
@@ -204,7 +183,7 @@ const AddressDetails = observer(
                                                 placeholder={localize('Town/City')}
                                                 disabled={
                                                     disabled_items.includes('address_city') ||
-                                                    (!!props.value?.address_city && has_real_account)
+                                                    (!!account_settings?.address_city && has_real_account)
                                                 }
                                             />
                                             {!isFetched && (
@@ -215,7 +194,7 @@ const AddressDetails = observer(
                                             {states_list?.length > 0 ? (
                                                 <Field name='address_state'>
                                                     {({ field }: FieldProps) => (
-                                                        <React.Fragment>
+                                                        <Fragment>
                                                             <DesktopWrapper>
                                                                 <Autocomplete
                                                                     {...field}
@@ -241,7 +220,8 @@ const AddressDetails = observer(
                                                                     list_portal_id='modal_root'
                                                                     disabled={
                                                                         disabled_items.includes('address_state') ||
-                                                                        (props.value?.address_state && has_real_account)
+                                                                        (!!account_settings?.address_state &&
+                                                                            has_real_account)
                                                                     }
                                                                 />
                                                             </DesktopWrapper>
@@ -264,12 +244,12 @@ const AddressDetails = observer(
                                                                     }}
                                                                     disabled={
                                                                         disabled_items.includes('address_state') ||
-                                                                        (!!props.value?.address_state &&
+                                                                        (!!account_settings?.address_state &&
                                                                             has_real_account)
                                                                     }
                                                                 />
                                                             </MobileWrapper>
-                                                        </React.Fragment>
+                                                        </Fragment>
                                                     )}
                                                 </Field>
                                             ) : (
@@ -280,7 +260,7 @@ const AddressDetails = observer(
                                                     placeholder={localize('State/Province')}
                                                     disabled={
                                                         disabled_items.includes('address_state') ||
-                                                        (!!props.value?.address_state && has_real_account)
+                                                        (!!account_settings?.address_state && has_real_account)
                                                     }
                                                 />
                                             )}
@@ -294,7 +274,7 @@ const AddressDetails = observer(
                                                 }}
                                                 disabled={
                                                     disabled_items.includes('address_postcode') ||
-                                                    (!!props.value?.address_postcode && has_real_account)
+                                                    (!!account_settings?.address_postcode && has_real_account)
                                                 }
                                             />
                                         </div>

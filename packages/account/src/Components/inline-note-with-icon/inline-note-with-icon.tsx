@@ -5,7 +5,7 @@ type TInlineNoteWithIconExtend = {
     icon?: string;
     font_size?: string;
     message: React.ReactNode;
-    title?: string;
+    title: React.ReactNode;
 };
 
 const InlineNoteWithIcon = ({ icon, message, font_size = 'xxxs', title }: TInlineNoteWithIconExtend) => {

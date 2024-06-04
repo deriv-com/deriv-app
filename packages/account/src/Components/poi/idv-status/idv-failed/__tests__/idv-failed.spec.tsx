@@ -67,12 +67,14 @@ describe('<IdvFailed/>', () => {
 
         await waitFor(() => {
             expect(screen.getByTestId(IDV_ERROR_STATUS.DobMismatch.code)).toBeInTheDocument();
-            expect(screen.queryByText('IDVForm')).not.toBeInTheDocument();
         });
     });
 
     it('should render IDVfailed component with name & DOB mismatch message', async () => {
-        const new_props = { ...mock_props, mismatch_status: IDV_ERROR_STATUS.NameDobMismatch.code };
+        const new_props = {
+            ...mock_props,
+            mismatch_status: IDV_ERROR_STATUS.NameDobMismatch.code,
+        };
         renderComponent({ props: new_props });
 
         await waitFor(() => {

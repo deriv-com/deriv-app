@@ -109,13 +109,13 @@ const ProofOfIdentityContainer = observer(
             manual,
             needs_poa,
             onfido,
+            poi_expiring_soon,
         } = verification_status;
         const should_ignore_idv = is_high_risk && is_withdrawal_lock;
 
-        if (!should_allow_authentication && !is_age_verified) {
+        if (!should_allow_authentication && !is_age_verified && !poi_expiring_soon) {
             return <NotRequired />;
         }
-
         const onClickRedirectButton = () => {
             const platform = platforms[from_platform.ref];
             const { is_hard_redirect = false, url = '' } = platform ?? {};
@@ -135,17 +135,19 @@ const ProofOfIdentityContainer = observer(
                 />
             </Button>
         );
-
         const should_show_mismatch_form =
+            identity_status != identity_status_codes.verified &&
             idv.submissions_left > 0 &&
             [identity_status_codes.rejected, identity_status_codes.suspected, identity_status_codes.expired].includes(
                 idv.status
             );
+
         if (
             identity_status === identity_status_codes.none ||
             has_require_submission ||
             allow_poi_resubmission ||
-            should_show_mismatch_form
+            should_show_mismatch_form ||
+            poi_expiring_soon
         ) {
             return (
                 <POISubmission

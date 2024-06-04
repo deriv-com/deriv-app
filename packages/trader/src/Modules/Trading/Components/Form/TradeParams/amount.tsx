@@ -79,6 +79,7 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
         is_vanilla,
         has_equals_only,
         has_open_accu_contract,
+        sendTradeParamsAnalytics,
         stake_boundary,
         onChange,
         validation_errors,
@@ -106,6 +107,32 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
     const error_messages = validation_errors?.amount;
 
     const getBasisList = () => basis_list.map(item => ({ text: item.text, value: item.value }));
+
+    const changeAmount = ({ target }: { target: { name: string; value: string | number; type?: string } }) => {
+        const { value } = target;
+        onChange({ target });
+        sendTradeParamsAnalytics(
+            {
+                action: 'change_parameter_value',
+                input_type: target.type ? 'manual' : 'plus_minus',
+                parameter_field_type: 'number',
+                parameter_type: basis === 'payout' ? 'payout_value' : 'stake_value',
+                parameter_value: `${value}`,
+            },
+            true
+        );
+    };
+
+    const changeAllowEquals = ({ target }: { target: { name: string; value: number } }) => {
+        const { value } = target;
+        onChange({ target });
+        sendTradeParamsAnalytics({
+            action: 'change_parameter_value',
+            parameter_field_type: 'checkbox',
+            parameter_type: 'allow_equals_mode',
+            parameter_value: value ? 'yes' : 'no',
+        });
+    };
 
     return (
         <Fieldset
@@ -135,7 +162,7 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
                         current_focus={current_focus}
                         error_messages={error_messages}
                         is_single_currency={is_single_currency}
-                        onChange={onChange}
+                        onChange={changeAmount}
                         setCurrentFocus={setCurrentFocus}
                     />
                     <Dropdown
@@ -158,7 +185,7 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
                     error_messages={error_messages}
                     is_single_currency={is_single_currency}
                     is_disabled={has_open_accu_contract}
-                    onChange={onChange}
+                    onChange={changeAmount}
                     setCurrentFocus={setCurrentFocus}
                 />
             )}
@@ -168,7 +195,7 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
                 contract_types_list={contract_types_list}
                 duration_unit={duration_unit}
                 expiry_type={expiry_type}
-                onChange={onChange}
+                onChange={changeAllowEquals}
                 value={Number(is_equal)}
                 has_equals_only={has_equals_only}
             />

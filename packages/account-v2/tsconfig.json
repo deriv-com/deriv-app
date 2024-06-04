@@ -1,0 +1,12 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./dist",
+        "baseUrl": "./",
+        "paths": {
+            "@deriv/*": ["../*/src"]
+        }
+    },
+    "include": ["src", "../../types/utils.d.ts", "src/utils/typeUtils.d.ts"],
+    "exclude": ["../shared/**/*", "./node_modules/*"]
+}

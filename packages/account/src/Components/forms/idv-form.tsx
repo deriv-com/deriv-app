@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+//@ts-nocheck [TODO] - Need to fix typescript errors
+
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Field, FormikProps, FieldProps, useFormikContext } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
 import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative } from '@deriv/components';
@@ -17,14 +20,16 @@ type TIDVFormProps = {
     selected_country: ResidenceList[0];
     hide_hint?: boolean;
     class_name?: string;
-    can_skip_document_verification?: boolean;
+    is_for_real_account_signup_modal?: boolean;
+    is_for_mt5?: boolean;
 };
 
 const IDVForm = ({
     class_name,
     selected_country,
     hide_hint,
-    can_skip_document_verification = false,
+    is_for_real_account_signup_modal = false,
+    is_for_mt5 = false,
 }: TIDVFormProps) => {
     const [document_list, setDocumentList] = React.useState<Array<TDocument>>([]);
     const [selected_doc, setSelectedDoc] = React.useState('');
@@ -40,17 +45,17 @@ const IDVForm = ({
         example_format: '',
     };
 
-    const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
+    const IDV_NOT_APPLICABLE_OPTION = React.useMemo(
+        () => getIDVNotApplicableOption(is_for_real_account_signup_modal),
+        [is_for_real_account_signup_modal]
+    );
 
     React.useEffect(() => {
         if (document_data && selected_country && selected_country.value) {
             const document_types = Object.keys(document_data);
             if (document_types.length === 0) return;
-            const filtered_documents = ['gh', 'ng'].includes(selected_country.value)
-                ? document_types.filter(d => d !== 'voter_id')
-                : document_types;
 
-            const new_document_list = filtered_documents.map(key => {
+            const new_document_list = document_types.map(key => {
                 const { display_name, format } = document_data[key];
                 const { new_display_name, example_format, additional_document_example_format } = getDocumentData(
                     selected_country.value ?? '',
@@ -79,13 +84,9 @@ const IDVForm = ({
                 };
             });
 
-            if (can_skip_document_verification) {
-                setDocumentList([...new_document_list, IDV_NOT_APPLICABLE_OPTION]);
-            } else {
-                setDocumentList([...new_document_list]);
-            }
+            setDocumentList([...new_document_list, IDV_NOT_APPLICABLE_OPTION]);
         }
-    }, [document_data, selected_country, can_skip_document_verification, IDV_NOT_APPLICABLE_OPTION]);
+    }, [document_data, selected_country, IDV_NOT_APPLICABLE_OPTION, is_for_mt5]);
 
     const resetDocumentItemSelected = () => {
         setFieldValue('document_type', default_document, true);
@@ -111,23 +112,23 @@ const IDVForm = ({
         setFieldValue('document_type', item, true);
         setSelectedDoc(item?.id);
         if (item?.id === IDV_NOT_APPLICABLE_OPTION.id) {
-            setFieldValue('document_number', '', true);
-            setFieldValue('document_additional', '', true);
+            setFieldValue('document_number', '', false);
+            setFieldValue('document_additional', '', false);
         }
     };
 
     return (
-        <section className={classNames('idv-form', class_name)}>
+        <section className={clsx('idv-form', class_name)}>
             <div className='details-form'>
                 <div className='poi-form-on-signup__fields'>
                     <div
-                        className={classNames('proof-of-identity__container', {
+                        className={clsx('proof-of-identity__container', {
                             'proof-of-identity__container--idv': hide_hint,
                         })}
                     >
-                        <div className={classNames('proof-of-identity__inner-container')}>
+                        <div className={clsx('proof-of-identity__inner-container')}>
                             <div className='proof-of-identity__fieldset-container'>
-                                <fieldset className={classNames({ 'proof-of-identity__fieldset': !hide_hint })}>
+                                <fieldset className={clsx({ 'proof-of-identity__fieldset': !hide_hint })}>
                                     <Field name='document_type'>
                                         {({ field }: FieldProps) => (
                                             <React.Fragment>
@@ -187,7 +188,7 @@ const IDVForm = ({
                                 {values?.document_type?.id !== IDV_NOT_APPLICABLE_OPTION.id && (
                                     <React.Fragment>
                                         <fieldset
-                                            className={classNames('additional-field', {
+                                            className={clsx('additional-field', {
                                                 'proof-of-identity__fieldset-input': !hide_hint,
                                             })}
                                         >

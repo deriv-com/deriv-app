@@ -166,6 +166,7 @@
     }
 
     &__divider {
+        margin-right: 1rem;
         width: 0.1rem;
         height: 3rem;
         margin-left: 0.8rem;
@@ -173,6 +174,10 @@
 
         @include mobile {
             height: 2.4rem;
+        }
+
+        &--wallets {
+            margin-left: 0;
         }
     }
 
@@ -225,10 +230,6 @@
     &__setting {
         margin-right: 2.2rem;
 
-        // @include mobile {
-        //     margin-left: 2.2rem;
-        // }
-
         &--icon {
             cursor: pointer;
         }
@@ -240,5 +241,13 @@
                 margin-right: 0;
             }
         }
+    }
+}
+
+.traders-hub-header-wallets {
+    &__logo {
+        align-self: center;
+        margin: 0 1.2rem;
+        cursor: pointer;
     }
 }

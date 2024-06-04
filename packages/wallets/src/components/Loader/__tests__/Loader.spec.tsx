@@ -5,7 +5,7 @@ import Loader from '../Loader';
 describe('Loader', () => {
     it('should render Loader component with default props', () => {
         render(<Loader />);
-        const loaderElement = screen.getByTestId('dt_wallets-loader');
+        const loaderElement = screen.getByTestId('dt_wallets_loader');
 
         expect(loaderElement).toBeInTheDocument();
         expect(loaderElement).toHaveClass('wallets-loader');
@@ -14,7 +14,7 @@ describe('Loader', () => {
 
     it('should render Loader component with custom props', () => {
         render(<Loader color='red' isFullScreen={false} />);
-        const loaderElement = screen.getByTestId('dt_wallets-loader');
+        const loaderElement = screen.getByTestId('dt_wallets_loader');
         const spanElement = screen.getByRole('span');
 
         expect(loaderElement).toBeInTheDocument();

@@ -1,6 +1,5 @@
 import React from 'react';
 import { mockStore, useStore } from '@deriv/stores';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
 import { mock_ws } from '../../utils/mock';
 import DBotProviders from '../dbot-providers';

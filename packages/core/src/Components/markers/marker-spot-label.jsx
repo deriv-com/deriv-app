@@ -114,6 +114,6 @@ MarkerSpotLabel.propTypes = {
     spot_epoch: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     spot_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     spot_profit: PropTypes.string,
-    status: PropTypes.oneOf(['won', 'lost']),
+    status: PropTypes.oneOf(['won', 'lost', '']),
 };
 export default observer(MarkerSpotLabel);

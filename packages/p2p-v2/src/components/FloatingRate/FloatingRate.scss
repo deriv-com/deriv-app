@@ -1,0 +1,63 @@
+.p2p-v2-floating-rate {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    @include mobile {
+        margin-top: -2.8rem;
+        margin-bottom: 1.6rem;
+    }
+
+    &__field {
+        display: flex;
+        align-items: center;
+
+        @include mobile {
+            flex-direction: column;
+        }
+
+        &--prefix {
+            @include mobile {
+                margin-bottom: 0.8rem;
+            }
+            margin-inline-end: 2rem;
+        }
+    }
+
+    &__mkt-rate {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 0 0.6rem;
+        background-color: #377cfc14;
+        border-radius: 0px 4px 4px 0px;
+        align-self: stretch;
+        gap: 0.2rem;
+        flex: none;
+
+        @include mobile {
+            padding-top: 0.4rem;
+            padding-bottom: 0.4rem;
+            flex-direction: row;
+            align-items: center;
+            gap: 1rem;
+            border-radius: 0px 0px 4px 4px;
+        }
+    }
+
+    &__hint {
+        padding-inline-start: 4rem;
+        margin-top: 0.3rem;
+        @include mobile {
+            padding-inline-start: 1rem;
+        }
+    }
+
+    &__error-message {
+        padding-inline-start: 4rem;
+        @include mobile {
+            padding-inline-start: 1rem;
+        }
+    }
+}

@@ -3,10 +3,34 @@ import React, { PropsWithChildren, createContext, useCallback, useContext, useEf
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import { getAppId, getSocketURL, useWS } from '@deriv/shared';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+    TSocketEndpointNames,
+    TSocketError,
+    TSocketRequestPayload,
+    TSocketResponseData,
+    TSocketSubscribableEndpointNames,
+} from '../types';
+import { hashObject } from './utils';
+
+type TSendFunction = <T extends TSocketEndpointNames>(
+    name: T,
+    payload?: TSocketRequestPayload<T>
+) => Promise<TSocketResponseData<T> & TSocketError<T>>;
+
+type TSubscribeFunction = <T extends TSocketSubscribableEndpointNames>(
+    name: T,
+    payload?: TSocketRequestPayload<T>
+) => Promise<{ id: string; subscription: DerivAPIBasic['subscribe'] }>;
+
+type TUnsubscribeFunction = (id: string) => void;
 
 type APIContextData = {
     derivAPI: DerivAPIBasic | null;
     switchEnvironment: (loginid: string | null | undefined) => void;
+    send: TSendFunction;
+    subscribe: TSubscribeFunction;
+    unsubscribe: TUnsubscribeFunction;
+    queryClient: QueryClient;
 };
 
 const APIContext = createContext<APIContextData | null>(null);
@@ -22,13 +46,7 @@ declare global {
 // This is a temporary workaround to share a single `QueryClient` instance between all the packages.
 const getSharedQueryClientContext = (): QueryClient => {
     if (!window.ReactQueryClient) {
-        window.ReactQueryClient = new QueryClient({
-            logger: {
-                log: console.log, // eslint-disable-line no-console
-                warn: console.warn, // eslint-disable-line no-console
-                error: () => null,
-            },
-        });
+        window.ReactQueryClient = new QueryClient();
     }
 
     return window.ReactQueryClient;
@@ -110,6 +128,9 @@ const queryClient = getSharedQueryClientContext();
  * @param {string | null | undefined} loginid - The login ID (can be a string, null, or undefined).
  * @returns {string} Returns the WS environment: 'custom', 'real', or 'demo'.
  */
+/**
+ * @deprecated Please use 'WebSocketUtils.getEnvironmentFromLoginid' from '@deriv-com/utils' instead of this.
+ */
 const getEnvironment = (loginid: string | null | undefined) => {
     const customServerURL = window.localStorage.getItem('config.server_url');
     if (customServerURL) return 'custom';
@@ -129,6 +150,47 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
     const activeLoginid = window.localStorage.getItem('active_loginid');
     const [environment, setEnvironment] = useState(getEnvironment(activeLoginid));
     const standaloneDerivAPI = useRef(standalone ? initializeDerivAPI(() => setReconnect(true)) : null);
+    const subscriptions = useRef<Record<string, DerivAPIBasic['subscribe']>>();
+
+    const send: TSendFunction = (name, payload) => {
+        return standaloneDerivAPI.current?.send({ [name]: 1, ...payload });
+    };
+
+    const subscribe: TSubscribeFunction = async (name, payload) => {
+        const id = await hashObject({ name, payload });
+        const matchingSubscription = subscriptions.current?.[id];
+        if (matchingSubscription) return { id, subscription: matchingSubscription };
+
+        const { payload: _payload } = payload ?? {};
+
+        const subscription = standaloneDerivAPI.current?.subscribe({
+            [name]: 1,
+            subscribe: 1,
+            ...(_payload ?? {}),
+        });
+
+        subscriptions.current = { ...(subscriptions.current ?? {}), ...{ [id]: subscription } };
+        return { id, subscription };
+    };
+
+    const unsubscribe: TUnsubscribeFunction = id => {
+        const matchingSubscription = subscriptions.current?.[id];
+        if (matchingSubscription) matchingSubscription.unsubscribe();
+    };
+
+    useEffect(() => {
+        const currentDerivApi = standaloneDerivAPI.current;
+        const currentSubscriptions = subscriptions.current;
+
+        return () => {
+            if (currentSubscriptions) {
+                Object.keys(currentSubscriptions).forEach(key => {
+                    currentSubscriptions[key].unsubscribe();
+                });
+            }
+            if (currentDerivApi && currentDerivApi.connection.readyState === 1) currentDerivApi.disconnect();
+        };
+    }, []);
 
     const switchEnvironment = useCallback(
         (loginid: string | null | undefined) => {
@@ -142,7 +204,7 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
     );
 
     useEffect(() => {
-        let interval_id: NodeJS.Timer;
+        let interval_id: ReturnType<typeof setInterval>;
 
         if (standalone) {
             interval_id = setInterval(() => standaloneDerivAPI.current?.send({ ping: 1 }), 10000);
@@ -164,7 +226,16 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
     }, [environment, reconnect, standalone]);
 
     return (
-        <APIContext.Provider value={{ derivAPI: standalone ? standaloneDerivAPI.current : WS, switchEnvironment }}>
+        <APIContext.Provider
+            value={{
+                derivAPI: standalone ? standaloneDerivAPI.current : WS,
+                switchEnvironment,
+                send,
+                subscribe,
+                unsubscribe,
+                queryClient,
+            }}
+        >
             <QueryClientProvider client={queryClient}>
                 {children}
                 {/* <ReactQueryDevtools /> */}

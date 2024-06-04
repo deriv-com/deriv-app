@@ -1,0 +1,28 @@
+.p2p-v2-my-ads-delete-modal {
+    height: auto;
+    width: 44rem;
+    border-radius: 8px;
+
+    @include mobile {
+        width: 32.8rem;
+    }
+
+    &__header {
+        @include mobile {
+            padding: 0 1.6rem;
+        }
+    }
+
+    &__body {
+        padding: 1rem 2.4rem;
+        @include mobile {
+            padding: 0 1.6rem;
+        }
+    }
+
+    &__footer {
+        @include mobile {
+            padding: 1.6rem;
+        }
+    }
+}

@@ -1,18 +1,29 @@
 import React, { FC, useCallback, useMemo } from 'react';
-import { useDocumentUpload, useIdentityDocumentVerificationAdd, usePOA, usePOI, useSettings } from '@deriv/api';
+import {
+    useDocumentUpload,
+    useIdentityDocumentVerificationAdd,
+    useMT5AccountsList,
+    usePOA,
+    usePOI,
+    useSettings,
+} from '@deriv/api-v2';
 import { ModalStepWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
 import { Loader } from '../../../../components/Loader';
 import { useModal } from '../../../../components/ModalProvider';
+import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
+import { ErrorCode } from '../../../accounts/constants';
 import {
+    IDVDocumentUpload,
     ManualDocumentUpload,
+    PersonalDetails,
     PoaScreen,
+    PoiPoaDocsSubmitted,
+    PoiUploadError,
     SelfieDocumentUpload,
     useHandleManualDocumentUpload,
 } from '../../../accounts/screens';
-import { IDVDocumentUpload } from '../../../accounts/screens/IDVDocumentUpload';
-import { PersonalDetails } from '../../../accounts/screens/PersonalDetails';
 import { PlatformDetails } from '../../constants';
 import { MT5PasswordModal } from '../../modals';
 import { Onfido } from '../../screens';
@@ -26,12 +37,14 @@ const Loading = () => {
 };
 
 const screens = {
+    duplicateUploadErrorScreen: <PoiUploadError errorCode={ErrorCode.DuplicateUpload} />,
     idvScreen: <IDVDocumentUpload />,
     loadingScreen: <Loading />,
     manualScreen: <ManualDocumentUpload />,
     onfidoScreen: <Onfido />,
     personalDetailsScreen: <PersonalDetails />,
     poaScreen: <PoaScreen />,
+    poiPoaDocsSubmitted: <PoiPoaDocsSubmitted />,
     selfieScreen: <SelfieDocumentUpload />,
 };
 
@@ -55,7 +68,7 @@ const getManualVerificationFooter = ({
     if (!context.formValues.selectedManualDocument) return undefined;
 
     const onClickBack = () => {
-        if (context.currentScreenId === 'selfieScreen') {
+        if (context.currentScreenId === 'selfieScreen' || context.currentScreenId === 'duplicateUploadErrorScreen') {
             context.switchScreen('manualScreen');
         } else context.setFormValues('selectedManualDocument', '');
     };
@@ -74,21 +87,31 @@ const getManualVerificationFooter = ({
 };
 
 const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
+    const { data: mt5AccountsList } = useMT5AccountsList();
     const { data: poiStatus, isSuccess: isSuccessPOIStatus } = usePOI();
     const { data: poaStatus, isSuccess: isSuccessPOAStatus } = usePOA();
     const { isLoading: isUploadLoading, upload } = useDocumentUpload();
-    const { isLoading: isManualUploadLoading, uploadDocument } = useHandleManualDocumentUpload();
+    const {
+        error: errorManualDocumentUpload,
+        isError: isErrorManualDocumentUpload,
+        isLoading: isManualUploadLoading,
+        uploadDocument,
+    } = useHandleManualDocumentUpload();
     const { data: settings, update: updateSettings } = useSettings();
     const { submitIDVDocuments } = useIdentityDocumentVerificationAdd();
     const { getModalState, hide, show } = useModal();
+    const { isMobile } = useDevice();
 
     const selectedMarketType = getModalState('marketType') ?? 'all';
     const platform = getModalState('platform') ?? PlatformDetails.mt5.platform;
+    const hasCreatedMT5Accounts = mt5AccountsList?.some(account => account.account_type === 'real');
 
-    const shouldSubmitPOA = useMemo(
-        () => !poaStatus?.has_attempted_poa || (!poaStatus?.is_pending && !poaStatus.is_verified),
-        [poaStatus]
-    );
+    const shouldSubmitPOA = useMemo(() => {
+        if (poaStatus?.is_pending) return false;
+        // @ts-expect-error as the prop verified_jurisdiction is not yet present in GetAccountStatusResponse type
+        return selectedJurisdiction ? !poaStatus?.verified_jurisdiction?.[selectedJurisdiction] : false;
+    }, [selectedJurisdiction, poaStatus]);
+
     const shouldFillPersonalDetails = useMemo(
         () => !settings?.has_submitted_personal_details,
         [settings?.has_submitted_personal_details]
@@ -101,6 +124,11 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const initialScreenId: keyof typeof screens = useMemo(() => {
         const service = poiStatus?.current?.service as keyof THooks.POI['services'];
 
+        if (isErrorManualDocumentUpload) {
+            if (errorManualDocumentUpload?.error.code === ErrorCode.DuplicateUpload) {
+                return 'duplicateUploadErrorScreen';
+            }
+        }
         if (service && poiStatus?.services && isSuccessPOIStatus) {
             const serviceStatus = poiStatus.status;
 
@@ -114,7 +142,17 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             if (service === 'manual') return 'manualScreen';
         }
         return 'loadingScreen';
-    }, [poiStatus, isSuccessPOIStatus, shouldSubmitPOA, shouldFillPersonalDetails, show, selectedMarketType, platform]);
+    }, [
+        poiStatus,
+        isSuccessPOIStatus,
+        shouldSubmitPOA,
+        shouldFillPersonalDetails,
+        show,
+        selectedMarketType,
+        platform,
+        isErrorManualDocumentUpload,
+        errorManualDocumentUpload,
+    ]);
 
     const isNextDisabled = ({ currentScreenId, errors, formValues }: TFlowProviderContext<typeof screens>) => {
         switch (currentScreenId) {
@@ -124,22 +162,33 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     !formValues.firstName ||
                     !formValues.lastName ||
                     !formValues.dateOfBirth ||
-                    !!errors.documentNumber
+                    !formValues.verifiedDocumentDetails ||
+                    !!errors.documentNumber ||
+                    !!errors.firstName ||
+                    !!errors.lastName ||
+                    !!errors.dateOfBirth
                 );
             case 'manualScreen':
                 if (formValues.selectedManualDocument === 'driving-license') {
                     return (
                         !formValues.drivingLicenceNumber ||
                         !formValues.drivingLicenseExpiryDate ||
+                        !!errors.drivingLicenseExpiryDate ||
                         !formValues.drivingLicenseCardFront ||
                         !formValues.drivingLicenseCardBack
                     );
                 } else if (formValues.selectedManualDocument === 'passport') {
-                    return !formValues.passportNumber || !formValues.passportExpiryDate || !formValues.passportCard;
+                    return (
+                        !formValues.passportNumber ||
+                        !formValues.passportExpiryDate ||
+                        !!errors.passportExpiryDate ||
+                        !formValues.passportCard
+                    );
                 } else if (formValues.selectedManualDocument === 'identity-card') {
                     return (
                         !formValues.identityCardNumber ||
                         !formValues.identityCardExpiryDate ||
+                        !!errors.identityCardExpiryDate ||
                         !formValues.identityCardFront ||
                         !formValues.identityCardBack
                     );
@@ -157,10 +206,23 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     !formValues.placeOfBirth ||
                     !formValues.taxResidence ||
                     !formValues.accountOpeningReason ||
-                    !formValues.taxIdentificationNumber
+                    !formValues.taxIdentificationNumber ||
+                    !!errors.taxIdentificationNumber
                 );
             case 'poaScreen':
-                return !formValues.townCityLine || !formValues.firstLine || !formValues.poaDocument || isUploadLoading;
+                return (
+                    !formValues.townCityLine ||
+                    !formValues.firstLine ||
+                    !formValues.poaDocument ||
+                    !!errors.townCityLine ||
+                    !!errors.firstLine ||
+                    !!errors.secondLine ||
+                    !!errors.zipCodeLine ||
+                    !!errors.poaDocument ||
+                    isUploadLoading
+                );
+            case 'duplicateUploadErrorScreen':
+                return true;
             default:
                 return false;
         }
@@ -205,6 +267,8 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     switchScreen('poaScreen');
                 } else if (shouldFillPersonalDetails) {
                     switchScreen('personalDetailsScreen');
+                } else if (hasCreatedMT5Accounts) {
+                    switchScreen('poiPoaDocsSubmitted');
                 } else {
                     show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
                 }
@@ -242,6 +306,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             }
         },
         [
+            hasCreatedMT5Accounts,
             hide,
             platform,
             selectedMarketType,
@@ -267,28 +332,41 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             screens={screens}
         >
             {context => {
+                const footer = ['duplicateUploadErrorScreen', 'manualScreen', 'selfieScreen'].includes(
+                    context.currentScreenId
+                )
+                    ? getManualVerificationFooter({
+                          context,
+                          isNextDisabled: isNextDisabled(context),
+                          isNextLoading: isNextLoading(context),
+                          nextFlowHandler: () => nextFlowHandler(context),
+                      })
+                    : () => (
+                          <WalletButton
+                              disabled={isNextDisabled(context)}
+                              isFullWidth={isMobile}
+                              isLoading={isNextLoading(context)}
+                              onClick={() => nextFlowHandler(context)}
+                              size='lg'
+                          >
+                              Next
+                          </WalletButton>
+                      );
+
+                const renderFooter =
+                    context.currentScreenId === 'poiPoaDocsSubmitted' || context.currentScreenId === 'onfidoScreen'
+                        ? undefined
+                        : footer;
+
                 return (
                     <ModalStepWrapper
-                        renderFooter={
-                            context.currentScreenId === 'manualScreen' || context.currentScreenId === 'selfieScreen'
-                                ? getManualVerificationFooter({
-                                      context,
-                                      isNextDisabled: isNextDisabled(context),
-                                      isNextLoading: isNextLoading(context),
-                                      nextFlowHandler: () => nextFlowHandler(context),
-                                  })
-                                : () => (
-                                      <WalletButton
-                                          disabled={isNextDisabled(context)}
-                                          isLoading={isNextLoading(context)}
-                                          onClick={() => nextFlowHandler(context)}
-                                          size='lg'
-                                      >
-                                          Next
-                                      </WalletButton>
-                                  )
+                        disableScroll={context.currentScreenId === 'personalDetailsScreen'}
+                        renderFooter={renderFooter}
+                        title={
+                            context.currentScreenId === 'duplicateUploadErrorScreen'
+                                ? 'Submit your proof of identity'
+                                : 'Add a real MT5 account'
                         }
-                        title='Add a real MT5 account'
                     >
                         {context.WalletScreen}
                     </ModalStepWrapper>

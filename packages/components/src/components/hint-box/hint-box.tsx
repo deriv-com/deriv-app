@@ -12,6 +12,7 @@ type THintBox = {
     icon_height?: number;
     icon_width?: number;
     message: string | React.ReactElement;
+    id?: string;
 };
 
 /** @deprecated use `InlineMessage` instead. */
@@ -25,6 +26,7 @@ const HintBox = ({
     icon_height,
     icon_width,
     message,
+    id,
 }: THintBox) => {
     return (
         <div
@@ -38,6 +40,7 @@ const HintBox = ({
                 },
                 className
             )}
+            id={id}
         >
             <Icon
                 className={classNames('dc-hint-box__icon', {

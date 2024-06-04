@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { useTransferBetweenAccounts } from '@deriv/api';
+import { useTransferBetweenAccounts } from '@deriv/api-v2';
 import { Loader } from '../../../../components';
 import { TransferModule } from '../../modules';
 import { TransferNotAvailable } from '../../screens/TransferNotAvailable';

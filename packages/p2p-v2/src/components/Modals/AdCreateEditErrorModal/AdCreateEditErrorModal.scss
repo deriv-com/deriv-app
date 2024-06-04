@@ -1,0 +1,29 @@
+.p2p-v2-ad-create-edit-error-modal {
+    height: fit-content;
+    width: 44rem;
+    border-radius: 8px;
+    @include mobile {
+        max-width: calc(100vw - 3.2rem);
+    }
+
+    &__header {
+        @include mobile {
+            padding: 1.6rem;
+        }
+    }
+
+    &__footer {
+        @include mobile {
+            padding-right: 1.6rem;
+            padding-left: 1.6rem;
+        }
+    }
+
+    &__body {
+        padding: 2.4rem;
+
+        @include mobile {
+            padding: 0.8rem 2.4rem;
+        }
+    }
+}

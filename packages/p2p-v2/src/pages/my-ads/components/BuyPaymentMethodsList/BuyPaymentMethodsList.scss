@@ -1,0 +1,30 @@
+.p2p-v2-buy-payment-methods-list {
+    &__dropdown {
+        border-style: dashed;
+        & .deriv-input {
+            &__field {
+                padding-left: 1rem;
+                &::placeholder {
+                    visibility: visible;
+                    color: #999999;
+                }
+            }
+            &__label {
+                display: none;
+            }
+        }
+    }
+
+    & .deriv-dropdown {
+        &__content {
+            & .deriv-input__container {
+                width: 100%;
+            }
+        }
+        &__items {
+            top: unset;
+            bottom: 7rem;
+            max-height: 20rem;
+        }
+    }
+}

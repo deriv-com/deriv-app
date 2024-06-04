@@ -1,0 +1,17 @@
+@import '../skeletonLoader.scss';
+
+.header-right-menu-skeleton-loader {
+    display: flex;
+    align-items: center;
+    gap: 2.4rem;
+
+    @include mobile {
+        gap: 1.6rem;
+    }
+
+    &__icon {
+        height: 2.4rem;
+        border-radius: 0.4rem;
+        width: 2.4rem;
+    }
+}

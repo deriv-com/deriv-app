@@ -1,5 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import { useStores } from 'Stores/index';
 import MyProfileName from '../my-profile-name';
 
@@ -23,6 +24,7 @@ describe('<MyProfileName />', () => {
     beforeEach(() => {
         mock_store = {
             general_store: {
+                is_advertiser: true,
                 advertiser_info: {
                     basic_verification: 1,
                     buy_orders_count: 0,
@@ -42,7 +44,9 @@ describe('<MyProfileName />', () => {
     });
 
     it('should render default view for new P2P user', () => {
-        render(<MyProfileName />);
+        render(<MyProfileName />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('Joined today'));
         expect(screen.getByText('Not rated yet'));
@@ -52,7 +56,9 @@ describe('<MyProfileName />', () => {
         mock_store.general_store.advertiser_info.rating_average = 5;
         mock_store.general_store.advertiser_info.rating_count = 1;
 
-        render(<MyProfileName />);
+        render(<MyProfileName />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('(1 rating)'));
     });
@@ -66,7 +72,9 @@ describe('<MyProfileName />', () => {
         mock_store.general_store.advertiser_info.recommended_count = 50;
         mock_store.general_store.advertiser_info.sell_orders_count = 200;
 
-        render(<MyProfileName />);
+        render(<MyProfileName />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
 
         expect(screen.queryByText('Joined today')).not.toBeInTheDocument();
         expect(screen.getByText('(50 ratings)')).toBeInTheDocument();

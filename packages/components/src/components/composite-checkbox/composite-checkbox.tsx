@@ -9,9 +9,9 @@ type TCompositeCheckbox = {
     onChange: React.FormEventHandler<HTMLInputElement> &
         ((e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => void);
     className?: string;
-    label: string;
+    label: JSX.Element;
     id?: string;
-    description: string;
+    description: JSX.Element;
 };
 
 const CompositeCheckbox = ({
@@ -24,7 +24,7 @@ const CompositeCheckbox = ({
     description,
     children,
     ...props
-}: React.PropsWithChildren<TCompositeCheckbox>) => {
+}: React.PropsWithChildren<TCompositeCheckbox & React.ComponentProps<typeof Checkbox>>) => {
     const onClickContainer = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
         e.preventDefault();

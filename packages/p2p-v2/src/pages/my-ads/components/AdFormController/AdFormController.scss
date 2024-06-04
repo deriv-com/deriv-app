@@ -1,0 +1,16 @@
+.p2p-v2-ad-form-controller {
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 0.8rem;
+    border-top: 1px solid #f2f3f4;
+    padding: 2rem 0;
+    margin-top: 2.4rem;
+    @include mobile {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        padding: 1.6rem;
+        background: #ffffff;
+    }
+}

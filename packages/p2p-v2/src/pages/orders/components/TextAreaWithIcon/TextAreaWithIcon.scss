@@ -1,0 +1,35 @@
+.p2p-v2-text-area-with-icon {
+    position: relative;
+    border: 1px solid #d6dadb;
+    border-radius: 0.4rem;
+    &:focus,
+    &:active {
+        border: 1px solid #85acb0;
+    }
+
+    & .deriv-textarea {
+        &__footer {
+            position: absolute;
+            right: 0;
+        }
+    }
+    & textarea {
+        height: 3.6rem;
+        border: none;
+        width: calc(100% - 32px - 0.8rem);
+        &:focus {
+            outline: none;
+            border: none;
+        }
+    }
+    &__textarea {
+        &::placeholder {
+            color: #999999;
+        }
+    }
+    &__icon {
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+    }
+}

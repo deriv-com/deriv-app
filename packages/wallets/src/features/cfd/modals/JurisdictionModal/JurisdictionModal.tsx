@@ -1,15 +1,19 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useAvailableMT5Accounts } from '@deriv/api';
+import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
+import { useAvailableMT5Accounts } from '@deriv/api-v2';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
+import { Loader } from '../../../../components/Loader';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { DynamicLeverageContext } from '../../components/DynamicLeverageContext';
 import { MarketTypeDetails, PlatformDetails } from '../../constants';
-import { Verification } from '../../flows/Verification';
 import { DynamicLeverageScreen, DynamicLeverageTitle } from '../../screens/DynamicLeverage';
 import { JurisdictionScreen } from '../../screens/Jurisdiction';
 import { MT5PasswordModal } from '..';
 import './JurisdictionModal.scss';
+
+const LazyVerification = lazy(
+    () => import(/* webpackChunkName: "wallets-verification-flow" */ '../../flows/Verification/Verification')
+);
 
 const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
@@ -29,14 +33,18 @@ const JurisdictionModal = () => {
         setIsDynamicLeverageVisible(!isDynamicLeverageVisible);
     }, [isDynamicLeverageVisible, setIsDynamicLeverageVisible]);
 
-    const jurisdictionTitle = `Choose a jurisdiction for your Deriv MT5 ${title} account`;
+    const jurisdictionTitle = `Choose a jurisdiction for your ${PlatformDetails.mt5.title} ${title} account`;
 
     const JurisdictionFlow = () => {
         if (selectedJurisdiction === 'svg') {
             return <MT5PasswordModal marketType={marketType} platform={platform} />;
         }
 
-        return <Verification selectedJurisdiction={selectedJurisdiction} />;
+        return (
+            <Suspense fallback={<Loader />}>
+                <LazyVerification selectedJurisdiction={selectedJurisdiction} />
+            </Suspense>
+        );
     };
 
     const modalFooter = isDynamicLeverageVisible

@@ -1,0 +1,13 @@
+.order-time-selection {
+    max-width: 67.2rem;
+    margin-top: 2.4rem;
+    &__title {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    &__popover {
+        max-width: unset;
+    }
+}

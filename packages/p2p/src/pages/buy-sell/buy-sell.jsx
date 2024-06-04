@@ -20,7 +20,6 @@ const BuySell = () => {
 
         return () => {
             disposeAdvertIntervalReaction();
-            general_store.setShouldShowPopup(false);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -34,13 +33,11 @@ const BuySell = () => {
     if (buy_sell_store.should_show_verification) {
         return (
             <React.Fragment>
-                {!general_store.should_show_popup && (
-                    <PageReturn
-                        className='buy-sell__page-return'
-                        onClick={buy_sell_store.hideVerification}
-                        page_title={localize('Verification')}
-                    />
-                )}
+                <PageReturn
+                    className='buy-sell__page-return'
+                    onClick={buy_sell_store.hideVerification}
+                    page_title={localize('Verification')}
+                />
                 <Verification />
             </React.Fragment>
         );

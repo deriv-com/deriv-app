@@ -6,7 +6,7 @@
     border-radius: $BORDER_RADIUS;
     box-shadow: 0 4px 8px 2px var(--shadow-menu);
     transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
-    padding: 0.8rem;
+    padding: 1.6rem;
     width: 240px;
     z-index: 99;
 
@@ -20,6 +20,14 @@
         transform: translate3d(-20px, 0, 0);
     }
     &__input {
+        @include mobile {
+            border-bottom: 1px solid var(--border-disabled);
+            padding: 1rem 1.6rem;
+
+            .dc-popover {
+                padding: 0.6rem 1rem;
+            }
+        }
         .dc-input-wrapper__input {
             border: 1px solid var(--border-normal);
             appearance: none;
@@ -36,9 +44,7 @@
             z-index: 2;
             color: inherit;
 
-            &-symbol {
-                font-size: 1.4rem;
-                line-height: 1.5;
+            &--symbol {
                 padding-bottom: 0.2rem;
             }
             &:before {
@@ -48,6 +54,10 @@
         }
     }
     &__popover {
+        margin-top: -50%;
+    }
+
+    &__popover-bubble {
         /* postcss-bem-linter: ignore */
         .dc-checkbox {
             margin-top: 0.8rem;
@@ -63,6 +73,12 @@
 
         .dc-btn {
             width: 100%;
+
+            @include mobile {
+                flex: 1;
+                height: 4rem;
+                margin: 0 1.6rem;
+            }
         }
     }
     &__form {
@@ -70,8 +86,7 @@
         flex: 1;
         @include mobile {
             grid-template-rows: auto auto 1fr;
-            grid-gap: 1.6rem;
-            margin: 1.6rem;
+            margin: 0 0 1.6rem;
 
             &--no-stop-loss {
                 grid-template-rows: auto 1fr;
@@ -86,9 +101,9 @@
         }
     }
     &__total-profit {
-        height: 5.2rem;
+        height: 3.6rem;
         padding: 1.6rem;
-        background: var(--general-main-2);
+        border-bottom: 1px solid var(--border-disabled);
         color: var(--text-general);
         display: flex;
         align-items: center;
@@ -99,9 +114,13 @@
 
 /** @define dc-contract-card-dialog-toggle; */
 .dc-contract-card-dialog-toggle {
+    all: unset;
     position: absolute;
+    display: flex;
+    justify-content: end;
     width: calc(100% + 0.4rem);
     height: calc(100% + 0.4rem);
+    /*rtl:ignore*/
     right: 0.4rem;
     top: -0.4rem;
     border: 1px solid var(--general-section-1);
@@ -112,6 +131,7 @@
     }
 
     &__icon {
+        /*rtl:ignore*/
         float: right;
         margin: 3px;
     }

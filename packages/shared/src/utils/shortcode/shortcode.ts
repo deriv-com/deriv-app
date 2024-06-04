@@ -17,8 +17,7 @@ type TInfoFromShortcode = Record<
     | 'start_time'
     | 'payout_tick'
     | 'growth_rate'
-    | 'growth_frequency'
-    | 'tick_size_barrier',
+    | 'growth_frequency',
     string
 >;
 
@@ -45,7 +44,6 @@ export const extractInfoFromShortcode = (shortcode: string): TInfoFromShortcode 
         payout_tick: '',
         growth_rate: '',
         growth_frequency: '',
-        tick_size_barrier: '',
     };
 
     const is_accumulators = /^ACCU/i.test(shortcode);
@@ -69,7 +67,6 @@ export const extractInfoFromShortcode = (shortcode: string): TInfoFromShortcode 
             info_from_shortcode.payout_tick = extracted[4];
             info_from_shortcode.growth_rate = extracted[5];
             info_from_shortcode.growth_frequency = extracted[6];
-            info_from_shortcode.tick_size_barrier = extracted[7];
             info_from_shortcode.start_time = extracted[8];
         } else {
             info_from_shortcode.start_time = extracted[4];
@@ -88,9 +85,18 @@ export const isHighLow = ({ shortcode = '', shortcode_info }: TIsHighLow) => {
     return info_from_shortcode && info_from_shortcode.barrier_1 ? !/^S0P$/.test(info_from_shortcode.barrier_1) : false;
 };
 
-export const isForwardStarting = (shortcode: string, purchase_time?: number) => {
+const getStartTime = (shortcode: string) => {
     const shortcode_info = extractInfoFromShortcode(shortcode);
     if (shortcode_info?.multiplier) return false;
-    const start_time: string = shortcode_info?.start_time || '';
+    return shortcode_info?.start_time || '';
+};
+
+export const isForwardStarting = (shortcode: string, purchase_time?: number) => {
+    const start_time = getStartTime(shortcode);
     return start_time && purchase_time && /f$/gi.test(start_time);
+};
+
+export const hasForwardContractStarted = (shortcode: string) => {
+    const start_time = getStartTime(shortcode);
+    return start_time && Date.now() / 1000 > Number(start_time.slice(0, -1));
 };

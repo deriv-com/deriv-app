@@ -15,11 +15,6 @@ jest.mock('../mt5-migration-front-side-content', () => {
     return MockMT5FrontsideContent;
 });
 
-jest.mock('../mt5-migration-back-side-content', () => {
-    const MockMT5BacksideContent = () => <div>MT5BacksideContent</div>;
-    return MockMT5BacksideContent;
-});
-
 const mockUseMT5MigrationModalContext = useMT5MigrationModalContext as jest.MockedFunction<
     typeof useMT5MigrationModalContext
 >;
@@ -47,11 +42,5 @@ describe('MT5MigrationModalContent', () => {
     it('should render MT5MigrationModalContent by showing frontside of the modal', () => {
         renderComponent();
         expect(screen.getByText('MT5FrontsideContent')).toBeInTheDocument();
-    });
-
-    it('should render backside of the modal', () => {
-        response.show_modal_front_side = false;
-        renderComponent();
-        expect(screen.getByText('MT5BacksideContent')).toBeInTheDocument();
     });
 });

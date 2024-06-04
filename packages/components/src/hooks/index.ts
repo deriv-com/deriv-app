@@ -1,4 +1,5 @@
 export * from './use-blockscroll';
+export * from './use-debounce';
 export * from './use-device';
 export * from './use-hover';
 export * from './use-interval';

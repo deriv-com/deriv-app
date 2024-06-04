@@ -1,8 +1,6 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
@@ -47,7 +45,7 @@ describe('RecentWorkspace', () => {
 
     it('should show strategy saved time in proper format', () => {
         render(<RecentWorkspace workspace={mock_workspace} />, { wrapper });
-        expect(screen.getByText('18 Oct2023')).toBeInTheDocument();
+        expect(screen.getByText('18 Oct 2023')).toBeInTheDocument();
     });
 
     it('should update selected strategy ID on clicking the strategy', () => {

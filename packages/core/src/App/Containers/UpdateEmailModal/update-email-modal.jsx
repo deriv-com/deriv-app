@@ -1,19 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'Stores/connect';
 import { Button, Modal, Text, Icon, Loading } from '@deriv/components';
 import { localize, Localize, getLanguage } from '@deriv/translations';
 import { redirectToLogin } from '@deriv/shared';
 import { WS } from 'Services';
+import { observer, useStore } from '@deriv/stores';
 
-const UpdateEmailModal = ({
-    is_visible,
-    toggleUpdateEmailModal,
-    logoutClient,
-    new_email,
-    verification_code,
-    is_logged_in,
-}) => {
+const UpdateEmailModal = observer(() => {
+    const { ui, client } = useStore();
+    const { logout: logoutClient, is_logged_in } = client;
+    const { is_update_email_modal_visible: is_visible, toggleUpdateEmailModal } = ui;
+    const new_email = client.new_email.system_email_change;
+    const verification_code = client.verification_code.system_email_change;
+
     const [is_email_updated, setIsEmailUpdated] = React.useState(false);
     const [update_email_error, setUpdateEmailMessage] = React.useState(null);
 
@@ -69,17 +67,19 @@ const UpdateEmailModal = ({
                         <Icon className='change-email-update__modal-icon' icon={`IcEmailVerified`} size={128} />
                     )}
                     <Text className='change-email-update__modal-title' weight='bold' size='s'>
-                        <Localize i18n_default_text={!update_email_error ? 'Success!' : 'Failed'} />
+                        {update_email_error ? (
+                            <Localize i18n_default_text='Failed' />
+                        ) : (
+                            <Localize i18n_default_text='Success!' />
+                        )}
                     </Text>
                     <Text className='change-email-update__modal-description' size='xs'>
-                        <Localize
-                            i18n_default_text={
-                                !update_email_error
-                                    ? 'Your email address has changed.<0 />Now, log in with your new email address.'
-                                    : update_email_error
-                            }
-                            components={[<br key={0} />]}
-                        />
+                        {update_email_error ?? (
+                            <Localize
+                                i18n_default_text='Your email address has changed.<0/>Now, log in with your new email address.'
+                                components={[<br key={0} />]}
+                            />
+                        )}
                     </Text>
                     <Modal.Footer className='change-email-update__footer'>
                         <Button onClick={onClickButton} has_effect text={localize('Log in')} primary large />
@@ -90,22 +90,6 @@ const UpdateEmailModal = ({
             )}
         </Modal>
     );
-};
+});
 
-UpdateEmailModal.prototypes = {
-    toggleUpdateEmailModal: PropTypes.func,
-    is_visible: PropTypes.bool,
-    logoutClient: PropTypes.func,
-    new_email: PropTypes.string,
-    verification_code: PropTypes.string,
-    is_logged_in: PropTypes.bool,
-};
-
-export default connect(({ ui, client }) => ({
-    logoutClient: client.logout,
-    is_visible: ui.is_update_email_modal_visible,
-    toggleUpdateEmailModal: ui.toggleUpdateEmailModal,
-    new_email: client.new_email.system_email_change,
-    verification_code: client.verification_code.system_email_change,
-    is_logged_in: client.is_logged_in,
-}))(UpdateEmailModal);
+export default UpdateEmailModal;

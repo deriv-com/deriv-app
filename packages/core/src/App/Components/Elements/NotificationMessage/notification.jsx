@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, LinearProgress, Text } from '@deriv/components';
-import { isEmptyObject, PlatformContext } from '@deriv/shared';
+import { isEmptyObject } from '@deriv/shared';
 import CloseButton from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';
 import NotificationBanner from './notification-banner.jsx';
@@ -13,10 +13,17 @@ import NotificationOrder from './notification-order.jsx';
 
 const Notification = ({ data, removeNotificationMessage }) => {
     const linear_progress_container_ref = React.useRef(null);
-    const { is_appstore } = React.useContext(PlatformContext);
 
     const destroy = is_closed_by_user => {
         removeNotificationMessage(data);
+
+        if (data.should_show_again) {
+            const closed_toast_notifications = JSON.parse(localStorage.getItem('closed_toast_notifications')) ?? [];
+            if (!closed_toast_notifications.includes(data.key)) {
+                closed_toast_notifications.push(data.key);
+                localStorage.setItem('closed_toast_notifications', JSON.stringify(closed_toast_notifications));
+            }
+        }
 
         if (data.closeOnClick) {
             data.closeOnClick(data, is_closed_by_user);
@@ -28,6 +35,9 @@ const Notification = ({ data, removeNotificationMessage }) => {
     if (data.is_auto_close) {
         setTimeout(destroy, data.delay || default_delay);
     }
+
+    const closed_toast_notifications = JSON.parse(localStorage.getItem('closed_toast_notifications')) ?? [];
+    if (closed_toast_notifications.includes(data.key)) return null;
 
     switch (data.type) {
         case 'news':
@@ -114,6 +124,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                                 'dc-btn--secondary',
                                                 'notification__cta-button'
                                             )}
+                                            onClick={onClick}
                                             to={data.action.route}
                                         >
                                             <Text size='xxs' weight='bold'>
@@ -126,7 +137,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                             onClick={() => {
                                                 if (data.timeout)
                                                     linear_progress_container_ref.current.removeTimeoutSession();
-                                                data.action.onClick({ is_appstore });
+                                                data.action.onClick();
                                             }}
                                             text={data.action.text}
                                             secondary
@@ -160,18 +171,19 @@ Notification.propTypes = {
         className: PropTypes.string,
         closeOnClick: PropTypes.func,
         delay: PropTypes.number,
-        header: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+        header: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
         header_popup: PropTypes.string,
         img_alt: PropTypes.string,
         img_src: PropTypes.string,
         is_auto_close: PropTypes.bool,
         key: PropTypes.string,
         icon: PropTypes.string,
-        message: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
+        message: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
         message_popup: PropTypes.string,
         primary_btn: PropTypes.object,
         secondary_btn: PropTypes.object,
         should_hide_close_btn: PropTypes.bool,
+        should_show_again: PropTypes.bool,
         size: PropTypes.oneOf(['small']),
         timeout: PropTypes.number,
         timeoutMessage: PropTypes.func,

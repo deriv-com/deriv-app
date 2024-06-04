@@ -1,52 +1,49 @@
-import React, { FC } from 'react';
-import { Button, Text, TextField, useBreakpoint } from '@deriv/quill-design';
-import { TPlatforms } from '../../../../types';
-import { validPassword } from '../../../../utils/password';
-import { PlatformDetails } from '../../constants';
+import React, { ChangeEvent } from 'react';
+import DxtradePasswordIcon from '@/assets/svgs/ic-derivx-password-updated.svg';
+import MT5PasswordIcon from '@/assets/svgs/ic-mt5-password.svg';
+import { useCFDContext } from '@/providers';
+import { CFDPlatforms, PlatformDetails } from '@cfd/constants';
+import { Modal, PasswordInput, Text } from '@deriv-com/ui';
+import DxtradePasswordFooter from '../../modals/DxtradePasswordModal/DxtradePasswordFooter';
+import MT5PasswordFooter from '../../modals/MT5PasswordModal/MT5PasswordFooter';
 
-type TProps = {
-    icon: React.ReactNode;
-    isLoading?: boolean;
-    onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onPrimaryClick: () => void;
+type TCreatePasswordProps = {
+    onPasswordChange?: (e: ChangeEvent<HTMLInputElement>) => void;
     password: string;
-    platform: TPlatforms.All;
 };
 
 /**
  * Component to create a password for the platform
- * @param icon
- * @param isLoading
  * @param onPasswordChange
- * @param onPrimaryClick
  * @param password
- * @param platform MT5 or Deriv X
- * @returns
  */
-const CreatePassword: FC<TProps> = ({ icon, isLoading, onPasswordChange, onPrimaryClick, password, platform }) => {
-    const { isMobile } = useBreakpoint();
+const CreatePassword = ({ onPasswordChange, password }: TCreatePasswordProps) => {
+    const { cfdState } = useCFDContext();
 
-    const title = PlatformDetails[platform].title;
+    const { platform = CFDPlatforms.MT5 } = cfdState;
+    const { title } = PlatformDetails[platform];
+
     return (
-        <div className='inline-flex flex-col items-center w-full text-center gap-1200 p-1600 rounded-400 bg-system-light-primary-background lg:w-[400px]'>
-            {!isMobile && icon}
-            <div className='flex flex-col justify-center gap-1200 lg:gap-400'>
-                <Text bold>Create a {title} password</Text>
-                <Text size='sm'>You can use this password for all your {title} accounts.</Text>
-            </div>
+        <React.Fragment>
+            <Modal.Body className='lg:pt-24 lg:px-24 lg:space-y-16'>
+                <div className='justify-center w-full lg:flex d-none lg:gap-8'>
+                    {platform === CFDPlatforms.MT5 ? <MT5PasswordIcon /> : <DxtradePasswordIcon />}
+                </div>
 
-            <TextField onChange={onPasswordChange} placeholder={`${title} password`} value={password} />
-            {!isMobile && (
-                <Button
-                    disabled={!password || isLoading || !validPassword(password)}
-                    isLoading={isLoading}
-                    onClick={onPrimaryClick}
-                    size='lg'
-                >
-                    {`Create ${title} password`}
-                </Button>
-            )}
-        </div>
+                <div className='flex flex-col items-center justify-center text-center lg:gap-8'>
+                    <Text weight='bold'>Create a {title} password</Text>
+                    <Text size='sm'>You can use this password for all your {title} accounts.</Text>
+                </div>
+                <PasswordInput isFullWidth label={`${title} password`} onChange={onPasswordChange} value={password} />
+            </Modal.Body>
+            <Modal.Footer className='flex justify-center' hideBorder>
+                {platform === CFDPlatforms.DXTRADE ? (
+                    <DxtradePasswordFooter password={password} />
+                ) : (
+                    <MT5PasswordFooter password={password} />
+                )}
+            </Modal.Footer>
+        </React.Fragment>
     );
 };
 

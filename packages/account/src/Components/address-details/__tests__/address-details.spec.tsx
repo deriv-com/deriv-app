@@ -1,11 +1,13 @@
 import React from 'react';
 import { FormikProps } from 'formik';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useStatesList } from '@deriv/hooks';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import AddressDetails, { TAddressDetailFormProps } from '../address-details';
 import { TStores } from '@deriv/stores/types';
+import userEvent from '@testing-library/user-event';
+import { splitValidationResultTypes } from 'Components/real-account-signup/helpers/utils';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -36,6 +38,10 @@ jest.mock('@deriv/components', () => {
     };
 });
 
+const mockedSplitValidationResultTypes = splitValidationResultTypes as jest.MockedFunction<
+    typeof splitValidationResultTypes
+>;
+
 describe('<AddressDetails/>', () => {
     const address_line_1 = 'First line of address';
     const address_line_1_marked = 'First line of address*';
@@ -46,12 +52,8 @@ describe('<AddressDetails/>', () => {
     const address_state = 'State/Province';
     const address_town = 'Town/City';
     const address_town_marked = 'Town/City*';
-    const use_address_info = /only use an address for which you have proof of residence/i;
-    const verification_info =
-        'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.';
 
     let modal_root_el: HTMLDivElement;
-
     const mock_props: React.ComponentProps<typeof AddressDetails> = {
         getCurrentStep: jest.fn(),
         goToNextStep: jest.fn(),
@@ -72,6 +74,7 @@ describe('<AddressDetails/>', () => {
         validate: jest.fn(),
         disabled_items: [],
         has_real_account: false,
+        states_list: [],
     };
 
     const store = mockStore({});
@@ -82,7 +85,6 @@ describe('<AddressDetails/>', () => {
         expect(screen.getByLabelText(address_postcode)).toBeInTheDocument();
         expect(screen.getByLabelText(address_state)).toBeInTheDocument();
         expect(screen.getByLabelText(address_town_marked)).toBeInTheDocument();
-        expect(screen.getByText(use_address_info)).toBeInTheDocument();
 
         expect(screen.queryByLabelText(address_line_1)).not.toBeInTheDocument();
         expect(screen.queryByLabelText(address_line_2_marked)).not.toBeInTheDocument();
@@ -128,7 +130,8 @@ describe('<AddressDetails/>', () => {
         await waitFor(() => {
             svgCommonRenderCheck();
         });
-        expect(screen.queryByText(verification_info)).not.toBeInTheDocument();
+
+        expect(screen.getByText('Complete your address details')).toBeInTheDocument();
 
         const inputs: HTMLTextAreaElement[] = screen.getAllByRole('textbox');
         expect(inputs).toHaveLength(5);
@@ -152,7 +155,6 @@ describe('<AddressDetails/>', () => {
         await waitFor(() => {
             svgCommonRenderCheck();
         });
-        expect(screen.queryByText(verification_info)).not.toBeInTheDocument();
 
         const inputs: HTMLTextAreaElement[] = screen.getAllByRole('textbox');
         expect(inputs).toHaveLength(5);
@@ -162,9 +164,9 @@ describe('<AddressDetails/>', () => {
 
         const previous_btn = screen.getByRole('button', { name: /previous/i });
         fireEvent.click(previous_btn);
-        expect(mock_props.getCurrentStep).toHaveBeenCalledTimes(1);
+        expect(mock_props.getCurrentStep).toHaveBeenCalled();
         expect(mock_props.onCancel).toHaveBeenCalledTimes(1);
-        expect(mock_props.onSave).toHaveBeenCalledTimes(1);
+        expect(mock_props.onSave).toHaveBeenCalled();
 
         const address_line_1_input: HTMLInputElement = screen.getByLabelText(address_line_1_marked);
         const first_line_adress_text = 'Test first line address';
@@ -201,7 +203,7 @@ describe('<AddressDetails/>', () => {
         const next_btn = screen.getByRole('button', { name: /next/i });
         fireEvent.click(next_btn);
         await waitFor(() => {
-            expect(mock_props.getCurrentStep).toHaveBeenCalledTimes(2);
+            expect(mock_props.getCurrentStep).toHaveBeenCalled();
             expect(mock_props.onSubmit).toHaveBeenCalledTimes(1);
         });
     });
@@ -268,5 +270,31 @@ describe('<AddressDetails/>', () => {
         });
         expect(screen.getByLabelText(address_town_marked)).toBeEnabled();
         expect(screen.getByLabelText(address_postcode)).toBeEnabled();
+    });
+
+    it('should show validation error for postcode if adding space in the beginning', async () => {
+        renderComponent({});
+
+        const address_postcode_input: HTMLInputElement = screen.getByLabelText(address_postcode);
+        await act(async () => {
+            userEvent.type(address_postcode_input, '  2222');
+            userEvent.tab();
+        });
+
+        mockedSplitValidationResultTypes.mockReturnValue({
+            errors: {
+                address_postcode: 'Only letters, numbers, space and hyphen are allowed.',
+            },
+            warnings: {},
+        });
+
+        const next_btn = screen.getByRole('button', { name: /next/i });
+        await act(async () => {
+            fireEvent.click(next_btn);
+        });
+
+        expect(mockedSplitValidationResultTypes).toHaveBeenCalled();
+        expect(mock_props.onSubmit).not.toHaveBeenCalled();
+        expect(screen.getByText('Only letters, numbers, space and hyphen are allowed.')).toBeInTheDocument();
     });
 });

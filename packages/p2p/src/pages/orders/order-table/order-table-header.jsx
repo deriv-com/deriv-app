@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Table } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
+import { order_list } from 'Constants/order-list';
 import { useStores } from 'Stores';
 import './order-table-header.scss';
 
@@ -14,10 +15,13 @@ const OrderTableHeader = observer(({ children }) => {
         <Table className='order-table-header'>
             <Table.Header>
                 <Table.Row
-                    className={classnames('order-table-grid', {
+                    className={classnames('order-table-header__labels order-table-grid', {
                         'order-table-grid--active': general_store.is_active_tab,
                     })}
                 >
+                    {general_store.order_table_type === order_list.INACTIVE && (
+                        <Table.Head>{localize('Date')}</Table.Head>
+                    )}
                     <Table.Head>{localize('Order')}</Table.Head>
                     <Table.Head>{localize('Order ID')}</Table.Head>
                     <Table.Head>{localize('Counterparty')}</Table.Head>

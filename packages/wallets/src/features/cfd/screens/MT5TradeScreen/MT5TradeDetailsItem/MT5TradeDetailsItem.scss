@@ -13,7 +13,6 @@
 
         @include mobile {
             padding: 0.8rem;
-            height: 6rem;
         }
     }
 
@@ -22,6 +21,7 @@
         align-items: center;
         gap: 0.8rem;
         padding-right: 0.8rem;
+        font-family: 'Courier', monospace;
 
         & .wallets-text {
             font-family: 'Courier', serif;

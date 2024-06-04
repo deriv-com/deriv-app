@@ -2,12 +2,12 @@ import React, { useCallback, useMemo, useRef } from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
 import { useHover } from 'usehooks-ts';
-import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api';
+import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api-v2';
+import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { Tooltip, WalletButton, WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
 import useDevice from '../../../../../../hooks/useDevice';
-import IcCrossLight from '../../../../../../public/images/ic-cross-light.svg';
 import { THooks } from '../../../../../../types';
 import { WalletActionModal } from '../../../../components/WalletActionModal';
 import { TransactionsPendingRowField } from './components/TransactionsPendingRowField';
@@ -141,6 +141,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     name='Time'
                     value={moment
                         .unix(transaction.submit_date)
+                        .utc()
                         .format(isMobile ? 'HH:mm:ss [GMT]' : 'DD MMM YYYY HH:mm:ss [GMT]')}
                     valueTextProps={{
                         color: 'general',
@@ -162,35 +163,42 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     </div>
                 )}
             </div>
-            <button
-                className='wallets-transactions-pending-row__transaction-status'
-                onClick={onMobileStatusClick}
-                ref={statusRef}
-            >
-                <Tooltip alignment='left' isVisible={!isMobile && isStatusHovered} message={transaction.description}>
-                    <div
-                        className={classNames(
-                            'wallets-transactions-pending-row__transaction-status-dot',
-                            `wallets-transactions-pending-row__transaction-status-dot--${transaction.status_code
-                                .toLowerCase()
-                                .replace('_', '-')}`
-                        )}
-                    />
-                </Tooltip>
-                <WalletText color='general' size='sm'>
-                    {transaction.status_name}
-                </WalletText>
-                {!isMobile && transaction.is_valid_to_cancel && (
+            <div className='wallets-transactions-pending-row__transaction-status'>
+                <button
+                    className='wallets-transactions-pending-row__transaction-status-button'
+                    data-testid='dt_transaction_status_button'
+                    onClick={onMobileStatusClick}
+                    ref={statusRef}
+                >
+                    <Tooltip
+                        alignment='left'
+                        isVisible={!isMobile && isStatusHovered}
+                        message={transaction.description}
+                    >
+                        <div
+                            className={classNames(
+                                'wallets-transactions-pending-row__transaction-status-dot',
+                                `wallets-transactions-pending-row__transaction-status-dot--${transaction.status_code
+                                    .toLowerCase()
+                                    .replace('_', '-')}`
+                            )}
+                        />
+                    </Tooltip>
+                    <WalletText color='general' size='sm'>
+                        {transaction.status_name}
+                    </WalletText>
+                </button>
+                {!isMobile && !!transaction.is_valid_to_cancel && (
                     <button
                         className='wallets-transactions-pending-row__transaction-cancel-button'
                         onClick={onCancelButtonClick}
                     >
-                        <IcCrossLight />
+                        <LegacyClose1pxIcon iconSize='xs' />
                     </button>
                 )}
-            </button>
+            </div>
 
-            {isMobile && transaction.is_valid_to_cancel && (
+            {isMobile && !!transaction.is_valid_to_cancel && (
                 <WalletButton isFullWidth onClick={onCancelButtonClick} size='sm' variant='outlined'>
                     Cancel transaction
                 </WalletButton>

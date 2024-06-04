@@ -25,7 +25,7 @@ const WalletText: React.FC<WalletTextProps> = ({
     weight = 'normal',
 }) => {
     const textClassNames = classNames(
-        'wallet-text',
+        'wallets-text',
         `wallets-text__size--${size}`,
         `wallets-text__weight--${weight}`,
         `wallets-text__align--${align}`,

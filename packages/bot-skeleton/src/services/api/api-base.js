@@ -12,14 +12,15 @@ class APIBase {
     subscriptions = [];
     time_interval = null;
     has_activeSymbols = false;
+    is_stopping = false;
 
-    init(force_update = false) {
+    async init(force_update = false) {
         if (getLoginId()) {
             this.toggleRunButton(true);
             if (force_update) this.terminate();
             this.api = generateDerivApiInstance();
             this.initEventListeners();
-            this.authorizeAndSubscribe();
+            await this.authorizeAndSubscribe();
             if (this.time_interval) clearInterval(this.time_interval);
             this.time_interval = null;
             this.getTime();
@@ -47,9 +48,9 @@ class APIBase {
         }
     }
 
-    createNewInstance(account_id) {
+    async createNewInstance(account_id) {
         if (this.account_id !== account_id) {
-            this.init(true);
+            await this.init(true);
         }
     }
 
@@ -63,33 +64,33 @@ class APIBase {
         }
     };
 
-    authorizeAndSubscribe() {
+    async authorizeAndSubscribe() {
         const { token, account_id } = getToken();
         if (token) {
             this.token = token;
             this.account_id = account_id;
             this.api.authorize(this.token);
-            this.api
-                .expectResponse('authorize')
-                .then(({ authorize }) => {
-                    if (this.has_activeSymbols) {
-                        this.toggleRunButton(false);
-                    } else {
-                        this.getActiveSymbols();
-                    }
-                    this.subscribe();
-                    this.account_info = authorize;
-                })
-                .catch(e => {
-                    globalObserver.emit('Error', e);
-                });
+            try {
+                const { authorize } = await this.api.expectResponse('authorize');
+                if (this.has_activeSymbols) {
+                    this.toggleRunButton(false);
+                } else {
+                    this.getActiveSymbols();
+                }
+                await this.subscribe();
+                this.account_info = authorize;
+            } catch (e) {
+                globalObserver.emit('Error', e);
+            }
         }
     }
 
-    subscribe() {
-        doUntilDone(() => this.api.send({ balance: 1, subscribe: 1 }));
-        doUntilDone(() => this.api.send({ transaction: 1, subscribe: 1 }));
-        doUntilDone(() => this.api.send({ proposal_open_contract: 1, subscribe: 1 }));
+    async subscribe() {
+        await Promise.all([
+            doUntilDone(() => this.api.send({ balance: 1, subscribe: 1 })),
+            doUntilDone(() => this.api.send({ transaction: 1, subscribe: 1 })),
+            doUntilDone(() => this.api.send({ proposal_open_contract: 1, subscribe: 1 })),
+        ]);
     }
 
     getActiveSymbols = async () => {

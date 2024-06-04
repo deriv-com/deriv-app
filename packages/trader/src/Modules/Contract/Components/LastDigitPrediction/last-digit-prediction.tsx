@@ -79,11 +79,11 @@ const LastDigitPrediction = ({
             [key: string]: (val: number | null) => boolean;
         } = {
             DIGITMATCH: (val: number | null) => val === barrier,
-            DIGITDIFF: (val: number | null) => val !== barrier && !!barrier && !isNaN(barrier),
-            DIGITOVER: (val: number | null) => !!(val && barrier) && val > barrier,
-            DIGITUNDER: (val: number | null) => !!(val && barrier) && val < barrier,
+            DIGITDIFF: (val: number | null) => val !== barrier,
+            DIGITOVER: (val: number | null) => !!((val || val === 0) && (barrier || barrier === 0)) && val > barrier,
+            DIGITUNDER: (val: number | null) => !!((val || val === 0) && (barrier || barrier === 0)) && val < barrier,
             DIGITODD: (val: number | null) => !!val && Boolean(val % 2),
-            DIGITEVEN: (val: number | null) => !!val && !(val % 2),
+            DIGITEVEN: (val: number | null) => (!!val && !(val % 2)) || val === 0,
         };
         if (!contract_type || !barrier_map[contract_type]) return null;
         return barrier_map[contract_type](num) ? num : null;
@@ -110,11 +110,12 @@ const LastDigitPrediction = ({
     // latest last digit refers to digit and spot values from latest price
     // latest contract digit refers to digit and spot values from last digit contract in contracts array
     const latest_tick_pip_size = tick ? +tick.pip_size : null;
-    const latest_tick_ask_price = tick?.ask && latest_tick_pip_size ? tick.ask.toFixed(latest_tick_pip_size) : null;
-    const latest_tick_digit = latest_tick_ask_price ? +(latest_tick_ask_price.split('').pop() || '') : null;
+    const latest_tick_quote_price =
+        tick?.quote && latest_tick_pip_size ? tick.quote.toFixed(latest_tick_pip_size) : null;
+    const latest_tick_digit = latest_tick_quote_price ? +(latest_tick_quote_price.split('').pop() || '') : null;
     const position = tick ? getOffset()[latest_tick_digit ?? -1] : getOffset()[last_contract_digit.digit];
     const latest_digit = !(is_won || is_lost)
-        ? { digit: latest_tick_digit, spot: latest_tick_ask_price }
+        ? { digit: latest_tick_digit, spot: latest_tick_quote_price }
         : last_contract_digit;
     return (
         <div

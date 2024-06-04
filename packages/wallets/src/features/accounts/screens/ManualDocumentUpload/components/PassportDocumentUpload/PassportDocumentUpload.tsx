@@ -1,5 +1,6 @@
 import React from 'react';
-import { Dropzone, FlowTextField, useFlow } from '../../../../../../components';
+import moment from 'moment';
+import { DatePicker, Dropzone, FlowTextField, useFlow } from '../../../../../../components';
 import { Divider, WalletText } from '../../../../../../components/Base';
 import PassportPlaceholder from '../../../../../../public/images/accounts/passport-placeholder.svg';
 import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
@@ -8,6 +9,10 @@ import './PassportDocumentUpload.scss';
 
 const PassportDocumentUpload = () => {
     const { formValues, setFormValues } = useFlow();
+
+    const handleDateChange = (formattedDate: string | null) => {
+        setFormValues('passportExpiryDate', formattedDate);
+    };
 
     return (
         <div className='wallets-passport-document-upload' data-testid='dt_passport-document-upload'>
@@ -19,17 +24,17 @@ const PassportDocumentUpload = () => {
                     name='passportNumber'
                     validationSchema={documentRequiredValidator('Passport number')}
                 />
-                <FlowTextField
+                <DatePicker
                     defaultValue={formValues.passportExpiryDate ?? ''}
                     label='Expiry date*'
+                    minDate={moment().add(2, 'days').toDate()}
                     name='passportExpiryDate'
-                    placeholder='DD/MM/YYYY'
-                    type='date'
+                    onDateChange={handleDateChange}
                     validationSchema={expiryDateValidator}
                 />
             </div>
             <Divider />
-            <div className='wallets-passport-document-upload__document-section'>
+            <div className='wallets-passport-document-upload__document-upload'>
                 <WalletText>Next, upload the page of your passport that contains your photo.</WalletText>
                 <Dropzone
                     buttonText='Drop file or click here to upload'
@@ -38,7 +43,8 @@ const PassportDocumentUpload = () => {
                     fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
                     icon={<PassportPlaceholder />}
                     maxSize={8388608}
-                    onFileChange={(file: File) => setFormValues('passportCard', file)}
+                    noClick
+                    onFileChange={(file?: File) => setFormValues('passportCard', file)}
                 />
                 <DocumentRuleHints docType='passport' />
             </div>

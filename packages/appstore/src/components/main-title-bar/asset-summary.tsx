@@ -6,14 +6,19 @@ import BalanceText from 'Components/elements/text/balance-text';
 import { observer, useStore } from '@deriv/stores';
 import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
-import { useTotalAccountBalance, useCFDAccounts, usePlatformAccounts, useExchangeRate } from '@deriv/hooks';
+import {
+    useTotalAccountBalance,
+    useCFDAccounts,
+    usePlatformAccounts,
+    useTotalAssetCurrency,
+    useExchangeRate,
+} from '@deriv/hooks';
+import { isRatesLoaded } from '../../helpers';
 
 const AssetSummary = observer(() => {
-    const { exchange_rates } = useExchangeRate();
-
     const { traders_hub, client, common, modules } = useStore();
     const { selected_account_type, is_eu_user, no_CR_account, no_MF_account } = traders_hub;
-    const { is_logging_in, is_switching, default_currency, is_landing_company_loaded } = client;
+    const { is_logging_in, is_switching, default_currency, is_landing_company_loaded, is_mt5_allowed } = client;
     const { account_transfer, general_store } = modules.cashier;
     const { is_transfer_confirm } = account_transfer;
     const { is_loading } = general_store;
@@ -24,6 +29,8 @@ const AssetSummary = observer(() => {
     const platform_real_balance = useTotalAccountBalance(platform_real_accounts);
     const cfd_real_balance = useTotalAccountBalance(cfd_real_accounts);
     const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
+    const total_assets_real_currency = useTotalAssetCurrency();
+    const { exchange_rates } = useExchangeRate();
 
     const is_real = selected_account_type === 'real';
 
@@ -34,12 +41,16 @@ const AssetSummary = observer(() => {
     const eu_account = is_eu_user && !no_MF_account;
     const cr_account = !is_eu_user && !no_CR_account;
 
+    const eu_mt5_allowed_total_assets = is_mt5_allowed
+        ? localize('Total assets in your Deriv Apps and Deriv MT5 CFDs demo account.')
+        : localize('Total assets in your account.');
+
     const should_show_loader =
         ((is_switching || is_logging_in) && (eu_account || cr_account)) ||
         !is_landing_company_loaded ||
-        !exchange_rates ||
         is_loading ||
-        is_transfer_confirm;
+        is_transfer_confirm ||
+        !isRatesLoaded(is_real, total_assets_real_currency, platform_real_accounts, cfd_real_accounts, exchange_rates);
 
     if (should_show_loader) {
         return (
@@ -63,9 +74,7 @@ const AssetSummary = observer(() => {
                     <Popover
                         alignment={isMobile() ? 'top' : 'left'}
                         message={
-                            is_eu_user
-                                ? localize('Total assets in your Deriv Apps and Deriv MT5 CFDs demo account.')
-                                : localize('Total assets in all your accounts')
+                            is_eu_user ? eu_mt5_allowed_total_assets : localize('Total assets in all your accounts')
                         }
                         zIndex={9999}
                         is_bubble_hover_enabled

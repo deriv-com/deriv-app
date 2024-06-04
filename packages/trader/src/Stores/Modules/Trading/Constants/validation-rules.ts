@@ -1,12 +1,11 @@
 import { localize } from '@deriv/translations';
-import { isHourValid, isMinuteValid, isTimeValid, toMoment } from '@deriv/shared';
+import { isHourValid, isMinuteValid, isTimeValid, toMoment, TRuleOptions } from '@deriv/shared';
 import { isSessionAvailable } from '../Helpers/start-date';
 import { TTradeStore } from 'Types';
-import type { TRuleOptions } from 'Utils/Validator/validator';
 
 type TValidationRules = {
     [key: string]: {
-        rules?: Array<string | TRuleOptions>[];
+        rules?: Array<string | TRuleOptions<TTradeStore>>[];
         trigger?: string;
     };
 };
@@ -143,7 +142,7 @@ export const getValidationRules = (): TValidationRules => ({
                 {
                     func: (value: TTradeStore['expiry_time'], options, store) =>
                         store?.contract_start_type === 'spot' || isTimeValid(value ?? ''),
-                    message: localize('Please enter the start time in the format "HH:MM".'),
+                    message: localize('Please enter the expiry time in the format "HH:MM".'),
                 },
             ],
             [

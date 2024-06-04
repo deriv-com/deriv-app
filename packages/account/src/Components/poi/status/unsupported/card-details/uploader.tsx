@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Field, FieldProps, FormikProps, FormikValues } from 'formik';
 import { localize } from '@deriv/translations';
 import { isMobile, supported_filetypes, max_document_size } from '@deriv/shared';
@@ -17,9 +17,9 @@ type TDROPZONE_ERRORS = Readonly<typeof DROPZONE_ERRORS>;
 type TUploader = {
     data: FormikValues;
     value: FormikValues;
-    is_full: boolean;
-    has_frame: boolean;
-    onChange: (e: unknown) => void;
+    is_full?: boolean;
+    has_frame?: boolean;
+    onChange?: (e: unknown) => void;
     setFieldValue: FormikProps<FormikValues>['setFieldValue'];
     handleChange: (file: object | null, setFieldValue: FormikProps<FormikValues>['setFieldValue']) => void;
 };
@@ -54,7 +54,7 @@ const Message = ({ data, open }: TMessage) => (
     </div>
 );
 
-const Preview = ({ data, setFieldValue, value, has_frame, handleChange }: Partial<TUploader>) => {
+const Preview = ({ data, setFieldValue, value, has_frame, handleChange }: Omit<TUploader, 'is_full' | 'onChange'>) => {
     const [background_url, setBackgroundUrl] = React.useState('');
 
     React.useEffect(() => {
@@ -64,7 +64,7 @@ const Preview = ({ data, setFieldValue, value, has_frame, handleChange }: Partia
     return (
         <div className={`${ROOT_CLASS}__uploader-details ${ROOT_CLASS}__uploader-details--preview`}>
             <div
-                className={classNames(`${ROOT_CLASS}__uploader-image`, {
+                className={clsx(`${ROOT_CLASS}__uploader-image`, {
                     [`${ROOT_CLASS}__uploader-image--has-frame`]: has_frame,
                 })}
                 style={{ backgroundImage: `url(${background_url})` }}
@@ -94,7 +94,7 @@ const Preview = ({ data, setFieldValue, value, has_frame, handleChange }: Partia
     );
 };
 
-const Uploader = ({ data, value, is_full, onChange, has_frame }: Partial<TUploader>) => {
+const Uploader = ({ data, value, is_full, onChange, has_frame }: Omit<TUploader, 'setFieldValue' | 'handleChange'>) => {
     const [image, setImage] = React.useState<FormikValues>();
 
     React.useEffect(() => {
@@ -141,7 +141,7 @@ const Uploader = ({ data, value, is_full, onChange, has_frame }: Partial<TUpload
         <Field name={data?.name}>
             {({ form: { setFieldValue } }: FieldProps) => (
                 <div
-                    className={classNames(`${ROOT_CLASS}__uploader`, {
+                    className={clsx(`${ROOT_CLASS}__uploader`, {
                         [`${ROOT_CLASS}__uploader--full`]: is_full,
                     })}
                 >

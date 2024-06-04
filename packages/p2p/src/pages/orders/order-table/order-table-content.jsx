@@ -1,11 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Loading, Button, InfiniteDataList, Div100vhContainer } from '@deriv/components';
+import { Loading, Button, InfiniteDataList, Div100vhContainer, Text } from '@deriv/components';
 import { reaction } from 'mobx';
 import { isMobile, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from 'Components/i18next';
+import { Localize } from 'Components/i18next';
 import TableError from 'Components/section-error';
 import P2pEmpty from 'Components/p2p-empty';
 import OrderRow from 'Pages/orders/order-table/order-table-row.jsx';
@@ -26,6 +26,22 @@ const OrderTableContent = () => {
         client: { loginid },
     } = useStore();
     const history = useHistory();
+    const { is_active_tab } = general_store;
+    const getNoOrderMessage = () => {
+        if (is_active_tab) {
+            return (
+                <Text weight='bold'>
+                    <Localize i18n_default_text='You have no orders.' />
+                </Text>
+            );
+        }
+
+        return (
+            <Text as='div' align='center' color='less-prominent'>
+                <Localize i18n_default_text="You've made no transactions of this type during this period." />
+            </Text>
+        );
+    };
 
     React.useEffect(
         () =>
@@ -53,7 +69,7 @@ const OrderTableContent = () => {
         const modified_list = order_store.orders
             .map(order => createExtendedOrderDetails(order, loginid, general_store.server_time))
             // TODO: Get rid of this filter if confirmed that BE is sending correct data.
-            .filter(order => (general_store.is_active_tab ? order.is_active_order : order.is_inactive_order));
+            .filter(order => (is_active_tab ? order.is_active_order : order.is_inactive_order));
 
         if (modified_list.length) {
             return (
@@ -72,8 +88,13 @@ const OrderTableContent = () => {
     }
 
     return (
-        <P2pEmpty has_tabs icon='IcNoOrder' title={localize('You have no orders.')}>
-            {general_store.is_active_tab && (
+        <P2pEmpty
+            has_tabs
+            icon={is_active_tab ? 'IcNoOrder' : 'IcStatement'}
+            is_disabled={!is_active_tab}
+            title={getNoOrderMessage()}
+        >
+            {is_active_tab && (
                 <Button
                     primary
                     large

@@ -1,4 +1,4 @@
-import { cloneObject } from '@deriv/shared';
+import { cloneObject, toMoment } from '@deriv/shared';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS, subscribeWS } from 'Utils/websocket';
@@ -8,18 +8,20 @@ import { api_error_codes } from '../constants/api-error-codes';
 export default class OrderStore {
     constructor(root_store) {
         makeObservable(this, {
+            action_param: observable,
             active_order: observable,
             api_error_message: observable,
-            cancellation_block_duration: observable,
-            cancellation_count_period: observable,
-            cancellation_limit: observable,
+            date_from: observable,
+            date_to: observable,
             error_code: observable,
             error_message: observable,
+            filtered_date_range: observable,
             has_more_items_to_load: observable,
             is_invalid_verification_link_modal_open: observable,
             is_loading: observable,
             is_rating_modal_open: observable,
             is_recommended: observable,
+            is_verifying_email: observable,
             orders: observable,
             order_id: observable,
             order_payment_method_details: observable,
@@ -28,13 +30,14 @@ export default class OrderStore {
             verification_code: observable,
             verification_link_error_message: observable,
             should_navigate_to_buy_sell: observable,
+            should_navigate_to_order_details: observable,
             has_order_payment_method_details: computed,
             order_information: computed,
             nav: computed,
             confirmOrderRequest: action.bound,
             confirmOrder: action.bound,
             getP2POrderList: action.bound,
-            getWebsiteStatus: action.bound,
+            handleDateChange: action.bound,
             handleRating: action.bound,
             hideDetails: action.bound,
             loadMoreOrders: action.bound,
@@ -42,19 +45,20 @@ export default class OrderStore {
             onOrdersUpdate: action.bound,
             onPageReturn: action.bound,
             onUnmount: action.bound,
+            setActionParam: action.bound,
             setActiveOrder: action.bound,
+            setDateTo: action.bound,
             setForceRerenderOrders: action.bound,
             setShouldNavigateToBuySell: action.bound,
+            setShouldNavigateToOrderDetails: action.bound,
             setApiErrorMessage: action.bound,
-            setCancellationBlockDuration: action.bound,
-            setCancellationCountPeriod: action.bound,
-            setCancellationLimit: action.bound,
             setErrorCode: action.bound,
             setErrorMessage: action.bound,
             setHasMoreItemsToLoad: action.bound,
             setIsLoading: action.bound,
             setIsRatingModalOpen: action.bound,
             setIsRecommended: action.bound,
+            setIsVerifyingEmail: action.bound,
             setOrderPaymentMethodDetails: action.bound,
             setOrderDetails: action.bound,
             setOrderId: action.bound,
@@ -81,19 +85,22 @@ export default class OrderStore {
         );
     }
 
+    action_param = null;
     active_order = null;
     api_error_message = '';
-    cancellation_block_duration = 0;
-    cancellation_count_period = 0;
-    cancellation_limit = 0;
+    date_from = null;
+    date_to = null;
     error_code = '';
     error_message = '';
+    filtered_date_range = null;
     has_more_items_to_load = false;
     is_invalid_verification_link_modal_open = false;
     should_navigate_to_buy_sell = false;
+    should_navigate_to_order_details = false;
     is_loading = false;
     is_rating_modal_open = false;
     is_recommended = undefined;
+    is_verifying_email = false;
     orders = [];
     order_id = null;
     order_payment_method_details = null;
@@ -164,6 +171,8 @@ export default class OrderStore {
                 }
 
                 localStorage.removeItem('verification_code.p2p_order_confirm');
+                this.setVerificationCode('');
+                this.setActionParam(null);
             }
         });
     }
@@ -188,6 +197,22 @@ export default class OrderStore {
         });
     }
 
+    handleDateChange(date_values, { date_range } = {}) {
+        const { from, to, is_batch } = date_values;
+
+        this.filtered_date_range = date_range;
+
+        if (from) {
+            this.date_from = toMoment(from).unix();
+        } else if (is_batch) {
+            this.date_from = null;
+        }
+
+        if (to) this.setDateTo(toMoment(to).unix());
+        this.setIsLoading(true);
+        this.loadMoreOrders({}, true);
+    }
+
     getP2POrderList() {
         requestWS({ p2p_order_list: 1 }).then(response => {
             if (response) {
@@ -207,22 +232,6 @@ export default class OrderStore {
         });
     }
 
-    getWebsiteStatus(should_show_cancel_modal) {
-        requestWS({ website_status: 1 }).then(response => {
-            if (response.error) {
-                this.setErrorMessage(response.error.message);
-            } else {
-                const { p2p_config } = response.website_status;
-                this.setCancellationBlockDuration(p2p_config.cancellation_block_duration);
-                this.setCancellationCountPeriod(p2p_config.cancellation_count_period);
-                this.setCancellationLimit(p2p_config.cancellation_limit);
-            }
-
-            if (should_show_cancel_modal)
-                this.root_store.general_store.showModal({ key: 'OrderDetailsCancelModal', props: {} });
-        });
-    }
-
     handleRating(rate) {
         this.setRatingValue(rate);
     }
@@ -236,17 +245,21 @@ export default class OrderStore {
         this.setActiveOrder(null);
     }
 
-    loadMoreOrders({ startIndex }) {
+    loadMoreOrders({ startIndex = 0 }, should_reset = false) {
         this.setApiErrorMessage('');
         return new Promise(resolve => {
             const { general_store } = this.root_store;
             const active = general_store.is_active_tab ? 1 : 0;
-            requestWS({
+            const order_request = {
                 p2p_order_list: 1,
                 active,
                 offset: startIndex,
                 limit: general_store.list_item_limit,
-            }).then(response => {
+            };
+            if (this.date_from && !active) order_request.date_from = this.date_from;
+            if (this.date_to && !active) order_request.date_to = this.date_to;
+
+            requestWS(order_request).then(response => {
                 if (!response?.error) {
                     // Ignore any responses that don't match our request. This can happen
                     // due to quickly switching between Active/Past tabs.
@@ -254,7 +267,7 @@ export default class OrderStore {
                         const { list } = response.p2p_order_list;
                         this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
 
-                        const old_list = [...this.orders];
+                        const old_list = should_reset ? [] : [...this.orders];
                         const new_list = [];
 
                         list?.forEach(order => {
@@ -271,7 +284,7 @@ export default class OrderStore {
                     }
                 } else if (response?.error?.code === api_error_codes.PERMISSION_DENIED) {
                     this.root_store.general_store.setIsBlocked(true);
-                } else {
+                } else if (response.error.code !== api_error_codes.ADVERTISER_NOT_FOUND) {
                     this.setApiErrorMessage(response.error.message);
                 }
 
@@ -356,6 +369,10 @@ export default class OrderStore {
         this.active_order = active_order;
     }
 
+    setDateTo(date_to) {
+        this.date_to = date_to;
+    }
+
     setQueryDetails(input_order) {
         const { general_store } = this.root_store;
         const order_information = createExtendedOrderDetails(
@@ -432,7 +449,7 @@ export default class OrderStore {
         if (this.order_id === null) {
             // When we're looking at a list, it's safe to move orders from Active to Past.
             if (order_idx === -1) {
-                this.orders.unshift(p2p_order_info);
+                return;
             } else if (
                 (get_order_status.is_completed_order && get_order_status.has_review_details) ||
                 !get_order_status.is_reviewable
@@ -477,6 +494,7 @@ export default class OrderStore {
                 dry_run: 1,
             }).then(response => {
                 general_store.hideModal();
+                this.setIsVerifyingEmail(true);
                 if (response) {
                     if (!response.error) {
                         clearTimeout(wait);
@@ -501,7 +519,7 @@ export default class OrderStore {
                             }, 750);
                         } else if (
                             code === api_error_codes.EXCESSIVE_VERIFICATION_FAILURES &&
-                            !order_store?.order_information.is_buy_order_for_user
+                            !order_store?.order_information?.is_buy_order_for_user
                         ) {
                             if (general_store.isCurrentModal('InvalidVerificationLinkModal')) {
                                 general_store.hideModal();
@@ -514,6 +532,8 @@ export default class OrderStore {
                                 },
                             });
                         }
+                        this.setVerificationCode('');
+                        this.setActionParam(null);
                     }
                     localStorage.removeItem('verification_code.p2p_order_confirm');
                 }
@@ -521,24 +541,20 @@ export default class OrderStore {
         }
     }
 
+    setActionParam(action_param) {
+        this.action_param = action_param;
+    }
+
     setApiErrorMessage(api_error_message) {
         this.api_error_message = api_error_message;
     }
 
-    setCancellationBlockDuration(cancellation_block_duration) {
-        this.cancellation_block_duration = cancellation_block_duration;
-    }
-
-    setCancellationCountPeriod(cancellation_count_period) {
-        this.cancellation_count_period = cancellation_count_period;
-    }
-
-    setCancellationLimit(cancellation_limit) {
-        this.cancellation_limit = cancellation_limit;
-    }
-
     setShouldNavigateToBuySell(should_navigate_to_buy_sell) {
         this.should_navigate_to_buy_sell = should_navigate_to_buy_sell;
+    }
+
+    setShouldNavigateToOrderDetails(should_navigate_to_order_details) {
+        this.should_navigate_to_order_details = should_navigate_to_order_details;
     }
 
     setErrorCode(error_code) {
@@ -567,6 +583,10 @@ export default class OrderStore {
 
     setIsRecommended(is_recommended) {
         this.is_recommended = is_recommended;
+    }
+
+    setIsVerifyingEmail(is_verifying_email) {
+        this.is_verifying_email = is_verifying_email;
     }
 
     setOrders(orders) {

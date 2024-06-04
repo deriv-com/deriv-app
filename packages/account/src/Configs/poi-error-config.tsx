@@ -30,7 +30,7 @@ export const CLAIMED_DOCUMENT_ERROR_MESSAGE = (
 export const generateIDVError = (
     is_document_upload_required: boolean,
     latest_status: DeepRequired<GetAccountStatus>['authentication']['attempts']['latest'],
-    chosen_country: DeepRequired<ResidenceList[0]>,
+    chosen_country: ResidenceList[0],
     mismatch_status: keyof typeof IDV_ERROR_STATUS
 ) => {
     const document_name = is_document_upload_required

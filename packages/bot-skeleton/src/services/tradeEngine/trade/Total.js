@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 import { info, log } from '../utils/broadcast';
 import { createError } from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
-import { log_types } from '../../../constants/messages';
+import { LogTypes } from '../../../constants/messages';
 
 const skeleton = {
     totalProfit: 0,
@@ -66,7 +66,7 @@ export default Engine =>
                 totalPayout: accountStat.totalPayout,
             });
 
-            log(win ? log_types.PROFIT : log_types.LOST, { currency, profit });
+            log(win ? LogTypes.PROFIT : LogTypes.LOST, { currency, profit });
         }
 
         updateAndReturnTotalRuns() {

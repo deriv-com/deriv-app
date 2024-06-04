@@ -24,9 +24,9 @@ test.describe('Wallets - Traders Hub', () => {
                 accounts: DEFAULT_WALLET_ACCOUNTS,
             },
         });
-        await page.goto(`${baseURL}/wallets`);
+        await page.goto(`${baseURL}/`);
 
-        // eslint-disable-next-line testing-library/prefer-screen-queries
-        await expect(page.getByText(`10,000.00 USD`)).toBeVisible();
+        const balanceContainer = await page.textContent('.wallets-balance__container');
+        expect(balanceContainer).toContain('9,988,000.89 USD');
     });
 });

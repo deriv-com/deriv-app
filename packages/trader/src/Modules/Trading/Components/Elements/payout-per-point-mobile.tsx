@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Money, Text, Popover } from '@deriv/components';
+import { ArrowIndicator, Money, Text, Popover } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset';
 import { observer } from '@deriv/stores';
@@ -15,10 +15,8 @@ const PayoutPerPointMobile = observer(() => {
     const { currency, proposal_info, contract_type, is_vanilla, is_vanilla_fx } = useTraderStore();
     const contract_key = contract_type?.toUpperCase();
     // remove assertion and local TProposalInfo type after TS migration for trade package is complete
-    const { has_error, has_increased, id, message, obj_contract_basis } =
-        (proposal_info as TProposalInfo)?.[contract_key] || {};
+    const { message, obj_contract_basis } = (proposal_info as TProposalInfo)?.[contract_key] || {};
     const { text: label, value: payout_per_point } = obj_contract_basis || {};
-    const has_error_or_not_loaded = has_error || !id;
     const turbos_payout_message = (
         <Localize i18n_default_text='This is the amount you’ll receive at expiry for every point of change in the underlying price, if the spot price never touches or breaches the barrier throughout the contract duration.' />
     );
@@ -49,13 +47,7 @@ const PayoutPerPointMobile = observer(() => {
             </div>
             <Text size='xs' weight='bold' className='payout-per-point__value'>
                 <Money amount={payout_per_point} currency={currency} show_currency should_format={false} />
-                <span className='trade-container__price-info-movement'>
-                    {!has_error_or_not_loaded && has_increased !== null && has_increased ? (
-                        <Icon icon='IcProfit' />
-                    ) : (
-                        <Icon icon='IcLoss' />
-                    )}
-                </span>
+                <ArrowIndicator className='trade-container__price-info-movement' value={payout_per_point} />
             </Text>
         </Fieldset>
     );

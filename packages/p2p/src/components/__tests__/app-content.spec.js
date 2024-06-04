@@ -8,7 +8,6 @@ const mocked_store_values = {
     general_store: {
         is_loading: false,
         should_show_dp2p_blocked: false,
-        should_show_popup: false,
         props: { should_show_verification: false },
         is_advertiser: false,
     },
@@ -46,7 +45,6 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 // jest.mock('Components/dp2p-blocked', () => jest.fn(() => 'Dp2pBlocked'));
-jest.mock('Components/nickname-form', () => jest.fn(() => 'NicknameForm'));
 jest.mock('Components/verification/verification', () => jest.fn(() => 'Verification'));
 jest.mock('Pages/my-ads/my-ads', () => jest.fn(() => 'MyAds'));
 jest.mock('Pages/orders/orders', () => jest.fn(() => 'Orders'));

@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useMemo } from 'react';
 import * as Yup from 'yup';
-import { useResidenceList, useSettings } from '@deriv/api';
-import { FlowTextField, Loader, useFlow, WalletDropdown, WalletText } from '../../../../components';
+import { useResidenceList, useSettings } from '@deriv/api-v2';
+import { FlowTextField, InlineMessage, Loader, useFlow, WalletDropdown, WalletText } from '../../../../components';
 import { accountOpeningReasonList } from './constants';
 import './PersonalDetails.scss';
 
@@ -63,6 +63,20 @@ const PersonalDetails = () => {
                             Any information you provide is confidential and will be used for verification purposes only.
                         </WalletText>
                     </div>
+                    <div className='wallets-personal-details__inline'>
+                        <InlineMessage type='information' variant='contained'>
+                            <WalletText size='xs'>
+                                Need help with tax info? Let us know via{' '}
+                                <button
+                                    className='wallets-link wallets-link__variant--bold'
+                                    onClick={() => window.LC_API.open_chat_window()}
+                                >
+                                    live chat
+                                </button>
+                                .
+                            </WalletText>
+                        </InlineMessage>
+                    </div>
                     <div className='wallets-personal-details__form'>
                         <WalletDropdown
                             label='Citizenship*'
@@ -70,6 +84,7 @@ const PersonalDetails = () => {
                                 text: residence.text as ReactNode,
                                 value: residence.value ?? '',
                             }))}
+                            listHeight='sm'
                             name='wallets-personal-details__dropdown-citizenship'
                             onSelect={selectedItem => setFormValues('citizenship', selectedItem)}
                             value={getSettings?.citizen ?? formValues?.citizenship}
@@ -82,6 +97,7 @@ const PersonalDetails = () => {
                                 text: residence.text as ReactNode,
                                 value: residence.value ?? '',
                             }))}
+                            listHeight='sm'
                             name='wallets-personal-details__dropdown-pob'
                             onSelect={selectedItem => setFormValues('placeOfBirth', selectedItem)}
                             value={getSettings?.place_of_birth ?? ''}
@@ -95,6 +111,7 @@ const PersonalDetails = () => {
                                 text: residence.text as ReactNode,
                                 value: residence.value ?? '',
                             }))}
+                            listHeight='sm'
                             name='wallets-personal-details__dropdown-tax-residence'
                             onChange={inputValue => {
                                 residenceList.forEach(residence => {

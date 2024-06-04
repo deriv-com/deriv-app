@@ -54,6 +54,10 @@ declare global {
     type RequireAtLeastOne<T> = {
         [K in keyof T]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<keyof T, K>>>;
     }[keyof T];
+
+    type WithRequiredProperty<T, Key extends keyof T> = T & {
+        [K in Key]-?: T[K];
+    };
 }
 
 export {};

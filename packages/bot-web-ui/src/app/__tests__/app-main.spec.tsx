@@ -19,6 +19,7 @@ const root_store = {
     },
 };
 
+jest.mock('react-toastify/dist/ReactToastify.css', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());

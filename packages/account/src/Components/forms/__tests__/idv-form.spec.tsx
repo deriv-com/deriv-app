@@ -3,12 +3,16 @@ import { Formik } from 'formik';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import IDVForm from '../idv-form';
-import { TIDVFormValues } from 'Types';
+import { TIDVFormValues } from '../../../Types';
 
 jest.mock('Helpers/utils', () => ({
     ...jest.requireActual('Helpers/utils'),
-    getDocumentData: jest.fn((country_code, key) => {
-        const data = {
+    getDocumentData: jest.fn((country_code: string, key) => {
+        const data: {
+            [key: string]: {
+                [key: string]: { new_display_name: string; example_format: string; sample_image: string };
+            };
+        } = {
             tc: {
                 document_1: {
                     new_display_name: '',
@@ -157,5 +161,28 @@ describe('<IDVForm/>', () => {
             fireEvent.change(el_selected_document);
         });
         expect(await screen.findByText('Example: 0123456789')).toBeInTheDocument();
+    });
+
+    it("Should hide document number field when 'I dont have any of these is chosen'", async () => {
+        render(<IDVForm {...mock_props} />, {
+            wrapper: ({ children }) => (
+                <Formik initialValues={mock_values} onSubmit={jest.fn()}>
+                    {() => children}
+                </Formik>
+            ),
+        });
+
+        const document_type_input = screen.getByLabelText('Choose the document type');
+        const document_number_input = screen.getByText('Enter your document number');
+
+        expect(document_type_input).toBeVisible();
+        expect(document_number_input).toBeVisible();
+
+        userEvent.click(document_type_input);
+        userEvent.type(document_type_input, "I don't have any of these");
+
+        await waitFor(() => {
+            expect(document_number_input).not.toBeVisible();
+        });
     });
 });

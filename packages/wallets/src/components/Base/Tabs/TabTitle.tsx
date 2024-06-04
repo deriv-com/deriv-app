@@ -1,16 +1,17 @@
 import React, { FC, useCallback } from 'react';
 import classNames from 'classnames';
-import { WalletText } from '../WalletText';
+import WalletText, { WalletTextProps } from '../WalletText/WalletText';
 
 export type TabTitleProps = {
     icon?: React.ReactNode;
     index: number;
     isActive?: boolean;
     setSelectedTab: (index: number) => void;
+    size: WalletTextProps['size'];
     title: string;
 };
 
-const TabTitle: FC<TabTitleProps> = ({ icon, index, isActive, setSelectedTab, title }) => {
+const TabTitle: FC<TabTitleProps> = ({ icon, index, isActive, setSelectedTab, size = 'md', title }) => {
     const handleOnClick = useCallback(() => {
         setSelectedTab(index);
     }, [setSelectedTab, index]);
@@ -23,7 +24,9 @@ const TabTitle: FC<TabTitleProps> = ({ icon, index, isActive, setSelectedTab, ti
             onClick={handleOnClick}
         >
             {icon}
-            <WalletText weight={isActive ? 'bold' : 'normal'}>{title}</WalletText>
+            <WalletText size={size} weight={isActive ? 'bold' : 'normal'}>
+                {title}
+            </WalletText>
         </button>
     );
 };

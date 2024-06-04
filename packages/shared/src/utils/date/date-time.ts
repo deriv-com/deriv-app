@@ -1,6 +1,5 @@
-import { localize } from '@deriv/translations';
+import { getLanguage, localize } from '@deriv/translations';
 import moment from 'moment';
-import 'moment/min/locales';
 
 type TExtendedMoment = typeof moment & {
     createFromInputFallback: (config: { _d: Date }) => void;
@@ -13,7 +12,13 @@ type TExtendedMoment = typeof moment & {
 };
 
 // Localize moment instance with specific object
-export const initMoment = (lang: string) => moment.locale(lang);
+export const initMoment = (lang: string) => {
+    const hasEnMomentLocale = ['EN', 'AR', 'BN', 'SI']; // 'AR', 'BN' & 'SI' langs have non-numeric dates ('২০২৪-০৫-০৭'), our current usage of moment requires us to make all dates numeric
+    if (!lang) return moment;
+    let locale = lang.toLowerCase().replace('_', '-');
+    if (hasEnMomentLocale.includes(lang)) locale = 'en-gb';
+    return import(`moment/locale/${locale}`).then(() => moment.locale(locale)).catch(() => moment);
+};
 
 /**
  * Convert epoch to moment object
@@ -46,6 +51,12 @@ export const toMoment = (value?: moment.MomentInput): moment.Moment => {
 };
 
 export const toLocalFormat = (time: moment.MomentInput) => moment.utc(time).local().format('YYYY-MM-DD HH:mm:ss Z');
+export const getLongDate = (time: number): string => {
+    moment.locale(getLanguage().toLowerCase());
+    //need to divide to 1000 as timestamp coming from BE is in ms
+    return moment.unix(time / 1000).format('MMMM Do, YYYY');
+};
+
 /**
  * Set specified time on moment object
  * @param  {moment} moment_obj  the moment to set the time on

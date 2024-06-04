@@ -101,21 +101,30 @@ describe('<ContractTypeWidget />', () => {
         value: TRADE_TYPES.MULTIPLIER,
     };
 
+    const mocked_default_props = {
+        name: 'test_name',
+        onChange: jest.fn(),
+        list,
+        unavailable_trade_types_list,
+        value: item.value,
+    };
+
     it('should render <ContractTypeMenu /> component when click on ', () => {
-        render(
-            <ContractTypeWidget
-                name='test_name'
-                onChange={jest.fn()}
-                list={list}
-                unavailable_trade_types_list={unavailable_trade_types_list}
-                value={item.value}
-            />,
-            {
-                wrapper: ({ children }) => (
-                    <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
-                ),
-            }
-        );
+        render(<ContractTypeWidget {...mocked_default_props} />, {
+            wrapper: ({ children }) => (
+                <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
+            ),
+        });
         expect(screen.getByTestId('dt_contract_widget')).toBeInTheDocument();
+    });
+
+    it('should render "Learn about this trade type" phrase', () => {
+        render(<ContractTypeWidget {...mocked_default_props} />, {
+            wrapper: ({ children }) => (
+                <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
+            ),
+        });
+
+        expect(screen.getByText('Learn about this trade type')).toBeInTheDocument();
     });
 });

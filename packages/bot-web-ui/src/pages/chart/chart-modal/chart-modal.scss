@@ -1,0 +1,96 @@
+@import '../../../styles/mixins.scss';
+
+#id-charts--disabled {
+    color: var(--fill-normal-1);
+    stroke-opacity: 30%;
+    pointer-events: none;
+}
+
+.chart-modal-dialog {
+    --modal-height: calc(100% - 54px);
+    height: var(--modal-height);
+    max-height: var(--modal-height);
+    padding: 0 0.8rem;
+    z-index: 999;
+    transition: opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+    @include flex-center;
+
+    .dashboard__chart-wrapper--modal {
+        height: 100%;
+        width: 100%;
+    }
+
+    .sc-navigation-widget {
+        display: none;
+    }
+
+    .cq-symbols-display {
+        .cq-menu-btn {
+            padding: 0.2rem;
+        }
+
+        .cq-symbol {
+            &-select-btn {
+                margin: 0.2rem;
+
+                &-dropdown {
+                    transform: scale(1);
+                    margin-left: auto;
+                }
+
+                .cq-symbol {
+                    font-size: 1.4rem;
+                }
+
+                &-info {
+                    min-height: unset;
+                }
+            }
+        }
+    }
+
+    .sc-toolbar-widget {
+        bottom: 4vh;
+        top: unset;
+        border-width: 0;
+        border-radius: 2rem;
+        cursor: pointer;
+        background: var(--general-section-1);
+
+        .sc-tooltip:not(:first-child) {
+            display: none;
+        }
+
+        .cq-menu-btn {
+            .sc-chart-mode__menu__timeperiod {
+                top: 0.6rem;
+                left: 1rem;
+            }
+        }
+
+        .cq-menu-btn:hover {
+            background: none;
+        }
+    }
+
+    .cq-chart-title {
+        .cq-menu-dropdown {
+            position: fixed;
+            height: 46rem;
+            inset-inline-start: unset;
+
+            .sc-dialog {
+                height: 100% !important;
+
+                &__body {
+                    height: inherit !important;
+
+                    .sc-mcd {
+                        height: inherit !important;
+                        min-width: auto !important;
+                    }
+                }
+            }
+        }
+    }
+}

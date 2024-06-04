@@ -90,13 +90,13 @@ export default class TradingTimes {
             return;
         }
 
-        markets.forEach(market => {
+        markets?.forEach(market => {
             const { submarkets } = market;
 
-            submarkets.forEach(submarket => {
+            submarkets?.forEach(submarket => {
                 const { symbols } = submarket;
 
-                symbols.forEach(symbol_obj => {
+                symbols?.forEach(symbol_obj => {
                     const { times, symbol } = symbol_obj;
                     const { open, close } = times;
                     const is_open_all_day = open.length === 1 && open[0] === '00:00:00' && close[0] === '23:59:59';

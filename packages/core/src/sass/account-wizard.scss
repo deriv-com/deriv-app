@@ -265,7 +265,17 @@
                 margin-top: 2.4rem;
                 @include typeface(--paragraph-center-normal-prominent);
                 @include mobile {
+                    width: 100%;
+                    padding: 1.6rem;
                     text-align: center;
+                }
+                &--info {
+                    display: flex;
+                    background-color: var(--transparent-info);
+                    border-radius: $BORDER_RADIUS;
+                    padding: 0.8rem;
+                    gap: 0.8rem;
+                    align-items: center;
                 }
             }
             &__container {
@@ -783,6 +793,15 @@
         &__fieldset {
             width: 100%;
             max-width: unset !important;
+        }
+    }
+    .details-form__elements {
+        width: 100%;
+    }
+    .financial-assessment__form {
+        width: 70%;
+        @include mobile {
+            width: 100%;
         }
     }
 }

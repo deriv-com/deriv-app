@@ -1,0 +1,19 @@
+@keyframes popup {
+    0% {
+        transform: scale(0.7);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes fadein {
+    0% {
+        transform: translate(0px, 100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(0px, 0);
+        opacity: 1;
+    }
+}

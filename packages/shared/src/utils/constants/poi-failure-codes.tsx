@@ -171,6 +171,10 @@ export const ONFIDO_ERROR_STATUS: TOnfidoErrorStatus = Object.freeze({
         code: 'DataValidationNoDocumentNumbers',
         message: <Localize i18n_default_text='The serial number of your document couldn’t be verified.' />,
     },
+    DuplicatedDocument: {
+        code: 'DuplicatedDocument',
+        message: <Localize i18n_default_text='Your verification documents were already used for another account.' />,
+    },
     Expired: { code: 'Expired', message: <Localize i18n_default_text='Your document has expired.' /> },
     ImageIntegrityColourPicture: {
         code: 'ImageIntegrityColourPicture',

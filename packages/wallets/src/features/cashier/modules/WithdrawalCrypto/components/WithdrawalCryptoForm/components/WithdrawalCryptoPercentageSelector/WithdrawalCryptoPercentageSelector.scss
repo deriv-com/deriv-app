@@ -1,0 +1,19 @@
+.wallets-withdrawal-crypto-percentage {
+    &__selector {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    &__message {
+        width: 100%;
+        height: 1.8rem;
+        text-align: center;
+
+        @include mobile {
+            height: 1.4rem;
+        }
+    }
+}

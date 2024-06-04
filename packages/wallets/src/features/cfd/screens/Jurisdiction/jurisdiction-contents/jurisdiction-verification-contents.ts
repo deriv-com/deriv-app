@@ -11,7 +11,7 @@ export const jurisdictionVerificationContents = (): TJurisdictionVerificationCon
             icon: 'IcDocumentNumberVerification',
             text: `Document number (eg. identity card, passport, driver's license)`,
         },
-        identityNumber: {
+        identityDocument: {
             icon: 'IcIdentityDocumentVerification',
             text: `A copy of your identity document (eg. identity card, passport, deiver's license)`,
         },

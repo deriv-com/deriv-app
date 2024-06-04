@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react';
 import * as Yup from 'yup';
-import { usePOI, useResidenceList, useSettings } from '@deriv/api';
+import { usePOI, useResidenceList, useSettings } from '@deriv/api-v2';
 import { FlowTextField, useFlow, WalletDropdown, WalletText } from '../../../../components';
 import { InlineMessage } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
 import { statusCodes } from '../../constants';
 import { requiredValidator } from '../../validations';
-import { IDVDocumentUploadDetails } from './components';
+import { VerifyDocumentDetails } from '../VerifyDocumentDetails';
 import './IDVDocumentUpload.scss';
 
 type TErrorMessageProps = Exclude<THooks.POI['current']['status'], undefined>;
@@ -145,7 +145,7 @@ const IDVDocumentUpload = () => {
                 <div className='wallets-idv-document-upload__title'>
                     <WalletText weight='bold'>Details</WalletText>
                 </div>
-                <IDVDocumentUploadDetails />
+                <VerifyDocumentDetails />
             </div>
         </div>
     );

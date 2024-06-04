@@ -7,7 +7,7 @@
     display: flex;
     flex-direction: column;
     gap: 1.6rem;
-    padding: 1.5rem 1.6rem 2.4rem;
+    padding: 2.4rem 1.6rem;
 
     &__icon {
         cursor: pointer;
@@ -18,10 +18,13 @@
         grid-auto-flow: column;
         gap: 1rem;
         grid-template-columns: 8% auto;
+
+        & > svg {
+            margin-top: 0.4rem;
+        }
     }
 
     &__border {
         border-top: 0.2rem solid #f2f3f4;
-        margin: 1.6rem 0;
     }
 }

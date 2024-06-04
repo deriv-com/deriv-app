@@ -1,20 +1,46 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
+import { clickAndKeyEventHandler } from '@deriv/shared';
 
 type THeader = {
-    onClickGoBack?: () => void;
+    onClickBack?: () => void;
+    onClose?: () => void;
+    should_render_arrow?: boolean;
+    should_render_close?: boolean;
     text_size?: string;
     title: string;
 };
 
-const Header = ({ onClickGoBack, text_size = 's', title }: THeader) => (
+const Header = ({
+    onClickBack,
+    onClose,
+    should_render_arrow = true,
+    should_render_close = false,
+    text_size = 's',
+    title,
+}: THeader) => (
     <div className='contract-type-info__action-bar'>
-        <span className='contract-type-info__icon' id='dt_contract_info_back_nav' onClick={onClickGoBack}>
-            <Icon icon='IcArrowLeftBold' />
-        </span>
+        {should_render_arrow && (
+            <span
+                className='contract-type-info__icon'
+                onClick={e => clickAndKeyEventHandler(onClickBack, e)}
+                onKeyDown={e => clickAndKeyEventHandler(onClickBack, e)}
+            >
+                <Icon icon='IcArrowLeftBold' />
+            </span>
+        )}
         <Text size={text_size} weight='bold' color='prominent' className='contract-type-info__title'>
             {title}
         </Text>
+        {should_render_close && (
+            <span
+                className='contract-type-info__icon-cross'
+                onClick={e => clickAndKeyEventHandler(onClose, e)}
+                onKeyDown={e => clickAndKeyEventHandler(onClose, e)}
+            >
+                <Icon icon='IcCross' />
+            </span>
+        )}
     </div>
 );
 

@@ -16,8 +16,8 @@ const MigrationSuccessModal = observer(({ is_open, closeModal }: TMigrationSucce
     const history = useHistory();
     const { ui, client } = useStore();
     const { mt5_login_list } = client;
-    const { is_mobile } = ui;
-    const { migrated_mt5_accounts } = useCfdStore();
+    const { is_mobile, setMT5MigrationModalEnabled } = ui;
+    const { migrated_mt5_accounts, setIsFromMt5MigrationModal } = useCfdStore();
 
     const has_migrated_mt5_accounts = !!migrated_mt5_accounts.length;
     const eligible_account_to_migrate = getFormattedJurisdictionCode(
@@ -36,10 +36,16 @@ const MigrationSuccessModal = observer(({ is_open, closeModal }: TMigrationSucce
     );
 
     const directToCashier = () => {
-        closeModal();
+        closeMigrationModals();
         if (!has_open_positions) {
             history.push(routes.cashier_acc_transfer);
         }
+    };
+
+    const closeMigrationModals = () => {
+        setIsFromMt5MigrationModal(false);
+        setMT5MigrationModalEnabled(false);
+        closeModal();
     };
 
     const getMigrationIcon = () => {
@@ -82,7 +88,7 @@ const MigrationSuccessModal = observer(({ is_open, closeModal }: TMigrationSucce
             header_classname='cfd-success-dialog-migration'
             portal_id='deriv_app'
             header=' '
-            onClickClose={closeModal}
+            onClickClose={closeMigrationModals}
         >
             <ModalContent />
         </PageOverlay>
@@ -90,7 +96,7 @@ const MigrationSuccessModal = observer(({ is_open, closeModal }: TMigrationSucce
         <Modal
             className='cfd-success-dialog-migration'
             is_open={is_open}
-            toggleModal={closeModal}
+            toggleModal={closeMigrationModals}
             has_close_icon
             title=' '
             width='58.8rem'

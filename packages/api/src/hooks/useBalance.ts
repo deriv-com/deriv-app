@@ -9,7 +9,6 @@ const useBalance = () => {
         payload: { account: 'all' },
         options: {
             enabled: isSuccess,
-            refetchInterval: 30000, // Refetch every 30 seconds to simulate subscription.
         },
     });
 

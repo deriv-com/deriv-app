@@ -59,8 +59,6 @@ module.exports = {
                 ],
             },
         ],
-        'sort-destructure-keys/sort-destructure-keys': 'error',
-        'sort-keys': 'error',
         'typescript-sort-keys/interface': 'error',
         'typescript-sort-keys/string-enum': 'error',
     },

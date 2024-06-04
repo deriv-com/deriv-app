@@ -1,9 +1,9 @@
 import { action, makeObservable, observable, reaction } from 'mobx';
 import { ApiHelpers, config as qs_config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
-import { STRATEGIES } from 'Components/quick-strategy/config';
-import { TFormData } from 'Components/quick-strategy/types';
 import { addDynamicBlockToDOM } from 'Utils/xml-dom-quick-strategy';
+import { STRATEGIES } from '../pages/bot-builder/quick-strategy/config';
+import { TFormData } from '../pages/bot-builder/quick-strategy/types';
 import RootStore from './root-store';
 
 export type TActiveSymbol = {
@@ -34,6 +34,7 @@ interface IQuickStrategyStore {
     };
     is_contract_dialog_open: boolean;
     is_stop_bot_dialog_open: boolean;
+    is_enabled_toggle_switch: boolean;
     setLossThresholdWarningData: (data: TLossThresholdWarningData) => void;
     setFormVisibility: (is_open: boolean) => void;
     setSelectedStrategy: (strategy: string) => void;
@@ -41,6 +42,7 @@ interface IQuickStrategyStore {
     onSubmit: (data: TFormData) => void;
     toggleStopBotDialog: () => void;
     setCurrentDurationMinMax: (min: number, max: number) => void;
+    setIsEnabledToggleSwitch: () => void;
 }
 
 export default class QuickStrategyStore implements IQuickStrategyStore {
@@ -62,6 +64,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
     loss_threshold_warning_data: TLossThresholdWarningData = {
         show: false,
     };
+    is_enabled_toggle_switch = !!this.form_data.boolean_max_stake;
 
     constructor(root_store: RootStore) {
         makeObservable(this, {
@@ -80,6 +83,8 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             setLossThresholdWarningData: action,
             setValue: action,
             toggleStopBotDialog: action,
+            is_enabled_toggle_switch: observable,
+            setIsEnabledToggleSwitch: action,
         });
         this.root_store = root_store;
         reaction(
@@ -105,6 +110,10 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             highlight_field: [],
             already_shown: false,
         };
+    };
+
+    setIsEnabledToggleSwitch = () => {
+        this.is_enabled_toggle_switch = !this.is_enabled_toggle_switch;
     };
 
     setFormVisibility = (is_open: boolean) => {
@@ -157,14 +166,16 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
                 el_block.innerHTML = value;
             });
         };
-        const { unit, action, ...rest_data } = data;
+        const { unit, action, type, ...rest_data } = data;
         const fields_to_update = {
             market,
             submarket,
             tradetypecat: trade_type_cat,
             dalembert_unit: unit,
             oscar_unit: unit,
+            type: 'both',
             ...rest_data,
+            purchase: type,
         };
 
         Object.keys(fields_to_update).forEach(key => {
@@ -207,5 +218,6 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
     toggleStopBotDialog = (): void => {
         this.is_contract_dialog_open = !this.is_contract_dialog_open;
         this.is_stop_bot_dialog_open = !this.is_stop_bot_dialog_open;
+        this.setFormVisibility(false);
     };
 }

@@ -7,7 +7,6 @@ import { identity_status_codes } from './proof-of-identity-utils';
 
 const Idv = ({ handleRequireSubmission, idv, is_from_external, needs_poa, redirect_button }) => {
     const { status, submissions_left, last_rejected } = idv;
-
     switch (status) {
         case identity_status_codes.pending:
             return (

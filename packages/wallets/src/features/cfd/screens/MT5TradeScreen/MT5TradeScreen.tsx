@@ -1,26 +1,18 @@
 import React, { FC, Fragment, useMemo } from 'react';
-import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api';
+import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api-v2';
+import { LabelPairedCircleExclamationMdFillIcon } from '@deriv/quill-icons';
 import { WalletListCardBadge } from '../../../../components';
 import { InlineMessage, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
-import ImportantIcon from '../../../../public/images/ic-important.svg';
-import { THooks, TPlatforms } from '../../../../types';
-import { MarketTypeDetails, PlatformDetails } from '../../constants';
+import { THooks } from '../../../../types';
+import { CFD_PLATFORMS, MarketTypeDetails, PlatformDetails, serviceMaintenanceMessages } from '../../constants';
 import { MT5TradeDetailsItem } from './MT5TradeDetailsItem';
 import { MT5TradeLink } from './MT5TradeLink';
 import './MT5TradeScreen.scss';
 
 type MT5TradeScreenProps = {
     mt5Account?: THooks.MT5AccountsList;
-};
-
-const serviceMaintenanceMessages: Record<TPlatforms.All, string> = {
-    ctrader:
-        'Server maintenance occurs every first Saturday of the month from 7 to 10 GMT time. You may experience service disruption during this time.',
-    dxtrade:
-        'Server maintenance starts at 06:00 GMT every Sunday and may last up to 2 hours. You may experience service disruption during this time.',
-    mt5: 'Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.',
 };
 
 const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
@@ -30,12 +22,16 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     const { data: ctraderAccountsList } = useCtraderAccountsList();
     const { data: activeWalletData } = useActiveWalletAccount();
 
-    const mt5Platform = PlatformDetails.mt5.platform;
-    const dxtradePlatform = PlatformDetails.dxtrade.platform;
-    const ctraderPlatform = PlatformDetails.ctrader.platform;
+    const mt5Platform = CFD_PLATFORMS.MT5;
+    const dxtradePlatform = CFD_PLATFORMS.DXTRADE;
+    const ctraderPlatform = CFD_PLATFORMS.CTRADER;
 
     const marketType = getModalState('marketType');
     const platform = getModalState('platform') ?? mt5Platform;
+
+    const { icon: platformIcon, title: platformTitle } = PlatformDetails[platform as keyof typeof PlatformDetails];
+    const { icon: marketTypeIcon, title: marketTypeTitle } =
+        MarketTypeDetails[(marketType as keyof typeof MarketTypeDetails) ?? 'all'];
 
     const platformToAccountsListMapper = useMemo(
         () => ({
@@ -46,59 +42,96 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
         [ctraderAccountsList, dxtradeAccountsList, mt5Account]
     );
 
+    const shouldShowAccountBalance = useMemo(() => {
+        if (
+            platform === mt5Platform &&
+            platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0]?.status ===
+                'migrated_without_position'
+        )
+            return false;
+        return true;
+    }, [marketType, mt5Platform, platform, platformToAccountsListMapper.mt5]);
+
     const details = useMemo(() => {
-        return platform === mt5Platform
-            ? platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0]
-            : platformToAccountsListMapper.dxtrade?.[0];
-    }, [platform, mt5Platform, platformToAccountsListMapper.mt5, platformToAccountsListMapper.dxtrade, marketType]);
+        switch (platform) {
+            case mt5Platform:
+                return platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0];
+            case dxtradePlatform:
+                return platformToAccountsListMapper.dxtrade?.[0];
+            case ctraderPlatform:
+                return platformToAccountsListMapper.ctrader?.[0];
+            default:
+                return undefined;
+        }
+    }, [
+        platform,
+        mt5Platform,
+        platformToAccountsListMapper.mt5,
+        platformToAccountsListMapper.dxtrade,
+        platformToAccountsListMapper.ctrader,
+        dxtradePlatform,
+        ctraderPlatform,
+        marketType,
+    ]);
 
     const loginId = useMemo(() => {
         if (platform === mt5Platform) {
-            return (details as THooks.MT5AccountsList)?.loginid;
+            return (details as THooks.MT5AccountsList)?.display_login;
         } else if (platform === dxtradePlatform) {
             return (details as THooks.DxtradeAccountsList)?.account_id;
         }
         return details?.login;
     }, [details, dxtradePlatform, mt5Platform, platform]);
 
-    const showNoNewPositionsMessage = useMemo(() => {
-        return (
-            !activeWalletData?.is_virtual &&
-            details?.landing_company_short === 'svg' &&
-            ['synthetic', 'financial'].includes(marketType ?? '') && (
-                <InlineMessage type='warning' variant='outlined'>
-                    No new positions
-                </InlineMessage>
-            )
-        );
-    }, [activeWalletData?.is_virtual, details?.landing_company_short, marketType]);
+    const migrationMessage = useMemo(() => {
+        if (platform === mt5Platform && !activeWalletData?.is_virtual) {
+            switch (
+                platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0]?.status
+            ) {
+                case 'migrated_with_position':
+                    return (
+                        <InlineMessage size='sm' type='warning' variant='outlined'>
+                            <WalletText color='warning' size='2xs' weight='bold'>
+                                No new positions
+                            </WalletText>
+                        </InlineMessage>
+                    );
+                case 'migrated_without_position':
+                    return (
+                        <InlineMessage size='sm' type='warning' variant='outlined'>
+                            <WalletText color='warning' size='2xs' weight='bold'>
+                                Account closed
+                            </WalletText>
+                        </InlineMessage>
+                    );
+                default:
+                    return null;
+            }
+        }
+    }, [activeWalletData?.is_virtual, marketType, mt5Platform, platform, platformToAccountsListMapper.mt5]);
 
     return (
         <div className='wallets-mt5-trade-screen'>
             <div className='wallets-mt5-trade-screen__details'>
                 <div className='wallets-mt5-trade-screen__details-description'>
-                    <div className='wallets-mt5-trade-screen__details-description--left'>
-                        {platform === mt5Platform
-                            ? MarketTypeDetails[marketType ?? 'all'].icon
-                            : PlatformDetails[platform].icon}
-                        <div className='wallets-mt5-trade-screen__label'>
-                            <div className='wallets-mt5-trade-screen__title'>
-                                <WalletText lineHeight='3xs' size='sm'>
-                                    {platform === mt5Platform
-                                        ? MarketTypeDetails[marketType ?? 'all'].title
-                                        : PlatformDetails[platform].title}{' '}
-                                    {!activeWalletData?.is_virtual && details?.landing_company_short?.toUpperCase()}
-                                </WalletText>
-                                {activeWalletData?.is_virtual && <WalletListCardBadge isDemo label='virtual' />}
-                            </div>
-                            <WalletText color='less-prominent' size='xs'>
-                                {loginId}
-                            </WalletText>
-                        </div>
+                    <div className='wallets-mt5-trade-screen__details-description__icon'>
+                        {platform === mt5Platform ? marketTypeIcon : platformIcon}
                     </div>
-                    <div className='wallets-mt5-trade-screen__details-description--right'>
-                        <WalletText weight='bold'>{details?.display_balance}</WalletText>
-                        {showNoNewPositionsMessage}
+                    <div className='wallets-mt5-trade-screen__details-description__details'>
+                        <div className='wallets-mt5-trade-screen__label'>
+                            <WalletText lineHeight='3xs' size={isDesktop ? 'sm' : 'md'}>
+                                {platform === mt5Platform ? marketTypeTitle : platformTitle}{' '}
+                                {!activeWalletData?.is_virtual && details?.landing_company_short?.toUpperCase()}
+                            </WalletText>
+                            {activeWalletData?.is_virtual && <WalletListCardBadge isDemo label='virtual' />}
+                        </div>
+                        <WalletText color='less-prominent' size='xs'>
+                            {platform !== ctraderPlatform && loginId}
+                        </WalletText>
+                    </div>
+                    <div className='wallets-mt5-trade-screen__details-description__balance'>
+                        {shouldShowAccountBalance && <WalletText weight='bold'>{details?.display_balance}</WalletText>}
+                        {migrationMessage}
                     </div>
                 </div>
 
@@ -128,24 +161,32 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                     )}
                 </div>
 
-                <div className='wallets-mt5-trade-screen__details-maintainance'>
-                    <ImportantIcon />
-                    <WalletText color='less-prominent' size='2xs'>
-                        {serviceMaintenanceMessages[platform || mt5Platform]}
+                <div className='wallets-mt5-trade-screen__details-maintenance'>
+                    <LabelPairedCircleExclamationMdFillIcon fill='#FFAD3A' />
+                    <WalletText color='less-prominent' size={isDesktop ? '2xs' : 'xs'}>
+                        {
+                            serviceMaintenanceMessages[
+                                (platform as keyof typeof serviceMaintenanceMessages) ?? PlatformDetails.mt5.platform
+                            ]
+                        }
                     </WalletText>
                 </div>
             </div>
             <div className='wallets-mt5-trade-screen__links'>
-                {isDesktop && platform === mt5Platform && (
+                {platform === mt5Platform && (
                     <Fragment>
                         <MT5TradeLink
                             app='web'
                             platform={mt5Platform}
                             webtraderUrl={(details as THooks.MT5AccountsList)?.webtrader_url}
                         />
-                        <MT5TradeLink app='windows' platform={mt5Platform} />
-                        <MT5TradeLink app='macos' platform={mt5Platform} />
-                        <MT5TradeLink app='linux' platform={mt5Platform} />
+                        {isDesktop && (
+                            <Fragment>
+                                <MT5TradeLink app='windows' platform={mt5Platform} />
+                                <MT5TradeLink app='macos' platform={mt5Platform} />
+                                <MT5TradeLink app='linux' platform={mt5Platform} />
+                            </Fragment>
+                        )}
                     </Fragment>
                 )}
                 {platform === dxtradePlatform && (

@@ -25,6 +25,21 @@
         &--disabled {
             border-color: var(--general-disabled);
         }
+
+        @include mobile {
+            input[type='date']::-webkit-calendar-picker-indicator {
+                background: transparent;
+                bottom: 0;
+                color: transparent;
+                cursor: pointer;
+                height: auto;
+                left: 0;
+                position: absolute;
+                right: 0;
+                top: 0;
+                width: auto;
+            }
+        }
     }
 
     &__hint {
@@ -87,15 +102,18 @@
         &--left {
             &-enter,
             &-exit {
+                /*rtl:ignore*/
                 transform: translate3d(-275px, 0, 0);
                 opacity: 0;
             }
             &-enter-done {
+                /*rtl:ignore*/
                 transform: translate3d(-295px, 0, 0);
                 opacity: 1;
             }
             &-enter-done,
             &-exit {
+                /*rtl:ignore*/
                 transition: transform 0.25s ease, opacity 0.25s linear;
             }
         }

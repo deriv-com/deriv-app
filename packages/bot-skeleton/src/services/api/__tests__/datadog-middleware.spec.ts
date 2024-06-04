@@ -43,6 +43,7 @@ describe('APIMiddleware', () => {
                 clearMarks,
             },
         });
+        Object.defineProperty(window, 'is_datadog_logging_enabled', { value: true });
 
         api_middleware = new APIMiddleware();
         process.env.DATADOG_CLIENT_TOKEN_LOGS = '123';
@@ -69,7 +70,6 @@ describe('APIMiddleware', () => {
         };
 
         const spyDatalogsInfo = jest.spyOn(datadogLogs.logger, 'info');
-
         api_middleware.log([datadog_logs], false);
 
         expect(spyDatalogsInfo).toHaveBeenCalledWith(datadog_logs.name, { ...measure_object });
@@ -99,14 +99,6 @@ describe('APIMiddleware', () => {
         await api_middleware.sendIsCalled({ response_promise, args: [{ authorize: 1 }] });
 
         expect(spydefineMeasure).toHaveBeenCalledWith('authorize');
-    });
-
-    it('Should invoke the method sendWillBeCalled()', async () => {
-        const spysendWillBeCalled = jest.spyOn(api_middleware, 'sendWillBeCalled');
-
-        await api_middleware.sendWillBeCalled({ args: [{ buy: 1 }] });
-
-        expect(spysendWillBeCalled).toHaveBeenCalledWith({ args: [{ buy: 1 }] });
     });
 
     describe('Define measure', () => {

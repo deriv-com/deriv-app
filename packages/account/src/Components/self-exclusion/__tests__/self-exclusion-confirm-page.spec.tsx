@@ -13,7 +13,7 @@ jest.mock('../self-exclusion-confirm-limits', () => {
 const mockUseFormikContext: FormikValues = jest.spyOn(formik, 'useFormikContext');
 
 describe('<SelfExclusionConfirmPage />', () => {
-    let mock_context: Required<TSelfExclusionContext> = {
+    let mock_context: TSelfExclusionContext = {
         backFromConfirmLimits: jest.fn(),
         currency: '',
         currency_display: '',
@@ -28,7 +28,6 @@ describe('<SelfExclusionConfirmPage />', () => {
         is_app_settings: false,
         is_wrapper_bypassed: false,
         toggleArticle: jest.fn(),
-        is_uk: false,
         handleSubmit: jest.fn(),
         validateFields: jest.fn(),
     };
@@ -49,7 +48,6 @@ describe('<SelfExclusionConfirmPage />', () => {
             is_app_settings: false,
             is_wrapper_bypassed: false,
             toggleArticle: jest.fn(),
-            is_uk: false,
             handleSubmit: jest.fn(),
             validateFields: jest.fn(),
         };
@@ -59,10 +57,16 @@ describe('<SelfExclusionConfirmPage />', () => {
         });
     });
     it('should not render SelfExclusionConfirmPage component', () => {
-        mock_context.state.show_confirm = true;
+        const new_mock_context = {
+            ...mock_context,
+            state: {
+                changed_attributes: [],
+                show_confirm: true,
+            },
+        };
 
         render(
-            <SelfExclusionContext.Provider value={mock_context}>
+            <SelfExclusionContext.Provider value={new_mock_context}>
                 <SelfExclusionConfirmPage />
             </SelfExclusionContext.Provider>
         );
@@ -72,20 +76,27 @@ describe('<SelfExclusionConfirmPage />', () => {
     });
 
     it('should render SelfExclusionConfirmPage component with options', () => {
-        mock_context.exclusion_texts = {
-            max_deposit: 'Max deposit is',
-            max_open_bets: 'Max open bets are',
-            max_total_stake: 'Max total stake is',
-            session_duration_limit: 'Session duration limit is',
-            timeout_until: 'Timeout until',
+        const new_mock_context = {
+            ...mock_context,
+            state: {
+                changed_attributes: [
+                    'max_deposit',
+                    'max_open_bets',
+                    'max_total_stake',
+                    'session_duration_limit',
+                    'timeout_until',
+                ],
+                show_confirm: false,
+                submit_error_message: '',
+            },
+            exclusion_texts: {
+                max_deposit: 'Max deposit is',
+                max_open_bets: 'Max open bets are',
+                max_total_stake: 'Max total stake is',
+                session_duration_limit: 'Session duration limit is',
+                timeout_until: 'Timeout until',
+            },
         };
-        mock_context.state.changed_attributes = [
-            'max_deposit',
-            'max_open_bets',
-            'max_total_stake',
-            'session_duration_limit',
-            'timeout_until',
-        ];
         mockUseFormikContext.mockReturnValue({
             isSubmitting: false,
             values: {
@@ -98,7 +109,7 @@ describe('<SelfExclusionConfirmPage />', () => {
         });
 
         render(
-            <SelfExclusionContext.Provider value={mock_context}>
+            <SelfExclusionContext.Provider value={new_mock_context}>
                 <SelfExclusionConfirmPage />
             </SelfExclusionContext.Provider>
         );

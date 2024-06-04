@@ -2,7 +2,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import NumberSelector from 'App/Components/Form/number-selector';
 import Fieldset from 'App/Components/Form/fieldset';
-import { getGrowthRatePercentage, getTickSizeBarrierPercentage, isEmptyObject } from '@deriv/shared';
+import { getGrowthRatePercentage, isEmptyObject } from '@deriv/shared';
 import classNames from 'classnames';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -13,7 +13,7 @@ const Accumulator = observer(() => {
         growth_rate,
         is_accumulator,
         onChange,
-        tick_size_barrier,
+        tick_size_barrier_percentage,
         proposal_info,
         has_open_accu_contract,
     } = useTraderStore();
@@ -35,10 +35,10 @@ const Accumulator = observer(() => {
             is_center
             is_tooltip_disabled={has_error_or_not_loaded && is_accumulator}
             header_tooltip={localize(
-                'Your stake will grow at {{growth_rate}}% per tick as long as the current spot price remains within ±{{tick_size_barrier}} from the previous spot price.',
+                'Your stake will grow at {{growth_rate}}% per tick as long as the current spot price remains within ±{{tick_size_barrier_percentage}} from the previous spot price.',
                 {
                     growth_rate: getGrowthRatePercentage(growth_rate),
-                    tick_size_barrier: getTickSizeBarrierPercentage(tick_size_barrier),
+                    tick_size_barrier_percentage,
                 }
             )}
         >

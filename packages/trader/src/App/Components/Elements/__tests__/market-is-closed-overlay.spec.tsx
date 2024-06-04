@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import MarketIsClosedOverlay from '../market-is-closed-overlay';
 
 const mock_default_props = {
@@ -14,8 +14,10 @@ const default_button_text = 'Try Synthetic Indices';
 jest.mock('../market-countdown-timer', () => jest.fn(() => <div>MarketCountdownTimer</div>));
 
 describe('<MarketIsClosedOverlay />', () => {
-    it('should render component with children', () => {
-        render(<MarketIsClosedOverlay {...mock_default_props} />);
+    it('should render component with children', async () => {
+        await act(async () => {
+            render(<MarketIsClosedOverlay {...mock_default_props} />);
+        });
 
         expect(screen.getByText('This market is closed')).toBeInTheDocument();
         expect(screen.getByText('MarketCountdownTimer')).toBeInTheDocument();

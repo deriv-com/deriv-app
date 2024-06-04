@@ -20,8 +20,8 @@ $MIN_HEIGHT_FLOATING: calc(
         }
 
         &__header--active {
-            border-left: 4px solid var(--brand-red-coral);
-            padding-left: 4.4rem;
+            border-inline-start: 4px solid var(--brand-red-coral);
+            padding-inline-start: 4.4rem;
             background-color: var(--general-main-1);
         }
 
@@ -37,7 +37,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 cursor: pointer;
 
                 &--icon {
-                    margin-right: 0.8rem;
+                    margin-inline-end: 0.8rem;
                 }
             }
         }
@@ -48,14 +48,14 @@ $MIN_HEIGHT_FLOATING: calc(
 
         .dc-vertical-tab__header {
             font-size: 1.2rem;
-            padding-left: 3.9rem;
+            padding-inline-start: 3.9rem;
 
             &__link {
-                margin-left: unset;
+                margin-inline-start: unset;
             }
 
             &--highlight {
-                border-left: unset;
+                border-inline-start: unset;
             }
 
             &-group__icon {
@@ -69,14 +69,14 @@ $MIN_HEIGHT_FLOATING: calc(
             &__financial-assessment {
                 .account__scrollbars_container {
                     width: 68.5rem;
-                    margin-left: 6rem;
+                    margin-inline-start: 6rem;
                     padding-top: 0;
                 }
             }
 
             &__password-wrapper {
                 width: 68.5rem;
-                margin-left: 6rem;
+                margin-inline-start: 6rem;
             }
         }
 
@@ -100,7 +100,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     line-height: 1.5;
                     width: calc(100% - 2rem);
                     float: left;
-                    padding-left: 2rem;
+                    padding-inline-start: 2rem;
                 }
 
                 &-close {
@@ -377,27 +377,6 @@ $MIN_HEIGHT_FLOATING: calc(
         }
 
         &__personal-details {
-            &--dashboard {
-                & .account-form__fieldset {
-                    margin-bottom: 3.2rem;
-
-                    @include mobile {
-                        margin-bottom: 3.2rem;
-                    }
-                }
-
-                & .dc-field--error {
-                    color: var(--text-loss-danger);
-                }
-
-                & .account-form__footer-note {
-                    width: unset;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                }
-            }
-
             @include desktop {
                 .account__scrollbars_container {
                     padding-top: 2.4rem;
@@ -620,10 +599,6 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 
     .account-management {
-        &__container {
-            margin: 0 auto;
-        }
-
         &__list {
             &-container {
                 margin-top: 1.6rem;
@@ -672,10 +647,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin: 0 16px;
                 align-items: center;
                 flex-direction: column;
-
-                @include mobile {
-                    justify-content: center;
-                }
 
                 .dc-btn {
                     height: 4rem;
@@ -1611,6 +1582,12 @@ $MIN_HEIGHT_FLOATING: calc(
             @include mobile {
                 padding-left: 5%;
             }
+
+            @include rtl {
+                & > li {
+                    width: fit-content;
+                }
+            }
         }
     }
 
@@ -1639,17 +1616,13 @@ $MIN_HEIGHT_FLOATING: calc(
     &__button {
         &--cancel {
             margin-top: 2.4rem;
-            margin-right: 10px;
+            margin-inline-end: 10px;
             float: right;
 
             @include mobile {
                 margin-top: -8px;
-                margin-right: 10px;
+                margin-inline-end: 10px;
                 float: right;
-
-                &--dashboard {
-                    width: 100%;
-                }
             }
         }
 
@@ -1660,10 +1633,6 @@ $MIN_HEIGHT_FLOATING: calc(
             @include mobile {
                 float: none;
                 margin: 2.4rem auto 3.2rem;
-
-                &--dashboard {
-                    width: 100%;
-                }
             }
         }
     }
@@ -1673,27 +1642,6 @@ $MIN_HEIGHT_FLOATING: calc(
         font-size: var(--text-size-xs);
         line-height: 1.43;
         font-weight: bold;
-
-        &--dashboard {
-            & .dc-form-submit-button {
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-                flex: 1;
-
-                & .dc-btn__large {
-                    width: 100%;
-                }
-            }
-
-            & .closing-account-reasons__title {
-                margin: 1.6rem 0 0.8rem;
-            }
-
-            & form {
-                width: 100%;
-            }
-        }
 
         &__title {
             margin-bottom: 18px;

@@ -11,8 +11,8 @@ const WithdrawalDisclaimer = () => (
                     the initial coin offering (ICO) tokens will not be credited into your account.
                 </li>
                 <li>
-                    Please note that your maximum and minimum withdrawal limits aren’t fixed. They change due to the
-                    high volatility of cryptocurrency.
+                    Please note that your maximum and minimum withdrawal limits aren&apos;t fixed. They change due to
+                    the high volatility of cryptocurrency.
                 </li>
             </ul>
         </InlineMessage>

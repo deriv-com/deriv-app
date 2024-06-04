@@ -1,3 +1,5 @@
+@import '../../styles/mixins.scss';
+
 /**
  * @define journal
  */
@@ -58,14 +60,12 @@
             border: solid 1px var(--general-section-1);
 
             &-filter {
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
+                @include flex-center(flex-end);
                 cursor: pointer;
                 flex: 1;
 
                 &--label {
-                    margin-right: 0.8rem;
+                    margin-inline-end: 0.8rem;
                 }
             }
         }
@@ -120,9 +120,10 @@
     border-radius: $BORDER_RADIUS;
     box-shadow: 0 4px 16px 0 var(--shadow-menu);
     transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
-    padding: 1.6rem 3.6rem 1.6rem 0.8rem;
+    padding: 1.6rem 0.8rem;
+    padding-inline-end: 3.6rem;
+    inset-inline-end: 16px;
     z-index: 99;
-    right: 16px;
 
     &--enter-done {
         opacity: 1;

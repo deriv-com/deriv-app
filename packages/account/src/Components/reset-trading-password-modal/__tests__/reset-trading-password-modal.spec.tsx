@@ -32,7 +32,7 @@ jest.mock('react-router-dom', () => ({
 const interactWithPasswordField = async (trigger_click = true) => {
     await waitForElementToBeRemoved(() => screen.getByTestId('dt_initial_loader'));
     fireEvent.change(screen.getByLabelText('Deriv MT5 password', { selector: 'input' }), {
-        target: { value: 'hN795jCWkDtPy5' },
+        target: { value: 'hN795jCWkDtPy5@' },
     });
     if (trigger_click) {
         fireEvent.click(screen.getByRole('button', { name: /Create/i }));
@@ -152,7 +152,7 @@ describe('<ResetTradingPasswordModal/>', () => {
 
         fireEvent.click(screen.getByTestId('dt_password_input_visibility_icon'));
         await waitFor(() => {
-            expect(screen.getByDisplayValue('hN795jCWkDtPy5')).toHaveAttribute('type', 'text');
+            expect(screen.getByDisplayValue('hN795jCWkDtPy5@')).toHaveAttribute('type', 'text');
         });
     });
 
@@ -167,7 +167,7 @@ describe('<ResetTradingPasswordModal/>', () => {
         fireEvent.click(el_visibility_icon);
 
         await waitFor(() => {
-            expect(screen.getByDisplayValue('hN795jCWkDtPy5')).toHaveAttribute('type', 'text');
+            expect(screen.getByDisplayValue('hN795jCWkDtPy5@')).toHaveAttribute('type', 'text');
         });
     });
 

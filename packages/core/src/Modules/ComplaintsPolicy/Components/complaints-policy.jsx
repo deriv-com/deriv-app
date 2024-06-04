@@ -2,20 +2,15 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { FadeWrapper, PageOverlay, Div100vhContainer, Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import ComplaintsPolicyContent from './complaints-policy-content.jsx';
 import 'Sass/app/modules/complaints-policy.scss';
+import { observer, useStore } from '@deriv/stores';
 
-const ComplaintsPolicy = ({
-    accounts,
-    history,
-    is_logged_in,
-    is_logging_in,
-    is_populating_mt5_account_list,
-    landing_companies,
-    loginid,
-    routeBackInApp,
-}) => {
+const ComplaintsPolicy = observer(({ history }) => {
+    const { common, client } = useStore();
+    const { accounts, is_logged_in, is_logging_in, is_populating_mt5_account_list, landing_companies, loginid } =
+        client;
+    const { routeBackInApp } = common;
     if (is_populating_mt5_account_list || (!is_logged_in && is_logging_in)) return <Loading is_fullscreen={true} />;
 
     const onClickClose = () => routeBackInApp(history);
@@ -35,14 +30,6 @@ const ComplaintsPolicy = ({
             </PageOverlay>
         </FadeWrapper>
     );
-};
+});
 
-export default connect(({ common, client }) => ({
-    accounts: client.accounts,
-    is_logged_in: client.is_logged_in,
-    is_logging_in: client.is_logging_in,
-    is_populating_mt5_account_list: client.is_populating_mt5_account_list,
-    landing_companies: client.landing_companies,
-    loginid: client.loginid,
-    routeBackInApp: common.routeBackInApp,
-}))(withRouter(ComplaintsPolicy));
+export default withRouter(ComplaintsPolicy);

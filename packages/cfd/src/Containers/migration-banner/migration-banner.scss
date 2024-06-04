@@ -1,0 +1,45 @@
+.mt5-migration-banner {
+    position: relative;
+    margin-bottom: 2.4rem;
+    overflow: hidden;
+    background-color: var(--general-hover);
+    border-radius: $BORDER_RADIUS * 2;
+    height: 7.2rem;
+    &__trade-modal {
+        margin: 2.4rem;
+    }
+
+    &__description {
+        position: relative;
+        z-index: 2;
+        max-width: 57.5rem;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: auto 1.6rem auto 3.2rem;
+        &--trade-modal {
+            margin: auto 3.2rem;
+            padding-left: 3.8rem;
+        }
+        @include mobile {
+            margin: auto 0.8rem auto 3.2rem;
+            &-text {
+                width: 90%;
+            }
+        }
+    }
+
+    &__image {
+        position: absolute;
+        z-index: 0;
+        left: 0;
+        top: 0;
+
+        @include mobile {
+            right: -0.1rem;
+            bottom: -0.1rem;
+            border-radius: $BORDER_RADIUS * 2;
+        }
+    }
+}

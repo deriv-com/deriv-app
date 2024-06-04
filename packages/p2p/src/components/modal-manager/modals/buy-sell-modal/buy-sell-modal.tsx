@@ -18,21 +18,19 @@ import BuySellModalError from './buy-sell-modal-error';
 const BuySellModal = () => {
     const { hideModal, is_modal_open, showModal } = useModalManagerContext();
     const { buy_sell_store, general_store, my_profile_store, order_store } = useStores();
-    const { is_buy_advert, selected_ad_state } = buy_sell_store;
+    const { is_buy_advert, selected_ad_state, submitForm } = buy_sell_store;
     const { account_currency } = selected_ad_state;
     const { balance } = general_store;
     const { should_show_add_payment_method_form } = my_profile_store;
 
     const history = useHistory();
     const location = useLocation();
+    const scroll_ref = React.useRef<HTMLDivElement & SVGSVGElement>(null);
     const [error_message, setErrorMessage] = React.useState('');
     const [is_submit_disabled, setIsSubmitDisabled] = React.useState(false);
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
-    const submitForm = React.useRef<(() => void) | null>(null);
 
     const show_low_balance_message = !is_buy_advert && is_account_balance_low;
-
-    const setSubmitForm = (submitFormFn: () => void) => (submitForm.current = submitFormFn);
 
     const onCancel = () => {
         if (should_show_add_payment_method_form) {
@@ -102,6 +100,12 @@ const BuySellModal = () => {
     }, [is_modal_open]);
 
     React.useEffect(() => {
+        if ((error_message || show_low_balance_message) && scroll_ref.current) {
+            scroll_ref.current.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }, [error_message, show_low_balance_message]);
+
+    React.useEffect(() => {
         const disposeHasRateChangedReaction = reaction(
             () => buy_sell_store.advert,
             (new_advert, previous_advert) => {
@@ -136,30 +140,31 @@ const BuySellModal = () => {
                     renderPageHeaderElement={<BuySellModalTitle is_buy={is_buy_advert} onReturn={onReturn} />}
                     pageHeaderReturnFn={onCancel}
                 >
-                    <BuySellModalError
-                        error_message={error_message}
-                        show_low_balance_message={show_low_balance_message}
-                    />
-                    {should_show_add_payment_method_form ? (
-                        <AddPaymentMethodForm should_show_separated_footer />
-                    ) : (
-                        <React.Fragment>
-                            <BuySellForm
-                                advert={selected_ad_state}
-                                handleClose={onCancel}
-                                handleConfirm={onConfirmClick}
-                                setIsSubmitDisabled={setIsSubmitDisabled}
-                                setErrorMessage={setErrorMessage}
-                                setSubmitForm={setSubmitForm}
-                            />
-                            <BuySellFormReceiveAmount />
-                            <BuySellModalFooter
-                                is_submit_disabled={!!is_submit_disabled}
-                                onCancel={onCancel}
-                                onSubmit={submitForm.current}
-                            />
-                        </React.Fragment>
-                    )}
+                    <ThemedScrollbars refSetter={scroll_ref}>
+                        <BuySellModalError
+                            error_message={error_message}
+                            show_low_balance_message={show_low_balance_message}
+                        />
+                        {should_show_add_payment_method_form ? (
+                            <AddPaymentMethodForm should_show_separated_footer />
+                        ) : (
+                            <React.Fragment>
+                                <BuySellForm
+                                    advert={selected_ad_state}
+                                    handleClose={onCancel}
+                                    handleConfirm={onConfirmClick}
+                                    setIsSubmitDisabled={setIsSubmitDisabled}
+                                    setErrorMessage={setErrorMessage}
+                                />
+                                <BuySellFormReceiveAmount />
+                                <BuySellModalFooter
+                                    is_submit_disabled={!!is_submit_disabled}
+                                    onCancel={onCancel}
+                                    onSubmit={submitForm}
+                                />
+                            </React.Fragment>
+                        )}
+                    </ThemedScrollbars>
                 </MobileFullPageModal>
             </MobileWrapper>
             <DesktopWrapper>
@@ -177,7 +182,10 @@ const BuySellModal = () => {
                     width='456px'
                 >
                     {/* Parent height - Modal.Header height - Modal.Footer height */}
-                    <ThemedScrollbars height={is_buy_advert ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
+                    <ThemedScrollbars
+                        height={is_buy_advert ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}
+                        refSetter={scroll_ref}
+                    >
                         <Modal.Body className='buy-sell-modal__layout'>
                             <BuySellModalError
                                 error_message={error_message}
@@ -192,7 +200,6 @@ const BuySellModal = () => {
                                     handleConfirm={onConfirmClick}
                                     setIsSubmitDisabled={setIsSubmitDisabled}
                                     setErrorMessage={setErrorMessage}
-                                    setSubmitForm={setSubmitForm}
                                 />
                             )}
                         </Modal.Body>
@@ -202,7 +209,7 @@ const BuySellModal = () => {
                             <BuySellModalFooter
                                 is_submit_disabled={!!is_submit_disabled}
                                 onCancel={onCancel}
-                                onSubmit={submitForm.current}
+                                onSubmit={submitForm}
                             />
                         </Modal.Footer>
                     )}

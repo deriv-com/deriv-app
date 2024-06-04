@@ -1,0 +1,16 @@
+name: Remote Config Backup Download
+description: Download remote config backup
+inputs:
+  REMOTE_CONFIG_URL:
+    description: "Remote config backup URL"
+runs:
+  using: composite
+  steps:
+    - name: Download remote config backup
+      env:
+        REMOTE_CONFIG_URL: ${{ inputs.REMOTE_CONFIG_URL }}
+      run: |
+        echo "Downloading remote config backup"
+        curl $REMOTE_CONFIG_URL > packages/api/src/remote_config.json
+        echo "Remote Config backup downloaded successfully!"
+      shell: bash

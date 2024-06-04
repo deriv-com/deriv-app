@@ -156,6 +156,7 @@ const OrderRow = ({ row: order }) => {
                             'order-table-row--attention': !isOrderSeen(id),
                         })}
                     >
+                        {!general_store.is_active_tab && <Table.Cell>{purchase_time}</Table.Cell>}
                         <Table.Cell>{order_type}</Table.Cell>
                         <Table.Cell>{id}</Table.Cell>
                         <Table.Cell>{other_user_details.name}</Table.Cell>
@@ -244,6 +245,7 @@ const OrderRow = ({ row: order }) => {
                                         height={15}
                                         width={16}
                                         onClick={() => {
+                                            order_store.setShouldNavigateToOrderDetails(true);
                                             sendbird_store.setShouldShowChatModal(true);
                                             sendbird_store.setShouldShowChatOnOrders(true);
                                         }}

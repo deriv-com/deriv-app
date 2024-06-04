@@ -31,6 +31,7 @@ const Journal = observer(() => {
             className={classnames('journal run-panel-tab__content--no-stat', {
                 'run-panel-tab__content': !is_mobile,
             })}
+            data-testid='dt_mock_journal'
         >
             <JournalTools
                 checked_filters={checked_filters}

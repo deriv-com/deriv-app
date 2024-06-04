@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck [TODO]:Need to check the issue with DeepPartial - { [K in keyof T]?: DeepPartial<T[K]> }
 import React from 'react';
 import { fireEvent, screen, render, waitFor } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
@@ -30,23 +32,10 @@ describe('<CurrencySelector/>', () => {
         set_currency: false,
     };
 
-    const fiat_msg =
-        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit.';
-    const mt5_cfd_msg =
-        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real CFDs account.';
-    const dxtrade_non_eu_msg =
-        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real Deriv MT5 or Deriv X account.';
-    const mt5_eu =
-        "Enjoy a seamless trading experience with the selected fiat account. Please note that once you've made your first deposit or created a real CFDs account, your account currency cannot be changed.";
-    const mt5_non_eu =
-        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real Deriv MT5 account.';
-
-    const runCommonTests = (msg: string) => {
-        expect(screen.getByRole('heading', { name: /fiat currencies/i })).toBeInTheDocument();
+    const runCommonTests = () => {
         expect(screen.getByRole('radio', { name: /us dollar \(usd\)/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /euro \(eur\)/i })).toBeInTheDocument();
 
-        expect(screen.getByRole('heading', { name: /cryptocurrencies/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /tether erc20 \(eusdt\)/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /usd coin \(usdc\)/i })).toBeInTheDocument();
 
@@ -58,7 +47,6 @@ describe('<CurrencySelector/>', () => {
         fireEvent.click(usd);
         expect(usd.checked).toEqual(true);
 
-        expect(screen.getByText(msg)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
     };
     const store = mockStore({
@@ -69,7 +57,7 @@ describe('<CurrencySelector/>', () => {
                     currency: 'USD',
                     is_disabled: 0,
                     is_virtual: 1,
-                    landing_company_shortcode: 'virtual',
+                    landing_company_shortcode: 'svg',
                     trading: {},
                     token: '',
                     email: '',
@@ -249,7 +237,7 @@ describe('<CurrencySelector/>', () => {
     it('should render Fiat currencies and submit the form', async () => {
         renderComponent({});
 
-        runCommonTests(fiat_msg);
+        runCommonTests();
         fireEvent.click(screen.getByRole('button', { name: /next/i }));
         await waitFor(() => {
             expect(mock_props.onSubmit).toHaveBeenCalled();
@@ -274,15 +262,10 @@ describe('<CurrencySelector/>', () => {
                         is_disabled: 0,
                         is_virtual: 1,
                         landing_company_shortcode: 'svg',
-                        trading: {},
                         token: '',
-                        email: '',
-                        session_start: 1651059038,
-                        excluded_until: '',
+                        excluded_until: undefined,
                         landing_company_name: 'svg',
-                        residence: 'es',
                         balance: 10000,
-                        accepted_bch: 0,
                     },
                 },
                 has_active_real_account: true,
@@ -309,7 +292,7 @@ describe('<CurrencySelector/>', () => {
             },
         };
         renderComponent({ store_config: new_store });
-        runCommonTests(dxtrade_non_eu_msg);
+        runCommonTests();
     });
 
     it('should render Fiat currencies when is_dxtrade_allowed,is_eu and is_mt5_allowed are true', () => {
@@ -321,11 +304,12 @@ describe('<CurrencySelector/>', () => {
                 is_mt5_allowed: true,
             },
             traders_hub: {
+                ...store.traders_hub,
                 is_eu_user: true,
             },
         };
         renderComponent({ store_config: new_store });
-        runCommonTests(mt5_eu);
+        runCommonTests();
     });
 
     it('should render Fiat currencies when is_mt5_allowed and is_eu are true', () => {
@@ -336,11 +320,12 @@ describe('<CurrencySelector/>', () => {
                 is_mt5_allowed: true,
             },
             traders_hub: {
+                ...store.traders_hub,
                 is_eu_user: true,
             },
         };
         renderComponent({ store_config: new_store });
-        runCommonTests(mt5_eu);
+        runCommonTests();
     });
 
     it('should render Fiat currencies when is_mt5_allowed is true', () => {
@@ -352,7 +337,7 @@ describe('<CurrencySelector/>', () => {
             },
         };
         renderComponent({ store_config: new_store });
-        runCommonTests(mt5_non_eu);
+        runCommonTests();
     });
 
     it('should render Cryptocurrencies and submit the form ', async () => {
@@ -361,7 +346,6 @@ describe('<CurrencySelector/>', () => {
             set_currency: true,
         };
         renderComponent({ props: new_props });
-        expect(screen.getByRole('heading', { name: /cryptocurrencies/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /tether erc20 \(eusdt\)/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /usd coin \(usdc\)/i })).toBeInTheDocument();
 
@@ -391,7 +375,7 @@ describe('<CurrencySelector/>', () => {
 
     it('should submit the form when getCurrentStep is not passed ', async () => {
         renderComponent({});
-        runCommonTests(fiat_msg);
+        runCommonTests();
         fireEvent.click(screen.getByRole('button', { name: /next/i }));
         await waitFor(() => {
             expect(mock_props.onSubmit).toHaveBeenCalled();

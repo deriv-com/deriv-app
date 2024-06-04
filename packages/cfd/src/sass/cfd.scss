@@ -264,12 +264,15 @@
     color: var(--text-prominent);
 
     &__container {
-        display: grid;
-        grid-template-rows: 12rem 7rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         height: 100%;
         width: 100%;
         justify-items: center;
         flex-grow: 1;
+        gap: 4rem;
+        padding: 2.4rem 0;
 
         @include mobile {
             min-height: 24rem;
@@ -294,8 +297,7 @@
     }
     &__password-area {
         @include desktop {
-            width: calc(min(33rem, 100vw));
-            padding: 2.4rem;
+            width: calc(min(34rem, 100vw));
         }
         @include mobile {
             width: 100%;
@@ -308,7 +310,7 @@
         min-height: 28.4rem;
         flex-direction: column;
         align-items: center;
-        padding-top: 2rem;
+        padding: 2rem 0;
         margin: 0 auto;
     }
     &__description {

@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Table, Text } from '@deriv/components';
+import { Table, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useP2PExchangeRate } from '@deriv/hooks';
 import { useStores } from 'Stores';
 import { buy_sell } from 'Constants/buy-sell';
-import { localize, Localize } from 'Components/i18next';
+import { Localize } from 'Components/i18next';
+import BuySellRowAction from 'Pages/buy-sell/buy-sell-row-action';
 import { generateEffectiveRate } from 'Utils/format-value';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import './advertiser-page-row.scss';
@@ -14,10 +15,16 @@ import './advertiser-page-row.scss';
 const AdvertiserPageRow = ({ row: advert }) => {
     const { advertiser_page_store, buy_sell_store, general_store } = useStores();
     const {
+        counterparty_advertiser_info: { id: counterparty_details_id },
+    } = advertiser_page_store;
+    const {
         client: { currency },
+        ui: { is_desktop },
     } = useStore();
     const {
         effective_rate,
+        eligibility_status,
+        is_eligible,
         local_currency,
         max_order_amount_limit_display,
         min_order_amount_limit_display,
@@ -26,10 +33,11 @@ const AdvertiserPageRow = ({ row: advert }) => {
         rate_type,
         rate,
     } = advert;
+
     const { showModal } = useModalManagerContext();
 
     const is_buy_advert = advertiser_page_store.counterparty_type === buy_sell.BUY;
-    const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
+    const is_my_advert = counterparty_details_id === general_store.advertiser_id;
     const exchange_rate = useP2PExchangeRate(local_currency);
 
     const { display_effective_rate } = generateEffectiveRate({
@@ -41,11 +49,25 @@ const AdvertiserPageRow = ({ row: advert }) => {
         market_rate: effective_rate,
     });
 
-    const showAdForm = () => {
+    const showBuySellForm = () => {
         buy_sell_store.setSelectedAdState(advert);
         showModal({
             key: 'BuySellModal',
         });
+    };
+
+    const onBuySellButtonClick = () => {
+        if (general_store.is_advertiser) {
+            showBuySellForm();
+        } else {
+            showModal({
+                key: 'NicknameModal',
+                props: {
+                    onConfirm: showBuySellForm,
+                    should_hide_close_btn: is_desktop,
+                },
+            });
+        }
     };
 
     if (isMobile()) {
@@ -93,9 +115,13 @@ const AdvertiserPageRow = ({ row: advert }) => {
                     <Table.Cell />
                 ) : (
                     <Table.Cell className='advertiser-page-adverts__button'>
-                        <Button primary large onClick={showAdForm} is_disabled={general_store.is_barred}>
-                            {is_buy_advert ? localize('Buy') : localize('Sell')} {currency}
-                        </Button>
+                        <BuySellRowAction
+                            account_currency={currency}
+                            eligibility_status={eligibility_status}
+                            is_buy_advert={is_buy_advert}
+                            is_eligible={is_eligible}
+                            onClick={onBuySellButtonClick}
+                        />
                     </Table.Cell>
                 )}
             </Table.Row>
@@ -129,9 +155,13 @@ const AdvertiserPageRow = ({ row: advert }) => {
                 <Table.Cell />
             ) : (
                 <Table.Cell className='advertiser-page-adverts__button'>
-                    <Button is_disabled={general_store.is_barred} onClick={showAdForm} primary small>
-                        {is_buy_advert ? localize('Buy') : localize('Sell')} {currency}
-                    </Button>
+                    <BuySellRowAction
+                        account_currency={currency}
+                        eligibility_status={eligibility_status}
+                        is_buy_advert={is_buy_advert}
+                        is_eligible={is_eligible}
+                        onClick={onBuySellButtonClick}
+                    />
                 </Table.Cell>
             )}
         </Table.Row>

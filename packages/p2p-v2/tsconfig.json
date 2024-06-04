@@ -5,8 +5,9 @@
         "baseUrl": "./",
         "paths": {
             "@deriv/*": ["../*/src"],
+            "@/*": ["src/*"]
         }
     },
     "include": ["src", "../../utils.d.ts"],
-    "exclude": ["../shared/**/*"]
+    "exclude": ["../shared/**/*", "./node_modules/*"]
 }

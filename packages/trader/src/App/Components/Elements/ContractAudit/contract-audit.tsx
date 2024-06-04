@@ -14,11 +14,12 @@ type TContractAudit = Partial<
     contract_update_history: TContractUpdateHistory;
     contract_end_time: number | undefined;
     contract_info: TContractInfo;
+    current_language: string;
     duration: string | number;
     duration_unit: string;
     exit_spot: string | undefined;
-    has_result: boolean;
     is_dark_theme: boolean;
+    is_history_tab_active: boolean;
     is_open: boolean;
     toggleHistoryTab: (state_change?: boolean) => void;
 };
@@ -29,8 +30,9 @@ type TResponse = {
 
 const ContractAudit = ({
     contract_update_history,
-    has_result,
+    current_language,
     is_accumulator,
+    is_history_tab_active,
     is_multiplier,
     is_turbos,
     toggleHistoryTab,
@@ -42,21 +44,28 @@ const ContractAudit = ({
     const getSortedUpdateHistory = (history: TContractUpdateHistory) =>
         history.sort((a, b) => Number(b?.order_date) - Number(a?.order_date));
 
+    const requestUpdatedHistory = React.useCallback((id?: number) => {
+        if (!id) return;
+        WS.contractUpdateHistory(id)
+            .then((response: TResponse) => {
+                setUpdateHistory(getSortedUpdateHistory(response.contract_update_history));
+            })
+            .catch(() => null);
+    }, []);
+
     React.useEffect(() => {
         if (!!contract_update_history.length && contract_update_history.length > update_history.length)
             setUpdateHistory(getSortedUpdateHistory(contract_update_history));
     }, [contract_update_history, update_history]);
 
+    React.useEffect(() => {
+        if (is_history_tab_active && current_language) requestUpdatedHistory(contract_id);
+    }, [contract_id, is_history_tab_active, current_language, requestUpdatedHistory]);
+
     const onTabItemClick = (tab_index: number) => {
         toggleHistoryTab(!!tab_index);
-        if (tab_index) {
-            WS.contractUpdateHistory(contract_id).then((response: TResponse) => {
-                setUpdateHistory(getSortedUpdateHistory(response.contract_update_history));
-            });
-        }
+        if (tab_index) requestUpdatedHistory(contract_id);
     };
-
-    if (!has_result) return null;
 
     if (!is_multiplier && !is_accumulator && !is_turbos) {
         return (

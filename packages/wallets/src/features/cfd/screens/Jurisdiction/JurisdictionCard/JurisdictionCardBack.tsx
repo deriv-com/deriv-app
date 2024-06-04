@@ -1,8 +1,9 @@
 import React, { Dispatch, FC, SetStateAction } from 'react';
+import { LegacyArrowLeft2pxIcon } from '@deriv/quill-icons';
 import { WalletText } from '../../../../../components/Base/WalletText';
-import BackArrowIcon from '../../../../../public/images/ic-back-arrow.svg';
-import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
+import DocumentIcon from '../../../../../public/images/ic-id-number.svg';
+import NameAndAddressIcon from '../../../../../public/images/ic-name-and-address.svg';
 import NotApplicableIcon from '../../../../../public/images/ic-not-applicable.svg';
 import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
 import VerificationFailedStatusIcon from '../../../../../public/images/ic-verification-failed-status.svg';
@@ -16,8 +17,9 @@ import {
 import './JurisdictionCardBack.scss';
 
 const verificationIconsMapper: Record<string, JSX.Element> = {
-    documentNumber: <IdCardIcon />,
-    nameAndAddress: <DocumentsIcon />,
+    documentNumber: <DocumentIcon />,
+    identityDocument: <IdCardIcon />,
+    nameAndAddress: <NameAndAddressIcon />,
     notApplicable: <NotApplicableIcon />,
     selfie: <SelfieIcon />,
 };
@@ -38,19 +40,20 @@ const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, ve
     if (verificationDocs)
         return (
             <div className='wallets-jurisdiction-card-back'>
-                <BackArrowIcon
+                <LegacyArrowLeft2pxIcon
                     className='wallets-jurisdiction-card-back__icon'
+                    iconSize='xs'
                     onClick={e => {
                         e.stopPropagation();
                         setIsFlipped(false);
                     }}
                 />
-                <WalletText size='sm'>{verificationContents.shortDescription}</WalletText>
+                <WalletText size='xs'>{verificationContents.shortDescription}</WalletText>
                 {verificationDocs.map((verificationDocument: TJurisdictionCardItemVerificationItem, i) => {
                     return (
                         <div className='wallets-jurisdiction-card-back__row' key={`${verificationDocument}-${i}`}>
                             {verificationIconsMapper[verificationDocument]}
-                            <WalletText size='sm'>
+                            <WalletText size='xs'>
                                 {verificationContents.requiredVerificationDocs[verificationDocument]?.text}
                             </WalletText>
                         </div>
@@ -61,7 +64,7 @@ const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, ve
                     return (
                         <div className='wallets-jurisdiction-card-back__row' key={`${statusReference}-${i}`}>
                             {verificationStatusIconsMapper[statusReference.icon]}
-                            <WalletText size='sm'>{statusReference.text}</WalletText>
+                            <WalletText size='xs'>{statusReference.text}</WalletText>
                         </div>
                     );
                 })}

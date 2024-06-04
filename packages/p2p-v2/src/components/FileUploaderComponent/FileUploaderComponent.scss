@@ -1,0 +1,12 @@
+.p2p-v2-file-uploader-component {
+    position: relative;
+
+    &__close-icon {
+        position: absolute;
+        top: 0.8rem;
+        right: 0.8rem;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}

@@ -25,6 +25,7 @@
         padding: 0.8rem;
 
         @include mobile {
+            min-height: 9rem;
             grid-template-columns: 60% 40%;
         }
     }

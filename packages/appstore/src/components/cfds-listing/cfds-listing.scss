@@ -23,9 +23,7 @@
         backface-visibility: hidden;
         transition: transform 0.6s ease;
         transform: rotateY(0deg);
-        @include mobile {
-            height: 100%;
-        }
+        height: 100%;
     }
 
     &__footer-content {
@@ -49,43 +47,49 @@
         }
     }
     &__wrapper {
-        @include desktop {
+        &--financial,
+        &--synthetic,
+        &--all {
+            height: 100%;
             position: relative;
+            bottom: 0;
+            overflow-y: scroll;
             perspective: 100rem;
-            overflow: scroll;
-            &--financial {
-                height: 76rem;
-            }
-            &--synthetic,
-            &--all {
-                height: 69rem;
+
+            @include mobile {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
             }
         }
     }
     &__flipped {
         @include desktop {
             height: 70rem;
+            overflow: scroll;
         }
 
         .jurisdiction-modal {
-            &__scrollable-content {
-                height: 80rem;
-            }
-
             &__content-wrapper {
-                height: 70rem;
+                height: 100%;
+                transition: transform 1.5s ease;
                 transform: rotateY(-180deg);
                 visibility: hidden;
-
-                @include mobile {
-                    height: 100%;
-                }
             }
         }
 
         .dynamic-leverage-modal {
-            transform: rotateY(0deg);
+            animation: show 1s ease forwards;
         }
+    }
+}
+
+@keyframes show {
+    0% {
+        transform: rotateY(180deg);
+    }
+    100% {
+        transform: rotateY(0deg);
     }
 }
 
@@ -113,7 +117,9 @@
     &__wrapper {
         margin: 3rem 5rem 1rem;
         display: flex;
-        justify-content: center;
+        @include desktop {
+            justify-content: center;
+        }
         gap: 1.6rem;
         @include mobile {
             margin: 0;
@@ -409,14 +415,81 @@
 
 .cfd-trade-modal {
     display: flex;
-    margin: 2.4rem;
+    margin: 1.2rem 2.4rem;
     align-items: center;
     gap: 0.8rem;
+
+    &__balance {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__list-of-accounts {
+        display: flex;
+        justify-content: space-between;
+        &:first-child {
+            border-top: 0.2rem solid var(--general-section-1);
+            padding-top: 1rem;
+        }
+        margin: 0.8rem 0;
+    }
+
     &__acc_status {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
     }
+
+    &__expansion-panel {
+        background-color: var(--general-section-5);
+        padding: 1.6rem 2.4rem;
+        border-radius: $BORDER_RADIUS * 2;
+        margin-top: 0.8rem;
+
+        &--ordered-list {
+            list-style-type: decimal;
+            padding-left: 0.8rem;
+        }
+
+        &--unordered-list {
+            list-style-type: disc;
+            padding-left: 1.6rem;
+        }
+
+        &--content {
+            padding: 0.4rem 0;
+
+            &-bold {
+                font-weight: bold;
+            }
+        }
+
+        &--divider {
+            width: 100%;
+            border-bottom: 0.2rem solid var(--general-hover);
+            margin-bottom: 1rem;
+            margin-top: 0.4rem;
+        }
+    }
+
+    &__get-more-accounts {
+        cursor: pointer;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        border: 2px dashed var(--general-hover);
+        padding: 0.3rem 0;
+        margin: 1.6rem 0;
+
+        &--icon {
+            margin-right: 1.5rem;
+        }
+
+        &--details {
+            margin-top: 0.2rem;
+        }
+    }
+
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-less-prominent);
@@ -441,22 +514,31 @@
         display: flex;
         flex-direction: column;
         flex-grow: 1;
+
+        &-balance {
+            margin-left: 1.5rem;
+        }
     }
     &__password {
         &-box {
             display: flex;
             align-items: center;
             gap: 0.8rem;
-        }
-        &-text {
-            overflow: hidden;
+
+            .dc-btn:hover {
+                text-decoration: underline;
+                text-decoration-color: var(--text-general);
+                -webkit-text-decoration: underline var(--text-general); // these are required for Safari ! (stackoverflow https://bit.ly/3UTe9C7
+                -webkit-text-decoration-color: var(--text-general);
+            }
         }
         &-action {
-            padding: 0;
-            height: 1.5rem;
-            .dc-btn__icon {
-                padding-right: 0;
-            }
+            text-decoration: underline var(--text-general);
+            text-decoration-color: var(--text-general);
+            -webkit-text-decoration: underline var(--text-general); // these are required for Safari ! (stackoverflow https://bit.ly/3UTe9C7
+            -webkit-text-decoration-color: var(--text-general);
+            padding-right: 0;
+            height: 2.1rem;
         }
     }
 
@@ -481,9 +563,11 @@
         align-items: center;
         text-decoration: none;
         border-radius: $BORDER_RADIUS;
+        padding: 0;
 
         &-icon {
             margin-left: 0.6rem;
+            margin-top: 0.1rem;
         }
 
         &-text {
@@ -519,16 +603,12 @@
         display: flex;
         flex-direction: column;
         gap: 0.1rem;
-        :first-child {
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-        }
         &-item {
             display: flex;
             padding: 0.5rem 0.8rem;
             align-items: center;
             justify-content: space-between;
-            background: var(--general-section-3);
+            background: var(--general-section-2, #f2f3f4);
         }
     }
     &__spec-box {
@@ -578,6 +658,8 @@
                     @include typeface(--paragraph-center-bold-black, none);
                     background-color: transparent;
                     border: 1px solid var(--border-normal-2);
+                    border-radius: 0.5rem;
+                    padding: 0.6rem 1.6rem;
                     color: var(--text-less-prominent);
 
                     &:hover {
@@ -589,8 +671,7 @@
                 &-container {
                     display: flex;
                     flex-direction: column;
-                    margin-top: 4rem;
-                    margin-bottom: 6rem;
+                    margin: 4rem 1.6rem 6rem;
                     @include mobile {
                         margin-top: 5rem;
                         margin-bottom: 0;
@@ -602,7 +683,8 @@
                 }
             }
 
-            &--windows {
+            &--windows,
+            &--macos {
                 display: flex;
                 gap: 1.6rem;
                 align-items: center;
@@ -700,6 +782,29 @@
         }
         &-wrapper {
             overflow: scroll;
+        }
+    }
+}
+
+.ctrader-transfer-modal {
+    &__accounts-list {
+        width: 95%;
+        display: flex;
+        margin: 1rem;
+        padding: 1rem 1.6rem;
+        justify-content: space-between;
+        border: none;
+        background: none;
+
+        &--balance {
+            display: flex;
+            align-items: center;
+        }
+
+        &:hover {
+            cursor: pointer;
+            border-radius: $BORDER_RADIUS;
+            background-color: var(--general-hover);
         }
     }
 }
@@ -820,7 +925,6 @@
     position: absolute;
     backface-visibility: hidden;
     transition: transform 0.6s ease;
-    transform: rotateY(180deg);
 
     @include mobile {
         margin: 1.5rem 2.4rem 2.4rem;
@@ -928,13 +1032,18 @@
 
         .manual-poi {
             margin: auto;
-            width: max-content;
             height: 100%;
+            max-width: 68rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
 
+            .dc-card__wrapper {
+                margin-bottom: 0;
+            }
+
             &-details {
+                max-width: 68rem;
                 margin: auto;
                 @include mobile {
                     overflow-y: scroll;
@@ -944,11 +1053,10 @@
                     display: flex;
                     flex-direction: column;
                     justify-content: space-between;
-                }
 
-                &__btns {
-                    height: 7.2rem;
-                    padding-bottom: 0;
+                    .account-form__footer {
+                        max-width: 100%;
+                    }
                 }
 
                 &__field {
@@ -979,6 +1087,10 @@
         .proof-of-identity__mismatch-container {
             max-width: 70.2rem;
             margin-inline: auto;
+
+            .proof-of-identity__footer {
+                max-width: 100%;
+            }
 
             .account__scrollbars_container {
                 padding-top: 2.4rem;
@@ -1089,6 +1201,15 @@
 
         .details-form__description {
             margin-inline: 1.6rem;
+        }
+    }
+
+    &__inline-message {
+        width: 45%;
+        margin: 1.2rem auto;
+
+        @include mobile {
+            width: 95%;
         }
     }
 }
@@ -1345,7 +1466,7 @@
                 margin: 0;
             }
             &:first-child {
-                margin-left: 0;
+                margin-inline-start: 0;
             }
         }
         @include mobile {
@@ -2062,12 +2183,15 @@
     color: var(--text-prominent);
 
     &__container {
-        display: grid;
-        grid-template-rows: 12rem 7rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         height: 100%;
         width: 100%;
         justify-items: center;
         flex-grow: 1;
+        gap: 4rem;
+        padding: 2.4rem 0;
 
         @include mobile {
             min-height: 24rem;
@@ -2092,8 +2216,7 @@
     }
     &__password-area {
         @include desktop {
-            width: calc(min(33rem, 100vw));
-            padding: 2.4rem;
+            width: calc(min(34rem, 100vw));
         }
         @include mobile {
             width: 100%;
@@ -2106,7 +2229,7 @@
         min-height: 28.4rem;
         flex-direction: column;
         align-items: center;
-        padding-top: 2rem;
+        padding: 2rem 0;
         margin: 0 auto;
     }
     &__description {
@@ -2198,6 +2321,8 @@
 }
 
 .dc-modal__container_jurisdiction-modal {
+    overflow-y: scroll;
+
     .dc-modal-header {
         border-bottom: 2px solid var(--general-section-1);
     }
@@ -2224,6 +2349,78 @@
         margin: 1.6rem 0;
         .dc-btn {
             margin: 0.5rem;
+        }
+    }
+}
+
+.cfd-password-change {
+    &-list {
+        list-style: disc;
+        margin-top: 0.4rem;
+        &-container {
+            padding-left: 2.5rem;
+            margin-bottom: 1.3rem;
+            font-size: 1.6rem;
+            color: var(--text-general);
+        }
+    }
+    &-modal {
+        &-description {
+            margin: 1.5rem 0 2rem;
+            @include mobile {
+                margin: 1rem 1rem 2rem;
+                &--button {
+                    display: flex;
+                    width: 100%;
+                }
+                &--footer {
+                    padding: 1rem 1.6rem;
+                    border-top: 1px solid var(--general-hover);
+                }
+            }
+        }
+    }
+    &__content {
+        border-top: 1px solid var(--general-hover);
+        // to override the default padding
+        padding: 0 !important;
+        &-center {
+            justify-content: center;
+        }
+    }
+    &__password-success {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        @include mobile {
+            padding: 1.4rem 1.6rem 2.4rem;
+        }
+    }
+    &__icon {
+        // to adjust the icon to the center
+        margin: 0 0 2rem 2.4rem;
+        @include mobile {
+            margin: 0 0 2.4rem 2.4rem;
+        }
+    }
+    &__heading {
+        margin-bottom: 0.8rem;
+    }
+    &__subtext {
+        margin-bottom: 1.6rem;
+    }
+    @include desktop {
+        &__footer {
+            &-button {
+                padding: 0 1rem 1rem 0;
+                align-self: self-end;
+            }
+        }
+        &__container {
+            padding: 0 1.3rem;
+            border-bottom: 1px solid var(--general-hover);
         }
     }
 }

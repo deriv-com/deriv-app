@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { loadBlocksFromRemote, runIrreversibleEvents } from '../../../../utils';
 import { observer as globalObserver } from '../../../../../utils/observer';
-import { log_types } from '../../../../../constants/messages';
+import { LogTypes } from '../../../../../constants/messages';
 
 Blockly.Blocks.loader = {
     init() {
@@ -75,7 +75,7 @@ Blockly.Blocks.loader = {
 
         loadBlocksFromRemote(this)
             .then(() => {
-                globalObserver.emit('ui.log.success', { log_type: log_types.LOAD_BLOCK });
+                globalObserver.emit('ui.log.success', { log_type: LogTypes.LOAD_BLOCK });
             })
             .catch(error_msg => {
                 globalObserver.emit('ui.log.error', error_msg);

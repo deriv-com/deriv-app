@@ -2,19 +2,19 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { connect } from 'Stores/connect';
-import { PlatformContext } from '@deriv/shared';
 import { findRouteByPath, normalizePath } from './helpers';
 import getRoutesConfig from '../../Constants/routes-config';
+import { observer, useStore } from '@deriv/stores';
 
 // TODO: solve circular dependency problem
 // when binary link is imported into components present in routes config
 // or into their descendants
-const BinaryLink = ({ active_class, to, children, href, has_error, setError, ...props }) => {
-    const platform_context = React.useContext(PlatformContext);
-    const is_appstore = platform_context?.is_appstore;
+const BinaryLink = observer(({ active_class, to, children, href, ...props }) => {
+    const { common } = useStore();
+    const { has_error, error } = common;
+    const setError = error.setError;
     const path = normalizePath(to);
-    const route = findRouteByPath(path, getRoutesConfig({ is_appstore }));
+    const route = findRouteByPath(path, getRoutesConfig());
 
     if (!route && to) {
         throw new Error(`Route not found: ${to}`);
@@ -39,18 +39,13 @@ const BinaryLink = ({ active_class, to, children, href, has_error, setError, ...
             {children}
         </a>
     );
-};
+});
 
 BinaryLink.propTypes = {
     active_class: PropTypes.string,
     children: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
-    has_error: PropTypes.bool,
     href: PropTypes.string,
-    setError: PropTypes.func,
     to: PropTypes.string,
 };
 
-export default connect(({ common }) => ({
-    has_error: common.has_error,
-    setError: common.setError,
-}))(BinaryLink);
+export default BinaryLink;

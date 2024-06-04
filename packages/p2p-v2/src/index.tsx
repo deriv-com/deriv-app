@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeLazyLoader, moduleLoader } from './utils/loader';
+import { makeLazyLoader, moduleLoader } from '@/utils/loader';
 
 const LazyApp = makeLazyLoader(
     () => {

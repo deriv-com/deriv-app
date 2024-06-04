@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+//@ts-nocheck [TODO] - Need to fix typescript errors in OnfidoUpload component
 import React from 'react';
 import { Loading, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
@@ -27,7 +29,7 @@ type TDetailComponent = {
     is_onfido_supported?: boolean;
     is_from_external?: boolean;
     setIsCfdPoiCompleted?: () => void;
-    is_mt5?: boolean;
+    is_for_mt5?: boolean;
     handlePOIforMT5Complete?: () => void;
 };
 
@@ -41,7 +43,7 @@ const DetailComponent = ({
     is_onfido_supported,
     is_from_external,
     setIsCfdPoiCompleted,
-    is_mt5,
+    is_for_mt5,
     handlePOIforMT5Complete,
     ...props
 }: TDetailComponent) => {
@@ -101,7 +103,7 @@ const DetailComponent = ({
         uploadFiles(values)
             .then(() => {
                 if (!is_any_failed) {
-                    if (is_mt5) {
+                    if (is_for_mt5) {
                         handlePOIforMT5Complete?.();
                     } else {
                         setStatus(STATUS.IS_COMPLETED);
@@ -142,9 +144,9 @@ const DetailComponent = ({
                                 country_code={country_code_key}
                                 documents_supported={[document.onfido_name]}
                                 height={height ?? null}
-                                handleComplete={is_mt5 ? handlePOIforMT5Complete : handleComplete}
+                                handleComplete={is_for_mt5 ? handlePOIforMT5Complete : handleComplete}
                                 is_default_enabled
-                                handleViewComplete={is_mt5 ? handlePOIforMT5Complete : handleComplete}
+                                handleViewComplete={is_for_mt5 ? handlePOIforMT5Complete : handleComplete}
                                 {...props}
                             />
                         </React.Fragment>

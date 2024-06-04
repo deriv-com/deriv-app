@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { Text, StatusBadge } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import {
     BrandConfig,
@@ -12,7 +13,6 @@ import {
 } from 'Constants/platform-config';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
-import { useActiveWallet } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import {
     CFD_PLATFORMS,
@@ -24,10 +24,6 @@ import {
 } from '@deriv/shared';
 import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
 import './trading-app-card.scss';
-
-type TWalletsProps = {
-    wallet_account?: ReturnType<typeof useActiveWallet>;
-};
 
 const TradingAppCard = ({
     availability,
@@ -46,9 +42,8 @@ const TradingAppCard = ({
     selected_mt5_jurisdiction,
     openFailedVerificationModal,
     market_type,
-    wallet_account,
     is_new = false,
-}: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid & TWalletsProps) => {
+}: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
     const {
         common,
         traders_hub,
@@ -57,16 +52,13 @@ const TradingAppCard = ({
         client,
     } = useStore();
     const { setIsVerificationModalVisible } = ui;
-    const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
+    const { is_eu_user, is_demo_low_risk, content_flag, is_real, selected_account_type } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;
-    const {
-        account_status: { authentication },
-    } = client;
+    const { account_status: { authentication } = {}, is_logged_in } = client;
 
     const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
     const demo_label = localize('Demo');
-    const is_real_account = wallet_account ? !wallet_account.is_virtual : is_real;
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -97,6 +89,12 @@ const TradingAppCard = ({
     };
 
     const openStaticPage = () => {
+        Analytics.trackEvent('ce_tradershub_dashboard_form', {
+            action: 'account_logo_push',
+            form_name: 'traders_hub_default',
+            account_mode: selected_account_type,
+            account_name: !is_real ? `${sub_title === undefined ? name : sub_title}` : name,
+        });
         if (is_deriv_platform) {
             switch (name) {
                 case DERIV_PLATFORM_NAMES.TRADER:
@@ -131,6 +129,10 @@ const TradingAppCard = ({
         mt5_acc_auth_status === MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION ||
         mt5_acc_auth_status === MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION;
     const is_disabled = !!(mt5_acc_auth_status && !migration_status) && !is_eu_user;
+    const platform_name = is_account_being_created ? name : sub_title ?? name;
+
+    const is_existing_real_ctrader_account =
+        platform === CFD_PLATFORMS.CTRADER && is_real && action_type === 'multi-action';
 
     return (
         <div className='trading-app-card' key={`trading-app-card__${current_language}`}>
@@ -141,13 +143,26 @@ const TradingAppCard = ({
             >
                 <TradingPlatformIconProps icon={icon} onClick={clickable_icon ? openStaticPage : undefined} size={48} />
             </div>
-            <div className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}>
+            <div
+                className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}
+                data-testid={`dt_trading-app-card_${is_real ? 'real' : 'demo'}_${platform_name
+                    .replaceAll(' ', '-')
+                    .toLowerCase()}${
+                    selected_mt5_jurisdiction?.jurisdiction ? `_${selected_mt5_jurisdiction.jurisdiction}` : ''
+                }`}
+            >
                 <div className='trading-app-card__details'>
                     <div>
-                        <Text className='title' size='xs' line_height='s' color='prominent'>
-                            {!is_real_account && sub_title ? `${sub_title} ${demo_label}` : sub_title}
+                        <Text
+                            className='title'
+                            size='xs'
+                            line_height='s'
+                            color='prominent'
+                            data-testid='dt_cfd-account-name'
+                        >
+                            {!is_real && sub_title ? `${sub_title} ${demo_label}` : sub_title}
                         </Text>
-                        {!wallet_account && short_code_and_region && (
+                        {short_code_and_region && (
                             <Text
                                 weight='bolder'
                                 size='xxxs'
@@ -165,6 +180,9 @@ const TradingAppCard = ({
                             line_height='s'
                             weight='bold'
                             color={action_type === 'trade' ? 'prominent' : 'general'}
+                            data-testid={
+                                action_type === 'get' || is_deriv_platform ? 'dt_platform-name' : 'dt_account-balance'
+                            }
                         >
                             {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
                         </Text>
@@ -179,8 +197,16 @@ const TradingAppCard = ({
                             </Text>
                         )}
                     </div>
-                    <Text className='description' color={'general'} size='xxs' line_height='m'>
-                        {app_desc}
+                    <Text
+                        className='description'
+                        color={'general'}
+                        size='xxs'
+                        line_height='m'
+                        data-testid={
+                            action_type === 'get' || is_deriv_platform ? 'dt_platform-description' : 'dt_account-id'
+                        }
+                    >
+                        {is_existing_real_ctrader_account ? '' : app_desc}
                     </Text>
                     {mt5_acc_auth_status && (
                         <StatusBadge

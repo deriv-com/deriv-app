@@ -1,0 +1,39 @@
+.mt5-download-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    margin: 2.4rem;
+
+    &--span {
+        width: 100%;
+    }
+
+    &--option {
+        width: 100%;
+        height: 3.4rem;
+        padding: 0.8rem;
+        border-radius: 0.8rem;
+        background-color: var(--general-section-4);
+        text-decoration: none;
+        border: none;
+        outline: none;
+        box-shadow: none;
+
+        .full-row {
+            gap: 0.8rem;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            .title {
+                flex: 1;
+            }
+        }
+    }
+
+    .blue {
+        background-color: #0364b9;
+        .title {
+            color: var(--text-colored-background);
+        }
+    }
+}

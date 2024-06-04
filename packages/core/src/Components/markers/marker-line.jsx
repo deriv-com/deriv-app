@@ -25,6 +25,14 @@ const MarkerLine = ({ label, line_style, marker_config, status }) => {
                     size={24}
                 />
             )}
+            {label === marker_config.LINE_RESET.content_config.label && (
+                <Icon
+                    icon='IcContractResetTimeCircle'
+                    className='chart-marker-line__icon chart-marker-line__icon--time'
+                    color='secondary'
+                    size={24}
+                />
+            )}
         </div>
     );
 };

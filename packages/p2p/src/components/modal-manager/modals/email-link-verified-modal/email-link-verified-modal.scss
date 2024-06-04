@@ -2,9 +2,15 @@
     align-items: center;
     display: flex;
     flex-direction: column;
+    padding: 2.4rem 2.4rem 1rem;
 
     &__footer {
         align-self: center;
+        padding-bottom: 2.4rem;
+
+        @include mobile {
+            padding-bottom: 1.6rem;
+        }
     }
 
     &__text {

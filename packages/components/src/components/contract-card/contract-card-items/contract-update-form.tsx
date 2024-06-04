@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import { Localize } from '@deriv/translations';
 import {
     getCancellationPrice,
     getContractUpdateConfig,
@@ -8,21 +9,20 @@ import {
     isDeepEqual,
     isMultiplierContract,
     pick,
-    getTotalProfit,
 } from '@deriv/shared';
 import Button from '../../button';
-import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import InputWithCheckbox from '../../input-wth-checkbox';
 import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
 import { TGetCardLables, TToastConfig } from '../../types';
+import ArrowIndicator from '../../arrow-indicator';
+import Text from '../../text';
 
 export type TGeneralContractCardBodyProps = {
     addToast: (toast_config: TToastConfig) => void;
     contract_info: TContractInfo;
     contract_update: TContractInfo['contract_update'];
-    connectWithContractUpdate?: (contract_update_form: React.ElementType) => React.ElementType;
     currency: string;
     current_focus?: string | null;
     error_message_alignment?: string;
@@ -34,8 +34,7 @@ export type TGeneralContractCardBodyProps = {
     is_sold: boolean;
     onMouseLeave?: () => void;
     removeToast: (toast_id: string) => void;
-    setCurrentFocus: (name: string) => void;
-    status?: string;
+    setCurrentFocus: (name: string | null) => void;
     toggleCancellationWarning: (state_change?: boolean) => void;
     progress_slider?: React.ReactNode;
     is_positions?: boolean;
@@ -49,7 +48,6 @@ export type TContractUpdateFormProps = Pick<
     | 'onMouseLeave'
     | 'removeToast'
     | 'setCurrentFocus'
-    | 'status'
 > & {
     contract: TContractStore;
     error_message_alignment?: string;
@@ -57,11 +55,12 @@ export type TContractUpdateFormProps = Pick<
     onMouseLeave?: () => void;
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (name: string | null) => void;
-    status: string;
     toggleDialog: (e: React.MouseEvent<HTMLButtonElement>) => void;
     getContractById: (contract_id: number) => TContractStore;
     is_accumulator?: boolean;
+    isMobile?: boolean;
     is_turbos?: boolean;
+    totalProfit: number;
 };
 
 const ContractUpdateForm = (props: TContractUpdateFormProps) => {
@@ -71,13 +70,14 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
         current_focus,
         error_message_alignment,
         getCardLabels,
+        isMobile,
         is_turbos,
         is_accumulator,
         onMouseLeave,
         removeToast,
         setCurrentFocus,
-        status,
         toggleDialog,
+        totalProfit,
     } = props;
 
     React.useEffect(() => {
@@ -121,9 +121,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
         : !!(is_take_profit_valid || is_stop_loss_valid);
     const is_valid_contract_update = is_multiplier ? is_valid_multiplier_contract_update : !!is_take_profit_valid;
 
-    const getStateToCompare = (
-        _state: Partial<ReturnType<typeof getContractUpdateConfig> & TContractUpdateFormProps>
-    ) => {
+    const getStateToCompare = (_state: Partial<TContractStore>) => {
         const props_to_pick = [
             'has_contract_update_take_profit',
             'has_contract_update_stop_loss',
@@ -135,7 +133,10 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
     };
 
     const isStateUnchanged = () => {
-        return isDeepEqual(getStateToCompare(getContractUpdateConfig(contract_info)), getStateToCompare(props));
+        return isDeepEqual(
+            getStateToCompare(getContractUpdateConfig(contract_info)),
+            getStateToCompare(props.contract)
+        );
     };
 
     const onChange = (
@@ -164,11 +165,13 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             addToast={addToast}
             removeToast={removeToast}
             current_focus={current_focus}
+            classNameBubble='dc-popover__trade-params'
             classNameInlinePrefix='dc-contract-card-dialog__input--currency'
             currency={currency}
             error_messages={error_messages.take_profit}
-            is_single_currency={true}
-            is_negative_disabled={true}
+            is_input_hidden={isMobile && !has_contract_update_take_profit}
+            is_single_currency
+            is_negative_disabled
             defaultChecked={has_contract_update_take_profit}
             label={getCardLabels().TAKE_PROFIT}
             name='contract_update_take_profit'
@@ -177,6 +180,10 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             value={contract_profit_or_loss.contract_update_take_profit}
             is_disabled={is_multiplier && !!is_valid_to_cancel}
             setCurrentFocus={setCurrentFocus}
+            tooltip_alignment={isMobile ? 'left' : 'right'}
+            tooltip_label={
+                <Localize i18n_default_text='When your profit reaches or exceeds this amount, your trade will be closed automatically.' />
+            }
         />
     );
 
@@ -186,12 +193,14 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             addToast={addToast}
             removeToast={removeToast}
             current_focus={current_focus}
+            classNameBubble='dc-popover__trade-params'
             classNameInlinePrefix='dc-contract-card-dialog__input--currency'
             currency={currency}
             defaultChecked={has_contract_update_stop_loss}
             error_messages={error_messages.stop_loss}
-            is_single_currency={true}
-            is_negative_disabled={true}
+            is_input_hidden={isMobile && !has_contract_update_stop_loss}
+            is_single_currency
+            is_negative_disabled
             label={getCardLabels().STOP_LOSS}
             max_value={Number(buy_price) - cancellation_price}
             name='contract_update_stop_loss'
@@ -200,35 +209,34 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             value={contract_profit_or_loss.contract_update_stop_loss}
             is_disabled={!!is_valid_to_cancel}
             setCurrentFocus={setCurrentFocus}
+            tooltip_alignment={isMobile ? 'left' : 'right'}
+            tooltip_label={
+                <Localize i18n_default_text='When your loss reaches or exceeds this amount, your trade will be closed automatically.' />
+            }
         />
     );
-
-    const total_profit = getTotalProfit(contract_info);
 
     return (
         <React.Fragment>
             <MobileWrapper>
                 <div className='dc-contract-card-dialog__total-profit'>
-                    <span>{getCardLabels().TOTAL_PROFIT_LOSS}</span>
+                    <Text color='less-prominent' size='xs' weight='bold'>
+                        {getCardLabels().TOTAL_PROFIT_LOSS}
+                    </Text>
                     <div
                         className={classNames(
                             'dc-contract-card__profit-loss dc-contract-card-item__total-profit-loss-value',
                             {
                                 'dc-contract-card__profit-loss--is-crypto': isCryptocurrency(currency),
-                                'dc-contract-card__profit-loss--negative': total_profit < 0,
-                                'dc-contract-card__profit-loss--positive': total_profit > 0,
+                                'dc-contract-card__profit-loss--negative': totalProfit < 0,
+                                'dc-contract-card__profit-loss--positive': totalProfit > 0,
                             }
                         )}
                     >
-                        <Money amount={total_profit} currency={currency} />
-                        <div
-                            className={classNames('dc-contract-card__indicative--movement', {
-                                'dc-contract-card__indicative--movement-complete': is_sold,
-                            })}
-                        >
-                            {status === 'profit' && <Icon icon='IcProfit' />}
-                            {status === 'loss' && <Icon icon='IcLoss' />}
-                        </div>
+                        <Money amount={totalProfit} currency={currency} show_currency />
+                        {!is_sold && (
+                            <ArrowIndicator className='dc-contract-card__indicative--movement' value={totalProfit} />
+                        )}
                     </div>
                 </div>
             </MobileWrapper>

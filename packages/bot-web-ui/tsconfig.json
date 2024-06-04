@@ -13,5 +13,5 @@
             "Types": ["src/types"],
         }
     },
-    "include": ["src", "../../utils.d.ts"]
+    "include": ["src", "../../utils.d.ts", "src/types/global.d.ts"],
 }

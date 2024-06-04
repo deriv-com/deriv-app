@@ -62,12 +62,7 @@ export const ACCOUNTS_LIST = [
         is_disabled: 0,
         is_virtual: 0,
         landing_company_name: 'svg',
-        linked_to: [
-            {
-                loginid: 'CRW1003',
-                platform: 'dwallet',
-            },
-        ],
+        linked_to: [],
         loginid: 'CR90000243',
     },
     {
@@ -122,12 +117,7 @@ export const ACCOUNTS_LIST = [
         is_disabled: 0,
         is_virtual: 0,
         landing_company_name: 'svg',
-        linked_to: [
-            {
-                loginid: 'CRW1017',
-                platform: 'dwallet',
-            },
-        ],
+        linked_to: [],
         loginid: 'CR90000256',
     },
     {
@@ -165,12 +155,7 @@ export const ACCOUNTS_LIST = [
         is_disabled: 0,
         is_virtual: 1,
         landing_company_name: 'virtual',
-        linked_to: [
-            {
-                loginid: 'VRW1004',
-                platform: 'dwallet',
-            },
-        ],
+        linked_to: [],
         loginid: 'VRTC90000115',
     },
     {
@@ -205,10 +190,11 @@ export default function mockWalletsAuthorize(context: Context) {
             throw new Error('authorize has not been prepopulated');
         }
 
-        const accountByToken = context.state.accounts.find(account => account.token === context.state.currentToken);
-        const accountByAuthorise = context.state.accounts.find(account => account.token === context.request.authorize);
+        context.state.currentToken = context.request.authorize || context.state.currentToken;
+        const currentAccount = context.state.accounts.find(account => account.token === context.state.currentToken);
 
         context.response.authorize.account_list = ACCOUNTS_LIST;
-        context.response.authorize.loginid = accountByToken?.id || accountByAuthorise.id;
+        context.response.authorize.loginid = currentAccount?.id;
+        context.response.authorize.currency = currentAccount?.currency;
     }
 }

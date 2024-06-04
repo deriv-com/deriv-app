@@ -11,6 +11,7 @@
 
 export { default as Accordion } from './components/accordion';
 export { default as AmountInput } from './components/amount-input';
+export { default as ArrowIndicator } from './components/arrow-indicator';
 export { default as AutoHeightWrapper } from './components/auto-height-wrapper';
 export { default as Autocomplete } from './components/autocomplete';
 export { default as AutoSizer } from './components/autosizer';
@@ -78,6 +79,7 @@ export { default as Money } from './components/money';
 export { default as MultiStep } from './components/multi-step';
 export { default as NewsTicker } from './components/news-ticker';
 export { default as Numpad } from './components/numpad';
+export { default as OpenLiveChatLink } from './components/open-livechat-link';
 export { default as PageError } from './components/page-error';
 export { default as PageErrorContainer } from './components/page-error-container';
 export { default as PageOverlay } from './components/page-overlay';

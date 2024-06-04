@@ -45,19 +45,30 @@ const KEY_CODE = {
     KEYUP: 38,
 };
 
+const isString = (item: TItem): item is string => typeof item === 'string';
+
 const getFilteredItems = (val: string, list: TItem[], should_filter_by_char = false) => {
-    if (should_filter_by_char) {
-        return list.filter(item =>
-            typeof item === 'string' ? matchStringByChar(item, val) : matchStringByChar(item.text || '', val)
-        );
-    }
-    return list.filter(item =>
-        typeof item === 'string'
-            ? getEnglishCharacters(item).toLowerCase().includes(val) || item.toLowerCase().includes(val)
-            : getEnglishCharacters(item.text || '')
-                  .toLowerCase()
-                  .includes(val) || item?.text?.toLowerCase().includes(val)
-    );
+    const searchTerm = val.toLowerCase();
+
+    const filtered = list.filter(item => {
+        const text = isString(item) ? item.toLowerCase() : (item.text || '').toLowerCase();
+        return text.includes(searchTerm);
+    });
+
+    const sortedFiltered = filtered.sort((a, b) => {
+        const indexA = (isString(a) ? a : a.text || '').toLowerCase().indexOf(searchTerm);
+        const indexB = (isString(b) ? b : b.text || '').toLowerCase().indexOf(searchTerm);
+        return indexA - indexB;
+    });
+
+    return sortedFiltered.filter(item => {
+        const text = isString(item) ? item : item.text || '';
+        const textLower = text.toLowerCase();
+        const englishChars = getEnglishCharacters(textLower);
+        return should_filter_by_char
+            ? matchStringByChar(text, val)
+            : englishChars.includes(val) || textLower.includes(val);
+    });
 };
 const Autocomplete = React.memo((props: TAutocompleteProps) => {
     const NO_SEARCH_RESULT = getSearchNotFoundOption();

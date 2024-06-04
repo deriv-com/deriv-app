@@ -1,19 +1,23 @@
-import React, { FC } from 'react';
-import { APIProvider } from '@deriv/api';
-import { BreakpointProvider } from '@deriv/quill-design';
+import React from 'react';
+import { CFDProvider, RealAccountCreationProvider, UIProvider } from '@/providers';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import AppContent from './AppContent';
-import { ModalProvider } from './components';
+import { Modals } from './modals';
 import './index.scss';
 
-const App: FC = () => (
-    <APIProvider standalone>
-        <ModalProvider>
-            <BreakpointProvider>
-                <AppContent />
-            </BreakpointProvider>
-            <AppContent />
-        </ModalProvider>
-    </APIProvider>
+const App = () => (
+    <UIProvider>
+        <APIProvider standalone>
+            <AuthProvider>
+                <CFDProvider>
+                    <RealAccountCreationProvider>
+                        <AppContent />
+                        <Modals />
+                    </RealAccountCreationProvider>
+                </CFDProvider>
+            </AuthProvider>
+        </APIProvider>
+    </UIProvider>
 );
 
 export default App;

@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect } from 'react';
-import { useActiveWalletAccount, useCryptoTransactions } from '@deriv/api';
-import { WalletsTransactionStatusLoader } from '../../../../components';
+import { useActiveWalletAccount, useCryptoTransactions } from '@deriv/api-v2';
+import { LegacyWarningIcon } from '@deriv/quill-icons';
+import { Loader } from '../../../../components';
 import { Divider, WalletText } from '../../../../components/Base';
-import Warning from '../../../../public/images/warning.svg';
 import { THooks } from '../../../../types';
 import { TransactionStatusError } from './components/TransactionStatusError';
 import { TransactionStatusSuccess } from './components/TransactionStatusSuccess';
@@ -50,11 +50,15 @@ const TransactionStatus: React.FC<TTransactionStatus> = ({ transactionType }) =>
                 <WalletText size='sm' weight='bold'>
                     Transaction status
                 </WalletText>
-                {isError && <Warning />}
+                {isError && <LegacyWarningIcon iconSize='xs' />}
             </div>
             <Divider color='#d6dadb' /> {/* --color-grey-5 */}
             <div className='wallets-transaction-status__body'>
-                {!isError && isLoading && <WalletsTransactionStatusLoader />}
+                {!isError && isLoading && (
+                    <div className='wallets-transaction-status__loader'>
+                        <Loader />
+                    </div>
+                )}
                 {isError && <TransactionStatusError refresh={refresh} />}
                 {isTransactionStatusSuccessVisible && (
                     <TransactionStatusSuccess

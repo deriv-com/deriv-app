@@ -1,0 +1,23 @@
+.p2p-v2-order-status-tag {
+    border-radius: 16px;
+    padding: 0.2rem 1.6rem;
+    white-space: nowrap;
+    width: fit-content;
+
+    &--danger {
+        color: #ff444f;
+        background-color: rgba(236, 63, 63, 0.16);
+    }
+    &--alert {
+        color: #ffad3a;
+        background-color: rgba(255, 173, 58, 0.16);
+    }
+    &--success {
+        color: #4bb4b3;
+        background-color: rgba(75, 180, 179, 0.16);
+    }
+    &--disabled {
+        color: #999999;
+        background-color: rgba(153, 153, 153, 0.16);
+    }
+}

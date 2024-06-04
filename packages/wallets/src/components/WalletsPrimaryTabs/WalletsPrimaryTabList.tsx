@@ -10,7 +10,7 @@ const WalletsPrimaryTabList = ({ list }: WalletPrimaryTabListProps) => {
     const { activeTabIndex, setActiveTabIndex } = useTabs();
 
     return (
-        <div className='wallets-tabs-list' data-list-count={list.length}>
+        <div className='wallets-tabs-list' data-list-count={list.length} data-testid='dt_tab_list'>
             {list.map((tab, i) => (
                 <button
                     className={`wallets-tabs-list-item wallets-tabs-list-item--${

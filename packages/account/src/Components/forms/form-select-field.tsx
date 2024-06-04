@@ -2,7 +2,8 @@ import { Autocomplete, SelectNative } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { Field, FieldProps, FormikErrors } from 'formik';
 import React from 'react';
-import { TGetField, TListItem } from '../additional-kyc-info-modal/form-config';
+import { TGetField } from '../additional-kyc-info-modal/form-config';
+import { TListItem } from 'Types';
 
 type TFormSelectField = TGetField & {
     onItemSelection?: (item: TListItem) => void;
@@ -31,7 +32,7 @@ const FormSelectField: React.FC<TFormSelectField> = ({
     const onSelect =
         (field: string, setFieldValue: TSetFieldValue) =>
         ({ value, text }: TListItem) => {
-            setFieldValue(field, value ? text : '', true);
+            setFieldValue(field, (value && text) ?? '', true);
         };
     // TODO: remove the following ts-expect-error comments once the issue is fixed within the components
     return (

@@ -1,62 +1,57 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useAuthorize } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api-v2';
+import {
+    LabelPairedArrowsRotateMdBoldIcon,
+    LabelPairedArrowUpArrowDownMdBoldIcon,
+    LabelPairedMinusMdBoldIcon,
+    LabelPairedPlusMdBoldIcon,
+} from '@deriv/quill-icons';
 import useDevice from '../../hooks/useDevice';
-import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
-import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
-import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
-import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
-import { THooks } from '../../types';
 import { IconButton, WalletButton, WalletText } from '../Base';
 import './WalletListCardActions.scss';
 
-const getWalletHeaderButtons = (isDemo: boolean) => {
+const getWalletHeaderButtons = (isDemo?: boolean) => {
     const buttons = [
         {
-            icon: <IcCashierAdd />,
+            className: isDemo ? 'wallets-mobile-actions-content-icon' : 'wallets-mobile-actions-content-icon--primary',
+            color: isDemo ? 'white' : 'primary',
+            icon: isDemo ? <LabelPairedArrowsRotateMdBoldIcon /> : <LabelPairedPlusMdBoldIcon fill='#FFF' />,
             name: isDemo ? 'reset-balance' : 'deposit',
             text: isDemo ? 'Reset balance' : 'Deposit',
+            variant: isDemo ? 'outlined' : 'contained',
         },
         {
-            icon: <IcCashierWithdrawal />,
-            name: 'withdraw',
+            className: 'wallets-mobile-actions-content-icon',
+            color: 'white',
+            icon: <LabelPairedMinusMdBoldIcon />,
+            name: 'withdrawal',
             text: 'Withdraw',
+            variant: 'outlined',
         },
         {
-            icon: <IcCashierTransfer />,
-            name: 'transfer',
+            className: 'wallets-mobile-actions-content-icon',
+            color: 'white',
+            icon: <LabelPairedArrowUpArrowDownMdBoldIcon />,
+            name: 'account-transfer',
             text: 'Transfer',
-        },
-        {
-            icon: <IcCashierStatement />,
-            name: 'transactions',
-            text: 'Transactions',
+            variant: 'outlined',
         },
     ] as const;
 
     // Filter out the "Withdraw" button when is_demo is true
-    const filteredButtons = isDemo ? buttons.filter(button => button.name !== 'withdraw') : buttons;
+    const filteredButtons = isDemo ? buttons.filter(button => button.name !== 'withdrawal') : buttons;
 
-    const orderForDemo = ['transfer', 'transactions', 'reset-balance'];
-
-    const sortedButtons = isDemo
-        ? [...filteredButtons].sort((a, b) => orderForDemo.indexOf(a.name) - orderForDemo.indexOf(b.name))
-        : filteredButtons;
-
-    return sortedButtons;
+    return filteredButtons;
 };
 
-type TProps = {
-    isActive: THooks.WalletAccountsList['is_active'];
-    isDemo: THooks.WalletAccountsList['is_virtual'];
-    loginid: THooks.WalletAccountsList['loginid'];
-};
-
-const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) => {
-    const { switchAccount } = useAuthorize();
+const WalletListCardActions = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const history = useHistory();
+
+    const isActive = activeWallet?.is_active;
+    const isDemo = activeWallet?.is_virtual;
 
     if (isMobile)
         return (
@@ -66,19 +61,17 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                         <div className='wallets-mobile-actions-content' key={button.name}>
                             <IconButton
                                 aria-label={button.name}
-                                className='wallets-mobile-actions-content-icon'
-                                color='transparent'
+                                className={button.className}
+                                color={button.color}
                                 icon={button.icon}
-                                isRound
                                 onClick={() => {
-                                    if (activeWallet?.loginid !== loginid) {
-                                        switchAccount(loginid);
-                                    }
-                                    history.push(`/wallets/cashier/${button.name}`);
+                                    history.push(`/wallet/${button.name}`);
                                 }}
                                 size='lg'
                             />
-                            <WalletText size='sm'>{button.text}</WalletText>
+                            <WalletText size='sm' weight={button.text === 'Deposit' ? 'bold' : 'normal'}>
+                                {button.text}
+                            </WalletText>
                         </div>
                     ))}
                 </div>
@@ -93,11 +86,10 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                     icon={button.icon}
                     key={button.name}
                     onClick={() => {
-                        switchAccount(loginid);
-                        history.push(`/wallets/cashier/${button.name}`);
+                        history.push(`/wallet/${button.name}`);
                     }}
-                    rounded='md'
-                    variant='outlined'
+                    rounded='lg'
+                    variant={button.variant}
                 >
                     {isActive ? button.text : ''}
                 </WalletButton>

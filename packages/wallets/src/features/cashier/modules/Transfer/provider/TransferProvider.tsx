@@ -1,12 +1,11 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { useAccountLimits, useAuthorize, useGetExchangeRate, useTransferBetweenAccounts } from '@deriv/api';
+import { useAccountLimits, useAuthorize, useGetExchangeRate, useTransferBetweenAccounts } from '@deriv/api-v2';
 import type { THooks } from '../../../../../types';
 import { useExtendedTransferAccountProperties, useSortedTransferAccounts } from '../hooks';
 import type { TInitialTransferFormValues } from '../types';
 
 type TReceipt = {
     feeAmount?: string;
-    feePercentage?: number;
     fromAccount: TInitialTransferFormValues['fromAccount'];
     fromAmount: TInitialTransferFormValues['fromAmount'];
     toAccount: TInitialTransferFormValues['toAccount'];
@@ -103,7 +102,6 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
 
                 setReceipt({
                     feeAmount,
-                    feePercentage,
                     fromAccount,
                     fromAmount,
                     toAccount,

@@ -11,7 +11,7 @@ export const mockContractInfo = (obj: Partial<TContractInfo> = {}): TContractInf
         currency: 'USD',
         current_spot: 2415.18,
         current_spot_display_value: '2415.18',
-        current_spot_time: 1700481935,
+        current_spot_time: 1700481950,
         date_expiry: 1700482235,
         date_settlement: 1700482235,
         date_start: 1700481935,

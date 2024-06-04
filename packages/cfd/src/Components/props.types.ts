@@ -90,6 +90,8 @@ export type TTradingPlatformAvailableAccount = {
     sub_account_type: string;
     account_type?: 'real' | 'demo';
     landing_company_short?: TShortcode;
+    max_count?: number;
+    available_count?: number;
 };
 
 export type TModifiedTradingPlatformAvailableAccount = Omit<TTradingPlatformAvailableAccount, 'market_type'> & {
@@ -276,6 +278,12 @@ export type TJurisdictionData = {
 
 export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     display_login?: string;
+    white_label_links?: {
+        webtrader_url: string;
+        android: string;
+        ios: string;
+        windows: string;
+    };
     landing_company_short?: TShortcode;
     short_code_and_region?: string;
     mt5_acc_auth_status?: string | null;

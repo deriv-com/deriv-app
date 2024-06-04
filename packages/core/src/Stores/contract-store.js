@@ -5,6 +5,7 @@ import {
     isEnded,
     isEqualObject,
     isMultiplierContract,
+    isResetContract,
     isOpen,
     isTurbosContract,
     getDigitInfo,
@@ -266,8 +267,21 @@ export default class ContractStore extends BaseStore {
             this.barriers_array = this.createBarriersArray(contract_info, is_dark_mode);
             return;
         }
+
         if (contract_info) {
-            if (isBarrierSupported(contract_type) && (barrier || high_barrier)) {
+            if (
+                this.barriers_array.length === 1 &&
+                isResetContract(contract_info.contract_type) &&
+                contract_info.reset_time
+            ) {
+                this.barriers_array = this.createBarriersArray(contract_info, is_dark_mode);
+                return;
+            }
+            if (
+                isBarrierSupported(contract_type) &&
+                (barrier || high_barrier) &&
+                !isResetContract(contract_info.contract_type)
+            ) {
                 main_barrier?.updateBarriers(barrier || high_barrier, low_barrier);
             }
             if (
@@ -287,10 +301,24 @@ export default class ContractStore extends BaseStore {
     createBarriersArray = contract_info => {
         let barriers = [];
         if (contract_info) {
-            const { contract_type, barrier, entry_spot, high_barrier: high, low_barrier } = contract_info;
+            const {
+                contract_type,
+                barrier,
+                entry_spot,
+                high_barrier: high,
+                low_barrier,
+                reset_time,
+                reset_barrier,
+            } = contract_info;
             const high_barrier = this.accu_high_barrier || barrier || high;
+            const common_props = {
+                not_draggable: true,
+                shade: DEFAULT_SHADES['2'],
+                color: BARRIER_COLORS.BLUE,
+            };
             if (
                 isBarrierSupported(contract_type) &&
+                !isResetContract(contract_type) &&
                 (high_barrier || (entry_spot && !isAccumulatorContract(contract_type)))
             ) {
                 // create barrier only when it's available in response
@@ -299,16 +327,36 @@ export default class ContractStore extends BaseStore {
                     this.accu_low_barrier || low_barrier,
                     null,
                     {
-                        color: BARRIER_COLORS.BLUE,
+                        ...common_props,
                         line_style: !isAccumulatorContract(contract_type) && BARRIER_LINE_STYLES.SOLID,
-                        not_draggable: true,
                         hideBarrierLine: isAccumulatorContract(contract_type),
                         shade: isAccumulatorContract(contract_type) && DEFAULT_SHADES['2'],
                     }
                 );
 
                 main_barrier.updateBarrierShade(true, contract_type);
+
                 barriers = [main_barrier];
+            } else if (isResetContract(contract_type) && entry_spot) {
+                const main_barrier = new ChartBarrierStore(entry_spot, low_barrier, null, {
+                    ...common_props,
+                });
+
+                main_barrier.updateBarrierShade(true, contract_type);
+
+                barriers = [main_barrier];
+
+                if (reset_time) {
+                    const reset_barrier_instance = new ChartBarrierStore(reset_barrier, low_barrier, null, {
+                        ...common_props,
+                        hideBarrierLine: true,
+                        line_style: BARRIER_LINE_STYLES.DASHED,
+                    });
+
+                    main_barrier.updateBarrierShade(false, contract_type);
+
+                    barriers.push(reset_barrier_instance);
+                }
             }
         }
         return barriers;

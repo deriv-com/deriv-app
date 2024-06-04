@@ -75,6 +75,7 @@ const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCa
                 'db-summary-card--completed': is_contract_completed,
                 'db-summary-card--completed-mobile': is_contract_completed && is_mobile,
             })}
+            data-testid='dt_mock_summary_card'
         >
             {is_contract_loading && <ContractCardLoader speed={2} />}
             {!is_contract_loading && contract_info && (

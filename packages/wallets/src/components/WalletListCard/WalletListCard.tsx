@@ -1,37 +1,25 @@
 import React from 'react';
-import { THooks } from '../../types';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { WalletCurrencyCard } from '../WalletCurrencyCard';
-import WalletListCardBalance from '../WalletListCardBalance/WalletListCardBalance';
-import WalletListCardIDetails from '../WalletListCardIDetails/WalletListCardIDetails';
+import { WalletListCardDetails } from '../WalletListCardDetails';
 import './WalletListCard.scss';
 
-type TProps = {
-    badge?: THooks.WalletAccountsList['landing_company_name'];
-    balance: THooks.WalletAccountsList['display_balance'];
-    currency: THooks.WalletAccountsList['wallet_currency_type'];
-    isActive: THooks.WalletAccountsList['is_active'];
-    isDemo: THooks.WalletAccountsList['is_virtual'];
-    loginid: THooks.WalletAccountsList['loginid'];
-    title: Exclude<THooks.WalletAccountsList['currency'], undefined>;
-};
+const WalletListCard = () => {
+    const { data: activeWallet } = useActiveWalletAccount();
 
-const WalletListCard: React.FC<TProps> = ({ badge, balance, currency, isActive, isDemo, loginid, title }) => (
-    <div className='wallets-list-header__card_container'>
-        <div className='wallets-list-header__content'>
-            <div className='wallets-list-header__details-container'>
-                <WalletCurrencyCard currency={currency} isDemo={isDemo} />
+    const currency = activeWallet?.wallet_currency_type || 'USD';
+    const isDemo = activeWallet?.is_virtual;
 
-                <WalletListCardIDetails
-                    badge={badge}
-                    isActive={isActive}
-                    isDemo={isDemo}
-                    loginid={loginid}
-                    title={title}
-                />
+    return (
+        <div className='wallets-list-card'>
+            <div className='wallets-list-card__container'>
+                <div className='wallets-list-card__details'>
+                    <WalletCurrencyCard currency={isDemo ? 'Demo' : currency} isDemo={isDemo} size='lg' />
+                    <WalletListCardDetails />
+                </div>
             </div>
-            <WalletListCardBalance balance={balance} />
         </div>
-    </div>
-);
+    );
+};
 
 export default WalletListCard;

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Icon, Money, DesktopWrapper, ContractCard } from '@deriv/components';
+import classNames from 'classnames';
+import { ArrowIndicator, Money, DesktopWrapper, ContractCard } from '@deriv/components';
 import { getCardLabels, TContractInfo } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
@@ -7,35 +8,30 @@ type TIndicativeCell = {
     amount: number;
     contract_info: TContractInfo;
     currency: string;
-    status?: string;
     is_footer: boolean;
     is_sell_requested: boolean;
+    profit: string;
+    status?: string;
 };
 
 const IndicativeCell = observer((props: TIndicativeCell) => {
-    const { amount, contract_info, currency, is_footer, is_sell_requested, status } = props;
+    const { amount, contract_info, currency, is_footer, is_sell_requested, profit } = props;
     const { portfolio } = useStore();
     const { onClickSell } = portfolio;
-    const [movement, setMovement] = React.useState<string | null>(null);
-    const [amount_state, setAmountState] = React.useState(0);
-
-    React.useEffect(() => {
-        setMovement(() => {
-            return amount >= amount_state ? 'profit' : 'loss';
-        });
-        setAmountState(amount);
-    }, [amount, amount_state]);
 
     return (
         <div className='open-positions__indicative'>
             <div className='open-positions__indicative--amount'>
-                <Money amount={Math.abs(amount)} currency={currency} />
-                {status !== 'no-resale' && amount !== 0 && (
-                    <React.Fragment>
-                        {movement === 'profit' && <Icon icon='IcProfit' />}
-                        {movement === 'loss' && <Icon icon='IcLoss' />}
-                    </React.Fragment>
-                )}
+                <div
+                    className={classNames({
+                        'dc-contract-card--profit': Number(profit) > 0,
+                        'dc-contract-card--loss': Number(profit) < 0,
+                    })}
+                    data-testid='dt_amount_container'
+                >
+                    <Money amount={Math.abs(amount)} currency={currency} />
+                </div>
+                <ArrowIndicator value={amount} data-testid='dt_arrow_indicator' />
             </div>
             <DesktopWrapper>
                 {!is_footer && (

@@ -9,7 +9,7 @@ type TWalletActionModal = {
         onClick: VoidFunction;
         text: string;
     }[];
-    description: string;
+    description?: string;
     hideCloseButton?: React.ComponentProps<typeof ModalWrapper>['hideCloseButton'];
     title: string;
 };
@@ -31,18 +31,20 @@ const WalletActionModal: React.FC<TWalletActionModal> = ({
                 <WalletText lineHeight={isMobile ? 'sm' : 'lg'} size='sm'>
                     {description}
                 </WalletText>
-                <div className='wallets-action-modal__buttons-container'>
-                    {actionButtonsOptions.map(action => (
-                        <WalletButton
-                            key={action.text}
-                            onClick={action.onClick}
-                            size='lg'
-                            variant={action.isPrimary ? 'contained' : 'outlined'}
-                        >
-                            {action.text}
-                        </WalletButton>
-                    ))}
-                </div>
+                {!!actionButtonsOptions.length && (
+                    <div className='wallets-action-modal__buttons-container'>
+                        {actionButtonsOptions.map(action => (
+                            <WalletButton
+                                key={action.text}
+                                onClick={action.onClick}
+                                size='lg'
+                                variant={action.isPrimary ? 'contained' : 'outlined'}
+                            >
+                                {action.text}
+                            </WalletButton>
+                        ))}
+                    </div>
+                )}
             </div>
         </ModalWrapper>
     );

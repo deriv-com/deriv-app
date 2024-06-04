@@ -1,0 +1,198 @@
+.db-toolbox {
+    position: absolute;
+    top: 0;
+    inset-inline-start: 0;
+    width: 23.6rem;
+    height: 100%;
+    padding: 0.8rem;
+    background: var(--general-main-1);
+    z-index: 1;
+    $toolbox: &;
+    $category-text-spacing: 10px;
+
+    &__title {
+        height: 2.6rem;
+        line-height: 2.6rem;
+        position: relative;
+        cursor: pointer;
+
+        &__chevron {
+            position: absolute;
+            right: 0;
+            top: 0.3rem;
+            transition: transform 0.3s ease;
+
+            &--active {
+                transform: rotate(180deg);
+                top: -0.2rem;
+            }
+        }
+    }
+
+    &__search {
+        padding: 1.3rem 0.8rem;
+        height: 6rem;
+
+        &-field {
+            margin-bottom: 0 !important;
+
+            input::-ms-clear {
+                display: none;
+            }
+
+            .dc-input {
+                justify-content: center;
+
+                &__container {
+                    height: 3.2rem;
+                    padding: 0.6rem 0.8rem;
+                    border-radius: 8px;
+
+                    &:focus-within {
+                        border-color: var(--text-general);
+                    }
+                }
+
+                &__field {
+                    width: unset;
+                    height: 2.8rem;
+                    flex-grow: 1;
+                    padding: 0.8rem;
+                    color: var(--text-general);
+                }
+
+                &__leading-icon {
+                    position: unset;
+                    pointer-events: unset;
+                    margin-left: 0.8rem;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        user-select: none;
+        z-index: 1;
+        visibility: visible;
+        border: solid 1px var(--general-section-1);
+    }
+
+    &__content-wrapper {
+        height: 0;
+    }
+
+    &__content-wrapper.active {
+        height: 100%;
+    }
+
+    &__header {
+        padding: 8px;
+        position: relative;
+        font-weight: bold;
+        font-size: 1.6em;
+        text-align: center;
+        color: var(--text-general);
+        background-color: var(--general-section-5);
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: row;
+        color: var(--text-general);
+
+        &:hover {
+            background-color: var(--general-hover);
+            color: var(--text-prominent);
+        }
+    }
+
+    &__category-arrow {
+        width: 16px;
+        height: 16px;
+        margin-right: $category-text-spacing;
+        transition: transform 0.3s ease;
+
+        &--active {
+            transform: rotate(180deg);
+        }
+    }
+
+    &__category-menu {
+        height: calc(100vh - 33.6rem);
+        overflow-y: scroll;
+    }
+
+    &__category-text {
+        display: flex;
+        align-self: center;
+        justify-content: space-between;
+        margin: 10px;
+        width: 100%;
+    }
+
+    &__description {
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+    &__label {
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    &__row {
+        cursor: pointer;
+        border-top: 1px solid var(--general-section-6);
+
+        #{$toolbox}__category--selected {
+            background-color: var(--general-active);
+        }
+
+        &:last-of-type {
+            border-bottom: 1px solid var(--general-section-6);
+        }
+
+        &--active {
+            background-color: var(--general-hover);
+        }
+    }
+
+    &__button.dc-btn {
+        margin: 16px auto;
+        padding: 0;
+        width: 152px;
+        height: 32px;
+        color: var(--text-colored-background);
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 1.4;
+    }
+
+    &__sub-category {
+        &-row {
+            padding: 1rem;
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--general-hover);
+            }
+            &--active {
+                background-color: var(--general-hover);
+            }
+        }
+    }
+}
+
+.loader {
+    border: 1px solid var(--general-active);
+    border-top: 1px solid var(--brand-secondary);
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 1s linear infinite;
+}

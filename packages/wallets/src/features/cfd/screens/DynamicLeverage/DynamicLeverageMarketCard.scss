@@ -6,6 +6,10 @@
         background-color: var(--general-hover, #e6e9e9);
         height: 24.8rem;
 
+        @include mobile {
+            width: 100%;
+        }
+
         &-description {
             font-style: italic;
         }

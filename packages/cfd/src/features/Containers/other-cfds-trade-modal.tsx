@@ -5,7 +5,7 @@ import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { getCFDAccountKey, isMobile, mobileOSDetect } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getPlatformQRCode, PlatformsDesktopDownload, mobileDownloadLink } from '../../Helpers/config';
-import { getTitle, platformsText, CTRADER_DESKTOP_DOWNLOAD } from '../../Helpers/constants';
+import { getTitle, platformsText, CTRADER_DESKTOP_WINDOWS_DOWNLOAD } from '../../Helpers/constants';
 import { CFD_PLATFORMS, MOBILE_PLATFORMS } from '../../Helpers/cfd-config';
 import SpecBox from '../../Components/specbox';
 import PasswordBox from '../../Components/passwordbox';
@@ -24,6 +24,7 @@ type TOtherCFDsTradeModalProps = {
     toggleModal: () => void;
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     ctrader_tokens: TCFDDashboardContainer['ctrader_tokens'];
+    ctraderTokenCall: (url: string, account_type: 'real' | 'demo') => void;
     is_demo: string;
     platform: TCFDsPlatformType;
     is_mobile?: boolean;
@@ -70,6 +71,7 @@ const OtherCFDsTradeModal = ({
     toggleModal,
     dxtrade_tokens,
     ctrader_tokens,
+    ctraderTokenCall,
     is_demo,
     platform,
     is_mobile,
@@ -141,6 +143,7 @@ const OtherCFDsTradeModal = ({
                     is_demo={is_demo}
                     dxtrade_tokens={dxtrade_tokens}
                     ctrader_tokens={ctrader_tokens}
+                    ctraderTokenCall={ctraderTokenCall}
                 />
             </div>
         );
@@ -234,7 +237,7 @@ const OtherCFDsTradeModal = ({
                             <a
                                 className='dc-btn cfd-trade-modal__download-center-app--windows-link'
                                 type='button'
-                                href={CTRADER_DESKTOP_DOWNLOAD}
+                                href={CTRADER_DESKTOP_WINDOWS_DOWNLOAD}
                                 target='_blank'
                                 rel='noopener noreferrer'
                             >

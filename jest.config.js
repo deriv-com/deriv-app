@@ -10,13 +10,13 @@ module.exports = {
     coverageReporters: ['lcov'],
     coverageDirectory: './coverage/',
     clearMocks: true,
-    projects: ['<rootDir>/packages/*/jest.config.js'],
+    projects: ['<rootDir>/packages/*/jest.config.js', '<rootDir>/packages/*/jest.config.ts'],
     transform: {
         '^.+\\.jsx?$': 'babel-jest',
         '^.+/es/^.+$': 'babel-jest',
         '^.+\\.(ts|tsx)?$': 'ts-jest',
     },
     testRegex: '(/__tests__/.*|(\\.)(test|spec))\\.(js|jsx|tsx|ts)?$',
-    transformIgnorePatterns: ['/node_modules/(?!@enykeev/react-virtualized).+\\.js$'],
-    testPathIgnorePatterns: ['/integration-tests/'],
+    transformIgnorePatterns: ['/node_modules/(?!(@enykeev/react-virtualized|@simplewebauthn/browser)).+\\.js$'],
+    testPathIgnorePatterns: ['/integration-tests/', '/account-v2/'],
 };

@@ -1,8 +1,6 @@
 import React from 'react';
 import { Redirect, RedirectProps, Route, RouteComponentProps, RouteProps } from 'react-router-dom';
 import {
-    alternateLinkTagChange,
-    canonicalLinkTagChange,
     redirectToLogin,
     removeBranchName,
     routes as shared_routes,
@@ -68,7 +66,7 @@ const RouteWithSubRoutes = ({
             if (should_redirect_login) {
                 redirectToLogin(is_logged_in, language);
             } else {
-                result = <Redirect to={shared_routes.root} />;
+                result = <Redirect to={shared_routes.traders_hub} />;
             }
         } else {
             const default_subroute = routes.find(r => r.default);
@@ -83,7 +81,7 @@ const RouteWithSubRoutes = ({
                         <Component {...props} routes={routes} />
                     ) : (
                         <React.Fragment>
-                            {should_redirect ? <Redirect to={shared_routes.root} /> : <Component404 />}
+                            {should_redirect ? <Redirect to={shared_routes.traders_hub} /> : <Component404 />}
                         </React.Fragment>
                     )}
                 </React.Fragment>
@@ -92,9 +90,6 @@ const RouteWithSubRoutes = ({
 
         const title = getTitle?.() || '';
         document.title = `${title} | ${default_title}`;
-
-        alternateLinkTagChange();
-        canonicalLinkTagChange();
 
         return result;
     };

@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import classNames from 'classnames';
 import ContentLoader from 'react-content-loader';
 import { getContractTypeName } from '@deriv/bot-skeleton';
+import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { Icon, IconTradeTypes, Popover } from '@deriv/components';
 import { convertDateFormat } from '@deriv/shared';
 import { transaction_elements } from 'Constants/transactions';
@@ -32,7 +33,7 @@ const TableHeader = ({ columns }: { columns: TColumn[] }) => (
 
 const IconWrapper = ({ message, icon }: { message: string; icon: ReactElement }) => (
     <div className={`${PARENT_CLASS}__icon-wrapper`}>
-        <Popover alignment='left' message={message} zIndex={'9999'}>
+        <Popover alignment={isDbotRTL() ? 'right' : 'left'} message={message} zIndex='9999'>
             {icon}
         </Popover>
     </div>
@@ -61,7 +62,7 @@ export default function DesktopTransactionTable({
     balance,
 }: TDesktopTransactionTable) {
     return (
-        <div data-testid='transaction_details_tables'>
+        <div data-testid='transaction_details_tables' className='transaction-details-tables'>
             <div
                 className={classNames(
                     `${PARENT_CLASS}__table-container`,
@@ -134,10 +135,15 @@ export default function DesktopTransactionTable({
                     );
                 })}
             </div>
-            <div className={classNames(`${PARENT_CLASS}__table-container`)}>
+            <div
+                className={classNames(
+                    `${PARENT_CLASS}__table-container`,
+                    `${PARENT_CLASS}__table-container__bottom-table`
+                )}
+            >
                 <TableHeader columns={result_columns} />
                 <div className={`${PARENT_CLASS}__table-row`}>
-                    <TableCell label={account} />
+                    <TableCell label={account} extra_classes={[`${PARENT_CLASS}__table-cell--grow-mid`]} />
                     <TableCell label={result?.number_of_runs} />
                     <TableCell label={Math.abs(result?.total_stake ?? 0).toFixed(2)} />
                     <TableCell label={Math.abs(result?.total_payout ?? 0).toFixed(2)} />

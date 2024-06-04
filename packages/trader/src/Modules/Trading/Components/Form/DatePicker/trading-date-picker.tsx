@@ -29,6 +29,7 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
         duration_units_list,
         expiry_type,
         onChange,
+        sendTradeParamsAnalytics,
         start_date,
         start_time,
         symbol,
@@ -111,12 +112,22 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
         }
 
         if (typeof onChange === 'function' && e.target) {
+            const value = hasRangeSelection() ? e.target.value : toMoment(e.target.value).format('YYYY-MM-DD');
             onChange({
                 target: {
                     name: e.target.name || '',
-                    value: hasRangeSelection() ? e.target.value : toMoment(e.target.value).format('YYYY-MM-DD'),
+                    value,
                 },
             });
+            sendTradeParamsAnalytics(
+                {
+                    action: 'change_parameter_value',
+                    parameter_field_type: 'date_picker',
+                    parameter_type: 'date_picker',
+                    parameter_value: `${value}`,
+                },
+                true
+            );
         }
     };
 
@@ -126,8 +137,7 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
             const new_market_events: TMarketEvent[] = [];
             let new_disabled_days: number[] = [];
             const events = await ContractType.getTradingEvents(e, symbol);
-            // @ts-expect-error TODO: check if TS error is gone after contract-type is converted to TS
-            events.forEach(evt => {
+            events?.forEach(evt => {
                 const dates = evt.dates.split(', '); // convert dates str into array
                 const idx = dates.indexOf('Fridays');
                 if (idx !== -1) {

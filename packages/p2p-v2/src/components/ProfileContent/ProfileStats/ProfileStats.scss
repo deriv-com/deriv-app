@@ -1,0 +1,32 @@
+.p2p-v2-profile-stats {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    row-gap: 5rem;
+
+    @include mobile {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: none;
+        column-gap: 3rem;
+        row-gap: 2rem;
+    }
+
+    &__item {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        column-gap: 2rem;
+
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        &-stat {
+            @include desktop {
+                &:not(:last-child) {
+                    border-right: 0.1rem solid #ededed;
+                }
+            }
+        }
+    }
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { log_types } from '@deriv/bot-skeleton';
+import { LogTypes } from '@deriv/bot-skeleton';
 import { Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -9,13 +9,13 @@ import { TFormatMessageProps } from '../journal.types';
 const FormatMessage = ({ logType, className, extra }: TFormatMessageProps) => {
     const getLogMessage = () => {
         switch (logType) {
-            case log_types.LOAD_BLOCK: {
+            case LogTypes.LOAD_BLOCK: {
                 return localize('Blocks are loaded successfully');
             }
-            case log_types.NOT_OFFERED: {
+            case LogTypes.NOT_OFFERED: {
                 return localize('Resale of this contract is not offered.');
             }
-            case log_types.PURCHASE: {
+            case LogTypes.PURCHASE: {
                 const { longcode, transaction_id } = extra;
                 return (
                     <Localize
@@ -26,7 +26,7 @@ const FormatMessage = ({ logType, className, extra }: TFormatMessageProps) => {
                     />
                 );
             }
-            case log_types.SELL: {
+            case LogTypes.SELL: {
                 const { sold_for } = extra;
                 return (
                     <Localize
@@ -36,7 +36,7 @@ const FormatMessage = ({ logType, className, extra }: TFormatMessageProps) => {
                     />
                 );
             }
-            case log_types.PROFIT: {
+            case LogTypes.PROFIT: {
                 const { currency, profit } = extra;
                 return (
                     <Localize
@@ -48,7 +48,7 @@ const FormatMessage = ({ logType, className, extra }: TFormatMessageProps) => {
                     />
                 );
             }
-            case log_types.LOST: {
+            case LogTypes.LOST: {
                 const { currency, profit } = extra;
                 return (
                     <Localize
@@ -60,7 +60,7 @@ const FormatMessage = ({ logType, className, extra }: TFormatMessageProps) => {
                     />
                 );
             }
-            case log_types.WELCOME_BACK: {
+            case LogTypes.WELCOME_BACK: {
                 const { current_currency } = extra;
                 if (current_currency)
                     return (
@@ -74,7 +74,7 @@ const FormatMessage = ({ logType, className, extra }: TFormatMessageProps) => {
                 return <Localize i18n_default_text='Welcome back! Your messages have been restored.' />;
             }
 
-            case log_types.WELCOME: {
+            case LogTypes.WELCOME: {
                 const { current_currency } = extra;
                 if (current_currency)
                     return (

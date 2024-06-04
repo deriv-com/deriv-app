@@ -19,6 +19,6 @@ describe('WalletListCardBadge', () => {
         render(<WalletListCardBadge label='malta' />);
         const badge = screen.getByText('MALTA');
         expect(badge).toBeInTheDocument();
-        expect(badge).toHaveClass('wallets-text__color--black');
+        expect(badge).toHaveClass('wallets-text__color--general');
     });
 });

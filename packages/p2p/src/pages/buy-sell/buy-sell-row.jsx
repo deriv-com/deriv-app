@@ -3,16 +3,19 @@ import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import { Button, Icon, Table, Text } from '@deriv/components';
+import { Icon, Table, Text } from '@deriv/components';
 import { isMobile, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useP2PExchangeRate } from '@deriv/hooks';
 
-import { Localize, localize } from 'Components/i18next';
+import { Localize } from 'Components/i18next';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { OnlineStatusAvatar } from 'Components/online-status';
 import StarRating from 'Components/star-rating';
 import TradeBadge from 'Components/trade-badge';
+import { document_status_codes, identity_status_codes } from 'Constants/account-status-codes';
 import { buy_sell } from 'Constants/buy-sell';
+import BuySellRowAction from 'Pages/buy-sell/buy-sell-row-action';
 import { useStores } from 'Stores';
 import { generateEffectiveRate } from 'Utils/format-value';
 
@@ -24,6 +27,8 @@ const BuySellRow = ({ row: advert }) => {
         advertiser_details,
         counterparty_type,
         effective_rate,
+        eligibility_status,
+        is_eligible,
         local_currency,
         max_order_amount_limit_display,
         min_order_amount_limit_display,
@@ -34,8 +39,10 @@ const BuySellRow = ({ row: advert }) => {
     } = advert;
 
     const { buy_sell_store, general_store } = useStores();
+    const { showModal } = useModalManagerContext();
     const {
         client: { currency },
+        ui: { is_desktop },
     } = useStore();
     const history = useHistory();
     const exchange_rate = useP2PExchangeRate(local_currency);
@@ -70,12 +77,30 @@ const BuySellRow = ({ row: advert }) => {
         exchange_rate,
         market_rate: effective_rate,
     });
+    const is_poi_poa_verified =
+        general_store.poi_status === identity_status_codes.VERIFIED &&
+        (!general_store.p2p_poa_required || general_store.poa_status === document_status_codes.VERIFIED);
     const onClickRow = () => {
-        if (!general_store.is_advertiser) {
-            buy_sell_store.setShouldShowVerification(true);
-        } else if (!general_store.is_barred) {
+        if ((general_store.is_advertiser || is_poi_poa_verified) && !general_store.is_barred) {
             buy_sell_store.showAdvertiserPage(advert);
             history.push({ pathname: routes.p2p_advertiser_page, search: `?id=${advert.advertiser_details.id}` });
+        } else if (!general_store.is_advertiser) {
+            buy_sell_store.setShouldShowVerification(true);
+        }
+    };
+
+    const onClickBuySell = () => {
+        if (general_store.is_advertiser) buy_sell_store.setSelectedAdvert(advert);
+        else if (is_poi_poa_verified) {
+            showModal({
+                key: 'NicknameModal',
+                props: {
+                    onConfirm: () => buy_sell_store.setSelectedAdvert(advert),
+                    should_hide_close_btn: is_desktop,
+                },
+            });
+        } else {
+            buy_sell_store.setShouldShowVerification(true);
         }
     };
 
@@ -165,19 +190,14 @@ const BuySellRow = ({ row: advert }) => {
                         )}
                     </div>
                     {!is_my_advert && (
-                        <Button
+                        <BuySellRowAction
+                            account_currency={account_currency}
                             className='buy-sell-row__button'
-                            is_disabled={general_store.is_barred}
-                            large
-                            onClick={() => buy_sell_store.setSelectedAdvert(advert)}
-                            primary
-                        >
-                            {is_buy_advert ? (
-                                <Localize i18n_default_text='Buy {{account_currency}}' values={{ account_currency }} />
-                            ) : (
-                                <Localize i18n_default_text='Sell {{account_currency}}' values={{ account_currency }} />
-                            )}
-                        </Button>
+                            eligibility_status={eligibility_status}
+                            is_buy_advert={is_buy_advert}
+                            is_eligible={is_eligible}
+                            onClick={onClickBuySell}
+                        />
                     )}
                 </div>
             </div>
@@ -271,16 +291,13 @@ const BuySellRow = ({ row: advert }) => {
                 <Table.Cell />
             ) : (
                 <Table.Cell className='buy-sell__button'>
-                    <Button
-                        is_disabled={general_store.is_barred}
-                        onClick={() => buy_sell_store.setSelectedAdvert(advert)}
-                        primary
-                        small
-                    >
-                        {is_buy_advert
-                            ? localize('Buy {{account_currency}}', { account_currency })
-                            : localize('Sell {{account_currency}}', { account_currency })}
-                    </Button>
+                    <BuySellRowAction
+                        account_currency={account_currency}
+                        eligibility_status={eligibility_status}
+                        is_buy_advert={is_buy_advert}
+                        is_eligible={is_eligible}
+                        onClick={onClickBuySell}
+                    />
                 </Table.Cell>
             )}
         </Table.Row>

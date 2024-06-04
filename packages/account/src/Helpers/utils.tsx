@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormikValues } from 'formik';
+import { FormikErrors, FormikValues } from 'formik';
 import countries from 'i18n-iso-countries';
 import { ResidenceList, GetAccountStatus } from '@deriv/api-types';
 import {
@@ -11,8 +11,8 @@ import {
     IDV_ERROR_STATUS,
     AUTH_STATUS_CODES,
 } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
-import { getIDVDocuments } from '../Constants/idv-document-config';
+import { localize } from '@deriv/translations';
+import { getIDVDocuments } from '../Configs/idv-document-config';
 import { TServerError } from '../Types';
 import { LANGUAGE_CODES } from '../Constants/onfido';
 
@@ -77,7 +77,10 @@ export const getDocumentData = (country_code: string, document_type: string) => 
         example_format: '',
     };
     const IDV_DOCUMENT_DATA: any = getIDVDocuments(country_code);
-    return IDV_DOCUMENT_DATA[document_type] ?? DEFAULT_CONFIG;
+    if (IDV_DOCUMENT_DATA) {
+        return IDV_DOCUMENT_DATA[document_type] ?? DEFAULT_CONFIG;
+    }
+    return DEFAULT_CONFIG;
 };
 
 export const preventEmptyClipboardPaste = (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -166,24 +169,19 @@ export const isDocumentNumberValid = (document_number: string, document_type: Fo
         const example_format = getExampleFormat(document_type.example_format);
         switch (document_type.id) {
             case 'drivers_license':
-                document_name = 'Driver License Reference number';
+                document_name = localize('Driver License Reference number');
                 break;
             case 'ssnit':
-                document_name = 'SSNIT number';
+                document_name = localize('SSNIT number');
                 break;
             case 'national_id_no_photo':
-                document_name = 'NIN';
+                document_name = localize('NIN');
                 break;
             default:
-                document_name = 'document number';
+                document_name = localize('document number');
                 break;
         }
-        return (
-            <Localize
-                i18n_default_text='Please enter your {{document_name}}. {{example_format}}'
-                values={{ document_name, example_format }}
-            />
-        );
+        return localize('Please enter your {{document_name}}. {{example_format}}', { document_name, example_format });
     } else if (is_document_number_invalid) {
         return localize('Please enter a valid ID number.');
     }
@@ -195,9 +193,6 @@ export const isDocumentNumberValid = (document_number: string, document_type: Fo
 };
 
 export const shouldHideHelperImage = (document_id: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;
-
-// @ts-expect-error as the generic is a Array
-export const flatten = <T extends Array<unknown>>(arr: T) => [].concat(...arr);
 
 export const isServerError = (error: unknown): error is TServerError =>
     typeof error === 'object' && error !== null && 'code' in error;
@@ -241,22 +236,25 @@ export const getOnfidoSupportedLocaleCode = (language_code: string) => {
 
 export const getIDVDocumentType = (
     idv_latest_attempt: DeepRequired<GetAccountStatus>['authentication']['attempts']['latest'],
-    residence: DeepRequired<ResidenceList[0]>
+    residence: ResidenceList[0]
 ) => {
     if (!idv_latest_attempt || !Object.keys(residence).length) return localize('identity document');
     const { document_type } = idv_latest_attempt;
     if (!document_type) return localize('identity document');
-    const {
-        identity: {
-            services: {
-                idv: { documents_supported },
+    if (residence?.identity?.services?.idv?.documents_supported) {
+        const {
+            identity: {
+                services: {
+                    idv: { documents_supported },
+                },
             },
-        },
-    } = residence;
-    return documents_supported[document_type as string].display_name;
+        } = residence;
+        return documents_supported[document_type as string].display_name;
+    }
+    return null;
 };
 
-export const validate = <T,>(errors: Record<string, string>, values: T) => {
+export const validate = <T,>(errors: FormikErrors<FormikValues>, values: T) => {
     return (fn: (value: string) => string, arr: string[], err_msg: string) => {
         arr.forEach(field => {
             const value = values[field as keyof typeof values] as string;
@@ -276,3 +274,6 @@ export const verifyFields = (status: TIDVErrorStatus) => {
             return ['first_name', 'last_name', 'date_of_birth'];
     }
 };
+
+export const isSpecialPaymentMethod = (payment_method_icon: string) =>
+    ['IcOnlineNaira', 'IcAstroPayLight', 'IcAstroPayDark'].some(icon => icon === payment_method_icon);

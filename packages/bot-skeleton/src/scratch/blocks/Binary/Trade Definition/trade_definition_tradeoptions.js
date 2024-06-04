@@ -251,6 +251,12 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     },
     updateDurationInput(should_use_default_unit, should_update_value) {
         const { contracts_for } = ApiHelpers.instance;
+        const {
+            workspaces: {
+                indentWorkspace: { x, y },
+            },
+        } = config;
+        Blockly.derivWorkspace.cleanUp(x, y);
 
         if (this.selected_trade_type === 'multiplier' && this.isDescendantOf('trade_definition')) {
             runIrreversibleEvents(() => {
@@ -306,7 +312,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     stop_loss_block.render();
 
                     this.dispose();
-                    Blockly.derivWorkspace.cleanUp();
                 });
             });
         } else {

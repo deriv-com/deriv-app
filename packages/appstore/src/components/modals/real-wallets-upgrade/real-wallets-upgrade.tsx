@@ -1,21 +1,25 @@
 import React from 'react';
-import { useWalletMigration } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { DesktopRealWalletsUpgrade, MobileRealWalletsUpgrade } from './components/modal-elements';
-import './real-wallets-upgrade.scss';
+import { useWalletMigration } from '@deriv/hooks';
 
 const RealWalletsUpgrade = observer(() => {
     const { traders_hub, ui } = useStore();
     const { is_real_wallets_upgrade_on, toggleWalletsUpgrade } = traders_hub;
     const { is_mobile } = ui;
+    const { startMigration, is_in_progress, is_ineligible, is_migrated, is_migrating } = useWalletMigration();
 
     const [current_step, setCurrentStep] = React.useState(0);
-    const [is_disabled, setIsDisabled] = React.useState(false);
+
+    React.useEffect(() => {
+        if (is_migrating || is_in_progress || is_ineligible || is_migrated) {
+            toggleWalletsUpgrade(false);
+        }
+    }, [is_in_progress, is_ineligible, is_migrated, is_migrating, toggleWalletsUpgrade]);
 
     React.useEffect(() => {
         if (!is_real_wallets_upgrade_on) {
             setCurrentStep(0);
-            setIsDisabled(false);
         }
     }, [is_real_wallets_upgrade_on]);
 
@@ -25,15 +29,8 @@ const RealWalletsUpgrade = observer(() => {
 
     const handleClose = () => toggleWalletsUpgrade(false);
 
-    const { start_migration } = useWalletMigration();
-
     const upgradeToWallets = () => {
-        start_migration();
-        toggleWalletsUpgrade(false);
-    };
-
-    const toggleCheckbox = () => {
-        setIsDisabled(prevDisabled => !prevDisabled);
+        startMigration();
     };
 
     const wallet_upgrade_steps = {
@@ -41,8 +38,7 @@ const RealWalletsUpgrade = observer(() => {
         handleBack,
         handleClose,
         handleNext,
-        is_disabled,
-        toggleCheckbox,
+        is_migrating,
         upgradeToWallets,
     };
 

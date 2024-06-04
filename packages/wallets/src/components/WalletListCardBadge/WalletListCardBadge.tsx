@@ -18,7 +18,7 @@ const WalletListCardBadge: React.FC<TProps> = ({ isDemo, label }) => {
 
     return (
         <div className={className}>
-            <WalletText color={isDemo ? 'white' : 'black'} size='2xs' weight='bold'>
+            <WalletText color={isDemo ? 'white' : 'general'} size='2xs' weight='bold'>
                 {formattedLabel}
             </WalletText>
         </div>

@@ -13,16 +13,38 @@ import './DepositCrypto.scss';
 
 const DepositCrypto = () => {
     const { isSuccess: isAuthorizeSuccess } = useAuthorize();
-    const { data: depositCryptoAddress, error, isLoading, mutate: mutateDepositCrypto } = useDepositCryptoAddress();
+    const {
+        data: depositCryptoAddress,
+        error,
+        isLoading,
+        mutateAsync: mutateDepositCrypto,
+    } = useDepositCryptoAddress();
     const depositCryptoError = error?.error;
+    const [isCryptoAdressReady, setIsCryptoAdressReady] = useState(false);
+    const isMountedRef = useRef(false);
 
     useEffect(() => {
-        if (isAuthorizeSuccess) {
-            mutateDepositCrypto();
-        }
+        isMountedRef.current = true;
+        return () => {
+            isMountedRef.current = false;
+        };
+    }, []);
+
+    useEffect(() => {
+        const handleAuthorization = async () => {
+            if (isAuthorizeSuccess) {
+                setIsCryptoAdressReady(false);
+                await mutateDepositCrypto();
+                if (isMountedRef.current) {
+                    setIsCryptoAdressReady(true);
+                }
+            }
+        };
+
+        handleAuthorization();
     }, [isAuthorizeSuccess, mutateDepositCrypto]);
 
-    if (isLoading) return <Loader />;
+    if (isLoading || !isCryptoAdressReady) return <Loader />;
 
     if (isServerError(depositCryptoError)) {
         return <DepositErrorScreen error={depositCryptoError} />;

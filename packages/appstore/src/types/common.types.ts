@@ -87,7 +87,7 @@ export type TTradingPlatformAvailableAccount = {
 };
 
 export type TCFDAccountsProps = {
-    isDerivedVisible: TVisibilityChecker;
+    isStandardVisible: TVisibilityChecker;
     isFinancialVisible: TVisibilityChecker;
     has_cfd_account_error: (platform: TPlatform) => boolean;
     current_list: Record<string, TDetailsOfEachMT5Loginid>;
@@ -95,10 +95,10 @@ export type TCFDAccountsProps = {
     has_real_account?: boolean;
 };
 
-export type TCFDPlatforms = 'Derived' | 'Financial' | 'Deriv X' | 'CFDs';
+export type TCFDPlatforms = 'Standard' | 'Financial' | 'Deriv X' | 'CFDs';
 
 export type TStaticAccountProps = {
-    name: 'Derived' | 'Financial' | 'Deriv X' | 'CFDs';
+    name: 'Standard' | 'Financial' | 'Deriv X' | 'CFDs';
     description: string;
     is_visible: boolean;
     disabled: boolean;
@@ -107,7 +107,7 @@ export type TStaticAccountProps = {
 };
 
 export type TIconTypes =
-    | 'Derived'
+    | 'Standard'
     | 'Financial'
     | 'BinaryBot'
     | 'BinaryBotBlue'

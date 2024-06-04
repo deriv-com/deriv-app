@@ -33,13 +33,7 @@ import { Localize, localize } from '@deriv/translations';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import SuccessDialog from '../Components/success-dialog.jsx';
 import MigrationSuccessModal from '../Components/migration-success-modal';
-import {
-    getDxCompanies,
-    getFormattedJurisdictionCode,
-    getMtCompanies,
-    TDxCompanies,
-    TMtCompanies,
-} from '../Stores/Modules/CFD/Helpers/cfd-config';
+import { getDxCompanies, getMtCompanies, TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import CFDPasswordModalTitle from './cfd-password-modal-title';
 import { CFD_PLATFORMS, JURISDICTION, CATEGORY } from '../Helpers/cfd-config';
@@ -181,7 +175,7 @@ const IconType = React.memo(({ platform, type, show_eu_related_content, product 
         }
         switch (type) {
             case 'synthetic':
-                return <TradingPlatformIcon icon='Derived' size={128} />;
+                return <TradingPlatformIcon icon='Standard' size={128} />;
             case 'all':
                 if (product === 'zero_spread') {
                     return <TradingPlatformIcon icon='ZeroSpread' size={128} />;
@@ -198,7 +192,7 @@ const IconType = React.memo(({ platform, type, show_eu_related_content, product 
     } else {
         switch (type) {
             case 'synthetic':
-                return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
+                return <Icon icon='IcMt5StandardPlatform' size={128} />;
             case 'all':
                 if (product === 'zero_spread') {
                     <Icon icon='IcMt5ZeroSpreadPlatform' size={128} />;

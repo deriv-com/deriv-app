@@ -68,6 +68,7 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                     &--collapsed {
                         display: block;
                         overflow: hidden;
+                        line-height: 1.5rem;
                         height: 2.8rem;
 
                         &:after {

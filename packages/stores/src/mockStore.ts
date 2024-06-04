@@ -453,7 +453,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             openTopUpModal: jest.fn(),
             toggleShouldShowRealAccountsList: jest.fn(),
             is_reset_trading_password_modal_visible: false,
-            setResetTradingPasswordModalOpen: jest.fn(),
             setIsMFVericationPendingModal: jest.fn(),
             setMT5MigrationModalEnabled: jest.fn(),
             toggleMT5MigrationModal: jest.fn(),

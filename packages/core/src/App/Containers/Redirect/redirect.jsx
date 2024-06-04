@@ -15,7 +15,7 @@ const Redirect = observer(() => {
 
     const {
         openRealAccountSignup,
-        setResetTradingPasswordModalOpen,
+        setCFDPasswordResetModal,
         toggleAccountSignupModal,
         toggleResetPasswordModal,
         toggleResetEmailModal,
@@ -126,7 +126,7 @@ const Redirect = observer(() => {
                 }
             }
 
-            setResetTradingPasswordModalOpen(true);
+            setCFDPasswordResetModal(true);
             break;
         }
         case 'payment_deposit': {

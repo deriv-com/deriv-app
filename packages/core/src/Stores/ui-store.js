@@ -386,7 +386,6 @@ export default class UIStore extends BaseStore {
             setPWAPromptEvent: action.bound,
             setRealAccountSignupEnd: action.bound,
             setRealAccountSignupParams: action.bound,
-            setResetTradingPasswordModalOpen: action.bound,
             setRouteModal: action.bound,
             setScamMessageLocalStorage: action.bound,
             setShouldShowAppropriatenessWarningModal: action.bound,
@@ -785,10 +784,6 @@ export default class UIStore extends BaseStore {
         this.is_update_email_modal_visible = state_change;
     }
 
-    setResetTradingPasswordModalOpen(is_reset_trading_password_modal_visible) {
-        this.is_reset_trading_password_modal_visible = is_reset_trading_password_modal_visible;
-    }
-
     setRealAccountSignupParams(params) {
         this.real_account_signup = {
             ...this.real_account_signup,
@@ -941,8 +936,8 @@ export default class UIStore extends BaseStore {
         this.is_need_real_account_for_cashier_modal_visible = !this.is_need_real_account_for_cashier_modal_visible;
     }
 
-    setCFDPasswordResetModal(val) {
-        this.is_cfd_reset_password_modal_enabled = !!val;
+    setCFDPasswordResetModal() {
+        this.is_cfd_reset_password_modal_enabled = !this.is_cfd_reset_password_modal_enabled;
     }
 
     setSubSectionIndex(index) {

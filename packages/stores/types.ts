@@ -776,7 +776,6 @@ type TUiStore = {
     is_reset_trading_password_modal_visible: boolean;
     real_account_signup: RealAccountSignupSettings;
     resetRealAccountSignupParams: () => void;
-    setResetTradingPasswordModalOpen: () => void;
     populateHeaderExtensions: (header_items: JSX.Element | null) => void;
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     purchase_states: boolean[];

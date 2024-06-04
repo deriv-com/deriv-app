@@ -7,13 +7,7 @@ import { TPlatforms } from '../Types';
 
 const ResetTradingPassword = observer(() => {
     const { ui, client } = useStore();
-    const {
-        enableApp,
-        disableApp,
-        is_reset_trading_password_modal_visible,
-        is_loading,
-        setResetTradingPasswordModalOpen,
-    } = ui;
+    const { enableApp, disableApp, is_reset_trading_password_modal_visible, is_loading, setCFDPasswordResetModal } = ui;
     const location = useLocation();
     const platform = React.useRef('');
     const query_params = new URLSearchParams(location.search);
@@ -35,7 +29,7 @@ const ResetTradingPassword = observer(() => {
             platform={platform.current as TPlatforms}
             enableApp={enableApp}
             disableApp={disableApp}
-            toggleResetTradingPasswordModal={setResetTradingPasswordModalOpen}
+            toggleResetTradingPasswordModal={setCFDPasswordResetModal}
             is_visible={is_reset_trading_password_modal_visible}
             is_loading={is_loading}
             verification_code={verification_code}

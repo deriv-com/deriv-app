@@ -5,7 +5,8 @@ import clsx from 'clsx';
 import { Form, Formik } from 'formik';
 import { Analytics } from '@deriv-com/analytics';
 import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, ThemedScrollbars } from '@deriv/components';
-import { getIDVNotApplicableOption, isDesktop, isMobile, removeEmptyPropertiesFromObject } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
+import { getIDVNotApplicableOption, removeEmptyPropertiesFromObject } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import {
@@ -49,7 +50,7 @@ const PersonalDetails = observer(
         const [no_confirmation_needed, setNoConfirmationNeeded] = useState(false);
 
         const PoiNameDobExampleIcon = PoiNameDobExample;
-
+        const { isDesktop } = useDevice();
         const handleCancel = values => {
             const current_step = getCurrentStep() - 1;
             onSave(current_step, values);
@@ -162,7 +163,7 @@ const PersonalDetails = observer(
                 }}
             >
                 {({ handleSubmit, isSubmitting, values }) => (
-                    <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
+                    <AutoHeightWrapper default_height={380} height_offset={isDesktop ? 81 : null}>
                         {({ setRef, height }) => (
                             <Form
                                 noValidate
@@ -173,8 +174,8 @@ const PersonalDetails = observer(
                                 data-testid='personal_details_form'
                             >
                                 <ScrollToFieldWithError
-                                    fields_to_scroll_bottom={isMobile() ? '' : ['account_opening_reason']}
-                                    fields_to_scroll_top={isMobile() ? ['account_opening_reason'] : ''}
+                                    fields_to_scroll_bottom={!isDesktop ? '' : ['account_opening_reason']}
+                                    fields_to_scroll_top={!isDesktop ? ['account_opening_reason'] : ''}
                                     should_recollect_inputs_names={
                                         values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
                                     }
@@ -182,7 +183,7 @@ const PersonalDetails = observer(
                                 <Div100vhContainer
                                     className='details-form'
                                     height_offset='100px'
-                                    is_disabled={isDesktop()}
+                                    is_disabled={isDesktop}
                                 >
                                     <ThemedScrollbars
                                         height={height}
@@ -191,7 +192,7 @@ const PersonalDetails = observer(
                                     >
                                         <div
                                             className={clsx('details-form__elements', 'personal-details-form')}
-                                            style={{ paddingBottom: isDesktop() ? 'unset' : null }}
+                                            style={{ paddingBottom: isDesktop ? 'unset' : null }}
                                         >
                                             {is_rendered_for_idv && (
                                                 <Fragment>
@@ -237,12 +238,12 @@ const PersonalDetails = observer(
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer has_separator is_bypassed={isMobile()}>
+                                <Modal.Footer has_separator is_bypassed={!isDesktop}>
                                     <FormSubmitButton
                                         cancel_label={localize('Previous')}
                                         has_cancel
                                         is_disabled={isSubmitting}
-                                        is_absolute={isMobile()}
+                                        is_absolute={!isDesktop}
                                         label={localize('Next')}
                                         onCancel={() => handleCancel(values)}
                                     />

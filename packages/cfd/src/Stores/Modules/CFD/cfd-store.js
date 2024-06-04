@@ -59,6 +59,7 @@ export default class CFDStore extends BaseStore {
     real_synthetic_accounts_existing_data = [];
     real_financial_accounts_existing_data = [];
     real_swapfree_accounts_existing_data = [];
+    real_zerospread_accounts_existing_data = [];
 
     migrated_mt5_accounts = [];
 
@@ -211,6 +212,7 @@ export default class CFDStore extends BaseStore {
                 return this.real_synthetic_accounts_existing_data?.some(
                     account => account.landing_company_short === this.jurisdiction_selected_shortcode
                 );
+            // here
             case 'all':
                 return this.real_swapfree_accounts_existing_data?.some(
                     account => account.landing_company_short === this.jurisdiction_selected_shortcode
@@ -695,6 +697,10 @@ export default class CFDStore extends BaseStore {
 
     getRealSwapfreeAccountsExistingData(real_swapfree_accounts_existing_data) {
         this.real_swapfree_accounts_existing_data = real_swapfree_accounts_existing_data;
+    }
+
+    getRealZerospreadAccountsExistingData(real_zerospread_accounts_existing_data) {
+        this.real_zerospread_accounts_existing_data = real_zerospread_accounts_existing_data;
     }
 
     toggleJurisdictionModal() {

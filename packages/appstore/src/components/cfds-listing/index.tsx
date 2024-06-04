@@ -265,6 +265,7 @@ const CFDsListing = observer(() => {
                                         }
                                     } else if (existing_account.action_type === 'multi-action') {
                                         const button_name = e?.currentTarget?.name;
+                                        setProduct(existing_account.product);
                                         if (button_name === 'transfer-btn') {
                                             Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                                 action: 'account_transfer',

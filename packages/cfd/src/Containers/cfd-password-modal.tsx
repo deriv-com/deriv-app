@@ -65,6 +65,7 @@ type TIconTypeProps = {
     platform: string;
     type?: string;
     show_eu_related_content: boolean;
+    product?: string;
 };
 
 type TCFDPasswordFormReusedProps = {
@@ -170,7 +171,7 @@ const ReviewMessageForMT5 = ({
     return null;
 };
 
-const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconTypeProps) => {
+const IconType = React.memo(({ platform, type, show_eu_related_content, product }: TIconTypeProps) => {
     const traders_hub = window.location.pathname === routes.traders_hub;
     if (platform === CFD_PLATFORMS.DXTRADE) {
         return <Icon icon='IcRebrandingDxtradeDashboard' size={128} />;
@@ -182,6 +183,9 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
             case 'synthetic':
                 return <TradingPlatformIcon icon='Derived' size={128} />;
             case 'all':
+                if (product === 'zero_spread') {
+                    return <TradingPlatformIcon icon='ZeroSpread' size={128} />;
+                }
                 return <TradingPlatformIcon icon='SwapFree' size={128} />;
             case 'financial':
                 if (show_eu_related_content) {
@@ -196,6 +200,9 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
             case 'synthetic':
                 return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
             case 'all':
+                if (product === 'zero_spread') {
+                    <Icon icon='IcMt5ZeroSpreadPlatform' size={128} />;
+                }
                 return <Icon icon='IcMt5SwapFreePlatform' size={128} />;
             case 'financial':
                 if (show_eu_related_content) {
@@ -1022,6 +1029,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         platform={platform}
                         type={account_type.type}
                         show_eu_related_content={show_eu_related_content}
+                        product={product}
                     />
                 }
                 icon_size='xlarge'

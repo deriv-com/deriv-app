@@ -621,6 +621,7 @@ export default class TradersHubStore extends BaseStore {
         if (has_active_real_account && platform === CFD_PLATFORMS.MT5) {
             if (product !== 'zero_spread' && product !== 'swap_free') {
                 toggleJurisdictionModal();
+                // here
             } else if (product === 'swap_free') {
                 enableCFDPasswordModal();
             } else if (product === 'zero_spread') {
@@ -632,7 +633,7 @@ export default class TradersHubStore extends BaseStore {
                     has_submitted_cfd_personal_details &&
                     !is_poa_required_for_zero_spread
                 ) {
-                    this.openPasswordModal(account_type);
+                    this.openRealPasswordModal(account_type);
                 } else {
                     toggleCFDVerificationModal();
                 }
@@ -747,6 +748,7 @@ export default class TradersHubStore extends BaseStore {
                             action_type: 'multi-action',
                             availability: this.selected_region,
                             market_type: account.market_type,
+                            product: account.product,
                             tracking_name: account.tracking_name,
                         },
                     ];
@@ -763,6 +765,7 @@ export default class TradersHubStore extends BaseStore {
                         action_type: 'get',
                         availability: this.selected_region,
                         market_type: account.market_type,
+                        product: account.product,
                         tracking_name: account.tracking_name,
                     },
                 ];

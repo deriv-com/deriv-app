@@ -26,6 +26,7 @@ type TMT5TradeModalProps = {
         arg5: string | undefined
     ) => void;
     toggleModal: () => void;
+    product?: string;
 };
 
 const getTitle = (market_type: string, show_eu_related_content: boolean) => {
@@ -34,7 +35,7 @@ const getTitle = (market_type: string, show_eu_related_content: boolean) => {
 };
 
 const DMT5TradeModal = observer(
-    ({ mt5_trade_account, show_eu_related_content, onPasswordManager, toggleModal }: TMT5TradeModalProps) => {
+    ({ mt5_trade_account, show_eu_related_content, onPasswordManager, toggleModal, product }: TMT5TradeModalProps) => {
         const { ui, client } = useStore();
         const { is_mobile } = ui;
         const { account_status: { authentication } = {} } = client;
@@ -58,12 +59,15 @@ const DMT5TradeModal = observer(
                 platform: CFD_PLATFORMS.MT5,
                 is_eu: show_eu_related_content,
                 shortcode: getCompanyShortcode(),
+                product,
                 is_mt5_trade_modal: true,
             });
         const getAccountTitle = () => {
             if (show_eu_related_content) return 'CFDs';
             else if (mt5_trade_account.market_type === MARKET_TYPE.SYNTHETIC) return 'Derived';
-            else if (mt5_trade_account.market_type === MARKET_TYPE.ALL) return 'SwapFree';
+            else if (mt5_trade_account.market_type === MARKET_TYPE.ALL && product === 'swap_free') return 'SwapFree';
+            else if (mt5_trade_account.market_type === MARKET_TYPE.ALL && product === 'zero_spread')
+                return 'ZeroSpread';
             return 'Financial';
         };
 

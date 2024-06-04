@@ -464,7 +464,6 @@ const FinancialAssessment = observer(() => {
                                                 }}
                                             />
                                         )}
-                                        ;
                                     </fieldset>
                                     {!is_mf && (
                                         <fieldset className='account-form__fieldset'>
@@ -507,7 +506,6 @@ const FinancialAssessment = observer(() => {
                                                     }}
                                                 />
                                             )}
-                                            ;
                                         </fieldset>
                                     )}
                                     <fieldset className='account-form__fieldset'>
@@ -538,7 +536,6 @@ const FinancialAssessment = observer(() => {
                                                 }}
                                             />
                                         )}
-                                        ;
                                     </fieldset>
                                     {!shouldHideOccupationField(values.employment_status || employment_status) && (
                                         <fieldset className='account-form__fieldset'>
@@ -574,7 +571,6 @@ const FinancialAssessment = observer(() => {
                                                     data_testid='occupation'
                                                 />
                                             )}
-                                            ;
                                         </fieldset>
                                     )}
                                     <fieldset className='account-form__fieldset'>
@@ -603,7 +599,6 @@ const FinancialAssessment = observer(() => {
                                                 }}
                                             />
                                         )}
-                                        ;
                                     </fieldset>
                                     <fieldset className='account-form__fieldset'>
                                         {isDesktop ? (
@@ -631,7 +626,6 @@ const FinancialAssessment = observer(() => {
                                                 }}
                                             />
                                         )}
-                                        ;
                                     </fieldset>
                                     <fieldset className='account-form__fieldset'>
                                         {isDesktop ? (
@@ -659,7 +653,6 @@ const FinancialAssessment = observer(() => {
                                                 }}
                                             />
                                         )}
-                                        ;
                                     </fieldset>
                                     <fieldset className='account-form__fieldset'>
                                         {isDesktop ? (
@@ -688,7 +681,6 @@ const FinancialAssessment = observer(() => {
                                                 }}
                                             />
                                         )}
-                                        ;
                                     </fieldset>
                                     <fieldset className='account-form__fieldset'>
                                         {isDesktop ? (
@@ -717,7 +709,6 @@ const FinancialAssessment = observer(() => {
                                                 }}
                                             />
                                         )}
-                                        ;
                                     </fieldset>
                                     {/* Trading experience fieldset */}
                                 </FormBodySection>
@@ -761,7 +752,6 @@ const FinancialAssessment = observer(() => {
                                                         }}
                                                     />
                                                 )}
-                                                ;
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 {isDesktop ? (
@@ -796,7 +786,6 @@ const FinancialAssessment = observer(() => {
                                                         }}
                                                     />
                                                 )}
-                                                ;
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 {isDesktop ? (
@@ -831,7 +820,6 @@ const FinancialAssessment = observer(() => {
                                                         }}
                                                     />
                                                 )}
-                                                ;
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 {isDesktop ? (
@@ -866,7 +854,6 @@ const FinancialAssessment = observer(() => {
                                                         }}
                                                     />
                                                 )}
-                                                ;
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 {isDesktop ? (
@@ -901,7 +888,6 @@ const FinancialAssessment = observer(() => {
                                                         }}
                                                     />
                                                 )}
-                                                ;
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 {isDesktop ? (
@@ -936,7 +922,6 @@ const FinancialAssessment = observer(() => {
                                                         }}
                                                     />
                                                 )}
-                                                ;
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 {isDesktop ? (
@@ -974,7 +959,6 @@ const FinancialAssessment = observer(() => {
                                                         }}
                                                     />
                                                 )}
-                                                ;
                                             </fieldset>
                                             <fieldset className='account-form__fieldset'>
                                                 {isDesktop ? (
@@ -1013,7 +997,6 @@ const FinancialAssessment = observer(() => {
                                                         }}
                                                     />
                                                 )}
-                                                ;
                                             </fieldset>
                                         </FormBodySection>
                                     </>

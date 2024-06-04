@@ -81,7 +81,6 @@ const FinancialDetailsDropdownField = ({
                             {...field}
                         />
                     )}
-                    ;
                 </React.Fragment>
             )}
         </Field>
@@ -141,7 +140,6 @@ const FinancialDetailsOccupationDropdownField = ({
                             required
                         />
                     )}
-                    ;
                 </React.Fragment>
             )}
         </Field>

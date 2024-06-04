@@ -71,7 +71,7 @@ const DatePicker = React.memo((props: TDatePicker) => {
     const [duration, setDuration] = React.useState<number | null | string>(daysFromTodayTo(value));
     const [is_datepicker_visible, setIsDatepickerVisible] = React.useState(false);
     const [is_placeholder_visible, setIsPlaceholderVisible] = React.useState(!!placeholder && !value);
-    const { isMobile } = useDevice();
+    const { isMobile, isTablet } = useDevice();
 
     useOnClickOutside(
         datepicker_ref,
@@ -197,7 +197,7 @@ const DatePicker = React.memo((props: TDatePicker) => {
     const getInputValue = (): string | number => (mode === 'duration' ? duration || 0 : date);
 
     const getCalendarValue = (new_date: string | null): string | null => {
-        if (!new_date) return isMobile ? null : toMoment(start_date || max_date).format(date_format);
+        if (!new_date) return isMobile || isTablet ? null : toMoment(start_date || max_date).format(date_format);
         return convertDateFormat(new_date, display_format, date_format);
     };
 
@@ -216,7 +216,7 @@ const DatePicker = React.memo((props: TDatePicker) => {
         ...other_props,
     };
 
-    if (isMobile) {
+    if (isMobile || isTablet) {
         return (
             <Native
                 id={id}

@@ -45,7 +45,6 @@
                 grid-template-columns: 1.2fr 1fr;
 
                 &--accumulator {
-                    display: flex;
                     grid-gap: 1px;
                 }
 
@@ -719,8 +718,6 @@
     }
     &__text {
         position: absolute;
-        color: var(--status-success);
         width: 100%;
-        text-align: center;
     }
 }

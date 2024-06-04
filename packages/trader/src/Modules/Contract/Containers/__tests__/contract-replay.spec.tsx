@@ -7,11 +7,6 @@ import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../../trader-providers';
 import { createMemoryHistory } from 'history';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useFeatureFlags: jest.fn(() => ({ is_next_wallet_enabled: false })),
-}));
-
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({ isMobile: false })),
@@ -37,6 +32,11 @@ jest.mock('../contract-replay-widget', () => ({
 }));
 
 jest.mock('../replay-chart', () => jest.fn(() => <div>ReplayChart</div>));
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useFeatureFlags: jest.fn(() => ({})),
+}));
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),

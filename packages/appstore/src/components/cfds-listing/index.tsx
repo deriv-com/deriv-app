@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { Loading, Text, StaticUrl } from '@deriv/components';
 import {
@@ -8,6 +8,7 @@ import {
     MT5_ACCOUNT_STATUS,
     makeLazyLoader,
     moduleLoader,
+    setPerformanceValue,
 } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
 import { localize, Localize } from '@deriv/translations';
@@ -68,7 +69,6 @@ const CFDsListing = observer(() => {
     const { setAccountType, toggleCTraderTransferModal } = cfd;
     const {
         account_status,
-        ctrader_accounts_list,
         is_landing_company_loaded,
         is_populating_mt5_account_list,
         real_account_creation_unlock_date,
@@ -173,6 +173,16 @@ const CFDsListing = observer(() => {
         return null;
     };
 
+    useEffect(() => {
+        if (is_landing_company_loaded && is_populating_mt5_account_list) {
+            setPerformanceValue('login_time');
+            setPerformanceValue('redirect_from_deriv_com_time');
+            setPerformanceValue('switch_currency_accounts_time');
+            setPerformanceValue('switch_from_demo_to_real_time');
+            setPerformanceValue('switch_from_real_to_demo_time');
+        }
+    }, [is_populating_mt5_account_list]);
+
     return (
         <ListingContainer
             title={
@@ -189,7 +199,7 @@ const CFDsListing = observer(() => {
                 <Text size='xs' line_height='s'>
                     <Localize
                         i18n_default_text={
-                            'Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'
+                            'Trade bigger positions with less capital across diverse financial and derived instruments. <0>Learn more</0>'
                         }
                         components={[<StaticUrl key={0} className='options' href='/trade-types/cfds' />]}
                     />
@@ -208,12 +218,10 @@ const CFDsListing = observer(() => {
                 <React.Fragment>
                     {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
-                        const track_account_name = is_demo
-                            ? `${existing_account.name} ${localize('Demo')}`
-                            : existing_account.name;
+
                         const track_account_subtitle = is_demo
-                            ? `${existing_account.sub_title} ${localize('Demo')}`
-                            : existing_account.sub_title;
+                            ? `${existing_account.tracking_name} Demo`
+                            : existing_account.tracking_name;
 
                         const has_mt5_account_status =
                             existing_account?.status || is_idv_revoked
@@ -241,7 +249,7 @@ const CFDsListing = observer(() => {
                                             action: 'account_get',
                                             form_name: 'traders_hub_default',
                                             account_mode: selected_account_type,
-                                            account_name: track_account_name,
+                                            account_name: track_account_subtitle,
                                         });
                                         if (real_account_creation_unlock_date && no_real_mf_account_eu_regulator) {
                                             setShouldShowCooldownModal(true);
@@ -262,7 +270,7 @@ const CFDsListing = observer(() => {
                                                 action: 'account_transfer',
                                                 form_name: 'traders_hub_default',
                                                 account_mode: selected_account_type,
-                                                account_name: track_account_name,
+                                                account_name: track_account_subtitle,
                                             });
                                             toggleAccountTransferModal();
                                             setSelectedAccount(existing_account);
@@ -322,7 +330,7 @@ const CFDsListing = observer(() => {
                 ? available_ctrader_accounts.map(account => {
                       const existing_accounts = getExistingAccounts(account.platform, account.market_type);
                       const has_existing_accounts = existing_accounts.length > 0;
-                      const track_account_name = is_demo ? `${account.name} ${localize('Demo')}` : account.name;
+                      const track_account_name = is_demo ? `${account.name} ${'Demo'}` : account.name;
                       return has_existing_accounts ? (
                           existing_accounts.map(existing_account => (
                               <TradingAppCard
@@ -411,7 +419,7 @@ const CFDsListing = observer(() => {
 
                     <div className='cfd-full-row'>
                         <Text line_height='m' weight='bold' color='prominent'>
-                            {localize('Other CFD Platforms')}
+                            {localize('Deriv X')}
                         </Text>
                     </div>
                 </React.Fragment>
@@ -420,7 +428,7 @@ const CFDsListing = observer(() => {
                 available_dxtrade_accounts?.map(account => {
                     const existing_accounts = getExistingAccounts(account.platform, account.market_type);
                     const has_existing_accounts = existing_accounts.length > 0;
-                    const track_account_name = is_demo ? `${account.name} ${localize('Demo')}` : account.name;
+                    const track_account_name = is_demo ? `${account.name} ${'Demo'}` : account.name;
 
                     return has_existing_accounts ? (
                         existing_accounts.map(existing_account => (
@@ -440,9 +448,7 @@ const CFDsListing = observer(() => {
                                 key={`trading_app_card_${existing_account.login}`}
                                 onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                                     const button_name = e?.currentTarget?.name;
-                                    const track_account_subtitle = is_demo
-                                        ? `${existing_account.sub_title} ${localize('Demo')}`
-                                        : existing_account.sub_title;
+
                                     if (button_name === 'transfer-btn') {
                                         Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                             action: 'account_transfer',
@@ -457,7 +463,7 @@ const CFDsListing = observer(() => {
                                             action: 'account_topup',
                                             form_name: 'traders_hub_default',
                                             account_mode: selected_account_type,
-                                            account_name: track_account_subtitle,
+                                            account_name: track_account_name,
                                         });
                                         showTopUpModal(existing_account);
                                         setAppstorePlatform(account.platform);
@@ -466,7 +472,7 @@ const CFDsListing = observer(() => {
                                             action: 'account_open',
                                             form_name: 'traders_hub_default',
                                             account_mode: selected_account_type,
-                                            account_name: track_account_subtitle,
+                                            account_name: track_account_name,
                                         });
                                         startTrade(account.platform, existing_account);
                                     }

@@ -42,7 +42,7 @@ const CommonMistakeExamples = () => {
     const example_images = getExampleImagesConfig(is_eu);
     return (
         <React.Fragment>
-            <Text as='div' weight='bold' size={!isDesktop ? 'xxs' : 'xs'} className='common-mistake-examples__title'>
+            <Text as='div' weight='bold' size={isDesktop ? 'xs' : 'xxs'} className='common-mistake-examples__title'>
                 <Localize i18n_default_text='Common mistakes' />
             </Text>
             <div className='common-mistake-examples__content'>

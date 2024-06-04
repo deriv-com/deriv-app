@@ -73,14 +73,14 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
                     >
                         {failed_message ? (
                             <React.Fragment>
-                                <Text align='center' weight='bold' size={!isDesktop ? 'xs' : 's'}>
+                                <Text align='center' weight='bold' size={isDesktop ? 's' : 'xs'}>
                                     <Localize i18n_default_text='Your identity verification failed because:' />
                                 </Text>
                                 <HintBox
                                     className={clsx('proof-of-identity__failed-message', 'hint-box-layout')}
                                     icon='IcAlertDanger'
                                     message={
-                                        <Text as='p' size={!isDesktop ? 'xxs' : 'xs'}>
+                                        <Text as='p' size={isDesktop ? 'xs' : 'xxs'}>
                                             {failed_message}
                                         </Text>
                                     }

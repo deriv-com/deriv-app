@@ -34,7 +34,7 @@ export const FormFieldInfo = (props: Omit<TPopoverProps, 'alignment'>) => {
                 zIndex='9999'
                 is_open={is_open}
                 onClick={() => setIsOpen(prev_is_open => !prev_is_open)}
-                alignment={!isDesktop ? 'left' : 'right'}
+                alignment={isDesktop ? 'right' : 'left'}
             />
         </div>
     );

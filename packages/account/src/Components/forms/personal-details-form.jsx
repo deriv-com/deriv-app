@@ -131,7 +131,7 @@ const PersonalDetailsForm = props => {
                     <InlineNoteWithIcon
                         icon='IcAlertWarning'
                         message={poa_clarification_message}
-                        font_size={!isDesktop ? 'xxxs' : 'xs'}
+                        font_size={isDesktop ? 'xs' : 'xxxs'}
                     />
                 )}
                 <FormBodySection
@@ -143,7 +143,7 @@ const PersonalDetailsForm = props => {
                     <fieldset className='account-form__fieldset'>
                         {'salutation' in values && !is_eu_user && (
                             <div>
-                                <Text size={!isDesktop ? 'xs' : 'xxs'} align={!isDesktop && 'center'}>
+                                <Text size={isDesktop ? 'xxs' : 'xs'} align={!isDesktop && 'center'}>
                                     {is_virtual ? (
                                         localize(
                                             'Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your account settings.'
@@ -530,7 +530,7 @@ const PersonalDetailsForm = props => {
                         label={
                             <Localize i18n_default_text='I confirm that the name and date of birth above match my chosen identity document' />
                         }
-                        label_font_size={!isDesktop ? 'xxs' : 'xs'}
+                        label_font_size={isDesktop ? 'xs' : 'xxs'}
                         disabled={is_confirmation_checkbox_disabled}
                         onChange={handleChange}
                         has_error={!!(touched.confirmation_checkbox && errors.confirmation_checkbox)}
@@ -596,7 +596,7 @@ const PersonalDetailsForm = props => {
                                 label={
                                     <Localize i18n_default_text='I confirm that my tax information is accurate and complete.' />
                                 }
-                                label_font_size={!isDesktop ? 'xxs' : 'xs'}
+                                label_font_size={isDesktop ? 'xs' : 'xxs'}
                                 onChange={e => {
                                     setFieldValue('crs_confirmation', e.target.checked, true);
                                     setFieldTouched('crs_confirmation', true);

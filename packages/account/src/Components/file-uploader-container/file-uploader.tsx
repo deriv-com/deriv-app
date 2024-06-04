@@ -22,10 +22,10 @@ const UploadMessage = () => {
             <Icon icon='IcUpload' className='dc-file-dropzone__message-icon' size={30} />
             <div className='dc-file-dropzone__message-subtitle'>
                 <Text size='xxs' align='center' weight='bold' color='less-prominent'>
-                    {!isDesktop ? (
-                        <Localize i18n_default_text='Click here to browse your files.' />
-                    ) : (
+                    {isDesktop ? (
                         <Localize i18n_default_text='Drag and drop a file or click to browse your files.' />
+                    ) : (
+                        <Localize i18n_default_text='Click here to browse your files.' />
                     )}
                 </Text>
                 <Text size={isMobile ? 'xxxxs' : 'xxxs'} align='center' color='less-prominent'>

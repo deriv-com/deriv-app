@@ -156,7 +156,7 @@ const TradingAssessment = observer(() => {
             {({ values, dirty, isSubmitting, handleChange, handleBlur }) => {
                 return (
                     <Form className='account-form account-form__trading-assessment'>
-                        <FormBody scroll_offset={!isDesktop ? '150px' : '80px'}>
+                        <FormBody scroll_offset={isDesktop ? '80px' : '150px'}>
                             <FormSubHeader
                                 title={localize('Trading Experience')}
                                 subtitle={localize('All fields are required')}

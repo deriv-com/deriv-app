@@ -18,12 +18,12 @@ const CardWithArrow = ({ onClick, title, description, icon }: TCardWithArrow) =>
                 <Text as='p' size='xs' weight='bold' color='prominent'>
                     {title}
                 </Text>
-                <Text as='p' size={!isDesktop ? 'xxxs' : 'xxs'}>
+                <Text as='p' size={isDesktop ? 'xxs' : 'xxxs'}>
                     {description}
                 </Text>
             </div>
 
-            <Icon icon='IcChevronRight' size={!isDesktop ? 23 : 31} />
+            <Icon icon='IcChevronRight' size={isDesktop ? 31 : 23} />
         </div>
     );
 };

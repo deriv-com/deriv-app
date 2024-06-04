@@ -39,7 +39,7 @@ const SectionTitle = ({ title, has_border_line }: TSectionTitle) => {
         <Text
             as='h2'
             weight='bold'
-            size={!isDesktop ? 'xxs' : 'xs'}
+            size={isDesktop ? 'xs' : 'xxs'}
             className={clsx('da-self-exclusion__header', {
                 'da-self-exclusion__header-border': has_border_line,
             })}

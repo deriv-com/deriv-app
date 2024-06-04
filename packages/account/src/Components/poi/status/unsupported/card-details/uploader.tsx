@@ -51,7 +51,7 @@ const Message = ({ data, open }: TMessage) => {
             <Button
                 medium
                 secondary
-                text={!isDesktop ? localize('Tap here to upload') : localize('Drop file or click here to upload')}
+                text={isDesktop ? localize('Drop file or click here to upload') : localize('Tap here to upload')}
                 onClick={open}
             />
         </div>
@@ -136,7 +136,7 @@ const Uploader = ({ data, value, is_full, onChange, has_frame }: Omit<TUploader,
             <Button
                 medium
                 secondary
-                text={!isDesktop ? localize('Tap here to upload') : localize('Drop file or click here to upload')}
+                text={isDesktop ? localize('Drop file or click here to upload') : localize('Tap here to upload')}
                 onClick={open}
             />
         </div>

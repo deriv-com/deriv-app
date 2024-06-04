@@ -19,7 +19,7 @@ const FormTitle = () => {
             as='p'
             size='s'
             line_height='xxl'
-            align={!isDesktop ? 'left' : 'center'}
+            align={isDesktop ? 'center' : 'left'}
             className='additional-kyc-info-modal__form--header'
         >
             <Localize i18n_default_text='Please take a moment to update your information now.' />

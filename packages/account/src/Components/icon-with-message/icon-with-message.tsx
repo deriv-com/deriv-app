@@ -23,7 +23,7 @@ const IconWithMessage = observer(({ has_button, icon, message }: TIconWithMessag
                 className='da-icon-with-message__text'
                 as='p'
                 color='general'
-                size={!isDesktop ? 'xs' : 's'}
+                size={isDesktop ? 's' : 'xs'}
                 line_height='m'
                 weight='bold'
             >

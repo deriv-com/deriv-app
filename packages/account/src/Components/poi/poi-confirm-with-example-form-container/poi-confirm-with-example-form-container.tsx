@@ -165,7 +165,7 @@ const PoiConfirmWithExampleFormContainer = ({
                             <Checkbox
                                 value={checked}
                                 label={
-                                    <Text size={!isDesktop ? 'xxs' : 'xs'}>
+                                    <Text size={isDesktop ? 'xs' : 'xxs'}>
                                         {localize(
                                             'I confirm that the name and date of birth above match my chosen identity document (see below)'
                                         )}

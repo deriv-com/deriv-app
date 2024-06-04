@@ -41,7 +41,7 @@ const SelfieUpload = ({ initial_values, goBack, onConfirm, onFileDrop }: TSelfie
 
                     return (
                         <Form className={`${ROOT_CLASS}__form`}>
-                            <FormBody className='form-body' scroll_offset={!isDesktop ? '18rem' : '8rem'}>
+                            <FormBody className='form-body' scroll_offset={isDesktop ? '8rem' : '18rem'}>
                                 <div className={`${ROOT_CLASS}__fields-content`}>
                                     <Text as='h3' size='s' weight='bold' color='prominent'>
                                         <Localize i18n_default_text='Upload your selfie' />

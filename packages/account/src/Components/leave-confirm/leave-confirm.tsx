@@ -23,7 +23,7 @@ const LeaveConfirmMessage = ({ back, leave }: TLeaveConfirmMessage) => {
             className='leave-confirm'
             message={localize('Unsaved changes')}
             text={localize('You have unsaved changes. Are you sure you want to discard changes and leave this page?')}
-            icon={<Icon icon='IcUnsavedChanges' size={!isDesktop ? 93 : 128} data_testid='dt_unsaved_changes_icon' />}
+            icon={<Icon icon='IcUnsavedChanges' size={isDesktop ? 128 : 93} data_testid='dt_unsaved_changes_icon' />}
         >
             <div className='account-management-flex-wrapper account-management-leave-confirm'>
                 <Button
@@ -32,7 +32,7 @@ const LeaveConfirmMessage = ({ back, leave }: TLeaveConfirmMessage) => {
                     onClick={back}
                     text={localize('Cancel')}
                     secondary
-                    {...(!isDesktop ? { large: true } : {})}
+                    {...(isDesktop ? {} : { large: true })}
                 />
                 <Button
                     type='button'
@@ -40,7 +40,7 @@ const LeaveConfirmMessage = ({ back, leave }: TLeaveConfirmMessage) => {
                     onClick={leave}
                     text={localize('Leave Settings')}
                     primary
-                    {...(!isDesktop ? { large: true } : {})}
+                    {...(isDesktop ? {} : { large: true })}
                 />
             </div>
         </IconMessageContent>

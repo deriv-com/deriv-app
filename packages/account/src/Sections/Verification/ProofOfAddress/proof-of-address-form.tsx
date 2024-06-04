@@ -272,7 +272,7 @@ const ProofOfAddressForm = observer(
         }
         const setOffset = (status: { msg: string }) => {
             const mobile_scroll_offset = status?.msg ? '200px' : '154px';
-            return !isDesktop && !is_for_cfd_modal ? mobile_scroll_offset : '80px';
+            return isDesktop && is_for_cfd_modal ? '80px' : mobile_scroll_offset;
         };
 
         return (
@@ -284,7 +284,7 @@ const ProofOfAddressForm = observer(
             >
                 {({ status, handleSubmit, isSubmitting, isValid }) => (
                     <>
-                        <LeaveConfirm onDirty={!isDesktop ? showForm : undefined} />
+                        <LeaveConfirm onDirty={isDesktop ? undefined : showForm} />
                         {form_state.should_show_form && (
                             <form noValidate className='account-form account-form_poa' onSubmit={handleSubmit}>
                                 <ThemedScrollbars
@@ -298,7 +298,7 @@ const ProofOfAddressForm = observer(
                                                 className='account-form_poa-submit-error'
                                                 icon='IcAlertDanger'
                                                 message={
-                                                    <Text as='p' size={!isDesktop ? 'xxxs' : 'xs'}>
+                                                    <Text as='p' size={isDesktop ? 'xs' : 'xxxs'}>
                                                         {!status?.msg && is_resubmit && (
                                                             <Localize i18n_default_text='We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.' />
                                                         )}

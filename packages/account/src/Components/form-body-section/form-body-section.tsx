@@ -55,12 +55,12 @@ const FormBodySection = ({
                     })}
                 >
                     {type === 'text' ? (
-                        <Text color='less-prominent' size={!isDesktop ? 'xxs' : 'xs'} data-testid='dt_side_note_text'>
+                        <Text color='less-prominent' size={isDesktop ? 'xs' : 'xxs'} data-testid='dt_side_note_text'>
                             {side_note}
                         </Text>
                     ) : (
                         <React.Fragment>
-                            <Text as='p' size={!isDesktop ? 'xxs' : 'xs'} weight='bold'>
+                            <Text as='p' size={isDesktop ? 'xs' : 'xxs'} weight='bold'>
                                 <Localize i18n_default_text='Example :' />
                             </Text>
                             <div className='account-form__section-side-note__example-image'>{side_note}</div>

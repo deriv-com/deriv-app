@@ -44,7 +44,7 @@ const TradersHub = observer(() => {
         (!is_switching && !is_logging_in && is_account_setting_loaded && is_landing_company_loaded) ||
         checkServerMaintenance(website_status);
 
-    const direct_to_real_account_creation = useGrowthbookGetFeatureValue({
+    const [direct_to_real_account_creation] = useGrowthbookGetFeatureValue({
         featureFlag: 'direct-real-account-creation-flow',
         defaultValue: false,
     });
@@ -83,7 +83,7 @@ const TradersHub = observer(() => {
         startPerformanceEventTimer('option_multiplier_section_loading_time');
     }, []);
 
-    const should_show_banner = useGrowthbookGetFeatureValue({
+    const [should_show_banner] = useGrowthbookGetFeatureValue({
         featureFlag: 'traders-hub-real-account-banner',
         defaultValue: false,
     });
@@ -146,15 +146,11 @@ const TradersHub = observer(() => {
                     })}
                     ref={traders_hub_ref}
                 >
-                    {should_show_banner &&
-                        !has_any_real_account &&
-                        !is_eu &&
-                        is_cr_demo &&
-                        is_landing_company_loaded && (
-                            <Suspense fallback={<div />}>
-                                <RealAccountCreationBanner />
-                            </Suspense>
-                        )}
+                    {should_show_banner && !has_any_real_account && is_landing_company_loaded && (
+                        <Suspense fallback={<div />}>
+                            <RealAccountCreationBanner />
+                        </Suspense>
+                    )}
 
                     <MainTitleBar />
                     <DesktopWrapper>{getOrderedPlatformSections(true)}</DesktopWrapper>

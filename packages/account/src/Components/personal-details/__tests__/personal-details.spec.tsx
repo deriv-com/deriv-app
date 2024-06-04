@@ -160,7 +160,7 @@ describe('<PersonalDetails/>', () => {
                                 format: 'A54321',
                             },
                         },
-                        has_visual_sample: true,
+                        has_visual_sample: 1 as any,
                     },
                 },
             },
@@ -199,7 +199,7 @@ describe('<PersonalDetails/>', () => {
             {
                 identity: {
                     services: {
-                        idv: default_IDV_config,
+                        idv: default_IDV_config as any,
                         onfido: {
                             documents_supported: {
                                 passport: {
@@ -217,7 +217,7 @@ describe('<PersonalDetails/>', () => {
             {
                 identity: {
                     services: {
-                        idv: default_IDV_config,
+                        idv: default_IDV_config as any,
                         onfido: {
                             documents_supported: {},
                             is_country_supported: 0,
@@ -287,12 +287,6 @@ describe('<PersonalDetails/>', () => {
         residence: '',
         real_account_signup_target: '',
     };
-
-    // beforeAll(() => {
-    //     ReactDOM.createPortal = jest.fn(component => component);
-    // });
-
-    // afterAll(() => ReactDOM.createPortal.mockClear());
 
     afterEach(() => {
         jest.clearAllMocks();
@@ -487,6 +481,22 @@ describe('<PersonalDetails/>', () => {
         fireEvent.click(screen.getByText('account settings'));
 
         expect(mock_props.closeRealAccountSignup).toHaveBeenCalledTimes(1);
+    });
+
+    it('should disable tax_residence field if it is immutable from BE', () => {
+        const new_store = mockStore({ ui: { is_mobile: false, is_desktop: true } });
+
+        const new_props = {
+            ...mock_props,
+            value: {
+                ...mock_props.value,
+                ...idv_document_data,
+                tax_residence: 'France',
+            },
+            disabled_items: ['salutation', 'first_name', 'last_name', 'date_of_birth', 'tax_residence'],
+        };
+        renderwithRouter({ props: new_props, store: new_store });
+        expect(screen.getByTestId('tax_residence')).toBeDisabled();
     });
 
     it('should show title and Name label when salutation is passed', () => {
@@ -872,7 +882,7 @@ describe('<PersonalDetails/>', () => {
                 ...mock_props.value,
                 ...idv_document_data,
             },
-            residence_list: default_residence_details,
+            residence_list: default_residence_details as any,
         };
         renderwithRouter({ props: new_props });
 
@@ -908,21 +918,5 @@ describe('<PersonalDetails/>', () => {
         await waitFor(() => {
             expect(isAdditionalDocumentValid).toHaveBeenCalled();
         });
-    });
-
-    it('should disable last_name field if it is immutable from BE', () => {
-        const new_store = mockStore({ ui: { is_mobile: false, is_desktop: true } });
-
-        const new_props = {
-            ...mock_props,
-            value: {
-                ...mock_props.value,
-                ...idv_document_data,
-                tax_residence: 'France',
-            },
-            disabled_items: ['salutation', 'first_name', 'last_name', 'date_of_birth', 'tax_residence'],
-        };
-        renderwithRouter({ props: new_props, store: new_store });
-        expect(screen.getByTestId('last_name')).toBeDisabled();
     });
 });

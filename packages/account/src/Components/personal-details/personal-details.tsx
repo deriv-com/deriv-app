@@ -1,5 +1,3 @@
-// [TODO] - Convert this to TypeScript and then remove React
-
 import { useState, Fragment, useCallback, useMemo, useEffect } from 'react';
 import clsx from 'clsx';
 import { Form, Formik, FormikErrors } from 'formik';
@@ -20,7 +18,8 @@ import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
-import { TIDVFormValues, TPersonalDetailsBaseForm } from '../../Types';
+import { TIDVFormValues, TListItem, TPersonalDetailsBaseForm } from '../../Types';
+import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
 
 type TPersonalDetailsSectionForm = Partial<TIDVFormValues & TPersonalDetailsBaseForm> & {
     confirmation_checkbox?: boolean;
@@ -39,17 +38,17 @@ type TPersonalDetailProps = {
     goToPreviousStep: () => void;
     goToNextStep: () => void;
     validate: (values: TPersonalDetailsSectionForm) => TPersonalDetailsSectionForm;
-    salutation_list: any[];
+    salutation_list: { label: string; value: string }[];
     disabled_items: string[];
     is_svg: boolean;
-    residence_list: any[];
+    residence_list: ResidenceList;
     is_virtual: boolean;
     is_fully_authenticated: boolean;
-    account_opening_reason_list: any[];
+    account_opening_reason_list: TListItem[];
     closeRealAccountSignup: () => void;
     has_real_account: boolean;
-    account_status: any;
-    account_settings: any;
+    account_status?: GetAccountStatus;
+    account_settings: GetSettings;
     residence: string;
     real_account_signup_target: string;
     value: TPersonalDetailsSectionForm;
@@ -119,8 +118,8 @@ const PersonalDetails = observer(
 
         //is_rendered_for_idv is used for configuring the components when they are used in idv page
         const is_rendered_for_idv = shouldShowIdentityInformation({
-            account_status,
-            citizen,
+            account_status: account_status as GetAccountStatus,
+            citizen: citizen as string,
             residence_list,
             real_account_signup_target,
         });

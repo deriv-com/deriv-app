@@ -191,13 +191,7 @@ const ContractDetails = ({
                             <React.Fragment>
                                 <ContractAuditItem
                                     id='dt_bt_label'
-                                    icon={
-                                        <Icon
-                                            className='contract-audit__icon-strike'
-                                            icon='IcContractStrike'
-                                            size={24}
-                                        />
-                                    }
+                                    icon={<Icon icon='IcContractStrike' size={24} />}
                                     label={getBarrierLabel(contract_info)}
                                     value={
                                         (isResetContract(contract_type)

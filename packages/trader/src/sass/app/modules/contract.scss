@@ -44,6 +44,11 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
 
                 a {
                     color: var(--brand-red-coral);
+
+                    @media only screen and (max-height: 667px) {
+                        font-size: 1rem;
+                        line-height: 1.5rem;
+                    }
                 }
             }
             &-text {

@@ -44,6 +44,12 @@ const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, ve
                     className='wallets-jurisdiction-card-back__icon'
                     iconSize='xs'
                     onClick={e => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setIsFlipped(false);
+                    }}
+                    onTouchEnd={e => {
+                        e.preventDefault();
                         e.stopPropagation();
                         setIsFlipped(false);
                     }}

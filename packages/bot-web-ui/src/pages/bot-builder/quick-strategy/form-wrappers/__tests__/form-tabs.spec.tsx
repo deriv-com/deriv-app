@@ -13,12 +13,11 @@ const onChangeMock = jest.fn();
 const mock_props = {
     active_tab: 'TRADE_PARAMETERS',
     onChange: onChangeMock,
-    description: 'description',
+    description: 'Exploring the Oscar’s Grind strategy in Deriv Bot',
 };
 
 describe('<FormTabs />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
-    const mock_onSubmit = jest.fn();
 
     beforeEach(() => {
         const mock_store = mockStore({});

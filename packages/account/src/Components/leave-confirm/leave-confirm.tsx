@@ -2,9 +2,9 @@ import React from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
 import { FormikConsumer } from 'formik';
 import { Button, Icon, Modal } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import IconMessageContent from '../icon-message-content';
+import { useDevice } from '@deriv-com/ui';
 
 type TLeaveConfirmMessage = {
     back: () => void;
@@ -17,12 +17,13 @@ type TTransitionBlocker = RouteComponentProps & {
 };
 
 const LeaveConfirmMessage = ({ back, leave }: TLeaveConfirmMessage) => {
+    const { isDesktop } = useDevice();
     return (
         <IconMessageContent
             className='leave-confirm'
             message={localize('Unsaved changes')}
             text={localize('You have unsaved changes. Are you sure you want to discard changes and leave this page?')}
-            icon={<Icon icon='IcUnsavedChanges' size={isMobile() ? 93 : 128} data_testid='dt_unsaved_changes_icon' />}
+            icon={<Icon icon='IcUnsavedChanges' size={!isDesktop ? 93 : 128} data_testid='dt_unsaved_changes_icon' />}
         >
             <div className='account-management-flex-wrapper account-management-leave-confirm'>
                 <Button
@@ -31,7 +32,7 @@ const LeaveConfirmMessage = ({ back, leave }: TLeaveConfirmMessage) => {
                     onClick={back}
                     text={localize('Cancel')}
                     secondary
-                    {...(isMobile() ? { large: true } : {})}
+                    {...(!isDesktop ? { large: true } : {})}
                 />
                 <Button
                     type='button'
@@ -39,7 +40,7 @@ const LeaveConfirmMessage = ({ back, leave }: TLeaveConfirmMessage) => {
                     onClick={leave}
                     text={localize('Leave Settings')}
                     primary
-                    {...(isMobile() ? { large: true } : {})}
+                    {...(!isDesktop ? { large: true } : {})}
                 />
             </div>
         </IconMessageContent>
@@ -84,10 +85,10 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
         setShow(false);
         if (onDirty) onDirty(true);
     };
-
+    const { isDesktop } = useDevice();
     return (
         <>
-            {show && isMobile() ? (
+            {show && !isDesktop ? (
                 <LeaveConfirmMessage back={back} leave={leave} />
             ) : (
                 <Modal is_open={show} small toggleModal={back}>

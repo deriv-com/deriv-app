@@ -6,7 +6,7 @@ import { RiskToleranceWarningModal, TestWarningModal } from 'Components/trading-
 import { getTradingAssessmentQuestions } from 'Constants/trading-assessment-questions';
 import { Dropdown, SelectNative, Text, FormSubmitButton, Button, Loading } from '@deriv/components';
 import FormFooter from 'Components/form-footer';
-import { isMobile, routes, WS } from '@deriv/shared';
+import { routes, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useHistory, withRouter } from 'react-router';
 import { Formik, Form } from 'formik';
@@ -156,7 +156,7 @@ const TradingAssessment = observer(() => {
             {({ values, dirty, isSubmitting, handleChange, handleBlur }) => {
                 return (
                     <Form className='account-form account-form__trading-assessment'>
-                        <FormBody scroll_offset={isMobile() ? '150px' : '80px'}>
+                        <FormBody scroll_offset={!isDesktop ? '150px' : '80px'}>
                             <FormSubHeader
                                 title={localize('Trading Experience')}
                                 subtitle={localize('All fields are required')}
@@ -273,7 +273,7 @@ const TradingAssessment = observer(() => {
                                 is_disabled={isSubmitting || !dirty || is_btn_loading}
                                 is_loading={is_btn_loading}
                                 has_effect
-                                is_absolute={isMobile()}
+                                is_absolute={!isDesktop}
                                 is_submit_success={is_submit_success && !dirty}
                                 green={is_submit_success && !dirty}
                                 label={localize('Submit')}

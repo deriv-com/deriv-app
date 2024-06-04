@@ -3,7 +3,7 @@
 /* -------------------------------------------------------------------------- */
 import { DetailsOfEachMT5Loginid, TransferBetweenAccountsResponse } from '@deriv/api-types';
 
-export type TPlatformIcon = 'Derived' | 'Financial' | 'Options' | 'CFDs';
+export type TPlatformIcon = 'Standard' | 'Financial' | 'Options' | 'CFDs';
 
 export type TAccount = {
     balance?: string | number;

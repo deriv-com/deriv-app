@@ -1510,7 +1510,7 @@ export default class ClientStore extends BaseStore {
             // If this fails, it means the landing company check failed
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
-                Analytics.identifyEvent();
+                Analytics.identifyEvent(this.user_id);
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',

@@ -23,7 +23,7 @@ import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
 import { MT5PasswordModalFooter, SuccessModalFooter } from './MT5PasswordModalFooters';
 
 type TProps = {
-    marketType: TMarketTypes.SortedMT5Accounts & 'standard';
+    marketType: TMarketTypes.SortedMT5Accounts;
     platform: TPlatforms.All;
 };
 
@@ -80,7 +80,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         // =================================
 
         const selectedJurisdiction = isDemo ? JURISDICTION.SVG : getModalState('selectedJurisdiction');
-        const accountType = marketType === MARKET_TYPE.STANDARD ? 'gaming' : marketType;
+        const accountType = marketType === 'synthetic' ? 'gaming' : marketType; // need to remove 'synthetic' once we start using 'standard' from BE
         const categoryAccountType = isDemo ? 'demo' : accountType;
 
         if (isMT5PasswordNotSet) {

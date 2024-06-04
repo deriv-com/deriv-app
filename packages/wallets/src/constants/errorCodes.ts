@@ -12,7 +12,3 @@ export enum CryptoWithdrawalErrorCodes {
     SuspendedCurrency = 'CryptoSuspendedCurrency',
     SuspendedWithdrawal = 'CryptoDisabledCurrencyWithdrawal',
 }
-
-export enum TransferErrorCodes {
-    TransferBetweenAccountsError = 'TransferBetweenAccountsError',
-}

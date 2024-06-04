@@ -84,6 +84,8 @@ describe('<DesktopFormWrapper />', () => {
 
         const close_button = screen.getByTestId('qs-desktop-close-button');
         userEvent.click(close_button);
+        userEvent.type(close_button, '{enter}');
+        userEvent.keyboard('{Enter}');
         expect(onClickClose).toBeCalled();
     });
 
@@ -101,6 +103,8 @@ describe('<DesktopFormWrapper />', () => {
 
         const strategy = screen.getByText('D’Alembert');
         userEvent.click(strategy);
+        const disabledTab = screen.getByText('Learn more');
+        userEvent.click(disabledTab);
         expect(mock_DBot_store?.quick_strategy.selected_strategy).toBe('D_ALEMBERT');
     });
 

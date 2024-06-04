@@ -89,14 +89,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         p2p_settings,
     } = useP2PSettings();
 
-    let TradersHubIcon;
-    if (has_wallet) {
-        TradersHubIcon = 'IcAppstoreTradersHubHomeUpdated';
-    } else if (is_dark_mode) {
-        TradersHubIcon = 'IcAppstoreHomeDark';
-    } else {
-        TradersHubIcon = 'IcAppstoreTradersHubHome';
-    }
+    const TradersHubIcon = is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHomeUpdated';
 
     React.useEffect(() => {
         if (isSuccess && !isSubscribed) {

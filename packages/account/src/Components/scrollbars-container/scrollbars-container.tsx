@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import React from 'react';
 import { ThemedScrollbars } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
@@ -22,10 +22,7 @@ export const ScrollbarsContainer = ({
             is_bypassed={!isDesktop}
             height={scroll_offset ? `calc(${height_unit} - ${scroll_offset})` : '100%'}
         >
-            <div
-                className={classNames('account__scrollbars_container', className)}
-                data-testid='dt_scrollbar_container_div'
-            >
+            <div className={clsx('account__scrollbars_container', className)} data-testid='dt_scrollbar_container_div'>
                 {children}
             </div>
         </ThemedScrollbars>

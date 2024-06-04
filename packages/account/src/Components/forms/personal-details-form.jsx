@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Field, useFormikContext } from 'formik';
 import {
     Autocomplete,
@@ -56,6 +56,15 @@ const PersonalDetailsForm = props => {
     const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched } = useFormikContext();
     const { isDesktop } = useDevice();
 
+    const handleToolTipStatus = React.useCallback(() => {
+        if (is_tax_residence_popover_open) {
+            setIsTaxResidencePopoverOpen(false);
+        }
+        if (is_tin_popover_open) {
+            setIsTinPopoverOpen(false);
+        }
+    }, [is_tax_residence_popover_open, is_tin_popover_open]);
+
     React.useEffect(() => {
         if (should_close_tooltip) {
             handleToolTipStatus();
@@ -91,15 +100,6 @@ const PersonalDetailsForm = props => {
             />
         );
 
-    const handleToolTipStatus = React.useCallback(() => {
-        if (is_tax_residence_popover_open) {
-            setIsTaxResidencePopoverOpen(false);
-        }
-        if (is_tin_popover_open) {
-            setIsTinPopoverOpen(false);
-        }
-    }, [is_tax_residence_popover_open, is_tin_popover_open]);
-
     const handleSalutationSelection = event => {
         if (event.target?.type === 'radio') {
             setFieldValue('salutation', event.target?.value);
@@ -118,7 +118,7 @@ const PersonalDetailsForm = props => {
     return (
         <React.Fragment>
             <div
-                className={classNames(class_name, {
+                className={clsx(class_name, {
                     'account-form__poi-confirm-example': is_rendered_for_idv,
                 })}
             >
@@ -439,7 +439,7 @@ const PersonalDetailsForm = props => {
                                     />
                                 )}
                                 {'employment_status' in values && (
-                                    <fieldset className={classNames('account-form__fieldset', 'emp-status')}>
+                                    <fieldset className={clsx('account-form__fieldset', 'emp-status')}>
                                         {isDesktop ? (
                                             <Dropdown
                                                 placeholder={

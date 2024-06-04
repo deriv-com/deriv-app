@@ -39,7 +39,7 @@ export const AdditionalKycInfoModal = observer(() => {
     const { isDesktop } = useDevice();
     const [error, setError] = React.useState<unknown>('');
 
-    const toggleModal = (e?: React.MouseEvent<HTMLElement, MouseEvent> | undefined) => {
+    const toggleModal = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         // if e.target is anchor tag, don't close modal for link click within modal
         const target = e?.target as HTMLElement;
         if (target.tagName === 'A') e?.stopPropagation();

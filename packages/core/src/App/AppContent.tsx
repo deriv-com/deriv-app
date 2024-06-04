@@ -7,10 +7,8 @@ import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
-
 import BinaryBotIFrame from 'Modules/BinaryBotIFrame';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
-
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import AppToastMessages from './Containers/app-toast-messages.jsx';
 import AppContents from './Containers/Layout/app-contents.jsx';
@@ -21,6 +19,7 @@ import Routes from './Containers/Routes/routes.jsx';
 import Devtools from './Devtools';
 import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 import initDatadog from '../Utils/Datadog';
+import { ThemeProvider } from '@deriv-com/quill-ui';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
@@ -91,7 +90,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     }, [has_wallet, store.common, store.ui]);
 
     return (
-        <>
+        <ThemeProvider theme={store.ui.is_dark_mode_on ? 'dark' : 'light'}>
             <LandscapeBlocker />
             <Header />
             <ErrorBoundary root_store={store}>
@@ -108,7 +107,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             <BinaryBotIFrame />
             <AppToastMessages />
             <Devtools />
-        </>
+        </ThemeProvider>
     );
 });
 

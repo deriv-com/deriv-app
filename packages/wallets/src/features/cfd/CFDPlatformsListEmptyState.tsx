@@ -23,7 +23,7 @@ const CFDPlatformsListEmptyState = () => {
             <WalletButton
                 color='primary-light'
                 onClick={() =>
-                    history.push('/wallets/cashier/transfer', {
+                    history.push('/wallet/account-transfer', {
                         shouldSelectDefaultWallet: true,
                     })
                 }

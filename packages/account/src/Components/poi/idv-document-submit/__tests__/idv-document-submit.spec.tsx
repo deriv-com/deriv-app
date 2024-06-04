@@ -85,7 +85,6 @@ describe('<IdvDocumentSubmit/>', () => {
             },
         },
         getChangeableFields: jest.fn(() => []),
-        is_from_external: false,
     };
 
     const renderComponent = () => {

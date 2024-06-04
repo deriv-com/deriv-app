@@ -10,7 +10,7 @@ const stepProps = {
     spotlightPadding: 0,
 };
 
-export const desktopStepTourGuide: Step[] = [
+export const desktopStepTourGuide = (allWalletsAreAdded: boolean): Step[] => [
     {
         content: <WalletText size='sm'>Manage your funds with Wallets.</WalletText>,
         placement: 'bottom-start',
@@ -28,11 +28,11 @@ export const desktopStepTourGuide: Step[] = [
         ...stepProps,
     },
     {
-        content: <WalletText size='sm'>Use the drop-down menu to switch between your Wallets.</WalletText>,
-        disableScrolling: false,
+        content: <WalletText size='sm'>Switch to a Wallet from the drop-down menu.</WalletText>,
+        disableScrolling: !!allWalletsAreAdded,
         placement: 'bottom',
         target: '.wallets-textfield__box',
-        title: <SpotLightHeader>Switch between Wallets</SpotLightHeader>,
+        title: <SpotLightHeader>Change your Wallet</SpotLightHeader>,
         ...stepProps,
         spotlightPadding: 8,
     },
@@ -45,10 +45,10 @@ export const desktopStepTourGuide: Step[] = [
         disableScrolling: false,
         placement: 'right',
         styles: { spotlight: { borderRadius: '1.6rem' } },
-        target: '.wallets-add-more__card',
+        target: allWalletsAreAdded ? 'null' : '.wallets-add-more__card',
         title: (
             <WalletText color='red' size='sm' weight='bold'>
-                Explore more Wallets
+                Add more currencies
             </WalletText>
         ),
         ...stepProps,
@@ -68,7 +68,7 @@ export const desktopStepTourGuide: Step[] = [
     },
 ];
 
-export const mobileStepTourGuide: Step[] = [
+export const mobileStepTourGuide = (allWalletsAreAdded: boolean): Step[] => [
     {
         content: <WalletText size='sm'>Manage your funds with Wallets.</WalletText>,
         placement: 'bottom',
@@ -79,6 +79,7 @@ export const mobileStepTourGuide: Step[] = [
     },
     {
         content: <WalletText size='sm'>Swipe left or right to switch between Wallets.</WalletText>,
+        disableScrolling: !!allWalletsAreAdded,
         placement: 'bottom',
         styles: { spotlight: { borderRadius: '0' } },
         target: '.wallets-carousel-content__wrapper',
@@ -87,6 +88,7 @@ export const mobileStepTourGuide: Step[] = [
     },
     {
         content: <WalletText size='sm'>Press the tab to switch between CFDs and Options accounts.</WalletText>,
+        disableScrolling: !!allWalletsAreAdded,
         placement: 'bottom',
         styles: { spotlight: { borderRadius: '0.8rem' } },
         target: '.wallets-tabs-list',
@@ -99,14 +101,16 @@ export const mobileStepTourGuide: Step[] = [
                 Want Wallets in other currencies too? Press <strong>Add</strong>.
             </WalletText>
         ),
+        disableScrolling: !!allWalletsAreAdded,
         placement: 'top',
         styles: { spotlight: { borderRadius: '1.6rem' } },
-        target: '.wallets-add-more__card',
+        target: allWalletsAreAdded ? 'null' : '.wallets-add-more__card',
         title: <SpotLightHeader>Add more currencies</SpotLightHeader>,
         ...stepProps,
     },
     {
         content: <WalletText size='sm'>Press here to repeat this tour.</WalletText>,
+        disableScrolling: !!allWalletsAreAdded,
         placement: 'bottom',
         styles: { spotlight: { borderRadius: '0 0 0.8rem 0.8rem' } },
         target: '.traders-hub-header__tradershub--onboarding--logo',

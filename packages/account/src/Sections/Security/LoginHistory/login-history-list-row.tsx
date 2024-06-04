@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { TLoginHistoryItems } from 'Types';
 import { Table } from '@deriv/components';
 import { Localize } from '@deriv/translations';
@@ -12,7 +12,7 @@ const LoginHistoryListRow = ({ id, date, action, browser, ip, status }: TLoginHi
     const { isDesktop } = useDevice();
 
     return (
-        <div className={classNames('login-history__list__wrapper')} key={id}>
+        <div className={clsx('login-history__list__wrapper')} key={id}>
             <Table.Row className='login-history__list__row login-history__list__row--with-margin'>
                 <Table.Cell className='login-history__list__row__cell'>
                     <ListCell title={date_title} text={date} />

@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { IDV_ERROR_STATUS, POIContext } from '@deriv/shared';
+import { IDV_ERROR_STATUS, POIContext, TPOIContext } from '@deriv/shared';
 import CountrySelector from '../poi-country-selector';
 import { APIProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
@@ -37,7 +37,7 @@ describe('<CountrySelector/>', () => {
 
     const store_config = mockStore({});
 
-    const poi_context_config = {
+    const poi_context_config: TPOIContext = {
         setSelectedCountry: jest.fn(),
         selected_country: {},
         setSubmissionService: jest.fn(),

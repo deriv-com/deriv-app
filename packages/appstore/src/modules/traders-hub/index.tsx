@@ -32,7 +32,6 @@ const TradersHub = observer(() => {
         is_mt5_allowed,
         has_active_real_account,
         website_status,
-        is_eu,
         has_any_real_account,
     } = client;
 

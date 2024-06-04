@@ -55,10 +55,26 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     }, [marketType, mt5Platform, platform, platformToAccountsListMapper.mt5]);
 
     const details = useMemo(() => {
-        return platform === mt5Platform
-            ? platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0]
-            : platformToAccountsListMapper.dxtrade?.[0];
-    }, [platform, mt5Platform, platformToAccountsListMapper.mt5, platformToAccountsListMapper.dxtrade, marketType]);
+        switch (platform) {
+            case mt5Platform:
+                return platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0];
+            case dxtradePlatform:
+                return platformToAccountsListMapper.dxtrade?.[0];
+            case ctraderPlatform:
+                return platformToAccountsListMapper.ctrader?.[0];
+            default:
+                return undefined;
+        }
+    }, [
+        platform,
+        mt5Platform,
+        platformToAccountsListMapper.mt5,
+        platformToAccountsListMapper.dxtrade,
+        platformToAccountsListMapper.ctrader,
+        dxtradePlatform,
+        ctraderPlatform,
+        marketType,
+    ]);
 
     const loginId = useMemo(() => {
         if (platform === mt5Platform) {

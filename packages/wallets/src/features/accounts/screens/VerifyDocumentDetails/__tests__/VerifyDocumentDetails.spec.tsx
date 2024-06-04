@@ -41,7 +41,7 @@ describe('IDVDocumentUploadDetails', () => {
 
         expect(screen.getByLabelText('First name*')).toHaveValue('John');
         expect(screen.getByLabelText('Last name*')).toHaveValue('Doe');
-        expect(screen.getByLabelText('Date of birth*')).toHaveValue('1970-01-01');
+        expect(screen.getByLabelText('Date of birth*')).toHaveValue('01-01-1970');
         expect(
             screen.getByLabelText(/I confirm that the name and date of birth above match my chosen identity document/)
         ).toBeInTheDocument();
@@ -76,7 +76,7 @@ describe('IDVDocumentUploadDetails', () => {
         expect(screen.getByLabelText('First name*')).toHaveValue('John');
         expect(screen.getByLabelText('Last name*')).toHaveValue('Doe');
         expect(screen.getByLabelText('Date of birth*')).toHaveValue(
-            moment().subtract(25, 'years').format('YYYY-MM-DD')
+            moment().subtract(25, 'years').format('DD-MM-YYYY')
         );
         expect(
             screen.getByLabelText(/I confirm that the name and date of birth above match my chosen identity document/)

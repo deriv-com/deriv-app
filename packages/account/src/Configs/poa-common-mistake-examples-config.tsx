@@ -8,6 +8,7 @@ import {
     DerivLightIcEnvelopeIcon,
     DerivLightIcOldIssuedDocumentMoreThan12Icon,
     DerivLightIcOldIssuedDocumentMoreThan6Icon,
+    DerivLightIcOldIssuedDocumentMoreThan12Icon,
 } from '@deriv/quill-icons';
 
 type TExampleImageConfig = {

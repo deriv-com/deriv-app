@@ -17,8 +17,11 @@
         position: absolute;
         display: inline-block;
         width: 28rem;
-        transform: translateY(4rem);
         z-index: 1;
+
+        @include desktop {
+            transform: translate(50%, 4rem);
+        }
 
         @include mobile {
             align-self: center;

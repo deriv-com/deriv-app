@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
 
@@ -9,7 +8,7 @@ type TListItem = {
     index?: number;
 };
 
-const ListItem = observer(({ text, index }: TListItem) => {
+const ListItem = ({ text, index }: TListItem) => {
     const { isDesktop } = useDevice();
 
     const text_size = isDesktop ? 'xs' : 'xxs';
@@ -25,6 +24,6 @@ const ListItem = observer(({ text, index }: TListItem) => {
             </Text>
         </div>
     );
-});
+};
 
 export default ListItem;

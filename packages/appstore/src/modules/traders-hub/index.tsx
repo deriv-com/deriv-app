@@ -2,7 +2,7 @@ import React from 'react';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { isDesktop, routes, checkServerMaintenance, startPerformanceEventTimer } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, useLocalize } from '@deriv/translations';
 import CFDsListing from 'Components/cfds-listing';
 import ModalManager from 'Components/modals/modal-manager';
 import MainTitleBar from 'Components/main-title-bar';
@@ -13,6 +13,7 @@ import './traders-hub.scss';
 import { useContentFlag, useGrowthbookFeatureFlag } from '@deriv/hooks';
 
 const TradersHub = observer(() => {
+    const { localize } = useLocalize();
     const { traders_hub, client, ui } = useStore();
     const {
         notification_messages_ui: Notifications,

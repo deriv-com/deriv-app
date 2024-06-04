@@ -50,7 +50,7 @@ const RegulatorSwitcher = observer(() => {
                                 is_selected={region === traders_hub.selected_region}
                                 onClick={() => traders_hub.selectRegion(region)}
                             >
-                                {region}
+                                <Localize i18n_default_text={region} />
                             </SwitcherItem>
                         );
                     })}

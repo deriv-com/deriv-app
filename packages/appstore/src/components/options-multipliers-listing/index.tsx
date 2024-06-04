@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Text, StaticUrl } from '@deriv/components';
 import { ContentFlag, setPerformanceValue } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, useLocalize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import TradingAppCard from 'Components/containers/trading-app-card';
@@ -12,6 +12,7 @@ import { getHasDivider } from 'Constants/utils';
 import { Analytics } from '@deriv-com/analytics';
 
 const OptionsAndMultipliersListing = observer(() => {
+    const { localize } = useLocalize();
     const { traders_hub, client, ui } = useStore();
     const {
         available_platforms,

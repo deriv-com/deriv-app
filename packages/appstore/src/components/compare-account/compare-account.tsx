@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';

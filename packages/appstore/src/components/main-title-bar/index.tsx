@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, DesktopWrapper, MobileWrapper, Tabs, Icon, Loading } from '@deriv/components';
 import { ContentFlag, makeLazyLoader, moduleLoader } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
+import { Localize, useLocalize } from '@deriv/translations';
 import { useFeatureFlags, useWalletMigration } from '@deriv/hooks';
 import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
 import BookBanner from 'Components/banners/book-banner';
@@ -25,6 +25,7 @@ const MainTitleBar = () => {
     const { state: wallet_migration_state } = useWalletMigration();
     const { selected_region, handleTabItemClick, toggleRegulatorsCompareModal, content_flag } = traders_hub;
     const { is_next_wallet_enabled } = useFeatureFlags();
+    const { localize } = useLocalize();
 
     const is_low_risk_cr_real_account =
         content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
@@ -80,8 +81,8 @@ const MainTitleBar = () => {
                                         is_scrollable
                                         is_overflow_hidden
                                     >
-                                        <div label={<Localize i18n_default_text='Non-EU' />} />
-                                        <div label={<Localize i18n_default_text='EU' />} />
+                                        <div label={localize('Non-EU')} />
+                                        <div label={localize('EU')} />
                                     </Tabs>
                                 </>
                             ) : (

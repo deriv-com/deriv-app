@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import './cfds-title.scss';
 
 const CFDsTitle = observer(() => {
@@ -12,7 +12,7 @@ const CFDsTitle = observer(() => {
     return (
         <div className='cfds-title'>
             <Text size='sm' weight='bold' color='prominent'>
-                {localize('CFDs')}
+                <Localize i18n_default_text='CFDs' />
             </Text>
         </div>
     );

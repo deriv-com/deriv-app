@@ -4,7 +4,8 @@ const path = require('path');
 // read and use parameters from command line
 const args = process.argv.slice(2); // Skip the first two elements
 let format = args.find(arg => arg.startsWith('--format='))?.split('=')[1] || 'html';
-let threshold = +(args.find(arg => arg.startsWith('--threshold='))?.split('=')[1] || 5);
+let orangeThreshold = +(args.find(arg => arg.startsWith('--orangeThreshold='))?.split('=')[1] || 0.5);
+let redThreshold = +(args.find(arg => arg.startsWith('--redThreshold='))?.split('=')[1] || 5);
 
 // main function execution
 main();
@@ -20,10 +21,10 @@ function main() {
         console.log(formattedOutput);
     } else if (format === 'console') {
         let formattedOutput = formatToConsole(sizes);
-        console.table(formattedOutput, ['oldSize', 'newSize', 'diff', 'percentage']);
+        console.table(formattedOutput, ['oldSize', 'newSize', 'diff', 'percentage', 'alert']);
     } else if (format === 'boolean') {
-        const aboveThreshold = Object.values(sizes).some(pkg => pkg.percentage > threshold);
-        if (aboveThreshold) {
+        const aboveRedThreshold = Object.values(sizes).some(pkg => pkg.percentage > redThreshold);
+        if (aboveRedThreshold) {
             console.log('true');
         } else {
             console.log('false');
@@ -72,7 +73,8 @@ function formatToTable(sizes) {
     let tableRows = '';
     for (const [pkg, { oldSize, newSize, diff, percentage }] of Object.entries(sizes)) {
         const formattedPercentage = formatPercentageWithSign(percentage);
-        const lightSign = percentage <= 0 ? GREEN_SIGN : percentage < threshold ? YELLOW_SIGN : RED_SIGN;
+        const lightSign =
+            percentage > redThreshold ? RED_SIGN : percentage > orangeThreshold ? YELLOW_SIGN : GREEN_SIGN;
 
         tableRows += `
         <tr>
@@ -108,7 +110,7 @@ function formatToConsole(sizes) {
         pkg.oldSize = formatBytes(pkg.oldSize);
         pkg.newSize = formatBytes(pkg.newSize);
         pkg.diff = formatBytes(pkg.diff, true);
-        pkg.alert = pkg.percentage > threshold ? 'FAIL' : pkg.percentage < 0 ? 'OK' : 'WARN';
+        pkg.alert = pkg.percentage > redThreshold ? 'FAIL' : pkg.percentage > orangeThreshold ? 'WARN' : 'OK';
         pkg.percentage = formatPercentageWithSign(pkg.percentage);
     });
     return sizes;

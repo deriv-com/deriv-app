@@ -153,7 +153,6 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
                                                 />
                                             </div>
                                         )}
-                                        ;
                                     </React.Fragment>
                                 )}
                             </Field>

@@ -67,6 +67,10 @@ $HEIGHT: calc(100vh - 34em);
                 align-items: center;
             }
         }
+        &-strike {
+            // added for showing in firefox
+            fill: var(--fill-color3);
+        }
     }
     &__item {
         display: flex;

@@ -67,7 +67,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const is_trading_hub_category =
         route === routes.traders_hub || route.startsWith(routes.cashier) || route.startsWith(routes.account);
 
-    const should_hide_platform_switcher =
+    const is_wallet_route =
         route === routes.traders_hub ||
         route.startsWith(routes.wallets) ||
         route.startsWith(routes.wallets_compare_accounts);
@@ -315,7 +315,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 <Div100vhContainer height_offset='40px'>
                     <div className='header__menu-mobile-body-wrapper'>
                         <React.Fragment>
-                            {!should_hide_platform_switcher && (
+                            {!is_wallet_route && (
                                 <MobileDrawer.SubHeader
                                     className={classNames({
                                         'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
@@ -335,7 +335,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 </MobileDrawer.SubHeader>
                             )}
 
-                            <MobileDrawer.Body className={should_hide_platform_switcher ? 'no-padding' : ''}>
+                            <MobileDrawer.Body className={is_wallet_route ? 'no-padding' : ''}>
                                 <div className='header__menu-mobile-platform-switcher' id='mobile_platform_switcher' />
                                 <MobileDrawer.Item>
                                     <MenuLink
@@ -420,14 +420,16 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                 />
                                             </MobileDrawer.Item>
                                         )}
-                                        <MobileDrawer.Item className='header__menu-mobile-theme--trader-hub'>
-                                            <MenuLink
-                                                link_to={getStaticUrl('/')}
-                                                icon='IcDerivOutline'
-                                                text={localize('Go to Deriv.com')}
-                                                onClickLink={toggleDrawer}
-                                            />
-                                        </MobileDrawer.Item>
+                                        {!is_wallet_route && (
+                                            <MobileDrawer.Item className='header__menu-mobile-theme--trader-hub'>
+                                                <MenuLink
+                                                    link_to={getStaticUrl('/')}
+                                                    icon='IcDerivOutline'
+                                                    text={localize('Go to Deriv.com')}
+                                                    onClickLink={toggleDrawer}
+                                                />
+                                            </MobileDrawer.Item>
+                                        )}
                                     </React.Fragment>
                                 )}
                                 {liveChat.isReady && cs_chat_whatsapp && (

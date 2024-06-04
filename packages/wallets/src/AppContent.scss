@@ -5,7 +5,7 @@
     gap: 2.4rem;
     width: 100%;
     align-self: stretch;
-    background: var(--system-light-7-secondary-background, #f2f3f4);
+    background-color: var(--general-main-1, #ffffff);
     min-height: calc(100vh - 8.4rem); // 100vh - (4.8rem header + 3.6rem footer)
 
     @include mobile {
@@ -14,8 +14,14 @@
         min-height: calc(var(--wallets-vh, 1vh) * 100 - 8.4rem); // 100vh - (4.8rem header + 3.6rem footer)
     }
 
-    & .wallets-modal-show-header-root {
+    .wallets-modal-show-header-root {
         position: absolute;
+        inset: 0;
         z-index: 10;
+        display: none;
+
+        &:not(:empty) {
+            display: flex;
+        }
     }
 }

@@ -30,12 +30,12 @@ const CFDPlatformsList: React.FC = () => {
                                         target='_blank'
                                     />,
                                 ]}
-                                defaults='Trade bigger positions with less capital. <0>Learn more</0>'
+                                defaults='Trade bigger positions with less capital across diverse financial and derived instruments. <0>Learn more</0>'
                             />
                         </WalletText>
                         <WalletButton
                             onClick={() => {
-                                history.push('/wallets/compare-accounts');
+                                history.push('/compare-accounts');
                             }}
                             size='sm'
                             textSize='sm'
@@ -52,7 +52,7 @@ const CFDPlatformsList: React.FC = () => {
                             </WalletText>
                             <WalletButton
                                 onClick={() => {
-                                    history.push('/wallets/compare-accounts');
+                                    history.push('/compare-accounts');
                                 }}
                                 size='sm'
                                 variant='ghost'
@@ -63,7 +63,7 @@ const CFDPlatformsList: React.FC = () => {
                         <WalletText size='md'>
                             <Trans
                                 components={[<WalletLink key={0} staticUrl='/trade-types/cfds/' />]}
-                                defaults='Trade bigger positions with less capital. <0>Learn more</0>'
+                                defaults='Trade bigger positions with less capital across diverse financial and derived instruments. <0>Learn more</0>'
                             />
                         </WalletText>
                     </div>

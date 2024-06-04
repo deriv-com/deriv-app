@@ -26,7 +26,7 @@
     "author": "Deriv",
     "license": "Apache-2.0",
     "dependencies": {
-        "@deriv-com/analytics": "1.4.13",
+        "@deriv-com/analytics": "1.5.8",
         "@deriv/account": "^1.0.0",
         "@deriv/cashier": "^1.0.0",
         "@deriv/cfd": "^1.0.0",
@@ -35,6 +35,7 @@
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",
         "@deriv/hooks": "^1.0.0",
+        "@deriv/wallets": "^1.0.0",
         "classnames": "^2.2.6",
         "mobx": "^6.6.1",
         "mobx-react-lite": "^3.4.0",
@@ -47,7 +48,7 @@
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",
         "@babel/preset-react": "^7.16.7",
-        "@deriv/api-types": "^1.0.172",
+        "@deriv/api-types": "1.0.172",
         "@deriv/publisher": "^0.0.1-beta4",
         "@storybook/addon-docs": "^6.5.10",
         "@storybook/addon-essentials": "^6.5.10",

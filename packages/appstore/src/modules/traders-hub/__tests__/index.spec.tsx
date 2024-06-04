@@ -7,7 +7,6 @@ jest.mock('Components/modals/modal-manager', () => jest.fn(() => 'mockedModalMan
 jest.mock('Components/main-title-bar', () => jest.fn(() => 'mockedMainTitleBar'));
 jest.mock('Components/cfds-listing', () => jest.fn(() => 'mockedCFDsListing'));
 jest.mock('Components/options-multipliers-listing', () => jest.fn(() => 'mocked<OptionsAndMultipliersListing>'));
-jest.mock('../../tour-guide/tour-guide', () => jest.fn(() => 'mocked<TourGuide>'));
 
 jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({

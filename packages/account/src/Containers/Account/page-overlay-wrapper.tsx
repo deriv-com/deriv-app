@@ -13,7 +13,7 @@ type RouteItems = React.ComponentProps<typeof VerticalTab>['list'];
 
 type PageOverlayWrapperProps = {
     routes: Array<TRoute>;
-    subroutes: RouteItems;
+    subroutes: TRoute[];
 };
 
 /**
@@ -24,7 +24,7 @@ type PageOverlayWrapperProps = {
 const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperProps) => {
     const history = useHistory();
     const { client, common } = useStore();
-    const { has_wallet, logout } = client;
+    const { logout } = client;
     const { is_from_derivgo } = common;
     const { isDesktop } = useDevice();
 
@@ -38,7 +38,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
 
     const list_groups = routes.map(route_group => ({
         icon: route_group.icon,
-        label: route_group?.getTitle(),
+        label: route_group?.getTitle?.(),
         subitems: route_group?.subroutes?.length ? route_group.subroutes.map(sub => subroutes.indexOf(sub)) : [],
     }));
 
@@ -47,10 +47,11 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
             passkeysMenuCloseActionEventTrack();
         }
 
-        has_wallet ? history.push(shared_routes.wallets) : history.push(shared_routes.traders_hub);
-    }, [history, has_wallet]);
+        history.push(shared_routes.traders_hub);
+    }, [history]);
 
-    const selected_route = getSelectedRoute({ routes: subroutes as Array<TRoute>, pathname: location.pathname });
+    //@ts-expect-error as component type conflicts with VerticalTab type
+    const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });
 
     const onClickLogout = () => {
         history.push(shared_routes.index);
@@ -60,7 +61,11 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     if (!isDesktop && selected_route) {
         const RouteComponent = selected_route.component as React.ElementType<{ component_icon: string | undefined }>;
         return (
-            <PageOverlay header={selected_route?.getTitle()} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
+            <PageOverlay
+                header={selected_route?.getTitle?.()}
+                onClickClose={onClickClose}
+                is_from_app={is_from_derivgo}
+            >
                 <RouteComponent component_icon={selected_route.icon_component} />
             </PageOverlay>
         );
@@ -76,7 +81,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
                 current_path={location.pathname}
                 is_routed
                 is_full_width
-                list={subroutes}
+                list={subroutes as RouteItems}
                 list_groups={list_groups}
                 extra_content={<TradingHubLogout handleOnLogout={onClickLogout} />}
                 is_sidebar_enabled={isDesktop}

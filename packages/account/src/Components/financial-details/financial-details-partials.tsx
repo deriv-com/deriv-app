@@ -167,10 +167,10 @@ const FinancialInformation = ({ employment_status }: TFinancialInformationProps)
             />
             {!shouldHideOccupationField(employment_status) && (
                 <FinancialDetailsOccupationDropdownField
-                    dropdown_list={getFormattedOccupationList(employment_status)}
+                    dropdown_list={getFormattedOccupationList(employment_status as TEmploymentStatus)}
                     field_key='occupation'
                     label={localize('Occupation')}
-                    employment_status={employment_status}
+                    employment_status={employment_status as TEmploymentStatus}
                 />
             )}
             <FinancialDetailsDropdownField

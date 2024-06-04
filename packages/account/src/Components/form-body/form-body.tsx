@@ -1,8 +1,8 @@
 import React from 'react';
 import { ScrollbarsContainer } from '../scrollbars-container/scrollbars-container';
 import { Div100vhContainer } from '@deriv/components';
-import classNames from 'classnames';
 import { useDevice } from '@deriv-com/ui';
+import clsx from 'clsx';
 
 type TFormBody = {
     scroll_offset?: string;
@@ -16,7 +16,7 @@ export const FormBody = ({ children, scroll_offset, className, isFullHeight }: R
         <React.Fragment>
             {isDesktop ? (
                 <ScrollbarsContainer
-                    className={classNames('account__scrollbars_container--grid-layout', className)}
+                    className={clsx('account__scrollbars_container--grid-layout', className)}
                     scroll_offset={scroll_offset}
                     isFullHeight={isFullHeight}
                 >
@@ -24,7 +24,7 @@ export const FormBody = ({ children, scroll_offset, className, isFullHeight }: R
                 </ScrollbarsContainer>
             ) : (
                 <Div100vhContainer
-                    className={classNames('account__scrollbars_container--grid-layout', className)}
+                    className={clsx('account__scrollbars_container--grid-layout', className)}
                     height_offset={scroll_offset || '200px'}
                 >
                     {children}

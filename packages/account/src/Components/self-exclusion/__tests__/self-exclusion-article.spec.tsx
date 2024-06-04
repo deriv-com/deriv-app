@@ -1,7 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import SelfExclusionArticle from '../self-exclusion-article';
-import { selfExclusionArticleItems } from 'Components/self-exclusion/self-exclusion-article-content';
 import SelfExclusionContext from '../self-exclusion-context';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
@@ -13,7 +12,6 @@ jest.mock('@deriv-com/ui', () => ({
 
 jest.mock('Components/self-exclusion/self-exclusion-article-content', () => ({
     ...jest.requireActual('Components/self-exclusion/self-exclusion-article-content'),
-    selfExclusionArticleItems: jest.fn(),
 }));
 
 describe('<SelfExclusionArticle />', () => {
@@ -46,7 +44,6 @@ describe('<SelfExclusionArticle />', () => {
 
     it('should render SelfExclusionArticle desktop component with selfExclusionArticleItems', () => {
         (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: true });
-        (selfExclusionArticleItems as jest.Mock).mockImplementation(() => ['Self Exclusion Article Items']);
 
         render(
             <StoreProvider store={store}>

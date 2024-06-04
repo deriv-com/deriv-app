@@ -166,8 +166,6 @@ describe('<AccountLimits/>', () => {
                 ...mock.client,
                 account_limits: {
                     api_initial_load_error: 'error in fetching data from API',
-                    account_balance: '',
-                    payout: '',
                     market_specific: {
                         commodities: [],
                         cryptocurrency: [],
@@ -175,9 +173,6 @@ describe('<AccountLimits/>', () => {
                         indices: [],
                         synthetic_index: [],
                     },
-                    num_of_days_limit: '',
-                    remainder: '',
-                    withdrawal_since_inception_monetary: '',
                 },
                 is_switching: false,
                 is_virtual: false,

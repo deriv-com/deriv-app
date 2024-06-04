@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Div100vhContainer, Text, Button, ThemedScrollbars, Icon } from '@deriv/components';
 import { getOnfidoError } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
@@ -25,14 +25,14 @@ const IconMessageList = ({ className, icon, message, message_list = [], onContin
                 height_offset='110px'
             >
                 <div
-                    className={classNames('account-management__message-content', {
+                    className={clsx('account-management__message-content', {
                         [`${className}__message-content`]: className,
                     })}
                     data-testid='dt_icon_message_list'
                 >
                     {icon && (
                         <div
-                            className={classNames('account-management__message-icon', {
+                            className={clsx('account-management__message-icon', {
                                 [`${className}__message-icon`]: className,
                             })}
                         >
@@ -42,7 +42,7 @@ const IconMessageList = ({ className, icon, message, message_list = [], onContin
                     <Text
                         as='div'
                         weight='bold'
-                        className={classNames('account-management__message', {
+                        className={clsx('account-management__message', {
                             [`${className}__message`]: className,
                         })}
                         size={isDesktop ? 's' : 'xs'}

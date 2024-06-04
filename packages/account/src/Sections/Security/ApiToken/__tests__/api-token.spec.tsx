@@ -129,7 +129,7 @@ describe('<ApiToken/>', () => {
                 display_name: 'First test token',
                 last_used: '',
                 scopes: ['Read', 'Trade'],
-                token: 'FirstTokenID',
+                token: 'GBjsG2kM1uxtJtk',
                 valid_for_ip: '',
             },
             {
@@ -150,16 +150,38 @@ describe('<ApiToken/>', () => {
 
         renderComponent({});
 
+        expect(await screen.findByText('First test token')).toBeInTheDocument();
+        expect(await screen.findByText('Last used')).toBeInTheDocument();
         expect(await screen.findByText('Name')).toBeInTheDocument();
-        // expect(await screen.findByText('Last Used')).toBeInTheDocument();
         expect(await screen.findByText('Token')).toBeInTheDocument();
         expect(await screen.findByText('Scopes')).toBeInTheDocument();
-        expect(await screen.findByText('First test token')).toBeInTheDocument();
         expect(await screen.findByText('Second test token')).toBeInTheDocument();
-        expect(screen.queryByText('Action')).not.toBeInTheDocument();
-        expect(screen.queryByText('SecondTokenID')).not.toBeInTheDocument();
-        const never_used = await screen.findAllByText('Never');
-        expect(never_used).toHaveLength(2);
+
+        const delete_btns_1 = screen.getAllByTestId('dt_token_delete_icon');
+        // expect(delete_btns_1).toHaveLength(2);
+
+        userEvent.click(delete_btns_1[0]);
+        const no_btn_1 = screen.getByRole('button', { name: /cancel/i });
+        expect(no_btn_1).toBeInTheDocument();
+
+        userEvent.click(no_btn_1);
+        await waitFor(() => {
+            expect(no_btn_1).not.toBeInTheDocument();
+        });
+
+        const delete_btns_2 = await screen.findAllByTestId('dt_token_delete_icon');
+        expect(delete_btns_2).toHaveLength(2);
+
+        userEvent.click(delete_btns_2[0]);
+        const yes_btn_1 = screen.getByRole('button', { name: /yes, delete/i });
+        expect(yes_btn_1).toBeInTheDocument();
+
+        userEvent.click(yes_btn_1);
+        const deleteToken = WS.authorized.apiToken;
+        expect(deleteToken).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(yes_btn_1).not.toBeInTheDocument();
+        });
     });
 
     it('should not render ApiToken component if data is still loading', async () => {

@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import classNames from 'classnames';
+import React from 'react';
+import clsx from 'clsx';
 
 export type TRadioButtonGroup = {
     className: string;
     is_fiat?: boolean;
     is_title_enabled?: boolean;
     item_count: number;
-    label: string;
-    description: React.ReactNode;
+    label?: string;
+    description?: React.ReactNode;
 };
 
 /**
@@ -34,7 +34,7 @@ const RadioButtonGroup = ({
         <div className={className}>
             {is_title_enabled && (
                 <h2
-                    className={classNames(`${className}--is-header`, {
+                    className={clsx(`${className}--is-header`, {
                         'currency-selector__is-crypto': !is_fiat,
                     })}
                 >
@@ -43,7 +43,7 @@ const RadioButtonGroup = ({
             )}
             {is_fiat && <div className='currency-selector__description'>{description}</div>}
             <div
-                className={classNames('currency-list__items', {
+                className={clsx('currency-list__items', {
                     'currency-list__items__center': item_count < 4,
                     'currency-list__items__is-fiat': is_fiat,
                     'currency-list__items__is-crypto': !is_fiat,

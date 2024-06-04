@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Field } from 'formik';
 import { Dropdown, Text, SelectNative } from '@deriv/components';
 import { localize } from '@deriv/translations';
@@ -73,7 +73,7 @@ const TradingAssessmentDropdown = ({
                                 {isDesktop ? (
                                     <Dropdown
                                         {...field}
-                                        classNameDisplay={classNames({
+                                        classNameDisplay={clsx({
                                             'trading-frequency--field': should_extend_trading_frequency_field,
                                         })}
                                         is_align_text_left

@@ -35,7 +35,7 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, vari
                             {value}
                         </WalletText>
                         {variant === 'clipboard' && (
-                            <WalletClipboard popoverAlignment='right' successMessage='' textCopy={value} />
+                            <WalletClipboard popoverAlignment='left' successMessage='' textCopy={value} />
                         )}
                         {variant === 'password' && (
                             <Tooltip alignment='left' isVisible={isHovered && isDesktop} message='Change password'>

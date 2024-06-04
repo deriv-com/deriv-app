@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Div100vhContainer, Text } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
 
@@ -25,20 +25,20 @@ const IconMessageContent = ({
 
     return (
         <Div100vhContainer
-            className={classNames('account-management__message-wrapper', {
+            className={clsx('account-management__message-wrapper', {
                 'account-management__message-wrapper-full-width': full_width,
             })}
             is_disabled={isDesktop || is_disabled_for_mobile}
             height_offset='110px'
         >
             <div
-                className={classNames('account-management__message-content', {
+                className={clsx('account-management__message-content', {
                     [`${className}__message-content`]: className,
                 })}
             >
                 {icon && (
                     <div
-                        className={classNames('account-management__message-icon', {
+                        className={clsx('account-management__message-icon', {
                             [`${className}__message-icon`]: className,
                         })}
                     >
@@ -51,7 +51,7 @@ const IconMessageContent = ({
                     weight='bold'
                     size='s'
                     align='center'
-                    className={classNames('account-management__message', {
+                    className={clsx('account-management__message', {
                         [`${className}__message`]: className,
                     })}
                 >
@@ -60,7 +60,7 @@ const IconMessageContent = ({
                 {text && (
                     <div className='account-management__text-container'>
                         <Text
-                            className={classNames({
+                            className={clsx({
                                 [`${className}__text`]: className,
                             })}
                             as='p'

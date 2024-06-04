@@ -1,5 +1,4 @@
 import { Button, Loading, Modal, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
@@ -11,18 +10,22 @@ import FormFieldInfo from '../form-field-info';
 import { FormInputField } from '../forms/form-fields';
 import FormSelectField from '../forms/form-select-field';
 import { TListItem, getFormConfig } from './form-config';
+import { useDevice } from '@deriv-com/ui';
 
-const FormTitle = () => (
-    <Text
-        as='p'
-        size='s'
-        line_height='xxl'
-        align={isMobile() ? 'left' : 'center'}
-        className='additional-kyc-info-modal__form--header'
-    >
-        <Localize i18n_default_text='Please take a moment to update your information now.' />
-    </Text>
-);
+const FormTitle = () => {
+    const { isDesktop } = useDevice();
+    return (
+        <Text
+            as='p'
+            size='s'
+            line_height='xxl'
+            align={!isDesktop ? 'left' : 'center'}
+            className='additional-kyc-info-modal__form--header'
+        >
+            <Localize i18n_default_text='Please take a moment to update your information now.' />
+        </Text>
+    );
+};
 
 type TAdditionalKycInfoFormProps = {
     setError?: React.Dispatch<React.SetStateAction<unknown>>;

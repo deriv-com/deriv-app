@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Formik, Form, Field, FormikValues, FormikErrors, FieldProps } from 'formik';
 import { Timeline, Input, Button, ThemedScrollbars, Loading } from '@deriv/components';
 import InlineNoteWithIcon from '../inline-note-with-icon';
-import { isDesktop, isMobile, getPropertyValue, useIsMounted, WS } from '@deriv/shared';
+import { getPropertyValue, useIsMounted, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import ApiTokenArticle from './api-token-article';
@@ -12,6 +12,7 @@ import ApiTokenTable from './api-token-table';
 import ApiTokenContext from './api-token-context';
 import { TToken } from 'Types';
 import { observer, useStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 
 const MIN_TOKEN = 2;
 const MAX_TOKEN = 32;
@@ -37,6 +38,7 @@ export type TApiToken = {
 
 const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown }: TApiToken) => {
     const { client } = useStore();
+    const { isDesktop } = useDevice();
     const { is_switching } = client;
     const isMounted = useIsMounted();
     const prev_is_switching = React.useRef(is_switching);
@@ -200,8 +202,8 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
                     })}
                 >
                     <div className='da-api-token__wrapper'>
-                        <ThemedScrollbars className='da-api-token__scrollbars' is_bypassed={isMobile()}>
-                            {!is_app_settings && isMobile() && <ApiTokenArticle />}
+                        <ThemedScrollbars className='da-api-token__scrollbars' is_bypassed={!isDesktop}>
+                            {!is_app_settings && !isDesktop && <ApiTokenArticle />}
                             <Formik initialValues={initial_form} onSubmit={handleSubmit} validate={validateFields}>
                                 {({
                                     values,
@@ -338,7 +340,7 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
                                 )}
                             </Formik>
                         </ThemedScrollbars>
-                        {!is_app_settings && isDesktop() && <ApiTokenArticle />}
+                        {!is_app_settings && isDesktop && <ApiTokenArticle />}
                     </div>
                 </section>
             </ApiTokenContext.Provider>

@@ -112,7 +112,6 @@ const TradingAssessmentDropdown = ({
                                         />
                                     </div>
                                 )}
-                                ;
                             </React.Fragment>
                         );
                     }}

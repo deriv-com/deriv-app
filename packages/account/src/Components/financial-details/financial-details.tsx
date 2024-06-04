@@ -65,9 +65,9 @@ const FinancialDetails = observer((props: TFinancialDetails) => {
         return errors;
     };
 
-    const fields_to_scroll_top = !isDesktop
-        ? ['income_source', 'account_turnover', 'estimated_worth']
-        : ['income_source'];
+    const fields_to_scroll_top = isDesktop
+        ? ['income_source']
+        : ['income_source', 'account_turnover', 'estimated_worth'];
     const fields_to_scroll_bottom = isDesktop ? ['account_turnover', 'estimated_worth'] : [];
 
     return (

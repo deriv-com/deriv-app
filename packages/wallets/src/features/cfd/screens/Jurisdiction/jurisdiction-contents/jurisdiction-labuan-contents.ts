@@ -4,7 +4,7 @@ export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
     contents: {
         financial: [
             {
-                description: 'Forex and Cryptocurrencies',
+                description: 'Forex (standard/exotic) and cryptocurrencies',
                 key: 'assets',
                 title: 'Assets',
                 titleIndicators: {
@@ -63,7 +63,7 @@ export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
         ],
         synthetic: [
             {
-                description: 'Forex and Cryptocurrencies',
+                description: 'Forex (standard/exotic) and cryptocurrencies',
                 key: 'assets',
                 title: 'Assets',
             },

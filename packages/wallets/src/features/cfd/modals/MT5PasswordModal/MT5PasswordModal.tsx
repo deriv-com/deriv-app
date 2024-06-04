@@ -23,7 +23,7 @@ import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
 import { MT5PasswordModalFooter, SuccessModalFooter } from './MT5PasswordModalFooters';
 
 type TProps = {
-    marketType: TMarketTypes.SortedMT5Accounts;
+    marketType: TMarketTypes.SortedMT5Accounts & 'standard';
     platform: TPlatforms.All;
 };
 
@@ -80,7 +80,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         // =================================
 
         const selectedJurisdiction = isDemo ? JURISDICTION.SVG : getModalState('selectedJurisdiction');
-        const accountType = marketType === MARKET_TYPE.SYNTHETIC ? 'gaming' : marketType;
+        const accountType = marketType === MARKET_TYPE.STANDARD ? 'gaming' : marketType;
         const categoryAccountType = isDemo ? 'demo' : accountType;
 
         if (isMT5PasswordNotSet) {
@@ -93,8 +93,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         createMT5AccountMutate({
             payload: {
                 account_type: categoryAccountType,
-                address: settingsData?.address_line_1 ?? '',
-                city: settingsData?.address_city ?? '',
                 company: selectedJurisdiction,
                 country: settingsData?.country_code ?? '',
                 email: settingsData?.email ?? '',
@@ -115,9 +113,6 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                           })),
                 ...(marketType === MARKET_TYPE.ALL && { sub_account_category: 'swap_free' }),
                 name: settingsData?.first_name ?? '',
-                phone: settingsData?.phone ?? '',
-                state: settingsData?.address_state ?? '',
-                zipCode: settingsData?.address_postcode ?? '',
             },
         });
     }, [
@@ -129,14 +124,9 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         marketType,
         mt5Platform,
         password,
-        settingsData?.address_city,
-        settingsData?.address_line_1,
-        settingsData?.address_postcode,
-        settingsData?.address_state,
         settingsData?.country_code,
         settingsData?.email,
         settingsData?.first_name,
-        settingsData?.phone,
         tradingPasswordChangeMutateAsync,
     ]);
 

@@ -41,7 +41,7 @@ const sortTradingAccounts = (a: TAccount, b: TAccount) => {
         derivez: 4,
         dxtrade: 3,
         mt5: 1,
-        standard: 5,
+        synthetic: 5,
     };
 
     const marketTypeOrder = {
@@ -81,7 +81,7 @@ const sortTradingAccounts = (a: TAccount, b: TAccount) => {
             );
         }
 
-        // For 'synthetic' and 'financial' market types, compare landing company name
+        // For 'standard' and 'financial' market types, compare landing company name
         if (
             marketTypeA === MT5MarketTypeDetails.synthetic.name ||
             marketTypeA === MT5MarketTypeDetails.financial.name

@@ -4,7 +4,7 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
     contents: {
         all: [
             {
-                description: 'Forex, stocks, stock indices, commodities, cryptocurrencies, ETFs and synthetic indices',
+                description: 'Forex (standard/micro), stocks, stock indices, commodities, cryptocurrencies and ETFs',
                 key: 'assets',
                 title: 'Assets',
                 titleIndicators: {
@@ -38,7 +38,7 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
         ],
         financial: [
             {
-                description: 'Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies',
+                description: 'Forex (standard/micro), stocks, stock indices, commodities, cryptocurrencies and ETFs',
                 key: 'assets',
                 title: 'Assets',
                 titleIndicators: {
@@ -88,7 +88,8 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
         ],
         synthetic: [
             {
-                description: 'Synthetics, Baskets and Standard FX',
+                description:
+                    'Forex (standard), stock indices, commodities, cryptocurrencies, synthetic indices, basket indices and derived FX',
                 key: 'assets',
                 title: 'Assets',
                 titleIndicators: {

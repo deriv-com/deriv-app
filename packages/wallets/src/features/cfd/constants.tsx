@@ -128,7 +128,7 @@ export const CFD_PLATFORMS = {
 export const MARKET_TYPE = {
     ALL: 'all',
     FINANCIAL: 'financial',
-    SYNTHETIC: 'synthetic',
+    STANDARD: 'standard',
 } as const;
 
 export const JURISDICTION = {

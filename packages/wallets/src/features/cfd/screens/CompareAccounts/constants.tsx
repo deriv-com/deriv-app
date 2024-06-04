@@ -10,12 +10,13 @@ import {
 import { CFD_PLATFORMS, MARKET_TYPE } from '../../constants';
 
 export const ACCOUNT_ICONS = {
-    [MARKET_TYPE.SYNTHETIC]: <AccountsDmt5StandardIcon iconSize='lg' />,
+    [MARKET_TYPE.STANDARD]: <AccountsDmt5StandardIcon iconSize='lg' />,
+    default: <AccountsDmt5CfdsIcon iconSize='lg' />,
+    synthetic: <AccountsDmt5StandardIcon iconSize='lg' />,
     [MARKET_TYPE.FINANCIAL]: <AccountsDmt5FinancialIcon iconSize='lg' />,
     [MARKET_TYPE.ALL]: <AccountsDmt5SwfIcon iconSize='lg' />,
     [CFD_PLATFORMS.DXTRADE]: <AccountsDerivXIcon iconSize='lg' />,
     [CFD_PLATFORMS.CTRADER]: <PartnersProductDerivCtraderBrandLightLogoHorizontalIcon height={48} width={48} />,
-    default: <AccountsDmt5CfdsIcon iconSize='lg' />,
 } as const;
 
 export const MARKET_TYPE_SHORTCODE = {

@@ -24,8 +24,11 @@ const getHighlightedIconLabel = (
     const forexLabel = (() => {
         if (isEuRegion) {
             return 'Forex';
-        } else if (marketTypeShortCode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN) {
-            return 'Forex: standard/exotic';
+        } else if (
+            marketTypeShortCode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN ||
+            marketTypeShortCode === MARKET_TYPE.STANDARD
+        ) {
+            return 'Forex: standard';
         } else if (
             (platform === CFD_PLATFORMS.MT5 && marketTypeShortCode === MARKET_TYPE_SHORTCODE.ALL_SVG) ||
             platform === CFD_PLATFORMS.CTRADER
@@ -36,7 +39,7 @@ const getHighlightedIconLabel = (
     })();
 
     switch (marketType) {
-        case MARKET_TYPE.SYNTHETIC:
+        case 'synthetic':
             return [
                 { highlighted: false, icon: 'Forex', text: forexLabel },
                 { highlighted: false, icon: 'Stocks', text: 'Stocks' },

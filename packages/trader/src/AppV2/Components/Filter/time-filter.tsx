@@ -116,7 +116,7 @@ const TimeFilter = ({
                 size='sm'
             />
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={() => setIsDropdownOpen(false)} position='left'>
-                <ActionSheet.Portal>
+                <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Filter by trade types' />} />
                     <ActionSheet.Content className='filter__item__wrapper'>
                         <RadioGroup
@@ -146,12 +146,13 @@ const TimeFilter = ({
             </ActionSheet.Root>
             {showDatePicker && (
                 <DateRangePicker
-                    handleDateChange={handleDateChange}
-                    isOpen={showDatePicker}
-                    onClose={() => {
+                    applyHandler={() => {
                         setShowDatePicker(false);
                         setIsDropdownOpen(false);
                     }}
+                    handleDateChange={handleDateChange}
+                    isOpen={showDatePicker}
+                    onClose={() => setShowDatePicker(false)}
                     setCustomTimeRangeFilter={setCustomTimeRangeFilter}
                 />
             )}

@@ -182,6 +182,8 @@ export default class UIStore extends BaseStore {
     is_additional_kyc_info_modal_open = false;
     is_kyc_information_submitted_modal_open = false;
 
+    should_show_global_loader = false;
+
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {
@@ -337,6 +339,7 @@ export default class UIStore extends BaseStore {
             is_tablet: computed,
             is_warning_scam_message_modal_visible: computed,
             url_hashed_values: observable,
+            should_show_global_loader: observable,
             notifyAppInstall: action.bound,
             onChangeUiStore: action.bound,
             openAccountNeededModal: action.bound,
@@ -427,6 +430,7 @@ export default class UIStore extends BaseStore {
             toggleKycInformationSubmittedModal: action.bound,
             toggleMT5MigrationModal: action.bound,
             toggleUrlUnavailableModal: action.bound,
+            setShouldShowGlobalLoader: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -995,5 +999,9 @@ export default class UIStore extends BaseStore {
 
     toggleUrlUnavailableModal(value) {
         this.isUrlUnavailableModalVisible = value;
+    }
+
+    setShouldShowGlobalLoader(value) {
+        this.should_show_global_loader = value;
     }
 }

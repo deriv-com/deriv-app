@@ -35,6 +35,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_dark_mode_on: is_dark_mode,
         setDarkMode: toggleTheme,
         setMobileLanguageMenuOpen,
+        setShouldShowGlobalLoader,
     } = ui;
     const {
         account_status,
@@ -450,6 +451,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     <MobileDrawer.Item
                                         onClick={() => {
                                             toggleDrawer();
+                                            setShouldShowGlobalLoader(true);
                                             history.push(routes.index);
                                             logoutClient().then(() => {
                                                 window.location.href = getStaticUrl('/');

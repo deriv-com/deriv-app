@@ -23,7 +23,7 @@ type PageOverlayWrapperProps = {
 const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperProps) => {
     const history = useHistory();
     const { client, common, ui } = useStore();
-    const { is_mobile } = ui;
+    const { is_mobile, setShouldShowGlobalLoader } = ui;
     const { logout } = client;
     const { is_from_derivgo } = common;
 
@@ -53,6 +53,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });
 
     const onClickLogout = () => {
+        setShouldShowGlobalLoader(true);
         history.push(shared_routes.index);
         logout().then(() => (window.location.href = getStaticUrl('/')));
     };

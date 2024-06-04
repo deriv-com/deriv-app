@@ -518,7 +518,7 @@ type TClientStore = {
     is_authentication_needed: boolean;
     authentication_status: TAuthenticationStatus;
     mt5_login_list: DetailsOfEachMT5Loginid[];
-    logout: (cb?: () => void) => Promise<LogOutResponse>;
+    logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     should_allow_poinc_authentication: boolean;
     isEligibleForMoreDemoMt5Svg: (market_type: 'synthetic' | 'financial' | 'gaming' | 'all') => boolean;
@@ -792,6 +792,8 @@ type TUiStore = {
     toggleKycInformationSubmittedModal: () => void;
     setAccountSwitcherDisabledMessage: (message?: string) => void;
     is_set_currency_modal_visible: boolean;
+    should_show_global_loader: boolean;
+    setShouldShowGlobalLoader: (value: boolean) => void;
 };
 
 type TPortfolioStore = {

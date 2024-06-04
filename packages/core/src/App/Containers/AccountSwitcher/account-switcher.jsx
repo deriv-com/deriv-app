@@ -62,6 +62,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         toggleSetCurrencyModal,
         should_show_real_accounts_list,
         setShouldShowCooldownModal,
+        setShouldShowGlobalLoader,
     } = ui;
     const [active_tab_index, setActiveTabIndex] = React.useState(!is_virtual || should_show_real_accounts_list ? 0 : 1);
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
@@ -98,10 +99,10 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
             togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
 
-        await logoutClient(() => {
-            history.push(routes.index);
-            window.location.href = getStaticUrl('/');
-        });
+        setShouldShowGlobalLoader(true);
+        history.push(routes.index);
+        await logoutClient();
+        window.location.href = getStaticUrl('/');
     };
 
     const closeAccountsDialog = () => {

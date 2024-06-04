@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useLocation, withRouter } from 'react-router';
 import { Analytics } from '@deriv-com/analytics';
-import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
+import { DesktopWrapper, Loading, MobileWrapper, ThemedScrollbars } from '@deriv/components';
 import { CookieStorage, isMobile, TRACKING_STATUS_KEY, platforms, routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
@@ -30,6 +30,7 @@ const AppContents = observer(({ children }) => {
         notifyAppInstall,
         setAppContentsScrollRef,
         is_dark_mode_on: is_dark_mode,
+        should_show_global_loader,
     } = ui;
 
     const tracking_status = tracking_status_cookie.get(TRACKING_STATUS_KEY);
@@ -112,6 +113,7 @@ const AppContents = observer(({ children }) => {
             })}
             ref={scroll_ref}
         >
+            {should_show_global_loader && <Loading is_fullscreen />}
             <MobileWrapper>{children}</MobileWrapper>
             <DesktopWrapper>
                 {/* Calculate height of user screen and offset height of header and footer */}

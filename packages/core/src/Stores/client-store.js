@@ -1994,13 +1994,11 @@ export default class ClientStore extends BaseStore {
         this.syncWithLegacyPlatforms(this.loginid, this.accounts);
     }
 
-    async logout(cb) {
+    async logout() {
         // TODO: [add-client-action] - Move logout functionality to client store
         const response = await requestLogout();
 
         if (response?.logout === 1) {
-            cb?.();
-
             this.cleanUp();
 
             this.setLogout(true);

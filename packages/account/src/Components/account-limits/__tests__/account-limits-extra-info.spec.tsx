@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { useDevice } from '@deriv-com/ui';
 import AccountLimitsExtraInfo from '../account-limits-extra-info';
+import { useDevice } from '@deriv-com/ui';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),

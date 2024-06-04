@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
-import { useOnfido } from '@deriv/api-v2';
+import { useOnfido, usePOA } from '@deriv/api-v2';
 import { InlineMessage } from '../../../../components';
 import { useFlow } from '../../../../components/FlowProvider';
 import { VerifyDocumentDetails } from '../../../accounts';
@@ -12,6 +12,7 @@ const Onfido = () => {
         isServiceTokenLoading,
     } = useOnfido();
     const { switchScreen } = useFlow();
+    const { data: poaStatus } = usePOA();
     const { formValues, setFormValues } = useFlow();
     // if the user goes back and already submitted Onfido, check the form store first
 
@@ -19,10 +20,15 @@ const Onfido = () => {
         if (hasSubmitted) {
             setFormValues('hasSubmittedOnfido', hasSubmitted);
             onfidoRef?.current?.safeTearDown();
-            switchScreen('poaScreen');
+            // @ts-expect-error as the prop verified_jurisdiction is not yet present in GetAccountStatusResponse type
+            if (!poaStatus?.is_pending && !poaStatus?.verified_jurisdiction?.[formValues.selectedJurisdiction]) {
+                switchScreen('poaScreen');
+            } else {
+                switchScreen('poiPoaDocsSubmitted');
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [hasSubmitted, setFormValues, onfidoRef]);
+    }, [hasSubmitted, poaStatus, formValues.selectedJurisdiction, setFormValues, onfidoRef]);
 
     return (
         <div className='wallets-onfido'>

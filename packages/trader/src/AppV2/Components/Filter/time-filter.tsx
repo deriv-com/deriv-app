@@ -9,10 +9,10 @@ type TTimeFilter = {
     customTimeRangeFilter?: string;
     handleDateChange: (
         values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean },
-        date_range?: {
-            date_range: any;
-        },
-        shouldFiltrateContractTypes?: boolean
+        otherParams?: {
+            date_range?: Record<string, string | number>;
+            shouldFiltrateContractTypes?: boolean;
+        }
     ) => void;
     setTimeFilter: (newTimeFilter?: string | undefined) => void;
     setCustomTimeRangeFilter: (newCustomTimeFilter?: string | undefined) => void;
@@ -82,8 +82,7 @@ const TimeFilter = ({
                     to: toMoment().endOf('day'),
                     is_batch: true,
                 },
-                undefined,
-                true
+                { shouldFiltrateContractTypes: true }
             );
         } else if (value === 'Yesterday') {
             handleDateChange(
@@ -92,8 +91,7 @@ const TimeFilter = ({
                     to: toMoment().subtract(1, 'days').endOf('day'),
                     is_batch: true,
                 },
-                undefined,
-                true
+                { shouldFiltrateContractTypes: true }
             );
         } else {
             handleDateChange(
@@ -102,8 +100,7 @@ const TimeFilter = ({
                     to: toMoment().endOf('day'),
                     is_batch: true,
                 },
-                undefined,
-                true
+                { shouldFiltrateContractTypes: true }
             );
         }
     };
@@ -117,8 +114,7 @@ const TimeFilter = ({
                 to: toMoment().endOf('day'),
                 is_batch: true,
             },
-            undefined,
-            true
+            { shouldFiltrateContractTypes: true }
         );
         setNoMatchesFound(false);
     };

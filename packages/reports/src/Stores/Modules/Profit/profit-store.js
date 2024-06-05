@@ -176,7 +176,7 @@ export default class ProfitTableStore extends BaseStore {
         this.date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     }
 
-    handleDateChange(date_values, { date_range } = {}, shouldFiltrateContractTypes) {
+    handleDateChange(date_values, { date_range, shouldFiltrateContractTypes } = {}) {
         const { from, to, is_batch } = date_values;
 
         this.filtered_date_range = date_range;

@@ -124,7 +124,9 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
                         <TimeFilter
                             timeFilter={timeFilter}
                             setTimeFilter={setTimeFilter}
-                            handleDateChange={handleDateChange}
+                            handleDateChange={
+                                handleDateChange as React.ComponentProps<typeof TimeFilter>['handleDateChange']
+                            }
                             customTimeRangeFilter={customTimeRangeFilter}
                             setCustomTimeRangeFilter={setCustomTimeRangeFilter}
                             setNoMatchesFound={setNoMatchesFound}

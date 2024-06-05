@@ -16,7 +16,7 @@
     },
     "dependencies": {
         "class-variance-authority": "^0.7.0",
-        "clsx": "^2.0.0",
+        "clsx": "^2.1.1",
         "i18n-iso-countries": "^6.8.0",
         "i18next": "^22.4.6",
         "usehooks-ts": "^2.7.0"
@@ -27,7 +27,7 @@
     ],
     "peerDependencies": {
         "@deriv-com/ui": "~1.14.5",
-        "@deriv/quill-icons": "~1.22.8",
+        "@deriv/quill-icons": "~1.22.10",
         "@deriv/api-v2": "1.0.0",
         "yup": "^0.32.11",
         "formik": "^2.1.4",
@@ -58,7 +58,7 @@
         "eslint-plugin-react-hooks": "^4.2.0",
         "eslint-plugin-simple-import-sort": "^10.0.0",
         "eslint-plugin-sonarjs": "^0.23.0",
-        "eslint-plugin-sort-destructure-keys": "^1.5.0",
+        "eslint-plugin-sort-destructure-keys": "1.5.0",
         "eslint-plugin-typescript-sort-keys": "^2.3.0",
         "postcss": "^8.4.24",
         "postcss-import": "^16.0.1",

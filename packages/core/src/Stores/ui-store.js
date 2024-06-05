@@ -784,8 +784,8 @@ export default class UIStore extends BaseStore {
         this.is_update_email_modal_visible = state_change;
     }
 
-    setResetTradingPasswordModalOpen(val) {
-        this.is_reset_trading_password_modal_visible = val;
+    setResetTradingPasswordModalOpen(is_reset_trading_password_modal_visible) {
+        this.is_reset_trading_password_modal_visible = is_reset_trading_password_modal_visible;
     }
 
     setRealAccountSignupParams(params) {

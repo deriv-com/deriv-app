@@ -19,7 +19,6 @@ module.exports = {
         '^Sections/(.*)$': '<rootDir>/src/Sections/$1',
         '^Sections$': '<rootDir>/src/Sections/index.js',
     },
-    transformIgnorePatterns: ['/node_modules/(?!(@deriv-com/translations)).+\\.js$'],
     transform: {
         '^.+\\.(ts|tsx)?$': ['ts-jest', { isolatedModules: true, babelConfig: true }],
         '^.+\\.(js|jsx)$': 'babel-jest',

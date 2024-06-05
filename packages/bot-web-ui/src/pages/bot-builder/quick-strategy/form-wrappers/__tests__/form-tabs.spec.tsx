@@ -1,4 +1,3 @@
-import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -22,7 +21,6 @@ describe('<FormTabs />', () => {
     beforeEach(() => {
         const mock_store = mockStore({});
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
-        const initial_value = {};
 
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>

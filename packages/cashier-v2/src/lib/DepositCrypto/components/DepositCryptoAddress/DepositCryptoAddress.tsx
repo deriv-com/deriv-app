@@ -7,15 +7,8 @@ import { DepositCryptoAddressLoader } from '../DepositCryptoAddressLoader';
 import styles from './DepositCryptoAddress.module.scss';
 
 const DepositCryptoAddress = () => {
-    const { data: depositCryptoAddress, isLoading, mutate } = useDepositCryptoAddress();
-    const { isSuccess: isAuthorizeSuccess } = useAuthorize();
+    const { data: depositCryptoAddress, isLoading } = useDepositCryptoAddress();
     const { isMobile } = useDevice();
-
-    useEffect(() => {
-        if (isAuthorizeSuccess) {
-            mutate();
-        }
-    }, [isAuthorizeSuccess, mutate]);
 
     if (isLoading)
         return (

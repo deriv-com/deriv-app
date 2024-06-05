@@ -3,35 +3,36 @@ import { Trans } from 'react-i18next';
 import { DerivLightIcMt5PasswordUpdatedIcon, DerivLightMt5SuccessPasswordResetIcon } from '@deriv/quill-icons';
 import useDevice from '../../hooks/useDevice';
 import { ModalStepWrapper, WalletButton } from '../Base';
-import { useModal } from '../ModalProvider';
+// import { useModal } from '../ModalProvider';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 
 type WalletSuccessResetMT5PasswordProps = {
     isInvestorPassword?: boolean;
-    onClickSuccess?: () => void;
+    onClick: () => void;
+    // onClickSuccess?: () => void; // what is this for??
     title: string;
 };
 
 const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
     isInvestorPassword = false,
-    onClickSuccess,
+    onClick,
     title,
 }) => {
-    const { hide } = useModal();
+    // const { hide } = useModal();
     const { isMobile } = useDevice();
 
-    const handleSuccess = useCallback(() => {
-        onClickSuccess?.();
-        hide();
-    }, [onClickSuccess, hide]);
+    // const handleSuccess = useCallback(() => {
+    //     onClickSuccess?.(); // what is this for tho?
+    //     hide();
+    // }, [onClickSuccess, hide]);
 
     const renderButtons = useCallback(() => {
         return (
-            <WalletButton isFullWidth={isMobile} onClick={handleSuccess} size='lg'>
+            <WalletButton isFullWidth={isMobile} onClick={onClick} size='lg'>
                 {isInvestorPassword ? <Trans defaults='Ok' /> : <Trans defaults='Done' />}
             </WalletButton>
         );
-    }, [handleSuccess, isInvestorPassword, isMobile]);
+    }, [isInvestorPassword, isMobile, onClick]);
 
     return (
         <ModalStepWrapper

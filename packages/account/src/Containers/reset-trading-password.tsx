@@ -13,6 +13,7 @@ const ResetTradingPassword = observer(() => {
         is_reset_trading_password_modal_visible,
         is_loading,
         setResetTradingPasswordModalOpen,
+        is_cfd_reset_password_modal_enabled,
     } = ui;
     const location = useLocation();
     const platform = React.useRef('');
@@ -36,7 +37,8 @@ const ResetTradingPassword = observer(() => {
             enableApp={enableApp}
             disableApp={disableApp}
             toggleResetTradingPasswordModal={setResetTradingPasswordModalOpen}
-            is_visible={is_reset_trading_password_modal_visible}
+            is_visible={is_cfd_reset_password_modal_enabled}
+            // is_visible={is_reset_trading_password_modal_visible}
             is_loading={is_loading}
             verification_code={verification_code}
         />

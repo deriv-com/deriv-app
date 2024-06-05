@@ -62,7 +62,7 @@ export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
             platform?: string;
         };
     platform?: TPlatform;
-    product?: string;
+    product?: 'swap_free' | 'zero_spread' | 'derivx' | 'ctrader';
     openFailedVerificationModal?: (from_account: string) => void;
     market_type: NonNullable<TTradingPlatformAvailableAccount['market_type']> | TMarketType;
 };

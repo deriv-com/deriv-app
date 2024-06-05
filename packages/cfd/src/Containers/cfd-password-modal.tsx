@@ -43,6 +43,7 @@ import CFDPasswordChange from './cfd-password-change';
 import CFDPasswordChangeContent from './cfd-password-change-content';
 
 import '../sass/cfd.scss';
+import { TProducts } from 'Components/props.types';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -59,7 +60,7 @@ type TIconTypeProps = {
     platform: string;
     type?: string;
     show_eu_related_content: boolean;
-    product?: string;
+    product?: TProducts;
 };
 
 type TCFDPasswordFormReusedProps = {

@@ -21,7 +21,9 @@ export const MARKET_TYPE = {
 export const PRODUCT = {
     SWAPFREE: 'swap_free',
     ZEROSPREAD: 'zero_spread',
-};
+    CTRADER: 'ctrader',
+    DERIVX: 'derivx',
+} as const;
 
 export const MOBILE_PLATFORMS = {
     IOS: 'ios',

@@ -789,6 +789,8 @@ import './mt5/ic-mt5-vanuatu-derived.svg';
 import './mt5/ic-mt5-vanuatu-financial.svg';
 import './mt5/ic-mt5-vanuatu-standard.svg';
 import './mt5/ic-mt5-vanuatu.svg';
+import './mt5/ic-mt5-zero-spread-platform.svg';
+import './mt5/ic-mt5-zero-spread.svg';
 import './option/ic-option-accumulators.svg';
 import './option/ic-option-call-put-reset.svg';
 import './option/ic-option-call-put-spread.svg';

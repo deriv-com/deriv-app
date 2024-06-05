@@ -5,7 +5,7 @@ import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-co
 import { getCFDAccountDisplay, getCFDAccountKey, MT5_ACCOUNT_STATUS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../Helpers/cfd-config';
+import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION, PRODUCT } from '../Helpers/cfd-config';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import MigrationBanner from './migration-banner';
 import MT5DesktopRedirectOption from './mt5-desktop-redirect-option';
@@ -13,7 +13,7 @@ import MT5MobileRedirectOption from './mt5-mobile-redirect-option';
 import PasswordBox from '../Components/passwordbox';
 import SpecBox from '../Components/specbox';
 import { TCFDPasswordReset } from './props.types';
-import { TTradingPlatformAccounts } from '../Components/props.types';
+import { TProducts, TTradingPlatformAccounts } from '../Components/props.types';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid;
@@ -26,7 +26,7 @@ type TMT5TradeModalProps = {
         arg5: string | undefined
     ) => void;
     toggleModal: () => void;
-    product?: string;
+    product?: TProducts;
 };
 
 const getTitle = (market_type: string, show_eu_related_content: boolean) => {
@@ -65,8 +65,9 @@ const DMT5TradeModal = observer(
         const getAccountTitle = () => {
             if (show_eu_related_content) return 'CFDs';
             else if (mt5_trade_account.market_type === MARKET_TYPE.SYNTHETIC) return 'Standard';
-            else if (mt5_trade_account.market_type === MARKET_TYPE.ALL && product === 'swap_free') return 'SwapFree';
-            else if (mt5_trade_account.market_type === MARKET_TYPE.ALL && product === 'zero_spread')
+            else if (mt5_trade_account.market_type === MARKET_TYPE.ALL && product === PRODUCT.SWAPFREE)
+                return 'SwapFree';
+            else if (mt5_trade_account.market_type === MARKET_TYPE.ALL && product === PRODUCT.ZEROSPREAD)
                 return 'ZeroSpread';
             return 'Financial';
         };

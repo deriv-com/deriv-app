@@ -5,11 +5,14 @@ import { TCompareAccountsCard } from 'Components/props.types';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { getJuridisctionDescription, getMarketType } from '../../Helpers/compare-accounts-config';
-import { REGION } from '../../Helpers/cfd-config';
+import { REGION, CFD_PLATFORMS } from '../../Helpers/cfd-config';
 
 const CFDCompareAccountsDescription = ({ trading_platforms, is_demo }: TCompareAccountsCard) => {
     const market_type = getMarketType(trading_platforms);
-    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode ?? '');
+    const market_type_shortcode =
+        trading_platforms.platform === CFD_PLATFORMS.MT5 && market_type === 'all'
+            ? `${market_type}_${trading_platforms.product}_${trading_platforms.shortcode}`
+            : market_type.concat('_', trading_platforms.shortcode ?? '');
     const juridisction_data = getJuridisctionDescription(market_type_shortcode);
     const { traders_hub } = useStore();
     const { selected_region } = traders_hub;

@@ -411,7 +411,7 @@ export default class TradersHubStore extends BaseStore {
                 availability: 'Non-EU',
             },
             {
-                name: localize('Zero Spread'),
+                name: localize('Zero spread'),
                 description: getZeroSpreadAccountDesc(),
                 platform: CFD_PLATFORMS.MT5,
                 market_type: 'all',

@@ -22,8 +22,8 @@ export const CFD_text: { [key: string]: string } = {
     financial_fx: 'Financial Labuan',
     financial_v: 'Financial Vanuatu',
     financial_svg: 'Financial SVG',
-    all: 'Swap-Free',
-    all_demo: 'Swap-Free Demo',
+    all_swap_free_demo: 'Swap-Free Demo',
+    all_zero_spread_demo: 'Zero spread Demo',
     all_swap_free_svg: 'Swap-Free SVG',
     all_zero_spread_bvi: 'Zero spread BVI',
 } as const;
@@ -67,9 +67,17 @@ export const getCFDAccountKey = ({
     if (platform === CFD_PLATFORMS.MT5 && market_type === 'all') {
         switch (product) {
             case 'swap_free':
-                return 'all_swap_free_svg';
+                if (shortcode) {
+                    return 'all_swap_free_svg';
+                }
+                return 'all_swap_free_demo';
+
             case 'zero_spread':
-                return 'all_zero_spread_bvi';
+                if (shortcode) {
+                    return 'all_zero_spread_bvi';
+                }
+                return 'all_zero_spread_demo';
+
             default:
                 return 'all_demo';
         }

@@ -8,7 +8,10 @@ import { CFD_PLATFORMS, MARKET_TYPE_SHORTCODE } from '../../Helpers/cfd-config';
 
 const CFDCompareAccountsTitleIcon = ({ trading_platforms, is_eu_user, is_demo }: TCompareAccountsCard) => {
     const market_type = !is_eu_user ? getMarketType(trading_platforms) : 'CFDs';
-    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode ?? '');
+    const market_type_shortcode =
+        trading_platforms.platform === CFD_PLATFORMS.MT5 && market_type === 'all'
+            ? `${market_type}_${trading_platforms.product}_${trading_platforms.shortcode}`
+            : market_type.concat('_', trading_platforms.shortcode ?? '');
     const jurisdiction_card_icon =
         trading_platforms.platform === CFD_PLATFORMS.DXTRADE || trading_platforms.platform === CFD_PLATFORMS.CTRADER
             ? getAccountIcon(trading_platforms.platform)

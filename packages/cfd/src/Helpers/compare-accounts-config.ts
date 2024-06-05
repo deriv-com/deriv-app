@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { TInstrumentsIcon, TModifiedTradingPlatformAvailableAccount } from '../Components/props.types';
+import { TInstrumentsIcon, TModifiedTradingPlatformAvailableAccount, TProducts } from '../Components/props.types';
 import { CFD_PLATFORMS, MARKET_TYPE, JURISDICTION, REGION, MARKET_TYPE_SHORTCODE, PRODUCT } from './cfd-config';
 
 // Map the accounts according to the market type
@@ -145,7 +145,7 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
         case MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG:
             return is_demo ? localize('Swap-Free Demo') : localize('Swap-Free - SVG');
         case MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI:
-            return is_demo ? localize('Zero Spread Demo') : localize('Zero Spread - BVI');
+            return is_demo ? localize('Zero spread Demo') : localize('Zero spread - BVI');
         case CFD_PLATFORMS.DXTRADE:
             return is_demo ? localize('Deriv X Demo') : localize('Deriv X');
         case CFD_PLATFORMS.CTRADER:
@@ -177,13 +177,12 @@ const platformsHeaderLabel = {
 };
 
 // Get the Account Icons based on the market type
-const getAccountIcon = (shortcode: string, product?: string) => {
+const getAccountIcon = (shortcode: string, product?: TProducts) => {
     switch (shortcode) {
         case MARKET_TYPE.SYNTHETIC:
             return 'Standard';
         case MARKET_TYPE.FINANCIAL:
             return 'Financial';
-        // eslint-disable-next-line no-fallthrough
         case MARKET_TYPE.ALL:
             switch (product) {
                 case PRODUCT.ZEROSPREAD:
@@ -305,7 +304,10 @@ const getJuridisctionDescription = (shortcode: string) => {
 // Sort the MT5 accounts in the order of derived, financial and swap-free
 const getSortedCFDAvailableAccounts = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
     const swap_free_accounts = available_accounts
-        .filter(item => item.market_type === MARKET_TYPE.ALL)
+        .filter(item => item.market_type === MARKET_TYPE.ALL && item.product === PRODUCT.SWAPFREE)
+        .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 } as const));
+    const zero_spread_accounts = available_accounts
+        .filter(item => item.market_type === MARKET_TYPE.ALL && item.product === PRODUCT.ZEROSPREAD)
         .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 } as const));
     const financial_accounts = available_accounts
         .filter(item => item.market_type === MARKET_TYPE.FINANCIAL && item.shortcode !== JURISDICTION.MALTA_INVEST)
@@ -313,7 +315,7 @@ const getSortedCFDAvailableAccounts = (available_accounts: TModifiedTradingPlatf
     const gaming_accounts = available_accounts
         .filter(item => item.market_type === MARKET_TYPE.GAMING)
         .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 } as const));
-    return [...gaming_accounts, ...financial_accounts, ...swap_free_accounts];
+    return [...zero_spread_accounts, ...gaming_accounts, ...financial_accounts, ...swap_free_accounts];
 };
 
 // Get the maltainvest accounts for EU and DIEL clients
@@ -341,7 +343,7 @@ const dxtrade_data: TModifiedTradingPlatformAvailableAccount = {
     shortcode: JURISDICTION.SVG,
     sub_account_type: '',
     platform: CFD_PLATFORMS.DXTRADE,
-    product: 'derivx',
+    product: PRODUCT.DERIVX,
 };
 
 const ctrader_data: TModifiedTradingPlatformAvailableAccount = {
@@ -369,6 +371,14 @@ const getMT5DemoData = (available_accounts: TModifiedTradingPlatformAvailableAcc
         item =>
             item.market_type === MARKET_TYPE.ALL &&
             item.shortcode === JURISDICTION.SVG &&
+            item.product === PRODUCT.SWAPFREE &&
+            item.platform === CFD_PLATFORMS.MT5
+    );
+    const zero_spread_demo_accounts = available_accounts.filter(
+        item =>
+            item.market_type === MARKET_TYPE.ALL &&
+            item.shortcode === JURISDICTION.BVI &&
+            item.product === PRODUCT.ZEROSPREAD &&
             item.platform === CFD_PLATFORMS.MT5
     );
     const financial_demo_accounts = available_accounts.filter(
@@ -377,7 +387,12 @@ const getMT5DemoData = (available_accounts: TModifiedTradingPlatformAvailableAcc
     const gaming_demo_accounts = available_accounts.filter(
         item => item.market_type === MARKET_TYPE.GAMING && item.shortcode === JURISDICTION.SVG
     );
-    return [...gaming_demo_accounts, ...financial_demo_accounts, ...swap_free_demo_accounts];
+    return [
+        ...zero_spread_demo_accounts,
+        ...gaming_demo_accounts,
+        ...financial_demo_accounts,
+        ...swap_free_demo_accounts,
+    ];
 };
 const getDxtradeDemoData = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
     return available_accounts.filter(item => item.platform === CFD_PLATFORMS.DXTRADE);

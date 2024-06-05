@@ -1,5 +1,6 @@
 import { Jurisdiction } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { TProducts } from 'Components/props.types';
 
 export type TDxCompanies = ReturnType<typeof getDxCompanies>;
 export type TMtCompanies = ReturnType<typeof getMtCompanies>;
@@ -97,7 +98,7 @@ export const getCTraderCompanies = () => {
     };
 };
 
-export const getMtCompanies = (is_eu: boolean, product?: string) => {
+export const getMtCompanies = (is_eu: boolean, product?: TProducts) => {
     const all_config = {
         account_type: '',
         leverage: 100,

@@ -33,6 +33,7 @@ const TradersHub = observer(() => {
         has_active_real_account,
         website_status,
         has_any_real_account,
+        is_eu,
     } = client;
 
     const { is_cr_demo, is_eu_demo, is_eu_real } = useContentFlag();
@@ -145,7 +146,7 @@ const TradersHub = observer(() => {
                     })}
                     ref={traders_hub_ref}
                 >
-                    {should_show_banner && !has_any_real_account && is_landing_company_loaded && (
+                    {should_show_banner && !has_any_real_account && !is_eu && is_landing_company_loaded && (
                         <Suspense fallback={<div />}>
                             <RealAccountCreationBanner />
                         </Suspense>

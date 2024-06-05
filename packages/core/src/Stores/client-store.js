@@ -1217,7 +1217,8 @@ export default class ClientStore extends BaseStore {
                 console.error('JSON parse failed, invalid value (client.accounts): ', error);
             }
 
-            const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
+            const { oauth_token, client_id, currency_type } =
+                response.new_account_real ?? response.new_account_maltainvest;
             BinarySocket.authorize(oauth_token)
                 .then(authorize_response => {
                     const new_data = {};
@@ -1227,6 +1228,7 @@ export default class ClientStore extends BaseStore {
                     new_data.is_virtual = authorize_response.authorize.is_virtual;
                     new_data.landing_company_name = authorize_response.authorize.landing_company_fullname;
                     new_data.landing_company_shortcode = authorize_response.authorize.landing_company_name;
+                    new_data.currency_type = currency_type;
                     runInAction(() => (client_accounts[client_id] = new_data));
                     this.setLoginInformation(client_accounts, client_id);
                     WS.authorized.storage.getSettings().then(get_settings_response => {
@@ -1510,7 +1512,7 @@ export default class ClientStore extends BaseStore {
             // If this fails, it means the landing company check failed
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
-                Analytics.identifyEvent();
+                Analytics.identifyEvent(this.user_id);
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',

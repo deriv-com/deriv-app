@@ -47,7 +47,7 @@ export const getUrlBinaryBot = (is_language_required = true) => {
     return is_language_required ? `${base_link}/?l=${i18n_language.toLowerCase()}` : base_link;
 };
 
-export const getUrlP2PStandalone = (is_language_required = true) => {
+export const getUrlP2P = (is_language_required = true) => {
     const url_lang = getlangFromUrl();
     const i18n_language = window.localStorage.getItem('i18n_language') || url_lang || 'en';
     const base_link = deriv_urls.P2P_PRODUCTION;

@@ -1,8 +1,8 @@
 import React from 'react';
-import { getUrlP2PStandalone } from '@deriv/shared';
+import { getUrlP2P } from '@deriv/shared';
 
 const BinaryBotIFrame = () => {
-    const base_link = getUrlP2PStandalone();
+    const base_link = getUrlP2P();
 
     return (
         <iframe

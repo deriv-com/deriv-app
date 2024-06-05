@@ -1,6 +1,6 @@
 import { TPortfolioPosition } from '@deriv/stores/types';
 import { CONTRACT_TYPES } from '@deriv/shared';
-import { encryptContractFilters, filterPositions, getProfit, getTotalPositionsProfit } from '../positions-utils';
+import { getFilteredContractTypes, filterPositions, getProfit, getTotalPositionsProfit } from '../positions-utils';
 
 const mockedActivePositions = [
     {
@@ -286,22 +286,25 @@ const mockedActivePositions = [
     },
 ] as TPortfolioPosition[];
 
-describe('encryptContractFilters', () => {
+describe('getFilteredContractTypes', () => {
     it('should return empty array if filters are empty', () => {
-        expect(encryptContractFilters([])).toEqual([]);
+        expect(getFilteredContractTypes([])).toEqual([]);
     });
 
     it('should return empty array if contract type filter does not exist in config', () => {
-        expect(encryptContractFilters(['MockContract'])).toEqual([]);
+        expect(getFilteredContractTypes(['MockContract'])).toEqual([]);
     });
 
     it('should return array with contract type filters', () => {
-        expect(encryptContractFilters(['Vanillas'])).toEqual([CONTRACT_TYPES.VANILLA.CALL, CONTRACT_TYPES.VANILLA.PUT]);
-        expect(encryptContractFilters(['Rise/Fall'])).toEqual([CONTRACT_TYPES.CALL, CONTRACT_TYPES.PUT]);
+        expect(getFilteredContractTypes(['Vanillas'])).toEqual([
+            CONTRACT_TYPES.VANILLA.CALL,
+            CONTRACT_TYPES.VANILLA.PUT,
+        ]);
+        expect(getFilteredContractTypes(['Rise/Fall'])).toEqual([CONTRACT_TYPES.CALL, CONTRACT_TYPES.PUT]);
     });
 
     it('should return array with contract type filters without duplicates', () => {
-        expect(encryptContractFilters(['Rise/Fall', 'Higher/Lower'])).toEqual([
+        expect(getFilteredContractTypes(['Rise/Fall', 'Higher/Lower'])).toEqual([
             CONTRACT_TYPES.CALL,
             CONTRACT_TYPES.PUT,
         ]);

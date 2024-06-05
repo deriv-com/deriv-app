@@ -74,12 +74,12 @@ export default class ProfitTableStore extends BaseStore {
         return true;
     }
 
-    async fetchNextBatch(shouldFiltrateContractTypes) {
+    async fetchNextBatch(shouldFilterContractTypes) {
         if (!this.shouldFetchNextBatch()) return;
         this.is_loading = true;
         const dateParams = getDateBoundaries(this.date_from, this.date_to, 0, false);
-        const optionalParams = shouldFiltrateContractTypes
-            ? { ...dateParams, contract_type: this.root_store.modules.positions.encryptedContractTypeFilter }
+        const optionalParams = shouldFilterContractTypes
+            ? { ...dateParams, contract_type: this.root_store.modules.positions.filteredContractTypes }
             : dateParams;
 
         const response = await WS.profitTable(batch_size, this.data.length, optionalParams);
@@ -108,16 +108,16 @@ export default class ProfitTableStore extends BaseStore {
         this.is_loading = false;
     }
 
-    fetchOnScroll = debounce((left, shouldFiltrateContractTypes) => {
+    fetchOnScroll = debounce((left, shouldFilterContractTypes) => {
         if (left < 1500) {
-            this.fetchNextBatch(shouldFiltrateContractTypes);
+            this.fetchNextBatch(shouldFilterContractTypes);
         }
     }, delay_on_scroll_time);
 
-    handleScroll(event, shouldFiltrateContractTypes) {
+    handleScroll(event, shouldFilterContractTypes) {
         const { scrollTop, scrollHeight, clientHeight } = event.target;
         const left_to_scroll = scrollHeight - (scrollTop + clientHeight);
-        this.fetchOnScroll(left_to_scroll, shouldFiltrateContractTypes);
+        this.fetchOnScroll(left_to_scroll, shouldFilterContractTypes);
     }
 
     networkStatusChangeListener(is_online) {
@@ -176,7 +176,7 @@ export default class ProfitTableStore extends BaseStore {
         this.date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     }
 
-    handleDateChange(date_values, { date_range, shouldFiltrateContractTypes } = {}) {
+    handleDateChange(date_values, { date_range, shouldFilterContractTypes } = {}) {
         const { from, to, is_batch } = date_values;
 
         this.filtered_date_range = date_range;
@@ -190,6 +190,6 @@ export default class ProfitTableStore extends BaseStore {
         if (to) this.date_to = toMoment(to).unix();
 
         this.clearTable();
-        this.fetchNextBatch(shouldFiltrateContractTypes);
+        this.fetchNextBatch(shouldFilterContractTypes);
     }
 }

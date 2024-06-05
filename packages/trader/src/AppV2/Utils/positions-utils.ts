@@ -20,7 +20,7 @@ export const filterPositions = (positions: (TPortfolioPosition | TClosedPosition
         return splittedFilter.includes('main_title' in config ? config.main_title : config.name);
     });
 };
-const encryptionConfig = {
+const contractTypesConfig = {
     Accumulators: [CONTRACT_TYPES.ACCUMULATOR],
     Vanillas: [CONTRACT_TYPES.VANILLA.CALL, CONTRACT_TYPES.VANILLA.PUT],
     Turbos: [CONTRACT_TYPES.TURBOS.LONG, CONTRACT_TYPES.TURBOS.SHORT],
@@ -33,10 +33,12 @@ const encryptionConfig = {
     'Over/Under': [CONTRACT_TYPES.OVER_UNDER.OVER, CONTRACT_TYPES.OVER_UNDER.UNDER],
 };
 
-export const encryptContractFilters = (filter: string[] | [], config: Record<string, string[]> = encryptionConfig) => {
+export const getFilteredContractTypes = (filter: string[] = []) => {
     if (!filter.length) return [];
-    const encryptedFilter = filter.map(option => config[option] ?? []).flat();
-    return [...new Set(encryptedFilter)];
+    const filteredContractTypes = filter
+        .map(option => contractTypesConfig[option as keyof typeof contractTypesConfig] ?? [])
+        .flat();
+    return [...new Set(filteredContractTypes)];
 };
 
 export const getProfit = (

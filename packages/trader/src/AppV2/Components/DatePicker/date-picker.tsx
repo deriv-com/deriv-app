@@ -11,7 +11,7 @@ type TDateRangePicker = {
         values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean },
         otherParams?: {
             date_range?: Record<string, string | number>;
-            shouldFiltrateContractTypes?: boolean;
+            shouldFilterContractTypes?: boolean;
         }
     ) => void;
     onClose: () => void;
@@ -36,7 +36,7 @@ const DateRangePicker = ({
                     from: toMoment(chosenRange[0]),
                     to: chosenRange[1] ? toMoment(chosenRange[1]) : moment(chosenRange[0]).endOf('day'),
                 },
-                { shouldFiltrateContractTypes: true }
+                { shouldFilterContractTypes: true }
             );
         }
         applyHandler();

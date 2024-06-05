@@ -1,12 +1,12 @@
 import { makeObservable, observable, action } from 'mobx';
 import { TRootStore } from 'Types';
-import { encryptContractFilters } from 'AppV2/Utils/positions-utils';
+import { getFilteredContractTypes } from 'AppV2/Utils/positions-utils';
 import BaseStore from 'Stores/base-store';
 
 export default class PositionsStore extends BaseStore {
     openContractTypeFilter: string[] | [] = [];
     closedContractTypeFilter: string[] | [] = [];
-    encryptedContractTypeFilter: string[] | [] = [];
+    filteredContractTypes: string[] | [] = [];
     timeFilter = '';
     customTimeRangeFilter = '';
 
@@ -27,7 +27,7 @@ export default class PositionsStore extends BaseStore {
 
     setClosedContractTypeFilter(contractTypes: string[] | []) {
         this.closedContractTypeFilter = [...contractTypes];
-        this.encryptedContractTypeFilter = encryptContractFilters(contractTypes);
+        this.filteredContractTypes = getFilteredContractTypes(contractTypes);
     }
 
     setOpenContractTypeFilter(contractTypes: string[] | []) {

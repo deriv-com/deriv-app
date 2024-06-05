@@ -11,7 +11,7 @@ type TOverrideProfitStore = Omit<ProfitStores, 'data' | 'date_from' | 'totals' |
         values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean },
         otherParams?: {
             date_range?: Record<string, string | number>;
-            shouldFiltrateContractTypes?: boolean;
+            shouldFilterContractTypes?: boolean;
         }
     ) => void;
     totals: { [key: string]: unknown };

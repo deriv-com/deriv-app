@@ -4,8 +4,7 @@ import { Localize } from '@deriv/translations';
 
 type TContractTypeFilter = {
     contractTypeFilter: string[] | [];
-    setContractTypeFilter: (filterValues: string[]) => void;
-    updateClosedPositions?: () => void;
+    onApplyContractTypeFilter: (filterValues: string[]) => void;
 };
 
 const availableContracts = [
@@ -21,11 +20,7 @@ const availableContracts = [
     { tradeType: <Localize i18n_default_text='Over/Under' />, id: 'Over/Under' },
 ];
 
-const ContractTypeFilter = ({
-    contractTypeFilter,
-    setContractTypeFilter,
-    updateClosedPositions,
-}: TContractTypeFilter) => {
+const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: TContractTypeFilter) => {
     const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
     const [changedOptions, setChangedOptions] = React.useState<string[]>(contractTypeFilter);
 
@@ -84,10 +79,7 @@ const ContractTypeFilter = ({
                         isSecondaryButtonDisabled={!changedOptions.length}
                         primaryAction={{
                             content: <Localize i18n_default_text='Apply' />,
-                            onAction: () => {
-                                setContractTypeFilter(changedOptions);
-                                updateClosedPositions?.();
-                            },
+                            onAction: () => onApplyContractTypeFilter(changedOptions),
                         }}
                         secondaryAction={{
                             content: <Localize i18n_default_text='Clear All' />,

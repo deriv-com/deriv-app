@@ -5,7 +5,7 @@ import ContractTypeFilter from '../contract-type-filter';
 
 const defaultFilterName = 'All trade types';
 const mockProps = {
-    setContractTypeFilter: jest.fn(),
+    onApplyContractTypeFilter: jest.fn(),
     contractTypeFilter: [],
 };
 const mediaQueryList = {
@@ -44,7 +44,7 @@ describe('ContractTypeFilter', () => {
         expect(screen.getByText(`${mockContractTypeFilter.length} trade types`)).toBeInTheDocument();
     });
 
-    it('should call setContractTypeFilter and setter (spied on) with array with chosen option after user clicks on contract type and clicks on "Apply" button', async () => {
+    it('should call onApplyContractTypeFilter and setter (spied on) with array with chosen option after user clicks on contract type and clicks on "Apply" button', async () => {
         const mockSetChangedOptions = jest.fn();
         jest.spyOn(React, 'useState')
             .mockImplementationOnce(() => [false, jest.fn()])
@@ -56,7 +56,7 @@ describe('ContractTypeFilter', () => {
         userEvent.click(screen.getByText('Apply'));
 
         expect(mockSetChangedOptions).toHaveBeenCalledWith(['Accumulators']);
-        expect(mockProps.setContractTypeFilter).toBeCalled();
+        expect(mockProps.onApplyContractTypeFilter).toBeCalled();
     });
 
     it('should call setter (spied on) with array without chosen option if user clicks on it, but it was already in contractTypeFilter', async () => {

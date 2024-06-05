@@ -83,9 +83,12 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
         />
     );
 
-    const updateClosedPositions = () => {
-        clearTable();
-        fetchMoreClosedPositions(true);
+    const onApplyContractTypeFilter = (filters: string[] | []) => {
+        setContractTypeFilter(filters);
+        if (isClosedTab) {
+            clearTable();
+            fetchMoreClosedPositions(true);
+        }
     };
 
     React.useEffect(() => {
@@ -133,9 +136,8 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
                         />
                     )}
                     <ContractTypeFilter
-                        setContractTypeFilter={setContractTypeFilter}
                         contractTypeFilter={contractTypeFilter}
-                        updateClosedPositions={isClosedTab ? updateClosedPositions : undefined}
+                        onApplyContractTypeFilter={onApplyContractTypeFilter}
                     />
                 </div>
             )}

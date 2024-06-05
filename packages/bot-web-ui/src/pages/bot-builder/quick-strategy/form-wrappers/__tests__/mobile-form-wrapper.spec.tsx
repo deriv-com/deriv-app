@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
@@ -99,5 +99,24 @@ describe('<MobileFormWrapper />', () => {
         const submit_button = screen.getByRole('button', { name: /Run/i });
         userEvent.click(submit_button);
         await waitFor(() => expect(mock_onSubmit).toBeCalled());
+    });
+
+    it('should handle the event at the FormTabs component and make the tab bold', async () => {
+        const { container } = render(
+            <MobileFromWrapper>
+                <div>test</div>
+            </MobileFromWrapper>,
+            {
+                wrapper,
+            }
+        );
+
+        const disabled_tab = screen.getByText('Learn more');
+        await act(async () => {
+            userEvent.type(disabled_tab, '{enter}');
+        });
+
+        expect(container).toBeInTheDocument();
+        expect(disabled_tab).toHaveStyle('--text-weight: var(--text-weight-bold)');
     });
 });

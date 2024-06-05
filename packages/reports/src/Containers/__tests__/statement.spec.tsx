@@ -1,12 +1,14 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { TCoreStores } from '@deriv/stores/types';
-import { isMobile } from '@deriv/shared';
+import { formatDate, isMobile } from '@deriv/shared';
 import { mockStore } from '@deriv/stores';
-import Statement from '../statement';
-import ReportsProviders from '../../reports-providers';
 import { useReportsStore } from 'Stores/useReportsStores';
+import Statement, { getRowAction } from '../statement';
+import ReportsProviders from '../../reports-providers';
+import { Analytics } from '@deriv-com/analytics';
 
 jest.mock('Stores/useReportsStores', () => ({
     ...jest.requireActual('Stores/useReportsStores'),
@@ -44,6 +46,13 @@ jest.mock('Stores/useReportsStores', () => ({
                     shortcode: 'MULTUP_1HZ100V_10.00_10_1717184563_4870799999_0_33.00_N1',
                     action_type: 'buy',
                     transaction_time: 1717184562,
+                },
+                {
+                    action: 'Deposit',
+                    amount: '1,000.00',
+                    balance: '1,000.00',
+                    refid: 17494117539,
+                    transaction_time: 1685769338,
                 },
             ],
             date_from: null,
@@ -96,6 +105,13 @@ jest.mock('@deriv/shared', () => ({
                         transaction_id: 486932886768,
                         transaction_time: 1717184562,
                     },
+                    {
+                        action_type: 'deposit',
+                        amount: 1000,
+                        balance_after: 1000,
+                        transaction_id: 17494117539,
+                        transaction_time: 1685769338,
+                    },
                 ],
             },
         }),
@@ -105,8 +121,10 @@ jest.mock('@deriv/shared', () => ({
 describe('Statement', () => {
     let store = mockStore({});
     const allTransactions = 'All transactions';
+    const buyTransactions = 'Buy';
     const dataTableTestId = 'dt_data_table';
     const dataListTestId = 'dt_data_list';
+    const filterDropdown = 'dt_dropdown_display';
     const loadingTestId = 'dt_loading_component';
     const noTransationsShortText = 'You have no transactions yet.';
     const noTransationsLongText = "You've made no transactions of this type during this period.";
@@ -138,7 +156,7 @@ describe('Statement', () => {
     });
     it('should render filter with All transactions selected and DataTable for desktop', () => {
         render(mockedStatement());
-        expect(screen.getByText(allTransactions)).toBeInTheDocument();
+        expect(screen.getByTestId(filterDropdown)).toHaveTextContent(allTransactions);
         expect(screen.getByTestId(dataTableTestId)).toBeInTheDocument();
     });
     it('should render filter but no DataTable if data is empty on desktop', () => {
@@ -149,7 +167,7 @@ describe('Statement', () => {
             },
         });
         render(mockedStatement());
-        expect(screen.getByText(allTransactions)).toBeInTheDocument();
+        expect(screen.getByTestId(filterDropdown)).toHaveTextContent(allTransactions);
         expect(screen.queryByTestId(dataTableTestId)).not.toBeInTheDocument();
     });
     it('should render filter dropdown with All transactions selected and DataList for mobile', () => {
@@ -224,7 +242,7 @@ describe('Statement', () => {
         expect(screen.queryByTestId(dataTableTestId)).not.toBeInTheDocument();
         expect(screen.getByTestId(loadingTestId)).toBeInTheDocument();
     });
-    it('should render transactions together with Loading when data is available & is_loading === true', () => {
+    it('should render DataTable together with Loading when data is available & is_loading === true', () => {
         (useReportsStore as jest.Mock).mockReturnValueOnce({
             statement: {
                 ...useReportsStore().statement,
@@ -234,5 +252,83 @@ describe('Statement', () => {
         render(mockedStatement());
         expect(screen.getByTestId(dataTableTestId)).toBeInTheDocument();
         expect(screen.getByTestId(loadingTestId)).toBeInTheDocument();
+    });
+    it('should set Buy filter when it is selected from the dropdown', () => {
+        render(mockedStatement());
+        userEvent.click(within(screen.getByTestId(filterDropdown)).getByText(allTransactions));
+        userEvent.click(screen.getByText(buyTransactions));
+        expect(screen.getByTestId(filterDropdown)).toHaveTextContent(buyTransactions);
+    });
+    it('should send analytics when previous filter value is defined', () => {
+        const { rerender } = render(mockedStatement());
+
+        (useReportsStore as jest.Mock).mockReturnValueOnce({
+            statement: {
+                ...useReportsStore().statement,
+                action_type: 'buy',
+            },
+        });
+        rerender(mockedStatement());
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(
+            'ce_reports_form',
+            expect.objectContaining({
+                action: 'filter_transaction_type',
+                form_name: 'default',
+                subform_name: 'statement_form',
+                transaction_type_filter: 'buy',
+            })
+        );
+    });
+    it('should send analytics when previous date_from and date_to are defined', () => {
+        const { rerender } = render(mockedStatement());
+
+        (useReportsStore as jest.Mock).mockReturnValueOnce({
+            statement: {
+                ...useReportsStore().statement,
+                date_from: 1717184362,
+                date_to: 1717631989,
+            },
+        });
+        rerender(mockedStatement());
+        expect(Analytics.trackEvent).toHaveBeenCalledWith(
+            'ce_reports_form',
+            expect.objectContaining({
+                action: 'filter_dates',
+                form_name: 'default',
+                subform_name: 'statement_form',
+                start_date_filter: formatDate(1717184362, 'DD/MM/YYYY', false),
+                end_date_filter: formatDate(1717631989, 'DD/MM/YYYY', false),
+            })
+        );
+    });
+});
+
+describe('getRowAction', () => {
+    const rowObj = {
+        is_sold: true,
+        shortcode: 'MULTUP_R_100_5.00_10_1717078783_4870713599_0_6.00_N1',
+        id: 243990619668,
+        action_type: 'sell',
+        purchase_time: 1717078783,
+        longcode:
+            "If you select 'Up', your total profit/loss will be the percentage increase in Volatility 100 Index, multiplied by 50, minus commissions.",
+        desc: "If you select 'Up', your total profit/loss will be the percentage increase in Volatility 100 Index, multiplied by 50, minus commissions.",
+        transaction_time: 1717465636,
+        withdrawal_details: '',
+    };
+    it('should return an empty object if row_obj is an empty object', () => {
+        expect(getRowAction?.({})).toMatchObject({});
+    });
+    it('should return contract path string if action_type in row_obj is sell & contract is supported & not forward-starting', () => {
+        const row_action = getRowAction?.(rowObj);
+        expect(row_action).toEqual('/contract/243990619668');
+    });
+    it('should return an object with component that renders details if action_type in row_obj is valid and its value is not buy or sell', () => {
+        const newRowObj = {
+            ...rowObj,
+            action_type: 'withdrawal',
+        };
+        render((getRowAction?.(newRowObj) as Record<string, JSX.Element>).component);
+        expect(screen.getByText(/If you select 'Up'/)).toBeInTheDocument();
     });
 });

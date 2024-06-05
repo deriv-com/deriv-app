@@ -77,7 +77,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 .account__scrollbars_container {
                     width: 68.5rem;
                     margin-inline-start: 6rem;
-                    padding-top: 0;
                     height: 100%;
                 }
             }
@@ -410,7 +409,6 @@ $MIN_HEIGHT_FLOATING: calc(
         &__personal-details {
             @include desktop-screen {
                 .account__scrollbars_container {
-                    padding-top: 2.4rem;
                     padding-bottom: 2.4rem;
                 }
             }

@@ -11,6 +11,7 @@ import CFDs from 'Assets/svgs/trading-platform/branding/ic-branding-mt5-cfds.svg
 import Derived from 'Assets/svgs/trading-platform/branding/ic-branding-mt5-derived-dashboard.svg';
 import Financial from 'Assets/svgs/trading-platform/branding/ic-branding-mt5-financial-dashboard.svg';
 import SmartTrader from 'Assets/svgs/trading-platform/branding/ic-branding-smarttrader-dashboard.svg';
+import Standard from 'Assets/svgs/trading-platform/branding/ic-branding-standard-dashboard.svg';
 import DropDown from 'Assets/svgs/trading-platform/drop-down.svg';
 import BinaryBotBlue from 'Assets/svgs/trading-platform/ic-appstore-binarybot-blue.svg';
 import DerivTradingLogo from 'Assets/svgs/trading-platform/ic-appstore-deriv-trading-logo.svg';
@@ -42,6 +43,7 @@ export const PlatformIcons = {
     Options,
     SmartTrader,
     SmartTraderBlue,
+    Standard,
 };
 
 const TradingPlatformIcon = ({ icon, className, size, onClick }: IconProps<keyof typeof PlatformIcons>) => {

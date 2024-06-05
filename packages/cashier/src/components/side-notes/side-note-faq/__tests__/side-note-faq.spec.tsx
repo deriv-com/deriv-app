@@ -1,10 +1,14 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import SideNoteFAQ from '../side-note-faq';
+
+const mock = mockStore({ ui: { is_desktop: true } });
+const wrapper = ({ children }: { children: JSX.Element }) => <StoreProvider store={mock}>{children}</StoreProvider>;
 
 describe('SideNoteFAQ', () => {
     it('should render faq regarding deposit', () => {
-        render(<SideNoteFAQ transaction_type='deposit' />);
+        render(<SideNoteFAQ transaction_type='deposit' />, { wrapper });
 
         expect(screen.getByText("Why can't I see deposited funds in my Deriv account?")).toBeInTheDocument();
         expect(screen.getByText('What do I do if I have reached my deposit limit?')).toBeInTheDocument();
@@ -13,7 +17,7 @@ describe('SideNoteFAQ', () => {
     });
 
     it('should render faq regarding withdrawal', () => {
-        render(<SideNoteFAQ transaction_type='withdraw' />);
+        render(<SideNoteFAQ transaction_type='withdraw' />, { wrapper });
 
         expect(
             screen.getByText("Why can't I see the funds on my card/e-wallet balance after I've made a withdrawal?")

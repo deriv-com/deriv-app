@@ -78,11 +78,11 @@ export default class ProfitTableStore extends BaseStore {
         if (!this.shouldFetchNextBatch()) return;
         this.is_loading = true;
         const dateParams = getDateBoundaries(this.date_from, this.date_to, 0, false);
-        const optionalParams = shouldFilterContractTypes
+        const params = shouldFilterContractTypes
             ? { ...dateParams, contract_type: this.root_store.modules.positions.filteredContractTypes }
             : dateParams;
 
-        const response = await WS.profitTable(batch_size, this.data.length, optionalParams);
+        const response = await WS.profitTable(batch_size, this.data.length, params);
 
         this.profitTableResponseHandler(response);
     }

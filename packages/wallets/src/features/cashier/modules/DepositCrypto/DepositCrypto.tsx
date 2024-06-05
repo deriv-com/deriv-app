@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useAuthorize, useDepositCryptoAddress } from '@deriv/api-v2';
+import { useDepositCryptoAddress } from '@deriv/api-v2';
 import { Loader } from '../../../../components';
 import { Divider } from '../../../../components/Base';
 import { isServerError } from '../../../../utils/utils';

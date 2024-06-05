@@ -8,6 +8,7 @@ import { getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer, Observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
@@ -23,6 +24,7 @@ const BuySellForm = props => {
     const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const { data: p2p_advertiser_payment_methods } = useP2PAdvertiserPaymentMethods();
+    const { stacked_modal } = useModalManagerContext();
 
     const { advert, has_rate_changed, setHasRateChanged, setPageFooterParent } = props;
     const {
@@ -114,10 +116,15 @@ const BuySellForm = props => {
     // This is to prevent the rate from changing when the MarketRateChangeErrorModal is shown on mobile and counterparty
     // changes the rate. This is to ensure that the rate is not changed when the user is in the middle of placing an order.
     React.useEffect(() => {
-        if (isMobile() && has_rate_changed && current_effective_rate !== effective_rate) {
+        if (
+            isMobile() &&
+            has_rate_changed &&
+            current_effective_rate !== effective_rate &&
+            stacked_modal?.key !== 'MarketRateChangeErrorModal'
+        ) {
             setChangedRate(effective_rate);
         }
-    }, [current_effective_rate, effective_rate, has_rate_changed]);
+    }, [current_effective_rate, effective_rate, has_rate_changed, stacked_modal]);
 
     React.useEffect(() => {
         if (current_effective_rate !== effective_rate && current_effective_rate !== 0) setHasRateChanged(true);
@@ -149,7 +156,7 @@ const BuySellForm = props => {
             initialValues: {
                 amount: min_order_amount_limit,
                 contact_info: buy_sell_store.temp_contact_info || general_store.contact_info,
-                payment_info: general_store.payment_info,
+                payment_info: buy_sell_store.temp_payment_info || general_store.payment_info,
                 rate: is_float ? default_effective_rate : null,
             },
             initialErrors: buy_sell_store.is_sell_advert ? { contact_info: true } : {},
@@ -461,6 +468,7 @@ const BuySellForm = props => {
                                         initial_character_count={general_store.payment_info.length}
                                         max_characters={300}
                                         disabled={should_disable_field}
+                                        onChange={event => buy_sell_store.setTempPaymentInfo(event.target.value)}
                                     />
                                 </div>
                             )}

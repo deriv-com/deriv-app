@@ -52,6 +52,7 @@ const BuySellModal = () => {
             buy_sell_store.fetchAdvertiserAdverts();
             buy_sell_store.unsubscribeAdvertInfo();
             buy_sell_store.setTempContactInfo(null);
+            buy_sell_store.setTempPaymentInfo(null);
             buy_sell_store.payment_method_ids = [];
         }
     };

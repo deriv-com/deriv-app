@@ -137,7 +137,7 @@ const App = () => {
             p2p_settings.currency_list.forEach(currency => {
                 const { is_default, value } = currency;
 
-                if (is_default) {
+                if (is_default && !buy_sell_store.selected_local_currency) {
                     buy_sell_store.setSelectedLocalCurrency(value);
                     buy_sell_store.setLocalCurrency(value);
                 }

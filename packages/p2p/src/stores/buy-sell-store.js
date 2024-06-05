@@ -38,6 +38,7 @@ export default class BuySellStore extends BaseStore {
     submitForm = null;
     table_type = buy_sell.BUY;
     temp_contact_info = null;
+    temp_payment_info = null;
     form_props = {};
     is_create_order_subscribed = false;
 
@@ -79,6 +80,7 @@ export default class BuySellStore extends BaseStore {
             submitForm: observable,
             table_type: observable,
             temp_contact_info: observable,
+            temp_payment_info: observable,
             form_props: observable,
             is_create_order_subscribed: observable,
             account_currency: computed,
@@ -124,6 +126,7 @@ export default class BuySellStore extends BaseStore {
             setSubmitForm: action.bound,
             setTableType: action.bound,
             setTempContactInfo: action.bound,
+            setTempPaymentInfo: action.bound,
             setSelectedAdvert: action.bound,
             showAdvertiserPage: action.bound,
             showVerification: action.bound,
@@ -223,7 +226,9 @@ export default class BuySellStore extends BaseStore {
                     },
                 });
             } else {
-                setErrorMessage(message);
+                if (!general_store.isCurrentModal('BuySellModal'))
+                    general_store.showModal({ key: 'BuySellModal', props: {} });
+                this.form_props.setErrorMessage(message);
                 this.setFormErrorCode(code);
             }
         } else {
@@ -256,7 +261,7 @@ export default class BuySellStore extends BaseStore {
         const payload = {
             p2p_order_create: 1,
             advert_id: this.advert.id,
-            amount: values.amount,
+            amount: this.form_props.input_amount,
             payment_method_ids: this.payment_method_ids,
             ...(values.payment_info && this.is_sell_advert ? { payment_info: values.payment_info } : {}),
             // Validate extra information for sell adverts.
@@ -407,6 +412,10 @@ export default class BuySellStore extends BaseStore {
 
     setTempContactInfo(temp_contact_info) {
         this.temp_contact_info = temp_contact_info;
+    }
+
+    setTempPaymentInfo(temp_payment_info) {
+        this.temp_payment_info = temp_payment_info;
     }
 
     setSelectedAdvert(selected_advert) {

@@ -11,6 +11,7 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
             setIsMarketRateErrorModalOpen: jest.fn(),
         },
         setTempContactInfo: jest.fn(),
+        setTempPaymentInfo: jest.fn(),
         payment_method_ids: [],
     },
 };
@@ -32,8 +33,13 @@ jest.mock('Stores', () => ({
 
 const el_modal = document.createElement('div');
 
+let mock_ui_store = {
+    is_desktop: true,
+    is_mobile: false,
+};
+
 const wrapper = ({ children }: { children: JSX.Element }) => (
-    <StoreProvider store={mockStore({ ui: { is_desktop: true } })}>{children}</StoreProvider>
+    <StoreProvider store={mockStore({ ui: mock_ui_store })}>{children}</StoreProvider>
 );
 
 const mock_props = {
@@ -85,5 +91,30 @@ describe('<MarketRateChangeErrorModal />', () => {
         expect(mock_modal_manager.hideModal).toHaveBeenCalled();
         expect(mock_store.buy_sell_store.form_props.setIsMarketRateErrorModalOpen).toHaveBeenCalledWith(false);
         expect(mock_store.buy_sell_store.setTempContactInfo).toHaveBeenCalledWith(null);
+    });
+
+    it('should call submitForm and not hideModal on desktop, when clicking on Continue with order button', () => {
+        render(<MarketRateChangeErrorModal {...mock_props} />, { wrapper });
+
+        const continue_button = screen.getByRole('button', { name: 'Continue with order' });
+        continue_button.click();
+
+        expect(mock_modal_manager.hideModal).not.toHaveBeenCalled();
+        expect(mock_props.submitForm).toHaveBeenCalled();
+    });
+
+    it('should call submitForm and hideModal on mobile, when clicking on Continue with order button', () => {
+        mock_ui_store = {
+            is_desktop: false,
+            is_mobile: true,
+        };
+
+        render(<MarketRateChangeErrorModal {...mock_props} />, { wrapper });
+
+        const continue_button = screen.getByRole('button', { name: 'Continue with order' });
+        continue_button.click();
+
+        expect(mock_modal_manager.hideModal).toHaveBeenCalled();
+        expect(mock_props.submitForm).toHaveBeenCalled();
     });
 });

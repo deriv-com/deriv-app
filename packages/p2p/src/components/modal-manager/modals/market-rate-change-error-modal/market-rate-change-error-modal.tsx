@@ -20,7 +20,7 @@ const MarketRateChangeErrorModal = ({ submitForm, values }: TMarketRateChangeErr
     const { is_modal_open, hideModal } = useModalManagerContext();
     const { buy_sell_store } = useStores();
     const {
-        ui: { is_desktop },
+        ui: { is_desktop, is_mobile },
     } = useStore();
 
     React.useEffect(() => {
@@ -67,6 +67,7 @@ const MarketRateChangeErrorModal = ({ submitForm, values }: TMarketRateChangeErr
                             buy_sell_store.form_props.setIsMarketRateErrorModalOpen(false);
                             if (is_desktop) {
                                 buy_sell_store.setTempContactInfo(null);
+                                buy_sell_store.setTempPaymentInfo(null);
                                 buy_sell_store.payment_method_ids = [];
                             }
                         }}
@@ -76,7 +77,10 @@ const MarketRateChangeErrorModal = ({ submitForm, values }: TMarketRateChangeErr
                     />
                     <Button
                         className='market-rate-change-error-modal__continue'
-                        onClick={submitForm}
+                        onClick={() => {
+                            if (is_mobile) hideModal();
+                            submitForm();
+                        }}
                         text={localize('Continue with order')}
                         primary
                         large

@@ -2247,11 +2247,6 @@ export default class ClientStore extends BaseStore {
             }
         });
 
-        // send email instead of code in case of lazy signup without needing the email verification
-        if (this.new_email.signup) {
-            signup_params.email = this.new_email.signup;
-        }
-
         return signup_params;
     }
 
@@ -2289,8 +2284,25 @@ export default class ClientStore extends BaseStore {
     }
 
     onSignup({ citizenship, password, residence }, cb) {
-        if (!this.verification_code.signup || !password || !residence || !citizenship) return;
-        WS.newAccountVirtual(this.verification_code.signup, password, residence, this.getSignupParams())
+        if ((!this.verification_code.signup && !this.new_email.signup) || !password || !residence || !citizenship)
+            return;
+
+        const payload = {
+            residence,
+            client_password: password,
+            ...this.getSignupParams(),
+        };
+
+        // send email instead of code in case of lazy signup without needing the email verification
+        if (this.new_email.signup) {
+            payload.email = this.new_email.signup;
+        }
+        // verification code is needed for normal signup, however it's not present in lazy signup
+        if (this.verification_code.signup) {
+            payload.verification_code = this.verification_code.signup;
+        }
+
+        WS.newAccountVirtual(payload)
             .then(async response => {
                 if (response.error) {
                     cb(response.error.message);

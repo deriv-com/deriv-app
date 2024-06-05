@@ -311,6 +311,9 @@ $colour_toolboxSelected: $black;
         cursor: grab;
         cursor: -webkit-grab;
         cursor: -moz-grab;
+        image[alt='Collapsed'] {
+            transform: translate(7px);
+        }
     }
 
     .blocklyDragging {

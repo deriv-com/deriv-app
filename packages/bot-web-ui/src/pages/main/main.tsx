@@ -87,7 +87,7 @@ const AppWrapper = observer(() => {
     React.useEffect(() => {
         const trashcan_init_id = setTimeout(() => {
             if (active_tab === BOT_BUILDER && Blockly?.derivWorkspace?.trashcan) {
-                const trashcanY = 648;
+                const trashcanY = window.innerHeight - 250;
                 let trashcanX;
                 if (is_drawer_open) {
                     trashcanX = isDbotRTL() ? 380 : window.innerWidth - 460;

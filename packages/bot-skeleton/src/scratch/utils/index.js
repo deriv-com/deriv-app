@@ -568,7 +568,7 @@ export const removeExtraInput = instance => {
     if (collapsed_input && instance.collapsed_ && !collapsed_input.icon_added) {
         collapsed_input.icon_added = true;
         const dropdown_path = `${instance.workspace.options.pathToMedia}dropdown-arrow.svg`;
-        const field_expand_icon = new Blockly.FieldImage(dropdown_path, 16, 16, localize('Expand'), () =>
+        const field_expand_icon = new Blockly.FieldImage(dropdown_path, 16, 16, localize('Collapsed'), () =>
             instance.setCollapsed(false)
         );
         const function_name = instance.getFieldValue('NAME');

@@ -16,28 +16,6 @@ const mock_response = {
 };
 
 describe('useRequestPhoneNumberOTP', () => {
-    it('should validate a correct phone number', async () => {
-        (useMutation as jest.Mock).mockReturnValueOnce(mock_response);
-        const { result } = renderHook(() => useRequestPhoneNumberOTP());
-
-        await act(async () => {
-            result.current.validatePhoneNumber('+1234567890');
-        });
-
-        expect(result.current.error_message).toBe('');
-    });
-
-    it('should return error when given an incorrect phone number', async () => {
-        (useMutation as jest.Mock).mockReturnValue(mock_response);
-        const { result } = renderHook(() => useRequestPhoneNumberOTP());
-
-        await act(async () => {
-            result.current.validatePhoneNumber('invalid');
-        });
-
-        expect(result.current.error_message).toStrictEqual(['Please enter a valid phone number.']);
-    });
-
     it('should call mutate with correct payload for SMS request and return correct response', () => {
         (useMutation as jest.Mock).mockReturnValueOnce(mock_response);
         const { result } = renderHook(() => useRequestPhoneNumberOTP());

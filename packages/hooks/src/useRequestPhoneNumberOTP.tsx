@@ -1,9 +1,7 @@
 import React from 'react';
-import * as Yup from 'yup';
-import { ValidationConstants } from '@deriv-com/utils';
 import { useMutation } from '@deriv/api';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 
 type THandleError = {
     code: string;
@@ -14,20 +12,6 @@ type THandleError = {
 const useRequestPhoneNumberOTP = () => {
     const { data, mutate, ...rest } = useMutation('phone_number_challenge');
     const [error_message, setErrorMessage] = React.useState<React.ReactNode>('');
-
-    const phoneNumberSchema = Yup.string().matches(
-        ValidationConstants.patterns.phoneNumber,
-        localize('Please enter a valid phone number.')
-    );
-
-    const validatePhoneNumber = (phone_number: string) => {
-        phoneNumberSchema
-            .validate(phone_number)
-            .then(() => setErrorMessage(''))
-            .catch(({ errors }: any) => {
-                setErrorMessage(errors);
-            });
-    };
 
     const requestOnSMS = () => {
         mutate({ payload: { carrier: VERIFICATION_SERVICES.SMS } });
@@ -66,7 +50,6 @@ const useRequestPhoneNumberOTP = () => {
         requestOnSMS,
         handleError,
         setErrorMessage,
-        validatePhoneNumber,
         mutate,
         ...rest,
     };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { useRequestPhoneNumberOTP } from '@deriv/hooks';
@@ -10,9 +10,9 @@ jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useRequestPhoneNumberOTP: jest.fn(() => ({
         error_message: '',
-        validatePhoneNumber: jest.fn(),
         requestOnWhatsApp: jest.fn(),
         requestOnSMS: jest.fn(),
+        setErrorMessage: jest.fn(),
         handleError: jest.fn(),
     })),
 }));
@@ -58,10 +58,10 @@ describe('ConfirmPhoneNumber', () => {
         expect(screen.getByRole('button', { name: 'Get code via WhatsApp' })).toBeInTheDocument();
     });
 
-    it('should call validatePhoneNumber when the user presses a key', () => {
-        const mock_validate_phone_number = jest.fn();
+    it('should call setErrorMessage when the user presses a key', async () => {
+        const mock_set_error_message = jest.fn();
         (useRequestPhoneNumberOTP as jest.Mock).mockReturnValue({
-            validatePhoneNumber: mock_validate_phone_number,
+            setErrorMessage: mock_set_error_message,
         });
         render(
             <StoreProvider store={store}>
@@ -72,8 +72,8 @@ describe('ConfirmPhoneNumber', () => {
         expect(screen.getByText('Confirm your phone number')).toBeInTheDocument();
         expect(phone_number_textfield).toBeInTheDocument();
         userEvent.clear(phone_number_textfield);
-        userEvent.type(phone_number_textfield, '+01293291291');
-        expect(mock_validate_phone_number).toHaveBeenCalled();
+        await act(async () => userEvent.type(phone_number_textfield, '+01293291291'));
+        expect(mock_set_error_message).toHaveBeenCalled();
     });
 
     it('should display given error message', () => {

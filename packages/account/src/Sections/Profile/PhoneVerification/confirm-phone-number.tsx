@@ -5,6 +5,7 @@ import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useRequestPhoneNumberOTP } from '@deriv/hooks';
 import { VERIFICATION_SERVICES, WS } from '@deriv/shared';
+import { validatePhoneNumber } from './validation';
 
 type TConfirmPhoneNumber = {
     setOtpVerification: (value: { show_otp_verification: boolean; phone_verification_type: string }) => void;
@@ -12,7 +13,7 @@ type TConfirmPhoneNumber = {
 
 const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber) => {
     const [phone_number, setPhoneNumber] = React.useState('');
-    const { requestOnSMS, requestOnWhatsApp, error_message, handleError, validatePhoneNumber, ...rest } =
+    const { requestOnSMS, requestOnWhatsApp, error_message, handleError, setErrorMessage, ...rest } =
         useRequestPhoneNumberOTP();
     const { client, ui } = useStore();
     const { account_settings } = client;
@@ -24,7 +25,7 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
 
     const handleOnChangePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPhoneNumber(e.target.value);
-        validatePhoneNumber(e.target.value);
+        validatePhoneNumber(e.target.value, setErrorMessage);
     };
 
     const handleSubmit = async (phone_verification_type: string) => {

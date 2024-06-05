@@ -38,7 +38,7 @@
         list-style: disc;
         margin-left: 1.5rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             margin-bottom: 1.5rem;
         }
     }

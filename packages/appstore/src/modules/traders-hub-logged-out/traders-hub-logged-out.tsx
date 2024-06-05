@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
-import { Div100vhContainer, DesktopWrapper, MobileWrapper, Loading, Text } from '@deriv/components';
+import { Div100vhContainer, DesktopWrapper, MobileOrTabletWrapper, Loading, Text } from '@deriv/components';
 import { isEuCountry } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import OrderedPlatformSections from 'Components/ordered-platform-sections';
@@ -42,10 +42,10 @@ const TradersHubLoggedOut = observer(() => {
                 <DesktopWrapper>
                     <OrderedPlatformSections isDesktop />
                 </DesktopWrapper>
-                <MobileWrapper>
+                <MobileOrTabletWrapper>
                     <TabsOrTitle />
                     <OrderedPlatformSections />
-                </MobileWrapper>
+                </MobileOrTabletWrapper>
             </div>
         </Div100vhContainer>
     );

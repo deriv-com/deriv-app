@@ -99,7 +99,7 @@
                 align-self: stretch;
 
                 & > .wallets-text {
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         max-width: 18rem;
                     }
                 }

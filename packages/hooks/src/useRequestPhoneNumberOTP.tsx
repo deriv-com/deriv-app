@@ -11,7 +11,7 @@ type THandleError = {
 };
 
 /** A hook for requesting OTP which is sent on whatsapp or sms platforms */
-const useGetPhoneNumberOTP = () => {
+const useRequestPhoneNumberOTP = () => {
     const { data, mutate, ...rest } = useMutation('phone_number_challenge');
     const [error_message, setErrorMessage] = React.useState<React.ReactNode>('');
 
@@ -72,4 +72,4 @@ const useGetPhoneNumberOTP = () => {
     };
 };
 
-export default useGetPhoneNumberOTP;
+export default useRequestPhoneNumberOTP;

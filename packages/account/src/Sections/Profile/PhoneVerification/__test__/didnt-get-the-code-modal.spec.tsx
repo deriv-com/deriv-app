@@ -3,12 +3,12 @@ import React from 'react';
 import DidntGetTheCodeModal from '../didnt-get-the-code-modal';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import userEvent from '@testing-library/user-event';
-import { useGetPhoneNumberOTP } from '@deriv/hooks';
+import { useRequestPhoneNumberOTP } from '@deriv/hooks';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
-    useGetPhoneNumberOTP: jest.fn(() => ({
+    useRequestPhoneNumberOTP: jest.fn(() => ({
         requestOnWhatsApp: jest.fn(),
         requestOnSMS: jest.fn(),
     })),
@@ -75,7 +75,7 @@ describe('DidntGetTheCodeModal', () => {
     it('should render mockRequestOnSMS and setOtpVerification with phone_verification_type: sms when Resend code is clicked, phone_verification_type is sms', () => {
         const mockRequestOnSMS = jest.fn();
 
-        (useGetPhoneNumberOTP as jest.Mock).mockReturnValueOnce({
+        (useRequestPhoneNumberOTP as jest.Mock).mockReturnValueOnce({
             requestOnSMS: mockRequestOnSMS,
         });
         renderComponent(VERIFICATION_SERVICES.SMS);
@@ -91,7 +91,7 @@ describe('DidntGetTheCodeModal', () => {
     it('should render mockRequestOnWhatsapp and setOtpVerification with phone_verification_type: whatsapp when Resend code is clicked, phone_verification_type is whatsapp', () => {
         const mockRequestOnWhatsapp = jest.fn();
 
-        (useGetPhoneNumberOTP as jest.Mock).mockReturnValueOnce({
+        (useRequestPhoneNumberOTP as jest.Mock).mockReturnValueOnce({
             requestOnWhatsApp: mockRequestOnWhatsapp,
         });
         renderComponent(VERIFICATION_SERVICES.WHATSAPP);
@@ -107,7 +107,7 @@ describe('DidntGetTheCodeModal', () => {
     it('should render mockRequestOnSMS and setOtpVerification with phone_verification_type: sms when Send code via SMS is clicked, phone_verification_type is whatsapp', () => {
         const mockRequestOnSMS = jest.fn();
 
-        (useGetPhoneNumberOTP as jest.Mock).mockReturnValueOnce({
+        (useRequestPhoneNumberOTP as jest.Mock).mockReturnValueOnce({
             requestOnSMS: mockRequestOnSMS,
         });
         renderComponent(VERIFICATION_SERVICES.WHATSAPP);
@@ -123,7 +123,7 @@ describe('DidntGetTheCodeModal', () => {
     it('should render mockRequestOnWhatsApp and setOtpVerification with phone_verification_type: whatsapp when Send code via WhatsApp is clicked, phone_verification_type is whatsapp', () => {
         const mockRequestOnWhatsapp = jest.fn();
 
-        (useGetPhoneNumberOTP as jest.Mock).mockReturnValueOnce({
+        (useRequestPhoneNumberOTP as jest.Mock).mockReturnValueOnce({
             requestOnWhatsApp: mockRequestOnWhatsapp,
         });
         renderComponent(VERIFICATION_SERVICES.SMS);

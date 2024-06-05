@@ -10,7 +10,6 @@ type TLeaveConfirmMessage = {
     back: () => void;
     leave: () => void;
 };
-
 type TTransitionBlocker = RouteComponentProps & {
     dirty: boolean;
     onDirty?: (prop: boolean) => void;
@@ -50,24 +49,20 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
     const [next_location, setNextLocation] = React.useState<{ pathname: string } | null>(null);
     const history = useHistory();
     const { isMobile } = useDevice();
-
+  
     React.useEffect(() => {
         return () => unblock();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
     const unblock = history.block((location: { pathname: string }) => {
         if (dirty) {
             if (onDirty) onDirty(false);
-
             if (show) leave();
-
             setShow(true);
             setNextLocation(location);
         }
         return !dirty;
     });
-
     const leave = () => {
         if (next_location?.pathname) {
             const { pathname } = next_location;
@@ -75,7 +70,6 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
             history.push(pathname);
         } else history.push(null);
     };
-
     const back = () => {
         setNextLocation(null);
         setShow(false);
@@ -97,11 +91,9 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
     );
 };
 export const TransitionBlockerWithRouter = withRouter(TransitionBlocker);
-
 const LeaveConfirm = ({ onDirty }: { onDirty?: (prop: boolean) => void }) => (
     <FormikConsumer>
         {formik => <TransitionBlockerWithRouter onDirty={onDirty} dirty={formik.dirty && formik.submitCount === 0} />}
     </FormikConsumer>
 );
-
 export default LeaveConfirm;

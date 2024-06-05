@@ -124,6 +124,7 @@ export default class ClientStore extends BaseStore {
     new_email = {
         system_email_change: '',
         social_email_change: '',
+        signup: '',
     };
 
     account_limits = {};
@@ -1441,6 +1442,7 @@ export default class ClientStore extends BaseStore {
         const search_params = new URLSearchParams(search);
         const redirect_url = search_params?.get('redirect_url');
         const code_param = search_params?.get('code');
+        const email_param = search_params?.get('email');
         const action_param = search_params?.get('action');
         const loginid_param = search_params?.get('loginid');
         const unused_params = [
@@ -1479,6 +1481,17 @@ export default class ClientStore extends BaseStore {
                     history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
                 }, 0);
             });
+
+            if (email_param && action_param === 'signup') {
+                this.setNewEmail(email_param, action_param);
+                document.addEventListener('DOMContentLoaded', () => {
+                    setTimeout(() => {
+                        // timeout is needed to get the token (code) from the URL before we hide it from the URL
+                        // and from LiveChat that gets the URL from Window, particularly when initialized via HTML script on mobile
+                        history.replaceState(null, null, window.location.search.replace(/&?email=[^&]*/i, ''));
+                    }, 0);
+                });
+            }
         }
 
         this.setDeviceData();
@@ -2197,6 +2210,9 @@ export default class ClientStore extends BaseStore {
         } else {
             LocalStore.remove(`new_email.${action}`);
         }
+        if (action === 'signup') {
+            this.fetchResidenceList(); // Prefetch for use in account signup process
+        }
     }
 
     setDeviceData() {
@@ -2230,6 +2246,11 @@ export default class ClientStore extends BaseStore {
                 signup_params[key] = url_params.get(key);
             }
         });
+
+        // send email instead of code in case of lazy signup without needing the email verification
+        if (this.new_email.signup) {
+            signup_params.email = this.new_email.signup;
+        }
 
         return signup_params;
     }

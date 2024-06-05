@@ -1,4 +1,4 @@
-import React from 'react';
+import { ComponentProps } from 'react';
 import { render, screen } from '@testing-library/react';
 import { PasskeysStatusContainer } from '../passkeys-status-container';
 import { PASSKEY_STATUS_CODES, TPasskeysStatus } from '../../passkeys-configs';
@@ -23,9 +23,10 @@ describe('PasskeysStatusContainer', () => {
     const mockOnPrimaryButtonClick = jest.fn();
     const mockOnonPasskeyMenuClick = jest.fn();
     const mockOnSecondaryButtonClick = jest.fn();
-    const mock_current_managed_passkey: React.ComponentProps<
-        typeof PasskeysStatusContainer
-    >['current_managed_passkey'] = { id: 777, name: 'test passkey name' };
+    const mock_current_managed_passkey: ComponentProps<typeof PasskeysStatusContainer>['current_managed_passkey'] = {
+        id: 777,
+        name: 'test passkey name',
+    };
 
     const renderComponent = (passkey_status: TPasskeysStatus) => {
         render(

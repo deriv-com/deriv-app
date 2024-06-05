@@ -7,14 +7,14 @@ import { PASSKEY_STATUS_CODES, passkeysMenuActionEventTrack } from '../passkeys-
 type TPasskeyCard = TPasskey & { onPasskeyMenuClick: TOnPasskeyMenuClick };
 
 export const PasskeyCard = ({ name, last_used, stored_on, id, icon, onPasskeyMenuClick }: TPasskeyCard) => {
+    const current_passkey_data = { id, name };
     const handleManagePasskey = (event: { target: { value: string } }) => {
         if (event.target.value === 'rename') {
-            onPasskeyMenuClick(PASSKEY_STATUS_CODES.RENAMING, {
-                id,
-                name,
-            });
+            onPasskeyMenuClick(PASSKEY_STATUS_CODES.RENAMING, current_passkey_data);
             passkeysMenuActionEventTrack('passkey_rename_open');
         } else if (event.target.value === 'remove') {
+            // TODO: check if we need to pass id
+            onPasskeyMenuClick(PASSKEY_STATUS_CODES.REMOVING, current_passkey_data);
             // TODO: add action for revoke passkey
         }
     };

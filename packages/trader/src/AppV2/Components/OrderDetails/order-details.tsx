@@ -14,30 +14,28 @@ const OrderDetails = ({ contract_info }: ContractInfoProps) => {
     const details = orderDetails ? orderDetails.details : {};
     return (
         <div className='order-details'>
-            <CardWrapper title='Order Details'>
-                <div className='table'>
-                    {Object.entries(details).map(([key, value], index) => (
-                        <div className='row' key={index}>
-                            <div className='cell'>
-                                <Text size='sm' color='quill-typography__color--subtle'>
-                                    <Localize i18n_default_text={key} />
-                                </Text>
-                            </div>
-                            <div className='cell'>
-                                {Array.isArray(value) ? (
-                                    value.map((val, i) => (
-                                        <Text key={i} size='sm'>
-                                            {val}
-                                        </Text>
-                                    ))
-                                ) : (
-                                    <Text size='sm'>{value as string | number}</Text>
-                                )}
-                            </div>
+            <div className='table'>
+                {Object.entries(details).map(([key, value], index) => (
+                    <div className='row' key={index}>
+                        <div className='cell'>
+                            <Text size='sm' color='quill-typography__color--subtle'>
+                                {key}
+                            </Text>
                         </div>
-                    ))}
-                </div>
-            </CardWrapper>
+                        <div className='cell'>
+                            {Array.isArray(value) ? (
+                                value.map((val, i) => (
+                                    <Text key={i} size='sm'>
+                                        {val}
+                                    </Text>
+                                ))
+                            ) : (
+                                <Text size='sm'>{value as string | number}</Text>
+                            )}
+                        </div>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

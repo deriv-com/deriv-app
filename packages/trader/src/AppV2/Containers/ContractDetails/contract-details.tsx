@@ -12,12 +12,13 @@ import { getContractDetailsConfig } from 'AppV2/Utils/contract-details-config';
 import TakeProfit from 'AppV2/Components/TakeProfit/take-profit';
 import StopLoss from 'AppV2/Components/StopLoss/stop-loss';
 import DealCancellation from 'AppV2/Components/DealCancellation/deal-cancellation';
-import { isOpen } from '@deriv/shared';
+import { hasContractStarted, isForwardStarting, isMultiplierContract, isOpen, isValidToCancel } from '@deriv/shared';
+import classNames from 'classnames';
+import ContractDetailsFooter from 'AppV2/Components/ContractDetailsFooter';
 
 const ContractDetails = observer(() => {
     const { contract_info, is_loading } = useContractDetails();
     if (is_loading) return <></>;
-    const { is_tp_history_visible } = getContractDetailsConfig(contract_info.contract_type ?? '');
     const historyData = [
         { date: '01 Jan 2024', time: '12:00:00 GMT', action: 'Take profit', amount: '5.00 USD' },
         { date: '02 Jan 2024', time: '13:00:00 GMT', action: 'Take profit', amount: '10.00 USD' },
@@ -26,8 +27,21 @@ const ContractDetails = observer(() => {
         { date: '05 Jan 2024', time: '12:00:00 GMT', action: 'Take profit', amount: '5.00 USD' },
         { date: '06 Jan 2024', time: '13:00:00 GMT', action: 'Take profit', amount: '10.00 USD' },
     ];
+    const is_multiplier = isMultiplierContract(contract_info.contract_type);
+    const is_valid_to_cancel = isValidToCancel(contract_info);
+    const should_show_sell =
+        (hasContractStarted(contract_info) ||
+            isForwardStarting(contract_info?.shortcode ?? '', contract_info.purchase_time)) &&
+        isOpen(contract_info);
+    const { is_tp_history_visible } = getContractDetailsConfig(contract_info.contract_type ?? '');
+    const show_cancel_button = is_multiplier && is_valid_to_cancel;
     return (
-        <div className='contract-details'>
+        <div
+            className={classNames('contract-details', {
+                'contract-details--two-buttons': should_show_sell && show_cancel_button,
+                'contract-details--one-button': should_show_sell && !show_cancel_button,
+            })}
+        >
             {/* TODO: remove temp contract card */}
             <div className='contract-card'>
                 <div className='row first-row'>
@@ -61,12 +75,13 @@ const ContractDetails = observer(() => {
                     <StopLoss />
                 </CardWrapper>
             )}
-            <div className='placeholder'>
+            <CardWrapper title='Order Details'>
                 <OrderDetails contract_info={contract_info} />
-            </div>
+            </CardWrapper>
             <PayoutInfo contract_info={contract_info} />
             <EntryExitDetails contract_info={contract_info} />
             {is_tp_history_visible && <TakeProfitHistory history={historyData} />}
+            {should_show_sell && <ContractDetailsFooter contract_info={contract_info} />}
         </div>
     );
 });

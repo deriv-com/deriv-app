@@ -4,10 +4,13 @@ import { useStore } from '@deriv/stores';
 
 const useContractDetails = () => {
     const store = useStore();
-    const { contract_replay } = store;
+    const { contract_replay, contract_trade } = store;
+    const { getContractById } = contract_trade;
     const { contract_store, onMount } = contract_replay;
-    const location = useLocation();
     const { contract_info } = contract_store;
+    const contract = getContractById(contract_info.contract_id);
+
+    const location = useLocation();
 
     useEffect(() => {
         if (!contract_info.contract_id) {
@@ -21,6 +24,7 @@ const useContractDetails = () => {
 
     return {
         contract_info,
+        contract,
         is_loading: !contract_info.contract_id,
     };
 };

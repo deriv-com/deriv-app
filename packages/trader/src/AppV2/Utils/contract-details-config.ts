@@ -15,13 +15,25 @@ export const getContractDetailsConfig = (contract_type: string) => {
             is_stop_loss_visible: false,
             is_tp_history_visible: true,
         },
-        [CONTRACT_TYPES.MULTIPLIER.UP || CONTRACT_TYPES.MULTIPLIER.DOWN]: {
+        [CONTRACT_TYPES.MULTIPLIER.UP]: {
             is_take_profit_visible: true,
             is_deal_cancellation_visible: true,
             is_stop_loss_visible: true,
             is_tp_history_visible: true,
         },
-        [CONTRACT_TYPES.TURBOS.LONG || CONTRACT_TYPES.TURBOS.SHORT]: {
+        [CONTRACT_TYPES.MULTIPLIER.DOWN]: {
+            is_take_profit_visible: true,
+            is_deal_cancellation_visible: true,
+            is_stop_loss_visible: true,
+            is_tp_history_visible: true,
+        },
+        [CONTRACT_TYPES.TURBOS.LONG]: {
+            is_take_profit_visible: true,
+            is_deal_cancellation_visible: false,
+            is_stop_loss_visible: false,
+            is_tp_history_visible: true,
+        },
+        [CONTRACT_TYPES.TURBOS.SHORT]: {
             is_take_profit_visible: true,
             is_deal_cancellation_visible: false,
             is_stop_loss_visible: false,

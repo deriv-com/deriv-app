@@ -7,7 +7,13 @@ import DateRangePicker from 'AppV2/Components/DatePicker';
 
 type TTimeFilter = {
     customTimeRangeFilter?: string;
-    handleDateChange: (values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean }) => void;
+    handleDateChange: (
+        values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean },
+        date_range?: {
+            date_range: any;
+        },
+        shouldFiltrateContractTypes?: boolean
+    ) => void;
     setTimeFilter: (newTimeFilter?: string | undefined) => void;
     setCustomTimeRangeFilter: (newCustomTimeFilter?: string | undefined) => void;
     setNoMatchesFound: React.Dispatch<React.SetStateAction<boolean>>;
@@ -70,23 +76,35 @@ const TimeFilter = ({
         setIsDropdownOpen(false);
 
         if (value === 'Today') {
-            handleDateChange({
-                from: toMoment().startOf('day'),
-                to: toMoment().endOf('day'),
-                is_batch: true,
-            });
+            handleDateChange(
+                {
+                    from: toMoment().startOf('day'),
+                    to: toMoment().endOf('day'),
+                    is_batch: true,
+                },
+                undefined,
+                true
+            );
         } else if (value === 'Yesterday') {
-            handleDateChange({
-                from: toMoment().subtract(1, 'days').startOf('day'),
-                to: toMoment().subtract(1, 'days').endOf('day'),
-                is_batch: true,
-            });
+            handleDateChange(
+                {
+                    from: toMoment().subtract(1, 'days').startOf('day'),
+                    to: toMoment().subtract(1, 'days').endOf('day'),
+                    is_batch: true,
+                },
+                undefined,
+                true
+            );
         } else {
-            handleDateChange({
-                from: toMoment().startOf('day').subtract(Number(value), 'day').add(1, 's'),
-                to: toMoment().endOf('day'),
-                is_batch: true,
-            });
+            handleDateChange(
+                {
+                    from: toMoment().startOf('day').subtract(Number(value), 'day').add(1, 's'),
+                    to: toMoment().endOf('day'),
+                    is_batch: true,
+                },
+                undefined,
+                true
+            );
         }
     };
 
@@ -94,10 +112,14 @@ const TimeFilter = ({
         setTimeFilter('');
         setCustomTimeRangeFilter('');
         setIsDropdownOpen(false);
-        handleDateChange({
-            to: toMoment().endOf('day'),
-            is_batch: true,
-        });
+        handleDateChange(
+            {
+                to: toMoment().endOf('day'),
+                is_batch: true,
+            },
+            undefined,
+            true
+        );
         setNoMatchesFound(false);
     };
 

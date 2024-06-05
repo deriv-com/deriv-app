@@ -7,7 +7,13 @@ import { DEFAULT_DATE_FORMATTING_CONFIG } from 'AppV2/Utils/positions-utils';
 
 type TDateRangePicker = {
     applyHandler: () => void;
-    handleDateChange: (values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean }) => void;
+    handleDateChange: (
+        values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean },
+        date_range?: {
+            date_range: any;
+        },
+        shouldFiltrateContractTypes?: boolean
+    ) => void;
     onClose: () => void;
     isOpen?: boolean;
     setCustomTimeRangeFilter: (newCustomTimeFilter?: string | undefined) => void;
@@ -25,10 +31,14 @@ const DateRangePicker = ({
     const onApply = () => {
         setCustomTimeRangeFilter(chosenRangeString);
         if (Array.isArray(chosenRange) && chosenRange.length) {
-            handleDateChange({
-                from: toMoment(chosenRange[0]),
-                to: chosenRange[1] ? toMoment(chosenRange[1]) : moment(chosenRange[0]).endOf('day'),
-            });
+            handleDateChange(
+                {
+                    from: toMoment(chosenRange[0]),
+                    to: chosenRange[1] ? toMoment(chosenRange[1]) : moment(chosenRange[0]).endOf('day'),
+                },
+                undefined,
+                true
+            );
         }
         applyHandler();
     };

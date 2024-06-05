@@ -32,6 +32,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     const { currency } = client;
     const { active_positions, is_active_empty, onClickCancel, onClickSell, onMount: onOpenTabMount } = portfolio;
     const {
+        clearTable,
         data,
         fetchNextBatch: fetchMoreClosedPositions,
         handleScroll,
@@ -58,7 +59,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     const onScroll = React.useCallback(
         (e: React.UIEvent<HTMLDivElement>) => {
             if (isClosedTab) {
-                handleScroll(e);
+                handleScroll(e, true);
             }
         },
         [handleScroll, isClosedTab]
@@ -82,20 +83,24 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
         />
     );
 
+    const updateClosedPositions = () => {
+        clearTable();
+        fetchMoreClosedPositions(true);
+    };
+
     React.useEffect(() => {
-        if (contractTypeFilter.length) {
+        if (contractTypeFilter.length && !isClosedTab) {
             const result = filterPositions(positions, contractTypeFilter);
             setNoMatchesFound(!result.length);
             setFilteredPositions(result);
-            if (result.length < 5 && isClosedTab) {
-                fetchMoreClosedPositions();
-            }
         } else {
             setNoMatchesFound(false);
             setFilteredPositions(positions);
         }
-        if (isClosedTab) setNoMatchesFound(!positions.length && !!(timeFilter || customTimeRangeFilter));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        if (isClosedTab)
+            setNoMatchesFound(
+                !positions.length && !!(timeFilter || customTimeRangeFilter || contractTypeFilter.length)
+            );
     }, [isClosedTab, positions, contractTypeFilter, timeFilter, customTimeRangeFilter]);
 
     React.useEffect(() => {
@@ -128,6 +133,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
                     <ContractTypeFilter
                         setContractTypeFilter={setContractTypeFilter}
                         contractTypeFilter={contractTypeFilter}
+                        updateClosedPositions={isClosedTab ? updateClosedPositions : undefined}
                     />
                 </div>
             )}

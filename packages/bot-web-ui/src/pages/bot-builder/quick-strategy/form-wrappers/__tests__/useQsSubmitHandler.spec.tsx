@@ -63,7 +63,7 @@ jest.mock('@deriv/bot-skeleton', () => ({
 
 jest.mock('../../../../../xml/martingale_max-stake.xml', () => '');
 
-describe('<useQsSubmitHandler />', () => {
+describe('useQsSubmitHandler hook', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
     const mock_store = mockStore({});
 

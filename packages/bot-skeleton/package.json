@@ -35,7 +35,7 @@
         "typescript": "^4.6.3"
     },
     "dependencies": {
-        "blockly": "3.20191014.4",
+        "blockly": "11.1.0",
         "@deriv/deriv-api": "^1.0.15",
         "@deriv/indicators": "^1.0.0",
         "@deriv/js-interpreter": "^3.0.0",

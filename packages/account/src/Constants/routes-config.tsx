@@ -1,12 +1,9 @@
 // /* eslint-disable @typescript-eslint/ban-ts-comment */
 // // @ts-nocheck [TODO] - Need to update the types of routes
 
-import React from 'react';
 import { routes, moduleLoader, makeLazyLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
-    AccountLimits,
-    Passwords,
     Passkeys,
     PersonalDetails,
     TradingAssessment,
@@ -20,11 +17,7 @@ import {
     SelfExclusion,
     Account,
     ClosingAccount,
-    ConnectedApps,
-    LoginHistory,
-    AccountClosed,
     DeactivateAccount,
-    LanguageSettings,
     ProofOfIncome,
 } from '../Sections';
 
@@ -35,6 +28,37 @@ const Page404 = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')),
     () => <Loading />
 )();
+
+const Passwords = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/Passwords')),
+    () => <Loading />
+)();
+
+const AccountLimits = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/AccountLimits')),
+    () => <Loading />
+)();
+
+const AccountClosed = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/AccountClosed')),
+    () => <Loading />
+)();
+
+const LanguageSettings = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Profile/LanguageSettings')),
+    () => <Loading />
+)();
+
+const LoginHistory = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/LoginHistory')),
+    () => <Loading />
+)();
+
+const ConnectedApps = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/ConnectedApps')),
+    () => <Loading />
+)();
+
 export type TPage404 = typeof Page404;
 
 // Order matters

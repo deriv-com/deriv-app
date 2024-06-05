@@ -152,12 +152,14 @@ type BrandConfig = {
 };
 
 export type TPortfolioPosition = {
+    barrier?: number;
     contract_info: ProposalOpenContract &
         Portfolio1 & {
             contract_update?: ContractUpdate;
         };
     details?: string;
     display_name: string;
+    entry_spot?: number;
     id?: number;
     indicative: number;
     payout?: number;
@@ -167,7 +169,9 @@ export type TPortfolioPosition = {
     is_unsupported: boolean;
     contract_update: ProposalOpenContract['limit_order'];
     is_sell_requested: boolean;
+    is_valid_to_sell?: boolean;
     profit_loss: number;
+    status?: null | string;
 };
 
 type TAppRoutingHistory = {
@@ -804,6 +808,7 @@ type TPortfolioStore = {
     barriers: TBarriers;
     error: string;
     getPositionById: (id: number) => TPortfolioPosition;
+    is_active_empty: boolean;
     is_loading: boolean;
     is_multiplier: boolean;
     is_accumulator: boolean;

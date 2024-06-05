@@ -13,6 +13,7 @@ const languages = {
     MN: 'Монгол',
     PL: 'Polish',
     PT: 'Português',
+    SW: 'Kiswahili',
     RU: 'Русский',
     SI: 'සිංහල',
     TR: 'Türkçe',

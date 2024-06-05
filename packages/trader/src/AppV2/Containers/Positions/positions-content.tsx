@@ -89,10 +89,10 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     };
 
     React.useEffect(() => {
-        if (contractTypeFilter.length && !isClosedTab) {
+        if (contractTypeFilter.length) {
             const result = filterPositions(positions, contractTypeFilter);
-            setNoMatchesFound(!result.length);
             setFilteredPositions(result);
+            if (!isClosedTab) setNoMatchesFound(!result.length);
         } else {
             setNoMatchesFound(false);
             setFilteredPositions(positions);

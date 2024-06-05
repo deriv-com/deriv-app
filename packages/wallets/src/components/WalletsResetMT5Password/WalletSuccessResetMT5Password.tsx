@@ -3,13 +3,11 @@ import { Trans } from 'react-i18next';
 import { DerivLightIcMt5PasswordUpdatedIcon, DerivLightMt5SuccessPasswordResetIcon } from '@deriv/quill-icons';
 import useDevice from '../../hooks/useDevice';
 import { ModalStepWrapper, WalletButton } from '../Base';
-// import { useModal } from '../ModalProvider';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 
 type WalletSuccessResetMT5PasswordProps = {
     isInvestorPassword?: boolean;
     onClick: () => void;
-    // onClickSuccess?: () => void; // what is this for??
     title: string;
 };
 
@@ -18,13 +16,7 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
     onClick,
     title,
 }) => {
-    // const { hide } = useModal();
     const { isMobile } = useDevice();
-
-    // const handleSuccess = useCallback(() => {
-    //     onClickSuccess?.(); // what is this for tho?
-    //     hide();
-    // }, [onClickSuccess, hide]);
 
     const renderButtons = useCallback(() => {
         return (

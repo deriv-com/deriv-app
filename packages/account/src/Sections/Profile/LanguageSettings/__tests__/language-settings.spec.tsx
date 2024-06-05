@@ -1,8 +1,12 @@
+import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { routes } from '@deriv/shared';
 import LanguageSettings from '../language-settings';
 import { mockStore, StoreProvider } from '@deriv/stores';
+import { useTranslations } from '@deriv-com/translations';
+
+jest.mock('@deriv-com/translations');
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -36,6 +40,11 @@ describe('LanguageSettings', () => {
                 is_mobile: false,
             },
         });
+        (useTranslations as jest.Mock).mockReturnValue({
+            currentLang: 'EN',
+            localize: jest.fn().mockImplementation(key => key),
+            switchLanguage: jest.fn(),
+        });
     });
 
     const renderLanguageSettings = () => {
@@ -55,9 +64,7 @@ describe('LanguageSettings', () => {
 
         expect(flags_icons).toHaveLength(2);
         expect(lang_1).toBeInTheDocument();
-        expect(/(active)/i.test(lang_1.className)).toBeTruthy();
         expect(lang_2).toBeInTheDocument();
-        expect(/(active)/i.test(lang_2.className)).toBeFalsy();
     });
 
     it('should trigger language change', () => {

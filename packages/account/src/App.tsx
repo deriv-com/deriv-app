@@ -18,10 +18,8 @@ type TAppProps = {
 
 type TLanguage = Exclude<Parameters<typeof TranslationProvider>[0]['defaultLang'], undefined>;
 
-// Replace the `cdnUrl` with the correct URL (https://pub-5ce11fcb15f34c0a9ce8ba7086d16e6a.r2.dev/deriv-app/account)
-
 const i18nInstance = initializeI18n({
-    cdnUrl: `https://pub-5ce11fcb15f34c0a9ce8ba7086d16e6a.r2.dev/${process.env.ACC_TRANSLATION_PATH}`,
+    cdnUrl: `${process.env.CROWDIN_URL}/${process.env.ACC_TRANSLATION_PATH}`, // https://translations.deriv.com/deriv-app/accounts
 });
 
 const App = ({ passthrough }: TAppProps) => {

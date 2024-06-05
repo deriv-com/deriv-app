@@ -6,6 +6,7 @@ module.exports = {
     moduleNameMapper: {
         '\\.s(c|a)ss$': '<rootDir>/../../__mocks__/styleMock.js',
         '^.+\\.svg$': '<rootDir>/../../__mocks__/styleMock.js',
+        '@deriv-com/translations': '<rootDir>/__mocks__/translation.mock.js',
         '^Assets/(.*)$': '<rootDir>/src/Assets/$1',
         '^Components/(.*)$': '<rootDir>/src/Components/$1',
         '^Constants/(.*)$': '<rootDir>/src/Constants/$1',
@@ -18,6 +19,7 @@ module.exports = {
         '^Sections/(.*)$': '<rootDir>/src/Sections/$1',
         '^Sections$': '<rootDir>/src/Sections/index.js',
     },
+    transformIgnorePatterns: ['/node_modules/(?!(@deriv-com/translations)).+\\.js$'],
     transform: {
         '^.+\\.(ts|tsx)?$': ['ts-jest', { isolatedModules: true, babelConfig: true }],
         '^.+\\.(js|jsx)$': 'babel-jest',

@@ -1111,7 +1111,7 @@ $MIN_HEIGHT_FLOATING: calc(
             overflow-y: hidden;
         }
 
-        @include mobile-or-tablet-screen {
+        @include mobile-screen {
             height: 100%;
         }
     }

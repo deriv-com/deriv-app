@@ -1,5 +1,6 @@
 import React from 'react';
 import { Accordion, SideNote, StaticUrl, Text } from '@deriv/components';
+import { useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import './side-note-faq.scss';
 
@@ -8,12 +9,15 @@ type TSideNoteFAQProps = {
 };
 
 const SideNoteFAQ = ({ transaction_type }: TSideNoteFAQProps) => {
+    const { ui } = useStore();
+    const { is_desktop } = ui;
+
     const onClickHandler = () => window.LC_API?.open_chat_window?.();
 
     return (
         <SideNote
             description={
-                <Text size='xxs' weight='bold'>
+                <Text size={is_desktop ? 'xs' : 'xxs'} weight='bold'>
                     <Localize i18n_default_text='FAQ' />
                 </Text>
             }

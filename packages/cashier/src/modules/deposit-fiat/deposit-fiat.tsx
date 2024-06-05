@@ -22,7 +22,7 @@ const DepositFiat: React.FC = observer(() => {
                     <SideNote
                         description={
                             <Localize
-                                i18n_default_text='To change your account currency, please contact us via <0>live chat</0>.'
+                                i18n_default_text='To change your account currency, contact us via <0>live chat</0>.'
                                 components={[
                                     is_from_derivgo ? (
                                         <span />

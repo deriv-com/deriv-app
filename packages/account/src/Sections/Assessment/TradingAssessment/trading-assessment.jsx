@@ -258,7 +258,6 @@ const TradingAssessment = observer(() => {
                                                                 />
                                                             </div>
                                                         )}
-                                                        ;
                                                     </fieldset>
                                                 );
                                             })}

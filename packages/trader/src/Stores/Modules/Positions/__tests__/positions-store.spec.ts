@@ -18,8 +18,10 @@ describe('PositionsStore', () => {
         it('should set closedContractTypeFilter', () => {
             mockedPositionsStore.setClosedContractTypeFilter(['Accumulators']);
             expect(mockedPositionsStore.closedContractTypeFilter).toEqual(['Accumulators']);
+            expect(mockedPositionsStore.encryptedContractTypeFilter).toEqual(['ACCU']);
             mockedPositionsStore.setClosedContractTypeFilter([]);
             expect(mockedPositionsStore.closedContractTypeFilter).toEqual([]);
+            expect(mockedPositionsStore.encryptedContractTypeFilter).toEqual([]);
         });
     });
     describe('setOpenContractTypeFilter', () => {

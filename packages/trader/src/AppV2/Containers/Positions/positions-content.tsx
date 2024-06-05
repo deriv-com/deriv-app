@@ -36,11 +36,11 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
         data,
         fetchNextBatch: fetchMoreClosedPositions,
         handleScroll,
+        handleDateChange,
         is_empty,
         is_loading: isFetchingClosedPositions,
         onMount: onClosedTabMount,
         onUnmount: onClosedTabUnmount,
-        handleDateChange,
     } = useReportsStore().profit_table;
     const closedPositions = React.useMemo(() => data.map(d => ({ contract_info: d })), [data]);
     const positions = React.useMemo(
@@ -127,9 +127,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
                         <TimeFilter
                             timeFilter={timeFilter}
                             setTimeFilter={setTimeFilter}
-                            handleDateChange={
-                                handleDateChange as React.ComponentProps<typeof TimeFilter>['handleDateChange']
-                            }
+                            handleDateChange={handleDateChange}
                             customTimeRangeFilter={customTimeRangeFilter}
                             setCustomTimeRangeFilter={setCustomTimeRangeFilter}
                             setNoMatchesFound={setNoMatchesFound}

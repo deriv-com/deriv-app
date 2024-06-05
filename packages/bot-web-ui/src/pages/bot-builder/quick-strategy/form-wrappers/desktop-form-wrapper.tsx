@@ -10,7 +10,6 @@ import {
     rudderStackSendQsEditStrategyEvent,
     rudderStackSendQsRunStrategyEvent,
     rudderStackSendQsSelectedTabEvent,
-    rudderStackSendSelectQsStrategyGuideEvent,
 } from '../analytics/rudderstack-quick-strategy';
 import { getQsActiveTabString } from '../analytics/utils';
 import { STRATEGIES } from '../config';
@@ -41,7 +40,6 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
         setActiveTab('TRADE_PARAMETERS');
-        rudderStackSendSelectQsStrategyGuideEvent({ selected_strategy });
     };
 
     const handleTabChange = (tab: string) => {

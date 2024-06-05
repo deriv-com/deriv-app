@@ -207,7 +207,6 @@ const TradingAssessment = observer(() => {
                                                     />
                                                 </div>
                                             )}
-                                            ;
                                         </fieldset>
                                     );
                                     // eslint-disable-next-line no-else-return

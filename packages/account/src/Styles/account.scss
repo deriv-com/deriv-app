@@ -444,6 +444,13 @@ $MIN_HEIGHT_FLOATING: calc(
                     }
                 }
             }
+
+            @include tablet-screen {
+                .dc-form-submit-error-message {
+                    width: 100%;
+                    justify-content: center;
+                }
+            }
         }
 
         &__trading-assessment,

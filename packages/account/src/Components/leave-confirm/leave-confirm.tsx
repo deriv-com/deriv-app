@@ -4,7 +4,7 @@ import { FormikConsumer } from 'formik';
 import { Button, Icon, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import IconMessageContent from '../icon-message-content';
-import { isMobile } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 
 type TLeaveConfirmMessage = {
     back: () => void;
@@ -16,29 +16,25 @@ type TTransitionBlocker = RouteComponentProps & {
 };
 
 const LeaveConfirmMessage = ({ back, leave }: TLeaveConfirmMessage) => {
+    const { isMobile } = useDevice();
+
     return (
         <IconMessageContent
             className='leave-confirm'
             message={localize('Unsaved changes')}
             text={localize('You have unsaved changes. Are you sure you want to discard changes and leave this page?')}
-            icon={<Icon icon='IcUnsavedChanges' size={isMobile() ? 93 : 128} data_testid='dt_unsaved_changes_icon' />}
+            icon={<Icon icon='IcUnsavedChanges' size={isMobile ? 93 : 128} data_testid='dt_unsaved_changes_icon' />}
+            is_disabled_for_mobile={true}
         >
             <div className='account-management-flex-wrapper account-management-leave-confirm'>
-                <Button
-                    type='button'
-                    has_effect
-                    onClick={back}
-                    text={localize('Cancel')}
-                    secondary
-                    {...(isMobile() ? { large: true } : {})}
-                />
+                <Button type='button' has_effect onClick={back} text={localize('Cancel')} secondary large={isMobile} />
                 <Button
                     type='button'
                     has_effect
                     onClick={leave}
                     text={localize('Leave Settings')}
                     primary
-                    {...(isMobile() ? { large: true } : {})}
+                    large={isMobile}
                 />
             </div>
         </IconMessageContent>
@@ -52,6 +48,8 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
     const [show, setShow] = React.useState(false);
     const [next_location, setNextLocation] = React.useState<{ pathname: string } | null>(null);
     const history = useHistory();
+    const { isMobile } = useDevice();
+  
     React.useEffect(() => {
         return () => unblock();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -80,7 +78,7 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
 
     return (
         <>
-            {show && isMobile() ? (
+            {show && isMobile ? (
                 <LeaveConfirmMessage back={back} leave={leave} />
             ) : (
                 <Modal is_open={show} small toggleModal={back}>

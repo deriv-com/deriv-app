@@ -48,7 +48,7 @@ const NetworkStatusToastError = ({ status, portal_id, message }: TNetworkStatusT
         }, 1500);
     }
 
-    return ReactDOM.createPortal(
+    return createPortal(
         <MobileWrapper>
             <Toast
                 className={clsx({

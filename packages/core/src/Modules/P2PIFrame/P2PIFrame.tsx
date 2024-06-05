@@ -1,7 +1,7 @@
 import React from 'react';
 import { getUrlP2P } from '@deriv/shared';
 
-const BinaryBotIFrame = () => {
+const P2PIFrame = () => {
     const base_link = getUrlP2P();
 
     return (
@@ -14,4 +14,4 @@ const BinaryBotIFrame = () => {
     );
 };
 
-export default BinaryBotIFrame;
+export default P2PIFrame;

@@ -10,7 +10,7 @@ import './trustpilot-widget.scss';
 const TrustpilotWidget = observer(() => {
     const [trustpilotData, setTrustpilotData] = useState<TTrustpilotWidgetData>();
     const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { is_mobile_or_tablet } = ui;
 
     useEffect(() => {
         const getTrustpilotData = async () => {
@@ -27,7 +27,7 @@ const TrustpilotWidget = observer(() => {
         <div className='trustpilot-widget'>
             <a href='https://www.trustpilot.com/review/deriv.com' target='_blank' rel='noopener noreferrer'>
                 <div className='trustpilot-widget__content'>
-                    {!is_mobile && (
+                    {!is_mobile_or_tablet && (
                         <React.Fragment>
                             <Text size='s' color='prominent'>
                                 <Localize i18n_default_text='Our customers say' />
@@ -38,7 +38,7 @@ const TrustpilotWidget = observer(() => {
                         </React.Fragment>
                     )}
                     <TrustpilotStarRating score={trustpilotData.trustScore} />
-                    {!is_mobile && (
+                    {!is_mobile_or_tablet && (
                         <Text size='s' color='prominent'>
                             <Localize
                                 i18n_default_text='{{trustScore}} out of 5 based on {{numberOfReviews}} reviews'

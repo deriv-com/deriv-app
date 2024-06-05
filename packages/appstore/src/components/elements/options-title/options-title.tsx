@@ -9,9 +9,9 @@ type TOptionsTitle = {
 
 const OptionsTitle = observer(({ is_eu_user }: TOptionsTitle) => {
     const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { is_mobile_or_tablet } = ui;
 
-    if (is_mobile) return null;
+    if (is_mobile_or_tablet) return null;
     return is_eu_user ? (
         <Text size='sm' weight='bold' color='prominent'>
             <Localize i18n_default_text='Multipliers' />

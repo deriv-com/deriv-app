@@ -19,7 +19,7 @@ const OrderDetails = ({ contract_info }: ContractInfoProps) => {
                     <div className='row' key={index}>
                         <div className='cell'>
                             <Text size='sm' color='quill-typography__color--subtle'>
-                                <Localize i18n_default_text={key} />
+                                {key}
                             </Text>
                         </div>
                         <div className='cell'>

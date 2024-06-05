@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { isDesktop, routes, checkServerMaintenance, startPerformanceEventTimer } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -8,9 +8,11 @@ import ModalManager from 'Components/modals/modal-manager';
 import MainTitleBar from 'Components/main-title-bar';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
+import { useContentFlag, useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import classNames from 'classnames';
 import './traders-hub.scss';
-import { useContentFlag, useGrowthbookGetFeatureValue } from '@deriv/hooks';
+
+const RealAccountCreationBanner = lazy(() => import('Components/real-account-creation-banner'));
 
 const TradersHub = observer(() => {
     const { traders_hub, client, ui } = useStore();
@@ -30,6 +32,8 @@ const TradersHub = observer(() => {
         is_mt5_allowed,
         has_active_real_account,
         website_status,
+        has_any_real_account,
+        is_eu,
     } = client;
 
     const { is_cr_demo, is_eu_demo, is_eu_real } = useContentFlag();
@@ -78,6 +82,11 @@ const TradersHub = observer(() => {
     React.useLayoutEffect(() => {
         startPerformanceEventTimer('option_multiplier_section_loading_time');
     }, []);
+
+    const [should_show_banner] = useGrowthbookGetFeatureValue({
+        featureFlag: 'traders-hub-real-account-banner',
+        defaultValue: false,
+    });
 
     const eu_title = is_eu_demo || is_eu_real || is_eu_user;
     const getPlatformToggleOptions = () => [
@@ -137,6 +146,12 @@ const TradersHub = observer(() => {
                     })}
                     ref={traders_hub_ref}
                 >
+                    {should_show_banner && !has_any_real_account && !is_eu && is_landing_company_loaded && (
+                        <Suspense fallback={<div />}>
+                            <RealAccountCreationBanner />
+                        </Suspense>
+                    )}
+
                     <MainTitleBar />
                     <DesktopWrapper>{getOrderedPlatformSections(true)}</DesktopWrapper>
                     <MobileWrapper>

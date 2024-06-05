@@ -17,7 +17,7 @@ type TDescriptionContent = {
 };
 
 export const DescriptionContent = ({ item, font_size }: TDescriptionContent) => {
-    const content_data: TDescriptionItem[] | string = Array.isArray(item) ? item : (item as string).slice(1);
+    const content_data: TDescriptionItem[] | string = Array.isArray(item) ? item : item.slice(1);
     return (
         <>
             {Array.isArray(content_data) &&

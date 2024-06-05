@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 //@ts-nocheck [TODO] - Need to fix typescript errors
-
-import { ComponentProps } from 'react';
+// [TODO] - Remove React after CFD is configured with new JSX transformer
+import React from 'react';
 import { Field, FieldProps } from 'formik';
 import { DateOfBirthPicker } from '@deriv/components';
 import { toMoment } from '@deriv/shared';
@@ -9,7 +9,7 @@ import { toMoment } from '@deriv/shared';
 type TDateOfBirthFieldProps = {
     name: string;
     portal_id: string;
-} & Omit<ComponentProps<typeof DateOfBirthPicker>, 'onBlur' | 'onChange' | 'error'>;
+} & Omit<React.ComponentProps<typeof DateOfBirthPicker>, 'onBlur' | 'onChange' | 'error'>;
 
 /**
  * DateOfBirthField is a wrapper around DateOfBirthPicker that can be used with Formik.

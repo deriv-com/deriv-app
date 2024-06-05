@@ -8,11 +8,10 @@ import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import DesktopFormWrapper from '../desktop-form-wrapper';
 
-jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
-jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
 jest.mock('../../../../../xml/martingale.xml', () => '');
+jest.mock('../../../../../xml/martingale_max-stake.xml', () => '');
 
 jest.mock('@deriv/bot-skeleton', () => ({
     ...jest.requireActual('@deriv/bot-skeleton'),
@@ -39,7 +38,23 @@ const onClickClose = jest.fn();
 
 describe('<DesktopFormWrapper />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
-    const mock_onSubmit = jest.fn();
+    const mock_onSubmit = jest.fn(() =>
+        Promise.resolve({
+            symbol: '1HZ100V',
+            durationtype: 't',
+            stake: '1',
+            loss: '1',
+            profit: '1',
+            size: '1',
+            duration: 1,
+            unit: '1',
+            max_stake: 10,
+            boolean_max_stake: false,
+            last_digit_prediction: 1,
+            tradetype: 'callput',
+            type: 'CALL',
+        })
+    );
 
     beforeEach(() => {
         const mock_store = mockStore({});

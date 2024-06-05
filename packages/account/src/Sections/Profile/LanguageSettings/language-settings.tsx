@@ -1,10 +1,9 @@
-import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, getAllowedLanguages } from '@deriv/translations';
-import FormSubHeader from 'Components/form-sub-header';
-import LanguageRadioButton from 'Components/language-settings';
+import FormSubHeader from '../../../Components/form-sub-header';
+import LanguageRadioButton from '../../../Components/language-settings';
 
 const LanguageSettings = observer(() => {
     const { client, common, ui } = useStore();

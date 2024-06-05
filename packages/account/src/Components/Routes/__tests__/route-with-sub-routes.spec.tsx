@@ -20,14 +20,14 @@ afterEach(() => {
 
 describe('<RouteWithSubRoutes />', () => {
     it('should render one <RouteWithSubRoutesRender /> component', () => {
-        render(<RouteWithSubRoutesRender />);
+        render(<RouteWithSubRoutesRender is_logged_in={false} is_logging_in={false} />);
 
         expect(screen.getByText(/Route loaded/)).toBeInTheDocument();
     });
 
     it('should have props as passed as route', () => {
         const route = { path: '/test', component: Redirect, title: '', exact: true, to: '/root' };
-        render(<RouteWithSubRoutesRender {...route} />);
+        render(<RouteWithSubRoutesRender is_logged_in={false} is_logging_in={false} {...route} />);
         expect(screen.getByText(/route loaded true \/test/i)).toBeInTheDocument();
     });
 });

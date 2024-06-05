@@ -33,7 +33,8 @@ const encryptionConfig = {
     'Over/Under': [CONTRACT_TYPES.OVER_UNDER.OVER, CONTRACT_TYPES.OVER_UNDER.UNDER],
 };
 
-export const encryptContractFilters = (filter: string[], config: Record<string, string[]> = encryptionConfig) => {
+export const encryptContractFilters = (filter: string[] | [], config: Record<string, string[]> = encryptionConfig) => {
+    if (!filter.length) return [];
     const encryptedFilter = filter.map(option => config[option] ?? []).flat();
     return [...new Set(encryptedFilter)];
 };

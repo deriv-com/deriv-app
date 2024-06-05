@@ -30,7 +30,7 @@ import {
     sortApiData,
     urlForLanguage,
     getAppId,
-    getUrlP2PStandalone,
+    getUrlp2p,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
@@ -2488,16 +2488,16 @@ export default class ClientStore extends BaseStore {
     syncWithLegacyPlatforms(active_loginid, client_accounts) {
         const smartTrader = {};
         const binaryBot = {};
-        const P2PStandalone = {};
+        const p2p = {};
 
         smartTrader.iframe = document.getElementById('localstorage-sync');
         binaryBot.iframe = document.getElementById('localstorage-sync__bot');
-        P2PStandalone.iframe = document.getElementById('localstorage-sync__p2p');
+        p2p.iframe = document.getElementById('localstorage-sync__p2p');
         smartTrader.origin = getUrlSmartTrader();
         binaryBot.origin = getUrlBinaryBot(false);
-        P2PStandalone.origin = getUrlP2PStandalone();
+        p2p.origin = getUrlp2p();
 
-        [smartTrader, binaryBot, P2PStandalone].forEach(platform => {
+        [smartTrader, binaryBot, p2p].forEach(platform => {
             if (platform.iframe) {
                 // Keep client.accounts in sync (in case user wasn't logged in).
                 platform.iframe.contentWindow.postMessage(

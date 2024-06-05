@@ -1,10 +1,11 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { FileDropzone, Icon, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { getSupportedFiles, max_document_size, supported_filetypes } from '@deriv/shared';
 import { DropzoneOptions } from 'react-dropzone';
 import { observer, useStore } from '@deriv/stores';
+import { TFile } from '../../Types';
 
 type THandleRejectedFiles = DropzoneOptions['onDropRejected'];
 
@@ -87,13 +88,13 @@ const FileUploader = ({ onFileDrop, onError }: TFileUploaderProps) => {
                 onDropAccepted={handleAcceptedFiles}
                 onDropRejected={handleRejectedFiles}
                 validation_error_message={file_error}
-                value={document_files}
+                value={document_files as TFile[]}
             />
             {((document_files && document_files?.length > 0) || file_error) && (
                 <div className='file-uploader__remove-btn-container'>
                     <Icon
                         icon='IcCloseCircle'
-                        className={classNames('file-uploader__remove-btn', {
+                        className={clsx('file-uploader__remove-btn', {
                             'file-uploader__remove-btn--error': file_error,
                         })}
                         onClick={removeFile}

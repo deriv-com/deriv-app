@@ -9,7 +9,7 @@ import ErrorMessage from '../../../Components/error-component';
 import MissingPersonalDetails from '../../../Components/poi/missing-personal-details';
 import PoiConfirmWithExampleFormContainer from '../../../Components/poi/poi-confirm-with-example-form-container';
 import OnfidoSdkView from './onfido-sdk-view';
-import type { SdkHandle, SdkResponse, SupportedLanguages } from '../../../Types';
+import type { SdkError, SdkHandle, SdkResponse, SupportedLanguages } from '../../../Types';
 import { convertAlpha2toAlpha3, convertAlpha3toAlpha2, getOnfidoSupportedLocaleCode } from '../../../Helpers/utils';
 import { getOnfidoPhrases } from '../../../Constants/onfido';
 
@@ -133,7 +133,7 @@ const OnfidoSdkViewContainer = observer(
                     });
                     setIsOnfidoInitialized(true);
                 } catch (err) {
-                    setAPIError(err?.message ?? err);
+                    setAPIError((err as SdkError)?.message ?? err);
                     setIsOnfidoDisabled(true);
                     onfido_init.current = undefined;
                 } finally {

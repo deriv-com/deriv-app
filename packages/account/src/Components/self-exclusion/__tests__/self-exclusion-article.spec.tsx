@@ -1,13 +1,11 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import SelfExclusionArticle from '../self-exclusion-article';
-import { selfExclusionArticleItems } from 'Components/self-exclusion/self-exclusion-article-content';
 import SelfExclusionContext from '../self-exclusion-context';
 import { mockStore, StoreProvider } from '@deriv/stores';
 
 jest.mock('Components/self-exclusion/self-exclusion-article-content', () => ({
     ...jest.requireActual('Components/self-exclusion/self-exclusion-article-content'),
-    selfExclusionArticleItems: jest.fn(),
 }));
 
 describe('<SelfExclusionArticle />', () => {
@@ -43,8 +41,6 @@ describe('<SelfExclusionArticle />', () => {
                 is_mobile_or_tablet: true,
             },
         });
-
-        (selfExclusionArticleItems as jest.Mock).mockImplementation(() => ['Self Exclusion Article Items']);
 
         render(
             <StoreProvider store={new_store}>

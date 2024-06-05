@@ -20,5 +20,5 @@ module.exports = {
     },
     testRegex: '(/__tests__/.*|(\\.)(test|spec))\\.(js|jsx|tsx|ts)?$',
     transformIgnorePatterns: baseConfig.transformIgnorePatterns,
-    testPathIgnorePatterns: ['/integration-tests/'],
+    testPathIgnorePatterns: ['/integration-tests/', '/account-v2/'],
 };

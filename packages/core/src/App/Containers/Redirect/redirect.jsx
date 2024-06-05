@@ -31,7 +31,7 @@ const Redirect = observer(() => {
     const ext_platform_url = url_params.get('ext_platform_url');
 
     const redirectToExternalPlatform = url => {
-        history.push(`${routes.root}?ext_platform_url=${url}`);
+        history.push(`${routes.traders_hub}?ext_platform_url=${url}`);
         redirected_to_route = true;
     };
     setVerificationCode(code_param, action_param);
@@ -96,28 +96,19 @@ const Redirect = observer(() => {
             if (redirect_to) {
                 let pathname = '';
                 let hash = '';
-                const main_screen_route = has_wallet ? routes.wallets : routes.traders_hub;
                 switch (redirect_to) {
                     case '1':
-                        pathname = routes.traders_hub;
-                        break;
-                    case '10':
-                        pathname = main_screen_route;
-                        hash = 'real';
-                        break;
-                    case '11':
-                        pathname = main_screen_route;
-                        hash = 'demo';
-                        break;
                     case '2':
                         pathname = routes.traders_hub;
                         break;
+                    case '10':
                     case '20':
-                        pathname = main_screen_route;
+                        pathname = routes.traders_hub;
                         hash = 'real';
                         break;
+                    case '11':
                     case '21':
-                        pathname = main_screen_route;
+                        pathname = routes.traders_hub;
                         hash = 'demo';
                         break;
                     case '3':
@@ -233,7 +224,7 @@ const Redirect = observer(() => {
             const is_demo = localStorage.getItem('cfd_reset_password_intent')?.includes('demo');
             if (has_wallet) {
                 history.push({
-                    pathname: routes.wallets,
+                    pathname: routes.traders_hub,
                     search: url_query_string,
                 });
             } else {
@@ -255,9 +246,9 @@ const Redirect = observer(() => {
             break;
     }
 
-    if (!redirected_to_route && history.location.pathname !== routes.root) {
+    if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
         history.push({
-            pathname: routes.root,
+            pathname: routes.traders_hub,
             search: url_query_string,
         });
     }

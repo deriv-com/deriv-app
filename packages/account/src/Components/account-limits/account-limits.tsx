@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormikValues } from 'formik';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { formatMoney, isDesktop, isMobileOrTablet, useIsMounted } from '@deriv/shared';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
@@ -14,7 +14,7 @@ import AccountLimitsFooter from './account-limits-footer';
 import AccountLimitsOverlay from './account-limits-overlay';
 import AccountLimitsTableCell from './account-limits-table-cell';
 import AccountLimitsTableHeader from './account-limits-table-header';
-import AccountLimitsTurnoverLimitRow from './account-limits-turnover-limit-row';
+import AccountLimitsTurnoverLimitRow, { TAccountLimitsCollection } from './account-limits-turnover-limit-row';
 import WithdrawalLimitsTable from './withdrawal-limits-table';
 
 type TAccountLimits = {
@@ -96,7 +96,7 @@ const AccountLimits = observer(
             return <LoadErrorMessage error_message={api_initial_load_error} />;
         }
 
-        const { commodities, forex, indices, synthetic_index } = { ...market_specific };
+        const { commodities, forex, indices, synthetic_index } = market_specific ?? {};
         const forex_ordered = forex?.slice().sort((a: FormikValues, b: FormikValues) => a.name.localeCompare(b.name));
         const derived_ordered = synthetic_index
             ?.slice()
@@ -113,7 +113,7 @@ const AccountLimits = observer(
             <AccountLimitsContext.Provider value={context_value}>
                 <section className='da-account-limits__wrapper' data-testid='account_limits_data'>
                     <div
-                        className={classNames('da-account-limits', {
+                        className={clsx('da-account-limits', {
                             'da-account-limits--app-settings': is_app_settings,
                         })}
                     >
@@ -182,7 +182,7 @@ const AccountLimits = observer(
                                                 <Localize i18n_default_text='Maximum aggregate payouts on open positions' />
                                             </AccountLimitsTableCell>
                                             <AccountLimitsTableCell align='right'>
-                                                {formatMoney(currency, payout, true)}
+                                                {formatMoney(currency, payout as number, true)}
                                             </AccountLimitsTableCell>
                                         </tr>
                                         <tr>
@@ -213,10 +213,18 @@ const AccountLimits = observer(
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <AccountLimitsTurnoverLimitRow collection={commodities} />
-                                        <AccountLimitsTurnoverLimitRow collection={forex_ordered} />
-                                        <AccountLimitsTurnoverLimitRow collection={indices} />
-                                        <AccountLimitsTurnoverLimitRow collection={derived_ordered} />
+                                        <AccountLimitsTurnoverLimitRow
+                                            collection={commodities as TAccountLimitsCollection[]}
+                                        />
+                                        <AccountLimitsTurnoverLimitRow
+                                            collection={forex_ordered as TAccountLimitsCollection[]}
+                                        />
+                                        <AccountLimitsTurnoverLimitRow
+                                            collection={indices as TAccountLimitsCollection[]}
+                                        />
+                                        <AccountLimitsTurnoverLimitRow
+                                            collection={derived_ordered as TAccountLimitsCollection[]}
+                                        />
                                     </tbody>
                                 </table>
                                 {/* We only show "Withdrawal Limits" on account-wide settings pages. */}

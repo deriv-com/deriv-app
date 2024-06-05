@@ -1,4 +1,3 @@
-import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';

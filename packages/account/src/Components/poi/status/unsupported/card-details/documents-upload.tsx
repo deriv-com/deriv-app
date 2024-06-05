@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Formik, Form, FormikValues } from 'formik';
 import { Localize, localize } from '@deriv/translations';
 import { isMobileOrTablet } from '@deriv/shared';
@@ -73,7 +73,7 @@ const DocumentsUpload = ({ initial_values, is_from_external, data, goToCards, on
 
     return (
         <div
-            className={classNames(ROOT_CLASS, {
+            className={clsx(ROOT_CLASS, {
                 [`${ROOT_CLASS}--mobile`]: isMobileOrTablet(),
             })}
         >

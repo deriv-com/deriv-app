@@ -57,12 +57,6 @@
             cursor: pointer;
         }
 
-        &--without-trading-account {
-            @include mobile-or-tablet-screen {
-                margin: auto 2rem;
-            }
-        }
-
         &__details {
             flex-grow: 1;
             display: flex;

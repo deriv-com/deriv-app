@@ -1,14 +1,12 @@
 import React from 'react';
-import { isDesktop, isMobileOrTablet } from '@deriv/shared';
 import ContractCardDialog from './contract-card-dialog';
 import ContractUpdateForm, { TGeneralContractCardBodyProps } from './contract-update-form';
 import Icon from '../../icon';
-import DesktopWrapper from '../../desktop-wrapper';
 import MobileDialog from '../../mobile-dialog';
-import MobileOrTabletWrapper from '../../mobile-wrapper';
 import Popover from '../../popover';
 import Div100vhContainer from '../../div100vh-container';
 import './sass/contract-card-dialog.scss';
+import { useDevice } from '@deriv-com/ui';
 
 export type TToggleCardDialogProps = Pick<
     TGeneralContractCardBodyProps,
@@ -43,7 +41,7 @@ const ToggleCardDialog = ({
     const [is_visible, setIsVisible] = React.useState(false);
     const [top, setTop] = React.useState(0);
     const [left, setLeft] = React.useState(0);
-
+    const { isDesktop } = useDevice();
     const toggle_ref = React.useRef<HTMLButtonElement>(null);
     const dialog_ref = React.useRef<HTMLDivElement>(null);
     const contract = getContractById(Number(contract_id));
@@ -81,7 +79,7 @@ const ToggleCardDialog = ({
     const toggleDialog = (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
-        if (isMobileOrTablet() && should_show_cancellation_warning && is_valid_to_cancel) {
+        if (!isDesktop && should_show_cancellation_warning && is_valid_to_cancel) {
             addToast({
                 key: 'deal_cancellation_active',
                 content: getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE,
@@ -107,7 +105,7 @@ const ToggleCardDialog = ({
 
     return (
         <div onClick={handleClick}>
-            {is_valid_to_cancel && should_show_cancellation_warning && isDesktop() ? (
+            {is_valid_to_cancel && should_show_cancellation_warning && isDesktop ? (
                 <Popover
                     alignment='right'
                     classNameBubble='dc-contract-card-dialog__popover-bubble'
@@ -127,7 +125,25 @@ const ToggleCardDialog = ({
                     {edit_icon}
                 </button>
             )}
-            <MobileOrTabletWrapper>
+            {isDesktop ? (
+                <ContractCardDialog
+                    ref={dialog_ref}
+                    is_visible={is_visible}
+                    left={left}
+                    top={top}
+                    toggle_ref={toggle_ref}
+                    toggleDialog={toggleDialogWrapper}
+                >
+                    <ContractUpdateForm
+                        addToast={addToast}
+                        contract={contract}
+                        getCardLabels={getCardLabels}
+                        getContractById={getContractById}
+                        toggleDialog={toggleDialogWrapper}
+                        {...passthrough_props}
+                    />
+                </ContractCardDialog>
+            ) : (
                 <MobileDialog
                     portal_element_id='modal_root'
                     visible={is_visible}
@@ -146,26 +162,7 @@ const ToggleCardDialog = ({
                         />
                     </Div100vhContainer>
                 </MobileDialog>
-            </MobileOrTabletWrapper>
-            <DesktopWrapper>
-                <ContractCardDialog
-                    ref={dialog_ref}
-                    is_visible={is_visible}
-                    left={left}
-                    top={top}
-                    toggle_ref={toggle_ref}
-                    toggleDialog={toggleDialogWrapper}
-                >
-                    <ContractUpdateForm
-                        addToast={addToast}
-                        contract={contract}
-                        getCardLabels={getCardLabels}
-                        getContractById={getContractById}
-                        toggleDialog={toggleDialogWrapper}
-                        {...passthrough_props}
-                    />
-                </ContractCardDialog>
-            </DesktopWrapper>
+            )}
         </div>
     );
 };

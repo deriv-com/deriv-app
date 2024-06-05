@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollbarsContainer } from '../scrollbars-container/scrollbars-container';
 import { Div100vhContainer, DesktopWrapper, MobileOrTabletWrapper } from '@deriv/components';
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 type TFormBody = {
     scroll_offset?: string;
@@ -12,7 +12,7 @@ export const FormBody = ({ children, scroll_offset, className }: React.PropsWith
     <React.Fragment>
         <DesktopWrapper>
             <ScrollbarsContainer
-                className={classNames('account__scrollbars_container--grid-layout', className)}
+                className={clsx('account__scrollbars_container--grid-layout', className)}
                 scroll_offset={scroll_offset}
             >
                 {children}
@@ -20,7 +20,7 @@ export const FormBody = ({ children, scroll_offset, className }: React.PropsWith
         </DesktopWrapper>
         <MobileOrTabletWrapper>
             <Div100vhContainer
-                className={classNames('account__scrollbars_container--grid-layout', className)}
+                className={clsx('account__scrollbars_container--grid-layout', className)}
                 height_offset={scroll_offset || '200px'}
             >
                 {children}

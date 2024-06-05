@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Button, DatePicker, Input, Text } from '@deriv/components';
 import { epochToMoment, toMoment, isMobileOrTablet } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -38,7 +38,7 @@ const SectionTitle = ({ title, has_border_line }: TSectionTitle) => {
             as='h2'
             weight='bold'
             size={isMobileOrTablet() ? 'xxs' : 'xs'}
-            className={classNames('da-self-exclusion__header', {
+            className={clsx('da-self-exclusion__header', {
                 'da-self-exclusion__header-border': has_border_line,
             })}
         >

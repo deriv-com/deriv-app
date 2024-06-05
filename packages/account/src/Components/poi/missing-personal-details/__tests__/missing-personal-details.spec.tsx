@@ -12,7 +12,7 @@ jest.mock('@deriv/components', () => {
 });
 
 describe('<MissingPersonalDetails />', () => {
-    const renderWithRouter = component => render(<BrowserRouter>{component}</BrowserRouter>);
+    const renderWithRouter = (component: React.ReactElement) => render(<BrowserRouter>{component}</BrowserRouter>);
 
     it('should render the MissingPersonalDetails component', () => {
         renderWithRouter(<MissingPersonalDetails />);

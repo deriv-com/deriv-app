@@ -140,3 +140,10 @@
         border-color: var(--button-secondary-default);
     }
 }
+
+.dc-mobile-dialog__contract-update {
+    @include tablet-screen {
+        max-width: 568px;
+        margin: 0 auto;
+    }
+}

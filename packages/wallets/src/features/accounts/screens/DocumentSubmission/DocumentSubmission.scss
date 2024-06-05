@@ -97,6 +97,12 @@
                 justify-content: space-between;
                 align-items: flex-start;
                 align-self: stretch;
+
+                & > .wallets-text {
+                    @include mobile {
+                        max-width: 18rem;
+                    }
+                }
             }
         }
         &__common-mistakes {

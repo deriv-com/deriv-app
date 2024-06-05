@@ -128,8 +128,8 @@ const AccountSignup = ({
                 error_message: error,
             });
         } else {
-            isModalVisible(false);
             setIsFromSignupAccount(true);
+            isModalVisible(false);
             SessionStore.remove('signup_query_param');
             enableApp();
 

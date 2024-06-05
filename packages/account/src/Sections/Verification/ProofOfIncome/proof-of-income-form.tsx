@@ -154,6 +154,7 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                                                 placeholder={localize('Select your document*')}
                                                 label={localize('Select your document*')}
                                                 value={values.document_type}
+                                                // @ts-expect-error [TODO]:Fix types for SelectNative
                                                 list_items={poinc_documents_list}
                                                 error={touched.document_type ? errors.document_type : undefined}
                                                 use_text

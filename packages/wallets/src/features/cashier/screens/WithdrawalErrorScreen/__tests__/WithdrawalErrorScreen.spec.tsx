@@ -1,12 +1,24 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { useActiveWalletAccount } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import WithdrawalErrorScreen from '../WithdrawalErrorScreen';
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: jest.fn(),
+}));
+
+jest.mock('@deriv/api-v2', () => ({
+    useActiveWalletAccount: jest.fn(),
+}));
 
 describe('WithdrawalErrorScreen', () => {
     let resetError: jest.Mock, setResendEmail: jest.Mock;
 
     beforeEach(() => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({ data: { currency: 'BTC' } });
         resetError = jest.fn();
         setResendEmail = jest.fn();
     });
@@ -61,14 +73,7 @@ describe('WithdrawalErrorScreen', () => {
             message: 'Crypto Suspended Currency',
         };
 
-        render(
-            <WithdrawalErrorScreen
-                currency='BTC'
-                error={error}
-                resetError={resetError}
-                setResendEmail={setResendEmail}
-            />
-        );
+        render(<WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />);
 
         expect(screen.getByText('BTC Wallet withdrawals are temporarily unavailable')).toBeInTheDocument();
         expect(
@@ -85,14 +90,7 @@ describe('WithdrawalErrorScreen', () => {
             message: 'Crypto Disabled Currency Withdrawal',
         };
 
-        render(
-            <WithdrawalErrorScreen
-                currency='BTC'
-                error={error}
-                resetError={resetError}
-                setResendEmail={setResendEmail}
-            />
-        );
+        render(<WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />);
 
         expect(screen.getByText('BTC Wallet withdrawals are temporarily unavailable')).toBeInTheDocument();
         expect(
@@ -114,6 +112,37 @@ describe('WithdrawalErrorScreen', () => {
         expect(screen.getByText('Maintenance in progress')).toBeInTheDocument();
         expect(screen.getByText('Crypto Connection Error')).toBeInTheDocument();
         expect(screen.queryByText('Try again')).not.toBeInTheDocument();
+    });
+
+    it('should show correct withdrawal error screen for crypto age limit verified error', () => {
+        const error = {
+            code: 'CryptoLimitAgeVerified',
+            message: 'Crypto Limit Age Verified Error',
+        };
+
+        render(<WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />);
+
+        expect(screen.getByText('Error')).toBeInTheDocument();
+        expect(screen.getByText('Crypto Limit Age Verified Error')).toBeInTheDocument();
+        expect(screen.queryByText('Verify identity')).toBeInTheDocument();
+    });
+
+    it('should show redirect the user to the account/proof-of-identity when the user clicks on `Verify identity` after receiving crypto age limit verified error', () => {
+        const mockHistoryPush = jest.fn();
+        (useHistory as jest.Mock).mockReturnValueOnce({
+            push: mockHistoryPush,
+        });
+        const error = {
+            code: 'CryptoLimitAgeVerified',
+            message: 'Crypto Limit Age Verified Error',
+        };
+
+        render(<WithdrawalErrorScreen error={error} resetError={resetError} setResendEmail={setResendEmail} />);
+
+        const verifyIdentityButton = screen.getByText('Verify identity');
+        userEvent.click(verifyIdentityButton);
+
+        expect(mockHistoryPush).toBeCalledWith('/account/proof-of-identity');
     });
 
     it('should reload page when the user clicks on `Try again` button', () => {

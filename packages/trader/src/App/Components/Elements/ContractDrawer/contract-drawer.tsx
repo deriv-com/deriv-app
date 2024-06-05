@@ -59,8 +59,9 @@ const ContractDrawer = observer(
         onClickSell,
         toggleHistoryTab,
     }: TContractDrawerProps) => {
-        const { common } = useStore();
-        const { server_time } = common;
+        const { common, ui } = useStore();
+        const { current_language, is_language_changing, server_time } = common;
+        const { is_history_tab_active } = ui;
         const { currency, exit_tick_display_value } = contract_info;
         const contract_drawer_ref = React.useRef<HTMLDivElement>(null);
         const contract_drawer_card_ref = React.useRef<HTMLDivElement>(null);
@@ -77,10 +78,12 @@ const ContractDrawer = observer(
                 exit_spot={exit_tick_display_value}
                 is_accumulator={is_accumulator}
                 is_dark_theme={is_dark_theme}
+                is_history_tab_active={is_history_tab_active}
                 is_multiplier={is_multiplier}
                 is_open
                 is_turbos={is_turbos}
                 is_vanilla={is_vanilla}
+                current_language={is_language_changing ? '' : current_language}
                 toggleHistoryTab={toggleHistoryTab}
             />
         );

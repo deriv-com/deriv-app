@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 import { Text } from '@deriv/components';
 import { isMobileOrTablet } from '@deriv/shared';
@@ -44,12 +44,12 @@ const FormBodySection = ({
         return (
             <div
                 data-testid='dt_side_note_container'
-                className={classNames('account-form__section', {
+                className={clsx('account-form__section', {
                     'account-form__section--reversed': side_note_position === 'right',
                 })}
             >
                 <div
-                    className={classNames('account-form__section-side-note', {
+                    className={clsx('account-form__section-side-note', {
                         'account-form__section-side-note__example': type !== 'text',
                     })}
                 >

@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { GetSettings } from '@deriv/api-types';
 import { Checkbox, HintBox, Loading, Text } from '@deriv/components';
@@ -162,7 +162,7 @@ const PoiConfirmWithExampleFormContainer = ({
                         />
                         <button
                             type='submit'
-                            className={classNames('account-form__poi-confirm-example--button', {
+                            className={clsx('account-form__poi-confirm-example--button', {
                                 'account-form__poi-confirm-example--button__disabled':
                                     checked || !isEmptyObject(errors),
                             })}

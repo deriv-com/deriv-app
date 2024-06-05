@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Formik } from 'formik';
 import {
     AutoHeightWrapper,
@@ -33,7 +33,7 @@ type TFinancialDetails = {
     validate: (values: TFinancialInformationForm) => object;
     value: TFinancialInformationForm;
     employment_status: string;
-    is_eu_user: boolean;
+    is_eu_user?: boolean;
 };
 
 /**
@@ -94,7 +94,7 @@ const FinancialDetails = observer((props: TFinancialDetails) => {
                                     fields_to_scroll_bottom={fields_to_scroll_bottom}
                                 />
                                 <Div100vhContainer
-                                    className={classNames('details-form', 'financial-assessment')}
+                                    className={clsx('details-form', 'financial-assessment')}
                                     height_offset='110px'
                                     is_disabled={isDesktop()}
                                 >
@@ -119,12 +119,7 @@ const FinancialDetails = observer((props: TFinancialDetails) => {
                                         </Text>
                                     )}
                                     <ThemedScrollbars autohide={window.innerHeight >= 890} height={Number(height) - 77}>
-                                        <div
-                                            className={classNames(
-                                                'details-form__elements',
-                                                'financial-assessment__form'
-                                            )}
-                                        >
+                                        <div className={clsx('details-form__elements', 'financial-assessment__form')}>
                                             <FinancialInformation employment_status={props.employment_status} />
                                         </div>
                                     </ThemedScrollbars>

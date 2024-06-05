@@ -35,7 +35,7 @@ const AccumulatorsStats = observer(({ is_expandable = true }: TAccumulatorStats)
     const rows = ticks_history.reduce((acc: number[][], _el, index) => {
         const desktop_row_size = is_collapsed ? ROW_SIZES.DESKTOP_COLLAPSED : ROW_SIZES.DESKTOP_EXPANDED;
         const mobile_row_size = is_collapsed ? ROW_SIZES.MOBILE_COLLAPSED : ROW_SIZES.MOBILE_EXPANDED;
-        const row_size = isDesktop ? desktop_row_size : mobile_row_size;
+        const row_size = isMobile ? mobile_row_size : desktop_row_size;
         if (index % row_size === 0) {
             acc.push(ticks_history.slice(index, index + row_size));
         }

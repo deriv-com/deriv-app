@@ -1,15 +1,10 @@
-import React from 'react';
-import classNames from 'classnames';
+// [TODO] - Convert this to TypeScript
+
+import React, { useState, Fragment, useCallback, useMemo, useEffect } from 'react';
+import clsx from 'clsx';
 import { Form, Formik } from 'formik';
 import { Analytics } from '@deriv-com/analytics';
-import {
-    AutoHeightWrapper,
-    Div100vhContainer,
-    FormSubmitButton,
-    Modal,
-    Text,
-    ThemedScrollbars,
-} from '@deriv/components';
+import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, ThemedScrollbars } from '@deriv/components';
 import { getIDVNotApplicableOption, isDesktop, isMobileOrTablet, removeEmptyPropertiesFromObject } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
@@ -23,7 +18,6 @@ import PoiNameDobExample from '../../Assets/ic-poi-name-dob-example.svg';
 import FormSubHeader from '../form-sub-header';
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
-import InlineNoteWithIcon from '../inline-note-with-icon';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
 
@@ -51,8 +45,8 @@ const PersonalDetails = observer(
             traders_hub: { is_eu_user },
         } = useStore();
         const { account_status, account_settings, residence, real_account_signup_target } = props;
-        const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
-        const [no_confirmation_needed, setNoConfirmationNeeded] = React.useState(false);
+        const [should_close_tooltip, setShouldCloseTooltip] = useState(false);
+        const [no_confirmation_needed, setNoConfirmationNeeded] = useState(false);
 
         const PoiNameDobExampleIcon = PoiNameDobExample;
 
@@ -63,7 +57,7 @@ const PersonalDetails = observer(
         };
         const citizen = residence || account_settings?.citizen;
 
-        const trackEvent = React.useCallback(
+        const trackEvent = useCallback(
             payload => {
                 if (is_eu_user) return;
                 Analytics.trackEvent('ce_real_account_signup_identity_form', {
@@ -75,7 +69,7 @@ const PersonalDetails = observer(
             [is_eu_user, real_account_signup_target]
         );
 
-        React.useEffect(() => {
+        useEffect(() => {
             trackEvent({
                 action: 'open',
             });
@@ -95,7 +89,7 @@ const PersonalDetails = observer(
             real_account_signup_target,
         });
 
-        const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
+        const IDV_NOT_APPLICABLE_OPTION = useMemo(() => getIDVNotApplicableOption(), []);
 
         const validateIDV = values => {
             const errors = {};
@@ -190,48 +184,28 @@ const PersonalDetails = observer(
                                     height_offset='100px'
                                     is_disabled={isDesktop()}
                                 >
-                                    {is_eu_user && (
-                                        <div className='details-form__banner-container'>
-                                            <InlineNoteWithIcon
-                                                icon='IcAlertWarning'
-                                                message={
-                                                    <Localize i18n_default_text='For verification purposes as required by regulation. It’s your responsibility to provide accurate and complete answers. You can update personal details at any time in your account settings.' />
-                                                }
-                                                title={localize('Why do we collect this?')}
-                                            />
-                                        </div>
-                                    )}
-                                    {!is_eu_user && !is_rendered_for_idv && (
-                                        <Text as='p' size='xxxs' align='center' className='details-form__description'>
-                                            <Localize
-                                                i18n_default_text={
-                                                    'Any information you provide is confidential and will be used for verification purposes only.'
-                                                }
-                                            />
-                                        </Text>
-                                    )}
                                     <ThemedScrollbars
                                         height={height}
                                         onScroll={closeToolTip}
                                         testId='dt_personal_details_container'
                                     >
                                         <div
-                                            className={classNames('details-form__elements', 'personal-details-form')}
+                                            className={clsx('details-form__elements', 'personal-details-form')}
                                             style={{ paddingBottom: isDesktop() ? 'unset' : null }}
                                         >
                                             {is_rendered_for_idv && (
-                                                <React.Fragment>
+                                                <Fragment>
                                                     <FormSubHeader title={localize('Identity verification')} />
                                                     <IDVForm
                                                         selected_country={selected_country}
                                                         hide_hint
                                                         is_for_real_account_signup_modal
                                                     />
-                                                </React.Fragment>
+                                                </Fragment>
                                             )}
                                             {is_svg && !is_eu_user && <FormSubHeader title={localize('Details')} />}
                                             <PersonalDetailsForm
-                                                class_name={classNames({
+                                                class_name={clsx({
                                                     'account-form__poi-confirm-example_container':
                                                         is_svg && !is_eu_user,
                                                 })}

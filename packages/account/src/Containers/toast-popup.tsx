@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { MobileOrTabletWrapper, Toast } from '@deriv/components';
@@ -24,7 +24,7 @@ export const ToastPopup = ({
     const new_portal_id = document.getElementById(portal_id);
     if (!new_portal_id) return null;
     return ReactDOM.createPortal(
-        <Toast className={classNames('dc-toast-popup', className)} {...props}>
+        <Toast className={clsx('dc-toast-popup', className)} {...props}>
             {children}
         </Toast>,
         new_portal_id
@@ -51,7 +51,7 @@ const NetworkStatusToastError = ({ status, portal_id, message }: TNetworkStatusT
     return ReactDOM.createPortal(
         <MobileOrTabletWrapper>
             <Toast
-                className={classNames({
+                className={clsx({
                     'dc-toast--blinker': status === 'blinker',
                 })}
                 is_open={is_open}

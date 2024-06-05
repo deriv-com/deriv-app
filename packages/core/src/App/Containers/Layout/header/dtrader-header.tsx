@@ -13,6 +13,7 @@ import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Prel
 import TradersHubHomeButton from './traders-hub-home-button';
 import HeaderAccountActions from './header-account-actions';
 import { useDevice } from '@deriv-com/ui';
+import DerivShortLogo from './deriv-short-logo';
 
 const DTraderHeader = observer(() => {
     const { client, common, ui, notifications, traders_hub } = useStore();
@@ -34,7 +35,7 @@ const DTraderHeader = observer(() => {
     const { setTogglePlatformType } = traders_hub;
 
     const history = useHistory();
-    const { isDesktop } = useDevice();
+    const { isDesktop, isMobile } = useDevice();
 
     const addUpdateNotification = () => addNotificationMessage(client_notifications?.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -82,8 +83,17 @@ const DTraderHeader = observer(() => {
         >
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
-                    {isDesktop ? (
+                    {!isDesktop ? (
                         <React.Fragment>
+                            <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
+                            {header_extension && is_logged_in && (
+                                <div className='header__menu-left-extensions'>{header_extension}</div>
+                            )}
+                        </React.Fragment>
+                    ) : (
+                        <React.Fragment>
+                            <DerivShortLogo />
+                            <div className='header__divider' />
                             <PlatformSwitcher
                                 app_routing_history={app_routing_history}
                                 platform_config={filterPlatformsForClients(platform_config)}
@@ -91,13 +101,6 @@ const DTraderHeader = observer(() => {
                                 current_language={current_language}
                             />
                             <TradersHubHomeButton />
-                        </React.Fragment>
-                    ) : (
-                        <React.Fragment>
-                            <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
-                            {header_extension && is_logged_in && (
-                                <div className='header__menu-left-extensions'>{header_extension}</div>
-                            )}
                         </React.Fragment>
                     )}
                     <MenuLinks />

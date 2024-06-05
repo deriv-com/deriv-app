@@ -35,7 +35,6 @@ const CFDPlatformsListAccounts: React.FC = () => {
     const hasDxtradeAccount = !!dxtradeAccountsList?.length;
 
     if (isLoading || !isFetchedAfterMount) {
-        /* TODO: Update loader with updated skeleton loader design */
         return (
             <div className='wallets-cfd-list-accounts__content'>
                 <TradingAppCardLoader />

@@ -38,7 +38,6 @@ const ResetTradingPassword = observer(() => {
             disableApp={disableApp}
             toggleResetTradingPasswordModal={setResetTradingPasswordModalOpen}
             is_visible={is_cfd_reset_password_modal_enabled}
-            // is_visible={is_reset_trading_password_modal_visible}
             is_loading={is_loading}
             verification_code={verification_code}
         />

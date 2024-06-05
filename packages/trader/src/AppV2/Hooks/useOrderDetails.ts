@@ -97,6 +97,7 @@ const transformAccumulatorData = (data: TContractInfo) => {
     return {
         'Reference ID': commonFields['Reference ID'],
         'Growth rate': data.growth_rate ? `${getGrowthRatePercentage(data.growth_rate)}%` : '',
+        Duration: `${getDurationTime(data) ?? ''} ${getDurationUnitText(getDurationPeriod(data)) ?? ''}`,
         Stake: commonFields.Stake,
         ...{
             ...(data.limit_order?.take_profit && {

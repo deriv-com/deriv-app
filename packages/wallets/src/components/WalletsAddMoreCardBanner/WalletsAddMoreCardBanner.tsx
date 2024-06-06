@@ -19,7 +19,14 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
 }) => {
     const switchWalletAccount = useWalletAccountSwitcher();
 
-    const { data, error, isSuccess: isMutateSuccess, mutate, status } = useCreateWallet();
+    const {
+        data,
+        error,
+        isLoading: isWalletCreationLoading,
+        isSuccess: isMutateSuccess,
+        mutate,
+        status,
+    } = useCreateWallet();
     const { isMobile } = useDevice();
     const history = useHistory();
     const modal = useModal();
@@ -64,7 +71,7 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
             </div>
             <WalletButton
                 color='white'
-                disabled={isAdded}
+                disabled={isAdded || isWalletCreationLoading}
                 icon={
                     // TODO: Replace hex colors with values from Deriv UI
                     isAdded ? (

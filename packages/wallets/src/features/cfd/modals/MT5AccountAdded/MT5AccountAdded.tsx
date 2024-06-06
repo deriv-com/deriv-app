@@ -15,34 +15,37 @@ type TProps = {
 };
 
 const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
-    const { data: activeWallet } = useActiveWalletAccount();
-    const { isMobile } = useDevice();
-    const history = useHistory();
+    const { data: activeWallet, isLoading: isActiveWalletAccountLoading } = useActiveWalletAccount();
+    const { data: mt5Accounts, isLoading: isMT5AccountsListLoading } = useMT5AccountsList();
+    const { data: poiData, isLoading: isPOILoading } = usePOI();
+    const { data: poaData, isLoading: isPOALoading } = usePOA();
     const { getVerificationStatus, isSuccess } = useJurisdictionStatus();
-    const { data: mt5Accounts } = useMT5AccountsList();
+
+    const history = useHistory();
+    const { isMobile } = useDevice();
     const { getModalState, hide } = useModal();
-    const { data: poiData } = usePOI();
-    const { data: poaData } = usePOA();
+
     const addedAccount = mt5Accounts?.find(acc => acc.login === account?.login);
-    const verificationStatus = getVerificationStatus(addedAccount?.landing_company_short, addedAccount?.status);
-    const poiService = poiData?.is_pending ? poiData?.previous?.service : poiData?.current?.service;
+
+    const isLoading =
+        isActiveWalletAccountLoading ||
+        isMT5AccountsListLoading ||
+        isPOILoading ||
+        !poiData ||
+        isPOALoading ||
+        !poaData ||
+        !addedAccount;
+
     const marketTypeTitle =
         marketType === 'all' && Object.keys(PlatformDetails).includes(platform)
             ? PlatformDetails[platform].title
             : MarketTypeDetails[marketType].title;
-    const isPOIVerified = poiData?.status === 'verified';
-    const isPOAVerified = poaData?.status === 'verified';
     const selectedJurisdiction = getModalState('selectedJurisdiction');
     const landingCompanyName = `(${
         companyNamesAndUrls?.[selectedJurisdiction as keyof typeof companyNamesAndUrls]?.shortcode
     })`;
 
     const isDemo = activeWallet?.is_virtual;
-
-    const displayBalance = useMemo(() => {
-        const account = mt5Accounts?.find(account => account.market_type === marketType);
-        return account?.display_balance;
-    }, [mt5Accounts, marketType]);
 
     const renderAccountSuccessButton = useCallback(
         (isTransferAllowed = false) => {
@@ -77,13 +80,24 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
 
     const renderSuccessDescription = useMemo(() => {
         if (isDemo) {
-            return `Let's practise trading with ${displayBalance} virtual funds.`;
+            return `Let's practise trading with ${addedAccount?.display_balance} virtual funds.`;
         }
         return `Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your ${marketTypeTitle} ${landingCompanyName} account to start trading.`;
-    }, [activeWallet?.wallet_currency_type, displayBalance, isDemo, landingCompanyName, marketTypeTitle]);
+    }, [
+        activeWallet?.wallet_currency_type,
+        addedAccount?.display_balance,
+        isDemo,
+        landingCompanyName,
+        marketTypeTitle,
+    ]);
 
     const renderMainContent = useMemo(() => {
-        if (!isSuccess) return null;
+        if (!isSuccess || isLoading) return null;
+
+        const verificationStatus = getVerificationStatus(addedAccount.landing_company_short, addedAccount.status);
+        const poiService = poiData.is_pending ? poiData.previous?.service : poiData.current?.service;
+        const isPOIVerified = poiData.status === 'verified';
+        const isPOAVerified = poaData.status === 'verified';
 
         if (!verificationStatus.is_not_applicable && !isPOIVerified && !isPOAVerified) {
             if (poiService === 'idv') {
@@ -92,7 +106,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                         description={`We need a few minutes to review your documents before you can start trading with your ${marketTypeTitle} ${
                             isDemo ? ' demo' : landingCompanyName
                         } account. You’ll get an in-app notification as soon as this is done.`}
-                        displayBalance={displayBalance}
+                        displayBalance={addedAccount?.display_balance}
                         landingCompany={selectedJurisdiction}
                         marketType={marketType}
                         platform={platform}
@@ -108,7 +122,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                         description={`We need 1-3 days to review your documents before you can start trading with your ${marketTypeTitle} ${
                             isDemo ? ' demo' : landingCompanyName
                         } account. You’ll get an email as soon as this is done.`}
-                        displayBalance={displayBalance}
+                        displayBalance={addedAccount?.display_balance}
                         landingCompany={selectedJurisdiction}
                         marketType={marketType}
                         platform={platform}
@@ -122,7 +136,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
         return (
             <CFDSuccess
                 description={renderSuccessDescription}
-                displayBalance={displayBalance}
+                displayBalance={addedAccount?.display_balance}
                 landingCompany={selectedJurisdiction}
                 marketType={marketType}
                 platform={platform}
@@ -131,21 +145,25 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
             />
         );
     }, [
-        displayBalance,
+        addedAccount?.display_balance,
+        addedAccount?.landing_company_short,
+        addedAccount?.status,
+        getVerificationStatus,
         isDemo,
-        isPOAVerified,
-        isPOIVerified,
+        isLoading,
         isSuccess,
         landingCompanyName,
         marketType,
         marketTypeTitle,
         platform,
-        poiService,
+        poaData?.status,
+        poiData,
         renderAccountSuccessButton,
         renderSuccessDescription,
         selectedJurisdiction,
-        verificationStatus.is_not_applicable,
     ]);
+
+    if (isLoading) return null;
 
     if (isMobile) {
         return <ModalStepWrapper renderFooter={renderAccountSuccessButton}>{renderMainContent}</ModalStepWrapper>;

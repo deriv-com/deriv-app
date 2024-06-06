@@ -15,6 +15,7 @@ import DealCancellation from 'AppV2/Components/DealCancellation/deal-cancellatio
 import { hasContractStarted, isForwardStarting, isMultiplierContract, isOpen, isValidToCancel } from '@deriv/shared';
 import classNames from 'classnames';
 import ContractDetailsFooter from 'AppV2/Components/ContractDetailsFooter';
+import { ContractCard } from 'AppV2/Components/ContractCard';
 
 const ContractDetails = observer(() => {
     const { contract_info, is_loading } = useContractDetails();
@@ -42,28 +43,7 @@ const ContractDetails = observer(() => {
                 'contract-details--one-button': should_show_sell && !show_cancel_button,
             })}
         >
-            {/* TODO: remove temp contract card */}
-            <div className='contract-card'>
-                <div className='row first-row'>
-                    <div className='title'>
-                        <Text size='sm'>Accumulators</Text>
-                    </div>
-                </div>
-                <div className='row'>
-                    <CaptionText>Volatility 75 Index</CaptionText>
-                    <CaptionText size='sm'>10.00 USD</CaptionText>
-                </div>
-                <div className='row last-row'>
-                    <div className='column'>
-                        <Text size='sm'>2/150 ticks</Text>
-                    </div>
-                    <div className='column'>
-                        <Text size='sm' className='red'>
-                            -1.00 USD
-                        </Text>
-                    </div>
-                </div>
-            </div>
+            <ContractCard contractInfo={contract_info} />
             {/* END OF CONTRACT CARD */}
             <div className='placeholder'>
                 <ChartPlaceholder />

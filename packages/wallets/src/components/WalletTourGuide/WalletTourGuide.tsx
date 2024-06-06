@@ -48,7 +48,8 @@ const WalletTourGuide = () => {
         if (needToStart && modal.isOpen) {
             modal.hide();
         }
-    }, [needToStart, modal]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [needToStart, modal.isOpen]);
 
     useEffect(() => {
         const switchAccountAndRun = async () => {

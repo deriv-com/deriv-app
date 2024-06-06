@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { useRequestPhoneNumberOTP } from '@deriv/hooks';
 import ConfirmPhoneNumber from '../confirm-phone-number';
-import { WS } from '@deriv/shared';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -13,17 +12,8 @@ jest.mock('@deriv/hooks', () => ({
         requestOnWhatsApp: jest.fn(),
         requestOnSMS: jest.fn(),
         setErrorMessage: jest.fn(),
-        handleError: jest.fn(),
+        setUsersPhoneNumber: jest.fn(),
     })),
-}));
-
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    WS: {
-        authorized: {
-            setSettings: jest.fn(() => Promise.resolve({})),
-        },
-    },
 }));
 
 describe('ConfirmPhoneNumber', () => {
@@ -39,10 +29,6 @@ describe('ConfirmPhoneNumber', () => {
     });
 
     const mockSetOtp = jest.fn();
-
-    beforeEach(() => {
-        (WS.authorized.setSettings as jest.Mock).mockReturnValue({});
-    });
 
     it('should render ConfirmPhoneNumber', () => {
         render(
@@ -89,13 +75,10 @@ describe('ConfirmPhoneNumber', () => {
     });
 
     it('should render handleError function when WS returns error promises', async () => {
-        const mock_handle_error = jest.fn();
-        (WS.authorized.setSettings as jest.Mock).mockReturnValue({
-            error: { code: 'SomeErrorCode', message: 'SomeErrorMessage' },
-        });
+        const mock_handle_error = jest.fn().mockResolvedValue({ error: null });
         (useRequestPhoneNumberOTP as jest.Mock).mockReturnValue({
             requestOnWhatsApp: jest.fn(),
-            handleError: mock_handle_error,
+            setUsersPhoneNumber: mock_handle_error,
         });
 
         render(
@@ -113,7 +96,7 @@ describe('ConfirmPhoneNumber', () => {
 
         (useRequestPhoneNumberOTP as jest.Mock).mockReturnValue({
             requestOnWhatsApp: mockWhatsappButtonClick,
-            handleError: jest.fn(),
+            setUsersPhoneNumber: jest.fn().mockResolvedValue({ error: null }),
         });
         render(
             <StoreProvider store={store}>
@@ -121,7 +104,7 @@ describe('ConfirmPhoneNumber', () => {
             </StoreProvider>
         );
         const whatsapp_btn = screen.getByRole('button', { name: 'Get code via WhatsApp' });
-        await userEvent.click(whatsapp_btn);
+        await act(async () => userEvent.click(whatsapp_btn));
         expect(mockWhatsappButtonClick).toHaveBeenCalled();
     });
 
@@ -130,7 +113,7 @@ describe('ConfirmPhoneNumber', () => {
 
         (useRequestPhoneNumberOTP as jest.Mock).mockReturnValue({
             requestOnSMS: mockSmsButtonClick,
-            handleError: jest.fn(),
+            setUsersPhoneNumber: jest.fn().mockResolvedValue({ error: null }),
         });
         render(
             <StoreProvider store={store}>
@@ -138,7 +121,7 @@ describe('ConfirmPhoneNumber', () => {
             </StoreProvider>
         );
         const sms_btn = screen.getByRole('button', { name: 'Get code via SMS' });
-        await userEvent.click(sms_btn);
+        await act(async () => userEvent.click(sms_btn));
         expect(mockSmsButtonClick).toHaveBeenCalled();
     });
 });

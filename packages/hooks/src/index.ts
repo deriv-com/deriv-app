@@ -70,6 +70,7 @@ export { default as useRealSTPAccount } from './useRealSTPAccount';
 export { default as useRegisterPasskey } from './useRegisterPasskey';
 export { default as useSendOTPVerificationCode } from './useSendOTPVerificationCode';
 export { default as useServiceToken } from './useServiceToken';
+export { default as useSetSettings } from './useSetSettings';
 export { default as useStatesList } from './useStatesList';
 export { default as useStoreLinkedWalletsAccounts } from './useStoreLinkedWalletsAccounts';
 export { default as useStoreWalletAccountsList } from './useStoreWalletAccountsList';

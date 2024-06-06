@@ -4,7 +4,7 @@ import { Button, Text, TextField } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useRequestPhoneNumberOTP } from '@deriv/hooks';
-import { VERIFICATION_SERVICES, WS } from '@deriv/shared';
+import { VERIFICATION_SERVICES } from '@deriv/shared';
 import { validatePhoneNumber } from './validation';
 
 type TConfirmPhoneNumber = {
@@ -13,7 +13,7 @@ type TConfirmPhoneNumber = {
 
 const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber) => {
     const [phone_number, setPhoneNumber] = React.useState('');
-    const { requestOnSMS, requestOnWhatsApp, error_message, handleError, setErrorMessage, ...rest } =
+    const { requestOnSMS, requestOnWhatsApp, error_message, setErrorMessage, setUsersPhoneNumber, ...rest } =
         useRequestPhoneNumberOTP();
     const { client, ui } = useStore();
     const { account_settings } = client;
@@ -29,11 +29,9 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
     };
 
     const handleSubmit = async (phone_verification_type: string) => {
-        const data = await WS.authorized.setSettings({ phone: phone_number });
+        const { error } = await setUsersPhoneNumber({ phone: phone_number });
 
-        if (data.error) {
-            handleError(data.error);
-        } else {
+        if (!error) {
             phone_verification_type === VERIFICATION_SERVICES.SMS ? requestOnSMS() : requestOnWhatsApp();
             setOtpVerification({ show_otp_verification: true, phone_verification_type });
             setShouldShowPhoneNumberOTP(true);

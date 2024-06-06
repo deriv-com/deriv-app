@@ -2,6 +2,7 @@ import React from 'react';
 import { useMutation } from '@deriv/api';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import useSetSettings from './useSetSettings';
 
 type THandleError = {
     code: string;
@@ -12,6 +13,7 @@ type THandleError = {
 const useRequestPhoneNumberOTP = () => {
     const { data, mutate, ...rest } = useMutation('phone_number_challenge');
     const [error_message, setErrorMessage] = React.useState<React.ReactNode>('');
+    const { setSettings } = useSetSettings();
 
     const requestOnSMS = () => {
         mutate({ payload: { carrier: VERIFICATION_SERVICES.SMS } });
@@ -19,6 +21,18 @@ const useRequestPhoneNumberOTP = () => {
 
     const requestOnWhatsApp = () => {
         mutate({ payload: { carrier: VERIFICATION_SERVICES.WHATSAPP } });
+    };
+
+    const setUsersPhoneNumber = async (value: { [key: string]: unknown }) => {
+        const data = await setSettings(value);
+
+        const { error } = data;
+
+        if (error) {
+            handleError(error);
+        }
+
+        return { error, data };
     };
 
     const handleError = ({ code, message }: THandleError) => {
@@ -50,6 +64,7 @@ const useRequestPhoneNumberOTP = () => {
         requestOnSMS,
         handleError,
         setErrorMessage,
+        setUsersPhoneNumber,
         mutate,
         ...rest,
     };

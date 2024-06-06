@@ -31,7 +31,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
 
     React.useEffect(() => {
         if (!should_show_phone_number_otp) {
-            // send();
+            send();
         } else if (is_phone_number_verified) {
             setShouldShowPhoneNumberVerifiedModal(true);
         }

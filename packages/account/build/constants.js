@@ -101,7 +101,7 @@ const plugins = () => [
     new DefinePlugin({
         'process.env.CROWDIN_PROJECT_NAME': JSON.stringify(process.env.PROJECT_NAME),
         'process.env.CROWDIN_BRANCH_NAME': JSON.stringify(process.env.CROWDIN_BRANCH_NAME),
-        'process.env.ACC_TRANSLATION_PATH': JSON.stringify('deriv-app/accounts'),
+        'process.env.ACC_TRANSLATION_PATH': JSON.stringify('deriv-app-account/staging'),
         'process.env.CROWDIN_URL': JSON.stringify('https://translations.deriv.com'),
     }),
     new CleanWebpackPlugin(),

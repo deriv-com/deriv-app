@@ -5,13 +5,21 @@ import { useTranslations } from '@deriv-com/translations';
 import { getAllowedLanguages } from '@deriv/translations';
 import FormSubHeader from '../../../Components/form-sub-header';
 import LanguageRadioButton from '../../../Components/language-settings';
+import { useEffect } from 'react';
 
 const LanguageSettings = observer(() => {
     const { client, common, ui } = useStore();
     const { switchLanguage, currentLang, localize } = useTranslations();
     const { has_wallet } = client;
-    const { changeSelectedLanguage } = common;
+    // [TODO]: Remove changeSelectedLanguage() when whole app starts to use @deriv-com/translations
+    const { changeSelectedLanguage, current_language } = common;
+
     const { is_mobile } = ui;
+
+    // [TODO]: Remove useEffect() when whole app starts to use @deriv-com/translations
+    useEffect(() => {
+        switchLanguage(current_language);
+    }, [current_language, switchLanguage]);
 
     if (is_mobile || has_wallet) {
         return <Redirect to={routes.traders_hub} />;
@@ -32,7 +40,7 @@ const LanguageSettings = observer(() => {
                             name='language-radio-group'
                             onChange={() => {
                                 switchLanguage(language_key);
-                                // [TODO]: Remove this function when whole app starts to use @deriv-com/translations
+                                // [TODO]: Remove changeSelectedLanguage() when whole app starts to use @deriv-com/translations
                                 changeSelectedLanguage(language_key);
                             }}
                         />

@@ -1,4 +1,3 @@
-import React from 'react';
 import Routes from './Containers/routes';
 import ResetTradingPassword from './Containers/reset-trading-password';
 import { NetworkStatusToastErrorPopup } from './Containers/toast-popup';
@@ -19,7 +18,7 @@ type TAppProps = {
 type TLanguage = Exclude<Parameters<typeof TranslationProvider>[0]['defaultLang'], undefined>;
 
 const i18nInstance = initializeI18n({
-    cdnUrl: `${process.env.CROWDIN_URL}/${process.env.ACC_TRANSLATION_PATH}`, // https://translations.deriv.com/deriv-app/accounts
+    cdnUrl: `${process.env.CROWDIN_URL}/${process.env.ACC_TRANSLATION_PATH}`, // https://translations.deriv.com/deriv-app-accounts/staging/translations
 });
 
 const App = ({ passthrough }: TAppProps) => {

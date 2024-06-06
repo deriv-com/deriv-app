@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import RecentComponent from '../recent';
+import DashboardBotList from '../dashboard-bot-list';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -28,7 +28,7 @@ const dashboard_strategies = [
     { ...dashboard_strategy, name: 'Strategy2', id: '2' },
 ];
 
-describe('RecentComponent', () => {
+describe('DashboardBotList', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
 
     beforeEach(() => {
@@ -51,7 +51,7 @@ describe('RecentComponent', () => {
     });
 
     it('Should display the list of strategies', () => {
-        render(<RecentComponent />, { wrapper });
+        render(<DashboardBotList />, { wrapper });
 
         const recent_сomponent = screen.getByText('Your bots:');
         const strategy_one = screen.getByText('Strategy1');
@@ -63,7 +63,7 @@ describe('RecentComponent', () => {
     });
 
     it('Should display text size equal to "xs" when using the mobile version', () => {
-        render(<RecentComponent />, { wrapper });
+        render(<DashboardBotList />, { wrapper });
 
         const load_strategy_label = screen.getByText('Your bots:');
 
@@ -74,7 +74,7 @@ describe('RecentComponent', () => {
     it('Should not display anything if the list of strategies is empty', () => {
         mock_DBot_store?.load_modal.setDashboardStrategies([]);
 
-        render(<RecentComponent />, { wrapper });
+        render(<DashboardBotList />, { wrapper });
 
         const recent_component = screen.queryByText('Your bots:');
         expect(recent_component).not.toBeInTheDocument();

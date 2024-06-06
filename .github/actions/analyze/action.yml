@@ -183,5 +183,20 @@ inputs:
   #     path: analyse.zip
   #     retention-days: 20
 
+runs:
+  using: composite
+  steps:
+  - name: Zip treemap charts
+    run: |
+      mkdir -p artifacts
+      zip artifacts/treemap-charts.zip packages/*/analyzed.html
+
+  - name: Upload treemap charts ZIP
+    uses: actions/upload-artifact@v4
+    with:
+      name: treemap-charts.zip
+      path: artifacts/treemap-charts.zip
+      retention-days: 10
+
 
   

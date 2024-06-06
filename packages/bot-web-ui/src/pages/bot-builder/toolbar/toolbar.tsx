@@ -3,7 +3,7 @@ import { Dialog } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendQsOpenEvent } from '../quick-strategy/analytics/rudderstack-quick-strategy';
+import { rudderStackSendQsOpenEvent } from '../../../analytics/rudderstack-quick-strategy';
 import ToolbarButton from './toolbar-button';
 import WorkspaceGroup from './workspace-group';
 

@@ -7,7 +7,7 @@ import { localize } from '@deriv/translations';
 import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendQsOpenEvent } from '../bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
+import { rudderStackSendQsOpenEvent } from '../../analytics/rudderstack-quick-strategy';
 import DashboardBotList from './load-bot-preview/dashboard-bot-list';
 import GoogleDrive from './load-bot-preview/google-drive';
 

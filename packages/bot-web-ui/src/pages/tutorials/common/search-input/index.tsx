@@ -4,7 +4,7 @@ import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendTutorialSearchEvent } from '../../../bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
+import { rudderStackSendTutorialSearchEvent } from '../../../../analytics/rudderstack-tutorials';
 
 type TSearchInput = {
     faq_value: string;

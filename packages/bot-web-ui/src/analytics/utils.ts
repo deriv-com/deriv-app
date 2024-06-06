@@ -1,4 +1,4 @@
-import { STRATEGIES } from '../config';
+import { STRATEGIES } from '../pages/bot-builder/quick-strategy/config';
 import { STORED_ITEM_NOT_FOUND, TFormStrategy } from './constants';
 
 export const getRsDropdownTextFromLocalStorage = () => {

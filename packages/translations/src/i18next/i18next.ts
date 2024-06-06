@@ -15,6 +15,7 @@ const ALL_LANGUAGES = Object.freeze({
     DE: 'Deutsch',
     FR: 'Français',
     ID: 'Indonesian',
+    KM: 'ខ្មែរ',
     IT: 'Italiano',
     KO: '한국어',
     PL: 'Polish',
@@ -49,6 +50,7 @@ export const getAllowedLanguages = () => {
         VI: 'Tiếng Việt',
         ZH_CN: '简体中文',
         ZH_TW: '繁體中文',
+        KM: 'ខ្មែរ',
     };
     const exclude_languages = ['ACH'];
     // TODO Change language_list to const when languages are available in prod.

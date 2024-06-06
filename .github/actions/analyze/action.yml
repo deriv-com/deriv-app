@@ -88,6 +88,9 @@ inputs:
 #       echo "artifact_url=$ARTIFACT_URL" >> $GITHUB_OUTPUT
 #       echo "artifact_url=$ARTIFACT_URL"
 
+runs:
+  using: composite
+  steps:
   - name: Create Release
     id: create_release
     if: github.ref != 'refs/heads/master'

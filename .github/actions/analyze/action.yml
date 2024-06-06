@@ -88,34 +88,6 @@ inputs:
 #       echo "artifact_url=$ARTIFACT_URL" >> $GITHUB_OUTPUT
 #       echo "artifact_url=$ARTIFACT_URL"
 
-runs:
-  using: composite
-  steps:
-  - name: Create Release
-    id: create_release
-    if: github.ref != 'refs/heads/master'
-    uses: actions/create-release@v1
-    env:
-      GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-    with:
-      tag_name: ${{ github.ref }}
-      release_name: Release ${{ github.ref }}
-      draft: false
-      prerelease: false
-
-  - name: Upload Release Asset
-    if: github.ref != 'refs/heads/master'
-    uses: actions/upload-release-asset@v1
-    env:
-      GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-    with:
-      upload_url: ${{ steps.create_release.outputs.upload_url }}
-      asset_path: ./packages/wallets/test.html
-      asset_name: test.html
-      asset_content_type: text/html
-
-
-
   # - name: Download artifact
   #   if: steps.get_artifact_url.outputs.artifact_url != 'null'
   #   env:
@@ -210,77 +182,6 @@ runs:
   #     name: analyse
   #     path: analyse.zip
   #     retention-days: 20
-
-  # - name: Upload treemap chart for account package
-  #   uses: actions/upload-artifact@v4
-  #   with:
-  #     name: account-treemap.html
-  #     path: packages/account/analyzed.html
-  #     retention-days: 10
-
-  # - name: Upload treemap chart for appstore package
-  #   uses: actions/upload-artifact@v4
-  #   with:
-  #     name: appstore-treemap.html
-  #     path: packages/appstore/analyzed.html
-  #     retention-days: 10
-
-  # - name: Upload treemap chart for bot-web-ui package
-  #   uses: actions/upload-artifact@v4
-  #   with:
-  #     name: bot-web-ui-treemap.html
-  #     path: packages/bot-web-ui/analyzed.html
-  #     retention-days: 10
-
-  # - name: Upload treemap chart for cashier package
-  #   uses: actions/upload-artifact@v4
-  #   with:
-  #     name: cashier-treemap.html
-  #     path: packages/cashier/analyzed.html
-  #     retention-days: 10
-
-  # - name: Upload treemap chart for cfd package
-  #   uses: actions/upload-artifact@v4
-  #   with:
-  #     name: cfd-treemap.html
-  #     path: packages/cfd/analyzed.html
-  #     retention-days: 10
-
-  # - name: Upload treemap chart for p2p package
-  #   uses: actions/upload-artifact@v4
-  #   with:
-  #     name: p2p-treemap.html
-  #     path: packages/p2p/analyzed.html
-  #     retention-days: 10
-
-  # - name: Upload treemap chart for reports package
-  #   uses: actions/upload-artifact@v4
-  #   with:
-  #     name: reports-treemap.html
-  #     path: packages/reports/analyzed.html
-  #     retention-days: 10
-
-  # - name: Upload treemap chart for trader package
-  #   uses: actions/upload-artifact@v4
-  #   with:
-  #     name: trader-treemap.html
-  #     path: packages/trader/analyzed.html
-  #     retention-days: 10
-
-  # - name: Upload treemap chart for core package
-  #   uses: actions/upload-artifact@v4
-  #   with:
-  #     name: core-treemap.html
-  #     path: packages/core/analyzed.html
-  #     retention-days: 10
-
-  # - name: Upload treemap chart for wallets package
-  #   uses: actions/upload-artifact@v4
-  #   with:
-  #     name: wallets-treemap.html
-  #     path: packages/wallets/analyzed.html
-  #     retention-days: 10
-
 
 
   

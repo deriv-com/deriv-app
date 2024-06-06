@@ -29,8 +29,8 @@ const App = ({ passthrough }: TAppProps) => {
     const language = getInitialLanguage();
 
     return (
-        <TranslationProvider defaultLang={language as TLanguage} i18nInstance={i18nInstance}>
-            <StoreProvider store={root_store}>
+        <StoreProvider store={root_store}>
+            <TranslationProvider defaultLang={language as TLanguage} i18nInstance={i18nInstance}>
                 <NetworkStatusToastErrorPopup />
                 <APIProvider>
                     <POIProvider>
@@ -39,8 +39,8 @@ const App = ({ passthrough }: TAppProps) => {
                         <ResetTradingPassword />
                     </POIProvider>
                 </APIProvider>
-            </StoreProvider>
-        </TranslationProvider>
+            </TranslationProvider>
+        </StoreProvider>
     );
 };
 

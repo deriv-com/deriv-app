@@ -17,6 +17,7 @@ const LanguageSettings = observer(() => {
     const { is_mobile } = ui;
 
     // [TODO]: Remove useEffect() when whole app starts to use @deriv-com/translations
+    // This is required to sync language state b/w footer language icon and Language settings
     useEffect(() => {
         switchLanguage(current_language);
     }, [current_language, switchLanguage]);
@@ -39,9 +40,10 @@ const LanguageSettings = observer(() => {
                             is_current_language={currentLang === language_key}
                             name='language-radio-group'
                             onChange={() => {
-                                switchLanguage(language_key);
                                 // [TODO]: Remove changeSelectedLanguage() when whole app starts to use @deriv-com/translations
+                                // This function also helps in informing language change to BE
                                 changeSelectedLanguage(language_key);
+                                switchLanguage(language_key);
                             }}
                         />
                     );

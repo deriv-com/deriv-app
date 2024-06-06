@@ -9,7 +9,8 @@ import { OECD_TIN_FORMAT_URL } from '../../Constants/external-urls';
 import FormFieldInfo from '../form-field-info';
 import { FormInputField } from '../forms/form-fields';
 import FormSelectField from '../forms/form-select-field';
-import { TListItem, getFormConfig } from './form-config';
+import { getFormConfig } from './form-config';
+import { TListItem } from 'Types';
 import { useDevice } from '@deriv-com/ui';
 
 const FormTitle = () => {

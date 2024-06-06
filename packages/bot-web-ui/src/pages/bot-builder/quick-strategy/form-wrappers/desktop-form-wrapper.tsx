@@ -27,6 +27,7 @@ type TDesktopFormWrapper = {
 
 const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClickClose, active_tab_ref }) => {
     const [activeTab, setActiveTab] = React.useState('TRADE_PARAMETERS');
+    const scroll_ref = React.useRef<HTMLDivElement & SVGSVGElement>(null);
     const { submitForm, isValid, setFieldValue, validateForm, values } = useFormikContext<TFormValues>();
     const { quick_strategy } = useDBotStore();
     const { selected_strategy, setSelectedStrategy, onSubmit, is_stop_bot_dialog_open } = quick_strategy;
@@ -37,9 +38,17 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
         validateForm();
     }, [selected_strategy, validateForm]);
 
+    const scrollToTop = () => {
+        // Gets the reference of the element and scrolls it to the top
+        if (scroll_ref.current) {
+            scroll_ref.current.scrollTop = 0;
+        }
+    };
+
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
         setActiveTab('TRADE_PARAMETERS');
+        scrollToTop();
     };
 
     const handleTabChange = (tab: string) => {
@@ -123,6 +132,7 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
                                 'qs__form__container--no-footer': activeTab !== 'TRADE_PARAMETERS',
                             })}
                             autohide={false}
+                            refSetter={scroll_ref}
                         >
                             <div ref={active_tab_ref}>
                                 <FormTabs

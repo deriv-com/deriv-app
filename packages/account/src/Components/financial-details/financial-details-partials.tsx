@@ -97,6 +97,7 @@ const FinancialDetailsOccupationDropdownField = ({
     const { values, handleChange, handleBlur, touched, errors, setFieldValue } = useFormikContext<{
         [key: string]: string;
     }>();
+    const { isDesktop } = useDevice();
 
     const getFormattedOccupationValues = () =>
         employment_status === EMPLOYMENT_VALUES.EMPLOYED && values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED

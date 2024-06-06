@@ -11,7 +11,7 @@ type TIconWithMessage = {
 };
 
 const IconWithMessage = observer(({ has_button, icon, message }: TIconWithMessage) => {
-    const { client } = useStore();
+    const { client, ui } = useStore();
     const { isDesktop } = useDevice();
     const { has_any_real_account: has_real_account } = client;
     const { toggleAccountsDialog, toggleShouldShowRealAccountsList } = ui;

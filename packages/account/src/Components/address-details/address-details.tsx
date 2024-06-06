@@ -18,7 +18,6 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { useStatesList } from '@deriv/hooks';
-import { getLocation } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { FormInputField } from '../forms/form-fields';
@@ -90,6 +89,7 @@ const AddressDetails = observer(
         has_real_account,
         ...props
     }: TAddressDetails) => {
+        const { isDesktop } = useDevice();
         const [address_state_to_display, setAddressStateToDisplay] = useState('');
 
         const {
@@ -117,7 +117,6 @@ const AddressDetails = observer(
             onSubmit((getCurrentStep?.() || 1) - 1, values, actions.setSubmitting, goToNextStep);
         };
 
-        const { isDesktop } = useDevice();
         return (
             <Formik initialValues={props.value} validate={handleValidate} validateOnMount onSubmit={handleSubmitData}>
                 {({
@@ -144,7 +143,7 @@ const AddressDetails = observer(
                                     is_disabled={isDesktop}
                                 >
                                     <ScrollToFieldWithError />
-                                    {is_mobile && (
+                                    {!isDesktop && (
                                         <Text size='xs' weight='bold' className='details-form__heading'>
                                             <Localize i18n_default_text='Complete your address details' />
                                         </Text>

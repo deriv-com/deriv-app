@@ -195,6 +195,3 @@ runs:
       name: treemap-charts.zip
       path: artifacts/treemap-charts.zip
       retention-days: 10
-
-
-  

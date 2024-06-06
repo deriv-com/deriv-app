@@ -2,10 +2,11 @@ import React from 'react';
 import { useStore } from '@deriv/stores';
 import ProfitStores from './Modules/Profit/profit-store';
 import StatementStores from './Modules/Statement/statement-store';
+import { formatProfitTableTransactions } from './Modules/Profit/Helpers/format-response';
 
 type TOverrideProfitStore = Omit<ProfitStores, 'data' | 'date_from' | 'totals'> & {
     date_from: number;
-    data: { [key: string]: string }[];
+    data: ReturnType<typeof formatProfitTableTransactions>[];
     totals: { [key: string]: unknown };
 };
 
@@ -39,7 +40,7 @@ type TOverrideStatementStore = Omit<
     suffix_icon: string;
 };
 
-type TReportsStore = {
+export type TReportsStore = {
     profit_table: TOverrideProfitStore;
     statement: TOverrideStatementStore;
 };

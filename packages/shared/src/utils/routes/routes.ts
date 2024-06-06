@@ -104,7 +104,6 @@ export const routes = {
 };
 
 export const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [
-    routes.traders_hub,
     routes.trade,
     routes.onboarding,
     routes.compare_cfds,
@@ -113,5 +112,8 @@ export const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [
     '/contract',
 ];
 
-export const isDisabledLandscapeBlockerRoute = (path: string) =>
-    DISABLE_LANDSCAPE_BLOCKER_ROUTES.some(route => path.startsWith(route));
+export const isDisabledLandscapeBlockerRoute = (path: string) => {
+    // can't use routes.traders_hub for the next check because all routes starts with '/'
+    if (path === routes.traders_hub) return true;
+    return DISABLE_LANDSCAPE_BLOCKER_ROUTES.some(route => path.startsWith(route));
+};

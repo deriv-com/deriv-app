@@ -183,13 +183,6 @@ runs:
       path: analyse.zip
       retention-days: 20
 
-  - name: Set sanitized branch name
-    id: sanitize
-    shell: bash
-    run: |
-      SANITIZED_REF_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g')
-      echo "SANITIZED_REF_NAME=${SANITIZED_REF_NAME}" >> $GITHUB_ENV
-
   - name: Upload treemap chart for account package
     uses: actions/upload-artifact@v4
     with:

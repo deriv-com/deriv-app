@@ -1040,7 +1040,7 @@ export default class ClientStore extends BaseStore {
 
     getLimits() {
         return new Promise(resolve => {
-            WS.authorized.storage.getLimits().then(data => {
+            WS.authorized.cache.getLimits({ get_limits: 1, loginid: this.loginid }).then(data => {
                 runInAction(() => {
                     if (data.error) {
                         this.account_limits = {

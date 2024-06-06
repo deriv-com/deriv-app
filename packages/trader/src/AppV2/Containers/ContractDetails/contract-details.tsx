@@ -12,21 +12,45 @@ import { getContractDetailsConfig } from 'AppV2/Utils/contract-details-config';
 import TakeProfit from 'AppV2/Components/TakeProfit/take-profit';
 import StopLoss from 'AppV2/Components/StopLoss/stop-loss';
 import DealCancellation from 'AppV2/Components/DealCancellation/deal-cancellation';
-import { hasContractStarted, isForwardStarting, isMultiplierContract, isOpen, isValidToCancel } from '@deriv/shared';
+import {
+    hasContractStarted,
+    isForwardStarting,
+    isMultiplierContract,
+    isOpen,
+    isValidToCancel,
+    WS,
+    TContractStore,
+} from '@deriv/shared';
 import classNames from 'classnames';
 import ContractDetailsFooter from 'AppV2/Components/ContractDetailsFooter';
 
 const ContractDetails = observer(() => {
     const { contract_info, is_loading } = useContractDetails();
+    const { contract_id, currency } = contract_info;
+    const [update_history, setUpdateHistory] = React.useState<TContractUpdateHistory>([]);
+
+    type TContractUpdateHistory = TContractStore['contract_update_history'];
+    type TResponse = {
+        contract_update_history: TContractUpdateHistory;
+    };
+
+    const getSortedUpdateHistory = (history: TContractUpdateHistory) =>
+        history.sort((a, b) => Number(b?.order_date) - Number(a?.order_date));
+    const requestUpdatedHistory = React.useCallback((id?: number) => {
+        if (!id) return;
+        WS.contractUpdateHistory(id)
+            .then((response: TResponse) => {
+                setUpdateHistory(getSortedUpdateHistory(response.contract_update_history));
+            })
+            .catch(() => null);
+    }, []);
+
+    React.useEffect(() => {
+        requestUpdatedHistory(contract_id);
+    }, [contract_id, requestUpdatedHistory]);
+
     if (is_loading) return <></>;
-    const historyData = [
-        { date: '01 Jan 2024', time: '12:00:00 GMT', action: 'Take profit', amount: '5.00 USD' },
-        { date: '02 Jan 2024', time: '13:00:00 GMT', action: 'Take profit', amount: '10.00 USD' },
-        { date: '03 Jan 2024', time: '12:00:00 GMT', action: 'Stop loss', amount: '5.00 USD' },
-        { date: '04 Jan 2024', time: '13:00:00 GMT', action: 'Take profit', amount: '10.00 USD' },
-        { date: '05 Jan 2024', time: '12:00:00 GMT', action: 'Take profit', amount: '5.00 USD' },
-        { date: '06 Jan 2024', time: '13:00:00 GMT', action: 'Take profit', amount: '10.00 USD' },
-    ];
+
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const should_show_sell =
@@ -35,6 +59,7 @@ const ContractDetails = observer(() => {
         isOpen(contract_info);
     const { is_tp_history_visible } = getContractDetailsConfig(contract_info.contract_type ?? '');
     const show_cancel_button = is_multiplier && is_valid_to_cancel;
+
     return (
         <div
             className={classNames('contract-details', {
@@ -80,7 +105,7 @@ const ContractDetails = observer(() => {
             </CardWrapper>
             <PayoutInfo contract_info={contract_info} />
             <EntryExitDetails contract_info={contract_info} />
-            {is_tp_history_visible && <TakeProfitHistory history={historyData} />}
+            {is_tp_history_visible && <TakeProfitHistory history={update_history} currency={currency} />}
             {should_show_sell && <ContractDetailsFooter contract_info={contract_info} />}
         </div>
     );

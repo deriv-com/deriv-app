@@ -1,14 +1,26 @@
 import { Text, CaptionText, Pagination } from '@deriv-com/quill-ui';
+import { formatDate, formatTime, TContractStore } from '@deriv/shared';
+import { FormatUtils } from '@deriv-com/utils';
 import CardWrapper from '../CardWrapper';
 import React, { useState } from 'react';
 import clsx from 'classnames';
 
-const TakeProfitHistory = ({ history }: any) => {
+type TContractHistory = {
+    currency?: string;
+    history?: [] | TContractStore['contract_update_history'];
+};
+
+type TPagination = {
+    currentPage: number;
+    totalPageCount: number;
+};
+
+const TakeProfitHistory = ({ history = [], currency }: TContractHistory) => {
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 4;
     const totalPages = Math.ceil(history.length / itemsPerPage);
 
-    const handlePageChange = (pagination: any) => {
+    const handlePageChange = (pagination: TPagination) => {
         setCurrentPage(pagination.currentPage - 1);
     };
 
@@ -21,19 +33,23 @@ const TakeProfitHistory = ({ history }: any) => {
                     'take-profit-history__table--fixed-height': history.length > itemsPerPage,
                 })}
             >
-                {currentItems.map((item: any, index: number) => (
+                {currentItems.map((item, index) => (
                     <div key={index} className='take-profit-history__table-row'>
                         <div
                             className={clsx('take-profit-history__table-cell', 'take-profit-history__table-cell--left')}
                         >
-                            <CaptionText size='sm'>{item.date}</CaptionText>
-                            <CaptionText color='rgba(0, 0, 0, 0.48)'>{item.time}</CaptionText>
+                            <CaptionText color='quill-typography__color--subtle' size='sm'>
+                                {formatDate(item.order_date, 'DD MMM YYYY')}
+                            </CaptionText>
+                            <CaptionText color='quill-typography__color--subtle'>
+                                {formatTime(Number(item.order_date))}
+                            </CaptionText>
                         </div>
                         <div className='take-profit-history__table-cell'>
-                            <Text size='sm'>{item.action}</Text>
-                            <Text color='rgba(0, 0, 0, 0.48)' size='sm'>
-                                {item.amount}
+                            <Text size='sm' color='quill-typography__color--subtle'>
+                                {item.display_name}
                             </Text>
+                            <Text size='sm'>{`${FormatUtils.formatMoney(Number(item.order_amount))} ${currency}`}</Text>
                         </div>
                     </div>
                 ))}

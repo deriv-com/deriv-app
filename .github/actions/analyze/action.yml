@@ -95,170 +95,170 @@ runs:
       path: packages/wallets/test.html
       retention-days: 20
 
-  - name: Download artifact
-    if: steps.get_artifact_url.outputs.artifact_url != 'null'
-    env:
-      ARTIFACT_URL: ${{ steps.get_artifact_url.outputs.artifact_url }}
-      GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-    shell: bash
-    run: |
-      curl -L -H "Authorization: Bearer $GITHUB_TOKEN" \
-        "$ARTIFACT_URL" \
-        -o artifact.zip
-      unzip artifact.zip -d old
-      cd old
-      unzip analyse.zip
+  # - name: Download artifact
+  #   if: steps.get_artifact_url.outputs.artifact_url != 'null'
+  #   env:
+  #     ARTIFACT_URL: ${{ steps.get_artifact_url.outputs.artifact_url }}
+  #     GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+  #   shell: bash
+  #   run: |
+  #     curl -L -H "Authorization: Bearer $GITHUB_TOKEN" \
+  #       "$ARTIFACT_URL" \
+  #       -o artifact.zip
+  #     unzip artifact.zip -d old
+  #     cd old
+  #     unzip analyse.zip
 
-  - name: Analyze all packages
-    env:
-      NODE_ENV: ${{ inputs.NODE_ENV }}
-      CROWDIN_WALLETS_API_KEY: ${{ inputs.CROWDIN_WALLETS_API_KEY }}
-      DATADOG_APPLICATION_ID: ${{ inputs.DATADOG_APPLICATION_ID }}
-      DATADOG_CLIENT_TOKEN: ${{ inputs.DATADOG_CLIENT_TOKEN }}
-      DATADOG_CLIENT_TOKEN_LOGS: ${{ inputs.DATADOG_CLIENT_TOKEN_LOGS }}
-      DATADOG_SESSION_REPLAY_SAMPLE_RATE: ${{ inputs.DATADOG_SESSION_REPLAY_SAMPLE_RATE }}
-      DATADOG_SESSION_SAMPLE_RATE: ${{ inputs.DATADOG_SESSION_SAMPLE_RATE }}
-      DATADOG_SESSION_SAMPLE_RATE_LOGS: ${{ inputs.DATADOG_SESSION_SAMPLE_RATE_LOGS }}
-      IS_GROWTHBOOK_ENABLED: ${{ inputs.IS_GROWTHBOOK_ENABLED }}
-      GD_API_KEY: ${{ inputs.GD_API_KEY }}
-      GD_APP_ID: ${{ inputs.GD_APP_ID }}
-      GD_CLIENT_ID: ${{ inputs.GD_CLIENT_ID }}
-      RUDDERSTACK_KEY: ${{ inputs.RUDDERSTACK_KEY }}
-      GROWTHBOOK_CLIENT_KEY: ${{ inputs.GROWTHBOOK_CLIENT_KEY }}
-      GROWTHBOOK_DECRYPTION_KEY: ${{ inputs.GROWTHBOOK_DECRYPTION_KEY }}
-      REF_NAME: ${{ inputs.REF_NAME }}
-      REMOTE_CONFIG_URL: ${{ inputs.REMOTE_CONFIG_URL }}
-      TRUSTPILOT_API_KEY: ${{ inputs.TRUSTPILOT_API_KEY }}
-      NODE_OPTIONS: "--max_old_space_size=4096"
-    shell: bash
-    run: npm run build:prod && npm run analyze:stats && npm run analyze:build
+  # - name: Analyze all packages
+  #   env:
+  #     NODE_ENV: ${{ inputs.NODE_ENV }}
+  #     CROWDIN_WALLETS_API_KEY: ${{ inputs.CROWDIN_WALLETS_API_KEY }}
+  #     DATADOG_APPLICATION_ID: ${{ inputs.DATADOG_APPLICATION_ID }}
+  #     DATADOG_CLIENT_TOKEN: ${{ inputs.DATADOG_CLIENT_TOKEN }}
+  #     DATADOG_CLIENT_TOKEN_LOGS: ${{ inputs.DATADOG_CLIENT_TOKEN_LOGS }}
+  #     DATADOG_SESSION_REPLAY_SAMPLE_RATE: ${{ inputs.DATADOG_SESSION_REPLAY_SAMPLE_RATE }}
+  #     DATADOG_SESSION_SAMPLE_RATE: ${{ inputs.DATADOG_SESSION_SAMPLE_RATE }}
+  #     DATADOG_SESSION_SAMPLE_RATE_LOGS: ${{ inputs.DATADOG_SESSION_SAMPLE_RATE_LOGS }}
+  #     IS_GROWTHBOOK_ENABLED: ${{ inputs.IS_GROWTHBOOK_ENABLED }}
+  #     GD_API_KEY: ${{ inputs.GD_API_KEY }}
+  #     GD_APP_ID: ${{ inputs.GD_APP_ID }}
+  #     GD_CLIENT_ID: ${{ inputs.GD_CLIENT_ID }}
+  #     RUDDERSTACK_KEY: ${{ inputs.RUDDERSTACK_KEY }}
+  #     GROWTHBOOK_CLIENT_KEY: ${{ inputs.GROWTHBOOK_CLIENT_KEY }}
+  #     GROWTHBOOK_DECRYPTION_KEY: ${{ inputs.GROWTHBOOK_DECRYPTION_KEY }}
+  #     REF_NAME: ${{ inputs.REF_NAME }}
+  #     REMOTE_CONFIG_URL: ${{ inputs.REMOTE_CONFIG_URL }}
+  #     TRUSTPILOT_API_KEY: ${{ inputs.TRUSTPILOT_API_KEY }}
+  #     NODE_OPTIONS: "--max_old_space_size=4096"
+  #   shell: bash
+  #   run: npm run build:prod && npm run analyze:stats && npm run analyze:build
 
-  - name: Compare report to master
-    id: diff
-    if: steps.get_artifact_url.outputs.artifact_url != 'null'
-    shell: bash
-    run: |
-      DIFF_OUTPUT_HTML=$(node .github/actions/analyze/compareReports.js --format=html)
-      ABOVE_THRESHOLD=$(node .github/actions/analyze/compareReports.js --format=boolean) || { echo "Threshold check failed"; exit 1; }
+  # - name: Compare report to master
+  #   id: diff
+  #   if: steps.get_artifact_url.outputs.artifact_url != 'null'
+  #   shell: bash
+  #   run: |
+  #     DIFF_OUTPUT_HTML=$(node .github/actions/analyze/compareReports.js --format=html)
+  #     ABOVE_THRESHOLD=$(node .github/actions/analyze/compareReports.js --format=boolean) || { echo "Threshold check failed"; exit 1; }
 
-      # Output results to GITHUB_OUTPUT
-      echo "diff_output_html=$DIFF_OUTPUT_HTML" >> $GITHUB_OUTPUT
-      echo "above_threshold=$ABOVE_THRESHOLD" >> $GITHUB_OUTPUT
+  #     # Output results to GITHUB_OUTPUT
+  #     echo "diff_output_html=$DIFF_OUTPUT_HTML" >> $GITHUB_OUTPUT
+  #     echo "above_threshold=$ABOVE_THRESHOLD" >> $GITHUB_OUTPUT
 
-  - name: Comment on PR with Diff Output
-    if: steps.get_artifact_url.outputs.artifact_url != 'null' && inputs.ISSUE_NUMBER
-    uses: actions/github-script@v5
-    env:
-      DIFF_OUTPUT_HTML: ${{ steps.diff.outputs.diff_output_html }}
-      ISSUE_NUMBER: ${{ inputs.ISSUE_NUMBER }}
-    with:
-      script: |
-        const diffOutputHtml = process.env.DIFF_OUTPUT_HTML;  // Removed Buffer.from and base64 decoding
-        const issueNumber = process.env.ISSUE_NUMBER;
-        github.rest.issues.createComment({
-          owner: context.repo.owner,
-          repo: context.repo.repo,
-          issue_number: issueNumber,
-          body: `${diffOutputHtml}`
-        });
-    continue-on-error: true
+  # - name: Comment on PR with Diff Output
+  #   if: steps.get_artifact_url.outputs.artifact_url != 'null' && inputs.ISSUE_NUMBER
+  #   uses: actions/github-script@v5
+  #   env:
+  #     DIFF_OUTPUT_HTML: ${{ steps.diff.outputs.diff_output_html }}
+  #     ISSUE_NUMBER: ${{ inputs.ISSUE_NUMBER }}
+  #   with:
+  #     script: |
+  #       const diffOutputHtml = process.env.DIFF_OUTPUT_HTML;  // Removed Buffer.from and base64 decoding
+  #       const issueNumber = process.env.ISSUE_NUMBER;
+  #       github.rest.issues.createComment({
+  #         owner: context.repo.owner,
+  #         repo: context.repo.repo,
+  #         issue_number: issueNumber,
+  #         body: `${diffOutputHtml}`
+  #       });
+  #   continue-on-error: true
 
-  - name: Print out differences on console
-    id: print_diff
-    if: steps.get_artifact_url.outputs.artifact_url != 'null'
-    shell: bash
-    run: |
-      node .github/actions/analyze/compareReports.js --format=console
+  # - name: Print out differences on console
+  #   id: print_diff
+  #   if: steps.get_artifact_url.outputs.artifact_url != 'null'
+  #   shell: bash
+  #   run: |
+  #     node .github/actions/analyze/compareReports.js --format=console
 
-  - name: Validate size changes
-    if: ${{ steps.diff.outputs.above_threshold == 'true' }}
-    uses: actions/github-script@v5
-    with:
-      script: |
-        core.setFailed('Size changes exceed the defined threshold. Check above logs for details.');
+  # - name: Validate size changes
+  #   if: ${{ steps.diff.outputs.above_threshold == 'true' }}
+  #   uses: actions/github-script@v5
+  #   with:
+  #     script: |
+  #       core.setFailed('Size changes exceed the defined threshold. Check above logs for details.');
 
-  - name: Zip all report.json files
-    shell: bash
-    run: |
-      zip -r analyse.zip packages/*/report.json
+  # - name: Zip all report.json files
+  #   shell: bash
+  #   run: |
+  #     zip -r analyse.zip packages/*/report.json
 
-  - name: Upload analyse.zip for Master Branch
-    if: github.ref == 'refs/heads/master'
-    uses: actions/upload-artifact@v4
-    with:
-      name: analyse
-      path: analyse.zip
-      retention-days: 20
+  # - name: Upload analyse.zip for Master Branch
+  #   if: github.ref == 'refs/heads/master'
+  #   uses: actions/upload-artifact@v4
+  #   with:
+  #     name: analyse
+  #     path: analyse.zip
+  #     retention-days: 20
 
-  - name: Upload treemap chart for account package
-    uses: actions/upload-artifact@v4
-    with:
-      name: account-treemap.html
-      path: packages/account/analyzed.html
-      retention-days: 10
+  # - name: Upload treemap chart for account package
+  #   uses: actions/upload-artifact@v4
+  #   with:
+  #     name: account-treemap.html
+  #     path: packages/account/analyzed.html
+  #     retention-days: 10
 
-  - name: Upload treemap chart for appstore package
-    uses: actions/upload-artifact@v4
-    with:
-      name: appstore-treemap.html
-      path: packages/appstore/analyzed.html
-      retention-days: 10
+  # - name: Upload treemap chart for appstore package
+  #   uses: actions/upload-artifact@v4
+  #   with:
+  #     name: appstore-treemap.html
+  #     path: packages/appstore/analyzed.html
+  #     retention-days: 10
 
-  - name: Upload treemap chart for bot-web-ui package
-    uses: actions/upload-artifact@v4
-    with:
-      name: bot-web-ui-treemap.html
-      path: packages/bot-web-ui/analyzed.html
-      retention-days: 10
+  # - name: Upload treemap chart for bot-web-ui package
+  #   uses: actions/upload-artifact@v4
+  #   with:
+  #     name: bot-web-ui-treemap.html
+  #     path: packages/bot-web-ui/analyzed.html
+  #     retention-days: 10
 
-  - name: Upload treemap chart for cashier package
-    uses: actions/upload-artifact@v4
-    with:
-      name: cashier-treemap.html
-      path: packages/cashier/analyzed.html
-      retention-days: 10
+  # - name: Upload treemap chart for cashier package
+  #   uses: actions/upload-artifact@v4
+  #   with:
+  #     name: cashier-treemap.html
+  #     path: packages/cashier/analyzed.html
+  #     retention-days: 10
 
-  - name: Upload treemap chart for cfd package
-    uses: actions/upload-artifact@v4
-    with:
-      name: cfd-treemap.html
-      path: packages/cfd/analyzed.html
-      retention-days: 10
+  # - name: Upload treemap chart for cfd package
+  #   uses: actions/upload-artifact@v4
+  #   with:
+  #     name: cfd-treemap.html
+  #     path: packages/cfd/analyzed.html
+  #     retention-days: 10
 
-  - name: Upload treemap chart for p2p package
-    uses: actions/upload-artifact@v4
-    with:
-      name: p2p-treemap.html
-      path: packages/p2p/analyzed.html
-      retention-days: 10
+  # - name: Upload treemap chart for p2p package
+  #   uses: actions/upload-artifact@v4
+  #   with:
+  #     name: p2p-treemap.html
+  #     path: packages/p2p/analyzed.html
+  #     retention-days: 10
 
-  - name: Upload treemap chart for reports package
-    uses: actions/upload-artifact@v4
-    with:
-      name: reports-treemap.html
-      path: packages/reports/analyzed.html
-      retention-days: 10
+  # - name: Upload treemap chart for reports package
+  #   uses: actions/upload-artifact@v4
+  #   with:
+  #     name: reports-treemap.html
+  #     path: packages/reports/analyzed.html
+  #     retention-days: 10
 
-  - name: Upload treemap chart for trader package
-    uses: actions/upload-artifact@v4
-    with:
-      name: trader-treemap.html
-      path: packages/trader/analyzed.html
-      retention-days: 10
+  # - name: Upload treemap chart for trader package
+  #   uses: actions/upload-artifact@v4
+  #   with:
+  #     name: trader-treemap.html
+  #     path: packages/trader/analyzed.html
+  #     retention-days: 10
 
-  - name: Upload treemap chart for core package
-    uses: actions/upload-artifact@v4
-    with:
-      name: core-treemap.html
-      path: packages/core/analyzed.html
-      retention-days: 10
+  # - name: Upload treemap chart for core package
+  #   uses: actions/upload-artifact@v4
+  #   with:
+  #     name: core-treemap.html
+  #     path: packages/core/analyzed.html
+  #     retention-days: 10
 
-  - name: Upload treemap chart for wallets package
-    uses: actions/upload-artifact@v4
-    with:
-      name: wallets-treemap.html
-      path: packages/wallets/analyzed.html
-      retention-days: 10
+  # - name: Upload treemap chart for wallets package
+  #   uses: actions/upload-artifact@v4
+  #   with:
+  #     name: wallets-treemap.html
+  #     path: packages/wallets/analyzed.html
+  #     retention-days: 10
 
 
 

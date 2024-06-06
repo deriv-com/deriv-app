@@ -80,9 +80,7 @@ const DetailsComponent = ({ message = '', action_type = '' }: TDetailsComponent)
     );
 };
 
-type TGetRowAction = TDataList['getRowAction'] | React.ComponentProps<typeof DataTable>['getRowAction'];
-
-export const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
+export const getRowAction = (row_obj: TSource | TRow): TAction => {
     let action: TAction = {};
     const { action_type, desc, id, is_sold, longcode, purchase_time, shortcode, transaction_time, withdrawal_details } =
         row_obj;

@@ -381,28 +381,28 @@ describe('getRowAction', () => {
     };
 
     it('should return an empty object if received data is an empty object, or if action_type is missing', () => {
-        expect(getRowAction?.({})).toMatchObject({});
+        expect(getRowAction({})).toMatchObject({});
 
-        expect(getRowAction?.({ ...buyTransactionData, action_type: '' })).toMatchObject({});
+        expect(getRowAction({ ...buyTransactionData, action_type: '' })).toMatchObject({});
     });
     it('should return contract path string if row_obj has id, action_type is buy or sell, and contract is supported & not forward-starting', () => {
-        expect(getRowAction?.(buyTransactionData)).toEqual(`/contract/${buyTransactionData.id}`);
+        expect(getRowAction(buyTransactionData)).toEqual(`/contract/${buyTransactionData.id}`);
 
-        expect(getRowAction?.(sellTransactionData)).toEqual(`/contract/${sellTransactionData.id}`);
+        expect(getRowAction(sellTransactionData)).toEqual(`/contract/${sellTransactionData.id}`);
     });
     it('should return an object with component that renders desc if action_type is valid but not buy or sell', () => {
-        render((getRowAction?.(depositTransactionData) as Record<string, JSX.Element>).component);
+        render((getRowAction(depositTransactionData) as Record<string, JSX.Element>).component);
         expect(screen.getByText(depositTransactionData.desc)).toBeInTheDocument();
     });
     it('should return an object with component that renders withdrawal_details and longcode if action_type is withdrawal, & data includes withdrawal_details and longcode', () => {
-        render((getRowAction?.(withdrawalTransactionData) as Record<string, JSX.Element>).component);
+        render((getRowAction(withdrawalTransactionData) as Record<string, JSX.Element>).component);
         expect(
             screen.getByText(`${withdrawalTransactionData.withdrawal_details} ${withdrawalTransactionData.longcode}`)
         ).toBeInTheDocument();
     });
     it('should return an object with component that renders desc if action_type is withdrawal, & withdrawal_details are missing', () => {
         render(
-            (getRowAction?.({ ...withdrawalTransactionData, withdrawal_details: '' }) as Record<string, JSX.Element>)
+            (getRowAction({ ...withdrawalTransactionData, withdrawal_details: '' }) as Record<string, JSX.Element>)
                 .component
         );
         expect(screen.getByText(withdrawalTransactionData.desc)).toBeInTheDocument();
@@ -410,7 +410,7 @@ describe('getRowAction', () => {
     it('should return an object with component that renders a correct message if action_type is buy or sell, & shortcode contains an unsupported contract_type', () => {
         const { rerender } = render(
             (
-                getRowAction?.({
+                getRowAction({
                     ...sellTransactionData,
                     shortcode: unsupportedContractShortcode,
                 }) as Record<string, JSX.Element>
@@ -420,7 +420,7 @@ describe('getRowAction', () => {
 
         rerender(
             (
-                getRowAction?.({
+                getRowAction({
                     ...buyTransactionData,
                     shortcode: unsupportedContractShortcode,
                 }) as Record<string, JSX.Element>
@@ -431,7 +431,7 @@ describe('getRowAction', () => {
     it('should return an object with component that renders a correct message if action_type is buy, & shortcode contains forward-starting contract details', () => {
         render(
             (
-                getRowAction?.({
+                getRowAction({
                     ...buyTransactionData,
                     transaction_time: 1717662763,
                     shortcode: 'CALL_1HZ25V_19.54_1717761900F_1717762800_S0P_0',
@@ -444,7 +444,7 @@ describe('getRowAction', () => {
     it('should return an object with component that renders a message with blockchain details & Copy icon if desc has blockchain details, & action_type is deposit', () => {
         render(
             (
-                getRowAction?.({
+                getRowAction({
                     ...depositTransactionData,
                     desc: blockchainDesc,
                 }) as Record<string, JSX.Element>
@@ -457,7 +457,7 @@ describe('getRowAction', () => {
     it('should return an object with component that renders a message with blockchain details & 2 Copy icons if desc has blockchain details, action_type is withdrawal, & withdrawal_details are missing', () => {
         render(
             (
-                getRowAction?.({
+                getRowAction({
                     ...withdrawalTransactionData,
                     desc: blockchainDesc,
                     withdrawal_details: '',

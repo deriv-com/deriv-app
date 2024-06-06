@@ -505,6 +505,13 @@
                 /*rtl:ignore*/
                 margin-left: 0.8rem;
                 max-width: 10.5rem;
+
+                @include mobile {
+                    max-width: 100%;
+                }
+                @include tablet {
+                    max-width: 100%;
+                }
             }
         }
         .dc-remaining-time {

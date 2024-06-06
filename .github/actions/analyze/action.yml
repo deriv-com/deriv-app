@@ -187,6 +187,7 @@ runs:
   using: composite
   steps:
   - name: Zip treemap charts
+    shell: bash
     run: |
       mkdir -p artifacts
       zip artifacts/treemap-charts.zip packages/*/analyzed.html

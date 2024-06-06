@@ -32,4 +32,4 @@ playwright/.cache/
 .nx
 packages/*/stats.json
 packages/*/report.json
-packages/*/treemap.html
+packages/*/analyzed.html

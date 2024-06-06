@@ -1,0 +1,13 @@
+{
+  "index": "./src/index.ts",
+  "AddressFields": "./src/AddressFields/AddressFields.tsx",
+  "FinancialAssessment": "./src/FinancialAssessment/FinancialAssessmentForm.tsx",
+  "FinancialAssessmentFields": "./src/FinancialAssessmentFields/FinancialAssessmentFields.tsx",
+  "IDVForm": "./src/IDVForm/IDVForm.tsx",
+  "IDVService": "./src/IDVService/IDVService.tsx",
+  "ManualUpload": "./src/ManualUpload/ManualUpload.tsx",
+  "Onfido": "./src/Onfido/OnfidoContainer.tsx",
+  "OnfidoService": "./src/OnfidoService/OnfidoService.tsx",
+  "POAForm": "./src/POAForm/POAFormContainer.tsx",
+  "POI": "./src/POI/POI.tsx"
+}

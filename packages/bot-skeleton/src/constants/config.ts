@@ -54,7 +54,7 @@ export const config = {
     opposites: {
         ACCUMULATOR: [
             {
-                ACCU: localize('Accumulator'),
+                ACCU: localize('Buy'),
             },
         ],
         MULTIPLIER: [

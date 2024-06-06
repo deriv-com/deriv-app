@@ -17,7 +17,7 @@ Blockly.Blocks.trade_definition_accumulator = {
             message0: localize('Growth Rate: {{ accumulator }}', {
                 accumulator: '%1',
             }),
-            message1: `${localize('Stake')}: %1 %2 %3`,
+            message1: `${localize('Stake')}: %1 %2`,
             message2: '%1',
             message3: '%1',
             args0: [
@@ -37,11 +37,6 @@ Blockly.Blocks.trade_definition_accumulator = {
                     type: 'input_value',
                     name: 'AMOUNT',
                     check: 'Number',
-                },
-                {
-                    type: 'field_label',
-                    name: 'AMOUNT_LIMITS',
-                    text: '',
                 },
             ],
             args2: [
@@ -127,7 +122,6 @@ Blockly.Blocks.trade_definition_accumulator = {
 
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             this.setCurrency();
-            this.updateAmountLimits();
             if (is_load_event) {
                 // Do NOT touch any values when a strategy is being loaded.
                 this.updateAccumulatorInput(false);
@@ -154,14 +148,12 @@ Blockly.Blocks.trade_definition_accumulator = {
                 }
             } else if (event.name === 'SYMBOL_LIST' || event.name === 'TRADETYPE_LIST') {
                 this.updateAccumulatorInput(true);
-                this.updateAmountLimits();
             }
             return;
         }
 
         if (event.type === Blockly.Events.END_DRAG) {
             this.setCurrency();
-            this.updateAmountLimits();
             this.validateBlocksInStatement();
             if (event.blockId === this.id) {
                 // Ensure this block is populated after initial drag from flyout.
@@ -174,17 +166,6 @@ Blockly.Blocks.trade_definition_accumulator = {
                 }
             }
         }
-    },
-    updateAmountLimits() {
-        runIrreversibleEvents(() => {
-            this.setFieldValue(
-                localize('(min: {{min_stake}} - max: {{max_payout}})', {
-                    min_stake: 1,
-                    max_payout: 200,
-                }),
-                'AMOUNT_LIMITS'
-            );
-        });
     },
     updateAccumulatorInput(should_use_default_value) {
         const { contracts_for } = ApiHelpers.instance;

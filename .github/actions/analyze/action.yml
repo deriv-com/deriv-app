@@ -170,10 +170,10 @@ runs:
       script: |
         core.setFailed('Size changes exceed the defined threshold. Check above logs for details.');
 
-  - name: Zip all report.json files
+  - name: Zip all treemaps and reports
     shell: bash
     run: |
-      zip -r analyse.zip packages/*/report.json
+      zip -r analyse.zip packages/*/{report.json,treemap.html}
 
   - name: Upload analyse.zip for Master Branch
     if: github.ref == 'refs/heads/master'
@@ -183,15 +183,17 @@ runs:
       path: analyse.zip
       retention-days: 20
 
-  - name: Zip treemap charts
+  - name: Set sanitized branch name
+    id: sanitize
     shell: bash
     run: |
-      mkdir -p artifacts
-      zip artifacts/treemap-charts.zip packages/*/analyzed.html
+      SANITIZED_REF_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g')
+      echo "SANITIZED_REF_NAME=${SANITIZED_REF_NAME}" >> $GITHUB_ENV
 
-  - name: Upload treemap charts
+  - name: Upload analyse.zip for Feature Branches
+    if: github.ref != 'refs/heads/master'
     uses: actions/upload-artifact@v4
     with:
-      name: treemap-charts.zip
-      path: artifacts/treemap-charts.zip
-      retention-days: 10
+      name: analyse-${{ env.SANITIZED_REF_NAME }}
+      path: analyse.zip
+      retention-days: 5

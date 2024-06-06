@@ -12,6 +12,8 @@ on:
 
 jobs:
   sync_translations:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     environment: Staging
     steps:

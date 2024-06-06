@@ -22,7 +22,7 @@ import {
     validate,
     validateName,
 } from '../../../../Helpers/utils';
-import { TIDVFormValues, TPersonalDetailsForm } from '../../../../Types';
+import { TIDVFormValues, TConfirmPersonalDetailsForm } from '../../../../Types';
 
 type TIdvDocSubmitOnSignup = {
     citizen_data: FormikValues;
@@ -34,7 +34,7 @@ type TIdvDocSubmitOnSignup = {
     residence_list: ResidenceList;
 };
 
-type TIDVDocFormType = TIDVFormValues & TPersonalDetailsForm;
+type TIDVDocFormType = TIDVFormValues & TConfirmPersonalDetailsForm;
 
 export const IdvDocSubmitOnSignup = ({
     citizen_data,

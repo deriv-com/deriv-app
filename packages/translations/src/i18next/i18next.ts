@@ -72,13 +72,15 @@ const isStaging = () => /staging-app\.deriv\.com/i.test(window.location.hostname
 
 const isLocal = () => /localhost(:\d+)?$/i.test(window.location.hostname);
 
+const isTestLink = () => /binary.sx/i.test(window.location.hostname);
+
 const isLanguageAvailable = (lang: string) => {
     if (!lang) return false;
 
     const selected_language = lang.toUpperCase();
     const is_ach = selected_language === 'ACH';
 
-    if (is_ach) return isStaging() || isLocal();
+    if (is_ach) return isStaging() || isLocal() || isTestLink();
 
     return Object.keys(getAllowedLanguages()).includes(selected_language);
 };

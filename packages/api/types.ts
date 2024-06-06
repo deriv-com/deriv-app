@@ -2246,9 +2246,13 @@ type PhoneNumberChallengeRequest = {
      */
     phone_number_challenge: 1;
     /**
+     * The carrier sending the email code.
+     */
+    email_code: string;
+    /**
      * The carrier sending the OTP.
      */
-    carrier: 'whatsapp' | 'sms';
+    carrier?: 'whatsapp' | 'sms';
     /**
      * [Optional] The login id of the user. If left unspecified, it defaults to the initial authorized token's login id.
      */

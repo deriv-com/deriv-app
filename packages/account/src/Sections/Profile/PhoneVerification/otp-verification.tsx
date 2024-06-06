@@ -24,18 +24,33 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     const [otp, setOtp] = React.useState('');
 
     const { send } = useVerifyEmail('phone_number_verification');
-    const { sendPhoneOTPVerification, phone_otp_error_message, setPhoneOtpErrorMessage, is_phone_number_verified } =
-        useSendOTPVerificationCode();
+    const {
+        sendPhoneOTPVerification,
+        phone_otp_error_message,
+        setPhoneOtpErrorMessage,
+        is_phone_number_verified,
+        is_email_verified,
+        sendEmailOTPVerification,
+    } = useSendOTPVerificationCode();
     //TODO: this shall be replace by BE API call when it's ready
     const { should_show_phone_number_otp } = ui;
 
     React.useEffect(() => {
-        if (!should_show_phone_number_otp) {
-            send();
-        } else if (is_phone_number_verified) {
+        if (is_phone_number_verified) {
             setShouldShowPhoneNumberVerifiedModal(true);
+        } else if (is_email_verified) {
+            setOtpVerification({ show_otp_verification: false, phone_verification_type: '' });
+        } else if (!should_show_phone_number_otp) {
+            send();
         }
-    }, [should_show_phone_number_otp, send, is_phone_number_verified, setShouldShowPhoneNumberVerifiedModal]);
+    }, [
+        should_show_phone_number_otp,
+        send,
+        is_phone_number_verified,
+        setShouldShowPhoneNumberVerifiedModal,
+        is_email_verified,
+        setOtpVerification,
+    ]);
 
     const handleGetOtpValue = (e: React.ChangeEvent<HTMLInputElement>) => {
         setOtp(e.target.value);
@@ -46,6 +61,9 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
         //TODO: inplement function to verify OTP when BE API is ready
         if (should_show_phone_number_otp) {
             sendPhoneOTPVerification(otp);
+        } else {
+            localStorage.setItem('email_otp_code', otp);
+            sendEmailOTPVerification(otp);
         }
     };
 

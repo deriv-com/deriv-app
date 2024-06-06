@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import QRCode from 'qrcode.react';
-import { useAuthorize, useDepositCryptoAddress } from '@deriv/api-v2';
+import { useDepositCryptoAddress } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
 import { Clipboard } from '../../../../components';
 import { DepositCryptoAddressLoader } from '../DepositCryptoAddressLoader';

@@ -64,29 +64,29 @@ inputs:
     description: 'Trustpilot api key'
     required: false
 
-runs:
-  using: composite
-  steps:
-  - name: Get artifact URL
-    id: get_artifact_url
-    env:
-      GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
-    shell: bash
-    run: |
-      RESPONSE=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
-        "https://api.github.com/repos/${{ github.repository }}/actions/artifacts?name=analyse")
+# runs:
+#   using: composite
+#   steps:
+#   - name: Get artifact URL
+#     id: get_artifact_url
+#     env:
+#       GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+#     shell: bash
+#     run: |
+#       RESPONSE=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+#         "https://api.github.com/repos/${{ github.repository }}/actions/artifacts?name=analyse")
 
-      ARTIFACT_URL=$(echo $RESPONSE | jq -r '.artifacts[0].archive_download_url')
+#       ARTIFACT_URL=$(echo $RESPONSE | jq -r '.artifacts[0].archive_download_url')
 
-      if [[ -z "$ARTIFACT_URL" ]]; then
-        echo "Error: No artifact URL found for the master branch with prefix 'analyse'."
-        exit 1
-      else
-        echo "Artifact URL: $ARTIFACT_URL"
-      fi
+#       if [[ -z "$ARTIFACT_URL" ]]; then
+#         echo "Error: No artifact URL found for the master branch with prefix 'analyse'."
+#         exit 1
+#       else
+#         echo "Artifact URL: $ARTIFACT_URL"
+#       fi
 
-      echo "artifact_url=$ARTIFACT_URL" >> $GITHUB_OUTPUT
-      echo "artifact_url=$ARTIFACT_URL"
+#       echo "artifact_url=$ARTIFACT_URL" >> $GITHUB_OUTPUT
+#       echo "artifact_url=$ARTIFACT_URL"
 
   - name: Create Release
     id: create_release

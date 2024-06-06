@@ -497,17 +497,14 @@
             transform: translateY(-8px);
         }
         &--has-cancel-btn {
-            justify-content: space-between;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
 
             .dc-btn--cancel {
                 /*rtl:ignore*/
-                margin-left: 0.8rem;
-                max-width: 10.5rem;
+                width: 50%;
 
                 @include mobile-tablet-mix {
-                    max-width: 100%;
+                    width: 100%;
                 }
             }
         }

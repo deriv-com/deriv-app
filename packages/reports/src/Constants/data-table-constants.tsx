@@ -5,7 +5,6 @@ import {
     isMobile,
     getCurrencyDisplayCode,
     getTotalProfit,
-    shouldShowCancellation,
     getGrowthRatePercentage,
     getCardLabels,
 } from '@deriv/shared';

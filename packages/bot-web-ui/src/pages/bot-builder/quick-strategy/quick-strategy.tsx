@@ -47,13 +47,18 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
 
     let initial_value: TFormData | null = null;
 
-    const getInitialValue = () => {
+    const getSavedValues = () => {
         let data: TFormData | null = null;
         try {
-            data = JSON.parse(localStorage.getItem('qs-fields') || '{}');
+            data = JSON.parse(localStorage.getItem('qs-fields') ?? '{}');
         } catch {
             data = null;
         }
+        return data;
+    };
+
+    const getInitialValue = () => {
+        const data = getSavedValues();
         initial_value = {
             symbol: data?.symbol ?? qs_config.QUICK_STRATEGY.DEFAULT.symbol,
             tradetype: data?.tradetype ?? '',
@@ -70,7 +75,6 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
             boolean_max_stake: data?.boolean_max_stake || false,
             last_digit_prediction: data?.last_digit_prediction ?? 1,
         };
-
         return initial_value;
     };
 

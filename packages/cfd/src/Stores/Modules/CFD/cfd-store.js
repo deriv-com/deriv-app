@@ -154,9 +154,9 @@ export default class CFDStore extends BaseStore {
 
     get account_title() {
         return this.account_type.category
-            ? getMtCompanies(this.root_store.traders_hub.show_eu_related_content)[this.account_type.category][
-                  this.account_type.type
-              ].title
+            ? getMtCompanies(this.root_store.traders_hub.show_eu_related_content, this.product)[
+                  this.account_type.category
+              ][this.account_type.type].title
             : '';
     }
 

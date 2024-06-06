@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { startAuthentication } from '@simplewebauthn/browser';
 import { useInvalidateQuery } from '@deriv/api';
 import { WS } from '@deriv/shared';
@@ -8,20 +8,10 @@ type TError = { code?: string; name?: string; message: string };
 const useRemovePasskey = ({ onSuccess }: { onSuccess: () => void }) => {
     const invalidate = useInvalidateQuery();
 
-    const [passkey_removing_error, setPasskeyRemovingError] = React.useState<TError | null>(null);
-    // const [public_key, setPublicKey] = React.useState<null | PublicKeyCredentialCreationOptionsJSON>(null);
+    const [passkey_removing_error, setPasskeyRemovingError] = useState<TError | null>(null);
 
-    // const startPasskeyRegistration = async () => {
-    //     try {
-    //         const passkeys_register_options_response = await WS.send({ passkeys_register_options: 1 });
-    //         const public_key = passkeys_register_options_response?.passkeys_register_options?.publicKey;
-    //         setPublicKey(public_key);
-    //     } catch (e) {
-    //         setPasskeyRegistrationError(e as TError);
-    //         passkeyErrorEventTrack(e as TError);
-    //     }
     // TODO: remove ID if not needed
-    const removePasskey = async (id: number) => {
+    const removePasskey = async (id?: number) => {
         try {
             const passkey_options_response = await WS.send({
                 passkeys_options: 1,

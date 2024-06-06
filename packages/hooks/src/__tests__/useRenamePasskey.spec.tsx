@@ -1,4 +1,3 @@
-import React from 'react';
 import { renderHook, act } from '@testing-library/react-hooks';
 import APIProvider from '@deriv/api/src/APIProvider';
 import { WS } from '@deriv/shared';
@@ -46,7 +45,7 @@ describe('useRenamePasskey', () => {
         expect(mockOnSuccess).toHaveBeenCalled();
     });
 
-    it('should throw passkey registration error', async () => {
+    it('should throw passkey renaming error', async () => {
         (WS.send as jest.Mock).mockRejectedValue(ws_error);
 
         const { result } = renderHook(() => useRenamePasskey({ onSuccess: mockOnSuccess }), { wrapper });

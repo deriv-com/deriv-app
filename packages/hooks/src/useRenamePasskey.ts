@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { useInvalidateQuery } from '@deriv/api';
 import { WS } from '@deriv/shared';
 
@@ -7,7 +7,7 @@ type TError = { code?: string; name?: string; message: string };
 const useRenamePasskey = ({ onSuccess }: { onSuccess: () => void }) => {
     const invalidate = useInvalidateQuery();
 
-    const [passkey_renaming_error, setPasskeyRenamingError] = React.useState<TError | null>(null);
+    const [passkey_renaming_error, setPasskeyRenamingError] = useState<TError | null>(null);
 
     const renamePasskey = async (passkey_id: number, new_passkey_name = '') => {
         try {

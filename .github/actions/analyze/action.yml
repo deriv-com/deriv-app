@@ -88,12 +88,30 @@ runs:
       echo "artifact_url=$ARTIFACT_URL" >> $GITHUB_OUTPUT
       echo "artifact_url=$ARTIFACT_URL"
 
-  - name: Test action
-    uses: actions/upload-artifact@v4
+  - name: Create Release
+    id: create_release
+    if: github.ref != 'refs/heads/master'
+    uses: actions/create-release@v1
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     with:
-      name: test-wallets
-      path: packages/wallets/test.html
-      retention-days: 20
+      tag_name: ${{ github.ref }}
+      release_name: Release ${{ github.ref }}
+      draft: false
+      prerelease: false
+
+  - name: Upload Release Asset
+    if: github.ref != 'refs/heads/master'
+    uses: actions/upload-release-asset@v1
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      asset_path: ./packages/wallets/test.html
+      asset_name: test.html
+      asset_content_type: text/html
+
+
 
   # - name: Download artifact
   #   if: steps.get_artifact_url.outputs.artifact_url != 'null'

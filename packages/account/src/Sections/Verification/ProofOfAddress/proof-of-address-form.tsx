@@ -23,7 +23,7 @@ type TProofOfAddressForm = {
     is_resubmit: boolean;
     is_for_cfd_modal?: boolean;
     onCancel?: () => void;
-    onSubmit: (needs_poi: boolean) => void;
+    onSubmit: (needs_poi: boolean, has_submitted_duplicate_poa?: boolean) => void;
     onSubmitForCFDModal: (index: number, values: FormikValues) => void;
     step_index: number;
 };
@@ -202,9 +202,14 @@ const ProofOfAddressForm = observer(
             try {
                 const api_response = await upload(document_files);
                 if (api_response?.warning) {
-                    setStatus({ msg: api_response?.message });
                     setFormState({ ...form_state, ...{ is_btn_loading: false } });
-                    setShouldScrollToTop(true);
+
+                    if (api_response.warning === 'DuplicateUpload') {
+                        onSubmit?.(false, true);
+                    } else {
+                        setStatus({ msg: api_response?.message });
+                        setShouldScrollToTop(true);
+                    }
                     return;
                 }
 
@@ -237,12 +242,10 @@ const ProofOfAddressForm = observer(
             } catch (error) {
                 if (isServerError(error)) {
                     setStatus({ msg: error.message });
+                    setSubmitting(false);
                     setFormState({ ...form_state, ...{ is_btn_loading: false } });
                     setShouldScrollToTop(true);
                 }
-            } finally {
-                setSubmitting(false);
-                setFormState({ ...form_state, ...{ is_btn_loading: false } });
             }
             if (is_for_cfd_modal && typeof step_index !== 'undefined') {
                 onSubmitForCFDModal?.(step_index, values);

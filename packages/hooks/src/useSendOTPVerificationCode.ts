@@ -37,7 +37,7 @@ const useSendOTPVerificationCode = () => {
                 case 'ExpiredCode':
                     setPhoneOtpErrorMessage(localize('Code expired.'));
                     break;
-                case 'InputValidationFailed':
+                case 'InvalidToken':
                     setPhoneOtpErrorMessage(localize('Invalid code. Press the link below to get a new code.'));
                     break;
                 case 'NoAttemptsLeft':
@@ -55,6 +55,7 @@ const useSendOTPVerificationCode = () => {
             // @ts-expect-error will remove once solved
             handleError(phone_otp_error);
         } else if (email_otp_error) {
+            // @ts-expect-error will remove once solved
             handleError(email_otp_error);
         }
     }, [phone_otp_error, email_otp_error]);

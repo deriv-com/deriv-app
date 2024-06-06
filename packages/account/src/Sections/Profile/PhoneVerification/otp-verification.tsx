@@ -39,6 +39,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
         if (is_phone_number_verified) {
             setShouldShowPhoneNumberVerifiedModal(true);
         } else if (is_email_verified) {
+            localStorage.setItem('email_otp_code', otp);
             setOtpVerification({ show_otp_verification: false, phone_verification_type: '' });
         } else if (!should_show_phone_number_otp) {
             send();
@@ -62,7 +63,6 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
         if (should_show_phone_number_otp) {
             sendPhoneOTPVerification(otp);
         } else {
-            localStorage.setItem('email_otp_code', otp);
             sendEmailOTPVerification(otp);
         }
     };

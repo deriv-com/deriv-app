@@ -139,4 +139,36 @@ describe('OTPVerification', () => {
         renderComponent();
         expect(screen.getByText(/Phone Number Verified Modal/)).toBeInTheDocument();
     });
+
+    it('should render sendEmailOTPVerification when should_show_phone_number_otp is false', () => {
+        const mockSendEmailOTPVerification = jest.fn();
+        store.ui.should_show_phone_number_otp = false;
+        (useSendOTPVerificationCode as jest.Mock).mockReturnValue({
+            sendEmailOTPVerification: mockSendEmailOTPVerification,
+            setPhoneOtpErrorMessage: jest.fn(),
+        });
+        renderComponent();
+        const otp_textfield = screen.getByRole('textbox');
+        const verify_button = screen.getByRole('button', { name: 'Verify' });
+        userEvent.type(otp_textfield, '123456');
+        expect(verify_button).toBeEnabled();
+        userEvent.click(verify_button);
+        expect(mockSendEmailOTPVerification).toBeCalledTimes(1);
+    });
+
+    it('should render setOtpVerification when is_email_verified is true', () => {
+        store.ui.should_show_phone_number_otp = false;
+        (useSendOTPVerificationCode as jest.Mock).mockReturnValue({
+            is_email_verified: true,
+            sendEmailOTPVerification: jest.fn(),
+            setPhoneOtpErrorMessage: jest.fn(),
+        });
+        renderComponent();
+        const otp_textfield = screen.getByRole('textbox');
+        const verify_button = screen.getByRole('button', { name: 'Verify' });
+        userEvent.type(otp_textfield, '123456');
+        expect(verify_button).toBeEnabled();
+        userEvent.click(verify_button);
+        expect(mockSetOtpVerification).toBeCalledWith({ phone_verification_type: '', show_otp_verification: false });
+    });
 });

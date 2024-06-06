@@ -6,6 +6,7 @@ import DerivX from './ic-appstore-deriv-x.svg';
 import Derived from './ic-appstore-derived.svg';
 import Financial from './ic-appstore-financial.svg';
 import SwapFree from './ic-appstore-swap-free.svg';
+import Standard from './ic-appstore-standard.svg';
 
 export interface IconProps<T> {
     icon: T;
@@ -21,6 +22,7 @@ export const PlatformIcons = {
     CTrader,
     SwapFree,
     DerivX,
+    Standard,
 };
 
 const TradingPlatformIcon = ({ icon, className, size, onClick }: IconProps<keyof typeof PlatformIcons>) => {

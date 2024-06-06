@@ -19,7 +19,7 @@ export const IconType = React.memo(({ platform, type, show_eu_related_content }:
         }
         switch (type) {
             case 'synthetic':
-                return <TradingPlatformIcon icon='Derived' size={128} />;
+                return <TradingPlatformIcon icon='Standard' size={128} />;
             case 'all':
                 return <TradingPlatformIcon icon='SwapFree' size={128} />;
             case 'financial':

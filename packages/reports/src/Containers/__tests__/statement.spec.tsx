@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Analytics } from '@deriv-com/analytics';
 import { MemoryRouter } from 'react-router-dom';
 import { TCoreStores } from '@deriv/stores/types';
 import { formatDate, isMobile } from '@deriv/shared';
@@ -8,7 +9,6 @@ import { mockStore } from '@deriv/stores';
 import { useReportsStore } from 'Stores/useReportsStores';
 import Statement, { getRowAction } from '../statement';
 import ReportsProviders from '../../reports-providers';
-import { Analytics } from '@deriv-com/analytics';
 
 jest.mock('Stores/useReportsStores', () => ({
     ...jest.requireActual('Stores/useReportsStores'),
@@ -18,33 +18,33 @@ jest.mock('Stores/useReportsStores', () => ({
             data: [
                 {
                     action: 'Sell',
-                    date: '04 Jun 2024 01:47:16',
-                    display_name: '',
-                    refid: 487679411128,
-                    payout: '0.00',
-                    amount: '11.00',
-                    balance: '8,866.19',
-                    desc: "If you select 'Up', your total profit/loss will be the percentage increase in Volatility 100 Index, multiplied by 50, minus commissions.",
-                    id: 243990619668,
-                    app_id: 2,
-                    shortcode: 'MULTUP_R_100_5.00_10_1717078783_4870713599_0_6.00_N1',
                     action_type: 'sell',
+                    amount: '11.00',
+                    app_id: 2,
+                    balance: '8,866.19',
+                    date: '04 Jun 2024 01:47:16',
+                    desc: "If you select 'Up', your total profit/loss will be the percentage increase in Volatility 100 Index, multiplied by 50, minus commissions.",
+                    display_name: '',
+                    id: 243990619668,
+                    payout: '0.00',
                     purchase_time: 1717078783,
+                    refid: 487679411128,
+                    shortcode: 'MULTUP_R_100_5.00_10_1717078783_4870713599_0_6.00_N1',
                     transaction_time: 1717465636,
                 },
                 {
                     action: 'Buy',
-                    date: '31 May 2024 19:42:42',
-                    display_name: '',
-                    refid: 486932886768,
-                    payout: '0.00',
-                    amount: '-10.00',
-                    balance: '8,845.35',
-                    desc: "If you select 'Up', your total profit/loss will be the percentage increase in Volatility 100 (1s) Index, multiplied by 100, minus commissions.",
-                    id: 244170956768,
-                    app_id: 36300,
-                    shortcode: 'MULTUP_1HZ100V_10.00_10_1717184563_4870799999_0_33.00_N1',
                     action_type: 'buy',
+                    amount: '-10.00',
+                    app_id: 36300,
+                    balance: '8,845.35',
+                    date: '31 May 2024 19:42:42',
+                    desc: "If you select 'Up', your total profit/loss will be the percentage increase in Volatility 100 (1s) Index, multiplied by 100, minus commissions.",
+                    display_name: '',
+                    id: 244170956768,
+                    payout: '0.00',
+                    refid: 486932886768,
+                    shortcode: 'MULTUP_1HZ100V_10.00_10_1717184563_4870799999_0_33.00_N1',
                     transaction_time: 1717184562,
                 },
                 {
@@ -118,6 +118,11 @@ jest.mock('@deriv/shared', () => ({
     },
 }));
 
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Clipboard: jest.fn(() => <div>Copy icon</div>),
+}));
+
 describe('Statement', () => {
     let store = mockStore({});
     const allTransactions = 'All transactions';
@@ -126,12 +131,13 @@ describe('Statement', () => {
     const dataListTestId = 'dt_data_list';
     const filterDropdown = 'dt_dropdown_display';
     const loadingTestId = 'dt_loading_component';
+    const mockedErrorMessage = 'Error message';
     const noTransationsShortText = 'You have no transactions yet.';
     const noTransationsLongText = "You've made no transactions of this type during this period.";
-    const mockedErrorMessage = 'Error message';
     const props: React.ComponentProps<typeof Statement> = {
         component_icon: 'IcStatement',
     };
+
     const mockedStatement = (
         mockedStore: TCoreStores = store,
         mockedProps: React.ComponentProps<typeof Statement> = props
@@ -144,6 +150,7 @@ describe('Statement', () => {
             </ReportsProviders>
         );
     };
+
     beforeEach(() => {
         store = mockStore({
             client: {
@@ -304,31 +311,161 @@ describe('Statement', () => {
 });
 
 describe('getRowAction', () => {
-    const rowObj = {
-        is_sold: true,
-        shortcode: 'MULTUP_R_100_5.00_10_1717078783_4870713599_0_6.00_N1',
-        id: 243990619668,
-        action_type: 'sell',
-        purchase_time: 1717078783,
-        longcode:
-            "If you select 'Up', your total profit/loss will be the percentage increase in Volatility 100 Index, multiplied by 50, minus commissions.",
-        desc: "If you select 'Up', your total profit/loss will be the percentage increase in Volatility 100 Index, multiplied by 50, minus commissions.",
-        transaction_time: 1717465636,
-        withdrawal_details: '',
+    const copyIcon = 'Copy icon';
+    const blockchainAddress = 'tb1qhu8ksh4ylvzycycm9e0eh3wy6fcxfp7g272qgi';
+    const blockchainTransaction = '3afb4aea5c6c250779ab2069f7bfaae87c64c3f64a116c251806b8e650513d27';
+    const blockchainDesc = `address: ${blockchainAddress}, transaction: ${blockchainTransaction}`;
+    const blockchainAddressText = `Address: ${blockchainAddress},`;
+    const blockchainTransactionText = `Transaction: ${blockchainTransaction}`;
+    const contractDetailsUnavailableText = /contract details aren't currently available/i;
+    const longcodeDescription =
+        'Win payout if Volatility 100 (1s) Index after 5 ticks is strictly higher than entry spot.';
+    const unsupportedContractShortcode = 'CALLSPREAD_1HZ100V_66.87_1717660032_5T';
+
+    const riseContractData = {
+        balance: '0.00',
+        desc: longcodeDescription,
+        display_name: '',
+        id: 244821136548,
+        payout: '66.87',
+        shortcode: 'CALL_1HZ100V_66.87_1717660032_5T_S0P_0',
     };
-    it('should return an empty object if row_obj is an empty object', () => {
+    const buyTransactionData = {
+        ...riseContractData,
+        action: 'Buy',
+        action_type: 'buy',
+        amount: '-34.23',
+        app_id: 36300,
+        date: '06 Jun 2024 07:47:12',
+        refid: 488153867768,
+        transaction_time: 1717660032,
+    };
+    const sellTransactionData = {
+        ...riseContractData,
+        action: 'Sell',
+        action_type: 'sell',
+        amount: '0.00',
+        app_id: 2,
+        date: '06 Jun 2024 07:47:18',
+        purchase_time: 1717660032,
+        refid: 488153881108,
+        transaction_time: 1717660038,
+    };
+    const depositTransactionData = {
+        action: 'Deposit',
+        action_type: 'deposit',
+        amount: '10,000.00',
+        app_id: 36300,
+        balance: '10,000.00',
+        date: '06 Jun 2024 07:47:27',
+        desc: 'Reset to default demo account balance.',
+        display_name: '',
+        id: null,
+        payout: '-',
+        refid: 488153902708,
+        shortcode: null,
+        transaction_time: 1717660047,
+    };
+    const withdrawalTransactionData = {
+        action: 'Withdrawal',
+        action_type: 'withdrawal',
+        amount: '750.00',
+        app_id: 36300,
+        balance: '0.00',
+        date: '06 Jun 2024 08:47:27',
+        desc: 'Withdrawal message',
+        longcode: 'Withdrawal message',
+        refid: 243990619558,
+        transaction_time: 1717465636,
+        withdrawal_details: 'Withdrawal details',
+    };
+
+    it('should return an empty object if received data is an empty object, or if action_type is missing', () => {
         expect(getRowAction?.({})).toMatchObject({});
+
+        expect(getRowAction?.({ ...buyTransactionData, action_type: '' })).toMatchObject({});
     });
-    it('should return contract path string if action_type in row_obj is sell & contract is supported & not forward-starting', () => {
-        const row_action = getRowAction?.(rowObj);
-        expect(row_action).toEqual('/contract/243990619668');
+    it('should return contract path string if row_obj has id, action_type is buy or sell, and contract is supported & not forward-starting', () => {
+        expect(getRowAction?.(buyTransactionData)).toEqual(`/contract/${buyTransactionData.id}`);
+
+        expect(getRowAction?.(sellTransactionData)).toEqual(`/contract/${sellTransactionData.id}`);
     });
-    it('should return an object with component that renders details if action_type in row_obj is valid and its value is not buy or sell', () => {
-        const newRowObj = {
-            ...rowObj,
-            action_type: 'withdrawal',
-        };
-        render((getRowAction?.(newRowObj) as Record<string, JSX.Element>).component);
-        expect(screen.getByText(/If you select 'Up'/)).toBeInTheDocument();
+    it('should return an object with component that renders desc if action_type is valid but not buy or sell', () => {
+        render((getRowAction?.(depositTransactionData) as Record<string, JSX.Element>).component);
+        expect(screen.getByText(depositTransactionData.desc)).toBeInTheDocument();
+    });
+    it('should return an object with component that renders withdrawal_details and longcode if action_type is withdrawal, & data includes withdrawal_details and longcode', () => {
+        render((getRowAction?.(withdrawalTransactionData) as Record<string, JSX.Element>).component);
+        expect(
+            screen.getByText(`${withdrawalTransactionData.withdrawal_details} ${withdrawalTransactionData.longcode}`)
+        ).toBeInTheDocument();
+    });
+    it('should return an object with component that renders desc if action_type is withdrawal, & withdrawal_details are missing', () => {
+        render(
+            (getRowAction?.({ ...withdrawalTransactionData, withdrawal_details: '' }) as Record<string, JSX.Element>)
+                .component
+        );
+        expect(screen.getByText(withdrawalTransactionData.desc)).toBeInTheDocument();
+    });
+    it('should return an object with component that renders a correct message if action_type is buy or sell, & shortcode contains an unsupported contract_type', () => {
+        const { rerender } = render(
+            (
+                getRowAction?.({
+                    ...sellTransactionData,
+                    shortcode: unsupportedContractShortcode,
+                }) as Record<string, JSX.Element>
+            ).component
+        );
+        expect(screen.getByText(contractDetailsUnavailableText)).toBeInTheDocument();
+
+        rerender(
+            (
+                getRowAction?.({
+                    ...buyTransactionData,
+                    shortcode: unsupportedContractShortcode,
+                }) as Record<string, JSX.Element>
+            ).component
+        );
+        expect(screen.getByText(contractDetailsUnavailableText)).toBeInTheDocument();
+    });
+    it('should return an object with component that renders a correct message if action_type is buy, & shortcode contains forward-starting contract details', () => {
+        render(
+            (
+                getRowAction?.({
+                    ...buyTransactionData,
+                    transaction_time: 1717662763,
+                    shortcode: 'CALL_1HZ25V_19.54_1717761900F_1717762800_S0P_0',
+                    desc: 'Win payout if Volatility 25 (1s) Index is strictly higher than entry spot at 15 minutes after 2024-06-07 12:05:00 GMT.',
+                }) as Record<string, JSX.Element>
+            ).component
+        );
+        expect(screen.getByText("You'll see these details once the contract starts.")).toBeInTheDocument();
+    });
+    it('should return an object with component that renders a message with blockchain details & Copy icon if desc has blockchain details, & action_type is deposit', () => {
+        render(
+            (
+                getRowAction?.({
+                    ...depositTransactionData,
+                    desc: blockchainDesc,
+                }) as Record<string, JSX.Element>
+            ).component
+        );
+        expect(screen.getByText(blockchainAddressText)).toBeInTheDocument();
+        expect(screen.getByText(blockchainTransactionText)).toBeInTheDocument();
+        expect(screen.getByText(copyIcon)).toBeInTheDocument();
+    });
+    it('should return an object with component that renders a message with blockchain details & 2 Copy icons if desc has blockchain details, action_type is withdrawal, & withdrawal_details are missing', () => {
+        render(
+            (
+                getRowAction?.({
+                    ...withdrawalTransactionData,
+                    desc: blockchainDesc,
+                    withdrawal_details: '',
+                }) as Record<string, JSX.Element>
+            ).component
+        );
+        expect(screen.getByText(blockchainAddressText)).toBeInTheDocument();
+        expect(screen.getByText(blockchainTransactionText)).toBeInTheDocument();
+        expect(screen.getAllByText(copyIcon)).toHaveLength(2);
     });
 });

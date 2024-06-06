@@ -1751,7 +1751,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     @include mobile-or-tablet-screen {
                         position: fixed;
                         bottom: 0;
-                        left: 0;
                         background: var(--general-main-1);
                         width: 100vw;
                         margin: unset;

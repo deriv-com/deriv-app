@@ -26,7 +26,14 @@ $colour_toolboxSelected: $black;
         filter: unset;
     }
 }
-
+.zelos-renderer.zelos_renderer-theme .blocklyNonEditableText > rect:not(.blocklyDropdownRect),
+.zelos-renderer.zelos_renderer-theme .blocklyEditableText > rect:not(.blocklyDropdownRect) {
+    fill: #fff;
+    width: 16px;
+    height: 16px;
+    x: 2;
+    y: 7;
+}
 .zelos-renderer.zelos_renderer-theme,
 .flyout .zelos-renderer.classic-theme,
 .gtm-search-results,
@@ -1171,4 +1178,9 @@ drag a block and selected text moves instead.
         fill: #ffffff;
         font-size: 1.9rem;
     }
+}
+
+.blocklyCheckbox + .blocklyFieldRect {
+    height: 16px;
+    width: 16px;
 }

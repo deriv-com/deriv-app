@@ -8,9 +8,10 @@ Blockly.Blocks.trade_definition_restartonerror = {
             }),
             args0: [
                 {
-                    type: 'field_image_checkbox',
+                    type: 'field_checkbox',
                     name: 'RESTARTONERROR',
                     checked: true,
+                    class: 'blocklyCheckbox',
                 },
             ],
             colour: Blockly.Colours.Base.colour,

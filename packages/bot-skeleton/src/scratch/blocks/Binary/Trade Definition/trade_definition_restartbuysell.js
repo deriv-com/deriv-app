@@ -8,9 +8,10 @@ Blockly.Blocks.trade_definition_restartbuysell = {
             }),
             args0: [
                 {
-                    type: 'field_image_checkbox',
+                    type: 'field_checkbox',
                     name: 'TIME_MACHINE_ENABLED',
                     checked: false,
+                    class: 'blocklyCheckbox',
                 },
             ],
             colour: Blockly.Colours.Base.colour,

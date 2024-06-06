@@ -190,10 +190,76 @@ runs:
       SANITIZED_REF_NAME=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g')
       echo "SANITIZED_REF_NAME=${SANITIZED_REF_NAME}" >> $GITHUB_ENV
 
-  - name: Upload analyse.zip for Feature Branches
-    if: github.ref != 'refs/heads/master'
+  - name: Upload treemap chart for account package
     uses: actions/upload-artifact@v4
     with:
-      name: analyse-${{ env.SANITIZED_REF_NAME }}
-      path: analyse.zip
-      retention-days: 5
+      name: account-treemap.html
+      path: /packages/account/analyzed.html
+      retention-days: 10
+
+  - name: Upload treemap chart for appstore package
+    uses: actions/upload-artifact@v4
+    with:
+      name: appstore-treemap.html
+      path: /packages/appstore/analyzed.html
+      retention-days: 10
+
+  - name: Upload treemap chart for bot-web-ui package
+    uses: actions/upload-artifact@v4
+    with:
+      name: bot-web-ui-treemap.html
+      path: /packages/bot-web-ui/analyzed.html
+      retention-days: 10
+
+  - name: Upload treemap chart for cashier package
+    uses: actions/upload-artifact@v4
+    with:
+      name: cashier-treemap.html
+      path: /packages/cashier/analyzed.html
+      retention-days: 10
+
+  - name: Upload treemap chart for cfd package
+    uses: actions/upload-artifact@v4
+    with:
+      name: cfd-treemap.html
+      path: /packages/cfd/analyzed.html
+      retention-days: 10
+
+  - name: Upload treemap chart for p2p package
+    uses: actions/upload-artifact@v4
+    with:
+      name: p2p-treemap.html
+      path: /packages/p2p/analyzed.html
+      retention-days: 10
+
+  - name: Upload treemap chart for reports package
+    uses: actions/upload-artifact@v4
+    with:
+      name: reports-treemap.html
+      path: /packages/reports/analyzed.html
+      retention-days: 10
+
+  - name: Upload treemap chart for trader package
+    uses: actions/upload-artifact@v4
+    with:
+      name: trader-treemap.html
+      path: /packages/trader/analyzed.html
+      retention-days: 10
+
+  - name: Upload treemap chart for core package
+    uses: actions/upload-artifact@v4
+    with:
+      name: core-treemap.html
+      path: /packages/core/analyzed.html
+      retention-days: 10
+
+  - name: Upload treemap chart for wallets package
+    uses: actions/upload-artifact@v4
+    with:
+      name: wallets-treemap.html
+      path: /packages/wallets/analyzed.html
+      retention-days: 10
+
+
+
+  

@@ -23,17 +23,18 @@ const QuickStrategyForm = observer(() => {
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
     const { current_duration_min_max } = quick_strategy;
 
-    const [is_enabled_toggle_switch, setIsEnabledToggleSwitch] = React.useState(false);
+    const [isEnabledToggleSwitch, setIsEnabledToggleSwitch] = React.useState(false);
 
     React.useEffect(() => {
         window.addEventListener('keydown', handleEnter);
         let data: TFormData | null = null;
         try {
-            data = JSON.parse(localStorage.getItem('qs-fields') || '{}');
+            data = JSON.parse(localStorage.getItem('qs-fields') ?? '{}');
         } catch {
             data = null;
         }
-        setIsEnabledToggleSwitch(!!data?.boolean_max_stake ?? false);
+        setIsEnabledToggleSwitch(!!data?.boolean_max_stake);
+
         return () => {
             window.removeEventListener('keydown', handleEnter);
         };
@@ -161,7 +162,7 @@ const QuickStrategyForm = observer(() => {
                                         key={key}
                                         name={field.name as string}
                                         label={field.label as string}
-                                        isEnabledToggleSwitch={!!is_enabled_toggle_switch}
+                                        isEnabledToggleSwitch={!!isEnabledToggleSwitch}
                                         setIsEnabledToggleSwitch={toggleSwitch}
                                     />
                                 );

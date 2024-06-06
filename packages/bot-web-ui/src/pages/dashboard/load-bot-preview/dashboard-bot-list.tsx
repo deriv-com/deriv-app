@@ -29,7 +29,7 @@ const HEADERS: THeader[] = [
     },
 ];
 
-const RecentComponent = observer(() => {
+const DashboardBotList = observer(() => {
     const { load_modal, dashboard } = useDBotStore();
     const { setDashboardStrategies, dashboard_strategies } = load_modal;
     const { setStrategySaveType, strategy_save_type } = dashboard;
@@ -61,38 +61,36 @@ const RecentComponent = observer(() => {
 
     if (!dashboard_strategies?.length) return null;
     return (
-        <div className='load-strategy__container load-strategy__container--has-footer'>
-            <div className='load-strategy__recent'>
-                <div className='load-strategy__recent__files'>
-                    <div className='load-strategy__title'>
-                        <Text size={is_mobile ? 'xs' : 's'} weight='bold'>
-                            <Localize i18n_default_text='Your bots:' />
-                        </Text>
-                    </div>
-                    <div className='bot-list__header'>
-                        {HEADERS.map(({ label, className }) => {
-                            return (
-                                <div className={className} key={label}>
-                                    <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
-                                        {label}
-                                    </Text>
-                                </div>
-                            );
-                        })}
-                    </div>
-                    <div className='bot-list__wrapper'>
-                        {dashboard_strategies.map((workspace, index) => {
-                            return <RecentWorkspace key={workspace.id} workspace={workspace} index={index} />;
-                        })}
-                    </div>
-                    <DeleteDialog setStrategies={setDashboardStrategies} />
-                    <MobileWrapper>
-                        <SaveModal />
-                    </MobileWrapper>
+        <div className='bot-list__container'>
+            <div className='bot-list__wrapper'>
+                <div className='bot-list__title'>
+                    <Text size={is_mobile ? 'xs' : 's'} weight='bold'>
+                        <Localize i18n_default_text='Your bots:' />
+                    </Text>
+                </div>
+                <div className='bot-list__header'>
+                    {HEADERS.map(({ label, className }) => {
+                        return (
+                            <div className={className} key={label}>
+                                <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
+                                    {label}
+                                </Text>
+                            </div>
+                        );
+                    })}
+                </div>
+                <div className='bot-list__table'>
+                    {dashboard_strategies.map((workspace, index) => {
+                        return <RecentWorkspace key={workspace.id} workspace={workspace} index={index} />;
+                    })}
                 </div>
             </div>
+            <DeleteDialog setStrategies={setDashboardStrategies} />
+            <MobileWrapper>
+                <SaveModal />
+            </MobileWrapper>
         </div>
     );
 });
 
-export default RecentComponent;
+export default DashboardBotList;

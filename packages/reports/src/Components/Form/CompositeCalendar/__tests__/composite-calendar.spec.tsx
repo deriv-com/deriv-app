@@ -26,7 +26,7 @@ jest.mock('../two-month-picker', () => jest.fn(() => <div>{twoMonthPickerCompone
 Loadable.preloadAll();
 
 describe('<CompositeCalendar />', () => {
-    const mockPositionsContent = () => (
+    const mockCompositeCalendar = () => (
         <StoreProvider store={mockStore({})}>
             <CompositeCalendar {...mockDefaultProps} />
         </StoreProvider>
@@ -37,14 +37,14 @@ describe('<CompositeCalendar />', () => {
     });
 
     it('should render component with default props', () => {
-        render(mockPositionsContent());
+        render(mockCompositeCalendar());
 
         expect(screen.getByPlaceholderText(inputDataFromPlaceholderText)).toBeInTheDocument();
         expect(screen.getByPlaceholderText(inputDataToPlaceholderText)).toBeInTheDocument();
     });
 
-    it('should render side list with options if user clicks on "from date" input', () => {
-        render(mockPositionsContent());
+    it('should render TwoMonthPicker component and side list with options if user clicks on "from date" input', () => {
+        render(mockCompositeCalendar());
 
         sideListLabels.forEach(item => expect(screen.queryByText(item)).not.toBeInTheDocument());
         expect(screen.queryByText(twoMonthPickerComponent)).not.toBeInTheDocument();
@@ -55,8 +55,8 @@ describe('<CompositeCalendar />', () => {
         expect(screen.getByText(twoMonthPickerComponent)).toBeInTheDocument();
     });
 
-    it('should render side list with options if user clicks on "to date" input', () => {
-        render(mockPositionsContent());
+    it('should render TwoMonthPicker component and side list with options if user clicks on "to date" input', () => {
+        render(mockCompositeCalendar());
 
         sideListLabels.forEach(item => expect(screen.queryByText(item)).not.toBeInTheDocument());
         expect(screen.queryByText(twoMonthPickerComponent)).not.toBeInTheDocument();
@@ -67,8 +67,8 @@ describe('<CompositeCalendar />', () => {
         expect(screen.getByText(twoMonthPickerComponent)).toBeInTheDocument();
     });
 
-    it('should call onChange function if user clicks on input "date to"', async () => {
-        render(mockPositionsContent());
+    it('should call onChange function if onChange is triggered from TwoMonthPicker component after user clicks on input "date to"', async () => {
+        render(mockCompositeCalendar());
 
         userEvent.click(screen.getByPlaceholderText(inputDataToPlaceholderText));
         act(() => {
@@ -80,8 +80,8 @@ describe('<CompositeCalendar />', () => {
         });
     });
 
-    it('should call onChange function if user clicks on input "date from"', async () => {
-        render(mockPositionsContent());
+    it('should call onChange function if onChange is triggered from TwoMonthPicker component after user clicks on input "date from"', async () => {
+        render(mockCompositeCalendar());
 
         userEvent.click(screen.getByPlaceholderText(inputDataFromPlaceholderText));
         act(() => {
@@ -94,7 +94,7 @@ describe('<CompositeCalendar />', () => {
     });
 
     it('should call onChange function for "All time" option with correct arguments', () => {
-        render(mockPositionsContent());
+        render(mockCompositeCalendar());
 
         userEvent.click(screen.getByPlaceholderText(inputDataFromPlaceholderText));
         userEvent.click(screen.getByText(sideListLabels[0]));
@@ -108,7 +108,7 @@ describe('<CompositeCalendar />', () => {
     });
 
     it('should call onChange function for "Last 7 days" option with correct arguments', () => {
-        render(mockPositionsContent());
+        render(mockCompositeCalendar());
 
         userEvent.click(screen.getByPlaceholderText(inputDataFromPlaceholderText));
         userEvent.click(screen.getByText(sideListLabels[1]));
@@ -122,7 +122,7 @@ describe('<CompositeCalendar />', () => {
     });
 
     it('should call onChange function for "Last 30 days" option with correct arguments', () => {
-        render(mockPositionsContent());
+        render(mockCompositeCalendar());
 
         userEvent.click(screen.getByPlaceholderText(inputDataFromPlaceholderText));
         userEvent.click(screen.getByText(sideListLabels[2]));
@@ -136,7 +136,7 @@ describe('<CompositeCalendar />', () => {
     });
 
     it('should call onChange function for "Last 60 days" option with correct arguments', () => {
-        render(mockPositionsContent());
+        render(mockCompositeCalendar());
 
         userEvent.click(screen.getByPlaceholderText(inputDataFromPlaceholderText));
         userEvent.click(screen.getByText(sideListLabels[3]));
@@ -150,7 +150,7 @@ describe('<CompositeCalendar />', () => {
     });
 
     it('should call onChange function for "Last quarter" option with correct arguments', () => {
-        render(mockPositionsContent());
+        render(mockCompositeCalendar());
 
         userEvent.click(screen.getByPlaceholderText(inputDataFromPlaceholderText));
         userEvent.click(screen.getByText(sideListLabels[4]));
@@ -164,7 +164,7 @@ describe('<CompositeCalendar />', () => {
     });
 
     it('should disable dates before "from" date in "to input" section ', () => {
-        render(mockPositionsContent());
+        render(mockCompositeCalendar());
         userEvent.click(screen.getByPlaceholderText(inputDataToPlaceholderText));
 
         userEvent.click(screen.getByPlaceholderText(inputDataToPlaceholderText));
@@ -174,7 +174,7 @@ describe('<CompositeCalendar />', () => {
     });
 
     it('should disable dates after "to" date in "from input" section ', () => {
-        render(mockPositionsContent());
+        render(mockCompositeCalendar());
 
         userEvent.click(screen.getByPlaceholderText(inputDataFromPlaceholderText));
 

@@ -69,6 +69,15 @@ describe('useQsSubmitHandler hook', () => {
 
     beforeEach(() => {
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
+        mock_DBot_store = {
+            ...mock_DBot_store,
+            quick_strategy: {
+                ...mock_DBot_store.quick_strategy,
+                setLossThresholdWarningData: jest.fn(),
+                onSubmit: jest.fn(),
+                toggleStopBotDialog: jest.fn(),
+            },
+        };
         const mock_onSubmit = jest.fn();
         const initial_value = {};
 
@@ -94,60 +103,49 @@ describe('useQsSubmitHandler hook', () => {
         expect(typeof proceedFormSubmission).toBe('function');
     });
 
-    it('useQsSubmitHandler hook should call proceedFormSubmission() when is_logged_in equals false', () => {
+    it('useQsSubmitHandler hook should not call setLossThresholdWarningData() when is_logged_in equals false', () => {
         mock_store.client.is_logged_in = false;
         const { result } = renderHook(() => useQsSubmitHandler(), { wrapper });
         result.current.handleSubmit();
 
-        const { handleSubmit, proceedFormSubmission } = result.current;
-
-        expect(typeof handleSubmit).toBe('function');
-        expect(typeof proceedFormSubmission).toBe('function');
+        expect(mock_DBot_store?.quick_strategy.setLossThresholdWarningData).not.toHaveBeenCalled();
     });
 
-    it('useQsSubmitHandler hook should call proceedFormSubmission() when bot is running handle toggleStopBotDialog() and make it false', () => {
+    it('useQsSubmitHandler hook should not call setLossThresholdWarningData() when bot is running handle toggleStopBotDialog() and make it false', () => {
         mock_DBot_store?.run_panel?.setIsRunning(true);
         mock_store.client.is_logged_in = false;
         const { result } = renderHook(() => useQsSubmitHandler(), { wrapper });
         result.current.handleSubmit();
-        const { handleSubmit, proceedFormSubmission } = result.current;
 
-        expect(typeof handleSubmit).toBe('function');
-        expect(typeof proceedFormSubmission).toBe('function');
         expect(mock_DBot_store?.quick_strategy.is_open).toBeFalsy();
+        expect(mock_DBot_store?.quick_strategy.setLossThresholdWarningData).not.toHaveBeenCalled();
     });
 
-    it('useQsSubmitHandler hook should call proceedFormSubmission() when the balance not less than loss and loss not bigger than profit', () => {
+    it('useQsSubmitHandler hook should not call setLossThresholdWarningData() when the balance not less than loss and loss not bigger than profit', () => {
         mock_store.client.balance = undefined;
 
         const { result } = renderHook(() => useQsSubmitHandler(), { wrapper });
         result.current.handleSubmit();
-        const { handleSubmit, proceedFormSubmission } = result.current;
 
-        expect(typeof handleSubmit).toBe('function');
-        expect(typeof proceedFormSubmission).toBe('function');
+        expect(mock_DBot_store?.quick_strategy.setLossThresholdWarningData).not.toHaveBeenCalled();
     });
 
-    it('useQsSubmitHandler hook should call proceedFormSubmission() when the balance more than loss and loss not bigger than profit', () => {
+    it('useQsSubmitHandler hook should not call setLossThresholdWarningData() when the balance more than loss and loss not bigger than profit', () => {
         mock_store.client.balance = 100000000;
 
         const { result } = renderHook(() => useQsSubmitHandler(), { wrapper });
         result.current.handleSubmit();
-        const { handleSubmit, proceedFormSubmission } = result.current;
 
-        expect(typeof handleSubmit).toBe('function');
-        expect(typeof proceedFormSubmission).toBe('function');
+        expect(mock_DBot_store?.quick_strategy.setLossThresholdWarningData).not.toHaveBeenCalled();
     });
 
-    it('useQsSubmitHandler hook should call setLossThresholdWarningData() when is_logged_in equals true and balance equals less than loss', () => {
+    it('useQsSubmitHandler hook should call setLossThresholdWarningData() when is_logged_in equals true and balance is less than loss', () => {
         mock_store.client.is_logged_in = true;
         mock_store.client.balance = -1;
 
         const { result } = renderHook(() => useQsSubmitHandler(), { wrapper });
         result.current.handleSubmit();
-        const { handleSubmit, proceedFormSubmission } = result.current;
 
-        expect(typeof handleSubmit).toBe('function');
-        expect(typeof proceedFormSubmission).toBe('function');
+        expect(mock_DBot_store?.quick_strategy.setLossThresholdWarningData).toHaveBeenCalled();
     });
 });

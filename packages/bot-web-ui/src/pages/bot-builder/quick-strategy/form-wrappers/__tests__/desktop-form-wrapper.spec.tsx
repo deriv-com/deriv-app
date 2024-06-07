@@ -7,6 +7,8 @@ import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import DesktopFormWrapper from '../desktop-form-wrapper';
+import { FORM_TABS, STRATEGIES } from '../../config';
+import { quick_strategy_content } from '../../../../tutorials/constants';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 
@@ -105,7 +107,7 @@ describe('<DesktopFormWrapper />', () => {
     });
 
     it('should change the selected strategy', () => {
-        mock_DBot_store?.quick_strategy.setSelectedStrategy('MARTINGALE');
+        mock_DBot_store?.quick_strategy.setSelectedStrategy(quick_strategy_content[0].qs_name);
         render(
             <DesktopFormWrapper onClickClose={onClickClose}>
                 <div>test</div>
@@ -114,13 +116,13 @@ describe('<DesktopFormWrapper />', () => {
                 wrapper,
             }
         );
-        expect(mock_DBot_store?.quick_strategy.selected_strategy).toBe('MARTINGALE');
+        expect(mock_DBot_store?.quick_strategy.selected_strategy).toBe(quick_strategy_content[0].qs_name);
 
-        const strategy = screen.getByText('D’Alembert');
+        const strategy = screen.getByText(STRATEGIES.D_ALEMBERT.label);
         userEvent.click(strategy);
-        const disabledTab = screen.getByText('Learn more');
+        const disabledTab = screen.getByText(FORM_TABS[0].label);
         userEvent.click(disabledTab);
-        expect(mock_DBot_store?.quick_strategy.selected_strategy).toBe('D_ALEMBERT');
+        expect(mock_DBot_store?.quick_strategy.selected_strategy).toBe(quick_strategy_content[1].qs_name);
     });
 
     it('should submit the form on edit', async () => {

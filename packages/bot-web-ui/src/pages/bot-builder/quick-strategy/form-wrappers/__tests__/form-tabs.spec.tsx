@@ -6,14 +6,16 @@ import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import FormTabs from '../form-tabs';
+import { FORM_TABS } from '../../config';
+import { quick_strategy_content } from '../../../../tutorials/constants';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 
 const onChangeMock = jest.fn();
 const mock_props = {
-    active_tab: 'TRADE_PARAMETERS',
+    active_tab: FORM_TABS[0].value,
     onChange: onChangeMock,
-    description: 'Exploring the Oscar’s Grind strategy in Deriv Bot',
+    description: quick_strategy_content[0].content[0],
 };
 
 describe('<FormTabs />', () => {
@@ -34,52 +36,52 @@ describe('<FormTabs />', () => {
 
     it('should render FormTabs component without description', () => {
         const { container } = render(<FormTabs {...mock_props} description={undefined} />, { wrapper });
-        expect(container).toBeInTheDocument();
+        expect(container).not.toBeEmptyDOMElement();
     });
 
     it('should render FormTabs component', () => {
         const { container } = render(<FormTabs {...mock_props} />, { wrapper });
-        expect(container).toBeInTheDocument();
+        expect(container).not.toBeEmptyDOMElement();
     });
 
     it('should not call onChange on click if the tab is disabled', () => {
         const { container } = render(<FormTabs {...mock_props} onChange={() => jest.fn()} />, { wrapper });
-        const disabledTab = screen.getByText('Learn more');
+        const disabledTab = screen.getByText(FORM_TABS[1].label);
         userEvent.click(disabledTab);
 
-        expect(container).toBeInTheDocument();
+        expect(container).not.toBeEmptyDOMElement();
         expect(onChangeMock).not.toHaveBeenCalled();
     });
 
     it('should not call onChange on Enter keydown if the tab is disabled', () => {
         const { container } = render(<FormTabs {...mock_props} onChange={() => jest.fn()} />, { wrapper });
-        const disabledTab = screen.getByText('Learn more');
+        const disabledTab = screen.getByText(FORM_TABS[1].label);
         userEvent.type(disabledTab, '{enter}');
 
-        expect(container).toBeInTheDocument();
+        expect(container).not.toBeEmptyDOMElement();
         expect(onChangeMock).not.toHaveBeenCalled();
     });
 
     it('should call onChange on click if the tab is not disabled', () => {
         const { container } = render(<FormTabs {...mock_props} />, { wrapper });
 
-        const enabledTab = screen.getByText('Trade parameters');
+        const enabledTab = screen.getByText(FORM_TABS[0].label);
 
         userEvent.click(enabledTab);
 
-        expect(container).toBeInTheDocument();
-        expect(onChangeMock).toHaveBeenCalledWith('TRADE_PARAMETERS');
+        expect(container).not.toBeEmptyDOMElement();
+        expect(onChangeMock).toHaveBeenCalledWith(FORM_TABS[0].value);
     });
 
     it('should call onChange on Enter keydown if the tab is not disabled', () => {
         const { container } = render(<FormTabs {...mock_props} />, { wrapper });
 
-        const enabledTab = screen.getByText('Trade parameters');
+        const enabledTab = screen.getByText(FORM_TABS[0].label);
 
         userEvent.type(enabledTab, '{enter}');
 
-        expect(container).toBeInTheDocument();
-        expect(onChangeMock).toHaveBeenCalledWith('TRADE_PARAMETERS');
+        expect(container).not.toBeEmptyDOMElement();
+        expect(onChangeMock).toHaveBeenCalledWith(FORM_TABS[0].value);
     });
 
     it('should not call onChange on Enter keydown if the tab is disabled', () => {
@@ -87,19 +89,19 @@ describe('<FormTabs />', () => {
 
         userEvent.keyboard('{Enter}');
 
-        expect(container).toBeInTheDocument();
+        expect(container).not.toBeEmptyDOMElement();
         expect(onChangeMock).not.toHaveBeenCalled();
     });
 
     it('should call onChange on Enter keydown if the tab is not disabled', () => {
         const { container } = render(<FormTabs {...mock_props} />, { wrapper });
 
-        const enabledTab = screen.getByText('Trade parameters');
+        const enabledTab = screen.getByText(FORM_TABS[0].label);
 
         userEvent.type(enabledTab, '{enter}');
         userEvent.keyboard('{Enter}');
 
-        expect(onChangeMock).toHaveBeenCalledWith('TRADE_PARAMETERS');
-        expect(container).toBeInTheDocument();
+        expect(onChangeMock).toHaveBeenCalledWith(FORM_TABS[0].value);
+        expect(container).not.toBeEmptyDOMElement();
     });
 });

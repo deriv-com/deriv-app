@@ -6,6 +6,7 @@ import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import AccordionStrategyGroup, { DescriptionContent } from '../accordion-strategy-group';
 import { TDescriptionItem, TStrategyDescription } from '../../types';
+import { quick_strategy_content } from '../../../../tutorials/constants';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 
@@ -66,13 +67,13 @@ describe('<DescriptionContent />', () => {
         expect(descriptions[0]).toHaveTextContent('Item 1 - 16px');
         expect(descriptions[1]).toHaveTextContent('Item 2 - 16px');
         expect(descriptions[2]).toHaveTextContent('Item 3 - 16px');
-        expect(container).toBeInTheDocument();
+        expect(container).not.toBeEmptyDOMElement();
     });
 
-    it('should render DescriptionContent component without description if the item is a string', () => {
+    it('should render empty DescriptionContent component if the item is a string', () => {
         const { container } = render(<DescriptionContent item={'Strategy description'} font_size='16px' />);
 
-        expect(container).toBeInTheDocument();
+        expect(container).toBeEmptyDOMElement();
     });
 });
 
@@ -97,23 +98,24 @@ describe('<AccordionStrategyGroup />', () => {
             wrapper,
         });
 
-        expect(container).toBeInTheDocument();
+        expect(container).not.toBeEmptyDOMElement();
     });
 
     it('should render AccordionStrategyGroup component with s fontsize if it is a desktop version and tutorial_selected_strategy provided', () => {
         const { container } = render(
             <AccordionStrategyGroup
                 {...mock_props}
-                tutorial_selected_strategy={'MARTINGALE'}
+                tutorial_selected_strategy={quick_strategy_content[0].qs_name}
                 grouped_objects_by_title={[mockData]}
             />,
             { wrapper }
         );
 
         const spanElement = screen.getByText('Item 1 - s');
+
+        expect(container).not.toBeEmptyDOMElement();
         // eslint-disable-next-line testing-library/no-node-access
         expect(spanElement?.parentElement).toHaveStyle('--text-size: var(--text-size-s)');
-        expect(container).toBeInTheDocument();
     });
 
     it('should render AccordionStrategyGroup component with xs fontsize if it is a mobile version', () => {
@@ -123,23 +125,25 @@ describe('<AccordionStrategyGroup />', () => {
         });
 
         const spanElement = screen.getByText('Item 1 - xs');
+
+        expect(container).not.toBeEmptyDOMElement();
         // eslint-disable-next-line testing-library/no-node-access
         expect(spanElement?.parentElement).toHaveStyle('--text-size: var(--text-size-xs)');
-        expect(container).toBeInTheDocument();
     });
 
     it('should render AccordionStrategyGroup component with empty content if the grouped_objects_by_title equal empty array', () => {
         const { container } = render(
             <AccordionStrategyGroup
                 {...mock_props}
-                tutorial_selected_strategy={'MARTINGALE'}
+                tutorial_selected_strategy={quick_strategy_content[0].qs_name}
                 grouped_objects_by_title={[[]]}
             />,
             { wrapper }
         );
 
         const accordionContent = screen.getByTestId('accordion-content');
-        expect(container).toBeInTheDocument();
+
+        expect(container).not.toBeEmptyDOMElement();
         expect(accordionContent).not.toHaveTextContent(/.+/);
     });
 });

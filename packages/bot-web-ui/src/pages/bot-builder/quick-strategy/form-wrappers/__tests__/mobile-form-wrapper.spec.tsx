@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
@@ -110,7 +110,7 @@ describe('<MobileFormWrapper />', () => {
         );
 
         const disabled_tab = screen.getByText('Learn more');
-        await act(async () => {
+        await waitFor(async () => {
             userEvent.type(disabled_tab, '{enter}');
         });
 

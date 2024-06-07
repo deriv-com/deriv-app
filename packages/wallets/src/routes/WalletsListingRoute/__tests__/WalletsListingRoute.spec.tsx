@@ -1,4 +1,5 @@
 import React, { PropsWithChildren } from 'react';
+import { APIProvider, AuthProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../../components/ModalProvider';
 import useDevice from '../../../hooks/useDevice';
@@ -16,7 +17,13 @@ jest.mock('../../../components/', () => {
     };
 });
 
-const wrapper = ({ children }: PropsWithChildren) => <ModalProvider>{children}</ModalProvider>;
+const wrapper = ({ children }: PropsWithChildren) => (
+    <APIProvider>
+        <AuthProvider>
+            <ModalProvider>{children}</ModalProvider>
+        </AuthProvider>
+    </APIProvider>
+);
 
 describe('WalletsListingRoute', () => {
     it('renders DesktopWalletsList, WalletsAddMoreCarousel and WalletTourGuide correctly on desktop', () => {

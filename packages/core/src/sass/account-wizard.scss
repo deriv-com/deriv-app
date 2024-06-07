@@ -2,7 +2,7 @@
     &_real-account-signup-modal {
         display: flex;
         flex-direction: column;
-        transition: all 0.3s ease-in-out;
+        transition: none;
         @include tablet {
             max-height: calc(100vh - 10.2rem) !important; // Header and footer
         }
@@ -27,7 +27,7 @@
                 flex-direction: column;
                 height: 100%;
                 width: 100%;
-                padding-top: 10rem;
+                padding-top: 3.6rem;
 
                 &__restricted-country-error {
                     padding: 3.3rem 2.4rem 2.4rem;
@@ -48,6 +48,13 @@
                         list-style-position: inside;
                     }
                 }
+                &__cta {
+                    border-top: 1px solid var(--general-section-1);
+                    width: 100%;
+                    display: flex;
+                    justify-content: flex-end;
+                    padding: 1.6rem;
+                }
             }
 
             & > svg {
@@ -60,13 +67,12 @@
                 @include typeface(--title-center-bold-black);
                 text-transform: none;
                 color: var(--text-general);
-                margin: 1.6rem 0 0.8rem;
+                margin-top: 1.6rem;
             }
             p {
                 @include typeface(--paragraph-center-normal-prominent);
                 text-transform: none;
-                width: 80%;
-                margin-bottom: 2.4rem;
+                padding: 1.6rem;
             }
             a.dc-btn {
                 @include typeface(--paragraph-center-bold-black);
@@ -161,8 +167,21 @@
             font-weight: bold;
             text-decoration: none;
             cursor: pointer;
-            display: block;
+            display: inline;
             text-align: center;
+        }
+
+        &__cta {
+            position: absolute;
+            bottom: 0;
+            border-top: 1px solid var(--general-section-1);
+            width: 100%;
+            display: flex;
+            padding: 1.6rem;
+
+            .dc-btn {
+                width: 100%;
+            }
         }
     }
 }
@@ -409,7 +428,7 @@
             }
 
             h1 {
-                font-size: 2.4rem;
+                font-size: 1.8rem;
                 text-align: center;
                 font-weight: bold;
                 line-height: 1.5;

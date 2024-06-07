@@ -170,10 +170,10 @@ runs:
       script: |
         core.setFailed('Size changes exceed the defined threshold. Check above logs for details.');
 
-  - name: Zip all report.json files
+  - name: Zip all treemaps and reports
     shell: bash
     run: |
-      zip -r analyse.zip packages/*/report.json
+      zip -r analyse.zip packages/*/{report.json,treemap.html}
 
   - name: Upload analyse.zip for Master Branch
     if: github.ref == 'refs/heads/master'

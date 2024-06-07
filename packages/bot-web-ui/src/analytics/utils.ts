@@ -1,4 +1,4 @@
-import { STRATEGIES } from '../config';
+import { STRATEGIES } from '../pages/bot-builder/quick-strategy/config';
 import { STORED_ITEM_NOT_FOUND, TFormStrategy } from './constants';
 
 export const getRsDropdownTextFromLocalStorage = () => {
@@ -18,15 +18,17 @@ export const getRsStrategyType = (selected_strategy: string) => STRATEGIES[selec
 export const getQsActiveTabString = (tab: string) => (tab === 'TRADE_PARAMETERS' ? 'trade parameters' : 'learn more');
 
 export const getSubpageName = () => {
-    const pathname = window.location.hash;
-    if (pathname.includes('dashboard')) {
+    const active_tab = localStorage.getItem('active_tab');
+    if (active_tab === '0') {
         return 'dashboard';
-    } else if (pathname.includes('chart')) {
-        return 'chart';
-    } else if (pathname.includes('tutorial')) {
-        return 'tutorial';
+    } else if (active_tab === '1') {
+        return 'bot_builder';
+    } else if (active_tab === '2') {
+        return 'charts';
+    } else if (active_tab === '3') {
+        return 'tutorials';
     }
-    return 'bot_builder';
+    return 'undefined';
 };
 
 export const getTradeParameterData = ({ form_values }: TFormStrategy) => {

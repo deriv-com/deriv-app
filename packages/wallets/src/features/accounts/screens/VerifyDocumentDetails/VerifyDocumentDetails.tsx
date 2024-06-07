@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Field, useFormikContext } from 'formik';
 import moment from 'moment';
 import { useSettings } from '@deriv/api-v2';
-import { DerivLightDobPoiIcon } from '@deriv/quill-icons';
+import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import { DatePicker, FlowTextField, InlineMessage, useFlow, WalletText } from '../../../../components';
 import unixToDateString from '../../../../utils/utils';
 import { dateOfBirthValidator, firstNameValidator, lastNameValidator } from '../../validations';
@@ -104,7 +104,7 @@ const VerifyDocumentDetails = () => {
                     <WalletText size='xs' weight='bold'>
                         Example
                     </WalletText>
-                    <DerivLightDobPoiIcon height={195} width={288} />
+                    <DerivLightNameDobPoiIcon height={195} width={288} />
                 </div>
             </div>
             <div

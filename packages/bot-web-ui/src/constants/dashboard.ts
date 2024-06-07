@@ -1,6 +1,7 @@
 import { localize } from '@deriv/translations';
 
 export const STRATEGY = {
+    OPEN: 'open',
     EDIT: 'edit',
     SAVE: 'save',
     DELETE: 'delete',
@@ -11,8 +12,8 @@ export const STRATEGY = {
 
 export const MENU_DESKTOP = [
     {
-        type: STRATEGY.EDIT,
-        icon: 'IcEdit',
+        type: STRATEGY.OPEN,
+        icon: 'IcOpen',
     },
     {
         type: STRATEGY.SAVE,
@@ -26,14 +27,9 @@ export const MENU_DESKTOP = [
 
 export const CONTEXT_MENU_MOBILE = [
     {
-        type: STRATEGY.PREVIEW_LIST,
-        icon: 'IcPreview',
-        label: localize('Preview'),
-    },
-    {
-        type: STRATEGY.EDIT,
-        icon: 'IcEdit',
-        label: localize('Edit'),
+        type: STRATEGY.OPEN,
+        icon: 'IcOpen',
+        label: localize('Open'),
     },
     {
         type: STRATEGY.SAVE,

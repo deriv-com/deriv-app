@@ -10,8 +10,8 @@ import {
     rudderStackSendQsEditStrategyEvent,
     rudderStackSendQsRunStrategyEvent,
     rudderStackSendQsSelectedTabEvent,
-} from '../analytics/rudderstack-quick-strategy';
-import { getQsActiveTabString } from '../analytics/utils';
+} from '../../../../analytics/rudderstack-quick-strategy';
+import { getQsActiveTabString } from '../../../../analytics/utils';
 import { STRATEGIES } from '../config';
 import { TFormData, TFormValues } from '../types';
 import FormTabs from './form-tabs';

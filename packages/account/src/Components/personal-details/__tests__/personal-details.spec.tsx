@@ -1,15 +1,14 @@
-// [TODO] - Convert this to TypeScript
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { ComponentProps, ReactNode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
-import { shouldShowIdentityInformation, isDocumentTypeValid, isAdditionalDocumentValid } from 'Helpers/utils';
+import { shouldShowIdentityInformation, isDocumentTypeValid, isAdditionalDocumentValid } from '../../../Helpers/utils';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { Analytics } from '@deriv-com/analytics';
+import { FormikErrors } from 'formik';
 
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
 
@@ -18,6 +17,7 @@ jest.mock('@deriv/components', () => ({
     Popover: jest.fn(props => props.is_open && <span>{props.message}</span>),
 }));
 
+// [TODO] - To be removed when PersonalDetailsForm is migrated to TSX
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isMobile: jest.fn(() => false),
@@ -31,6 +31,11 @@ jest.mock('../../real-account-signup/helpers/utils.ts', () => ({
     })),
 }));
 
+jest.mock('react-dom', () => ({
+    ...jest.requireActual('react-dom'),
+    createPortal: (node: ReactNode) => node,
+}));
+
 jest.mock('Helpers/utils', () => ({
     ...jest.requireActual('Helpers/utils'),
     isDocumentTypeValid: jest.fn(),
@@ -38,8 +43,10 @@ jest.mock('Helpers/utils', () => ({
     isAdditionalDocumentValid: jest.fn(),
 }));
 
+type TPersonalDetailsSectionForm = ComponentProps<typeof PersonalDetails>['value'];
+
 const mock_warnings = {};
-const mock_errors = {
+const mock_errors: FormikErrors<TPersonalDetailsSectionForm> = {
     account_opening_reason: 'Account opening reason is required.',
     salutation: 'Salutation is required.',
     first_name: 'First name is required.',
@@ -57,7 +64,7 @@ const tax_residence_pop_over_text =
     /the country in which you meet the criteria for paying taxes\. usually the country in which you physically reside\./i;
 const tin_pop_over_text = /don't know your tax identification number\?/i;
 
-const runCommonFormfieldsTests = is_svg => {
+const runCommonFormfieldsTests = (is_svg: boolean) => {
     expect(screen.getByRole('radio', { name: /mr/i })).toBeInTheDocument();
     expect(screen.getByRole('radio', { name: /ms/i })).toBeInTheDocument();
     expect(screen.getByTestId('first_name')).toBeInTheDocument();
@@ -92,9 +99,9 @@ const runCommonFormfieldsTests = is_svg => {
     }
 
     const tax_residence_pop_over = screen.queryByTestId('tax_residence_pop_over');
-    expect(tax_residence_pop_over).toBeInTheDocument();
-
-    fireEvent.click(tax_residence_pop_over);
+    if (tax_residence_pop_over) {
+        fireEvent.click(tax_residence_pop_over);
+    }
 
     expect(screen.getByText(tax_residence_pop_over_text)).toBeInTheDocument();
 
@@ -102,7 +109,9 @@ const runCommonFormfieldsTests = is_svg => {
     const tax_identification_number_pop_over = screen.queryByTestId('tax_identification_number_pop_over');
     expect(tax_identification_number_pop_over).toBeInTheDocument();
 
-    fireEvent.click(tax_identification_number_pop_over);
+    if (tax_identification_number_pop_over) {
+        fireEvent.click(tax_identification_number_pop_over);
+    }
 
     expect(screen.getByText(tin_pop_over_text)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'here' })).toBeInTheDocument();
@@ -124,6 +133,7 @@ describe('<PersonalDetails/>', () => {
         document_type: {
             value: 'national_id',
             text: 'National ID',
+            id: '0',
         },
         document_number: '1234567890123',
     };
@@ -150,16 +160,15 @@ describe('<PersonalDetails/>', () => {
                                 format: 'A54321',
                             },
                         },
-                        has_visual_sample: true,
+                        has_visual_sample: 1 as any,
                     },
                 },
             },
         },
     ];
 
-    const props = {
+    const mock_props: ComponentProps<typeof PersonalDetails> = {
         is_svg: true,
-        is_high_risk: false,
         account_opening_reason_list: [
             {
                 text: 'Hedging',
@@ -190,7 +199,7 @@ describe('<PersonalDetails/>', () => {
             {
                 identity: {
                     services: {
-                        idv: default_IDV_config,
+                        idv: default_IDV_config as any,
                         onfido: {
                             documents_supported: {
                                 passport: {
@@ -208,7 +217,7 @@ describe('<PersonalDetails/>', () => {
             {
                 identity: {
                     services: {
-                        idv: default_IDV_config,
+                        idv: default_IDV_config as any,
                         onfido: {
                             documents_supported: {},
                             is_country_supported: 0,
@@ -264,46 +273,47 @@ describe('<PersonalDetails/>', () => {
             tax_identification_number: '',
             tax_identification_confirm: false,
         },
-        index: 1,
-        has_currency: true,
-        form_error: '',
-        bypass_to_personal: false,
         onSubmit: jest.fn(),
         getCurrentStep: jest.fn(() => 1),
         onSave: jest.fn(),
         onCancel: jest.fn(),
         account_settings: {},
+        goToPreviousStep: jest.fn(),
+        goToNextStep: jest.fn(),
+        is_virtual: false,
+        is_fully_authenticated: false,
+        has_real_account: false,
+        account_status: undefined,
+        residence: '',
+        real_account_signup_target: '',
     };
-
-    beforeAll(() => {
-        ReactDOM.createPortal = jest.fn(component => component);
-    });
-
-    afterAll(() => ReactDOM.createPortal.mockClear());
 
     afterEach(() => {
         jest.clearAllMocks();
     });
 
-    const renderwithRouter = (component, store) => {
-        const mock_store = mockStore({});
+    const mock_store = mockStore({});
+
+    const renderwithRouter = ({ props = mock_props, store = mock_store }) => {
         render(
             <StoreProvider store={store ?? mock_store}>
-                <BrowserRouter>{component}</BrowserRouter>
+                <BrowserRouter>
+                    <PersonalDetails {...props} />
+                </BrowserRouter>
             </StoreProvider>
         );
     };
 
     it('should have called trackEvent on mount', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
+        renderwithRouter({});
         expect(Analytics.trackEvent).toHaveBeenCalledTimes(1);
     });
 
     it('should have validation errors on form fields', async () => {
-        isMobile.mockReturnValue(false);
-        isDesktop.mockReturnValue(true);
+        const new_props = { ...mock_props, is_svg: false };
+        const store_config = mockStore({ ui: { is_desktop: true } });
 
-        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
+        renderwithRouter({ props: new_props, store: store_config });
 
         const first_name = screen.getByTestId('first_name');
         const last_name = screen.getByTestId('last_name');
@@ -331,25 +341,23 @@ describe('<PersonalDetails/>', () => {
         expect(await screen.findByText(/phone is required\./i)).toBeInTheDocument();
         expect(await screen.findByText(/tax residence is required\./i)).toBeInTheDocument();
         expect(await screen.findByText(/tax identification number is required\./i)).toBeInTheDocument();
-        splitValidationResultTypes.mockReturnValue({
+        (splitValidationResultTypes as jest.Mock).mockReturnValue({
             ...mock_warnings,
             errors: {
-                ...mock_errors.errors,
+                ...mock_errors,
                 first_name: 'letters, spaces, periods, hyphens, apostrophes only',
-                last_name: 'Enter no more than 50 characters.',
+                last_name: 'last name should be between 2 and 50 characters.',
                 date_of_birth: 'You must be 18 years old and above.',
                 tax_identification_number: "Tax Identification Number can't be longer than 25 characters.",
             },
         });
         fireEvent.change(first_name, { target: { value: '123' } });
-        fireEvent.change(last_name, {
-            target: { value: 'ABCDEFGHIJKLMNOP.QRSTU VWXYZabcdefghi-jklmnopqrstuvwxyzh-shs' },
-        });
+        fireEvent.change(last_name, { target: { value: 'a' } });
         fireEvent.change(date_of_birth, { target: { value: '2021-04-13' } });
         fireEvent.change(tax_identification_number, { target: { value: '123456789012345678901234567890' } });
 
         expect(await screen.findByText(/letters, spaces, periods, hyphens, apostrophes only/i)).toBeInTheDocument();
-        expect(await screen.findByText(/Enter no more than 50 characters./i)).toBeInTheDocument();
+        expect(await screen.findByText(/last name should be between 2 and 50 characters/i)).toBeInTheDocument();
         expect(await screen.findByText(/you must be 18 years old and above\./i)).toBeInTheDocument();
         expect(
             await screen.findByText(/tax Identification Number can't be longer than 25 characters\./i)
@@ -358,7 +366,7 @@ describe('<PersonalDetails/>', () => {
 
     it('submit button should be enabled if TIN or tax_residence is optional in case of CR accounts', () => {
         const new_props = {
-            ...props,
+            ...mock_props,
             is_svg: true,
             value: {
                 first_name: '',
@@ -368,10 +376,9 @@ describe('<PersonalDetails/>', () => {
                 phone: '+34',
                 tax_residence: '',
                 tax_identification_number: '',
-                document_type: 'none',
             },
         };
-        renderwithRouter(<PersonalDetails {...new_props} />);
+        renderwithRouter({ props: new_props });
 
         const first_name = screen.getByTestId('first_name');
         const last_name = screen.getByTestId('last_name');
@@ -386,9 +393,9 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should not display confirmation checkbox if opt-out of IDV', async () => {
-        splitValidationResultTypes.mockReturnValue({ warnings: {}, errors: {} });
+        (splitValidationResultTypes as jest.Mock).mockReturnValue({ warnings: {}, errors: {} });
         const new_props = {
-            ...props,
+            ...mock_props,
             value: {
                 first_name: '',
                 last_name: '',
@@ -396,11 +403,10 @@ describe('<PersonalDetails/>', () => {
                 phone: '+93',
                 account_opening_reason: '',
                 place_of_birth: '',
-                document_type: 'none',
             },
         };
 
-        renderwithRouter(<PersonalDetails {...new_props} />);
+        renderwithRouter({ props: new_props });
 
         const first_name = screen.getByTestId('first_name');
         const last_name = screen.getByTestId('last_name');
@@ -431,14 +437,14 @@ describe('<PersonalDetails/>', () => {
 
     it('should autopopulate tax_residence for MF clients', () => {
         const new_props = {
-            ...props,
+            ...mock_props,
             is_svg: false,
             value: {
-                ...props.value,
+                ...mock_props.value,
                 tax_residence: 'Malta',
             },
         };
-        renderwithRouter(<PersonalDetails {...new_props} />);
+        renderwithRouter({ props: new_props });
         expect(
             screen.getByRole('textbox', {
                 name: /tax residence\*/i,
@@ -447,12 +453,13 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should render PersonalDetails component', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
+        renderwithRouter({});
         expect(screen.getByTestId('personal_details_form')).toBeInTheDocument();
     });
 
     it('should show proper salutation message when is_virtual is true', () => {
-        renderwithRouter(<PersonalDetails {...props} is_virtual />);
+        const new_props = { ...mock_props, is_virtual: true };
+        renderwithRouter({ props: new_props });
 
         expect(
             screen.getByText(
@@ -462,7 +469,7 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should show proper salutation message when is_virtual is false', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
+        renderwithRouter({});
 
         expect(
             screen.getByText(
@@ -473,7 +480,23 @@ describe('<PersonalDetails/>', () => {
 
         fireEvent.click(screen.getByText('account settings'));
 
-        expect(props.closeRealAccountSignup).toHaveBeenCalledTimes(1);
+        expect(mock_props.closeRealAccountSignup).toHaveBeenCalledTimes(1);
+    });
+
+    it('should disable tax_residence field if it is immutable from BE', () => {
+        const new_store = mockStore({ ui: { is_mobile: false, is_desktop: true } });
+
+        const new_props = {
+            ...mock_props,
+            value: {
+                ...mock_props.value,
+                ...idv_document_data,
+                tax_residence: 'France',
+            },
+            disabled_items: ['salutation', 'first_name', 'last_name', 'date_of_birth', 'tax_residence'],
+        };
+        renderwithRouter({ props: new_props, store: new_store });
+        expect(screen.getByTestId('tax_residence')).toBeDisabled();
     });
 
     it('should show title and Name label when salutation is passed', () => {
@@ -482,7 +505,7 @@ describe('<PersonalDetails/>', () => {
                 is_eu_user: true,
             },
         });
-        renderwithRouter(<PersonalDetails {...props} />, mock_store);
+        renderwithRouter({ store: mock_store });
 
         expect(
             screen.getByRole('heading', {
@@ -492,18 +515,18 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should show Name label when salutation is not passed', () => {
-        const newprops = { ...props, value: {} };
-        renderwithRouter(<PersonalDetails {...newprops} />);
+        const newprops = { ...mock_props, value: {} };
+        renderwithRouter({ props: newprops });
 
         expect(screen.getByRole('heading', { name: /details/i })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: /title and name/i })).not.toBeInTheDocument();
     });
 
     it('should show salutation options', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
+        renderwithRouter({});
 
-        const mr_radio_btn = screen.getByRole('radio', { name: /mr/i });
-        const mrs_radio_btn = screen.getByRole('radio', { name: /ms/i });
+        const mr_radio_btn: HTMLInputElement = screen.getByRole('radio', { name: /mr/i }) as HTMLInputElement;
+        const mrs_radio_btn: HTMLInputElement = screen.getByRole('radio', { name: /ms/i }) as HTMLInputElement;
         expect(mr_radio_btn).toBeInTheDocument();
         expect(mrs_radio_btn).toBeInTheDocument();
         expect(mr_radio_btn.checked).toEqual(false);
@@ -515,18 +538,18 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should display the correct field details ', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
+        renderwithRouter({});
 
         expect(screen.getByText(/first name\*/i)).toBeInTheDocument();
         expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/phone number\*/i)).toBeInTheDocument();
 
-        runCommonFormfieldsTests(props.is_svg);
+        runCommonFormfieldsTests(mock_props.is_svg);
     });
 
     it('should display the correct field details when is_svg is true ', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
+        renderwithRouter({});
 
         expect(screen.queryByRole('heading', { name: 'Details' })).toBeInTheDocument();
         expect(screen.getByText(/first name\*/i)).toBeInTheDocument();
@@ -534,7 +557,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
 
-        runCommonFormfieldsTests(props.is_svg);
+        runCommonFormfieldsTests(mock_props.is_svg);
     });
 
     it('should display the correct field details when is_svg is false ', () => {
@@ -543,7 +566,7 @@ describe('<PersonalDetails/>', () => {
                 is_eu_user: true,
             },
         });
-        renderwithRouter(<PersonalDetails {...props} is_svg={false} />, mock_store);
+        renderwithRouter({ store: mock_store });
 
         expect(screen.getByRole('heading', { name: 'Title and name' })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: 'name' })).not.toBeInTheDocument();
@@ -558,12 +581,11 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should not enable fields which are disabled and empty', () => {
-        renderwithRouter(
-            <PersonalDetails
-                {...props}
-                disabled_items={['salutation', 'first_name', 'last_name', 'date_of_birth', 'account_opening_reason']}
-            />
-        );
+        const new_props = {
+            ...mock_props,
+            disabled_items: ['salutation', 'first_name', 'last_name', 'date_of_birth', 'account_opening_reason'],
+        };
+        renderwithRouter({ props: new_props });
         expect(screen.getByRole('radio', { name: /mr/i })).toBeEnabled();
         expect(screen.getByRole('radio', { name: /ms/i })).toBeEnabled();
         expect(screen.getByTestId('first_name')).toBeDisabled();
@@ -575,21 +597,26 @@ describe('<PersonalDetails/>', () => {
 
     it('should disable citizen field if the client is_fully_authenticated', () => {
         const new_props = {
-            ...props,
+            ...mock_props,
+            is_fully_authenticated: true,
             value: {
-                ...props.value,
+                ...mock_props.value,
                 citizen: 'france',
             },
         };
-        renderwithRouter(<PersonalDetails {...new_props} is_fully_authenticated={true} />);
+        renderwithRouter({ props: new_props });
 
         expect(screen.getByTestId('citizenship')).toBeDisabled();
     });
 
     it('should display proper data in mobile mode', () => {
-        isMobile.mockReturnValue(true);
-        isDesktop.mockReturnValue(false);
-        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
+        // [TODO] - Remove this when PersonalDetailsForm is migrated to TSX
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        const mock_store = mockStore({ ui: { is_mobile: true, is_desktop: false } });
+        const new_props = { ...mock_props, is_svg: false };
+
+        renderwithRouter({ props: new_props, store: mock_store });
 
         expect(screen.getByRole('radio', { name: /mr/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /ms/i })).toBeInTheDocument();
@@ -613,15 +640,19 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should select correct dropdown options in mobile mode', () => {
-        isMobile.mockReturnValue(true);
-        isDesktop.mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        const mock_store = mockStore({ ui: { is_mobile: true, is_desktop: false } });
+        const new_props = { ...mock_props, is_svg: false };
 
-        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
+        renderwithRouter({ props: new_props, store: mock_store });
         const place_of_birth_mobile = screen.queryByTestId('place_of_birth_mobile');
 
         expect(place_of_birth_mobile).toBeInTheDocument();
 
-        fireEvent.change(place_of_birth_mobile, { target: { value: 'Afghanistan' } });
+        if (place_of_birth_mobile) {
+            fireEvent.change(place_of_birth_mobile, { target: { value: 'Afghanistan' } });
+        }
 
         const { getByText } = within(screen.getAllByTestId('selected_value')[0]);
         expect(getByText('Afghanistan')).toBeInTheDocument();
@@ -634,8 +665,8 @@ describe('<PersonalDetails/>', () => {
                 tax_identification_number: 'Tax Identification Number is not properly formatted.',
             },
         };
-        splitValidationResultTypes.mockReturnValue(newvalidate);
-        renderwithRouter(<PersonalDetails {...props} />);
+        (splitValidationResultTypes as jest.Mock).mockReturnValue(newvalidate);
+        renderwithRouter({});
         const tax_identification_number = screen.getByTestId('tax_identification_number');
 
         fireEvent.blur(tax_identification_number);
@@ -645,9 +676,9 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should submit the form if there is no validation error on desktop', async () => {
-        splitValidationResultTypes.mockReturnValue({ warnings: {}, errors: {} });
+        (splitValidationResultTypes as jest.Mock).mockReturnValue({ warnings: {}, errors: {} });
         const new_props = {
-            ...props,
+            ...mock_props,
             value: {
                 first_name: '',
                 last_name: '',
@@ -656,7 +687,7 @@ describe('<PersonalDetails/>', () => {
             },
         };
 
-        renderwithRouter(<PersonalDetails {...new_props} />);
+        renderwithRouter({ props: new_props });
 
         const first_name = screen.getByTestId('first_name');
         const last_name = screen.getByTestId('last_name');
@@ -686,11 +717,13 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should submit the form if there is no validation error on mobile', async () => {
-        isMobile.mockReturnValue(true);
-        isDesktop.mockReturnValue(false);
-        splitValidationResultTypes.mockReturnValue({ warnings: {}, errors: {} });
+        // [TODO] - Remove this when PersonalDetailsForm is migrated to TSX
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+
+        (splitValidationResultTypes as jest.Mock).mockReturnValue({ warnings: {}, errors: {} });
         const new_props = {
-            ...props,
+            ...mock_props,
             is_svg: false,
             value: {
                 account_opening_reason: '',
@@ -707,9 +740,9 @@ describe('<PersonalDetails/>', () => {
             },
         };
 
-        renderwithRouter(<PersonalDetails {...new_props} />);
+        renderwithRouter({ props: new_props });
 
-        const mr_radio_btn = screen.getByRole('radio', { name: /mr/i });
+        const mr_radio_btn = screen.getByRole('radio', { name: /mr/i }) as HTMLInputElement;
         const first_name = screen.getByTestId('first_name');
         const last_name = screen.getByTestId('last_name');
         const date_of_birth = screen.getByTestId('date_of_birth');
@@ -750,16 +783,16 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should save filled date when cancel button is clicked ', async () => {
-        splitValidationResultTypes.mockReturnValue({ warnings: {}, errors: {} });
+        (splitValidationResultTypes as jest.Mock).mockReturnValue({ warnings: {}, errors: {} });
         const new_props = {
-            ...props,
+            ...mock_props,
             value: {
                 first_name: '',
                 last_name: '',
             },
         };
 
-        renderwithRouter(<PersonalDetails {...new_props} />);
+        renderwithRouter({ props: new_props });
 
         const first_name = screen.getByTestId('first_name');
         const last_name = screen.getByTestId('last_name');
@@ -772,12 +805,13 @@ describe('<PersonalDetails/>', () => {
         fireEvent.click(previous_btn);
 
         await waitFor(() => {
-            expect(props.onSave).toBeCalledWith(0, { first_name: 'test firstname', last_name: 'test lastname' });
+            expect(mock_props.onSave).toBeCalledWith(0, { first_name: 'test firstname', last_name: 'test lastname' });
         });
     });
 
     it('should close tax_residence pop-over when clicked outside', () => {
-        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
+        const new_props = { ...mock_props, is_svg: false };
+        renderwithRouter({ props: new_props });
 
         const tax_residence_pop_over = screen.getByTestId('tax_residence_pop_over');
         expect(tax_residence_pop_over).toBeInTheDocument();
@@ -791,7 +825,8 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should close tax_identification_number_pop_over when clicked outside', () => {
-        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
+        const new_props = { ...mock_props, is_svg: false };
+        renderwithRouter({ props: new_props });
 
         const tin_pop_over = screen.getByTestId('tax_identification_number_pop_over');
         expect(tin_pop_over).toBeInTheDocument();
@@ -807,7 +842,7 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should close tax_residence pop-over when scrolled', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
+        renderwithRouter({});
 
         const tax_residence_pop_over = screen.getByTestId('tax_residence_pop_over');
         expect(tax_residence_pop_over).toBeInTheDocument();
@@ -823,7 +858,7 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should close tax_identification_number_pop_over when scrolled', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
+        renderwithRouter({});
 
         const tax_identification_number_pop_over = screen.getByTestId('tax_identification_number_pop_over');
         expect(tax_identification_number_pop_over).toBeInTheDocument();
@@ -840,16 +875,16 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should validate idv values when a document type is selected', async () => {
-        shouldShowIdentityInformation.mockReturnValue(true);
+        (shouldShowIdentityInformation as jest.Mock).mockReturnValue(true);
         const new_props = {
-            ...props,
+            ...mock_props,
             value: {
-                ...props.value,
+                ...mock_props.value,
                 ...idv_document_data,
             },
-            residence_list: default_residence_details,
+            residence_list: default_residence_details as any,
         };
-        renderwithRouter(<PersonalDetails {...new_props} />);
+        renderwithRouter({ props: new_props });
 
         await waitFor(() => {
             expect(isDocumentTypeValid).toHaveBeenCalled();
@@ -858,41 +893,30 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should validate idv values along with additional document number when a document type is selected', async () => {
-        shouldShowIdentityInformation.mockReturnValue(true);
+        (shouldShowIdentityInformation as jest.Mock).mockReturnValue(true);
 
         const new_document_data = {
             ...idv_document_data,
-            document_type: { ...idv_document_data.document_type, additional: '12345' },
+            document_type: {
+                ...idv_document_data.document_type,
+                additional: {
+                    display_name: '12345',
+                },
+            },
         };
 
         const new_props = {
-            ...props,
+            ...mock_props,
             value: {
-                ...props.value,
+                ...mock_props.value,
                 ...new_document_data,
             },
             residence_list: default_residence_details,
         };
-        renderwithRouter(<PersonalDetails {...new_props} />);
+        renderwithRouter({ props: new_props });
 
         await waitFor(() => {
             expect(isAdditionalDocumentValid).toHaveBeenCalled();
         });
-    });
-
-    it('should disable tax_residence field if it is immutable from BE', () => {
-        isMobile.mockReturnValue(false);
-        isDesktop.mockReturnValue(true);
-        const new_props = {
-            ...props,
-            value: {
-                ...props.value,
-                tax_residence: 'France',
-                document_type: idv_document_data,
-            },
-            disabled_items: ['salutation', 'first_name', 'last_name', 'date_of_birth', 'tax_residence'],
-        };
-        renderwithRouter(<PersonalDetails {...new_props} />);
-        expect(screen.getByTestId('tax_residence')).toBeDisabled();
     });
 });

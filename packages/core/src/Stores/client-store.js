@@ -30,7 +30,7 @@ import {
     sortApiData,
     urlForLanguage,
     getAppId,
-    getUrlp2p,
+    getUrlP2P,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
@@ -2498,7 +2498,7 @@ export default class ClientStore extends BaseStore {
         p2p.iframe = document.getElementById('localstorage-sync__p2p');
         smartTrader.origin = getUrlSmartTrader();
         binaryBot.origin = getUrlBinaryBot(false);
-        p2p.origin = getUrlp2p();
+        p2p.origin = getUrlP2P();
 
         [smartTrader, binaryBot, p2p].forEach(platform => {
             if (platform.iframe) {

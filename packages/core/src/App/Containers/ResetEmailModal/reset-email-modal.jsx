@@ -11,10 +11,9 @@ const ResetEmailModal = observer(() => {
     const { ui, client } = useStore();
     const { disableApp, enableApp, is_loading, is_reset_email_modal_visible: is_visible, toggleResetEmailModal } = ui;
     const { email } = client;
-    const verification_code = client.verification_code.request_email;
     const [is_confirm_email_modal_open, setIsConfirmResetEmailModal] = React.useState(false);
     const [email_error_msg, setEmailErrorMsg] = React.useState(null);
-    const [email_value, setEmailValue] = React.useState(null);
+    const [email_value, setEmailValue] = React.useState('');
 
     const handleSubmit = values => {
         setEmailValue(values.email);
@@ -43,7 +42,6 @@ const ResetEmailModal = observer(() => {
                 onClose={() => setIsConfirmResetEmailModal(false)}
                 prev_email={email}
                 setErrorMessage={setEmailErrorMsg}
-                verification_code={verification_code}
                 setEmailValue={setEmailValue}
             />
         );
@@ -62,7 +60,7 @@ const ResetEmailModal = observer(() => {
                     disableApp={disableApp}
                     enableApp={enableApp}
                     is_loading={is_loading}
-                    dismissable={status.error_msg}
+                    dismissable={status.error_msg || email_error_msg}
                     onConfirm={() => toggleResetEmailModal(false)}
                     is_closed_on_cancel={false}
                 >
@@ -116,7 +114,9 @@ const ResetEmailModal = observer(() => {
                                                     !values.email || errors.email || isSubmitting,
                                             })}
                                             type='submit'
-                                            is_disabled={!values.email || !!errors.email || isSubmitting}
+                                            is_disabled={
+                                                !values.email || !!errors.email || isSubmitting || !!email_error_msg
+                                            }
                                             primary
                                             large
                                         >

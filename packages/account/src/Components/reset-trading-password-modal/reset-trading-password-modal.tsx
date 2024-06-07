@@ -176,7 +176,12 @@ const ResetTradingPassword = ({
                                         />
                                     </Text>
                                     <Text as='p' size='xs' className='reset-trading-password__details'>
-                                        {localize('You can use this password for all your Deriv MT5 accounts.')}
+                                        <Localize
+                                            i18n_default_text='You can use this password for all your {{platform}} accounts.'
+                                            values={{
+                                                platform: getCFDPlatformLabel(platform),
+                                            }}
+                                        />
                                     </Text>
                                     <fieldset className='reset-trading-password__input-field'>
                                         <PasswordMeter

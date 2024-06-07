@@ -15,17 +15,17 @@ const LanguageSettings = observer(() => {
         return <Redirect to={routes.traders_hub} />;
     }
 
-    const allowed_language_keys: string[] = Object.keys(getAllowedLanguages());
+    const allowed_languages: Record<string, string> = getAllowedLanguages();
     return (
         <div className='settings-language'>
             <FormSubHeader title={localize('Select Language')} />
             <div className='settings-language__language-container'>
-                {allowed_language_keys.map(language_key => {
+                {Object.entries(allowed_languages).map(([language_key, value]) => {
                     return (
                         <LanguageRadioButton
                             key={language_key}
                             id={language_key}
-                            language_code={language_key}
+                            language_text={value}
                             is_current_language={current_language === language_key}
                             name='language-radio-group'
                             onChange={() => {

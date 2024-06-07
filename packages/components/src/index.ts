@@ -67,6 +67,7 @@ export * from './components/inline-message';
 export { default as Input } from './components/input';
 export { default as InputField } from './components/input-field';
 export { default as InputWithCheckbox } from './components/input-wth-checkbox';
+export { default as IconMessageContent } from './components/icon-message-content';
 export { default as Label } from './components/label';
 export { default as LinearProgress } from './components/linear-progress';
 export { default as Loading } from './components/loading';

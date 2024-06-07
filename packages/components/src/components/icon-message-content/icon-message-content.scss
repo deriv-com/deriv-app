@@ -1,0 +1,21 @@
+.icon-with-message-content {
+    margin-top: 8rem;
+    padding: 3.2rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.6rem;
+
+    &__title {
+        margin-top: 1rem;
+    }
+    &__desc {
+        margin-top: 1rem;
+    }
+    &__btn {
+        width: fit-content;
+    }
+    @include mobile {
+        width: 100vw;
+    }
+}

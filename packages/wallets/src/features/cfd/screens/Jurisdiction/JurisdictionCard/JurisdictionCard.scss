@@ -71,10 +71,11 @@
         transform-style: preserve-3d;
         transition: transform 0.3s;
 
-        &--flip {
-            -webkit-transform: rotateY(180deg);
-            transform: rotateY(180deg);
-        }
+        // &--flip {
+        //     -webkit-transform: rotateY(180deg);
+        //     transform: rotateY(180deg);
+        //     background-color: #ff444f;
+        // }
 
         &__label {
             text-align: center;

@@ -805,6 +805,9 @@
         width: 0;
         height: 0;
     }
+    @include desktop {
+        padding-bottom: unset;
+    }
 }
 
 .wizard__main-step {

@@ -1,11 +1,9 @@
-// [TODO] - Convert this to TypeScript
-
-import React, { useState, Fragment, useCallback, useMemo, useEffect } from 'react';
+import { useState, Fragment, useCallback, useMemo, useEffect } from 'react';
 import clsx from 'clsx';
-import { Form, Formik } from 'formik';
-import { Analytics } from '@deriv-com/analytics';
+import { Form, Formik, FormikErrors } from 'formik';
+import { Analytics, TEvents } from '@deriv-com/analytics';
 import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, ThemedScrollbars } from '@deriv/components';
-import { getIDVNotApplicableOption, isDesktop, isMobile, removeEmptyPropertiesFromObject } from '@deriv/shared';
+import { getIDVNotApplicableOption, removeEmptyPropertiesFromObject } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import {
@@ -14,12 +12,49 @@ import {
     isDocumentTypeValid,
     shouldShowIdentityInformation,
 } from '../../Helpers/utils';
-import PoiNameDobExample from '../../Assets/ic-poi-name-dob-example.svg';
+import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import FormSubHeader from '../form-sub-header';
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
+import { TIDVFormValues, TListItem, TPersonalDetailsBaseForm } from '../../Types';
+import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
+
+type TPersonalDetailsSectionForm = Partial<TIDVFormValues & TPersonalDetailsBaseForm> & {
+    confirmation_checkbox?: boolean;
+};
+
+type TPersonalDetailProps = {
+    getCurrentStep: () => number;
+    onSave: (current_step: number, values: TPersonalDetailsSectionForm) => void;
+    onCancel: (current_step: number, goToPreviousStep: () => void) => void;
+    onSubmit: (
+        current_step: number,
+        values: TPersonalDetailsSectionForm,
+        setSubmitting: (is_submitting: boolean) => void,
+        goToNextStep: () => void
+    ) => void;
+    goToPreviousStep: () => void;
+    goToNextStep: () => void;
+    validate: (values: TPersonalDetailsSectionForm) => TPersonalDetailsSectionForm;
+    salutation_list: { label: string; value: string }[];
+    disabled_items: string[];
+    is_svg: boolean;
+    residence_list: ResidenceList;
+    is_virtual: boolean;
+    is_fully_authenticated: boolean;
+    account_opening_reason_list: TListItem[];
+    closeRealAccountSignup: () => void;
+    has_real_account: boolean;
+    account_status?: GetAccountStatus;
+    account_settings: GetSettings;
+    residence: string;
+    real_account_signup_target: string;
+    value: TPersonalDetailsSectionForm;
+};
+
+type TrackEvent = TEvents['ce_real_account_signup_identity_form'];
 
 const PersonalDetails = observer(
     ({
@@ -39,18 +74,18 @@ const PersonalDetails = observer(
         account_opening_reason_list,
         closeRealAccountSignup,
         has_real_account,
+        value,
         ...props
-    }) => {
+    }: TPersonalDetailProps) => {
         const {
             traders_hub: { is_eu_user },
+            ui: { is_mobile, is_desktop },
         } = useStore();
         const { account_status, account_settings, residence, real_account_signup_target } = props;
         const [should_close_tooltip, setShouldCloseTooltip] = useState(false);
         const [no_confirmation_needed, setNoConfirmationNeeded] = useState(false);
 
-        const PoiNameDobExampleIcon = PoiNameDobExample;
-
-        const handleCancel = values => {
+        const handleCancel = (values: TPersonalDetailsSectionForm) => {
             const current_step = getCurrentStep() - 1;
             onSave(current_step, values);
             onCancel(current_step, goToPreviousStep);
@@ -58,7 +93,7 @@ const PersonalDetails = observer(
         const citizen = residence || account_settings?.citizen;
 
         const trackEvent = useCallback(
-            payload => {
+            (payload: TrackEvent) => {
                 if (is_eu_user) return;
                 Analytics.trackEvent('ce_real_account_signup_identity_form', {
                     ...payload,
@@ -83,22 +118,23 @@ const PersonalDetails = observer(
 
         //is_rendered_for_idv is used for configuring the components when they are used in idv page
         const is_rendered_for_idv = shouldShowIdentityInformation({
-            account_status,
-            citizen,
+            account_status: account_status as GetAccountStatus,
+            citizen: citizen as string,
             residence_list,
             real_account_signup_target,
         });
 
         const IDV_NOT_APPLICABLE_OPTION = useMemo(() => getIDVNotApplicableOption(), []);
 
-        const validateIDV = values => {
-            const errors = {};
+        const validateIDV = (values: TPersonalDetailsSectionForm) => {
+            const errors: FormikErrors<TPersonalDetailsSectionForm> = {};
             const { document_type, document_number, document_additional } = values;
-            if (document_type.id === IDV_NOT_APPLICABLE_OPTION.id) return errors;
-
+            if (document_type?.id === IDV_NOT_APPLICABLE_OPTION.id) return errors;
+            /* eslint-disable @typescript-eslint/ban-ts-comment */
+            // @ts-expect-error Error is tring but Formik value was an object
             errors.document_type = isDocumentTypeValid(document_type);
 
-            const needs_additional_document = !!document_type.additional;
+            const needs_additional_document = !!document_type?.additional;
 
             if (needs_additional_document) {
                 errors.document_additional = isAdditionalDocumentValid(document_type, document_additional);
@@ -106,13 +142,13 @@ const PersonalDetails = observer(
 
             errors.document_number = isDocumentNumberValid(document_number, document_type);
 
-            if (document_type.id !== IDV_NOT_APPLICABLE_OPTION.id && !values.confirmation_checkbox) {
+            if (document_type?.id !== IDV_NOT_APPLICABLE_OPTION.id && !values?.confirmation_checkbox) {
                 errors.confirmation_checkbox = 'error';
             }
             return removeEmptyPropertiesFromObject(errors);
         };
 
-        const handleValidate = values => {
+        const handleValidate = (values: TPersonalDetailsSectionForm) => {
             const current_step = getCurrentStep() - 1;
             onSave(current_step, values);
 
@@ -136,8 +172,8 @@ const PersonalDetails = observer(
 
         const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
 
-        const getEditableFields = (is_confirmed, selected_document_type_id) => {
-            const editable_fields = Object.keys(props.value).filter(field => !disabled_items.includes(field)) || [];
+        const getEditableFields = (is_confirmed = false, selected_document_type_id?: string) => {
+            const editable_fields = Object.keys(value).filter(field => !disabled_items.includes(field)) || [];
 
             if (IDV_NOT_APPLICABLE_OPTION.id === selected_document_type_id) return editable_fields;
 
@@ -150,7 +186,7 @@ const PersonalDetails = observer(
 
         return (
             <Formik
-                initialValues={{ ...props.value }}
+                initialValues={{ ...value }}
                 validate={handleValidate}
                 validateOnMount
                 onSubmit={(values, actions) => {
@@ -162,7 +198,7 @@ const PersonalDetails = observer(
                 }}
             >
                 {({ handleSubmit, isSubmitting, values }) => (
-                    <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
+                    <AutoHeightWrapper default_height={380} height_offset={is_desktop ? 81 : null}>
                         {({ setRef, height }) => (
                             <Form
                                 noValidate
@@ -173,8 +209,8 @@ const PersonalDetails = observer(
                                 data-testid='personal_details_form'
                             >
                                 <ScrollToFieldWithError
-                                    fields_to_scroll_bottom={isMobile() ? '' : ['account_opening_reason']}
-                                    fields_to_scroll_top={isMobile() ? ['account_opening_reason'] : ''}
+                                    fields_to_scroll_bottom={is_mobile ? undefined : ['account_opening_reason']}
+                                    fields_to_scroll_top={is_mobile ? ['account_opening_reason'] : undefined}
                                     should_recollect_inputs_names={
                                         values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
                                     }
@@ -182,17 +218,14 @@ const PersonalDetails = observer(
                                 <Div100vhContainer
                                     className='details-form'
                                     height_offset='100px'
-                                    is_disabled={isDesktop()}
+                                    is_disabled={is_desktop}
                                 >
                                     <ThemedScrollbars
                                         height={height}
                                         onScroll={closeToolTip}
                                         testId='dt_personal_details_container'
                                     >
-                                        <div
-                                            className={clsx('details-form__elements', 'personal-details-form')}
-                                            style={{ paddingBottom: isDesktop() ? 'unset' : null }}
-                                        >
+                                        <div className={clsx('details-form__elements', 'personal-details-form')}>
                                             {is_rendered_for_idv && (
                                                 <Fragment>
                                                     <FormSubHeader title={localize('Identity verification')} />
@@ -212,10 +245,10 @@ const PersonalDetails = observer(
                                                 is_virtual={is_virtual}
                                                 is_svg={is_svg}
                                                 is_eu_user={is_eu_user}
-                                                side_note={<PoiNameDobExampleIcon />}
+                                                side_note={<DerivLightNameDobPoiIcon height='200px' />}
                                                 is_rendered_for_idv={is_rendered_for_idv}
                                                 editable_fields={getEditableFields(
-                                                    values.confirmation_checkbox,
+                                                    values?.confirmation_checkbox,
                                                     values?.document_type?.id
                                                 )}
                                                 residence_list={residence_list}
@@ -237,12 +270,12 @@ const PersonalDetails = observer(
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer has_separator is_bypassed={isMobile()}>
+                                <Modal.Footer has_separator is_bypassed={is_mobile}>
                                     <FormSubmitButton
                                         cancel_label={localize('Previous')}
                                         has_cancel
                                         is_disabled={isSubmitting}
-                                        is_absolute={isMobile()}
+                                        is_absolute={is_mobile}
                                         label={localize('Next')}
                                         onCancel={() => handleCancel(values)}
                                     />

@@ -54,12 +54,12 @@ const TransactionStatus: React.FC<TTransactionStatus> = ({ transactionType }) =>
             </div>
             <Divider color='#d6dadb' /> {/* --color-grey-5 */}
             <div className='wallets-transaction-status__body'>
-                {!isError && isLoading && (
+                {isLoading && (
                     <div className='wallets-transaction-status__loader'>
                         <Loader />
                     </div>
                 )}
-                {isError && <TransactionStatusError refresh={refresh} />}
+                {isError && !isLoading && <TransactionStatusError refresh={refresh} />}
                 {isTransactionStatusSuccessVisible && (
                     <TransactionStatusSuccess
                         transactionType={transactionType}

@@ -53,7 +53,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });
 
     const onClickLogout = () => {
-        history.push(shared_routes.index);
+        history.push(shared_routes.traders_hub);
         logout();
     };
 

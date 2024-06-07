@@ -98,7 +98,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
             togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
 
-        history.push(routes.index);
+        history.push(routes.traders_hub);
         await logoutClient();
     };
 
@@ -510,11 +510,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                             <Text color='prominent' size='xs' align='left' className='acc-switcher__logout-text'>
                                 {localize('Log out')}
                             </Text>
-                            <Icon
-                                icon='IcLogout'
-                                className='acc-switcher__logout-icon drawer__icon'
-                                onClick={handleLogout}
-                            />
+                            <Icon icon='IcLogout' className='acc-switcher__logout-icon drawer__icon' />
                         </div>
                     </div>
                 </React.Fragment>

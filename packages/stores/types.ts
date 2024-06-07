@@ -792,8 +792,6 @@ type TUiStore = {
     toggleKycInformationSubmittedModal: () => void;
     setAccountSwitcherDisabledMessage: (message?: string) => void;
     is_set_currency_modal_visible: boolean;
-    should_show_global_loader: boolean;
-    setShouldShowGlobalLoader: (value: boolean) => void;
 };
 
 type TPortfolioStore = {

@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Analytics } from '@deriv-com/analytics';
 import { PageOverlay, VerticalTab } from '@deriv/components';
-import { getOSNameWithUAParser, getSelectedRoute, getStaticUrl, routes as shared_routes } from '@deriv/shared';
+import { getOSNameWithUAParser, getSelectedRoute, routes as shared_routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import TradingHubLogout from './tradinghub-logout';
@@ -23,7 +23,7 @@ type PageOverlayWrapperProps = {
 const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperProps) => {
     const history = useHistory();
     const { client, common, ui } = useStore();
-    const { is_mobile, setShouldShowGlobalLoader } = ui;
+    const { is_mobile } = ui;
     const { logout } = client;
     const { is_from_derivgo } = common;
 
@@ -53,9 +53,8 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });
 
     const onClickLogout = () => {
-        setShouldShowGlobalLoader(true);
         history.push(shared_routes.index);
-        logout().then(() => (window.location.href = getStaticUrl('/')));
+        logout();
     };
 
     if (is_mobile && selected_route) {

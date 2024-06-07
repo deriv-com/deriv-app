@@ -21,9 +21,7 @@ module.exports = {
     testPathIgnorePatterns: [
         '/integration-tests/',
         '/component-tests/',
-        '/packages/account-v2',
         '/packages/cashier-v2',
-        '/packages/p2p-v2',
         '/packages/tradershub',
     ],
 };

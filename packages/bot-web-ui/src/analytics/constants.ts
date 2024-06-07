@@ -1,4 +1,4 @@
-import { TFormValues } from '../types';
+import { TFormValues } from '../pages/bot-builder/quick-strategy/types';
 
 export const form_name = 'ce_bot_form';
 export const STORED_ITEM_NOT_FOUND = 'No results found';

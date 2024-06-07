@@ -1,11 +1,10 @@
 import React from 'react';
-import { CaptionText, Text } from '@deriv-com/quill-ui';
 import EntryExitDetails from 'AppV2/Components/EntryExitDetails';
 import TakeProfitHistory from 'AppV2/Components/TakeProfitHistory';
 import PayoutInfo from 'AppV2/Components/PayoutInfo';
 import ChartPlaceholder from '../Chart';
 import CardWrapper from 'AppV2/Components/CardWrapper';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import OrderDetails from 'AppV2/Components/OrderDetails';
 import { getContractDetailsConfig } from 'AppV2/Utils/contract-details-config';
@@ -27,8 +26,11 @@ import { ContractCard } from 'AppV2/Components/ContractCard';
 
 const ContractDetails = observer(() => {
     const { contract_info, is_loading } = useContractDetails();
-    const { contract_id, currency } = contract_info;
+    const { contract_id, currency, contract_type, limit_order } = contract_info;
     const [update_history, setUpdateHistory] = React.useState<TContractUpdateHistory>([]);
+    const { common } = useStore();
+    const { server_time } = common;
+    const { is_take_profit_visible, is_stop_loss_visible } = getContractDetailsConfig(contract_type ?? '');
 
     type TContractUpdateHistory = TContractStore['contract_update_history'];
     type TResponse = {
@@ -48,7 +50,7 @@ const ContractDetails = observer(() => {
 
     React.useEffect(() => {
         requestUpdatedHistory(contract_id);
-    }, [contract_id, requestUpdatedHistory]);
+    }, [contract_id, limit_order, requestUpdatedHistory]);
 
     if (is_loading) return <></>;
 
@@ -68,13 +70,12 @@ const ContractDetails = observer(() => {
                 'contract-details--one-button': should_show_sell && !show_cancel_button,
             })}
         >
-            <ContractCard contractInfo={contract_info} />
-            {/* END OF CONTRACT CARD */}
+            <ContractCard contractInfo={contract_info} serverTime={server_time} />
             <div className='placeholder'>
                 <ChartPlaceholder />
             </div>
             <DealCancellation />
-            {isOpen(contract_info) && (
+            {isOpen(contract_info) && (is_take_profit_visible || is_stop_loss_visible) && (
                 <CardWrapper>
                     <TakeProfit />
                     <StopLoss />
@@ -85,7 +86,9 @@ const ContractDetails = observer(() => {
             </CardWrapper>
             <PayoutInfo contract_info={contract_info} />
             <EntryExitDetails contract_info={contract_info} />
-            {is_tp_history_visible && <TakeProfitHistory history={update_history} currency={currency} />}
+            {is_tp_history_visible && update_history.length > 0 && (
+                <TakeProfitHistory history={update_history} currency={currency} />
+            )}
             {should_show_sell && <ContractDetailsFooter contract_info={contract_info} />}
         </div>
     );

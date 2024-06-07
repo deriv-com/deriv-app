@@ -644,6 +644,8 @@ export default class TradersHubStore extends BaseStore {
 
     getShortCodeAndRegion(account) {
         let short_code_and_region;
+        const existing_derived_svg_accounts = this.getExistingAccounts(CFD_PLATFORMS.MT5, account.market_type);
+
         if (this.is_real && !this.is_eu_user && account.landing_company_short) {
             const short_code =
                 account.landing_company_short === 'svg' || account.landing_company_short === 'bvi'
@@ -651,7 +653,9 @@ export default class TradersHubStore extends BaseStore {
                     : account.landing_company_short.charAt(0).toUpperCase() + account.landing_company_short.slice(1);
 
             const region =
-                account.landing_company_short === 'svg' && account.market_type === 'synthetic'
+                account.landing_company_short === 'svg' &&
+                account.market_type === 'synthetic' &&
+                existing_derived_svg_accounts.length > 1
                     ? ` - ${this.getServerName(account)}`
                     : '';
 

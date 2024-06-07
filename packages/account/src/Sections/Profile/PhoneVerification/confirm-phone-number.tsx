@@ -3,7 +3,7 @@ import PhoneVerificationCard from './phone-verification-card';
 import { Button, Text, TextField } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { useRequestPhoneNumberOTP } from '@deriv/hooks';
+import { useRequestPhoneNumberOTP, useSettings } from '@deriv/hooks';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 import { validatePhoneNumber } from './validation';
 
@@ -15,8 +15,8 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
     const [phone_number, setPhoneNumber] = React.useState('');
     const { requestOnSMS, requestOnWhatsApp, error_message, setErrorMessage, setUsersPhoneNumber, ...rest } =
         useRequestPhoneNumberOTP();
-    const { client, ui } = useStore();
-    const { account_settings } = client;
+    const { data: account_settings } = useSettings();
+    const { ui } = useStore();
     const { setShouldShowPhoneNumberOTP } = ui;
 
     React.useEffect(() => {

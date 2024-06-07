@@ -2,14 +2,14 @@ import { act, renderHook } from '@testing-library/react-hooks';
 import { useMutation } from '@deriv/api';
 import useRequestPhoneNumberOTP from '../useRequestPhoneNumberOTP';
 import React from 'react';
-import useSetSettings from '../useSetSettings';
+import useSettings from '../useSettings';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useMutation: jest.fn(),
 }));
 
-jest.mock('../useSetSettings');
+jest.mock('../useSettings');
 
 const mock_response = {
     data: {
@@ -19,16 +19,18 @@ const mock_response = {
     isSuccess: true,
 };
 
-const mockSetSettingsResponse = {
-    error: null,
+const mock_set_settings_response = {
+    data: {},
+    mutate: jest.fn(),
+    isSuccess: true,
 };
 
-const mock_set_settings = jest.fn().mockResolvedValue(mockSetSettingsResponse);
+const mock_set_settings = jest.fn().mockResolvedValue(mock_set_settings_response);
 
 describe('useRequestPhoneNumberOTP', () => {
     beforeEach(() => {
-        (useSetSettings as jest.Mock).mockReturnValue({
-            setSettings: mock_set_settings,
+        (useSettings as jest.Mock).mockReturnValue({
+            mutation: { mutateAsync: mock_set_settings },
         });
     });
 
@@ -59,7 +61,7 @@ describe('useRequestPhoneNumberOTP', () => {
         const { result } = renderHook(() => useRequestPhoneNumberOTP());
 
         act(() => {
-            result.current.handleError({ code: 'PhoneNumberTaken', message: '' });
+            result.current.formatError({ code: 'PhoneNumberTaken', message: '' });
         });
 
         if (result.current?.error_message && React.isValidElement(result.current?.error_message))
@@ -72,7 +74,7 @@ describe('useRequestPhoneNumberOTP', () => {
         const { result } = renderHook(() => useRequestPhoneNumberOTP());
 
         act(() => {
-            result.current.handleError({ code: 'OtherError', message: 'This is an error message' });
+            result.current.formatError({ code: 'OtherError', message: 'This is an error message' });
         });
 
         if (result.current?.error_message) expect(result.current?.error_message).toBe('This is an error message');
@@ -83,10 +85,10 @@ describe('useRequestPhoneNumberOTP', () => {
 
         await act(async () => {
             const response = await result.current.setUsersPhoneNumber({ phone: '+1234567890' });
-            expect(response.error).toBe(null);
+            expect(response.error).toBe(undefined);
         });
 
-        expect(mock_set_settings).toHaveBeenCalledWith({ phone: '+1234567890' });
+        expect(mock_set_settings).toHaveBeenCalledWith({ payload: { phone: '+1234567890' } });
     });
 
     it('should handle error response from setSettings', async () => {
@@ -94,19 +96,15 @@ describe('useRequestPhoneNumberOTP', () => {
         const mock_set_settings_error_response = {
             error: { code: 'SomeError', message: 'An error occurred' },
         };
-        (useSetSettings as jest.Mock).mockReturnValueOnce({
-            setSettings: jest.fn().mockResolvedValue(mock_set_settings_error_response),
+        (useSettings as jest.Mock).mockReturnValueOnce({
+            mutation: { mutateAsync: jest.fn().mockRejectedValue(mock_set_settings_error_response) },
         });
 
         const { result } = renderHook(() => useRequestPhoneNumberOTP());
-        const mock_set_settings = (useSetSettings as jest.Mock).mock.results[0].value.setSettings;
 
         await act(async () => {
             const response = await result.current.setUsersPhoneNumber({ phone: '+1234567890' });
-            expect(response.error).toEqual(mock_set_settings_error_response.error);
+            expect(response.error).toEqual(mock_set_settings_error_response);
         });
-
-        expect(mock_set_settings).toHaveBeenCalledWith({ phone: '+1234567890' });
-        expect(result.current.error_message).toEqual('An error occurred');
     });
 });

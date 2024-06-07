@@ -2,7 +2,7 @@ import React from 'react';
 import { useMutation } from '@deriv/api';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import useSetSettings from './useSetSettings';
+import useSettings from './useSettings';
 
 type TFormatError = {
     code: string;
@@ -13,7 +13,9 @@ type TFormatError = {
 const useRequestPhoneNumberOTP = () => {
     const { data, mutate, ...rest } = useMutation('phone_number_challenge');
     const [error_message, setErrorMessage] = React.useState<React.ReactNode>('');
-    const { setSettings } = useSetSettings();
+    const {
+        mutation: { mutateAsync: updateSettings },
+    } = useSettings();
 
     const requestOnSMS = () => {
         mutate({ payload: { carrier: VERIFICATION_SERVICES.SMS } });
@@ -24,15 +26,19 @@ const useRequestPhoneNumberOTP = () => {
     };
 
     const setUsersPhoneNumber = async (value: { [key: string]: unknown }) => {
-        const data = await setSettings(value);
-
-        const { error } = data;
-
-        if (error) {
-            formatError(error);
+        let error;
+        try {
+            await updateSettings({
+                payload: value,
+            });
+        } catch (err) {
+            formatError(err as TFormatError);
+            error = err;
         }
 
-        return { error, data };
+        return {
+            error,
+        };
     };
 
     const formatError = ({ code, message }: TFormatError) => {

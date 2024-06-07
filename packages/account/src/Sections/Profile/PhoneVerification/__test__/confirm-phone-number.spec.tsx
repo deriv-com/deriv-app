@@ -2,7 +2,7 @@ import React from 'react';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { useRequestPhoneNumberOTP } from '@deriv/hooks';
+import { useRequestPhoneNumberOTP, useSettings } from '@deriv/hooks';
 import ConfirmPhoneNumber from '../confirm-phone-number';
 
 jest.mock('@deriv/hooks', () => ({
@@ -14,15 +14,13 @@ jest.mock('@deriv/hooks', () => ({
         setErrorMessage: jest.fn(),
         setUsersPhoneNumber: jest.fn(),
     })),
+    useSettings: jest.fn(() => ({
+        data: {},
+    })),
 }));
 
 describe('ConfirmPhoneNumber', () => {
     const store = mockStore({
-        client: {
-            account_settings: {
-                phone: '+0123456789',
-            },
-        },
         ui: {
             setShouldShowPhoneNumberOTP: jest.fn(),
         },
@@ -31,6 +29,9 @@ describe('ConfirmPhoneNumber', () => {
     const mockSetOtp = jest.fn();
 
     it('should render ConfirmPhoneNumber', () => {
+        (useSettings as jest.Mock).mockReturnValue({
+            data: { phone: '+0123456789' },
+        });
         render(
             <StoreProvider store={store}>
                 <ConfirmPhoneNumber setOtpVerification={mockSetOtp} />

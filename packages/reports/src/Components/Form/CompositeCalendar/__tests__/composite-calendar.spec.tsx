@@ -31,10 +31,12 @@ describe('<CompositeCalendar />', () => {
             <CompositeCalendar {...mockDefaultProps} />
         </StoreProvider>
     );
+
     beforeEach(() => {
         jest.clearAllMocks();
     });
-    it('should render the component with default props', () => {
+
+    it('should render component with default props', () => {
         render(mockPositionsContent());
 
         expect(screen.getByPlaceholderText(inputDataFromPlaceholderText)).toBeInTheDocument();
@@ -65,23 +67,27 @@ describe('<CompositeCalendar />', () => {
         expect(screen.getByText(twoMonthPickerComponent)).toBeInTheDocument();
     });
 
-    it('should call setToDate function click', async () => {
+    it('should call onChange function if user clicks on input "date to"', async () => {
         render(mockPositionsContent());
+
         userEvent.click(screen.getByPlaceholderText(inputDataToPlaceholderText));
         act(() => {
             (TwoMonthPicker as unknown as jest.Mock).mock.calls[0][0].onChange();
         });
+
         await waitFor(() => {
             expect(mockDefaultProps.onChange).toHaveBeenCalled();
         });
     });
 
-    it('should call setFromDate function click', async () => {
+    it('should call onChange function if user clicks on input "date from"', async () => {
         render(mockPositionsContent());
+
         userEvent.click(screen.getByPlaceholderText(inputDataFromPlaceholderText));
         act(() => {
             (TwoMonthPicker as unknown as jest.Mock).mock.calls[0][0].onChange();
         });
+
         await waitFor(() => {
             expect(mockDefaultProps.onChange).toHaveBeenCalled();
         });

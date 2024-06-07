@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { toMoment } from '@deriv/shared';
 import { ActionSheet, Chip, RadioGroup } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
@@ -19,6 +20,8 @@ type TTimeFilter = {
     setNoMatchesFound: React.Dispatch<React.SetStateAction<boolean>>;
     timeFilter?: string;
 };
+
+type TDateChangeArguments = Record<string, { from: moment.Moment; to: moment.Moment }>;
 
 const timeFilterList = [
     {
@@ -75,34 +78,27 @@ const TimeFilter = ({
         setTimeFilter(value);
         setIsDropdownOpen(false);
 
-        if (value === 'Today') {
-            handleDateChange(
-                {
-                    from: toMoment().startOf('day'),
-                    to: toMoment().endOf('day'),
-                    is_batch: true,
-                },
-                { shouldFilterContractTypes: true }
-            );
-        } else if (value === 'Yesterday') {
-            handleDateChange(
-                {
-                    from: toMoment().subtract(1, 'days').startOf('day'),
-                    to: toMoment().subtract(1, 'days').endOf('day'),
-                    is_batch: true,
-                },
-                { shouldFilterContractTypes: true }
-            );
-        } else {
-            handleDateChange(
-                {
-                    from: toMoment().startOf('day').subtract(Number(value), 'day').add(1, 's'),
-                    to: toMoment().endOf('day'),
-                    is_batch: true,
-                },
-                { shouldFilterContractTypes: true }
-            );
-        }
+        const dateChangeArguments: TDateChangeArguments = {
+            Today: {
+                from: toMoment().startOf('day'),
+                to: toMoment().endOf('day'),
+            },
+            Yesterday: {
+                from: toMoment().subtract(1, 'days').startOf('day'),
+                to: toMoment().subtract(1, 'days').endOf('day'),
+            },
+            default: {
+                from: toMoment().startOf('day').subtract(Number(value), 'day').add(1, 's'),
+                to: toMoment().endOf('day'),
+            },
+        };
+
+        handleDateChange(
+            { ...(dateChangeArguments[value] ?? dateChangeArguments.default), is_batch: true },
+            {
+                shouldFilterContractTypes: true,
+            }
+        );
     };
 
     const onReset = () => {

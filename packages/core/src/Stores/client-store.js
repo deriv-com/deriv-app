@@ -2028,10 +2028,17 @@ export default class ClientStore extends BaseStore {
             landing_company_name: 'landing_company_shortcode',
         };
         const client_object = {};
+        const selected_account = obj_params?.selected_acct;
+        const is_wallets_selected = selected_account?.startsWith('CRW');
         let active_loginid;
+        let active_wallet_loginid;
 
-        if (obj_params.selected_acct) {
-            active_loginid = obj_params.selected_acct;
+        if (selected_account) {
+            if (is_wallets_selected) {
+                active_wallet_loginid = obj_params.selected_acct;
+            } else {
+                active_loginid = obj_params.selected_acct;
+            }
         }
 
         account_list.forEach(function (account) {
@@ -2074,7 +2081,12 @@ export default class ClientStore extends BaseStore {
 
         // TODO: send login flag to GTM if needed
         if (active_loginid && Object.keys(client_object).length) {
-            localStorage.setItem('active_loginid', active_loginid);
+            if (selected_account && is_wallets_selected) {
+                localStorage.setItem('active_wallet_loginid', active_wallet_loginid);
+            } else {
+                localStorage.setItem('active_loginid', active_loginid);
+            }
+
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
             this.syncWithLegacyPlatforms(active_loginid, this.accounts);
         }

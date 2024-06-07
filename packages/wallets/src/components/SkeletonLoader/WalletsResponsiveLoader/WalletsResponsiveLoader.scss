@@ -20,17 +20,17 @@
             width: 100%;
             border-radius: 6px;
         }
+    }
 
-        &-tabs {
-            height: 5rem;
-        }
+    &__content-tabs {
+        height: 5rem;
+    }
 
-        &-description {
-            height: 7.6rem;
-        }
+    &__content-description {
+        height: 7.6rem;
+    }
 
-        &-list {
-            height: 8rem;
-        }
+    &__content-list {
+        height: 8rem;
     }
 }

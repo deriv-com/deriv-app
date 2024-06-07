@@ -968,7 +968,7 @@ $side-padding: 1.2em;
         fill: var(--brand-secondary);
     }
     &:is(.open-positions .market-symbol-icon) {
-        @include desktop-screen {
+        @include desktop {
             justify-content: center;
         }
     }

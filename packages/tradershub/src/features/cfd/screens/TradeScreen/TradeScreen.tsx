@@ -86,7 +86,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                     <div className='flex flex-col items-end'>
                         <Text weight='bold'>
                             {platform === ctraderPlatform
-                                ? (details as THooks.CtraderAccountsList)?.display_balance
+                                ? (details as THooks.CtraderAccountsList)?.formatted_balance
                                 : details?.display_balance}
                         </Text>
                     </div>

@@ -1,10 +1,9 @@
 import { TCoreStores } from '@deriv/stores/types';
 import { PromiseUtils } from '@deriv-com/utils';
-import moment from 'moment';
 
 const ServerTime = (() => {
     let clock_started = false;
-    const pending = PromiseUtils.createPromise<moment.Moment>();
+    const pending = PromiseUtils.createPromise();
     let common_store: TCoreStores['common'];
 
     const init = (store: TCoreStores['common']) => {
@@ -20,7 +19,8 @@ const ServerTime = (() => {
     return {
         init,
         get,
-        timePromise: () => (clock_started ? Promise.resolve(common_store.server_time) : pending.promise),
+        timePromise: () =>
+            clock_started ? Promise.resolve(common_store.server_time) : (pending.promise as Promise<moment.Moment>),
     };
 })();
 

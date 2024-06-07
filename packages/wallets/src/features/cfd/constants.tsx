@@ -14,7 +14,6 @@ import {
 } from '@deriv/quill-icons';
 import i18n from '../../translations/i18n';
 import { TPlatforms } from '../../types';
-import { ctraderLinks, whiteLabelLinks } from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 
 export const MarketTypeDetails = {
     all: {
@@ -76,31 +75,31 @@ export const companyNamesAndUrls = {
 export const AppToContentMapper = {
     ctrader: {
         icon: <LabelPairedWindowsXlIcon />,
-        link: ctraderLinks.windows,
+        link: 'https://getctrader.com/deriv/ctrader-deriv-setup.exe',
         text: i18n.t('Download'),
         title: i18n.t('CTrader Windows App'),
     },
     linux: {
         icon: <LabelPairedLinuxXlIcon />,
-        link: whiteLabelLinks.linux,
+        link: 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
         text: i18n.t('Learn more'),
         title: i18n.t('MetaTrader 5 Linux app'),
     },
     macos: {
         icon: <LabelPairedMacosXlIcon />,
-        link: whiteLabelLinks.macos,
+        link: 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg',
         text: i18n.t('Download'),
         title: i18n.t('MetaTrader 5 MacOS app'),
     },
     web: {
         icon: <PartnersProductDerivMt5BrandLightLogoHorizontalIcon height={32} width={32} />,
-        link: whiteLabelLinks.webtrader_url,
+        link: '',
         text: i18n.t('Open'),
         title: i18n.t('MetaTrader 5 web'),
     },
     windows: {
         icon: <LabelPairedWindowsXlIcon />,
-        link: whiteLabelLinks.windows,
+        link: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
         text: i18n.t('Download'),
         title: i18n.t('MetaTrader 5 Windows app'),
     },
@@ -124,18 +123,6 @@ export const CFD_PLATFORMS = {
     CTRADER: 'ctrader',
     DXTRADE: 'dxtrade',
     MT5: 'mt5',
-} as const;
-
-export const DESKTOP_PLATFORMS = {
-    LINUX: 'linux',
-    MACOS: 'macos',
-    WINDOWS: 'windows',
-} as const;
-
-export const MOBILE_PLATFORMS = {
-    ANDROID: 'android',
-    HAUWEI: 'huawei',
-    IOS: 'ios',
 } as const;
 
 export const MARKET_TYPE = {

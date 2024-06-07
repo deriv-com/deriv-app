@@ -1,5 +1,6 @@
+import React from 'react';
 import { Localize } from '@deriv/translations';
-import Article from '../../../Components/article';
+import Article from 'Components/article';
 
 const openAPIManagingWebsite = () => {
     window.open(

@@ -10,12 +10,10 @@ export const getJurisdictionVanuatuContents = ({
         {
             key: 'assets',
             title: localize('Assets'),
-            description: localize(
-                'Forex (standard), stock indices, commodities, cryptocurrencies, synthetic indices, basket indices and derived FX'
-            ),
+            description: localize('Synthetic indices, basket indices, and derived FX'),
             title_indicators: {
                 type: 'displayText',
-                display_text: localize('210+'),
+                display_text: localize('40+'),
                 display_text_skin_color: 'red-darker',
             },
         },
@@ -34,7 +32,7 @@ export const getJurisdictionVanuatuContents = ({
             title_indicators: { type: 'displayIcons' },
             clickable_description: [
                 { type: 'link', text: localize('Learn more') },
-                { type: 'text', text: localize('about required verifications.') },
+                { type: 'text', text: localize('about verifications needed.') },
             ],
         },
         {
@@ -87,7 +85,7 @@ export const getJurisdictionVanuatuContents = ({
             title_indicators: { type: 'displayIcons' },
             clickable_description: [
                 { type: 'link', text: localize('Learn more') },
-                { type: 'text', text: localize('about required verifications.') },
+                { type: 'text', text: localize('about verifications needed.') },
             ],
         },
         {

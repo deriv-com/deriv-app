@@ -1217,8 +1217,7 @@ export default class ClientStore extends BaseStore {
                 console.error('JSON parse failed, invalid value (client.accounts): ', error);
             }
 
-            const { oauth_token, client_id, currency_type } =
-                response.new_account_real ?? response.new_account_maltainvest;
+            const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
             BinarySocket.authorize(oauth_token)
                 .then(authorize_response => {
                     const new_data = {};
@@ -1228,7 +1227,6 @@ export default class ClientStore extends BaseStore {
                     new_data.is_virtual = authorize_response.authorize.is_virtual;
                     new_data.landing_company_name = authorize_response.authorize.landing_company_fullname;
                     new_data.landing_company_shortcode = authorize_response.authorize.landing_company_name;
-                    new_data.currency_type = currency_type;
                     runInAction(() => (client_accounts[client_id] = new_data));
                     this.setLoginInformation(client_accounts, client_id);
                     WS.authorized.storage.getSettings().then(get_settings_response => {
@@ -1512,7 +1510,7 @@ export default class ClientStore extends BaseStore {
             // If this fails, it means the landing company check failed
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
-                Analytics.identifyEvent(this.user_id);
+                Analytics.identifyEvent();
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',
@@ -1740,12 +1738,11 @@ export default class ClientStore extends BaseStore {
                 language: getLanguage(),
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
-                country: Cookies.get('clients_country') || Cookies?.getJSON('website_status')?.clients_country,
+                country: Cookies.get('clients_country') || Cookies?.getJSON('website_status'),
                 utm_source: ppc_campaign_cookies?.utm_source,
                 utm_medium: ppc_campaign_cookies?.utm_medium,
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,
                 utm_content: ppc_campaign_cookies?.utm_content,
-                domain: window.location.hostname,
             });
         }, 4);
 

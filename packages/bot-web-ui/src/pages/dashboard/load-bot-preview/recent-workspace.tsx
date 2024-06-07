@@ -4,8 +4,9 @@ import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { DBOT_TABS } from 'Constants/bot-contents';
+import { waitForDomElement } from 'Utils/dom-observer';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from '../../../constants/dashboard';
 import { useComponentVisibility } from '../../../hooks';
@@ -18,8 +19,10 @@ type TRecentWorkspace = {
 };
 
 const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const { dashboard, load_modal, save_modal } = useDBotStore();
-    const { setActiveTab } = dashboard;
+    const { active_tab, setActiveTab, setPreviewOnDialog } = dashboard;
     const { toggleSaveModal, updateBotName } = save_modal;
     const {
         dashboard_strategies = [],
@@ -28,9 +31,11 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         getSelectedStrategyID,
         loadFileFromRecent,
         onToggleDeleteDialog,
+        previewRecentStrategy,
         previewed_strategy_id,
         selected_strategy_id,
         setSelectedStrategyId,
+        setPreviewedStrategyId,
     } = load_modal;
 
     const trigger_div_ref = React.useRef<HTMLInputElement | null>(null);
@@ -62,7 +67,27 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         setSelectedStrategyId(workspace.id);
     };
 
-    const handleOpen = async () => {
+    const handleInit = () => {
+        setPreviewedStrategyId(workspace?.id);
+        // Fires for desktop
+        if (active_tab === 0) {
+            previewRecentStrategy(workspace.id);
+        }
+    };
+
+    const handlePreviewList = () => {
+        setPreviewedStrategyId(workspace.id);
+        // Fires for mobile on clicking preview button
+        if (is_mobile) {
+            setPreviewOnDialog(true);
+            const dashboard_tab_dom_element = document.getElementsByClassName('tab__dashboard')?.[0];
+            waitForDomElement('#load-strategy__blockly-container', dashboard_tab_dom_element).then(() => {
+                previewRecentStrategy(workspace.id);
+            });
+        }
+    };
+
+    const handleEdit = async () => {
         await loadFileFromRecent();
         setActiveTab(DBOT_TABS.BOT_BUILDER);
     };
@@ -76,8 +101,18 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         setSelectedStrategyId(workspace.id);
 
         switch (type) {
-            case STRATEGY.OPEN:
-                await handleOpen();
+            case STRATEGY.INIT:
+                // Fires for desktop preview
+                handleInit();
+                break;
+
+            case STRATEGY.PREVIEW_LIST:
+                // Fires for mobile preview
+                handlePreviewList();
+                break;
+
+            case STRATEGY.EDIT:
+                await handleEdit();
                 break;
 
             case STRATEGY.SAVE:

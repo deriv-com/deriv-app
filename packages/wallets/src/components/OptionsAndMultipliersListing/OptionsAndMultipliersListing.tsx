@@ -7,7 +7,6 @@ import { optionsAndMultipliersContent } from '../../constants/constants';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../helpers/urls';
 import useDevice from '../../hooks/useDevice';
 import { TRoute } from '../../routes/Router';
-import { TSubscribedBalance } from '../../types';
 import { WalletLink, WalletText } from '../Base';
 import { DerivAppsSection } from '../DerivAppsSection';
 import { TradingAccountCard } from '../TradingAccountCard';
@@ -55,7 +54,7 @@ const LinkTitle: React.FC<TLinkTitleProps> = ({ icon, title }) => {
     );
 };
 
-const OptionsAndMultipliersListing: React.FC<TSubscribedBalance> = ({ balance }) => {
+const OptionsAndMultipliersListing: React.FC = () => {
     const { isMobile } = useDevice();
     const history = useHistory();
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
@@ -78,7 +77,7 @@ const OptionsAndMultipliersListing: React.FC<TSubscribedBalance> = ({ balance })
                         />
                     </WalletText>
                 </div>
-                <DerivAppsSection balance={balance} />
+                <DerivAppsSection />
             </section>
             <div className='wallets-options-and-multipliers-listing__content'>
                 {optionsAndMultipliersContent.map(account => {

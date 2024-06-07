@@ -11,11 +11,11 @@ export const CFD_text: { [key: string]: string } = {
     mt5_cfds: 'MT5 CFDs',
     cfd: 'CFDs',
     ctrader: 'Deriv cTrader',
-    synthetic: 'Standard',
-    synthetic_demo: 'Standard Demo',
-    synthetic_bvi: 'Standard BVI',
-    synthetic_svg: 'Standard SVG',
-    synthetic_v: 'Standard Vanuatu',
+    synthetic: 'Derived',
+    synthetic_demo: 'Derived Demo',
+    synthetic_bvi: 'Derived BVI',
+    synthetic_svg: 'Derived SVG',
+    synthetic_v: 'Derived Vanuatu',
     financial: 'Financial',
     financial_demo: 'Financial Demo',
     financial_bvi: 'Financial BVI',
@@ -488,7 +488,7 @@ export const getFormattedJurisdictionMarketTypes = (
     switch (jurisdiction_market_type) {
         case 'synthetic': // need to remove this once we have the correct market type from BE
         case JURISDICTION_MARKET_TYPES.DERIVED:
-            formatted_market_type = localize('Standard');
+            formatted_market_type = localize('Derived');
             break;
         case JURISDICTION_MARKET_TYPES.FINANCIAL:
             formatted_market_type = localize('Financial');

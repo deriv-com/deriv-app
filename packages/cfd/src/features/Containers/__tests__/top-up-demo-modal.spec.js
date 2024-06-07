@@ -22,7 +22,7 @@ describe('TopUpDemoModal', () => {
     const synthetic_config = {
         account_type: 'synthetic',
         leverage: 500,
-        short_title: 'Standard',
+        short_title: 'Derived',
     };
 
     const financial_config = {
@@ -40,7 +40,7 @@ describe('TopUpDemoModal', () => {
                         synthetic: {
                             mt5_account_type: synthetic_config.account_type,
                             leverage: synthetic_config.leverage,
-                            title: 'Demo Standard',
+                            title: 'Demo Derived',
                             short_title: synthetic_config.short_title,
                         },
                         financial: {
@@ -54,7 +54,7 @@ describe('TopUpDemoModal', () => {
                         synthetic: {
                             mt5_account_type: synthetic_config.account_type,
                             leverage: synthetic_config.leverage,
-                            title: 'Standard',
+                            title: 'Derived',
                             short_title: synthetic_config.short_title,
                         },
                         financial: {

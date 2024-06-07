@@ -48,10 +48,11 @@ import { action, computed, makeObservable, observable, override, reaction, runIn
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
 import { getHoveredColor } from './Helpers/barrier-utils';
 import BaseStore from '../../base-store';
-import { TRootStore, TTextValueNumber, TTextValueStrings } from 'Types';
+import { TTextValueNumber, TTextValueStrings } from 'Types';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import debounce from 'lodash.debounce';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
+import type { TCoreStores } from '@deriv/stores/types';
 import {
     ActiveSymbols,
     ActiveSymbolsRequest,
@@ -316,7 +317,7 @@ export default class TradeStore extends BaseStore {
     is_initial_barrier_applied = false;
     is_digits_widget_active = false;
     should_skip_prepost_lifecycle = false;
-    constructor({ root_store }: { root_store: TRootStore }) {
+    constructor({ root_store }: { root_store: TCoreStores }) {
         const local_storage_properties = [
             'amount',
             'currency',

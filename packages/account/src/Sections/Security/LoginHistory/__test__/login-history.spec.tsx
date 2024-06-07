@@ -4,7 +4,7 @@ import { WS } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import LoginHistory from '../login-history';
-import { getLoginHistoryFormattedData } from '@deriv/utils';
+import { getLoginHistoryFormattedData } from '../../../../../../utils/src/getLoginHistoryFormattedData';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
@@ -16,8 +16,7 @@ jest.mock('@deriv/components', () => ({
     Loading: jest.fn(() => 'mockedLoading'),
 }));
 
-jest.mock('@deriv/utils', () => ({
-    ...jest.requireActual('@deriv/utils'),
+jest.mock('../../../../../../utils/src/getLoginHistoryFormattedData', () => ({
     getLoginHistoryFormattedData: jest.fn(),
 }));
 

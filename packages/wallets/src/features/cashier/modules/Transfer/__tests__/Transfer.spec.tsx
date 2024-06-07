@@ -56,10 +56,10 @@ describe('Transfer', () => {
 
         expect(screen.getByText('Error')).toBeInTheDocument();
         expect(screen.getByText('Error message')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Make another transfer' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Reset error' })).toBeInTheDocument();
     });
 
-    it('should call reset transfer when Make another transfer button is clicked', () => {
+    it('should call reset transfer when reset error button is clicked', () => {
         (useTransfer as jest.Mock).mockReturnValue({
             error: { error: { code: 'Error', message: 'Error message' } },
             receipt: undefined,
@@ -67,9 +67,22 @@ describe('Transfer', () => {
         });
         render(<TransferModule accounts={[]} />, { wrapper });
 
-        const resetErrorButton = screen.getByRole('button', { name: 'Make another transfer' });
+        const resetErrorButton = screen.getByRole('button', { name: 'Reset error' });
         expect(resetErrorButton).toBeInTheDocument();
         userEvent.click(resetErrorButton);
         expect(mockResetTransfer).toBeCalled();
+    });
+
+    it('should render the correct error screen when transfer between accounts error is received', () => {
+        (useTransfer as jest.Mock).mockReturnValue({
+            error: { error: { code: 'TransferBetweenAccountsError', message: 'Transfer Between Accounts Error' } },
+            receipt: undefined,
+            resetTransfer: mockResetTransfer,
+        });
+        render(<TransferModule accounts={[]} />, { wrapper });
+
+        expect(screen.getByText('Error')).toBeInTheDocument();
+        expect(screen.getByText('Transfer Between Accounts Error')).toBeInTheDocument();
+        expect(screen.queryByText('Reset error')).not.toBeInTheDocument();
     });
 });

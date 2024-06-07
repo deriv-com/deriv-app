@@ -398,7 +398,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         const mt5_platform_label = jurisdiction_selected_shortcode !== JURISDICTION.MALTA_INVEST ? 'Deriv MT5' : '';
 
         const accountTypes = () => {
-            if (platform === CFD_PLATFORMS.DXTRADE && type_label === 'Standard') {
+            if (platform === CFD_PLATFORMS.DXTRADE && type_label === 'Derived') {
                 return 'Synthetic';
             } else if (platform === CFD_PLATFORMS.CTRADER) {
                 return 'CFDs';

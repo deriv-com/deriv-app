@@ -20,8 +20,6 @@ const getHighlightedIconLabel = (
             trading_platforms.platform === CFD_PLATFORMS.CTRADER
         ) {
             return localize('Forex: major/minor');
-        } else if (market_type === MARKET_TYPE.SYNTHETIC) {
-            return localize('Forex: standard');
         }
         return localize('Forex: standard/micro');
     };
@@ -29,11 +27,11 @@ const getHighlightedIconLabel = (
     switch (trading_platforms.market_type) {
         case MARKET_TYPE.GAMING:
             return [
-                { icon: 'Forex', text: getForexLabel(), highlighted: true },
+                { icon: 'Forex', text: getForexLabel(), highlighted: false },
                 { icon: 'Stocks', text: localize('Stocks'), highlighted: false },
-                { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
-                { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
-                { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
+                { icon: 'StockIndices', text: localize('Stock indices'), highlighted: false },
+                { icon: 'Commodities', text: localize('Commodities'), highlighted: false },
+                { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: false },
                 { icon: 'ETF', text: localize('ETFs'), highlighted: false },
                 { icon: 'Synthetics', text: localize('Synthetic indices'), highlighted: true },
                 { icon: 'Baskets', text: localize('Basket indices'), highlighted: true },
@@ -113,11 +111,11 @@ const getHighlightedIconLabel = (
 const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
     switch (shortcode) {
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_SVG:
-            return is_demo ? localize('Standard Demo') : localize('Standard - SVG');
+            return is_demo ? localize('Derived Demo') : localize('Derived - SVG');
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_BVI:
-            return localize('Standard - BVI');
+            return localize('Derived - BVI');
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_VANUATU:
-            return localize('Standard - Vanuatu');
+            return localize('Derived - Vanuatu');
         case MARKET_TYPE_SHORTCODE.FINANCIAL_SVG:
             return is_demo ? localize('Financial Demo') : localize('Financial - SVG');
         case MARKET_TYPE_SHORTCODE.FINANCIAL_BVI:
@@ -162,7 +160,7 @@ const platformsHeaderLabel = {
 const getAccountIcon = (shortcode: string) => {
     switch (shortcode) {
         case MARKET_TYPE.SYNTHETIC:
-            return 'Standard';
+            return 'Derived';
         case MARKET_TYPE.FINANCIAL:
             return 'Financial';
         case MARKET_TYPE.ALL:

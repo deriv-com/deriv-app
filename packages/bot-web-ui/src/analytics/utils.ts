@@ -28,7 +28,7 @@ export const getSubpageName = () => {
     } else if (active_tab === '3') {
         return 'tutorials';
     }
-    return 'Not found';
+    return 'undefined';
 };
 
 export const getTradeParameterData = ({ form_values }: TFormStrategy) => {

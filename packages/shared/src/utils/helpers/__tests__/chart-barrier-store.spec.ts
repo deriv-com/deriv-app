@@ -10,7 +10,7 @@ configure({ safeDescriptors: false });
 let mockedChartBarrierStore: ChartBarrierStore;
 const initialHigh = '1.234';
 const initialLow = '1.200';
-const newBarriersData = { high: '+0.12', low: '-0.12', title: 'new title' };
+const newBarriersData = { high: '+0.12', low: '-0.12', title: 'new title', hidePriceLines: true };
 const newBarriersValuesArray = Object.values(newBarriersData) as [string, string, string];
 
 beforeEach(async () => {
@@ -60,6 +60,13 @@ describe('ChartBarrierStore', () => {
 
             mockedChartBarrierStore.updateBarriers(initialHigh);
             expect(mockedChartBarrierStore.title).toEqual(newBarriersData.title);
+        });
+        it('should not update hidePriceLines if not provided, and should update it otherwise', () => {
+            mockedChartBarrierStore.updateBarriers(initialHigh);
+            expect(mockedChartBarrierStore.hidePriceLines).toEqual(false);
+
+            mockedChartBarrierStore.updateBarriers(...newBarriersValuesArray);
+            expect(mockedChartBarrierStore.hidePriceLines).toEqual(newBarriersData.hidePriceLines);
         });
         it('should update relative property if isFromChart === false', () => {
             expect(mockedChartBarrierStore.relative).toEqual(false);

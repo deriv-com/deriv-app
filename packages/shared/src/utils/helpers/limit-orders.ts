@@ -75,11 +75,17 @@ export const setLimitOrderBarriers = ({
 
             let barrier = barriers.find(b => b.key === key);
 
+            const shouldHidePriceLines = has_stop_loss && key === LIMIT_ORDER_TYPES.STOP_OUT;
             if (barrier) {
-                if (barrier.high !== +obj_limit_order.value || barrier.title !== obj_limit_order.display_name) {
+                if (
+                    barrier.high !== +obj_limit_order.value ||
+                    barrier.title !== obj_limit_order.display_name ||
+                    barrier.hidePriceLines !== shouldHidePriceLines
+                ) {
                     barrier.onChange({
                         high: obj_limit_order.value,
                         title: obj_limit_order.display_name,
+                        hidePriceLines: shouldHidePriceLines,
                     });
                 }
             } else {
@@ -90,7 +96,7 @@ export const setLimitOrderBarriers = ({
                     draggable: false,
                     lineStyle:
                         key === LIMIT_ORDER_TYPES.STOP_OUT ? BARRIER_LINE_STYLES.DOTTED : BARRIER_LINE_STYLES.SOLID,
-                    hidePriceLines: has_stop_loss && key === LIMIT_ORDER_TYPES.STOP_OUT,
+                    hidePriceLines: shouldHidePriceLines,
                     hideOffscreenLine: true,
                     showOffscreenArrows: true,
                     isSingleBarrier: true,

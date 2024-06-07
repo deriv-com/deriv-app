@@ -75,7 +75,9 @@ const WalletsResetMT5Password = ({
     useEffect(() => {
         if (isChangePasswordSuccess) {
             localStorage.removeItem(`verification_code.${actionParams}`); // TODO:Remove verification code from local storage
-            show(<WalletSuccessResetMT5Password title={title} />, { defaultRootId: 'wallets_modal_root' });
+            show(<WalletSuccessResetMT5Password onClick={hide} title={title} />, {
+                defaultRootId: 'wallets_modal_root',
+            });
         } else if (isChangePasswordError) {
             show(
                 <WalletError
@@ -91,7 +93,7 @@ const WalletsResetMT5Password = ({
     useEffect(() => {
         if (isChangeInvestorPasswordSuccess) {
             localStorage.removeItem(`verification_code.${actionParams}`); // TODO:Remove verification code from local storage
-            show(<WalletSuccessResetMT5Password isInvestorPassword title={title} />, {
+            show(<WalletSuccessResetMT5Password isInvestorPassword onClick={hide} title={title} />, {
                 defaultRootId: 'wallets_modal_root',
             });
         } else if (isChangeInvestorPasswordError) {

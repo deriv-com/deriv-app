@@ -1,10 +1,10 @@
-import React from 'react';
+import { PropsWithChildren } from 'react';
 
 type TInputGroup = {
     className?: string;
 };
 
-const InputGroup = ({ children, className }: React.PropsWithChildren<TInputGroup>) => (
+const InputGroup = ({ children, className }: PropsWithChildren<TInputGroup>) => (
     <fieldset className='account-form__fieldset'>
         <div className={className}>{children}</div>
     </fieldset>

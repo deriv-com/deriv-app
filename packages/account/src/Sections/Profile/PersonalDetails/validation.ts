@@ -19,7 +19,7 @@ const getBaseSchema = () =>
             .min(1, localize('Enter no more than 50 characters.'))
             .max(50, localize('Enter no more than 50 characters.'))
             .matches(
-                 /^(?!\s)[\p{L}'.-]+(?:\s[\p{L}'.-]+)*$/u,
+                /^(?!\s)[\p{L}'.-]+(?:\s[\p{L}'.-]+)*$/u,
                 localize('Letters, spaces, periods, hyphens, apostrophes only.')
             ),
         phone: Yup.string()

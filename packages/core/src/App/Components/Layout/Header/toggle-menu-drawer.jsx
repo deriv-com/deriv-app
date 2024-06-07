@@ -63,13 +63,14 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { is_p2p_enabled } = useIsP2PEnabled();
 
     const { pathname: route } = useLocation();
-    const location = useLocation();
 
     const is_trading_hub_category =
         route === routes.traders_hub || route.startsWith(routes.cashier) || route.startsWith(routes.account);
 
-    const should_hide_platform_switcher = location.pathname === routes.traders_hub;
     const should_show_regulatory_information = is_eu && show_eu_related_content && !is_virtual;
+    const is_traders_hub_route = route === routes.traders_hub;
+
+    const is_wallet_route = route.startsWith(routes.wallets) || route.startsWith(routes.wallets_compare_accounts);
 
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());
@@ -307,7 +308,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 <Div100vhContainer height_offset='40px'>
                     <div className='header__menu-mobile-body-wrapper'>
                         <React.Fragment>
-                            {!should_hide_platform_switcher && (
+                            {!(is_traders_hub_route || is_wallet_route) && (
                                 <MobileDrawer.SubHeader
                                     className={classNames({
                                         'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
@@ -327,7 +328,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 </MobileDrawer.SubHeader>
                             )}
 
-                            <MobileDrawer.Body className={should_hide_platform_switcher ? 'no-padding' : ''}>
+                            <MobileDrawer.Body className={is_traders_hub_route || is_wallet_route ? 'no-padding' : ''}>
                                 <div className='header__menu-mobile-platform-switcher' id='mobile_platform_switcher' />
                                 <MobileDrawer.Item>
                                     <MenuLink

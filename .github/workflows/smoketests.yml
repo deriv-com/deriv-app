@@ -41,7 +41,7 @@ jobs:
         # https://docs.cypress.io/guides/cloud/projects#Set-up-a-project-to-record
         record: true
         parallel: true # Runs test in parallel using settings above
-        spec: cypress/e2e/wip/Wallets/*.cy.js
+        spec: cypress/e2e/smoke/Wallets/*.cy.js
         group: 'Smoke Tests'
         
       env:
@@ -53,7 +53,8 @@ jobs:
         # Set Base Url from client_payload.
         CYPRESS_BASE_URL: https://staging-app.deriv.com/
         # Send PR details to Cypress test run
-        COMMIT_INFO_MESSAGE: PR "${{ github.event.issue.number }}" Changed By "${{ github.event.issue.user.login }}" in Labels "${{ github.event.issue.labels.*.name }}" (draft? "${{ github.event.issue.draft }} )"
+        COMMIT_INFO_MESSAGE: PR "${{ github.event.issue.number }}" Changed By "${{ github.event.issue.user.login }}" in Labels "${join(github.event.issue.labels.*.name, ', ')}" (draft? "${{ github.event.issue.draft }}")
+
         # Set login env variables
         E2E_OAUTH_URL: ${{ secrets.E2E_OAUTH_URL }}
         E2E_CONFIG_APPID: ${{ secrets.E2E_CONFIG_APPID }}
@@ -98,6 +99,18 @@ jobs:
         E2E_EU_LOGIN: ${{secrets.E2E_EU_LOGIN}}
         E2E_APP_REGISTER_URL: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
         E2E_RUN_FROM_PR: ${{secrets.E2E_RUN_FROM_PR}}
+        E2E_DERIV_LOGIN_WALLET_MOBILE : ${{ secrets.E2E_DERIV_LOGIN_WALLET_MOBILE }}
+        E2E_WALLET_MIGRATION_NEWCLIENT : ${{ secrets.E2E_WALLET_MIGRATION_NEWCLIENT }}
+        E2E_WALLET_MIGRATION_NO_VRTC : ${{ secrets.E2E_WALLET_MIGRATION_NO_VRTC }}
+        E2E_WALLET_MIGRATION_VRTCONLY : ${{ secrets.E2E_WALLET_MIGRATION_VRTCONLY }}
+        E2E_WALLET_MIGRATION_NO_CURRENCY : ${{ secrets.E2E_WALLET_MIGRATION_NO_CURRENCY }}
+        E2E_WALLET_MIGRATION_NON_USD : ${{ secrets.E2E_WALLET_MIGRATION_NON_USD }}
+        E2E_WALLET_MIGRATION_P2P : ${{ secrets.E2E_WALLET_MIGRATION_P2P }}
+        E2E_WALLET_MIGRATION_PA : ${{ secrets.E2E_WALLET_MIGRATION_PA }}
+        E2E_WALLET_MIGRATION_PA_CLIENT : ${{ secrets.E2E_WALLET_MIGRATION_PA_CLIENT }}
+        E2E_DERIV_LOGIN_WALLET: ${{ secrets.E2E_DERIV_LOGIN_WALLET }}
+        E2E_WALLETS_LOGIN_PROD: ${{ secrets.E2E_WALLETS_LOGIN_PROD }}
+        E2E_WALLETS_PASSWORD_PROD: ${{ secrets.E2E_WALLETS_PASSWORD_PROD }}
 
     - name: Set comments message
       id: set_msg 

@@ -18,5 +18,5 @@ module.exports = {
         '^Services/(.*)$': '<rootDir>/src/Services/$1',
         '^Stores/(.*)$': '<rootDir>/src/Stores/$1',
     },
-    transformIgnorePatterns: ['/node_modules/(?!(@deriv-com/quill-ui|@simplewebauthn/browser)).+\\.js$'],
+    transformIgnorePatterns: ['/node_modules/(?!(@deriv-com/quill-ui|@deriv-com/ui|@simplewebauthn/browser)).+\\.js$'],
 };

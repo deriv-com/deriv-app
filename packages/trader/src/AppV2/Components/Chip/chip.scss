@@ -1,0 +1,87 @@
+.quill-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-style: solid;
+    border-width: var(--component-chip-border-width);
+    border-color: var(--component-chip-border-color);
+    border-radius: var(--component-chip-border-radius);
+    background-color: var(--core-color-solid-slate-50);
+    padding-inline: var(--component-chip-spacing-padding-lg);
+    height: var(--component-chip-height-md);
+    gap: var(--component-chip-spacing-padding-sm);
+
+    &:hover {
+        background-color: var(--component-chip-bg-hover);
+    }
+
+    &:active {
+        background-color: var(--component-chip-bg-active);
+    }
+
+    & > svg {
+        fill: var(--component-chip-icon-default);
+    }
+
+    &--selected {
+        background-color: var(--component-chip-bg-selected);
+
+        & > p {
+            color: var(--component-chip-item-color-default);
+        }
+
+        & > svg {
+            fill: var(--component-chip-icon-selected);
+        }
+
+        &:has(.rotate--open) {
+            background-color: var(--component-chip-bg-selectedExpand);
+        }
+
+        &:hover {
+            background-color: var(--component-chip-bg-selectedHover);
+        }
+
+        &:active {
+            background-color: var(--component-chip-bg-selectedActive);
+        }
+    }
+
+    &:disabled {
+        pointer-events: none;
+        user-select: none;
+
+        & > p {
+            color: var(--component-chip-label-color-disabled);
+        }
+
+        & > svg {
+            fill: var(--component-chip-icon-disabled);
+        }
+
+        &--selected {
+            background-color: var(--component-chip-bg-selectedDisabled);
+
+            & > p,
+            svg {
+                color: var(--component-chip-label-color-disabledWhite);
+                fill: var(--component-chip-icon-disabledWhite);
+            }
+        }
+    }
+
+    &__custom-right-padding {
+        padding-inline: var(--component-chip-spacing-padding-lg) var(--component-chip-spacing-padding-sm);
+    }
+}
+
+.rotate {
+    transition-property: transform;
+    transition-timing-function: var(--core-motion-ease-400);
+    transition-duration: var(--core-motion-duration-200);
+    transform: rotate(0);
+
+    &--open {
+        transform: rotate(180deg);
+    }
+}

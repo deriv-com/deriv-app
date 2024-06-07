@@ -1,6 +1,6 @@
+import { FC, Fragment } from 'react';
 import { Autocomplete, SelectNative } from '@deriv/components';
 import { Field, FieldProps, FormikErrors } from 'formik';
-import React from 'react';
 import { TGetField } from '../additional-kyc-info-modal/form-config';
 import { TListItem } from 'Types';
 import { useDevice } from '@deriv-com/ui';
@@ -16,7 +16,7 @@ type TSetFieldValue = (
     shouldValidate?: boolean
 ) => Promise<void | FormikErrors<Record<string, string>>>;
 
-const FormSelectField: React.FC<TFormSelectField> = ({
+const FormSelectField: FC<TFormSelectField> = ({
     label,
     name,
     required = false,
@@ -36,7 +36,7 @@ const FormSelectField: React.FC<TFormSelectField> = ({
     return (
         <Field name={name}>
             {({ field, meta: { touched, error }, form: { setFieldValue } }: FieldProps<string>) => (
-                <React.Fragment>
+                <Fragment>
                     {!isDesktop ? (
                         <SelectNative
                             {...field}
@@ -69,7 +69,7 @@ const FormSelectField: React.FC<TFormSelectField> = ({
                             list_height={list_height}
                         />
                     )}
-                </React.Fragment>
+                </Fragment>
             )}
         </Field>
     );

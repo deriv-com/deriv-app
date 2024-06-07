@@ -34,7 +34,7 @@ import {
     DUPLICATE_ACCOUNT_ERROR_MESSAGE,
     GENERIC_ERROR_MESSAGE,
 } from '../../../Configs/poi-error-config';
-import { TIDVFormValues, TPersonalDetailsForm } from 'Types';
+import { TIDVFormValues, TConfirmPersonalDetailsForm } from 'Types';
 import { API_ERROR_CODES } from '../../../Constants/api-error-codes';
 
 type TIDVDocumentSubmitProps = {
@@ -45,7 +45,7 @@ type TIDVDocumentSubmitProps = {
     handleSelectionNext?: (should_show_manual: boolean) => void;
 };
 
-export type TIdvDocumentSubmitForm = TIDVFormValues & TPersonalDetailsForm & { confirmation_checkbox: boolean };
+export type TIdvDocumentSubmitForm = TIDVFormValues & TConfirmPersonalDetailsForm;
 
 const IdvDocumentSubmit = observer(
     ({ handleBack, handleViewComplete, handleSelectionNext, selected_country }: TIDVDocumentSubmitProps) => {
@@ -59,7 +59,7 @@ const IdvDocumentSubmit = observer(
         const side_note_image = <PoiNameDobExample />;
 
         const form_initial_values = filterObjProperties(account_settings, visible_settings) as {
-            [Property in keyof TPersonalDetailsForm]: string;
+            [Property in keyof TConfirmPersonalDetailsForm]: string;
         };
 
         if (form_initial_values.date_of_birth) {

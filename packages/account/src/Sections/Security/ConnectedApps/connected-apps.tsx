@@ -4,7 +4,7 @@ import { Loading } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { WS } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
-import ErrorComponent from 'Components/error-component';
+import ErrorComponent from '../../../Components/error-component';
 import ConnectedAppsKnowMore from './connected-apps-know-more';
 import ConnectedAppsInfo from './connected-apps-info';
 import ConnectedAppsEarnMore from './connected-apps-earn-more';

@@ -38,7 +38,7 @@ export const firstNameValidator = Yup.string()
 
 export const lastNameValidator = Yup.string()
     .required('This field is required')
-    .matches( /^(?!\s)[\p{L}'.-]+(?:\s[\p{L}'.-]+)*$/u, 'Letters, spaces, periods, hyphens, apostrophes only.')
+    .matches(/^(?!\s)[\p{L}'.-]+(?:\s[\p{L}'.-]+)*$/u, 'Letters, spaces, periods, hyphens, apostrophes only.')
     .min(1, 'Enter no more than 50 characters.')
     .max(50, 'Enter no more than 50 characters.');
 

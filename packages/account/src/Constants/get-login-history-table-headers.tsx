@@ -1,3 +1,4 @@
+import React from 'react';
 import { Localize } from '@deriv/translations';
 
 const getLoginHistoryTableHeaders = () => ({

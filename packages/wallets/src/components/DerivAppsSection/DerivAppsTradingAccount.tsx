@@ -1,19 +1,16 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useAuthorize } from '@deriv/api-v2';
-import { displayMoney } from '@deriv/api-v2/src/utils';
+import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useBalance } from '@deriv/api-v2';
 import { LabelPairedArrowsRotateSmBoldIcon, LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
 import useDevice from '../../hooks/useDevice';
-import { TSubscribedBalance } from '../../types';
 import { WalletText } from '../Base';
 import { WalletListCardBadge } from '../WalletListCardBadge';
 import { WalletMarketIcon } from '../WalletMarketIcon';
 
-const DerivAppsTradingAccount: React.FC<TSubscribedBalance> = ({ balance }) => {
+const DerivAppsTradingAccount: React.FC = () => {
     const { isMobile } = useDevice();
     const history = useHistory();
-    const { data: authorizeData } = useAuthorize();
-    const { data: balanceData, isLoading } = balance;
+    const { isLoading } = useBalance();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
 
@@ -31,14 +28,7 @@ const DerivAppsTradingAccount: React.FC<TSubscribedBalance> = ({ balance }) => {
                     <div className='wallets-skeleton wallets-deriv-apps-balance-loader' />
                 ) : (
                     <WalletText size='sm' weight='bold'>
-                        {displayMoney(
-                            balanceData?.accounts?.[activeLinkedToTradingAccount?.loginid ?? '']?.balance || 0,
-                            activeLinkedToTradingAccount?.currency_config?.display_code || 'USD',
-                            {
-                                fractional_digits: activeLinkedToTradingAccount?.currency_config?.fractional_digits,
-                                preferred_language: authorizeData?.preferred_language,
-                            }
-                        )}
+                        {activeLinkedToTradingAccount?.display_balance}
                     </WalletText>
                 )}
                 <WalletText color='less-prominent' lineHeight='sm' size='xs' weight='bold'>

@@ -63,9 +63,9 @@ const MigrationSuccessModal = observer(({ is_open, closeModal }: TMigrationSucce
             } else {
                 switch (to_acc) {
                     case Jurisdiction.BVI:
-                        return 'IcMt5StandardFinancialBvi';
+                        return 'IcMt5DerivedFinancialBvi';
                     case Jurisdiction.VANUATU:
-                        return 'IcMt5StandardFinancialVanuatu';
+                        return 'IcMt5DerivedFinancialVanuatu';
                     default:
                         return '';
                 }

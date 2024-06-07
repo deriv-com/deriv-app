@@ -1,9 +1,9 @@
-import { ReactNode } from 'react';
+import React from 'react';
 import { Icon } from '@deriv/components';
 import IconMessageContent from '../icon-message-content';
 
 type TLoadErrorMessage = {
-    error_message: ReactNode;
+    error_message: React.ReactNode;
 };
 
 const LoadErrorMessage = ({ error_message }: TLoadErrorMessage) => (

@@ -16,11 +16,11 @@ export interface AvailableAccount {
 
 export const getCFDAvailableAccount = () => [
     {
-        name: 'Standard',
-        description: localize('CFDs on derived and financial instruments.'),
+        name: 'Derived',
+        description: localize('CFDs on derived instruments.'),
         platform: CFD_PLATFORMS.MT5,
         market_type: 'synthetic',
-        icon: 'Standard',
+        icon: 'Derived',
         availability: 'Non-EU',
     },
     {

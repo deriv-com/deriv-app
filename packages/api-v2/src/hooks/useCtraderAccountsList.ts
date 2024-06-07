@@ -35,7 +35,7 @@ const useCtraderAccountsList = () => {
                     /** The platform of the account */
                     platform: 'ctrader' as const,
                     /** Formatted display balance */
-                    display_balance: displayMoney(account.balance || 0, account.currency || 'USD', {
+                    formatted_balance: displayMoney(account.balance || 0, account.currency || 'USD', {
                         preferred_language: authorize_data?.preferred_language,
                     }),
                     /** Converted balance from the exchange rate */

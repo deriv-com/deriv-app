@@ -37,7 +37,7 @@ import {
     generateIDVError,
 } from '../../../../Configs/poi-error-config';
 import { API_ERROR_CODES } from '../../../../Constants/api-error-codes';
-import { TIDVFormValues, TConfirmPersonalDetailsForm } from '../../../../Types';
+import { TIDVFormValues, TPersonalDetailsForm } from '../../../../Types';
 import LoadErrorMessage from '../../../load-error-message';
 import { TIdvDocumentSubmitForm } from '../../idv-document-submit/idv-document-submit';
 import { useDevice } from '@deriv-com/ui';
@@ -68,7 +68,7 @@ type TIDVFailureConfig = {
     inline_note_text: React.ReactNode;
 };
 
-type TIdvFailedForm = Partial<TIDVFormValues> & Partial<TConfirmPersonalDetailsForm>;
+type TIdvFailedForm = Partial<TIDVFormValues> & Partial<TPersonalDetailsForm>;
 
 const IdvFailed = ({
     getChangeableFields,

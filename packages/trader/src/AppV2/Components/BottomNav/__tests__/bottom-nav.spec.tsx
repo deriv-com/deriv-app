@@ -1,8 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { StoreProvider, mockStore } from '@deriv/stores';
 import BottomNav from '../bottom-nav';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('../bottom-nav-item', () => {
     return jest.fn(({ index, setSelectedIndex }) => (
@@ -20,13 +19,11 @@ describe('BottomNav', () => {
     const mockedMarketsContainer = <div>MockedMarkets</div>;
     const mockedPositionsContainer = <div>MockedPositions</div>;
     const renderedBottomNav = (
-        <StoreProvider store={mockStore({})}>
-            <BottomNav>
-                <div>{mockedTradeContainer}</div>
-                <div>{mockedMarketsContainer}</div>
-                <div>{mockedPositionsContainer}</div>
-            </BottomNav>
-        </StoreProvider>
+        <BottomNav>
+            <div>{mockedTradeContainer}</div>
+            <div>{mockedMarketsContainer}</div>
+            <div>{mockedPositionsContainer}</div>
+        </BottomNav>
     );
     it('should render correctly', () => {
         const { container } = render(renderedBottomNav);

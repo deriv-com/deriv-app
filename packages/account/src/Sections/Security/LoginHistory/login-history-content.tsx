@@ -1,6 +1,7 @@
+import React from 'react';
 import { Table } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
-import getLoginHistoryTableHeaders from '../../../Constants/get-login-history-table-headers';
+import getLoginHistoryTableHeaders from 'Constants/get-login-history-table-headers';
 import LoginHistoryTableRow from './login-history-table-row';
 import LoginHistoryListRow from './login-history-list-row';
 

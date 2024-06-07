@@ -14,8 +14,9 @@ describe('WalletsErrorScreen', () => {
         jest.clearAllMocks();
     });
 
-    it('should show the correct title with default message', () => {
+    it('should show the correct title and icon with default message', () => {
         render(<WalletsErrorScreen />);
+        expect(screen.getByTestId('dt_error_icon')).toBeInTheDocument();
         expect(screen.getByText('Oops, something went wrong!')).toBeInTheDocument();
         expect(
             screen.getByText('Sorry an error occurred. Please try accessing our cashier again.')

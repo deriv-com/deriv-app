@@ -2,6 +2,7 @@ import React from 'react';
 import { ModalStepWrapper } from '../../../../src/components/Base/ModalStepWrapper';
 import { FlowProvider, TFlowProviderContext, useFlow } from '../../../../src/components/FlowProvider';
 import { useModal } from '../../../../src/components/ModalProvider';
+import { MT5AccountType } from '../../../../src/features/cfd/screens/MT5AccountType';
 import VerificationFlow from './VerificationFlow';
 
 const PasswordScreen = () => {
@@ -61,6 +62,7 @@ const screens = {
     bScreen: <ScreenB />,
     JurisdictionScreen: <JurisdictionScreen />,
     passwordScreen: <PasswordScreen />,
+    selectAccountTypeScreen: <MT5AccountType onMarketTypeSelect={marketType => marketType} selectedMarketType='all' />,
 };
 
 const AccountFlow = () => {
@@ -89,7 +91,7 @@ const AccountFlow = () => {
                 testb: '',
             }}
             screens={screens}
-            screensOrder={['JurisdictionScreen', 'passwordScreen', 'aScreen', 'bScreen']}
+            screensOrder={['selectAccountTypeScreen', 'JurisdictionScreen', 'passwordScreen', 'aScreen', 'bScreen']}
         >
             {context => {
                 return (

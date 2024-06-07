@@ -66,7 +66,7 @@ const OptionsAndMultipliersListing = observer(() => {
                 low_risk_cr_non_eu || high_risk_cr || cr_demo ? (
                     <Text size='xs' line_height='s'>
                         <Localize
-                            i18n_default_text='Earn potential profits when the market aligns with your prediction, with risks capped at your initial stake. <0>Learn more</0>'
+                            i18n_default_text='Buy or sell at a specific time for a specific price. <0>Learn more</0>'
                             components={[
                                 <StaticUrl
                                     key={0}

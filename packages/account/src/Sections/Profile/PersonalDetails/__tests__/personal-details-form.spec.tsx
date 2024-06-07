@@ -98,11 +98,11 @@ describe('<PersonalDetailsForm />', () => {
         });
     });
 
-    it('should display error for up to 50 characters length validation for First name when entered characters are more than 50', async () => {
+    it('should display error for up to 50 characters length validation, for last name when entered characters are more than 50', async () => {
         renderComponent();
-        await waitFor(() => {
-            const first_name = screen.getByTestId('dt_first_name');
-            userEvent.type(first_name, 'ABCDEFGHIJKLMNOP.QRSTU VWXYZabcdefghi-jklmnopqrstuvwxyzh-shs');
+        await waitFor(async () => {
+            const last_name = screen.getByTestId('dt_last_name');
+            await userEvent.type(last_name, 'ABCDEFGHIJKLMNOP.QRSTU VWXYZabcdefghi-jklmnopqrstuvwxyzh-shs');
             expect(screen.getByText(/Enter no more than 50 characters./)).toBeInTheDocument();
         });
     });
@@ -110,9 +110,9 @@ describe('<PersonalDetailsForm />', () => {
     it('should display error for the regex validation, for First name when unacceptable characters are entered', async () => {
         renderComponent();
 
-        await waitFor(() => {
+        await waitFor(async () => {
             const first_name = screen.getByTestId('dt_first_name');
-            userEvent.type(first_name, 'test 3');
+            await userEvent.type(first_name, 'test 3');
             expect(screen.getByText('Letters, spaces, periods, hyphens, apostrophes only.')).toBeInTheDocument();
         });
     });

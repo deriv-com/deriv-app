@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
-import { useBalance } from '@deriv/api-v2';
 import { LegacyTransferIcon } from '@deriv/quill-icons';
 import { IconButton, WalletText } from '../Base';
 import { WalletCurrencyCard } from '../WalletCurrencyCard';
@@ -12,11 +11,11 @@ type TProps = {
     currency: string;
     hidden?: boolean;
     isDemo?: boolean;
+    isLoading?: boolean;
 };
 
-const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, isDemo }) => {
+const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, isDemo, isLoading }) => {
     const history = useHistory();
-    const { isLoading } = useBalance();
 
     return (
         <div className={classNames('wallets-carousel-header', { 'wallets-carousel-header--hidden': hidden })}>

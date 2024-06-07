@@ -3,14 +3,15 @@ import { screen, render, waitFor } from '@testing-library/react';
 import { WS } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import LoginHistory from '../login-history';
-import { getLoginHistoryFormattedData } from '../../../../../../utils/src/getLoginHistoryFormattedData';
+import { getLoginHistoryFormattedData } from '@deriv/utils';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Loading: jest.fn(() => 'mockedLoading'),
 }));
 
-jest.mock('../../../../../../utils/src/getLoginHistoryFormattedData', () => ({
+jest.mock('@deriv/utils', () => ({
+    ...jest.requireActual('@deriv/utils'),
     getLoginHistoryFormattedData: jest.fn(),
 }));
 

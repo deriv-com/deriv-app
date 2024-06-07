@@ -19,9 +19,24 @@ import {
     UpdateContractRequest,
 } from '@deriv/api-types';
 import { TCoreStores } from '@deriv/stores/types';
+import ModulesStore from 'Stores/Modules';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 import { TSocketEndpointNames, TSocketResponse } from '../../../api/types';
+
+export type TRootStore = {
+    client: TCoreStores['client'];
+    common: TCoreStores['common'];
+    modules: ModulesStore;
+    ui: TCoreStores['ui'];
+    gtm: TCoreStores['gtm'];
+    notifications: TCoreStores['notifications'];
+    contract_replay: TCoreStores['contract_replay'];
+    contract_trade: TCoreStores['contract_trade'];
+    portfolio: TCoreStores['portfolio'];
+    chart_barrier_store: TCoreStores['chart_barrier_store'];
+    active_symbols: TCoreStores['active_symbols'];
+};
 
 export type TBinaryRoutesProps = {
     is_logged_in: boolean;

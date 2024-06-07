@@ -15,7 +15,7 @@
         "translate": "sh ./scripts/update-translations.sh"
     },
     "dependencies": {
-        "@deriv-com/utils": "^0.0.20",
+        "@deriv-com/utils": "^0.0.24",
         "@deriv/api-v2": "^1.0.0",
         "@deriv/integration": "^1.0.0",
         "@deriv/quill-icons": "^1.22.10",

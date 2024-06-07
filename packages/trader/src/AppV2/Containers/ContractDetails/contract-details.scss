@@ -6,13 +6,13 @@
     overflow: auto;
     height: 100vh;
     gap: var(--semantic-spacing-general-sm);
-    padding-bottom: 20px;
+    padding-bottom: 70px;
     &--two-buttons {
-        padding-bottom: 180px;
+        padding-bottom: 230px;
     }
 
     &--one-button {
-        padding-bottom: 90px;
+        padding-bottom: 140px;
     }
 }
 .placeholder {

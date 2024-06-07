@@ -1,0 +1,33 @@
+.date-picker__action-sheet {
+    padding: 0;
+
+    .react-calendar {
+        &__tile {
+            font-size: var(--core-fontSize-100);
+
+            &--now:after {
+                display: none;
+            }
+
+            &--range {
+                background-color: var(--semantic-color-monochrome-surface-normal-low);
+                color: var(--component-dropdownItem-label-color-default);
+            }
+
+            &--rangeStart,
+            &--rangeEnd {
+                background-color: var(--component-dropdownItem-bg-selected);
+                color: var(--component-dropdownItem-label-color-selectedWhite);
+            }
+
+            &:disabled {
+                background-color: unset;
+                color: var(--component-textIcon-normal-disabled);
+            }
+        }
+    }
+}
+
+.quill-date-picker__wrapper--fixed-width {
+    margin: auto;
+}

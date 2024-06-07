@@ -22,6 +22,7 @@ const EditPaymentMethodForm = () => {
     const { error: mutation_error, reset, status: mutation_status } = mutation;
     const {
         payment_method_to_edit,
+        setAddPaymentMethodErrorMessage,
         setPaymentMethodToEdit,
         setSelectedPaymentMethod,
         setSelectedPaymentMethodDisplayName,
@@ -55,14 +56,14 @@ const EditPaymentMethodForm = () => {
 
     React.useEffect(() => {
         if (mutation_status === 'success') {
-            my_profile_store.setShouldShowEditPaymentMethodForm(false);
+            setShouldShowEditPaymentMethodForm(false);
         } else if (mutation_status === 'error') {
-            my_profile_store.setAddPaymentMethodErrorMessage(mutation_error.message);
+            setAddPaymentMethodErrorMessage(mutation_error.message);
             showModal({ key: 'AddPaymentMethodErrorModal', props: {} });
             general_store.formik_ref.setSubmitting(false);
             reset();
         }
-    }, [mutation_error, mutation_status, reset, general_store.formik_ref]);
+    }, [mutation_error, mutation_status, reset]);
 
     if (isEmptyObject(payment_method_to_edit)) {
         return <Loading is_fullscreen={false} />;

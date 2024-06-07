@@ -3,9 +3,9 @@ import { Loading, ThemedScrollbars } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { WS, useIsMounted } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
-import LoadErrorMessage from 'Components/load-error-message';
+import LoadErrorMessage from '../../../Components/load-error-message';
 import LoginHistoryContent from './login-history-content';
-import { getLoginHistoryFormattedData } from '../../../../../utils/src/getLoginHistoryFormattedData';
+import { getLoginHistoryFormattedData } from '@deriv/utils';
 
 type TLoginData = { id: number; date: string; action: string; browser: string; ip: string; status: string }[];
 

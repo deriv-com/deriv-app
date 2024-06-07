@@ -73,7 +73,7 @@ const MenuRight = observer(() => {
     return (
         <div
             className={classNames('header__menu-right', {
-                'header__menu-right--hidden': is_mobile && is_logging_in,
+                'header__menu-right--hidden': (is_logging_in || is_switching) && !is_logged_in,
             })}
         >
             {(is_logging_in || is_switching) && (

@@ -4,7 +4,7 @@ import { VERIFICATION_SERVICES } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import useSetSettings from './useSetSettings';
 
-type THandleError = {
+type TFormatError = {
     code: string;
     message: string;
 };
@@ -29,13 +29,13 @@ const useRequestPhoneNumberOTP = () => {
         const { error } = data;
 
         if (error) {
-            handleError(error);
+            formatError(error);
         }
 
         return { error, data };
     };
 
-    const handleError = ({ code, message }: THandleError) => {
+    const formatError = ({ code, message }: TFormatError) => {
         switch (code) {
             case 'PhoneNumberTaken':
                 setErrorMessage(
@@ -62,7 +62,7 @@ const useRequestPhoneNumberOTP = () => {
         error_message,
         requestOnWhatsApp,
         requestOnSMS,
-        handleError,
+        formatError,
         setErrorMessage,
         setUsersPhoneNumber,
         mutate,

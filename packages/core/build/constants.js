@@ -4,7 +4,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 const PreloadWebpackPlugin = require('preload-webpack-plugin');
-const IgnorePlugin = require('webpack').IgnorePlugin;
+const { IgnorePlugin, DefinePlugin } = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const path = require('path');
@@ -33,7 +33,6 @@ const {
     IS_RELEASE,
 } = require('./loaders-config');
 const Dotenv = require('dotenv-webpack');
-const { DefinePlugin } = require('webpack');
 
 const HOISTED_PACKAGES = {
     react: path.resolve(__dirname, '../../../node_modules/react'),

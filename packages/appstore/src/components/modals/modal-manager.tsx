@@ -8,6 +8,11 @@ import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
+const EmailVerificationModal = makeLazyLoader(
+    () => moduleLoader(() => import(/* webpackChunkName: "modal_email-verification" */ './email-verification')),
+    () => <Loading />
+)();
+
 const RealWalletsUpgrade = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "modal_real-wallets-upgrade" */ './real-wallets-upgrade')),
     () => <Loading />
@@ -217,6 +222,7 @@ const ModalManager = () => {
         is_top_up_virtual_open,
         is_top_up_virtual_success,
         is_mt5_migration_modal_open,
+        is_email_verification_modal_visible,
     } = ui;
     const {
         is_demo,
@@ -352,6 +358,7 @@ const ModalManager = () => {
                     {is_eligible && <WalletsUpgradeModal />}
                 </React.Fragment>
             )}
+            {is_email_verification_modal_visible && <EmailVerificationModal />}
         </React.Fragment>
     );
 };

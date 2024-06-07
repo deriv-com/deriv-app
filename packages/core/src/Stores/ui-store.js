@@ -182,6 +182,8 @@ export default class UIStore extends BaseStore {
     is_additional_kyc_info_modal_open = false;
     is_kyc_information_submitted_modal_open = false;
 
+    is_email_verification_modal_visible = false;
+
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {
@@ -211,6 +213,7 @@ export default class UIStore extends BaseStore {
         super({ root_store, local_storage_properties, store_name });
 
         makeObservable(this, {
+            is_email_verification_modal_visible: observable,
             is_additional_kyc_info_modal_open: observable,
             is_kyc_information_submitted_modal_open: observable,
             account_needed_modal_props: observable,
@@ -427,6 +430,7 @@ export default class UIStore extends BaseStore {
             toggleKycInformationSubmittedModal: action.bound,
             toggleMT5MigrationModal: action.bound,
             toggleUrlUnavailableModal: action.bound,
+            toggleEmailVerificationModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -995,5 +999,9 @@ export default class UIStore extends BaseStore {
 
     toggleUrlUnavailableModal(value) {
         this.isUrlUnavailableModalVisible = value;
+    }
+
+    toggleEmailVerificationModal(value) {
+        this.is_email_verification_modal_visible = value;
     }
 }

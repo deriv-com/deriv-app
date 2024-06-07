@@ -792,6 +792,8 @@ type TUiStore = {
     toggleKycInformationSubmittedModal: () => void;
     setAccountSwitcherDisabledMessage: (message?: string) => void;
     is_set_currency_modal_visible: boolean;
+    is_email_verification_modal_visible: boolean;
+    toggleEmailVerificationModal: () => void;
 };
 
 type TPortfolioStore = {

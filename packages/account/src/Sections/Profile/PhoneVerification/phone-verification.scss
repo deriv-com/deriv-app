@@ -65,6 +65,15 @@
                 width: 100%;
                 margin-top: 3.2rem;
             }
+
+            &__livechat {
+                color: var(--core-color-solid-red-900, #c40000);
+                font-weight: bold;
+                text-decoration: underline;
+                &:hover {
+                    cursor: pointer;
+                }
+            }
         }
 
         &--buttons_container {

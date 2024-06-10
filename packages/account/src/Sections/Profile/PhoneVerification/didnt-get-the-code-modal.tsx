@@ -3,7 +3,7 @@ import { Button, Modal, Text } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
-import { useGetPhoneNumberOTP } from '@deriv/hooks';
+import { useRequestPhoneNumberOTP } from '@deriv/hooks';
 import { convertPhoneTypeDisplay } from 'Helpers/utils';
 
 type TDidntGetTheCodeModal = {
@@ -22,7 +22,7 @@ const DidntGetTheCodeModal = observer(
         phone_verification_type,
         setOtpVerification,
     }: TDidntGetTheCodeModal) => {
-        const { requestOnSMS, requestOnWhatsApp, ...rest } = useGetPhoneNumberOTP();
+        const { requestOnSMS, requestOnWhatsApp, ...rest } = useRequestPhoneNumberOTP();
         const { ui } = useStore();
         const { is_mobile } = ui;
 

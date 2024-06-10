@@ -54,6 +54,7 @@ const AdConditionsSection = ({
             showModal({
                 key: 'AdCreateEditErrorModal',
                 props: {
+                    ad_type: action,
                     onUpdateAd: () => {
                         goToFirstStep();
                         my_ads_store.setApiErrorCode(null);

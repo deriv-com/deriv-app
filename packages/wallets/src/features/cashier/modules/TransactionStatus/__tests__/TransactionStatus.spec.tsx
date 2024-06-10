@@ -77,6 +77,15 @@ describe('TransactionStatus component', () => {
     it('should render error state correctly for useActiveWalletAccount', async () => {
         const mockError = new Error('Test error');
 
+        (useCryptoTransactions as jest.Mock).mockImplementation(() => ({
+            data: [],
+            error: null,
+            isLoading: false,
+            resetData: jest.fn(),
+            subscribe: jest.fn(),
+            unsubscribe: jest.fn(),
+        }));
+
         (useActiveWalletAccount as jest.Mock).mockImplementation(() => ({
             data: null,
             error: mockError,

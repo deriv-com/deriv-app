@@ -84,6 +84,7 @@ const PersonalDetails = () => {
                                 text: residence.text as ReactNode,
                                 value: residence.value ?? '',
                             }))}
+                            listHeight='sm'
                             name='wallets-personal-details__dropdown-citizenship'
                             onSelect={selectedItem => setFormValues('citizenship', selectedItem)}
                             value={getSettings?.citizen ?? formValues?.citizenship}
@@ -96,6 +97,7 @@ const PersonalDetails = () => {
                                 text: residence.text as ReactNode,
                                 value: residence.value ?? '',
                             }))}
+                            listHeight='sm'
                             name='wallets-personal-details__dropdown-pob'
                             onSelect={selectedItem => setFormValues('placeOfBirth', selectedItem)}
                             value={getSettings?.place_of_birth ?? ''}
@@ -109,6 +111,7 @@ const PersonalDetails = () => {
                                 text: residence.text as ReactNode,
                                 value: residence.value ?? '',
                             }))}
+                            listHeight='sm'
                             name='wallets-personal-details__dropdown-tax-residence'
                             onChange={inputValue => {
                                 residenceList.forEach(residence => {

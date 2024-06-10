@@ -32,7 +32,7 @@ const CTraderSuccessModalButtons = ({ createdAccount, hide, isDemo }: TCTraderSu
             <WalletButton
                 onClick={() => {
                     hide();
-                    history.push('/wallets/cashier/transfer', { toAccountLoginId: createdAccount?.account_id });
+                    history.push('/wallet/account-transfer', { toAccountLoginId: createdAccount?.account_id });
                 }}
                 size={isMobile ? 'lg' : 'md'}
             >

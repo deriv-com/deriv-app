@@ -8,9 +8,8 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import {
     rudderStackSendQsRunStrategyEvent,
     rudderStackSendQsSelectedTabEvent,
-    rudderStackSendSelectQsStrategyGuideEvent,
-} from '../analytics/rudderstack-quick-strategy';
-import { getQsActiveTabString } from '../analytics/utils';
+} from '../../../../analytics/rudderstack-quick-strategy';
+import { getQsActiveTabString } from '../../../../analytics/utils';
 import { STRATEGIES } from '../config';
 import { TFormValues } from '../types';
 import FormTabs from './form-tabs';
@@ -38,9 +37,6 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children, ac
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
         setActiveTab('TRADE_PARAMETERS');
-        rudderStackSendSelectQsStrategyGuideEvent({
-            selected_strategy,
-        });
     };
 
     const handleTabChange = (tab: string) => {

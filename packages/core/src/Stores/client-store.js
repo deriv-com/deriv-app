@@ -1217,7 +1217,8 @@ export default class ClientStore extends BaseStore {
                 console.error('JSON parse failed, invalid value (client.accounts): ', error);
             }
 
-            const { oauth_token, client_id } = response.new_account_real ?? response.new_account_maltainvest;
+            const { oauth_token, client_id, currency_type } =
+                response.new_account_real ?? response.new_account_maltainvest;
             BinarySocket.authorize(oauth_token)
                 .then(authorize_response => {
                     const new_data = {};
@@ -1227,6 +1228,7 @@ export default class ClientStore extends BaseStore {
                     new_data.is_virtual = authorize_response.authorize.is_virtual;
                     new_data.landing_company_name = authorize_response.authorize.landing_company_fullname;
                     new_data.landing_company_shortcode = authorize_response.authorize.landing_company_name;
+                    new_data.currency_type = currency_type;
                     runInAction(() => (client_accounts[client_id] = new_data));
                     this.setLoginInformation(client_accounts, client_id);
                     WS.authorized.storage.getSettings().then(get_settings_response => {
@@ -1459,6 +1461,11 @@ export default class ClientStore extends BaseStore {
             '_filteredParams',
         ];
 
+        // redirect to the DTrader of there is needed query params
+        if (!window.location.pathname.endsWith(routes.trade) && /chart_type|interval|symbol|trade_type/.test(search)) {
+            window.history.replaceState({}, document.title, routes.trade + search);
+        }
+
         const authorize_response = await this.setUserLogin(login_new_user);
 
         if (action_param === 'signup') {
@@ -1499,13 +1506,20 @@ export default class ClientStore extends BaseStore {
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
+        if (action_param === 'request_email') {
+            const request_email_code = code_param ?? LocalStore.get(`verification_code.${action_param}`) ?? '';
+            if (request_email_code) {
+                this.setVerificationCode(request_email_code, action_param);
+                this.root_store.ui.toggleResetEmailModal(true);
+            }
+        }
         const client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login
         if (authorize_response) {
             // If this fails, it means the landing company check failed
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
-                Analytics.identifyEvent();
+                Analytics.identifyEvent(this.user_id);
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',
@@ -1733,11 +1747,12 @@ export default class ClientStore extends BaseStore {
                 language: getLanguage(),
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
-                country: Cookies.get('clients_country') || Cookies?.getJSON('website_status'),
+                country: Cookies.get('clients_country') || Cookies?.getJSON('website_status')?.clients_country,
                 utm_source: ppc_campaign_cookies?.utm_source,
                 utm_medium: ppc_campaign_cookies?.utm_medium,
                 utm_campaign: ppc_campaign_cookies?.utm_campaign,
                 utm_content: ppc_campaign_cookies?.utm_content,
+                domain: window.location.hostname,
             });
         }, 4);
 
@@ -1859,7 +1874,7 @@ export default class ClientStore extends BaseStore {
             }
 
             //temporary workaround to sync this.loginid with selected wallet loginid
-            if (window.location.pathname.includes(routes.wallets_cashier)) {
+            if (window.location.pathname.includes(routes.wallets)) {
                 this.resetLocalStorageValues(localStorage.getItem('active_loginid') ?? this.loginid);
                 return;
             }
@@ -2015,10 +2030,17 @@ export default class ClientStore extends BaseStore {
             landing_company_name: 'landing_company_shortcode',
         };
         const client_object = {};
+        const selected_account = obj_params?.selected_acct;
+        const is_wallets_selected = selected_account?.startsWith('CRW');
         let active_loginid;
+        let active_wallet_loginid;
 
-        if (obj_params.selected_acct) {
-            active_loginid = obj_params.selected_acct;
+        if (selected_account) {
+            if (is_wallets_selected) {
+                active_wallet_loginid = obj_params.selected_acct;
+            } else {
+                active_loginid = obj_params.selected_acct;
+            }
         }
 
         account_list.forEach(function (account) {
@@ -2061,7 +2083,12 @@ export default class ClientStore extends BaseStore {
 
         // TODO: send login flag to GTM if needed
         if (active_loginid && Object.keys(client_object).length) {
-            localStorage.setItem('active_loginid', active_loginid);
+            if (selected_account && is_wallets_selected) {
+                localStorage.setItem('active_wallet_loginid', active_wallet_loginid);
+            } else {
+                localStorage.setItem('active_loginid', active_loginid);
+            }
+
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
             this.syncWithLegacyPlatforms(active_loginid, this.accounts);
         }
@@ -2104,10 +2131,10 @@ export default class ClientStore extends BaseStore {
 
             const redirect_url = sessionStorage.getItem('redirect_url');
 
-            const target_url = this.has_wallet ? routes.wallets : routes.traders_hub;
+            const target_url = routes.traders_hub;
 
             if (
-                (redirect_url?.endsWith('/') ||
+                (redirect_url?.endsWith(routes.trade) ||
                     redirect_url?.endsWith(routes.bot) ||
                     /chart_type|interval|symbol|trade_type/.test(redirect_url)) &&
                 (isTestLink() || isProduction() || isLocal() || isStaging() || isTestDerivApp())

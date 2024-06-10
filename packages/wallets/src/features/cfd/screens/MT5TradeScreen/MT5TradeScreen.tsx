@@ -213,7 +213,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                                 >
                                     <WalletText size='sm'>{account.login}</WalletText>
                                     <WalletText size='sm' weight='bold'>
-                                        {account.formatted_balance}
+                                        {account.display_balance}
                                     </WalletText>
                                 </li>
                             ))}

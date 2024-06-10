@@ -1,6 +1,7 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 import { useMutation } from '@deriv/api';
 import useRequestPhoneNumberOTP from '../useRequestPhoneNumberOTP';
+import { VERIFICATION_SERVICES } from '@deriv/shared';
 import React from 'react';
 import useSettings from '../useSettings';
 
@@ -41,7 +42,9 @@ describe('useRequestPhoneNumberOTP', () => {
         result.current.requestOnSMS();
 
         expect(useMutation).toHaveBeenCalledWith('phone_number_challenge');
-        expect(result.current.mutate).toHaveBeenCalledWith({ payload: { carrier: 'sms' } });
+        expect(result.current.mutate).toHaveBeenCalledWith({
+            payload: { carrier: VERIFICATION_SERVICES.SMS, email_code: '' },
+        });
         expect(result.current.data).toEqual(1);
     });
 
@@ -52,7 +55,22 @@ describe('useRequestPhoneNumberOTP', () => {
         result.current.requestOnWhatsApp();
 
         expect(useMutation).toHaveBeenCalledWith('phone_number_challenge');
-        expect(result.current.mutate).toHaveBeenCalledWith({ payload: { carrier: 'whatsapp' } });
+        expect(result.current.mutate).toHaveBeenCalledWith({
+            payload: { carrier: VERIFICATION_SERVICES.WHATSAPP, email_code: '' },
+        });
+        expect(result.current.data).toEqual(1);
+    });
+
+    it('should call mutate with correct payload for sendEmailOTPVerification request and return correct response', () => {
+        (useMutation as jest.Mock).mockReturnValueOnce(mock_response);
+        const { result } = renderHook(() => useRequestPhoneNumberOTP());
+
+        result.current.sendEmailOTPVerification('123456');
+
+        expect(useMutation).toHaveBeenCalledWith('phone_number_challenge');
+        expect(result.current.mutate).toHaveBeenCalledWith({
+            payload: { email_code: '123456' },
+        });
         expect(result.current.data).toEqual(1);
     });
 

@@ -11,18 +11,36 @@ type TFormatError = {
 
 /** A hook for requesting OTP which is sent on whatsapp or sms platforms */
 const useRequestPhoneNumberOTP = () => {
-    const { data, mutate, ...rest } = useMutation('phone_number_challenge');
+    const {
+        data,
+        mutate,
+        error: email_otp_error,
+        isSuccess: is_email_verified,
+        ...rest
+    } = useMutation('phone_number_challenge');
     const [error_message, setErrorMessage] = React.useState<React.ReactNode>('');
     const {
         mutation: { mutateAsync: updateSettings },
     } = useSettings();
 
+    //TODOs: need to wait confirmation from the team whether to stay at phone number page when refresh or restart the email verification process again
     const requestOnSMS = () => {
-        mutate({ payload: { carrier: VERIFICATION_SERVICES.SMS } });
+        mutate({
+            payload: { carrier: VERIFICATION_SERVICES.SMS, email_code: localStorage.getItem('email_otp_code') || '' },
+        });
+    };
+    //TODOs: need to wait confirmation from the team whether to stay at phone number page when refresh or restart the email verification process again
+    const requestOnWhatsApp = () => {
+        mutate({
+            payload: {
+                carrier: VERIFICATION_SERVICES.WHATSAPP,
+                email_code: localStorage.getItem('email_otp_code') || '',
+            },
+        });
     };
 
-    const requestOnWhatsApp = () => {
-        mutate({ payload: { carrier: VERIFICATION_SERVICES.WHATSAPP } });
+    const sendEmailOTPVerification = (value: string) => {
+        mutate({ payload: { email_code: value } });
     };
 
     const setUsersPhoneNumber = async (value: { [key: string]: unknown }) => {
@@ -66,11 +84,14 @@ const useRequestPhoneNumberOTP = () => {
     return {
         data: data?.phone_number_challenge,
         error_message,
+        email_otp_error,
+        is_email_verified,
         requestOnWhatsApp,
         requestOnSMS,
         formatError,
         setErrorMessage,
         setUsersPhoneNumber,
+        sendEmailOTPVerification,
         mutate,
         ...rest,
     };

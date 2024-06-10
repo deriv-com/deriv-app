@@ -332,6 +332,12 @@ const AccountWizard = observer(props => {
         // Check if account wizard is not finished
         if (should_override || index + 1 >= state_items.length) {
             createRealAccount({});
+            //to count the last step of the wizard 'terms_of_use' as a step
+            trackEvent({
+                action: 'step_passed',
+                step_num: 3,
+                step_codename: STEP_IDENTIFIERS[index],
+            });
         } else {
             trackEvent({
                 action: 'step_passed',

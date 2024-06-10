@@ -38,7 +38,25 @@ jest.mock('@deriv/components', () => ({
 }));
 
 describe('CompositeCalendarMobile', () => {
-    it('should render the input field by default and not render MobileDialog children if it is closed (default state)', () => {
+    const checkModalOpenCloseFunctionality = (buttonName?: string) => {
+        userEvent.click(screen.getByRole('textbox'));
+
+        radioButtonText.forEach(item => expect(screen.getByText(item)).toBeInTheDocument());
+        expect(screen.getByText(customDateRangeText)).toBeInTheDocument();
+        expect(screen.getByPlaceholderText(startDate)).toBeInTheDocument();
+        expect(screen.getByText(backToTodayButtonText)).toBeInTheDocument();
+
+        if (!buttonName) return;
+
+        userEvent.click(screen.getByText(buttonName));
+
+        radioButtonText.forEach(item => expect(screen.queryByText(item)).not.toBeInTheDocument());
+        expect(screen.queryByText(customDateRangeText)).not.toBeInTheDocument();
+        expect(screen.queryByPlaceholderText(startDate)).not.toBeInTheDocument();
+        expect(screen.queryByText(backToTodayButtonText)).not.toBeInTheDocument();
+    };
+
+    it('should render the input field by default and not render MobileDialog with children if the Modal is closed (default state)', () => {
         render(<CompositeCalendarMobile {...mockDefaultProps} />);
 
         expect(screen.getByRole('textbox')).toBeInTheDocument();
@@ -48,7 +66,7 @@ describe('CompositeCalendarMobile', () => {
         expect(screen.queryByText(backToTodayButtonText)).not.toBeInTheDocument();
     });
 
-    it('should render functioning component if props from and to are equal to 0', () => {
+    it('should render functioning component if props "from" and "to" are equal to 0: MobileDialog should be opened if user clicks on the calendar field', () => {
         render(<CompositeCalendarMobile {...mockDefaultProps} from={0} to={0} />);
 
         radioButtonText.forEach(item => expect(screen.queryByText(item)).not.toBeInTheDocument());
@@ -56,85 +74,28 @@ describe('CompositeCalendarMobile', () => {
         expect(screen.queryByPlaceholderText(startDate)).not.toBeInTheDocument();
         expect(screen.queryByText(backToTodayButtonText)).not.toBeInTheDocument();
 
-        userEvent.click(screen.getByRole('textbox'));
-
-        radioButtonText.forEach(item => expect(screen.getByText(item)).toBeInTheDocument());
-        expect(screen.getByText(customDateRangeText)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(startDate)).toBeInTheDocument();
-        expect(screen.getByText(backToTodayButtonText)).toBeInTheDocument();
-    });
-
-    it('should open the MobileDialog with children on clicking on the calendar field', () => {
-        render(<CompositeCalendarMobile {...mockDefaultProps} />);
-
-        radioButtonText.forEach(item => expect(screen.queryByText(item)).not.toBeInTheDocument());
-        expect(screen.queryByText(customDateRangeText)).not.toBeInTheDocument();
-        expect(screen.queryByPlaceholderText(startDate)).not.toBeInTheDocument();
-        expect(screen.queryByText(backToTodayButtonText)).not.toBeInTheDocument();
-
-        userEvent.click(screen.getByRole('textbox'));
-
-        radioButtonText.forEach(item => expect(screen.getByText(item)).toBeInTheDocument());
-        expect(screen.getByText(customDateRangeText)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(startDate)).toBeInTheDocument();
-        expect(screen.getByText(backToTodayButtonText)).toBeInTheDocument();
+        checkModalOpenCloseFunctionality();
     });
 
     it('should close the MobileDialog if user clicks on Cancel button', () => {
         render(<CompositeCalendarMobile {...mockDefaultProps} />);
 
-        userEvent.click(screen.getByRole('textbox'));
-
-        radioButtonText.forEach(item => expect(screen.getByText(item)).toBeInTheDocument());
-        expect(screen.getByText(customDateRangeText)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(startDate)).toBeInTheDocument();
-        expect(screen.getByText(backToTodayButtonText)).toBeInTheDocument();
-
-        userEvent.click(screen.getByText('Cancel'));
-
-        radioButtonText.forEach(item => expect(screen.queryByText(item)).not.toBeInTheDocument());
-        expect(screen.queryByText(customDateRangeText)).not.toBeInTheDocument();
-        expect(screen.queryByPlaceholderText(startDate)).not.toBeInTheDocument();
-        expect(screen.queryByText(backToTodayButtonText)).not.toBeInTheDocument();
+        checkModalOpenCloseFunctionality('Cancel');
     });
 
     it('should close the MobileDialog if user clicks on Close button', () => {
         render(<CompositeCalendarMobile {...mockDefaultProps} />);
 
-        userEvent.click(screen.getByRole('textbox'));
-
-        radioButtonText.forEach(item => expect(screen.getByText(item)).toBeInTheDocument());
-        expect(screen.getByText(customDateRangeText)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(startDate)).toBeInTheDocument();
-        expect(screen.getByText(backToTodayButtonText)).toBeInTheDocument();
-
-        userEvent.click(screen.getByText('Close MobileDialog'));
-
-        radioButtonText.forEach(item => expect(screen.queryByText(item)).not.toBeInTheDocument());
-        expect(screen.queryByText(customDateRangeText)).not.toBeInTheDocument();
-        expect(screen.queryByPlaceholderText(startDate)).not.toBeInTheDocument();
-        expect(screen.queryByText(backToTodayButtonText)).not.toBeInTheDocument();
+        checkModalOpenCloseFunctionality('Close MobileDialog');
     });
 
-    it('should close the MobileDialog if user clicks on backToTodayButtonText button', () => {
+    it('should close the MobileDialog if user clicks on "Back to today" button', () => {
         render(<CompositeCalendarMobile {...mockDefaultProps} />);
 
-        userEvent.click(screen.getByRole('textbox'));
-
-        radioButtonText.forEach(item => expect(screen.getByText(item)).toBeInTheDocument());
-        expect(screen.getByText(customDateRangeText)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(startDate)).toBeInTheDocument();
-        expect(screen.getByText(backToTodayButtonText)).toBeInTheDocument();
-
-        userEvent.click(screen.getByText(backToTodayButtonText));
-
-        radioButtonText.forEach(item => expect(screen.queryByText(item)).not.toBeInTheDocument());
-        expect(screen.queryByText(customDateRangeText)).not.toBeInTheDocument();
-        expect(screen.queryByPlaceholderText(startDate)).not.toBeInTheDocument();
-        expect(screen.queryByText(backToTodayButtonText)).not.toBeInTheDocument();
+        checkModalOpenCloseFunctionality(backToTodayButtonText);
     });
 
-    it('should apply new value and set it to the input if user choose some radio button value and clicks on OK button', () => {
+    it('should apply new value and set it to the input if user chooses some radio button value and clicks on OK button', () => {
         render(<CompositeCalendarMobile {...mockDefaultProps} />);
 
         const input = screen.getByRole('textbox');
@@ -147,7 +108,7 @@ describe('CompositeCalendarMobile', () => {
         expect(input).toHaveValue(radioButtonText[1]);
     });
 
-    it('should apply custom value and set it to the input if user click on Custom radio button value and clicks on OK button', () => {
+    it('should apply custom value and set it to the input if user clicks on Custom radio button value and clicks on OK button', () => {
         render(<CompositeCalendarMobile {...mockDefaultProps} />);
 
         const input = screen.getByRole('textbox');
@@ -167,7 +128,6 @@ describe('CompositeCalendarMobile', () => {
 
         const inputForStartDate = screen.getByPlaceholderText(startDate);
         expect(inputForStartDate).toHaveValue('03 Oct 2023');
-
         userEvent.type(inputForStartDate, '10 Jun 2024');
 
         expect(inputForStartDate).toHaveValue('10 Jun 2024');

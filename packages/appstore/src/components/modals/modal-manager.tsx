@@ -299,7 +299,6 @@ const ModalManager = () => {
             {is_jurisdiction_modal_visible && <JurisdictionModal openPasswordModal={openRealPasswordModal} />}
             {should_show_cfd_password_modal && <CFDPasswordModal platform={platform} />}
             {is_cfd_verification_modal_visible && <CFDDbviOnBoarding />}
-            <CFDResetPasswordModal platform={platform} /> {/* a new condition for this hotfix needs to be found */}
             {is_ctrader_transfer_modal_visible && <CTraderTransferModal />}
             {has_cfd_error && <CFDServerErrorDialog />}
             {(is_top_up_virtual_open || is_top_up_virtual_success) && <CFDTopUpDemoModal platform={platform} />}
@@ -323,17 +322,16 @@ const ModalManager = () => {
                     toggleModal={togglePasswordManagerModal}
                 />
             )}
-            {is_reset_trading_password_modal_visible && (
-                <ResetTradingPasswordModal
-                    platform={trading_platform_dxtrade_password_reset ? 'dxtrade' : 'mt5'}
-                    enableApp={enableApp}
-                    disableApp={disableApp}
-                    toggleResetTradingPasswordModal={setCFDPasswordResetModal}
-                    is_visible={is_reset_trading_password_modal_visible}
-                    is_loading={is_populating_mt5_account_list}
-                    verification_code={trading_platform_dxtrade_password_reset || trading_platform_mt5_password_reset}
-                />
-            )}
+            <CFDResetPasswordModal platform={platform} /> {/* a new condition for this hotfix needs to be found */}
+            <ResetTradingPasswordModal
+                platform={trading_platform_dxtrade_password_reset ? 'dxtrade' : 'mt5'}
+                enableApp={enableApp}
+                disableApp={disableApp}
+                toggleResetTradingPasswordModal={setCFDPasswordResetModal}
+                is_visible={is_reset_trading_password_modal_visible}
+                is_loading={is_populating_mt5_account_list}
+                verification_code={trading_platform_dxtrade_password_reset || trading_platform_mt5_password_reset}
+            />
             {(is_mt5_migration_modal_open || !!mt5_migration_error) && <MT5MigrationModal />}
             {is_regulators_compare_modal_visible && <RegulatorsCompareModal />}
             {is_account_transfer_modal_open && (

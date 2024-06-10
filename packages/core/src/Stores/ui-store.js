@@ -784,8 +784,8 @@ export default class UIStore extends BaseStore {
         this.is_update_email_modal_visible = state_change;
     }
 
-    setResetTradingPasswordModalOpen(is_reset_trading_password_modal_visible) {
-        this.is_reset_trading_password_modal_visible = is_reset_trading_password_modal_visible;
+    setResetTradingPasswordModalOpen(is_cfd_reset_password_modal_enabled) {
+        this.is_cfd_reset_password_modal_enabled = is_cfd_reset_password_modal_enabled;
     }
 
     setRealAccountSignupParams(params) {
@@ -941,7 +941,6 @@ export default class UIStore extends BaseStore {
     }
 
     setCFDPasswordResetModal(val) {
-        this.is_cfd_reset_password_modal_enabled = !!val;
         this.is_reset_trading_password_modal_visible = !!val;
     }
 

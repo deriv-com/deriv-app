@@ -1,1 +1,0 @@
-export { ManualForm } from './ManualForm';

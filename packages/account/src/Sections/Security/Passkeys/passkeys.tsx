@@ -92,7 +92,8 @@ const Passkeys = observer(() => {
         if (
             is_passkeys_list_loading ||
             passkey_status === PASSKEY_STATUS_CODES.CREATED ||
-            passkey_status === PASSKEY_STATUS_CODES.REMOVED
+            passkey_status === PASSKEY_STATUS_CODES.REMOVED ||
+            passkey_status === PASSKEY_STATUS_CODES.VERIFYING
         )
             return;
         if (!passkeys_list?.length) {

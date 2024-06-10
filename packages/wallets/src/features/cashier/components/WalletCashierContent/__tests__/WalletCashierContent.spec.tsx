@@ -2,20 +2,32 @@ import React from 'react';
 import { createMemoryHistory, To } from 'history';
 import { Router } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
-import { WalletDeposit } from '../../../flows/WalletDeposit';
-import { WalletFiatOnRamp } from '../../../flows/WalletFiatOnRamp';
-import { WalletResetBalance } from '../../../flows/WalletResetBalance';
-import { WalletTransactions } from '../../../flows/WalletTransactions';
-import { WalletTransfer } from '../../../flows/WalletTransfer';
-import { WalletWithdrawal } from '../../../flows/WalletWithdrawal';
 import WalletCashierContent from '../WalletCashierContent';
 
-jest.mock('../../../flows/WalletDeposit');
-jest.mock('../../../flows/WalletFiatOnRamp');
-jest.mock('../../../flows/WalletResetBalance');
-jest.mock('../../../flows/WalletTransactions');
-jest.mock('../../../flows/WalletTransfer');
-jest.mock('../../../flows/WalletWithdrawal');
+jest.mock('../../../flows/WalletDeposit', () => ({
+    WalletDeposit: jest.fn(() => <div>WalletDeposit</div>),
+}));
+
+jest.mock('../../../flows/WalletFiatOnRamp', () => ({
+    WalletFiatOnRamp: jest.fn(() => <div>WalletFiatOnRamp</div>),
+}));
+
+jest.mock('../../../flows/WalletResetBalance', () => ({
+    WalletResetBalance: jest.fn(() => <div>WalletResetBalance</div>),
+}));
+
+jest.mock('../../../flows/WalletTransactions', () => ({
+    WalletTransactions: jest.fn(() => <div>WalletTransactions</div>),
+}));
+
+jest.mock('../../../flows/WalletTransfer', () => ({
+    WalletTransfer: jest.fn(() => <div>WalletTransfer</div>),
+}));
+
+jest.mock('../../../flows/WalletWithdrawal', () => ({
+    WalletWithdrawal: jest.fn(() => <div>WalletWithdrawal</div>),
+}));
+
 jest.mock('../../../modules', () => ({
     CashierLocked: jest.fn(({ children }) => <div>{children}</div>),
     DepositLocked: jest.fn(({ children }) => <div>{children}</div>),
@@ -32,15 +44,6 @@ describe('WalletCashierContent', () => {
             </Router>
         );
     };
-
-    beforeEach(() => {
-        (WalletDeposit as jest.Mock).mockReturnValue(<div>WalletDeposit</div>);
-        (WalletFiatOnRamp as jest.Mock).mockReturnValue(<div>WalletFiatOnRamp</div>);
-        (WalletResetBalance as jest.Mock).mockReturnValue(<div>WalletResetBalance</div>);
-        (WalletTransactions as jest.Mock).mockReturnValue(<div>WalletTransactions</div>);
-        (WalletTransfer as jest.Mock).mockReturnValue(<div>WalletTransfer</div>);
-        (WalletWithdrawal as jest.Mock).mockReturnValue(<div>WalletWithdrawal</div>);
-    });
 
     it('redirects to deposit page if no other page is matched', () => {
         const history = createMemoryHistory();

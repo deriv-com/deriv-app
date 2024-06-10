@@ -1,7 +1,7 @@
 /** @define app-contents; weak */
 
 *:where(:not(html, iframe, canvas, img, svg, video, audio):not(svg *, symbol *)) {
-    all: revert-layer;
+    all: revert-layer !important;
 }
 
 /*rtl:begin:ignore*/

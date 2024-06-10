@@ -24,20 +24,13 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
         error,
         isLoading: isWalletCreationLoading,
         isSuccess: isMutateSuccess,
-        mutate,
+        mutateAsync,
         status,
     } = useCreateWallet();
     const { isMobile } = useDevice();
     const history = useHistory();
     const modal = useModal();
     const { addWalletAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
-
-    useEffect(() => {
-        if (data && isMutateSuccess) {
-            addWalletAccountToLocalStorage(data);
-            switchWalletAccount(data?.client_id);
-        }
-    }, [addWalletAccountToLocalStorage, data, isMutateSuccess, switchWalletAccount]);
 
     useEffect(
         () => {
@@ -80,9 +73,20 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
                         <LabelPairedPlusMdFillIcon fill='#333333' />
                     )
                 }
-                onClick={e => {
+                onClick={async e => {
                     e.stopPropagation();
-                    currency && mutate({ account_type: isCrypto ? 'crypto' : 'doughflow', currency });
+
+                    if (!currency) return;
+
+                    const { new_account_wallet } = await mutateAsync({
+                        account_type: isCrypto ? 'crypto' : 'doughflow',
+                        currency,
+                    });
+
+                    if (!new_account_wallet) return;
+
+                    await addWalletAccountToLocalStorage({ ...new_account_wallet, display_balance: '0.00' });
+                    switchWalletAccount(new_account_wallet.client_id);
                 }}
                 size={isMobile ? 'sm' : 'lg'}
             >

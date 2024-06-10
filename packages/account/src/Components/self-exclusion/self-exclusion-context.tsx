@@ -6,7 +6,7 @@ export type TSelfExclusionContext = {
     currency: string;
     currency_display?: string;
     exclusion_texts?: Record<string, string>;
-    footer_ref?: React.RefObject<HTMLElement>;
+    footer_ref?: HTMLElement | DocumentFragment;
     getMaxLength?: (value: string) => void;
     goToConfirm?: (value: FormikValues) => void;
     handleSubmit: (values: FormikValues, setSubmitting: FormikHelpers<FormikValues>) => void;
@@ -20,6 +20,7 @@ export type TSelfExclusionContext = {
     state?: FormikValues;
     toggleArticle?: () => void;
     validateFields?: (values: FormikValues) => Record<string, string | null | undefined>;
+    backToReview?: () => void;
 };
 
 const SelfExclusionContext = React.createContext<TSelfExclusionContext>({

@@ -1,4 +1,3 @@
-import React from 'react';
 import { localize } from '@deriv/translations';
 import IconWithMessage from '../icon-with-message';
 

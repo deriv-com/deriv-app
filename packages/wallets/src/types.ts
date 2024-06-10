@@ -8,6 +8,7 @@ import type {
     useAuthentication,
     useAuthorize,
     useAvailableMT5Accounts,
+    useBalanceSubscription,
     useCreateMT5Account,
     useCreateOtherCFDAccount,
     useCreateWallet,
@@ -104,3 +105,7 @@ export type TMT5LandingCompanyName = THooks.MT5AccountsList['landing_company_sho
 export type TWalletCarouselItem = Omit<THooks.AllWalletAccounts, 'landing_company_name'>;
 
 export type TIconTypes = Record<string, IconTypes>;
+
+export type TSubscribedBalance = {
+    balance: Omit<ReturnType<typeof useBalanceSubscription>, 'subscribe' | 'unsubscribe'>;
+};

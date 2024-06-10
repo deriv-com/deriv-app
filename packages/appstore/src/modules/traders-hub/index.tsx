@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { isDesktop, routes, checkServerMaintenance, startPerformanceEventTimer } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -8,9 +8,11 @@ import ModalManager from 'Components/modals/modal-manager';
 import MainTitleBar from 'Components/main-title-bar';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
+import { useContentFlag, useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import classNames from 'classnames';
 import './traders-hub.scss';
-import { useContentFlag, useGrowthbookFeatureFlag } from '@deriv/hooks';
+
+const RealAccountCreationBanner = lazy(() => import('Components/real-account-creation-banner'));
 
 const TradersHub = observer(() => {
     const { traders_hub, client, ui } = useStore();
@@ -30,6 +32,8 @@ const TradersHub = observer(() => {
         is_mt5_allowed,
         has_active_real_account,
         website_status,
+        has_any_real_account,
+        is_eu,
     } = client;
 
     const { is_cr_demo, is_eu_demo, is_eu_real } = useContentFlag();
@@ -40,7 +44,7 @@ const TradersHub = observer(() => {
         (!is_switching && !is_logging_in && is_account_setting_loaded && is_landing_company_loaded) ||
         checkServerMaintenance(website_status);
 
-    const direct_to_real_account_creation = useGrowthbookFeatureFlag({
+    const [direct_to_real_account_creation] = useGrowthbookGetFeatureValue({
         featureFlag: 'direct-real-account-creation-flow',
         defaultValue: false,
     });
@@ -79,6 +83,11 @@ const TradersHub = observer(() => {
         startPerformanceEventTimer('option_multiplier_section_loading_time');
     }, []);
 
+    const [should_show_banner] = useGrowthbookGetFeatureValue({
+        featureFlag: 'traders-hub-real-account-banner',
+        defaultValue: false,
+    });
+
     const eu_title = is_eu_demo || is_eu_real || is_eu_user;
     const getPlatformToggleOptions = () => [
         { text: eu_title ? localize('Multipliers') : localize('Options'), value: 'options' },
@@ -111,9 +120,11 @@ const TradersHub = observer(() => {
         );
     };
 
-    const getOrderedPlatformSections = () => {
+    const getOrderedPlatformSections = (isDesktop = false) => {
         if (is_mt5_allowed) {
-            return (
+            return isDesktop ? (
+                <OrderedPlatformSections />
+            ) : (
                 <OrderedPlatformSections
                     is_cfd_visible={selected_platform_type === 'cfd'}
                     is_options_and_multipliers_visible={selected_platform_type === 'options'}
@@ -135,31 +146,30 @@ const TradersHub = observer(() => {
                     })}
                     ref={traders_hub_ref}
                 >
+                    {should_show_banner && !has_any_real_account && !is_eu && is_landing_company_loaded && (
+                        <Suspense fallback={<div />}>
+                            <RealAccountCreationBanner />
+                        </Suspense>
+                    )}
+
                     <MainTitleBar />
-                    <DesktopWrapper>
-                        {!is_landing_company_loaded ? (
-                            <OrderedPlatformSections />
-                        ) : (
-                            <OrderedPlatformSections is_cfd_visible={is_mt5_allowed} />
-                        )}
-                    </DesktopWrapper>
+                    <DesktopWrapper>{getOrderedPlatformSections(true)}</DesktopWrapper>
                     <MobileWrapper>
-                        {is_landing_company_loaded ? (
-                            is_mt5_allowed && (
+                        {is_mt5_allowed &&
+                            (is_landing_company_loaded ? (
                                 <ButtonToggle
                                     buttons_arr={is_eu_user ? platform_toggle_options_eu : platform_toggle_options}
                                     className='traders-hub__button-toggle'
                                     has_rounded_button
                                     is_traders_hub={window.location.pathname === routes.traders_hub}
-                                    name='platform_type'
+                                    name='platforn_type'
                                     onChange={platformTypeChange}
                                     value={selected_platform_type}
                                 />
-                            )
-                        ) : (
-                            <ButtonToggleLoader />
-                        )}
-                        {is_landing_company_loaded && !is_mt5_allowed && (
+                            ) : (
+                                <ButtonToggleLoader />
+                            ))}
+                        {!is_mt5_allowed && (
                             <div className='traders-hub--mt5-not-allowed'>
                                 <Text size='s' weight='bold' color='prominent'>
                                     <Localize i18n_default_text='Multipliers' />

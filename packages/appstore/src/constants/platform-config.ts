@@ -57,7 +57,7 @@ export const getAppstorePlatforms = (): PlatformConfig[] => [
     },
     {
         name: getPlatformSettingsAppstore('go').name,
-        app_desc: localize('The mobile trading app for multipliers.'),
+        app_desc: localize('The mobile app for trading multipliers and accumulators.'),
         is_external: false,
         new_tab: false,
     },

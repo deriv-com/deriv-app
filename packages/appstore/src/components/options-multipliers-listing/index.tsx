@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Text, StaticUrl } from '@deriv/components';
-import { getPlatformSettingsAppstore, setPerformanceValue } from '@deriv/shared';
+import { ContentFlag, getPlatformSettingsAppstore, setPerformanceValue } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
@@ -9,7 +9,6 @@ import TradingAppCard from 'Components/containers/trading-app-card';
 import { BrandConfig } from 'Constants/platform-config';
 import { getHasDivider } from 'Constants/utils';
 import { Analytics } from '@deriv-com/analytics';
-import { getAvailablePlatforms } from '../../helpers';
 
 const OptionsAndMultipliersListing = observer(() => {
     const { traders_hub, client, ui } = useStore();
@@ -21,13 +20,20 @@ const OptionsAndMultipliersListing = observer(() => {
         no_CR_account,
         is_demo,
         selected_account_type,
+        content_flag,
         setIsDerivGoModalVisible,
     } = traders_hub;
-    const { has_maltainvest_account, real_account_creation_unlock_date, is_landing_company_loaded } = client;
+    const { has_maltainvest_account, is_eu, real_account_creation_unlock_date, is_landing_company_loaded } = client;
 
     const { setShouldShowCooldownModal, openRealAccountSignup, is_mobile } = ui;
 
-    const platforms = getAvailablePlatforms();
+    const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
+
+    const low_risk_cr_eu = content_flag === ContentFlag.LOW_RISK_CR_EU;
+
+    const high_risk_cr = content_flag === ContentFlag.HIGH_RISK_CR;
+
+    const cr_demo = content_flag === ContentFlag.CR_DEMO;
 
     const analyticsAction = (available_platform: typeof available_platforms[number]) => {
         Analytics.trackEvent('ce_tradershub_dashboard_form', {
@@ -40,13 +46,13 @@ const OptionsAndMultipliersListing = observer(() => {
 
     const OptionsTitle = () => {
         if (is_mobile) return null;
-        if (platforms.includes('options')) {
+        if (low_risk_cr_non_eu || high_risk_cr || cr_demo) {
             return (
                 <Text size='sm' weight='bold'>
                     <Localize i18n_default_text='Options' />
                 </Text>
             );
-        } else if (!platforms.includes('options')) {
+        } else if (low_risk_cr_eu || is_eu) {
             return (
                 <Text size='sm' weight='bold' color='prominent'>
                     <Localize i18n_default_text='Multipliers' />
@@ -66,7 +72,7 @@ const OptionsAndMultipliersListing = observer(() => {
         <ListingContainer
             title={<OptionsTitle />}
             description={
-                platforms.includes('options') && platforms.includes('multipliers') ? (
+                low_risk_cr_non_eu || high_risk_cr || cr_demo ? (
                     <Text size='xs' line_height='s'>
                         <Localize
                             i18n_default_text='Buy or sell at a specific time for a specific price. <0>Learn more</0>'

@@ -1,12 +1,12 @@
 import { action, intercept, observable, reaction, toJS, when, makeObservable } from 'mobx';
 import { isProduction, isEmptyObject, Validator } from '@deriv/shared';
-import { TCoreStores } from '@deriv/stores/types';
 import { getValidationRules } from './Modules/Trading/Constants/validation-rules';
+import { TRootStore } from 'Types';
 
 type TValidationRules = ReturnType<typeof getValidationRules> | Record<string, never>;
 
 type TBaseStoreOptions = {
-    root_store: TCoreStores;
+    root_store: TRootStore;
     local_storage_properties?: string[];
     session_storage_properties?: string[];
     validation_rules?: TValidationRules;
@@ -38,7 +38,7 @@ export default class BaseStore {
     pre_switch_account_listener: null | (() => Promise<void>) = null;
     realAccountSignupEndedDisposer: null | (() => void) = null;
     real_account_signup_ended_listener: null | (() => Promise<void>) = null;
-    root_store: TCoreStores;
+    root_store: TRootStore;
     session_storage_properties: string[];
     store_name = '';
     switchAccountDisposer: null | (() => void) = null;

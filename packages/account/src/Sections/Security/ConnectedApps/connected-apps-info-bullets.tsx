@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { Text } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
-import { CONNECTED_APPS_INFO_BULLETS } from 'Constants/connected-apps-config';
+import { CONNECTED_APPS_INFO_BULLETS } from '../../../Constants/connected-apps-config';
 
 type TConnectedAppsInfoBulletsProps = {
     class_name: string;

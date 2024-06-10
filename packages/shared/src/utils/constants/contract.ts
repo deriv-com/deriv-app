@@ -299,6 +299,7 @@ export const getCardLabels = () =>
         TAKE_PROFIT_LOSS_NOT_AVAILABLE: localize(
             'Take profit and/or stop loss are not available while deal cancellation is active.'
         ),
+        TAKE_PROFIT_IS_NOT_AVAILABLE: localize("Take profit can't be adjusted for ongoing accumulator contracts."),
         WON: localize('Won'),
     } as const);
 

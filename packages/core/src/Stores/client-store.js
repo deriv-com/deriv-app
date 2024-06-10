@@ -30,7 +30,6 @@ import {
     sortApiData,
     urlForLanguage,
     getAppId,
-    getUrlp2p,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
@@ -1507,6 +1506,13 @@ export default class ClientStore extends BaseStore {
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
+        if (action_param === 'request_email') {
+            const request_email_code = code_param ?? LocalStore.get(`verification_code.${action_param}`) ?? '';
+            if (request_email_code) {
+                this.setVerificationCode(request_email_code, action_param);
+                this.root_store.ui.toggleResetEmailModal(true);
+            }
+        }
         const client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login
         if (authorize_response) {
@@ -2024,10 +2030,17 @@ export default class ClientStore extends BaseStore {
             landing_company_name: 'landing_company_shortcode',
         };
         const client_object = {};
+        const selected_account = obj_params?.selected_acct;
+        const is_wallets_selected = selected_account?.startsWith('CRW');
         let active_loginid;
+        let active_wallet_loginid;
 
-        if (obj_params.selected_acct) {
-            active_loginid = obj_params.selected_acct;
+        if (selected_account) {
+            if (is_wallets_selected) {
+                active_wallet_loginid = obj_params.selected_acct;
+            } else {
+                active_loginid = obj_params.selected_acct;
+            }
         }
 
         account_list.forEach(function (account) {
@@ -2070,7 +2083,12 @@ export default class ClientStore extends BaseStore {
 
         // TODO: send login flag to GTM if needed
         if (active_loginid && Object.keys(client_object).length) {
-            localStorage.setItem('active_loginid', active_loginid);
+            if (selected_account && is_wallets_selected) {
+                localStorage.setItem('active_wallet_loginid', active_wallet_loginid);
+            } else {
+                localStorage.setItem('active_loginid', active_loginid);
+            }
+
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
             this.syncWithLegacyPlatforms(active_loginid, this.accounts);
         }
@@ -2491,16 +2509,13 @@ export default class ClientStore extends BaseStore {
     syncWithLegacyPlatforms(active_loginid, client_accounts) {
         const smartTrader = {};
         const binaryBot = {};
-        const p2p = {};
 
         smartTrader.iframe = document.getElementById('localstorage-sync');
         binaryBot.iframe = document.getElementById('localstorage-sync__bot');
-        p2p.iframe = document.getElementById('localstorage-sync__p2p');
         smartTrader.origin = getUrlSmartTrader();
         binaryBot.origin = getUrlBinaryBot(false);
-        p2p.origin = getUrlp2p();
 
-        [smartTrader, binaryBot, p2p].forEach(platform => {
+        [smartTrader, binaryBot].forEach(platform => {
             if (platform.iframe) {
                 // Keep client.accounts in sync (in case user wasn't logged in).
                 platform.iframe.contentWindow.postMessage(

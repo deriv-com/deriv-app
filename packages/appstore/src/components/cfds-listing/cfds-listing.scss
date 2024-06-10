@@ -1932,6 +1932,13 @@
     }
 }
 
+.dc-mobile-dialog__content.dc-mobile-dialog__content--is-full-height:has(.dc-mobile-dialog__cfd-password-modal) {
+    @include mobile-or-tablet-screen {
+        display: flex;
+        justify-content: center;
+    }
+}
+
 .dc-modal__container_cfd-password-modal,
 .dc-mobile-dialog__cfd-password-modal {
     display: flex;

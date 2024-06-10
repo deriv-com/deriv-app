@@ -5,7 +5,7 @@
     justify-content: space-between;
     gap: 4.8rem;
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         display: none;
     }
     &__left {

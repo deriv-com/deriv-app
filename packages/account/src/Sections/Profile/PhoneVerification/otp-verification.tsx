@@ -46,6 +46,11 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
         //TODO: inplement function to verify OTP when BE API is ready
         if (should_show_phone_number_otp) {
             sendPhoneOTPVerification(otp);
+        } else {
+            setOtpVerification({
+                show_otp_verification: false,
+                phone_verification_type: '',
+            });
         }
     };
 

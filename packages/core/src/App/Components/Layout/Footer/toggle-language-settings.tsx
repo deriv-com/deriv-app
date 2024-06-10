@@ -2,14 +2,15 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import { Icon, Modal, Popover, Text } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { useTranslations, Localize } from '@deriv-com/translations';
 import 'Sass/app/modules/settings.scss';
 import LanguageSettings from '../../../Containers/SettingsModal/settings-language';
 
 const ToggleLanguageSettings = observer(() => {
     const { common, ui } = useStore();
+    const { localize, currentLang } = useTranslations();
     const { is_language_settings_modal_on, toggleLanguageSettingsModal } = ui;
-    const { current_language, is_language_changing } = common;
+    const { is_language_changing } = common;
 
     const toggle_settings_class = classNames('ic-language', 'footer__link', {
         'ic-settings--active': is_language_settings_modal_on,
@@ -25,13 +26,13 @@ const ToggleLanguageSettings = observer(() => {
             >
                 <Popover alignment='top' message={localize('Language')} zIndex='9999'>
                     <Icon
-                        icon={`IcFlag${current_language.replace('_', '-')}`}
+                        icon={`IcFlag${currentLang.replace('_', '-')}`}
                         data_testid='dt_icon'
                         className='ic-settings-language__icon'
                         size={18}
                     />
                     <Text weight='bold' size='xxs'>
-                        <Localize i18n_default_text={current_language} />
+                        <Localize i18n_default_text={currentLang} />
                     </Text>
                 </Popover>
             </a>

@@ -1,5 +1,5 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const { IgnorePlugin, DefinePlugin } = require('webpack');
+const { IgnorePlugin } = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const path = require('path');
@@ -17,7 +17,6 @@ const {
 } = require('./loaders-config');
 
 const ALIASES = {
-    'react/jsx-runtime': 'react/jsx-runtime.js',
     Assets: path.resolve(__dirname, '../src/Assets'),
     Components: path.resolve(__dirname, '../src/Components'),
     Configs: path.resolve(__dirname, '../src/Configs'),
@@ -98,10 +97,6 @@ const MINIMIZERS = !IS_RELEASE
       ];
 
 const plugins = () => [
-    new DefinePlugin({
-        'process.env.ACC_TRANSLATION_PATH': JSON.stringify('deriv-app-account/staging'),
-        'process.env.CROWDIN_URL': JSON.stringify('https://translations.deriv.com'),
-    }),
     new CleanWebpackPlugin(),
     new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
     new MiniCssExtractPlugin(cssConfig()),

@@ -1,8 +1,7 @@
 import { Redirect } from 'react-router-dom';
-import { routes } from '@deriv/shared';
+import { BLOCK_LANGUAGES, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useTranslations } from '@deriv-com/translations';
-import { getAllowedLanguages } from '@deriv/translations';
+import { useTranslations, getAllowedLanguages } from '@deriv-com/translations';
 import FormSubHeader from '../../../Components/form-sub-header';
 import LanguageRadioButton from '../../../Components/language-settings';
 import { useEffect } from 'react';
@@ -27,7 +26,7 @@ const LanguageSettings = observer(() => {
     }
 
     // [TODO] - Need to replace this with utility function after merging https://github.com/deriv-com/translations/pull/41
-    const allowed_languages: Record<string, string> = getAllowedLanguages();
+    const allowed_languages: Record<string, string> = getAllowedLanguages(BLOCK_LANGUAGES);
     return (
         <div className='settings-language'>
             <FormSubHeader title={localize('Select Language')} />

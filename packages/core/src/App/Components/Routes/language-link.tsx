@@ -2,7 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import { Icon } from '@deriv/components';
-import { getAllowedLanguages } from '@deriv/translations';
+import { getAllowedLanguages, useTranslations } from '@deriv-com/translations';
+import { BLOCK_LANGUAGES } from '@deriv/shared';
 
 export type TLanguageLink = {
     icon_classname?: string;
@@ -13,8 +14,9 @@ export type TLanguageLink = {
 
 const LanguageLink = observer(({ icon_classname, is_clickable = false, lang, toggleModal }: TLanguageLink) => {
     const { common } = useStore();
-    const { changeSelectedLanguage, current_language } = common;
-    const is_active = current_language === lang;
+    const { currentLang, switchLanguage } = useTranslations();
+    const { changeSelectedLanguage } = common;
+    const is_active = currentLang === lang;
 
     const link: React.ReactNode = (
         <React.Fragment>
@@ -31,7 +33,7 @@ const LanguageLink = observer(({ icon_classname, is_clickable = false, lang, tog
                     'settings-language__language-name--active': is_active,
                 })}
             >
-                {getAllowedLanguages()[lang]}
+                {getAllowedLanguages(BLOCK_LANGUAGES)[lang]}
             </span>
         </React.Fragment>
     );
@@ -53,6 +55,7 @@ const LanguageLink = observer(({ icon_classname, is_clickable = false, lang, tog
                     key={lang}
                     onClick={() => {
                         changeSelectedLanguage(lang);
+                        switchLanguage(lang);
                         toggleModal?.();
                     }}
                     className={classNames('settings-language__language-link', {

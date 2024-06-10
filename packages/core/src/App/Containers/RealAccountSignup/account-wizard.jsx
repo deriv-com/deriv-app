@@ -336,7 +336,7 @@ const AccountWizard = observer(props => {
             trackEvent({
                 action: 'step_passed',
                 step_num: 3,
-                step_codename: STEP_IDENTIFIERS[index],
+                step_codename: STEP_IDENTIFIERS[3],
             });
         } else {
             trackEvent({

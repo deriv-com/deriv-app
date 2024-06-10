@@ -6,12 +6,7 @@ import WalletCashierHeader from '../WalletCashierHeader';
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
-    useActiveWalletAccount: jest.fn().mockReturnValue({
-        data: {
-            currency: 'USD',
-            loginid: 'CR1',
-        },
-    }),
+    useActiveWalletAccount: jest.fn(),
     useBalanceSubscription: jest.fn(),
 }));
 
@@ -29,6 +24,12 @@ const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => (
 
 describe('<WalletCashierHeader/>', () => {
     beforeEach(() => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({
+            data: {
+                currency: 'USD',
+                loginid: 'CR1',
+            },
+        });
         (useBalanceSubscription as jest.Mock).mockReturnValue({
             data: {
                 balance: 10,

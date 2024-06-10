@@ -28,7 +28,7 @@ const useAvailableCTraderAccounts = () => {
                             account.market_type as keyof typeof market_type_to_leverage_mapper
                         ],
                 } as const;
-            }) ?? [],
+            }),
         [ctrader_available_accounts?.trading_platform_available_accounts]
     );
 

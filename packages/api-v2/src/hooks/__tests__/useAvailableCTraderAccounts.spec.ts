@@ -42,7 +42,7 @@ describe('useAvailableCTraderAccounts', () => {
 
         const { result } = renderHook(() => useAvailableCTraderAccounts());
 
-        expect(result.current.data).toEqual([]);
+        expect(result.current.data).toBe(undefined);
     });
 
     it('should pass through other fields from useAuthorizedQuery', () => {

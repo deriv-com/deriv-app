@@ -2,6 +2,7 @@ const baseConfigForPackages = require('../../jest.config.base');
 
 module.exports = {
     ...baseConfigForPackages,
+    preset: 'ts-jest',
     moduleNameMapper: {
         '\\.css$': '<rootDir>/../../__mocks__/styleMock.js',
         '\\.s(c|a)ss$': '<rootDir>/../../__mocks__/styleMock.js',
@@ -17,5 +18,9 @@ module.exports = {
         '^Stores/(.*)$': '<rootDir>/src/Stores/$1',
         '^Sections/(.*)$': '<rootDir>/src/Sections/$1',
         '^Sections$': '<rootDir>/src/Sections/index.js',
+    },
+    transform: {
+        '^.+\\.(ts|tsx)?$': ['ts-jest', { isolatedModules: true, babelConfig: true }],
+        '^.+\\.(js|jsx)$': 'babel-jest',
     },
 };

@@ -51,11 +51,6 @@ describe('TradersHubHeader', () => {
                     mock_store ??
                     mockStore({
                         ui: { is_desktop: true },
-                        feature_flags: {
-                            data: {
-                                next_wallet: true,
-                            },
-                        },
                         traders_hub: {
                             modal_data: {
                                 active_modal: 'currency_selection',
@@ -82,11 +77,6 @@ describe('TradersHubHeader', () => {
         });
         renderComponent(mock_store);
         expect(await screen.findByText('MockedRealAccountSignup')).toBeInTheDocument();
-    });
-
-    it('should render "View tutorial" option in the header', () => {
-        renderComponent();
-        expect(screen.getByText('View tutorial')).toBeInTheDocument();
     });
 
     it('should render "Notifications" option in the header', () => {

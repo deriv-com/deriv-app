@@ -1,16 +1,19 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useBalance } from '@deriv/api-v2';
+import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useAuthorize } from '@deriv/api-v2';
+import { displayMoney } from '@deriv/api-v2/src/utils';
 import { LabelPairedArrowsRotateSmBoldIcon, LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
 import useDevice from '../../hooks/useDevice';
+import { TSubscribedBalance } from '../../types';
 import { WalletText } from '../Base';
 import { WalletListCardBadge } from '../WalletListCardBadge';
 import { WalletMarketIcon } from '../WalletMarketIcon';
 
-const DerivAppsTradingAccount: React.FC = () => {
+const DerivAppsTradingAccount: React.FC<TSubscribedBalance> = ({ balance }) => {
     const { isMobile } = useDevice();
     const history = useHistory();
-    const { isLoading } = useBalance();
+    const { data: authorizeData } = useAuthorize();
+    const { data: balanceData, isLoading } = balance;
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
 
@@ -28,7 +31,14 @@ const DerivAppsTradingAccount: React.FC = () => {
                     <div className='wallets-skeleton wallets-deriv-apps-balance-loader' />
                 ) : (
                     <WalletText size='sm' weight='bold'>
-                        {activeLinkedToTradingAccount?.display_balance}
+                        {displayMoney(
+                            balanceData?.accounts?.[activeLinkedToTradingAccount?.loginid ?? '']?.balance || 0,
+                            activeLinkedToTradingAccount?.currency_config?.display_code || 'USD',
+                            {
+                                fractional_digits: activeLinkedToTradingAccount?.currency_config?.fractional_digits,
+                                preferred_language: authorizeData?.preferred_language,
+                            }
+                        )}
                     </WalletText>
                 )}
                 <WalletText color='less-prominent' lineHeight='sm' size='xs' weight='bold'>
@@ -39,8 +49,8 @@ const DerivAppsTradingAccount: React.FC = () => {
                 className='wallets-deriv-apps-section__button'
                 onClick={() => {
                     activeWallet?.is_virtual
-                        ? history.push('/wallets/cashier/reset-balance')
-                        : history.push('/wallets/cashier/transfer', {
+                        ? history.push('/wallet/reset-balance')
+                        : history.push('/wallet/account-transfer', {
                               toAccountLoginId: activeLinkedToTradingAccount?.loginid,
                           });
                 }}

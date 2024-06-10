@@ -3,6 +3,7 @@ import Joyride, { CallBackProps, STATUS } from 'react-joyride';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import {
     useActiveWalletAccount,
+    useAllWalletAccounts,
     useAuthorize,
     useCtraderAccountsList,
     useDxtradeAccountsList,
@@ -11,6 +12,7 @@ import {
 } from '@deriv/api-v2';
 import useDevice from '../../hooks/useDevice';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
+import { useModal } from '../ModalProvider';
 import {
     getFiatWalletLoginId,
     TooltipComponent,
@@ -23,6 +25,7 @@ const WalletTourGuide = () => {
     const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key) ?? '');
     const [run, setRun] = useState(false);
     const { isMobile } = useDevice();
+    const modal = useModal();
 
     const switchWalletAccount = useWalletAccountSwitcher();
     const { isFetching, isLoading, isSuccess } = useAuthorize();
@@ -31,6 +34,7 @@ const WalletTourGuide = () => {
     const { isFetching: ctraderIsLoading } = useCtraderAccountsList();
     const { isFetching: dxtradeIsLoading } = useDxtradeAccountsList();
     const { isFetching: sortedAccountsIsLoading } = useSortedMT5Accounts();
+    const { data: availableWallets } = useAllWalletAccounts();
 
     const needToStart = walletsOnboarding === START_VALUE;
     const activeWalletLoginId = activeWallet?.loginid;
@@ -38,6 +42,14 @@ const WalletTourGuide = () => {
     const activeFiatWalletLoginId = fiatWalletLoginId == activeWalletLoginId;
     const isEverythingLoaded =
         !isLoading && !isFetching && isSuccess && !ctraderIsLoading && !dxtradeIsLoading && !sortedAccountsIsLoading;
+    const allWalletsAreAdded = Boolean(availableWallets?.every(wallet => wallet.is_added));
+
+    useEffect(() => {
+        if (needToStart && modal.isOpen) {
+            modal.hide();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [needToStart, modal.isOpen]);
 
     useEffect(() => {
         const switchAccountAndRun = async () => {
@@ -81,7 +93,7 @@ const WalletTourGuide = () => {
             floaterProps={{ disableAnimation: true }}
             run={run}
             scrollOffset={isMobile ? 100 : 80}
-            steps={isMobile ? mobileStepTourGuide : desktopStepTourGuide}
+            steps={isMobile ? mobileStepTourGuide(allWalletsAreAdded) : desktopStepTourGuide(allWalletsAreAdded)}
             tooltipComponent={TooltipComponent}
         />
     );

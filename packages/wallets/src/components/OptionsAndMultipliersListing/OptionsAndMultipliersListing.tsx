@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Trans } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useActiveLinkedToTradingAccount } from '@deriv/api-v2';
@@ -8,6 +7,7 @@ import { optionsAndMultipliersContent } from '../../constants/constants';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../helpers/urls';
 import useDevice from '../../hooks/useDevice';
 import { TRoute } from '../../routes/Router';
+import { TSubscribedBalance } from '../../types';
 import { WalletLink, WalletText } from '../Base';
 import { DerivAppsSection } from '../DerivAppsSection';
 import { TradingAccountCard } from '../TradingAccountCard';
@@ -55,7 +55,7 @@ const LinkTitle: React.FC<TLinkTitleProps> = ({ icon, title }) => {
     );
 };
 
-const OptionsAndMultipliersListing: React.FC = () => {
+const OptionsAndMultipliersListing: React.FC<TSubscribedBalance> = ({ balance }) => {
     const { isMobile } = useDevice();
     const history = useHistory();
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
@@ -78,14 +78,9 @@ const OptionsAndMultipliersListing: React.FC = () => {
                         />
                     </WalletText>
                 </div>
-                <DerivAppsSection />
+                <DerivAppsSection balance={balance} />
             </section>
-            <div
-                className={classNames('wallets-options-and-multipliers-listing__content', {
-                    'wallets-options-and-multipliers-listing__content--without-trading-account':
-                        !activeLinkedToTradingAccount?.loginid,
-                })}
-            >
+            <div className='wallets-options-and-multipliers-listing__content'>
                 {optionsAndMultipliersContent.map(account => {
                     const { description, title } = account;
 
@@ -94,16 +89,7 @@ const OptionsAndMultipliersListing: React.FC = () => {
                             {...account}
                             disabled={!activeLinkedToTradingAccount?.loginid}
                             key={`trading-account-card-${title}`}
-                            leading={
-                                <LinkTitle
-                                    icon={
-                                        activeLinkedToTradingAccount?.loginid || !isMobile
-                                            ? account.icon
-                                            : account.smallIcon
-                                    }
-                                    title={title}
-                                />
-                            }
+                            leading={<LinkTitle icon={account.icon} title={title} />}
                             onClick={() => {
                                 account.isExternal
                                     ? window.open(account.redirect, '_blank')

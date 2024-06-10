@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
-import { routes, ContentFlag, checkServerMaintenance, startPerformanceEventTimer } from '@deriv/shared';
+import { routes, checkServerMaintenance, startPerformanceEventTimer } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
@@ -9,9 +9,11 @@ import ModalManager from 'Components/modals/modal-manager';
 import MainTitleBar from 'Components/main-title-bar';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
+import { useContentFlag, useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import classNames from 'classnames';
-import TourGuide from '../tour-guide/tour-guide';
 import './traders-hub.scss';
+
+const RealAccountCreationBanner = lazy(() => import('Components/real-account-creation-banner'));
 
 const TradersHub = observer(() => {
     const { isDesktop } = useDevice();
@@ -31,40 +33,44 @@ const TradersHub = observer(() => {
         is_mt5_allowed,
         has_active_real_account,
         website_status,
+        has_any_real_account,
+        is_eu,
     } = client;
-    const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
+
+    const { is_cr_demo, is_eu_demo, is_eu_real } = useContentFlag();
+    const { selected_platform_type, setTogglePlatformType, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef<HTMLDivElement>(null);
 
     const can_show_notify =
         (!is_switching && !is_logging_in && is_account_setting_loaded && is_landing_company_loaded) ||
         checkServerMaintenance(website_status);
 
-    const [scrolled, setScrolled] = React.useState(false);
-
-    const handleScroll = React.useCallback(() => {
-        const element = traders_hub_ref?.current;
-        if (element && is_tour_open) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    }, [is_tour_open]);
+    const [direct_to_real_account_creation] = useGrowthbookGetFeatureValue({
+        featureFlag: 'direct-real-account-creation-flow',
+        defaultValue: false,
+    });
 
     React.useEffect(() => {
-        if (is_eu_user) setTogglePlatformType('cfd');
-        if (
-            !has_active_real_account &&
-            is_logged_in &&
-            is_from_signup_account &&
-            content_flag === ContentFlag.EU_DEMO
-        ) {
-            openRealAccountSignup('maltainvest');
-            setIsFromSignupAccount(false);
+        if (is_eu_user) {
+            setTogglePlatformType('cfd');
+        }
+        if (!has_active_real_account && is_from_signup_account && is_logged_in) {
+            if (direct_to_real_account_creation && is_cr_demo) {
+                openRealAccountSignup('svg');
+                setIsFromSignupAccount(false);
+            } else if (is_eu_demo) {
+                openRealAccountSignup('maltainvest');
+                setIsFromSignupAccount(false);
+            }
         }
     }, [
-        content_flag,
+        is_cr_demo,
+        is_eu_demo,
         has_active_real_account,
         is_eu_user,
         is_from_signup_account,
         is_logged_in,
+        direct_to_real_account_creation,
         openRealAccountSignup,
         setIsFromSignupAccount,
         setTogglePlatformType,
@@ -72,23 +78,20 @@ const TradersHub = observer(() => {
 
     React.useEffect(() => {
         if (is_eu_user) setTogglePlatformType('cfd');
-        const timer = setTimeout(() => {
-            handleScroll();
-            setTimeout(() => {
-                setScrolled(true);
-            }, 200);
-        }, 100);
-        return () => clearTimeout(timer);
-    }, [handleScroll, is_eu_user, is_tour_open, setTogglePlatformType]);
+    }, [is_eu_user, setTogglePlatformType]);
 
     React.useLayoutEffect(() => {
         startPerformanceEventTimer('option_multiplier_section_loading_time');
     }, []);
 
-    const eu_title = content_flag === ContentFlag.EU_DEMO || content_flag === ContentFlag.EU_REAL || is_eu_user;
+    const [should_show_banner] = useGrowthbookGetFeatureValue({
+        featureFlag: 'traders-hub-real-account-banner',
+        defaultValue: false,
+    });
 
+    const eu_title = is_eu_demo || is_eu_real || is_eu_user;
     const getPlatformToggleOptions = () => [
-        { text: eu_title ? localize('Multipliers') : localize('Options & Multipliers'), value: 'options' },
+        { text: eu_title ? localize('Multipliers') : localize('Options'), value: 'options' },
         { text: localize('CFDs'), value: 'cfd' },
     ];
     const platform_toggle_options = getPlatformToggleOptions();
@@ -171,10 +174,15 @@ const TradersHub = observer(() => {
                     })}
                     ref={traders_hub_ref}
                 >
+                    {should_show_banner && !has_any_real_account && !is_eu && is_landing_company_loaded && (
+                        <Suspense fallback={<div />}>
+                            <RealAccountCreationBanner />
+                        </Suspense>
+                    )}
+
                     <MainTitleBar />
                     {isDesktop ? getOrderedPlatformSections() : mobileTabletContent}
                     <ModalManager />
-                    {scrolled && <TourGuide />}
                 </div>
             </Div100vhContainer>
             {is_eu_user && (

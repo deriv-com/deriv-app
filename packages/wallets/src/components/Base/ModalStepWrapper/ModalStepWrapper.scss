@@ -71,9 +71,8 @@
     }
 
     &__body {
-        @include mobile {
-            overflow-y: scroll;
-        }
+        height: 100%;
+        overflow-y: scroll;
     }
 
     &__footer {

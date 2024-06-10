@@ -65,7 +65,11 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { pathname: route } = useLocation();
 
     const is_trading_hub_category =
-        route.startsWith(routes.traders_hub) || route.startsWith(routes.cashier) || route.startsWith(routes.account);
+        route === routes.traders_hub || route.startsWith(routes.cashier) || route.startsWith(routes.account);
+
+    const is_traders_hub_route = route === routes.traders_hub;
+
+    const is_wallet_route = route.startsWith(routes.wallets) || route.startsWith(routes.wallets_compare_accounts);
 
     const isMounted = useIsMounted();
     const { data } = useRemoteConfig(isMounted());
@@ -105,12 +109,12 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             const routes_config = getRoutesConfig();
             let primary_routes = [];
 
-            const location = window.location.pathname;
-
-            if (location === is_trading_hub_category) {
+            if (is_trading_hub_category) {
                 primary_routes = has_wallet ? [routes.reports, routes.account] : [routes.account, routes.cashier];
             } else {
-                primary_routes = [routes.reports, routes.account, routes.cashier];
+                primary_routes = has_wallet
+                    ? [routes.reports, routes.account]
+                    : [routes.reports, routes.account, routes.cashier];
             }
             setPrimaryRoutesConfig(getFilteredRoutesConfig(routes_config, primary_routes));
         };
@@ -310,7 +314,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 <Div100vhContainer height_offset='40px'>
                     <div className='header__menu-mobile-body-wrapper'>
                         <React.Fragment>
-                            {
+                            {!(is_traders_hub_route || is_wallet_route) && (
                                 <MobileDrawer.SubHeader
                                     className={classNames({
                                         'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
@@ -328,8 +332,9 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         setTogglePlatformType={setTogglePlatformType}
                                     />
                                 </MobileDrawer.SubHeader>
-                            }
-                            <MobileDrawer.Body>
+                            )}
+
+                            <MobileDrawer.Body className={is_traders_hub_route || is_wallet_route ? 'no-padding' : ''}>
                                 <div className='header__menu-mobile-platform-switcher' id='mobile_platform_switcher' />
                                 <MobileDrawer.Item>
                                     <MenuLink
@@ -350,7 +355,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         />
                                     </MobileDrawer.Item>
                                 )}
-                                {
+                                {route !== routes.traders_hub && (
                                     <MobileDrawer.Item>
                                         <MenuLink
                                             link_to={routes.trade}
@@ -360,7 +365,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                             is_active={route === routes.trade}
                                         />
                                     </MobileDrawer.Item>
-                                }
+                                )}
                                 {primary_routes_config.map((route_config, idx) =>
                                     getRoutesWithSubMenu(route_config, idx)
                                 )}
@@ -396,7 +401,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                 onClickLink={toggleDrawer}
                                             />
                                         </MobileDrawer.Item>
-                                        <MobileDrawer.Item>
+                                        <MobileDrawer.Item className='header__menu-mobile-theme--responsible-trading'>
                                             <MenuLink
                                                 link_to={getStaticUrl('/responsible')}
                                                 icon='IcVerification'
@@ -414,14 +419,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                 />
                                             </MobileDrawer.Item>
                                         )}
-                                        <MobileDrawer.Item className='header__menu-mobile-theme--trader-hub'>
-                                            <MenuLink
-                                                link_to={getStaticUrl('/')}
-                                                icon='IcDerivOutline'
-                                                text={localize('Go to Deriv.com')}
-                                                onClickLink={toggleDrawer}
-                                            />
-                                        </MobileDrawer.Item>
                                     </React.Fragment>
                                 )}
                                 {liveChat.isReady && cs_chat_whatsapp && (

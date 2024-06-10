@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, Formik } from 'formik';
-import className from 'classnames';
+import clsx from 'clsx';
 import {
     Div100vhContainer,
     Modal,
@@ -21,7 +21,7 @@ import FatcaDeclaration from './fatca-declaration';
 type TTermsOfUseFormProps = {
     agreed_tos: boolean;
     agreed_tnc: boolean;
-    fatca_declaration: '0' | '1';
+    fatca_declaration?: '0' | '1';
     resident_self_declaration?: boolean;
 };
 
@@ -105,7 +105,7 @@ const TermsOfUse = observer(
                                     is_disabled={isDesktop()}
                                 >
                                     <ThemedScrollbars>
-                                        <div className={className('details-form__elements', 'terms-of-use')}>
+                                        <div className={clsx('details-form__elements', 'terms-of-use')}>
                                             <BrokerSpecificMessage target={real_account_signup_target} />
                                             <Hr />
                                             <Field
@@ -118,7 +118,7 @@ const TermsOfUse = observer(
                                             <Hr />
                                             <Field
                                                 component={CheckboxField}
-                                                className='terms-of-use__checkbox'
+                                                clsx='terms-of-use__checkbox'
                                                 name='agreed_tos'
                                                 id='agreed_tos'
                                                 label={localize(

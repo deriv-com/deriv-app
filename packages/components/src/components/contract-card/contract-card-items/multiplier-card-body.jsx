@@ -97,8 +97,8 @@ const MultiplierCardBody = ({
                         <ToggleCardDialog
                             contract_id={contract_info.contract_id}
                             getCardLabels={getCardLabels}
-                            is_valid_to_cancel={is_valid_to_cancel}
-                            should_show_cancellation_warning={should_show_cancellation_warning}
+                            is_risk_management_edition_disabled={is_valid_to_cancel}
+                            should_show_warning={should_show_cancellation_warning}
                             toggleCancellationWarning={toggleCancellationWarning}
                             {...toggle_card_dialog_props}
                         />

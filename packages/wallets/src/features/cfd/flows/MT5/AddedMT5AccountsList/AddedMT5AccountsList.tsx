@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { useAuthorize, useJurisdictionStatus } from '@deriv/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
@@ -47,7 +48,11 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                       );
             }}
             trailing={
-                <div className='wallets-added-mt5__icon'>
+                <div
+                    className={classNames('wallets-added-mt5__icon', {
+                        'wallets-added-mt5__icon--pending': jurisdictionStatus.is_pending,
+                    })}
+                >
                     <LabelPairedChevronRightCaptionRegularIcon width={16} />
                 </div>
             }

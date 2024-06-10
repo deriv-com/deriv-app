@@ -2,7 +2,7 @@
     "compilerOptions": {
         "module": "es2022", // Specify module code generation
         "target": "es5", // Specify ECMAScript target version
-        "jsx": "react", // Support JSX in .tsx files
+        "jsx": "react-jsx", // Support JSX in .tsx files
         "lib": ["dom", "dom.iterable", "esnext"], // List of library files to be included in the compilation
         "allowJs": true, // Allow JavaScript files to be compiled
         "declaration": true, // Generate corresponding .d.ts file

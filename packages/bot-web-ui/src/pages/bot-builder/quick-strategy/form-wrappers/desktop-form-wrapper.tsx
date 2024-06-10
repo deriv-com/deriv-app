@@ -10,9 +10,8 @@ import {
     rudderStackSendQsEditStrategyEvent,
     rudderStackSendQsRunStrategyEvent,
     rudderStackSendQsSelectedTabEvent,
-    rudderStackSendSelectQsStrategyGuideEvent,
-} from '../analytics/rudderstack-quick-strategy';
-import { getQsActiveTabString } from '../analytics/utils';
+} from '../../../../analytics/rudderstack-quick-strategy';
+import { getQsActiveTabString } from '../../../../analytics/utils';
 import { STRATEGIES } from '../config';
 import { TFormData, TFormValues } from '../types';
 import FormTabs from './form-tabs';
@@ -41,7 +40,6 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
         setActiveTab('TRADE_PARAMETERS');
-        rudderStackSendSelectQsStrategyGuideEvent({ selected_strategy });
     };
 
     const handleTabChange = (tab: string) => {

@@ -162,7 +162,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     !formValues.firstName ||
                     !formValues.lastName ||
                     !formValues.dateOfBirth ||
-                    !formValues.verifiedIdvDetails ||
+                    !formValues.verifiedDocumentDetails ||
                     !!errors.documentNumber ||
                     !!errors.firstName ||
                     !!errors.lastName ||
@@ -252,6 +252,10 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                         first_name: formValues.firstName,
                         last_name: formValues.lastName,
                     });
+                } else if (currentScreenId === 'onfidoScreen') {
+                    if (shouldSubmitPOA) {
+                        switchScreen('poaScreen');
+                    }
                 } else if (currentScreenId === 'selfieScreen') {
                     await uploadDocument(formValues);
                     await upload({
@@ -328,6 +332,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             initialValues={{
                 hasSubmittedOnfido: false,
                 selectedJurisdiction,
+                service: poiStatus?.current?.service as keyof THooks.POI['services'],
             }}
             screens={screens}
         >
@@ -353,7 +358,10 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                           </WalletButton>
                       );
 
-                const renderFooter = context.currentScreenId === 'poiPoaDocsSubmitted' ? undefined : footer;
+                const renderFooter =
+                    context.currentScreenId === 'poiPoaDocsSubmitted' || context.currentScreenId === 'onfidoScreen'
+                        ? undefined
+                        : footer;
 
                 return (
                     <ModalStepWrapper

@@ -20,7 +20,9 @@ jest.mock('../../../../../components/ModalProvider', () => ({
 
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
-    useActiveWalletAccount: jest.fn(),
+    useActiveWalletAccount: jest.fn(() => ({
+        data: {},
+    })),
     useJurisdictionStatus: jest.fn(() => ({
         getVerificationStatus: jest.fn(() => ({
             is_failed: false,
@@ -31,8 +33,9 @@ jest.mock('@deriv/api-v2', () => ({
         isSuccess: true,
     })),
     useMT5AccountsList: jest.fn(() => ({
-        data: [{ display_balance: '10,000.00 USD', market_type: 'financial' }],
+        data: [{ display_balance: '10,000.00 USD', login: 'MD12345', market_type: 'financial' }],
     })),
+    usePOA: jest.fn(() => ({ data: {} })),
     usePOI: jest.fn(() => ({
         data: {
             current: {
@@ -60,7 +63,7 @@ describe('MT5AccountAdded', () => {
             <APIProvider>
                 <WalletsAuthProvider>
                     <ModalProvider>
-                        <MT5AccountAdded marketType='financial' platform='mt5' />
+                        <MT5AccountAdded account={{ login: 'MD12345' }} marketType='financial' platform='mt5' />
                     </ModalProvider>
                 </WalletsAuthProvider>
             </APIProvider>
@@ -86,7 +89,7 @@ describe('MT5AccountAdded', () => {
             <APIProvider>
                 <WalletsAuthProvider>
                     <ModalProvider>
-                        <MT5AccountAdded marketType='financial' platform='mt5' />
+                        <MT5AccountAdded account={{ login: 'MD12345' }} marketType='financial' platform='mt5' />
                     </ModalProvider>
                 </WalletsAuthProvider>
             </APIProvider>
@@ -164,7 +167,7 @@ describe('MT5AccountAdded', () => {
             <APIProvider>
                 <WalletsAuthProvider>
                     <ModalProvider>
-                        <MT5AccountAdded marketType='financial' platform='mt5' />
+                        <MT5AccountAdded account={{ login: 'MD12345' }} marketType='financial' platform='mt5' />
                     </ModalProvider>
                 </WalletsAuthProvider>
             </APIProvider>
@@ -209,7 +212,7 @@ describe('MT5AccountAdded', () => {
             <APIProvider>
                 <WalletsAuthProvider>
                     <ModalProvider>
-                        <MT5AccountAdded marketType='financial' platform='mt5' />
+                        <MT5AccountAdded account={{ login: 'MD12345' }} marketType='financial' platform='mt5' />
                     </ModalProvider>
                 </WalletsAuthProvider>
             </APIProvider>

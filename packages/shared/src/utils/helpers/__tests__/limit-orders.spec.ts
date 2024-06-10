@@ -120,6 +120,7 @@ describe('setLimitOrderBarriers', () => {
             is_over: true,
         });
         expect(barriers[0].onChange).toHaveBeenCalledWith({
+            hidePriceLines: false,
             high: '15',
             title: 'Dừng',
         });

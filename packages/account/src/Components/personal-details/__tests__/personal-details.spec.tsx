@@ -714,7 +714,6 @@ describe('<PersonalDetails/>', () => {
     it('should submit the form if there is no validation error on mobile', async () => {
         // [TODO] - Remove this when PersonalDetailsForm is migrated to TSX
         (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
-        (useDevice as jest.Mock).mockReturnValueOnce({ isMobile: true });
 
         (splitValidationResultTypes as jest.Mock).mockReturnValue({ warnings: {}, errors: {} });
         const new_props = {

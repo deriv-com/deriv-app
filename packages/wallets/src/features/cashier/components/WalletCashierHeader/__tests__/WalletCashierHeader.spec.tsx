@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider, useBalanceSubscription } from '@deriv/api-v2';
+import { APIProvider, useActiveWalletAccount, useBalanceSubscription } from '@deriv/api-v2';
 import { render, screen, waitFor } from '@testing-library/react';
 import WalletsAuthProvider from '../../../../../AuthProvider';
 import WalletCashierHeader from '../WalletCashierHeader';
@@ -85,5 +85,30 @@ describe('<WalletCashierHeader/>', () => {
         await waitFor(() => {
             expect(mockUnsubscribe).toBeCalled();
         });
+    });
+
+    it('should test if the correct tabs are displayed for real wallets', () => {
+        render(<WalletCashierHeader hideWalletDetails={false} />, { wrapper });
+
+        expect(screen.getByText('Deposit')).toBeInTheDocument();
+        expect(screen.getByText('Withdraw')).toBeInTheDocument();
+        expect(screen.getByText('Transfer')).toBeInTheDocument();
+        expect(screen.getByText('Transactions')).toBeInTheDocument();
+    });
+
+    it('should test if the correct tabs are displayed for demo wallets', () => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({
+            data: {
+                currency: 'USD',
+                is_virtual: true,
+                loginid: 'CR1',
+            },
+        });
+
+        render(<WalletCashierHeader hideWalletDetails={false} />, { wrapper });
+
+        expect(screen.getByText('Reset Balance')).toBeInTheDocument();
+        expect(screen.getByText('Transfer')).toBeInTheDocument();
+        expect(screen.getByText('Transactions')).toBeInTheDocument();
     });
 });

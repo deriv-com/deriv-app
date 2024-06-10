@@ -21,9 +21,20 @@ const QuickStrategyForm = observer(() => {
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const { is_mobile } = ui;
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
-    const { current_duration_min_max, is_enabled_toggle_switch, setIsEnabledToggleSwitch } = quick_strategy;
+    const { current_duration_min_max } = quick_strategy;
+
+    const [isEnabledToggleSwitch, setIsEnabledToggleSwitch] = React.useState(false);
+
     React.useEffect(() => {
         window.addEventListener('keydown', handleEnter);
+        let data: TFormData | null = null;
+        try {
+            data = JSON.parse(localStorage.getItem('qs-fields') ?? '{}');
+        } catch {
+            data = null;
+        }
+        setIsEnabledToggleSwitch(!!data?.boolean_max_stake);
+
         return () => {
             window.removeEventListener('keydown', handleEnter);
         };
@@ -48,6 +59,10 @@ const QuickStrategyForm = observer(() => {
             if (item.multiple) return item.multiple.includes(item_value);
             return values[item.key as keyof TFormData] === item.value;
         });
+
+    const toggleSwitch = () => {
+        setIsEnabledToggleSwitch(prev => !prev);
+    };
 
     const renderForm = () => {
         return config.map((group, group_index) => {
@@ -147,8 +162,8 @@ const QuickStrategyForm = observer(() => {
                                         key={key}
                                         name={field.name as string}
                                         label={field.label as string}
-                                        isEnabledToggleSwitch={!!is_enabled_toggle_switch}
-                                        setIsEnabledToggleSwitch={setIsEnabledToggleSwitch}
+                                        isEnabledToggleSwitch={!!isEnabledToggleSwitch}
+                                        setIsEnabledToggleSwitch={toggleSwitch}
                                     />
                                 );
                             // Dedicated components only for Quick-Strategy

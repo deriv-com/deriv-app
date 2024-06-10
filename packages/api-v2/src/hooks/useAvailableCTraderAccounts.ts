@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
-import useQuery from '../useQuery';
-import useAuthorize from './useAuthorize';
+import useAuthorizedQuery from '../useAuthorizedQuery';
 
 const market_type_to_leverage_mapper: Record<string, number> = {
     gaming: 500,
@@ -10,10 +9,8 @@ const market_type_to_leverage_mapper: Record<string, number> = {
 
 /** A custom hook to get the list of available CTrader accounts. */
 const useAvailableCTraderAccounts = () => {
-    const { isSuccess } = useAuthorize();
-    const { data: ctrader_available_accounts, ...rest } = useQuery('trading_platform_available_accounts', {
-        payload: { platform: 'ctrader' },
-        options: { enabled: isSuccess },
+    const { data: ctrader_available_accounts, ...rest } = useAuthorizedQuery('trading_platform_available_accounts', {
+        platform: 'ctrader',
     });
 
     const modified_ctrader_available_accounts = useMemo(
@@ -31,7 +28,7 @@ const useAvailableCTraderAccounts = () => {
                             account.market_type as keyof typeof market_type_to_leverage_mapper
                         ],
                 } as const;
-            }),
+            }) ?? [],
         [ctrader_available_accounts?.trading_platform_available_accounts]
     );
 

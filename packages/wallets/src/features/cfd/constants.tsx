@@ -2,7 +2,7 @@ import React from 'react';
 import {
     AccountsDerivCtraderIcon,
     AccountsDerivXIcon,
-    AccountsDmt5DerivedIcon,
+    AccountsDmt5StandardIcon,
     AccountsDmt5FinancialIcon,
     AccountsDmt5SwfIcon,
     DerivProductDerivXBrandDarkWordmarkIcon,
@@ -29,7 +29,7 @@ export const MarketTypeDetails = {
     },
     synthetic: {
         description: i18n.t('CFDs on derived instruments.'),
-        icon: <AccountsDmt5DerivedIcon height={48} width={48} />,
+        icon: <AccountsDmt5StandardIcon height={48} width={48} />,
         title: i18n.t('Derived'),
     },
 } as const;
@@ -48,13 +48,13 @@ export const PlatformDetails = {
         title: i18n.t('Deriv X'),
     },
     mt5: {
-        icon: <AccountsDmt5DerivedIcon height={48} width={48} />,
+        icon: <AccountsDmt5StandardIcon height={48} width={48} />,
         link: 'https://onelink.to/grmtyx',
         platform: i18n.t('mt5') as TPlatforms.MT5,
         title: i18n.t('Deriv MT5'),
     },
     mt5Investor: {
-        icon: <AccountsDmt5DerivedIcon height={48} width={48} />,
+        icon: <AccountsDmt5StandardIcon height={48} width={48} />,
         link: 'https://onelink.to/grmtyx',
         platform: i18n.t('mt5') as TPlatforms.MT5,
         title: i18n.t('Deriv MT5 investor'),

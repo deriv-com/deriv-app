@@ -2,8 +2,8 @@ import React from 'react';
 import {
     AccountsDerivCtraderIcon,
     AccountsDerivXIcon,
-    AccountsDmt5StandardIcon,
     AccountsDmt5FinancialIcon,
+    AccountsDmt5StandardIcon,
     AccountsDmt5SwfIcon,
     DerivProductDerivXBrandDarkWordmarkIcon,
     LabelPairedLinuxXlIcon,
@@ -18,17 +18,17 @@ import { ctraderLinks, whiteLabelLinks } from './screens/MT5TradeScreen/MT5Trade
 
 export const MarketTypeDetails = {
     all: {
-        description: i18n.t('Swap-free CFDs on selected financial and derived instruments.'),
+        description: i18n.t('Swap-free CFDs on selected financial and derived instruments'),
         icon: <AccountsDmt5SwfIcon height={48} width={48} />,
         title: i18n.t('Swap-Free'),
     },
     financial: {
-        description: i18n.t('CFDs on financial instruments.'),
+        description: i18n.t('CFDs on financial instruments'),
         icon: <AccountsDmt5FinancialIcon height={48} width={48} />,
         title: i18n.t('Financial'),
     },
     synthetic: {
-        description: i18n.t('CFDs on derived instruments.'),
+        description: i18n.t('CFDs on derived and financial instruments'),
         icon: <AccountsDmt5StandardIcon height={48} width={48} />,
         title: i18n.t('Derived'),
     },

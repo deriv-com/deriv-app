@@ -61,7 +61,7 @@ const ThemedScrollbars = ({
                 'dc-themed-scrollbars--hidden-scrollbar': is_scrollbar_hidden,
             })}
             style={{
-                // maxHeight: height || '100%',
+                maxHeight: '100%',
                 maxWidth: width || 'none',
                 ...style,
             }}

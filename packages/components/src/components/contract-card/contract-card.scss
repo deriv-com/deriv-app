@@ -502,9 +502,11 @@
             .dc-btn--cancel {
                 /*rtl:ignore*/
                 width: 50%;
+                max-width: 10.5rem;
 
                 @include mobile-tablet-mix {
                     width: 100%;
+                    max-width: unset;
                 }
             }
         }

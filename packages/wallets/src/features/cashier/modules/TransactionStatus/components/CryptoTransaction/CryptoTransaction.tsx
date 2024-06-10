@@ -14,7 +14,7 @@ type TCryptoTransaction = {
     currencyDisplayCode: THooks.CurrencyConfig['code'];
     currencyDisplayFraction?: THooks.CurrencyConfig['fractional_digits'];
     // TODO: Remove transaction_fee from transaction type once API is updated
-    /* eslint-disable camelcase */
+    /* eslint-disable-next-line camelcase */
     transaction: THooks.CryptoTransactions & { transaction_fee?: number };
 };
 

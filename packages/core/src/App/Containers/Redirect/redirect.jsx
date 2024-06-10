@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { withRouter, useHistory } from 'react-router-dom';
-import { loginUrl, routes, redirectToLogin, SessionStore, getMobileDerivGoAppInstallerURL } from '@deriv/shared';
+import { loginUrl, routes, redirectToLogin, SessionStore } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
@@ -245,13 +245,10 @@ const Redirect = observer(() => {
     }
 
     if (!redirected_to_route && history.location.pathname !== routes.traders_hub) {
-        if (history.location.pathname === '/redirect/derivgo')
-            window.location.replace(getMobileDerivGoAppInstallerURL());
-        else
-            history.push({
-                pathname: routes.traders_hub,
-                search: url_query_string,
-            });
+        history.push({
+            pathname: routes.traders_hub,
+            search: url_query_string,
+        });
     }
 
     return null;

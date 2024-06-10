@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
-import { getPlatformDerivGoDownloadLink, MOBILE_PLATFORMS } from '@deriv/shared';
 import { Icon } from '@deriv/components';
+import { getPlatformDerivGoDownloadLink, MOBILE_PLATFORMS } from 'Constants/platform-config';
 import './deriv-go-modal-desktop.scss';
 
 type TMobilePlatfromsIcons = {

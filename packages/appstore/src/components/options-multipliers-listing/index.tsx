@@ -6,6 +6,7 @@ import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import TradingAppCard from 'Components/containers/trading-app-card';
+import { BrandConfig } from 'Constants/platform-config';
 import { getHasDivider } from 'Constants/utils';
 import { Analytics } from '@deriv-com/analytics';
 
@@ -122,7 +123,7 @@ const OptionsAndMultipliersListing = observer(() => {
                     />
                 </div>
             )}
-            {available_platforms?.map((available_platform, index: number) => {
+            {available_platforms?.map((available_platform: BrandConfig, index: number) => {
                 const is_deriv_go_platform = available_platform?.name === getPlatformSettingsAppstore('go').name;
 
                 return (

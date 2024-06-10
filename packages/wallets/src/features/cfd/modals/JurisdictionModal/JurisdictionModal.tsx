@@ -33,8 +33,6 @@ const JurisdictionModal = () => {
         setIsDynamicLeverageVisible(!isDynamicLeverageVisible);
     }, [isDynamicLeverageVisible, setIsDynamicLeverageVisible]);
 
-    const jurisdictionTitle = `Choose a jurisdiction for your ${PlatformDetails.mt5.title} ${title} account`;
-
     const JurisdictionFlow = () => {
         if (selectedJurisdiction === 'svg') {
             return <MT5PasswordModal marketType={marketType} platform={platform} />;
@@ -71,7 +69,7 @@ const JurisdictionModal = () => {
             <ModalStepWrapper
                 renderFooter={modalFooter}
                 shouldHideHeader={isDynamicLeverageVisible}
-                title={jurisdictionTitle}
+                title='Choose a jurisdiction'
             >
                 {isDynamicLeverageVisible && <DynamicLeverageTitle />}
                 <div className='wallets-jurisdiction-modal'>

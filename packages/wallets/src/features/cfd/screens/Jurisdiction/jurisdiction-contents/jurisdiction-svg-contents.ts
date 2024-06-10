@@ -38,7 +38,7 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
         ],
         financial: [
             {
-                description: 'Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies',
+                description: 'Forex (standard/micro), stocks, stock indices, commodities, cryptocurrencies and ETFs',
                 key: 'assets',
                 title: 'Assets',
                 titleIndicators: {

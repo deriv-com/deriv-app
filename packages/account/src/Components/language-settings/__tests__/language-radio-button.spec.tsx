@@ -5,13 +5,13 @@ import LanguageRadioButton, { TLanguageRadioButton } from '../language-radio-but
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    TranslationFlag: { 'Lang 1': () => <div>Language 1 Flag</div> },
+    TranslationFlag: { lang_id: () => <div>Language 1 Flag</div> },
 }));
 
 describe('LanguageRadioButton', () => {
     const mock_props: TLanguageRadioButton = {
         is_current_language: true,
-        id: 'test id',
+        id: 'lang_id',
         language_text: 'Lang 1',
         name: 'Test Language',
         onChange: jest.fn(),
@@ -40,7 +40,7 @@ describe('LanguageRadioButton', () => {
 
         const button = screen.getByRole('radio');
         expect(button).toHaveClass('settings-language__language--radio-button');
-        expect(button).toHaveAttribute('id', 'test id');
+        expect(button).toHaveAttribute('id', 'lang_id');
         expect(button).toHaveAttribute('name', 'Test Language');
         userEvent.click(button);
         expect(mock_props.onChange).toHaveBeenCalled();

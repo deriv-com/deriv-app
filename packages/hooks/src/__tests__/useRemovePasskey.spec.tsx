@@ -42,11 +42,15 @@ describe('useRemovePasskey', () => {
         expect(mockOnSuccess).not.toHaveBeenCalled();
 
         await act(async () => {
-            result.current.removePasskey();
+            result.current.removePasskey(123);
         });
 
         expect(WS.send).toHaveBeenCalledWith({ passkeys_options: 1 });
-        expect(WS.send).toHaveBeenCalledWith({ passkeys_revoke: 1, publicKeyCredential: 'authenticator_response' });
+        expect(WS.send).toHaveBeenCalledWith({
+            passkeys_revoke: 1,
+            publicKeyCredential: 'authenticator_response',
+            id: 123,
+        });
         expect(mockInvalidate).toHaveBeenCalled();
         expect(mockOnSuccess).toHaveBeenCalled();
     });
@@ -59,7 +63,7 @@ describe('useRemovePasskey', () => {
         expect(mockOnSuccess).not.toHaveBeenCalled();
 
         await act(async () => {
-            result.current.removePasskey();
+            result.current.removePasskey(123);
         });
 
         expect(WS.send).toHaveBeenCalledWith({ passkeys_options: 1 });

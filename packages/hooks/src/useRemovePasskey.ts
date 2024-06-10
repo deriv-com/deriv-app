@@ -10,8 +10,7 @@ const useRemovePasskey = ({ onSuccess }: { onSuccess: () => void }) => {
 
     const [passkey_removing_error, setPasskeyRemovingError] = useState<TError | null>(null);
 
-    // TODO: remove ID if not needed
-    const removePasskey = async (id?: number) => {
+    const removePasskey = async (id: number) => {
         try {
             const passkey_options_response = await WS.send({
                 passkeys_options: 1,
@@ -21,8 +20,7 @@ const useRemovePasskey = ({ onSuccess }: { onSuccess: () => void }) => {
 
             const passkeys_revoke_response = await WS.send({
                 passkeys_revoke: 1,
-                // TODO: check if we need to pass id
-                // id,
+                id,
                 publicKeyCredential: authenticator_response,
             });
 

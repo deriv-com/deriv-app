@@ -145,7 +145,6 @@ const Passkeys = observer(() => {
 
     const onPasskeyMenuClick = (passkey_managing_status: TPasskeysStatus, passkey_data: TCurrentManagedPasskey) => {
         if (passkey_managing_status === PASSKEY_STATUS_CODES.REMOVING) {
-            // TODO: check if we need id
             removePasskey(passkey_data.id);
             return;
         }

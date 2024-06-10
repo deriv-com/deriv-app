@@ -13,7 +13,7 @@ import './CryptoTransaction.scss';
 type TCryptoTransaction = {
     currencyDisplayCode: THooks.CurrencyConfig['code'];
     currencyDisplayFraction?: THooks.CurrencyConfig['fractional_digits'];
-    transaction: THooks.CryptoTransactions ;
+    transaction: THooks.CryptoTransactions & { transaction_fee?: number };
 };
 
 const CryptoTransaction: React.FC<TCryptoTransaction> = ({

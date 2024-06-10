@@ -54,7 +54,7 @@ const TransactionsCryptoTransactionStatusSideNote: React.FC = observer(() => {
                         <Text
                             size={'xxxs'}
                             color={'less-prominent'}
-                            className='transactions-crypto-transaction-status-side-note__date'
+                            className='transactions-crypto-transaction-status-side-note__transaction-fee'
                         >
                             {localize('Transaction fee: {{amount}} {{currency}}', {
                                 amount: Number(transaction_fee).toFixed(currency_config?.fractional_digits),

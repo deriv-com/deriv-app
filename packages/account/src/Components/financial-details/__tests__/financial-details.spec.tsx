@@ -70,13 +70,13 @@ describe('<FinancialDetails />', () => {
     });
 
     it('should render "FinancialDetails" for mobile', () => {
-        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
 
         renderComponent({});
 
         fieldsRenderCheck();
 
-        const inputs = screen.getAllByTestId('dt_dropdown_display');
+        const inputs = screen.getAllByRole('combobox');
         expect(inputs).toHaveLength(8);
 
         expect(screen.getByText('Next')).toBeInTheDocument();
@@ -96,13 +96,13 @@ describe('<FinancialDetails />', () => {
     });
 
     it('should trigger "Previous" or "Submit" button', async () => {
-        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
 
         renderComponent({});
 
         fieldsRenderCheck();
 
-        const select_inputs = screen.getAllByTestId('dt_dropdown_display');
+        const select_inputs = screen.getAllByRole('combobox');
 
         const account_turnover_select = select_inputs.find(
             (option: FormikValues) => option.name === 'account_turnover'

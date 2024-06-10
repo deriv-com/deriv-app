@@ -97,7 +97,7 @@ describe('<WalletCashierHeader/>', () => {
         expect(screen.getByText('Transactions')).toBeInTheDocument();
     });
 
-    it('should display demo transfer tabs - Display Balance, Transfer, Transaction', () => {
+    it('should display demo transfer tabs - Reset Balance, Transfer, Transaction', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: {
                 currency: 'USD',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Text, Clipboard, usePrevious } from '@deriv/components';
 import {
     capitalizeFirstLetter,
@@ -34,7 +34,7 @@ type TAction =
       }
     | string;
 
-type TStatement = {
+type TStatement = RouteComponentProps & {
     component_icon: string;
 };
 
@@ -80,9 +80,7 @@ const DetailsComponent = ({ message = '', action_type = '' }: TDetailsComponent)
     );
 };
 
-type TGetRowAction = TDataList['getRowAction'] | React.ComponentProps<typeof DataTable>['getRowAction'];
-
-const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
+export const getRowAction = (row_obj: TSource | TRow): TAction => {
     let action: TAction = {};
     const { action_type, desc, id, is_sold, longcode, purchase_time, shortcode, transaction_time, withdrawal_details } =
         row_obj;
@@ -182,6 +180,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
                 transaction_type_filter: action_type,
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [action_type]);
 
     React.useEffect(() => {
@@ -194,6 +193,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
                 end_date_filter: formatDate(date_to, 'DD/MM/YYYY', false),
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [date_to, date_from]);
 
     if (error) return <p>{error}</p>;
@@ -204,7 +204,6 @@ const Statement = observer(({ component_icon }: TStatement) => {
         return map;
     }, {} as Record<TColIndex, typeof columns[number]>);
 
-    // TODO: Export type instead of any from 'DataList' component when it migrates to tsx
     const mobileRowRenderer = ({
         row,
         passthrough,
@@ -243,8 +242,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
             </div>
         </React.Fragment>
     );
-    // TODO: Uncomment and update this when DTrader 2.0 development starts:
-    // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='l'>I am Statement for DTrader 2.0.</Text>;
+
     return (
         <React.Fragment>
             <ReportsMeta className='reports__meta--statement' filter_component={<FilterComponent />} is_statement />

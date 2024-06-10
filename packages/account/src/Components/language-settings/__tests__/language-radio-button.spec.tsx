@@ -23,7 +23,7 @@ describe('LanguageRadioButton', () => {
     const mock_props: TLanguageRadioButton = {
         is_current_language: true,
         id: 'test id',
-        language_code: 'lang_1',
+        language_text: 'Lang 1',
         name: 'Test Language',
         onChange: jest.fn(),
     };
@@ -32,7 +32,7 @@ describe('LanguageRadioButton', () => {
         render(<LanguageRadioButton {...mock_props} />);
 
         expect(screen.getByText('Flag Icon')).toBeInTheDocument();
-        expect(screen.getByText('Test Lang 1')).toBeInTheDocument();
+        expect(screen.getByText('Lang 1')).toBeInTheDocument();
         expect(screen.getByTestId('dt_language_settings_button')).toHaveClass(
             'settings-language__language-link--active'
         );
@@ -44,7 +44,7 @@ describe('LanguageRadioButton', () => {
         render(<LanguageRadioButton {...mock_props} />);
 
         expect(screen.getByText('Flag Icon')).toBeInTheDocument();
-        expect(screen.getByText('Test Lang 1')).toBeInTheDocument();
+        expect(screen.getByText('Lang 1')).toBeInTheDocument();
         expect(screen.getByTestId('dt_language_settings_button')).not.toHaveClass(
             'settings-language__language-link--active'
         );

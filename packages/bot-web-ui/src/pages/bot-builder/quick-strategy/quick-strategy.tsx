@@ -6,7 +6,7 @@ import { MobileFullPageModal, Modal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendQsCloseEvent } from './analytics/rudderstack-quick-strategy';
+import { rudderStackSendQsCloseEvent } from '../../../analytics/rudderstack-quick-strategy';
 import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
 import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
 import LossThresholdWarningDialog from './parts/loss-threshold-warning-dialog';
@@ -39,26 +39,43 @@ const getErrorMessage = (dir: 'MIN' | 'MAX', value: number, type = 'DEFAULT') =>
 
 const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     const { quick_strategy } = useDBotStore();
-    const { selected_strategy, form_data, setValue, current_duration_min_max, initializeLossThresholdWarningData } =
+    const { selected_strategy, form_data, current_duration_min_max, initializeLossThresholdWarningData } =
         quick_strategy;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const [dynamic_schema, setDynamicSchema] = useState(Yup.object().shape({}));
     const is_mounted = useRef(true);
 
-    const initial_value: TFormData = {
-        symbol: qs_config.QUICK_STRATEGY.DEFAULT.symbol,
-        tradetype: '',
-        durationtype: qs_config.QUICK_STRATEGY.DEFAULT.durationtype,
-        stake: '1',
-        loss: '',
-        profit: '',
-        size: String(qs_config.QUICK_STRATEGY.DEFAULT.size),
-        duration: '1',
-        unit: String(qs_config.QUICK_STRATEGY.DEFAULT.unit),
-        action: 'RUN',
-        max_stake: 10,
-        boolean_max_stake: false,
-        last_digit_prediction: 1,
+    let initial_value: TFormData | null = null;
+
+    const getSavedValues = () => {
+        let data: TFormData | null = null;
+        try {
+            data = JSON.parse(localStorage.getItem('qs-fields') ?? '{}');
+        } catch {
+            data = null;
+        }
+        return data;
+    };
+
+    const getInitialValue = () => {
+        const data = getSavedValues();
+        initial_value = {
+            symbol: data?.symbol ?? qs_config.QUICK_STRATEGY.DEFAULT.symbol,
+            tradetype: data?.tradetype ?? '',
+            type: data?.type ?? '',
+            durationtype: data?.durationtype ?? qs_config.QUICK_STRATEGY.DEFAULT.durationtype,
+            duration: data?.duration ?? '1',
+            stake: data?.stake ?? '1',
+            loss: data?.loss ?? '',
+            profit: data?.profit ?? '',
+            size: data?.size ?? String(qs_config.QUICK_STRATEGY.DEFAULT.size),
+            unit: data?.unit ?? String(qs_config.QUICK_STRATEGY.DEFAULT.unit),
+            action: data?.action ?? 'RUN',
+            max_stake: data?.max_stake ?? 10,
+            boolean_max_stake: data?.boolean_max_stake || false,
+            last_digit_prediction: data?.last_digit_prediction ?? 1,
+        };
+        return initial_value;
     };
 
     React.useEffect(() => {
@@ -68,11 +85,6 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     }, []);
 
     React.useEffect(() => {
-        const data = JSON.parse(localStorage.getItem('qs-fields') || '{}');
-        Object.keys(data).forEach(key => {
-            initial_value[key as keyof TFormData] = data[key];
-            setValue(key, data[key]);
-        });
         initializeLossThresholdWarningData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -106,7 +118,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                         if (should_validate && field.name === 'max_stake') {
                             min = +form_data?.stake;
                             if (isNaN(min)) {
-                                min = +initial_value.stake;
+                                min = +(initial_value?.stake ?? 0);
                             }
                             min_error = getErrorMessage('MIN', min);
                         }
@@ -169,7 +181,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
 
     return (
         <Formik
-            initialValues={initial_value}
+            initialValues={getInitialValue()}
             validationSchema={dynamic_schema}
             onSubmit={handleSubmit}
             validate={values => getErrors(values)}

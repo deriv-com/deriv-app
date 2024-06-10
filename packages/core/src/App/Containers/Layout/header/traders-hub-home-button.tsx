@@ -8,22 +8,14 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 
 const TradersHubHomeButton = observer(() => {
-    const { client, ui } = useStore();
-    const { has_wallet } = client;
+    const { ui } = useStore();
     const { is_dark_mode_on } = ui;
     const history = useHistory();
     const location = useLocation();
     const { pathname } = location;
     const { is_next_tradershub_enabled } = useFeatureFlags();
 
-    let TradersHubIcon;
-    if (has_wallet) {
-        TradersHubIcon = 'IcAppstoreTradersHubHomeUpdated';
-    } else if (is_dark_mode_on) {
-        TradersHubIcon = 'IcAppstoreHomeDark';
-    } else {
-        TradersHubIcon = 'IcAppstoreTradersHubHome';
-    }
+    const TradersHubIcon = is_dark_mode_on ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHomeUpdated';
 
     const redirectRoutes = () => {
         if (is_next_tradershub_enabled) {

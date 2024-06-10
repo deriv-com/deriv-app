@@ -19,6 +19,8 @@ import {
     isValidToCancel,
     WS,
     TContractStore,
+    isValidToSell,
+    hasContractEntered,
 } from '@deriv/shared';
 import classNames from 'classnames';
 import ContractDetailsFooter from 'AppV2/Components/ContractDetailsFooter';
@@ -31,7 +33,7 @@ const ContractDetails = observer(() => {
     const { common } = useStore();
     const { server_time } = common;
     const { is_take_profit_visible, is_stop_loss_visible } = getContractDetailsConfig(contract_type ?? '');
-
+    const is_valid_to_sell = isValidToSell(contract_info);
     type TContractUpdateHistory = TContractStore['contract_update_history'];
     type TResponse = {
         contract_update_history: TContractUpdateHistory;
@@ -55,14 +57,17 @@ const ContractDetails = observer(() => {
     if (is_loading) return <></>;
 
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
+
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const should_show_sell =
-        (hasContractStarted(contract_info) ||
+        (hasContractEntered(contract_info) ||
             isForwardStarting(contract_info?.shortcode ?? '', contract_info.purchase_time)) &&
         isOpen(contract_info);
-    const { is_tp_history_visible } = getContractDetailsConfig(contract_info.contract_type ?? '');
+    const { is_tp_history_visible, is_deal_cancellation_visible } = getContractDetailsConfig(
+        contract_info.contract_type ?? ''
+    );
     const show_cancel_button = is_multiplier && is_valid_to_cancel;
-
+    console.log(is_valid_to_sell);
     return (
         <div
             className={classNames('contract-details', {
@@ -75,12 +80,14 @@ const ContractDetails = observer(() => {
                 <ChartPlaceholder />
             </div>
             <DealCancellation />
-            {isOpen(contract_info) && (is_take_profit_visible || is_stop_loss_visible) && (
-                <CardWrapper>
-                    <TakeProfit />
-                    <StopLoss />
-                </CardWrapper>
-            )}
+            {isOpen(contract_info) &&
+                (is_take_profit_visible || is_stop_loss_visible) &&
+                (is_valid_to_sell || is_deal_cancellation_visible) && (
+                    <CardWrapper>
+                        <TakeProfit />
+                        <StopLoss />
+                    </CardWrapper>
+                )}
             <CardWrapper title='Order Details'>
                 <OrderDetails contract_info={contract_info} />
             </CardWrapper>

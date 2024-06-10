@@ -9,7 +9,7 @@ import {
     isAccumulatorContract,
     isResetContract,
 } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { getBarrierValue } from 'App/Components/Elements/PositionsDrawer/helpers';
 
 // Contains all key values that are used more than once in different transform objects
@@ -95,8 +95,12 @@ const transformAccumulatorData = (data: TContractInfo) => {
     const commonFields = getCommonFields(data);
     return {
         [localize('Reference ID')]: commonFields[localize('Reference ID')],
+        ...{
+            ...((data.is_expired || data.is_sold) && {
+                [localize('Duration')]: commonFields[localize('Duration')],
+            }),
+        },
         [localize('Growth rate')]: data.growth_rate ? `${getGrowthRatePercentage(data.growth_rate)}%` : '',
-        [localize('Duration')]: `${getDurationTime(data) ?? ''} ${getDurationUnitText(getDurationPeriod(data)) ?? ''}`,
         [localize('Stake')]: commonFields[localize('Stake')],
         ...{
             ...(data.limit_order?.take_profit && {
@@ -136,6 +140,7 @@ const transformFunctionMap: Record<string, (data: TContractInfo) => Record<strin
     [CONTRACT_TYPES.OVER_UNDER.UNDER]: transformMatcherData,
     [CONTRACT_TYPES.RESET.CALL]: transformRiseData,
     [CONTRACT_TYPES.PUT]: transformRiseData,
+    [CONTRACT_TYPES.CALLE]: transformRiseData,
     [CONTRACT_TYPES.CALL]: transformRiseData,
     [CONTRACT_TYPES.TOUCH.ONE_TOUCH]: transformRiseData,
     [CONTRACT_TYPES.TOUCH.NO_TOUCH]: transformRiseData,
@@ -146,7 +151,6 @@ const transformFunctionMap: Record<string, (data: TContractInfo) => Record<strin
 
 const useOrderDetails = (contract_info: TContractInfo) => {
     const contractInfo = contract_info;
-
     if (!contractInfo.contract_type) return;
     const transformFunction = transformFunctionMap[contractInfo.contract_type];
     const details = transformFunction ? transformFunction(contractInfo) : {};

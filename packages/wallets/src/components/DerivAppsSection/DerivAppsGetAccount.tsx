@@ -19,10 +19,9 @@ const DerivAppsGetAccount: React.FC = () => {
     const { isDesktop } = useDevice();
     const { data: activeWallet } = useActiveWalletAccount();
     const {
-        data: newTradingAccountData,
         isLoading: isAccountCreationLoading,
         isSuccess: isAccountCreationSuccess,
-        mutate: createNewRealAccount,
+        mutateAsync: createNewRealAccount,
     } = useCreateNewRealAccount();
     const {
         data: { country_code: countryCode, date_of_birth: dateOfBirth, first_name: firstName, last_name: lastName },
@@ -34,9 +33,9 @@ const DerivAppsGetAccount: React.FC = () => {
 
     const landingCompanyName = activeWallet?.landing_company_name?.toLocaleUpperCase();
 
-    const createTradingAccount = () => {
+    const createTradingAccount = async () => {
         if (!activeWallet?.is_virtual) {
-            createNewRealAccount({
+            const { new_account_real } = await createNewRealAccount({
                 payload: {
                     currency: activeWallet?.currency_config?.display_code,
                     date_of_birth: toMoment(dateOfBirth).format('YYYY-MM-DD'),
@@ -45,13 +44,14 @@ const DerivAppsGetAccount: React.FC = () => {
                     residence: countryCode || '',
                 },
             });
+
+            if (!new_account_real) return;
+
+            await addTradingAccountToLocalStorage(new_account_real);
         }
     };
 
     useEffect(() => {
-        if (newTradingAccountData && isAccountCreationSuccess) {
-            addTradingAccountToLocalStorage(newTradingAccountData);
-        }
         if (isAccountCreationSuccess) {
             show(
                 <ModalStepWrapper
@@ -72,7 +72,7 @@ const DerivAppsGetAccount: React.FC = () => {
             );
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [addTradingAccountToLocalStorage, newTradingAccountData, isAccountCreationSuccess]);
+    }, [addTradingAccountToLocalStorage, isAccountCreationSuccess]);
 
     return (
         <div className='wallets-deriv-apps-section wallets-deriv-apps-section__get-account'>

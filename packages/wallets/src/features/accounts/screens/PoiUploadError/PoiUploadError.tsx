@@ -1,8 +1,6 @@
 import React from 'react';
 import { DerivLightDeclinedPoiIcon } from '@deriv/quill-icons';
-import { WalletButton } from '../../../../components/Base';
-import { useFlow } from '../../../../components/FlowProvider';
-import { WalletsActionScreen } from '../../../../components/WalletsActionScreen';
+import { useFlow, WalletButton, WalletsActionScreen } from '../../../../components';
 import { ErrorCode } from '../../constants';
 import './PoiUploadError.scss';
 

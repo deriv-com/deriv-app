@@ -1,11 +1,14 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 import { useMutation } from '@deriv/api';
 import useSendOTPVerificationCode from '../useSendOTPVerificationCode';
+import useRequestPhoneNumberOTP from '../useRequestPhoneNumberOTP';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useMutation: jest.fn(),
 }));
+
+jest.mock('../useRequestPhoneNumberOTP');
 
 describe('useSendOTPVerificationCode', () => {
     const mockMutate = jest.fn();
@@ -16,8 +19,19 @@ describe('useSendOTPVerificationCode', () => {
         isSuccess: false,
     };
 
+    const mock_request_phone_number_otp_response = {
+        sendEmailOTPVerification: jest.fn(),
+        email_otp_error: {},
+        is_email_verified: false,
+    };
+
     beforeEach(() => {
         (useMutation as jest.Mock).mockReturnValue(mock_response);
+        (useRequestPhoneNumberOTP as jest.Mock).mockReturnValue(mock_request_phone_number_otp_response);
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
     });
 
     it('should return initial state correctly', () => {

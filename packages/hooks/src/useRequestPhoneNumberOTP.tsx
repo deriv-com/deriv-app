@@ -23,11 +23,13 @@ const useRequestPhoneNumberOTP = () => {
         mutation: { mutateAsync: updateSettings },
     } = useSettings();
 
+    //TODOs: need to wait confirmation from the team whether to stay at phone number page when refresh or restart the email verification process again
     const requestOnSMS = () => {
         mutate({
             payload: { carrier: VERIFICATION_SERVICES.SMS, email_code: localStorage.getItem('email_otp_code') || '' },
         });
     };
+    //TODOs: need to wait confirmation from the team whether to stay at phone number page when refresh or restart the email verification process again
     const requestOnWhatsApp = () => {
         mutate({
             payload: {

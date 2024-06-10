@@ -5,7 +5,7 @@ import { Loader } from '../../../../components/Loader';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { DynamicLeverageContext } from '../../components/DynamicLeverageContext';
-import { MarketTypeDetails, PlatformDetails } from '../../constants';
+import { PlatformDetails } from '../../constants';
 import { DynamicLeverageScreen, DynamicLeverageTitle } from '../../screens/DynamicLeverage';
 import { JurisdictionScreen } from '../../screens/Jurisdiction';
 import { MT5PasswordModal } from '..';
@@ -26,8 +26,6 @@ const JurisdictionModal = () => {
 
     const marketType = getModalState('marketType') ?? 'all';
     const platform = getModalState('platform') ?? PlatformDetails.mt5.platform;
-
-    const { title } = MarketTypeDetails[marketType];
 
     const toggleDynamicLeverage = useCallback(() => {
         setIsDynamicLeverageVisible(!isDynamicLeverageVisible);

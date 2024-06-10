@@ -39,21 +39,21 @@ describe('<WalletCashierHeader/>', () => {
         });
     });
 
-    it('should test if header renders', () => {
+    it('should render header', () => {
         render(<WalletCashierHeader hideWalletDetails={false} />, { wrapper });
 
         const divElement = screen.getByTestId('dt_wallet_gradient_background');
         expect(divElement).toBeInTheDocument();
     });
 
-    it('should test if correct balance displays', () => {
+    it('should display correct balance', () => {
         render(<WalletCashierHeader hideWalletDetails={false} />, { wrapper });
 
         const balanceElement = screen.getByText('10.00 USD');
         expect(balanceElement).toBeInTheDocument();
     });
 
-    it('should test if the balance call is subscribed with the correct account when the header mounts', () => {
+    it('should subscribe to the balance call when the header mounts', () => {
         const mockSubscribe = jest.fn();
 
         (useBalanceSubscription as jest.Mock).mockReturnValue({
@@ -69,7 +69,7 @@ describe('<WalletCashierHeader/>', () => {
         expect(mockSubscribe).toBeCalledWith({ loginid: 'CR1' });
     });
 
-    it('should test if the balance call is unsubscribed when the header mounts', async () => {
+    it('should unsubscribe from the balance call when the header unmounts', async () => {
         const mockUnsubscribe = jest.fn();
 
         (useBalanceSubscription as jest.Mock).mockReturnValue({
@@ -88,7 +88,7 @@ describe('<WalletCashierHeader/>', () => {
         });
     });
 
-    it('should test if the correct tabs are displayed for real wallets', () => {
+    it('should display real transfer tabs - Deposit, Withdraw, Transfer, Transaction', () => {
         render(<WalletCashierHeader hideWalletDetails={false} />, { wrapper });
 
         expect(screen.getByText('Deposit')).toBeInTheDocument();
@@ -97,7 +97,7 @@ describe('<WalletCashierHeader/>', () => {
         expect(screen.getByText('Transactions')).toBeInTheDocument();
     });
 
-    it('should test if the correct tabs are displayed for demo wallets', () => {
+    it('should display demo transfer tabs - Display Balance, Transfer, Transaction', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: {
                 currency: 'USD',

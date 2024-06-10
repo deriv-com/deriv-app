@@ -121,7 +121,7 @@ describe('CompositeCalendarMobile', () => {
         expect(input).toHaveValue('03 Oct 2023 - 10 May 2024');
     });
 
-    it('should apply date which user type in DatePicker for Start date', () => {
+    it('should apply date which user has typed in DatePicker for Start date', () => {
         render(<CompositeCalendarMobile {...mockDefaultProps} />);
 
         userEvent.click(screen.getByRole('textbox'));
@@ -133,7 +133,7 @@ describe('CompositeCalendarMobile', () => {
         expect(inputForStartDate).toHaveValue('10 Jun 2024');
     });
 
-    it('should apply date which user type in DatePicker for End date', () => {
+    it('should apply date which user has typed in DatePicker for End date', () => {
         render(<CompositeCalendarMobile {...mockDefaultProps} />);
 
         userEvent.click(screen.getByRole('textbox'));

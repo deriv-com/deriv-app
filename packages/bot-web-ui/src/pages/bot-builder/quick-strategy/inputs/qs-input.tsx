@@ -88,7 +88,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                     should_disable_pointer_events
                                 >
                                     <Input
-                                        data_testId='qs-input'
+                                        data_testId={`dt_qs_${name}`}
                                         className={classNames(
                                             'qs__input',
                                             { error: has_error },

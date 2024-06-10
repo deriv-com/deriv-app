@@ -18,7 +18,7 @@ import './app.scss';
 const App = () => {
     const { notifications, client, ui, common, modules } = useStore();
     const { balance, is_logging_in } = client;
-    const { setOnRemount } = modules?.cashier?.general_store;
+    const { is_loading, setOnRemount } = modules?.cashier?.general_store;
 
     const { is_mobile } = ui;
     const { setP2POrderProps, setP2PRedirectTo } = notifications;
@@ -31,9 +31,14 @@ const App = () => {
 
     const lang = getLanguage();
 
+    const [is_app_loading, setIsAppLoading] = React.useState(true);
     const [order_id, setOrderId] = React.useState(null);
     const [action_param, setActionParam] = React.useState();
     const [code_param, setCodeParam] = React.useState();
+
+    React.useEffect(() => {
+        if (!is_loading) setIsAppLoading(false);
+    }, [is_loading]);
 
     useP2PCompletedOrdersNotification();
 
@@ -269,8 +274,8 @@ const App = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [action_param, code_param]);
 
-    if (is_logging_in || general_store.is_loading) {
-        return <Loading className='p2p__loading' is_fullscreen={false} />;
+    if (is_logging_in || general_store.is_loading || is_app_loading) {
+        return <Loading className='p2p__loading' />;
     }
 
     return (

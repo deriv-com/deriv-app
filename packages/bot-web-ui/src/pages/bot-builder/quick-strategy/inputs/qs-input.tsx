@@ -74,7 +74,7 @@ const QSInput: React.FC<TQSInput> = observer(
                             })}
                         >
                             <div
-                                data-testid='qs-input-container'
+                                data-testid='dt_qs_input_container'
                                 onMouseEnter={() => setFocus(true)}
                                 onMouseLeave={() => setFocus(false)}
                             >
@@ -99,7 +99,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                             is_number ? (
                                                 <button
                                                     disabled={disabled || (!!min && field.value <= min)}
-                                                    data-testid='qs-input-decrease'
+                                                    data-testid='dt_qs_input_decrease'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const value = Number(field.value) - 1;
                                                         handleButtonInputChange(
@@ -120,7 +120,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                                         field.value == max_value ||
                                                         (!!max && field.value >= max)
                                                     }
-                                                    data-testid='qs-input-increase'
+                                                    data-testid='dt_qs_input_increase'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const value = Number(field.value) + 1;
                                                         handleButtonInputChange(

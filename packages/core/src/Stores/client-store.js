@@ -441,9 +441,14 @@ export default class ClientStore extends BaseStore {
         );
 
         reaction(
-            () => [this.is_logged_in, this.is_authorize, this.is_passkey_supported],
+            () => [this.is_logged_in, this.is_authorize, this.is_passkey_supported, this.root_store.ui?.is_mobile],
             () => {
-                if (this.is_logged_in && this.is_authorize && this.is_passkey_supported) {
+                if (
+                    this.is_logged_in &&
+                    this.is_authorize &&
+                    this.is_passkey_supported &&
+                    this.root_store.ui?.is_mobile
+                ) {
                     this.fetchShouldShowEffortlessLoginModal();
                 }
             }
@@ -2692,34 +2697,26 @@ export default class ClientStore extends BaseStore {
     setShouldShowEffortlessLoginModal(should_show_effortless_login_modal = true) {
         this.should_show_effortless_login_modal = should_show_effortless_login_modal;
     }
+
     async fetchShouldShowEffortlessLoginModal() {
-        if (this.is_passkey_supported) {
-            try {
-                const stored_value = localStorage.getItem('show_effortless_login_modal');
-                const show_effortless_login_modal = stored_value === null || JSON.parse(stored_value) === true;
-                if (show_effortless_login_modal) {
-                    localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
-                }
+        try {
+            const stored_value = localStorage.getItem('show_effortless_login_modal');
+            const show_effortless_login_modal = stored_value === null || JSON.parse(stored_value) === true;
+
+            if (show_effortless_login_modal) {
+                localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
 
                 const data = await WS.authorized.send({ passkeys_list: 1 });
 
-                if (data?.passkeys_list) {
-                    const should_show_effortless_login_modal =
-                        this.root_store.ui.is_mobile &&
-                        !data?.passkeys_list?.length &&
-                        this.is_passkey_supported &&
-                        show_effortless_login_modal &&
-                        this.is_logged_in;
-
-                    this.setShouldShowEffortlessLoginModal(should_show_effortless_login_modal);
+                if (data?.passkeys_list?.length === 0) {
+                    this.setShouldShowEffortlessLoginModal(true);
                 } else {
                     this.setShouldShowEffortlessLoginModal(false);
+                    localStorage.setItem('show_effortless_login_modal', JSON.stringify(false));
                 }
-            } catch (e) {
-                //error handling needed
             }
-        } else {
-            this.setShouldShowEffortlessLoginModal(false);
+        } catch (e) {
+            //error handling needed
         }
     }
 

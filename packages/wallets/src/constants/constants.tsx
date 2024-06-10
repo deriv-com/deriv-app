@@ -41,7 +41,7 @@ export const optionsAndMultipliersContent = [
         title: i18n.t('Binary Bot'),
     },
     {
-        description: i18n.t('The mobile app for trading multipliers and accumulators.'),
+        description: i18n.t('The mobile trading app for multipliers.'),
         icon: <DerivProductDerivGoBrandLightLogoHorizontalIcon height='48' width='48' />,
         isExternal: true,
         redirect: getStaticUrl('/deriv-go'),

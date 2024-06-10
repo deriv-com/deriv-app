@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { Formik, FormikValues, FormikHelpers, FormikErrors, Form } from 'formik';
-import { Localize } from '@deriv/translations';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button } from '@deriv/components';
 import {
@@ -9,7 +8,7 @@ import {
     removeEmptyPropertiesFromObject,
     getIDVNotApplicableOption,
 } from '@deriv/shared';
-import { useTranslations } from '@deriv-com/translations';
+import { useTranslations, Localize } from '@deriv-com/translations';
 import PoiNameDobExample from '../../../../Assets/ic-poi-name-dob-example.svg';
 import FormSubHeader from '../../../form-sub-header';
 import IDVForm from '../../../forms/idv-form';

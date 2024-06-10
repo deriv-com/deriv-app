@@ -11,7 +11,7 @@ const WalletWithdrawal = () => {
     const [verificationCode, setVerificationCode] = useState('');
     const [resendEmail, setResendEmail] = useState(false);
 
-    const isBalanceLoading = isLoading || isRefetching;
+    const isBalanceLoading = isLoading && !isRefetching;
 
     useEffect(() => {
         refetch();

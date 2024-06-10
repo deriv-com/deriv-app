@@ -4,9 +4,11 @@ import APIProvider from '../APIProvider';
 import AuthProvider from '../AuthProvider';
 import useSubscription from '../useSubscription';
 
-jest.mock('./../useAPI', () => ({
+jest.mock('../AuthProvider', () => ({
     __esModule: true,
-    default() {
+    ...jest.requireActual('../AuthProvider'),
+
+    useAuthContext: () => {
         return {
             subscribe() {
                 return {

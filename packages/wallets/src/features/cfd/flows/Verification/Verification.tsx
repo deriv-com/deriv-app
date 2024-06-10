@@ -124,6 +124,10 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const initialScreenId: keyof typeof screens = useMemo(() => {
         const service = poiStatus?.current?.service as keyof THooks.POI['services'];
 
+        if (isManualUploadLoading || isUploadLoading) {
+            return 'loadingScreen';
+        }
+
         if (isErrorManualDocumentUpload) {
             if (errorManualDocumentUpload?.error.code === ErrorCode.DuplicateUpload) {
                 return 'duplicateUploadErrorScreen';
@@ -144,14 +148,16 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         return 'loadingScreen';
     }, [
         poiStatus,
+        isManualUploadLoading,
+        isUploadLoading,
+        isErrorManualDocumentUpload,
         isSuccessPOIStatus,
+        errorManualDocumentUpload?.error.code,
         shouldSubmitPOA,
         shouldFillPersonalDetails,
         show,
         selectedMarketType,
         platform,
-        isErrorManualDocumentUpload,
-        errorManualDocumentUpload,
     ]);
 
     const isNextDisabled = ({ currentScreenId, errors, formValues }: TFlowProviderContext<typeof screens>) => {
@@ -257,6 +263,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                         switchScreen('poaScreen');
                     }
                 } else if (currentScreenId === 'selfieScreen') {
+                    switchScreen('loadingScreen');
                     await uploadDocument(formValues);
                     await upload({
                         document_issuing_country: settings?.country_code ?? undefined,
@@ -264,6 +271,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                         file: formValues.selfie,
                     });
                     setFormValues('selectedManualDocument', '');
+                    setFormValues('selfie', '');
                 }
 
                 // handle screen switching

@@ -1,10 +1,10 @@
 import React from 'react';
 import { DerivLightDeclinedPoiIcon } from '@deriv/quill-icons';
 import { WalletButton } from '../../../../components/Base';
+import { useFlow } from '../../../../components/FlowProvider';
 import { WalletsActionScreen } from '../../../../components/WalletsActionScreen';
 import { ErrorCode } from '../../constants';
 import './PoiUploadError.scss';
-import { useFlow } from '../../../../components/FlowProvider';
 
 type PoiUploadErrorProps = {
     errorCode: keyof typeof ErrorCode;
@@ -40,6 +40,7 @@ const PoiUploadError = ({ errorCode }: PoiUploadErrorProps) => {
         }
 
         setFormValues('selectedManualDocument', '');
+        setFormValues('selfie', '');
         switchScreen('manualScreen');
     };
 

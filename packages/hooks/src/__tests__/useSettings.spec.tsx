@@ -45,7 +45,7 @@ describe('useSettings', () => {
 
         const { result } = renderHook(() => useSettings(), { wrapper });
 
-        expect(result.current.data).toStrictEqual({ has_submitted_personal_details: false });
+        expect(result.current.data).toBe(undefined);
         expect(result.current.mutation.data).toBe(null);
         expect(result.current.mutation.isLoading).toBe(false);
         expect(result.current.mutation.error).toBe(null);
@@ -56,6 +56,7 @@ describe('useSettings', () => {
             get_settings: {
                 citizen: 'country',
                 account_opening_reason: 'reason',
+                has_submitted_personal_details: true,
                 place_of_birth: 'place',
                 tax_residence: 'residence',
                 tax_identification_number: 'number',

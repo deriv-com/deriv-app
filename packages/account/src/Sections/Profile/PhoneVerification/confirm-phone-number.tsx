@@ -21,7 +21,7 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
 
     React.useEffect(() => {
         setPhoneNumber(account_settings?.phone || '');
-    }, [account_settings.phone]);
+    }, [account_settings?.phone]);
 
     const handleOnChangePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPhoneNumber(e.target.value);
@@ -33,6 +33,7 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
 
         if (!error) {
             phone_verification_type === VERIFICATION_SERVICES.SMS ? requestOnSMS() : requestOnWhatsApp();
+            //TODOs: Add an error checking from API here before setting setOtpVerification to true
             setOtpVerification({ show_otp_verification: true, phone_verification_type });
             setShouldShowPhoneNumberOTP(true);
         }

@@ -7,11 +7,8 @@ export enum CryptoDepositErrorCodes {
 export enum CryptoWithdrawalErrorCodes {
     CryptoConnectionError = 'CryptoConnectionError',
     CryptoInvalidAddress = 'CryptoInvalidAddress',
+    CryptoLimitAgeVerified = 'CryptoLimitAgeVerified',
     InvalidToken = 'InvalidToken',
     SuspendedCurrency = 'CryptoSuspendedCurrency',
     SuspendedWithdrawal = 'CryptoDisabledCurrencyWithdrawal',
-}
-
-export enum TransferErrorCodes {
-    TransferBetweenAccountsError = 'TransferBetweenAccountsError',
 }

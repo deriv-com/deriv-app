@@ -20,6 +20,7 @@ const DerivAppsGetAccount: React.FC = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const {
         data: newTradingAccountData,
+        isLoading: isAccountCreationLoading,
         isSuccess: isAccountCreationSuccess,
         mutate: createNewRealAccount,
     } = useCreateNewRealAccount();
@@ -28,7 +29,8 @@ const DerivAppsGetAccount: React.FC = () => {
     } = useSettings();
     const { addTradingAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
 
-    const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
+    const { data: activeLinkedToTradingAccount, isLoading: isActiveLinkedToTradingAccountLoading } =
+        useActiveLinkedToTradingAccount();
 
     const landingCompanyName = activeWallet?.landing_company_name?.toLocaleUpperCase();
 
@@ -84,7 +86,11 @@ const DerivAppsGetAccount: React.FC = () => {
                     </WalletText>
                     <WalletText size={isDesktop ? '2xs' : 'xs'}>One options account for all platforms.</WalletText>
                 </div>
-                <WalletButton color='primary-light' onClick={createTradingAccount}>
+                <WalletButton
+                    color='primary-light'
+                    disabled={isAccountCreationLoading || isActiveLinkedToTradingAccountLoading}
+                    onClick={createTradingAccount}
+                >
                     Get
                 </WalletButton>
             </div>

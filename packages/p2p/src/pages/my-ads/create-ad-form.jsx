@@ -4,6 +4,7 @@ import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
 import { useP2PSettings } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
+import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
@@ -30,9 +31,9 @@ const CreateAdForm = ({ country_list }) => {
     } = useP2PSettings();
     const { useRegisterModalProps } = useModalManagerContext();
     const steps = [
-        { header: { title: 'Set ad type and amount' } },
-        { header: { title: 'Set payment details' } },
-        { header: { title: 'Set ad conditions' } },
+        { header: { title: localize('Set ad type and amount') } },
+        { header: { title: localize('Set payment details') } },
+        { header: { title: localize('Set ad conditions') } },
     ];
 
     // when adding payment methods in creating an ad, once user declines to save their payment method, flow is to close all add payment method modals

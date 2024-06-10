@@ -45,7 +45,8 @@ const DrivingLicenseDocumentUpload = () => {
                         fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
                         icon={<DrivingLicenseCardFront />}
                         maxSize={8388608}
-                        onFileChange={(file: File) => setFormValues('drivingLicenseCardFront', file)}
+                        noClick
+                        onFileChange={(file?: File) => setFormValues('drivingLicenseCardFront', file)}
                     />
                     <Dropzone
                         buttonText='Drop file or click here to upload'
@@ -54,7 +55,8 @@ const DrivingLicenseDocumentUpload = () => {
                         fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
                         icon={<DrivingLicenseCardBack />}
                         maxSize={8388608}
-                        onFileChange={(file: File) => setFormValues('drivingLicenseCardBack', file)}
+                        noClick
+                        onFileChange={(file?: File) => setFormValues('drivingLicenseCardBack', file)}
                     />
                 </div>
                 <DocumentRuleHints docType='drivingLicense' />

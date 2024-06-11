@@ -5,7 +5,7 @@ import { useP2PAdvertiserAdverts } from 'Hooks';
 import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
 import { useP2PAdvertInfo } from '@deriv/hooks';
-import { daysSince, isEmptyObject, isMobile, routes } from '@deriv/shared';
+import { daysSince, isDesktop, isEmptyObject, isMobile, routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 
 import { Localize, localize } from 'Components/i18next';
@@ -73,7 +73,14 @@ const AdvertiserPage = () => {
     // rating_average_decimal converts rating_average to 1 d.p number
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
 
-    const { data: p2p_advert_info } = useP2PAdvertInfo(counterparty_advert_id);
+    const {
+        data: p2p_advert_info,
+        isFetching,
+        isSuccess: has_p2p_advert_info,
+    } = useP2PAdvertInfo(counterparty_advert_id, {
+        enabled: !!counterparty_advert_id,
+        retry: false,
+    });
 
     const showErrorModal = eligibility_status => {
         let error_message = localize("It's either deleted or no longer active.");
@@ -101,28 +108,37 @@ const AdvertiserPage = () => {
 
     const setShowAdvertInfo = React.useCallback(
         () => {
-            if (p2p_advert_info) {
-                const { eligibility_status, is_active, is_buy, is_eligible, is_visible } = p2p_advert_info || {};
+            const { is_active, is_buy, is_visible } = p2p_advert_info || {};
+            if (has_p2p_advert_info) {
                 const advert_type = is_buy ? 1 : 0;
 
-                if (is_active && is_visible && is_eligible) {
+                if (is_active && is_visible) {
                     advertiser_page_store.setActiveIndex(advert_type);
                     advertiser_page_store.handleTabItemClick(advert_type);
                     buy_sell_store.setSelectedAdState(p2p_advert_info);
                     showModal({ key: 'BuySellModal' });
                 } else {
-                    showErrorModal(eligibility_status);
+                    showErrorModal();
                 }
+            } else {
+                showErrorModal();
             }
         },
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [p2p_advert_info]
+        [has_p2p_advert_info, p2p_advert_info]
     );
 
     React.useEffect(() => {
-        if (is_advertiser && !is_barred && is_my_advert !== null && !is_my_advert) setShowAdvertInfo();
-    }, [counterparty_advert_id, setShowAdvertInfo, is_my_advert]);
+        if (is_advertiser && !is_barred && is_my_advert !== null && !is_my_advert) {
+            if (isFetching && isDesktop()) {
+                showModal({ key: 'LoadingModal' });
+            } else if (counterparty_advert_id) {
+                setShowAdvertInfo();
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [counterparty_advert_id, isFetching, setShowAdvertInfo, is_my_advert]);
 
     React.useEffect(() => {
         if (location.search || counterparty_advertiser_id) {
@@ -200,6 +216,7 @@ const AdvertiserPage = () => {
             disposeBlockUnblockUserErrorReaction();
             advertiser_page_store.onUnmount();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [advertiser_details_name, counterparty_advertiser_info]);
 
     useRegisterModalProps({

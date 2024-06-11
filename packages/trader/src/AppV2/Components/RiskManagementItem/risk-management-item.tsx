@@ -28,7 +28,6 @@ const RiskManagementItem = observer(
         const [toggle, setToggle] = React.useState(Boolean(value));
         const [isSheetOpen, setIsSheetOpen] = React.useState(false);
         const [isEnabled, setIsEnabled] = React.useState(false);
-        const dummy_boolean = false;
         const [stepperValue, setStepperValue] = React.useState(0);
         const { contract_info, contract } = useContractDetails();
         const { contract_type, currency } = contract_info;

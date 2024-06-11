@@ -80,7 +80,7 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
 
                     if (!newAccountWallet) return;
 
-                    await addWalletAccountToLocalStorage({ ...newAccountWallet, display_balance: '0.00' });
+                    await addWalletAccountToLocalStorage({ ...newAccountWallet, display_balance: `0.00 ${currency}` });
                     switchWalletAccount(newAccountWallet.client_id);
                 }}
                 size={isMobile ? 'sm' : 'lg'}

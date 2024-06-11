@@ -95,17 +95,17 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
     };
 
     return (
-        <div
-            className={classNames('wallets-jurisdiction-card', {
-                'wallets-jurisdiction-card--added': isAdded,
-                'wallets-jurisdiction-card--flip': isFlipped,
-                'wallets-jurisdiction-card--selected': isSelected,
-            })}
-            onClick={() => {
-                !isAdded && onSelect(jurisdiction);
-            }}
-        >
-            <React.Fragment>
+        <div className='wallets-jurisdiction-card'>
+            <div
+                className={classNames('wallets-jurisdiction-card-wrapper', {
+                    'wallets-jurisdiction-card-wrapper--added': isAdded,
+                    'wallets-jurisdiction-card-wrapper--flipped': isFlipped,
+                    'wallets-jurisdiction-card-wrapper--selected': isSelected,
+                })}
+                onClick={() => {
+                    !isAdded && onSelect(jurisdiction);
+                }}
+            >
                 <div className='wallets-jurisdiction-card-front'>
                     {isOverHeaderAvailable && <JurisdictionCardTag tag={overHeader || ''} />}
                     <div className='wallets-jurisdiction-card-front__label'>
@@ -174,7 +174,7 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
                 {marketType && marketType !== 'all' && verificationDocs && (
                     <JurisdictionCardBack setIsFlipped={setIsFlipped} verificationDocs={verificationDocs[marketType]} />
                 )}
-            </React.Fragment>
+            </div>
         </div>
     );
 };

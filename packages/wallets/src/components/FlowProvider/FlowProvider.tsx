@@ -33,8 +33,8 @@ export type TWalletScreens = {
 
 export type TFlowProviderProps<T> = {
     children: (context: TFlowProviderContext<T>) => FlowChildren;
-    initialScreenId?: keyof T;
     initialValues: FormikValues;
+    screenId?: keyof T;
     screens: T;
     validationSchema?: Yup.AnyObjectSchema;
 };
@@ -69,12 +69,12 @@ export const useFlow = () => {
  */
 function FlowProvider<T extends TWalletScreens>({
     children,
-    initialScreenId,
     initialValues,
+    screenId,
     screens,
     validationSchema,
 }: TFlowProviderProps<T>) {
-    const [currentScreenId, setCurrentScreenId] = useState<keyof T>(initialScreenId || Object.keys(screens)[0]);
+    const [currentScreenId, setCurrentScreenId] = useState<keyof T>(screenId || Object.keys(screens)[0]);
     const switchScreen = (screenId: keyof T) => {
         setCurrentScreenId(screenId);
     };
@@ -92,8 +92,8 @@ function FlowProvider<T extends TWalletScreens>({
     };
 
     useEffect(() => {
-        if (initialScreenId) setCurrentScreenId(initialScreenId);
-    }, [initialScreenId]);
+        if (screenId) setCurrentScreenId(screenId);
+    }, [screenId]);
 
     if (!currentScreenId) return null;
     return (

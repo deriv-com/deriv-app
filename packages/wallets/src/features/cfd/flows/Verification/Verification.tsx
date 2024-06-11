@@ -121,7 +121,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         return !isSuccessPOIStatus || !isSuccessPOAStatus;
     }, [isSuccessPOIStatus, isSuccessPOAStatus]);
 
-    const initialScreenId: keyof typeof screens = useMemo(() => {
+    const screenId: keyof typeof screens = useMemo(() => {
         const service = poiStatus?.current?.service as keyof THooks.POI['services'];
 
         if (isErrorManualDocumentUpload) {
@@ -146,7 +146,9 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             if (service === 'manual') return 'manualScreen';
         }
         return 'loadingScreen';
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
+        hasCreatedMT5Accounts,
         poiStatus,
         isManualUploadLoading,
         isUploadLoading,
@@ -336,12 +338,12 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
 
     return (
         <FlowProvider
-            initialScreenId={initialScreenId}
             initialValues={{
                 hasSubmittedOnfido: false,
                 selectedJurisdiction,
                 service: poiStatus?.current?.service as keyof THooks.POI['services'],
             }}
+            screenId={screenId}
             screens={screens}
         >
             {context => {

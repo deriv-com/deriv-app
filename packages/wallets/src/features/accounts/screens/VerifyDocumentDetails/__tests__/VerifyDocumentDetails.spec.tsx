@@ -97,10 +97,10 @@ describe('IDVDocumentUploadDetails', () => {
         await act(async () => {
             render(
                 <FlowProvider
-                    initialScreenId='onfidoScreen'
                     initialValues={{
                         test: 'default',
                     }}
+                    screenId='onfidoScreen'
                     screens={{
                         onfidoScreen: <FlowTextField name='onfido' />,
                     }}
@@ -144,10 +144,10 @@ describe('IDVDocumentUploadDetails', () => {
         await act(async () => {
             render(
                 <FlowProvider
-                    initialScreenId='onfidoScreen'
                     initialValues={{
                         test: 'default',
                     }}
+                    screenId='onfidoScreen'
                     screens={{
                         onfidoScreen: <FlowTextField name='onfido' />,
                     }}

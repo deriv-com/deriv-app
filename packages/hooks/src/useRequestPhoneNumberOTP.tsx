@@ -3,6 +3,7 @@ import { useMutation } from '@deriv/api';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import useSettings from './useSettings';
+import { useStore } from '@deriv/stores';
 
 type TFormatError = {
     code: string;
@@ -19,6 +20,9 @@ const useRequestPhoneNumberOTP = () => {
         ...rest
     } = useMutation('phone_number_challenge');
     const [error_message, setErrorMessage] = React.useState<React.ReactNode>('');
+    const { client } = useStore();
+    const { verification_code } = client;
+    const { phone_number_verification } = verification_code;
     const {
         mutation: { mutateAsync: updateSettings },
     } = useSettings();
@@ -26,7 +30,10 @@ const useRequestPhoneNumberOTP = () => {
     //TODOs: need to wait confirmation from the team whether to stay at phone number page when refresh or restart the email verification process again
     const requestOnSMS = () => {
         mutate({
-            payload: { carrier: VERIFICATION_SERVICES.SMS, email_code: localStorage.getItem('email_otp_code') || '' },
+            payload: {
+                carrier: VERIFICATION_SERVICES.SMS,
+                email_code: phone_number_verification || localStorage.getItem('email_otp_code') || '',
+            },
         });
     };
     //TODOs: need to wait confirmation from the team whether to stay at phone number page when refresh or restart the email verification process again
@@ -34,7 +41,7 @@ const useRequestPhoneNumberOTP = () => {
         mutate({
             payload: {
                 carrier: VERIFICATION_SERVICES.WHATSAPP,
-                email_code: localStorage.getItem('email_otp_code') || '',
+                email_code: phone_number_verification || localStorage.getItem('email_otp_code') || '',
             },
         });
     };

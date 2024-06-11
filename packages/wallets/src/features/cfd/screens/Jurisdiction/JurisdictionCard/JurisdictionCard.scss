@@ -1,29 +1,63 @@
 .wallets-jurisdiction-card {
-    align-items: center;
-    border-radius: 1.6rem;
-    border: 0.2rem solid #f2f3f4;
+    background-color: #ff444f;
+    height: 100vh;
+    width: 25%;
     cursor: pointer;
+    position: relative;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
-    width: 25%;
-    position: relative;
-    height: 100%;
-
-    transition-duration: 0.3s;
-    transition-property: transform, box-shadow;
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;
-
-    &--flip {
-        transform: rotateY(180deg);
-    }
+    border-radius: 1.6rem;
+    border: 0.2rem solid #f2f3f4;
 
     @include mobile {
         max-width: 100%;
         width: 100%;
     }
 
+    &-wrapper {
+        background-color: #ecf83d;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        height: 100%;
+        width: 100%;
+        transform-style: preserve-3d;
+
+        &--flipped {
+            transform: rotateY(180deg);
+        }
+    }
+    &-front,
+    &-back {
+        backface-visibility: hidden;
+        transform-style: preserve-3d;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: center;
+    }
+    &-front {
+        background-color: hsl(149, 96%, 62%);
+        z-index: 2;
+        transform: rotateY(0deg);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+        justify-content: center;
+        padding: 4rem 1.6rem 3.6rem;
+    }
+    &-back {
+        transform: rotateY(-180deg);
+    }
     &__added-status {
         position: absolute;
         width: 100%;
@@ -34,15 +68,12 @@
         border-radius: 0 0 1.3rem 1.3rem;
         background: var(--brand-blue, #85acb0);
     }
-
     &__link {
         color: #ff444f;
     }
-
     &:hover:not(.wallets-jurisdiction-card--added) {
         box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);
     }
-
     &--added {
         user-select: none;
         cursor: not-allowed;
@@ -52,92 +83,159 @@
         border: 0.2rem solid #85acb0;
         box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);
     }
-
-    &-front {
-        -webkit-backface-visibility: hidden;
-        backface-visibility: hidden;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        width: 100%;
-        justify-content: center;
-        padding: 4rem 1.6rem 3.6rem;
-
-        @include mobile {
-            width: 100%;
-        }
-
-        -webkit-transform-style: preserve-3d;
-        transform-style: preserve-3d;
-        transition: transform 0.3s;
-
-        &--flip {
-            -webkit-transform: rotateY(180deg);
-            transform: rotateY(180deg);
-        }
-
-        &__label {
-            text-align: center;
-
-            @include mobile {
-                margin-top: 2.5rem;
-            }
-        }
-
-        &__tag {
-            background-color: #661b20;
-            border-radius: 0.4rem;
-            color: #ffffff;
-            font-weight: 700;
-            padding: 0.5rem 1rem;
-
-            &-icons {
-                display: flex;
-                gap: 0.6rem;
-            }
-
-            &--red-darker {
-                background: #661b20;
-            }
-            &--red-dark {
-                background: #b33037;
-            }
-            &--red-light {
-                background: #ff444f;
-            }
-            &--yellow-dark {
-                background: #b3760d;
-            }
-            &--yellow-light {
-                background: #ffa912;
-            }
-            &--violet-dark {
-                background: #4a3871;
-            }
-            &--brown-dark {
-                background: #664407;
-            }
-        }
-    }
 }
 
-@keyframes flip {
-    from {
-        transform: rotateY(-180deg);
-    }
-    to {
-        transform: rotateY(0deg);
-    }
-}
+// .wallets-jurisdiction-card {
+//     align-items: center;
+//     border-radius: 1.6rem;
+//     border: 0.2rem solid #f2f3f4;
+//     cursor: pointer;
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     width: 25%;
+//     position: relative;
+//     height: 100%;
 
-.wallets-dynamic-leverage-modal-transition {
-    animation: flip 0.6s;
-}
+//     transition-duration: 0.3s;
+//     transition-property: transform, box-shadow;
+//     -webkit-transform-style: preserve-3d;
+//     transform-style: preserve-3d;
+//     &-wrapper {
+//         background-color: aqua;
+//         align-items: center;
+//         display: flex;
+//         flex-direction: column;
+//         justify-content: center;
+//         position: relative;
+//         height: 100%;
+//         width: 100%;
+//         transform-style: preserve-3d;
 
-.wallets-jurisdiction-card-rows > .wallets-jurisdiction-card-row {
-    border-bottom: 0.2rem solid #f2f3f4;
-}
+//         &--flipped {
+//             transform: rotateY(180deg);
+//         }
+//     }
 
-.wallets-jurisdiction-card-rows > .wallets-jurisdiction-card-row:last-child {
-    border-bottom: none;
-}
+//     @include mobile {
+//         max-width: 100%;
+//         width: 100%;
+//     }
+
+//     &__added-status {
+//         position: absolute;
+//         width: 100%;
+//         bottom: 0;
+//         left: 0;
+//         padding: 0.8rem;
+//         text-align: center;
+//         border-radius: 0 0 1.3rem 1.3rem;
+//         background: var(--brand-blue, #85acb0);
+//     }
+
+//     &__link {
+//         color: #ff444f;
+//     }
+
+//     &:hover:not(.wallets-jurisdiction-card--added) {
+//         box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);
+//     }
+
+//     &--added {
+//         user-select: none;
+//         cursor: not-allowed;
+//     }
+
+//     &--selected {
+//         border: 0.2rem solid #85acb0;
+//         box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);
+//     }
+
+//     &-front {
+//         -webkit-backface-visibility: hidden;
+//         backface-visibility: hidden;
+//         display: flex;
+//         flex-direction: column;
+//         height: 100%;
+//         width: 100%;
+//         justify-content: center;
+//         padding: 4rem 1.6rem 3.6rem;
+
+//         @include mobile {
+//             width: 100%;
+//         }
+
+//         -webkit-transform-style: preserve-3d;
+//         transform-style: preserve-3d;
+//         transition: transform 0.3s;
+
+//         &--flip {
+//             -webkit-transform: rotateY(180deg);
+//             transform: rotateY(180deg);
+//         }
+
+//         &__label {
+//             text-align: center;
+
+//             @include mobile {
+//                 margin-top: 2.5rem;
+//             }
+//         }
+
+//         &__tag {
+//             background-color: #661b20;
+//             border-radius: 0.4rem;
+//             color: #ffffff;
+//             font-weight: 700;
+//             padding: 0.5rem 1rem;
+
+//             &-icons {
+//                 display: flex;
+//                 gap: 0.6rem;
+//             }
+
+//             &--red-darker {
+//                 background: #661b20;
+//             }
+//             &--red-dark {
+//                 background: #b33037;
+//             }
+//             &--red-light {
+//                 background: #ff444f;
+//             }
+//             &--yellow-dark {
+//                 background: #b3760d;
+//             }
+//             &--yellow-light {
+//                 background: #ffa912;
+//             }
+//             &--violet-dark {
+//                 background: #4a3871;
+//             }
+//             &--brown-dark {
+//                 background: #664407;
+//             }
+//         }
+//     }
+// }
+
+// @keyframes flip {
+//     from {
+//         transform: rotateY(-180deg);
+//     }
+//     to {
+//         transform: rotateY(0deg);
+//     }
+// }
+
+// .wallets-dynamic-leverage-modal-transition {
+//     animation: flip 0.6s;
+// }
+
+// .wallets-jurisdiction-card-rows > .wallets-jurisdiction-card-row {
+//     border-bottom: 0.2rem solid #f2f3f4;
+// }
+
+// .wallets-jurisdiction-card-rows > .wallets-jurisdiction-card-row:last-child {
+//     border-bottom: none;
+// }

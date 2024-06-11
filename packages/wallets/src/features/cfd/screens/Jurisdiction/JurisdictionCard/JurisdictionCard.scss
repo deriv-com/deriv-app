@@ -1,5 +1,5 @@
 .wallets-jurisdiction-card {
-    background-color: #ff444f;
+    // background-color: #ff444f;
     height: 100%;
     width: 25%;
     cursor: pointer;
@@ -8,10 +8,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-radius: 1.6rem;
-    border: 0.2rem solid #f2f3f4;
-    transition-property: box-shadow;
-    transition-duration: 0.3s;
 
     @include mobile {
         max-width: 100%;
@@ -19,8 +15,10 @@
     }
 
     &-wrapper {
-        background-color: #ecf83d;
+        // background-color: #ecf83d;
         align-items: center;
+        border-radius: 1.6rem;
+        border: 0.2rem solid #f2f3f4;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -29,10 +27,22 @@
         width: 100%;
         transform-style: preserve-3d;
         transition-duration: 0.3s;
-        transition-property: transform;
+        transition-property: transform, box-shadow;
 
         &--flipped {
             transform: rotateY(180deg);
+        }
+        &:hover:not(.wallets-jurisdiction-card-wrapper--added) {
+            box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);
+        }
+        &--added {
+            user-select: none;
+            cursor: not-allowed;
+        }
+
+        &--selected {
+            border: 0.2rem solid #85acb0;
+            box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);
         }
     }
     &-front,
@@ -48,7 +58,7 @@
         justify-content: center;
     }
     &-front {
-        background-color: hsl(149, 96%, 62%);
+        // background-color: hsl(149, 96%, 62%);
         z-index: 2;
         transform: rotateY(0deg);
         display: flex;
@@ -75,18 +85,6 @@
     }
     &__link {
         color: #ff444f;
-    }
-    &:hover:not(.wallets-jurisdiction-card--added) {
-        box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);
-    }
-    &--added {
-        user-select: none;
-        cursor: not-allowed;
-    }
-
-    &--selected {
-        border: 0.2rem solid #85acb0;
-        box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);
     }
 }
 

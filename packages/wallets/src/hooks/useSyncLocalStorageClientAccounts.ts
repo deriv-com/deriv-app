@@ -8,7 +8,7 @@ type TNewWalletAccount = NonNullable<ReturnType<typeof useCreateWallet>['data']>
 type TNewTradingAccount = NonNullable<ReturnType<typeof useCreateNewRealAccount>['data']>;
 
 const useSyncLocalStorageClientAccounts = () => {
-    const { mutateAsync } = useMutation('authorize');
+    const { mutateAsync } = useMutation('account_list');
     const { data: settingsData } = useSettings();
     const [, setLocalStorageClientAccounts] = useLocalStorage(
         'client.accounts',
@@ -19,14 +19,14 @@ const useSyncLocalStorageClientAccounts = () => {
         async (newAccount: TNewWalletAccount) => {
             if (!newAccount) return;
 
-            const data = await mutateAsync({ payload: { authorize: newAccount.oauth_token } });
+            const data = await mutateAsync();
 
             if (!data) return;
 
-            const authorize = data.authorize;
             // eslint-disable-next-line
-            const acccount_list = authorize?.account_list;
+            const acccount_list = data?.account_list;
 
+            // eslint-disable-next-line
             if (!acccount_list) return;
 
             const account = acccount_list.find(acc => acc.loginid === newAccount.client_id);
@@ -65,12 +65,12 @@ const useSyncLocalStorageClientAccounts = () => {
         async (newAccount: TNewTradingAccount) => {
             if (!newAccount) return;
 
-            const data = await mutateAsync({ payload: { authorize: newAccount.oauth_token } });
+            const data = await mutateAsync();
 
             if (!data) return;
 
-            const authorize = data.authorize;
-            const acccount_list = authorize?.account_list;
+            // eslint-disable-next-line
+            const acccount_list = data?.account_list;
 
             if (!acccount_list) return;
 
@@ -92,21 +92,31 @@ const useSyncLocalStorageClientAccounts = () => {
                     is_virtual: Number(account.is_virtual),
                     landing_company_name: newAccount.landing_company_shortcode,
                     landing_company_shortcode: newAccount.landing_company_shortcode,
-                    linked_to: [],
+                    linked_to: account.linked_to,
                     residence: settingsData.citizen || settingsData.country_code,
                     session_start: moment().utc().valueOf() / 1000,
                     token: newAccount.oauth_token,
                 };
 
                 const clientAccounts = getAccountsFromLocalStorage() ?? {};
+
                 const localStorageData = {
                     ...clientAccounts,
                     [newAccount.client_id]: dataToStore,
-                    [account.loginid]: {
-                        ...clientAccounts[account.loginid],
-                        linked_to: [{ loginid: newAccount.client_id, platform: 'dtrade' }],
-                    },
                 };
+
+                const linkedWallet = account.linked_to.find(acc => acc.platform === 'dwallet');
+                const linkedWalletLoginId = linkedWallet?.loginid;
+
+                if (linkedWalletLoginId) {
+                    localStorageData[linkedWalletLoginId].linked_to = [
+                        {
+                            loginid: newAccount.client_id,
+                            platform: 'dtrade',
+                        },
+                    ];
+                }
+
                 setLocalStorageClientAccounts(localStorageData);
             }
         },

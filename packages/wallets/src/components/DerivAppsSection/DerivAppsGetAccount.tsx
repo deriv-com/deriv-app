@@ -4,6 +4,7 @@ import {
     useActiveWalletAccount,
     useCreateNewRealAccount,
     useSettings,
+    useInvalidateQuery,
 } from '@deriv/api-v2';
 import { toMoment } from '@deriv/utils';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
@@ -27,6 +28,7 @@ const DerivAppsGetAccount: React.FC = () => {
         data: { country_code: countryCode, date_of_birth: dateOfBirth, first_name: firstName, last_name: lastName },
     } = useSettings();
     const { addTradingAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
+    const invalidate = useInvalidateQuery();
 
     const { data: activeLinkedToTradingAccount, isLoading: isActiveLinkedToTradingAccountLoading } =
         useActiveLinkedToTradingAccount();
@@ -50,6 +52,8 @@ const DerivAppsGetAccount: React.FC = () => {
             if (!new_account_real) return;
 
             await addTradingAccountToLocalStorage(new_account_real);
+
+            invalidate('account_list');
         }
     };
 

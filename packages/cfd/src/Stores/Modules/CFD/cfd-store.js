@@ -460,7 +460,9 @@ export default class CFDStore extends BaseStore {
             zipCode: address_postcode,
             ...(this.account_type.type === 'all' ? { sub_account_category: 'swap_free' } : {}),
             ...(values.server ? { server: values.server } : {}),
-            ...(this.jurisdiction_selected_shortcode ? { company: this.jurisdiction_selected_shortcode } : {}),
+            ...(this.jurisdiction_selected_shortcode
+                ? { company: this.account_type.category === 'real' ? this.jurisdiction_selected_shortcode : 'svg' }
+                : {}),
             ...(this.jurisdiction_selected_shortcode !== Jurisdiction.LABUAN
                 ? type_request
                 : {
@@ -850,6 +852,7 @@ export default class CFDStore extends BaseStore {
     }
 
     setJurisdictionSelectedShortcode(shortcode) {
+        console.log('==>', { shortcode });
         this.jurisdiction_selected_shortcode = shortcode;
     }
 

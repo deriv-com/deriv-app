@@ -1,5 +1,5 @@
 // [TODO] - To be removed once CFD is configured to use the new form-body component
-import { PropsWithChildren, Fragment } from 'react';
+import React, { PropsWithChildren, Fragment } from 'react';
 import { ScrollbarsContainer } from '../scrollbars-container/scrollbars-container';
 import { Div100vhContainer } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';

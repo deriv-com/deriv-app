@@ -1,9 +1,9 @@
 import React, { PropsWithChildren } from 'react';
+import { APIProvider } from '@deriv/api-v2';
 import { renderHook } from '@testing-library/react-hooks';
+import WalletsAuthProvider from '../../AuthProvider';
 import { mockLocalStorageBeforeEachTest, restoreLocalStorageAfterEachTest } from '../../utils/tests';
 import useSyncLocalStorageClientAccounts from '../useSyncLocalStorageClientAccounts';
-import { APIProvider } from '@deriv/api-v2';
-import WalletsAuthProvider from '../../AuthProvider';
 
 jest.mock('usehooks-ts', () => ({
     ...jest.requireActual('usehooks-ts'),
@@ -94,13 +94,6 @@ jest.mock('@deriv/api-v2', () => ({
             loginid: 'CRW1002',
         },
     })),
-    useSettings: jest.fn(() => ({
-        data: {
-            citizen: 'id',
-            email: 'wallet+01@deriv.com',
-            residence: 'id',
-        },
-    })),
     useAuthorize: jest.fn(),
     useMutation: jest.fn(() => ({
         mutateAsync: jest.fn(() => ({
@@ -142,6 +135,13 @@ jest.mock('@deriv/api-v2', () => ({
                 },
             ],
         })),
+    })),
+    useSettings: jest.fn(() => ({
+        data: {
+            citizen: 'id',
+            email: 'wallet+01@deriv.com',
+            residence: 'id',
+        },
     })),
 }));
 

@@ -23,13 +23,11 @@ const useSyncLocalStorageClientAccounts = () => {
 
             if (!data) return;
 
-            // eslint-disable-next-line
-            const acccount_list = data?.account_list;
+            const accountsList = data?.account_list;
 
-            // eslint-disable-next-line
-            if (!acccount_list) return;
+            if (!accountsList) return;
 
-            const account = acccount_list.find(acc => acc.loginid === newAccount.client_id);
+            const account = accountsList.find(acc => acc.loginid === newAccount.client_id);
 
             if (!account) return;
 
@@ -69,12 +67,11 @@ const useSyncLocalStorageClientAccounts = () => {
 
             if (!data) return;
 
-            // eslint-disable-next-line
-            const acccount_list = data?.account_list;
+            const accountsList = data?.account_list;
 
-            if (!acccount_list) return;
+            if (!accountsList) return;
 
-            const account = acccount_list.find(acc => acc.loginid === newAccount.client_id);
+            const account = accountsList.find(acc => acc.loginid === newAccount.client_id);
 
             if (!account || !account.loginid) return;
 

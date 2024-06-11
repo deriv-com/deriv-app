@@ -14,4 +14,6 @@ const useTranslations = () => ({
 
 const localize = jest.fn(text => text);
 
-export { Localize, localize, useTranslations };
+const getAllowedLanguages = jest.fn(() => ({ EN: 'English', VI: 'Tiếng Việt' }));
+
+export { Localize, localize, useTranslations, getAllowedLanguages };

@@ -13,11 +13,6 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(() => false),
 }));
 
-jest.mock('@deriv/translations', () => ({
-    ...jest.requireActual('@deriv/translations'),
-    getAllowedLanguages: jest.fn(() => ({ lang_1: 'Test Lang 1', lang_2: 'Test Lang 2' })),
-}));
-
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Icon: jest.fn(() => <div>Flag Icon</div>),
@@ -59,8 +54,8 @@ describe('LanguageSettings', () => {
         expect(screen.getByText('Select Language')).toBeInTheDocument();
 
         const flags_icons = screen.getAllByText('Flag Icon');
-        const lang_1 = screen.getByText('Test Lang 1');
-        const lang_2 = screen.getByText('Test Lang 2');
+        const lang_1 = screen.getByText('English');
+        const lang_2 = screen.getByText('Tiếng Việt');
 
         expect(flags_icons).toHaveLength(2);
         expect(lang_1).toBeInTheDocument();
@@ -70,7 +65,7 @@ describe('LanguageSettings', () => {
     it('should trigger language change', () => {
         renderLanguageSettings();
 
-        const lang_2 = screen.getByText('Test Lang 2');
+        const lang_2 = screen.getByText('Tiếng Việt');
         userEvent.click(lang_2);
 
         expect(mockRootStore.common.changeSelectedLanguage).toHaveBeenCalled();

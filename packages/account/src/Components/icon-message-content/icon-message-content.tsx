@@ -49,7 +49,6 @@ const IconMessageContent = ({
                     as='div'
                     color='general'
                     weight='bold'
-                    size='s'
                     align='center'
                     className={clsx('account-management__message', {
                         [`${className}__message`]: className,

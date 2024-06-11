@@ -18,7 +18,6 @@ const FormTitle = () => {
     return (
         <Text
             as='p'
-            size='s'
             line_height='xxl'
             align={isDesktop ? 'center' : 'left'}
             className='additional-kyc-info-modal__form--header'

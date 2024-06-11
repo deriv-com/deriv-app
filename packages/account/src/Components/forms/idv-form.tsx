@@ -181,7 +181,6 @@ const IDVForm = ({
                                                         required
                                                     />
                                                 )}
-                                                ;
                                             </React.Fragment>
                                         )}
                                     </Field>

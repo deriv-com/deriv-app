@@ -6,7 +6,7 @@ import { Localize, localize } from '@deriv/translations';
 import React from 'react';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import { Formik, FormikErrors, FormikHelpers, FormikProps } from 'formik';
-import { TCFDPasswordFormValues } from 'Containers/cfd-password-modal';
+import { TCFDPasswordFormValues } from 'Containers/cfd-password-modal/cfd-password-modal.types';
 
 const MT5MigrationBackSideContent = observer(() => {
     const { ui, common, client } = useStore();

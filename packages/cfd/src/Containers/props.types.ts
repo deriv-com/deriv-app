@@ -20,8 +20,7 @@ import {
     TTradingPlatformAvailableAccount,
 } from '../Components/props.types';
 import RootStore from '../Stores/index';
-
-import { TCFDPasswordFormValues } from './cfd-password-modal';
+import { TCFDPasswordFormValues } from './cfd-password-modal/cfd-password-modal.types';
 
 export type TCFDPersonalDetailsContainerProps = {
     onSubmit: (index: number, value: { [key: string]: string }) => void;

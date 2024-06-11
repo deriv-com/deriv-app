@@ -429,6 +429,8 @@ const BinarySocketBase = (() => {
             wallet_migration: 'reset',
         });
 
+    const confirmEmail = verification_code => deriv_api.send({ confirm_email: 1, email_consent: 1, verification_code });
+
     return {
         init,
         openNewConnection,
@@ -471,6 +473,7 @@ const BinarySocketBase = (() => {
         close,
         cryptoWithdraw,
         cryptoConfig,
+        confirmEmail,
         contractUpdate,
         contractUpdateHistory,
         getFinancialAssessment,

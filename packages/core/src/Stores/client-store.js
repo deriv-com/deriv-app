@@ -119,6 +119,7 @@ export default class ClientStore extends BaseStore {
         request_email: '',
         social_email_change: '',
         system_email_change: '',
+        verify_account: '',
     };
 
     new_email = {
@@ -307,6 +308,7 @@ export default class ClientStore extends BaseStore {
             is_eu_country: computed,
             is_options_blocked: computed,
             is_multipliers_only: computed,
+            is_email_verified: computed,
             is_proof_of_ownership_enabled: computed,
             resetLocalStorageValues: action.bound,
             getBasicUpgradeInfo: action.bound,
@@ -467,6 +469,10 @@ export default class ClientStore extends BaseStore {
                 }
             }
         );
+    }
+
+    get is_email_verified() {
+        return !this.account_status?.status?.includes('email_not_verified');
     }
 
     get balance() {

@@ -183,6 +183,7 @@ export default class UIStore extends BaseStore {
     is_kyc_information_submitted_modal_open = false;
 
     is_email_verification_modal_visible = false;
+    is_email_verification_code_expired_modal_visible = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -214,6 +215,7 @@ export default class UIStore extends BaseStore {
 
         makeObservable(this, {
             is_email_verification_modal_visible: observable,
+            is_email_verification_code_expired_modal_visible: observable,
             is_additional_kyc_info_modal_open: observable,
             is_kyc_information_submitted_modal_open: observable,
             account_needed_modal_props: observable,
@@ -431,6 +433,7 @@ export default class UIStore extends BaseStore {
             toggleMT5MigrationModal: action.bound,
             toggleUrlUnavailableModal: action.bound,
             toggleEmailVerificationModal: action.bound,
+            toggleEmailVerificationCodeExpiredModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -662,6 +665,8 @@ export default class UIStore extends BaseStore {
 
     openRealAccountSignup(target) {
         if (target) {
+            if (!this.root_store.client?.is_email_verified) return this.toggleEmailVerificationModal(true);
+
             this.is_real_acc_signup_on = true;
             this.real_account_signup_target = target;
             this.is_accounts_switcher_on = false;
@@ -1003,5 +1008,9 @@ export default class UIStore extends BaseStore {
 
     toggleEmailVerificationModal(value) {
         this.is_email_verification_modal_visible = value;
+    }
+
+    toggleEmailVerificationCodeExpiredModal(value) {
+        this.is_email_verification_code_expired_modal_visible = value;
     }
 }

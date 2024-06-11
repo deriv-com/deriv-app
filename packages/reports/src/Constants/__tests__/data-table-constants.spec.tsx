@@ -26,7 +26,7 @@ jest.mock('@deriv/shared', () => ({
     getGrowthRatePercentage: jest.fn(growth_rate => `${growth_rate * 100}`),
 }));
 
-jest.mock('../../containers/progress-slider-stream', () => jest.fn(() => 'ProgressSliderStream'));
+jest.mock('../../Containers/progress-slider-stream', () => jest.fn(() => 'ProgressSliderStream'));
 
 jest.mock('Components/indicative-cell', () => {
     return {

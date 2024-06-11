@@ -43,19 +43,12 @@
             box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);
         }
     }
-    &-front,
-    &-back {
+
+    &-front {
         backface-visibility: hidden;
         transform-style: preserve-3d;
         top: 0;
         left: 0;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        justify-content: center;
-    }
-    &-front {
         z-index: 2;
         transform: rotateY(0deg);
         display: flex;
@@ -65,6 +58,7 @@
         justify-content: center;
         padding: 4rem 1.6rem 3.6rem;
         position: relative;
+
         &__tag {
             background-color: #661b20;
             border-radius: 0.4rem;
@@ -99,6 +93,7 @@
                 background: #664407;
             }
         }
+
         &__label {
             text-align: center;
 
@@ -107,13 +102,11 @@
             }
         }
     }
-    &-back {
-        transform: rotateY(-180deg);
-        position: absolute;
-    }
+
     &__link {
         color: #ff444f;
     }
+
     &__added-status {
         position: absolute;
         width: 100%;

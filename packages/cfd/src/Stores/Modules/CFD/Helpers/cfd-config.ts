@@ -187,7 +187,7 @@ export const getMtCompanies = (is_eu: boolean, product?: TProducts) => {
             all: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
-                title: localize('Swap-Free'),
+                title: product === 'swap_free' ? localize('Swap-Free') : localize('Zero spread'),
                 short_title: all_config.short_title,
             },
             all_swap_free_svg: {

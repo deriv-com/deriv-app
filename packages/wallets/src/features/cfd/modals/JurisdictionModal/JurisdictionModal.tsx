@@ -5,7 +5,7 @@ import { Loader } from '../../../../components/Loader';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { DynamicLeverageContext } from '../../components/DynamicLeverageContext';
-import { PlatformDetails } from '../../constants';
+import { MarketTypeDetails, PlatformDetails } from '../../constants';
 import { DynamicLeverageScreen, DynamicLeverageTitle } from '../../screens/DynamicLeverage';
 import { JurisdictionScreen } from '../../screens/Jurisdiction';
 import { MT5PasswordModal } from '..';
@@ -27,9 +27,13 @@ const JurisdictionModal = () => {
     const marketType = getModalState('marketType') ?? 'all';
     const platform = getModalState('platform') ?? PlatformDetails.mt5.platform;
 
+    const { title } = MarketTypeDetails[marketType];
+
     const toggleDynamicLeverage = useCallback(() => {
         setIsDynamicLeverageVisible(!isDynamicLeverageVisible);
     }, [isDynamicLeverageVisible, setIsDynamicLeverageVisible]);
+
+    const jurisdictionTitle = `Choose a jurisdiction for your ${PlatformDetails.mt5.title} ${title} account`;
 
     const JurisdictionFlow = () => {
         if (selectedJurisdiction === 'svg') {
@@ -67,7 +71,7 @@ const JurisdictionModal = () => {
             <ModalStepWrapper
                 renderFooter={modalFooter}
                 shouldHideHeader={isDynamicLeverageVisible}
-                title='Choose a jurisdiction'
+                title={jurisdictionTitle}
             >
                 {isDynamicLeverageVisible && <DynamicLeverageTitle />}
                 <div className='wallets-jurisdiction-modal'>

@@ -3,14 +3,6 @@ import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import LanguageRadioButton, { TLanguageRadioButton } from '../language-radio-button';
 
-jest.mock('@deriv/translations', () => {
-    const original_module = jest.requireActual('@deriv/translations');
-    return {
-        ...original_module,
-        getAllowedLanguages: jest.fn(() => ({ lang_1: 'Test Lang 1', lang_2: 'Test lang 2' })),
-    };
-});
-
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
     return {

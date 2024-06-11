@@ -43,8 +43,6 @@ describe('<SelfExclusionArticle />', () => {
     });
 
     it('should render SelfExclusionArticle desktop component with selfExclusionArticleItems', () => {
-        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: true });
-
         render(
             <StoreProvider store={store}>
                 <SelfExclusionContext.Provider value={mock_self_exclusion_context}>
@@ -59,7 +57,6 @@ describe('<SelfExclusionArticle />', () => {
     });
 
     it('should render SelfExclusionArticle desktop component without is_appstore for EU items', () => {
-        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: true });
         mock_self_exclusion_context.is_eu = true;
 
         render(
@@ -76,8 +73,6 @@ describe('<SelfExclusionArticle />', () => {
     });
 
     it('should render SelfExclusionArticle desktop component for non EU items', () => {
-        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: true });
-
         render(
             <StoreProvider store={store}>
                 <SelfExclusionContext.Provider value={mock_self_exclusion_context}>

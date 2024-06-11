@@ -1,6 +1,5 @@
 import React from 'react';
 import clsx from 'clsx';
-import { isDesktop, isMobile } from '@deriv/shared';
 import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
 import SelfExclusionArticle from './self-exclusion-article';
 import SelfExclusionContext from './self-exclusion-context';

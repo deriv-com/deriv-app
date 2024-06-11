@@ -19,7 +19,7 @@ const cryptoAccount = {
 };
 
 describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
-    it('should return null if sourceAccount is not a wallet', () => {
+    it('returns null if sourceAccount is not a wallet', () => {
         const result = lifetimeAccountLimitsBetweenWalletsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             sourceAccount: { account_category: 'trading' },
@@ -27,7 +27,7 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
         expect(result).toBeNull();
     });
 
-    it('should return null if targetAccount is not a wallet', () => {
+    it('returns null if targetAccount is not a wallet', () => {
         const result = lifetimeAccountLimitsBetweenWalletsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             targetAccount: { account_category: 'trading' },
@@ -35,7 +35,7 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
         expect(result).toBeNull();
     });
 
-    it('should handle reaching the lifetime limit for fiat transfers', () => {
+    it('handles reaching the lifetime limit for fiat transfers', () => {
         const result = lifetimeAccountLimitsBetweenWalletsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'USD' },
@@ -63,7 +63,7 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
         });
     });
 
-    it('should handle reaching the lifetime limit for crypto transfers', () => {
+    it('handles reaching the lifetime limit for crypto transfers', () => {
         const result = lifetimeAccountLimitsBetweenWalletsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'USD' },
@@ -91,7 +91,7 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
         });
     });
 
-    it('should handle available lifetime limit for crypto transfers', () => {
+    it('handles available lifetime limit for crypto transfers', () => {
         const result = lifetimeAccountLimitsBetweenWalletsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'USD' },
@@ -120,7 +120,7 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
         });
     });
 
-    it('should handle available lifetime limit for crypto transfers with equal allowed and available sum', () => {
+    it('handles available lifetime limit for crypto transfers with equal allowed and available sum', () => {
         const result = lifetimeAccountLimitsBetweenWalletsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'USD' },
@@ -148,7 +148,7 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
         });
     });
 
-    it('should handle available lifetime limit for fiat transfers', () => {
+    it('handles available lifetime limit for fiat transfers', () => {
         const result = lifetimeAccountLimitsBetweenWalletsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'BTC' },
@@ -177,7 +177,7 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
         });
     });
 
-    it('should handle lifetime limit for fiat transfers with equal allowed and available sum', () => {
+    it('handles lifetime limit for fiat transfers with equal allowed and available sum', () => {
         const result = lifetimeAccountLimitsBetweenWalletsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'BTC' },
@@ -205,7 +205,7 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
         });
     });
 
-    it('should handle available lifetime limit for crypto to crypto transfers', () => {
+    it('handles available lifetime limit for crypto to crypto transfers', () => {
         const result = lifetimeAccountLimitsBetweenWalletsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'BTC' },
@@ -234,7 +234,7 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
         });
     });
 
-    it('should handle lifetime limit for crypto to crypto transfers with equal allowed and available sum', () => {
+    it('handles lifetime limit for crypto to crypto transfers with equal allowed and available sum', () => {
         const result = lifetimeAccountLimitsBetweenWalletsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'BTC' },
@@ -262,7 +262,7 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
         });
     });
 
-    it('should return null if sourceAccount currency does not match activeWallet currency and no exchange rate', () => {
+    it('returns null if sourceAccount currency does not match activeWallet currency and no exchange rate', () => {
         const result = lifetimeAccountLimitsBetweenWalletsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'USD' },
@@ -289,7 +289,7 @@ describe('lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
         expect(result).toBeNull();
     });
 
-    it('should return null if targetAccount currency does not match activeWallet currency and no exchange rate', () => {
+    it('returns null if targetAccount currency does not match activeWallet currency and no exchange rate', () => {
         const result = lifetimeAccountLimitsBetweenWalletsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'USD' },

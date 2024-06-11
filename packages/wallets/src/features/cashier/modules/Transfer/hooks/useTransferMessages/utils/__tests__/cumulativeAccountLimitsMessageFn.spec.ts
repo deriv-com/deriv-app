@@ -27,7 +27,7 @@ const tradingAccount = {
 };
 
 describe('cumulativeAccountLimitsMessageFn', () => {
-    it('should return null if targetAccount is not provided', () => {
+    it('returns null if targetAccount is not provided', () => {
         const result = cumulativeAccountLimitsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             sourceAccount: {},
@@ -36,7 +36,7 @@ describe('cumulativeAccountLimitsMessageFn', () => {
         expect(result).toBeNull();
     });
 
-    it('should handle demo transfer with full limit available', () => {
+    it('handles demo transfer with full limit available', () => {
         const result = cumulativeAccountLimitsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { is_virtual: true },
@@ -65,7 +65,7 @@ describe('cumulativeAccountLimitsMessageFn', () => {
         });
     });
 
-    it('should handle demo transfer with partial limit available', () => {
+    it('handles demo transfer with partial limit available', () => {
         const result = cumulativeAccountLimitsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { is_virtual: true },
@@ -94,7 +94,7 @@ describe('cumulativeAccountLimitsMessageFn', () => {
         });
     });
 
-    it('should handle real account transfer with available limit for wallets', () => {
+    it('handles real account transfer with available limit for wallets', () => {
         const result = cumulativeAccountLimitsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'USD', is_virtual: false },
@@ -126,7 +126,7 @@ describe('cumulativeAccountLimitsMessageFn', () => {
         });
     });
 
-    it('should handle real account transfer with available limit for non-wallets', () => {
+    it('handles real account transfer with available limit for non-wallets', () => {
         const result = cumulativeAccountLimitsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'USD', is_virtual: false },
@@ -158,7 +158,7 @@ describe('cumulativeAccountLimitsMessageFn', () => {
         });
     });
 
-    it('should handle real account transfer with equal allowed and available limits for wallets', () => {
+    it('handles real account transfer with equal allowed and available limits for wallets', () => {
         const result = cumulativeAccountLimitsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'USD', is_virtual: false },
@@ -191,7 +191,7 @@ describe('cumulativeAccountLimitsMessageFn', () => {
         });
     });
 
-    it('should handle real account transfer with equal allowed and available limits for non-wallets', () => {
+    it('handles real account transfer with equal allowed and available limits for non-wallets', () => {
         const result = cumulativeAccountLimitsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'USD', is_virtual: false },
@@ -224,7 +224,7 @@ describe('cumulativeAccountLimitsMessageFn', () => {
         });
     });
 
-    it('should handle real account transfer with no available limit for wallets', () => {
+    it('handles real account transfer with no available limit for wallets', () => {
         const result = cumulativeAccountLimitsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'USD', is_virtual: false },
@@ -257,7 +257,7 @@ describe('cumulativeAccountLimitsMessageFn', () => {
         });
     });
 
-    it('should handle real account transfer with no available limit for non-wallets', () => {
+    it('handles real account transfer with no available limit for non-wallets', () => {
         const result = cumulativeAccountLimitsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'USD', is_virtual: false },
@@ -290,7 +290,7 @@ describe('cumulativeAccountLimitsMessageFn', () => {
         });
     });
 
-    it('should return null if exchange rates are not available', () => {
+    it('returns null if exchange rates are not available', () => {
         const result = cumulativeAccountLimitsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'USD' },
@@ -313,7 +313,7 @@ describe('cumulativeAccountLimitsMessageFn', () => {
         expect(result).toBeNull();
     });
 
-    it('should return null if source account does not match active wallet currency and no exchange rate is available', () => {
+    it('returns null if source account does not match active wallet currency and no exchange rate is available', () => {
         const result = cumulativeAccountLimitsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'USD' },
@@ -336,7 +336,7 @@ describe('cumulativeAccountLimitsMessageFn', () => {
         expect(result).toBeNull();
     });
 
-    it('should return null if target account does not match active wallet currency and no exchange rate is available', () => {
+    it('returns null if target account does not match active wallet currency and no exchange rate is available', () => {
         const result = cumulativeAccountLimitsMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { currency: 'USD' },

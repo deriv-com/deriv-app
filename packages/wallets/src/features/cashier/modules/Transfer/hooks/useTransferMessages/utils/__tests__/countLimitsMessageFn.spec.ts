@@ -1,7 +1,7 @@
 import countLimitMessageFn from '../countLimitsMessageFn';
 
 describe('countLimitMessageFn', () => {
-    it('should return null if targetAccount is not provided', () => {
+    it('returns null if targetAccount is not provided', () => {
         const result = countLimitMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             targetAccount: null,
@@ -9,7 +9,7 @@ describe('countLimitMessageFn', () => {
         expect(result).toBeNull();
     });
 
-    it('should handle demo transfer with no available count', () => {
+    it('handles demo transfer with no available count', () => {
         const result = countLimitMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { is_virtual: true },
@@ -35,7 +35,7 @@ describe('countLimitMessageFn', () => {
         });
     });
 
-    it('should handle real account transfer with no available count between wallets', () => {
+    it('handles real account transfer with no available count between wallets', () => {
         const result = countLimitMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { is_virtual: false },
@@ -61,7 +61,7 @@ describe('countLimitMessageFn', () => {
         });
     });
 
-    it('should handle real account transfer with no available count between non-wallet accounts', () => {
+    it('handles real account transfer with no available count between non-wallet accounts', () => {
         const result = countLimitMessageFn({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             activeWallet: { is_virtual: false },
@@ -87,7 +87,7 @@ describe('countLimitMessageFn', () => {
         });
     });
 
-    it('should return null if allowedCount and availableCount are undefined', () => {
+    it('returns null if allowedCount and availableCount are undefined', () => {
         const result = countLimitMessageFn({
             limits: {
                 daily_transfers: {
@@ -105,7 +105,7 @@ describe('countLimitMessageFn', () => {
         expect(result).toBeNull();
     });
 
-    it('should return null if allowedCount and availableCount are defined and availableCount is not 0', () => {
+    it('returns null if allowedCount and availableCount are defined and availableCount is not 0', () => {
         const result = countLimitMessageFn({
             limits: {
                 daily_transfers: {

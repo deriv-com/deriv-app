@@ -88,7 +88,7 @@ const getManualVerificationFooter = ({
 
 const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { data: mt5AccountsList } = useMT5AccountsList();
-    const { data: poiStatus, isSuccess: isSuccessPOIStatus } = usePOI();
+    const { data: poiStatus, isSuccess: isSuccessPOIStatus, refetch } = usePOI();
     const { data: poaStatus, isSuccess: isSuccessPOAStatus } = usePOA();
     const { isLoading: isUploadLoading, upload } = useDocumentUpload();
     const {
@@ -124,23 +124,23 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const initialScreenId: keyof typeof screens = useMemo(() => {
         const service = poiStatus?.current?.service as keyof THooks.POI['services'];
 
-        if (isManualUploadLoading || isUploadLoading) {
-            return 'loadingScreen';
-        }
-
         if (isErrorManualDocumentUpload) {
             if (errorManualDocumentUpload?.error.code === ErrorCode.DuplicateUpload) {
                 return 'duplicateUploadErrorScreen';
             }
         }
-        if (service && poiStatus?.services && isSuccessPOIStatus) {
-            const serviceStatus = poiStatus.status;
+        if (service && poiStatus?.services && isSuccessPOIStatus && !(isManualUploadLoading || isUploadLoading)) {
+            refetch();
 
+            const serviceStatus = poiStatus.status;
             if (serviceStatus === 'pending' || serviceStatus === 'verified') {
                 if (shouldSubmitPOA) return 'poaScreen';
                 if (shouldFillPersonalDetails) return 'personalDetailsScreen';
-                show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
+                if (!hasCreatedMT5Accounts) {
+                    show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
+                }
             }
+
             if (service === 'idv') return 'idvScreen';
             if (service === 'onfido') return 'onfidoScreen';
             if (service === 'manual') return 'manualScreen';

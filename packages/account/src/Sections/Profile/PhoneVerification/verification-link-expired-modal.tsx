@@ -21,8 +21,6 @@ const VerificationLinkExpiredModal = observer(
             setShouldShowVerificationLinkExpiredModal(false);
             history.goBack();
         };
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore for now
         const { send } = useVerifyEmail('phone_number_verification');
         const handleSendNewLinkButton = () => {
             send();

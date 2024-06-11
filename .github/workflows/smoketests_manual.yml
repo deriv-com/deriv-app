@@ -56,7 +56,8 @@ jobs:
       - name: Trigger another deriv-app smoke tests from regentmarkets
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.PAT }}
+          # github-token: ${{ secrets.PAT }}
+          github-token: ${{ E2E_CYPRESS_RECORD_KEY }}
           script: |
             github.actions.createWorkflowDispatch({
               owner: 'regentmarkets',

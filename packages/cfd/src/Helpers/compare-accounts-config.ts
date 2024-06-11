@@ -256,13 +256,22 @@ const getJuridisctionDescription = (shortcode: string) => {
     switch (shortcode) {
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_BVI:
         case MARKET_TYPE_SHORTCODE.FINANCIAL_BVI:
-        case MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI:
             return createDescription(
                 'Deriv (BVI) Ltd',
                 'British Virgin Islands',
                 localize('British Virgin Islands Financial Services Commission'),
                 localize('(License no. SIBA/L/18/1114)'),
                 localize('Regulator/External dispute resolution')
+            );
+        case MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI:
+            return createDescription(
+                'Deriv (BVI) Ltd',
+                'British Virgin Islands',
+                localize('British Virgin Islands Financial Services Commission'),
+                localize('(License no. SIBA/L/18/1114)'),
+                localize('Regulator/External dispute resolution'),
+                '1:1000',
+                '0.0 pips'
             );
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_VANUATU:
         case MARKET_TYPE_SHORTCODE.FINANCIAL_VANUATU:

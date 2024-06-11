@@ -1,9 +1,5 @@
 /** @define app-contents; weak */
 
-*:where(:not(html, iframe, canvas, img, svg, video, audio):not(svg *, symbol *)) {
-    all: revert-layer !important;
-}
-
 /*rtl:begin:ignore*/
 .app-contents {
     &--show-positions-drawer:not(&--is-mobile) {

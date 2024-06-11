@@ -25,7 +25,6 @@ const LanguageSettings = observer(() => {
         return <Redirect to={routes.traders_hub} />;
     }
 
-    // [TODO] - Need to replace this with utility function after merging https://github.com/deriv-com/translations/pull/41
     const allowed_languages: Record<string, string> = getAllowedLanguages(BLOCK_LANGUAGES);
     return (
         <div className='settings-language'>

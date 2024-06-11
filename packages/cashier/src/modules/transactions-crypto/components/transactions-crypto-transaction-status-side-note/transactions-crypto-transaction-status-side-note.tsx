@@ -52,8 +52,8 @@ const TransactionsCryptoTransactionStatusSideNote: React.FC = observer(() => {
                     </Text>
                     {transaction_fee && (
                         <Text
-                            size={'xxxs'}
-                            color={'less-prominent'}
+                            size='xxxs'
+                            color='less-prominent'
                             className='transactions-crypto-transaction-status-side-note__transaction-fee'
                         >
                             {localize('Transaction fee: {{amount}} {{currency}}', {

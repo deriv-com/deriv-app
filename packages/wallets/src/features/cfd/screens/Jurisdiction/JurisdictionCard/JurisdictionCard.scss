@@ -1,6 +1,6 @@
 .wallets-jurisdiction-card {
     background-color: #ff444f;
-    height: 100vh;
+    height: 100%;
     width: 25%;
     cursor: pointer;
     position: relative;
@@ -10,6 +10,8 @@
     justify-content: center;
     border-radius: 1.6rem;
     border: 0.2rem solid #f2f3f4;
+    transition-property: box-shadow;
+    transition-duration: 0.3s;
 
     @include mobile {
         max-width: 100%;
@@ -26,6 +28,8 @@
         height: 100%;
         width: 100%;
         transform-style: preserve-3d;
+        transition-duration: 0.3s;
+        transition-property: transform;
 
         &--flipped {
             transform: rotateY(180deg);
@@ -35,7 +39,6 @@
     &-back {
         backface-visibility: hidden;
         transform-style: preserve-3d;
-        position: absolute;
         top: 0;
         left: 0;
         width: 100%;
@@ -54,9 +57,11 @@
         width: 100%;
         justify-content: center;
         padding: 4rem 1.6rem 3.6rem;
+        position: relative;
     }
     &-back {
         transform: rotateY(-180deg);
+        position: absolute;
     }
     &__added-status {
         position: absolute;

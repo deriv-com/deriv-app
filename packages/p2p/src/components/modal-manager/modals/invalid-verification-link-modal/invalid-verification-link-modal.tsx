@@ -1,11 +1,11 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Button, Icon, Modal, Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
+import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { api_error_codes } from 'Constants/api-error-codes';
-import { useStores } from 'Stores';
-import classNames from 'classnames';
 
 type TInvalidVerificationLinkModalProps = {
     error_message: string;

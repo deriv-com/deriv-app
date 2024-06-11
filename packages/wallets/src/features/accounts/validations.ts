@@ -10,7 +10,10 @@ export const passportValidator = Yup.string()
     .max(8)
     .required('Please enter your Passport number. Example: G1234567');
 
-export const documentRequiredValidator = (documentType: string) => Yup.string().required(`${documentType} is required`);
+export const documentRequiredValidator = (documentType: string) =>
+    Yup.string()
+        .matches(/^[\w\s-]{0,30}$/g)
+        .required(`Only letters, numbers, space, underscore, and hyphen are allowed for ${documentType}`);
 
 export const ssnitValidator = Yup.string()
     .matches(/^[A-Z]\d{12}$/, 'Please enter the correct format. Example: C123456789012')

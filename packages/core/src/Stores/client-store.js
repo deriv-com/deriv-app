@@ -1850,8 +1850,6 @@ export default class ClientStore extends BaseStore {
         // broadcastAccountChange is already called after new connection is authorized
         if (!should_switch_socket_connection) this.broadcastAccountChange();
 
-        if (!this.is_virtual) this.getLimits();
-
         runInAction(() => (this.is_switching = false));
     }
 

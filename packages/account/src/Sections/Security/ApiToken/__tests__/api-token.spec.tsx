@@ -330,6 +330,7 @@ describe('<ApiToken/>', () => {
 
         expect(await screen.findByText('Name')).toBeInTheDocument();
         expect(await screen.findByText('Token')).toBeInTheDocument();
+        expect(await screen.findByText('Last used')).toBeInTheDocument();
         expect(await screen.findByText('Scopes')).toBeInTheDocument();
         expect(await screen.findByText('First test token')).toBeInTheDocument();
         expect(await screen.findByText('Second test token')).toBeInTheDocument();

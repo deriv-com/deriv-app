@@ -1,5 +1,5 @@
 // [TODO] - To be removed once CFD is configured to use the new form-body component
-import React, { PropsWithChildren, Fragment } from 'react';
+import { PropsWithChildren, Fragment } from 'react';
 import { ScrollbarsContainer } from '../scrollbars-container/scrollbars-container';
 import { Div100vhContainer } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
@@ -11,7 +11,7 @@ type TFormBody = {
     isFullHeight?: boolean;
 };
 
-export const FormBody = ({ children, scroll_offset, className, isFullHeight }: React.PropsWithChildren<TFormBody>) => {
+export const FormBody = ({ children, scroll_offset, className, isFullHeight }: PropsWithChildren<TFormBody>) => {
     const { isDesktop } = useDevice();
     return (
         <Fragment>

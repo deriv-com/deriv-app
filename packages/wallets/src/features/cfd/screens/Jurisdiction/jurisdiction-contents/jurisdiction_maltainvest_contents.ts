@@ -4,7 +4,7 @@ export const getJurisdictionMaltainvestContents = (): TJurisdictionCardItems => 
     contents: {
         financial: [
             {
-                description: 'Forex, stocks, stock indices, commodities, cryptocurrencies and synthetic indices.',
+                description: 'Forex, stocks, stock indices, commodities, cryptocurrencies and synthetic indices',
                 key: 'assets',
                 title: 'Assets',
                 titleIndicators: {

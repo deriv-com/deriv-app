@@ -101,7 +101,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         // for DBot we need to logout first and only after this redirect to TH
         if (window.location.pathname.startsWith(routes.bot)) {
             await logoutClient();
-            history.push(routes.traders_hub);
+            history.push(routes.index);
         } else {
             history.push(routes.traders_hub);
             await logoutClient();

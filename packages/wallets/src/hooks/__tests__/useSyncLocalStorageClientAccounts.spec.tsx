@@ -2,9 +2,8 @@ import React, { PropsWithChildren } from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { mockLocalStorageBeforeEachTest, restoreLocalStorageAfterEachTest } from '../../utils/tests';
 import useSyncLocalStorageClientAccounts from '../useSyncLocalStorageClientAccounts';
-import { APIProvider, useMutation } from '@deriv/api-v2';
+import { APIProvider } from '@deriv/api-v2';
 import WalletsAuthProvider from '../../AuthProvider';
-import { useMultipleSelection } from 'downshift';
 
 jest.mock('usehooks-ts', () => ({
     ...jest.requireActual('usehooks-ts'),

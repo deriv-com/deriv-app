@@ -20,14 +20,7 @@ const useSyncLocalStorageClientAccounts = () => {
             if (!newAccount) return;
 
             const data = await mutateAsync();
-
-            if (!data) return;
-
-            const accountsList = data?.account_list;
-
-            if (!accountsList) return;
-
-            const account = accountsList.find(acc => acc.loginid === newAccount.client_id);
+            const account = data?.account_list?.find(acc => acc.loginid === newAccount.client_id);
 
             if (!account) return;
 
@@ -64,14 +57,7 @@ const useSyncLocalStorageClientAccounts = () => {
             if (!newAccount) return;
 
             const data = await mutateAsync();
-
-            if (!data) return;
-
-            const accountsList = data?.account_list;
-
-            if (!accountsList) return;
-
-            const account = accountsList.find(acc => acc.loginid === newAccount.client_id);
+            const account = data?.account_list?.find(acc => acc.loginid === newAccount.client_id);
 
             if (!account || !account.loginid) return;
 

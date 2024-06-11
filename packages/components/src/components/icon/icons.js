@@ -507,6 +507,7 @@ import './common/ic-notification-clear.svg';
 import './common/ic-notification.svg';
 import './common/ic-online-naira.svg';
 import './common/ic-open-positions.svg';
+import './common/ic-open.svg';
 import './common/ic-other-payment-method.svg';
 import './common/ic-pa.svg';
 import './common/ic-passcode.svg';

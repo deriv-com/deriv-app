@@ -104,6 +104,8 @@ type TPopulateSettingsExtensionsMenuItem = {
     value: <T extends object>(props: T) => JSX.Element;
 };
 
+type TProduct = 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx';
+
 type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 
 type TIconTypes =
@@ -247,7 +249,7 @@ type TTradingPlatformAvailableAccount = {
     sub_account_type: string;
     max_count?: number;
     available_count?: number;
-    product: 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx';
+    product: TProduct;
 };
 
 type TAvailableCFDAccounts = {
@@ -1013,7 +1015,7 @@ type TTradersHubStore = {
             availability?: TRegionAvailability;
             description?: string;
             market_type?: 'all' | 'financial' | 'synthetic';
-            product: string;
+            product: TProduct;
         }[];
     openModal: (modal_id: string, props?: unknown) => void;
     selected_account: {

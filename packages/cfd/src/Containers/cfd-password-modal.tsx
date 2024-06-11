@@ -30,20 +30,20 @@ import {
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 
-import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import { TProducts } from '../Components/props.types';
 import SuccessDialog from '../Components/success-dialog.jsx';
-import MigrationSuccessModal from '../Components/migration-success-modal';
-import { getDxCompanies, getMtCompanies, TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
-import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import CFDPasswordModalTitle from './cfd-password-modal-title';
-import { CFD_PLATFORMS, JURISDICTION, CATEGORY } from '../Helpers/cfd-config';
+import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import MigrationSuccessModal from '../Components/migration-success-modal';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { CFD_PLATFORMS, JURISDICTION, CATEGORY, PRODUCT } from '../Helpers/cfd-config';
+import { getDxCompanies, getMtCompanies, TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 
-import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 import CFDPasswordChange from './cfd-password-change';
 import CFDPasswordChangeContent from './cfd-password-change-content';
+import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 
 import '../sass/cfd.scss';
-import { TProducts } from 'Components/props.types';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -178,7 +178,7 @@ const IconType = React.memo(({ platform, type, show_eu_related_content, product 
             case 'synthetic':
                 return <TradingPlatformIcon icon='Standard' size={128} />;
             case 'all':
-                if (product === 'zero_spread') {
+                if (product === PRODUCT.ZEROSPREAD) {
                     return <TradingPlatformIcon icon='ZeroSpread' size={128} />;
                 }
                 return <TradingPlatformIcon icon='SwapFree' size={128} />;
@@ -195,7 +195,7 @@ const IconType = React.memo(({ platform, type, show_eu_related_content, product 
             case 'synthetic':
                 return <Icon icon='IcMt5StandardPlatform' size={128} />;
             case 'all':
-                if (product === 'zero_spread') {
+                if (product === PRODUCT.ZEROSPREAD) {
                     return <Icon icon='IcMt5ZeroSpreadPlatform' size={128} />;
                 }
                 return <Icon icon='IcMt5SwapFreePlatform' size={128} />;

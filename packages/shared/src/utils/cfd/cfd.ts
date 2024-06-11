@@ -38,6 +38,7 @@ export const getMT5Title = (account_type: string) => {
     return CFD_text.financial;
 };
 
+type TProduct = 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx';
 type TPlatform = 'dxtrade' | 'mt5' | 'ctrader';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
 type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'malta' | 'maltainvest';
@@ -48,7 +49,7 @@ type TGetAccount = {
 };
 type TGetCFDAccountKey = TGetAccount & {
     shortcode?: TShortcode;
-    product?: string;
+    product?: TProduct;
 };
 
 // * mt5_login_list returns these:
@@ -262,7 +263,7 @@ export const setSharedCFDText = (all_shared_CFD_text: { [key: string]: () => voi
     CFD_text_translated = all_shared_CFD_text;
 };
 
-type TAccount = DetailsOfEachMT5Loginid & { platform: string; product?: string };
+type TAccount = DetailsOfEachMT5Loginid & { platform: string; product?: TProduct };
 export const getAccountListKey = (account: TAccount, platform: TPlatform, shortcode?: TShortcode) => {
     return `${account.platform || platform}.${account.account_type}.${getCFDAccountKey({
         market_type: account.market_type,

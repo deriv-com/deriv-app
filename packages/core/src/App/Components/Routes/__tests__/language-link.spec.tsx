@@ -1,14 +1,12 @@
 import React from 'react';
+import { useTranslations } from '@deriv-com/translations';
 import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { TLanguageLink } from 'App/Components/Routes/language-link';
 import { LanguageLink } from '../index';
 
-jest.mock('react-i18next', () => ({
-    ...jest.requireActual('react-i18next'),
-    useTranslation: jest.fn(() => ({ i18n: { changeLanguage: jest.fn() } })),
-}));
+jest.mock('@deriv-com/translations');
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -21,9 +19,17 @@ jest.mock('Utils/Language', () => ({
 }));
 
 describe('LanguageLink component', () => {
+    beforeEach(() => {
+        (useTranslations as jest.Mock).mockReturnValue({
+            currentLang: 'VI',
+            localize: jest.fn().mockImplementation(key => key),
+            switchLanguage: jest.fn(),
+        });
+    });
+
     const mock_props: TLanguageLink = {
         is_clickable: false,
-        lang: 'ID',
+        lang: 'VI',
         toggleModal: jest.fn(),
     };
     const mockRootStore = mockStore({});
@@ -33,7 +39,7 @@ describe('LanguageLink component', () => {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
-        expect(screen.getByText('Indonesian')).toBeInTheDocument();
+        expect(screen.getByText('Tiếng Việt')).toBeInTheDocument();
         expect(screen.getByTestId('dt_mocked_icon')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_settings_language_button')).not.toBeInTheDocument();
     });
@@ -45,7 +51,7 @@ describe('LanguageLink component', () => {
         });
 
         const lang_btn = screen.getByTestId('dt_settings_language_button');
-        expect(screen.getByText('Indonesian')).toBeInTheDocument();
+        expect(screen.getByText('Tiếng Việt')).toBeInTheDocument();
         expect(screen.getByTestId('dt_mocked_icon')).toBeInTheDocument();
         expect(screen.getByTestId('dt_settings_language_button')).toBeInTheDocument();
 

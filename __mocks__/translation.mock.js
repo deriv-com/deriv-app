@@ -10,6 +10,7 @@ const useTranslations = () => ({
     localize: jest.fn((text, args) => {
         return text.replace(/{{(.*?)}}/g, (_, match) => args[match.trim()]);
     }),
+    currentLang: 'EN',
 });
 
 const localize = jest.fn(text => text);

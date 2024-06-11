@@ -1,14 +1,15 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import IconMessageContent from '../icon-message-content';
 
 type TPOIManualUploadFailed = {
     error?: string;
+    message?: React.ReactNode;
 };
-const POIManualUploadFailed = ({ children, error }: React.PropsWithChildren<TPOIManualUploadFailed>) => (
+const POIManualUploadFailed = ({ children, message, error }: React.PropsWithChildren<TPOIManualUploadFailed>) => (
     <IconMessageContent
-        message={localize('Proof of identity documents upload failed')}
+        message={message ?? <Localize i18n_default_text={'Proof of identity documents upload failed'} />}
         text={error}
         icon={<Icon icon='IcPoiFailed' size={128} />}
         className='account-management-dashboard'

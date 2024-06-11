@@ -623,6 +623,7 @@ export default class TradersHubStore extends BaseStore {
             if (product !== 'zero_spread' && product !== 'swap_free') {
                 toggleJurisdictionModal();
             } else if (product === 'swap_free') {
+                setJurisdictionSelectedShortcode('svg');
                 enableCFDPasswordModal();
             } else if (product === 'zero_spread') {
                 setJurisdictionSelectedShortcode('bvi');

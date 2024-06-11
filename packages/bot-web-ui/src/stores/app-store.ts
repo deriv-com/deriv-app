@@ -65,7 +65,7 @@ export default class AppStore {
         const toggleAccountsDialog = ui?.toggleAccountsDialog;
 
         if (!client?.is_logged_in && client?.is_eu_country) {
-            return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
+            return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(), null, true);
         }
 
         if (!client.is_landing_company_loaded) {

@@ -852,7 +852,6 @@ export default class CFDStore extends BaseStore {
     }
 
     setJurisdictionSelectedShortcode(shortcode) {
-        console.log('==>', { shortcode });
         this.jurisdiction_selected_shortcode = shortcode;
     }
 

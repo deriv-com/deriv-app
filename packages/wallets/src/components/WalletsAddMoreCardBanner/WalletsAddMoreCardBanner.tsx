@@ -71,18 +71,17 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
 
                     if (!currency) return;
 
-                    // eslint-disable-next-line
-                    const { new_account_wallet } = await mutateAsync({
+                    const createAccountResponse = await mutateAsync({
                         account_type: isCrypto ? 'crypto' : 'doughflow',
                         currency,
                     });
 
-                    // eslint-disable-next-line
-                    if (!new_account_wallet) return;
+                    const newAccountWallet = createAccountResponse?.new_account_wallet;
 
-                    // eslint-disable-next-line
-                    await addWalletAccountToLocalStorage({ ...new_account_wallet, display_balance: '0.00' });
-                    switchWalletAccount(new_account_wallet.client_id);
+                    if (!newAccountWallet) return;
+
+                    await addWalletAccountToLocalStorage({ ...newAccountWallet, display_balance: '0.00' });
+                    switchWalletAccount(newAccountWallet.client_id);
                 }}
                 size={isMobile ? 'sm' : 'lg'}
             >

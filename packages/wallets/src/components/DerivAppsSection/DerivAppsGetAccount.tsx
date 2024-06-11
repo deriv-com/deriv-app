@@ -37,8 +37,7 @@ const DerivAppsGetAccount: React.FC = () => {
 
     const createTradingAccount = async () => {
         if (!activeWallet?.is_virtual) {
-            // eslint-disable-next-line
-            const { new_account_real } = await createNewRealAccount({
+            const createAccountResponse = await createNewRealAccount({
                 payload: {
                     currency: activeWallet?.currency_config?.display_code,
                     date_of_birth: toMoment(dateOfBirth).format('YYYY-MM-DD'),
@@ -48,10 +47,11 @@ const DerivAppsGetAccount: React.FC = () => {
                 },
             });
 
-            // eslint-disable-next-line
-            if (!new_account_real) return;
+            const newAccountReal = createAccountResponse?.new_account_real;
 
-            await addTradingAccountToLocalStorage(new_account_real);
+            if (!newAccountReal) return;
+
+            await addTradingAccountToLocalStorage(newAccountReal);
 
             invalidate('account_list');
         }

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import { Icon } from '@deriv/components';
 import { getAllowedLanguages, useTranslations } from '@deriv-com/translations';
-import { BLOCK_LANGUAGES } from '@deriv/shared';
+import { UNSUPPORTED_LANGUAGES } from '@deriv/shared';
 
 export type TLanguageLink = {
     icon_classname?: string;
@@ -33,7 +33,7 @@ const LanguageLink = observer(({ icon_classname, is_clickable = false, lang, tog
                     'settings-language__language-name--active': is_active,
                 })}
             >
-                {getAllowedLanguages(BLOCK_LANGUAGES)[lang]}
+                {getAllowedLanguages(UNSUPPORTED_LANGUAGES)[lang]}
             </span>
         </React.Fragment>
     );

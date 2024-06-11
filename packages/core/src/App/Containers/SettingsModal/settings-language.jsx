@@ -2,7 +2,7 @@ import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { getAllowedLanguages } from '@deriv-com/translations';
 import { LanguageLink } from 'App/Components/Routes';
-import { BLOCK_LANGUAGES } from '@deriv/shared';
+import { UNSUPPORTED_LANGUAGES } from '@deriv/shared';
 
 const isCurrentLanguage = (lang, current_language) => lang === current_language;
 
@@ -14,7 +14,7 @@ const LanguageSettings = observer(() => {
     return (
         <div className='settings-language'>
             <div className='settings-language__language-container'>
-                {Object.keys(getAllowedLanguages(BLOCK_LANGUAGES)).map(lang =>
+                {Object.keys(getAllowedLanguages(UNSUPPORTED_LANGUAGES)).map(lang =>
                     isCurrentLanguage(lang, current_language) ? (
                         <LanguageLink key={lang} lang={lang} />
                     ) : (

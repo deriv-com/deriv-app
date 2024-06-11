@@ -4,7 +4,7 @@ import { MobileDrawer } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { getAllowedLanguages, useTranslations } from '@deriv-com/translations';
 import { LanguageLink } from 'App/Components/Routes';
-import { BLOCK_LANGUAGES } from '@deriv/shared';
+import { UNSUPPORTED_LANGUAGES } from '@deriv/shared';
 
 type TMobileLanguageMenu = {
     expandSubMenu: (prop: boolean) => void;
@@ -32,7 +32,7 @@ const MobileLanguageMenu = observer(({ expandSubMenu, toggleDrawer }: TMobileLan
                     'settings-language__language-container--disabled': is_language_changing,
                 })}
             >
-                {Object.keys(getAllowedLanguages(BLOCK_LANGUAGES)).map(lang => (
+                {Object.keys(getAllowedLanguages(UNSUPPORTED_LANGUAGES)).map(lang => (
                     <LanguageLink
                         key={lang}
                         icon_classname='settings-language__language-flag'

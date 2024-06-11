@@ -1,5 +1,5 @@
 import { Redirect } from 'react-router-dom';
-import { BLOCK_LANGUAGES, routes } from '@deriv/shared';
+import { UNSUPPORTED_LANGUAGES, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTranslations, getAllowedLanguages } from '@deriv-com/translations';
 import FormSubHeader from '../../../Components/form-sub-header';
@@ -25,7 +25,7 @@ const LanguageSettings = observer(() => {
         return <Redirect to={routes.traders_hub} />;
     }
 
-    const allowed_languages: Record<string, string> = getAllowedLanguages(BLOCK_LANGUAGES);
+    const allowed_languages: Record<string, string> = getAllowedLanguages(UNSUPPORTED_LANGUAGES);
     return (
         <div className='settings-language'>
             <FormSubHeader title={localize('Select Language')} />

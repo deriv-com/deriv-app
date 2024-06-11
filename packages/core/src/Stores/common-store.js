@@ -3,7 +3,7 @@ import { action, computed, makeObservable, observable } from 'mobx';
 import { changeLanguage } from '@deriv/translations';
 import { getAllowedLanguages } from '@deriv-com/translations';
 import {
-    BLOCK_LANGUAGES,
+    UNSUPPORTED_LANGUAGES,
     getAppId,
     getUrlBinaryBot,
     getUrlSmartTrader,
@@ -67,7 +67,7 @@ export default class CommonStore extends BaseStore {
         });
     }
 
-    allowed_languages = Object.keys(getAllowedLanguages(BLOCK_LANGUAGES));
+    allowed_languages = Object.keys(getAllowedLanguages(UNSUPPORTED_LANGUAGES));
     app_id = undefined;
     app_router = { history: null };
     app_routing_history = [];

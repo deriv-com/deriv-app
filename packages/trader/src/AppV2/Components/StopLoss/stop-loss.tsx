@@ -18,7 +18,6 @@ const StopLoss = observer(() => {
             }
             value={limit_order?.stop_loss?.order_amount}
             type='stop_loss'
-            validation_message='hello'
         />
     ) : null;
 });

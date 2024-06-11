@@ -24,12 +24,13 @@ const DealCancellationRemainingTime = observer(({ format = 'mm:ss' }: DealCancel
     return (
         <React.Fragment>
             <Tag
-                variant='custom'
-                label={timestamp}
-                icon={<LabelPairedStopwatchCaptionRegularIcon />}
-                size='sm'
-                color='custom'
                 className='deal-cancellation-badge'
+                color='custom'
+                data-testid='deal-cancellation-badge'
+                icon={<LabelPairedStopwatchCaptionRegularIcon />}
+                label={timestamp}
+                size='sm'
+                variant='custom'
             />
         </React.Fragment>
     );

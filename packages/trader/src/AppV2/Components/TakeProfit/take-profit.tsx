@@ -18,7 +18,6 @@ const TakeProfit = observer(() => {
                 }
                 value={limit_order?.take_profit?.order_amount}
                 type='take_profit'
-                validation_message='hello'
             />
         )
     );

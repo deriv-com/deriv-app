@@ -1,9 +1,7 @@
 import React from 'react';
-import CardWrapper from '../CardWrapper';
 import { Text } from '@deriv-com/quill-ui';
 import useOrderDetails from 'AppV2/Hooks/useOrderDetails';
 import { TContractInfo } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
 
 interface ContractInfoProps {
     contract_info: TContractInfo;

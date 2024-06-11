@@ -18,8 +18,8 @@ const InvalidVerificationLinkModal = ({ error_message, order_id }: TInvalidVerif
         ui: { is_mobile },
     } = useStore();
     const { hideModal, is_modal_open } = useModalManagerContext();
-    const { confirmOrderRequest, setIsVerifyingEmail } = order_store;
-    const is_invalid_verification_token = order_store.error_code === api_error_codes.INVALID_VERIFICATION_TOKEN;
+    const { confirmOrderRequest, error_code, setIsVerifyingEmail } = order_store;
+    const is_invalid_verification_token = error_code === api_error_codes.INVALID_VERIFICATION_TOKEN;
 
     return (
         <Modal

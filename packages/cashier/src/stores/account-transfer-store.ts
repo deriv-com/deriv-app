@@ -394,6 +394,7 @@ export default class AccountTransferStore {
                           sub_account_type: account.sub_account_type,
                           platform: account.account_type,
                           is_eu: this.root_store.client.is_eu,
+                          product: account.product,
                       })} ${this.root_store.client.is_eu ? '' : non_eu_accounts}`
                     : `${cfd_text_display} ${
                           getCFDAccountDisplay({

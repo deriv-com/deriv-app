@@ -35,6 +35,7 @@ const DerivAppsGetAccount: React.FC = () => {
 
     const createTradingAccount = async () => {
         if (!activeWallet?.is_virtual) {
+            // eslint-disable-next-line
             const { new_account_real } = await createNewRealAccount({
                 payload: {
                     currency: activeWallet?.currency_config?.display_code,
@@ -45,6 +46,7 @@ const DerivAppsGetAccount: React.FC = () => {
                 },
             });
 
+            // eslint-disable-next-line
             if (!new_account_real) return;
 
             await addTradingAccountToLocalStorage(new_account_real);

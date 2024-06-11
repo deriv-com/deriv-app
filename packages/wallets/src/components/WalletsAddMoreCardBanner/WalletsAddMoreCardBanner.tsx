@@ -19,14 +19,7 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
 }) => {
     const switchWalletAccount = useWalletAccountSwitcher();
 
-    const {
-        data,
-        error,
-        isLoading: isWalletCreationLoading,
-        isSuccess: isMutateSuccess,
-        mutateAsync,
-        status,
-    } = useCreateWallet();
+    const { data, error, isLoading: isWalletCreationLoading, mutateAsync, status } = useCreateWallet();
     const { isMobile } = useDevice();
     const history = useHistory();
     const modal = useModal();
@@ -78,13 +71,16 @@ const WalletsAddMoreCardBanner: React.FC<TWalletCarouselItem> = ({
 
                     if (!currency) return;
 
+                    // eslint-disable-next-line
                     const { new_account_wallet } = await mutateAsync({
                         account_type: isCrypto ? 'crypto' : 'doughflow',
                         currency,
                     });
 
+                    // eslint-disable-next-line
                     if (!new_account_wallet) return;
 
+                    // eslint-disable-next-line
                     await addWalletAccountToLocalStorage({ ...new_account_wallet, display_balance: '0.00' });
                     switchWalletAccount(new_account_wallet.client_id);
                 }}

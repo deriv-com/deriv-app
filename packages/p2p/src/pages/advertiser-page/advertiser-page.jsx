@@ -101,17 +101,17 @@ const AdvertiserPage = () => {
 
     const setShowAdvertInfo = React.useCallback(
         () => {
-            const { is_active, is_buy, is_visible } = p2p_advert_info || {};
+            const { eligibility_status, is_active, is_buy, is_eligible, is_visible } = p2p_advert_info || {};
             if (isSubscribed && p2p_advert_info) {
                 const advert_type = is_buy ? 1 : 0;
 
-                if (is_active && is_visible) {
+                if (is_active && is_visible && is_eligible) {
                     advertiser_page_store.setActiveIndex(advert_type);
                     advertiser_page_store.handleTabItemClick(advert_type);
                     buy_sell_store.setSelectedAdState(p2p_advert_info);
                     showModal({ key: 'BuySellModal' });
                 } else {
-                    showErrorModal();
+                    showErrorModal(eligibility_status);
                 }
             } else {
                 showErrorModal();

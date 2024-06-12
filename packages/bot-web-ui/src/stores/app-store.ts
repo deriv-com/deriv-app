@@ -65,6 +65,10 @@ export default class AppStore {
         const toggleAccountsDialog = ui?.toggleAccountsDialog;
 
         if (!client?.is_logged_in && client?.is_eu_country) {
+            if (client?.has_logged_out) {
+                window.location.href = routes.traders_hub;
+            }
+
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
         }
 

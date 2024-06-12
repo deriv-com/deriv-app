@@ -1085,6 +1085,10 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+
+            .upload_error_btn {
+                margin-top: 3.2rem;
+            }
         }
 
         @include desktop() {
@@ -1164,6 +1168,7 @@
             @include typeface(--paragraph-center-normal-black);
             color: var(--text-prominent);
         }
+
         &__continue {
             margin-top: 3rem;
         }

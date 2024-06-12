@@ -132,7 +132,7 @@ const DetailComponent = ({
                         <Localize i18n_default_text='It seems you’ve submitted this document before. Upload a new document.' />
                     }
                 >
-                    <Button onClick={onClickBack} large primary>
+                    <Button onClick={onClickBack} large primary className='upload_error_btn'>
                         <Localize i18n_default_text='Try Again' />
                     </Button>
                 </POIManualUploadFailed>

@@ -12,7 +12,6 @@ import TakeProfit from 'AppV2/Components/TakeProfit/take-profit';
 import StopLoss from 'AppV2/Components/StopLoss/stop-loss';
 import DealCancellation from 'AppV2/Components/DealCancellation/deal-cancellation';
 import {
-    hasContractStarted,
     isForwardStarting,
     isMultiplierContract,
     isOpen,
@@ -87,9 +86,7 @@ const ContractDetails = observer(() => {
                         <StopLoss />
                     </CardWrapper>
                 )}
-            <CardWrapper title='Order Details'>
-                <OrderDetails contract_info={contract_info} />
-            </CardWrapper>
+            <OrderDetails contract_info={contract_info} />
             <PayoutInfo contract_info={contract_info} />
             <EntryExitDetails contract_info={contract_info} />
             {is_tp_history_visible && update_history.length > 0 && (

@@ -91,9 +91,9 @@ const RiskManagementItem = observer(
             updateLimitOrder();
         };
         return (
-            <div className='risk-management-item--container'>
+            <div className='risk-management-item__container'>
                 <div className='risk-management-item'>
-                    <span className='risk-management-item--title'>
+                    <span className='risk-management-item__title'>
                         <Text size='sm'>{label}</Text>
                         <RiskManagementInfoModal
                             header_content={label}

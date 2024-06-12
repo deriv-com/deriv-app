@@ -1994,6 +1994,7 @@ export default class ClientStore extends BaseStore {
         localStorage.removeItem('readScamMessage');
         localStorage.removeItem('isNewAccount');
         localStorage.removeItem('show_effortless_login_modal');
+        localStorage.removeItem('traders_hub_store');
         LocalStore.set('marked_notifications', JSON.stringify([]));
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('active_user_id', this.user_id);

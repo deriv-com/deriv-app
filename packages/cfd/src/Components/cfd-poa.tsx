@@ -27,7 +27,7 @@ const CFDPOA = ({ index, onSave, onSubmit }: TCFDPOA) => {
             {has_submitted_duplicate_poa ? (
                 <IconMessageContent
                     message={<Localize i18n_default_text='We could not verify your proof of address' />}
-                    text=<Localize i18n_default_text='Proof of address documents upload failed' />
+                    text={<Localize i18n_default_text='Proof of address documents upload failed' />}
                     icon={<Icon icon='IcPoaError' size={128} />}
                 >
                     <Button

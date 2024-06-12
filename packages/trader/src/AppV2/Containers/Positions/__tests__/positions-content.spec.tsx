@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { ReportsStoreProvider } from '../../../../../../reports/src/Stores/useReportsStores';
@@ -275,13 +276,15 @@ describe('PositionsContent', () => {
 
     const mockPositionsContent = (isClosedTab = false) => {
         return (
-            <TraderProviders store={defaultMockStore}>
-                <ReportsStoreProvider>
-                    <ModulesProvider store={defaultMockStore}>
-                        <PositionsContent {...mockProps} isClosedTab={isClosedTab} />
-                    </ModulesProvider>
-                </ReportsStoreProvider>
-            </TraderProviders>
+            <BrowserRouter>
+                <TraderProviders store={defaultMockStore}>
+                    <ReportsStoreProvider>
+                        <ModulesProvider store={defaultMockStore}>
+                            <PositionsContent {...mockProps} isClosedTab={isClosedTab} />
+                        </ModulesProvider>
+                    </ReportsStoreProvider>
+                </TraderProviders>
+            </BrowserRouter>
         );
     };
 

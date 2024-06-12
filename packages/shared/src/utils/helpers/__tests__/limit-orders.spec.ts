@@ -1,3 +1,4 @@
+import { TContractStore } from '../../contract';
 import { getLimitOrder, LIMIT_ORDER_TYPES, setLimitOrderBarriers } from '../limit-orders';
 
 describe('getLimitOrder', () => {
@@ -17,7 +18,7 @@ describe('getLimitOrder', () => {
                     },
                 },
             },
-        };
+        } as TContractStore;
         const result = getLimitOrder(contract_update);
         expect(result).toEqual({
             take_profit: 100,
@@ -40,7 +41,7 @@ describe('getLimitOrder', () => {
                     },
                 },
             },
-        };
+        } as TContractStore;
         const result = getLimitOrder(contract_update);
         expect(result).toEqual({ stop_loss: null, take_profit: null });
     });
@@ -107,19 +108,22 @@ describe('setLimitOrderBarriers', () => {
         expect(barriers).toHaveLength(0);
     });
     it('should update barriers with changed obj_limit_order values', () => {
-        barriers = [{ ...mock_barrier, key: LIMIT_ORDER_TYPES.STOP_OUT, high: 10 }];
+        barriers = [{ ...mock_barrier, key: LIMIT_ORDER_TYPES.STOP_OUT, high: 10, title: 'Stop Out' }];
         if (contract_info?.limit_order?.stop_out) {
             contract_info.limit_order.stop_out.value = '15';
+            contract_info.limit_order.stop_out.display_name = 'Dừng';
         }
-
         setLimitOrderBarriers({
             barriers,
             contract_type,
             contract_info,
             is_over: true,
         });
-        expect(barriers.find(barrier => barrier.key === LIMIT_ORDER_TYPES.STOP_OUT)?.high).toBe(10);
-        expect(barriers.find(barrier => barrier.key === LIMIT_ORDER_TYPES.STOP_OUT)?.onChange).toHaveBeenCalled();
+        expect(barriers[0].onChange).toHaveBeenCalledWith({
+            hidePriceLines: false,
+            high: '15',
+            title: 'Dừng',
+        });
     });
     it('should create and add a new barrier if conditions are met', () => {
         barriers = [];

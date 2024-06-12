@@ -147,7 +147,7 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
         case MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG:
             return is_demo ? localize('Swap-Free Demo') : localize('Swap-Free - SVG');
         case MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI:
-            return is_demo ? localize('Zero spread Demo') : localize('Zero spread - BVI');
+            return is_demo ? localize('Zero Spread Demo') : localize('Zero Spread - BVI');
         case CFD_PLATFORMS.DXTRADE:
             return is_demo ? localize('Deriv X Demo') : localize('Deriv X');
         case CFD_PLATFORMS.CTRADER:

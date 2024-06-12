@@ -66,13 +66,13 @@ describe('<CFDCompareAccountsTitleIcon />', () => {
         expect(screen.getByText('Swap-Free - SVG')).toBeInTheDocument();
     });
 
-    test('should render correct title for Zero spread market type and shortcode', () => {
+    test('should render correct title for Zero Spread market type and shortcode', () => {
         mocked_props.trading_platforms.platform = 'mt5';
         mocked_props.trading_platforms.market_type = 'all';
         mocked_props.trading_platforms.shortcode = 'bvi';
         mocked_props.trading_platforms.product = 'zero_spread';
         render(<CFDCompareAccountsTitleIcon {...mocked_props} />);
-        expect(screen.getByText('Zero spread - BVI')).toBeInTheDocument();
+        expect(screen.getByText('Zero Spread - BVI')).toBeInTheDocument();
     });
 
     test('should render correct title for Deriv X market type and shortcode', () => {
@@ -123,7 +123,7 @@ describe('<CFDCompareAccountsTitleIcon />', () => {
         expect(screen.getByText('Swap-Free Demo')).toBeInTheDocument();
     });
 
-    test('should render correct title for Zero spread with correct market type and shortcode demo account', () => {
+    test('should render correct title for Zero Spread with correct market type and shortcode demo account', () => {
         mocked_props.trading_platforms.platform = 'mt5';
         mocked_props.trading_platforms.market_type = 'all';
         mocked_props.trading_platforms.shortcode = 'bvi';
@@ -131,7 +131,7 @@ describe('<CFDCompareAccountsTitleIcon />', () => {
         mocked_props.is_demo = true;
         mocked_props.is_eu_user = false;
         render(<CFDCompareAccountsTitleIcon {...mocked_props} />);
-        expect(screen.getByText('Zero spread Demo')).toBeInTheDocument();
+        expect(screen.getByText('Zero Spread Demo')).toBeInTheDocument();
     });
 
     test('should render correct title for DerivX with correct market type and shortcode demo account', () => {

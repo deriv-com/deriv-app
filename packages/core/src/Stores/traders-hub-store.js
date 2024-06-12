@@ -387,7 +387,7 @@ export default class TradersHubStore extends BaseStore {
             return localize('Swap-free CFDs on selected financial and derived instruments.');
         };
         const getZeroSpreadAccountDesc = () => {
-            return localize('Zero spread CFDs on selected financial and derived instruments');
+            return localize('Zero Spread CFDs on selected financial and derived instruments');
         };
 
         const all_available_accounts = [
@@ -411,7 +411,7 @@ export default class TradersHubStore extends BaseStore {
                 availability: 'Non-EU',
             },
             {
-                name: localize('Zero spread'),
+                name: localize('Zero Spread'),
                 description: getZeroSpreadAccountDesc(),
                 platform: CFD_PLATFORMS.MT5,
                 market_type: 'all',

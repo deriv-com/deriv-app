@@ -102,7 +102,7 @@ export const getMtCompanies = (is_eu: boolean, product?: TProducts) => {
     const all_config = {
         account_type: '',
         leverage: 100,
-        short_title: product === 'swap_free' ? localize('Swap-Free') : localize('Zero spread'),
+        short_title: product === 'swap_free' ? localize('Swap-Free') : localize('Zero Spread'),
     };
     const synthetic_config = {
         account_type: '',
@@ -124,7 +124,7 @@ export const getMtCompanies = (is_eu: boolean, product?: TProducts) => {
             all: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
-                title: product === 'swap_free' ? localize('Demo Swap-Free') : localize('Demo Zero spread'),
+                title: product === 'swap_free' ? localize('Demo Swap-Free') : localize('Demo Zero Spread'),
                 short_title: all_config.short_title,
             },
             all_swap_free_svg: {
@@ -136,8 +136,8 @@ export const getMtCompanies = (is_eu: boolean, product?: TProducts) => {
             all_zero_spread_bvi: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
-                title: localize('Demo Zero spread BVI'),
-                short_title: localize('Zero spread BVI'),
+                title: localize('Demo Zero Spread BVI'),
+                short_title: localize('Zero Spread BVI'),
             },
             ctrader: {
                 mt5_account_type: all_config.account_type,
@@ -187,7 +187,7 @@ export const getMtCompanies = (is_eu: boolean, product?: TProducts) => {
             all: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
-                title: product === 'swap_free' ? localize('Swap-Free') : localize('Zero spread'),
+                title: product === 'swap_free' ? localize('Swap-Free') : localize('Zero Spread'),
                 short_title: all_config.short_title,
             },
             all_swap_free_svg: {
@@ -199,7 +199,7 @@ export const getMtCompanies = (is_eu: boolean, product?: TProducts) => {
             all_zero_spread_bvi: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
-                title: localize('Zero spread BVI'),
+                title: localize('Zero Spread BVI'),
                 short_title: all_config.short_title,
             },
             ctrader: {

@@ -23,9 +23,9 @@ export const CFD_text: { [key: string]: string } = {
     financial_v: 'Financial Vanuatu',
     financial_svg: 'Financial SVG',
     all_swap_free_demo: 'Swap-Free Demo',
-    all_zero_spread_demo: 'Zero spread Demo',
+    all_zero_spread_demo: 'Zero Spread Demo',
     all_swap_free_svg: 'Swap-Free SVG',
-    all_zero_spread_bvi: 'Zero spread BVI',
+    all_zero_spread_bvi: 'Zero Spread BVI',
 } as const;
 
 export const getMT5Title = (account_type: string) => {

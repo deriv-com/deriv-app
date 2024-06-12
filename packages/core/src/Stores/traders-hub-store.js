@@ -325,7 +325,11 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailablePlatforms() {
-        if (!this.root_store.client.is_landing_company_loaded) return this.available_platforms;
+        if (
+            !this.root_store.client.is_landing_company_loaded &&
+            (this.root_store.client.is_logged_in || this.root_store.client.is_logging_in)
+        )
+            return this.available_platforms;
 
         const appstore_platforms = getAppstorePlatforms();
         if ((this.financial_restricted_countries || this.is_eu_user) && !this.is_demo_low_risk) {

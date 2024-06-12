@@ -9,7 +9,6 @@ import TradingAppCard from 'Components/containers/trading-app-card';
 import { BrandConfig } from 'Constants/platform-config';
 import { getHasDivider } from 'Constants/utils';
 import { Analytics } from '@deriv-com/analytics';
-import { getAvailablePlatforms } from '../../helpers';
 
 const OptionsAndMultipliersListing = observer(() => {
     const { traders_hub, client, ui } = useStore();
@@ -19,17 +18,15 @@ const OptionsAndMultipliersListing = observer(() => {
 
     const { setShouldShowCooldownModal, openRealAccountSignup, is_mobile } = ui;
 
-    const platforms = getAvailablePlatforms();
-
     const OptionsTitle = () => {
         if (is_mobile) return null;
-        if (platforms.includes('options')) {
+        if (!is_eu_user) {
             return (
                 <Text size='sm' weight='bold'>
                     <Localize i18n_default_text='Options' />
                 </Text>
             );
-        } else if (!platforms.includes('options')) {
+        } else if (is_eu_user) {
             return (
                 <Text size='sm' weight='bold' color='prominent'>
                     <Localize i18n_default_text='Multipliers' />
@@ -49,7 +46,7 @@ const OptionsAndMultipliersListing = observer(() => {
         <ListingContainer
             title={<OptionsTitle />}
             description={
-                platforms.includes('options') && platforms.includes('multipliers') ? (
+                !is_eu_user ? (
                     <Text size='xs' line_height='s'>
                         <Localize
                             i18n_default_text='Buy or sell at a specific time for a specific price. <0>Learn more</0>'

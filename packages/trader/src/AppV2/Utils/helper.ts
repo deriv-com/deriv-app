@@ -1,11 +1,10 @@
-import { TGetCardLables } from '@deriv/components';
 import { formatDuration, getDiffDuration } from '@deriv/shared';
 
 type TRemainingTimeProps = {
     end_time?: number;
     start_time: moment.Moment;
     format?: string;
-    getCardLabels: TGetCardLables;
+    getCardLabels: Function;
 };
 
 export const getRemainingTime = ({ end_time, format, getCardLabels, start_time }: TRemainingTimeProps) => {

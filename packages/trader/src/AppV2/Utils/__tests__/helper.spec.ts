@@ -9,7 +9,7 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('getRemainingTime', () => {
-    const mockGetCardLabels: TGetCardLables = jest.fn(() => ({
+    const mockGetCardLabels = jest.fn(() => ({
         DAYS: 'days',
         DAY: 'day',
     }));

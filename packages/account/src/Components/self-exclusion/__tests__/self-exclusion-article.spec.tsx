@@ -3,12 +3,6 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import SelfExclusionArticle from '../self-exclusion-article';
 import SelfExclusionContext from '../self-exclusion-context';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { useDevice } from '@deriv-com/ui';
-
-jest.mock('@deriv-com/ui', () => ({
-    ...jest.requireActual('@deriv-com/ui'),
-    useDevice: jest.fn(() => ({ isDesktop: true })),
-}));
 
 jest.mock('Components/self-exclusion/self-exclusion-article-content', () => ({
     ...jest.requireActual('Components/self-exclusion/self-exclusion-article-content'),
@@ -42,7 +36,7 @@ describe('<SelfExclusionArticle />', () => {
         };
     });
 
-    it('should render SelfExclusionArticle desktop component with selfExclusionArticleItems', () => {
+    it('should render SelfExclusionArticle with selfExclusionArticleItems', () => {
         render(
             <StoreProvider store={store}>
                 <SelfExclusionContext.Provider value={mock_self_exclusion_context}>
@@ -56,7 +50,7 @@ describe('<SelfExclusionArticle />', () => {
         expect(screen.queryByText(non_eu_item)).toBeInTheDocument();
     });
 
-    it('should render SelfExclusionArticle desktop component without is_appstore for EU items', () => {
+    it('should render SelfExclusionArticle for EU items', () => {
         mock_self_exclusion_context.is_eu = true;
 
         render(
@@ -72,7 +66,7 @@ describe('<SelfExclusionArticle />', () => {
         expect(screen.queryByText(non_eu_item)).not.toBeInTheDocument();
     });
 
-    it('should render SelfExclusionArticle desktop component for non EU items', () => {
+    it('should render SelfExclusionArticle for non EU items', () => {
         render(
             <StoreProvider store={store}>
                 <SelfExclusionContext.Provider value={mock_self_exclusion_context}>
@@ -86,8 +80,7 @@ describe('<SelfExclusionArticle />', () => {
         expect(screen.queryByText(eu_item)).not.toBeInTheDocument();
     });
 
-    it('should render SelfExclusionArticle mobile component and trigger click', () => {
-        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
+    it('should render SelfExclusionArticle component and trigger click', () => {
         const mockToggleArticle = mock_self_exclusion_context.toggleArticle;
 
         render(

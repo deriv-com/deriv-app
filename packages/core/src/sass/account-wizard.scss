@@ -805,7 +805,7 @@
         width: 0;
         height: 0;
     }
-    @include desktop {
+    @include desktop-screen {
         padding-bottom: unset;
     }
 }

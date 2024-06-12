@@ -107,7 +107,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     }, [isClosedTab, positions, contractTypeFilter, timeFilter, customTimeRangeFilter]);
 
     React.useEffect(() => {
-        isClosedTab ? onClosedTabMount() : onOpenTabMount();
+        isClosedTab ? onClosedTabMount(true) : onOpenTabMount();
 
         return () => {
             isClosedTab && onClosedTabUnmount();

@@ -27,7 +27,11 @@ const MainTitleBar = () => {
 
     const is_low_risk_cr_real_account =
         content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
-    const show_wallets_banner = wallet_migration_state && wallet_migration_state !== 'ineligible';
+    const show_wallets_banner =
+        wallet_migration_state === 'eligible' ||
+        wallet_migration_state === 'in_progress' ||
+        wallet_migration_state === 'migrated' ||
+        wallet_migration_state === 'failed';
 
     const [active_index, setActiveIndex] = React.useState(0);
     React.useEffect(() => {

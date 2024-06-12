@@ -86,7 +86,7 @@ const Header = observer(() => {
                 break;
             case is_dtrader_v2_enabled &&
                 is_mobile &&
-                (pathname === routes.trade ||
+                (pathname.startsWith(routes.trade) ||
                     pathname.startsWith('/contract/') === routes.contract.startsWith('/contract/')):
                 result = <DTraderV2Header />;
                 break;

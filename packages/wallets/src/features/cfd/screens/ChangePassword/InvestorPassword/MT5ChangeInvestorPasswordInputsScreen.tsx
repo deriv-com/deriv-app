@@ -6,7 +6,6 @@ import { WalletButton, WalletsActionScreen, WalletText } from '../../../../../co
 import { WalletPasswordFieldLazy, WalletTextField } from '../../../../../components/Base';
 import PasswordViewerIcon from '../../../../../components/Base/WalletPasswordField/PasswordViewerIcon';
 import { useModal } from '../../../../../components/ModalProvider';
-import useDevice from '../../../../../hooks/useDevice';
 import { validPasswordMT5 } from '../../../../../utils/password-validation';
 import { PlatformDetails } from '../../../constants';
 
@@ -21,7 +20,6 @@ type TProps = {
 };
 
 const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, setNextScreen }) => {
-    const { isMobile } = useDevice();
     const { getModalState } = useModal();
     const mt5AccountId = getModalState('accountId') ?? '';
     const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);

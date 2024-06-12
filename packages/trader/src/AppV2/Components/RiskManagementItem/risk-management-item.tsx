@@ -10,21 +10,13 @@ import { CONTRACT_TYPES, isAccumulatorContract, isValidToCancel } from '@deriv/s
 type RiskManagementItemProps = {
     label: React.ReactNode;
     modal_body_content: React.ReactNode;
-    validation_message?: React.ReactNode;
     is_deal_cancellation?: boolean;
     value?: number | null;
     type?: string;
 };
 
 const RiskManagementItem = observer(
-    ({
-        label,
-        modal_body_content,
-        validation_message,
-        is_deal_cancellation = false,
-        value,
-        type,
-    }: RiskManagementItemProps) => {
+    ({ label, modal_body_content, is_deal_cancellation = false, value, type }: RiskManagementItemProps) => {
         const [toggle, setToggle] = React.useState(Boolean(value));
         const [isSheetOpen, setIsSheetOpen] = React.useState(false);
         const [isEnabled, setIsEnabled] = React.useState(false);
@@ -49,23 +41,18 @@ const RiskManagementItem = observer(
         const errorKey = `contract_update_${type}` as 'contract_update_stop_loss' | 'contract_update_take_profit';
         const errorMessage = validation_errors[errorKey]?.length > 0 ? validation_errors[errorKey][0] : '';
 
+        const getMessageForMultiplier = (is_valid_to_cancel: boolean, is_deal_cancellation: boolean) =>
+            is_valid_to_cancel && !is_deal_cancellation ? (
+                <Localize i18n_default_text='Take profit and stop loss are unavailable while deal cancellation is enabled.' />
+            ) : null;
+
         const info_message = {
             [CONTRACT_TYPES.ACCUMULATOR]: (
                 <Localize i18n_default_text='Take profit can’t be adjusted for ongoing accumulator contracts.' />
             ),
-            [CONTRACT_TYPES.MULTIPLIER.UP]:
-                is_valid_to_cancel && !is_deal_cancellation ? (
-                    <Localize i18n_default_text='Take profit and stop loss are unavailable while deal cancellation is enabled.' />
-                ) : (
-                    ''
-                ),
-            [CONTRACT_TYPES.MULTIPLIER.DOWN]:
-                is_valid_to_cancel && !is_deal_cancellation ? (
-                    <Localize i18n_default_text='Take profit and stop loss are unavailable while deal cancellation is enabled.' />
-                ) : (
-                    ''
-                ),
-        } as const;
+            [CONTRACT_TYPES.MULTIPLIER.UP]: getMessageForMultiplier(is_valid_to_cancel, is_deal_cancellation),
+            [CONTRACT_TYPES.MULTIPLIER.DOWN]: getMessageForMultiplier(is_valid_to_cancel, is_deal_cancellation),
+        };
 
         const onChange = (
             e: React.ChangeEvent<HTMLInputElement> | { target: { name: string; value: number | string | boolean } }

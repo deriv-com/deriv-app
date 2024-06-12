@@ -17,6 +17,7 @@ import CommonMistakeExamples from '../../../Components/poa/common-mistakes/commo
 import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
 import { isServerError, validate } from '../../../Helpers/utils';
 import { getFileUploaderDescriptions } from '../../../Constants/file-uploader';
+import { API_ERROR_CODES } from '../../../Constants/api-error-codes';
 
 type TProofOfAddressForm = {
     className?: string;
@@ -205,7 +206,7 @@ const ProofOfAddressForm = observer(
                 if (api_response?.warning) {
                     setFormState({ ...form_state, ...{ is_btn_loading: false } });
 
-                    if (api_response.warning === 'DuplicateUpload') {
+                    if (api_response.warning === API_ERROR_CODES.DUPLICATE_DOCUMENT) {
                         if (is_for_cfd_modal && typeof step_index !== 'undefined') {
                             onSubmitForCFDModal?.(step_index, values, true);
                         } else {

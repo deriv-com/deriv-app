@@ -5,9 +5,9 @@ import IconMessageContent from '../../../icon-message-content';
 
 type TUnverified = {
     title?: string | ReactElement;
-    description?: string | React.ReactElement;
+    description?: string | ReactElement;
     onClick?: () => void;
-    button_text?: string | React.ReactElement;
+    button_text?: string | ReactElement;
 };
 
 export const Unverified = ({ title, description, button_text, onClick }: TUnverified) => {

@@ -6,6 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import { WS } from '@deriv/shared';
 import { UploadComplete } from '../upload-complete/upload-complete';
 import POIManualUploadFailed from '../../../poi-manual-upload-failed';
+import { API_ERROR_CODES } from '../../../../Constants/api-error-codes';
 import uploadFile from '../../../file-uploader-container/upload-file';
 import OnfidoUpload from '../../../../Sections/Verification/ProofOfIdentity/onfido-sdk-view-container';
 
@@ -74,9 +75,9 @@ const DetailComponent = ({
                 })
                     .then(response => {
                         file_to_upload_index += 1;
-                        if (response.warning === 'DuplicateUpload') {
+                        if (response?.warning === API_ERROR_CODES.DUPLICATE_DOCUMENT) {
                             setStatus(STATUS.IS_DUPLICATE_UPLOAD);
-                        } else if (response.warning || response.error) {
+                        } else if (response?.warning || response.error) {
                             is_any_failed = true;
                             setStatus(STATUS.IS_FAILED);
                             setError(

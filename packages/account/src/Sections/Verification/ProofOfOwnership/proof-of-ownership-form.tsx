@@ -21,6 +21,7 @@ import {
     TProofOfOwnershipFormValue,
 } from '../../../Types';
 import { isValidPaymentMethodIdentifier, isValidFile } from './validation';
+import { API_ERROR_CODES } from 'Constants/api-error-codes';
 
 type TProofOfOwnershipFormProps = {
     grouped_payment_method_data: Partial<Record<TPaymentMethod, TPaymentMethodInfo>>;
@@ -205,7 +206,10 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
                             const response = await uploader.upload(processed_file);
                             const upload_error: Array<string> = [];
                             if (response?.warning) {
-                                if (response?.warning?.trim() === 'DuplicateUpload' && response?.message) {
+                                if (
+                                    response?.warning?.trim() === API_ERROR_CODES.DUPLICATE_DOCUMENT &&
+                                    response?.message
+                                ) {
                                     upload_error[index] = response?.message;
                                     const error_obj = {
                                         [payment_id]: {

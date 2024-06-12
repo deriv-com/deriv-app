@@ -14,6 +14,9 @@ export const routes = {
     dxtrade: '/derivx',
     bot: '/bot',
     trade: '/dtrader',
+    markets: '/dtrader/markets',
+    trader_positions: '/dtrader/positions',
+    trader_menu: '/dtrader/menu',
     smarttrader: getUrlSmartTrader(),
     binarybot: getUrlBinaryBot(),
 

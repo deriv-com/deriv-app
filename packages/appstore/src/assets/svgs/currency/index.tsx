@@ -28,6 +28,7 @@ const Currencies = [
     'USDC',
     'USDK',
     'UST',
+    'XRP',
     'VIRTUAL',
 ] as const;
 

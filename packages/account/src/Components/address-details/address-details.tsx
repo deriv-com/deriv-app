@@ -144,7 +144,7 @@ const AddressDetails = observer(
                                     is_disabled={is_desktop}
                                 >
                                     <ScrollToFieldWithError />
-                                    {is_mobile && (
+                                    {is_mobile_or_tablet && (
                                         <Text size='xs' weight='bold' className='details-form__heading'>
                                             <Localize i18n_default_text='Complete your address details' />
                                         </Text>

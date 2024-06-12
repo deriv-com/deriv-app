@@ -144,7 +144,7 @@ describe('<IdvDocumentSubmit/>', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
         (isMobileOrTablet as jest.Mock).mockReturnValue(true);
-        // (useDevice as jest.Mock).mockReturnValue(() => ({ isDesktop: false, isTablet: false, isMobile: true }));
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false, isTablet: false, isMobile: true });
 
         render(
             <StoreProvider store={mock_store}>

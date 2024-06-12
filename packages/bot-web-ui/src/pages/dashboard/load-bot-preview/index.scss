@@ -357,13 +357,13 @@
         display: flex;
         justify-content: center;
         width: 100%;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             display: unset;
         }
     }
     &__wrapper {
         width: 623px;
-        @include mobile {
+        @include mobile-or-tablet-screen {
             width: unset;
         }
     }
@@ -409,7 +409,7 @@
             width: 25%;
             padding: 0.8rem 1.6rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding: 0;
             }
         }
@@ -456,7 +456,7 @@
             width: 25%;
             padding: 0.8rem 1.6rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding: 0;
             }
 

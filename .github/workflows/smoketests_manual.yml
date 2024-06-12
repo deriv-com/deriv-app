@@ -3,51 +3,6 @@ run-name: Manual run of ${{ github.event.inputs.suite }} tests on ${{ github.eve
 
 on:
   workflow_dispatch:
-    inputs:
-      environment:
-        type: choice
-        description: Select the environment
-        options:
-        - https://staging-app.deriv.com/
-        - https://app.deriv.com/
-        - https://test-app.deriv.com
-      suite:
-        type: choice
-        description: Run smoke or full test suite
-        options:
-        - full
-        - smoke
-        - full/P2P
-        - smoke/P2P
-        - api
-        - wip/CFD/testcases/MT5
-        - wip/dbot/sanity-tests
-        - wip/Wallets
-        - wip/dtrader
-        - wip/P2P
-        - wip/Tradershub
-        - wip/cashierLegacy
-        - full_extended
-        - wip/KYC
-      qabox:
-        type: number
-        required: false
-        description: (Optional) Enter QA box number.
-      appid:
-        type: number
-        required: false
-        description: (Optional) Enter app ID.
-      testlink:
-        type: string
-        required: false
-        description: (Optional) Enter your test URL.
-      testcase:
-        type: string
-        description: (Optional) Run one spec file (e.g. signUpPage.cy.js) or leave it blank to run all tests in the selected test suite.
-        required: false
-      branches:
-        type: string
-        description: (Optional) Enter your branch name.
 
 jobs:
   trigger-workflow:

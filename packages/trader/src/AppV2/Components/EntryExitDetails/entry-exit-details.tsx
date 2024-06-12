@@ -64,21 +64,19 @@ const EntryExitDetails = ({ contract_info }: { contract_info: TContractInfo }) =
         <CardWrapper title='Entry & exit details' className='entry-exit-details'>
             <div className='entry-exit-details__table'>
                 {dateTimes.start && (
-                    <DateTimeRow label={<Localize i18n_default_text={'Start time'} />} {...dateTimes.start} />
+                    <DateTimeRow label={<Localize i18n_default_text='Start time' />} {...dateTimes.start} />
                 )}
                 {dateTimes.entry && entryValue && (
                     <DateTimeRow
-                        label={<Localize i18n_default_text={'Entry spot'} />}
+                        label={<Localize i18n_default_text='Entry spot' />}
                         value={entryValue}
                         {...dateTimes.entry}
                     />
                 )}
-                {dateTimes.end && (
-                    <DateTimeRow label={<Localize i18n_default_text={'Exit time'} />} {...dateTimes.end} />
-                )}
+                {dateTimes.end && <DateTimeRow label={<Localize i18n_default_text='Exit time' />} {...dateTimes.end} />}
                 {dateTimes.exit && exitValue && (
                     <DateTimeRow
-                        label={<Localize i18n_default_text={'Exit spot'} />}
+                        label={<Localize i18n_default_text='Exit spot' />}
                         value={exitValue}
                         {...dateTimes.exit}
                     />

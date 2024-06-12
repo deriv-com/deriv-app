@@ -152,12 +152,14 @@ type BrandConfig = {
 };
 
 export type TPortfolioPosition = {
+    barrier?: number;
     contract_info: ProposalOpenContract &
         Portfolio1 & {
             contract_update?: ContractUpdate;
         };
     details?: string;
     display_name: string;
+    entry_spot?: number;
     id?: number;
     indicative: number;
     payout?: number;
@@ -167,7 +169,9 @@ export type TPortfolioPosition = {
     is_unsupported: boolean;
     contract_update: ProposalOpenContract['limit_order'];
     is_sell_requested: boolean;
+    is_valid_to_sell?: boolean;
     profit_loss: number;
+    status?: null | string;
 };
 
 type TAppRoutingHistory = {
@@ -801,6 +805,7 @@ type TPortfolioStore = {
     barriers: TBarriers;
     error: string;
     getPositionById: (id: number) => TPortfolioPosition;
+    is_active_empty: boolean;
     is_loading: boolean;
     is_multiplier: boolean;
     is_accumulator: boolean;
@@ -840,7 +845,7 @@ type TAddContractParams = {
     limit_order?: ProposalOpenContract['limit_order'];
 };
 type TOnChartBarrierChange = null | ((barrier_1: string, barrier_2?: string) => void);
-type TOnChangeParams = { high: string | number; low?: string | number };
+type TOnChangeParams = { high: string | number; low?: string | number; title?: string; hidePriceLines?: boolean };
 type TBarriers = Array<{
     color: string;
     lineStyle: string;
@@ -860,7 +865,13 @@ type TBarriers = Array<{
     hideOffscreenBarrier?: boolean;
     isSingleBarrier?: boolean;
     onBarrierChange: (barriers: TOnChangeParams) => void;
-    updateBarriers: (high: string | number, low?: string | number, isFromChart?: boolean) => void;
+    updateBarriers: (
+        high: string | number,
+        low?: string | number,
+        title?: string,
+        hidePriceLines?: boolean,
+        isFromChart?: boolean
+    ) => void;
     updateBarrierShade: (should_display: boolean, contract_type: string) => void;
     barrier_count: number;
     default_shade: string;

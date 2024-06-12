@@ -11,11 +11,17 @@ jest.mock('@deriv/components', () => {
 });
 
 describe('<POIManualUploadFailed />', () => {
-    const error = 'error';
-    it('should render <POIManualUploadFailed /> component with its content', () => {
+    const error = 'MockAPIError';
+    it('should render <POIManualUploadFailed /> component with its default content', () => {
         render(<POIManualUploadFailed error={error} />);
         expect(screen.getByText('Proof of identity documents upload failed')).toBeInTheDocument();
-        expect(screen.getByText('error')).toBeInTheDocument();
+        expect(screen.getByText('MockAPIError')).toBeInTheDocument();
+        expect(screen.getByText('Mocked Icon')).toBeInTheDocument();
+    });
+
+    it('should render <POIManualUploadFailed /> component with content from props', () => {
+        render(<POIManualUploadFailed message='message' error={error} />);
+        expect(screen.getByText('message')).toBeInTheDocument();
         expect(screen.getByText('Mocked Icon')).toBeInTheDocument();
     });
 });

@@ -4,7 +4,7 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import useIsEmailVerified from '../useIsEmailVerified';
 
 describe('useIsEmailVerified', () => {
-    it('should return false when the status is not present', () => {
+    it('should return true when the status is not present', () => {
         const mock = mockStore({
             client: {
                 account_status: {
@@ -19,10 +19,10 @@ describe('useIsEmailVerified', () => {
 
         const { result } = renderHook(() => useIsEmailVerified(), { wrapper });
 
-        expect(result.current).toBeFalsy();
+        expect(result.current).toBeTruthy();
     });
 
-    it('should return true when the status is present', () => {
+    it('should return false when the status is present', () => {
         const mock = mockStore({
             client: {
                 account_status: {
@@ -37,6 +37,6 @@ describe('useIsEmailVerified', () => {
 
         const { result } = renderHook(() => useIsEmailVerified(), { wrapper });
 
-        expect(result.current).toBeTruthy();
+        expect(result.current).toBeFalsy();
     });
 });

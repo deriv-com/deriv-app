@@ -3,7 +3,7 @@ import { Dialog } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendQsOpenEventFromBotBuilder } from '../quick-strategy/analytics/rudderstack-quick-strategy';
+import { rudderStackSendQsOpenEvent } from '../../../analytics/rudderstack-quick-strategy';
 import ToolbarButton from './toolbar-button';
 import WorkspaceGroup from './workspace-group';
 
@@ -20,11 +20,11 @@ const Toolbar = observer(() => {
     const handleQuickStrategyOpen = () => {
         setFormVisibility(true);
         // send to rs if quick strategy is opened from bot builder (mobile)
-        rudderStackSendQsOpenEventFromBotBuilder();
+        rudderStackSendQsOpenEvent({ subform_source: 'bot_builder' });
     };
     return (
         <React.Fragment>
-            <div className='toolbar dashboard__toolbar' data-testid='dashboard__toolbar'>
+            <div className='toolbar dashboard__toolbar' data-testid='dt_dashboard_toolbar'>
                 <div className='toolbar__section'>
                     {is_mobile && (
                         <ToolbarButton
@@ -58,7 +58,7 @@ const Toolbar = observer(() => {
                             <div
                                 key={0}
                                 className='toolbar__dialog-text--second'
-                                data-testid='toolbar__dialog-text--second'
+                                data-testid='dt_toolbar_dialog_text_second'
                             />,
                         ]}
                     />

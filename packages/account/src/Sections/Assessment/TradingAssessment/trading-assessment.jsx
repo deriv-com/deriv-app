@@ -167,7 +167,7 @@ const TradingAssessment = observer(() => {
                                     return (
                                         <fieldset className='account-form__question' key={form_control}>
                                             {isDesktop ? (
-                                                <div>
+                                                <React.Fragment>
                                                     <Text
                                                         as='h1'
                                                         color='prominent'
@@ -185,9 +185,9 @@ const TradingAssessment = observer(() => {
                                                         onChange={handleChange}
                                                         handleBlur={handleBlur}
                                                     />
-                                                </div>
+                                                </React.Fragment>
                                             ) : (
-                                                <div>
+                                                <React.Fragment>
                                                     <Text
                                                         as='h1'
                                                         color='prominent'
@@ -205,7 +205,7 @@ const TradingAssessment = observer(() => {
                                                         onChange={e => handleChange(e)}
                                                         should_show_empty_option={false}
                                                     />
-                                                </div>
+                                                </React.Fragment>
                                             )}
                                         </fieldset>
                                     );
@@ -218,7 +218,7 @@ const TradingAssessment = observer(() => {
                                                 return (
                                                     <fieldset key={sub_form_control} className='account-form__question'>
                                                         {isDesktop ? (
-                                                            <div>
+                                                            <React.Fragment>
                                                                 <Text
                                                                     as='h1'
                                                                     color='prominent'
@@ -236,9 +236,9 @@ const TradingAssessment = observer(() => {
                                                                     onChange={handleChange}
                                                                     handleBlur={handleBlur}
                                                                 />
-                                                            </div>
+                                                            </React.Fragment>
                                                         ) : (
-                                                            <div>
+                                                            <React.Fragment>
                                                                 <Text
                                                                     as='h1'
                                                                     color='prominent'
@@ -256,7 +256,7 @@ const TradingAssessment = observer(() => {
                                                                     onChange={e => handleChange(e)}
                                                                     should_show_empty_option={false}
                                                                 />
-                                                            </div>
+                                                            </React.Fragment>
                                                         )}
                                                     </fieldset>
                                                 );

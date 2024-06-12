@@ -273,7 +273,7 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
                                                 />
                                             </InputGroup>
                                         ) : (
-                                            <div>
+                                            <Fragment>
                                                 <fieldset className='account-form__fieldset'>
                                                     <Input
                                                         data-lpignore='true'
@@ -306,7 +306,7 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
                                                         data-testid='dt_last_name'
                                                     />
                                                 </fieldset>
-                                            </div>
+                                            </Fragment>
                                         )}
                                         {'place_of_birth' in values && (
                                             <fieldset className='account-form__fieldset'>

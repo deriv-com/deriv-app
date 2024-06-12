@@ -97,10 +97,10 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
     return (
         <div className='wallets-jurisdiction-card'>
             <div
-                className={classNames('wallets-jurisdiction-card-wrapper', {
-                    'wallets-jurisdiction-card-wrapper--added': isAdded,
-                    'wallets-jurisdiction-card-wrapper--flipped': isFlipped,
-                    'wallets-jurisdiction-card-wrapper--selected': isSelected,
+                className={classNames('wallets-jurisdiction-card__wrapper', {
+                    'wallets-jurisdiction-card__wrapper--added': isAdded,
+                    'wallets-jurisdiction-card__wrapper--flipped': isFlipped,
+                    'wallets-jurisdiction-card__wrapper--selected': isSelected,
                 })}
                 onClick={() => {
                     !isAdded && onSelect(jurisdiction);

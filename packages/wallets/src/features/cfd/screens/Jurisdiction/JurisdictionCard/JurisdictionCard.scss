@@ -13,7 +13,7 @@
         width: 100%;
     }
 
-    &-wrapper {
+    &__wrapper {
         align-items: center;
         border-radius: 1.6rem;
         border: 0.2rem solid #f2f3f4;
@@ -30,7 +30,7 @@
         &--flipped {
             transform: rotateY(180deg);
         }
-        &:hover:not(.wallets-jurisdiction-card-wrapper--added) {
+        &:hover:not(.wallets-jurisdiction-card__wrapper--added) {
             box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);
         }
         &--added {

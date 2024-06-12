@@ -2,18 +2,31 @@ import { Text, CaptionText } from '@deriv-com/quill-ui';
 import CardWrapper from '../CardWrapper';
 import React, { useMemo } from 'react';
 import { TContractInfo, addComma, getEndTime } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
 
-const getDateTimeFromEpoch = (epoch: number) => {
-    const date = new Date(epoch * 1000);
-    const formattedDate = date.toUTCString().split(' ').slice(0, 4).join(' ');
-    const formattedTime = `${date.toUTCString().split(' ')[4]} GMT`;
-    return {
-        date: formattedDate,
-        time: formattedTime,
-    };
+const getDateTimeFromEpoch = (epoch?: number) => {
+    if (epoch) {
+        const date = new Date(epoch * 1000);
+        const formattedDate = date.toUTCString().split(' ').slice(0, 4).join(' ');
+        const formattedTime = `${date.toUTCString().split(' ')[4]} GMT`;
+        return {
+            date: formattedDate,
+            time: formattedTime,
+        };
+    }
 };
 
-const DateTimeRow = ({ label, value, date, time }: { label: string; value?: string; date: string; time: string }) => (
+const DateTimeRow = ({
+    label,
+    value,
+    date,
+    time,
+}: {
+    label: React.ReactNode;
+    value?: string;
+    date: string;
+    time: string;
+}) => (
     <div className='entry-exit-details__table-row'>
         <div className='entry-exit-details__table-cell'>
             <Text size='sm' color='quill-typography__color--subtle'>
@@ -50,12 +63,24 @@ const EntryExitDetails = ({ contract_info }: { contract_info: TContractInfo }) =
     return (
         <CardWrapper title='Entry & exit details' className='entry-exit-details'>
             <div className='entry-exit-details__table'>
-                {dateTimes.start && <DateTimeRow label='Start time' {...dateTimes.start} />}
-                {dateTimes.entry && entryValue && (
-                    <DateTimeRow label='Entry spot' value={entryValue} {...dateTimes.entry} />
+                {dateTimes.start && (
+                    <DateTimeRow label={<Localize i18n_default_text='Start time' />} {...dateTimes.start} />
                 )}
-                {dateTimes.end && <DateTimeRow label='Exit time' {...dateTimes.end} />}
-                {dateTimes.exit && exitValue && <DateTimeRow label='Exit spot' value={exitValue} {...dateTimes.exit} />}
+                {dateTimes.entry && entryValue && (
+                    <DateTimeRow
+                        label={<Localize i18n_default_text='Entry spot' />}
+                        value={entryValue}
+                        {...dateTimes.entry}
+                    />
+                )}
+                {dateTimes.end && <DateTimeRow label={<Localize i18n_default_text='Exit time' />} {...dateTimes.end} />}
+                {dateTimes.exit && exitValue && (
+                    <DateTimeRow
+                        label={<Localize i18n_default_text='Exit spot' />}
+                        value={exitValue}
+                        {...dateTimes.exit}
+                    />
+                )}
             </div>
         </CardWrapper>
     );

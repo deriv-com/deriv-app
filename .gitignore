@@ -32,3 +32,4 @@ playwright/.cache/
 packages/*/stats.json
 packages/*/report.json
 packages/*/analyzed.html
+packages/*/treemap.html

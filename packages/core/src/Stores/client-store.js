@@ -441,9 +441,14 @@ export default class ClientStore extends BaseStore {
         );
 
         reaction(
-            () => [this.is_logged_in, this.is_authorize, this.is_passkey_supported],
+            () => [this.is_logged_in, this.is_authorize, this.is_passkey_supported, this.root_store.ui?.is_mobile],
             () => {
-                if (this.is_logged_in && this.is_authorize && this.is_passkey_supported) {
+                if (
+                    this.is_logged_in &&
+                    this.is_authorize &&
+                    this.is_passkey_supported &&
+                    this.root_store.ui?.is_mobile
+                ) {
                     this.fetchShouldShowEffortlessLoginModal();
                 }
             }
@@ -1506,6 +1511,13 @@ export default class ClientStore extends BaseStore {
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
+        if (action_param === 'request_email') {
+            const request_email_code = code_param ?? LocalStore.get(`verification_code.${action_param}`) ?? '';
+            if (request_email_code) {
+                this.setVerificationCode(request_email_code, action_param);
+                this.root_store.ui.toggleResetEmailModal(true);
+            }
+        }
         const client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login
         if (authorize_response) {
@@ -1837,8 +1849,6 @@ export default class ClientStore extends BaseStore {
 
         // broadcastAccountChange is already called after new connection is authorized
         if (!should_switch_socket_connection) this.broadcastAccountChange();
-
-        if (!this.is_virtual) this.getLimits();
 
         runInAction(() => (this.is_switching = false));
     }
@@ -2685,34 +2695,26 @@ export default class ClientStore extends BaseStore {
     setShouldShowEffortlessLoginModal(should_show_effortless_login_modal = true) {
         this.should_show_effortless_login_modal = should_show_effortless_login_modal;
     }
+
     async fetchShouldShowEffortlessLoginModal() {
-        if (this.is_passkey_supported) {
-            try {
-                const stored_value = localStorage.getItem('show_effortless_login_modal');
-                const show_effortless_login_modal = stored_value === null || JSON.parse(stored_value) === true;
-                if (show_effortless_login_modal) {
-                    localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
-                }
+        try {
+            const stored_value = localStorage.getItem('show_effortless_login_modal');
+            const show_effortless_login_modal = stored_value === null || JSON.parse(stored_value) === true;
+
+            if (show_effortless_login_modal) {
+                localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
 
                 const data = await WS.authorized.send({ passkeys_list: 1 });
 
-                if (data?.passkeys_list) {
-                    const should_show_effortless_login_modal =
-                        this.root_store.ui.is_mobile &&
-                        !data?.passkeys_list?.length &&
-                        this.is_passkey_supported &&
-                        show_effortless_login_modal &&
-                        this.is_logged_in;
-
-                    this.setShouldShowEffortlessLoginModal(should_show_effortless_login_modal);
+                if (data?.passkeys_list?.length === 0) {
+                    this.setShouldShowEffortlessLoginModal(true);
                 } else {
                     this.setShouldShowEffortlessLoginModal(false);
+                    localStorage.setItem('show_effortless_login_modal', JSON.stringify(false));
                 }
-            } catch (e) {
-                //error handling needed
             }
-        } else {
-            this.setShouldShowEffortlessLoginModal(false);
+        } catch (e) {
+            //error handling needed
         }
     }
 

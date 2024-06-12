@@ -17,11 +17,13 @@ const getHighlightedIconLabel = (
         } else if (
             (trading_platforms.platform === CFD_PLATFORMS.MT5 &&
                 market_type_shortcode === MARKET_TYPE_SHORTCODE.ALL_SWAP_FREE_SVG) ||
-            market_type_shortcode === MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI ||
             trading_platforms.platform === CFD_PLATFORMS.CTRADER
         ) {
             return localize('Forex: major/minor');
-        } else if (market_type === MARKET_TYPE.SYNTHETIC) {
+        } else if (
+            market_type === MARKET_TYPE.SYNTHETIC ||
+            market_type_shortcode === MARKET_TYPE_SHORTCODE.ALL_ZS_BVI
+        ) {
             return localize('Forex: standard');
         }
         return localize('Forex: standard/micro');
@@ -99,11 +101,11 @@ const getHighlightedIconLabel = (
                 } else if (trading_platforms.product === PRODUCT.ZEROSPREAD) {
                     return [
                         { icon: 'Forex', text: getForexLabel(), highlighted: true },
-                        { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
+                        { icon: 'Stocks', text: localize('Stocks'), highlighted: false },
                         { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
                         { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
                         { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
-                        { icon: 'ETF', text: localize('ETFs'), highlighted: true },
+                        { icon: 'ETF', text: localize('ETFs'), highlighted: false },
                         { icon: 'Synthetics', text: localize('Synthetic indices'), highlighted: true },
                         { icon: 'Baskets', text: localize('Basket indices'), highlighted: true },
                         { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: true },

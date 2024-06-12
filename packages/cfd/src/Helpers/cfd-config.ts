@@ -62,6 +62,7 @@ export const MARKET_TYPE_SHORTCODE = {
     FINANCIAL_MALTA_INVEST: 'financial_maltainvest',
     ALL_SWAP_FREE_SVG: 'all_swap_free_svg',
     ALL_ZERO_SPREAD_BVI: 'all_zero_spread_bvi',
+    ALL_ZS_BVI: 'all_bvi',
     ALL_DXTRADE: 'all_',
 } as const;
 

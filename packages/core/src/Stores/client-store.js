@@ -1436,6 +1436,20 @@ export default class ClientStore extends BaseStore {
         this.switch_broadcast = false;
     }
 
+    async handleAuthorizeError(authorize_response) {
+        await this.logout();
+        this.root_store.common.setError(true, {
+            header: authorize_response.error.message,
+            message: localize('Please Log in'),
+            should_show_refresh: false,
+            redirect_label: localize('Log in'),
+            redirectOnClick: () => redirectToLogin(false, getLanguage()),
+        });
+        this.setIsLoggingIn(false);
+        this.setInitialized(false);
+        this.setSwitched('');
+        return false;
+    }
     /**
      * We initially fetch things from local storage, and then do everything inside the store.
      */
@@ -1492,22 +1506,15 @@ export default class ClientStore extends BaseStore {
 
         // On case of invalid token, no need to continue with additional api calls.
         if (authorize_response?.error) {
-            await this.logout();
-            this.root_store.common.setError(true, {
-                header: authorize_response.error.message,
-                message: localize('Please Log in'),
-                should_show_refresh: false,
-                redirect_label: localize('Log in'),
-                redirectOnClick: () => redirectToLogin(false, getLanguage()),
-            });
-            this.setIsLoggingIn(false);
-            this.setInitialized(false);
-            this.setSwitched('');
-            return false;
+            return this.handleAuthorizeError(authorize_response);
         }
 
-        if (action_param === 'payment_withdraw' && loginid_param) this.setLoginId(loginid_param);
-        else this.setLoginId(LocalStore.get('active_loginid'));
+        if (action_param === 'payment_withdraw' && loginid_param) {
+            this.setLoginId(loginid_param);
+        } else {
+            this.setLoginId(LocalStore.get('active_loginid'));
+        }
+
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
@@ -1518,7 +1525,9 @@ export default class ClientStore extends BaseStore {
                 this.root_store.ui.toggleResetEmailModal(true);
             }
         }
+
         const client = this.accounts[this.loginid];
+
         // If there is an authorize_response, it means it was the first login
         if (authorize_response) {
             // If this fails, it means the landing company check failed

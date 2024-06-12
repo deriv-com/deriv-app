@@ -98,8 +98,14 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
             togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
 
-        history.push(routes.traders_hub);
-        await logoutClient();
+        // for DBot we need to logout first and only after this redirect to TH
+        if (window.location.pathname.startsWith(routes.bot)) {
+            await logoutClient();
+            history.push(routes.traders_hub);
+        } else {
+            history.push(routes.traders_hub);
+            await logoutClient();
+        }
     };
 
     const closeAccountsDialog = () => {

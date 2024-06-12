@@ -16,24 +16,29 @@ const getDateTimeFromEpoch = (epoch?: number) => {
     }
 };
 
-const DateTimeRow = ({ label, value, date, time }: { label: string; value?: string; date: string; time: string }) => (
+const DateTimeRow = ({
+    label,
+    value,
+    date,
+    time,
+}: {
+    label: React.ReactNode;
+    value?: string;
+    date: string;
+    time: string;
+}) => (
     <div className='entry-exit-details__table-row'>
         <div className='entry-exit-details__table-cell'>
             <Text size='sm' color='quill-typography__color--subtle'>
-                <Localize i18n_default_text={label} />
                 {label}
             </Text>
         </div>
         <div className='entry-exit-details__table-cell'>
-            <Text size='sm'>
-                <Localize i18n_default_text={value} />
-            </Text>
+            <Text size='sm'>{value}</Text>
             <Text size='sm' color='quill-typography__color--subtle'>
-                <Localize i18n_default_text={date} />
+                {date}
             </Text>
-            <CaptionText color='quill-typography__color--subtle'>
-                <Localize i18n_default_text={time} />
-            </CaptionText>
+            <CaptionText color='quill-typography__color--subtle'>{time}</CaptionText>
         </div>
     </div>
 );
@@ -58,12 +63,26 @@ const EntryExitDetails = ({ contract_info }: { contract_info: TContractInfo }) =
     return (
         <CardWrapper title='Entry & exit details' className='entry-exit-details'>
             <div className='entry-exit-details__table'>
-                {dateTimes.start && <DateTimeRow label='Start time' {...dateTimes.start} />}
-                {dateTimes.entry && entryValue && (
-                    <DateTimeRow label='Entry spot' value={entryValue} {...dateTimes.entry} />
+                {dateTimes.start && (
+                    <DateTimeRow label={<Localize i18n_default_text={'Start time'} />} {...dateTimes.start} />
                 )}
-                {dateTimes.end && <DateTimeRow label='Exit time' {...dateTimes.end} />}
-                {dateTimes.exit && exitValue && <DateTimeRow label='Exit spot' value={exitValue} {...dateTimes.exit} />}
+                {dateTimes.entry && entryValue && (
+                    <DateTimeRow
+                        label={<Localize i18n_default_text={'Entry spot'} />}
+                        value={entryValue}
+                        {...dateTimes.entry}
+                    />
+                )}
+                {dateTimes.end && (
+                    <DateTimeRow label={<Localize i18n_default_text={'Exit time'} />} {...dateTimes.end} />
+                )}
+                {dateTimes.exit && exitValue && (
+                    <DateTimeRow
+                        label=<Localize i18n_default_text={'Exit spot'} />
+                        value={exitValue}
+                        {...dateTimes.exit}
+                    />
+                )}
             </div>
         </CardWrapper>
     );

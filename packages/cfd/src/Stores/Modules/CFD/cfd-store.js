@@ -198,7 +198,7 @@ export default class CFDStore extends BaseStore {
 
     // eslint-disable-next-line class-methods-use-this
     get mt5_companies() {
-        return getMtCompanies(this.root_store.client.is_eu);
+        return getMtCompanies(this.root_store.client.is_eu, this.product);
     }
 
     // eslint-disable-next-line class-methods-use-this

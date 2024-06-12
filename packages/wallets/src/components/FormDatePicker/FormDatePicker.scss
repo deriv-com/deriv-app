@@ -1,0 +1,148 @@
+.wallets-datepicker {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    caret-color: transparent;
+
+    &__button {
+        all: unset;
+        cursor: pointer;
+
+        &:disabled {
+            filter: invert(92%) sepia(0%) saturate(112%) hue-rotate(253deg) brightness(106%) contrast(89%);
+        }
+    }
+
+    &__container {
+        position: absolute;
+        display: inline-block;
+        width: 28rem;
+        z-index: 1;
+
+        @include desktop {
+            transform: translate(50%, 4rem);
+        }
+
+        @include mobile {
+            align-self: center;
+
+            &--above {
+                transform: translateY(-104%);
+            }
+
+            &--below {
+                transform: translateY(6rem);
+            }
+        }
+
+        /* stylelint-disable-next-line selector-class-pattern */
+        .react-calendar {
+            border-radius: 0.5rem;
+
+            button {
+                border-radius: 0.5rem;
+                color: var(--text-general, #333333);
+            }
+
+            &__navigation {
+                border-bottom: 0.1rem solid #d6dadb;
+                height: 5rem;
+                padding: 1.6rem;
+                margin-bottom: 0;
+
+                &__arrow {
+                    font-size: 2.4rem;
+                    transform: translateY(-1.2rem);
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                &__label {
+                    font-weight: bold;
+                    transform: translateY(-0.4rem);
+                }
+
+                button {
+                    min-width: 2.4rem;
+                    padding: 0.6rem;
+                    border-radius: 0.5rem;
+
+                    &:enabled:hover,
+                    &:enabled:focus,
+                    &:disabled {
+                        background-color: unset;
+                    }
+                }
+            }
+
+            &__viewContainer {
+                padding: 0.8rem 2rem;
+            }
+
+            &__month-view {
+                &__days,
+                &__weekdays {
+                    /* stylelint-disable-next-line declaration-no-important */
+                    display: grid !important; // to overwrite flex property of calendar
+                    grid-template-columns: repeat(7, 2.4rem);
+                    grid-auto-rows: 2.4rem;
+                    grid-gap: 1.2rem;
+                    align-items: center;
+                    justify-content: center;
+
+                    &__day--neighboringMonth {
+                        color: #757575;
+                    }
+
+                    &__day--weekend {
+                        color: revert;
+                    }
+
+                    &__weekday {
+                        font-size: 1.2rem;
+                    }
+                }
+
+                &__weekdays {
+                    margin-bottom: 1.2rem;
+                }
+
+                button {
+                    min-width: 2.4rem;
+                    padding: 0.6rem;
+                    border-radius: 0.5rem;
+                }
+            }
+
+            &__tile {
+                font-size: 1.2rem;
+
+                &--active,
+                &--hasActive {
+                    border-radius: 0.5rem;
+                    background: #d6dadb;
+                    color: unset;
+
+                    &:enabled:hover,
+                    &:enabled:focus {
+                        background-color: #d6dadb;
+                    }
+                }
+
+                &--active {
+                    font-weight: bold;
+                }
+
+                &--now,
+                &:disabled {
+                    background-color: unset;
+                }
+            }
+        }
+
+        /* stylelint-disable-next-line selector-class-pattern */
+        .react-calendar__month-view__days__day--weekend.react-calendar__month-view__days__day--neighboringMonth {
+            color: #757575;
+        }
+    }
+}

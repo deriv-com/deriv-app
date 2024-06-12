@@ -78,7 +78,7 @@ const EntryExitDetails = ({ contract_info }: { contract_info: TContractInfo }) =
                 )}
                 {dateTimes.exit && exitValue && (
                     <DateTimeRow
-                        label=<Localize i18n_default_text={'Exit spot'} />
+                        label={<Localize i18n_default_text={'Exit spot'} />}
                         value={exitValue}
                         {...dateTimes.exit}
                     />

@@ -8,7 +8,6 @@ import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import {
     rudderStackSendQsEditStrategyEvent,
-    rudderStackSendQsRunStrategyEvent,
     rudderStackSendQsSelectedTabEvent,
 } from '../../../../analytics/rudderstack-quick-strategy';
 import { getQsActiveTabString } from '../../../../analytics/utils';

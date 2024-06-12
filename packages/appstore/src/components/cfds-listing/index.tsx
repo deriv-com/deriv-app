@@ -315,18 +315,14 @@ const CFDsListing = observer(() => {
             ) : (
                 <PlatformLoader />
             )}
-            {!is_eu_user && (
+            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                 <Fragment>
-                    {!CFDs_restricted_countries && !financial_restricted_countries && (
-                        <div className='cfd-full-row'>
-                            <hr className='divider' />
-                        </div>
-                    )}
-                    {!CFDs_restricted_countries && !financial_restricted_countries && (
-                        <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
-                            <Text weight='bold'>{localize('Deriv cTrader')}</Text>
-                        </div>
-                    )}
+                    <div className='cfd-full-row'>
+                        <hr className='divider' />
+                    </div>
+                    <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
+                        <Text weight='bold'>{localize('Deriv cTrader')}</Text>
+                    </div>
                     {is_landing_company_loaded ? (
                         available_ctrader_accounts.map(account => {
                             const existing_accounts = getExistingAccounts(account.platform, account.market_type);
@@ -414,19 +410,17 @@ const CFDsListing = observer(() => {
                     ) : (
                         <PlatformLoader />
                     )}
-                    {!CFDs_restricted_countries && !financial_restricted_countries && (
-                        <React.Fragment>
-                            <div className='cfd-full-row'>
-                                <hr className='divider' />
-                            </div>
+                    <React.Fragment>
+                        <div className='cfd-full-row'>
+                            <hr className='divider' />
+                        </div>
 
-                            <div className='cfd-full-row'>
-                                <Text line_height='m' weight='bold' color='prominent'>
-                                    {localize('Deriv X')}
-                                </Text>
-                            </div>
-                        </React.Fragment>
-                    )}
+                        <div className='cfd-full-row'>
+                            <Text line_height='m' weight='bold' color='prominent'>
+                                {localize('Deriv X')}
+                            </Text>
+                        </div>
+                    </React.Fragment>
                     {is_landing_company_loaded ? (
                         available_dxtrade_accounts?.map(account => {
                             const existing_accounts = getExistingAccounts(account.platform, account.market_type);

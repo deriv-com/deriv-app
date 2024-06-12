@@ -92,7 +92,7 @@ const TradingAssessmentDropdown = ({
                                         error={meta.touched && meta.error}
                                     />
                                 ) : (
-                                    <div>
+                                    <React.Fragment>
                                         <Text as='h1' color='prominent' weight='bold' size='xs'>
                                             {question?.question_text}
                                         </Text>
@@ -110,7 +110,7 @@ const TradingAssessmentDropdown = ({
                                             disabled={disabled_items.includes(question.form_control)}
                                             error={meta.touched && meta.error}
                                         />
-                                    </div>
+                                    </React.Fragment>
                                 )}
                             </React.Fragment>
                         );

@@ -4,6 +4,7 @@ import { FormatUtils } from '@deriv-com/utils';
 import CardWrapper from '../CardWrapper';
 import React, { useState } from 'react';
 import clsx from 'classnames';
+import { Localize } from '@deriv/translations';
 
 type TContractHistory = {
     currency?: string;
@@ -27,7 +28,7 @@ const TakeProfitHistory = ({ history = [], currency }: TContractHistory) => {
     const currentItems = history.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     return (
-        <CardWrapper title='TP history' className='take-profit-history'>
+        <CardWrapper title={<Localize i18n_default_text='TP history' />} className='take-profit-history'>
             <div
                 className={clsx('take-profit-history__table', {
                     'take-profit-history__table--fixed-height': history.length > itemsPerPage,

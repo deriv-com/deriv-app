@@ -1,12 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-userEvent;
 import '@testing-library/jest-dom';
 import { useStore } from '@deriv/stores';
 import { getCardLabels, isValidToSell, isValidToCancel, isMultiplierContract } from '@deriv/shared';
 import ContractDetailsFooter from '../contract-details-footer';
 import { getRemainingTime } from 'AppV2/Utils/helper';
 import userEvent from '@testing-library/user-event';
+
+userEvent;
 
 jest.mock('@deriv/stores', () => ({
     useStore: jest.fn(),
@@ -85,7 +86,6 @@ describe('ContractDetailsFooter', () => {
                 contract_info={{
                     ...mockContractInfo,
                     contract_type: 'multiplier',
-                    cancellation: { date_expiry: new Date() },
                 }}
             />
         );
@@ -134,7 +134,6 @@ describe('ContractDetailsFooter', () => {
                     ...mockContractInfo,
                     contract_type: 'multiplier',
                     profit: 0,
-                    cancellation: { date_expiry: new Date() },
                 }}
             />
         );

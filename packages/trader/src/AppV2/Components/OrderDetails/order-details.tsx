@@ -12,15 +12,15 @@ const OrderDetails = ({ contract_info }: ContractInfoProps) => {
     const details = orderDetails ? orderDetails.details : {};
     return (
         <div className='order-details'>
-            <div className='table'>
+            <div className='order-details-table'>
                 {Object.entries(details).map(([key, value], index) => (
-                    <div className='row' key={index}>
-                        <div className='cell'>
+                    <div className='order-details-table-row' key={index}>
+                        <div className='order-details-table-row-cell'>
                             <Text size='sm' color='quill-typography__color--subtle'>
                                 {key}
                             </Text>
                         </div>
-                        <div className='cell'>
+                        <div className='order-details-table-row-cell'>
                             {Array.isArray(value) ? (
                                 value.map((val, i) => (
                                     <Text key={i} size='sm'>

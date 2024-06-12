@@ -2,30 +2,38 @@ import { Text, CaptionText } from '@deriv-com/quill-ui';
 import CardWrapper from '../CardWrapper';
 import React, { useMemo } from 'react';
 import { TContractInfo, addComma, getEndTime } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
 
-const getDateTimeFromEpoch = (epoch: number) => {
-    const date = new Date(epoch * 1000);
-    const formattedDate = date.toUTCString().split(' ').slice(0, 4).join(' ');
-    const formattedTime = `${date.toUTCString().split(' ')[4]} GMT`;
-    return {
-        date: formattedDate,
-        time: formattedTime,
-    };
+const getDateTimeFromEpoch = (epoch?: number) => {
+    if (epoch) {
+        const date = new Date(epoch * 1000);
+        const formattedDate = date.toUTCString().split(' ').slice(0, 4).join(' ');
+        const formattedTime = `${date.toUTCString().split(' ')[4]} GMT`;
+        return {
+            date: formattedDate,
+            time: formattedTime,
+        };
+    }
 };
 
 const DateTimeRow = ({ label, value, date, time }: { label: string; value?: string; date: string; time: string }) => (
     <div className='entry-exit-details__table-row'>
         <div className='entry-exit-details__table-cell'>
             <Text size='sm' color='quill-typography__color--subtle'>
+                <Localize i18n_default_text={label} />
                 {label}
             </Text>
         </div>
         <div className='entry-exit-details__table-cell'>
-            <Text size='sm'>{value}</Text>
-            <Text size='sm' color='quill-typography__color--subtle'>
-                {date}
+            <Text size='sm'>
+                <Localize i18n_default_text={value} />
             </Text>
-            <CaptionText color='quill-typography__color--subtle'>{time}</CaptionText>
+            <Text size='sm' color='quill-typography__color--subtle'>
+                <Localize i18n_default_text={date} />
+            </Text>
+            <CaptionText color='quill-typography__color--subtle'>
+                <Localize i18n_default_text={time} />
+            </CaptionText>
         </div>
     </div>
 );

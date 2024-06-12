@@ -83,7 +83,7 @@ describe('Toolbar component', () => {
         expect(await screen.findByRole('button')).toBeInTheDocument();
     });
 
-    it('Toolbar should render Quick strategy form on toolbar button click and when it is mobile version', async () => {
+    it('Toolbar should render Quick strategy form on toolbar button click and when it is mobile version', () => {
         (useStore as jest.Mock).mockReturnValue({
             ui: {
                 is_mobile: true,

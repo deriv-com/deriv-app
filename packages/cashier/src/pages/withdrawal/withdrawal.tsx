@@ -85,6 +85,7 @@ const Withdrawal = observer(() => {
         is_switching,
         verification_code: { payment_withdraw: verification_code },
         setVerificationCode,
+        account_limits,
     } = client;
     const { withdraw, transaction_history } = useCashierStore();
     const { is_transactions_crypto_visible } = transaction_history;
@@ -106,7 +107,7 @@ const Withdrawal = observer(() => {
 
     React.useEffect(() => {
         check10kLimit();
-    }, [check10kLimit]);
+    }, [check10kLimit, account_limits?.remainder]);
 
     React.useEffect(() => {
         return () => setVerificationCode('', 'payment_withdraw');

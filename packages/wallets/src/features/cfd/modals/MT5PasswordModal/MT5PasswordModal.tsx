@@ -21,6 +21,7 @@ import { CreatePassword, EnterPassword, MT5ResetPasswordModal } from '../../scre
 import MT5AccountAdded from '../MT5AccountAdded/MT5AccountAdded';
 import { PasswordLimitExceededModal } from '../PasswordLimitExceededModal';
 import { MT5PasswordModalFooter, SuccessModalFooter } from './MT5PasswordModalFooters';
+import './MT5PasswordModal.scss';
 
 type TProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
@@ -282,7 +283,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
 
     if (emailVerificationStatus === 'success') {
         return (
-            <ModalWrapper isFullscreen={isMobile}>
+            <ModalWrapper className='wallets-mt5-password-modal' isFullscreen={isMobile}>
                 <SentEmailContent platform={CFD_PLATFORMS.MT5} />
             </ModalWrapper>
         );

@@ -37,12 +37,10 @@ const MT5ChangePasswordScreens = () => {
                 </WalletText>
             </div>
 
-            <div className='wallets-change-investor-password-screens__sent-email-wrapper'>
-                <SentEmailContent
-                    description='Please click on the link in the email to reset your password.'
-                    isInvestorPassword
-                />
-            </div>
+            <SentEmailContent
+                description='Please click on the link in the email to reset your password.'
+                isInvestorPassword
+            />
         </Fragment>
     ) : (
         <Tabs

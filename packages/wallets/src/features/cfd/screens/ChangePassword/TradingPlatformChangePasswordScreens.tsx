@@ -80,12 +80,7 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
         },
     };
 
-    if (activeScreen === 'emailVerification')
-        return (
-            <div className='wallets-change-password__sent-email-wrapper'>
-                <SentEmailContent isChangePassword platform={platform} />
-            </div>
-        );
+    if (activeScreen === 'emailVerification') return <SentEmailContent isChangePassword platform={platform} />;
 
     return (
         <div className='wallets-change-password__content'>

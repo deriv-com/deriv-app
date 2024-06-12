@@ -5,7 +5,7 @@ import { TCompareAccountsCard } from 'Components/props.types';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { getJuridisctionDescription, getMarketType } from '../../Helpers/compare-accounts-config';
-import { REGION, CFD_PLATFORMS } from '../../Helpers/cfd-config';
+import { REGION, CFD_PLATFORMS, MARKET_TYPE_SHORTCODE } from '../../Helpers/cfd-config';
 
 const CFDCompareAccountsDescription = ({ trading_platforms, is_demo }: TCompareAccountsCard) => {
     const market_type = getMarketType(trading_platforms);
@@ -37,7 +37,7 @@ const CFDCompareAccountsDescription = ({ trading_platforms, is_demo }: TCompareA
                     <Text as='h1' weight='bold' size='m' align='center'>
                         <div className='compare-cfd-account-spread'>
                             {juridisction_data.spread}
-                            {market_type_shortcode === 'all_zero_spread_bvi' && (
+                            {market_type_shortcode === MARKET_TYPE_SHORTCODE.ALL_ZERO_SPREAD_BVI && (
                                 <Popover
                                     alignment='top'
                                     className='compare-cfd-account-zerospread-tooltip'

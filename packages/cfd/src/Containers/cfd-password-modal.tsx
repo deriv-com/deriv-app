@@ -196,7 +196,7 @@ const IconType = React.memo(({ platform, type, show_eu_related_content, product 
                 return <Icon icon='IcMt5StandardPlatform' size={128} />;
             case 'all':
                 if (product === PRODUCT.ZEROSPREAD) {
-                    return <Icon icon='IcMt5ZeroSpreadPlatform' size={128} />;
+                    return <Icon icon='IcMt5ZeroSpread' size={128} />;
                 }
                 return <Icon icon='IcMt5SwapFreePlatform' size={128} />;
             case 'financial':

@@ -66,6 +66,16 @@ const DMT5TradeModal = observer(
             if (show_eu_related_content) return 'CFDs';
             else if (mt5_trade_account.market_type === MARKET_TYPE.SYNTHETIC) return 'Standard';
             else if (mt5_trade_account.market_type === MARKET_TYPE.ALL && product === PRODUCT.SWAPFREE)
+                return 'Swap-Free';
+            else if (mt5_trade_account.market_type === MARKET_TYPE.ALL && product === PRODUCT.ZEROSPREAD)
+                return 'Zero Spread';
+            return 'Financial';
+        };
+
+        const getAccountIcons = () => {
+            if (show_eu_related_content) return 'CFDs';
+            else if (mt5_trade_account.market_type === MARKET_TYPE.SYNTHETIC) return 'Standard';
+            else if (mt5_trade_account.market_type === MARKET_TYPE.ALL && product === PRODUCT.SWAPFREE)
                 return 'SwapFree';
             else if (mt5_trade_account.market_type === MARKET_TYPE.ALL && product === PRODUCT.ZEROSPREAD)
                 return 'ZeroSpread';
@@ -90,7 +100,7 @@ const DMT5TradeModal = observer(
         return (
             <div className='cfd-trade-modal-container'>
                 <div className='cfd-trade-modal'>
-                    <TradingPlatformIcon icon={getAccountTitle()} size={24} />
+                    <TradingPlatformIcon icon={getAccountIcons()} size={24} />
                     <div className='cfd-trade-modal__desc'>
                         <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
                             {getHeadingTitle()}

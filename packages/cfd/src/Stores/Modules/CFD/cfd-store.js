@@ -699,10 +699,6 @@ export default class CFDStore extends BaseStore {
         this.real_swapfree_accounts_existing_data = real_swapfree_accounts_existing_data;
     }
 
-    getRealZerospreadAccountsExistingData(real_zerospread_accounts_existing_data) {
-        this.real_zerospread_accounts_existing_data = real_zerospread_accounts_existing_data;
-    }
-
     toggleJurisdictionModal() {
         this.is_jurisdiction_modal_visible = !this.is_jurisdiction_modal_visible;
     }

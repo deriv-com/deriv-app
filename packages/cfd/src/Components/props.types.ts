@@ -8,7 +8,7 @@ export type TCFDPlatform = 'dxtrade' | 'mt5' | 'ctrader';
 
 export type TCFDsPlatformType = 'dxtrade' | 'mt5' | 'ctrader' | '';
 
-export type TProducts = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx' | 'cTrader' | '';
+export type TProducts = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx' | 'cTrader';
 
 export type TShortcode = DetailsOfEachMT5Loginid['landing_company_short'];
 
@@ -99,7 +99,7 @@ export type TTradingPlatformAvailableAccount = {
 export type TModifiedTradingPlatformAvailableAccount = Omit<TTradingPlatformAvailableAccount, 'market_type'> & {
     platform?: 'mt5' | 'dxtrade' | 'ctrader';
     market_type: TTradingPlatformAvailableAccount['market_type'] | 'synthetic';
-    product: TProducts;
+    product?: TProducts;
 };
 
 export type TCardFlipStatus = {

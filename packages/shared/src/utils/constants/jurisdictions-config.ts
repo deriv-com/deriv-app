@@ -23,5 +23,5 @@ export const DBVI_COMPANY_NAMES = {
 
 export const JURISDICTION_MARKET_TYPES = {
     FINANCIAL: 'financial',
-    DERIVED: 'derived',
+    DERIVED: 'synthetic',
 } as const;

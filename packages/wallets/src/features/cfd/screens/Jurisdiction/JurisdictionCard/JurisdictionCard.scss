@@ -104,7 +104,7 @@
     }
 
     &__link {
-        color: #ff444f;
+        color: var(--text-red, #ff444f);
     }
 
     &__added-status {

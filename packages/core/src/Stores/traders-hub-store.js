@@ -160,28 +160,16 @@ export default class TradersHubStore extends BaseStore {
         reaction(
             () => [this.root_store.client.loginid, this.root_store.client.residence],
             () => {
-                const loginid = localStorage.getItem('active_loginid');
-
-                const active_demo = /^VRT|VRW/.test(loginid);
-                const active_real_mf = /^MF|MFW/.test(loginid);
-                const active_real_cr = /^CR/.test(loginid);
-
+                const residence = this.root_store.client.residence;
+                const active_demo = /^VRT|VRW/.test(this.root_store.client.loginid);
+                const active_real_mf = /^MF|MFW/.test(this.root_store.client.loginid);
                 const default_region = () => {
-                    if (active_real_cr) {
-                        return 'Non-EU';
-                    }
-
-                    if (active_real_mf || this.is_eu_user) {
+                    if (((active_demo || active_real_mf) && isEuCountry(residence)) || active_real_mf) {
                         return 'EU';
                     }
-
-                    if (active_demo) {
-                        return 'Non-EU';
-                    }
-
                     return 'Non-EU';
                 };
-                this.selected_account_type = !active_demo ? 'real' : 'demo';
+                this.selected_account_type = !/^VRT|VRW/.test(this.root_store.client.loginid) ? 'real' : 'demo';
                 this.selected_region = default_region();
             }
         );

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Text, StaticUrl } from '@deriv/components';
-import { setPerformanceValue } from '@deriv/shared';
+import { ContentFlag, setPerformanceValue } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
@@ -12,21 +12,37 @@ import { Analytics } from '@deriv-com/analytics';
 
 const OptionsAndMultipliersListing = observer(() => {
     const { traders_hub, client, ui } = useStore();
-    const { available_platforms, is_eu_user, is_real, no_MF_account, no_CR_account, is_demo, selected_account_type } =
-        traders_hub;
-    const { has_maltainvest_account, real_account_creation_unlock_date, is_landing_company_loaded } = client;
+    const {
+        available_platforms,
+        is_eu_user,
+        is_real,
+        no_MF_account,
+        no_CR_account,
+        is_demo,
+        content_flag,
+        selected_account_type,
+    } = traders_hub;
+    const { is_landing_company_loaded, is_eu, has_maltainvest_account, real_account_creation_unlock_date } = client;
 
     const { setShouldShowCooldownModal, openRealAccountSignup, is_mobile } = ui;
 
+    const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
+
+    const low_risk_cr_eu = content_flag === ContentFlag.LOW_RISK_CR_EU;
+
+    const high_risk_cr = content_flag === ContentFlag.HIGH_RISK_CR;
+
+    const cr_demo = content_flag === ContentFlag.CR_DEMO;
+
     const OptionsTitle = () => {
         if (is_mobile) return null;
-        if (!is_eu_user) {
+        if (low_risk_cr_non_eu || high_risk_cr || cr_demo) {
             return (
                 <Text size='sm' weight='bold'>
                     <Localize i18n_default_text='Options' />
                 </Text>
             );
-        } else if (is_eu_user) {
+        } else if (low_risk_cr_eu || is_eu) {
             return (
                 <Text size='sm' weight='bold' color='prominent'>
                     <Localize i18n_default_text='Multipliers' />
@@ -46,7 +62,7 @@ const OptionsAndMultipliersListing = observer(() => {
         <ListingContainer
             title={<OptionsTitle />}
             description={
-                !is_eu_user ? (
+                low_risk_cr_non_eu || high_risk_cr || cr_demo ? (
                     <Text size='xs' line_height='s'>
                         <Localize
                             i18n_default_text='Buy or sell at a specific time for a specific price. <0>Learn more</0>'

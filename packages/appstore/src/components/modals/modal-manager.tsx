@@ -216,6 +216,7 @@ const ModalManager = () => {
         is_top_up_virtual_open,
         is_top_up_virtual_success,
         is_mt5_migration_modal_open,
+        is_cfd_reset_password_modal_enabled,
     } = ui;
     const {
         is_demo,
@@ -303,22 +304,6 @@ const ModalManager = () => {
             {is_jurisdiction_modal_visible && <JurisdictionModal openPasswordModal={openRealPasswordModal} />}
             {should_show_cfd_password_modal && <CFDPasswordModal platform={platform} />}
             {is_cfd_verification_modal_visible && <CFDDbviOnBoarding />}
-            {/* 
-                This modal used for reset password and always needs to be rendered!
-                OR
-                We can try to use the same logic from the modal for lazy loading like this: 
-
-                `
-                const is_invalid_investor_token =
-                    Object.keys(current_list).length === 0 && localStorage.getItem('cfd_reset_password_code');
-                const should_show_cfd_reset_password_modal = is_cfd_reset_password_modal_enabled && !is_invalid_investor_token;
-
-                in JSX:
-                {should_show_cfd_reset_password_modal && <CFDResetPasswordModal platform={platform} />}
-                `
-
-                !!! Needs to confirm with CFD squad !!!
-            */}
             {should_show_cfd_reset_password_modal && <CFDResetPasswordModal platform={platform} />}
             {is_ctrader_transfer_modal_visible && <CTraderTransferModal />}
             {has_cfd_error && <CFDServerErrorDialog />}

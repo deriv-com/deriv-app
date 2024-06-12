@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { ObjectUtils } from '@deriv-com/utils';
 import initData from '../remote_config.json';
 
 const remoteConfigQuery = async function () {
@@ -20,8 +21,10 @@ function useRemoteConfig(enabled = false) {
     useEffect(() => {
         enabled &&
             remoteConfigQuery()
-                .then(res => {
-                    if (JSON.stringify(res) !== JSON.stringify(data)) {
+                .then(async res => {
+                    const resHash = await ObjectUtils.hashObject(res);
+                    const dataHash = await ObjectUtils.hashObject(data);
+                    if (resHash !== dataHash) {
                         setData(res);
                     }
                 })

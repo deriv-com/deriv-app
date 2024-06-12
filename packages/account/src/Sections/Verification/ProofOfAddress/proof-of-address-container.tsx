@@ -100,7 +100,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
         }));
     };
 
-    const handleDuplicatePoaSubmission = () => {
+    const handleDuplicatePOASubmission = () => {
         setAuthenticationStatus(authentication_status => ({
             ...authentication_status,
             ...{ resubmit_poa: true, has_submitted_duplicate_poa: false, has_submitted_poa: false },
@@ -168,10 +168,12 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
     if (has_submitted_duplicate_poa)
         return (
             <Unverified
-                title=<Localize i18n_default_text='Proof of address documents upload failed' />
-                description=<Localize i18n_default_text='It seems you’ve submitted this document before. Upload a new document.' />
-                button_text=<Localize i18n_default_text='Try again' />
-                onClick={handleDuplicatePoaSubmission}
+                title={<Localize i18n_default_text='Proof of address documents upload failed' />}
+                description={
+                    <Localize i18n_default_text='It seems you’ve submitted this document before. Upload a new document.' />
+                }
+                button_text={<Localize i18n_default_text='Try again' />}
+                onClick={handleDuplicatePOASubmission}
             />
         );
     if (has_submitted_poa && !poa_address_mismatch)

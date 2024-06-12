@@ -6,7 +6,7 @@ import IconMessageContent from '../../../icon-message-content';
 type TUnverified = {
     title?: string | ReactElement;
     description?: string | ReactElement;
-    onClick?: () => void;
+    onClick: () => void;
     button_text?: string | ReactElement;
 };
 

@@ -84,7 +84,7 @@ const SymbolSelect: React.FC = () => {
     };
 
     const handleItemSelection = (item: TItem) => {
-        if (item) {
+        if (item?.value) {
             const { value } = item as TSymbol;
             setFieldValue('symbol', value);
             setValue('symbol', value);

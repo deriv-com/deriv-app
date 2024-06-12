@@ -17,19 +17,19 @@ const mocked_props = {
 describe('<CFDCompareAccountsTitleIcon />', () => {
     test('should render correct title for synthetic_svg market type and shortcode', () => {
         render(<CFDCompareAccountsTitleIcon {...mocked_props} />);
-        expect(screen.getByText('Derived - SVG')).toBeInTheDocument();
+        expect(screen.getByText('Standard - SVG')).toBeInTheDocument();
     });
 
     test('should render correct title for synthetic_bvi market type and shortcode', () => {
         mocked_props.trading_platforms.shortcode = 'bvi';
         render(<CFDCompareAccountsTitleIcon {...mocked_props} />);
-        expect(screen.getByText('Derived - BVI')).toBeInTheDocument();
+        expect(screen.getByText('Standard - BVI')).toBeInTheDocument();
     });
 
     test('should render correct title for synthetic_vanuatu market type and shortcode', () => {
         mocked_props.trading_platforms.shortcode = 'vanuatu';
         render(<CFDCompareAccountsTitleIcon {...mocked_props} />);
-        expect(screen.getByText('Derived - Vanuatu')).toBeInTheDocument();
+        expect(screen.getByText('Standard - Vanuatu')).toBeInTheDocument();
     });
 
     test('should render correct title for financial_labuan market type and shortcode', () => {
@@ -88,7 +88,7 @@ describe('<CFDCompareAccountsTitleIcon />', () => {
         mocked_props.is_demo = true;
         mocked_props.is_eu_user = false;
         render(<CFDCompareAccountsTitleIcon {...mocked_props} />);
-        expect(screen.getByText('Derived Demo')).toBeInTheDocument();
+        expect(screen.getByText('Standard Demo')).toBeInTheDocument();
     });
 
     test('should render correct title for financial market type and shortcode demo account', () => {

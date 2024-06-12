@@ -17,8 +17,11 @@
         position: absolute;
         display: inline-block;
         width: 28rem;
-        transform: translateY(4rem);
         z-index: 1;
+
+        @include desktop-screen {
+            transform: translate(50%, 4rem);
+        }
 
         @include mobile-or-tablet-screen {
             align-self: center;
@@ -38,6 +41,7 @@
 
             button {
                 border-radius: 0.5rem;
+                color: var(--text-general, #333333);
             }
 
             &__navigation {

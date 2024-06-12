@@ -8,8 +8,8 @@ import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendQsOpenEventFromDashboard } from '../bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
+import DashboardBotList from './load-bot-preview/dashboard-bot-list';
 import GoogleDrive from './load-bot-preview/google-drive';
-import Recent from './load-bot-preview/recent';
 
 type TCardProps = {
     has_dashboard_strategies: boolean;
@@ -172,7 +172,7 @@ const Cards = observer(({ is_mobile_or_tablet, has_dashboard_strategies }: TCard
                         </MobileFullPageModal>
                     </MobileOrTabletWrapper>
                 </div>
-                <Recent is_file_supported={is_file_supported} />
+                <DashboardBotList is_file_supported={is_file_supported} />
             </div>
         ),
         // eslint-disable-next-line react-hooks/exhaustive-deps

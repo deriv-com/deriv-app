@@ -62,7 +62,7 @@ const DMT5TradeModal = observer(
             });
         const getAccountTitle = () => {
             if (show_eu_related_content) return 'CFDs';
-            else if (mt5_trade_account.market_type === MARKET_TYPE.SYNTHETIC) return 'Derived';
+            else if (mt5_trade_account.market_type === MARKET_TYPE.SYNTHETIC) return 'Standard';
             else if (mt5_trade_account.market_type === MARKET_TYPE.ALL) return 'SwapFree';
             return 'Financial';
         };

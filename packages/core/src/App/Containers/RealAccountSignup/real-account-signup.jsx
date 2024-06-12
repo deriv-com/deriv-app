@@ -204,6 +204,8 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                     return localize('Create a new account');
                 } else if (local_props?.has_fiat && local_props?.available_crypto_currencies?.length === 0) {
                     return localize('Manage account');
+                } else if (signup_error) {
+                    return null;
                 }
                 return localize('Add or manage account');
             },
@@ -285,7 +287,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
 
     const getModalHeight = () => {
         if (is_from_restricted_country) return '304px';
-        else if ([invalid_input_error, status_dialog].includes(getActiveModalIndex())) return 'auto';
+        else if ([invalid_input_error, status_dialog, signup_error].includes(getActiveModalIndex())) return 'auto';
         if (!currency || getActiveModalIndex() === modal_pages_indices.set_currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
             if (show_eu_related_content && getActiveModalIndex() === modal_pages_indices.add_or_manage_account) {
@@ -303,7 +305,10 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         return '740px'; // Account wizard modal
     };
     const getModalWidth = () => {
-        if (is_from_restricted_country || getActiveModalIndex() === modal_pages_indices.invalid_input_error)
+        if (
+            is_from_restricted_country ||
+            [modal_pages_indices.invalid_input_error, modal_pages_indices.signup_error].includes(getActiveModalIndex())
+        )
             return '440px';
         return !has_close_icon ? 'auto' : '955px';
     };
@@ -668,6 +673,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                             wrapper_classname='account-signup-mobile-dialog'
                             visible={is_real_acc_signup_on}
                             onClose={closeModal}
+                            has_full_height={getActiveModalIndex() === modal_pages_indices.signup_error}
                             renderTitle={() => {
                                 if (Title) {
                                     return (

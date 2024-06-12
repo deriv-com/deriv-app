@@ -5,7 +5,6 @@ import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import OnboardTourHandler from '../tutorials/dbot-tours/onboarding-tour';
-import Local from './load-bot-preview/local';
 import Cards from './cards';
 import InfoPanel from './info-panel';
 import UserGuide from './user-guide';
@@ -65,25 +64,10 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                                 )}
                             </Text>
                         </div>
-                        <div
-                            className={classNames('tab__dashboard__centered', {
-                                'tab__dashboard__centered--listed': !is_mobile_or_tablet && has_dashboard_strategies,
-                                'tab__dashboard__centered--not-listed': !has_dashboard_strategies,
-                            })}
-                        >
-                            <Cards
-                                has_dashboard_strategies={has_dashboard_strategies}
-                                is_mobile_or_tablet={is_mobile_or_tablet}
-                            />
-                        </div>
-                        {is_mobile_or_tablet && <Local />}
-                    </div>
-                    <div className={classNames('preview-panel', { 'preview-panel--active': has_dashboard_strategies })}>
-                        {has_dashboard_strategies && !is_mobile_or_tablet && (
-                            <div className='tab__dashboard__preview'>
-                                <Local />
-                            </div>
-                        )}
+                        <Cards
+                            has_dashboard_strategies={has_dashboard_strategies}
+                            is_mobile_or_tablet={is_mobile_or_tablet}
+                        />
                     </div>
                 </div>
             </div>

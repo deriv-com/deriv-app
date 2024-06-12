@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Formik, FormikErrors, FormikHelpers } from 'formik';
+import { useDevice } from '@deriv-com/ui';
 
 import { SentEmailModal } from '@deriv/account';
 import {
@@ -20,7 +21,6 @@ import {
     getCFDPlatformLabel,
     getErrorMessages,
     getLegalEntityName,
-    isDesktop,
     routes,
     validLength,
     validPassword,
@@ -33,13 +33,7 @@ import { Localize, localize } from '@deriv/translations';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import SuccessDialog from '../Components/success-dialog.jsx';
 import MigrationSuccessModal from '../Components/migration-success-modal';
-import {
-    getDxCompanies,
-    getFormattedJurisdictionCode,
-    getMtCompanies,
-    TDxCompanies,
-    TMtCompanies,
-} from '../Stores/Modules/CFD/Helpers/cfd-config';
+import { getDxCompanies, getMtCompanies, TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import CFDPasswordModalTitle from './cfd-password-modal-title';
 import { CFD_PLATFORMS, JURISDICTION, CATEGORY } from '../Helpers/cfd-config';
@@ -115,36 +109,36 @@ type TCFDPasswordModalProps = {
     platform: typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS];
 };
 
-const PasswordModalHeader = observer(
-    ({ should_set_trading_password, is_password_reset_error, platform }: TPasswordModalHeaderProps) => {
-        const { ui } = useStore();
-        const { is_mobile_or_tablet } = ui;
+const PasswordModalHeader = ({
+    should_set_trading_password,
+    is_password_reset_error,
+    platform,
+}: TPasswordModalHeaderProps) => {
+    const { isDesktop } = useDevice();
 
-        const element = is_mobile_or_tablet ? 'p' : 'span';
-        const alignment = 'center';
-        const font_size = 's';
-        const style = is_mobile_or_tablet
-            ? {
-                  padding: '2rem',
-              }
-            : {};
+    const element = !isDesktop ? 'p' : 'span';
+    const alignment = 'center';
+    const font_size = 's';
+    const style = !isDesktop
+        ? {
+              padding: '2rem',
+          }
+        : {};
 
-        return (
-            <Text styles={style} as={element} line_height='m' weight='bold' size={font_size} align={alignment}>
-                {!should_set_trading_password && !is_password_reset_error && (
-                    <Localize
-                        i18n_default_text='Enter your {{platform}} password'
-                        values={{
-                            platform: getCFDPlatformLabel(platform),
-                        }}
-                    />
-                )}
-                {is_password_reset_error && <Localize i18n_default_text='Too many attempts' />}
-            </Text>
-        );
-    }
-);
-
+    return (
+        <Text styles={style} as={element} line_height='m' weight='bold' size={font_size} align={alignment}>
+            {!should_set_trading_password && !is_password_reset_error && (
+                <Localize
+                    i18n_default_text='Enter your {{platform}} password'
+                    values={{
+                        platform: getCFDPlatformLabel(platform),
+                    }}
+                />
+            )}
+            {is_password_reset_error && <Localize i18n_default_text='Too many attempts' />}
+        </Text>
+    );
+};
 const ReviewMessageForMT5 = ({
     is_selected_mt5_verified,
     jurisdiction_selected_shortcode,
@@ -180,7 +174,7 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
         }
         switch (type) {
             case 'synthetic':
-                return <TradingPlatformIcon icon='Derived' size={128} />;
+                return <TradingPlatformIcon icon='Standard' size={128} />;
             case 'all':
                 return <TradingPlatformIcon icon='SwapFree' size={128} />;
             case 'financial':
@@ -194,7 +188,7 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
     } else {
         switch (type) {
             case 'synthetic':
-                return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
+                return <Icon icon='IcMt5StandardPlatform' size={128} />;
             case 'all':
                 return <Icon icon='IcMt5SwapFreePlatform' size={128} />;
             case 'financial':
@@ -212,9 +206,10 @@ IconType.displayName = 'IconType';
 const getCancelButtonLabel = ({
     should_set_trading_password,
     error_type,
-}: Pick<TCFDPasswordFormProps, 'should_set_trading_password' | 'error_type'>) => {
+    isDesktop,
+}: Pick<TCFDPasswordFormProps, 'should_set_trading_password' | 'error_type'> & { isDesktop: boolean }) => {
     if (should_set_trading_password && error_type !== 'PasswordReset') {
-        return isDesktop() ? null : localize('Cancel');
+        return isDesktop ? null : localize('Cancel');
     }
 
     return localize('Forgot password?');
@@ -388,169 +383,166 @@ const CFDCreatePasswordForm = ({
     return <MultiStep ref={multi_step_ref} steps={steps} />;
 };
 
-const CFDPasswordForm = observer(
-    ({
-        closeModal,
-        error_message,
-        error_type,
-        form_error,
-        has_mt5_account,
-        is_real_financial_stp,
-        onCancel,
-        onForgotPassword,
-        platform,
-        should_set_trading_password,
-        submitPassword,
-        validatePassword,
-    }: TCFDPasswordFormProps) => {
-        const { ui } = useStore();
-        const { is_mobile_or_tablet } = ui;
+const CFDPasswordForm = ({
+    closeModal,
+    error_message,
+    error_type,
+    form_error,
+    has_mt5_account,
+    is_real_financial_stp,
+    onCancel,
+    onForgotPassword,
+    platform,
+    should_set_trading_password,
+    submitPassword,
+    validatePassword,
+}: TCFDPasswordFormProps) => {
+    const { isDesktop } = useDevice();
 
-        const button_label = React.useMemo(() => {
-            if (error_type === 'PasswordReset') {
-                return localize('Try later');
-            }
-            return localize('Add account');
-        }, [error_type]);
-
-        const has_cancel_button = (isDesktop() ? !should_set_trading_password : true) || error_type === 'PasswordReset';
-
-        const cancel_button_label = getCancelButtonLabel({ should_set_trading_password, error_type });
-
-        const handleCancel = () => {
-            if (!has_cancel_button) {
-                return undefined;
-            }
-            if (should_set_trading_password) {
-                return onCancel();
-            }
-
-            return onForgotPassword();
-        };
-
+    const button_label = React.useMemo(() => {
         if (error_type === 'PasswordReset') {
-            return (
-                <React.Fragment>
-                    <div className='cfd-password-reset'>
-                        <div className='cfd-password-modal__content cfd-password-modal__content--password-reset'>
-                            <Text as='p' line_height='24' size='xs'>
-                                <Localize i18n_default_text='Please try again in a minute.' />
-                            </Text>
-                        </div>
-                        <Formik onSubmit={closeModal} initialValues={{}}>
-                            {({ handleSubmit }) => (
-                                <form onSubmit={handleSubmit}>
-                                    <FormSubmitButton
-                                        has_cancel={has_cancel_button}
-                                        cancel_label={cancel_button_label}
-                                        onCancel={handleCancel}
-                                        is_absolute={is_mobile_or_tablet}
-                                        label={button_label}
-                                    />
-                                </form>
-                            )}
-                        </Formik>
-                    </div>
-                </React.Fragment>
-            );
+            return localize('Try later');
         }
+        return localize('Add account');
+    }, [error_type]);
 
+    const has_cancel_button = (isDesktop ? !should_set_trading_password : true) || error_type === 'PasswordReset';
+
+    const cancel_button_label = getCancelButtonLabel({ should_set_trading_password, error_type, isDesktop });
+
+    const handleCancel = () => {
+        if (!has_cancel_button) {
+            return undefined;
+        }
         if (should_set_trading_password) {
-            return (
-                <CFDCreatePasswordForm
-                    platform={platform}
-                    error_message={error_message}
-                    validatePassword={validatePassword}
-                    submitPassword={submitPassword}
-                    has_mt5_account={has_mt5_account}
-                    is_real_financial_stp={is_real_financial_stp}
-                />
-            );
+            return onCancel();
         }
 
-        return (
-            <Formik
-                initialValues={{
-                    password: '',
-                }}
-                enableReinitialize
-                validate={validatePassword}
-                onSubmit={submitPassword}
-            >
-                {({
-                    errors,
-                    isSubmitting,
-                    handleBlur,
-                    handleChange,
-                    handleSubmit,
-                    setFieldTouched,
-                    touched,
-                    values,
-                    validateForm,
-                }) => (
-                    <form onSubmit={handleSubmit}>
-                        <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
-                            {!should_set_trading_password && <CFDPasswordModalTitle platform={platform} />}
-                            <div className='input-element'>
-                                <PasswordInput
-                                    autoComplete='new-password'
-                                    label={localize('{{platform}} password', {
-                                        platform: getCFDPlatformLabel(platform),
-                                    })}
-                                    error={
-                                        (touched.password && errors.password) ||
-                                        (values.password.length === 0 ? error_message : '')
-                                    }
-                                    name='password'
-                                    value={values.password}
-                                    onBlur={handleBlur}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                        handlePasswordInputChange(e, handleChange, validateForm, setFieldTouched);
-                                    }}
-                                    data_testId={`dt_${platform}_password`}
-                                />
-                            </div>
+        return onForgotPassword();
+    };
 
-                            {is_real_financial_stp && (
-                                <div className='dc-modal__container_cfd-password-modal__description'>
-                                    <Localize
-                                        i18n_default_text='Your MT5 Financial STP account will be opened through {{legal_entity_name}}. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).'
-                                        values={{
-                                            legal_entity_name: getLegalEntityName('fx'),
-                                        }}
-                                    />
-                                </div>
-                            )}
-                            {error_type === 'PasswordError' && (
-                                <Text size='xs' as='p' className='dc-modal__container_mt5-password-modal__hint'>
-                                    <Localize
-                                        i18n_default_text='Hint: You may have entered your Deriv password, which is different from your {{platform}} password.'
-                                        values={{
-                                            platform: getCFDPlatformLabel(platform),
-                                        }}
-                                    />
-                                </Text>
-                            )}
-                        </div>
-                        <FormSubmitButton
-                            is_disabled={!values.password}
-                            has_cancel={has_cancel_button}
-                            cancel_label={cancel_button_label}
-                            onCancel={handleCancel}
-                            is_absolute={is_mobile_or_tablet}
-                            is_loading={isSubmitting}
-                            label={button_label}
-                            is_center={should_set_trading_password}
-                            form_error={form_error}
-                        />
-                    </form>
-                )}
-            </Formik>
+    if (error_type === 'PasswordReset') {
+        return (
+            <React.Fragment>
+                <div className='cfd-password-reset'>
+                    <div className='cfd-password-modal__content cfd-password-modal__content--password-reset'>
+                        <Text as='p' line_height='24' size='xs'>
+                            <Localize i18n_default_text='Please try again in a minute.' />
+                        </Text>
+                    </div>
+                    <Formik onSubmit={closeModal} initialValues={{}}>
+                        {({ handleSubmit }) => (
+                            <form onSubmit={handleSubmit}>
+                                <FormSubmitButton
+                                    has_cancel={has_cancel_button}
+                                    cancel_label={cancel_button_label}
+                                    onCancel={handleCancel}
+                                    is_absolute={!isDesktop}
+                                    label={button_label}
+                                />
+                            </form>
+                        )}
+                    </Formik>
+                </div>
+            </React.Fragment>
         );
     }
-);
 
+    if (should_set_trading_password) {
+        return (
+            <CFDCreatePasswordForm
+                platform={platform}
+                error_message={error_message}
+                validatePassword={validatePassword}
+                submitPassword={submitPassword}
+                has_mt5_account={has_mt5_account}
+                is_real_financial_stp={is_real_financial_stp}
+            />
+        );
+    }
+
+    return (
+        <Formik
+            initialValues={{
+                password: '',
+            }}
+            enableReinitialize
+            validate={validatePassword}
+            onSubmit={submitPassword}
+        >
+            {({
+                errors,
+                isSubmitting,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                setFieldTouched,
+                touched,
+                values,
+                validateForm,
+            }) => (
+                <form onSubmit={handleSubmit}>
+                    <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
+                        {!should_set_trading_password && <CFDPasswordModalTitle platform={platform} />}
+                        <div className='input-element'>
+                            <PasswordInput
+                                autoComplete='new-password'
+                                label={localize('{{platform}} password', {
+                                    platform: getCFDPlatformLabel(platform),
+                                })}
+                                error={
+                                    (touched.password && errors.password) ||
+                                    (values.password.length === 0 ? error_message : '')
+                                }
+                                name='password'
+                                value={values.password}
+                                onBlur={handleBlur}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                    handlePasswordInputChange(e, handleChange, validateForm, setFieldTouched);
+                                }}
+                                data_testId={`dt_${platform}_password`}
+                            />
+                        </div>
+
+                        {is_real_financial_stp && (
+                            <div className='dc-modal__container_cfd-password-modal__description'>
+                                <Localize
+                                    i18n_default_text='Your MT5 Financial STP account will be opened through {{legal_entity_name}}. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).'
+                                    values={{
+                                        legal_entity_name: getLegalEntityName('fx'),
+                                    }}
+                                />
+                            </div>
+                        )}
+                        {error_type === 'PasswordError' && (
+                            <Text size='xs' as='p' className='dc-modal__container_mt5-password-modal__hint'>
+                                <Localize
+                                    i18n_default_text='Hint: You may have entered your Deriv password, which is different from your {{platform}} password.'
+                                    values={{
+                                        platform: getCFDPlatformLabel(platform),
+                                    }}
+                                />
+                            </Text>
+                        )}
+                    </div>
+                    <FormSubmitButton
+                        is_disabled={!values.password}
+                        has_cancel={has_cancel_button}
+                        cancel_label={cancel_button_label}
+                        onCancel={handleCancel}
+                        is_absolute={!isDesktop}
+                        is_loading={isSubmitting}
+                        label={button_label}
+                        is_center={should_set_trading_password}
+                        form_error={form_error}
+                    />
+                </form>
+            )}
+        </Formik>
+    );
+};
 const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalProps) => {
+    const { isDesktop } = useDevice();
     const { client, traders_hub, ui } = useStore();
 
     const {
@@ -565,12 +557,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         updateMT5Status,
     } = client;
     const { show_eu_related_content, is_eu_user, toggleAccountTransferModal } = traders_hub;
-    const {
-        is_mobile_or_tablet,
-        is_mt5_migration_modal_enabled,
-        setMT5MigrationModalEnabled,
-        is_mt5_migration_modal_open,
-    } = ui;
+    const { is_mt5_migration_modal_enabled, setMT5MigrationModalEnabled, is_mt5_migration_modal_open } = ui;
 
     const {
         account_type,
@@ -777,17 +764,17 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const should_show_password_modal = React.useMemo(() => {
         if (should_show_password) {
-            return should_set_trading_password ? true : isDesktop();
+            return should_set_trading_password ? true : isDesktop;
         }
         return false;
     }, [should_set_trading_password, should_show_password]);
 
     const should_show_password_dialog = React.useMemo(() => {
         if (should_show_password) {
-            if (!should_set_trading_password) return is_mobile_or_tablet;
+            if (!should_set_trading_password) return !isDesktop;
         }
         return false;
-    }, [is_mobile_or_tablet, should_set_trading_password, should_show_password]);
+    }, [isDesktop, should_set_trading_password, should_show_password]);
 
     const success_modal_submit_label = React.useMemo(() => {
         if (account_type.category === CATEGORY.REAL) {
@@ -932,7 +919,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             onUnmount={() => getAccountStatus(platform)}
             onExited={() => setPasswordModalExited(true)}
             onEntered={() => setPasswordModalExited(false)}
-            width={is_mobile_or_tablet ? '32.8rem' : 'auto'}
+            width={!isDesktop ? '32.8rem' : 'auto'}
         >
             {cfd_password_form}
         </Modal>
@@ -1038,8 +1025,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         : account_type.category === CATEGORY.REAL
                 }
                 has_close_icon={false}
-                width={is_mobile_or_tablet ? '32.8rem' : 'auto'}
-                is_medium_button={is_mobile_or_tablet}
+                width={!isDesktop ? '32.8rem' : 'auto'}
+                is_medium_button={!isDesktop}
             />
             <MigrationSuccessModal is_open={should_show_migration_success} closeModal={closeModal} />
             <SentEmailModal

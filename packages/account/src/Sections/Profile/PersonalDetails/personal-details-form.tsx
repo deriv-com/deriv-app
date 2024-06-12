@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect, Fragment } from 'react';
 import clsx from 'clsx';
 import { Formik, Form, FormikHelpers } from 'formik';
-import { BrowserHistory } from 'history';
-import { withRouter } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
 import {
     Button,
     Checkbox,
@@ -34,13 +33,10 @@ import FormSelectField from 'Components/forms/form-select-field';
 
 type TRestState = {
     show_form: boolean;
-    errors?: boolean;
     api_error?: string;
-    changeable_fields?: string[];
-    form_initial_values?: Record<string, any>;
 };
 
-export const PersonalDetailsForm = observer(({ history }: { history: BrowserHistory }) => {
+export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponentProps>) => {
     const [is_loading, setIsLoading] = useState(true);
     const [is_state_loading, setIsStateLoading] = useState(false);
     const [is_btn_loading, setIsBtnLoading] = useState(false);
@@ -78,7 +74,6 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
     const has_poa_address_mismatch = account_status?.status?.includes('poa_address_mismatch');
     const [rest_state, setRestState] = useState<TRestState>({
         show_form: true,
-        form_initial_values: {},
     });
 
     const notification_timeout = useRef<NodeJS.Timeout>();
@@ -138,12 +133,11 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
             // force request to update settings cache since settings have been updated
             const response = await WS.authorized.storage.getSettings();
             if (response.error) {
-                setRestState({ ...rest_state, api_error: response.error.message });
+                setRestState(prev_state => ({ ...prev_state, api_error: response.error.message }));
                 return;
             }
             // Fetches the status of the account after update
             updateAccountStatus();
-            setRestState({ ...rest_state, ...response.get_settings });
             setIsLoading(false);
             refreshNotifications();
             setIsBtnLoading(false);
@@ -202,7 +196,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
 
     const is_account_verified = is_poa_verified && is_poi_verified;
 
-    //Generate Redirection Link to user based on verifiction status
+    //Generate Redirection Link to user based on verification status
     const getRedirectionLink = () => {
         if (!is_poi_verified) {
             return '/account/proof-of-identity';

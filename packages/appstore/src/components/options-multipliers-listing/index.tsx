@@ -9,6 +9,7 @@ import TradingAppCard from 'Components/containers/trading-app-card';
 import { BrandConfig } from 'Constants/platform-config';
 import { getHasDivider } from 'Constants/utils';
 import { Analytics } from '@deriv-com/analytics';
+import PlatformLoader from 'Components/pre-loader/platform-loader';
 
 const OptionsAndMultipliersListing = observer(() => {
     const { traders_hub, client, ui } = useStore();
@@ -114,6 +115,7 @@ const OptionsAndMultipliersListing = observer(() => {
                 </div>
             )}
 
+            {!available_platforms.length && <PlatformLoader />}
             {available_platforms.map((available_platform: BrandConfig, index: number) => (
                 <TradingAppCard
                     key={`trading_app_card_${available_platform.name}`}

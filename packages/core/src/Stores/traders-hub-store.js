@@ -129,6 +129,7 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.client.mt5_login_list,
                 this.root_store.client.dxtrade_accounts_list,
                 this.root_store.client.ctrader_accounts_list,
+                this.root_store.client.is_landing_company_loaded,
                 this.is_demo_low_risk,
                 this.root_store.modules?.cfd?.current_list,
                 this.root_store.client.landing_companies,
@@ -138,9 +139,6 @@ export default class TradersHubStore extends BaseStore {
             () => {
                 this.getAvailablePlatforms();
                 this.getAvailableCFDAccounts();
-
-                this.is_cfd_restricted_country = this.CFDs_restricted_countries;
-                this.is_financial_restricted_country = this.financial_restricted_countries;
             }
         );
 
@@ -327,6 +325,8 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailablePlatforms() {
+        if (!this.root_store.client.is_landing_company_loaded) return this.available_platforms;
+
         const appstore_platforms = getAppstorePlatforms();
         if ((this.financial_restricted_countries || this.is_eu_user) && !this.is_demo_low_risk) {
             this.available_platforms = appstore_platforms.filter(platform =>
@@ -431,13 +431,23 @@ export default class TradersHubStore extends BaseStore {
     get financial_restricted_countries() {
         const { financial_company, gaming_company } = this.root_store.client.landing_companies;
 
-        return this.is_financial_restricted_country || (financial_company?.shortcode === 'svg' && !gaming_company);
+        const is_restricted =
+            this.is_financial_restricted_country || (financial_company?.shortcode === 'svg' && !gaming_company);
+        // update the flag in the store
+        this.is_financial_restricted_country = is_restricted;
+
+        return is_restricted;
     }
 
     get CFDs_restricted_countries() {
         const { financial_company, gaming_company } = this.root_store.client.landing_companies;
 
-        return this.is_cfd_restricted_country || (gaming_company?.shortcode === 'svg' && !financial_company);
+        const is_restricted =
+            this.is_cfd_restricted_country || (gaming_company?.shortcode === 'svg' && !financial_company);
+        // update the flag in the store
+        this.is_cfd_restricted_country = is_restricted;
+
+        return is_restricted;
     }
 
     getAvailableMt5Accounts() {

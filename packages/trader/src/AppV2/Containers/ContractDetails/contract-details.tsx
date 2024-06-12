@@ -67,7 +67,6 @@ const ContractDetails = observer(() => {
         contract_info.contract_type ?? ''
     );
     const show_cancel_button = is_multiplier && is_valid_to_cancel;
-    console.log(is_valid_to_sell);
     return (
         <div
             className={classNames('contract-details', {

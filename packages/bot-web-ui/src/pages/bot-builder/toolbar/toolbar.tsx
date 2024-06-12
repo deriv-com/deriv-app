@@ -24,7 +24,7 @@ const Toolbar = observer(() => {
     };
     return (
         <React.Fragment>
-            <div className='toolbar dashboard__toolbar' data-testid='dashboard__toolbar'>
+            <div className='toolbar dashboard__toolbar' data-testid='dt_dashboard_toolbar'>
                 <div className='toolbar__section'>
                     {is_mobile && (
                         <ToolbarButton
@@ -58,7 +58,7 @@ const Toolbar = observer(() => {
                             <div
                                 key={0}
                                 className='toolbar__dialog-text--second'
-                                data-testid='toolbar__dialog-text--second'
+                                data-testid='dt_toolbar_dialog_text_second'
                             />,
                         ]}
                     />

@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { Icon, Text } from '@deriv/components';
-import { useStore, observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { TTrustpilotWidgetData } from 'Types';
 import { fetchTrustpilotData } from 'Helpers';
 import TrustpilotStarRating from 'Components/trustpilot-star-rating';
 import './trustpilot-widget.scss';
 
-const TrustpilotWidget = observer(() => {
+const TrustpilotWidget = () => {
+    const { isDesktop } = useDevice();
     const [trustpilotData, setTrustpilotData] = useState<TTrustpilotWidgetData>();
-    const { ui } = useStore();
-    const { is_mobile } = ui;
 
     useEffect(() => {
         const getTrustpilotData = async () => {
@@ -27,7 +26,7 @@ const TrustpilotWidget = observer(() => {
         <div className='trustpilot-widget'>
             <a href='https://www.trustpilot.com/review/deriv.com' target='_blank' rel='noopener noreferrer'>
                 <div className='trustpilot-widget__content'>
-                    {!is_mobile && (
+                    {isDesktop && (
                         <React.Fragment>
                             <Text size='s' color='prominent'>
                                 <Localize i18n_default_text='Our customers say' />
@@ -38,7 +37,7 @@ const TrustpilotWidget = observer(() => {
                         </React.Fragment>
                     )}
                     <TrustpilotStarRating score={trustpilotData.trustScore} />
-                    {!is_mobile && (
+                    {isDesktop && (
                         <Text size='s' color='prominent'>
                             <Localize
                                 i18n_default_text='{{trustScore}} out of 5 based on {{numberOfReviews}} reviews'
@@ -54,6 +53,6 @@ const TrustpilotWidget = observer(() => {
             </a>
         </div>
     );
-});
+};
 
 export default TrustpilotWidget;

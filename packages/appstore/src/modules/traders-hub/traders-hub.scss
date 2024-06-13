@@ -23,12 +23,12 @@
     }
 
     &--eu-user {
-        @include mobile {
+        @include mobile-or-tablet-screen {
             min-height: 650px;
         }
 
         &-without-mt5 {
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 min-height: 540px;
             }
         }

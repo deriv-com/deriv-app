@@ -1,8 +1,8 @@
 import React from 'react';
-import { deriv_urls } from '@deriv/shared';
+import { getUrlP2P } from '@deriv/shared';
 
 const P2PIFrame = () => {
-    const base_link = deriv_urls.P2P_STAGING;
+    const base_link = getUrlP2P();
 
     return (
         <iframe

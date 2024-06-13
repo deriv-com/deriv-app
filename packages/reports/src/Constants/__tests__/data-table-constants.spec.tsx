@@ -109,23 +109,20 @@ describe('getStatementTableColumnsTemplate', () => {
     it('should render cell content for "Transaction time" column', () => {
         const transactionTimeColumn = columns[3];
         const cell_value = '2023-01-01 12:00:00';
-        //@ts-expect-error type for cell_value is wrong
-        render(transactionTimeColumn.renderCellContent({ cell_value }));
+        render(transactionTimeColumn.renderCellContent({ cell_value } as TCellContentProps));
 
         expect(screen.getByText(`${cell_value} GMT`)).toBeInTheDocument();
     });
     it('should render cell content for "Credit/Debit" column', () => {
         const creditDebitColumn = columns[5];
         const cell_value = '1000';
-        //@ts-expect-error type for cell_value is wrong
-        render(creditDebitColumn.renderCellContent({ cell_value }));
+        render(creditDebitColumn.renderCellContent({ cell_value } as TCellContentProps));
         expect(screen.getByText(cell_value.replace(/[,]+/g, ''))).toBeInTheDocument();
     });
     it('should render cell content for "Balance" column', () => {
         const balanceColumn = columns[6];
         const cell_value = '2000';
-        //@ts-expect-error type for cell_value is wrong
-        render(balanceColumn.renderCellContent({ cell_value }));
+        render(balanceColumn.renderCellContent({ cell_value } as TCellContentProps));
 
         expect(screen.getByText(cell_value)).toBeInTheDocument();
     });
@@ -135,66 +132,74 @@ describe('getProfitTableColumnsTemplate', () => {
     const currency = 'USD';
     const items_count = 10;
     const columns = getProfitTableColumnsTemplate(currency, items_count);
+    const props = {
+        cell_value: '',
+        is_footer: false,
+        passthrough: {},
+        row_obj: {},
+        is_turbo: false,
+        is_vanilla: false,
+    };
 
     it('should render cell content for "Type" column', () => {
         const typeColumn = columns[0];
         const row_obj = { transaction_id: '123' };
-        //@ts-expect-error renderCellContent conditionally renders null or JSX ELement hence render function complains
-        render(typeColumn.renderCellContent({ row_obj, is_footer: false }));
+        if (typeColumn.renderCellContent)
+            render(typeColumn.renderCellContent({ ...props, row_obj, is_footer: false }) as JSX.Element);
 
         expect(screen.getByText(row_obj.transaction_id)).toBeInTheDocument();
     });
     it('should render footer content for "Type" column', () => {
         const typeColumn = columns[0];
-        //@ts-expect-error renderCellContent conditionally renders null or JSX ELement hence render function complains
-        render(typeColumn.renderCellContent({ is_footer: true }));
+        if (typeColumn.renderCellContent)
+            render(typeColumn.renderCellContent({ ...props, is_footer: true }) as JSX.Element);
 
         expect(screen.getByText(/on the last/i)).toBeInTheDocument();
     });
     it('should render cell content for "Currency" column', () => {
         const currencyColumn = columns[2];
-        //@ts-expect-error renderCellContent conditionally renders null or JSX ELement hence render function complains
-        render(currencyColumn.renderCellContent({ is_footer: false }));
+        if (currencyColumn.renderCellContent)
+            render(currencyColumn.renderCellContent({ ...props, is_footer: false }) as JSX.Element);
 
         expect(screen.getByText(currency)).toBeInTheDocument();
     });
     it('should render cell content for "Buy time" column', () => {
         const buyTimeColumn = columns[3];
         const cell_value = '2023-05-30 12:34:56';
-        //@ts-expect-error renderCellContent conditionally renders null or JSX ELement hence render function complains
-        render(buyTimeColumn.renderCellContent({ cell_value, is_footer: false }));
+        if (buyTimeColumn.renderCellContent)
+            render(buyTimeColumn.renderCellContent({ ...props, cell_value, is_footer: false }) as JSX.Element);
 
         expect(screen.getByText(`${cell_value} GMT`)).toBeInTheDocument();
     });
     it('should render cell content for "Stake" column', () => {
         const stakeColumn = columns[4];
         const cell_value = '1000';
-        //@ts-expect-error renderCellContent conditionally renders null or JSX ELement hence render function complains
-        render(stakeColumn.renderCellContent({ cell_value, is_footer: false }));
+        if (stakeColumn.renderCellContent)
+            render(stakeColumn.renderCellContent({ ...props, cell_value, is_footer: false }) as JSX.Element);
 
         expect(screen.getByText(cell_value)).toBeInTheDocument();
     });
     it('should render cell content for "Sell time" column', () => {
         const sellTimeColumn = columns[5];
         const cell_value = '2023-05-30 13:34:56';
-        //@ts-expect-error renderCellContent conditionally renders null or JSX ELement hence render function complains
-        render(sellTimeColumn.renderCellContent({ cell_value, is_footer: false }));
+        if (sellTimeColumn.renderCellContent)
+            render(sellTimeColumn.renderCellContent({ ...props, cell_value, is_footer: false }) as JSX.Element);
 
         expect(screen.getByText(`${cell_value} GMT`)).toBeInTheDocument();
     });
     it('should render cell content for "Contract value" column', () => {
         const contractValueColumn = columns[6];
         const cell_value = '2000';
-        //@ts-expect-error renderCellContent conditionally renders null or JSX ELement hence render function complains
-        render(contractValueColumn.renderCellContent({ cell_value, is_footer: false }));
+        if (contractValueColumn.renderCellContent)
+            render(contractValueColumn.renderCellContent({ ...props, cell_value, is_footer: false }) as JSX.Element);
 
         expect(screen.getByText(cell_value)).toBeInTheDocument();
     });
     it('should render cell content for "Total profit/loss" column', () => {
         const totalProfitLossColumn = columns[7];
         const cell_value = '500';
-        //@ts-expect-error renderCellContent conditionally renders null or JSX ELement hence render function complains
-        render(totalProfitLossColumn.renderCellContent({ cell_value }));
+        if (totalProfitLossColumn.renderCellContent)
+            render(totalProfitLossColumn.renderCellContent({ ...props, cell_value }) as JSX.Element);
 
         expect(screen.getByText(cell_value)).toBeInTheDocument();
     });

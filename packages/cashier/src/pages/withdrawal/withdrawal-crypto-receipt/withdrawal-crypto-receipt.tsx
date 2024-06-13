@@ -131,18 +131,12 @@ const WithdrawalCryptoReceipt = observer(() => {
     const { selected_from: account } = account_transfer;
     const { cashier_route_tab_index: tab_index } = general_store;
     const { setIsTransactionsCryptoVisible } = transaction_history;
-    const [last_transaction_detail, setLastTransactionDetail] = React.useState<TModifiedTransaction | undefined>();
 
-    const { blockchain_address, resetWithdrawForm, setIsWithdrawConfirmed, withdraw_amount } = withdraw;
+    const { blockchain_address, resetWithdrawForm, setIsWithdrawConfirmed, withdraw_amount, crypto_estimations_fee } =
+        withdraw;
 
     const { last_transaction } = useCryptoTransactions();
     const currency_config = useCurrentCurrencyConfig();
-
-    useEffect(() => {
-        if (last_transaction) {
-            setLastTransactionDetail(last_transaction);
-        }
-    }, [last_transaction, last_transaction?.transaction_fee]);
 
     React.useEffect(() => {
         return () => {
@@ -186,7 +180,7 @@ const WithdrawalCryptoReceipt = observer(() => {
                 <Icon className='withdrawal-crypto-receipt__icon' icon='IcArrowDown' size={30} />
                 <WalletInformation account={account} blockchain_address={blockchain_address} is_mobile={is_mobile} />
             </div>
-            {last_transaction_detail?.transaction_fee && (
+            {crypto_estimations_fee && (
                 <div className='withdrawal-crypto-receipt__transfer-fee-info'>
                     <Text as='p' align='center' size={is_mobile ? 'xxxs' : 'xxs'}>
                         <Localize i18n_default_text='Amount received' />
@@ -195,7 +189,7 @@ const WithdrawalCryptoReceipt = observer(() => {
                         <Localize
                             i18n_default_text='{{transaction_amount}} {{currency_symbol}}'
                             values={{
-                                transaction_amount: Number(last_transaction_detail?.amount).toFixed(
+                                transaction_amount: (Number(withdraw_amount) - Number(crypto_estimations_fee)).toFixed(
                                     currency_config?.fractional_digits
                                 ),
                                 currency_symbol: currency?.toUpperCase(),
@@ -206,7 +200,7 @@ const WithdrawalCryptoReceipt = observer(() => {
                         <Localize
                             i18n_default_text='(Transaction fee: {{transaction_fee}} {{currency_symbol}})'
                             values={{
-                                transaction_fee: Number(last_transaction_detail?.transaction_fee).toFixed(
+                                transaction_fee: Number(crypto_estimations_fee).toFixed(
                                     currency_config?.fractional_digits
                                 ),
                                 currency_symbol: currency?.toUpperCase(),

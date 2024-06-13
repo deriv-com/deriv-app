@@ -14,7 +14,7 @@ const WithdrawalCryptoPriority = observer(() => {
     const { currency } = client;
     const { converter_from_amount } = crypto_fiat_converter;
 
-    const { error, setCryptoEstimationsFeeUniqueId } = withdraw;
+    const { error, setCryptoEstimationsFeeUniqueId, setCryptoEstimationsFee } = withdraw;
     const {
         getCryptoEstimations,
         error: crypto_estimation_error,
@@ -39,9 +39,12 @@ const WithdrawalCryptoPriority = observer(() => {
     React.useEffect(() => {
         if (!priority_withdrawal_checkbox) {
             setCryptoEstimationsFeeUniqueId('');
+            setCryptoEstimationsFee(0);
         } else if (crypto_estimations_fee_unique_id) {
             setCryptoEstimationsFeeUniqueId(crypto_estimations_fee_unique_id);
+            setCryptoEstimationsFee(crypto_estimations_fee);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [priority_withdrawal_checkbox, crypto_estimations_fee_unique_id, setCryptoEstimationsFeeUniqueId]);
 
     React.useEffect(() => {

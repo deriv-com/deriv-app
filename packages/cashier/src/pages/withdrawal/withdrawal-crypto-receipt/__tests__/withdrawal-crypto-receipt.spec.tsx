@@ -59,6 +59,7 @@ describe('<WithdrawalCryptoReceipt />', () => {
                         resetWithdrawForm: jest.fn(),
                         setIsWithdrawConfirmed: jest.fn(),
                         withdraw_amount: 0.0002,
+                        crypto_estimations_fee: 0.001,
                     },
                 },
             },
@@ -140,11 +141,6 @@ describe('<WithdrawalCryptoReceipt />', () => {
     });
 
     it('should show transaction fee when transaction fee is available', () => {
-        mock_last_transaction = {
-            ...mock_last_transaction,
-            status_code: 'PROCESSING',
-            transaction_fee: '0.0001',
-        };
         renderWithdrawalCryptoReceipt();
 
         expect(screen.getByText(/Transaction fee/)).toBeInTheDocument();

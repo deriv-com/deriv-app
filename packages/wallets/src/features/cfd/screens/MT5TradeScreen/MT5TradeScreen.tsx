@@ -138,9 +138,9 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                 </div>
 
                 <div className='wallets-mt5-trade-screen__details-clipboards'>
-                    {getModalState('platform') === mt5Platform && (
+                    {getModalState('platform') === mt5Platform && details?.platform === mt5Platform && (
                         <Fragment>
-                            <MT5TradeDetailsItem label='Broker' value='Deriv Holdings (Guernsey) Ltd' />
+                            <MT5TradeDetailsItem label='Broker' value={details?.landing_company ?? ''} />
                             <MT5TradeDetailsItem
                                 label='Server'
                                 value={details?.server_info?.environment ?? 'Deriv-Server'}

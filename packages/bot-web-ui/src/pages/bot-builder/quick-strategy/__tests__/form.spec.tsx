@@ -227,7 +227,7 @@ describe('<QuickStrategyForm />', () => {
         render(<QuickStrategyForm />, {
             wrapper,
         });
-        const input = screen.getByTestId('qs_autocomplete_tradetype');
+        const input = screen.getByTestId('dt_qs_tradetype');
         fireEvent.keyDown(input, { key: 'Enter', code: 'Enter', keyCode: 13 });
         fireEvent.keyDown(input, { keyCode: 13 });
 

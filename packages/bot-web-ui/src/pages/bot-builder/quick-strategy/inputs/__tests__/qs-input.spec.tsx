@@ -60,10 +60,10 @@ describe('<QSInput />', () => {
             wrapper,
         });
 
-        const increase_button = screen.getByTestId('qs-input-increase');
+        const increase_button = screen.getByTestId('dt_qs_input_increase');
         userEvent.click(increase_button);
 
-        const input_increase = screen.getByTestId('qs-input') as HTMLInputElement;
+        const input_increase = screen.getByTestId('dt_qs_duration') as HTMLInputElement;
         const input_value = input_increase.value;
         expect(input_value).toEqual('2');
     });
@@ -73,10 +73,10 @@ describe('<QSInput />', () => {
             wrapper,
         });
 
-        const decrease_button = screen.getByTestId('qs-input-decrease');
+        const decrease_button = screen.getByTestId('dt_qs_input_decrease');
         userEvent.click(decrease_button);
 
-        const input_decrease = screen.getByTestId('qs-input') as HTMLInputElement;
+        const input_decrease = screen.getByTestId('dt_qs_duration') as HTMLInputElement;
         const input_value = input_decrease.value;
 
         expect(input_value).toEqual('0');
@@ -87,7 +87,7 @@ describe('<QSInput />', () => {
             wrapper,
         });
 
-        const container_element = screen.getByTestId('qs-input-container');
+        const container_element = screen.getByTestId('dt_qs_input_container');
         userEvent.unhover(container_element);
 
         expect(container_element).not.toHaveClass('no-focus');

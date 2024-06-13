@@ -10,6 +10,8 @@ const ContractStageText: React.FC<TContractStageText> = ({ contract_stage }) => 
     switch (contract_stage) {
         case contract_stages.STARTING:
             return <Localize i18n_default_text='Bot is starting' />;
+        case contract_stages.RUNNING:
+            return <Localize i18n_default_text='Bot is running' />;
         case contract_stages.PURCHASE_SENT:
             return <Localize i18n_default_text='Buying contract' />;
         case contract_stages.PURCHASE_RECEIVED:

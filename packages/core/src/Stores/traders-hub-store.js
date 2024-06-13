@@ -118,6 +118,7 @@ export default class TradersHubStore extends BaseStore {
             showTopUpModal: action.bound,
             toggleWalletsUpgrade: action.bound,
             setWalletsMigrationFailedPopup: action.bound,
+            cleanup: action.bound,
         });
 
         reaction(
@@ -789,5 +790,17 @@ export default class TradersHubStore extends BaseStore {
 
     setWalletsMigrationFailedPopup(value) {
         this.is_wallet_migration_failed = value;
+    }
+
+    cleanup() {
+        if (
+            !localStorage.getItem('active_loginid') ||
+            (!this.root_store.client.is_logged_in && localStorage.getItem('active_loginid') === 'null')
+        ) {
+            localStorage.removeItem('traders_hub_store');
+            this.is_cfd_restricted_country = false;
+            this.is_financial_restricted_country = false;
+            this.available_platforms = [];
+        }
     }
 }

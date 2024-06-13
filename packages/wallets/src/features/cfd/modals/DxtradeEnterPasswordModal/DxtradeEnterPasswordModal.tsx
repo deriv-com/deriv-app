@@ -7,7 +7,7 @@ import {
     useDxtradeAccountsList,
 } from '@deriv/api-v2';
 import { SentEmailContent, WalletError } from '../../../../components';
-import { ModalStepWrapper, ModalWrapper } from '../../../../components/Base';
+import { ModalWrapper } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import useSendPasswordResetEmail from '../../../../hooks/useSendPasswordResetEmail';

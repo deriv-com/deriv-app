@@ -505,12 +505,13 @@
         line-height: 1.45;
     }
     &--tag {
-        background-color: $color-blue;
-        color: var(--text-colored-background);
+        background-color: $color-blue-8;
+        color: $color-blue-9;
         border-radius: 0.2rem;
         padding: 0 0.4rem;
         font-weight: bold;
         font-size: 1.3rem;
+        margin-left: 0.3rem;
     }
 
     &__mobile {

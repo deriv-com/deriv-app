@@ -27,6 +27,7 @@ type TMT5TradeModalProps = {
     ) => void;
     toggleModal: () => void;
     product?: TProducts;
+    is_demo: string;
 };
 
 const getTitle = (market_type: string, show_eu_related_content: boolean) => {
@@ -35,7 +36,14 @@ const getTitle = (market_type: string, show_eu_related_content: boolean) => {
 };
 
 const DMT5TradeModal = observer(
-    ({ mt5_trade_account, show_eu_related_content, onPasswordManager, toggleModal, product }: TMT5TradeModalProps) => {
+    ({
+        mt5_trade_account,
+        show_eu_related_content,
+        onPasswordManager,
+        toggleModal,
+        product,
+        is_demo,
+    }: TMT5TradeModalProps) => {
         const { ui, client } = useStore();
         const { is_mobile } = ui;
         const { account_status: { authentication } = {} } = client;
@@ -102,9 +110,23 @@ const DMT5TradeModal = observer(
                 <div className='cfd-trade-modal'>
                     <TradingPlatformIcon icon={getAccountIcons()} size={24} />
                     <div className='cfd-trade-modal__desc'>
-                        <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
-                            {getHeadingTitle()}
-                        </Text>
+                        {!is_demo && (
+                            <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
+                                {getHeadingTitle()}
+                            </Text>
+                        )}
+                        {is_demo && (
+                            <React.Fragment>
+                                <div>
+                                    <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
+                                        {getAccountTitle()}
+                                    </Text>
+                                    <Text size='xs' line_height='l' className='cfd-trade-modal--tag'>
+                                        Demo
+                                    </Text>
+                                </div>
+                            </React.Fragment>
+                        )}
                         {(mt5_trade_account as TTradingPlatformAccounts)?.display_login && (
                             <Text color='less-prominent' size='xxxs' line_height='xxxs'>
                                 {(mt5_trade_account as TTradingPlatformAccounts)?.display_login}

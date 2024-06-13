@@ -43,6 +43,7 @@ const MT5TradeModal = observer(
                         onPasswordManager={onPasswordManager}
                         toggleModal={toggleModal}
                         product={product}
+                        is_demo={is_demo}
                     />
                 );
             }

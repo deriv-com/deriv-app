@@ -28,6 +28,11 @@ export const CFD_text: { [key: string]: string } = {
     all_zero_spread_bvi: 'Zero Spread BVI',
 } as const;
 
+export const CFD_PRODUCTS_TITLE = {
+    ZEROSPREAD: 'Zero Spread',
+    SWAPFREE: 'Swap-Free',
+} as const;
+
 export const getMT5Title = (account_type: string) => {
     if (account_type === 'synthetic') {
         return CFD_text.synthetic;

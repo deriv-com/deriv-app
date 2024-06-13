@@ -387,7 +387,7 @@ export default class TradersHubStore extends BaseStore {
             return localize('Swap-free CFDs on selected financial and derived instruments.');
         };
         const getZeroSpreadAccountDesc = () => {
-            return localize('Zero Spread CFDs on selected financial and derived instruments');
+            return localize('Zero spread CFDs on financial and derived instruments');
         };
 
         const all_available_accounts = [

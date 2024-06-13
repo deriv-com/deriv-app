@@ -234,6 +234,7 @@ const CFDsListing = observer(() => {
                                 action_type={existing_account.action_type}
                                 availability={selected_region}
                                 clickable_icon
+                                is_new
                                 icon={existing_account.icon}
                                 sub_title={existing_account?.sub_title}
                                 name={!has_mt5_account_status ? existing_account?.name : ''}
@@ -407,7 +408,6 @@ const CFDsListing = observer(() => {
                                   }
                               }}
                               key={`trading_app_card_${account.name}`}
-                              is_new
                           />
                       );
                   })

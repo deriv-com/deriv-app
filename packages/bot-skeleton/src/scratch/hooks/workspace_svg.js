@@ -92,7 +92,8 @@ Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
 
     // Call svgResize to avoid glitching workspace.
     Blockly.svgResize(new_block.workspace);
-    this.centerOnBlock(new_block.id, false);
+    // kept this commented since it is making a glitching issue,
+    //this.centerOnBlock(new_block.id, false);
 };
 
 /**

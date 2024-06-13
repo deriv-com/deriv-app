@@ -499,11 +499,11 @@ export const runGroupedEvents = (use_existing_group, callbackFn, opt_group_name)
  */
 export const runIrreversibleEvents = callbackFn => {
     const { recordUndo } = Blockly.Events;
-    Blockly.Events.recordUndo = false;
+    Blockly.Events.setRecordUndo(false);
 
     callbackFn();
 
-    Blockly.Events.recordUndo = recordUndo;
+    Blockly.Events.setRecordUndo(recordUndo ?? true);
 };
 
 /**

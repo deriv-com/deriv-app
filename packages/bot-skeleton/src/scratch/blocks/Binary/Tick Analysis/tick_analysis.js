@@ -11,7 +11,7 @@ Blockly.Blocks.tick_analysis = {
                 {
                     type: 'field_label',
                     text: localize('The content of this block is called on every tick'),
-                    class: 'blocklyTextRootBlockHeader',
+                    class: 'blocklyTextTickAnalysis',
                 },
                 {
                     type: 'input_dummy',
@@ -33,7 +33,7 @@ Blockly.Blocks.tick_analysis = {
         return {
             display_name: localize('Run on every tick'),
             description: localize(
-                'The content of this block is called on every tick. Place this block outside of any root block.'
+                'check The content of this block is called on every tick. Place this block outside of any root block.'
             ),
         };
     },

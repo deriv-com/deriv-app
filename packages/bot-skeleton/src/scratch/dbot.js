@@ -388,8 +388,8 @@ class DBot {
      */
     // eslint-disable-next-line class-methods-use-this
     unselectBlocks() {
-        if (Blockly.selected) {
-            Blockly.selected.unselect();
+        if (Blockly.getSelected()) {
+            Blockly.getSelected().unselect();
         }
         return true;
     }
@@ -556,7 +556,7 @@ class DBot {
                 const required_inputs_object = block.getRequiredValueInputs();
                 const required_input_names = Object.keys(required_inputs_object);
                 const should_highlight = required_input_names.some(input_name => {
-                    const is_selected = Blockly.selected === block; // Don't highlight selected blocks.
+                    const is_selected = Blockly.getSelected() === block; // Don't highlight selected blocks.
                     const is_disabled = block.disabled || block.getInheritedDisabled(); // Don't highlight disabled blocks.
 
                     if (is_selected || is_disabled) {

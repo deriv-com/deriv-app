@@ -24,26 +24,6 @@ Blockly.BlockSvg.prototype.setDisabled = function (disabled) {
 };
 
 /**
- * Enable or disable a block.
- * @deriv/bot: Update fill path if it doesn't match the disabledPatternId.
- */
-Blockly.BlockSvg.prototype.updateDisabled = function () {
-    if (this.disabled || this.getInheritedDisabled()) {
-        Blockly.utils.dom.addClass(this.svgGroup_, 'blocklyDisabled');
-
-        const fill = `url(#${this.workspace.options.disabledPatternId})`;
-        if (this.svgGroup_.getAttribute('fill') !== fill) {
-            this.svgGroup_.setAttribute('fill', fill);
-        }
-    } else {
-        Blockly.utils.dom.removeClass(this.svgGroup_, 'blocklyDisabled');
-    }
-
-    const children = this.getChildren(false);
-    children.forEach(child => child.updateDisabled());
-};
-
-/**
  * Set whether the block is error highlighted or not.
  * @param {boolean} highlighted True if highlighted for error.
  */

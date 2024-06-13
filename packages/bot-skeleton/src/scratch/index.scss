@@ -17,23 +17,39 @@ $colour_toolboxSelected: $black;
     .zelos-renderer.zelos_renderer-theme rect.blocklyFieldRect.blocklyDropdownRect,
     .zelos-renderer.zelos_renderer-theme .blocklyNonEditableText > rect:not(.blocklyDropdownRect),
     .zelos-renderer.zelos_renderer-theme .blocklyEditableText > rect:not(.blocklyDropdownRect),
-    .zelos-renderer.zelos_renderer-theme .blocklyPath[fill='#fff'] {
+    .blocklyPath[fill='#fff'],
+    .blocklyOutlinePath {
         fill: $black !important;
+    }
+
+    .flyout rect.blocklyFieldRect.blocklyDropdownRect,
+    .flyout .zelos-renderer.classic-theme .blocklyMainBackground {
+        fill: #151816 !important;
     }
 
     .zelos-renderer.zelos_renderer-theme .blocklyEditableText > image,
     .zelos-renderer.zelos_renderer-theme .blocklyNonEditableText > image {
         filter: unset;
     }
+
+    .flyout .zelos-renderer.classic-theme .blocklyEditableText > image {
+        filter: invert(0);
+    }
+
+    .zelos-renderer.classic-theme .blocklyNonEditableText > rect:not(.blocklyDropdownRect),
+    .zelos-renderer.classic-theme .blocklyEditableText > rect:not(.blocklyDropdownRect) {
+        fill: unset;
+    }
 }
-.zelos-renderer.zelos_renderer-theme .blocklyNonEditableText > rect:not(.blocklyDropdownRect),
-.zelos-renderer.zelos_renderer-theme .blocklyEditableText > rect:not(.blocklyDropdownRect) {
-    fill: #fff;
-    width: 16px;
-    height: 16px;
-    x: 2;
-    y: 7;
+
+.flyout .injectionDiv {
+    height: 100%;
 }
+
+.flyout .zelos-renderer.classic-theme .blocklyMainBackground {
+    filter: unset;
+}
+
 .zelos-renderer.zelos_renderer-theme,
 .flyout .zelos-renderer.classic-theme,
 .gtm-search-results,
@@ -635,7 +651,7 @@ drag a block and selected text moves instead.
 
     .blocklyMainBackground {
         stroke-width: 0;
-        fill: #fff !important;
+        fill: #fff;
     }
 
     .blocklyMutatorBackground {
@@ -1168,15 +1184,21 @@ drag a block and selected text moves instead.
     }
 
     rect.blocklyFieldRect.blocklyDropdownRect {
-        fill: #ffffff !important;
+        fill: #ffffff;
         rx: 16px;
-        ry: 32;
+        ry: 16px;
     }
+
     .blocklyTextRootBlockHeader {
         width: 17rem !important;
         color: #fff;
         fill: #ffffff;
         font-size: 1.9rem;
+    }
+
+    .blocklyTextTickAnalysis {
+        fill: #ffffff;
+        font-size: 1.6rem;
     }
 }
 

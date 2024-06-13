@@ -85,8 +85,8 @@ const BotBuilder = observer(() => {
     }, [is_loading]);
 
     const handleBlockDelete = (e: TBlocklyEvents) => {
-        if (e.type === 'ui' && e.element === 'selected' && !e.group?.includes('dbot-')) {
-            selection_id = e.oldValue;
+        if (e.isUiEvent && e.type === 'selected' && !e.group?.includes('dbot-')) {
+            selection_id = e.newElementId;
         }
 
         if (e.type === 'drag' && !e.isStart && !e.group?.includes('dbot-')) {

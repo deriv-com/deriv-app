@@ -111,10 +111,10 @@ Blockly.Blocks.trade_definition = {
         };
     },
     onchange(event) {
-        if (event.type === 'ui' && !this.isInit) {
+        if (event.type === Blockly.Events.SELECTED && !this.isInit) {
             this.isInit = true;
             initErrorHandlingListener('keydown');
-        } else if (Blockly.selected === null && this.isInit) {
+        } else if (Blockly.getSelected() === null && this.isInit) {
             this.isInit = false;
             removeErrorHandlingEventListener('keydown');
         }

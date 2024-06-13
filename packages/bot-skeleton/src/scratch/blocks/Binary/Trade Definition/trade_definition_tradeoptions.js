@@ -317,6 +317,8 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                         .connect(stop_loss_block.previousConnection);
                     stop_loss_block.initSvg();
                     stop_loss_block.renderEfficiently();
+                    stop_loss_block.queueRender();
+                    stop_loss_block.updateDisabled();
 
                     this.dispose();
                 });

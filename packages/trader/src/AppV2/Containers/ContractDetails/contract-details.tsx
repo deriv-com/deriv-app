@@ -73,7 +73,9 @@ const ContractDetails = observer(() => {
                 'contract-details--one-button': should_show_sell && !show_cancel_button,
             })}
         >
-            <ContractCard contractInfo={contract_info} serverTime={server_time} />
+            <div className='contract-card-wrapper'>
+                <ContractCard contractInfo={contract_info} serverTime={server_time} />
+            </div>
             <div className='placeholder'>
                 <ChartPlaceholder />
             </div>

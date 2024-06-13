@@ -44,7 +44,6 @@ export const ACTION = {
 
 export const STATE_TYPES = {
     CHART_INTERVAL_CHANGE: 'CHART_INTERVAL_CHANGE',
-    CHART_MODE_TOGGLE: 'CHART_MODE_TOGGLE',
     CHART_TYPE_CHANGE: 'CHART_TYPE_CHANGE',
     FAVORITE_MARKETS_TOGGLE: 'FAVORITE_MARKETS_TOGGLE',
     INDICATOR_ADDED: 'INDICATOR_ADDED',
@@ -57,7 +56,6 @@ export const STATE_TYPES = {
     INITIAL: 'INITIAL',
     MARKET_SEARCH: 'MARKET_SEARCH',
     MARKET_STATE_CHANGE: 'MARKET_STATE_CHANGE',
-    MARKETS_LIST_TOGGLE: 'MARKETS_LIST_TOGGLE',
     READY: 'READY',
     SCROLL_TO_LEFT: 'SCROLL_TO_LEFT',
     SET_CHART_MODE: 'SET_CHART_MODE',
@@ -70,7 +68,7 @@ export const SUBFORM_NAME = {
 } as const;
 
 const getChartTypeFormAnalyticsData = (state: keyof typeof STATE_TYPES, option: TStateChangeOption = {}) => {
-    const { chart_type_name = '', is_open, time_interval_name } = option;
+    const { chart_type_name = '', time_interval_name } = option;
     const chart_event_type = 'ce_chart_types_form';
     const payload: TPayload = {
         data: {
@@ -80,14 +78,10 @@ const getChartTypeFormAnalyticsData = (state: keyof typeof STATE_TYPES, option: 
         },
         event_type: chart_event_type,
     };
-    const open_close_action = is_open ? ACTION.OPEN : ACTION.CLOSE;
     if (!chart_type_name) return {};
     switch (state) {
         case STATE_TYPES.CHART_INTERVAL_CHANGE:
             payload.data.action = ACTION.CHOOSE_TIME_INTERVAL;
-            break;
-        case STATE_TYPES.CHART_MODE_TOGGLE:
-            payload.data.action = open_close_action;
             break;
         case STATE_TYPES.CHART_TYPE_CHANGE:
             payload.data.action = ACTION.CHOOSE_CHART_TYPE;
@@ -170,16 +164,9 @@ const getIndicatorTypeFormAnalyticsData = (state: keyof typeof STATE_TYPES, opti
 };
 
 const getMarketTypeFormAnalyticsData = (state: keyof typeof STATE_TYPES, option: TStateChangeOption = {}) => {
-    const {
-        is_favorite,
-        is_open,
-        symbol_category: tab_market_name = '',
-        search_string,
-        symbol: market_type_name = '',
-    } = option;
+    const { is_favorite, symbol_category: tab_market_name = '', search_string, symbol: market_type_name = '' } = option;
     const market_event_type = 'ce_market_types_form';
     const favorites_action = is_favorite ? ACTION.ADD_TO_FAVORITES : ACTION.DELETE_FROM_FAVORITES;
-    const open_close_action = is_open ? ACTION.OPEN : ACTION.CLOSE;
     const payload = {
         event_type: market_event_type,
     } as TPayload;
@@ -202,12 +189,6 @@ const getMarketTypeFormAnalyticsData = (state: keyof typeof STATE_TYPES, option:
                 search_string,
             };
             break;
-        case STATE_TYPES.MARKETS_LIST_TOGGLE:
-            payload.data = {
-                action: open_close_action,
-                market_type_name,
-            };
-            break;
         case STATE_TYPES.SYMBOL_CHANGE:
             payload.data = {
                 action: ACTION.CHOOSE_MARKET_TYPE,
@@ -222,11 +203,7 @@ const getMarketTypeFormAnalyticsData = (state: keyof typeof STATE_TYPES, option:
 };
 
 export const getChartAnalyticsData = (state: keyof typeof STATE_TYPES, option: TStateChangeOption = {}) => {
-    const chart_type_form_events: string[] = [
-        STATE_TYPES.CHART_INTERVAL_CHANGE,
-        STATE_TYPES.CHART_MODE_TOGGLE,
-        STATE_TYPES.CHART_TYPE_CHANGE,
-    ];
+    const chart_type_form_events: string[] = [STATE_TYPES.CHART_INTERVAL_CHANGE, STATE_TYPES.CHART_TYPE_CHANGE];
     const indicator_type_form_events: string[] = [
         STATE_TYPES.INDICATOR_ADDED,
         STATE_TYPES.INDICATOR_DELETED,
@@ -238,7 +215,6 @@ export const getChartAnalyticsData = (state: keyof typeof STATE_TYPES, option: T
     ];
     const market_type_form_events: string[] = [
         STATE_TYPES.FAVORITE_MARKETS_TOGGLE,
-        STATE_TYPES.MARKETS_LIST_TOGGLE,
         STATE_TYPES.MARKET_SEARCH,
         STATE_TYPES.SYMBOL_CHANGE,
     ];

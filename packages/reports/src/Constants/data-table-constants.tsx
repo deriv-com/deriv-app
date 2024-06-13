@@ -14,7 +14,7 @@ import { TCellContentProps, THeaderProps } from 'Types';
 import { getProfitOrLoss } from '../Helpers/profit-loss';
 import IndicativeCell from '../Components/indicative-cell';
 import MarketSymbolIconRow from '../Components/market-symbol-icon-row';
-import ProfitLossCell from '../Components/profit_loss_cell';
+import ProfitLossCell from '../Components/profit-loss-cell';
 import CurrencyWrapper from '../Components/currency-wrapper';
 import { useStore } from '@deriv/stores';
 import moment from 'moment';

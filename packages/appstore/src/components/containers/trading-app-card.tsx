@@ -183,12 +183,7 @@ const TradingAppCard = ({
                             {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
                         </Text>
                         {is_new && name === CFD_PRODUCTS_TITLE.ZEROSPREAD && (
-                            <Text
-                                className='trading-app-card__details__new'
-                                weight='bolder'
-                                size='xxxs'
-                                line_height='s'
-                            >
+                            <Text className='trading-app-card__details__new' weight='bolder' size='xxs' line_height='s'>
                                 {localize('NEW!')}
                             </Text>
                         )}

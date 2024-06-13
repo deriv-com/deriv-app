@@ -373,7 +373,7 @@ const ctrader_data: TModifiedTradingPlatformAvailableAccount = {
     shortcode: JURISDICTION.SVG,
     sub_account_type: '',
     platform: CFD_PLATFORMS.CTRADER,
-    product: 'cTrader',
+    product: 'ctrader',
 };
 
 // Get the MT5 demo accounts of the user

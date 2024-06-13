@@ -104,7 +104,7 @@ type TPopulateSettingsExtensionsMenuItem = {
     value: <T extends object>(props: T) => JSX.Element;
 };
 
-type TProduct = 'swap_free' | 'zero_spread' | 'cTrader' | 'derivx';
+type TProduct = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx';
 
 type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 

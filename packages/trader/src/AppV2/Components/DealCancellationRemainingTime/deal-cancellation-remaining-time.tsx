@@ -22,17 +22,15 @@ const DealCancellationRemainingTime = observer(({ format = 'mm:ss' }: DealCancel
     const { timestamp } = formatDuration(getDiffDuration(start_time.unix(), end_time), format);
 
     return (
-        <React.Fragment>
-            <Tag
-                className='deal-cancellation-badge'
-                color='custom'
-                data-testid='deal-cancellation-badge'
-                icon={<LabelPairedStopwatchCaptionRegularIcon />}
-                label={timestamp}
-                size='sm'
-                variant='custom'
-            />
-        </React.Fragment>
+        <Tag
+            className='deal-cancellation-badge'
+            color='custom'
+            data-testid='deal-cancellation-badge'
+            icon={<LabelPairedStopwatchCaptionRegularIcon />}
+            label={timestamp}
+            size='sm'
+            variant='custom'
+        />
     );
 });
 

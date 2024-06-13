@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react-hooks';
 import { useLocation } from 'react-router';
 import { useStore } from '@deriv/stores';
 import useContractDetails from '../useContractDetails';

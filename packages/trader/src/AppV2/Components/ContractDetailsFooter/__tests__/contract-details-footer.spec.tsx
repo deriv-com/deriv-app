@@ -7,8 +7,6 @@ import ContractDetailsFooter from '../contract-details-footer';
 import { getRemainingTime } from 'AppV2/Utils/helper';
 import userEvent from '@testing-library/user-event';
 
-userEvent;
-
 jest.mock('@deriv/stores', () => ({
     useStore: jest.fn(),
 }));

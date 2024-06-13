@@ -26,13 +26,17 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const is_multiplier = isMultiplierContract(contract_type);
 
+    const cardLabels = getCardLabels();
+    const bidDetails = !is_valid_to_cancel ? `@${bid_price} ${currency}` : '';
+    const label = `${cardLabels.CLOSE} ${bidDetails}`;
+
     return (
         <div className='contract-details-footer--container'>
             {is_multiplier ? (
                 <>
                     <Button
                         variant='secondary'
-                        label={`${getCardLabels().CLOSE} ${!is_valid_to_cancel ? `@${bid_price} ${currency}` : ''}`}
+                        label={label}
                         color='black'
                         size='lg'
                         isLoading={is_sell_requested}
@@ -44,7 +48,7 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                         <Button
                             onClick={() => onClickCancel(contract_id)}
                             variant='secondary'
-                            label={`${getCardLabels().CANCEL} ${getRemainingTime({
+                            label={`${cardLabels.CANCEL} ${getRemainingTime({
                                 end_time: cancellation_date_expiry,
                                 format: 'mm:ss',
                                 getCardLabels,
@@ -62,8 +66,8 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                     variant='secondary'
                     label={
                         is_valid_to_sell
-                            ? `${getCardLabels().CLOSE} @ ${bid_price} ${currency}`
-                            : getCardLabels().RESALE_NOT_OFFERED
+                            ? `${cardLabels.CLOSE} @ ${bid_price} ${currency}`
+                            : cardLabels.RESALE_NOT_OFFERED
                     }
                     color='black'
                     size='lg'

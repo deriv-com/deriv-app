@@ -16,8 +16,8 @@ const OrderDetails = ({ contract_info }: ContractInfoProps) => {
         <CardWrapper title={<Localize i18n_default_text='Order Details' />}>
             <div className='order-details'>
                 <div className='order-details__table'>
-                    {Object.entries(details).map(([key, value], index) => (
-                        <div className='order-details__table-row' key={index}>
+                    {Object.entries(details).map(([key, value]) => (
+                        <div className='order-details__table-row' key={key}>
                             <div className='order-details__table-row-cell'>
                                 <Text size='sm' color='quill-typography__color--subtle'>
                                     {key}
@@ -25,8 +25,8 @@ const OrderDetails = ({ contract_info }: ContractInfoProps) => {
                             </div>
                             <div className='order-details__table-row-cell'>
                                 {Array.isArray(value) ? (
-                                    value.map((val, i) => (
-                                        <Text key={i} size='sm'>
+                                    value.map(val => (
+                                        <Text key={val} size='sm'>
                                             {val}
                                         </Text>
                                     ))

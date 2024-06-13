@@ -18,8 +18,6 @@ const useContractDetails = () => {
             const url_contract_id = url_array ? +url_array[0] : undefined;
             onMount(url_contract_id);
         }
-
-        // TODO: need to add onUnmount from contract_replay store whenever pathname changes
     }, [location.pathname, onMount, contract_info.contract_id]);
 
     return {

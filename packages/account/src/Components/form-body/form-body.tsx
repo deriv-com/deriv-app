@@ -22,7 +22,7 @@ export const FormBody = ({ children, scroll_offset, className }: PropsWithChildr
         <MobileWrapper>
             <Div100vhContainer
                 className={clsx('account__scrollbars_container--grid-layout', className)}
-                height_offset={scroll_offset || '200px'}
+                height_offset={scroll_offset || '100%'}
             >
                 {children}
             </Div100vhContainer>

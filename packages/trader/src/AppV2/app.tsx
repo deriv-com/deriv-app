@@ -7,9 +7,7 @@ import TraderProviders from '../trader-providers';
 import { ReportsStoreProvider } from '../../../reports/src/Stores/useReportsStores';
 import { NotificationsProvider } from '@deriv-com/quill-ui';
 import 'Sass/app.scss';
-import ContractDetails from './Containers/ContractDetails';
 import '@deriv-com/quill-tokens/dist/quill.css';
-import { useLocation } from 'react-router';
 import Notifications from './Containers/Notifications';
 import Router from './Routes/router';
 
@@ -26,7 +24,7 @@ const App = ({ passthrough }: Apptypes) => {
     React.useEffect(() => {
         return () => root_store.ui.setPromptHandler(false);
     }, [root_store]);
-    const location = useLocation();
+
     return (
         <TraderProviders store={root_store}>
             <ReportsStoreProvider>

@@ -16,6 +16,7 @@ import {
     WS,
     hasContractEntered,
     isForwardStarting,
+    isAccumulatorContract,
 } from '@deriv/shared';
 import { getContractDetailsConfig } from 'AppV2/Utils/contract-details-config';
 
@@ -89,6 +90,7 @@ jest.mock('@deriv/shared', () => ({
     useWS: jest.fn(),
     hasContractEntered: jest.fn(),
     isForwardStarting: jest.fn(),
+    isAccumulatorContract: jest.fn(),
     WS: {
         contractUpdateHistory: jest.fn(),
     },
@@ -142,6 +144,7 @@ describe('ContractDetails', () => {
         (isOpen as jest.Mock).mockReturnValue(true);
         (hasContractEntered as jest.Mock).mockReturnValue(true);
         (isForwardStarting as jest.Mock).mockReturnValue(true);
+        (isAccumulatorContract as jest.Mock).mockReturnValue(false);
         (useWS as jest.Mock).mockReturnValue({
             send: jest.fn(),
             subscribe: jest.fn(),

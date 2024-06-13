@@ -68,16 +68,10 @@ const DxtradeEnterPasswordModal = () => {
 
     useEffect(() => {
         if (!isResetPasswordSuccessful) return;
-        if (!isDxtradePasswordNotSet && isMobile) {
+        if (!isDxtradePasswordNotSet) {
             show(
-                <ModalStepWrapper>
-                    <SentEmailContent onErrorButtonClick={hide} platform={dxtradePlatform} />
-                </ModalStepWrapper>
-            );
-        } else if (!isDxtradePasswordNotSet) {
-            show(
-                <ModalWrapper>
-                    <SentEmailContent onErrorButtonClick={hide} platform={dxtradePlatform} />
+                <ModalWrapper isFullscreen={isMobile}>
+                    <SentEmailContent isForgotten onErrorButtonClick={hide} platform={dxtradePlatform} />
                 </ModalWrapper>
             );
         }

@@ -6,7 +6,6 @@ import { useModal } from '../../ModalProvider';
 import './ModalWrapper.scss';
 
 type TProps = {
-    className?: string;
     hideCloseButton?: boolean;
     isFullscreen?: boolean;
     shouldPreventCloseOnEscape?: boolean;
@@ -14,7 +13,6 @@ type TProps = {
 
 const ModalWrapper: FC<React.PropsWithChildren<TProps>> = ({
     children,
-    className,
     hideCloseButton = false,
     isFullscreen = false,
     shouldPreventCloseOnEscape = false,
@@ -29,13 +27,9 @@ const ModalWrapper: FC<React.PropsWithChildren<TProps>> = ({
 
     return (
         <div
-            className={classNames(
-                'wallets-modal-wrapper',
-                {
-                    'wallets-modal-wrapper--fullscreen': isFullscreen,
-                },
-                className
-            )}
+            className={classNames('wallets-modal-wrapper', {
+                'wallets-modal-wrapper--fullscreen': isFullscreen,
+            })}
         >
             {!hideCloseButton && <CloseIcon className='wallets-modal-wrapper__close-icon' onClick={hide} />}
             {children}

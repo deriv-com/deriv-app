@@ -1,6 +1,5 @@
 .wallets-sent-email-content {
     display: inline-flex;
-    padding: 6rem 0 3.2rem;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -13,19 +12,16 @@
         width: 100%;
         justify-content: flex-start;
         border-radius: 0;
-        padding-top: 0;
         padding-bottom: 2.4rem;
     }
 
-    &--mt5-changed-password {
-        padding-top: 3.2rem;
-    }
-
     &--forgotten-password {
+        padding: 6rem 2.4rem 3.2rem;
         padding-inline: 2.4rem;
 
         @include mobile {
             padding-top: 4.8rem;
+            height: calc(100vh - 40px);
             overflow-y: scroll;
         }
     }
@@ -57,6 +53,11 @@
 
         & svg {
             flex-shrink: 0;
+        }
+
+        .wallets-text {
+            display: flex;
+            align-self: flex-start;
         }
     }
 }

@@ -92,7 +92,7 @@
         "@deriv-com/quill-tokens": "^2.0.4",
         "@deriv-com/quill-ui": "^1.10.13",
         "@deriv-com/utils": "^0.0.24",
-        "@deriv-com/ui": "^1.14.5",
+        "@deriv-com/ui": "v1.28.1",
         "@deriv/api-types": "1.0.172",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.15",

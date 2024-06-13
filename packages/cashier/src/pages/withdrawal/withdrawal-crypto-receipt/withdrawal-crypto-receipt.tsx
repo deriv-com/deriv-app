@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Clipboard, Icon, Text } from '@deriv/components';
-import { useCryptoTransactions } from '@deriv/hooks';
+import { useCryptoTransactions, useCurrentCurrencyConfig } from '@deriv/hooks';
 import { TModifiedTransaction } from '@deriv/hooks/src/useCryptoTransactions';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -131,10 +131,18 @@ const WithdrawalCryptoReceipt = observer(() => {
     const { selected_from: account } = account_transfer;
     const { cashier_route_tab_index: tab_index } = general_store;
     const { setIsTransactionsCryptoVisible } = transaction_history;
+    const [last_transaction_detail, setLastTransactionDetail] = React.useState<TModifiedTransaction | undefined>();
 
     const { blockchain_address, resetWithdrawForm, setIsWithdrawConfirmed, withdraw_amount } = withdraw;
 
     const { last_transaction } = useCryptoTransactions();
+    const currency_config = useCurrentCurrencyConfig();
+
+    useEffect(() => {
+        if (last_transaction) {
+            setLastTransactionDetail(last_transaction);
+        }
+    }, [last_transaction, last_transaction?.transaction_fee]);
 
     React.useEffect(() => {
         return () => {
@@ -178,6 +186,35 @@ const WithdrawalCryptoReceipt = observer(() => {
                 <Icon className='withdrawal-crypto-receipt__icon' icon='IcArrowDown' size={30} />
                 <WalletInformation account={account} blockchain_address={blockchain_address} is_mobile={is_mobile} />
             </div>
+            {last_transaction_detail?.transaction_fee && (
+                <div className='withdrawal-crypto-receipt__transfer-fee-info'>
+                    <Text as='p' align='center' size={is_mobile ? 'xxxs' : 'xxs'}>
+                        <Localize i18n_default_text='Amount received' />
+                    </Text>
+                    <Text as='p' align='center' size={is_mobile ? 'xsm' : 'm'} weight='bold'>
+                        <Localize
+                            i18n_default_text='{{transaction_amount}} {{currency_symbol}}'
+                            values={{
+                                transaction_amount: Number(last_transaction_detail?.amount).toFixed(
+                                    currency_config?.fractional_digits
+                                ),
+                                currency_symbol: currency?.toUpperCase(),
+                            }}
+                        />
+                    </Text>
+                    <Text as='p' align='center' size={is_mobile ? 'xxxs' : 'xxs'}>
+                        <Localize
+                            i18n_default_text='(Transaction fee: {{transaction_fee}} {{currency_symbol}})'
+                            values={{
+                                transaction_fee: Number(last_transaction_detail?.transaction_fee).toFixed(
+                                    currency_config?.fractional_digits
+                                ),
+                                currency_symbol: currency?.toUpperCase(),
+                            }}
+                        />
+                    </Text>
+                </div>
+            )}
             <div className='withdrawal-crypto-receipt__button-wrapper'>
                 <Button
                     id='withdraw_transaction'

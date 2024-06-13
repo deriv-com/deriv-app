@@ -150,21 +150,28 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
 
     const requestCryptoWithdrawal = (values: Parameters<THooks.CryptoWithdrawal>[0]) => {
         // eslint-disable-next-line camelcase
-        const { address, amount, estimated_fee_unique_id } = values;
+        const { address, amount, estimated_fee_unique_id: estimatedFeeUniqueId } = values;
         mutateAsync({
             address,
             amount,
-            estimated_fee_unique_id,
+            estimated_fee_unique_id: estimatedFeeUniqueId,
             verification_code: verificationCode,
         })
-            .then(() =>
+            .then(() => {
+                const fractionalDigits = activeWallet?.currency_config?.fractional_digits ?? 0;
                 setWithdrawalReceipt({
                     address,
-                    amount: amount?.toFixed(activeWallet?.currency_config?.fractional_digits),
+                    amount: amount?.toFixed(fractionalDigits),
+                    amountReceived: estimatedFeeUniqueId
+                        ? (Number(amount) - Number(cryptoEstimationsFee)).toFixed(fractionalDigits)
+                        : amount?.toFixed(fractionalDigits),
                     currency: activeWallet?.currency,
                     landingCompany: activeWallet?.landing_company_name,
-                })
-            )
+                    transactionFee: estimatedFeeUniqueId
+                        ? Number(cryptoEstimationsFee)?.toFixed(fractionalDigits)
+                        : undefined,
+                });
+            })
             .catch((error: TSocketError<'cashier'>) => {
                 setError(error.error);
             });

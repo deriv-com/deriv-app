@@ -14,9 +14,8 @@ const useContractDetails = () => {
 
     useEffect(() => {
         if (!contract_info.contract_id) {
-            const url_array = /[^/]*$/.exec(location.pathname);
-            const url_contract_id = url_array ? +url_array[0] : undefined;
-            onMount(url_contract_id);
+            const url_contract_id = location.pathname.split('/').pop();
+            onMount(parseInt(url_contract_id));
         }
 
         // TODO: need to add onUnmount from contract_replay store whenever pathname changes

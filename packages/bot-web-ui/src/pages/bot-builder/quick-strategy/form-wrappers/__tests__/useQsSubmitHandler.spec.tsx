@@ -1,11 +1,11 @@
 import React from 'react';
+import { Formik } from 'formik';
 import { mockStore, StoreProvider } from '@deriv/stores';
+import { renderHook } from '@testing-library/react-hooks';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import useQsSubmitHandler from '../useQsSubmitHandler';
-import { renderHook } from '@testing-library/react-hooks';
-import { Formik } from 'formik';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 

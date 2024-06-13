@@ -67,6 +67,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const is_trading_hub_category =
         route === routes.traders_hub || route.startsWith(routes.cashier) || route.startsWith(routes.account);
 
+    const should_show_regulatory_information = is_eu && show_eu_related_content && !is_virtual;
     const is_traders_hub_route = route === routes.traders_hub;
 
     const is_wallet_route = route.startsWith(routes.wallets) || route.startsWith(routes.wallets_compare_accounts);
@@ -89,14 +90,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         p2p_settings,
     } = useP2PSettings();
 
-    let TradersHubIcon;
-    if (has_wallet) {
-        TradersHubIcon = 'IcAppstoreTradersHubHomeUpdated';
-    } else if (is_dark_mode) {
-        TradersHubIcon = 'IcAppstoreHomeDark';
-    } else {
-        TradersHubIcon = 'IcAppstoreTradersHubHome';
-    }
+    const TradersHubIcon = is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHomeUpdated';
 
     React.useEffect(() => {
         if (isSuccess && !isSubscribed) {
@@ -344,17 +338,15 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         onClickLink={toggleDrawer}
                                     />
                                 </MobileDrawer.Item>
-                                {is_logged_in && (
-                                    <MobileDrawer.Item>
-                                        <MenuLink
-                                            link_to={routes.traders_hub}
-                                            icon={TradersHubIcon}
-                                            text={localize("Trader's Hub")}
-                                            onClickLink={toggleDrawer}
-                                            is_active={route === routes.traders_hub}
-                                        />
-                                    </MobileDrawer.Item>
-                                )}
+                                <MobileDrawer.Item>
+                                    <MenuLink
+                                        link_to={routes.traders_hub}
+                                        icon={TradersHubIcon}
+                                        text={localize("Trader's Hub")}
+                                        onClickLink={toggleDrawer}
+                                        is_active={route === routes.traders_hub}
+                                    />
+                                </MobileDrawer.Item>
                                 {route !== routes.traders_hub && (
                                     <MobileDrawer.Item>
                                         <MenuLink
@@ -391,7 +383,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     </MobileDrawer.Item>
                                 )}
                                 {HelpCentreRoute()}
-                                {is_logged_in && (
+                                {is_logged_in ? (
                                     <React.Fragment>
                                         <MobileDrawer.Item>
                                             <MenuLink
@@ -401,7 +393,13 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                 onClickLink={toggleDrawer}
                                             />
                                         </MobileDrawer.Item>
-                                        <MobileDrawer.Item className='header__menu-mobile-theme--responsible-trading'>
+                                        <MobileDrawer.Item
+                                            className={
+                                                should_show_regulatory_information
+                                                    ? ''
+                                                    : 'header__menu-mobile-theme--trader-hub'
+                                            }
+                                        >
                                             <MenuLink
                                                 link_to={getStaticUrl('/responsible')}
                                                 icon='IcVerification'
@@ -409,8 +407,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                                 onClickLink={toggleDrawer}
                                             />
                                         </MobileDrawer.Item>
-                                        {is_eu && show_eu_related_content && !is_virtual && (
-                                            <MobileDrawer.Item>
+                                        {should_show_regulatory_information && (
+                                            <MobileDrawer.Item className='header__menu-mobile-theme--trader-hub'>
                                                 <MenuLink
                                                     link_to={getStaticUrl('/regulatory')}
                                                     icon='IcRegulatoryInformation'
@@ -420,6 +418,15 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                             </MobileDrawer.Item>
                                         )}
                                     </React.Fragment>
+                                ) : (
+                                    <MobileDrawer.Item className='header__menu-mobile-theme--trader-hub'>
+                                        <MenuLink
+                                            link_to={getStaticUrl('/responsible')}
+                                            icon='IcVerification'
+                                            text={localize('Responsible trading')}
+                                            onClickLink={toggleDrawer}
+                                        />
+                                    </MobileDrawer.Item>
                                 )}
                                 {liveChat.isReady && cs_chat_whatsapp && (
                                     <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
@@ -444,10 +451,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     <MobileDrawer.Item
                                         onClick={() => {
                                             toggleDrawer();
-                                            history.push(routes.index);
-                                            logoutClient().then(() => {
-                                                window.location.href = getStaticUrl('/');
-                                            });
+                                            history.push(routes.traders_hub);
+                                            logoutClient();
                                         }}
                                         className='dc-mobile-drawer__item'
                                     >

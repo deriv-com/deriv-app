@@ -32,7 +32,7 @@ const PhoneVerificationPage = observer(() => {
 
     React.useEffect(() => {
         setIsLoading(false);
-        if (email_otp_error && phone_number_verification) {
+        if (email_otp_error) {
             setShouldShowVerificationLinkExpiredModal(true);
         } else if (is_email_verified) {
             setOtpVerification({
@@ -40,7 +40,7 @@ const PhoneVerificationPage = observer(() => {
                 phone_verification_type: '',
             });
         }
-    }, [email_otp_error, phone_number_verification, is_email_verified]);
+    }, [email_otp_error, is_email_verified]);
 
     React.useEffect(() => {
         if (phone_number_verification) {

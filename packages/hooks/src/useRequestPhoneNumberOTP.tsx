@@ -32,7 +32,7 @@ const useRequestPhoneNumberOTP = () => {
         mutate({
             payload: {
                 carrier: VERIFICATION_SERVICES.SMS,
-                email_code: phone_number_verification || localStorage.getItem('email_otp_code') || '',
+                email_code: phone_number_verification || '',
             },
         });
     };
@@ -41,7 +41,7 @@ const useRequestPhoneNumberOTP = () => {
         mutate({
             payload: {
                 carrier: VERIFICATION_SERVICES.WHATSAPP,
-                email_code: phone_number_verification || localStorage.getItem('email_otp_code') || '',
+                email_code: phone_number_verification || '',
             },
         });
     };

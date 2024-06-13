@@ -156,7 +156,7 @@ describe('OTPVerification', () => {
         expect(mockSendEmailOTPVerification).toBeCalledTimes(1);
     });
 
-    it('should render setOtpVerification when is_email_verified is true', () => {
+    it('should render setOtpVerification and setVerificationCode when is_email_verified is true', () => {
         store.ui.should_show_phone_number_otp = false;
         (useSendOTPVerificationCode as jest.Mock).mockReturnValue({
             is_email_verified: true,
@@ -169,6 +169,7 @@ describe('OTPVerification', () => {
         userEvent.type(otp_textfield, '123456');
         expect(verify_button).toBeEnabled();
         userEvent.click(verify_button);
+        expect(store.client.setVerificationCode).toBeCalled();
         expect(mockSetOtpVerification).toBeCalledWith({ phone_verification_type: '', show_otp_verification: false });
     });
 });

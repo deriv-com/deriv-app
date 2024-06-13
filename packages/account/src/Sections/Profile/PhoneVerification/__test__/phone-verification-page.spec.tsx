@@ -17,14 +17,10 @@ jest.mock('@deriv/hooks', () => ({
         sendEmailOTPVerification: jest.fn(),
     })),
 }));
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
-
-    return {
-        ...original_module,
-        Loading: jest.fn(() => 'mockedLoading'),
-    };
-});
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Loading: jest.fn(() => 'mockedLoading'),
+}));
 
 describe('ConfirmPhoneNumber', () => {
     let mock_store_data = mockStore({});

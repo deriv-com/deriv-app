@@ -16,9 +16,7 @@ import SetCurrency from './set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
 import { Analytics } from '@deriv-com/analytics';
-import 'Sass/details-form.scss';
 import 'Sass/account-wizard.scss';
-import 'Sass/real-account-signup.scss';
 
 const AccountWizard = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-wizard-modal" */ './account-wizard.jsx'))

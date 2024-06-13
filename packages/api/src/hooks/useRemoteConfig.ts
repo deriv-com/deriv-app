@@ -32,7 +32,7 @@ function useRemoteConfig(enabled = false) {
                     // eslint-disable-next-line no-console
                     console.log('Remote Config error: ', error);
                 });
-    });
+    }, [enabled]);
 
     return { data };
 }

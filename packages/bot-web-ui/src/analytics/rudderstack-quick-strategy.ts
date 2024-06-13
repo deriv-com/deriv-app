@@ -34,6 +34,7 @@ export const rudderStackSendQsRunStrategyEvent = ({
         action: ACTION.RUN_QUICK_STRATEGY,
         form_name,
         subform_name: 'quick_strategy',
+        strategy_name: getRsStrategyType(selected_strategy),
         ...getTradeParameterData({ form_values, selected_strategy }),
     });
 };
@@ -46,6 +47,7 @@ export const rudderStackSendQsEditStrategyEvent = ({
         action: ACTION.EDIT_QUICK_STRATEGY,
         form_name,
         subform_name: 'quick_strategy',
+        strategy_name: getRsStrategyType(selected_strategy),
         ...getTradeParameterData({ form_values, selected_strategy }),
     });
 };

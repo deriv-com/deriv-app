@@ -53,6 +53,7 @@ describe('<WithdrawalCryptoForm />', () => {
                         requestWithdraw: jest.fn(),
                         setBlockchainAddress: jest.fn(),
                         setWithdrawPercentageSelectorResult: jest.fn(),
+                        setCryptoEstimationsFee: jest.fn(),
                         setCryptoEstimationsFeeUniqueId: jest.fn(),
                     },
                 },

@@ -34,6 +34,7 @@ describe('<WithdrawalCryptoPriority />', () => {
                         requestWithdraw: jest.fn(),
                         setBlockchainAddress: jest.fn(),
                         setWithdrawPercentageSelectorResult: jest.fn(),
+                        setCryptoEstimationsFee: jest.fn().mockReturnValue(0.001),
                         setCryptoEstimationsFeeUniqueId: jest.fn().mockReturnValue('unique_id'),
                     },
                     crypto_fiat_converter: {

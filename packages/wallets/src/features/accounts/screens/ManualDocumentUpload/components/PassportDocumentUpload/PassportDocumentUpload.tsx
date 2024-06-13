@@ -1,6 +1,14 @@
 import React from 'react';
+import { useFormikContext } from 'formik';
 import moment from 'moment';
-import { DatePicker, Dropzone, FlowTextField, useFlow } from '../../../../../../components';
+import {
+    DatePicker,
+    Dropzone,
+    FlowTextField,
+    FormDatePicker,
+    FormTextField,
+    useFlow,
+} from '../../../../../../components';
 import { Divider, WalletText } from '../../../../../../components/Base';
 import PassportPlaceholder from '../../../../../../public/images/accounts/passport-placeholder.svg';
 import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
@@ -8,7 +16,7 @@ import { DocumentRuleHints } from '../DocumentRuleHints';
 import './PassportDocumentUpload.scss';
 
 const PassportDocumentUpload = () => {
-    const { formValues, setFormValues } = useFlow();
+    const { setFieldValue: setFormValues, values: formValues } = useFormikContext();
 
     const handleDateChange = (formattedDate: string | null) => {
         setFormValues('passportExpiryDate', formattedDate);
@@ -18,13 +26,13 @@ const PassportDocumentUpload = () => {
         <div className='wallets-passport-document-upload' data-testid='dt_passport-document-upload'>
             <WalletText>First, enter your Passport number and the expiry date.</WalletText>
             <div className='wallets-passport-document-upload__input-group'>
-                <FlowTextField
+                <FormTextField
                     defaultValue={formValues.passportNumber ?? ''}
                     label='Passport number*'
                     name='passportNumber'
                     validationSchema={documentRequiredValidator('Passport number')}
                 />
-                <DatePicker
+                <FormDatePicker
                     defaultValue={formValues.passportExpiryDate ?? ''}
                     label='Expiry date*'
                     minDate={moment().add(2, 'days').toDate()}

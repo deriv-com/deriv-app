@@ -1,6 +1,16 @@
 import React from 'react';
+import { useFormikContext } from 'formik';
 import moment from 'moment';
-import { DatePicker, Divider, Dropzone, FlowTextField, useFlow, WalletText } from '../../../../../../components';
+import {
+    DatePicker,
+    Divider,
+    Dropzone,
+    FlowTextField,
+    FormDatePicker,
+    FormTextField,
+    useFlow,
+    WalletText,
+} from '../../../../../../components';
 import DrivingLicenseCardBack from '../../../../../../public/images/accounts/document-back.svg';
 import DrivingLicenseCardFront from '../../../../../../public/images/accounts/driving-license-front.svg';
 import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
@@ -8,7 +18,7 @@ import { DocumentRuleHints } from '../DocumentRuleHints';
 import './DrivingLicenseDocumentUpload.scss';
 
 const DrivingLicenseDocumentUpload = () => {
-    const { formValues, setFormValues } = useFlow();
+    const { setFieldValue: setFormValues, values: formValues } = useFormikContext();
 
     const handleDateChange = (formattedDate: string | null) => {
         setFormValues('drivingLicenseExpiryDate', formattedDate);
@@ -18,13 +28,13 @@ const DrivingLicenseDocumentUpload = () => {
         <div className='wallets-driving-license-document-upload' data-testid='dt_driving-license-document-upload'>
             <WalletText>First, enter your Driving licence number and the expiry date.</WalletText>
             <div className='wallets-driving-license-document-upload__input-group'>
-                <FlowTextField
+                <FormTextField
                     defaultValue={formValues.drivingLicenceNumber ?? ''}
                     label='Driving licence number*'
                     name='drivingLicenceNumber'
                     validationSchema={documentRequiredValidator('Driving licence number')}
                 />
-                <DatePicker
+                <FormDatePicker
                     defaultValue={formValues.drivingLicenseExpiryDate ?? ''}
                     label='Expiry date*'
                     minDate={moment().add(2, 'days').toDate()}

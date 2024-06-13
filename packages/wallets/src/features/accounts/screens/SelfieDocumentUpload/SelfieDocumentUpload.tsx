@@ -1,4 +1,5 @@
 import React from 'react';
+import { useFormikContext } from 'formik';
 import { Dropzone, useFlow, WalletText } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
 import SelfieIcon from '../../../../public/images/accounts/selfie-icon.svg';
@@ -6,7 +7,7 @@ import './SelfieDocumentUpload.scss';
 
 const SelfieDocumentUpload = () => {
     const { isDesktop } = useDevice();
-    const { formValues, setFormValues } = useFlow();
+    const { setFieldValue: setFormValues, values: formValues } = useFormikContext();
 
     return (
         <div className='wallets-selfie-document-upload'>

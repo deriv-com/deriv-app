@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
+import { useFormik, useFormikContext } from 'formik';
 import * as Yup from 'yup';
 import { usePOI, useResidenceList, useSettings } from '@deriv/api-v2';
-import { FlowTextField, useFlow, WalletDropdown, WalletText } from '../../../../components';
+import { FlowTextField, FormTextField, useFlow, WalletDropdown, WalletText } from '../../../../components';
 import { InlineMessage } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
@@ -45,7 +46,7 @@ const ErrorMessage: React.FC<{ status: TErrorMessageProps }> = ({ status }) => {
 
 const IDVDocumentUpload = () => {
     const { data: poiStatus } = usePOI();
-    const { formValues, setFormValues } = useFlow();
+    const { setFieldValue: setFormValues, values: formValues } = useFormikContext();
     const { data: residenceList, isSuccess: isResidenceListSuccess } = useResidenceList();
     const { data: settings } = useSettings();
 
@@ -136,7 +137,7 @@ const IDVDocumentUpload = () => {
                     value={formValues?.documentType}
                     variant='comboBox'
                 />
-                <FlowTextField
+                <FormTextField
                     disabled={!formValues.documentType}
                     label='Enter your document number'
                     name='documentNumber'

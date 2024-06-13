@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
+import { useFormikContext } from 'formik';
 import { useOnfido, usePOA } from '@deriv/api-v2';
 import { InlineMessage } from '../../../../components';
 import { useFlow } from '../../../../components/FlowProvider';
@@ -13,7 +14,7 @@ const Onfido = () => {
     } = useOnfido();
     const { switchScreen } = useFlow();
     const { data: poaStatus } = usePOA();
-    const { formValues, setFormValues } = useFlow();
+    const { setFieldValue: setFormValues, values: formValues } = useFormikContext();
     // if the user goes back and already submitted Onfido, check the form store first
 
     useEffect(() => {

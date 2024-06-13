@@ -1,13 +1,23 @@
 import React, { ReactNode, useEffect, useMemo } from 'react';
+import { useFormikContext } from 'formik';
 import * as Yup from 'yup';
 import { useResidenceList, useSettings } from '@deriv/api-v2';
-import { FlowTextField, InlineMessage, Loader, useFlow, WalletDropdown, WalletText } from '../../../../components';
+import {
+    FlowTextField,
+    FormTextField,
+    InlineMessage,
+    Loader,
+    useFlow,
+    WalletDropdown,
+    WalletText,
+} from '../../../../components';
 import { accountOpeningReasonList } from './constants';
 import './PersonalDetails.scss';
 
 const PersonalDetails = () => {
     const { data: residenceList, isLoading, isSuccess: isResidenceListSuccess } = useResidenceList();
-    const { formValues, setFormValues } = useFlow();
+    const { setFieldValue: setFormValues, values: formValues } = useFormikContext();
+
     const { data: getSettings } = useSettings();
 
     const countryCodeToPatternMapper = useMemo(() => {
@@ -126,7 +136,7 @@ const PersonalDetails = () => {
                             value={getSettings?.tax_residence ?? formValues?.taxResidence}
                             variant='comboBox'
                         />
-                        <FlowTextField
+                        <FormTextField
                             defaultValue={getSettings?.tax_identification_number ?? formValues?.taxIdentificationNumber}
                             errorMessage={!formValues?.taxResidence ? 'Please fill in tax residence' : tinValidator}
                             isInvalid={

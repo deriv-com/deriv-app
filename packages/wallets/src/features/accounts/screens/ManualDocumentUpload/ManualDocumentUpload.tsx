@@ -1,4 +1,5 @@
 import React from 'react';
+import { useFormikContext } from 'formik';
 import { useFlow } from '../../../../components/FlowProvider';
 import { DocumentSelection } from './components/DocumentSelection';
 import {
@@ -10,7 +11,7 @@ import {
 import './ManualDocumentUpload.scss';
 
 const ManualDocumentUploadContent = () => {
-    const { formValues, setFormValues } = useFlow();
+    const { setFieldValue: setFormValues, values: formValues } = useFormikContext();
 
     if (formValues.selectedManualDocument === 'passport') {
         return <PassportDocumentUpload />;

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Divider, Dropzone, FlowTextField, useFlow, WalletText } from '../../../../../../components';
+import { useFormikContext } from 'formik';
+import { Divider, Dropzone, FlowTextField, FormTextField, useFlow, WalletText } from '../../../../../../components';
 import NIMCSlipFront from '../../../../../../public/images/accounts/nimc-slip-front.svg';
 import ProofOfAgeIcon from '../../../../../../public/images/accounts/proof-of-age.svg';
 import { documentRequiredValidator } from '../../../../validations';
@@ -7,12 +8,12 @@ import { DocumentRuleHints } from '../DocumentRuleHints';
 import './NIMCSlipDocumentUpload.scss';
 
 const NIMCSlipDocumentUpload = () => {
-    const { formValues, setFormValues } = useFlow();
+    const { setFieldValue: setFormValues, values: formValues } = useFormikContext();
 
     return (
         <div className='wallets-nimc-slip-document-upload' data-testid='dt_driving-license-document-upload'>
             <WalletText>First, enter your NIMC slip number.</WalletText>
-            <FlowTextField
+            <FormTextField
                 defaultValue={formValues.nimcNumber ?? ''}
                 label='NIMC slip number*'
                 name='nimcNumber'

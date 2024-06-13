@@ -128,9 +128,10 @@ describe('CompositeCalendarMobile', () => {
 
         const inputForStartDate = screen.getByPlaceholderText(startDate);
         expect(inputForStartDate).toHaveValue('03 Oct 2023');
-        userEvent.type(inputForStartDate, '10 Jun 2024');
 
-        expect(inputForStartDate).toHaveValue('10 Jun 2024');
+        const newDate = toMoment().format('DD MMM YYYY');
+        userEvent.type(inputForStartDate, newDate);
+        expect(inputForStartDate).toHaveValue(newDate);
     });
 
     it('should apply date which user has typed in DatePicker for End date', () => {

@@ -40,7 +40,6 @@ export default class TradersHubStore extends BaseStore {
         const local_storage_properties = [
             'available_platforms',
             'selected_region',
-            'selected_platform_type',
             'is_cfd_restricted_country',
             'is_financial_restricted_country',
         ];
@@ -325,11 +324,7 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailablePlatforms() {
-        if (
-            !this.root_store.client.is_landing_company_loaded &&
-            (this.root_store.client.is_logged_in || this.root_store.client.is_logging_in)
-        )
-            return this.available_platforms;
+        if (!this.root_store.client.is_landing_company_loaded) return this.available_platforms;
 
         const appstore_platforms = getAppstorePlatforms();
         if ((this.financial_restricted_countries || this.is_eu_user) && !this.is_demo_low_risk) {

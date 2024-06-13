@@ -1,29 +1,32 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import FormBody from '../../../../Components/form-body';
-import PasskeyCard from './passkey-card';
-import PasskeysFooterButtons from 'Sections/Security/Passkeys/components/passkeys-footer-buttons';
+import { TOnPasskeyMenuClick, TPasskey } from '../passkeys';
+import { PasskeyCard } from './passkey-card';
+import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status-layout';
 
 type TPasskeysList = {
-    passkeys_list: React.ComponentProps<typeof PasskeyCard>[];
-    onPrimaryButtonClick: React.MouseEventHandler<HTMLButtonElement>;
-    onSecondaryButtonClick: React.MouseEventHandler<HTMLButtonElement>;
-};
+    passkeys_list: TPasskey[];
+    onPasskeyMenuClick: TOnPasskeyMenuClick;
+} & TPasskeysButtonOnClicks;
 
-const PasskeysList = ({ passkeys_list, onPrimaryButtonClick, onSecondaryButtonClick }: TPasskeysList) => (
-    <React.Fragment>
-        <FormBody scroll_offset='16rem'>
-            {passkeys_list.map(passkey => (
-                <PasskeyCard {...passkey} key={passkey.passkey_id} />
-            ))}
-        </FormBody>
-        <PasskeysFooterButtons
-            onSecondaryButtonClick={onSecondaryButtonClick}
+export const PasskeysList = ({
+    passkeys_list,
+    onPrimaryButtonClick,
+    onSecondaryButtonClick,
+    onPasskeyMenuClick,
+}: TPasskeysList) => (
+    <div className='passkeys'>
+        <PasskeysStatusLayout
+            className='passkeys-list__wrapper'
             onPrimaryButtonClick={onPrimaryButtonClick}
+            onSecondaryButtonClick={onSecondaryButtonClick}
             primary_button_text={<Localize i18n_default_text='Create passkey' />}
+            scroll_offset='16rem'
             secondary_button_text={<Localize i18n_default_text='Learn more' />}
-        />
-    </React.Fragment>
+        >
+            {passkeys_list.map(passkey => (
+                <PasskeyCard {...passkey} key={passkey.passkey_id} onPasskeyMenuClick={onPasskeyMenuClick} />
+            ))}
+        </PasskeysStatusLayout>
+    </div>
 );
-
-export default PasskeysList;

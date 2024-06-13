@@ -6,6 +6,7 @@ import { useHistory } from 'react-router';
 import { routes } from '@deriv/shared';
 import { Popover, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { useVerifyEmail } from '@deriv/hooks';
 
 export const VerifyButton = observer(() => {
     const [open_popover, setOpenPopover] = React.useState(false);
@@ -15,8 +16,10 @@ export const VerifyButton = observer(() => {
     const { phone_number_verification } = account_settings;
     const { verified: phone_number_verified } = phone_number_verification;
     const history = useHistory();
+    const { send } = useVerifyEmail('phone_number_verification');
 
     const redirectToPhoneVerification = () => {
+        send();
         history.push(routes.phone_verification);
     };
 

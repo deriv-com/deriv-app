@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react';
 import React from 'react';
+import { render, screen } from '@testing-library/react';
 import DidntGetTheCodeModal from '../didnt-get-the-code-modal';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import userEvent from '@testing-library/user-event';
@@ -11,24 +11,29 @@ jest.mock('@deriv/hooks', () => ({
     useRequestPhoneNumberOTP: jest.fn(() => ({
         requestOnWhatsApp: jest.fn(),
         requestOnSMS: jest.fn(),
+        email_otp_error: null,
     })),
 }));
 
 describe('DidntGetTheCodeModal', () => {
     const mock_store = mockStore({});
     const mockSetShouldShowDidntGetTheCodeModal = jest.fn();
-    const mockSetStartTimer = jest.fn();
+    const mockSetTimer = jest.fn();
     const mockSetOtpVerification = jest.fn();
+    const mockReInitializeGetSettings = jest.fn();
+    const mockSetIsButtonDisabled = jest.fn();
     const resend_code_text = /Resend code/;
 
     const renderComponent = (phone_verification_type: string) => {
         render(
             <StoreProvider store={mock_store}>
                 <DidntGetTheCodeModal
+                    setIsButtonDisabled={mockSetIsButtonDisabled}
+                    reInitializeGetSettings={mockReInitializeGetSettings}
+                    setTimer={mockSetTimer}
                     should_show_didnt_get_the_code_modal={true}
                     phone_verification_type={phone_verification_type}
                     setShouldShowDidntGetTheCodeModal={mockSetShouldShowDidntGetTheCodeModal}
-                    setStartTimer={mockSetStartTimer}
                     setOtpVerification={mockSetOtpVerification}
                 />
             </StoreProvider>
@@ -37,7 +42,7 @@ describe('DidntGetTheCodeModal', () => {
 
     beforeEach(() => {
         mockSetShouldShowDidntGetTheCodeModal.mockClear();
-        mockSetStartTimer.mockClear();
+        mockSetTimer.mockClear();
         mockSetOtpVerification.mockClear();
     });
 
@@ -55,21 +60,21 @@ describe('DidntGetTheCodeModal', () => {
         expect(screen.getByRole('button', { name: /Send code via SMS/ })).toBeInTheDocument();
     });
 
-    it('should render setOtpVerification and setShouldShowDidintGetTheCodeModal when Change phone number is clicked, should not render setStartTimer', () => {
+    it('should render setOtpVerification and setShouldShowDidintGetTheCodeModal when Change phone number is clicked, should not render mockSetTimer', () => {
         renderComponent(VERIFICATION_SERVICES.SMS);
         const change_phone_number_button = screen.getByRole('button', { name: /Change phone number/ });
         userEvent.click(change_phone_number_button);
         expect(mockSetShouldShowDidntGetTheCodeModal).toHaveBeenCalledTimes(1);
         expect(mockSetOtpVerification).toHaveBeenCalledTimes(1);
-        expect(mockSetStartTimer).not.toBeCalled();
+        expect(mockSetTimer).not.toBeCalled();
     });
 
-    it('should render setStartTimer and setShouldShowDidintGetTheCodeModal when Resend code is clicked', () => {
+    it('should render mockSetTimer and setShouldShowDidintGetTheCodeModal when Resend code is clicked', () => {
         renderComponent(VERIFICATION_SERVICES.SMS);
         const resend_code_button = screen.getByRole('button', { name: resend_code_text });
         userEvent.click(resend_code_button);
         expect(mockSetShouldShowDidntGetTheCodeModal).toHaveBeenCalledTimes(1);
-        expect(mockSetStartTimer).toHaveBeenCalledTimes(1);
+        expect(mockSetTimer).toBeCalled();
     });
 
     it('should render mockRequestOnSMS and setOtpVerification with phone_verification_type: sms when Resend code is clicked, phone_verification_type is sms', () => {

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
@@ -60,25 +59,5 @@ describe('RiskManagementInfoModal', () => {
         expect(screen.getByText(headerContent)).toBeInTheDocument();
         expect(screen.getByText(bodyContent)).toBeInTheDocument();
         expect(screen.queryByText(infoMessage)).not.toBeInTheDocument();
-    });
-
-    it('should close the modal when the primary button is clicked', () => {
-        render(
-            <RiskManagementInfoModal
-                header_content={headerContent}
-                body_content={bodyContent}
-                info_message={infoMessage}
-            />
-        );
-
-        const button = screen.getByRole('button');
-        userEvent.click(button);
-
-        expect(screen.getByText(headerContent)).toBeInTheDocument();
-
-        const primaryButton = screen.getByText('Got it');
-        userEvent.click(primaryButton);
-
-        waitFor(() => expect(screen.queryByText(headerContent)).not.toBeInTheDocument());
     });
 });

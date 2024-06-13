@@ -231,17 +231,17 @@ describe('getOpenPositionsColumnsTemplate', () => {
         columns.forEach(column => {
             const { renderCellContent: content, col_index } = column;
             if (content) {
-                let cell_value: React.ReactNode = '1000';
-                if (col_index === 'profit') cell_value = 50;
+                let cell_value = '1000';
+                if (col_index === 'profit') cell_value = '50';
                 if (col_index === 'type') cell_value = 'Type';
 
                 const cellContent = content({
                     row_obj: dummyRowObj,
-                    //@ts-expect-error type should be React.ReactNode
                     cell_value,
                     is_footer: false,
                     is_vanilla: false,
                     is_turbos: false,
+                    passthrough: {},
                 });
 
                 render(<div>{cellContent}</div>);
@@ -327,7 +327,6 @@ describe('getMultiplierOpenPositionsColumnsTemplate', () => {
         columns.forEach(column => {
             const { renderCellContent: content, col_index } = column;
             if (content) {
-                //@ts-expect-error cell_value type should be React.ReactNode
                 const cellContent = content({ ...input_mocked_obj });
                 render(<div>{cellContent}</div>);
 
@@ -350,7 +349,6 @@ describe('getMultiplierOpenPositionsColumnsTemplate', () => {
 
     it('should render "Total" for the "Type" column when is_footer is true', () => {
         const { renderCellContent: content } = typeColumn;
-        //@ts-expect-error cell_value type should be React.ReactNode
         const cellContent = content({
             ...input_mocked_obj,
             is_footer: true,
@@ -364,7 +362,6 @@ describe('getMultiplierOpenPositionsColumnsTemplate', () => {
     it('should render empty content for the "Limit Order" column when is_footer is true', () => {
         const { renderCellContent: content } = limitOrderColumn;
 
-        //@ts-expect-error cell_value type should be React.ReactNode
         const cellContent = content({
             ...input_mocked_obj,
             is_footer: true,
@@ -378,7 +375,6 @@ describe('getMultiplierOpenPositionsColumnsTemplate', () => {
     it('should render empty content for the "Bid Price" column when is_footer is true', () => {
         const { renderCellContent: content } = bidPriceColumn;
 
-        //@ts-expect-error cell_value type should be React.ReactNode
         const cellContent = content({
             ...input_mocked_obj,
             is_footer: true,
@@ -392,7 +388,6 @@ describe('getMultiplierOpenPositionsColumnsTemplate', () => {
     it('should render empty content for the "Profit" column when is_footer is true', () => {
         const { renderCellContent: content } = profitColumn;
 
-        //@ts-expect-error cell_value type should be React.ReactNode
         const cellContent = content({
             ...input_mocked_obj,
             is_footer: true,
@@ -406,7 +401,6 @@ describe('getMultiplierOpenPositionsColumnsTemplate', () => {
     it('should render row action element for the "Action" column when is_footer is true', () => {
         const { renderCellContent: content } = actionColumn;
 
-        //@ts-expect-error cell_value type should be React.ReactNode
         const cellContent = content({
             ...input_mocked_obj,
             is_footer: true,
@@ -438,7 +432,7 @@ describe('getAccumulatorOpenPositionsColumnsTemplate', () => {
         is_sell_requested: false,
     };
 
-    const cell_value: React.ReactNode = '1000';
+    const cell_value = '1000';
     const input_mocked_obj = {
         row_obj: dummyRowObj,
         cell_value,
@@ -483,7 +477,6 @@ describe('getAccumulatorOpenPositionsColumnsTemplate', () => {
 
         columns.forEach(column => {
             const { renderCellContent: content, col_index } = column;
-            //@ts-expect-error cell_value type should be React.ReactNode
             const cellContent = content(input_mocked_obj);
 
             render(<div>{cellContent}</div>);
@@ -530,7 +523,6 @@ describe('getAccumulatorOpenPositionsColumnsTemplate', () => {
         const typeColumn = columns.find(column => column.col_index === 'type');
         if (typeColumn) {
             const { renderCellContent: content } = typeColumn;
-            //@ts-expect-error cell_value type should be React.ReactNode
             const cellContent = content({ ...input_mocked_obj, row_obj: {}, is_footer: true });
             expect(cellContent).toEqual('Total');
         }
@@ -546,7 +538,6 @@ describe('getAccumulatorOpenPositionsColumnsTemplate', () => {
         const purchaseColumn = columns.find(column => column.col_index === 'purchase');
         if (purchaseColumn) {
             const { renderCellContent: content } = purchaseColumn;
-            //@ts-expect-error cell_value type should be React.ReactNode
             const cellContent = content({ ...input_mocked_obj, row_obj: {} });
             expect(cellContent).toEqual('');
         }
@@ -562,7 +553,6 @@ describe('getAccumulatorOpenPositionsColumnsTemplate', () => {
         const bidPriceColumn = columns.find(column => column.col_index === 'bid_price');
         if (bidPriceColumn) {
             const { renderCellContent: content } = bidPriceColumn;
-            //@ts-expect-error cell_value type should be React.ReactNode
             const cellContent = content({ ...input_mocked_obj, row_obj: {} });
             expect(cellContent).toEqual('-');
         }

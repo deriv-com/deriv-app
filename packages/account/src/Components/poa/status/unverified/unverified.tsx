@@ -1,13 +1,13 @@
-import React, { ReactElement } from 'react';
+import React, { ReactNode } from 'react';
 import { Button, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import IconMessageContent from '../../../icon-message-content';
 
 type TUnverified = {
-    title?: string | ReactElement;
-    description?: string | ReactElement;
+    title?: ReactNode;
+    description?: ReactNode;
     onClick: () => void;
-    button_text?: string | ReactElement;
+    button_text?: ReactNode;
 };
 
 export const Unverified = ({ title, description, button_text, onClick }: TUnverified) => {

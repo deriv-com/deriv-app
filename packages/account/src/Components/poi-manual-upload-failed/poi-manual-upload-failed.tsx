@@ -14,7 +14,7 @@ const POIManualUploadFailed = ({ children, message, error }: React.PropsWithChil
         icon={<Icon icon='IcPoiFailed' size={128} />}
         className='account-management-dashboard'
     >
-        {children && <>{children}</>}
+        {children}
     </IconMessageContent>
 );
 

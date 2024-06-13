@@ -20,10 +20,10 @@ import { getFileUploaderDescriptions } from '../../../Constants/file-uploader';
 import { API_ERROR_CODES } from '../../../Constants/api-error-codes';
 
 type TProofOfAddressForm = {
-    className?: string;
+    className: string;
     is_resubmit: boolean;
-    is_for_cfd_modal?: boolean;
-    onCancel?: () => void;
+    is_for_cfd_modal: boolean;
+    onCancel: () => void;
     onSubmit: (needs_poi: boolean, has_submitted_duplicate_poa?: boolean) => void;
     onSubmitForCFDModal: (index: number, values: FormikValues, has_submitted_duplicate_poa?: boolean) => void;
     step_index: number;

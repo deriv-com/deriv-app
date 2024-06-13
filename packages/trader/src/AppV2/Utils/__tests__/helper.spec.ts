@@ -1,5 +1,4 @@
 import moment from 'moment';
-import { TGetCardLables } from '@deriv/components';
 import { formatDuration, getDiffDuration } from '@deriv/shared';
 import { getRemainingTime } from '../helper';
 

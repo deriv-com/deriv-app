@@ -1,10 +1,15 @@
 import { formatDuration, getDiffDuration } from '@deriv/shared';
 
+type GetCardLabels = () => {
+    DAY: string;
+    DAYS: string;
+};
+
 type TRemainingTimeProps = {
     end_time?: number;
     start_time: moment.Moment;
     format?: string;
-    getCardLabels: Function;
+    getCardLabels: GetCardLabels;
 };
 
 export const getRemainingTime = ({ end_time, format, getCardLabels, start_time }: TRemainingTimeProps) => {

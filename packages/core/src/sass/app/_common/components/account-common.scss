@@ -14,7 +14,7 @@
         min-height: 50rem;
         margin: auto;
         @include mobile {
-            height: 100%;
+            height: fit-content;
         }
     }
 

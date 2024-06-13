@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import classNames from 'classnames';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
 import { DerivLightDmt5PasswordIcon, DerivLightIcDxtradePasswordIcon } from '@deriv/quill-icons';
 import { SentEmailContent, WalletButton, WalletsActionScreen, WalletText } from '../../../../components';
@@ -80,15 +81,24 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
         },
     };
 
-    if (activeScreen === 'emailVerification')
+    if (activeScreen === 'emailVerification') {
         return (
-            <div className='wallets-change-password__sent-email-wrapper'>
+            <div
+                className={classNames('wallets-change-password__sent-email-content-wrapper', {
+                    'wallets-change-password__sent-email-content-wrapper--dxtrade': platform === 'dxtrade',
+                })}
+            >
                 <SentEmailContent isChangePassword platform={platform} />
             </div>
         );
+    }
 
     return (
-        <div className='wallets-change-password__content'>
+        <div
+            className={classNames('wallets-change-password__content', {
+                'wallets-change-password__content--dxtrade': platform === 'dxtrade',
+            })}
+        >
             <WalletsActionScreen
                 description={ChangePasswordScreens[activeScreen].bodyText}
                 descriptionSize='sm'

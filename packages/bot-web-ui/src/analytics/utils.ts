@@ -32,6 +32,8 @@ export const getSubpageName = () => {
 };
 
 export const getTradeParameterData = ({ form_values }: TFormStrategy) => {
+    if (!form_values) return;
+
     const { symbol, tradetype, type, stake } = form_values;
     const stored_texts = getRsDropdownTextFromLocalStorage();
 

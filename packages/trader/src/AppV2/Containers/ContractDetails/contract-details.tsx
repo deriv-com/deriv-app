@@ -20,6 +20,7 @@ import {
     TContractStore,
     isValidToSell,
     hasContractEntered,
+    isAccumulatorContract,
 } from '@deriv/shared';
 import classNames from 'classnames';
 import ContractDetailsFooter from 'AppV2/Components/ContractDetailsFooter';
@@ -66,6 +67,14 @@ const ContractDetails = observer(() => {
         contract_info.contract_type ?? ''
     );
     const show_cancel_button = is_multiplier && is_valid_to_cancel;
+    let showTpSl =
+        isOpen(contract_info) &&
+        (is_take_profit_visible || is_stop_loss_visible) &&
+        (is_valid_to_sell || is_deal_cancellation_visible);
+
+    if (isAccumulatorContract(contract_info.contract_type)) {
+        showTpSl = isOpen(contract_info) && Boolean(limit_order);
+    }
     return (
         <div
             className={classNames('contract-details', {
@@ -80,14 +89,13 @@ const ContractDetails = observer(() => {
                 <ChartPlaceholder />
             </div>
             <DealCancellation />
-            {isOpen(contract_info) &&
-                (is_take_profit_visible || is_stop_loss_visible) &&
-                (is_valid_to_sell || is_deal_cancellation_visible) && (
-                    <CardWrapper>
-                        <TakeProfit />
-                        <StopLoss />
-                    </CardWrapper>
-                )}
+            {showTpSl && (
+                <CardWrapper>
+                    <TakeProfit />
+                    <StopLoss />
+                </CardWrapper>
+            )}
+
             <OrderDetails contract_info={contract_info} />
             <PayoutInfo contract_info={contract_info} />
             <EntryExitDetails contract_info={contract_info} />

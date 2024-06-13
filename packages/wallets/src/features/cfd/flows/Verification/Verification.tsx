@@ -27,6 +27,7 @@ import {
 import { PlatformDetails } from '../../constants';
 import { MT5PasswordModal } from '../../modals';
 import { Onfido } from '../../screens';
+import Verification2 from './VerificationV2';
 
 const Loading = () => {
     return (
@@ -391,4 +392,4 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     );
 };
 
-export default Verification;
+export default Verification2;

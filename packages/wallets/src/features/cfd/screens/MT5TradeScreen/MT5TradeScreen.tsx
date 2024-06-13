@@ -7,6 +7,8 @@ import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
 import { CFD_PLATFORMS, MarketTypeDetails, PlatformDetails, serviceMaintenanceMessages } from '../../constants';
+import MT5DesktopRedirectOption from './MT5TradeLink/MT5DesktopRedirectOption';
+import MT5MobileRedirectOption from './MT5TradeLink/MT5MobileRedirectOption';
 import { MT5TradeDetailsItem } from './MT5TradeDetailsItem';
 import { MT5TradeLink } from './MT5TradeLink';
 import './MT5TradeScreen.scss';
@@ -53,10 +55,26 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     }, [marketType, mt5Platform, platform, platformToAccountsListMapper.mt5]);
 
     const details = useMemo(() => {
-        return platform === mt5Platform
-            ? platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0]
-            : platformToAccountsListMapper.dxtrade?.[0];
-    }, [platform, mt5Platform, platformToAccountsListMapper.mt5, platformToAccountsListMapper.dxtrade, marketType]);
+        switch (platform) {
+            case mt5Platform:
+                return platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0];
+            case dxtradePlatform:
+                return platformToAccountsListMapper.dxtrade?.[0];
+            case ctraderPlatform:
+                return platformToAccountsListMapper.ctrader?.[0];
+            default:
+                return undefined;
+        }
+    }, [
+        platform,
+        mt5Platform,
+        platformToAccountsListMapper.mt5,
+        platformToAccountsListMapper.dxtrade,
+        platformToAccountsListMapper.ctrader,
+        dxtradePlatform,
+        ctraderPlatform,
+        marketType,
+    ]);
 
     const loginId = useMemo(() => {
         if (platform === mt5Platform) {
@@ -120,9 +138,9 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                 </div>
 
                 <div className='wallets-mt5-trade-screen__details-clipboards'>
-                    {getModalState('platform') === mt5Platform && (
+                    {getModalState('platform') === mt5Platform && details?.platform === mt5Platform && (
                         <Fragment>
-                            <MT5TradeDetailsItem label='Broker' value='Deriv Holdings (Guernsey) Ltd' />
+                            <MT5TradeDetailsItem label='Broker' value={details?.landing_company ?? ''} />
                             <MT5TradeDetailsItem
                                 label='Server'
                                 value={details?.server_info?.environment ?? 'Deriv-Server'}
@@ -159,17 +177,10 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
             <div className='wallets-mt5-trade-screen__links'>
                 {platform === mt5Platform && (
                     <Fragment>
-                        <MT5TradeLink
-                            app='web'
-                            platform={mt5Platform}
-                            webtraderUrl={(details as THooks.MT5AccountsList)?.webtrader_url}
-                        />
-                        {isDesktop && (
-                            <Fragment>
-                                <MT5TradeLink app='windows' platform={mt5Platform} />
-                                <MT5TradeLink app='macos' platform={mt5Platform} />
-                                <MT5TradeLink app='linux' platform={mt5Platform} />
-                            </Fragment>
+                        {isDesktop ? (
+                            <MT5DesktopRedirectOption />
+                        ) : (
+                            <MT5MobileRedirectOption mt5TradeAccount={details as THooks.MT5AccountsList} />
                         )}
                     </Fragment>
                 )}
@@ -186,5 +197,4 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
         </div>
     );
 };
-
 export default MT5TradeScreen;

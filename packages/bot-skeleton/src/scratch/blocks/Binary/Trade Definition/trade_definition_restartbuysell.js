@@ -23,6 +23,12 @@ Blockly.Blocks.trade_definition_restartbuysell = {
 
         this.setMovable(false);
         this.setDeletable(false);
+        this.setOnChange(() => {
+            const next_block = this?.getNextBlock();
+            if (next_block?.type !== 'trade_definition_restartonerror') {
+                next_block?.unplug(true);
+            }
+        });
     },
     onchange(/* event */) {
         if (!this.workspace || Blockly.derivWorkspace.isFlyout_ || this.workspace.isDragging()) {

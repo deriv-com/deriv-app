@@ -91,7 +91,7 @@ const Header = observer(() => {
             case pathname === routes.onboarding:
                 result = null;
                 break;
-            case is_dtrader_v2_enabled && is_mobile && pathname === routes.trade:
+            case is_dtrader_v2_enabled && is_mobile && pathname.startsWith(routes.trade):
                 result = <DTraderV2Header />;
                 break;
             case is_dtrader_v2_enabled &&

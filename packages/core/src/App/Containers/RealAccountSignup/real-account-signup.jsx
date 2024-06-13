@@ -280,10 +280,10 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
     );
 
     React.useEffect(() => {
-        if (is_real_acc_signup_on) {
+        if (is_real_acc_signup_on && real_account_signup_target === 'svg') {
             trackEvent({ action: 'open' });
         }
-    }, [is_real_acc_signup_on, trackEvent]);
+    }, [is_real_acc_signup_on, real_account_signup_target, trackEvent]);
 
     const getModalHeight = () => {
         if (is_from_restricted_country) return '304px';

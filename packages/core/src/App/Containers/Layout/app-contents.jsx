@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useLocation, withRouter } from 'react-router';
 import { Analytics } from '@deriv-com/analytics';
-import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, ThemedScrollbars, useDevice } from '@deriv/components';
 import { CookieStorage, isMobile, TRACKING_STATUS_KEY, platforms, routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
+import { useFeatureFlags } from '@deriv/hooks';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 
 const tracking_status_cookie = new CookieStorage(TRACKING_STATUS_KEY);
@@ -31,6 +32,16 @@ const AppContents = observer(({ children }) => {
         setAppContentsScrollRef,
         is_dark_mode_on: is_dark_mode,
     } = ui;
+
+    const { is_dtrader_v2_enabled } = useFeatureFlags();
+    const { pathname } = useLocation();
+    const { is_mobile } = useDevice();
+
+    const isDTraderV2 =
+        is_dtrader_v2_enabled &&
+        is_mobile &&
+        (pathname.startsWith(routes.trade) ||
+            pathname.startsWith('/contract/') === routes.contract.startsWith('/contract/'));
 
     const tracking_status = tracking_status_cookie.get(TRACKING_STATUS_KEY);
 
@@ -109,6 +120,7 @@ const AppContents = observer(({ children }) => {
                 'app-contents--is-scrollable': is_cfd_page || is_cashier_visible,
                 'app-contents--is-hidden': platforms[platform],
                 'app-contents--is-onboarding': window.location.pathname === routes.onboarding,
+                'app-contents--is-dtrader-v2': isDTraderV2,
             })}
             ref={scroll_ref}
         >

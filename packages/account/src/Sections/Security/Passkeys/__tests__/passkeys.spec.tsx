@@ -8,7 +8,7 @@ import { useGetPasskeysList, useRegisterPasskey } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import Passkeys from '../passkeys';
-import PasskeysList from '../components/passkeys-list';
+import { PasskeysList } from '../components/passkeys-list';
 
 const passkey_name_1 = 'Test Passkey 1';
 const passkey_name_2 = 'Test Passkey 2';
@@ -19,7 +19,7 @@ export const mock_passkeys_list: React.ComponentProps<typeof PasskeysList>['pass
         name: passkey_name_1,
         last_used: 1633024800000,
         created_at: 1633024800000,
-        stored_on: '',
+        stored_on: 'Test device 1',
         icon: 'Test Icon 1',
         passkey_id: 'mock-id-1',
     },
@@ -28,7 +28,7 @@ export const mock_passkeys_list: React.ComponentProps<typeof PasskeysList>['pass
         name: passkey_name_2,
         last_used: 1633124800000,
         created_at: 1634024800000,
-        stored_on: '',
+        stored_on: 'Test device 2',
         icon: 'Test Icon 2',
         passkey_id: 'mock-id-2',
     },
@@ -64,6 +64,8 @@ describe('Passkeys', () => {
     const create_passkey = 'Create passkey';
     const error_message = 'We’re experiencing a temporary issue in processing your request. Please try again later.';
     const error_title = 'Unable to process your request';
+    const ok_button = /ok/i;
+    const continue_button = /continue/i;
 
     const tracking_event = 'ce_passkey_account_settings_form';
     const getAnalyticsParams = (
@@ -98,13 +100,17 @@ describe('Passkeys', () => {
         jest.clearAllMocks();
     });
 
-    const RenderWrapper = ({ children }: React.PropsWithChildren) => (
-        <MemoryRouter>
-            <APIProvider>
-                <StoreProvider store={mock_store}>{children}</StoreProvider>
-            </APIProvider>
-        </MemoryRouter>
-    );
+    const renderComponent = () => {
+        render(
+            <MemoryRouter>
+                <APIProvider>
+                    <StoreProvider store={mock_store}>
+                        <Passkeys />
+                    </StoreProvider>
+                </APIProvider>
+            </MemoryRouter>
+        );
+    };
 
     const mockCreatePasskey = jest.fn();
     const mockStartPasskeyRegistration = jest.fn();
@@ -117,11 +123,7 @@ describe('Passkeys', () => {
         });
 
         mock_store.ui.is_mobile = false;
-        render(
-            <RenderWrapper>
-                <Passkeys />
-            </RenderWrapper>
-        );
+        renderComponent();
 
         expect(screen.queryByText(passkey_name_1)).not.toBeInTheDocument();
         expect(screen.queryByText(passkey_name_2)).not.toBeInTheDocument();
@@ -134,11 +136,7 @@ describe('Passkeys', () => {
             is_passkeys_list_loading: true,
         });
 
-        render(
-            <RenderWrapper>
-                <Passkeys />
-            </RenderWrapper>
-        );
+        renderComponent();
 
         expect(screen.getByText('MockLoading')).toBeInTheDocument();
         expect(Analytics.trackEvent).not.toHaveBeenCalled();
@@ -151,17 +149,13 @@ describe('Passkeys', () => {
 
         mock_store.common.network_status.class = 'offline';
 
-        render(
-            <RenderWrapper>
-                <Passkeys />
-            </RenderWrapper>
-        );
+        renderComponent();
 
         expect(screen.getByText('MockLoading')).toBeInTheDocument();
         expect(Analytics.trackEvent).not.toHaveBeenCalled();
     });
 
-    it('renders existed passkeys correctly and triggers new passkey creation', async () => {
+    it('renders existed passkeys correctly and triggers new passkey creation', () => {
         (useGetPasskeysList as jest.Mock).mockReturnValue({
             passkeys_list: mock_passkeys_list,
         });
@@ -169,11 +163,8 @@ describe('Passkeys', () => {
             startPasskeyRegistration: mockStartPasskeyRegistration,
         });
 
-        render(
-            <RenderWrapper>
-                <Passkeys />
-            </RenderWrapper>
-        );
+        renderComponent();
+
         expect(screen.getByText(passkey_name_1)).toBeInTheDocument();
         expect(screen.getByText(passkey_name_2)).toBeInTheDocument();
 
@@ -194,11 +185,7 @@ describe('Passkeys', () => {
             startPasskeyRegistration: mockStartPasskeyRegistration,
         });
 
-        render(
-            <RenderWrapper>
-                <Passkeys />
-            </RenderWrapper>
-        );
+        renderComponent();
 
         expect(screen.getByText('Experience safer logins')).toBeInTheDocument();
         const learn_more_button = screen.getByRole('button', { name: 'Learn more' });
@@ -221,11 +208,7 @@ describe('Passkeys', () => {
             is_passkey_registered: true,
         });
 
-        render(
-            <RenderWrapper>
-                <Passkeys />
-            </RenderWrapper>
-        );
+        renderComponent();
 
         expect(screen.getByText('Success!')).toBeInTheDocument();
         expect(Analytics.trackEvent).toHaveBeenCalledWith(
@@ -236,7 +219,7 @@ describe('Passkeys', () => {
         userEvent.click(add_more_passkeys_button);
         expect(Analytics.trackEvent).toHaveBeenCalledWith(tracking_event, getAnalyticsParams('add_more_passkeys'));
 
-        const create_passkey_button = screen.getByRole('button', { name: 'Create passkey' });
+        const create_passkey_button = screen.getByRole('button', { name: create_passkey });
         expect(create_passkey_button).toBeInTheDocument();
         expect(screen.queryByText('Success!')).not.toBeInTheDocument();
     });
@@ -246,11 +229,7 @@ describe('Passkeys', () => {
             is_passkey_registered: true,
         });
 
-        render(
-            <RenderWrapper>
-                <Passkeys />
-            </RenderWrapper>
-        );
+        renderComponent();
 
         expect(screen.getByText('Success!')).toBeInTheDocument();
         expect(Analytics.trackEvent).toHaveBeenCalledWith(
@@ -276,21 +255,18 @@ describe('Passkeys', () => {
         (useRegisterPasskey as jest.Mock).mockReturnValue({
             createPasskey: mockCreatePasskey,
             is_passkey_registration_started: true,
+            startPasskeyRegistration: mockStartPasskeyRegistration,
         });
 
-        render(
-            <RenderWrapper>
-                <Passkeys />
-            </RenderWrapper>
-        );
+        renderComponent();
 
+        userEvent.click(screen.getByRole('button', { name: create_passkey }));
         expect(screen.getByText('Just a reminder')).toBeInTheDocument();
         expect(screen.getByText('Enable screen lock on your device.')).toBeInTheDocument();
         expect(screen.getByText('Enable bluetooth.')).toBeInTheDocument();
         expect(screen.getByText('Sign in to your Google or iCloud account.')).toBeInTheDocument();
 
-        const continue_button = screen.getByRole('button', { name: /continue/i });
-        userEvent.click(continue_button);
+        userEvent.click(screen.getByRole('button', { name: continue_button }));
         expect(mockCreatePasskey).toBeCalledTimes(1);
         expect(Analytics.trackEvent).toHaveBeenCalledWith(
             tracking_event,
@@ -302,18 +278,21 @@ describe('Passkeys', () => {
         (useRegisterPasskey as jest.Mock).mockReturnValue({
             passkey_registration_error: { message: 'error' },
             clearPasskeyRegistrationError: mockClearPasskeyRegistrationError,
+            startPasskeyRegistration: mockStartPasskeyRegistration,
+            createPasskey: mockCreatePasskey,
         });
 
-        render(
-            <RenderWrapper>
-                <Passkeys />
-            </RenderWrapper>
-        );
+        renderComponent();
 
-        const ok_button = screen.getByRole('button', { name: /ok/i });
-        expect(screen.getByText(error_message)).toBeInTheDocument();
-        expect(screen.getByText(error_title)).toBeInTheDocument();
-        userEvent.click(ok_button);
+        userEvent.click(screen.getByRole('button', { name: create_passkey }));
+        userEvent.click(screen.getByRole('button', { name: continue_button }));
+
+        await waitFor(() => {
+            expect(screen.getByText(error_message)).toBeInTheDocument();
+            expect(screen.getByText(error_title)).toBeInTheDocument();
+        });
+
+        userEvent.click(screen.getByRole('button', { name: ok_button }));
         await waitFor(() => {
             expect(mockClearPasskeyRegistrationError).toBeCalledTimes(1);
             expect(mockHistoryPush).toHaveBeenCalledWith(routes.traders_hub);
@@ -323,6 +302,8 @@ describe('Passkeys', () => {
     it('renders passkeys list error modal and triggers closing', async () => {
         (useRegisterPasskey as jest.Mock).mockReturnValue({
             passkey_registration_error: null,
+            startPasskeyRegistration: mockStartPasskeyRegistration,
+            createPasskey: mockCreatePasskey,
         });
 
         (useGetPasskeysList as jest.Mock).mockReturnValue({
@@ -330,16 +311,17 @@ describe('Passkeys', () => {
             reloadPasskeysList: mockReloadPasskeysList,
         });
 
-        render(
-            <RenderWrapper>
-                <Passkeys />
-            </RenderWrapper>
-        );
+        renderComponent();
 
-        const ok_button = screen.getByRole('button', { name: /ok/i });
-        expect(screen.getByText(error_message)).toBeInTheDocument();
-        expect(screen.getByText(error_title)).toBeInTheDocument();
-        userEvent.click(ok_button);
+        userEvent.click(screen.getByRole('button', { name: create_passkey }));
+        userEvent.click(screen.getByRole('button', { name: continue_button }));
+
+        await waitFor(() => {
+            expect(screen.getByText(error_message)).toBeInTheDocument();
+            expect(screen.getByText(error_title)).toBeInTheDocument();
+        });
+
+        userEvent.click(screen.getByRole('button', { name: ok_button }));
         expect(mockHistoryPush).toHaveBeenCalledWith(routes.traders_hub);
     });
 });

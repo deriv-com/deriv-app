@@ -4,8 +4,8 @@ import useActiveWalletAccount from './useActiveWalletAccount';
 
 /** A custom hook that gets the active linked trading account for the current user. */
 const useActiveLinkedToTradingAccount = () => {
-    const { data: account_list_data } = useDerivAccountsList();
-    const { data: wallet_account_data } = useActiveWalletAccount();
+    const { data: account_list_data, isLoading: isDerivAccountListLoading } = useDerivAccountsList();
+    const { data: wallet_account_data, isLoading: isActiveWalletAccountLoading } = useActiveWalletAccount();
 
     const modified_account = useMemo(() => {
         if (!account_list_data || !wallet_account_data) return undefined;
@@ -22,6 +22,7 @@ const useActiveLinkedToTradingAccount = () => {
     return {
         /** The active linked trading account for the current user. */
         data: modified_account,
+        isLoading: isDerivAccountListLoading || isActiveWalletAccountLoading,
     };
 };
 

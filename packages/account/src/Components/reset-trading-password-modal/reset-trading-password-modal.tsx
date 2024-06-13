@@ -214,7 +214,11 @@ const ResetTradingPassword = ({
                                         </PasswordMeter>
                                     </fieldset>
                                     <Text as='p' size='xs' className='reset-trading-password__hint'>
-                                        <Localize i18n_default_text='Your password must contain between 8-16 characters that include uppercase and lowercase letters, and at least one number and special character such as ( _ @ ? ! / # ).' />
+                                        {platform === CFD_PLATFORMS.DXTRADE ? (
+                                            <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
+                                        ) : (
+                                            <Localize i18n_default_text='Your password must contain between 8-16 characters that include uppercase and lowercase letters, and at least one number and special character such as ( _ @ ? ! / # ).' />
+                                        )}
                                     </Text>
                                     <FormSubmitButton
                                         is_disabled={!values.password || !!errors.password || isSubmitting}

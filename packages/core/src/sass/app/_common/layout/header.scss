@@ -400,6 +400,16 @@
     }
 
     &__acc-info {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+
+        &__name {
+            display: flex;
+            align-items: center;
+            gap: var(--core-spacing-200);
+        }
+
         &__container {
             height: 100%;
             display: flex;
@@ -408,10 +418,6 @@
             padding-inline: var(--core-spacing-800);
 
             .notifications {
-                // &__wrapper {
-                //     position: relative;
-                // }
-
                 &__icon {
                     fill: var(--core-color-opacity-black-600);
                 }
@@ -428,7 +434,7 @@
         &__select-arrow {
             pointer-events: none;
             transform: rotate(0);
-            transform-origin: 50% 45%;
+            // TODO: check for animation quill token. Current animation was taken from production
             transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
 
             &--up {

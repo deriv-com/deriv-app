@@ -14,7 +14,7 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            border-bottom: 1px solid var(--core-color-solid-slate-75);
+            border-bottom: var(--core-borderWidth-75) solid var(--core-color-solid-slate-75);
             margin: var(--core-spacing-400) 0;
         }
 

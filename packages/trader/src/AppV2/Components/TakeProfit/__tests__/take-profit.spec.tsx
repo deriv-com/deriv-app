@@ -35,13 +35,9 @@ describe('TakeProfit component', () => {
         jest.clearAllMocks();
     });
 
-    it('renders the RiskManagementItem component when take profit is visible', () => {
-        render(<TakeProfit />);
-        expect(screen.getByText('Risk Management Item Mock')).toBeInTheDocument();
-    });
-
     it('passes correct props to RiskManagementItem component when take profit is visible', () => {
         render(<TakeProfit />);
+        expect(screen.getByText('Risk Management Item Mock')).toBeInTheDocument();
         expect(screen.getByText('Take profit')).toBeInTheDocument();
         expect(
             screen.getByText(

@@ -35,13 +35,9 @@ describe('StopLoss component', () => {
         jest.clearAllMocks();
     });
 
-    it('renders the RiskManagementItem component when stop loss is visible', () => {
-        render(<StopLoss />);
-        expect(screen.getByText('Risk Management Item Mock')).toBeInTheDocument();
-    });
-
     it('passes correct props to RiskManagementItem component when stop loss is visible', () => {
         render(<StopLoss />);
+        expect(screen.getByText('Risk Management Item Mock')).toBeInTheDocument();
         expect(screen.getByText('Stop Loss')).toBeInTheDocument();
         expect(
             screen.getByText(

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActionSheet, Text, TextField, TextFieldWithSteppers, ToggleSwitch } from '@deriv-com/quill-ui';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import RiskManagementInfoModal from '../RiskManagementInfoModal';
 import DealCancellationRemainingTime from '../DealCancellationRemainingTime/deal-cancellation-remaining-time';
 import { observer } from '@deriv/stores';
@@ -17,7 +17,7 @@ type RiskManagementItemProps = {
 
 const RiskManagementItem = observer(
     ({ label, modal_body_content, is_deal_cancellation = false, value, type }: RiskManagementItemProps) => {
-        const [toggle, setToggle] = React.useState(Boolean(value));
+        const [isToggleOn, setIsToggleOn] = React.useState(Boolean(value));
         const [isSheetOpen, setIsSheetOpen] = React.useState(false);
         const [isEnabled, setIsEnabled] = React.useState(false);
         const [stepperValue, setStepperValue] = React.useState(0);
@@ -30,7 +30,7 @@ const RiskManagementItem = observer(
         React.useEffect(() => {
             if (value) {
                 setStepperValue(value);
-                setToggle(Boolean(value));
+                setIsToggleOn(Boolean(value));
             }
             return () => clearContractUpdateConfigValues();
         }, [clearContractUpdateConfigValues, value]);
@@ -39,7 +39,7 @@ const RiskManagementItem = observer(
         const finalValue = Math.abs(value as number);
 
         const errorKey = `contract_update_${type}` as 'contract_update_stop_loss' | 'contract_update_take_profit';
-        const errorMessage = validation_errors[errorKey]?.length > 0 ? validation_errors[errorKey][0] : '';
+        const errorMessage = validation_errors[errorKey]?.[0] ?? '';
 
         const getMessageForMultiplier = (is_valid_to_cancel: boolean, is_deal_cancellation: boolean) =>
             is_valid_to_cancel && !is_deal_cancellation ? (
@@ -76,7 +76,7 @@ const RiskManagementItem = observer(
                     value,
                 });
                 updateLimitOrder();
-                setToggle(!toggle);
+                setIsToggleOn(!isToggleOn);
             }
         };
 
@@ -109,13 +109,13 @@ const RiskManagementItem = observer(
                         ) : (
                             <ToggleSwitch
                                 disabled={isDealCancellation}
-                                checked={toggle}
+                                checked={isToggleOn}
                                 onChange={handleToggleSwitch}
                             />
                         ))}
                     {is_valid_to_cancel && is_deal_cancellation && <DealCancellationRemainingTime />}
                 </div>
-                {!is_accumulator && toggle && (
+                {!is_accumulator && isToggleOn && (
                     <TextField
                         variant='fill'
                         inputSize='md'
@@ -159,10 +159,10 @@ const RiskManagementItem = observer(
                             )}
                         </ActionSheet.Content>
                         <ActionSheet.Footer
-                            isPrimaryButtonDisabled={errorMessage !== ''}
+                            isPrimaryButtonDisabled={!!errorMessage}
                             shouldCloseOnPrimaryButtonClick
                             primaryAction={{
-                                content: localize('Save'),
+                                content: <Localize i18n_default_text='Save' />,
                                 onAction: onSave,
                             }}
                         />

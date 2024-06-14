@@ -31,7 +31,7 @@ const OrderDetails = ({ contract_info }: ContractInfoProps) => {
                                         </Text>
                                     ))
                                 ) : (
-                                    <Text size='sm'>{value as string | number}</Text>
+                                    <Text size='sm'>{value}</Text>
                                 )}
                             </div>
                         </div>

@@ -28,7 +28,7 @@ const TakeProfitHistory = ({ history = [], currency }: TContractHistory) => {
     const currentItems = history.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
     return (
-        <CardWrapper title={<Localize i18n_default_text='TP history' />} className='take-profit-history'>
+        <CardWrapper title={<Localize i18n_default_text='TP & SL history' />} className='take-profit-history'>
             <div
                 className={clsx('take-profit-history__table', {
                     'take-profit-history__table--fixed-height': history.length > itemsPerPage,

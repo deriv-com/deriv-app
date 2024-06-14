@@ -20,7 +20,7 @@ jest.mock('@deriv-com/quill-ui', () => ({
             <button onClick={primaryAction.onAction}>{primaryAction.content}</button>
         ),
     },
-    Text: ({ children, size, color }: { children: React.ReactNode; size: string; color?: string }) => (
+    Text: ({ children, color }: { children: React.ReactNode; color?: string }) => (
         <span className={color}>{children}</span>
     ),
     ToggleSwitch: ({

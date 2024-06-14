@@ -1,5 +1,13 @@
-import { Button } from '@deriv-com/quill-ui';
-import { TContractInfo, getCardLabels, isMultiplierContract, isValidToCancel, isValidToSell } from '@deriv/shared';
+import { Button, Text } from '@deriv-com/quill-ui';
+import { RemainingTime } from '@deriv/components';
+import {
+    TContractInfo,
+    formatMoney,
+    getCardLabels,
+    isMultiplierContract,
+    isValidToCancel,
+    isValidToSell,
+} from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { getRemainingTime } from 'AppV2/Utils/helper';
 import { observer } from 'mobx-react';
@@ -44,12 +52,20 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                         <Button
                             onClick={() => onClickCancel(contract_id)}
                             variant='secondary'
-                            label={`${getCardLabels().CANCEL} ${getRemainingTime({
-                                end_time: cancellation_date_expiry,
-                                format: 'mm:ss',
-                                getCardLabels,
-                                start_time: server_time,
-                            })}`}
+                            label={
+                                <>
+                                    {getCardLabels().CANCEL}
+                                    {'  '}
+                                    <RemainingTime
+                                        as='span'
+                                        end_time={cancellation_date_expiry}
+                                        format='mm:ss'
+                                        className='color'
+                                        getCardLabels={getCardLabels}
+                                        start_time={server_time}
+                                    />
+                                </>
+                            }
                             color='black'
                             disabled={Number(profit) >= 0}
                             size='lg'
@@ -62,7 +78,7 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                     variant='secondary'
                     label={
                         is_valid_to_sell
-                            ? `${getCardLabels().CLOSE} @ ${bid_price} ${currency}`
+                            ? `${getCardLabels().CLOSE} @ ${bid_price} ${formatMoney(currency)}`
                             : getCardLabels().RESALE_NOT_OFFERED
                     }
                     color='black'

@@ -6,13 +6,13 @@
     overflow: auto;
     gap: var(--semantic-spacing-general-sm);
     height: 100vh;
-    padding-bottom: var(--core-spacing-400);
+    padding-bottom: var(--semantic-spacing-general-4xl);
     &--two-buttons {
-        padding-bottom: 230px;
+        padding-bottom: 186px;
     }
 
     &--one-button {
-        padding-bottom: 140px;
+        padding-bottom: 130px;
     }
     .contract-card-wrapper {
         margin-top: var(--core-spacing-200);

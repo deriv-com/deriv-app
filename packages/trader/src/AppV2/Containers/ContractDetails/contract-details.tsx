@@ -76,34 +76,37 @@ const ContractDetails = observer(() => {
         showTpSl = isOpen(contract_info) && Boolean(limit_order);
     }
     return (
-        <div
-            className={classNames('contract-details', {
-                'contract-details--two-buttons': should_show_sell && show_cancel_button,
-                'contract-details--one-button': should_show_sell && !show_cancel_button,
-            })}
-        >
-            <div className='contract-card-wrapper'>
-                <ContractCard contractInfo={contract_info} serverTime={server_time} />
-            </div>
-            <div className='placeholder'>
-                <ChartPlaceholder />
-            </div>
-            <DealCancellation />
-            {showTpSl && (
-                <CardWrapper>
-                    <TakeProfit />
-                    <StopLoss />
-                </CardWrapper>
-            )}
+        <>
+            {' '}
+            <div
+                className={classNames('contract-details', {
+                    'contract-details--two-buttons': should_show_sell && show_cancel_button,
+                    'contract-details--one-button': should_show_sell && !show_cancel_button,
+                })}
+            >
+                <div className='contract-card-wrapper'>
+                    <ContractCard contractInfo={contract_info} serverTime={server_time} />
+                </div>
+                <div className='placeholder'>
+                    <ChartPlaceholder />
+                </div>
+                <DealCancellation />
+                {showTpSl && (
+                    <CardWrapper>
+                        <TakeProfit />
+                        <StopLoss />
+                    </CardWrapper>
+                )}
 
-            <OrderDetails contract_info={contract_info} />
-            <PayoutInfo contract_info={contract_info} />
-            <EntryExitDetails contract_info={contract_info} />
-            {is_tp_history_visible && update_history.length > 0 && (
-                <TakeProfitHistory history={update_history} currency={currency} />
-            )}
+                <OrderDetails contract_info={contract_info} />
+                <PayoutInfo contract_info={contract_info} />
+                <EntryExitDetails contract_info={contract_info} />
+                {is_tp_history_visible && update_history.length > 0 && (
+                    <TakeProfitHistory history={update_history} currency={currency} />
+                )}
+            </div>
             {should_show_sell && <ContractDetailsFooter contract_info={contract_info} />}
-        </div>
+        </>
     );
 });
 

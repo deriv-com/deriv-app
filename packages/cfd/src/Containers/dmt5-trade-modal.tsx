@@ -60,16 +60,6 @@ const DMT5TradeModal = observer(
             return undefined;
         };
 
-        const getHeadingTitle = () =>
-            getCFDAccountDisplay({
-                market_type: mt5_trade_account.market_type,
-                sub_account_type: mt5_trade_account.sub_account_type,
-                platform: CFD_PLATFORMS.MT5,
-                is_eu: show_eu_related_content,
-                shortcode: getCompanyShortcode(),
-                product,
-                is_mt5_trade_modal: true,
-            });
         const getAccountTitle = () => {
             if (show_eu_related_content) return 'CFDs';
             else if (mt5_trade_account.market_type === MARKET_TYPE.SYNTHETIC) return 'Standard';

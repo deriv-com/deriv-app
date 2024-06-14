@@ -118,8 +118,8 @@ const DMT5TradeModal = observer(
                 <div className='cfd-trade-modal'>
                     <TradingPlatformIcon icon={getAccountIcons()} size={24} />
                     <div className='cfd-trade-modal__desc'>
-                        <div>
-                            <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
+                        <div className='cfd-trade-modal__desc-heading'>
+                            <Text size='xs' line_height='l'>
                                 {getAccountTitle()}
                             </Text>
                             {!is_demo ? (

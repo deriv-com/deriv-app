@@ -117,14 +117,12 @@ const DMT5TradeModal = observer(
                         )}
                         {is_demo && (
                             <React.Fragment>
-                                <div>
-                                    <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
-                                        {getAccountTitle()}
-                                    </Text>
-                                    <Text size='xs' line_height='l' className='cfd-trade-modal--tag'>
-                                        Demo
-                                    </Text>
-                                </div>
+                                <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
+                                    {getAccountTitle()}
+                                </Text>
+                                <Text size='xs' line_height='l' className='cfd-trade-modal--tag'>
+                                    Demo
+                                </Text>
                             </React.Fragment>
                         )}
                         {(mt5_trade_account as TTradingPlatformAccounts)?.display_login && (

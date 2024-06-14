@@ -4,17 +4,9 @@ import { StandaloneBellRegularIcon } from '@deriv/quill-icons';
 import { formatMoney, moduleLoader } from '@deriv/shared';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
-import 'Sass/app/_common/components/account-switcher.scss';
 import { Badge } from '@deriv-com/quill-ui';
-
-const AccountInfo = React.lazy(() =>
-    moduleLoader(
-        () =>
-            import(
-                /* webpackChunkName: "account-info", webpackPreload: true */ 'App/Components/Layout/Header/account-info.jsx'
-            )
-    )
-);
+import 'Sass/app/_common/components/account-switcher.scss';
+import AccountInfoDTraderV2 from './account-info-dtrader-v2';
 
 type TAccountActionsDTraderV2 = {
     acc_switcher_disabled_message?: string;
@@ -28,9 +20,30 @@ type TAccountActionsDTraderV2 = {
     is_acc_switcher_on?: boolean;
     is_logged_in?: boolean;
     is_virtual?: boolean;
-    notifications_count: number;
+    notifications_count?: number;
     toggleAccountsDialog: (value?: boolean | undefined) => void;
 };
+
+export type TAccountInfoDTraderV2 = Omit<
+    TAccountActionsDTraderV2,
+    'toggleAccountsDialog' | 'is_acc_switcher_disabled' | 'is_acc_switcher_on'
+> & {
+    is_dialog_on?: boolean;
+    toggleDialog: (value?: boolean | undefined) => void;
+    is_disabled?: boolean;
+    is_mobile?: boolean;
+};
+// const AccountInfoDTraderV2 = React.lazy(
+//     () =>
+//         moduleLoader(
+//             () =>
+//                 import(
+//                     /* webpackChunkName: "account-info-dtrader-v2", webpackPreload: true */ 'App/Components/Layout/Header/account-info-dtrader-v2'
+//                 )
+//         ) as Promise<{
+//             default: React.ComponentType<TAccountInfoDTraderV2>;
+//         }>
+// );
 
 const AccountActionsDTraderV2 = React.memo(
     ({
@@ -52,7 +65,7 @@ const AccountActionsDTraderV2 = React.memo(
             return (
                 <React.Fragment>
                     <React.Suspense fallback={<div />}>
-                        <AccountInfo
+                        <AccountInfoDTraderV2
                             acc_switcher_disabled_message={acc_switcher_disabled_message}
                             account_type={account_type}
                             balance={typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)}
@@ -87,6 +100,7 @@ const AccountActionsDTraderV2 = React.memo(
                 </React.Fragment>
             );
         }
+        // TODO: remove Login/out after
         return (
             <React.Fragment>
                 <LoginButton className='acc-info__button' />

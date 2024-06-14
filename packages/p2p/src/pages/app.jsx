@@ -275,7 +275,7 @@ const App = () => {
     if (is_p2p_v2_enabled) window.location.href = URLConstants.derivP2pProduction;
 
     if (is_logging_in || general_store.is_loading) {
-        return <Loading className='p2p__loading' is_fullscreen={false} />;
+        return <Loading className='p2p__loading' />;
     }
 
     return (

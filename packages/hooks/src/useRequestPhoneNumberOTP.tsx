@@ -22,7 +22,7 @@ const useRequestPhoneNumberOTP = () => {
     const [error_message, setErrorMessage] = React.useState<React.ReactNode>('');
     const { client } = useStore();
     const { verification_code } = client;
-    const { phone_number_verification } = verification_code;
+    const { phone_number_verification: phone_number_verification_code } = verification_code;
     const {
         mutation: { mutateAsync: updateSettings },
     } = useSettings();
@@ -32,7 +32,7 @@ const useRequestPhoneNumberOTP = () => {
         mutate({
             payload: {
                 carrier: VERIFICATION_SERVICES.SMS,
-                email_code: phone_number_verification || '',
+                email_code: phone_number_verification_code || '',
             },
         });
     };
@@ -41,7 +41,7 @@ const useRequestPhoneNumberOTP = () => {
         mutate({
             payload: {
                 carrier: VERIFICATION_SERVICES.WHATSAPP,
-                email_code: phone_number_verification || '',
+                email_code: phone_number_verification_code || '',
             },
         });
     };

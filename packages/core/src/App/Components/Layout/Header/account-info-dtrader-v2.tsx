@@ -85,10 +85,16 @@ const AccountInfoDTraderV2 = ({
                 is_mobile
                 is_dtrader_v2
             >
-                <div className='header-v2__acc-info__wrapper' onClick={is_disabled ? undefined : () => toggleDialog()}>
+                <button
+                    className='header-v2__acc-info__wrapper'
+                    onClick={is_disabled ? undefined : () => toggleDialog()}
+                >
                     {getAccountIcon(currency, !!is_virtual)}
                     <div className='header-v2__acc-info'>
                         <div className='header-v2__acc-info__name'>
+                            {/* <Text size='xxxs' line_height='s'>
+                                    <DisplayAccountType account_type={account_type} is_eu={!!is_eu} />
+                                </Text> */}
                             <CaptionText color='quill-typography__color--default'>
                                 <Localize i18n_default_text='Placeholder' />
                             </CaptionText>
@@ -110,13 +116,10 @@ const AccountInfoDTraderV2 = ({
                                 ) : (
                                     `${balance} ${getCurrencyDisplayCode(currency)}`
                                 )}
-                                {/* <Text size='xxxs' line_height='s'>
-                                    <DisplayAccountType account_type={account_type} is_eu={!!is_eu} />
-                                </Text> */}
                             </Heading.H5>
                         )}
                     </div>
-                </div>
+                </button>
             </AccountInfoWrapper>
             <AccountSwitcherMobile
                 is_visible={is_dialog_on}

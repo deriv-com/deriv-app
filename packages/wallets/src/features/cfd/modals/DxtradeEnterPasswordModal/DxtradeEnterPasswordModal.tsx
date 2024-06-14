@@ -71,7 +71,7 @@ const DxtradeEnterPasswordModal = () => {
         if (!isDxtradePasswordNotSet) {
             show(
                 <ModalWrapper isFullscreen={isMobile}>
-                    <SentEmailContent isForgotten onErrorButtonClick={hide} platform={dxtradePlatform} />
+                    <SentEmailContent isForgottenPassword onErrorButtonClick={hide} platform={dxtradePlatform} />
                 </ModalWrapper>
             );
         }

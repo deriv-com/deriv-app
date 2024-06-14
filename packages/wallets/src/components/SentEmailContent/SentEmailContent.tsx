@@ -22,7 +22,7 @@ import './SentEmailContent.scss';
 type SentEmailContentProps = {
     description?: string;
     isChangePassword?: boolean; // NOTE: This prop is ONLY used for rendering different email icons between either Change Password/Forgot password email modal
-    isForgotten?: boolean;
+    isForgottenPassword?: boolean;
     isInvestorPassword?: boolean;
     onErrorButtonClick?: () => void;
     platform?: TPlatforms.All;
@@ -59,7 +59,7 @@ const emailReasons = [
 const SentEmailContent: FC<SentEmailContentProps> = ({
     description,
     isChangePassword = false,
-    isForgotten = false,
+    isForgottenPassword = false,
     isInvestorPassword = false,
     onErrorButtonClick,
     platform,
@@ -106,7 +106,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
     return (
         <div
             className={classNames('wallets-sent-email-content', {
-                'wallets-sent-email-content--forgotten-password': isForgotten,
+                'wallets-sent-email-content--scrollable': isForgottenPassword,
             })}
         >
             <WalletsActionScreen

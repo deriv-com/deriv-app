@@ -472,7 +472,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     networkStatusChangeListener(is_online) {
-        this.is_loading = !is_online;
+        this.is_loading = this.is_loading || !is_online;
     }
 
     onMount() {

@@ -30,7 +30,7 @@ export const MarketTypeDetails = {
     synthetic: {
         description: i18n.t('CFDs on derived and financial instruments'),
         icon: <AccountsDmt5StandardIcon height={48} width={48} />,
-        title: i18n.t('Derived'),
+        title: i18n.t('Standard'),
     },
 } as const;
 

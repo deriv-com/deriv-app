@@ -848,7 +848,7 @@ type TAddContractParams = {
     limit_order?: ProposalOpenContract['limit_order'];
 };
 type TOnChartBarrierChange = null | ((barrier_1: string, barrier_2?: string) => void);
-type TOnChangeParams = { high: string | number; low?: string | number };
+type TOnChangeParams = { high: string | number; low?: string | number; title?: string; hidePriceLines?: boolean };
 type TBarriers = Array<{
     color: string;
     lineStyle: string;
@@ -868,7 +868,13 @@ type TBarriers = Array<{
     hideOffscreenBarrier?: boolean;
     isSingleBarrier?: boolean;
     onBarrierChange: (barriers: TOnChangeParams) => void;
-    updateBarriers: (high: string | number, low?: string | number, isFromChart?: boolean) => void;
+    updateBarriers: (
+        high: string | number,
+        low?: string | number,
+        title?: string,
+        hidePriceLines?: boolean,
+        isFromChart?: boolean
+    ) => void;
     updateBarrierShade: (should_display: boolean, contract_type: string) => void;
     barrier_count: number;
     default_shade: string;

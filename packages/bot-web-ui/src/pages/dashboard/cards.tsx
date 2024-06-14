@@ -7,8 +7,9 @@ import { localize } from '@deriv/translations';
 import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderStackSendQsOpenEvent } from '../../analytics/rudderstack-quick-strategy';
+import DashboardBotList from './load-bot-preview/dashboard-bot-list';
 import GoogleDrive from './load-bot-preview/google-drive';
-import Recent from './load-bot-preview/recent';
 
 type TCardProps = {
     has_dashboard_strategies: boolean;
@@ -78,6 +79,8 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             method: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
                 setFormVisibility(true);
+                // send to rs if quick strategy is opened from dashbaord
+                rudderStackSendQsOpenEvent({ subform_source: 'dashboard' });
             },
         },
     ];
@@ -164,7 +167,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                         </MobileFullPageModal>
                     </MobileWrapper>
                 </div>
-                <Recent is_file_supported={is_file_supported} />
+                <DashboardBotList is_file_supported={is_file_supported} />
             </div>
         ),
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { setColors } from '@deriv/bot-skeleton';
 import { TStores } from '@deriv/stores/types';
@@ -124,7 +125,6 @@ export default class DashboardStore implements IDashboardStore {
         });
         this.root_store = root_store;
         this.core = core;
-        const removeHTMLTagsFromString = (param = '') => param.replace(/<.*?>/g, '');
 
         const getUserGuideContent = [...user_guide_content].map(
             item => `${item.search_id}# ${item.content.toLowerCase()}`
@@ -135,7 +135,9 @@ export default class DashboardStore implements IDashboardStore {
         const getFaqContent = faq_content.map(item => {
             return `${item.search_id}# ${item.title.toLowerCase()} ${item.description
                 .map(inner_item => {
-                    const itemWithoutHTML = removeHTMLTagsFromString(inner_item.content);
+                    const itemWithoutHTML = DOMPurify.sanitize(inner_item.content, {
+                        ALLOWED_TAGS: [], //kept empty to remove all tags
+                    });
                     return itemWithoutHTML?.toLowerCase();
                 })
                 .join(' ')}`;
@@ -354,7 +356,13 @@ export default class DashboardStore implements IDashboardStore {
 
     setFileLoaded = (has_file_loaded: boolean): void => {
         this.has_file_loaded = has_file_loaded;
-        clearInjectionDiv('store', document.getElementById('load-strategy__blockly-container'));
+        const el_ref = document.getElementById('load-strategy__blockly-container');
+        if (!el_ref) {
+            // eslint-disable-next-line no-console
+            console.warn('Could not find preview workspace element.');
+            return;
+        }
+        clearInjectionDiv(el_ref);
     };
 
     onCloseDialog = (): void => {
@@ -363,6 +371,7 @@ export default class DashboardStore implements IDashboardStore {
 
     setActiveTab = (active_tab: number): void => {
         this.active_tab = active_tab;
+        localStorage.setItem('active_tab', active_tab.toString());
     };
 
     setActiveTabTutorial = (active_tab_tutorials: number): void => {

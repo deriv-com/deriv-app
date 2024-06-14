@@ -1,9 +1,15 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockContractInfo, getCardLabels } from '@deriv/shared';
+import { mockContractInfo, getCardLabels, isValidToSell } from '@deriv/shared';
 import AccumulatorCardBody from '../accumulator-card-body';
 
 type TAccumulatorCardBody = React.ComponentProps<typeof AccumulatorCardBody>;
+
+jest.mock('../toggle-card-dialog', () => jest.fn(() => <div>ToggleCardDialog</div>));
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    isValidToSell: jest.fn(() => false),
+}));
 
 describe('<AccumulatorCardBody />', () => {
     const mock_props: TAccumulatorCardBody = {
@@ -57,9 +63,16 @@ describe('<AccumulatorCardBody />', () => {
         expect(screen.queryByTestId('dt_arrow_indicator')).not.toBeInTheDocument();
     });
 
-    it('should render arrow indicator if the contract is not sold (is_sold === false)', () => {
+    it('should render two arrow indicators if the contract was not sold (is_sold === false)', () => {
         render(<AccumulatorCardBody {...mock_props} is_sold={false} />);
 
-        expect(screen.getAllByTestId('dt_arrow_indicator')).not.toHaveLength(0);
+        expect(screen.getAllByTestId('dt_arrow_indicator')).toHaveLength(2);
+    });
+
+    it('should render ToggleCardDialog component if contract is valid to sell', () => {
+        (isValidToSell as jest.Mock).mockReturnValue(true);
+        render(<AccumulatorCardBody {...mock_props} />);
+
+        expect(screen.getByText('ToggleCardDialog')).toBeInTheDocument();
     });
 });

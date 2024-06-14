@@ -9,7 +9,7 @@ import styles from './WithdrawalCryptoPercentageSelector.module.scss';
 
 const WithdrawalCryptoPercentageSelector: React.FC = () => {
     const { setValues, values } = useFormikContext<TWithdrawalForm>();
-    const { accountLimits, activeAccount, fractionalDigits, getConvertedFiatAmount, isClientVerified } =
+    const { accountLimits, activeAccount, cryptoConfig, fractionalDigits, getConvertedFiatAmount, isClientVerified } =
         useWithdrawalCryptoContext();
 
     const getPercentageMessage = (value: string) => {
@@ -22,13 +22,14 @@ const WithdrawalCryptoPercentageSelector: React.FC = () => {
         }
     };
 
-    const isInvalidInput =
+    const isValidInput =
         !validateCryptoInput(
             activeAccount,
             fractionalDigits,
             isClientVerified,
             accountLimits?.remainder ?? 0,
-            values.cryptoAmount
+            values.cryptoAmount,
+            cryptoConfig?.minimum_withdrawal
         ) && !validateFiatInput(fractionalDigits, values.fiatAmount);
 
     const onChangePercentage = (percentage: number) => {
@@ -40,7 +41,8 @@ const WithdrawalCryptoPercentageSelector: React.FC = () => {
                 fractionalDigits,
                 isClientVerified,
                 accountLimits?.remainder ?? 0,
-                cryptoAmount
+                cryptoAmount,
+                cryptoConfig?.minimum_withdrawal
             )
                 ? getConvertedFiatAmount(cryptoAmount)
                 : '';
@@ -69,7 +71,7 @@ const WithdrawalCryptoPercentageSelector: React.FC = () => {
             />
             <div className={styles['percentage-message']}>
                 <Text color='less-prominent' size='xs'>
-                    {isInvalidInput && getPercentageMessage(values.cryptoAmount)}
+                    {isValidInput && getPercentageMessage(values.cryptoAmount)}
                 </Text>
             </div>
         </div>

@@ -1,25 +1,31 @@
 import { useMemo } from 'react';
-import useQuery from '../useQuery';
 import useAuthorize from './useAuthorize';
 import useBalance from './useBalance';
 import useCurrencyConfig from './useCurrencyConfig';
 import { displayMoney } from '../utils';
+import useAuthorizedQuery from '../useAuthorizedQuery';
+import { getAccountListWithAuthToken } from '@deriv/utils';
 
 /** A custom hook that returns the list of accounts for the current user. */
 const useDerivAccountsList = () => {
-    const { data: authorize_data, isSuccess } = useAuthorize();
-    const { data: account_list_data, ...rest } = useQuery('account_list', {
-        options: {
-            enabled: isSuccess,
-            refetchOnWindowFocus: false,
-        },
-    });
+    const { data: authorize_data } = useAuthorize();
+
+    // its pretty much stale data, so never refresh, unless user creates a new account
+    const { data: account_list_data, ...rest } = useAuthorizedQuery(
+        'account_list',
+        {},
+        {
+            staleTime: Infinity,
+        }
+    );
+
     const { data: balance_data } = useBalance();
     const { getConfig } = useCurrencyConfig();
 
+    const account_list = account_list_data?.account_list;
     // Add additional information to the authorize response.
     const modified_accounts = useMemo(() => {
-        return account_list_data?.account_list?.map(account => {
+        return getAccountListWithAuthToken(account_list_data?.account_list)?.map(account => {
             return {
                 ...account,
                 /** Creation time of the account. */
@@ -50,7 +56,7 @@ const useDerivAccountsList = () => {
                 is_mf: account.loginid?.startsWith('MF'),
             } as const;
         });
-    }, [account_list_data?.account_list, authorize_data?.loginid, getConfig]);
+    }, [account_list_data, account_list, authorize_data?.loginid, getConfig]);
 
     // Add balance to each account
     const modified_accounts_with_balance = useMemo(

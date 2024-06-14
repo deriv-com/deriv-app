@@ -26,7 +26,6 @@ const TradeTypeSelect: React.FC = () => {
     const { setFieldValue, values, validateForm } = useFormikContext<TFormData>();
     const { quick_strategy } = useDBotStore();
     const { setValue } = quick_strategy;
-    const selected = values?.tradetype;
 
     React.useEffect(() => {
         const first_time_user_data = !(JSON.parse(localStorage?.getItem('qs-fields') as string) as TFormData);
@@ -39,7 +38,8 @@ const TradeTypeSelect: React.FC = () => {
     }, []);
 
     React.useEffect(() => {
-        if (values?.symbol && selected !== '') {
+        if (values?.symbol) {
+            const selected = values?.tradetype;
             const { contracts_for } = ApiHelpers.instance as unknown as TApiHelpersInstance;
             const getTradeTypes = async () => {
                 const trade_types = await contracts_for.getTradeTypesForQuickStrategy(values?.symbol);
@@ -47,7 +47,6 @@ const TradeTypeSelect: React.FC = () => {
                 const has_selected = trade_types?.some(trade_type => trade_type.value === selected);
                 if (!has_selected && trade_types?.[0]?.value !== selected) {
                     await setFieldValue?.('tradetype', trade_types?.[0].value || '');
-                    await validateForm();
                     setValue('tradetype', trade_types?.[0].value);
                 }
             };
@@ -56,7 +55,7 @@ const TradeTypeSelect: React.FC = () => {
             }, 100)();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [values?.symbol, selected]);
+    }, [values?.symbol]);
 
     const trade_type_dropdown_options = React.useMemo(
         () =>
@@ -79,7 +78,7 @@ const TradeTypeSelect: React.FC = () => {
                             {...field}
                             readOnly
                             inputMode='none'
-                            data-testid='qs_autocomplete_tradetype'
+                            data-testid='dt_qs_tradetype'
                             autoComplete='off'
                             className='qs__autocomplete'
                             value={selected_trade_type?.text || ''}

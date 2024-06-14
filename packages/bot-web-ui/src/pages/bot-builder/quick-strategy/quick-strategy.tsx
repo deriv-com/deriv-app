@@ -7,12 +7,13 @@ import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { DBOT_TABS } from 'Constants/bot-contents';
+import { rudderStackSendQsCloseEvent } from '../../../analytics/rudderstack-quick-strategy';
 import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
 import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
 import LossThresholdWarningDialog from './parts/loss-threshold-warning-dialog';
 import { STRATEGIES } from './config';
 import Form from './form';
-import { TConfigItem, TFormData } from './types';
+import { TConfigItem, TFormData, TFormValues } from './types';
 import './quick-strategy.scss';
 
 type TFormikWrapper = {
@@ -37,47 +38,70 @@ const getErrorMessage = (dir: 'MIN' | 'MAX', value: number, type = 'DEFAULT') =>
     return errors[type][dir];
 };
 
-export const initial_value: TFormData = {
-    symbol: qs_config.QUICK_STRATEGY.DEFAULT.symbol,
-    tradetype: '',
-    durationtype: qs_config.QUICK_STRATEGY.DEFAULT.durationtype,
-    stake: '1',
-    loss: '0',
-    profit: '0',
-    size: String(qs_config.QUICK_STRATEGY.DEFAULT.size),
-    duration: '1',
-    unit: String(qs_config.QUICK_STRATEGY.DEFAULT.unit),
-    action: 'RUN',
-    max_stake: 10,
-    boolean_max_stake: false,
-    last_digit_prediction: 1,
-};
-
 export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     const { client } = useStore();
     const { quick_strategy, dashboard, server_bot } = useDBotStore();
     const {
         selected_strategy,
         form_data,
-        onSubmit,
-        setValue,
         current_duration_min_max,
         initializeLossThresholdWarningData,
+        onSubmit,
+        setValue,
     } = quick_strategy;
     const { active_tab } = dashboard;
     const { setValueServerBot, createBot, setFormValues } = server_bot;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const [dynamic_schema, setDynamicSchema] = useState(Yup.object().shape({}));
-    const { BOT_BUILDER } = DBOT_TABS;
+    const { SERVER_BOT } = DBOT_TABS;
+    const is_mounted = useRef(true);
+
+    let initial_value: TFormData | null = null;
+
+    const getSavedValues = () => {
+        let data: TFormData | null = null;
+        try {
+            const data = JSON.parse(
+                localStorage.getItem(active_tab === SERVER_BOT ? 'server-form-fields' : 'qs-fields') || '{}'
+            );
+            Object.keys(data).forEach(key => {
+                initial_value[key as keyof TFormData] = data[key];
+                setValue(key, data[key]);
+            });
+        } catch {
+            data = null;
+        }
+        return data;
+    };
+
+    const getInitialValue = () => {
+        const data = getSavedValues();
+        initial_value = {
+            symbol: data?.symbol ?? qs_config.QUICK_STRATEGY.DEFAULT.symbol,
+            tradetype: data?.tradetype ?? '',
+            type: data?.type ?? '',
+            durationtype: data?.durationtype ?? qs_config.QUICK_STRATEGY.DEFAULT.durationtype,
+            duration: data?.duration ?? '1',
+            stake: data?.stake ?? '1',
+            loss: data?.loss ?? '',
+            profit: data?.profit ?? '',
+            size: data?.size ?? String(qs_config.QUICK_STRATEGY.DEFAULT.size),
+            unit: data?.unit ?? String(qs_config.QUICK_STRATEGY.DEFAULT.unit),
+            action: data?.action ?? 'RUN',
+            max_stake: data?.max_stake ?? 10,
+            boolean_max_stake: data?.boolean_max_stake || false,
+            last_digit_prediction: data?.last_digit_prediction ?? 1,
+        };
+        return initial_value;
+    };
 
     React.useEffect(() => {
-        const data = JSON.parse(
-            localStorage.getItem(active_tab === BOT_BUILDER ? 'server-form-fields' : 'qs-fields') || '{}'
-        );
-        Object.keys(data).forEach(key => {
-            initial_value[key as keyof TFormData] = data[key];
-            setValue(key, data[key]);
-        });
+        return () => {
+            is_mounted.current = false;
+        };
+    }, []);
+
+    React.useEffect(() => {
         initializeLossThresholdWarningData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -111,7 +135,7 @@ export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) =
                         if (should_validate && field.name === 'max_stake') {
                             min = +form_data?.stake;
                             if (isNaN(min)) {
-                                min = +initial_value.stake;
+                                min = +(initial_value?.stake ?? 0);
                             }
                             min_error = getErrorMessage('MIN', min);
                         }
@@ -161,31 +185,32 @@ export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) =
                 }
             });
         });
-        setDynamicSchema(Yup.object().shape(sub_schema));
+        if (is_mounted.current) {
+            setDynamicSchema(Yup.object().shape(sub_schema));
+        }
     };
 
     const handleSubmit = (form_data: TFormData) => {
-        const is_server_qs_form = active_tab === BOT_BUILDER;
+        const is_server_qs_form = active_tab === SERVER_BOT;
         if (is_server_qs_form) {
             localStorage?.setItem('server-form-fields', JSON.stringify(form_data));
             setValueServerBot(form_data);
             setFormValues(client?.currency);
             createBot();
         } else {
-            onSubmit(form_data); // true to load and run the bot
+            getErrors(form_data);
             localStorage?.setItem('qs-fields', JSON.stringify(form_data));
         }
+        return form_data;
     };
 
     return (
         <Formik
-            initialValues={initial_value}
+            initialValues={getInitialValue()}
             validationSchema={dynamic_schema}
             onSubmit={handleSubmit}
             validate={values => getErrors(values)}
-            validateOnBlur
-            validateOnChange
-            validateOnMount
+            validateOnChange={false}
         >
             {children}
         </Formik>
@@ -196,11 +221,24 @@ const QuickStrategy = observer(() => {
     const { quick_strategy } = useDBotStore();
     const { ui } = useStore();
     const { is_mobile } = ui;
-    const { is_open, setFormVisibility } = quick_strategy;
+    const { is_open, setFormVisibility, form_data, selected_strategy } = quick_strategy;
 
     const active_tab_ref = useRef<HTMLDivElement>(null);
 
+    const sendRudderStackQsFormCloseData = () => {
+        const active_tab =
+            active_tab_ref.current?.querySelector('.active')?.textContent?.toLowerCase() === 'learn more'
+                ? 'learn more'
+                : 'trade parameters';
+        rudderStackSendQsCloseEvent({
+            quick_strategy_tab: active_tab,
+            selected_strategy,
+            form_values: form_data as TFormValues,
+        });
+    };
+
     const handleClose = () => {
+        sendRudderStackQsFormCloseData();
         setFormVisibility(false);
     };
 

@@ -133,6 +133,7 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function (x = 0, y = 0, blocks_to_clean
         let column_index = 0;
 
         root_blocks.forEach((block, index) => {
+            block?.svgGroup_?.setAttribute('data-testid', block?.category_);
             if (index === (column_index + 1) * blocks_per_column) {
                 original_cursor_y = y;
                 column_index++;
@@ -140,7 +141,7 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function (x = 0, y = 0, blocks_to_clean
 
             const xy = block.getRelativeToSurfaceXY();
             const cursor_x = is_import ? x : -xy.x;
-            const cursor_y = original_cursor_y - (is_import ? 0 : xy.y);
+            const cursor_y = original_cursor_y - (is_import ? 0 : xy.y) + (DBotStore.instance.is_mobile ? 50 : 0);
 
             if (column_index === 0) {
                 block.moveBy(cursor_x, cursor_y);
@@ -204,6 +205,10 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function (x = 0, y = 0, blocks_to_clean
     const filtered_top_blocks = top_blocks.filter(block => !block.isMainBlock());
 
     filtered_top_blocks.forEach(block => {
+        if (this.RTL && block.comment) {
+            block.RTL = true;
+            block.comment.needsAutoPositioning_ = true;
+        }
         const xy = block.getRelativeToSurfaceXY();
         const cursor_x = is_import ? x : -xy.x;
         const cursor_y = original_cursor_y - (is_import ? 0 : xy.y);

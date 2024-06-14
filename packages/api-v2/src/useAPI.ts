@@ -15,7 +15,7 @@ const useAPI = () => {
     const send = useCallback(
         async <T extends TSocketEndpointNames | TSocketPaginateableEndpointNames = TSocketEndpointNames>(
             name: T,
-            payload?: TSocketRequestPayload<T>
+            payload?: TSocketRequestPayload<T>['payload']
         ): Promise<TSocketResponseData<T>> => {
             const response = await derivAPI?.send({ [name]: 1, ...(payload || {}) });
 
@@ -41,7 +41,9 @@ const useAPI = () => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 onError: (response: any) => void
             ) => { unsubscribe?: VoidFunction };
-        } => derivAPI?.subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) }),
+        } => {
+            return derivAPI?.subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) });
+        },
         [derivAPI]
     );
 

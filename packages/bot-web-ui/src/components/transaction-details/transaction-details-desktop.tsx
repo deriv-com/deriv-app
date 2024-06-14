@@ -33,13 +33,13 @@ const result_columns: TColumn[] = [
 const TransactionDetailsDesktop = observer(() => {
     const { client } = useStore();
     const { loginid, balance } = client;
-    const { transactions, run_panel } = useDBotStore();
+    const { transactions } = useDBotStore();
     const {
         toggleTransactionDetailsModal,
         is_transaction_details_modal_open,
         transactions: transaction_list,
     }: Partial<TTransactionStore> = transactions;
-    const { statistics }: Partial<TRunPanelStore> = run_panel;
+    const { statistics }: Partial<TRunPanelStore> = transactions;
 
     return (
         <React.Fragment>

@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-import useQuery from '../useQuery';
+import useWebsiteStatus from './useWebsiteStatus';
 
 /** A custom hook that gets the client country. */
 const useClientCountry = () => {
-    const { data, ...website_status_rest } = useQuery('website_status');
+    const { data, ...rest } = useWebsiteStatus();
 
     /** Modify the client country. */
     const modified_client_country = useMemo(() => {
@@ -13,7 +13,7 @@ const useClientCountry = () => {
     return {
         /** The client's country */
         data: modified_client_country,
-        ...website_status_rest,
+        ...rest,
     };
 };
 

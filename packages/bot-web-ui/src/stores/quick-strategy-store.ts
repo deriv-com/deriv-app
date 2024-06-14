@@ -209,5 +209,6 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
     toggleStopBotDialog = (): void => {
         this.is_contract_dialog_open = !this.is_contract_dialog_open;
         this.is_stop_bot_dialog_open = !this.is_stop_bot_dialog_open;
+        this.setFormVisibility(false);
     };
 }

@@ -14,8 +14,8 @@ export type TGetCryptoFiatConverterValidationSchema = {
         displayBalance?: string;
         fractionalDigits?: number;
         limits: {
-            max: number;
-            min: number;
+            max?: number;
+            min?: number;
         };
     };
     toAccount: {

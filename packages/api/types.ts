@@ -123,6 +123,8 @@ import type {
     P2PAdvertUpdateResponse,
     P2PChatCreateRequest,
     P2PChatCreateResponse,
+    P2PCountryListRequest,
+    P2PCountryListResponse,
     P2POrderCancelRequest,
     P2POrderCancelResponse,
     P2POrderConfirmRequest,
@@ -261,6 +263,10 @@ type KycAuthStatus = {
              * Reason(s) for the rejected POI attempt.
              */
             rejected_reasons?: string[];
+            /**
+             * Indicate if the verification report was returned by the provider (IDV only).
+             */
+            report_available?: 0 | 1;
         };
         /**
          * Service used for the current POI status.
@@ -2232,6 +2238,21 @@ type PasskeyRegisterResponse = {
     req_id?: number;
     [k: string]: unknown;
 };
+type PasskeysRenameRequest = {
+    passkeys_rename: 1;
+    id: number;
+    name: string;
+    req_id?: number;
+};
+type PasskeysRenameResponse = {
+    passkeys_rename?: 1 | 0;
+    echo_req: {
+        [k: string]: unknown;
+    };
+    msg_type: 'passkeys_rename';
+    req_id?: number;
+    [k: string]: unknown;
+};
 
 type TSocketEndpoints = {
     active_symbols: {
@@ -2490,6 +2511,10 @@ type TSocketEndpoints = {
         request: P2PChatCreateRequest;
         response: P2PChatCreateResponse;
     };
+    p2p_country_list: {
+        request: P2PCountryListRequest;
+        response: P2PCountryListResponse;
+    };
     p2p_order_cancel: {
         request: P2POrderCancelRequest;
         response: P2POrderCancelResponse;
@@ -2529,6 +2554,10 @@ type TSocketEndpoints = {
     passkeys_list: {
         request: PasskeysListRequest;
         response: PasskeysListResponse;
+    };
+    passkeys_rename: {
+        request: PasskeysRenameRequest;
+        response: PasskeysRenameResponse;
     };
     passkeys_register_options: {
         request: PasskeysRegisterOptionsRequest;

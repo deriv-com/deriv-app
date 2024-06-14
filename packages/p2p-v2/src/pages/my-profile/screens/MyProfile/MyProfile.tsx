@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ProfileContent, Verification } from '@/components';
 import { NicknameModal } from '@/components/Modals';
-import { useAdvertiserStats, usePoiPoaStatus, useQueryString } from '@/hooks';
+import { useAdvertiserStats, useIsAdvertiser, usePoiPoaStatus, useQueryString } from '@/hooks';
 import { Loader, Tab, Tabs, useDevice } from '@deriv-com/ui';
 import { MyProfileAdDetails } from '../MyProfileAdDetails';
 import { MyProfileCounterparties } from '../MyProfileCounterparties';
@@ -16,8 +16,9 @@ const MyProfile = () => {
     const { isMobile } = useDevice();
     const { queryString, setQueryString } = useQueryString();
     const { data } = usePoiPoaStatus();
-    const { data: advertiserStats, failureReason, isLoading } = useAdvertiserStats();
+    const { data: advertiserStats, isLoading } = useAdvertiserStats();
     const { isP2PPoaRequired, isPoaVerified, isPoiVerified } = data || {};
+    const isAdvertiser = useIsAdvertiser();
     const [isNicknameModalOpen, setIsNicknameModalOpen] = useState<boolean | undefined>(false);
 
     const currentTab = queryString.tab;
@@ -31,8 +32,8 @@ const MyProfile = () => {
 
     useEffect(() => {
         const isPoaPoiVerified = (!isP2PPoaRequired || isPoaVerified) && isPoiVerified;
-        if (isPoaPoiVerified && !!failureReason) setIsNicknameModalOpen(true);
-    }, [failureReason, isP2PPoaRequired, isPoaVerified, isPoiVerified]);
+        if (isPoaPoiVerified && !isAdvertiser) setIsNicknameModalOpen(true);
+    }, [isAdvertiser, isP2PPoaRequired, isPoaVerified, isPoiVerified]);
 
     if (isLoading && !advertiserStats) {
         return <Loader />;

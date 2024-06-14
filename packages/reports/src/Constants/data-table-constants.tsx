@@ -5,7 +5,6 @@ import {
     isMobile,
     getCurrencyDisplayCode,
     getTotalProfit,
-    shouldShowCancellation,
     getGrowthRatePercentage,
     getCardLabels,
 } from '@deriv/shared';
@@ -15,7 +14,7 @@ import { TCellContentProps, THeaderProps } from 'Types';
 import { getProfitOrLoss } from '../Helpers/profit-loss';
 import IndicativeCell from '../Components/indicative-cell';
 import MarketSymbolIconRow from '../Components/market-symbol-icon-row';
-import ProfitLossCell from '../Components/profit_loss_cell';
+import ProfitLossCell from '../Components/profit-loss-cell';
 import CurrencyWrapper from '../Components/currency-wrapper';
 import { useStore } from '@deriv/stores';
 import moment from 'moment';
@@ -320,9 +319,6 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
         col_index: 'cancellation',
         renderCellContent: ({ row_obj }: TCellContentProps) => {
             if (!row_obj.contract_info || !row_obj.contract_info.underlying) return '-';
-
-            if (!shouldShowCancellation(row_obj.contract_info.underlying)) return localize('N/A');
-
             if (row_obj.contract_info.cancellation) {
                 return <Money amount={row_obj.contract_info.cancellation.ask_price} currency={currency} />;
             }

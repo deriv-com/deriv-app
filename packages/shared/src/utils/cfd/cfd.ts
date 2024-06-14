@@ -1,8 +1,7 @@
 import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
-
 import { CFD_PLATFORMS } from '../platform';
-import { Jurisdiction, JURISDICTION_MARKET_TYPES } from '../constants/jurisdictions-config';
+import { AUTH_STATUS_CODES, Jurisdiction, JURISDICTION_MARKET_TYPES } from '../constants';
 
 let CFD_text_translated: { [key: string]: () => void };
 
@@ -12,11 +11,11 @@ export const CFD_text: { [key: string]: string } = {
     mt5_cfds: 'MT5 CFDs',
     cfd: 'CFDs',
     ctrader: 'Deriv cTrader',
-    synthetic: 'Derived',
-    synthetic_demo: 'Derived Demo',
-    synthetic_bvi: 'Derived BVI',
-    synthetic_svg: 'Derived SVG',
-    synthetic_v: 'Derived Vanuatu',
+    synthetic: 'Standard',
+    synthetic_demo: 'Standard Demo',
+    synthetic_bvi: 'Standard BVI',
+    synthetic_svg: 'Standard SVG',
+    synthetic_v: 'Standard Vanuatu',
     financial: 'Financial',
     financial_demo: 'Financial Demo',
     financial_bvi: 'Financial BVI',
@@ -489,7 +488,7 @@ export const getFormattedJurisdictionMarketTypes = (
     switch (jurisdiction_market_type) {
         case 'synthetic': // need to remove this once we have the correct market type from BE
         case JURISDICTION_MARKET_TYPES.DERIVED:
-            formatted_market_type = localize('Derived');
+            formatted_market_type = localize('Standard');
             break;
         case JURISDICTION_MARKET_TYPES.FINANCIAL:
             formatted_market_type = localize('Financial');
@@ -513,15 +512,10 @@ export const getMT5AccountTitle = ({ account_type, jurisdiction }: TGetMT5Accoun
 };
 
 export const isPOARequiredForMT5 = (account_status: GetAccountStatus, jurisdiction_shortcode: string) => {
-    const { authentication } = account_status || {};
-
-    if (authentication?.attempts?.latest?.service === 'idv') {
-        if (authentication?.document?.status === 'pending') {
-            return false;
-        }
-        // @ts-expect-error as the prop authenticated_with_idv is not yet present in GetAccountStatus
-        return !authentication?.document?.authenticated_with_idv[jurisdiction_shortcode];
+    const { document } = account_status?.authentication || {};
+    if (document?.status === AUTH_STATUS_CODES.PENDING) {
+        return false;
     }
-
-    return !['pending', 'verified'].includes(authentication?.document?.status ?? '');
+    // @ts-expect-error as the prop verified_jurisdiction is not yet present in GetAccountStatu
+    return !document?.verified_jurisdiction[jurisdiction_shortcode];
 };

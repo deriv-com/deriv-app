@@ -40,7 +40,7 @@ const FooterExtensionRenderer = (footer_extension, idx) => {
 const TradingHubFooter = observer(() => {
     const { client, common, ui, traders_hub } = useStore();
     const { show_eu_related_content } = traders_hub;
-    const { is_logged_in, is_eu, landing_company_shortcode, is_virtual } = client;
+    const { has_wallet, is_logged_in, is_eu, landing_company_shortcode, is_virtual } = client;
     const { current_language } = common;
     const {
         enableApp,
@@ -103,15 +103,17 @@ const TradingHubFooter = observer(() => {
                         show_eu_related_content={show_eu_related_content}
                     />
                 )}
-                <div className='footer__links--dark-mode'>
-                    <Popover alignment='top' message={localize('Change theme')} zIndex={9999}>
-                        {is_dark_mode ? (
-                            <LightModeToggleIcon onClick={changeTheme} />
-                        ) : (
-                            <DarkModeToggleIcon onClick={changeTheme} />
-                        )}
-                    </Popover>
-                </div>
+                {!has_wallet && (
+                    <div className='footer__links--dark-mode'>
+                        <Popover alignment='top' message={localize('Change theme')} zIndex={9999}>
+                            {is_dark_mode ? (
+                                <LightModeToggleIcon onClick={changeTheme} />
+                            ) : (
+                                <DarkModeToggleIcon onClick={changeTheme} />
+                            )}
+                        </Popover>
+                    </div>
+                )}
                 <FooterIconSeparator />
                 <HelpCentre />
                 {location === routes.trade && (
@@ -123,11 +125,13 @@ const TradingHubFooter = observer(() => {
                         settings_extension={settings_extension}
                     />
                 )}
-                <ToggleLanguageSettings
-                    is_settings_visible={is_language_settings_modal_on}
-                    toggleSettings={toggleLanguageSettingsModal}
-                    lang={current_language}
-                />
+                {!has_wallet && (
+                    <ToggleLanguageSettings
+                        is_settings_visible={is_language_settings_modal_on}
+                        toggleSettings={toggleLanguageSettingsModal}
+                        lang={current_language}
+                    />
+                )}
                 <ToggleFullScreen />
             </div>
         </footer>

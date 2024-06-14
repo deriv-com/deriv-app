@@ -165,11 +165,22 @@ jest.mock('@deriv/api-v2', () => ({
     useActiveAccount: () => ({ data: { currency: 'USD' } }),
 }));
 
-jest.mock('@/hooks', () => ({
-    ...jest.requireActual('@/hooks'),
-    useFloatingRate: () => ({ rateType: 'floating' }),
-    useQueryString: jest.fn().mockReturnValue({ queryString: { advertId: '' } }),
-}));
+jest.mock('@/hooks', () => {
+    const modalManager = {
+        hideModal: jest.fn(),
+        isModalOpenFor: jest.fn(),
+        showModal: jest.fn(),
+    };
+    modalManager.showModal.mockImplementation(() => {
+        modalManager.isModalOpenFor.mockReturnValue(true);
+    });
+    return {
+        ...jest.requireActual('@/hooks'),
+        useFloatingRate: () => ({ rateType: 'floating' }),
+        useModalManager: jest.fn().mockReturnValue(modalManager),
+        useQueryString: jest.fn().mockReturnValue({ queryString: { advertId: '' } }),
+    };
+});
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),

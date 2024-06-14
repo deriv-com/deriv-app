@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { THooks } from 'types';
 import { Search } from '@/components/Search';
 import { p2p } from '@deriv/api-v2';
 import { Checkbox, Text } from '@deriv-com/ui';
 import './FilterModalPaymentMethods.scss';
-import { THooks } from 'types';
 
 type TFilterModalPaymentMethodsProps = {
     selectedPaymentMethods: string[];

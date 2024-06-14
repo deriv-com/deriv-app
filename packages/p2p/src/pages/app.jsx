@@ -2,10 +2,11 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { reaction } from 'mobx';
 import { Loading } from '@deriv/components';
-import { useP2PCompletedOrdersNotification, useP2PSettings } from '@deriv/hooks';
+import { useP2PCompletedOrdersNotification, useFeatureFlags, useP2PSettings } from '@deriv/hooks';
 import { isEmptyObject, routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
+import { URLConstants } from '@deriv-com/utils';
 import { init } from 'Utils/server_time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
@@ -16,6 +17,7 @@ import Routes from 'Components/routes';
 import './app.scss';
 
 const App = () => {
+    const { is_p2p_v2_enabled } = useFeatureFlags();
     const { notifications, client, ui, common, modules } = useStore();
     const { balance, is_logging_in } = client;
     const { setOnRemount } = modules?.cashier?.general_store;
@@ -160,6 +162,7 @@ const App = () => {
         let passed_order_id;
 
         setActionParam(url_params.get('action'));
+
         if (is_mobile) {
             setCodeParam(localStorage.getItem('verification_code.p2p_order_confirm'));
         } else if (!code_param) {
@@ -258,18 +261,18 @@ const App = () => {
     }, [balance]);
 
     React.useEffect(() => {
-        if (code_param) {
+        if (action_param && code_param) {
             // We need an extra state since we delete the code from the query params.
             // Do not remove.
             order_store.setVerificationCode(code_param);
-        }
-        if (action_param && code_param) {
-            general_store.showModal({ key: 'LoadingModal', props: {} });
-            order_store.verifyEmailVerificationCode(action_param, code_param);
+            order_store.setActionParam(action_param);
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [action_param, code_param]);
+
+    // TODO: This will redirect the internal users to the standalone application temporarily. Remove this once the standalone application is ready.
+    if (is_p2p_v2_enabled) window.location.href = URLConstants.derivP2pProduction;
 
     if (is_logging_in || general_store.is_loading) {
         return <Loading className='p2p__loading' is_fullscreen={false} />;

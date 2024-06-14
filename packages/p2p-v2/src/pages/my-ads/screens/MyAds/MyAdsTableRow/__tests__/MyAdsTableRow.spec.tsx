@@ -31,6 +31,7 @@ const mockProps = {
     counterparty_type: 'sell' as const,
     country: 'id',
     created_time: new Date(1688460999),
+    currentRateType: 'fixed' as const,
     days_until_archive: 1,
     description: '',
     effective_rate: 22,
@@ -65,18 +66,13 @@ const mockProps = {
     rate_type: 'fixed' as const,
     remaining_amount: 22,
     remaining_amount_display: '22.00',
-    setIsModalOpen: jest.fn(),
+    showModal: jest.fn(),
     type: 'buy' as const,
     visibility_status: [],
 };
 
 jest.mock('@deriv/api-v2', () => ({
     useExchangeRateSubscription: jest.fn(),
-}));
-
-jest.mock('@/hooks', () => ({
-    ...jest.requireActual('@/hooks'),
-    useFloatingRate: () => ({ rateType: 'fixed' }),
 }));
 
 jest.mock('@deriv-com/ui', () => ({
@@ -121,7 +117,20 @@ describe('MyAdsTableRow', () => {
             expect(screen.getByText('Copy')).toBeInTheDocument();
         });
     });
-    it('should handle onClick for each menu item', async () => {
+    it('should handle onClick for edit item', async () => {
+        render(<MyAdsTableRow {...mockProps} currentRateType='float' />);
+        const button = screen.getByTestId('dt_p2p_v2_popover_dropdown_icon');
+        userEvent.click(button);
+        await waitFor(() => {
+            const edit = screen.getByText('Edit');
+            expect(edit).toBeInTheDocument();
+            userEvent.click(edit);
+        });
+        await waitFor(() => {
+            expect(mockProps.showModal).toHaveBeenCalledWith('AdRateSwitchModal');
+        });
+    });
+    it('should handle onclick for edit when rate type is same as current rate type', async () => {
         render(<MyAdsTableRow {...mockProps} />);
         const button = screen.getByTestId('dt_p2p_v2_popover_dropdown_icon');
         userEvent.click(button);
@@ -131,7 +140,7 @@ describe('MyAdsTableRow', () => {
             userEvent.click(edit);
         });
         await waitFor(() => {
-            expect(mockProps.onClickIcon).toHaveBeenCalledWith('138', 'edit');
+            expect(mockProps.onClickIcon).toHaveBeenCalledWith('edit');
         });
     });
 });

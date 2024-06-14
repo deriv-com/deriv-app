@@ -11,6 +11,7 @@ import { generateErrorDialogTitle } from 'Utils/adverts';
 import { api_error_codes } from '../constants/api-error-codes';
 
 export default class MyAdsStore extends BaseStore {
+    ad_form_values = null;
     advert_details = null;
     adverts = [];
     api_error = '';
@@ -20,27 +21,31 @@ export default class MyAdsStore extends BaseStore {
     edit_ad_form_error = '';
     error_message = '';
     has_more_items_to_load = false;
+    min_join_days = 0;
+    min_completion_rate = 0;
     is_ad_created_modal_visible = false;
-    is_edit_ad_error_modal_visible = false;
     is_form_loading = false;
     is_table_loading = false;
     is_loading = false;
     p2p_advert_information = {};
     show_ad_form = false;
+    should_copy_advert = false;
     selected_ad_id = '';
     should_show_add_payment_method = false;
     show_edit_ad_form = false;
+    table_height = 0;
     required_ad_type;
     error_code = '';
-
     payment_method_ids = [];
     payment_method_names = [];
+    preferred_countries = [];
 
     constructor(root_store) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
         super(root_store);
 
         makeObservable(this, {
+            ad_form_values: observable,
             advert_details: observable,
             adverts: observable,
             api_error: observable,
@@ -51,12 +56,12 @@ export default class MyAdsStore extends BaseStore {
             error_message: observable,
             has_more_items_to_load: observable,
             is_ad_created_modal_visible: observable,
-            is_edit_ad_error_modal_visible: observable,
             is_form_loading: observable,
             is_table_loading: observable,
             is_loading: observable,
             p2p_advert_information: observable,
             selected_ad_id: observable,
+            should_copy_advert: observable,
             should_show_add_payment_method: observable,
             show_ad_form: observable,
             show_edit_ad_form: observable,
@@ -68,6 +73,7 @@ export default class MyAdsStore extends BaseStore {
             handleSubmit: action.bound,
             hideQuickAddModal: action.bound,
             onClickActivateDeactivate: action.bound,
+            onClickCopy: action.bound,
             onClickCreate: action.bound,
             onClickDelete: action.bound,
             onClickEdit: action.bound,
@@ -77,6 +83,7 @@ export default class MyAdsStore extends BaseStore {
             restrictLength: action.bound,
             restrictDecimalPlace: action.bound,
             showQuickAddModal: action.bound,
+            setAdFormValues: action.bound,
             setAdvertDetails: action.bound,
             setAdverts: action.bound,
             setApiError: action.bound,
@@ -88,15 +95,19 @@ export default class MyAdsStore extends BaseStore {
             setErrorMessage: action.bound,
             setHasMoreItemsToLoad: action.bound,
             setIsAdCreatedModalVisible: action.bound,
-            setIsEditAdErrorModalVisible: action.bound,
             setIsFormLoading: action.bound,
             setIsLoading: action.bound,
             setIsTableLoading: action.bound,
+            setMinJoinDays: action.bound,
+            setMinCompletionRate: action.bound,
             setP2pAdvertInformation: action.bound,
+            setPreferredCountries: action.bound,
             setSelectedAdId: action.bound,
+            setShouldCopyAdvert: action.bound,
             setShouldShowAddPaymentMethod: action.bound,
             setShowAdForm: action.bound,
             setShowEditAdForm: action.bound,
+            setTableHeight: action.bound,
             onToggleSwitchModal: action.bound,
             setRequiredAdType: action.bound,
             toggleMyAdsRateSwitchModal: action.bound,
@@ -132,9 +143,9 @@ export default class MyAdsStore extends BaseStore {
         }
     }
 
-    getAdvertInfo() {
+    async getAdvertInfo() {
         this.setIsFormLoading(true);
-        requestWS({
+        await requestWS({
             p2p_advert_info: 1,
             id: this.selected_ad_id,
         })
@@ -155,7 +166,7 @@ export default class MyAdsStore extends BaseStore {
             .finally(() => this.setIsFormLoading(false));
     }
 
-    handleSubmit(values, { setSubmitting }) {
+    handleSubmit(values, { setSubmitting }, should_reload_ads = false, adverts_archive_period) {
         this.setApiErrorMessage('');
 
         const is_sell_ad = values.type === buy_sell.SELL;
@@ -164,12 +175,15 @@ export default class MyAdsStore extends BaseStore {
         const create_advert = {
             p2p_advert_create: 1,
             type: values.type,
+            eligible_countries: values.eligible_countries,
             amount: Number(values.offer_amount),
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
             order_expiry_period: values.order_completion_time,
             rate_type: values.rate_type_string,
             rate: Number(values.rate_type),
+            ...(this.min_completion_rate ? { min_completion_rate: Number(this.min_completion_rate) } : {}),
+            ...(this.min_join_days ? { min_join_days: Number(this.min_join_days) } : {}),
             ...(this.payment_method_names.length > 0 && !is_sell_ad
                 ? { payment_method_names: this.payment_method_names }
                 : {}),
@@ -196,6 +210,12 @@ export default class MyAdsStore extends BaseStore {
                 } else if (should_not_show_auto_archive_message !== 'true') {
                     this.setAdvertDetails(response.p2p_advert_create);
                     this.setIsAdCreatedModalVisible(true);
+                    this.root_store.general_store.showModal({
+                        key: 'AdCreatedModal',
+                        props: { adverts_archive_period },
+                    });
+                    this.setAdFormValues(null);
+                    this.setShouldCopyAdvert(false);
                 } else if (!this.is_ad_created_modal_visible) {
                     if (!response.p2p_advert_create.is_visible) {
                         this.setAdvertDetails(response.p2p_advert_create);
@@ -213,8 +233,13 @@ export default class MyAdsStore extends BaseStore {
                             props: { error_code: api_error_codes.AD_EXCEEDS_DAILY_LIMIT },
                         });
                     }
+                    this.root_store.general_store.hideModal();
                     this.setShowAdForm(false);
+                    this.setAdFormValues(null);
+                    this.setShouldCopyAdvert(false);
                 }
+
+                if (should_reload_ads) this.loadMoreAds({ startIndex: 0 });
             }
         });
     }
@@ -249,6 +274,22 @@ export default class MyAdsStore extends BaseStore {
                 }
                 this.setSelectedAdId('');
             });
+        }
+    }
+
+    async onClickCopy(country_list, id, is_copy_advert_modal_visible) {
+        this.setSelectedAdId(id);
+
+        if (is_copy_advert_modal_visible) {
+            await this.getAdvertInfo();
+            this.root_store.general_store.showModal({
+                key: 'CopyAdvertModal',
+                props: { advert: this.p2p_advert_information, country_list },
+            });
+        } else {
+            this.getAdvertInfo();
+            this.setShowAdForm(true);
+            this.setShouldCopyAdvert(true);
         }
     }
 
@@ -298,11 +339,14 @@ export default class MyAdsStore extends BaseStore {
         const update_advert = {
             p2p_advert_update: 1,
             id: this.selected_ad_id,
+            eligible_countries: values.eligible_countries,
             max_order_amount: Number(values.max_transaction),
             min_order_amount: Number(values.min_transaction),
             order_expiry_period: values.order_completion_time,
             rate_type: this.required_ad_type,
             rate: Number(values.rate_type),
+            min_completion_rate: Number(this.min_completion_rate) > 0 ? Number(this.min_completion_rate) : null,
+            min_join_days: Number(this.min_join_days) > 0 ? Number(this.min_join_days) : null,
             ...(this.payment_method_names.length > 0 && !is_sell_ad
                 ? { payment_method_names: this.payment_method_names }
                 : {}),
@@ -315,8 +359,8 @@ export default class MyAdsStore extends BaseStore {
             update_advert.contact_info = values.contact_info;
         }
 
-        if (values.description) {
-            update_advert.description = values.description;
+        if (values.default_advert_description) {
+            update_advert.description = values.default_advert_description;
         }
         if (values.reached_target_date) {
             update_advert.is_active = values.is_active;
@@ -329,7 +373,6 @@ export default class MyAdsStore extends BaseStore {
                     setSubmitting(false);
                     this.setApiErrorCode(response.error.code);
                     this.setEditAdFormError(response.error.message);
-                    this.setIsEditAdErrorModalVisible(true);
                 } else {
                     this.setShowEditAdForm(false);
                 }
@@ -424,6 +467,10 @@ export default class MyAdsStore extends BaseStore {
         this.root_store.general_store.showModal({ key: 'QuickAddModal', props: { advert } });
     }
 
+    setAdFormValues(ad_form_values) {
+        this.ad_form_values = ad_form_values;
+    }
+
     setAdvertDetails(advert_details) {
         this.advert_details = advert_details;
     }
@@ -468,8 +515,8 @@ export default class MyAdsStore extends BaseStore {
         this.is_ad_created_modal_visible = is_ad_created_modal_visible;
     }
 
-    setIsEditAdErrorModalVisible(is_edit_ad_error_modal_visible) {
-        this.is_edit_ad_error_modal_visible = is_edit_ad_error_modal_visible;
+    setShouldCopyAdvert(should_copy_advert) {
+        this.should_copy_advert = should_copy_advert;
     }
 
     setIsFormLoading(is_form_loading) {
@@ -484,8 +531,20 @@ export default class MyAdsStore extends BaseStore {
         this.is_table_loading = is_table_loading;
     }
 
+    setMinJoinDays(min_join_days) {
+        this.min_join_days = min_join_days;
+    }
+
+    setMinCompletionRate(min_completion_rate) {
+        this.min_completion_rate = min_completion_rate;
+    }
+
     setP2pAdvertInformation(p2p_advert_information) {
         this.p2p_advert_information = p2p_advert_information;
+    }
+
+    setPreferredCountries(preferred_countries) {
+        this.preferred_countries = preferred_countries;
     }
 
     setSelectedAdId(selected_ad_id) {
@@ -502,6 +561,10 @@ export default class MyAdsStore extends BaseStore {
 
     setShowEditAdForm(show_edit_ad_form) {
         this.show_edit_ad_form = show_edit_ad_form;
+    }
+
+    setTableHeight(table_height) {
+        this.table_height = table_height;
     }
 
     onToggleSwitchModal(ad_id) {

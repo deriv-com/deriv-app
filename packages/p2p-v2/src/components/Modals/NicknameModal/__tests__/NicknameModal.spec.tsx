@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAdvertiserInfoState } from '@/providers/AdvertiserInfoStateProvider';
 import { APIProvider, AuthProvider, p2p } from '@deriv/api-v2';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -17,6 +18,7 @@ const mockedMutate = jest.fn();
 const mockedReset = jest.fn();
 const mockedUseAdvertiserCreate = p2p.advertiser.useCreate as jest.MockedFunction<typeof p2p.advertiser.useCreate>;
 const mockPush = jest.fn();
+const mockUseAdvertiserInfoState = useAdvertiserInfoState as jest.MockedFunction<typeof useAdvertiserInfoState>;
 
 jest.mock('lodash', () => ({
     ...jest.requireActual('lodash'),
@@ -52,6 +54,12 @@ jest.mock('@deriv/api-v2', () => ({
     },
 }));
 
+jest.mock('@/providers/AdvertiserInfoStateProvider', () => ({
+    useAdvertiserInfoState: jest.fn().mockReturnValue({
+        setHasCreatedAdvertiser: jest.fn(),
+    }),
+}));
+
 describe('NicknameModal', () => {
     it('should render title and description correctly', () => {
         render(<NicknameModal isModalOpen setIsModalOpen={jest.fn()} />, { wrapper });
@@ -75,9 +83,10 @@ describe('NicknameModal', () => {
         expect(mockedMutate).toHaveBeenCalledWith({
             name: 'Nahida',
         });
+        expect(mockUseAdvertiserInfoState().setHasCreatedAdvertiser).toBeCalledWith(true);
     });
     it('should invoke reset when there is an error from creating advertiser', async () => {
-        mockedUseAdvertiserCreate.mockImplementationOnce(() => ({
+        (mockedUseAdvertiserCreate as jest.Mock).mockImplementationOnce(() => ({
             error: undefined,
             isError: true,
             isSuccess: false,
@@ -92,7 +101,7 @@ describe('NicknameModal', () => {
         expect(mockedReset).toBeCalled();
     });
     it('should close the modal when Cancel button is clicked', async () => {
-        mockedUseAdvertiserCreate.mockImplementationOnce(() => ({
+        (mockedUseAdvertiserCreate as jest.Mock).mockImplementationOnce(() => ({
             error: undefined,
             isError: false,
             isSuccess: true,

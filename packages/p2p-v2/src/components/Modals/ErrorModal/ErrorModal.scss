@@ -1,0 +1,16 @@
+.p2p-v2-error-modal {
+    width: 44rem;
+    height: unset;
+
+    @include mobile {
+        max-width: calc(100% - 3.2rem);
+    }
+
+    &__body {
+        padding: 2.4rem;
+
+        @include mobile {
+            padding: 1.6rem;
+        }
+    }
+}

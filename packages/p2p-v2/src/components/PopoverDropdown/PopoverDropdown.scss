@@ -7,6 +7,11 @@
         margin-left: 1rem;
     }
 
+    & .deriv-tooltip {
+        @include mobile {
+            display: none;
+        }
+    }
     &__list {
         display: flex;
         flex-direction: column;

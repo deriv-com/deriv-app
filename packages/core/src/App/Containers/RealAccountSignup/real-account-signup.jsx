@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
 import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text, UILoader } from '@deriv/components';
-import { ContentFlag, WS, moduleLoader, routes } from '@deriv/shared';
+import { WS, moduleLoader, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import AddCurrency from './add-currency.jsx';
@@ -16,9 +16,7 @@ import SetCurrency from './set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
 import { Analytics } from '@deriv-com/analytics';
-import 'Sass/details-form.scss';
 import 'Sass/account-wizard.scss';
-import 'Sass/real-account-signup.scss';
 
 const AccountWizard = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-wizard-modal" */ './account-wizard.jsx'))
@@ -39,9 +37,8 @@ const modal_pages_indices = {
 };
 let active_modal_index_no = 0;
 
-const WizardHeading = ({ country_standpoint, currency, is_isle_of_man_residence, real_account_signup_target }) => {
+const WizardHeading = ({ currency, real_account_signup_target }) => {
     const maltainvest_signup = real_account_signup_target === 'maltainvest';
-    const iom_signup = real_account_signup_target === 'iom';
     const deposit_cash_signup = real_account_signup_target === 'deposit_cash';
 
     if ((!maltainvest_signup && !currency) || active_modal_index_no === modal_pages_indices.set_currency) {
@@ -52,37 +49,9 @@ const WizardHeading = ({ country_standpoint, currency, is_isle_of_man_residence,
         return <Localize i18n_default_text='Add a Deriv Gaming account' />;
     }
 
-    if (iom_signup && is_isle_of_man_residence) {
-        return <Localize i18n_default_text='Add a Deriv account' />;
-    }
-
     switch (real_account_signup_target) {
-        case 'malta':
-            if (
-                country_standpoint.is_united_kingdom ||
-                country_standpoint.is_rest_of_eu ||
-                country_standpoint.is_belgium
-            ) {
-                return <Localize i18n_default_text='Add a real Deriv Options account' />;
-            }
-            return <Localize i18n_default_text='Add a Derived account' />;
-        case 'iom':
-            if (country_standpoint.is_united_kingdom) {
-                return <Localize i18n_default_text='Add a real Deriv Gaming account' />;
-            }
-            return <Localize i18n_default_text='Add a Derived account' />;
         case 'maltainvest':
-            if (
-                country_standpoint.is_united_kingdom ||
-                country_standpoint.is_france ||
-                country_standpoint.is_other_eu ||
-                country_standpoint.is_rest_of_eu
-            ) {
-                return <Localize i18n_default_text='Setup your account' />;
-            }
-            return <Localize i18n_default_text='Add a Deriv Financial account' />;
-        case 'samoa':
-            return <Localize i18n_default_text='Terms of use' />;
+            return <Localize i18n_default_text='Setup your account' />;
         default:
             return <Localize i18n_default_text='Add a Deriv account' />;
     }
@@ -92,7 +61,6 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
     const { ui, client, traders_hub, modules } = useStore();
     const {
         available_crypto_currencies,
-        country_standpoint,
         currency,
         fetchAccountSettings,
         has_fiat,
@@ -117,12 +85,10 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         real_account_signup: state_value,
         is_trading_assessment_for_new_user_enabled,
     } = ui;
-    const { content_flag, show_eu_related_content, toggleIsTourOpen } = traders_hub;
+    const { show_eu_related_content } = traders_hub;
     const deposit_target = modules.cashier.general_store.deposit_target;
     const setIsDeposit = modules.cashier.general_store.setIsDeposit;
     const should_show_all_available_currencies = modules.cashier.general_store.should_show_all_available_currencies;
-    const is_belgium_residence = client.residence === 'be'; // TODO: [deriv-eu] refactor this once more residence checks are required
-    const is_isle_of_man_residence = client.residence === 'im'; // TODO: [deriv-eu] refactor this once more residence checks are required
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
@@ -227,7 +193,20 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                     onConfirm={() => onErrorConfirm(local_props.state_value.error_code)}
                 />
             ),
-            title: () => localize('Add a real account'),
+            title: local_props => {
+                if (local_props?.real_account_signup_target === 'add_crypto') {
+                    return localize('Create a cryptocurrency account');
+                } else if (local_props?.real_account_signup_target === 'add_fiat') {
+                    return localize('Add a Deriv real account');
+                } else if (local_props?.real_account_signup_target === 'add_currency') {
+                    return localize('Create a new account');
+                } else if (local_props?.has_fiat && local_props?.available_crypto_currencies?.length === 0) {
+                    return localize('Manage account');
+                } else if (signup_error) {
+                    return null;
+                }
+                return localize('Add or manage account');
+            },
         },
         {
             body: () => <ChooseCurrency className='account-wizard__body' onError={showErrorModal} />,
@@ -299,14 +278,14 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
     );
 
     React.useEffect(() => {
-        if (is_real_acc_signup_on) {
+        if (is_real_acc_signup_on && real_account_signup_target === 'svg') {
             trackEvent({ action: 'open' });
         }
-    }, [is_real_acc_signup_on, trackEvent]);
+    }, [is_real_acc_signup_on, real_account_signup_target, trackEvent]);
 
     const getModalHeight = () => {
         if (is_from_restricted_country) return '304px';
-        else if ([invalid_input_error, status_dialog].includes(getActiveModalIndex())) return 'auto';
+        else if ([invalid_input_error, status_dialog, signup_error].includes(getActiveModalIndex())) return 'auto';
         if (!currency || getActiveModalIndex() === modal_pages_indices.set_currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
             if (show_eu_related_content && getActiveModalIndex() === modal_pages_indices.add_or_manage_account) {
@@ -324,7 +303,10 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         return '740px'; // Account wizard modal
     };
     const getModalWidth = () => {
-        if (is_from_restricted_country || getActiveModalIndex() === modal_pages_indices.invalid_input_error)
+        if (
+            is_from_restricted_country ||
+            [modal_pages_indices.invalid_input_error, modal_pages_indices.signup_error].includes(getActiveModalIndex())
+        )
             return '440px';
         return !has_close_icon ? 'auto' : '955px';
     };
@@ -456,9 +438,6 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
 
         if (modal_content[getActiveModalIndex()].action === 'signup') {
             setIsClosingCreateRealAccountModal(true);
-            if ([ContentFlag.EU_REAL, ContentFlag.EU_DEMO].includes(content_flag)) {
-                toggleIsTourOpen(true);
-            }
 
             return;
         }
@@ -467,9 +446,11 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
     };
 
     const onErrorConfirm = err_code => {
+        const addOrManageAccountErrorType = ['CurrencyTypeNotAllowed', 'DuplicateCurrency'];
+        setLoading(true);
         setParams({
             active_modal_index:
-                current_action === 'multi' || err_code === 'CurrencyTypeNotAllowed'
+                current_action === 'multi' || addOrManageAccountErrorType.includes(err_code)
                     ? modal_pages_indices.add_or_manage_account
                     : modal_pages_indices.account_wizard,
         });
@@ -658,12 +639,9 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                                     return (
                                         <Title
                                             available_crypto_currencies={available_crypto_currencies}
-                                            country_standpoint={country_standpoint}
                                             currency={currency}
                                             has_fiat={has_fiat}
-                                            is_belgium_residence={is_belgium_residence}
                                             is_eu={show_eu_related_content}
-                                            is_isle_of_man_residence={is_isle_of_man_residence}
                                             real_account_signup_target={real_account_signup_target}
                                             should_show_all_available_currencies={should_show_all_available_currencies}
                                         />
@@ -693,14 +671,12 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                             wrapper_classname='account-signup-mobile-dialog'
                             visible={is_real_acc_signup_on}
                             onClose={closeModal}
+                            has_full_height={getActiveModalIndex() === modal_pages_indices.signup_error}
                             renderTitle={() => {
                                 if (Title) {
                                     return (
                                         <Title
-                                            country_standpoint={country_standpoint}
                                             currency={currency}
-                                            is_belgium_residence={is_belgium_residence}
-                                            is_isle_of_man_residence={is_isle_of_man_residence}
                                             real_account_signup_target={real_account_signup_target}
                                             should_show_all_available_currencies={should_show_all_available_currencies}
                                         />

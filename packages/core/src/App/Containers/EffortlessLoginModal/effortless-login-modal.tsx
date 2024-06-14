@@ -1,15 +1,28 @@
 import React from 'react';
-import { useHistory } from 'react-router';
 import ReactDOM from 'react-dom';
+import { useHistory } from 'react-router';
 import FormFooter from '@deriv/account/src/Components/form-footer';
 import FormBody from '@deriv/account/src/Components/form-body';
+import { Analytics } from '@deriv-com/analytics';
 import { Button, Icon, Text } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { getOSNameWithUAParser, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { DerivLightIcInfoPasskeyIcon } from '@deriv/quill-icons';
 import { EffortLessLoginTips } from './effortless-login-tips';
 import { EffortlessLoginDescription } from './effortless-login-description';
 import './effortless-login-modal.scss';
+
+const passkeysEffortlessModalActionEventTrack = (action: string) => {
+    // TODO: remove ts-ignore after updating analytica package
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    Analytics.trackEvent('ce_passkey_effortless_form', {
+        action,
+        form_name: 'ce_passkey_effortless_form',
+        operating_system: getOSNameWithUAParser(),
+    });
+};
 
 const EffortlessLoginModal = observer(() => {
     const [is_learn_more_opened, setIsLearnMoreOpened] = React.useState(false);
@@ -18,10 +31,37 @@ const EffortlessLoginModal = observer(() => {
     const { client } = useStore();
     const { setShouldShowEffortlessLoginModal } = client;
 
-    const onClickHandler = (route: string) => {
+    React.useEffect(() => {
+        if (!portal_element) return;
+        passkeysEffortlessModalActionEventTrack('open');
+
+        const track_close = () => {
+            passkeysEffortlessModalActionEventTrack('close');
+        };
+        window.addEventListener('beforeunload', track_close);
+        return () => {
+            window.removeEventListener('beforeunload', track_close);
+        };
+    }, [portal_element]);
+
+    const onClickHandler = (route: string, action: string) => {
         localStorage.setItem('show_effortless_login_modal', JSON.stringify(false));
+        // TODO: fix routes types across the app
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         history.push(route);
         setShouldShowEffortlessLoginModal(false);
+        passkeysEffortlessModalActionEventTrack(action);
+    };
+
+    const onLearnMoreClick = () => {
+        setIsLearnMoreOpened(true);
+        passkeysEffortlessModalActionEventTrack('info_open');
+    };
+
+    const onBackClick = () => {
+        setIsLearnMoreOpened(false);
+        passkeysEffortlessModalActionEventTrack('info_back');
     };
 
     if (!portal_element) return null;
@@ -31,7 +71,7 @@ const EffortlessLoginModal = observer(() => {
                 <Icon
                     data_testid='effortless_login_modal__back-button'
                     icon='IcBackButton'
-                    onClick={() => setIsLearnMoreOpened(false)}
+                    onClick={onBackClick}
                     className='effortless-login-modal__back-button'
                 />
             ) : (
@@ -43,25 +83,31 @@ const EffortlessLoginModal = observer(() => {
                     line_height='xl'
                     align='right'
                     className='effortless-login-modal__header'
-                    onClick={() => onClickHandler(routes.traders_hub)}
+                    onClick={() => onClickHandler(routes.traders_hub, 'maybe_later')}
                 >
                     <Localize i18n_default_text='Maybe later' />
                 </Text>
             )}
 
             <FormBody scroll_offset='15rem' className='effortless-login-modal__wrapper'>
-                <Icon icon='IcInfoPasskey' size={96} />
+                <DerivLightIcInfoPasskeyIcon height='96px' width='96px' className='passkey__info-icon' />
                 <Text as='div' color='general' weight='bold' align='center' className='effortless-login-modal__title'>
                     <Localize i18n_default_text='Effortless login with passkeys' />
                 </Text>
                 {is_learn_more_opened ? (
                     <EffortlessLoginDescription />
                 ) : (
-                    <EffortLessLoginTips onLearnMoreClick={() => setIsLearnMoreOpened(true)} />
+                    <EffortLessLoginTips onLearnMoreClick={onLearnMoreClick} />
                 )}
             </FormBody>
             <FormFooter>
-                <Button type='button' has_effect large primary onClick={() => onClickHandler(routes.passkeys)}>
+                <Button
+                    type='button'
+                    has_effect
+                    large
+                    primary
+                    onClick={() => onClickHandler(routes.passkeys, 'get_started')}
+                >
                     <Localize i18n_default_text='Get started' />
                 </Button>
             </FormFooter>

@@ -51,6 +51,11 @@ const mockProps = {
     rateType: 'float',
 };
 
+jest.mock('@/components', () => ({
+    ...jest.requireActual('@/components'),
+    FloatingRate: () => <div>FloatingRate</div>,
+}));
+
 describe('AdTypeSection', () => {
     it('should render the ad type section component', () => {
         render(<AdTypeSection {...mockProps} />);

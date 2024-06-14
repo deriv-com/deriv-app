@@ -5,7 +5,6 @@ import { Icon, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { useFeatureFlags } from '@deriv/hooks';
 
 const TradersHubHomeButton = observer(() => {
     const { ui } = useStore();
@@ -13,31 +12,20 @@ const TradersHubHomeButton = observer(() => {
     const history = useHistory();
     const location = useLocation();
     const { pathname } = location;
-    const { is_next_tradershub_enabled } = useFeatureFlags();
 
-    const redirect_routes = () => {
-        if (is_next_tradershub_enabled) {
-            return routes.traders_hub_v2;
-        }
-        return routes.traders_hub;
-    };
+    const TradersHubIcon = is_dark_mode_on ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHomeUpdated';
 
     return (
         <div
             data-testid='dt_traders_hub_home_button'
             className={classNames('traders-hub-header__tradershub', {
                 'traders-hub-header__tradershub--active':
-                    pathname === routes.traders_hub ||
-                    pathname === routes.traders_hub_v2 ||
-                    pathname === routes.wallets,
+                    pathname === routes.traders_hub || pathname === routes.traders_hub_v2,
             })}
-            onClick={() => history.push(redirect_routes())}
+            onClick={() => history.push(routes.traders_hub)}
         >
             <div className='traders-hub-header__tradershub--home-logo'>
-                <Icon
-                    icon={is_dark_mode_on ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHome'}
-                    size={is_dark_mode_on ? 15 : 17}
-                />
+                <Icon icon={TradersHubIcon} size={is_dark_mode_on ? 15 : 17} />
             </div>
             <Text className='traders-hub-header__tradershub--text'>
                 <Localize i18n_default_text="Trader's Hub" />

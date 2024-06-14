@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Text, Clipboard, usePrevious } from '@deriv/components';
 import {
     capitalizeFirstLetter,
@@ -15,7 +15,6 @@ import { Analytics } from '@deriv-com/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component';
-import AccountStatistics from '../Components/account-statistics';
 import FilterComponent from '../Components/filter-component';
 import { ReportsMeta } from '../Components/reports-meta';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
@@ -35,7 +34,7 @@ type TAction =
       }
     | string;
 
-type TStatement = {
+type TStatement = RouteComponentProps & {
     component_icon: string;
 };
 
@@ -81,9 +80,7 @@ const DetailsComponent = ({ message = '', action_type = '' }: TDetailsComponent)
     );
 };
 
-type TGetRowAction = TDataList['getRowAction'] | React.ComponentProps<typeof DataTable>['getRowAction'];
-
-const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
+export const getRowAction = (row_obj: TSource | TRow): TAction => {
     let action: TAction = {};
     const { action_type, desc, id, is_sold, longcode, purchase_time, shortcode, transaction_time, withdrawal_details } =
         row_obj;
@@ -140,7 +137,7 @@ const getRowAction: TGetRowAction = (row_obj: TSource | TRow) => {
 const Statement = observer(({ component_icon }: TStatement) => {
     const { client } = useStore();
     const { statement } = useReportsStore();
-    const { currency, standpoint, is_switching, is_virtual } = client;
+    const { currency, is_switching, is_virtual } = client;
     const {
         action_type,
         data,
@@ -154,7 +151,6 @@ const Statement = observer(({ component_icon }: TStatement) => {
         onMount,
         onUnmount,
     } = statement;
-    const is_mx_mlt = standpoint.iom || standpoint.malta;
     const prev_action_type = usePrevious(action_type);
     const prev_date_from = usePrevious(date_from);
     const prev_date_to = usePrevious(date_to);
@@ -184,6 +180,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
                 transaction_type_filter: action_type,
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [action_type]);
 
     React.useEffect(() => {
@@ -196,6 +193,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
                 end_date_filter: formatDate(date_to, 'DD/MM/YYYY', false),
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [date_to, date_from]);
 
     if (error) return <p>{error}</p>;
@@ -206,7 +204,6 @@ const Statement = observer(({ component_icon }: TStatement) => {
         return map;
     }, {} as Record<TColIndex, typeof columns[number]>);
 
-    // TODO: Export type instead of any from 'DataList' component when it migrates to tsx
     const mobileRowRenderer = ({
         row,
         passthrough,
@@ -245,16 +242,10 @@ const Statement = observer(({ component_icon }: TStatement) => {
             </div>
         </React.Fragment>
     );
-    // TODO: Uncomment and update this when DTrader 2.0 development starts:
-    // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='l'>I am Statement for DTrader 2.0.</Text>;
+
     return (
         <React.Fragment>
-            <ReportsMeta
-                className={is_mx_mlt ? undefined : 'reports__meta--statement'}
-                filter_component={<FilterComponent />}
-                is_statement
-                optional_component={!is_switching && is_mx_mlt && <AccountStatistics />}
-            />
+            <ReportsMeta className='reports__meta--statement' filter_component={<FilterComponent />} is_statement />
             {is_switching ? (
                 <PlaceholderComponent is_loading />
             ) : (

@@ -2,12 +2,13 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
+import { routes } from '@deriv/shared';
 import Header from '../header';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
-    useFeatureFlags: jest.fn(() => ({ is_next_wallet_enabled: false })),
     useStoreWalletAccountsList: jest.fn(() => ({ data: [], has_wallet: false })),
+    useFeatureFlags: jest.fn(() => ({})),
 }));
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -31,27 +32,27 @@ describe('Header', () => {
             </StoreProvider>
         );
 
-    it('should render the "TradersHubHeader" component if user is logged in and in traders hub route', () => {
+    it('should render the "TradersHubHeader" component if user is logged in and in traders hub route', async () => {
         (useLocation as jest.Mock).mockReturnValue({
-            pathname: '/appstore/traders-hub',
+            pathname: routes.traders_hub,
         });
         renderComponent();
-        expect(screen.getByTestId('dt_traders_hub_header')).toBeInTheDocument();
+        expect(await screen.findByTestId('dt_traders_hub_header')).toBeInTheDocument();
         expect(screen.getByText('MockedTradersHubHeader')).toBeInTheDocument();
     });
 
-    it('should render the "DTraderHeader" component if user is logged in and not in the traders hub route', () => {
+    it('should render the "DTraderHeader" component if user is logged in and not in the traders hub route', async () => {
         (useLocation as jest.Mock).mockReturnValue({
-            pathname: '/',
+            pathname: routes.trade,
         });
         renderComponent();
-        expect(screen.getByTestId('dt_dtrader_header')).toBeInTheDocument();
+        expect(await screen.findByTestId('dt_dtrader_header')).toBeInTheDocument();
         expect(screen.getByText('MockedDTraderHeader')).toBeInTheDocument();
     });
 
-    it('should render the "DefaultHeader" component if user is not logged in', () => {
+    it('should render the "DefaultHeader" component if user is not logged in', async () => {
         renderComponent(mockStore({ client: { is_logged_in: false } }));
-        expect(screen.getByTestId('dt_default_header')).toBeInTheDocument();
+        expect(await screen.findByTestId('dt_default_header')).toBeInTheDocument();
         expect(screen.getByText('MockedDefaultHeader')).toBeInTheDocument();
     });
 });

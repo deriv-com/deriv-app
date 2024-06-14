@@ -87,7 +87,7 @@ const useSendbird = (orderId: string) => {
         isError: isErrorSendbirdServiceToken,
         isSuccess: isSuccessSendbirdServiceToken,
     } = useSendbirdServiceToken();
-    const { data: advertiserInfo, isSuccess: isSuccessAdvertiserInfo } = p2p.advertiser.useGetInfo();
+    const { data: advertiserInfo } = p2p.advertiser.useGetInfo();
     //TODO: p2p_chat_create endpoint to be removed once chat_channel_url is created from p2p_order_create
     const { isError: isErrorChatCreate, mutate: createChat } = useChatCreate();
     const { isErrorOrderInfo, orderDetails } = useOrderDetails();
@@ -221,12 +221,7 @@ const useSendbird = (orderId: string) => {
 
     const initialiseChat = useCallback(async () => {
         try {
-            if (
-                isSuccessSendbirdServiceToken &&
-                isSuccessAdvertiserInfo &&
-                sendbirdServiceToken?.app_id &&
-                advertiserInfo?.chat_user_id
-            ) {
+            if (isSuccessSendbirdServiceToken && sendbirdServiceToken?.app_id && advertiserInfo?.chat_user_id) {
                 setIsChatError(false);
                 setIsChatLoading(true);
                 const { app_id: appId, token } = sendbirdServiceToken;
@@ -262,7 +257,6 @@ const useSendbird = (orderId: string) => {
         }
     }, [
         isSuccessSendbirdServiceToken,
-        isSuccessAdvertiserInfo,
         sendbirdServiceToken,
         advertiserInfo?.chat_user_id,
         orderDetails?.chat_channel_url,

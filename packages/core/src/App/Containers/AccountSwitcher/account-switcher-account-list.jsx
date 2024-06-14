@@ -8,7 +8,6 @@ const AccountList = ({
     balance,
     currency,
     currency_icon,
-    country_standpoint,
     display_type,
     has_balance,
     has_error,
@@ -49,12 +48,7 @@ const AccountList = ({
                     />
                     <span>
                         {display_type === 'currency' ? (
-                            <CurrencyDisplay
-                                country_standpoint={country_standpoint}
-                                currency={currency}
-                                loginid={loginid}
-                                is_virtual={is_virtual}
-                            />
+                            <CurrencyDisplay currency={currency} loginid={loginid} is_virtual={is_virtual} />
                         ) : (
                             <AccountDisplay
                                 is_eu={is_eu}
@@ -114,24 +108,11 @@ const AccountList = ({
     );
 };
 
-const CurrencyDisplay = ({ country_standpoint, currency, loginid, is_virtual }) => {
-    const user_is_from_this_country_list = Object.values(country_standpoint).includes(true);
+const CurrencyDisplay = ({ currency, loginid, is_virtual }) => {
     const account_type = loginid.replace(/\d/g, '');
 
-    if (user_is_from_this_country_list) {
-        if (account_type === 'MLT') {
-            return <Localize i18n_default_text='Options' />;
-        } else if (account_type === 'MX') {
-            if (country_standpoint.is_united_kingdom) {
-                return <Localize i18n_default_text='Gaming' />;
-            }
-            if (country_standpoint.is_isle_of_man) {
-                return getCurrencyName(currency);
-            }
-            return <Localize i18n_default_text='Synthetic' />;
-        } else if (account_type === 'MF') {
-            return <Localize i18n_default_text='Multipliers' />;
-        }
+    if (account_type === 'MF') {
+        return <Localize i18n_default_text='Multipliers' />;
     }
 
     if (is_virtual) {

@@ -6,10 +6,14 @@ type TPrevNextButtonProps = {
     enabled: boolean;
     onClick: () => void;
     isNext: boolean;
+    isRtl?: boolean;
 };
 
 const CFDCompareAccountsCarouselButton = (props: TPrevNextButtonProps) => {
-    const { enabled, onClick, isNext } = props;
+    const { enabled, onClick, isNext, isRtl = false } = props;
+
+    const nextButtonName = isRtl ? 'IcChevronLeftBold' : 'IcChevronRightBold';
+    const prevButtonName = isRtl ? 'IcChevronRightBold' : 'IcChevronLeftBold';
 
     return (
         <button
@@ -21,7 +25,7 @@ const CFDCompareAccountsCarouselButton = (props: TPrevNextButtonProps) => {
             disabled={!enabled}
         >
             <Icon
-                icon={isNext ? 'IcChevronRightBold' : 'IcChevronLeftBold'}
+                icon={isNext ? nextButtonName : prevButtonName}
                 className='cfd-compare-accounts-carousel__button__svg'
             />
         </button>

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
-import { useDevice } from '@deriv-com/ui';
 import { Loading, Button, Text, ThemedScrollbars, FormSubmitButton, Modal, HintBox } from '@deriv/components';
 import { useFileUploader } from '@deriv/hooks';
 import { validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv/shared';
@@ -45,8 +44,7 @@ const ProofOfAddressForm = observer(
         step_index,
         className,
     }: Partial<TProofOfAddressForm>) => {
-        const { isDesktop } = useDevice();
-        const { client, notifications } = useStore();
+        const { client, notifications, ui } = useStore();
         const { account_settings, fetchResidenceList, fetchStatesList, getChangeableFields, states_list, is_eu } =
             client;
         const {
@@ -54,6 +52,7 @@ const ProofOfAddressForm = observer(
             removeNotificationMessage,
             removeNotificationByKey,
         } = notifications;
+        const { is_mobile } = ui;
         const [document_files, setDocumentFiles] = React.useState<File[]>([]);
         const [file_selection_error, setFileSelectionError] = React.useState<string | null>(null);
         const [is_loading, setIsLoading] = React.useState(true);
@@ -272,7 +271,7 @@ const ProofOfAddressForm = observer(
         }
         const setOffset = (status: { msg: string }) => {
             const mobile_scroll_offset = status?.msg ? '200px' : '154px';
-            return !isDesktop && !is_for_cfd_modal ? mobile_scroll_offset : '80px';
+            return is_mobile && !is_for_cfd_modal ? mobile_scroll_offset : '80px';
         };
 
         return (
@@ -284,12 +283,12 @@ const ProofOfAddressForm = observer(
             >
                 {({ status, handleSubmit, isSubmitting, isValid }) => (
                     <>
-                        <LeaveConfirm onDirty={!isDesktop ? showForm : undefined} />
+                        <LeaveConfirm onDirty={is_mobile ? showForm : undefined} />
                         {form_state.should_show_form && (
                             <form noValidate className='account-form account-form_poa' onSubmit={handleSubmit}>
                                 <ThemedScrollbars
                                     height='572px'
-                                    is_bypassed={!is_for_cfd_modal || !isDesktop}
+                                    is_bypassed={!is_for_cfd_modal || is_mobile}
                                     className={className}
                                 >
                                     <FormBody scroll_offset={setOffset(status)}>
@@ -298,7 +297,7 @@ const ProofOfAddressForm = observer(
                                                 className='account-form_poa-submit-error'
                                                 icon='IcAlertDanger'
                                                 message={
-                                                    <Text as='p' size={!isDesktop ? 'xxxs' : 'xs'}>
+                                                    <Text as='p' size={is_mobile ? 'xxxs' : 'xs'}>
                                                         {!status?.msg && is_resubmit && (
                                                             <Localize i18n_default_text='We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.' />
                                                         )}
@@ -343,7 +342,7 @@ const ProofOfAddressForm = observer(
                                                 !!file_selection_error
                                             }
                                             label={localize('Continue')}
-                                            is_absolute={!isDesktop}
+                                            is_absolute={is_mobile}
                                             is_loading={isSubmitting}
                                         />
                                     </Modal.Footer>

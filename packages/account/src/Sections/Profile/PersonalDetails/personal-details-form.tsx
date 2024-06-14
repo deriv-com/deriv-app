@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, Fragment } from 'react';
 import clsx from 'clsx';
 import { Formik, Form, FormikHelpers } from 'formik';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { useHistory } from 'react-router';
 import {
     Button,
     Checkbox,
@@ -30,18 +30,20 @@ import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
-import { useInvalidateQuery, useResidenceList, useStatesList } from '@deriv/api';
+import { useInvalidateQuery } from '@deriv/api';
+import { useStatesList, useResidenceList } from '@deriv/hooks';
 
 type TRestState = {
     show_form: boolean;
     api_error?: string;
 };
 
-export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponentProps>) => {
+const PersonalDetailsForm = observer(() => {
     const [is_loading, setIsLoading] = useState(false);
     const [is_btn_loading, setIsBtnLoading] = useState(false);
     const [is_submit_success, setIsSubmitSuccess] = useState(false);
     const invalidate = useInvalidateQuery();
+    const history = useHistory();
 
     const {
         client,
@@ -675,4 +677,4 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
     );
 });
 
-export default withRouter(PersonalDetailsForm);
+export default PersonalDetailsForm;

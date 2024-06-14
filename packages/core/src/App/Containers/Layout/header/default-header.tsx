@@ -4,7 +4,7 @@ import { getDecimalPlaces, platforms, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
-import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
+import NewVersionNotification from 'App/Containers/new-version-notification';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';

@@ -406,6 +406,16 @@
             align-items: center;
             justify-content: space-between;
             padding-inline: 1.6rem;
+
+            .notifications {
+                // &__wrapper {
+                //     position: relative;
+                // }
+
+                &__icon {
+                    fill: var(--core-color-opacity-black-600);
+                }
+            }
         }
     }
 }

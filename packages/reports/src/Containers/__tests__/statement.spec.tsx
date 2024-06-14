@@ -434,7 +434,7 @@ describe('getRowAction', () => {
                 getRowAction({
                     ...buyTransactionData,
                     transaction_time: 1717662763,
-                    shortcode: 'CALL_1HZ25V_19.54_1717761900F_1717762800_S0P_0',
+                    shortcode: `CALL_1HZ25V_19.54_${Math.floor(Date.now() / 1000) + 100}F_1717762800_S0P_0`,
                     desc: 'Win payout if Volatility 25 (1s) Index is strictly higher than entry spot at 15 minutes after 2024-06-07 12:05:00 GMT.',
                 }) as Record<string, JSX.Element>
             ).component

@@ -19,13 +19,7 @@ const Routes: React.FC = observer(() => {
 
     const title_TH = localize("Trader's Hub");
     const title_TH_logged_out = localize('Deriv App');
-
-    const componentToRender = () => {
-        if (is_logged_in || is_logging_in) {
-            return TradersHub;
-        }
-        return TradersHubLoggedOut;
-    };
+    const show_logged_in_version = is_logged_in || is_logging_in;
 
     return (
         <React.Suspense fallback={<Loading />}>
@@ -33,8 +27,8 @@ const Routes: React.FC = observer(() => {
                 <RouteWithSubroutes
                     path={routes.traders_hub}
                     exact
-                    component={componentToRender()}
-                    getTitle={() => (is_logged_in || is_logging_in ? title_TH : title_TH_logged_out)}
+                    component={show_logged_in_version ? TradersHub : TradersHubLoggedOut}
+                    getTitle={() => (show_logged_in_version ? title_TH : title_TH_logged_out)}
                 />
                 <RouteWithSubroutes
                     path={routes.onboarding}

@@ -31,32 +31,43 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Setup Environment variables
-      run: |
-        echo "NAMESPACE=${{ inputs.K8S_NAMESPACE }}" >> "$GITHUB_ENV"
-        echo "KUBE_SERVER=${{ inputs.KUBE_SERVER }}" >> "$GITHUB_ENV"
-        echo "SERVICEACCOUNT_TOKEN=${{ inputs.SERVICEACCOUNT_TOKEN }}" >> "$GITHUB_ENV"
-        echo "DOCKERHUB_ORGANISATION=${{ inputs.DOCKERHUB_ORGANISATION }}" >> "$GITHUB_ENV"
-        echo "CA_CRT=${{ inputs.CA_CRT }}" >> "$GITHUB_ENV"
-        echo "APP_NAME=deriv-app" >> "$GITHUB_ENV"
-        echo "APP_VERSION=${{ inputs.APP_VERSION }}" >> "$GITHUB_ENV"
-      shell: bash
     - name: Build docker image 🐳
+      env:
+        DOCKERHUB_ORGANISATION: ${{ inputs.DOCKERHUB_ORGANISATION }}
+        APP_NAME: deriv-app
+        APP_VERSION: ${{ inputs.APP_VERSION }}
       run: docker build -t ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${APP_VERSION} -t ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${{ github.ref_name }} .
       shell: bash
     - name: Verify nginx image
+      env:
+        DOCKERHUB_ORGANISATION: ${{ inputs.DOCKERHUB_ORGANISATION }}
+        APP_NAME: deriv-app
       run: |
         set -e
         docker run --rm ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${{ github.ref_name }} nginx -t
         echo "docker image validated successfully"
       shell: bash
     - name: Pushing Image to docker hub 🐳
+      env:
+          DOCKERHUB_ORGANISATION: ${{ inputs.DOCKERHUB_ORGANISATION }}
+          APP_NAME: deriv-app
+          APP_VERSION: ${{ inputs.APP_VERSION }}
+          DOCKERHUB_USERNAME: ${{ inputs.DOCKERHUB_USERNAME }}
+          DOCKERHUB_PASSWORD: ${{ inputs.DOCKERHUB_PASSWORD }}
       run: |
-        echo ${{ inputs.DOCKERHUB_PASSWORD }}| docker login -u ${{ inputs.DOCKERHUB_USERNAME }} --password-stdin
+        echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
         docker push ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${APP_VERSION}
         docker push ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${{ github.ref_name }}
       shell: bash
     - name: Deploy 🚀
+      env:
+        NAMESPACE: ${{ inputs.K8S_NAMESPACE }}
+        KUBE_SERVER: ${{ inputs.KUBE_SERVER }}
+        SERVICEACCOUNT_TOKEN: ${{ inputs.SERVICEACCOUNT_TOKEN }}
+        DOCKERHUB_ORGANISATION: ${{ inputs.DOCKERHUB_ORGANISATION }}
+        CA_CRT: ${{ inputs.CA_CRT }}
+        APP_NAME: deriv-app
+        APP_VERSION: ${{ inputs.APP_VERSION }}
       run: |
         git clone https://github.com/binary-com/devops-ci-scripts
         cd devops-ci-scripts/k8s-build_tools

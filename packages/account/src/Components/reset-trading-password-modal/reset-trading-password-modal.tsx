@@ -176,13 +176,23 @@ const ResetTradingPassword = ({
                                         />
                                     </Text>
                                     <Text as='p' size='xs' className='reset-trading-password__details'>
-                                        {localize('You can use this password for all your Deriv MT5 accounts.')}
+                                        <Localize
+                                            i18n_default_text='You can use this password for all your {{platform}} accounts.'
+                                            values={{
+                                                platform: getCFDPlatformLabel(platform),
+                                            }}
+                                        />
                                     </Text>
                                     <fieldset className='reset-trading-password__input-field'>
                                         <PasswordMeter
                                             input={values.password}
                                             has_error={!!(touched.password && errors.password)}
-                                            custom_feedback_messages={getErrorMessages().password_warnings}
+                                            custom_feedback_messages={
+                                                getErrorMessages().password_warnings as unknown as Record<
+                                                    string,
+                                                    string
+                                                >
+                                            }
                                         >
                                             <PasswordInput
                                                 autoComplete='new-password'

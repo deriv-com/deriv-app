@@ -11,6 +11,7 @@ describe('Tesing <DateOfBirthField/> component', () => {
         };
         render(
             <Formik initialValues={{}} onSubmit={jest.fn()}>
+                {/* @ts-expect-error [TODO] need to fix types for  DateOfBirthField component*/}
                 <DateOfBirthField {...props} />
             </Formik>
         );

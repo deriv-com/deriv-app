@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Loading } from '@deriv/components';
 import {
     getBrandWebsiteName,
@@ -71,12 +71,19 @@ type TResponse = {
 
 const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShown }: TSelfExclusion) => {
     const { client, ui } = useStore();
-    const { currency, is_virtual, is_switching, standpoint, is_eu, is_uk, logout, landing_company_shortcode } = client;
+    const {
+        currency,
+        is_virtual,
+        is_switching,
+        standpoint,
+        is_eu,
+        logout,
+        landing_company_shortcode,
+        getLimits: getLimitsFromStore,
+    } = client;
     const { is_tablet } = ui;
     const is_wrapper_bypassed = false;
-    const is_mlt = landing_company_shortcode === 'malta';
     const is_mf = landing_company_shortcode === 'maltainvest';
-    const is_mx = landing_company_shortcode === 'iom';
     const is_cr = standpoint.svg;
     const exclusion_fields_settings = Object.freeze({
         max_number: 9999999999999,
@@ -386,7 +393,7 @@ const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShow
     const getLimits = () => {
         setState({ is_loading: true });
 
-        WS.authorized.getLimits({ get_limits: 1 }).then((limits: FormikValues) => {
+        getLimitsFromStore().then((limits: FormikValues) => {
             exclusion_limits.current = limits;
         });
     };
@@ -441,10 +448,7 @@ const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShow
         handleSubmit,
         is_eu,
         is_mf,
-        is_mlt,
-        is_mx,
         is_tablet,
-        is_uk,
         is_wrapper_bypassed,
         objectValuesToString,
         overlay_ref,

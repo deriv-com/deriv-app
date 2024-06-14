@@ -28,7 +28,7 @@ export const personal_details_config = ({
     residence_list,
     account_settings,
     real_account_signup_target,
-}: TPersonalDetailsConfig) => {
+}: TPersonalDetailsConfig): TSchema => {
     if (!residence_list || !account_settings) {
         return {};
     }
@@ -37,35 +37,35 @@ export const personal_details_config = ({
 
     const config = {
         account_opening_reason: {
-            supported_in: ['iom', 'malta', 'maltainvest'],
+            supported_in: ['maltainvest'],
             default_value: account_settings.account_opening_reason ?? '',
             rules: [['req', localize('Account opening reason is required.')]],
         },
         salutation: {
-            supported_in: ['iom', 'malta', 'maltainvest'],
+            supported_in: ['maltainvest'],
             default_value: account_settings.salutation ?? '',
             rules: [['req', localize('Salutation is required.')]],
         },
         first_name: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: ['svg', 'maltainvest'],
             default_value: account_settings.first_name ?? '',
             rules: [
                 ['req', localize('First name is required.')],
-                ['length', localize('First name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
+                ['length', localize('Enter no more than 50 characters.'), { min: 1, max: 50 }],
                 ['name', getErrorMessages().name()],
             ],
         },
         last_name: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: ['svg', 'maltainvest'],
             default_value: account_settings.last_name ?? '',
             rules: [
                 ['req', localize('Last name is required.')],
-                ['length', localize('Last name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
+                ['length', localize('Enter no more than 50 characters.'), { min: 1, max: 50 }],
                 ['name', getErrorMessages().name()],
             ],
         },
         date_of_birth: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: ['svg', 'maltainvest'],
             default_value: account_settings.date_of_birth
                 ? toMoment(account_settings.date_of_birth).format('YYYY-MM-DD')
                 : '',
@@ -78,7 +78,7 @@ export const personal_details_config = ({
             ],
         },
         place_of_birth: {
-            supported_in: ['maltainvest', 'iom', 'malta'],
+            supported_in: ['maltainvest'],
             default_value:
                 (account_settings.place_of_birth &&
                     residence_list.find(item => item.value === account_settings.place_of_birth)?.text) ||
@@ -86,7 +86,7 @@ export const personal_details_config = ({
             rules: [['req', localize('Place of birth is required.')]],
         },
         citizen: {
-            supported_in: ['iom', 'malta', 'maltainvest'],
+            supported_in: ['maltainvest'],
             default_value:
                 (account_settings.citizen &&
                     residence_list.find(item => item.value === account_settings.citizen)?.text) ||
@@ -94,7 +94,7 @@ export const personal_details_config = ({
             rules: [['req', localize('Citizenship is required')]],
         },
         phone: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+            supported_in: ['svg', 'maltainvest'],
             default_value: account_settings.phone ?? '',
             rules: [
                 ['req', localize('Phone is required.')],
@@ -237,8 +237,7 @@ const personalDetailsConfig = <T>(
         account_status,
         residence,
     }: TPersonalDetailsConfig,
-    PersonalDetails: T,
-    is_appstore = false
+    PersonalDetails: T
 ) => {
     const config = personal_details_config({
         residence_list,
@@ -250,8 +249,8 @@ const personalDetailsConfig = <T>(
     const disabled_items = account_settings.immutable_fields;
     return {
         header: {
-            active_title: is_appstore ? localize('A few personal details') : localize('Complete your personal details'),
-            title: is_appstore ? localize('PERSONAL') : localize('Personal details'),
+            active_title: localize('Complete your personal details'),
+            title: localize('Personal details'),
         },
         body: PersonalDetails,
         form_value: getDefaultFields(real_account_signup_target, config),
@@ -305,18 +304,13 @@ const personalDetailsConfig = <T>(
 
 const transformConfig = (
     config: TSchema,
-    { real_account_signup_target, residence_list, account_settings, account_status, residence }: TPersonalDetailsConfig
+    { real_account_signup_target, residence_list, account_status, residence }: TPersonalDetailsConfig
 ) => {
-    // Remove required rule for malta and iom
-    if (['malta', 'iom'].includes(real_account_signup_target) && config.tax_residence) {
-        config?.tax_residence?.rules?.shift();
-    }
     // Remove IDV for non supporting SVG countries
     if (
         !shouldShowIdentityInformation({
             account_status,
-            account_settings,
-            residence,
+            citizen: residence,
             residence_list,
             real_account_signup_target,
         })

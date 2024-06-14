@@ -1,122 +1,209 @@
-import React from 'react';
-import { Redirect } from 'react-router-dom';
-import { Loading } from '@deriv/components';
-import { useGetPasskeysList, useRegisterPasskey } from '@deriv/hooks';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { Redirect, useHistory } from 'react-router-dom';
+import { InlineMessage, Loading } from '@deriv/components';
+import { useGetPasskeysList, useRegisterPasskey, useRenamePasskey } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import PasskeysStatusContainer from './components/passkeys-status-container';
-import PasskeysList from './components/passkeys-list';
-import PasskeyModal from './components/passkey-modal';
-import { getModalContent, PASSKEY_STATUS_CODES, TPasskeysStatus } from './passkeys-configs';
+import { Localize } from '@deriv/translations';
+import { PasskeyErrorModal } from './components/passkey-error-modal';
+import { PasskeyReminderModal } from './components/passkey-reminder-modal';
+import { PasskeysStatusContainer } from './components/passkeys-status-container';
+import { clearTimeOut, PASSKEY_STATUS_CODES, passkeysMenuActionEventTrack, TPasskeysStatus } from './passkeys-configs';
 import './passkeys.scss';
 
-const Passkeys = observer(() => {
-    const { ui, client, common } = useStore();
-    const { is_mobile } = ui;
-    const { is_passkey_supported } = client;
-    let timeout: ReturnType<typeof setTimeout>;
+export type TPasskey = {
+    id: number;
+    name: string;
+    last_used: number;
+    created_at?: number;
+    stored_on?: string;
+    passkey_id?: string;
+    icon?: string;
+};
+export type TOnPasskeyMenuClick = (
+    passkey_managing_status: TPasskeysStatus,
+    passkey_data: TCurrentManagedPasskey
+) => void;
+export type TCurrentManagedPasskey = {
+    id: TPasskey['id'];
+    name: TPasskey['name'];
+};
 
-    const [passkey_status, setPasskeyStatus] = React.useState<TPasskeysStatus>(PASSKEY_STATUS_CODES.NONE);
-    const [is_modal_open, setIsModalOpen] = React.useState(false);
+const Passkeys = observer(() => {
+    const { client, ui, common } = useStore();
+    const { is_passkey_supported } = client;
+    const { is_mobile } = ui;
+    const is_network_on = common.network_status.class === 'online';
+
+    const error_modal_timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const snackbar_timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const prev_passkey_status = React.useRef<TPasskeysStatus>(PASSKEY_STATUS_CODES.LIST);
+
+    const history = useHistory();
+
     const { passkeys_list, is_passkeys_list_loading, passkeys_list_error, reloadPasskeysList } = useGetPasskeysList();
     const {
-        cancelPasskeyRegistration,
         createPasskey,
         clearPasskeyRegistrationError,
         startPasskeyRegistration,
-        is_passkey_registration_started,
         is_passkey_registered,
         passkey_registration_error,
     } = useRegisterPasskey();
+    const { is_passkey_renamed, passkey_renaming_error, renamePasskey } = useRenamePasskey();
 
-    const should_show_passkeys = is_passkey_supported && is_mobile;
-    const error = passkeys_list_error || passkey_registration_error;
-    const modal_content = getModalContent({
-        error,
-        is_passkey_registration_started,
+    const [passkey_status, setPasskeyStatus] = useState<TPasskeysStatus>(PASSKEY_STATUS_CODES.LIST);
+    const [is_reminder_modal_open, setIsReminderModalOpen] = useState(false);
+    const [is_error_modal_open, setIsErrorModalOpen] = useState(false);
+    const [is_snackbar_open, setIsSnackbarOpen] = useState(false);
+    const [current_managed_passkey, setCurrentManagedPasskey] = useState<TCurrentManagedPasskey>({
+        id: 0,
+        name: '',
     });
 
-    React.useEffect(() => {
-        if (!passkeys_list?.length && !is_passkey_registered) {
-            setPasskeyStatus(PASSKEY_STATUS_CODES.NO_PASSKEY);
-        } else if (is_passkey_registered) {
-            setPasskeyStatus(PASSKEY_STATUS_CODES.CREATED);
-        } else {
-            setPasskeyStatus(PASSKEY_STATUS_CODES.NONE);
-        }
-    }, [is_passkey_registered, passkeys_list]);
+    const should_show_passkeys = is_passkey_supported && is_mobile;
+    const error = passkeys_list_error || passkey_registration_error || passkey_renaming_error;
 
-    React.useEffect(() => {
-        if (!!error || is_passkey_registration_started) {
-            setIsModalOpen(true);
+    useEffect(() => {
+        if (is_passkeys_list_loading || passkey_status === PASSKEY_STATUS_CODES.CREATED) return;
+        if (!passkeys_list?.length) {
+            setPasskeyStatus(PASSKEY_STATUS_CODES.NO_PASSKEY);
+        } else {
+            setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
+        }
+    }, [is_passkeys_list_loading, passkeys_list?.length]);
+
+    useEffect(() => {
+        if (is_passkey_renamed) {
+            setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
+            setIsSnackbarOpen(true);
+            passkeysMenuActionEventTrack('passkey_rename_success');
+            clearTimeOut(snackbar_timeout);
+            snackbar_timeout.current = setTimeout(() => {
+                setIsSnackbarOpen(false);
+            }, 5000);
         }
         return () => {
-            clearTimeout(timeout);
+            clearTimeOut(snackbar_timeout);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [error, is_passkey_registration_started]);
+    }, [is_passkey_renamed]);
 
-    if (should_show_passkeys && (is_passkeys_list_loading || common.network_status.class !== 'online')) {
+    useEffect(() => {
+        if (is_passkey_registered) {
+            passkeysMenuActionEventTrack('create_passkey_finished');
+            setPasskeyStatus(PASSKEY_STATUS_CODES.CREATED);
+        }
+    }, [is_passkey_registered]);
+
+    useEffect(() => {
+        if (error) {
+            is_reminder_modal_open && setIsReminderModalOpen(false);
+            clearTimeOut(error_modal_timeout);
+            error_modal_timeout.current = setTimeout(() => setIsErrorModalOpen(true), 500);
+        }
+        return () => clearTimeOut(error_modal_timeout);
+    }, [error, is_reminder_modal_open]);
+
+    if (should_show_passkeys && (is_passkeys_list_loading || !is_network_on)) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
+
     if (!should_show_passkeys) {
         return <Redirect to={routes.traders_hub} />;
     }
 
-    // to avoid flickering with blank Modal we need first close it, then clear content
-    const onCloseModal = (delayed_action: () => void) => {
-        setIsModalOpen(false);
-        if (timeout) clearTimeout(timeout);
-        timeout = setTimeout(delayed_action, 300);
-    };
-
-    const onCloseError = () => {
-        if (passkeys_list_error) {
-            reloadPasskeysList();
-        }
+    const onCloseErrorModal = () => {
         if (passkey_registration_error) {
             clearPasskeyRegistrationError();
         }
+        history.push(routes.traders_hub);
     };
-    const onModalButtonClick = () => {
-        if (error) {
-            onCloseModal(onCloseError);
-        } else {
-            createPasskey();
-            setIsModalOpen(false);
+
+    const onCloseReminderModal = () => {
+        setIsReminderModalOpen(false);
+    };
+
+    const onContinueReminderModal = () => {
+        createPasskey();
+        if (!error) {
+            passkeysMenuActionEventTrack('create_passkey_reminder_passed');
+        }
+        setIsReminderModalOpen(false);
+    };
+
+    const onPasskeyMenuClick = (passkey_managing_status: TPasskeysStatus, passkey_data: TCurrentManagedPasskey) => {
+        setCurrentManagedPasskey(passkey_data);
+        setPasskeyStatus(passkey_managing_status);
+    };
+
+    const onPrimaryButtonClick = (passkey_data?: Partial<TCurrentManagedPasskey>) => {
+        if (
+            passkey_status === PASSKEY_STATUS_CODES.NO_PASSKEY ||
+            passkey_status === PASSKEY_STATUS_CODES.LIST ||
+            passkey_status === PASSKEY_STATUS_CODES.LEARN_MORE
+        ) {
+            const subform_name = passkey_status === PASSKEY_STATUS_CODES.LEARN_MORE ? 'passkey_info' : 'passkey_main';
+            passkeysMenuActionEventTrack('create_passkey_started', { subform_name });
+            startPasskeyRegistration();
+            setIsReminderModalOpen(true);
+        }
+        if (passkey_status === PASSKEY_STATUS_CODES.CREATED) {
+            passkeysMenuActionEventTrack('create_passkey_continue_trading');
+            history.push(routes.traders_hub);
+        }
+        if (passkey_status === PASSKEY_STATUS_CODES.RENAMING) {
+            renamePasskey(current_managed_passkey.id, passkey_data?.name ?? current_managed_passkey.name);
+        }
+        if (passkey_status === PASSKEY_STATUS_CODES.REMOVED) {
+            // TODO: add the logic for revoking and tracking events
         }
     };
 
-    const onCloseRegistration = () => {
-        onCloseModal(cancelPasskeyRegistration);
+    const onSecondaryButtonClick = () => {
+        if (passkey_status === PASSKEY_STATUS_CODES.NO_PASSKEY || passkey_status === PASSKEY_STATUS_CODES.LIST) {
+            passkeysMenuActionEventTrack('info_open');
+            setPasskeyStatus(PASSKEY_STATUS_CODES.LEARN_MORE);
+        }
+        if (passkey_status === PASSKEY_STATUS_CODES.LEARN_MORE) {
+            passkeysMenuActionEventTrack('info_back');
+            setPasskeyStatus(prev_passkey_status.current);
+        }
+        if (passkey_status === PASSKEY_STATUS_CODES.CREATED) {
+            passkeysMenuActionEventTrack('add_more_passkeys');
+            setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
+        }
+        if (passkey_status === PASSKEY_STATUS_CODES.RENAMING) {
+            passkeysMenuActionEventTrack('passkey_rename_back');
+            setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
+        }
+        prev_passkey_status.current = passkey_status;
     };
 
     return (
-        <div className='passkeys'>
-            {passkey_status ? (
-                <PasskeysStatusContainer
-                    createPasskey={startPasskeyRegistration}
-                    passkey_status={passkey_status}
-                    setPasskeyStatus={setPasskeyStatus}
-                />
-            ) : (
-                <PasskeysList
-                    passkeys_list={passkeys_list || []}
-                    onPrimaryButtonClick={startPasskeyRegistration}
-                    onSecondaryButtonClick={() => setPasskeyStatus(PASSKEY_STATUS_CODES.LEARN_MORE)}
-                />
-            )}
-            <PasskeyModal
-                toggleModal={is_passkey_registration_started ? onCloseRegistration : undefined}
-                has_close_icon={!!modal_content.header}
-                header={modal_content.header}
-                className='passkeys-modal'
-                is_modal_open={is_modal_open}
-                description={modal_content.description}
-                button_text={modal_content.button_text}
-                onButtonClick={onModalButtonClick}
+        <Fragment>
+            <PasskeysStatusContainer
+                current_managed_passkey={current_managed_passkey}
+                onPasskeyMenuClick={onPasskeyMenuClick}
+                onPrimaryButtonClick={onPrimaryButtonClick}
+                onSecondaryButtonClick={onSecondaryButtonClick}
+                passkey_status={passkey_status}
+                passkeys_list={passkeys_list || []}
             />
-        </div>
+            {is_snackbar_open && (
+                <div className='passkeys-snackbar__container'>
+                    <InlineMessage
+                        size='sm'
+                        message={<Localize i18n_default_text='Changes saved.' />}
+                        type='information'
+                    />
+                </div>
+            )}
+            <PasskeyReminderModal
+                is_modal_open={is_reminder_modal_open}
+                onButtonClick={onContinueReminderModal}
+                toggleModal={onCloseReminderModal}
+            />
+            <PasskeyErrorModal error={error} is_modal_open={is_error_modal_open} onButtonClick={onCloseErrorModal} />
+        </Fragment>
     );
 });
 

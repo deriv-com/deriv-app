@@ -7,36 +7,34 @@ describe('DescriptionContainer', () => {
         const description_data = [
             {
                 question: 'What are passkeys?',
-                description:
-                    'Passkeys are a security measure that lets you log in the same way you unlock your device: with a fingerprint, a face scan, or a screen lock PIN.',
+                descriptions: [
+                    'Secure alternative to passwords.',
+                    'Unlock your account like your phone - with biometrics, face scan or PIN.',
+                ],
             },
             {
                 question: 'Why passkeys?',
-                description:
-                    'Passkeys are an added layer of security that protects your account against unauthorised access and phishing attacks.',
+                descriptions: ['Extra security layer.', 'Shields against unauthorised access and phishing.'],
             },
             {
                 question: 'How to create a passkey?',
-                description:
-                    'Go to ‘Account Settings’ on Deriv to set up your passkey. Each device can only save one passkey; however, iOS users may still see the "Create passkey" button due to iOS’s ability to save passkeys on other devices.',
+                descriptions: ['Go to ‘Account Settings’ on Deriv.', 'You can create one passkey per device.'],
             },
             {
                 question: 'Where are passkeys saved?',
-                description:
-                    'Passkeys are saved in your Google password manager for Android devices and in iCloud keychain on iOS devices to help you sign in on other devices.',
+                descriptions: ['Android: Google password manager.', 'iOS: iCloud keychain.'],
             },
             {
                 question: 'What happens if my Deriv account email is changed?',
-                description:
-                    'Even if you change your email address, you can still continue to log in to your Deriv account with the same passkey.',
+                descriptions: ['No problem! Your passkey still works.', 'Sign in to Deriv with your existing passkey.'],
             },
         ];
 
         render(<DescriptionContainer />);
 
-        description_data.forEach(({ question, description }) => {
+        description_data.forEach(({ question, descriptions }) => {
             expect(screen.getByText(question)).toBeInTheDocument();
-            expect(screen.getByText(description)).toBeInTheDocument();
+            descriptions.forEach(description => expect(screen.getByText(description)).toBeInTheDocument());
         });
     });
 });

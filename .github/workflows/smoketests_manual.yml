@@ -1,0 +1,21 @@
+name: Run Smoke Tests - Manually
+run-name: Manual run of ${{ github.event.inputs.suite }} tests on ${{ github.event.inputs.testlink || github.event.inputs.environment }} in ${{ github.event.inputs.qabox }} ${{ github.event.inputs.appid }}
+
+on:
+  workflow_dispatch:
+
+jobs:
+  trigger-workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger another deriv-app smoke tests from regentmarkets
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.actions.createWorkflowDispatch({
+              owner: 'regentmarkets',
+              repo: 'e2e-deriv-app',
+              workflow_id: 'E2E_Run_v2.yml',
+              ref: 'master'
+            })

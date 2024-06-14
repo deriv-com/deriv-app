@@ -16,7 +16,7 @@ import {
     Loading,
 } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { routes, formatMoney, ContentFlag, getStaticUrl } from '@deriv/shared';
+import { routes, formatMoney, ContentFlag } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useHasSetCurrency } from '@deriv/hooks';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
@@ -97,9 +97,15 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         if (is_positions_drawer_on) {
             togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
-        await logoutClient();
-        window.location.href = getStaticUrl('/');
-        history.push(routes.index);
+
+        // for DBot we need to logout first and only after this redirect to TH
+        if (window.location.pathname.startsWith(routes.bot)) {
+            await logoutClient();
+            history.push(routes.traders_hub);
+        } else {
+            history.push(routes.traders_hub);
+            await logoutClient();
+        }
     };
 
     const closeAccountsDialog = () => {
@@ -510,11 +516,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                             <Text color='prominent' size='xs' align='left' className='acc-switcher__logout-text'>
                                 {localize('Log out')}
                             </Text>
-                            <Icon
-                                icon='IcLogout'
-                                className='acc-switcher__logout-icon drawer__icon'
-                                onClick={handleLogout}
-                            />
+                            <Icon icon='IcLogout' className='acc-switcher__logout-icon drawer__icon' />
                         </div>
                     </div>
                 </React.Fragment>

@@ -15,7 +15,8 @@ type TOTPVerification = {
 };
 
 const OTPVerification = observer(({ phone_verification_type, setOtpVerification }: TOTPVerification) => {
-    const { ui } = useStore();
+    const { client, ui } = useStore();
+    const { setVerificationCode } = client;
     const { data: account_settings, invalidate } = useSettings();
     const [should_show_phone_number_verified_modal, setShouldShowPhoneNumberVerifiedModal] = React.useState(false);
     const [should_show_didnt_get_the_code_modal, setShouldShowDidntGetTheCodeModal] = React.useState(false);
@@ -48,7 +49,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
         if (is_phone_number_verified) {
             setShouldShowPhoneNumberVerifiedModal(true);
         } else if (is_email_verified) {
-            localStorage.setItem('email_otp_code', otp);
+            setVerificationCode('phone_number_verification', otp);
             setOtpVerification({ show_otp_verification: false, phone_verification_type: '' });
         }
     }, [is_phone_number_verified, is_email_verified, setOtpVerification]);

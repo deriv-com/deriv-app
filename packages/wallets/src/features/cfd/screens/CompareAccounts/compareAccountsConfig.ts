@@ -38,11 +38,11 @@ const getHighlightedIconLabel = (
     switch (marketType) {
         case MARKET_TYPE.SYNTHETIC:
             return [
-                { highlighted: false, icon: 'Forex', text: forexLabel },
+                { highlighted: true, icon: 'Forex', text: forexLabel },
                 { highlighted: false, icon: 'Stocks', text: 'Stocks' },
-                { highlighted: false, icon: 'StockIndices', text: 'Stock indices' },
-                { highlighted: false, icon: 'Commodities', text: 'Commodities' },
-                { highlighted: false, icon: 'Cryptocurrencies', text: 'Cryptocurrencies' },
+                { highlighted: true, icon: 'StockIndices', text: 'Stock indices' },
+                { highlighted: true, icon: 'Commodities', text: 'Commodities' },
+                { highlighted: true, icon: 'Cryptocurrencies', text: 'Cryptocurrencies' },
                 { highlighted: false, icon: 'ETF', text: 'ETFs' },
                 { highlighted: true, icon: 'Synthetics', text: 'Synthetic indices' },
                 { highlighted: true, icon: 'Baskets', text: 'Basket indices' },

@@ -34,13 +34,17 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const is_multiplier = isMultiplierContract(contract_type);
 
+    const cardLabels = getCardLabels();
+    const bidDetails = !is_valid_to_cancel ? `@${bid_price} ${currency}` : '';
+    const label = `${cardLabels.CLOSE} ${bidDetails}`;
+
     return (
         <div className='contract-details-footer--container'>
             {is_multiplier ? (
                 <>
                     <Button
                         variant='secondary'
-                        label={`${getCardLabels().CLOSE} ${!is_valid_to_cancel ? `@${bid_price} ${currency}` : ''}`}
+                        label={label}
                         color='black'
                         size='lg'
                         isLoading={is_sell_requested}

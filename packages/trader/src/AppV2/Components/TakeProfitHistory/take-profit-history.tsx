@@ -34,8 +34,8 @@ const TakeProfitHistory = ({ history = [], currency }: TContractHistory) => {
                     'take-profit-history__table--fixed-height': history.length > itemsPerPage,
                 })}
             >
-                {currentItems.map((item, index) => (
-                    <div key={index} className='take-profit-history__table-row'>
+                {currentItems.map(item => (
+                    <div key={item.display_name} className='take-profit-history__table-row'>
                         <div
                             className={clsx('take-profit-history__table-cell', 'take-profit-history__table-cell--left')}
                         >

@@ -1,8 +1,8 @@
-import { Text, CaptionText } from '@deriv-com/quill-ui';
-import CardWrapper from '../CardWrapper';
 import React, { useMemo } from 'react';
 import { TContractInfo, addComma, getEndTime } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import EntryExitDetailRow from './entry-exit-details-row';
+import CardWrapper from '../CardWrapper';
 
 const getDateTimeFromEpoch = (epoch?: number) => {
     if (epoch) {
@@ -15,33 +15,6 @@ const getDateTimeFromEpoch = (epoch?: number) => {
         };
     }
 };
-
-const DateTimeRow = ({
-    label,
-    value,
-    date,
-    time,
-}: {
-    label: React.ReactNode;
-    value?: string;
-    date: string;
-    time: string;
-}) => (
-    <div className='entry-exit-details__table-row'>
-        <div className='entry-exit-details__table-cell'>
-            <Text size='sm' color='quill-typography__color--subtle'>
-                {label}
-            </Text>
-        </div>
-        <div className='entry-exit-details__table-cell'>
-            <Text size='sm'>{value}</Text>
-            <Text size='sm' color='quill-typography__color--subtle'>
-                {date}
-            </Text>
-            <CaptionText color='quill-typography__color--subtle'>{time}</CaptionText>
-        </div>
-    </div>
-);
 
 const EntryExitDetails = ({ contract_info }: { contract_info: TContractInfo }) => {
     const { entry_tick_time, entry_spot_display_value, exit_tick_time, date_start, exit_tick_display_value } =
@@ -64,18 +37,20 @@ const EntryExitDetails = ({ contract_info }: { contract_info: TContractInfo }) =
         <CardWrapper title='Entry & exit details' className='entry-exit-details'>
             <div className='entry-exit-details__table'>
                 {dateTimes.start && (
-                    <DateTimeRow label={<Localize i18n_default_text='Start time' />} {...dateTimes.start} />
+                    <EntryExitDetailRow label={<Localize i18n_default_text='Start time' />} {...dateTimes.start} />
                 )}
                 {dateTimes.entry && entryValue && (
-                    <DateTimeRow
+                    <EntryExitDetailRow
                         label={<Localize i18n_default_text='Entry spot' />}
                         value={entryValue}
                         {...dateTimes.entry}
                     />
                 )}
-                {dateTimes.end && <DateTimeRow label={<Localize i18n_default_text='Exit time' />} {...dateTimes.end} />}
+                {dateTimes.end && (
+                    <EntryExitDetailRow label={<Localize i18n_default_text='Exit time' />} {...dateTimes.end} />
+                )}
                 {dateTimes.exit && exitValue && (
-                    <DateTimeRow
+                    <EntryExitDetailRow
                         label={<Localize i18n_default_text='Exit spot' />}
                         value={exitValue}
                         {...dateTimes.exit}

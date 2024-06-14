@@ -81,7 +81,7 @@ const transformTurbosData = (data: TContractInfo) => {
 };
 
 // For Digits
-const transformMatcherData = (data: TContractInfo) => {
+const transformDigitData = (data: TContractInfo) => {
     const commonFields = getCommonFields(data);
     return {
         [localize('Reference ID')]: commonFields[localize('Reference ID')],
@@ -132,14 +132,15 @@ const transformFunctionMap: Record<string, (data: TContractInfo) => Record<strin
     [CONTRACT_TYPES.TURBOS.SHORT]: transformTurbosData,
     [CONTRACT_TYPES.MULTIPLIER.DOWN]: transformMultiplierData,
     [CONTRACT_TYPES.MULTIPLIER.UP]: transformMultiplierData,
-    [CONTRACT_TYPES.MATCH_DIFF.MATCH]: transformMatcherData,
-    [CONTRACT_TYPES.MATCH_DIFF.DIFF]: transformMatcherData,
-    [CONTRACT_TYPES.EVEN_ODD.EVEN]: transformMatcherData,
-    [CONTRACT_TYPES.EVEN_ODD.ODD]: transformMatcherData,
-    [CONTRACT_TYPES.OVER_UNDER.OVER]: transformMatcherData,
-    [CONTRACT_TYPES.OVER_UNDER.UNDER]: transformMatcherData,
+    [CONTRACT_TYPES.MATCH_DIFF.MATCH]: transformDigitData,
+    [CONTRACT_TYPES.MATCH_DIFF.DIFF]: transformDigitData,
+    [CONTRACT_TYPES.EVEN_ODD.EVEN]: transformDigitData,
+    [CONTRACT_TYPES.EVEN_ODD.ODD]: transformDigitData,
+    [CONTRACT_TYPES.OVER_UNDER.OVER]: transformDigitData,
+    [CONTRACT_TYPES.OVER_UNDER.UNDER]: transformDigitData,
     [CONTRACT_TYPES.RESET.CALL]: transformRiseData,
     [CONTRACT_TYPES.PUT]: transformRiseData,
+    [CONTRACT_TYPES.PUTE]: transformRiseData,
     [CONTRACT_TYPES.CALLE]: transformRiseData,
     [CONTRACT_TYPES.CALL]: transformRiseData,
     [CONTRACT_TYPES.TOUCH.ONE_TOUCH]: transformRiseData,

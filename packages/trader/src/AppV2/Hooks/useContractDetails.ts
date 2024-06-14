@@ -14,8 +14,8 @@ const useContractDetails = () => {
 
     useEffect(() => {
         if (!contract_info.contract_id) {
-            const url_contract_id = location.pathname.split('/').pop();
-            onMount(parseInt(url_contract_id));
+            const urlContractId = location.pathname.split('/').pop();
+            onMount(parseInt(urlContractId));
         }
     }, [location.pathname, onMount, contract_info.contract_id]);
 

@@ -8,9 +8,9 @@ import RiskManagementItem from '../RiskManagementItem';
 const StopLoss = observer(() => {
     const { contract_info } = useContractDetails();
     const { limit_order } = contract_info;
-    const { is_stop_loss_visible } = getContractDetailsConfig(contract_info.contract_type ?? '');
+    const { isStopLossVisible } = getContractDetailsConfig(contract_info.contract_type ?? '');
 
-    return is_stop_loss_visible ? (
+    return isStopLossVisible ? (
         <RiskManagementItem
             label={<Localize i18n_default_text='Stop Loss' />}
             modal_body_content={

@@ -1,45 +1,45 @@
 import { CONTRACT_TYPES } from '@deriv/shared';
 
-const DEFAULT_CONFIG = {
-    is_take_profit_visible: false,
-    is_deal_cancellation_visible: false,
-    is_stop_loss_visible: false,
-    is_tp_history_visible: false,
+const defaultConfig = {
+    isTakeProfitVisible: false,
+    isDealCancellationVisible: false,
+    isStopLossVisible: false,
+    isTpHistoryVisible: false,
 };
 
-export const getContractDetailsConfig = (contract_type: string) => {
+export const getContractDetailsConfig = (contractType: string) => {
     const config = {
         [CONTRACT_TYPES.ACCUMULATOR]: {
-            is_take_profit_visible: true,
-            is_deal_cancellation_visible: false,
-            is_stop_loss_visible: false,
-            is_tp_history_visible: true,
+            isTakeProfitVisible: true,
+            isDealCancellationVisible: false,
+            isStopLossVisible: false,
+            isTpHistoryVisible: true,
         },
         [CONTRACT_TYPES.MULTIPLIER.UP]: {
-            is_take_profit_visible: true,
-            is_deal_cancellation_visible: true,
-            is_stop_loss_visible: true,
-            is_tp_history_visible: true,
+            isTakeProfitVisible: true,
+            isDealCancellationVisible: true,
+            isStopLossVisible: true,
+            isTpHistoryVisible: true,
         },
         [CONTRACT_TYPES.MULTIPLIER.DOWN]: {
-            is_take_profit_visible: true,
-            is_deal_cancellation_visible: true,
-            is_stop_loss_visible: true,
-            is_tp_history_visible: true,
+            isTakeProfitVisible: true,
+            isDealCancellationVisible: true,
+            isStopLossVisible: true,
+            isTpHistoryVisible: true,
         },
         [CONTRACT_TYPES.TURBOS.LONG]: {
-            is_take_profit_visible: true,
-            is_deal_cancellation_visible: false,
-            is_stop_loss_visible: false,
-            is_tp_history_visible: true,
+            isTakeProfitVisible: true,
+            isDealCancellationVisible: false,
+            isStopLossVisible: false,
+            isTpHistoryVisible: true,
         },
         [CONTRACT_TYPES.TURBOS.SHORT]: {
-            is_take_profit_visible: true,
-            is_deal_cancellation_visible: false,
-            is_stop_loss_visible: false,
-            is_tp_history_visible: true,
+            isTakeProfitVisible: true,
+            isDealCancellationVisible: false,
+            isStopLossVisible: false,
+            isTpHistoryVisible: true,
         },
     } as const;
 
-    return config[contract_type as keyof typeof config] || DEFAULT_CONFIG;
+    return config[contractType as keyof typeof config] || defaultConfig;
 };

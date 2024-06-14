@@ -127,7 +127,12 @@ const DMT5TradeModal = observer(
                                     {shortcode}
                                 </Text>
                             ) : (
-                                <Text size='xs' line_height='l' className='cfd-trade-modal--tag'>
+                                <Text
+                                    size='xxs'
+                                    line_height='l'
+                                    weight='bold'
+                                    className='cfd-trade-modal__desc-heading--demo'
+                                >
                                     {localize('Demo')}
                                 </Text>
                             )}

@@ -504,15 +504,6 @@
         color: var(--text-less-prominent);
         line-height: 1.45;
     }
-    &--tag {
-        background-color: $color-blue-8;
-        color: $color-blue-9;
-        border-radius: 0.2rem;
-        padding: 0 0.4rem;
-        font-weight: bold;
-        font-size: 1.3rem;
-        margin-left: 0.3rem;
-    }
 
     &__mobile {
         &-title {
@@ -526,12 +517,18 @@
         flex-grow: 1;
 
         &-heading--real {
-            padding: 0.4rem;
-            height: fit-content;
-            width: fit-content;
+            padding: 0 0.4rem;
             margin-left: 0.3rem;
             background-color: var(--icon-grey-background);
             border-radius: $BORDER_RADIUS;
+        }
+
+        &-heading--demo {
+            background-color: $color-blue-8;
+            color: $color-blue-9;
+            border-radius: $BORDER_RADIUS;
+            padding: 0 0.4rem;
+            margin-left: 0.3rem;
         }
 
         &-balance {

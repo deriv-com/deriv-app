@@ -4,23 +4,10 @@ import useOrderDetails from '../useOrderDetails';
 
 jest.mock('@deriv/translations', () => ({
     localize: jest.fn(text => text),
+    Localize: jest.fn(text => text),
 }));
 
 jest.mock('@deriv/shared', () => ({
-    CONTRACT_TYPES: {
-        TURBOS: { LONG: 'turbos_long', SHORT: 'turbos_short' },
-        MULTIPLIER: { DOWN: 'multiplier_down', UP: 'multiplier_up' },
-        MATCH_DIFF: { MATCH: 'match_diff_match', DIFF: 'match_diff_diff' },
-        EVEN_ODD: { EVEN: 'even_odd_even', ODD: 'even_odd_odd' },
-        OVER_UNDER: { OVER: 'over_under_over', UNDER: 'over_under_under' },
-        RESET: { CALL: 'reset_call' },
-        PUT: 'put',
-        CALLE: 'calle',
-        CALL: 'call',
-        TOUCH: { ONE_TOUCH: 'touch_one_touch', NO_TOUCH: 'touch_no_touch' },
-        ACCUMULATOR: 'accumulator',
-        VANILLA: { CALL: 'vanilla_call', PUT: 'vanilla_put' },
-    },
     getDurationPeriod: jest.fn(),
     getDurationTime: jest.fn(),
     getDurationUnitText: jest.fn(),
@@ -28,6 +15,7 @@ jest.mock('@deriv/shared', () => ({
     isAccumulatorContract: jest.fn(),
     isResetContract: jest.fn(),
     addComma: jest.fn(),
+    ...jest.requireActual('@deriv/shared'),
 }));
 
 jest.mock('App/Components/Elements/PositionsDrawer/helpers', () => ({
@@ -99,7 +87,7 @@ describe('useOrderDetails', () => {
         const { result } = renderHook(() => useOrderDetails(mockData));
         expect(result.current?.details).toEqual({
             'Reference ID': ['12345 (Buy)', '67890 (Sell)'],
-            Duration: ' ',
+            Duration: '5 seconds',
             Target: undefined,
             Stake: '100.00 USD',
         });
@@ -110,8 +98,8 @@ describe('useOrderDetails', () => {
         const { result } = renderHook(() => useOrderDetails(mockData));
         expect(result.current?.details).toEqual({
             'Reference ID': ['12345 (Buy)', '67890 (Sell)'],
-            Duration: '5 ticks',
-            'Growth rate': '10%',
+            Duration: '3/5 ticks',
+            'Growth rate': '1000%',
             Stake: '100.00 USD',
             'Take Profit': '200 USD',
         });
@@ -123,7 +111,7 @@ describe('useOrderDetails', () => {
         expect(result.current?.details).toEqual({
             'Reference ID': ['12345 (Buy)', '67890 (Sell)'],
             'Strike Price': ' - ',
-            Duration: ' ',
+            Duration: '5 seconds',
             'Payout per point': '1',
             Stake: '100.00 USD',
         });

@@ -32,8 +32,8 @@ const ContractDetails = observer(() => {
     const [update_history, setUpdateHistory] = React.useState<TContractUpdateHistory>([]);
     const { common } = useStore();
     const { server_time } = common;
-    const { is_take_profit_visible, is_stop_loss_visible } = getContractDetailsConfig(contract_type ?? '');
-    const is_valid_to_sell = isValidToSell(contract_info);
+    const { isTakeProfitVisible, isStopLossVisible } = getContractDetailsConfig(contract_type ?? '');
+    const canSell = isValidToSell(contract_info);
     type TContractUpdateHistory = TContractStore['contract_update_history'];
     type TResponse = {
         contract_update_history: TContractUpdateHistory;
@@ -56,32 +56,30 @@ const ContractDetails = observer(() => {
 
     if (is_loading) return <></>;
 
-    const is_multiplier = isMultiplierContract(contract_info.contract_type);
+    const isMultiplier = isMultiplierContract(contract_info.contract_type);
 
-    const is_valid_to_cancel = isValidToCancel(contract_info);
-    const should_show_sell =
+    const canCancel = isValidToCancel(contract_info);
+    const shouldShowSell =
         (hasContractEntered(contract_info) ||
             isForwardStarting(contract_info?.shortcode ?? '', contract_info.purchase_time)) &&
         isOpen(contract_info);
-    const { is_tp_history_visible, is_deal_cancellation_visible } = getContractDetailsConfig(
+    const { isTpHistoryVisible, isDealCancellationVisible } = getContractDetailsConfig(
         contract_info.contract_type ?? ''
     );
-    const show_cancel_button = is_multiplier && is_valid_to_cancel;
-    let showTpSl =
-        isOpen(contract_info) &&
-        (is_take_profit_visible || is_stop_loss_visible) &&
-        (is_valid_to_sell || is_deal_cancellation_visible);
+    const showCancelButton = isMultiplier && canCancel;
+    let showRiskManagement =
+        isOpen(contract_info) && (isTakeProfitVisible || isStopLossVisible) && (canSell || isDealCancellationVisible);
 
     if (isAccumulatorContract(contract_info.contract_type)) {
-        showTpSl = isOpen(contract_info) && Boolean(limit_order);
+        showRiskManagement = isOpen(contract_info) && Boolean(limit_order);
     }
     return (
         <>
             {' '}
             <div
                 className={classNames('contract-details', {
-                    'contract-details--two-buttons': should_show_sell && show_cancel_button,
-                    'contract-details--one-button': should_show_sell && !show_cancel_button,
+                    'contract-details--two-buttons': shouldShowSell && showCancelButton,
+                    'contract-details--one-button': shouldShowSell && !showCancelButton,
                 })}
             >
                 <div className='contract-card-wrapper'>
@@ -91,7 +89,7 @@ const ContractDetails = observer(() => {
                     <ChartPlaceholder />
                 </div>
                 <DealCancellation />
-                {showTpSl && (
+                {showRiskManagement && (
                     <CardWrapper>
                         <TakeProfit />
                         <StopLoss />
@@ -101,11 +99,11 @@ const ContractDetails = observer(() => {
                 <OrderDetails contract_info={contract_info} />
                 <PayoutInfo contract_info={contract_info} />
                 <EntryExitDetails contract_info={contract_info} />
-                {is_tp_history_visible && update_history.length > 0 && (
+                {isTpHistoryVisible && update_history.length > 0 && (
                     <TakeProfitHistory history={update_history} currency={currency} />
                 )}
             </div>
-            {should_show_sell && <ContractDetailsFooter contract_info={contract_info} />}
+            {shouldShowSell && <ContractDetailsFooter contract_info={contract_info} />}
         </>
     );
 });

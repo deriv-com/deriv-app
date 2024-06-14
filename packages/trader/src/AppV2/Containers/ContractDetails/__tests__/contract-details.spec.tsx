@@ -154,10 +154,10 @@ describe('ContractDetails', () => {
             contract_update_history: [],
         });
         (getContractDetailsConfig as jest.Mock).mockReturnValue({
-            is_take_profit_visible: true,
-            is_stop_loss_visible: true,
-            is_deal_cancellation_visible: true,
-            is_tp_history_visible: true,
+            isTakeProfitVisible: true,
+            isStopLossVisible: true,
+            isDealCancellationVisible: true,
+            isTpHistoryVisible: true,
         });
     });
 
@@ -177,7 +177,7 @@ describe('ContractDetails', () => {
         await act(async () => {
             renderContractDetails();
         });
-        expect(screen.getByTestId('contract-card')).toBeInTheDocument();
+        expect(screen.getByText('ContractCard')).toBeInTheDocument();
     });
 
     it('should render the ChartPlaceholder component', async () => {

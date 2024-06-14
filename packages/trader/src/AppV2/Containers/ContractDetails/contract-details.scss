@@ -5,7 +5,7 @@
     flex-direction: column;
     overflow: auto;
     gap: var(--semantic-spacing-general-sm);
-    height: 100%;
+    height: 100vh;
     padding-bottom: var(--core-spacing-400);
     &--two-buttons {
         padding-bottom: 230px;

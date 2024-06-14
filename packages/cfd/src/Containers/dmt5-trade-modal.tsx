@@ -105,26 +105,33 @@ const DMT5TradeModal = observer(
             MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION,
         ].includes(mt5_trade_account?.status);
 
+        const shortcode =
+            mt5_trade_account.landing_company_short &&
+            mt5_trade_account.landing_company_short !== 'svg' &&
+            mt5_trade_account.landing_company_short !== 'bvi'
+                ? mt5_trade_account.landing_company_short?.charAt(0).toUpperCase() +
+                  mt5_trade_account.landing_company_short?.slice(1)
+                : mt5_trade_account.landing_company_short?.toUpperCase();
+
         return (
             <div className='cfd-trade-modal-container'>
                 <div className='cfd-trade-modal'>
                     <TradingPlatformIcon icon={getAccountIcons()} size={24} />
                     <div className='cfd-trade-modal__desc'>
-                        {!is_demo && (
+                        <div>
                             <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
-                                {getHeadingTitle()}
+                                {getAccountTitle()}
                             </Text>
-                        )}
-                        {is_demo && (
-                            <div>
-                                <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
-                                    {getAccountTitle()}
+                            {!is_demo ? (
+                                <Text size='xxs' line_height='l' className='cfd-trade-modal__desc-heading--real'>
+                                    {shortcode}
                                 </Text>
+                            ) : (
                                 <Text size='xs' line_height='l' className='cfd-trade-modal--tag'>
-                                    Demo
+                                    {localize('Demo')}
                                 </Text>
-                            </div>
-                        )}
+                            )}
+                        </div>
                         {(mt5_trade_account as TTradingPlatformAccounts)?.display_login && (
                             <Text color='less-prominent' size='xxxs' line_height='xxxs'>
                                 {(mt5_trade_account as TTradingPlatformAccounts)?.display_login}

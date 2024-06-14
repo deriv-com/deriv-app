@@ -525,6 +525,15 @@
         flex-direction: column;
         flex-grow: 1;
 
+        &-heading--real {
+            padding: 0.4rem;
+            height: fit-content;
+            width: fit-content;
+            margin-left: 0.3rem;
+            background-color: var(--icon-grey-background);
+            border-radius: $BORDER_RADIUS;
+        }
+
         &-balance {
             margin-left: 1.5rem;
         }

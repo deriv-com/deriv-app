@@ -45,7 +45,7 @@
         grid-gap: 1.6rem;
         padding-bottom: 1.1rem;
 
-        @include mobile-or-tablet-screen {
+        @include mobile-screen {
             grid-template-columns: 1fr;
         }
     }
@@ -111,7 +111,7 @@
     &__timeline {
         padding: 0 1.4rem 1.6rem;
 
-        @include mobile-or-tablet-screen {
+        @include mobile-screen {
             margin: 1.2rem;
         }
     }

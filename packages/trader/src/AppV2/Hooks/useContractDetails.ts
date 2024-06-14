@@ -14,9 +14,8 @@ const useContractDetails = () => {
 
     useEffect(() => {
         if (!contract_info.contract_id) {
-            const url_array = /[^/]*$/.exec(location.pathname);
-            const url_contract_id = url_array ? +url_array[0] : undefined;
-            onMount(url_contract_id);
+            const urlArray = /[^/]*$/.exec(location.pathname);
+            onMount(urlArray ? +urlArray[0] : undefined);
         }
     }, [location.pathname, onMount, contract_info.contract_id]);
 

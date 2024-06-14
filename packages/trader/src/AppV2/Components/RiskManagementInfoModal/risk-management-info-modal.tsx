@@ -28,7 +28,7 @@ const RiskManagementInfoModal = ({ header_content, body_content, info_message }:
                 <Modal.Body>
                     <div className='risk-management-info-modal__container'>
                         <Text size='md'>{body_content}</Text>
-                        {info_message && <SectionMessage message={info_message} size='sm' status='info' title={''} />}
+                        {info_message && <SectionMessage message={info_message} size='sm' status='info' />}
                     </div>
                 </Modal.Body>
             </Modal>

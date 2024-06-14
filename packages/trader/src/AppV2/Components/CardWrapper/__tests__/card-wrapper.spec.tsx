@@ -17,14 +17,6 @@ describe('CardWrapper component', () => {
             </CardWrapper>
         );
         expect(screen.getByText('Child content')).toBeInTheDocument();
-    });
-
-    it('renders the title when provided', () => {
-        render(
-            <CardWrapper title='Test Title'>
-                <div>Child content</div>
-            </CardWrapper>
-        );
         expect(screen.getByText('Test Title')).toBeInTheDocument();
     });
 
@@ -35,24 +27,6 @@ describe('CardWrapper component', () => {
             </CardWrapper>
         );
         expect(screen.queryByText('Test Title')).not.toBeInTheDocument();
-    });
-
-    it('renders children content', () => {
-        render(
-            <CardWrapper>
-                <div>Child content</div>
-            </CardWrapper>
-        );
-        expect(screen.getByText('Child content')).toBeInTheDocument();
-    });
-
-    it('applies "title" class to the title element', () => {
-        render(
-            <CardWrapper title='Test Title'>
-                <div>Child content</div>
-            </CardWrapper>
-        );
-        expect(screen.getByText('Test Title')).toHaveClass('title');
     });
 
     it('applies correct classes to the Text component', () => {

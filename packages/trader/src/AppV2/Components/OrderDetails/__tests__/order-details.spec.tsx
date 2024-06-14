@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import OrderDetails from '../order-details';
 import { TContractInfo } from '@deriv/shared';
 import useOrderDetails from 'AppV2/Hooks/useOrderDetails';

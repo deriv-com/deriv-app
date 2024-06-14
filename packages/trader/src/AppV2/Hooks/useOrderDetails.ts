@@ -30,7 +30,7 @@ const getCommonFields = (data: TContractInfo) => {
             Number(tick_count) > 0
                 ? ticks_duration_text
                 : `${getDurationTime(data) ?? ''} ${getDurationUnitText(getDurationPeriod(data)) ?? ''}`,
-        [localize('Payout per point')]: data.display_number_of_contracts ? `${data.display_number_of_contracts}` : '',
+        [localize('Payout per point')]: data.display_number_of_contracts ?? '',
     };
 };
 
@@ -60,7 +60,7 @@ const transformRiseData = (data: TContractInfo) => {
     return {
         [localize('Reference ID')]: commonFields[localize('Reference ID')],
         [localize('Duration')]: commonFields[localize('Duration')],
-        [localize('Barrier')]: data.barrier ? data.barrier : '',
+        [localize('Barrier')]: data.barrier ?? '',
         [localize('Stake')]: commonFields[localize('Stake')],
     };
 };
@@ -81,7 +81,7 @@ const transformTurbosData = (data: TContractInfo) => {
 };
 
 // For Digits
-const transformMatcherData = (data: TContractInfo) => {
+const transformDigitsData = (data: TContractInfo) => {
     const commonFields = getCommonFields(data);
     return {
         [localize('Reference ID')]: commonFields[localize('Reference ID')],
@@ -132,12 +132,12 @@ const transformFunctionMap: Record<string, (data: TContractInfo) => Record<strin
     [CONTRACT_TYPES.TURBOS.SHORT]: transformTurbosData,
     [CONTRACT_TYPES.MULTIPLIER.DOWN]: transformMultiplierData,
     [CONTRACT_TYPES.MULTIPLIER.UP]: transformMultiplierData,
-    [CONTRACT_TYPES.MATCH_DIFF.MATCH]: transformMatcherData,
-    [CONTRACT_TYPES.MATCH_DIFF.DIFF]: transformMatcherData,
-    [CONTRACT_TYPES.EVEN_ODD.EVEN]: transformMatcherData,
-    [CONTRACT_TYPES.EVEN_ODD.ODD]: transformMatcherData,
-    [CONTRACT_TYPES.OVER_UNDER.OVER]: transformMatcherData,
-    [CONTRACT_TYPES.OVER_UNDER.UNDER]: transformMatcherData,
+    [CONTRACT_TYPES.MATCH_DIFF.MATCH]: transformDigitsData,
+    [CONTRACT_TYPES.MATCH_DIFF.DIFF]: transformDigitsData,
+    [CONTRACT_TYPES.EVEN_ODD.EVEN]: transformDigitsData,
+    [CONTRACT_TYPES.EVEN_ODD.ODD]: transformDigitsData,
+    [CONTRACT_TYPES.OVER_UNDER.OVER]: transformDigitsData,
+    [CONTRACT_TYPES.OVER_UNDER.UNDER]: transformDigitsData,
     [CONTRACT_TYPES.RESET.CALL]: transformRiseData,
     [CONTRACT_TYPES.PUT]: transformRiseData,
     [CONTRACT_TYPES.CALLE]: transformRiseData,

@@ -16,7 +16,7 @@ const DealCancellationRemainingTime = observer(({ format = 'mm:ss' }: DealCancel
 
     const { date_expiry: end_time } = contract_info.cancellation || {};
     if (!end_time || start_time.unix() > +end_time) {
-        return <React.Fragment>{''}</React.Fragment>;
+        return null;
     }
 
     const { timestamp } = formatDuration(getDiffDuration(start_time.unix(), end_time), format);

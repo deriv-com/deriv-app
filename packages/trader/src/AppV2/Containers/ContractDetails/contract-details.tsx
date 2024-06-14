@@ -67,13 +67,13 @@ const ContractDetails = observer(() => {
         contract_info.contract_type ?? ''
     );
     const show_cancel_button = is_multiplier && is_valid_to_cancel;
-    let showTpSl =
+    let showRiskManagement =
         isOpen(contract_info) &&
         (is_take_profit_visible || is_stop_loss_visible) &&
         (is_valid_to_sell || is_deal_cancellation_visible);
 
     if (isAccumulatorContract(contract_info.contract_type)) {
-        showTpSl = isOpen(contract_info) && Boolean(limit_order);
+        showRiskManagement = isOpen(contract_info) && Boolean(limit_order);
     }
     return (
         <div
@@ -89,7 +89,7 @@ const ContractDetails = observer(() => {
                 <ChartPlaceholder />
             </div>
             <DealCancellation />
-            {showTpSl && (
+            {showRiskManagement && (
                 <CardWrapper>
                     <TakeProfit />
                     <StopLoss />

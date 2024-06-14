@@ -14,7 +14,7 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            border-bottom: 1px solid var(--core-color-opacity-black-100);
+            border-bottom: var(--core-borderWidth-75) solid var(--core-color-opacity-black-100);
             padding: var(--core-spacing-400) 0;
 
             &-cell {

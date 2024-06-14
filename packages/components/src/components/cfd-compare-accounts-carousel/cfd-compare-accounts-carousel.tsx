@@ -38,18 +38,8 @@ const CFDCompareAccountsCarousel = ({ children, isRtl = false }: TCFDCompareAcco
             <div className='cfd-compare-accounts-carousel__viewport' ref={emblaRef}>
                 <div className='cfd-compare-accounts-carousel__container'>{children}</div>
             </div>
-            <CFDCompareAccountsCarouselButton
-                onClick={scrollPrev}
-                isNext={false}
-                enabled={prev_btn_enabled}
-                isRtl={isRtl}
-            />
-            <CFDCompareAccountsCarouselButton
-                onClick={scrollNext}
-                isNext={true}
-                enabled={next_btn_enabled}
-                isRtl={isRtl}
-            />
+            <CFDCompareAccountsCarouselButton onClick={scrollPrev} enabled={prev_btn_enabled} isRtl={isRtl} />
+            <CFDCompareAccountsCarouselButton onClick={scrollNext} isNext enabled={next_btn_enabled} isRtl={isRtl} />
         </div>
     );
 };

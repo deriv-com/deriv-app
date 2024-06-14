@@ -5,12 +5,12 @@ import Icon from '../icon';
 type TPrevNextButtonProps = {
     enabled: boolean;
     onClick: () => void;
-    isNext: boolean;
+    isNext?: boolean;
     isRtl?: boolean;
 };
 
 const CFDCompareAccountsCarouselButton = (props: TPrevNextButtonProps) => {
-    const { enabled, onClick, isNext, isRtl = false } = props;
+    const { enabled, onClick, isNext = false, isRtl = false } = props;
 
     const nextButtonName = isRtl ? 'IcChevronLeftBold' : 'IcChevronRightBold';
     const prevButtonName = isRtl ? 'IcChevronRightBold' : 'IcChevronLeftBold';

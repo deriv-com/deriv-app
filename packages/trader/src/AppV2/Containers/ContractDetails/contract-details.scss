@@ -1,12 +1,12 @@
 .contract-details {
     background-color: rgb(245, 247, 249);
-    padding: 8px;
+    padding: var(--core-spacing-400);
     display: flex;
     flex-direction: column;
     overflow: auto;
-    height: 100vh;
     gap: var(--semantic-spacing-general-sm);
-    padding-bottom: 70px;
+    height: 100%;
+    padding-bottom: var(--core-spacing-400);
     &--two-buttons {
         padding-bottom: 230px;
     }
@@ -15,21 +15,21 @@
         padding-bottom: 140px;
     }
     .contract-card-wrapper {
-        margin-top: 4px;
+        margin-top: var(--core-spacing-200);
     }
 }
 .placeholder {
-    margin: 4px 0;
-    background-color: #fff;
+    margin: var(--core-spacing-200) 0;
+    background-color: var(--core-color-solid-slate-50);
 }
 
 .contract-card {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 16px;
+    background-color: var(--core-color-solid-slate-50);
+    border-radius: var(--core-borderRadius-500);
+    padding: var(--core-spacing-800);
 
     .row {
         display: flex;
@@ -43,8 +43,7 @@
     }
 
     .last-row {
-        margin-top: 8px;
-
+        margin-top: var(--core-spacing-400);
         .red {
             color: var(--core-color-solid-coral-600);
         }

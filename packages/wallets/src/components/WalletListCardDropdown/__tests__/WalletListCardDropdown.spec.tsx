@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { useWalletAccountsList } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
+import BalanceProvider from '../../../providers/BalanceProvider';
 import { TSubscribedBalance } from '../../../types';
 import WalletListCardDropdown from '../WalletListCardDropdown';
 
@@ -63,17 +64,28 @@ const mockBalanceData: TSubscribedBalance['balance'] = {
     isSubscribed: false,
 };
 
+const Wrapper: FC<PropsWithChildren<{ data: TSubscribedBalance['balance'] }>> = ({ children, data }) => (
+    <BalanceProvider balanceData={data}>{children}</BalanceProvider>
+);
 describe('WalletListCardDropdown', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
     it('should render with the correct data', async () => {
-        render(<WalletListCardDropdown balance={mockBalanceData} />);
+        render(
+            <Wrapper data={mockBalanceData}>
+                <WalletListCardDropdown />
+            </Wrapper>
+        );
     });
 
     it('should switch to selected account on click of the list item', async () => {
-        render(<WalletListCardDropdown balance={mockBalanceData} />);
+        render(
+            <Wrapper data={mockBalanceData}>
+                <WalletListCardDropdown />
+            </Wrapper>
+        );
 
         expect(screen.getByDisplayValue('USD Wallet')).toBeInTheDocument();
 
@@ -88,7 +100,11 @@ describe('WalletListCardDropdown', () => {
     it('should render dropdown without crashing when unable to fetch wallets', async () => {
         (useWalletAccountsList as jest.Mock).mockReturnValueOnce({ data: [] });
 
-        render(<WalletListCardDropdown balance={mockBalanceData} />);
+        render(
+            <Wrapper data={mockBalanceData}>
+                <WalletListCardDropdown />
+            </Wrapper>
+        );
 
         expect(screen.getByDisplayValue('')).toBeInTheDocument();
     });

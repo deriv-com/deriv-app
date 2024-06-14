@@ -3,19 +3,20 @@ import { Trans, useTranslation } from 'react-i18next';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
-import { THooks, TSubscribedBalance } from '../../types';
+import { useBalanceContext } from '../../providers/BalanceProvider';
+import { THooks } from '../../types';
 import { WalletDropdown, WalletText } from '../Base';
 import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import './WalletListCardDropdown.scss';
 
 type WalletList = ComponentProps<typeof WalletDropdown>['list'] | undefined;
 
-const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
+const WalletListCardDropdown = () => {
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const switchWalletAccount = useWalletAccountSwitcher();
     const { t } = useTranslation();
-    const { data: balanceData } = balance;
+    const { data: balanceData } = useBalanceContext();
 
     const [inputWidth, setInputWidth] = useState('auto');
     const loginId = activeWallet?.loginid;

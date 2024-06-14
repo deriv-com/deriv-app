@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
+import BalanceProvider from '../../../providers/BalanceProvider';
 import { TSubscribedBalance } from '../../../types';
 import WalletListCardBalance from '../WalletListCardBalance';
 
@@ -30,6 +31,10 @@ const mockBalanceData: TSubscribedBalance['balance'] = {
     isSubscribed: false,
 };
 
+const Wrapper: FC<PropsWithChildren<{ data: TSubscribedBalance['balance'] }>> = ({ children, data }) => (
+    <BalanceProvider balanceData={data}>{children}</BalanceProvider>
+);
+
 describe('WalletListCardBalance', () => {
     it('displays the loader when the balance is loading', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
@@ -39,7 +44,11 @@ describe('WalletListCardBalance', () => {
 
         mockBalanceData.isLoading = true;
 
-        render(<WalletListCardBalance balance={mockBalanceData} />);
+        render(
+            <Wrapper data={mockBalanceData}>
+                <WalletListCardBalance />
+            </Wrapper>
+        );
 
         expect(screen.getByTestId('dt_wallet_list_card_balance_loader')).toBeInTheDocument();
     });
@@ -56,7 +65,11 @@ describe('WalletListCardBalance', () => {
 
         mockBalanceData.isLoading = false;
 
-        render(<WalletListCardBalance balance={mockBalanceData} />);
+        render(
+            <Wrapper data={mockBalanceData}>
+                <WalletListCardBalance />
+            </Wrapper>
+        );
         expect(screen.getByText('100.00 USD')).toBeInTheDocument();
     });
 });

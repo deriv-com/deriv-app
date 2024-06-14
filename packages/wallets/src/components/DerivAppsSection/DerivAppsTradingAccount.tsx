@@ -4,16 +4,16 @@ import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useAuthorize }
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { LabelPairedArrowsRotateSmBoldIcon, LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
 import useDevice from '../../hooks/useDevice';
-import { TSubscribedBalance } from '../../types';
+import { useBalanceContext } from '../../providers/BalanceProvider';
 import { WalletText } from '../Base';
 import { WalletListCardBadge } from '../WalletListCardBadge';
 import { WalletMarketIcon } from '../WalletMarketIcon';
 
-const DerivAppsTradingAccount: React.FC<TSubscribedBalance> = ({ balance }) => {
+const DerivAppsTradingAccount = () => {
     const { isMobile } = useDevice();
     const history = useHistory();
     const { data: authorizeData } = useAuthorize();
-    const { data: balanceData, isLoading } = balance;
+    const { data: balanceData, isLoading } = useBalanceContext();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
 

@@ -1,18 +1,18 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
-import { TSubscribedBalance } from '../../types';
+import { useBalanceContext } from '../../providers/BalanceProvider';
 import { AccountsList } from '../AccountsList';
 import { WalletsCarouselContent } from '../WalletsCarouselContent';
 import { WalletsCarouselHeader } from '../WalletsCarouselHeader';
 import './WalletsCarousel.scss';
 
-const WalletsCarousel: React.FC<TSubscribedBalance> = ({ balance }) => {
+const WalletsCarousel = () => {
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
     const [hideWalletsCarouselHeader, setHideWalletsCarouselHeader] = useState(true);
     const contentRef = useRef(null);
 
-    const { data: balanceData, isLoading: isBalanceLoading } = balance;
+    const { data: balanceData, isLoading: isBalanceLoading } = useBalanceContext();
 
     const displayedBalance = useMemo(() => {
         return displayMoney?.(
@@ -65,7 +65,7 @@ const WalletsCarousel: React.FC<TSubscribedBalance> = ({ balance }) => {
                     <WalletsCarouselContent />
                 </div>
             </div>
-            <AccountsList balance={balance} />
+            <AccountsList />
         </div>
     );
 };

@@ -6,6 +6,7 @@ import { APIProvider } from '@deriv/api';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import PersonalDetailsForm from '../personal-details-form';
+import { useResidenceList } from '@deriv/hooks';
 
 afterAll(cleanup);
 jest.mock('@deriv/components', () => ({
@@ -206,5 +207,11 @@ describe('<PersonalDetailsForm />', () => {
             expect(screen.queryByText(value)).not.toBeInTheDocument();
         });
         expect(screen.getByText('Country of residence*')).toBeInTheDocument();
+    });
+
+    it('should display loader while fetching data', () => {
+        (useResidenceList as jest.Mock).mockImplementation(() => ({ data: [], isLoading: true }));
+        renderComponent();
+        expect(screen.getByText(/Loading/)).toBeInTheDocument();
     });
 });

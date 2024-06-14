@@ -180,7 +180,7 @@ const WithdrawalCryptoReceipt = observer(() => {
                 <Icon className='withdrawal-crypto-receipt__icon' icon='IcArrowDown' size={30} />
                 <WalletInformation account={account} blockchain_address={blockchain_address} is_mobile={is_mobile} />
             </div>
-            {crypto_estimations_fee && (
+            {!!crypto_estimations_fee && (
                 <div className='withdrawal-crypto-receipt__transfer-fee-info'>
                     <Text as='p' align='center' size={is_mobile ? 'xxxs' : 'xxs'}>
                         <Localize i18n_default_text='Amount received' />

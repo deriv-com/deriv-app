@@ -3,6 +3,6 @@
     flex-direction: column;
     background-color: var(--core-color-solid-slate-50);
     padding: var(--semantic-spacing-general-md);
-    border-radius: 0.625rem;
+    border-radius: var(--core-borderRadius-500);
     gap: var(--semantic-spacing-gap-lg);
 }

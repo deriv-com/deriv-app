@@ -8,9 +8,9 @@ import RiskManagementItem from '../RiskManagementItem';
 const TakeProfit = observer(() => {
     const { contract_info } = useContractDetails();
     const { limit_order } = contract_info;
-    const { is_take_profit_visible } = getContractDetailsConfig(contract_info.contract_type ?? '');
+    const { isTakeProfitVisible } = getContractDetailsConfig(contract_info.contract_type ?? '');
     return (
-        is_take_profit_visible && (
+        isTakeProfitVisible && (
             <RiskManagementItem
                 label={<Localize i18n_default_text='Take profit' />}
                 modal_body_content={

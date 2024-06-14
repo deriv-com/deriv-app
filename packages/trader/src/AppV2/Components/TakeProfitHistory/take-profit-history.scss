@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin-top: 8px;
-    border-radius: 10px;
+    margin-top: var(--core-spacing-400);
+    border-radius: var(--core-borderRadius-500);
 
     &__table {
         display: flex;
@@ -14,8 +14,8 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            border-bottom: var(--core-borderWidth-75) solid rgb(246, 247, 248);
-            margin: 8px 0;
+            border-bottom: var(--core-borderWidth-75) solid var(--core-color-solid-slate-75);
+            margin: var(--core-spacing-400) 0;
         }
 
         &-cell {

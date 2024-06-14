@@ -11,7 +11,6 @@ type TDidntGetTheCodeModal = {
     should_show_didnt_get_the_code_modal: boolean;
     setIsButtonDisabled: (value: boolean) => void;
     setShouldShowDidntGetTheCodeModal: (value: boolean) => void;
-    setTimer: (value: number | undefined) => void;
     setOtpVerification: (value: { show_otp_verification: boolean; phone_verification_type: string }) => void;
     reInitializeGetSettings: () => void;
 };
@@ -20,7 +19,6 @@ const DidntGetTheCodeModal = observer(
     ({
         should_show_didnt_get_the_code_modal,
         setShouldShowDidntGetTheCodeModal,
-        setTimer,
         setIsButtonDisabled,
         reInitializeGetSettings,
         phone_verification_type,
@@ -36,7 +34,6 @@ const DidntGetTheCodeModal = observer(
         }, [email_otp_error, reInitializeGetSettings]);
 
         const setDidntGetACodeButtonDisabled = () => {
-            setTimer(undefined);
             setIsButtonDisabled(true);
         };
 

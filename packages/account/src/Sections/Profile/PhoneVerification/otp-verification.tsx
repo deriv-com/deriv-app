@@ -20,7 +20,6 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     const [should_show_phone_number_verified_modal, setShouldShowPhoneNumberVerifiedModal] = React.useState(false);
     const [should_show_didnt_get_the_code_modal, setShouldShowDidntGetTheCodeModal] = React.useState(false);
     const [otp, setOtp] = React.useState('');
-    const [timer, setTimer] = React.useState<number | undefined>();
     const [is_button_disabled, setIsButtonDisabled] = React.useState(false);
 
     const {
@@ -34,12 +33,11 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     //TODO: this shall be replace by BE API call when it's ready
     const { should_show_phone_number_otp } = ui;
 
-    const reInitializeGetSettings = React.useCallback(() => {
+    const reInitializeGetSettings = () => {
         invalidate('get_settings').then(() => {
             setIsButtonDisabled(false);
-            setTimer(undefined);
         });
-    }, [invalidate]);
+    };
 
     React.useEffect(() => {
         setIsButtonDisabled(true);
@@ -76,7 +74,6 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                 setShouldShowPhoneNumberVerifiedModal={setShouldShowPhoneNumberVerifiedModal}
             />
             <DidntGetTheCodeModal
-                setTimer={setTimer}
                 setIsButtonDisabled={setIsButtonDisabled}
                 reInitializeGetSettings={reInitializeGetSettings}
                 should_show_didnt_get_the_code_modal={should_show_didnt_get_the_code_modal}
@@ -128,8 +125,6 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                     maxLength={6}
                 />
                 <ResendCodeTimer
-                    timer={timer}
-                    setTimer={setTimer}
                     is_button_disabled={is_button_disabled}
                     setIsButtonDisabled={setIsButtonDisabled}
                     should_show_resend_code_button={!should_show_phone_number_otp}

@@ -5,23 +5,20 @@ import { useSettings, useVerifyEmail } from '@deriv/hooks';
 import dayjs from 'dayjs';
 
 type TResendCodeTimer = {
-    timer: number | undefined;
     is_button_disabled: boolean;
     should_show_resend_code_button: boolean;
     setIsButtonDisabled: (value: boolean) => void;
-    setTimer: (value: number | undefined) => void;
     setShouldShowDidntGetTheCodeModal: (value: boolean) => void;
     reInitializeGetSettings: () => void;
 };
 const ResendCodeTimer = ({
-    timer,
     is_button_disabled,
     should_show_resend_code_button,
     setIsButtonDisabled,
-    setTimer,
     setShouldShowDidntGetTheCodeModal,
     reInitializeGetSettings,
 }: TResendCodeTimer) => {
+    const [timer, setTimer] = React.useState<number | undefined>();
     const [next_otp_request, setNextOtpRequest] = React.useState('');
     // @ts-expect-error this for now
     const { send, is_success } = useVerifyEmail('phone_number_verification');
@@ -99,7 +96,6 @@ const ResendCodeTimer = ({
 
     const resendCode = () => {
         if (should_show_resend_code_button) {
-            setTimer(undefined);
             setIsButtonDisabled(true);
             send();
         } else {

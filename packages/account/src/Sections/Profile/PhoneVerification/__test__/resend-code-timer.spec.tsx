@@ -40,8 +40,6 @@ describe('ConfirmPhoneNumber', () => {
                     reInitializeGetSettings={jest.fn}
                     setIsButtonDisabled={jest.fn()}
                     should_show_resend_code_button
-                    timer={59}
-                    setTimer={jest.fn()}
                     setShouldShowDidntGetTheCodeModal={jest.fn()}
                 />
             </StoreProvider>
@@ -54,12 +52,11 @@ describe('ConfirmPhoneNumber', () => {
         expect(screen.queryByRole('button', { name: 'Resend code in 59s' })).toBeDisabled;
     });
 
-    it('should trigger mockSend and mockSetTimer when send button is clicked', () => {
+    it('should trigger mockSend when send button is clicked', () => {
         const mockSend = jest.fn();
         (useVerifyEmail as jest.Mock).mockReturnValue({
             send: mockSend,
         });
-        const mockSetTimer = jest.fn();
         render(
             <StoreProvider store={mock_store}>
                 <ResendCodeTimer
@@ -67,8 +64,6 @@ describe('ConfirmPhoneNumber', () => {
                     reInitializeGetSettings={jest.fn}
                     setIsButtonDisabled={jest.fn()}
                     should_show_resend_code_button={true}
-                    timer={undefined}
-                    setTimer={mockSetTimer}
                     setShouldShowDidntGetTheCodeModal={jest.fn()}
                 />
             </StoreProvider>
@@ -77,7 +72,6 @@ describe('ConfirmPhoneNumber', () => {
         expect(resend_button).toBeEnabled();
 
         userEvent.click(resend_button);
-        expect(mockSetTimer).toBeCalledWith(undefined);
         expect(mockSend).toBeCalled();
     });
 
@@ -89,8 +83,6 @@ describe('ConfirmPhoneNumber', () => {
                     reInitializeGetSettings={jest.fn}
                     setIsButtonDisabled={jest.fn()}
                     should_show_resend_code_button
-                    timer={undefined}
-                    setTimer={jest.fn()}
                     setShouldShowDidntGetTheCodeModal={jest.fn()}
                 />
             </StoreProvider>
@@ -107,8 +99,6 @@ describe('ConfirmPhoneNumber', () => {
                     reInitializeGetSettings={jest.fn}
                     setIsButtonDisabled={jest.fn()}
                     should_show_resend_code_button={false}
-                    timer={undefined}
-                    setTimer={jest.fn()}
                     setShouldShowDidntGetTheCodeModal={jest.fn()}
                 />
             </StoreProvider>
@@ -126,8 +116,6 @@ describe('ConfirmPhoneNumber', () => {
                     reInitializeGetSettings={jest.fn}
                     setIsButtonDisabled={jest.fn()}
                     should_show_resend_code_button={false}
-                    timer={undefined}
-                    setTimer={jest.fn()}
                     setShouldShowDidntGetTheCodeModal={mockSetShouldShowDidntGetTheCodeModal}
                 />
             </StoreProvider>

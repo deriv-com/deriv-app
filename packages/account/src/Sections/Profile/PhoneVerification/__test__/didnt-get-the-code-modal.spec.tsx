@@ -18,7 +18,6 @@ jest.mock('@deriv/hooks', () => ({
 describe('DidntGetTheCodeModal', () => {
     const mock_store = mockStore({});
     const mockSetShouldShowDidntGetTheCodeModal = jest.fn();
-    const mockSetTimer = jest.fn();
     const mockSetOtpVerification = jest.fn();
     const mockReInitializeGetSettings = jest.fn();
     const mockSetIsButtonDisabled = jest.fn();
@@ -30,7 +29,6 @@ describe('DidntGetTheCodeModal', () => {
                 <DidntGetTheCodeModal
                     setIsButtonDisabled={mockSetIsButtonDisabled}
                     reInitializeGetSettings={mockReInitializeGetSettings}
-                    setTimer={mockSetTimer}
                     should_show_didnt_get_the_code_modal={true}
                     phone_verification_type={phone_verification_type}
                     setShouldShowDidntGetTheCodeModal={mockSetShouldShowDidntGetTheCodeModal}
@@ -42,7 +40,6 @@ describe('DidntGetTheCodeModal', () => {
 
     beforeEach(() => {
         mockSetShouldShowDidntGetTheCodeModal.mockClear();
-        mockSetTimer.mockClear();
         mockSetOtpVerification.mockClear();
     });
 
@@ -66,15 +63,13 @@ describe('DidntGetTheCodeModal', () => {
         userEvent.click(change_phone_number_button);
         expect(mockSetShouldShowDidntGetTheCodeModal).toHaveBeenCalledTimes(1);
         expect(mockSetOtpVerification).toHaveBeenCalledTimes(1);
-        expect(mockSetTimer).not.toBeCalled();
     });
 
-    it('should render mockSetTimer and setShouldShowDidintGetTheCodeModal when Resend code is clicked', () => {
+    it('should render setShouldShowDidintGetTheCodeModal when Resend code is clicked', () => {
         renderComponent(VERIFICATION_SERVICES.SMS);
         const resend_code_button = screen.getByRole('button', { name: resend_code_text });
         userEvent.click(resend_code_button);
         expect(mockSetShouldShowDidntGetTheCodeModal).toHaveBeenCalledTimes(1);
-        expect(mockSetTimer).toBeCalled();
     });
 
     it('should render mockRequestOnSMS and setOtpVerification with phone_verification_type: sms when Resend code is clicked, phone_verification_type is sms', () => {

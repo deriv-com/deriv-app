@@ -21,37 +21,6 @@ describe('getChartAnalyticsData', () => {
     it('should return empty object if args are empty', () => {
         expect(getChartAnalyticsData('' as keyof typeof STATE_TYPES)).toEqual({});
     });
-    it('should return correct object with data and event_type for STATE_TYPES.CHART_MODE_TOGGLE', () => {
-        expect(
-            getChartAnalyticsData(STATE_TYPES.CHART_MODE_TOGGLE, {
-                is_open: mocked_data.is_open,
-                chart_type_name: mocked_data.chart_type_name,
-                time_interval_name: mocked_data.time_interval_name,
-            })
-        ).toEqual({
-            data: {
-                action: ACTION.OPEN,
-                chart_type_name: mocked_data.chart_type_name,
-                time_interval_name: mocked_data.time_interval_name,
-            },
-            event_type: chart_event_type,
-        });
-        expect(
-            getChartAnalyticsData(STATE_TYPES.CHART_MODE_TOGGLE, {
-                is_open: false,
-                chart_type_name: mocked_data.chart_type_name,
-                time_interval_name: mocked_data.time_interval_name,
-            })
-        ).toEqual({
-            data: {
-                action: ACTION.CLOSE,
-                chart_type_name: mocked_data.chart_type_name,
-                time_interval_name: mocked_data.time_interval_name,
-            },
-            event_type: chart_event_type,
-        });
-        expect(getChartAnalyticsData(STATE_TYPES.CHART_MODE_TOGGLE)).toEqual({});
-    });
     it('should return correct object with data and event_type for STATE_TYPES.CHART_TYPE_CHANGE', () => {
         expect(
             getChartAnalyticsData(STATE_TYPES.CHART_TYPE_CHANGE, {
@@ -238,39 +207,6 @@ describe('getChartAnalyticsData', () => {
         });
         expect(getChartAnalyticsData(STATE_TYPES.MARKET_SEARCH)).toEqual({});
     });
-    it('should return correct object with data and event_type for STATE_TYPES.MARKETS_LIST_TOGGLE', () => {
-        expect(
-            getChartAnalyticsData(STATE_TYPES.MARKETS_LIST_TOGGLE, {
-                is_open: mocked_data.is_open,
-                symbol: mocked_data.symbol,
-            })
-        ).toEqual({
-            data: {
-                action: ACTION.OPEN,
-                market_type_name,
-            },
-            event_type: market_event_type,
-        });
-        expect(
-            getChartAnalyticsData(STATE_TYPES.MARKETS_LIST_TOGGLE, {
-                is_open: false,
-                symbol: mocked_data.symbol,
-            })
-        ).toEqual({
-            data: {
-                action: ACTION.CLOSE,
-                market_type_name,
-            },
-            event_type: market_event_type,
-        });
-        expect(getChartAnalyticsData(STATE_TYPES.MARKETS_LIST_TOGGLE)).toEqual({
-            data: {
-                action: ACTION.CLOSE,
-                market_type_name: '',
-            },
-            event_type: market_event_type,
-        });
-    });
     it('should return correct object with data and event_type for STATE_TYPES.SYMBOL_CHANGE', () => {
         expect(
             getChartAnalyticsData(STATE_TYPES.SYMBOL_CHANGE, {
@@ -289,26 +225,6 @@ describe('getChartAnalyticsData', () => {
             data: {
                 action: ACTION.CHOOSE_MARKET_TYPE,
                 market_type_name: '',
-                tab_market_name: '',
-            },
-            event_type: market_event_type,
-        });
-    });
-    it('should return correct object with data and event_type for STATE_TYPES.MARKET_INFO_REDIRECT', () => {
-        expect(
-            getChartAnalyticsData(STATE_TYPES.MARKET_INFO_REDIRECT, {
-                symbol_category: mocked_data.symbol_category,
-            })
-        ).toEqual({
-            data: {
-                action: ACTION.INFO_REDIRECT,
-                tab_market_name,
-            },
-            event_type: market_event_type,
-        });
-        expect(getChartAnalyticsData(STATE_TYPES.MARKET_INFO_REDIRECT)).toEqual({
-            data: {
-                action: ACTION.INFO_REDIRECT,
                 tab_market_name: '',
             },
             event_type: market_event_type,

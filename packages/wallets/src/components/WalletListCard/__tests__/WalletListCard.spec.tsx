@@ -20,9 +20,21 @@ jest.mock('../../WalletListCardDetails/WalletListCardDetails', () => ({
     default: jest.fn(() => <div>Mocked WalletListCardDetails</div>),
 }));
 
-jest.mock('../../WalletCardIcon', () => ({
-    WalletCardIcon: jest.fn(() => <div>Mocked WalletCardIcon</div>),
+jest.mock('../../WalletCurrencyCard', () => ({
+    WalletCurrencyCard: jest.fn(() => <div>Mocked WalletCurrencyCard</div>),
 }));
+
+const mockedData = {
+    data: {
+        accounts: {},
+        balance: 1000,
+        currency: 'USD',
+    },
+    error: undefined,
+    isIdle: false,
+    isLoading: false,
+    isSubscribed: false,
+};
 
 describe('WalletListCard', () => {
     beforeEach(() => {
@@ -34,9 +46,9 @@ describe('WalletListCard', () => {
     });
 
     it('should render with components correctly', () => {
-        render(<WalletListCard />);
+        render(<WalletListCard balance={mockedData} />);
 
-        expect(screen.getByText('Mocked WalletCardIcon')).toBeInTheDocument();
+        expect(screen.getByText('Mocked WalletCurrencyCard')).toBeInTheDocument();
         expect(screen.getByText('Mocked WalletListCardDetails')).toBeInTheDocument();
     });
 
@@ -46,9 +58,9 @@ describe('WalletListCard', () => {
                 is_virtual: true,
             },
         });
-        render(<WalletListCard />);
+        render(<WalletListCard balance={mockedData} />);
 
-        expect(screen.getByText('Mocked WalletCardIcon')).toBeInTheDocument();
+        expect(screen.getByText('Mocked WalletCurrencyCard')).toBeInTheDocument();
         expect(screen.getByText('Mocked WalletListCardDetails')).toBeInTheDocument();
     });
 });

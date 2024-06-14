@@ -1,12 +1,13 @@
 import React, { FC, PropsWithChildren, ReactNode, useEffect } from 'react';
 import classNames from 'classnames';
 import { useEventListener } from 'usehooks-ts';
-import CloseIcon from '../../../public/images/close-icon.svg';
+import { LegacyClose2pxIcon } from '@deriv/quill-icons';
 import { useModal } from '../../ModalProvider';
 import { WalletText } from '../WalletText';
 import './ModalStepWrapper.scss';
 
 type TModalStepWrapperProps = {
+    disableScroll?: boolean;
     renderFooter?: () => ReactNode;
     shouldFixedFooter?: boolean;
     shouldHideDerivAppHeader?: boolean;
@@ -18,6 +19,7 @@ type TModalStepWrapperProps = {
 
 const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     children,
+    disableScroll = false,
     renderFooter,
     shouldFixedFooter = true,
     shouldHideDerivAppHeader = false,
@@ -53,6 +55,7 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     return (
         <div
             className={classNames('wallets-modal-step-wrapper', {
+                'wallets-modal-step-wrapper--disable-scroll': disableScroll,
                 'wallets-modal-step-wrapper--fixed-footer': fixedFooter && !shouldHideHeader,
                 'wallets-modal-step-wrapper--hide-deriv-app-header': shouldHideDerivAppHeader,
                 'wallets-modal-step-wrapper--no-footer': shouldHideFooter,
@@ -64,9 +67,10 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
             {!shouldHideHeader && (
                 <div className='wallets-modal-step-wrapper__header' data-testid='dt_modal_step_wrapper_header'>
                     <WalletText weight='bold'>{title}</WalletText>
-                    <CloseIcon
+                    <LegacyClose2pxIcon
                         className='wallets-modal-step-wrapper__header-close-icon'
                         data-testid='dt_modal_step_wrapper_header_icon'
+                        iconSize='xs'
                         onClick={hide}
                     />
                 </div>

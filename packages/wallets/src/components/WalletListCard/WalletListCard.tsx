@@ -1,28 +1,22 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { WalletCardIcon } from '../WalletCardIcon';
-import WalletListCardDetails from '../WalletListCardDetails/WalletListCardDetails';
+import { TSubscribedBalance } from '../../types';
+import { WalletCurrencyCard } from '../WalletCurrencyCard';
+import { WalletListCardDetails } from '../WalletListCardDetails';
 import './WalletListCard.scss';
 
-const WalletListCard = () => {
+const WalletListCard: React.FC<TSubscribedBalance> = ({ balance }) => {
     const { data: activeWallet } = useActiveWalletAccount();
 
     const currency = activeWallet?.wallet_currency_type || 'USD';
     const isDemo = activeWallet?.is_virtual;
 
     return (
-        <div className='wallets-list-header__card_container'>
-            <div className='wallets-list-header__content'>
-                <div className='wallets-list-header__details-container'>
-                    <div className='wallets-list-header__details-container-icon'>
-                        <WalletCardIcon
-                            device='desktop'
-                            size='lg'
-                            type={isDemo ? 'Demo' : currency}
-                            variant='circular'
-                        />
-                    </div>
-                    <WalletListCardDetails />
+        <div className='wallets-list-card'>
+            <div className='wallets-list-card__container'>
+                <div className='wallets-list-card__details'>
+                    <WalletCurrencyCard currency={isDemo ? 'Demo' : currency} isDemo={isDemo} size='lg' />
+                    <WalletListCardDetails balance={balance} />
                 </div>
             </div>
         </div>

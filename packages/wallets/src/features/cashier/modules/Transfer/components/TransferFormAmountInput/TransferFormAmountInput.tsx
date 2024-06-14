@@ -172,6 +172,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
                 currency={currency}
                 disabled={isAmountInputDisabled}
                 fractionDigits={fractionDigits}
+                isError={values.isError}
                 label={amountLabel}
                 locale={preferredLanguage}
                 maxDigits={maxDigits}

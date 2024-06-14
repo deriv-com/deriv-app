@@ -46,6 +46,7 @@ type TTickData =
           bid: TTickStream['tick'];
           current_tick: number;
           epoch: TTickStream['epoch'];
+          quote: TTickStream['tick'];
           pip_size?: number;
       };
 
@@ -83,6 +84,7 @@ const DigitsWrapper = ({
                 bid: t.tick,
                 epoch: t.epoch,
                 pip_size: t.tick_display_value?.split('.')[1].length,
+                quote: t.tick,
                 current_tick: tick_stream.length,
             };
         }

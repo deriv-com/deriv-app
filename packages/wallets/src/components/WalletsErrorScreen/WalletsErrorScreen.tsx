@@ -1,27 +1,38 @@
-import React from 'react';
-import ErrorIcon from '../../public/images/error-icon.svg';
+import React, { ComponentProps } from 'react';
 import { WalletButton } from '../Base';
 import { WalletsActionScreen } from '../WalletsActionScreen';
+import './WalletsErrorScreen.scss';
 
 type TProps = {
+    buttonText?: string;
+    buttonVariant?: ComponentProps<typeof WalletButton>['variant'];
     message?: string;
+    onClick?: () => void;
+    title?: string;
 };
 
-const ErrorState: React.FC<TProps> = ({
-    message = 'Sorry an error occurred. Please try accessing our cashier page again.',
+const WalletsErrorScreen: React.FC<TProps> = ({
+    buttonText,
+    buttonVariant = 'contained',
+    message = 'Sorry an error occurred. Please try accessing our cashier again.',
+    onClick,
+    title = 'Oops, something went wrong!',
 }) => {
     return (
-        <WalletsActionScreen
-            description={message}
-            icon={<ErrorIcon data-testid='dt_error_icon' />}
-            renderButtons={() => (
-                <WalletButton onClick={() => window.location.reload()} size='lg' variant='ghost'>
-                    Try again
-                </WalletButton>
-            )}
-            title='Oops, something went wrong!'
-        />
+        <div className='wallets-error-screen'>
+            <WalletsActionScreen
+                description={message}
+                renderButtons={() =>
+                    buttonText ? (
+                        <WalletButton onClick={onClick} size='lg' variant={buttonVariant}>
+                            {buttonText}
+                        </WalletButton>
+                    ) : null
+                }
+                title={title}
+            />
+        </div>
     );
 };
 
-export default ErrorState;
+export default WalletsErrorScreen;

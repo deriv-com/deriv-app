@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useCopyToClipboard, useHover } from 'usehooks-ts';
+import { LegacyCopy1pxIcon, LegacyWonIcon } from '@deriv/quill-icons';
 import useDevice from '../../../hooks/useDevice';
-import Clipboard from '../../../public/images/clipboard.svg';
-import CheckmarkCircle from '../../../public/images/ic-checkmark-circle.svg';
 import { Tooltip } from '../Tooltip';
 import './WalletClipboard.scss';
 
@@ -14,7 +13,8 @@ type TProps = {
 };
 
 const WalletClipboard = ({
-    //  info_message, popoverAlignment, success_message,
+    // info_message, success_message,
+    popoverAlignment = 'right',
     textCopy,
 }: TProps) => {
     const [, copy] = useCopyToClipboard();
@@ -38,9 +38,17 @@ const WalletClipboard = ({
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <Tooltip alignment='right' isVisible={isHovered && !isMobile} message={isCopied ? 'Copied!' : 'Copy'}>
+        <Tooltip
+            alignment={popoverAlignment}
+            isVisible={isHovered && !isMobile}
+            message={isCopied ? 'Copied!' : 'Copy'}
+        >
             <button className='wallets-clipboard' onClick={onClick} ref={hoverRef}>
-                {isCopied ? <CheckmarkCircle /> : <Clipboard />}
+                {isCopied ? (
+                    <LegacyWonIcon data-testid='dt_legacy_won_icon' fill='#4BB4B3' iconSize='xs' />
+                ) : (
+                    <LegacyCopy1pxIcon data-testid='dt_legacy_copy_icon' iconSize='xs' />
+                )}
             </button>
         </Tooltip>
     );

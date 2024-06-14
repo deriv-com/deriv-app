@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useActiveWalletAccount, useAuthorize, useCurrencyConfig } from '@deriv/api-v2';
+import { useActiveWalletAccount, useAuthorize, useBalance } from '@deriv/api-v2';
 import { Loader } from '../../../../components';
-import {
-    CashierLocked,
-    WithdrawalCryptoModule,
-    WithdrawalFiatModule,
-    WithdrawalLocked,
-    WithdrawalVerificationModule,
-} from '../../modules';
+import { WithdrawalCryptoModule, WithdrawalFiatModule, WithdrawalVerificationModule } from '../../modules';
+import { WithdrawalNoBalance } from '../../screens';
 
 const WalletWithdrawal = () => {
-    const { isSuccess: isCurrencyConfigSuccess } = useCurrencyConfig();
     const { switchAccount } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
+    const { data: balanceData, isLoading, isRefetching, refetch } = useBalance();
     const [verificationCode, setVerificationCode] = useState('');
+    const [resendEmail, setResendEmail] = useState(false);
+
+    const isBalanceLoading = isLoading && !isRefetching;
+
+    useEffect(() => {
+        refetch();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
@@ -39,35 +42,31 @@ const WalletWithdrawal = () => {
 
     const isCrypto = activeWallet?.currency_config?.is_crypto;
 
-    if (verificationCode) {
-        if (isCurrencyConfigSuccess && activeWallet?.currency) {
-            return (
-                <CashierLocked module='withdrawal'>
-                    <WithdrawalLocked>
-                        {isCrypto ? (
-                            <WithdrawalCryptoModule
-                                onClose={() => {
-                                    setVerificationCode('');
-                                }}
-                                verificationCode={verificationCode}
-                            />
-                        ) : (
-                            <WithdrawalFiatModule verificationCode={verificationCode} />
-                        )}
-                    </WithdrawalLocked>
-                </CashierLocked>
-            );
-        }
+    if (!activeWallet || isBalanceLoading) {
         return <Loader />;
     }
 
-    return (
-        <CashierLocked module='withdrawal'>
-            <WithdrawalLocked>
-                <WithdrawalVerificationModule />
-            </WithdrawalLocked>
-        </CashierLocked>
-    );
+    if (
+        balanceData.accounts &&
+        !isBalanceLoading &&
+        balanceData.accounts[activeWallet?.loginid ?? 'USD'].balance <= 0
+    ) {
+        return <WithdrawalNoBalance activeWallet={activeWallet} />;
+    }
+
+    if (activeWallet?.currency && verificationCode && !isBalanceLoading) {
+        return isCrypto ? (
+            <WithdrawalCryptoModule
+                setResendEmail={setResendEmail}
+                setVerificationCode={setVerificationCode}
+                verificationCode={verificationCode}
+            />
+        ) : (
+            <WithdrawalFiatModule verificationCode={verificationCode} />
+        );
+    }
+
+    return <WithdrawalVerificationModule resendEmail={resendEmail} />;
 };
 
 export default WalletWithdrawal;

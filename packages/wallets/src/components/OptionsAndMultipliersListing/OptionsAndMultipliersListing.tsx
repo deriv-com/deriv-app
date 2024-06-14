@@ -1,24 +1,19 @@
-import React, { useEffect } from 'react';
-import classNames from 'classnames';
+import React from 'react';
 import { Trans } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useActiveLinkedToTradingAccount } from '@deriv/api-v2';
+import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { optionsAndMultipliersContent } from '../../constants/constants';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../helpers/urls';
 import useDevice from '../../hooks/useDevice';
 import { TRoute } from '../../routes/Router';
-import { WalletButton, WalletLink, WalletText } from '../Base';
+import { TSubscribedBalance } from '../../types';
+import { WalletLink, WalletText } from '../Base';
 import { DerivAppsSection } from '../DerivAppsSection';
 import { TradingAccountCard } from '../TradingAccountCard';
 import './OptionsAndMultipliersListing.scss';
 
-type TShowButtonProps = Pick<typeof optionsAndMultipliersContent[number], 'isExternal' | 'redirect'>;
-
 type TLinkTitleProps = Pick<typeof optionsAndMultipliersContent[number], 'icon' | 'title'>;
-
-type TOptionsAndMultipliersListingProps = {
-    onOptionsAndMultipliersLoaded?: (value: boolean) => void;
-};
 
 const LinkTitle: React.FC<TLinkTitleProps> = ({ icon, title }) => {
     const handleClick = (event: React.KeyboardEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
@@ -60,37 +55,10 @@ const LinkTitle: React.FC<TLinkTitleProps> = ({ icon, title }) => {
     );
 };
 
-const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
+const OptionsAndMultipliersListing: React.FC<TSubscribedBalance> = ({ balance }) => {
+    const { isMobile } = useDevice();
     const history = useHistory();
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
-    if (activeLinkedToTradingAccount?.loginid) {
-        return (
-            <WalletButton
-                onClick={() => {
-                    if (isExternal) {
-                        window.open(redirect, '_blank');
-                    } else {
-                        history.push(redirect as TRoute);
-                    }
-                }}
-            >
-                Open
-            </WalletButton>
-        );
-    }
-    return null;
-};
-
-const OptionsAndMultipliersListing: React.FC<TOptionsAndMultipliersListingProps> = ({
-    onOptionsAndMultipliersLoaded,
-}) => {
-    const { isMobile } = useDevice();
-    const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
-
-    useEffect(() => {
-        onOptionsAndMultipliersLoaded?.(true);
-        return () => onOptionsAndMultipliersLoaded?.(false);
-    }, [onOptionsAndMultipliersLoaded]);
 
     return (
         <div className='wallets-options-and-multipliers-listing'>
@@ -110,40 +78,37 @@ const OptionsAndMultipliersListing: React.FC<TOptionsAndMultipliersListingProps>
                         />
                     </WalletText>
                 </div>
-                <DerivAppsSection />
+                <DerivAppsSection balance={balance} />
             </section>
-            <div
-                className={classNames('wallets-options-and-multipliers-listing__content', {
-                    'wallets-options-and-multipliers-listing__content--without-trading-account':
-                        !activeLinkedToTradingAccount?.loginid,
-                })}
-            >
+            <div className='wallets-options-and-multipliers-listing__content'>
                 {optionsAndMultipliersContent.map(account => {
-                    const title = account.title;
+                    const { description, title } = account;
 
                     return (
                         <TradingAccountCard
                             {...account}
+                            disabled={!activeLinkedToTradingAccount?.loginid}
                             key={`trading-account-card-${title}`}
-                            leading={
-                                <LinkTitle
-                                    icon={
-                                        activeLinkedToTradingAccount?.loginid || !isMobile
-                                            ? account.icon
-                                            : account.smallIcon
-                                    }
-                                    title={title}
-                                />
+                            leading={<LinkTitle icon={account.icon} title={title} />}
+                            onClick={() => {
+                                account.isExternal
+                                    ? window.open(account.redirect, '_blank')
+                                    : history.push(account.redirect as TRoute);
+                            }}
+                            trailing={
+                                activeLinkedToTradingAccount?.loginid ? (
+                                    <div className='wallets-options-and-multipliers-listing__icon'>
+                                        <LabelPairedChevronRightCaptionRegularIcon width={16} />
+                                    </div>
+                                ) : null
                             }
-                            trailing={<ShowOpenButton isExternal={account.isExternal} redirect={account.redirect} />}
                         >
                             <div className='wallets-options-and-multipliers-listing__content__details'>
-                                <WalletText size='sm' weight='bold'>
+                                <WalletText size='sm'>
                                     <Trans defaults={title} />
                                 </WalletText>
-
                                 <WalletText size='xs'>
-                                    <Trans defaults={account.description} />
+                                    <Trans defaults={description} />
                                 </WalletText>
                             </div>
                         </TradingAccountCard>

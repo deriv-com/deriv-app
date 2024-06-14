@@ -17,7 +17,7 @@ const WalletsContainer: React.FC<React.PropsWithChildren<TProps>> = ({ children,
     useEffect(() => {
         const timeout = setTimeout(() => {
             if (isOpen && walletsCardRef?.current) {
-                walletsCardRef.current.style.scrollMarginTop = '24px';
+                walletsCardRef.current.style.scrollMarginTop = '80px';
                 walletsCardRef.current.scrollIntoView({ behavior: 'smooth' });
             }
         }, 300);
@@ -29,12 +29,14 @@ const WalletsContainer: React.FC<React.PropsWithChildren<TProps>> = ({ children,
             className={classNames('wallets-container', {
                 'wallets-container--virtual': isDemo,
             })}
+            data-testid='dt_wallets_container'
             ref={walletsCardRef}
         >
             <div
                 className={classNames('wallets-container__header', {
                     'wallets-container__header--virtual': isDemo,
                 })}
+                data-testid='dt_wallets_container_header'
             >
                 {renderHeader()}
             </div>

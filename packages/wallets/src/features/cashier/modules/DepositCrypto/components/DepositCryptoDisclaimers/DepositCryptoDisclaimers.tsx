@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api-v2';
+import { useActiveWalletAccount, useCryptoConfig } from '@deriv/api-v2';
 import { InlineMessage, WalletText } from '../../../../../../components/Base';
 import './DepositCryptoDisclaimers.scss';
 
@@ -16,8 +16,9 @@ const cryptoCurrencyToNetworkMapper: Record<string, string> = {
 
 const DepositCryptoDisclaimers = () => {
     const { data } = useActiveWalletAccount();
+    const { data: cryptoConfig } = useCryptoConfig();
     const { currency } = data || {};
-    const formattedMinimumDepositValue = data?.currency_config?.minimum_deposit?.toFixed(
+    const formattedMinimumDepositValue = cryptoConfig?.minimum_deposit?.toFixed(
         data?.currency_config?.fractional_digits
     );
 
@@ -41,7 +42,7 @@ const DepositCryptoDisclaimers = () => {
                         To avoid loss of funds:
                     </WalletText>
                     <ul className='wallets-deposit-crypto-disclaimers__points'>
-                        {data?.currency_config?.minimum_deposit && minimumDepositDisclaimer}
+                        {cryptoConfig?.minimum_deposit && minimumDepositDisclaimer}
                         <li>Do not send other cryptocurrencies to this address.</li>
                         <li>Make sure to copy your Deriv account address correctly into your crypto wallet.</li>
                         <li>

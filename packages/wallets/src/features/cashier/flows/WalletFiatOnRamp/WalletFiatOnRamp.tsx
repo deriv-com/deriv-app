@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api-v2';
-import { CashierLocked, FiatOnRampModule } from '../../modules';
+import { FiatOnRampModule } from '../../modules';
 
 const WalletFiatOnRamp = () => {
     const { data } = useActiveWalletAccount();
@@ -12,15 +12,11 @@ const WalletFiatOnRamp = () => {
 
     useEffect(() => {
         if (!isCrypto) {
-            history.push('/wallets/cashier/deposit');
+            history.push('/wallet/deposit');
         }
     }, [history, isCrypto]);
 
-    return (
-        <CashierLocked module='deposit'>
-            <FiatOnRampModule />
-        </CashierLocked>
-    );
+    return <FiatOnRampModule />;
 };
 
 export default WalletFiatOnRamp;

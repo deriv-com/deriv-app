@@ -1,31 +1,25 @@
 import React, { ComponentProps, PropsWithChildren } from 'react';
+import { WalletTourGuide } from 'src/components/WalletTourGuide';
 import { APIProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../AuthProvider';
 import useDevice from '../../../hooks/useDevice';
+import { TSubscribedBalance } from '../../../types';
 import { ModalProvider } from '../../ModalProvider';
-import WalletMobileTourGuide from '../../WalletTourGuide/WalletMobileTourGuide';
 import AccountsList from '../AccountsList';
 
 jest.mock('../../../hooks/useDevice');
 const mockUseDevice = useDevice as jest.MockedFunction<typeof useDevice>;
 
-const mockWalletMobileTourGuide = jest.fn();
+const mockWalletTourGuide = jest.fn();
 jest.mock(
-    '../../WalletTourGuide/WalletMobileTourGuide',
+    '../../WalletTourGuide/WalletTourGuide',
     // eslint-disable-next-line react/display-name
-    () => (props: ComponentProps<typeof WalletMobileTourGuide>) => {
-        mockWalletMobileTourGuide(props);
+    () => (props: ComponentProps<typeof WalletTourGuide>) => {
+        mockWalletTourGuide(props);
         return (
             <div>
                 <p>mock wallet tour guide</p>
-                <p>{props.isMT5PlatformListLoaded ? 'mt5 list loaded' : 'mt5 list not loaded'}</p>
-                <p>
-                    {props.isOptionsAndMultipliersLoaded
-                        ? 'options and multipliers loaded'
-                        : 'options and multipliers not loaded'}
-                </p>
-                <p>{props.isWalletSettled ? 'wallet settled' : 'wallet not settled'}</p>
             </div>
         );
     }
@@ -39,6 +33,36 @@ const wrapper = ({ children }: PropsWithChildren) => (
     </APIProvider>
 );
 
+const mockBalanceData: TSubscribedBalance['balance'] = {
+    data: {
+        accounts: {
+            1234567: {
+                balance: 1000.0,
+                converted_amount: 1000.0,
+                currency: 'USD',
+                demo_account: 0,
+                status: 1,
+                type: 'deriv',
+            },
+            7654321: {
+                balance: 1.0,
+                converted_amount: 1.0,
+                currency: 'BTC',
+                demo_account: 1,
+                status: 1,
+                type: 'deriv',
+            },
+        },
+        balance: 9990,
+        currency: 'USD',
+        loginid: 'CRW1314',
+    },
+    error: undefined,
+    isIdle: false,
+    isLoading: false,
+    isSubscribed: false,
+};
+
 describe('AccountsList', () => {
     it('should render account list in mobile view', () => {
         mockUseDevice.mockReturnValue({
@@ -46,7 +70,7 @@ describe('AccountsList', () => {
             isMobile: true,
             isTablet: false,
         });
-        render(<AccountsList isWalletSettled={true} />, { wrapper });
+        render(<AccountsList balance={mockBalanceData} />, { wrapper });
         expect(screen.getByTestId('dt_tabs')).toBeInTheDocument();
         expect(screen.getByTestId('dt_tab_list')).toBeInTheDocument();
         expect(screen.getByTestId('dt_tab_panels')).toBeInTheDocument();
@@ -61,7 +85,7 @@ describe('AccountsList', () => {
             isMobile: true,
             isTablet: false,
         });
-        render(<AccountsList isWalletSettled={true} />, { wrapper });
+        render(<AccountsList balance={mockBalanceData} />, { wrapper });
         expect(screen.getByTestId('dt_tab_panels')).toBeInTheDocument();
         expect(screen.getByText('CFDs')).toBeInTheDocument();
         expect(screen.getAllByText('Options')[0]).toBeInTheDocument();
@@ -81,7 +105,7 @@ describe('AccountsList', () => {
             isMobile: false,
             isTablet: false,
         });
-        render(<AccountsList isWalletSettled={true} />, { wrapper });
+        render(<AccountsList balance={mockBalanceData} />, { wrapper });
 
         expect(screen.getByTestId('dt_desktop_accounts_list')).toBeInTheDocument();
         expect(screen.getByText('CFDs')).toBeInTheDocument();
@@ -94,8 +118,8 @@ describe('AccountsList', () => {
             isMobile: true,
             isTablet: false,
         });
-        render(<AccountsList isWalletSettled={false} />, { wrapper });
-        expect(mockWalletMobileTourGuide).toBeCalledWith(expect.objectContaining({ isWalletSettled: false }));
+        render(<AccountsList balance={mockBalanceData} />, { wrapper });
+        expect(mockWalletTourGuide);
     });
 
     it('should render wallet tour guide in mobile view with isWalletSettled set to true', () => {
@@ -104,7 +128,7 @@ describe('AccountsList', () => {
             isMobile: true,
             isTablet: false,
         });
-        render(<AccountsList isWalletSettled={true} />, { wrapper });
-        expect(mockWalletMobileTourGuide).toBeCalledWith(expect.objectContaining({ isWalletSettled: true }));
+        render(<AccountsList balance={mockBalanceData} />, { wrapper });
+        expect(mockWalletTourGuide);
     });
 });

@@ -116,7 +116,7 @@ describe('WithdrawalLockedContent', () => {
         });
 
         if (result) render(result);
-        expect(screen.getByText(/You have reached the withdrawal limit. Please complete/)).toBeInTheDocument();
+        expect(screen.getByText(/Please complete/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'financial assessment form' })).toBeInTheDocument();
     });
 

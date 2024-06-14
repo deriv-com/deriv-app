@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useMutation } from '@deriv/api-v2';
 import { WalletButton, WalletsActionScreen } from '../../../../components';
+//TODO: replace with quill-icons
 import IcResetDemoBalance from '../../../../public/images/ic-demo-reset-balance.svg';
 import IcResetDemoBalanceDone from '../../../../public/images/ic-demo-reset-balance-done.svg';
 
@@ -22,7 +23,7 @@ const ResetBalance = () => {
             icon={isResetBalanceSuccess ? <IcResetDemoBalanceDone /> : <IcResetDemoBalance />}
             renderButtons={() => (
                 <WalletButton
-                    onClick={isResetBalanceSuccess ? () => history.push(`/wallets/cashier/transfer`) : resetBalance}
+                    onClick={isResetBalanceSuccess ? () => history.push('/wallet/account-transfer') : resetBalance}
                     size='lg'
                 >
                     {isResetBalanceSuccess ? 'Transfer funds' : 'Reset balance'}

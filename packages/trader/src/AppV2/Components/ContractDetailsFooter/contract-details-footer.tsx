@@ -2,7 +2,6 @@ import { Button, Text } from '@deriv-com/quill-ui';
 import { RemainingTime } from '@deriv/components';
 import {
     TContractInfo,
-    formatMoney,
     getCardLabels,
     isMultiplierContract,
     isValidToCancel,
@@ -81,7 +80,7 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                     variant='secondary'
                     label={
                         is_valid_to_sell
-                            ? `${getCardLabels().CLOSE} @ ${formatMoney(bid_price)} ${(currency)}`
+                            ? `${getCardLabels().CLOSE} @ ${bid_price} ${(currency)}`
                             : getCardLabels().RESALE_NOT_OFFERED
                     }
                     color='black'

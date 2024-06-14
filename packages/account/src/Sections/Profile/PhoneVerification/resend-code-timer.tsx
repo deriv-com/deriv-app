@@ -54,6 +54,7 @@ const ResendCodeTimer = ({
             const next_email_otp_request = Math.round(email_otp_request_in_miliseconds.diff(current_time) / 1000);
 
             if (next_email_otp_request > 0) {
+                setIsButtonDisabled(true);
                 setTitle(next_email_otp_request);
                 setTimer(next_email_otp_request);
             }
@@ -66,6 +67,7 @@ const ResendCodeTimer = ({
             const next_phone_otp_request = Math.round(phone_otp_request_in_miliseconds.diff(current_time) / 1000);
 
             if (next_phone_otp_request > 0) {
+                setIsButtonDisabled(true);
                 setTitle(next_phone_otp_request);
                 setTimer(next_phone_otp_request);
             }

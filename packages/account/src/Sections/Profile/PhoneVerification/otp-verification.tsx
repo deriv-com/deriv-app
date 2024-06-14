@@ -33,11 +33,11 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     //TODO: this shall be replace by BE API call when it's ready
     const { should_show_phone_number_otp } = ui;
 
-    const reInitializeGetSettings = () => {
+    const reInitializeGetSettings = React.useCallback(() => {
         invalidate('get_settings').then(() => {
             setIsButtonDisabled(false);
         });
-    };
+    }, [invalidate]);
 
     React.useEffect(() => {
         setIsButtonDisabled(true);

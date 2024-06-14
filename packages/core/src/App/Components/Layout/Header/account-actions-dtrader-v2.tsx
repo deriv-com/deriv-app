@@ -13,8 +13,6 @@ type TAccountActionsDTraderV2 = {
     currency: string;
     is_acc_switcher_disabled?: boolean;
     is_eu?: boolean;
-    disableApp: () => void;
-    enableApp: () => void;
     is_acc_switcher_on?: boolean;
     is_logged_in?: boolean;
     is_virtual?: boolean;
@@ -48,8 +46,6 @@ const AccountActionsDTraderV2 = React.memo(
         account_type,
         balance,
         currency,
-        disableApp,
-        enableApp,
         is_acc_switcher_on,
         is_acc_switcher_disabled,
         is_eu,
@@ -67,8 +63,6 @@ const AccountActionsDTraderV2 = React.memo(
                             account_type={account_type}
                             balance={typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)}
                             is_disabled={is_acc_switcher_disabled}
-                            disableApp={disableApp}
-                            enableApp={enableApp}
                             is_eu={is_eu}
                             is_virtual={is_virtual}
                             currency={currency}

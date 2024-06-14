@@ -7,8 +7,6 @@ const HeaderAccountActionsDTraderV2 = observer(() => {
     const { account_type, balance, currency, is_eu, is_logged_in, is_virtual } = client;
     const {
         account_switcher_disabled_message,
-        disableApp,
-        enableApp,
         is_account_switcher_disabled,
         is_accounts_switcher_on,
         toggleAccountsDialog,
@@ -22,8 +20,6 @@ const HeaderAccountActionsDTraderV2 = observer(() => {
                 account_type={account_type}
                 balance={balance}
                 currency={currency}
-                disableApp={disableApp}
-                enableApp={enableApp}
                 is_acc_switcher_on={is_accounts_switcher_on}
                 is_acc_switcher_disabled={is_account_switcher_disabled}
                 is_eu={is_eu}

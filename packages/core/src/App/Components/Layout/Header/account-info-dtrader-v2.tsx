@@ -36,8 +36,6 @@ const AccountInfoDTraderV2 = ({
     // account_type = '',
     balance,
     currency,
-    disableApp,
-    enableApp,
     is_dialog_on,
     // is_eu,
     is_virtual,
@@ -121,12 +119,7 @@ const AccountInfoDTraderV2 = ({
                     </div>
                 </button>
             </AccountInfoWrapper>
-            <AccountSwitcherMobile
-                is_visible={is_dialog_on}
-                disableApp={disableApp}
-                enableApp={enableApp}
-                toggle={toggleDialog}
-            />
+            <AccountSwitcherMobile is_visible={is_dialog_on} toggle={toggleDialog} />
         </React.Fragment>
     );
 };

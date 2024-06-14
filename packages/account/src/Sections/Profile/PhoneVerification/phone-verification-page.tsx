@@ -39,15 +39,11 @@ const PhoneVerificationPage = observer(() => {
                 show_otp_verification: false,
                 phone_verification_type: '',
             });
-        }
-    }, [email_otp_error, is_email_verified]);
-
-    React.useEffect(() => {
-        if (phone_number_verification) {
+        } else if (phone_number_verification) {
             setIsLoading(true);
             sendEmailOTPVerification(phone_number_verification);
         }
-    }, [phone_number_verification]);
+    }, [email_otp_error, is_email_verified, phone_number_verification]);
 
     if (is_loading) {
         return <Loading is_fullscreen={false} />;

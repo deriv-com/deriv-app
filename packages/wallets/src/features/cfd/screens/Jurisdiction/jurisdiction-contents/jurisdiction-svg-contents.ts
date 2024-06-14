@@ -88,7 +88,7 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
         ],
         synthetic: [
             {
-                description: 'Synthetics, Baskets and Derived FX',
+                description: 'Synthetic indices, basket indices, and derived FX',
                 key: 'assets',
                 title: 'Assets',
                 titleIndicators: {

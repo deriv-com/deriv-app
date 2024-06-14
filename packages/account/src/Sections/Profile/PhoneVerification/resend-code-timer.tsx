@@ -22,8 +22,7 @@ const ResendCodeTimer = ({
     setShouldShowDidntGetTheCodeModal,
     reInitializeGetSettings,
 }: TResendCodeTimer) => {
-    const [email_otp_attempt, setEmailOtpAttempt] = React.useState('');
-    const [phone_otp_attempt, setPhoneOtpAttempt] = React.useState('');
+    const [next_otp_request, setNextOtpRequest] = React.useState('');
     // @ts-expect-error this for now
     const { send, is_success } = useVerifyEmail('phone_number_verification');
     const { data: account_settings } = useSettings();
@@ -38,8 +37,8 @@ const ResendCodeTimer = ({
                 display_time = `${timer}s`;
             }
             should_show_resend_code_button
-                ? setEmailOtpAttempt(` in ${display_time}`)
-                : setPhoneOtpAttempt(` (${display_time})`);
+                ? setNextOtpRequest(` in ${display_time}`)
+                : setNextOtpRequest(` (${display_time})`);
         },
         [should_show_resend_code_button]
     );
@@ -92,8 +91,7 @@ const ResendCodeTimer = ({
                 setTitle(timer);
             }, 1000);
         } else {
-            setEmailOtpAttempt('');
-            setPhoneOtpAttempt('');
+            setNextOtpRequest('');
         }
 
         return () => clearInterval(countdown);
@@ -113,14 +111,11 @@ const ResendCodeTimer = ({
         <Button variant='tertiary' onClick={resendCode} disabled={!!timer || is_button_disabled} color='black'>
             <CaptionText bold underlined>
                 {should_show_resend_code_button ? (
-                    <Localize
-                        i18n_default_text='Resend code{{resendCode}}'
-                        values={{ resendCode: email_otp_attempt }}
-                    />
+                    <Localize i18n_default_text='Resend code{{resendCode}}' values={{ resendCode: next_otp_request }} />
                 ) : (
                     <Localize
                         i18n_default_text="Didn't get the code?{{resendCode}}"
-                        values={{ resendCode: phone_otp_attempt }}
+                        values={{ resendCode: next_otp_request }}
                     />
                 )}
             </CaptionText>

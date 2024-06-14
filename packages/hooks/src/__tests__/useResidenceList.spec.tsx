@@ -9,7 +9,7 @@ jest.mock('@deriv/api', () => ({
     useQuery: jest.fn(),
 }));
 
-const mockUseFetch = useQuery as jest.MockedFunction<typeof useQuery<'residence_list'>>;
+const mockUseQuery = useQuery as jest.MockedFunction<typeof useQuery<'residence_list'>>;
 
 describe('useResidenceList', () => {
     const mock = mockStore({});
@@ -22,7 +22,7 @@ describe('useResidenceList', () => {
 
     it('should return an empty array when the store is not ready', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useQuery
-        mockUseFetch.mockReturnValue({ data: undefined, isFetched: false });
+        mockUseQuery.mockReturnValue({ data: undefined, isFetched: false });
         const { result } = renderHook(() => useResidenceList(), { wrapper });
 
         expect(result.current.data).toHaveLength(0);
@@ -30,7 +30,7 @@ describe('useResidenceList', () => {
 
     it('should return data fetched along with correct status', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useQuery
-        mockUseFetch.mockReturnValue({
+        mockUseQuery.mockReturnValue({
             data: {
                 residence_list: [
                     { text: 'state 1', value: 's1' },

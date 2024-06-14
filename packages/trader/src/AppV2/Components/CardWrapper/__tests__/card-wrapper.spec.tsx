@@ -12,7 +12,7 @@ jest.mock('@deriv-com/quill-ui', () => ({
 describe('CardWrapper component', () => {
     it('renders without crashing', () => {
         render(
-            <CardWrapper>
+            <CardWrapper title='Test Title'>
                 <div>Child content</div>
             </CardWrapper>
         );

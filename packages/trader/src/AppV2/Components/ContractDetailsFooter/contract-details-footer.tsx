@@ -9,7 +9,6 @@ import {
     isValidToSell,
 } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
-import { getRemainingTime } from 'AppV2/Utils/helper';
 import { observer } from 'mobx-react';
 import React from 'react';
 
@@ -82,7 +81,7 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                     variant='secondary'
                     label={
                         is_valid_to_sell
-                            ? `${getCardLabels().CLOSE} @ ${bid_price} ${formatMoney(currency)}`
+                            ? `${getCardLabels().CLOSE} @ ${formatMoney(bid_price)} ${(currency)}`
                             : getCardLabels().RESALE_NOT_OFFERED
                     }
                     color='black'

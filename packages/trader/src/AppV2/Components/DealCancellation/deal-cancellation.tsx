@@ -11,9 +11,9 @@ const DealCancellation = observer(() => {
     const { contract_info } = useContractDetails();
     const { isDealCancellationVisible } = getContractDetailsConfig(contract_info.contract_type ?? '');
 
-    const is_valid_to_cancel = isValidToCancel(contract_info);
+    const canCancel = isValidToCancel(contract_info);
 
-    return is_valid_to_cancel && isDealCancellationVisible && isOpen(contract_info) ? (
+    return canCancel && isDealCancellationVisible && isOpen(contract_info) ? (
         <CardWrapper>
             <RiskManagementItem
                 label={<Localize i18n_default_text='Deal cancellation' />}

@@ -1,7 +1,6 @@
 import { Tag } from '@deriv-com/quill-ui';
 import { RemainingTime } from '@deriv/components';
-import { LabelPairedStopwatchCaptionRegularIcon } from '@deriv/quill-icons';
-import { formatDuration, getCardLabels, getDiffDuration } from '@deriv/shared';
+import { getCardLabels } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import React from 'react';

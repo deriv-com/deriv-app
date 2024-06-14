@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { useStore } from '@deriv/stores';
-import { getCardLabels, isValidToSell, isValidToCancel, isMultiplierContract } from '@deriv/shared';
+import { getCardLabels, isValidToSell, isValidToCancel, isMultiplierContract, formatMoney } from '@deriv/shared';
 import ContractDetailsFooter from '../contract-details-footer';
 import { getRemainingTime } from 'AppV2/Utils/helper';
 import userEvent from '@testing-library/user-event';
@@ -11,9 +11,11 @@ jest.mock('@deriv/stores', () => ({
     useStore: jest.fn(),
 }));
 jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
     getCardLabels: jest.fn(),
     isValidToSell: jest.fn(),
     isValidToCancel: jest.fn(),
+    formatMoney: jest.fn(),
     isMultiplierContract: jest.fn(),
 }));
 jest.mock('AppV2/Utils/helper', () => ({
@@ -49,6 +51,7 @@ describe('ContractDetailsFooter', () => {
             CANCEL: 'Cancel',
             RESALE_NOT_OFFERED: 'Resale not offered',
         }));
+        (formatMoney as jest.Mock).mockImplementation(val => val);
         jest.clearAllMocks();
     });
 
@@ -89,7 +92,7 @@ describe('ContractDetailsFooter', () => {
         );
 
         const closeButton = screen.getByRole('button', { name: /close/i });
-        const cancelButton = screen.getByRole('button', { name: /cancel 10:00/i });
+        const cancelButton = screen.getByRole('button', { name: /cancel/i });
 
         expect(closeButton).toBeInTheDocument();
         expect(cancelButton).toBeInTheDocument();
@@ -136,7 +139,7 @@ describe('ContractDetailsFooter', () => {
             />
         );
 
-        const cancelButton = screen.getByRole('button', { name: /cancel 10:00/i });
+        const cancelButton = screen.getByRole('button', { name: /cancel/i });
         expect(cancelButton).toBeDisabled();
     });
 

@@ -7,8 +7,10 @@ import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import DealCancellationRemainingTime from '../deal-cancellation-remaining-time';
 
 jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
     formatDuration: jest.fn(),
     getDiffDuration: jest.fn(),
+
 }));
 
 jest.mock('@deriv/stores', () => ({

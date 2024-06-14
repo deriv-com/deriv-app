@@ -33,7 +33,7 @@ describe('TakeProfitHistory component', () => {
 
     it('renders without crashing', () => {
         render(<TakeProfitHistory />);
-        expect(screen.getByText('TP history')).toBeInTheDocument();
+        expect(screen.getByText('TP & SL history')).toBeInTheDocument();
     });
 
     it('renders the correct number of history items', () => {

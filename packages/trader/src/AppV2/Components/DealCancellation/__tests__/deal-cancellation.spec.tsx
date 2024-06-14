@@ -54,7 +54,7 @@ describe('DealCancellation component', () => {
         (isValidToCancel as jest.Mock).mockReturnValue(true);
         (isOpen as jest.Mock).mockReturnValue(true);
         (getContractDetailsConfig as jest.Mock).mockReturnValue({
-            is_deal_cancellation_visible: true,
+            isDealCancellationVisible: true,
         });
 
         render(<DealCancellation />);
@@ -66,7 +66,7 @@ describe('DealCancellation component', () => {
         (isValidToCancel as jest.Mock).mockReturnValue(false);
         (isOpen as jest.Mock).mockReturnValue(true);
         (getContractDetailsConfig as jest.Mock).mockReturnValue({
-            is_deal_cancellation_visible: true,
+            isDealCancellationVisible: true,
         });
 
         render(<DealCancellation />);
@@ -78,7 +78,7 @@ describe('DealCancellation component', () => {
         (isValidToCancel as jest.Mock).mockReturnValue(true);
         (isOpen as jest.Mock).mockReturnValue(true);
         (getContractDetailsConfig as jest.Mock).mockReturnValue({
-            is_deal_cancellation_visible: false,
+            isDealCancellationVisible: false,
         });
 
         render(<DealCancellation />);
@@ -90,7 +90,7 @@ describe('DealCancellation component', () => {
         (isValidToCancel as jest.Mock).mockReturnValue(true);
         (isOpen as jest.Mock).mockReturnValue(false);
         (getContractDetailsConfig as jest.Mock).mockReturnValue({
-            is_deal_cancellation_visible: true,
+            isDealCancellationVisible: true,
         });
 
         render(<DealCancellation />);

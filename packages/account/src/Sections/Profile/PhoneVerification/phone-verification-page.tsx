@@ -7,18 +7,48 @@ import ConfirmPhoneNumber from './confirm-phone-number';
 import OTPVerification from './otp-verification';
 import CancelPhoneVerificationModal from './cancel-phone-verification-modal';
 import VerificationLinkExpiredModal from './verification-link-expired-modal';
+import { observer, useStore } from '@deriv/stores';
+import { useSendOTPVerificationCode } from '@deriv/hooks';
+import { Loading } from '@deriv/components';
 
-const PhoneVerificationPage = () => {
+const PhoneVerificationPage = observer(() => {
     const [otp_verification, setOtpVerification] = React.useState({
         show_otp_verification: true,
         phone_verification_type: '',
     });
+    const [is_loading, setIsLoading] = React.useState(false);
     const [should_show_cancel_verification_modal, setShouldShowCancelVerificationModal] = React.useState(false);
     const [should_show_verification_link_expired_modal, setShouldShowVerificationLinkExpiredModal] =
         React.useState(false);
     const handleBackButton = () => {
         setShouldShowCancelVerificationModal(true);
     };
+    const { sendEmailOTPVerification, email_otp_error, is_email_verified } = useSendOTPVerificationCode();
+
+    const { client } = useStore();
+    const {
+        verification_code: { phone_number_verification: phone_number_verification_code },
+    } = client;
+
+    React.useEffect(() => {
+        if (email_otp_error) {
+            setIsLoading(false);
+            setShouldShowVerificationLinkExpiredModal(true);
+        } else if (is_email_verified) {
+            setIsLoading(false);
+            setOtpVerification({
+                show_otp_verification: false,
+                phone_verification_type: '',
+            });
+        } else if (phone_number_verification_code) {
+            setIsLoading(true);
+            sendEmailOTPVerification(phone_number_verification_code);
+        }
+    }, [email_otp_error, is_email_verified, phone_number_verification_code]);
+
+    if (is_loading) {
+        return <Loading is_fullscreen={false} />;
+    }
 
     return (
         <div>
@@ -52,6 +82,6 @@ const PhoneVerificationPage = () => {
             )}
         </div>
     );
-};
+});
 
 export default PhoneVerificationPage;

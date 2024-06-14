@@ -1,15 +1,34 @@
 import React from 'react';
 import classNames from 'classnames';
-import { CSSTransition } from 'react-transition-group';
-import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode } from '@deriv/shared';
-import AccountSwitcher from 'App/Containers/AccountSwitcher';
 import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile';
-import AccountInfoWrapper from './account-info-wrapper';
-import AccountInfoIcon from './account-info-icon';
 import DisplayAccountType from './display-account-type';
 import { TAccountInfoDTraderV2 } from './account-actions-dtrader-v2';
+import AccountInfoWrapper from './account-info-wrapper';
+import {
+    CurrencyBusdIcon,
+    CurrencyAudIcon,
+    CurrencyBchIcon,
+    CurrencyUsdtIcon,
+    CurrencyBtcIcon,
+    CurrencyEthIcon,
+    CurrencyLtcIcon,
+    CurrencyUsdcIcon,
+    CurrencyUsdIcon,
+    CurrencyEurIcon,
+    CurrencyGbpIcon,
+    CurrencyPlaceholderIcon,
+    CurrencyDemoIcon,
+    CurrencyMultiCollateralDaiIcon,
+    CurrencyEursIcon,
+    CurrencyIdkIcon,
+    CurrencyPaxIcon,
+    CurrencyTusdIcon,
+    CurrencyUsdkIcon,
+    CurrencyXrpIcon,
+} from '@deriv/quill-icons';
 
 const AccountInfoDTraderV2 = ({
     acc_switcher_disabled_message,
@@ -23,38 +42,51 @@ const AccountInfoDTraderV2 = ({
     is_virtual,
     toggleDialog,
     is_disabled,
-    is_mobile,
 }: TAccountInfoDTraderV2) => {
-    const currency_lower = currency?.toLowerCase();
+    // TODO: remove function into the config?
+    const getAccountIcon = (currency: string, is_virtual: boolean) => {
+        if (is_virtual) return <CurrencyDemoIcon iconSize='md' />;
+        if (!currency) return <CurrencyPlaceholderIcon iconSize='md' />;
 
+        const key = currency.toUpperCase();
+        const config = {
+            AUD: <CurrencyAudIcon iconSize='md' />,
+            BCH: <CurrencyBchIcon iconSize='md' />,
+            BUSD: <CurrencyBusdIcon iconSize='md' />,
+            DAI: <CurrencyMultiCollateralDaiIcon iconSize='md' />,
+            TUSDT: <CurrencyUsdtIcon iconSize='md' />,
+            UST: <CurrencyUsdtIcon iconSize='md' />,
+            EUSDT: <CurrencyUsdtIcon iconSize='md' />,
+            BTC: <CurrencyBtcIcon iconSize='md' />,
+            ETH: <CurrencyEthIcon iconSize='md' />,
+            LTC: <CurrencyLtcIcon iconSize='md' />,
+            USDC: <CurrencyUsdcIcon iconSize='md' />,
+            USD: <CurrencyUsdIcon iconSize='md' />,
+            EUR: <CurrencyEurIcon iconSize='md' />,
+            GBP: <CurrencyGbpIcon iconSize='md' />,
+            EURS: <CurrencyEursIcon iconSize='md' />,
+            IDK: <CurrencyIdkIcon iconSize='md' />,
+            PAX: <CurrencyPaxIcon iconSize='md' />,
+            TUSD: <CurrencyTusdIcon iconSize='md' />,
+            USDK: <CurrencyUsdkIcon iconSize='md' />,
+            XRP: <CurrencyXrpIcon iconSize='md' />,
+        };
+
+        return config[key as keyof typeof config] ?? <CurrencyPlaceholderIcon iconSize='md' />;
+    };
+
+    // TODO: remove unused css
+    // TODO: disabling logic?
     return (
-        <div className='acc-info__wrapper'>
-            <div className='acc-info__separator' />
+        <React.Fragment>
             <AccountInfoWrapper
                 is_disabled={is_disabled}
                 disabled_message={acc_switcher_disabled_message}
-                is_mobile={is_mobile}
+                is_mobile
+                is_dtrader_v2
             >
-                <div
-                    data-testid='dt_acc_info'
-                    id='dt_core_account-info_acc-info'
-                    className={classNames('acc-info', {
-                        'acc-info--show': is_dialog_on,
-                        'acc-info--is-virtual': is_virtual,
-                        'acc-info--is-disabled': is_disabled,
-                    })}
-                    onClick={is_disabled ? undefined : () => toggleDialog()}
-                >
-                    <span className='acc-info__id'>
-                        <DesktopWrapper>
-                            <AccountInfoIcon is_virtual={is_virtual} currency={currency_lower} />
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            {(is_virtual || currency) && (
-                                <AccountInfoIcon is_virtual={is_virtual} currency={currency_lower} />
-                            )}
-                        </MobileWrapper>
-                    </span>
+                <div className='header-v2__acc-info__wrapper' onClick={is_disabled ? undefined : () => toggleDialog()}>
+                    {getAccountIcon(currency, !!is_virtual)}
                     {(typeof balance !== 'undefined' || !currency) && (
                         <div className='acc-info__account-type-and-balance'>
                             <p
@@ -70,7 +102,7 @@ const AccountInfoDTraderV2 = ({
                                 )}
                             </p>
                             <Text size='xxxs' line_height='s'>
-                                <DisplayAccountType account_type={account_type} is_eu={is_eu} />
+                                <DisplayAccountType account_type={account_type} is_eu={!!is_eu} />
                             </Text>
                         </div>
                     )}
@@ -80,36 +112,20 @@ const AccountInfoDTraderV2 = ({
                         <Icon
                             data_testid='dt_select_arrow'
                             icon='IcChevronDownBold'
-                            className='acc-info__select-arrow'
+                            className={classNames('header-v2__acc-info__select-arrow', {
+                                'header-v2__acc-info__select-arrow--up': is_dialog_on,
+                            })}
                         />
                     )}
                 </div>
             </AccountInfoWrapper>
-            <MobileWrapper>
-                <AccountSwitcherMobile
-                    is_visible={is_dialog_on}
-                    disableApp={disableApp}
-                    enableApp={enableApp}
-                    toggle={toggleDialog}
-                />
-            </MobileWrapper>
-            <DesktopWrapper>
-                <CSSTransition
-                    in={is_dialog_on}
-                    timeout={200}
-                    classNames={{
-                        enter: 'acc-switcher__wrapper--enter',
-                        enterDone: 'acc-switcher__wrapper--enter-done',
-                        exit: 'acc-switcher__wrapper--exit',
-                    }}
-                    unmountOnExit
-                >
-                    <div className='acc-switcher__wrapper'>
-                        <AccountSwitcher is_visible={is_dialog_on} toggle={toggleDialog} />
-                    </div>
-                </CSSTransition>
-            </DesktopWrapper>
-        </div>
+            <AccountSwitcherMobile
+                is_visible={is_dialog_on}
+                disableApp={disableApp}
+                enableApp={enableApp}
+                toggle={toggleDialog}
+            />
+        </React.Fragment>
     );
 };
 

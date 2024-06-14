@@ -1,12 +1,10 @@
 import React from 'react';
-// import { Button, Counter, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
 import { StandaloneBellRegularIcon } from '@deriv/quill-icons';
 import { formatMoney, moduleLoader } from '@deriv/shared';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
 import { Badge } from '@deriv-com/quill-ui';
 import 'Sass/app/_common/components/account-switcher.scss';
-import AccountInfoDTraderV2 from './account-info-dtrader-v2';
 
 type TAccountActionsDTraderV2 = {
     acc_switcher_disabled_message?: string;
@@ -31,19 +29,18 @@ export type TAccountInfoDTraderV2 = Omit<
     is_dialog_on?: boolean;
     toggleDialog: (value?: boolean | undefined) => void;
     is_disabled?: boolean;
-    is_mobile?: boolean;
 };
-// const AccountInfoDTraderV2 = React.lazy(
-//     () =>
-//         moduleLoader(
-//             () =>
-//                 import(
-//                     /* webpackChunkName: "account-info-dtrader-v2", webpackPreload: true */ 'App/Components/Layout/Header/account-info-dtrader-v2'
-//                 )
-//         ) as Promise<{
-//             default: React.ComponentType<TAccountInfoDTraderV2>;
-//         }>
-// );
+const AccountInfoDTraderV2 = React.lazy(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "account-info-dtrader-v2", webpackPreload: true */ 'App/Components/Layout/Header/account-info-dtrader-v2'
+                )
+        ) as Promise<{
+            default: React.ComponentType<TAccountInfoDTraderV2>;
+        }>
+);
 
 const AccountActionsDTraderV2 = React.memo(
     ({
@@ -74,7 +71,6 @@ const AccountActionsDTraderV2 = React.memo(
                             enableApp={enableApp}
                             is_eu={is_eu}
                             is_virtual={is_virtual}
-                            is_mobile
                             currency={currency}
                             is_dialog_on={is_acc_switcher_on}
                             toggleDialog={toggleAccountsDialog}

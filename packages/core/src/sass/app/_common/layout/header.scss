@@ -405,7 +405,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding-inline: 1.6rem;
+            padding-inline: var(--core-spacing-800);
 
             .notifications {
                 // &__wrapper {
@@ -415,6 +415,24 @@
                 &__icon {
                     fill: var(--core-color-opacity-black-600);
                 }
+            }
+        }
+
+        &__wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: var(--core-spacing-400);
+        }
+
+        &__select-arrow {
+            pointer-events: none;
+            transform: rotate(0);
+            transform-origin: 50% 45%;
+            transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+
+            &--up {
+                transform: rotate(180deg);
             }
         }
     }

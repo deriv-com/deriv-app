@@ -410,6 +410,10 @@
             gap: var(--core-spacing-200);
         }
 
+        &__balance:is(h5) {
+            color: var(--core-color-opacity-black-600);
+        }
+
         &__container {
             height: 100%;
             display: flex;

@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode } from '@deriv/shared';
-import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile';
+import AccountSwitcherDTraderV2 from 'App/Containers/AccountSwitcher/account-switcher-dtrader-v2';
 import { TAccountInfoDTraderV2 } from './account-actions-dtrader-v2';
 import AccountInfoWrapper from './account-info-wrapper';
 import {
@@ -29,7 +29,7 @@ import {
     LabelPairedChevronDownCaptionRegularIcon,
     LabelPairedLockCaptionRegularIcon,
 } from '@deriv/quill-icons';
-import { CaptionText, Heading } from '@deriv-com/quill-ui';
+import { CaptionText, Heading, ActionSheet } from '@deriv-com/quill-ui';
 
 const AccountInfoDTraderV2 = ({
     acc_switcher_disabled_message,
@@ -107,7 +107,7 @@ const AccountInfoDTraderV2 = ({
                             )}
                         </div>
                         {(balance ?? !currency) && (
-                            <Heading.H5 color='quill-typography__color--default'>
+                            <Heading.H5 className='header-v2__acc-info__balance'>
                                 {/* TODO: case without currency is taken from current production. No design */}
                                 {!currency ? (
                                     <Localize i18n_default_text='No currency assigned' />
@@ -119,7 +119,13 @@ const AccountInfoDTraderV2 = ({
                     </div>
                 </button>
             </AccountInfoWrapper>
-            <AccountSwitcherMobile is_visible={is_dialog_on} toggle={toggleDialog} />
+            <ActionSheet.Root isOpen={is_dialog_on} onClose={() => toggleDialog(false)} position='left'>
+                <ActionSheet.Portal shouldCloseOnDrag>
+                    <ActionSheet.Content>
+                        <AccountSwitcherDTraderV2 is_mobile is_visible />
+                    </ActionSheet.Content>
+                </ActionSheet.Portal>
+            </ActionSheet.Root>
         </React.Fragment>
     );
 };

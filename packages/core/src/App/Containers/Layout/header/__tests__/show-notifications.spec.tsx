@@ -12,6 +12,12 @@ jest.mock('App/Components/Layout/Header', () => {
     };
 });
 
+jest.mock('@deriv-com/quill-ui', () => ({
+    Badge: jest.fn(() => {
+        return 'MockedBadge';
+    }),
+}));
+
 describe('ShowNotifications', () => {
     let store: TStores;
     beforeEach(() => {

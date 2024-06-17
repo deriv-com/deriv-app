@@ -4,7 +4,7 @@ import { formatMoney, moduleLoader } from '@deriv/shared';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
 import { Badge } from '@deriv-com/quill-ui';
-import 'Sass/app/_common/components/account-switcher.scss';
+import 'Sass/app/_common/components/account-switcher-dtrader-v2.scss';
 
 type TAccountActionsDTraderV2 = {
     acc_switcher_disabled_message?: string;

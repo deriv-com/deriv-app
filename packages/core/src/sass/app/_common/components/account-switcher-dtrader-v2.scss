@@ -1,0 +1,7 @@
+.acc-switcher-dtrader {
+    &__wrapper {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: var(--core-spacing-800);
+    }
+}

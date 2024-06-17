@@ -106,67 +106,65 @@ const AccountListDTraderV2 = ({
     };
 
     return (
-        <React.Fragment>
-            <div
-                id={`dt_${loginid}`}
-                className={classNames('acc-switcher-dtrader__account', {
-                    'acc-switcher-dtrader__account--selected': loginid === selected_loginid,
-                    'acc-switcher-dtrader__account--disabled': is_disabled,
-                })}
-                onClick={() => {
-                    if (!is_disabled) redirectAccount?.();
-                }}
-            >
-                {getAccountIcon(currency, is_virtual, 'sm')}
-                <div className='acc-switcher-dtrader__account__info'>
-                    {display_type === 'currency' ? (
-                        <Text size='sm' color='quill-typography__color--default'>
-                            <CurrencyDisplay currency={currency} loginid={loginid} is_virtual={is_virtual} />
-                        </Text>
-                    ) : (
-                        <AccountDisplay
-                            is_eu={is_eu}
-                            market_type={market_type}
-                            server={server}
-                            sub_account_type={sub_account_type}
-                            has_error={has_error}
-                            platform={platform}
-                            shortcode={shortcode}
-                            should_show_server_name={should_show_server_name}
-                        />
-                    )}
-                    <Text size='sm' color='quill-typography__color--disabled' as='span'>
-                        {loginid}
+        <div
+            id={`dt_${loginid}`}
+            className={classNames('acc-switcher-dtrader__account', {
+                'acc-switcher-dtrader__account--selected': loginid === selected_loginid,
+                'acc-switcher-dtrader__account--disabled': is_disabled,
+            })}
+            onClick={() => {
+                if (!is_disabled) redirectAccount?.();
+            }}
+        >
+            {getAccountIcon(currency, is_virtual, 'sm')}
+            <div className='acc-switcher-dtrader__account__info'>
+                {display_type === 'currency' ? (
+                    <Text size='sm' color='quill-typography__color--default'>
+                        <CurrencyDisplay currency={currency} loginid={loginid} is_virtual={is_virtual} />
                     </Text>
-                </div>
-                {has_reset_balance ? (
-                    <Button
-                        disabled={is_disabled}
-                        color='white'
-                        label={<Localize i18n_default_text='Reset balance' />}
-                        onClick={e => {
-                            e.stopPropagation();
-                            onClickResetVirtualBalance?.();
-                        }}
-                        size='sm'
-                        type='button'
-                        variant='secondary'
-                    />
                 ) : (
-                    has_balance &&
-                    currency && (
-                        <Text size='sm' color='quill-typography__color--default'>
-                            <Money
-                                currency={getCurrencyDisplayCode(currency)}
-                                amount={formatMoney(currency, Number(balance), true)}
-                                should_format={false}
-                                show_currency
-                            />
-                        </Text>
-                    )
+                    <AccountDisplay
+                        is_eu={is_eu}
+                        market_type={market_type}
+                        server={server}
+                        sub_account_type={sub_account_type}
+                        has_error={has_error}
+                        platform={platform}
+                        shortcode={shortcode}
+                        should_show_server_name={should_show_server_name}
+                    />
                 )}
+                <Text size='sm' color='quill-typography__color--disabled' as='span'>
+                    {loginid}
+                </Text>
             </div>
-        </React.Fragment>
+            {has_reset_balance ? (
+                <Button
+                    disabled={is_disabled}
+                    color='white'
+                    label={<Localize i18n_default_text='Reset balance' />}
+                    onClick={e => {
+                        e.stopPropagation();
+                        onClickResetVirtualBalance?.();
+                    }}
+                    size='sm'
+                    type='button'
+                    variant='secondary'
+                />
+            ) : (
+                has_balance &&
+                currency && (
+                    <Text size='sm' color='quill-typography__color--default'>
+                        <Money
+                            currency={getCurrencyDisplayCode(currency)}
+                            amount={formatMoney(currency, Number(balance), true)}
+                            should_format={false}
+                            show_currency
+                        />
+                    </Text>
+                )
+            )}
+        </div>
     );
 };
 

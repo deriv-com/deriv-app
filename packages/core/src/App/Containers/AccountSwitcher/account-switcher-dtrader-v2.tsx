@@ -7,7 +7,7 @@ import { localize, Localize } from '@deriv/translations';
 import { useHasSetCurrency } from '@deriv/hooks';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { BinaryLink } from 'App/Components/Routes';
-import { Button, Text } from '@deriv-com/quill-ui';
+import { Button, CaptionText, Text } from '@deriv-com/quill-ui';
 import { getSortedAccountList, getSortedCFDList, isDemo } from './helpers';
 import { LabelPairedChevronRightSmRegularIcon } from '@deriv/quill-icons';
 import AccountListDTraderV2 from './account-switcher-account-list-dtrader-v2';
@@ -16,6 +16,25 @@ import { TActiveAccount } from '@deriv/stores/types';
 type TAccountSwitcherDTraderV2 = RouteComponentProps & {
     is_visible?: boolean;
     history?: ReturnType<typeof useHistory>;
+};
+
+type TAccountGroupWrapper = { separator_text?: React.ReactNode };
+
+const AccountGroupWrapper = ({ children, separator_text }: React.PropsWithChildren<TAccountGroupWrapper>) => {
+    return separator_text ? (
+        <div className='acc-switcher-dtrader__accounts-list__group'>
+            <CaptionText
+                color='quill-typography__color--default'
+                className='acc-switcher-dtrader__accounts-list__title'
+                bold
+            >
+                {separator_text}
+            </CaptionText>
+            {children}
+        </div>
+    ) : (
+        <React.Fragment>{children}</React.Fragment>
+    );
 };
 
 const AccountSwitcherDTraderV2 = observer(({ is_visible, history }: TAccountSwitcherDTraderV2) => {
@@ -47,7 +66,6 @@ const AccountSwitcherDTraderV2 = observer(({ is_visible, history }: TAccountSwit
     const { openRealAccountSignup, toggleAccountsDialog, toggleSetCurrencyModal, setShouldShowCooldownModal } = ui;
 
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
-    const scroll_ref = React.useRef(null);
 
     const vrtc_loginid = account_list.find(account => account.is_virtual)?.loginid ?? '';
 
@@ -159,10 +177,17 @@ const AccountSwitcherDTraderV2 = observer(({ is_visible, history }: TAccountSwit
     // all: 1 in mt5_status response means that server is suspended
     const has_cr_account = account_list.find(acc => acc.loginid?.startsWith('CR'))?.loginid;
 
+    // TODO: refactor
+    const show_separator =
+        (is_low_risk && has_maltainvest_account) ||
+        ((!is_high_risk || is_eu) && has_maltainvest_account && is_low_risk);
+
     const demo_account = (
         <React.Fragment>
             {!!vrtc_loginid && (
-                <React.Fragment>
+                <AccountGroupWrapper
+                    separator_text={show_separator ? <Localize i18n_default_text='Demo account' /> : ''}
+                >
                     {getSortedAccountList(account_list, accounts)
                         .filter(account => account.is_virtual)
                         .map(account => (
@@ -181,18 +206,24 @@ const AccountSwitcherDTraderV2 = observer(({ is_visible, history }: TAccountSwit
                                 selected_loginid={account_loginid}
                             />
                         ))}
-                </React.Fragment>
+                </AccountGroupWrapper>
             )}
         </React.Fragment>
     );
 
     const real_accounts = (
-        <div ref={scroll_ref}>
+        <React.Fragment>
             {!is_eu || is_low_risk ? (
-                <React.Fragment>
-                    {is_low_risk && has_maltainvest_account
+                <AccountGroupWrapper
+                    separator_text={
+                        is_low_risk &&
+                        has_maltainvest_account &&
+                        localize(`Non-EU Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
+                    }
+                >
+                    {/* {is_low_risk && has_maltainvest_account
                         ? localize(`Non-EU Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
-                        : localize(`Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)}
+                        : localize(`Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)} */}
                     {getSortedAccountList(account_list, accounts)
                         .filter(account => !account.is_virtual && account.loginid.startsWith('CR'))
                         .map(account => {
@@ -238,14 +269,20 @@ const AccountSwitcherDTraderV2 = observer(({ is_visible, history }: TAccountSwit
                                     />
                                 </div>
                             ))}
-                    {/* </AccountWrapper> */}
-                </React.Fragment>
+                </AccountGroupWrapper>
             ) : null}
             {(!is_high_risk || is_eu) && has_maltainvest_account ? (
-                <React.Fragment>
-                    {is_low_risk && has_maltainvest_account
+                <AccountGroupWrapper
+                    separator_text={
+                        is_low_risk && localize(`EU Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)
+                    }
+                >
+                    {/* {is_low_risk && has_maltainvest_account
                         ? localize(`EU Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)
-                        : localize(`Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)}
+                        : localize(`Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)} */}
+                    {/* {is_low_risk &&
+                        has_maltainvest_account &&
+                        localize(`EU Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)} */}
                     {getSortedAccountList(account_list, accounts)
                         .filter(account => !account.is_virtual && account.loginid.startsWith('MF'))
                         .map(account => (
@@ -288,9 +325,9 @@ const AccountSwitcherDTraderV2 = observer(({ is_visible, history }: TAccountSwit
                                 />
                             </div>
                         ))}
-                </React.Fragment>
+                </AccountGroupWrapper>
             ) : null}
-        </div>
+        </React.Fragment>
     );
 
     const handleRedirect = () => {

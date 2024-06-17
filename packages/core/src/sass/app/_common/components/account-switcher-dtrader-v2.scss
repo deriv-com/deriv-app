@@ -22,6 +22,15 @@
     &__accounts-list {
         overflow-y: scroll;
         max-height: 494px;
+
+        &__group {
+            padding-block: var(--core-spacing-400);
+            border-bottom: var(--core-borderWidth-100) solid var(--general-section-2);
+        }
+
+        &__title {
+            padding: 0 var(--core-spacing-800) var(--core-spacing-400) var(--core-spacing-400);
+        }
     }
 
     &__account {

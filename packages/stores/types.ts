@@ -538,7 +538,7 @@ type TClientStore = {
     updateMT5Status: () => Promise<void>;
     fetchAccountSettings: () => Promise<void>;
     setAccountSettings: (get_settings_response: GetSettings) => void;
-    upgradeable_landing_companies: unknown[];
+    upgradeable_landing_companies: string[];
     is_populating_mt5_account_list: boolean;
     landing_companies: LandingCompany;
     getChangeableFields: () => string[];

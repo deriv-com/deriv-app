@@ -113,7 +113,7 @@ const AccountSwitcherDTraderV2 = observer(({ is_mobile, is_visible, history }: T
     };
 
     // SVG clients can't upgrade.
-    const getRemainingRealAccounts = () => {
+    const getRemainingRealAccounts = (): string[] | [] => {
         if (show_eu_related_content || is_virtual || !canOpenMulti() || is_low_risk) {
             return upgradeable_landing_companies;
         }
@@ -181,148 +181,106 @@ const AccountSwitcherDTraderV2 = observer(({ is_mobile, is_visible, history }: T
 
     const real_accounts = (
         <div ref={scroll_ref}>
-            <React.Fragment>
-                {!is_eu || is_low_risk ? (
-                    <React.Fragment>
-                        {/* <AccountWrapper
-                            className='acc-switcher__title'
-                            header={
-                                is_low_risk && has_maltainvest_account
-                                    ? localize(`Non-EU Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
-                                    : localize(`Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
-                            }
-                            is_visible={is_non_eu_regulator_visible}
-                            toggleVisibility={() => {
-                                toggleVisibility('real_deriv');
-                            }}
-                        > */}
-                        <div>
-                            {is_low_risk && has_maltainvest_account
-                                ? localize(`Non-EU Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
-                                : localize(`Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)}
-                        </div>
-                        <React.Fragment>
-                            {getSortedAccountList(account_list, accounts)
-                                .filter(account => !account.is_virtual && account.loginid.startsWith('CR'))
-                                .map(account => {
-                                    return (
-                                        <AccountListDTraderV2
-                                            key={account.loginid}
-                                            balance={accounts[account.loginid].balance}
-                                            currency={accounts[account.loginid].currency}
-                                            display_type={'currency'}
-                                            has_balance={'balance' in accounts[account.loginid]}
-                                            is_disabled={account.is_disabled}
-                                            is_virtual={account.is_virtual}
-                                            is_eu={is_eu}
-                                            loginid={account.loginid}
-                                            redirectAccount={
-                                                account.is_disabled ? undefined : () => doSwitch(account.loginid)
+            {!is_eu || is_low_risk ? (
+                <React.Fragment>
+                    {is_low_risk && has_maltainvest_account
+                        ? localize(`Non-EU Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
+                        : localize(`Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)}
+                    {getSortedAccountList(account_list, accounts)
+                        .filter(account => !account.is_virtual && account.loginid.startsWith('CR'))
+                        .map(account => {
+                            return (
+                                <AccountListDTraderV2
+                                    key={account.loginid}
+                                    balance={accounts[account.loginid].balance}
+                                    currency={accounts[account.loginid].currency}
+                                    display_type={'currency'}
+                                    has_balance={'balance' in accounts[account.loginid]}
+                                    is_disabled={account.is_disabled}
+                                    is_virtual={account.is_virtual}
+                                    is_eu={is_eu}
+                                    loginid={account.loginid}
+                                    redirectAccount={account.is_disabled ? undefined : () => doSwitch(account.loginid)}
+                                    selected_loginid={account_loginid}
+                                    should_show_server_name={checkMultipleSvgAcc()}
+                                />
+                            );
+                        })}
+                    {!has_cr_account &&
+                        getRemainingRealAccounts()
+                            .filter(account => account === 'svg')
+                            .map(account => (
+                                <div key={account} className='acc-switcher__new-account'>
+                                    <Icon icon='IcDeriv' size={24} />
+                                    <Text size='sm'>{getAccountTitle(account as string)}</Text>
+                                    <Button
+                                        onClick={() => {
+                                            if (real_account_creation_unlock_date) {
+                                                closeAccountsDialog();
+                                                setShouldShowCooldownModal(true);
+                                            } else {
+                                                selectRegion('Non-EU');
+                                                openRealAccountSignup('svg');
                                             }
-                                            selected_loginid={account_loginid}
-                                            should_show_server_name={checkMultipleSvgAcc()}
-                                        />
-                                    );
-                                })}
-                        </React.Fragment>
-                        {!has_cr_account &&
-                            getRemainingRealAccounts()
-                                .filter(account => account === 'svg')
-                                .map((account, index) => (
-                                    <div key={index} className='acc-switcher__new-account'>
-                                        <Icon icon='IcDeriv' size={24} />
-                                        <Text size='sm'>{getAccountTitle(account as string)}</Text>
-                                        <Button
-                                            onClick={() => {
-                                                if (real_account_creation_unlock_date) {
-                                                    closeAccountsDialog();
-                                                    setShouldShowCooldownModal(true);
-                                                } else {
-                                                    selectRegion('Non-EU');
-                                                    openRealAccountSignup('svg');
-                                                }
-                                            }}
-                                            color='black'
-                                            label={<Localize i18n_default_text='Add' />}
-                                            type='button'
-                                            variant='secondary'
-                                        />
-                                    </div>
-                                ))}
-                        {/* </AccountWrapper> */}
-                    </React.Fragment>
-                ) : null}
-                {(!is_high_risk || is_eu) && has_maltainvest_account ? (
-                    <React.Fragment>
-                        {/* <AccountWrapper
-                            header={
-                                is_low_risk && has_maltainvest_account
-                                    ? localize(`EU Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)
-                                    : localize(`Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)
-                            }
-                            is_visible={is_eu_regulator_visible}
-                            toggleVisibility={() => {
-                                toggleVisibility('real_deriv');
-                            }}
-                        > */}
-                        <div>
-                            {is_low_risk && has_maltainvest_account
-                                ? localize(`EU Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)
-                                : localize(`Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)}
-                        </div>
-                        <React.Fragment>
-                            {getSortedAccountList(account_list, accounts)
-                                .filter(account => !account.is_virtual && account.loginid.startsWith('MF'))
-                                .map(account => {
-                                    return (
-                                        <AccountListDTraderV2
-                                            key={account.loginid}
-                                            balance={accounts[account.loginid].balance}
-                                            currency={accounts[account.loginid].currency}
-                                            display_type={'currency'}
-                                            has_balance={'balance' in accounts[account.loginid]}
-                                            is_disabled={account.is_disabled}
-                                            is_virtual={account.is_virtual}
-                                            is_eu={is_eu}
-                                            loginid={account.loginid}
-                                            redirectAccount={
-                                                account.is_disabled ? undefined : () => doSwitch(account.loginid)
-                                            }
-                                            selected_loginid={account_loginid}
-                                            should_show_server_name={checkMultipleSvgAcc()}
-                                        />
-                                    );
-                                })}
-                        </React.Fragment>
-                        {getRemainingRealAccounts()
-                            .filter(account => account === 'maltainvest')
-                            .map((account, index) => {
-                                return (
-                                    <div key={index} className='acc-switcher__new-account'>
-                                        <Icon icon='IcDeriv' size={24} />
-                                        <Text size='sm'>{getAccountTitle(account as string)}</Text>
-                                        <Button
-                                            onClick={() => {
-                                                if (real_account_creation_unlock_date) {
-                                                    closeAccountsDialog();
-                                                    setShouldShowCooldownModal(true);
-                                                } else {
-                                                    selectRegion('EU');
-                                                    openRealAccountSignup('maltainvest');
-                                                }
-                                            }}
-                                            color='black'
-                                            label={<Localize i18n_default_text='Add' />}
-                                            type='button'
-                                            variant='secondary'
-                                        />
-                                    </div>
-                                );
-                            })}
-                        {/* </AccountWrapper> */}
-                    </React.Fragment>
-                ) : null}
-            </React.Fragment>
+                                        }}
+                                        color='black'
+                                        label={<Localize i18n_default_text='Add' />}
+                                        type='button'
+                                        variant='secondary'
+                                    />
+                                </div>
+                            ))}
+                    {/* </AccountWrapper> */}
+                </React.Fragment>
+            ) : null}
+            {(!is_high_risk || is_eu) && has_maltainvest_account ? (
+                <React.Fragment>
+                    {is_low_risk && has_maltainvest_account
+                        ? localize(`EU Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)
+                        : localize(`Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)}
+                    {getSortedAccountList(account_list, accounts)
+                        .filter(account => !account.is_virtual && account.loginid.startsWith('MF'))
+                        .map(account => (
+                            <AccountListDTraderV2
+                                key={account.loginid}
+                                balance={accounts[account.loginid].balance}
+                                currency={accounts[account.loginid].currency}
+                                display_type={'currency'}
+                                has_balance={'balance' in accounts[account.loginid]}
+                                is_disabled={account.is_disabled}
+                                is_virtual={account.is_virtual}
+                                is_eu={is_eu}
+                                loginid={account.loginid}
+                                redirectAccount={account.is_disabled ? undefined : () => doSwitch(account.loginid)}
+                                selected_loginid={account_loginid}
+                                should_show_server_name={checkMultipleSvgAcc()}
+                            />
+                        ))}
+                    {getRemainingRealAccounts()
+                        .filter(account => account === 'maltainvest')
+                        .map(account => (
+                            <div key={account} className='acc-switcher__new-account'>
+                                <Icon icon='IcDeriv' size={24} />
+                                <Text size='sm'>{getAccountTitle(account as string)}</Text>
+                                <Button
+                                    onClick={() => {
+                                        if (real_account_creation_unlock_date) {
+                                            closeAccountsDialog();
+                                            setShouldShowCooldownModal(true);
+                                        } else {
+                                            selectRegion('EU');
+                                            openRealAccountSignup('maltainvest');
+                                        }
+                                    }}
+                                    color='black'
+                                    label={<Localize i18n_default_text='Add' />}
+                                    type='button'
+                                    variant='secondary'
+                                />
+                            </div>
+                        ))}
+                </React.Fragment>
+            ) : null}
         </div>
     );
 

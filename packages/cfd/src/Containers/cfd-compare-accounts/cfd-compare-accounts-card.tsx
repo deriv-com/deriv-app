@@ -20,7 +20,7 @@ const CFDCompareAccountsCard = ({ trading_platforms, is_eu_user, is_demo }: TCom
                         size='xs'
                         color='colored-background'
                     >
-                        <Localize i18n_default_text='New!' />
+                        <Localize i18n_default_text='NEW' />
                     </Text>
                 )}
                 <CFDCompareAccountsTitleIcon

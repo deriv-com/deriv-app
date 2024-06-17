@@ -157,11 +157,14 @@ export type TPortfolioPosition = {
         Portfolio1 & {
             contract_update?: ContractUpdate;
         };
+    current_tick?: number;
     details?: string;
     display_name: string;
     entry_spot?: number;
+    high_barrier?: number;
     id?: number;
     indicative: number;
+    low_barrier?: number;
     payout?: number;
     purchase?: number;
     reference: number;
@@ -699,7 +702,7 @@ type TUiStore = {
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
-    notification_messages_ui: React.ElementType;
+    notification_messages_ui: () => JSX.Element;
     setChartCountdown: (value: boolean) => void;
     populateFooterExtensions: (
         footer_extensions:

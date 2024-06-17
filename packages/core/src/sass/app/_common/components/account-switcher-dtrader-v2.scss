@@ -3,6 +3,10 @@
         display: flex;
         flex-flow: column nowrap;
         gap: var(--core-spacing-800);
+
+        .quill-button {
+            border-width: var(--core-spacing-75);
+        }
     }
 
     &__traders-hub {
@@ -13,5 +17,34 @@
         border-radius: var(--core-borderRadius-300);
         background-color: var(--core-color-solid-slate-75);
         gap: var(--core-spacing-400);
+    }
+
+    &__account {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 var(--core-spacing-800);
+        gap: var(--core-spacing-400);
+        border-radius: var(--core-borderRadius-300);
+        height: var(--core-spacing-2800);
+
+        &--selected {
+            background: var(--core-color-solid-slate-1400);
+            p {
+                color: var(--core-color-solid-slate-50);
+            }
+            span {
+                color: var(--core-color-solid-slate-200);
+            }
+        }
+
+        &--disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        &__info {
+            flex-grow: 1;
+        }
     }
 }

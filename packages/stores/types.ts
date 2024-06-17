@@ -225,7 +225,7 @@ type TAccountsList = {
 }[];
 
 // balance is missing in @deriv/api-types
-type TActiveAccount = TAccount & {
+export type TActiveAccount = TAccount & {
     balance?: string | number;
     landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest';
     is_virtual: number;

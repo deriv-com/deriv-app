@@ -43,35 +43,39 @@ const AccountInfoDTraderV2 = ({
     is_disabled,
 }: TAccountInfoDTraderV2) => {
     // TODO: remove function into the config?
-    const getAccountIcon = (currency: string, is_virtual: boolean) => {
-        if (is_virtual) return <CurrencyDemoIcon iconSize='md' />;
-        if (!currency) return <CurrencyPlaceholderIcon iconSize='md' />;
+    const getAccountIcon = (
+        currency?: string,
+        is_virtual?: boolean,
+        size?: React.ComponentProps<typeof CurrencyDemoIcon>['iconSize']
+    ) => {
+        if (is_virtual) return <CurrencyDemoIcon iconSize={size} />;
+        if (!currency) return <CurrencyPlaceholderIcon iconSize={size} />;
 
         const key = currency.toUpperCase();
         const config = {
-            AUD: <CurrencyAudIcon iconSize='md' />,
-            BCH: <CurrencyBchIcon iconSize='md' />,
-            BUSD: <CurrencyBusdIcon iconSize='md' />,
-            DAI: <CurrencyMultiCollateralDaiIcon iconSize='md' />,
-            TUSDT: <CurrencyUsdtIcon iconSize='md' />,
-            UST: <CurrencyUsdtIcon iconSize='md' />,
-            EUSDT: <CurrencyUsdtIcon iconSize='md' />,
-            BTC: <CurrencyBtcIcon iconSize='md' />,
-            ETH: <CurrencyEthIcon iconSize='md' />,
-            LTC: <CurrencyLtcIcon iconSize='md' />,
-            USDC: <CurrencyUsdcIcon iconSize='md' />,
-            USD: <CurrencyUsdIcon iconSize='md' />,
-            EUR: <CurrencyEurIcon iconSize='md' />,
-            GBP: <CurrencyGbpIcon iconSize='md' />,
-            EURS: <CurrencyEursIcon iconSize='md' />,
-            IDK: <CurrencyIdkIcon iconSize='md' />,
-            PAX: <CurrencyPaxIcon iconSize='md' />,
-            TUSD: <CurrencyTusdIcon iconSize='md' />,
-            USDK: <CurrencyUsdkIcon iconSize='md' />,
-            XRP: <CurrencyXrpIcon iconSize='md' />,
+            AUD: <CurrencyAudIcon iconSize={size} />,
+            BCH: <CurrencyBchIcon iconSize={size} />,
+            BUSD: <CurrencyBusdIcon iconSize={size} />,
+            DAI: <CurrencyMultiCollateralDaiIcon iconSize={size} />,
+            TUSDT: <CurrencyUsdtIcon iconSize={size} />,
+            UST: <CurrencyUsdtIcon iconSize={size} />,
+            EUSDT: <CurrencyUsdtIcon iconSize={size} />,
+            BTC: <CurrencyBtcIcon iconSize={size} />,
+            ETH: <CurrencyEthIcon iconSize={size} />,
+            LTC: <CurrencyLtcIcon iconSize={size} />,
+            USDC: <CurrencyUsdcIcon iconSize={size} />,
+            USD: <CurrencyUsdIcon iconSize={size} />,
+            EUR: <CurrencyEurIcon iconSize={size} />,
+            GBP: <CurrencyGbpIcon iconSize={size} />,
+            EURS: <CurrencyEursIcon iconSize={size} />,
+            IDK: <CurrencyIdkIcon iconSize={size} />,
+            PAX: <CurrencyPaxIcon iconSize={size} />,
+            TUSD: <CurrencyTusdIcon iconSize={size} />,
+            USDK: <CurrencyUsdkIcon iconSize={size} />,
+            XRP: <CurrencyXrpIcon iconSize={size} />,
         };
 
-        return config[key as keyof typeof config] ?? <CurrencyPlaceholderIcon iconSize='md' />;
+        return config[key as keyof typeof config] ?? <CurrencyPlaceholderIcon iconSize={size} />;
     };
 
     // TODO: disabling logic?
@@ -87,7 +91,7 @@ const AccountInfoDTraderV2 = ({
                     className='header-v2__acc-info__wrapper'
                     onClick={is_disabled ? undefined : () => toggleDialog()}
                 >
-                    {getAccountIcon(currency, !!is_virtual)}
+                    {getAccountIcon(currency, !!is_virtual, 'md')}
                     <div className='header-v2__acc-info'>
                         <div className='header-v2__acc-info__name'>
                             {/* <Text size='xxxs' line_height='s'>

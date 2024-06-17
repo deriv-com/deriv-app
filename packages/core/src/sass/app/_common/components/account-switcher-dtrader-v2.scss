@@ -19,6 +19,11 @@
         gap: var(--core-spacing-400);
     }
 
+    &__accounts-list {
+        overflow-y: scroll;
+        max-height: 494px;
+    }
+
     &__account {
         display: flex;
         align-items: center;

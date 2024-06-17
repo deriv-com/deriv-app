@@ -4,7 +4,7 @@ import { AccountActionsDTraderV2 } from 'App/Components/Layout/Header';
 
 const HeaderAccountActionsDTraderV2 = observer(() => {
     const { client, ui, notifications } = useStore();
-    const { account_type, balance, currency, is_eu, is_logged_in, is_virtual } = client;
+    const { account_type, balance, currency, is_eu, is_logged_in, is_virtual, loginid } = client;
     const {
         account_switcher_disabled_message,
         is_account_switcher_disabled,
@@ -16,6 +16,7 @@ const HeaderAccountActionsDTraderV2 = observer(() => {
     return (
         <div className='header-v2__acc-info__container'>
             <AccountActionsDTraderV2
+                loginid={loginid}
                 acc_switcher_disabled_message={account_switcher_disabled_message}
                 account_type={account_type}
                 balance={balance}

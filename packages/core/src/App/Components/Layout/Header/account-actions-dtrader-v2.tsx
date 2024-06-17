@@ -18,6 +18,7 @@ type TAccountActionsDTraderV2 = {
     is_virtual?: boolean;
     notifications_count?: number;
     toggleAccountsDialog: (value?: boolean | undefined) => void;
+    loginid?: string;
 };
 
 export type TAccountInfoDTraderV2 = Omit<
@@ -53,6 +54,7 @@ const AccountActionsDTraderV2 = React.memo(
         is_virtual,
         notifications_count,
         toggleAccountsDialog,
+        loginid,
     }: TAccountActionsDTraderV2) => {
         if (is_logged_in) {
             return (
@@ -68,6 +70,7 @@ const AccountActionsDTraderV2 = React.memo(
                             currency={currency}
                             is_dialog_on={is_acc_switcher_on}
                             toggleDialog={toggleAccountsDialog}
+                            loginid={loginid}
                         />
                     </React.Suspense>
                     {/* TODO: old functionality was in <ToggleNotifications />. Current version is just placeholder without functionality*/}

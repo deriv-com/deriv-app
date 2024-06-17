@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Localize } from '@deriv/translations';
-import { getCurrencyDisplayCode } from '@deriv/shared';
+import { getCurrencyDisplayCode, getCurrencyName } from '@deriv/shared';
 import AccountSwitcherDTraderV2 from 'App/Containers/AccountSwitcher/account-switcher-dtrader-v2';
 import { TAccountInfoDTraderV2 } from './account-actions-dtrader-v2';
 import AccountInfoWrapper from './account-info-wrapper';
@@ -41,6 +41,7 @@ const AccountInfoDTraderV2 = ({
     is_virtual,
     toggleDialog,
     is_disabled,
+    loginid,
 }: TAccountInfoDTraderV2) => {
     // TODO: remove function into the config?
     const getAccountIcon = (
@@ -77,6 +78,32 @@ const AccountInfoDTraderV2 = ({
 
         return config[key as keyof typeof config] ?? <CurrencyPlaceholderIcon iconSize={size} />;
     };
+    //TODO: move to helper (together with the duplicates)
+    const CurrencyDisplay = ({
+        currency,
+        loginid,
+        is_virtual,
+    }: {
+        currency?: string;
+        loginid?: string;
+        is_virtual?: boolean;
+    }) => {
+        const account_type = loginid?.replace(/\d/g, '');
+
+        if (account_type === 'MF') {
+            return <Localize i18n_default_text='Multipliers' />;
+        }
+
+        if (is_virtual) {
+            return <Localize i18n_default_text='Demo' />;
+        }
+
+        if (!currency) {
+            return <Localize i18n_default_text='No currency assigned' />;
+        }
+
+        return getCurrencyName(currency);
+    };
 
     // TODO: disabling logic?
     return (
@@ -94,11 +121,8 @@ const AccountInfoDTraderV2 = ({
                     {getAccountIcon(currency, !!is_virtual, 'md')}
                     <div className='header-v2__acc-info'>
                         <div className='header-v2__acc-info__name'>
-                            {/* <Text size='xxxs' line_height='s'>
-                                    <DisplayAccountType account_type={account_type} is_eu={!!is_eu} />
-                                </Text> */}
                             <CaptionText color='quill-typography__color--default'>
-                                <Localize i18n_default_text='Placeholder' />
+                                {CurrencyDisplay({ currency, loginid, is_virtual })}
                             </CaptionText>
                             {is_disabled ? (
                                 <LabelPairedLockCaptionRegularIcon />
@@ -126,7 +150,7 @@ const AccountInfoDTraderV2 = ({
             <ActionSheet.Root isOpen={is_dialog_on} onClose={() => toggleDialog(false)} position='left'>
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Content>
-                        <AccountSwitcherDTraderV2 is_mobile is_visible />
+                        <AccountSwitcherDTraderV2 is_visible />
                     </ActionSheet.Content>
                 </ActionSheet.Portal>
             </ActionSheet.Root>

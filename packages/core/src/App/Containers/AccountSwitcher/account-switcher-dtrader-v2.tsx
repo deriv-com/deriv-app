@@ -14,12 +14,11 @@ import AccountListDTraderV2 from './account-switcher-account-list-dtrader-v2';
 import { TActiveAccount } from '@deriv/stores/types';
 
 type TAccountSwitcherDTraderV2 = RouteComponentProps & {
-    is_mobile?: boolean;
     is_visible?: boolean;
     history?: ReturnType<typeof useHistory>;
 };
 
-const AccountSwitcherDTraderV2 = observer(({ is_mobile, is_visible, history }: TAccountSwitcherDTraderV2) => {
+const AccountSwitcherDTraderV2 = observer(({ is_visible, history }: TAccountSwitcherDTraderV2) => {
     const { client, ui, traders_hub } = useStore();
     const {
         available_crypto_currencies,
@@ -227,6 +226,7 @@ const AccountSwitcherDTraderV2 = observer(({ is_mobile, is_visible, history }: T
                                         label={<Localize i18n_default_text='Add' />}
                                         type='button'
                                         variant='secondary'
+                                        size='sm'
                                     />
                                 </div>
                             ))}
@@ -276,6 +276,7 @@ const AccountSwitcherDTraderV2 = observer(({ is_mobile, is_visible, history }: T
                                     label={<Localize i18n_default_text='Add' />}
                                     type='button'
                                     variant='secondary'
+                                    size='sm'
                                 />
                             </div>
                         ))}
@@ -303,7 +304,7 @@ const AccountSwitcherDTraderV2 = observer(({ is_mobile, is_visible, history }: T
         <div className='acc-switcher-dtrader__wrapper' ref={wrapper_ref}>
             {is_landing_company_loaded ? (
                 <React.Fragment>
-                    <div>
+                    <div className='acc-switcher-dtrader__accounts-list'>
                         {real_accounts}
                         {demo_account}
                     </div>

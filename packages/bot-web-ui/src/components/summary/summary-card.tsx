@@ -79,6 +79,7 @@ const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCa
                 'db-summary-card--inactive': is_contract_inactive && !is_contract_loading && !contract_info,
                 'db-summary-card--completed': is_contract_completed,
                 'db-summary-card--completed-mobile': is_contract_completed && is_mobile,
+                'db-summary-card--delayed-loading': is_bot_running,
             })}
             data-testid='dt_mock_summary_card'
         >

@@ -1,11 +1,10 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { Text } from '@deriv/components';
-import { Loader } from '@deriv-com/ui';
+import { Icon, Text } from '@deriv/components';
 
 const ContractCardRunningBot = () => (
-    <div className='dc-contract-card-container'>
-        <Loader color='var(--core-color-opacity-black-600, rgba(0, 0, 0, 0.72))' />
+    <>
+        <Icon id='rotate-icon' icon='IcCircleLoader' color='black' size={16} />
         <Text
             color='less-prominent'
             line_height='xs'
@@ -16,7 +15,7 @@ const ContractCardRunningBot = () => (
         >
             {localize('Your bot is running and waiting for a signal to buy a contract.')}
         </Text>
-    </div>
+    </>
 );
 
 export default ContractCardRunningBot;

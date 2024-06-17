@@ -29,6 +29,7 @@ const Summary = observer(({ is_drawer_open }: TSummary) => {
                     summary: (!is_contract_loading && !contract_info) || is_bot_running,
                     'summary--loading':
                         (is_mobile && is_contract_loading) || (is_mobile && !is_contract_loading && contract_info),
+                    'summary--delayed-loading': is_bot_running,
                 })}
             >
                 <SummaryCard is_contract_loading={is_contract_loading} contract_info={contract_info} />

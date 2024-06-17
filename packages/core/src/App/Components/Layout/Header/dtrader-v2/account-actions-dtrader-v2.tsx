@@ -1,10 +1,10 @@
 import React from 'react';
 import { LabelPairedBellLgRegularIcon } from '@deriv/quill-icons';
 import { formatMoney, moduleLoader } from '@deriv/shared';
-import { LoginButton } from './login-button.jsx';
-import { SignupButton } from './signup-button.jsx';
 import { Badge } from '@deriv-com/quill-ui';
 import 'Sass/app/_common/components/account-switcher-dtrader-v2.scss';
+import { LoginButton } from '../login-button';
+import { SignupButton } from '../signup-button';
 
 type TAccountActionsDTraderV2 = {
     acc_switcher_disabled_message?: string;
@@ -34,7 +34,7 @@ const AccountInfoDTraderV2 = React.lazy(
         moduleLoader(
             () =>
                 import(
-                    /* webpackChunkName: "account-info-dtrader-v2", webpackPreload: true */ 'App/Components/Layout/Header/account-info-dtrader-v2'
+                    /* webpackChunkName: "account-info-dtrader-v2", webpackPreload: true */ 'App/Components/Layout/Header/dtrader-v2/account-info-dtrader-v2'
                 )
         ) as Promise<{
             default: React.ComponentType<TAccountInfoDTraderV2>;
@@ -71,7 +71,6 @@ const AccountActionsDTraderV2 = React.memo(
                         toggleDialog={toggleAccountsDialog}
                         account_switcher_title={account_switcher_title}
                     />
-                    {/* TODO: old functionality was in <ToggleNotifications />. Current version is just placeholder without functionality*/}
                     <div className='notifications__wrapper'>
                         {notifications_count ? (
                             <Badge

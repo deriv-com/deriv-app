@@ -8,7 +8,7 @@ import { useHasSetCurrency } from '@deriv/hooks';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { BinaryLink } from 'App/Components/Routes';
 import { Button, CaptionText, Text } from '@deriv-com/quill-ui';
-import { getSortedAccountList, getSortedCFDList, isDemo } from './helpers';
+import { getSortedAccountList, getSortedCFDList, isDemo } from '../../../../Containers/AccountSwitcher/helpers';
 import { LabelPairedChevronRightSmRegularIcon } from '@deriv/quill-icons';
 import AccountListDTraderV2 from './account-switcher-account-list-dtrader-v2';
 import { TActiveAccount } from '@deriv/stores/types';

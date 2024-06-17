@@ -3,10 +3,9 @@ import { observer, useStore } from '@deriv/stores';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import NewVersionNotification from 'App/Containers/new-version-notification';
-import HeaderAccountActionsDTraderV2 from './header-account-actions-dtrader-v2';
+import HeaderAccountActionsDTraderV2 from 'App/Components/Layout/Header/dtrader-v2/header-account-actions-dtrader-v2';
 
 const DTraderV2Header = observer(() => {
-    // TODO: clean unused
     const { ui, notifications } = useStore();
     const { is_real_acc_signup_on } = ui;
     const { addNotificationMessage, client_notifications, removeNotificationMessage } = notifications;

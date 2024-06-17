@@ -9,11 +9,10 @@ import { getContractTypeDisplay } from 'Constants/contract';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TSummaryCardProps } from './summary-card.types';
 
-const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCardProps) => {
+const SummaryCard = observer(({ contract_info, is_contract_loading, is_bot_running }: TSummaryCardProps) => {
     const { summary_card, run_panel } = useDBotStore();
     const { ui, common } = useStore();
-    const { is_contract_completed, is_contract_inactive, is_multiplier, is_bot_running, setIsBotRunning } =
-        summary_card;
+    const { is_contract_completed, is_contract_inactive, is_multiplier, setIsBotRunning } = summary_card;
     const { onClickSell, is_sell_requested, contract_stage } = run_panel;
     const { addToast, current_focus, removeToast, setCurrentFocus } = ui;
     const { server_time } = common;

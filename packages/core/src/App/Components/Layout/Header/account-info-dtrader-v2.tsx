@@ -41,7 +41,7 @@ const AccountInfoDTraderV2 = ({
     is_virtual,
     toggleDialog,
     is_disabled,
-    loginid,
+    account_switcher_title,
 }: TAccountInfoDTraderV2) => {
     // TODO: remove function into the config?
     const getAccountIcon = (
@@ -78,34 +78,7 @@ const AccountInfoDTraderV2 = ({
 
         return config[key as keyof typeof config] ?? <CurrencyPlaceholderIcon iconSize={size} />;
     };
-    //TODO: move to helper (together with the duplicates)
-    const CurrencyDisplay = ({
-        currency,
-        loginid,
-        is_virtual,
-    }: {
-        currency?: string;
-        loginid?: string;
-        is_virtual?: boolean;
-    }) => {
-        const account_type = loginid?.replace(/\d/g, '');
 
-        if (account_type === 'MF') {
-            return <Localize i18n_default_text='Multipliers' />;
-        }
-
-        if (is_virtual) {
-            return <Localize i18n_default_text='Demo' />;
-        }
-
-        if (!currency) {
-            return <Localize i18n_default_text='No currency assigned' />;
-        }
-
-        return getCurrencyName(currency);
-    };
-
-    // TODO: disabling logic?
     return (
         <React.Fragment>
             <AccountInfoWrapper
@@ -120,20 +93,24 @@ const AccountInfoDTraderV2 = ({
                 >
                     {getAccountIcon(currency, !!is_virtual, 'md')}
                     <div className='header-v2__acc-info'>
-                        <div className='header-v2__acc-info__name'>
-                            <CaptionText color='quill-typography__color--default'>
-                                {CurrencyDisplay({ currency, loginid, is_virtual })}
-                            </CaptionText>
-                            {is_disabled ? (
-                                <LabelPairedLockCaptionRegularIcon />
-                            ) : (
-                                <LabelPairedChevronDownCaptionRegularIcon
-                                    className={classNames('header-v2__acc-info__select-arrow', {
-                                        'header-v2__acc-info__select-arrow--up': is_dialog_on,
-                                    })}
-                                />
-                            )}
-                        </div>
+                        {account_switcher_title ? (
+                            <div className='header-v2__acc-info__name'>
+                                <CaptionText color='quill-typography__color--default'>
+                                    {account_switcher_title}
+                                </CaptionText>
+                                {is_disabled ? (
+                                    <LabelPairedLockCaptionRegularIcon />
+                                ) : (
+                                    <LabelPairedChevronDownCaptionRegularIcon
+                                        className={classNames('header-v2__acc-info__select-arrow', {
+                                            'header-v2__acc-info__select-arrow--up': is_dialog_on,
+                                        })}
+                                    />
+                                )}
+                            </div>
+                        ) : (
+                            <div className='header-v2__acc-info--loader' />
+                        )}
                         {(balance ?? !currency) && (
                             <Heading.H5 className='header-v2__acc-info__balance'>
                                 {/* TODO: case without currency is taken from current production. No design */}

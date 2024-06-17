@@ -19,6 +19,7 @@ type TAccountSwitcherDTraderV2 = RouteComponentProps & {
 };
 
 const AccountSwitcherDTraderV2 = observer(({ is_visible, history }: TAccountSwitcherDTraderV2) => {
+    const [is_closing, setIsClosing] = React.useState(false);
     const { client, ui, traders_hub } = useStore();
     const {
         available_crypto_currencies,
@@ -83,9 +84,16 @@ const AccountSwitcherDTraderV2 = observer(({ is_visible, history }: TAccountSwit
     };
 
     const doSwitch = async (loginid?: string) => {
+        setIsClosing(true);
         closeAccountsDialog();
-        if (account_loginid === loginid) return;
+
+        if (account_loginid === loginid) {
+            setIsClosing(false);
+            return;
+        }
+
         await switchAccount(loginid);
+        setIsClosing(false);
     };
 
     const resetBalance = async () => {
@@ -314,7 +322,7 @@ const AccountSwitcherDTraderV2 = observer(({ is_visible, history }: TAccountSwit
                         </Text>
                         <LabelPairedChevronRightSmRegularIcon />
                     </BinaryLink>
-                    {has_active_real_account && !is_virtual && (
+                    {has_active_real_account && !is_virtual && !is_closing && (
                         <Button
                             color='black'
                             label={<Localize i18n_default_text='Manage accounts' />}

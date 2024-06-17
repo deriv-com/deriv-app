@@ -18,7 +18,7 @@ type TAccountActionsDTraderV2 = {
     is_virtual?: boolean;
     notifications_count?: number;
     toggleAccountsDialog: (value?: boolean | undefined) => void;
-    loginid?: string;
+    account_switcher_title?: React.ReactNode;
 };
 
 export type TAccountInfoDTraderV2 = Omit<
@@ -54,25 +54,23 @@ const AccountActionsDTraderV2 = React.memo(
         is_virtual,
         notifications_count,
         toggleAccountsDialog,
-        loginid,
+        account_switcher_title,
     }: TAccountActionsDTraderV2) => {
         if (is_logged_in) {
             return (
                 <React.Fragment>
-                    <React.Suspense fallback={<div />}>
-                        <AccountInfoDTraderV2
-                            acc_switcher_disabled_message={acc_switcher_disabled_message}
-                            account_type={account_type}
-                            balance={typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)}
-                            is_disabled={is_acc_switcher_disabled}
-                            is_eu={is_eu}
-                            is_virtual={is_virtual}
-                            currency={currency}
-                            is_dialog_on={is_acc_switcher_on}
-                            toggleDialog={toggleAccountsDialog}
-                            loginid={loginid}
-                        />
-                    </React.Suspense>
+                    <AccountInfoDTraderV2
+                        acc_switcher_disabled_message={acc_switcher_disabled_message}
+                        account_type={account_type}
+                        balance={typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)}
+                        is_disabled={is_acc_switcher_disabled}
+                        is_eu={is_eu}
+                        is_virtual={is_virtual}
+                        currency={currency}
+                        is_dialog_on={is_acc_switcher_on}
+                        toggleDialog={toggleAccountsDialog}
+                        account_switcher_title={account_switcher_title}
+                    />
                     {/* TODO: old functionality was in <ToggleNotifications />. Current version is just placeholder without functionality*/}
                     <div className='notifications__wrapper'>
                         {notifications_count ? (

@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 // import { withRouter } from 'react-router';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
-import { Icon, Text, useOnClickOutside, Loading } from '@deriv/components';
+import { Icon, useOnClickOutside, Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { routes, formatMoney, ContentFlag } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -11,8 +11,9 @@ import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/consta
 import { BinaryLink } from 'App/Components/Routes';
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
-import { Button } from '@deriv-com/quill-ui';
+import { Button, Text } from '@deriv-com/quill-ui';
 import { getSortedAccountList, getSortedCFDList, isDemo } from './helpers';
+import { LabelPairedChevronRightSmRegularIcon } from '@deriv/quill-icons';
 
 type TAccountSwitcherDTraderV2 = RouteComponentProps & {
     is_mobile?: boolean;
@@ -88,21 +89,21 @@ const AccountSwitcherDTraderV2 = observer(({ is_mobile, is_visible, history }: T
     //     }
     // };
 
-    const handleLogout = async () => {
-        closeAccountsDialog();
-        if (is_positions_drawer_on) {
-            togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
-        }
+    // const handleLogout = async () => {
+    //     closeAccountsDialog();
+    //     if (is_positions_drawer_on) {
+    //         togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
+    //     }
 
-        // for DBot we need to logout first and only after this redirect to TH
-        if (window.location.pathname.startsWith(routes.bot)) {
-            await logoutClient();
-            history.push(routes.traders_hub);
-        } else {
-            history.push(routes.traders_hub);
-            await logoutClient();
-        }
-    };
+    //     // for DBot we need to logout first and only after this redirect to TH
+    //     if (window.location.pathname.startsWith(routes.bot)) {
+    //         await logoutClient();
+    //         history.push(routes.traders_hub);
+    //     } else {
+    //         history.push(routes.traders_hub);
+    //         await logoutClient();
+    //     }
+    // };
 
     const closeAccountsDialog = () => {
         toggleAccountsDialog(false);
@@ -394,39 +395,18 @@ const AccountSwitcherDTraderV2 = observer(({ is_mobile, is_visible, history }: T
         </div>
     );
 
-    const first_real_login_id = account_list?.find(account => /^(CR|MF)/.test(account.loginid ?? ''))?.loginid;
+    // const first_real_login_id = account_list?.find(account => /^(CR|MF)/.test(account.loginid ?? ''))?.loginid;
 
-    const TradersHubRedirect = () => {
-        const TradersHubLink = () => {
-            const handleRedirect = async () => {
-                if (!is_virtual) {
-                    await switchAccount(virtual_account_loginid);
-                } else if (is_virtual) {
-                    await switchAccount(first_real_login_id);
-                }
-                toggleAccountsDialog(false);
-                history.push(routes.traders_hub);
-                setTogglePlatformType('cfd');
-            };
-
-            return (
-                <div className='acc-switcher__traders-hub'>
-                    <BinaryLink onClick={handleRedirect} className='acc-switcher__traders-hub--link'>
-                        <Text size='xs' align='center' className='acc-switcher__traders-hub--text'>
-                            <Localize i18n_default_text="Looking for CFD accounts? Go to Trader's Hub" />
-                        </Text>
-                    </BinaryLink>
-                </div>
-            );
-        };
-
-        // if ((isRealAccountTab && has_any_real_account) || isDemoAccountTab) {
-        //     return <TradersHubLink />;
+    const handleRedirect = () => {
+        // TODO: temporary unused?
+        // if (!is_virtual) {
+        //     await switchAccount(virtual_account_loginid);
+        // } else if (is_virtual) {
+        //     await switchAccount(first_real_login_id);
         // }
-
-        // return null;
-
-        return <TradersHubLink />;
+        toggleAccountsDialog(false);
+        history.push(routes.traders_hub);
+        setTogglePlatformType('cfd');
     };
 
     return (
@@ -437,7 +417,12 @@ const AccountSwitcherDTraderV2 = observer(({ is_mobile, is_visible, history }: T
                         {real_accounts}
                         {demo_account}
                     </div>
-                    <TradersHubRedirect />
+                    <BinaryLink onClick={handleRedirect} className='acc-switcher-dtrader__traders-hub'>
+                        <Text size='sm'>
+                            <Localize i18n_default_text="Looking for CFD accounts? Go to Trader's Hub" />
+                        </Text>
+                        <LabelPairedChevronRightSmRegularIcon />
+                    </BinaryLink>
                     {has_active_real_account && (
                         <Button
                             color='black'
@@ -461,6 +446,7 @@ const AccountSwitcherDTraderV2 = observer(({ is_mobile, is_visible, history }: T
                     </div> */}
                 </React.Fragment>
             ) : (
+                // TODO: it's old Loader from current production. Add new?
                 <Loading is_fullscreen={false} />
             )}
         </div>

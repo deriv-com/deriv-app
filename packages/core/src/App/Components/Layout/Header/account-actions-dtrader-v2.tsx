@@ -1,5 +1,5 @@
 import React from 'react';
-import { StandaloneBellRegularIcon } from '@deriv/quill-icons';
+import { LabelPairedBellLgRegularIcon } from '@deriv/quill-icons';
 import { formatMoney, moduleLoader } from '@deriv/shared';
 import { LoginButton } from './login-button.jsx';
 import { SignupButton } from './signup-button.jsx';
@@ -81,10 +81,10 @@ const AccountActionsDTraderV2 = React.memo(
                                 size='sm'
                                 contentSize='sm'
                             >
-                                <StandaloneBellRegularIcon iconSize='md' className='notifications__icon' />
+                                <LabelPairedBellLgRegularIcon className='notifications__icon' />
                             </Badge>
                         ) : (
-                            <StandaloneBellRegularIcon iconSize='md' className='notifications__icon' />
+                            <LabelPairedBellLgRegularIcon className='notifications__icon' />
                         )}
                     </div>
                 </React.Fragment>

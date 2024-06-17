@@ -4,4 +4,14 @@
         flex-flow: column nowrap;
         gap: var(--core-spacing-800);
     }
+
+    &__traders-hub {
+        display: flex;
+        padding: var(--core-spacing-400) var(--core-spacing-800);
+        justify-content: space-between;
+        align-items: center;
+        border-radius: var(--core-borderRadius-300);
+        background-color: var(--core-color-solid-slate-75);
+        gap: var(--core-spacing-400);
+    }
 }

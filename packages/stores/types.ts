@@ -621,6 +621,7 @@ type TCommonStoreError = {
     should_clear_error_on_click?: boolean;
     should_redirect?: boolean;
     should_show_refresh?: boolean;
+    setError?: (has_error: boolean, error: React.ReactNode | null) => void;
     type?: string;
 };
 

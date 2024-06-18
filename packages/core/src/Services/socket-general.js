@@ -235,7 +235,7 @@ const BinarySocketGeneral = (() => {
                 if (active_platform === 'DBot') return;
 
                 client_store.logout().then(() => {
-                    let redirect_to = routes.trade;
+                    let redirect_to = routes.traders_hub;
                     const action = getActionFromUrl();
                     if (action === 'system_email_change') {
                         return;

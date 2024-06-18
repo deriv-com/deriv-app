@@ -1,12 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import EntryExitDetails from '../entry-exit-details';
 import { TContractInfo } from '@deriv/shared';
 
 jest.mock('@deriv/shared', () => ({
     addComma: jest.fn(value => value.toString()),
     getEndTime: jest.fn(() => 1623441600),
+    formatDate: jest.fn(() => '12/1/23'),
+    formatTime: jest.fn(() => '12:23'),
 }));
 
 const mockContractInfo: TContractInfo = {
@@ -42,8 +43,7 @@ describe('EntryExitDetails component', () => {
 
     it('renders correct entry and exit time', () => {
         render(<EntryExitDetails contract_info={mockContractInfo} />);
-
-        expect(screen.queryAllByText('Fri, 11 Jun 2021').length).toBeGreaterThan(0);
-        expect(screen.queryAllByText('Tue, 01 Jun 2021').length).toBeGreaterThan(0);
+        expect(screen.queryAllByText('12/1/23').length).toBeGreaterThan(0);
+        expect(screen.queryAllByText('12:23').length).toBeGreaterThan(0);
     });
 });

@@ -41,9 +41,9 @@ const EntryExitDetails = ({ contract_info }: { contract_info: TContractInfo }) =
             <div className='entry-exit-details__table'>
                 {dateTimes.start && (
                     <EntryExitDetailRow
-                        is_time
                         label={<Localize i18n_default_text='Start time' />}
-                        {...dateTimes.start}
+                        value={dateTimes.start.date}
+                        time={dateTimes.start.time}
                     />
                 )}
                 {dateTimes.entry && entryValue && (
@@ -54,7 +54,11 @@ const EntryExitDetails = ({ contract_info }: { contract_info: TContractInfo }) =
                     />
                 )}
                 {dateTimes.end && (
-                    <EntryExitDetailRow is_time label={<Localize i18n_default_text='Exit time' />} {...dateTimes.end} />
+                    <EntryExitDetailRow
+                        label={<Localize i18n_default_text='Exit time' />}
+                        value={dateTimes.end.date}
+                        time={dateTimes.end.time}
+                    />
                 )}
                 {dateTimes.exit && exitValue && (
                     <EntryExitDetailRow

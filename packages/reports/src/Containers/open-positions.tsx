@@ -266,6 +266,7 @@ export const OpenPositionsTable = ({
             trade_type_filter: contract_type_value,
             growth_type_filter: accumulator_rate,
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -318,24 +319,28 @@ export const OpenPositionsTable = ({
     );
 };
 
-const getRowAction: TDataList['getRowAction'] = row_obj => {
+export const getRowAction = (row_obj: NonNullable<TMobileRowRenderer['row']> = {}) => {
+    let action: string | { component?: React.ReactElement } = {};
     const unsupportedContractConfig = getUnsupportedContracts()[row_obj.type as TUnsupportedContractType];
-    let action = unsupportedContractConfig
-        ? {
-              component: (
-                  <Localize
-                      i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
-                      values={{
-                          trade_type_name: unsupportedContractConfig?.name,
-                      }}
-                  />
-              ),
-          }
-        : getContractPath(row_obj.id || 0);
-    if (!hasContractStarted(row_obj?.contract_info))
+
+    if (row_obj.contract_info && !hasContractStarted(row_obj.contract_info)) {
         action = {
             component: <Localize i18n_default_text="You'll see these details once the contract starts." />,
         };
+    } else if (unsupportedContractConfig || row_obj.id) {
+        action = unsupportedContractConfig
+            ? {
+                  component: (
+                      <Localize
+                          i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
+                          values={{
+                              trade_type_name: unsupportedContractConfig?.name,
+                          }}
+                      />
+                  ),
+              }
+            : getContractPath(row_obj.id);
+    }
 
     return action;
 };
@@ -345,7 +350,7 @@ const getRowAction: TDataList['getRowAction'] = row_obj => {
  * purchase property in contract positions object is somehow NaN or undefined in the first few responses.
  * So we set it to true in these cases to show a preloader for the data-table-row until the correct value is set.
  */
-const isPurchaseReceived: TOpenPositionsTable['preloaderCheck'] = (item: { purchase?: number }) =>
+export const isPurchaseReceived: TOpenPositionsTable['preloaderCheck'] = (item: { purchase?: number }) =>
     isNaN(Number(item.purchase)) || !item.purchase;
 
 const getOpenPositionsTotals = (
@@ -552,6 +557,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                 trade_type_filter: contract_type_value,
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [contract_type_value]);
 
     React.useEffect(() => {
@@ -563,6 +569,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                 growth_type_filter: accumulator_rate,
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [accumulator_rate]);
 
     const checkForAccuAndMultContracts = (prev_active_positions: TPortfolioStore['active_positions'] = []) => {

@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { TPortfolioPosition } from '@deriv/stores/types';
 import { mockStore } from '@deriv/stores';
-import OpenPositions, { OpenPositionsTable } from '../open-positions';
+import OpenPositions, { OpenPositionsTable, getRowAction, isPurchaseReceived } from '../open-positions';
 import ReportsProviders from '../../reports-providers';
 
 jest.mock('@deriv/shared', () => ({
@@ -19,6 +19,68 @@ jest.mock('@deriv/components', () => ({
     DataList: jest.fn(() => <>DataList</>),
 }));
 
+const future_time = Math.floor(Date.now() / 1000) + 5000;
+const options_position = {
+    contract_info: {
+        account_id: 112905368,
+        barrier: '1184.99',
+        barrier_count: 1,
+        bid_price: 9.52,
+        buy_price: 10,
+        contract_id: 246179185288,
+        contract_type: 'CALL',
+        currency: 'USD',
+        current_spot: 1184.95,
+        current_spot_display_value: '1184.95',
+        current_spot_time: 1718630678,
+        date_expiry: future_time,
+        date_settlement: future_time,
+        date_start: 1718630564,
+        display_name: 'Volatility 100 Index',
+        entry_spot: 1184.99,
+        entry_spot_display_value: '1184.99',
+        entry_tick: 1184.99,
+        entry_tick_display_value: '1184.99',
+        entry_tick_time: 1718630566,
+        expiry_time: future_time,
+        id: '6838091b-05ce-7872-3131-eedddd394422',
+        is_expired: 0,
+        is_forward_starting: 0,
+        is_intraday: 1,
+        is_path_dependent: 0,
+        is_settleable: 0,
+        is_sold: 0,
+        is_valid_to_cancel: 0,
+        is_valid_to_sell: 1,
+        longcode:
+            'Win payout if Volatility 100 Index is strictly higher than entry spot at 6 hours after contract start time.',
+        payout: 19.73,
+        profit: -0.48,
+        profit_percentage: -4.8,
+        purchase_time: 1718630564,
+        shortcode: `CALL_R_100_19.73_1718630564_${future_time}_S0P_0`,
+        status: 'open',
+        transaction_ids: {
+            buy: 490752972668,
+        },
+        underlying: 'R_100',
+    },
+    details:
+        'Win payout if Volatility 100 Index is strictly higher than entry spot at 6 hours after contract start time.',
+    display_name: '',
+    id: 246179185288,
+    indicative: 9.52,
+    payout: 19.73,
+    purchase: 10,
+    reference: 490752972668,
+    type: 'CALL',
+    profit_loss: -0.48,
+    is_valid_to_sell: true,
+    status: 'loss',
+    barrier: 1184.99,
+    entry_spot: 1184.99,
+} as TPortfolioPosition;
+
 describe('OpenPositions', () => {
     let store = mockStore({});
     const data_table_test_id = 'dt_data_table';
@@ -26,7 +88,6 @@ describe('OpenPositions', () => {
     const loading_test_id = 'dt_loading_component';
     const mocked_error_message = 'Error message';
     const no_open_positions_text = 'You have no open positions yet.';
-    const expiry_time = Math.floor(Date.now() / 1000) + 5000;
     const accumulators_position = {
         contract_info: {
             account_id: 112905368,
@@ -42,8 +103,8 @@ describe('OpenPositions', () => {
             current_spot_high_barrier: '1101.055',
             current_spot_low_barrier: '1099.705',
             current_spot_time: 1718717010,
-            date_expiry: expiry_time,
-            date_settlement: expiry_time,
+            date_expiry: future_time,
+            date_settlement: future_time,
             date_start: 1718716983,
             display_name: 'Volatility 100 Index',
             entry_spot: 1100.28,
@@ -51,7 +112,7 @@ describe('OpenPositions', () => {
             entry_tick: 1100.28,
             entry_tick_display_value: '1100.28',
             entry_tick_time: 1718716984,
-            expiry_time,
+            expiry_time: future_time,
             growth_rate: 0.01,
             high_barrier: '1100.714',
             id: '51bb838f-c549-0389-9be1-ace068906f5d',
@@ -168,7 +229,7 @@ describe('OpenPositions', () => {
             buy_price: 11.29,
             cancellation: {
                 ask_price: 1.29,
-                date_expiry: expiry_time,
+                date_expiry: future_time,
             },
             commission: 0.11,
             contract_id: 246291934908,
@@ -177,8 +238,8 @@ describe('OpenPositions', () => {
             current_spot: 1095.68,
             current_spot_display_value: '1095.68',
             current_spot_time: 1718716822,
-            date_expiry: expiry_time,
-            date_settlement: expiry_time,
+            date_expiry: future_time,
+            date_settlement: future_time,
             date_start: 1718716675,
             display_name: 'Volatility 100 Index',
             entry_spot: 1094.94,
@@ -186,7 +247,7 @@ describe('OpenPositions', () => {
             entry_tick: 1094.94,
             entry_tick_display_value: '1094.94',
             entry_tick_time: 1718716676,
-            expiry_time,
+            expiry_time: future_time,
             id: '51bb838f-c549-0389-9be1-ace068906f5d',
             is_expired: 0,
             is_forward_starting: 0,
@@ -210,7 +271,7 @@ describe('OpenPositions', () => {
             profit: 0.09,
             profit_percentage: 0.9,
             purchase_time: 1718716675,
-            shortcode: `MULTUP_R_100_10.00_30_1718716675_${expiry_time}_60m_0.00_N1`,
+            shortcode: `MULTUP_R_100_10.00_30_1718716675_${future_time}_60m_0.00_N1`,
             status: 'open',
             transaction_ids: {
                 buy: 490978376408,
@@ -239,66 +300,6 @@ describe('OpenPositions', () => {
         status: null,
     } as TPortfolioPosition;
     const multipliers_profit = '1.20';
-    const options_position = {
-        contract_info: {
-            account_id: 112905368,
-            barrier: '1184.99',
-            barrier_count: 1,
-            bid_price: 9.52,
-            buy_price: 10,
-            contract_id: 246179185288,
-            contract_type: 'CALL',
-            currency: 'USD',
-            current_spot: 1184.95,
-            current_spot_display_value: '1184.95',
-            current_spot_time: 1718630678,
-            date_expiry: expiry_time,
-            date_settlement: expiry_time,
-            date_start: 1718630564,
-            display_name: 'Volatility 100 Index',
-            entry_spot: 1184.99,
-            entry_spot_display_value: '1184.99',
-            entry_tick: 1184.99,
-            entry_tick_display_value: '1184.99',
-            entry_tick_time: 1718630566,
-            expiry_time,
-            id: '6838091b-05ce-7872-3131-eedddd394422',
-            is_expired: 0,
-            is_forward_starting: 0,
-            is_intraday: 1,
-            is_path_dependent: 0,
-            is_settleable: 0,
-            is_sold: 0,
-            is_valid_to_cancel: 0,
-            is_valid_to_sell: 1,
-            longcode:
-                'Win payout if Volatility 100 Index is strictly higher than entry spot at 6 hours after contract start time.',
-            payout: 19.73,
-            profit: -0.48,
-            profit_percentage: -4.8,
-            purchase_time: 1718630564,
-            shortcode: `CALL_R_100_19.73_1718630564_${expiry_time}_S0P_0`,
-            status: 'open',
-            transaction_ids: {
-                buy: 490752972668,
-            },
-            underlying: 'R_100',
-        },
-        details:
-            'Win payout if Volatility 100 Index is strictly higher than entry spot at 6 hours after contract start time.',
-        display_name: '',
-        id: 246179185288,
-        indicative: 9.52,
-        payout: 19.73,
-        purchase: 10,
-        reference: 490752972668,
-        type: 'CALL',
-        profit_loss: -0.48,
-        is_valid_to_sell: true,
-        status: 'loss',
-        barrier: 1184.99,
-        entry_spot: 1184.99,
-    } as TPortfolioPosition;
 
     beforeEach(() => {
         (isMobile as jest.Mock).mockReturnValue(false);
@@ -462,165 +463,56 @@ describe('OpenPositions', () => {
     });
 });
 
-// describe('getRowAction', () => {
-//     const copyIcon = 'Copy icon';
-//     const blockchainAddress = 'tb1qhu8ksh4ylvzycycm9e0eh3wy6fcxfp7g272qgi';
-//     const blockchainTransaction = '3afb4aea5c6c250779ab2069f7bfaae87c64c3f64a116c251806b8e650513d27';
-//     const blockchainDesc = `address: ${blockchainAddress}, transaction: ${blockchainTransaction}`;
-//     const blockchainAddressText = `Address: ${blockchainAddress},`;
-//     const blockchainTransactionText = `Transaction: ${blockchainTransaction}`;
-//     const contractDetailsUnavailableText = /contract details aren't currently available/i;
-//     const longcodeDescription =
-//         'Win payout if Volatility 100 (1s) Index after 5 ticks is strictly higher than entry spot.';
-//     const unsupportedContractShortcode = 'CALLSPREAD_1HZ100V_66.87_1717660032_5T';
+describe('isPurchaseReceived', () => {
+    it('should return true if purchase value (position purchase) is 0 / NaN / undefined', () => {
+        expect(isPurchaseReceived({ purchase: 0 })).toBe(true);
+        expect(isPurchaseReceived({ purchase: NaN })).toBe(true);
+        expect(isPurchaseReceived({})).toBe(true);
+    });
+    it('should return false if purchase value (position purchase) is a non-zero number', () => {
+        expect(isPurchaseReceived({ purchase: 10 })).toBe(false);
+        expect(isPurchaseReceived({ purchase: 1.55 })).toBe(false);
+    });
+});
 
-//     const riseContractData = {
-//         balance: '0.00',
-//         desc: longcodeDescription,
-//         display_name: '',
-//         id: 244821136548,
-//         payout: '66.87',
-//         shortcode: 'CALL_1HZ100V_66.87_1717660032_5T_S0P_0',
-//     };
-//     const buyTransactionData = {
-//         ...riseContractData,
-//         action: 'Buy',
-//         action_type: 'buy',
-//         amount: '-34.23',
-//         app_id: 36300,
-//         date: '06 Jun 2024 07:47:12',
-//         refid: 488153867768,
-//         transaction_time: 1717660032,
-//     };
-//     const sellTransactionData = {
-//         ...riseContractData,
-//         action: 'Sell',
-//         action_type: 'sell',
-//         amount: '0.00',
-//         app_id: 2,
-//         date: '06 Jun 2024 07:47:18',
-//         purchase_time: 1717660032,
-//         refid: 488153881108,
-//         transaction_time: 1717660038,
-//     };
-//     const depositTransactionData = {
-//         action: 'Deposit',
-//         action_type: 'deposit',
-//         amount: '10,000.00',
-//         app_id: 36300,
-//         balance: '10,000.00',
-//         date: '06 Jun 2024 07:47:27',
-//         desc: 'Reset to default demo account balance.',
-//         display_name: '',
-//         id: null,
-//         payout: '-',
-//         refid: 488153902708,
-//         shortcode: null,
-//         transaction_time: 1717660047,
-//     };
-//     const withdrawalTransactionData = {
-//         action: 'Withdrawal',
-//         action_type: 'withdrawal',
-//         amount: '750.00',
-//         app_id: 36300,
-//         balance: '0.00',
-//         date: '06 Jun 2024 08:47:27',
-//         desc: 'Withdrawal message',
-//         longcode: 'Withdrawal message',
-//         refid: 243990619558,
-//         transaction_time: 1717465636,
-//         withdrawal_details: 'Withdrawal details',
-//     };
-
-//     it('should return an empty object if received data is an empty object, or if action_type is missing', () => {
-//         expect(getRowAction({})).toMatchObject({});
-
-//         expect(getRowAction({ ...buyTransactionData, action_type: '' })).toMatchObject({});
-//     });
-//     it('should return contract path string if row_obj has id, action_type is buy or sell, and contract is supported & not forward-starting', () => {
-//         expect(getRowAction(buyTransactionData)).toEqual(`/contract/${buyTransactionData.id}`);
-
-//         expect(getRowAction(sellTransactionData)).toEqual(`/contract/${sellTransactionData.id}`);
-//     });
-//     it('should return an object with component that renders desc if action_type is valid but not buy or sell', () => {
-//         render((getRowAction(depositTransactionData) as Record<string, JSX.Element>).component);
-//         expect(screen.getByText(depositTransactionData.desc)).toBeInTheDocument();
-//     });
-//     it('should return an object with component that renders withdrawal_details and longcode if action_type is withdrawal, & data includes withdrawal_details and longcode', () => {
-//         render((getRowAction(withdrawalTransactionData) as Record<string, JSX.Element>).component);
-//         expect(
-//             screen.getByText(`${withdrawalTransactionData.withdrawal_details} ${withdrawalTransactionData.longcode}`)
-//         ).toBeInTheDocument();
-//     });
-//     it('should return an object with component that renders desc if action_type is withdrawal, & withdrawal_details are missing', () => {
-//         render(
-//             (getRowAction({ ...withdrawalTransactionData, withdrawal_details: '' }) as Record<string, JSX.Element>)
-//                 .component
-//         );
-//         expect(screen.getByText(withdrawalTransactionData.desc)).toBeInTheDocument();
-//     });
-//     it('should return an object with component that renders a correct message if action_type is buy or sell, & shortcode contains an unsupported contract_type', () => {
-//         const { rerender } = render(
-//             (
-//                 getRowAction({
-//                     ...sellTransactionData,
-//                     shortcode: unsupportedContractShortcode,
-//                 }) as Record<string, JSX.Element>
-//             ).component
-//         );
-//         expect(screen.getByText(contractDetailsUnavailableText)).toBeInTheDocument();
-
-//         rerender(
-//             (
-//                 getRowAction({
-//                     ...buyTransactionData,
-//                     shortcode: unsupportedContractShortcode,
-//                 }) as Record<string, JSX.Element>
-//             ).component
-//         );
-//         expect(screen.getByText(contractDetailsUnavailableText)).toBeInTheDocument();
-//     });
-//     it('should return an object with component that renders a correct message if action_type is buy, & shortcode contains forward-starting contract details', () => {
-//         render(
-//             (
-//                 getRowAction({
-//                     ...buyTransactionData,
-//                     transaction_time: 1717662763,
-//                     shortcode: `CALL_1HZ25V_19.54_${Math.floor(Date.now() / 1000) + 100}F_1717762800_S0P_0`,
-//                     desc: 'Win payout if Volatility 25 (1s) Index is strictly higher than entry spot at 15 minutes after 2024-06-07 12:05:00 GMT.',
-//                 }) as Record<string, JSX.Element>
-//             ).component
-//         );
-//         expect(screen.getByText("You'll see these details once the contract starts.")).toBeInTheDocument();
-//     });
-//     it('should return an object with component that renders a message with blockchain details & Copy icon if desc has blockchain details, & action_type is deposit', () => {
-//         render(
-//             (
-//                 getRowAction({
-//                     ...depositTransactionData,
-//                     desc: blockchainDesc,
-//                 }) as Record<string, JSX.Element>
-//             ).component
-//         );
-//         expect(screen.getByText(blockchainAddressText)).toBeInTheDocument();
-//         expect(screen.getByText(blockchainTransactionText)).toBeInTheDocument();
-//         expect(screen.getByText(copyIcon)).toBeInTheDocument();
-//     });
-//     it('should return an object with component that renders a message with blockchain details & 2 Copy icons if desc has blockchain details, action_type is withdrawal, & withdrawal_details are missing', () => {
-//         render(
-//             (
-//                 getRowAction({
-//                     ...withdrawalTransactionData,
-//                     desc: blockchainDesc,
-//                     withdrawal_details: '',
-//                 }) as Record<string, JSX.Element>
-//             ).component
-//         );
-//         expect(screen.getByText(blockchainAddressText)).toBeInTheDocument();
-//         expect(screen.getByText(blockchainTransactionText)).toBeInTheDocument();
-//         expect(screen.getAllByText(copyIcon)).toHaveLength(2);
-//     });
-// });
+describe('getRowAction', () => {
+    it('should return an empty object if received data is an empty object, or if contract_info and id are missing in it', () => {
+        expect(getRowAction()).toMatchObject({});
+        expect(getRowAction({})).toMatchObject({});
+        expect(getRowAction({ ...options_position, id: '', contract_info: undefined })).toMatchObject({});
+        expect(getRowAction({ ...options_position, id: '', contract_info: undefined, type: '' })).toMatchObject({});
+    });
+    it('should return contract path string if received data has an id, and if contract is not unsupported or forward-starting', () => {
+        expect(getRowAction({ id: options_position.id })).toEqual(`/contract/${options_position.id}`);
+        expect(getRowAction(options_position)).toEqual(`/contract/${options_position.id}`);
+    });
+    it('should return an object with component that renders a correct message if contract type is unsupported', () => {
+        render(
+            (
+                getRowAction({
+                    ...options_position,
+                    type: 'CALLSPREAD',
+                }) as Record<string, JSX.Element>
+            ).component
+        );
+        expect(screen.getByText(/contract details aren't currently available/i)).toBeInTheDocument();
+    });
+    it('should return an object with component that renders a correct message if contract is forward-starting', () => {
+        render(
+            (
+                getRowAction({
+                    ...options_position,
+                    contract_info: {
+                        ...options_position.contract_info,
+                        current_spot_time: 1717662763,
+                        date_start: future_time,
+                    },
+                }) as Record<string, JSX.Element>
+            ).component
+        );
+        expect(screen.getByText("You'll see these details once the contract starts.")).toBeInTheDocument();
+    });
+});
 
 describe('OpenPositionsTable', () => {
     beforeEach(() => {

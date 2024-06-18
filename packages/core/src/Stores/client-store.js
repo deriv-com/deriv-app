@@ -2520,7 +2520,7 @@ export default class ClientStore extends BaseStore {
         p2p.iframe = document.getElementById('localstorage-sync__p2p');
         smartTrader.origin = getUrlSmartTrader();
         binaryBot.origin = getUrlBinaryBot(false);
-        p2p.origin = getUrlP2P();
+        p2p.origin = getUrlP2P(false);
 
         [smartTrader, binaryBot, p2p].forEach(platform => {
             if (platform.iframe) {
@@ -2539,6 +2539,17 @@ export default class ClientStore extends BaseStore {
                     },
                     platform.origin
                 );
+
+                if (platform === p2p) {
+                    const currentLang = LocalStore.get(LANGUAGE_KEY);
+                    platform.iframe.contentWindow.postMessage(
+                        {
+                            key: LANGUAGE_KEY,
+                            value: currentLang,
+                        },
+                        platform.origin
+                    );
+                }
             }
         });
     }

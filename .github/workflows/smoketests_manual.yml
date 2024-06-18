@@ -16,11 +16,11 @@ jobs:
             const workflowInputs = {
               environment: '${{ secrets.E2E_WORKFLOW_ENV }}',
               suite: '${{ secrets.E2E_WORKFLOW.SUITE }}',
-              qabox: '${{ "" || "" }}',
-              appid: '${{ "" || "" }}',
-              testlink: '${{ "" || "" }}',
-              testcase: '${{ "" || "" }}',
-              branches: '${{ "" || "" }}'
+              qabox: '${{ github.event.inputs.qabox || "" }}',
+              appid: '${{ github.event.inputs.appid || "" }}',
+              testlink: '${{ github.event.inputs.testlink || "" }}',
+              testcase: '${{ github.event.inputs.testcase || "" }}',
+              branches: '${{ github.event.inputs.branches || "" }}'
             };
             const response = await github.rest.actions.createWorkflowDispatch({
               owner: 'regentmarkets',

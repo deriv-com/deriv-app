@@ -9,7 +9,7 @@ const EntryExitDetailRow = ({
 }: {
     label: React.ReactNode;
     value?: string;
-    date: string;
+    date?: string;
     time: string;
 }) => (
     <div className='entry-exit-details__table-row'>

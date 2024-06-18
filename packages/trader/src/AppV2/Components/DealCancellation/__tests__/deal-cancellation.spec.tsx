@@ -33,6 +33,8 @@ jest.mock('../../RiskManagementItem', () => {
 });
 
 describe('DealCancellation component', () => {
+    const dealCancellation = 'Deal cancellation';
+
     const mockContractInfo = {
         contract_type: 'MULTIPLIER',
     };
@@ -54,47 +56,47 @@ describe('DealCancellation component', () => {
         (isValidToCancel as jest.Mock).mockReturnValue(true);
         (isOpen as jest.Mock).mockReturnValue(true);
         (getContractDetailsConfig as jest.Mock).mockReturnValue({
-            is_deal_cancellation_visible: true,
+            isDealCancellationVisible: true,
         });
 
         render(<DealCancellation />);
 
-        expect(screen.getByText('Deal cancellation')).toBeInTheDocument();
+        expect(screen.getByText(dealCancellation)).toBeInTheDocument();
     });
 
     it('does not render the DealCancellation component when isValidToCancel is false', () => {
         (isValidToCancel as jest.Mock).mockReturnValue(false);
         (isOpen as jest.Mock).mockReturnValue(true);
         (getContractDetailsConfig as jest.Mock).mockReturnValue({
-            is_deal_cancellation_visible: true,
+            isDealCancellationVisible: true,
         });
 
         render(<DealCancellation />);
 
-        expect(screen.queryByText('Deal cancellation')).not.toBeInTheDocument();
+        expect(screen.queryByText(dealCancellation)).not.toBeInTheDocument();
     });
 
     it('does not render the DealCancellation component when is_deal_cancellation_visible is false', () => {
         (isValidToCancel as jest.Mock).mockReturnValue(true);
         (isOpen as jest.Mock).mockReturnValue(true);
         (getContractDetailsConfig as jest.Mock).mockReturnValue({
-            is_deal_cancellation_visible: false,
+            isDealCancellationVisible: false,
         });
 
         render(<DealCancellation />);
 
-        expect(screen.queryByText('Deal cancellation')).not.toBeInTheDocument();
+        expect(screen.queryByText(dealCancellation)).not.toBeInTheDocument();
     });
 
     it('does not render the DealCancellation component when isOpen is false', () => {
         (isValidToCancel as jest.Mock).mockReturnValue(true);
         (isOpen as jest.Mock).mockReturnValue(false);
         (getContractDetailsConfig as jest.Mock).mockReturnValue({
-            is_deal_cancellation_visible: true,
+            isDealCancellationVisible: true,
         });
 
         render(<DealCancellation />);
 
-        expect(screen.queryByText('Deal cancellation')).not.toBeInTheDocument();
+        expect(screen.queryByText(dealCancellation)).not.toBeInTheDocument();
     });
 });

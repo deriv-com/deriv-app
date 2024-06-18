@@ -71,10 +71,10 @@ const transformRiseData = (data: TContractInfo) => {
 const transformTurbosData = (data: TContractInfo) => {
     const commonFields = getCommonFields(data);
     return {
-        [`${CARD_LABELS.REFERENCE_ID}:`]: commonFields[`${CARD_LABELS.REFERENCE_ID}:`],
-        [`${CARD_LABELS.DURATION}:`]: commonFields[`${CARD_LABELS.DURATION}:`],
-        [CARD_LABELS.BARRIER]: data.barrier ? data.barrier : '',
-        [`${CARD_LABELS.PAYOUT_PER_POINT}:`]: commonFields[`${CARD_LABELS.PAYOUT_PER_POINT}:`],
+        [`${CARD_LABELS.REFERENCE_ID}:`]: commonFields[CARD_LABELS.REFERENCE_ID],
+        [`${CARD_LABELS.DURATION}:`]: commonFields[CARD_LABELS.DURATION],
+        [CARD_LABELS.BARRIER]: data.barrier ?? '',
+        [`${CARD_LABELS.PAYOUT_PER_POINT}:`]: commonFields[CARD_LABELS.PAYOUT_PER_POINT],
         [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
         [CARD_LABELS.TAKE_PROFIT]: data.limit_order?.take_profit?.order_amount
             ? `${data.limit_order.take_profit.order_amount.toFixed(2)} ${data.currency}`
@@ -128,7 +128,7 @@ const transformVanillaData = (data: TContractInfo) => {
         [`${CARD_LABELS.DURATION}:`]: `${getDurationTime(data) ?? ''} ${
             getDurationUnitText(getDurationPeriod(data)) ?? ''
         }`,
-        [`${CARD_LABELS.PAYOUT_PER_POINT}:`]: commonFields[`${CARD_LABELS.PAYOUT_PER_POINT}:`],
+        [`${CARD_LABELS.PAYOUT_PER_POINT}:`]: commonFields[CARD_LABELS.PAYOUT_PER_POINT],
         [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
     };
 };

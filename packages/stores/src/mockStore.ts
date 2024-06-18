@@ -186,6 +186,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             verification_code: {
                 payment_agent_withdraw: '',
                 payment_withdraw: '',
+                phone_number_verification: '',
                 request_email: '',
                 reset_password: '',
                 signup: '',

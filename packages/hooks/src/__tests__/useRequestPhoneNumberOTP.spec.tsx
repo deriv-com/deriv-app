@@ -4,6 +4,7 @@ import useRequestPhoneNumberOTP from '../useRequestPhoneNumberOTP';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 import React from 'react';
 import useSettings from '../useSettings';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -26,6 +27,10 @@ const mock_set_settings_response = {
     isSuccess: true,
 };
 
+const mock_store_data = mockStore({
+    client: { verification_code: { phone_number_verification: '' } },
+});
+
 const mock_set_settings = jest.fn().mockResolvedValue(mock_set_settings_response);
 
 describe('useRequestPhoneNumberOTP', () => {
@@ -34,10 +39,13 @@ describe('useRequestPhoneNumberOTP', () => {
             mutation: { mutateAsync: mock_set_settings },
         });
     });
+    const wrapper = ({ children }: { children: JSX.Element }) => (
+        <StoreProvider store={mock_store_data}>{children}</StoreProvider>
+    );
 
     it('should call mutate with correct payload for SMS request and return correct response', () => {
         (useMutation as jest.Mock).mockReturnValueOnce(mock_response);
-        const { result } = renderHook(() => useRequestPhoneNumberOTP());
+        const { result } = renderHook(() => useRequestPhoneNumberOTP(), { wrapper });
 
         result.current.requestOnSMS();
 
@@ -50,7 +58,7 @@ describe('useRequestPhoneNumberOTP', () => {
 
     it('should call mutate with correct payload for WhatsApp request and return correct response', () => {
         (useMutation as jest.Mock).mockReturnValueOnce(mock_response);
-        const { result } = renderHook(() => useRequestPhoneNumberOTP());
+        const { result } = renderHook(() => useRequestPhoneNumberOTP(), { wrapper });
 
         result.current.requestOnWhatsApp();
 
@@ -61,9 +69,37 @@ describe('useRequestPhoneNumberOTP', () => {
         expect(result.current.data).toEqual(1);
     });
 
+    it('should call mutate with code given in phone_number_verification for SMS request and return correct response', () => {
+        mock_store_data.client.verification_code.phone_number_verification = '121212';
+        (useMutation as jest.Mock).mockReturnValueOnce(mock_response);
+        const { result } = renderHook(() => useRequestPhoneNumberOTP(), { wrapper });
+
+        result.current.requestOnSMS();
+
+        expect(useMutation).toHaveBeenCalledWith('phone_number_challenge');
+        expect(result.current.mutate).toHaveBeenCalledWith({
+            payload: { carrier: VERIFICATION_SERVICES.SMS, email_code: '121212' },
+        });
+        expect(result.current.data).toEqual(1);
+    });
+
+    it('should call mutate with code given in phone_number_verification for WhatsApp request and return correct response', () => {
+        mock_store_data.client.verification_code.phone_number_verification = '121212';
+        (useMutation as jest.Mock).mockReturnValueOnce(mock_response);
+        const { result } = renderHook(() => useRequestPhoneNumberOTP(), { wrapper });
+
+        result.current.requestOnWhatsApp();
+
+        expect(useMutation).toHaveBeenCalledWith('phone_number_challenge');
+        expect(result.current.mutate).toHaveBeenCalledWith({
+            payload: { carrier: VERIFICATION_SERVICES.WHATSAPP, email_code: '121212' },
+        });
+        expect(result.current.data).toEqual(1);
+    });
+
     it('should call mutate with correct payload for sendEmailOTPVerification request and return correct response', () => {
         (useMutation as jest.Mock).mockReturnValueOnce(mock_response);
-        const { result } = renderHook(() => useRequestPhoneNumberOTP());
+        const { result } = renderHook(() => useRequestPhoneNumberOTP(), { wrapper });
 
         result.current.sendEmailOTPVerification('123456');
 
@@ -76,7 +112,7 @@ describe('useRequestPhoneNumberOTP', () => {
 
     it('should return Localized error message when PhoneNumberTaken error code is passed inside', () => {
         (useMutation as jest.Mock).mockReturnValue(mock_response);
-        const { result } = renderHook(() => useRequestPhoneNumberOTP());
+        const { result } = renderHook(() => useRequestPhoneNumberOTP(), { wrapper });
 
         act(() => {
             result.current.formatError({ code: 'PhoneNumberTaken', message: '' });
@@ -89,7 +125,7 @@ describe('useRequestPhoneNumberOTP', () => {
     });
 
     it('should return given error message when Other error code is passed inside', () => {
-        const { result } = renderHook(() => useRequestPhoneNumberOTP());
+        const { result } = renderHook(() => useRequestPhoneNumberOTP(), { wrapper });
 
         act(() => {
             result.current.formatError({ code: 'OtherError', message: 'This is an error message' });
@@ -99,7 +135,7 @@ describe('useRequestPhoneNumberOTP', () => {
     });
 
     it('should call setSettings with correct payload and handle success response', async () => {
-        const { result } = renderHook(() => useRequestPhoneNumberOTP());
+        const { result } = renderHook(() => useRequestPhoneNumberOTP(), { wrapper });
 
         await act(async () => {
             const response = await result.current.setUsersPhoneNumber({ phone: '+1234567890' });
@@ -118,7 +154,7 @@ describe('useRequestPhoneNumberOTP', () => {
             mutation: { mutateAsync: jest.fn().mockRejectedValue(mock_set_settings_error_response) },
         });
 
-        const { result } = renderHook(() => useRequestPhoneNumberOTP());
+        const { result } = renderHook(() => useRequestPhoneNumberOTP(), { wrapper });
 
         await act(async () => {
             const response = await result.current.setUsersPhoneNumber({ phone: '+1234567890' });

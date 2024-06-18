@@ -4,6 +4,7 @@ import { Localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
 import { observer, useStore } from '@deriv/stores';
 import { LabelPairedCircleXmarkLgRegularIcon } from '@deriv/quill-icons';
+import { useVerifyEmail } from '@deriv/hooks';
 
 type TVerificationLinkExpiredModal = {
     should_show_verification_link_expired_modal: boolean;
@@ -20,6 +21,11 @@ const VerificationLinkExpiredModal = observer(
             setShouldShowVerificationLinkExpiredModal(false);
             history.goBack();
         };
+        const { send } = useVerifyEmail('phone_number_verification');
+        const handleSendNewLinkButton = () => {
+            send();
+            setShouldShowVerificationLinkExpiredModal(false);
+        };
         const { ui } = useStore();
         const { is_mobile } = ui;
 
@@ -28,7 +34,7 @@ const VerificationLinkExpiredModal = observer(
                 isMobile={is_mobile}
                 showHandleBar
                 isOpened={should_show_verification_link_expired_modal}
-                primaryButtonCallback={() => setShouldShowVerificationLinkExpiredModal(false)}
+                primaryButtonCallback={handleSendNewLinkButton}
                 primaryButtonLabel={<Localize i18n_default_text='Send new link' />}
                 disableCloseOnOverlay
                 showSecondaryButton

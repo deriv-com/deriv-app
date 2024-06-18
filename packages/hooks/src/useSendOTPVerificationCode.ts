@@ -68,6 +68,7 @@ const useSendOTPVerificationCode = () => {
         data,
         sendPhoneOTPVerification,
         sendEmailOTPVerification,
+        email_otp_error,
         phone_otp_error,
         phone_otp_error_message,
         setPhoneOtpErrorMessage,

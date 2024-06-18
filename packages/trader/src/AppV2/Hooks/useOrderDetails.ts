@@ -128,7 +128,7 @@ const transformVanillaData = (data: TContractInfo) => {
         [`${CARD_LABELS.DURATION}:`]: `${getDurationTime(data) ?? ''} ${
             getDurationUnitText(getDurationPeriod(data)) ?? ''
         }`,
-        [`${CARD_LABELS.PAYOUT_PER_POINT}:`]: commonFields[`${CARD_LABELS.PAYOUT_PER_POINT}`],
+        [`${CARD_LABELS.PAYOUT_PER_POINT}:`]: commonFields[CARD_LABELS.PAYOUT_PER_POINT],
         [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
     };
 };

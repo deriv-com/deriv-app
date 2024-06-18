@@ -16,7 +16,7 @@ describe('EmptyPositions', () => {
         render(<EmptyPositions />);
 
         act(() => {
-            jest.advanceTimersByTime(500);
+            jest.advanceTimersByTime(700);
         });
 
         expect(screen.getByText('No open trades')).toBeInTheDocument();
@@ -28,7 +28,7 @@ describe('EmptyPositions', () => {
         render(<EmptyPositions isClosedTab />);
 
         act(() => {
-            jest.advanceTimersByTime(500);
+            jest.advanceTimersByTime(700);
         });
 
         expect(screen.getByText('No closed trades')).toBeInTheDocument();
@@ -40,7 +40,7 @@ describe('EmptyPositions', () => {
         render(<EmptyPositions noMatchesFound />);
 
         act(() => {
-            jest.advanceTimersByTime(500);
+            jest.advanceTimersByTime(700);
         });
 
         expect(screen.getByText('No matches found')).toBeInTheDocument();
@@ -52,7 +52,7 @@ describe('EmptyPositions', () => {
         const { rerender } = render(<EmptyPositions />);
 
         act(() => {
-            jest.advanceTimersByTime(500);
+            jest.advanceTimersByTime(700);
         });
 
         expect(screen.getByTestId(iconId)).toBeInTheDocument();

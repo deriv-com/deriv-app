@@ -13,7 +13,7 @@ type TCFDPOA = {
 
 const CFDPOA = ({ index, onSave, onSubmit }: TCFDPOA) => {
     const [has_submitted_duplicate_poa, setHasSubmittedDuplicatePOA] = React.useState(false);
-    const onSubmitForCFDModal = (index: number, values: FormikValues, has_submitted_duplicate_poa = false) => {
+    const onSubmitForCFDModal = (values: FormikValues, has_submitted_duplicate_poa = false) => {
         if (has_submitted_duplicate_poa) {
             setHasSubmittedDuplicatePOA(has_submitted_duplicate_poa);
         } else {
@@ -45,7 +45,6 @@ const CFDPOA = ({ index, onSave, onSubmit }: TCFDPOA) => {
             ) : (
                 <div className='cfd-proof-of-address'>
                     <ProofOfAddressForm
-                        step_index={index}
                         is_for_cfd_modal
                         onSubmitForCFDModal={onSubmitForCFDModal}
                         className='cfd-proof-of-address__form'

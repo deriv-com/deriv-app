@@ -163,9 +163,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
     const demo_account = (
         <React.Fragment>
             {!!vrtc_loginid && (
-                <AccountGroupWrapper
-                    separator_text={show_separator ? <Localize i18n_default_text='Demo account' /> : ''}
-                >
+                <AccountGroupWrapper separator_text={show_separator && <Localize i18n_default_text='Demo account' />}>
                     {(getSortedAccountList(account_list, accounts) as typeof account_list)
                         .filter(account => account.is_virtual)
                         .map(account => getAccountItem(account, true))}
@@ -179,9 +177,9 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
             {(!is_eu || is_low_risk) && (
                 <AccountGroupWrapper
                     separator_text={
-                        is_low_risk && has_maltainvest_account
-                            ? localize(`Non-EU Deriv ${checkIfUserHaveMoreAccount('CR') ? 'accounts' : 'account'}`)
-                            : ''
+                        is_low_risk &&
+                        has_maltainvest_account &&
+                        localize(`Non-EU Deriv ${checkIfUserHaveMoreAccount('CR') ? 'accounts' : 'account'}`)
                     }
                     show_bottom_separator
                 >
@@ -199,9 +197,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
             {(!is_high_risk || is_eu) && has_maltainvest_account && (
                 <AccountGroupWrapper
                     separator_text={
-                        is_low_risk
-                            ? localize(`EU Deriv ${checkIfUserHaveMoreAccount('MF') ? 'accounts' : 'account'}`)
-                            : ''
+                        is_low_risk && localize(`EU Deriv ${checkIfUserHaveMoreAccount('MF') ? 'accounts' : 'account'}`)
                     }
                     show_bottom_separator
                 >

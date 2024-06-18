@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import RiskManagementItem from '../risk-management-item';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
@@ -118,27 +119,27 @@ describe('RiskManagementItem component', () => {
 
     it('renders the modal content', () => {
         renderComponent();
-        fireEvent.click(screen.getByText('Test Label'));
+        userEvent.click(screen.getByText('Test Label'));
         expect(screen.getByText('Modal content')).toBeInTheDocument();
     });
 
     it('opens action sheet when toggle is enabled', () => {
         renderComponent({ value: 10 });
-        fireEvent.click(screen.getByRole('checkbox'));
+        userEvent.click(screen.getByRole('checkbox'));
         expect(screen.getByText('Save')).toBeInTheDocument();
     });
 
     it('displays correct value in text field', () => {
         renderComponent({ value: 10 });
         const textField = screen.getByRole('textbox');
-        fireEvent.click(textField);
+        userEvent.click(textField);
         expect(textField).toHaveValue('10.00 USD');
     });
 
     it('handles save action correctly', () => {
         renderComponent({ value: 10 });
-        fireEvent.click(screen.getByRole('checkbox'));
-        fireEvent.click(screen.getByText('Save'));
+        userEvent.click(screen.getByRole('checkbox'));
+        userEvent.click(screen.getByText('Save'));
         expect(mockUseContractDetails().contract.updateLimitOrder).toHaveBeenCalled();
     });
 });

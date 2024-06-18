@@ -1,5 +1,5 @@
 name: Run Smoke Tests - Manually
-run-name: Manual run of ${{ secrets.E2E_WORKFLOW.SUITE }} tests on ${{ secrets.E2E_WORKFLOW_ENV }}
+run-name: Manual run of tests
 
 on:
   workflow_dispatch:

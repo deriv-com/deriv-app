@@ -1,5 +1,5 @@
 name: Run Smoke Tests - Manually
-run-name: Manual run of ${{ github.event.inputs.suite }} tests on ${{ github.event.inputs.testlink || github.event.inputs.environment }} in ${{ github.event.inputs.qabox }} ${{ github.event.inputs.appid }}
+run-name: Manual run of ${{ secrets.E2E_WORKFLOW.SUITE }} tests on ${{ secrets.E2E_WORKFLOW_ENV }}
 
 on:
   workflow_dispatch:

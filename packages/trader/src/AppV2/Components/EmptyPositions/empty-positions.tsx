@@ -13,7 +13,7 @@ const EmptyPositions = ({ isClosedTab, noMatchesFound }: TEmptyPositionsProps) =
     const [showLoader, setShowLoader] = React.useState(true);
 
     React.useEffect(() => {
-        const timeout = setTimeout(() => setShowLoader(false), 500);
+        const timeout = setTimeout(() => setShowLoader(false), 700);
         return () => {
             clearTimeout(timeout);
         };

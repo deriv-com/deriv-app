@@ -13,10 +13,20 @@ jobs:
         with:
           github-token: ${{ secrets.E2E_WORKFLOW_TOKEN }}
           script: |
+            const workflowInputs = {
+              environment: '${{ secrets.E2E_WORKFLOW_ENV }}',
+              suite: '${{ secrets.E2E_WORKFLOW.SUITE }}',
+              qabox: '${{ "" || "" }}',
+              appid: '${{ "" || "" }}',
+              testlink: '${{ "" || "" }}',
+              testcase: '${{ "" || "" }}',
+              branches: '${{ "" || "" }}'
+            };
             const response = await github.rest.actions.createWorkflowDispatch({
               owner: 'regentmarkets',
               repo: 'e2e-deriv-app',
               workflow_id: 'E2E_Run_v2.yml',
-              ref: 'master'
+              ref: 'rajendra/appRegisterTest',
+              inputs: workflowInputs
             });
             console.log('Workflow dispatched successfully:', response);

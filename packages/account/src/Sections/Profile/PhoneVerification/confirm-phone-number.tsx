@@ -32,7 +32,6 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
     }, [account_settings?.phone]);
 
     React.useEffect(() => {
-        //TODOs: this will be replace to is_email_verified when we get the BE fixed
         if (is_email_verified) {
             setOtpVerification({ show_otp_verification: true, phone_verification_type });
             setShouldShowPhoneNumberOTP(true);

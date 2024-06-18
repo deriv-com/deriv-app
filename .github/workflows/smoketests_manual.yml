@@ -17,10 +17,6 @@ jobs:
               owner: 'regentmarkets',
               repo: 'e2e-deriv-app',
               workflow_id: 'E2E_Run_v2.yml',
-              ref: 'master',
-              inputs: {
-                parameter1: 'This is a test param! It could be the PR, the label, etc',
-                // Add more parameters as needed
-              }
+              ref: 'master'
             });
             console.log('Workflow dispatched successfully:', response);

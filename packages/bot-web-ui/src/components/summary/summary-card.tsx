@@ -12,7 +12,7 @@ import { TSummaryCardProps } from './summary-card.types';
 const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCardProps) => {
     const { summary_card, run_panel } = useDBotStore();
     const { ui, common } = useStore();
-    const { is_contract_completed, is_contract_inactive, is_multiplier, is_accumulator } = summary_card;
+    const { is_contract_completed, is_contract_inactive, is_multiplier } = summary_card;
     const { onClickSell, is_sell_requested } = run_panel;
     const { addToast, current_focus, removeToast, setCurrentFocus } = ui;
     const { server_time } = common;
@@ -41,7 +41,6 @@ const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCa
             getContractById={() => summary_card}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
-            is_accumulator={is_accumulator}
             is_sold={is_contract_completed}
             removeToast={removeToast}
             server_time={server_time}

@@ -142,14 +142,10 @@ export default class SummaryCardStore {
 
     getLimitOrder() {
         const limit_order: TLimitOrder = {};
-
         // send positive take_profit to update or null to cancel
         limit_order.take_profit = this.has_contract_update_take_profit ? +(this.contract_update_take_profit ?? 0) : 0;
-
-        if (!this.is_accumulator) {
-            // send positive stop_loss to update or null to cancel
-            limit_order.stop_loss = this.has_contract_update_stop_loss ? +(this.contract_update_stop_loss ?? 0) : 0;
-        }
+        // send positive stop_loss to update or null to cancel
+        limit_order.stop_loss = this.has_contract_update_stop_loss ? +(this.contract_update_stop_loss ?? 0) : 0;
 
         return limit_order;
     }

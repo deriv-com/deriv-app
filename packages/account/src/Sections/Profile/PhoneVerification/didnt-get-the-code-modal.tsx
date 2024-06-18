@@ -24,14 +24,14 @@ const DidntGetTheCodeModal = observer(
         phone_verification_type,
         setOtpVerification,
     }: TDidntGetTheCodeModal) => {
-        const { requestOnSMS, requestOnWhatsApp, email_otp_error, ...rest } = useRequestPhoneNumberOTP();
+        const { requestOnSMS, requestOnWhatsApp, is_email_verified, ...rest } = useRequestPhoneNumberOTP();
         const { ui } = useStore();
         const { is_mobile } = ui;
 
         React.useEffect(() => {
             //TODO: will replace error_otp_error once BE error is solved
-            if (email_otp_error) reInitializeGetSettings();
-        }, [email_otp_error, reInitializeGetSettings]);
+            if (is_email_verified) reInitializeGetSettings();
+        }, [is_email_verified, reInitializeGetSettings]);
 
         const setDidntGetACodeButtonDisabled = () => {
             setIsButtonDisabled(true);

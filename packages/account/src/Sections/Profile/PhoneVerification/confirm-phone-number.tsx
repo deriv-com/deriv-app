@@ -20,7 +20,7 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
         error_message,
         setErrorMessage,
         setUsersPhoneNumber,
-        email_otp_error,
+        is_email_verified,
         ...rest
     } = useRequestPhoneNumberOTP();
     const { data: account_settings } = useSettings();
@@ -33,11 +33,11 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
 
     React.useEffect(() => {
         //TODOs: this will be replace to is_email_verified when we get the BE fixed
-        if (email_otp_error) {
+        if (is_email_verified) {
             setOtpVerification({ show_otp_verification: true, phone_verification_type });
             setShouldShowPhoneNumberOTP(true);
         }
-    }, [email_otp_error]);
+    }, [is_email_verified]);
 
     const handleOnChangePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPhoneNumber(e.target.value);

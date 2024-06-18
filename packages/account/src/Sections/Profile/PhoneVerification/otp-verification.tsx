@@ -49,7 +49,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
         if (is_phone_number_verified) {
             setShouldShowPhoneNumberVerifiedModal(true);
         } else if (is_email_verified) {
-            setVerificationCode('phone_number_verification', otp);
+            setVerificationCode(otp, 'phone_number_verification');
             setOtpVerification({ show_otp_verification: false, phone_verification_type: '' });
         }
     }, [is_phone_number_verified, is_email_verified, setOtpVerification]);

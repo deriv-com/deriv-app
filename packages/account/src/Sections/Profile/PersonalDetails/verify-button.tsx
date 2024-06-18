@@ -29,7 +29,7 @@ export const VerifyButton = observer(() => {
                 <div className='account-form__phone-verification-btn--verified'>
                     <LegacyWonIcon iconSize='xs' />
                     <CaptionText bold color='#4bb4b3'>
-                        Verified
+                        <Localize i18n_default_text='Verified' />
                     </CaptionText>
                     <Popover
                         data_testid='dt_phone_verification_popover'

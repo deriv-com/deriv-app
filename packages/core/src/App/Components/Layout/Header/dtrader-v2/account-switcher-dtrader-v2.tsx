@@ -38,6 +38,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
         is_logged_in,
         is_virtual,
         loginid: account_loginid,
+        is_mt5_allowed,
         mt5_login_list,
         switchAccount,
         resetVirtualBalance,
@@ -49,15 +50,14 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
 
     const vrtc_loginid = account_list.find(account => account.is_virtual)?.loginid ?? '';
     const has_user_set_currency = useHasSetCurrency();
-    // all: 1 in mt5_status response means that server is suspended
     const has_cr_account = account_list.find(acc => acc.loginid?.startsWith('CR'))?.loginid;
     // TODO: refactor
-    const show_separator =
-        (is_low_risk && has_maltainvest_account) ||
-        ((!is_high_risk || is_eu) && has_maltainvest_account && is_low_risk);
-    const show_button = (has_active_real_account && !is_virtual && !is_closing) || !has_any_real_account;
-
-    // TODO: Check unused css
+    const show_separator = is_low_risk && has_maltainvest_account;
+    const show_button =
+        (has_active_real_account && !is_virtual && !is_closing) ||
+        (is_high_risk && !has_cr_account) ||
+        (is_low_risk && !has_cr_account && !has_maltainvest_account) ||
+        (is_eu && !is_high_risk && !is_low_risk && !has_maltainvest_account);
 
     const closeAccountsDialog = () => {
         toggleAccountsDialog(false);
@@ -240,11 +240,14 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
                             ? localize(`Non-EU Deriv ${checkIfUserHaveMoreAccount('CR') ? 'accounts' : 'account'}`)
                             : ''
                     }
+                    show_bottom_separator
                 >
                     {(getSortedAccountList(account_list, accounts) as typeof account_list)
                         .filter(account => !account.is_virtual && account?.loginid?.startsWith('CR'))
                         .map(account => getAccountItem(account))}
                     {!has_cr_account &&
+                        is_low_risk &&
+                        has_maltainvest_account &&
                         getRemainingRealAccounts()
                             .filter(account => account === 'svg')
                             .map(account => getAddAccountButton(account))}
@@ -257,6 +260,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
                             ? localize(`EU Deriv ${checkIfUserHaveMoreAccount('MF') ? 'accounts' : 'account'}`)
                             : ''
                     }
+                    show_bottom_separator
                 >
                     {(getSortedAccountList(account_list, accounts) as typeof account_list)
                         .filter(account => !account.is_virtual && account?.loginid?.startsWith('MF'))
@@ -279,12 +283,14 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
                         {real_accounts}
                         {demo_account}
                     </div>
-                    <BinaryLink onClick={handleRedirect} className='acc-switcher-dtrader__traders-hub'>
-                        <Text size='sm'>
-                            <Localize i18n_default_text="Looking for CFD accounts? Go to Trader's Hub" />
-                        </Text>
-                        <LabelPairedChevronRightSmRegularIcon />
-                    </BinaryLink>
+                    {is_mt5_allowed && (
+                        <BinaryLink onClick={handleRedirect} className='acc-switcher-dtrader__traders-hub'>
+                            <Text size='sm'>
+                                <Localize i18n_default_text="Looking for CFD accounts? Go to Trader's Hub" />
+                            </Text>
+                            <LabelPairedChevronRightSmRegularIcon />
+                        </BinaryLink>
+                    )}
                     {show_button && (
                         <Button
                             color='black'

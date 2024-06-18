@@ -25,7 +25,10 @@
 
         &__group {
             padding-block: var(--core-spacing-400);
-            border-bottom: var(--core-borderWidth-100) solid var(--general-section-2);
+
+            &--separator {
+                border-bottom: var(--core-borderWidth-100) solid var(--general-section-2);
+            }
         }
 
         &__title {

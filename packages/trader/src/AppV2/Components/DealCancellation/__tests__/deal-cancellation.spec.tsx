@@ -33,6 +33,8 @@ jest.mock('../../RiskManagementItem', () => {
 });
 
 describe('DealCancellation component', () => {
+    const dealCancellation = 'Deal cancellation';
+
     const mockContractInfo = {
         contract_type: 'MULTIPLIER',
     };
@@ -59,7 +61,7 @@ describe('DealCancellation component', () => {
 
         render(<DealCancellation />);
 
-        expect(screen.getByText('Deal cancellation')).toBeInTheDocument();
+        expect(screen.getByText(dealCancellation)).toBeInTheDocument();
     });
 
     it('does not render the DealCancellation component when isValidToCancel is false', () => {
@@ -71,7 +73,7 @@ describe('DealCancellation component', () => {
 
         render(<DealCancellation />);
 
-        expect(screen.queryByText('Deal cancellation')).not.toBeInTheDocument();
+        expect(screen.queryByText(dealCancellation)).not.toBeInTheDocument();
     });
 
     it('does not render the DealCancellation component when is_deal_cancellation_visible is false', () => {
@@ -83,7 +85,7 @@ describe('DealCancellation component', () => {
 
         render(<DealCancellation />);
 
-        expect(screen.queryByText('Deal cancellation')).not.toBeInTheDocument();
+        expect(screen.queryByText(dealCancellation)).not.toBeInTheDocument();
     });
 
     it('does not render the DealCancellation component when isOpen is false', () => {
@@ -95,6 +97,6 @@ describe('DealCancellation component', () => {
 
         render(<DealCancellation />);
 
-        expect(screen.queryByText('Deal cancellation')).not.toBeInTheDocument();
+        expect(screen.queryByText(dealCancellation)).not.toBeInTheDocument();
     });
 });

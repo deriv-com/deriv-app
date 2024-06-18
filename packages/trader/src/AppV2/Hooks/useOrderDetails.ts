@@ -71,7 +71,7 @@ const transformTurbosData = (data: TContractInfo) => {
     return {
         [localize('Reference ID')]: commonFields[localize('Reference ID')],
         [localize('Duration')]: commonFields[localize('Duration')],
-        [localize('Barrier')]: data.barrier ? data.barrier : '',
+        [localize('Barrier')]: data.barrier ?? '',
         [localize('Payout per point')]: commonFields[localize('Payout per point')],
         [localize('Stake')]: commonFields[localize('Stake')],
         [localize('Take Profit')]: data.limit_order?.take_profit?.order_amount

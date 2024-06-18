@@ -1,14 +1,17 @@
 import React, { useMemo } from 'react';
-import { TContractInfo, addComma, getEndTime } from '@deriv/shared';
+import { TContractInfo, addComma, formatDate, formatTime, getEndTime } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import EntryExitDetailRow from './entry-exit-details-row';
 import CardWrapper from '../CardWrapper';
+import moment from 'moment';
 
-const getDateTimeFromEpoch = (epoch?: number) => {
+const getDateTimeFromEpoch = (epoch: number) => {
     if (epoch) {
         const date = new Date(epoch * 1000);
-        const formattedDate = date.toUTCString().split(' ').slice(0, 4).join(' ');
-        const formattedTime = `${date.toUTCString().split(' ')[4]} GMT`;
+        const momentDate = moment(date);
+        const formattedDate = formatDate(momentDate, 'DD MMM YYYY');
+        const formattedTime = formatTime(epoch, 'HH:mm:ss [GMT]');
+
         return {
             date: formattedDate,
             time: formattedTime,
@@ -22,10 +25,10 @@ const EntryExitDetails = ({ contract_info }: { contract_info: TContractInfo }) =
 
     const dateTimes = useMemo(
         () => ({
-            entry: entry_tick_time && getDateTimeFromEpoch(entry_tick_time),
-            exit: exit_tick_time && getDateTimeFromEpoch(exit_tick_time),
-            start: date_start && getDateTimeFromEpoch(date_start),
-            end: getEndTime(contract_info) && getDateTimeFromEpoch(getEndTime(contract_info)),
+            entry: entry_tick_time ? getDateTimeFromEpoch(entry_tick_time) : undefined,
+            exit: exit_tick_time ? getDateTimeFromEpoch(exit_tick_time) : undefined,
+            start: date_start ? getDateTimeFromEpoch(date_start) : undefined,
+            end: getEndTime(contract_info) ? getDateTimeFromEpoch(getEndTime(contract_info) ?? 0) : undefined,
         }),
         [contract_info]
     );
@@ -37,7 +40,11 @@ const EntryExitDetails = ({ contract_info }: { contract_info: TContractInfo }) =
         <CardWrapper title='Entry & exit details' className='entry-exit-details'>
             <div className='entry-exit-details__table'>
                 {dateTimes.start && (
-                    <EntryExitDetailRow label={<Localize i18n_default_text='Start time' />} {...dateTimes.start} />
+                    <EntryExitDetailRow
+                        is_time
+                        label={<Localize i18n_default_text='Start time' />}
+                        {...dateTimes.start}
+                    />
                 )}
                 {dateTimes.entry && entryValue && (
                     <EntryExitDetailRow
@@ -47,7 +54,7 @@ const EntryExitDetails = ({ contract_info }: { contract_info: TContractInfo }) =
                     />
                 )}
                 {dateTimes.end && (
-                    <EntryExitDetailRow label={<Localize i18n_default_text='Exit time' />} {...dateTimes.end} />
+                    <EntryExitDetailRow is_time label={<Localize i18n_default_text='Exit time' />} {...dateTimes.end} />
                 )}
                 {dateTimes.exit && exitValue && (
                     <EntryExitDetailRow

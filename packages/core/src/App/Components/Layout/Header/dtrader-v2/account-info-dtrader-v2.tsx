@@ -73,7 +73,7 @@ const AccountInfoDTraderV2 = ({
             <ActionSheet.Root isOpen={is_dialog_on} onClose={() => toggleDialog(false)} position='left'>
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Content>
-                        <AccountSwitcherDTraderV2 is_visible />
+                        <AccountSwitcherDTraderV2 />
                     </ActionSheet.Content>
                 </ActionSheet.Portal>
             </ActionSheet.Root>

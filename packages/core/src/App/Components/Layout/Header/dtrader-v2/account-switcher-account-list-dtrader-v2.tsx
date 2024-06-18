@@ -16,8 +16,8 @@ type TAccountListDTraderV2 = {
     has_balance?: boolean;
     has_error?: boolean;
     has_reset_balance?: boolean;
-    is_disabled?: boolean;
-    is_virtual?: boolean;
+    is_disabled?: boolean | number;
+    is_virtual?: boolean | number;
     is_eu?: boolean;
     loginid?: string;
     market_type?: string;
@@ -61,11 +61,11 @@ const AccountListDTraderV2 = ({
             if (!is_disabled) redirectAccount?.();
         }}
     >
-        {getAccountIcon(currency, is_virtual, 'sm')}
+        {getAccountIcon(currency, !!is_virtual, 'sm')}
         <div className='acc-switcher-dtrader__account__info'>
             {display_type === 'currency' ? (
                 <Text size='sm' color='quill-typography__color--default'>
-                    {getAccountTitle({ currency, loginid, is_virtual })}
+                    {getAccountTitle({ currency, loginid, is_virtual: !!is_virtual })}
                 </Text>
             ) : (
                 <AccountDisplay
@@ -85,7 +85,7 @@ const AccountListDTraderV2 = ({
         </div>
         {has_reset_balance ? (
             <Button
-                disabled={is_disabled}
+                disabled={!!is_disabled}
                 color='white'
                 label={<Localize i18n_default_text='Reset balance' />}
                 onClick={e => {

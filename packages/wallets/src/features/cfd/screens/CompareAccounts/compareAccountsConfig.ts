@@ -32,7 +32,7 @@ const getHighlightedIconLabel = (
         ) {
             return 'Forex: major/minor';
         }
-        return 'Forex: standard/micro';
+        return 'Forex: standard';
     })();
 
     switch (marketType) {

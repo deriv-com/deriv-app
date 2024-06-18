@@ -34,7 +34,7 @@
         "@deriv-com/translations": "^1.2.3",
         "@deriv-com/utils": "^0.0.25",
         "@deriv/api": "^1.0.0",
-        "@deriv-com/quill-ui": "^1.10.13",
+        "@deriv-com/quill-ui": "^1.10.19",
         "@deriv/components": "^1.0.0",
         "@deriv/hooks": "^1.0.0",
         "@deriv/integration": "1.0.0",

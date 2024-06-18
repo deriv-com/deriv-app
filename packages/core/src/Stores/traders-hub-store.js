@@ -524,7 +524,6 @@ export default class TradersHubStore extends BaseStore {
         const existing_accounts = current_list_keys
             .filter(key => {
                 const maltainvest_account = current_list[key].landing_company_short === 'maltainvest';
-
                 if (
                     platform === CFD_PLATFORMS.MT5 &&
                     market_type !== 'all' &&
@@ -558,7 +557,6 @@ export default class TradersHubStore extends BaseStore {
             }, []);
         return existing_accounts;
     }
-
     startTrade(platform, account) {
         const { common, modules } = this.root_store;
         const { toggleMT5TradeModal, setMT5TradeAccount } = modules.cfd;

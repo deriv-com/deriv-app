@@ -232,6 +232,7 @@ export const getCFDAccountDisplay = ({
 type TGetCFDAccount = TGetAccount & {
     is_eu?: boolean;
     is_transfer_form?: boolean;
+    product?: TProduct;
 };
 
 type TGetMT5Icon = {
@@ -245,8 +246,9 @@ export const getCFDAccount = ({
     platform,
     is_eu,
     is_transfer_form = false,
+    product,
 }: TGetCFDAccount) => {
-    let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform });
+    let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, product });
     if (!cfd_account_key) return undefined;
 
     if (cfd_account_key === 'financial_demo' && is_eu) {

@@ -2,10 +2,10 @@ import React from 'react';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Text, Icon, Money, StatusBadge } from '@deriv/components';
 import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
-import { getCFDAccountDisplay, getCFDAccountKey, MT5_ACCOUNT_STATUS } from '@deriv/shared';
+import { getCFDAccountKey, MT5_ACCOUNT_STATUS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION, PRODUCT } from '../Helpers/cfd-config';
+import { CFD_PLATFORMS, MARKET_TYPE, PRODUCT } from '../Helpers/cfd-config';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import MigrationBanner from './migration-banner';
 import MT5DesktopRedirectOption from './mt5-desktop-redirect-option';
@@ -48,17 +48,6 @@ const DMT5TradeModal = observer(
         const { is_mobile } = ui;
         const { account_status: { authentication } = {} } = client;
         const is_eligible_to_migrate = mt5_trade_account.eligible_to_migrate;
-        const getCompanyShortcode = () => {
-            if (
-                (mt5_trade_account.account_type === CATEGORY.DEMO &&
-                    mt5_trade_account.market_type === MARKET_TYPE.FINANCIAL &&
-                    mt5_trade_account.landing_company_short === JURISDICTION.LABUAN) ||
-                mt5_trade_account.account_type === CATEGORY.REAL
-            ) {
-                return mt5_trade_account.landing_company_short;
-            }
-            return undefined;
-        };
 
         const getAccountTitle = () => {
             if (show_eu_related_content) return 'CFDs';
@@ -186,6 +175,7 @@ const DMT5TradeModal = observer(
                                         sub_account_type: mt5_trade_account.sub_account_type,
                                         platform: CFD_PLATFORMS.MT5,
                                         shortcode: mt5_trade_account.landing_company_short,
+                                        product,
                                     });
                                     onPasswordManager(
                                         mt5_trade_account?.login,

@@ -10,12 +10,15 @@ import WalletsResetMT5Password from '../WalletsResetMT5Password';
 jest.mock('../../../hooks/useDevice');
 const mockUseDevice = useDevice as jest.MockedFunction<typeof useDevice>;
 
+const mockShow = jest.fn();
+const mockHide = jest.fn();
+
 jest.mock('../../ModalProvider', () => ({
     ...jest.requireActual('../../ModalProvider'),
     useModal: jest.fn(() => ({
-        hide: jest.fn(),
+        hide: mockHide,
         setModalOptions: jest.fn(),
-        show: jest.fn(),
+        show: mockShow,
     })),
 }));
 
@@ -35,18 +38,6 @@ jest.mock('@deriv/api-v2', () => ({
         isSuccess: true,
         mutate: jest.fn(),
     })),
-}));
-
-jest.mock('../../WalletError', () => ({
-    __esModule: true,
-    default: () => <div>WalletError</div>,
-    ...jest.requireActual('../../WalletError'),
-}));
-
-jest.mock('../WalletSuccessResetMT5Password', () => ({
-    __esModule: true,
-    default: () => <div>WalletSuccessResetMT5Password</div>,
-    ...jest.requireActual('../WalletSuccessResetMT5Password'),
 }));
 
 const defaultProps = {
@@ -163,5 +154,65 @@ describe('WalletsResetMT5Password', () => {
         expect(createButton).toBeEnabled();
         await fireEvent.click(createButton);
         expect(mockMutate).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return Error when API returns error', async () => {
+        mockUseDevice.mockReturnValue({
+            isDesktop: true,
+            isMobile: false,
+            isTablet: false,
+        });
+
+        const mockMutate = jest.fn();
+        (useTradingPlatformPasswordReset as jest.Mock).mockReturnValue({
+            error: 'Error',
+            isError: true,
+            isLoading: false,
+            isSuccess: false,
+            mutate: mockMutate,
+        });
+
+        render(<WalletsResetMT5Password {...defaultProps} />);
+        expect(screen.getByTestId('dt_modal_step_wrapper')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Create/ })).toBeInTheDocument();
+
+        const inputBox = await screen.findByLabelText(/Deriv MT5 password/);
+        const createButton = await screen.findByRole('button', { name: /Create/ });
+        fireEvent.change(inputBox, { target: { value: 'Abcd1234!' } });
+        expect(await inputBox).toHaveValue('Abcd1234!');
+        expect(createButton).toBeEnabled();
+        await fireEvent.click(createButton);
+        expect(mockMutate).toHaveBeenCalledTimes(1);
+        expect(mockShow).toBeCalled();
+    });
+
+    it('should return Success when API returns success', async () => {
+        mockUseDevice.mockReturnValue({
+            isDesktop: true,
+            isMobile: false,
+            isTablet: false,
+        });
+
+        const mockMutate = jest.fn();
+        (useTradingPlatformPasswordReset as jest.Mock).mockReturnValue({
+            error: null,
+            isError: false,
+            isLoading: false,
+            isSuccess: true,
+            mutate: mockMutate,
+        });
+
+        render(<WalletsResetMT5Password {...defaultProps} />);
+        expect(screen.getByTestId('dt_modal_step_wrapper')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /Create/ })).toBeInTheDocument();
+
+        const inputBox = await screen.findByLabelText(/Deriv MT5 password/);
+        const createButton = await screen.findByRole('button', { name: /Create/ });
+        fireEvent.change(inputBox, { target: { value: 'Abcd1234!' } });
+        expect(await inputBox).toHaveValue('Abcd1234!');
+        expect(createButton).toBeEnabled();
+        await fireEvent.click(createButton);
+        expect(mockMutate).toHaveBeenCalledTimes(1);
+        expect(mockShow).toBeCalled();
     });
 });

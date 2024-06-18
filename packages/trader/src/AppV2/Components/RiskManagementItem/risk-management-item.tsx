@@ -41,7 +41,7 @@ const RiskManagementItem = observer(
         const errorKey = `contract_update_${type}` as 'contract_update_stop_loss' | 'contract_update_take_profit';
         const errorMessage = validation_errors[errorKey]?.[0] ?? '';
 
-        const getMessageForMultiplier = (is_valid_to_cancel: boolean, is_deal_cancellation: boolean) =>
+        const messageForMultiplier =
             is_valid_to_cancel && !is_deal_cancellation ? (
                 <Localize i18n_default_text='Take profit and stop loss are unavailable while deal cancellation is enabled.' />
             ) : null;
@@ -50,8 +50,8 @@ const RiskManagementItem = observer(
             [CONTRACT_TYPES.ACCUMULATOR]: (
                 <Localize i18n_default_text='Take profit can’t be adjusted for ongoing accumulator contracts.' />
             ),
-            [CONTRACT_TYPES.MULTIPLIER.UP]: getMessageForMultiplier(is_valid_to_cancel, is_deal_cancellation),
-            [CONTRACT_TYPES.MULTIPLIER.DOWN]: getMessageForMultiplier(is_valid_to_cancel, is_deal_cancellation),
+            [CONTRACT_TYPES.MULTIPLIER.UP]: messageForMultiplier,
+            [CONTRACT_TYPES.MULTIPLIER.DOWN]: messageForMultiplier,
         };
 
         const onChange = (

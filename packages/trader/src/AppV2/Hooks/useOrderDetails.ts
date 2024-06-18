@@ -8,29 +8,31 @@ import {
     getGrowthRatePercentage,
     isAccumulatorContract,
     isResetContract,
+    getCardLabels,
 } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import { getBarrierValue } from 'App/Components/Elements/PositionsDrawer/helpers';
+
+const CARD_LABELS = getCardLabels();
 
 // Contains all key values that are used more than once in different transform objects
 const getCommonFields = (data: TContractInfo) => {
     const { tick_count, tick_passed, contract_type } = data;
-    const ticks_label = Number(tick_count) < 2 ? localize('tick') : localize('ticks');
+    const ticks_label = Number(tick_count) < 2 ? CARD_LABELS.TICK : CARD_LABELS.TICKS;
     const ticks_duration_text = isAccumulatorContract(contract_type)
-        ? `${tick_passed}/${tick_count} ${localize('ticks')}`
+        ? `${tick_passed}/${tick_count} ${CARD_LABELS.TICKS}`
         : `${tick_count} ${ticks_label}`;
 
     return {
-        [localize('Reference ID')]: [
+        [`${CARD_LABELS.REFERENCE_ID}:`]: [
             data.transaction_ids?.buy ? `${data.transaction_ids.buy} (Buy)` : '',
             data.transaction_ids?.sell ? `${data.transaction_ids.sell} (Sell)` : '',
         ],
-        [localize('Stake')]: data.buy_price ? `${data.buy_price.toFixed(2)} ${data.currency}` : '',
-        [localize('Duration')]:
+        [CARD_LABELS.STAKE]: data.buy_price ? `${data.buy_price.toFixed(2)} ${data.currency}` : '',
+        [`${CARD_LABELS.DURATION}:`]:
             Number(tick_count) > 0
                 ? ticks_duration_text
                 : `${getDurationTime(data) ?? ''} ${getDurationUnitText(getDurationPeriod(data)) ?? ''}`,
-        [localize('Payout per point')]: data.display_number_of_contracts ?? '',
+        [`${CARD_LABELS.PAYOUT_PER_POINT}:`]: data.display_number_of_contracts ?? '',
     };
 };
 
@@ -38,17 +40,17 @@ const getCommonFields = (data: TContractInfo) => {
 const transformMultiplierData = (data: TContractInfo) => {
     const commonFields = getCommonFields(data);
     return {
-        [localize('Reference ID')]: commonFields[localize('Reference ID')],
-        [localize('Multiplier')]: data.multiplier ? `x${data.multiplier}` : '',
-        [localize('Stake')]: commonFields[localize('Stake')],
-        [localize('Commission')]: data.commission ? `${data.commission} ${data.currency}` : '',
-        [localize('Take Profit')]: data.limit_order?.take_profit?.order_amount
+        [`${CARD_LABELS.REFERENCE_ID}:`]: commonFields[`${CARD_LABELS.REFERENCE_ID}:`],
+        [CARD_LABELS.MULTIPLIER]: data.multiplier ? `x${data.multiplier}` : '',
+        [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
+        [`${CARD_LABELS.COMMISSION}:`]: data.commission ? `${data.commission} ${data.currency}` : '',
+        [CARD_LABELS.TAKE_PROFIT]: data.limit_order?.take_profit?.order_amount
             ? `${data.limit_order.take_profit.order_amount.toFixed(2)} ${data.currency}`
-            : localize('Not set'),
-        [localize('Stop loss')]: data.limit_order?.stop_loss?.order_amount
+            : CARD_LABELS.NOT_SET,
+        [CARD_LABELS.STOP_LOSS]: data.limit_order?.stop_loss?.order_amount
             ? `${data.limit_order.stop_loss.order_amount.toFixed(2)} ${data.currency}`
-            : localize('Not set'),
-        [localize('Stop out level')]: data.limit_order?.stop_out?.order_amount
+            : CARD_LABELS.NOT_SET,
+        [`${CARD_LABELS.STOP_OUT_LEVEL}:`]: data.limit_order?.stop_out?.order_amount
             ? `${data.limit_order.stop_out.order_amount.toFixed(2)} ${data.currency}`
             : '',
     };
@@ -58,10 +60,10 @@ const transformMultiplierData = (data: TContractInfo) => {
 const transformRiseData = (data: TContractInfo) => {
     const commonFields = getCommonFields(data);
     return {
-        [localize('Reference ID')]: commonFields[localize('Reference ID')],
-        [localize('Duration')]: commonFields[localize('Duration')],
-        [localize('Barrier')]: data.barrier ?? '',
-        [localize('Stake')]: commonFields[localize('Stake')],
+        [`${CARD_LABELS.REFERENCE_ID}:`]: commonFields[`${CARD_LABELS.REFERENCE_ID}:`],
+        [`${CARD_LABELS.DURATION}:`]: commonFields[`${CARD_LABELS.DURATION}:`],
+        [CARD_LABELS.BARRIER]: data.barrier ?? '',
+        [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
     };
 };
 
@@ -69,14 +71,14 @@ const transformRiseData = (data: TContractInfo) => {
 const transformTurbosData = (data: TContractInfo) => {
     const commonFields = getCommonFields(data);
     return {
-        [localize('Reference ID')]: commonFields[localize('Reference ID')],
-        [localize('Duration')]: commonFields[localize('Duration')],
-        [localize('Barrier')]: data.barrier ?? '',
-        [localize('Payout per point')]: commonFields[localize('Payout per point')],
-        [localize('Stake')]: commonFields[localize('Stake')],
-        [localize('Take Profit')]: data.limit_order?.take_profit?.order_amount
+        [`${CARD_LABELS.REFERENCE_ID}:`]: commonFields[CARD_LABELS.REFERENCE_ID],
+        [`${CARD_LABELS.DURATION}:`]: commonFields[CARD_LABELS.DURATION],
+        [CARD_LABELS.BARRIER]: data.barrier ?? '',
+        [`${CARD_LABELS.PAYOUT_PER_POINT}:`]: commonFields[CARD_LABELS.PAYOUT_PER_POINT],
+        [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
+        [CARD_LABELS.TAKE_PROFIT]: data.limit_order?.take_profit?.order_amount
             ? `${data.limit_order.take_profit.order_amount.toFixed(2)} ${data.currency}`
-            : localize('Not set'),
+            : CARD_LABELS.NOT_SET,
     };
 };
 
@@ -84,29 +86,32 @@ const transformTurbosData = (data: TContractInfo) => {
 const transformDigitsData = (data: TContractInfo) => {
     const commonFields = getCommonFields(data);
     return {
-        [localize('Reference ID')]: commonFields[localize('Reference ID')],
-        [localize('Duration')]: `${getDurationTime(data) ?? ''} ${getDurationUnitText(getDurationPeriod(data)) ?? ''}`,
-        [localize('Target')]: getBarrierValue(data),
-        [localize('Stake')]: commonFields[localize('Stake')],
+        [`${CARD_LABELS.REFERENCE_ID}:`]: commonFields[`${CARD_LABELS.REFERENCE_ID}:`],
+        [`${CARD_LABELS.DURATION}:`]: `${getDurationTime(data) ?? ''} ${
+            getDurationUnitText(getDurationPeriod(data)) ?? ''
+        }`,
+        [`${CARD_LABELS.TARGET}:`]: getBarrierValue(data),
+        [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
     };
 };
+
 // For Accumulators
 const transformAccumulatorData = (data: TContractInfo) => {
     const commonFields = getCommonFields(data);
     return {
-        [localize('Reference ID')]: commonFields[localize('Reference ID')],
+        [`${CARD_LABELS.REFERENCE_ID}:`]: commonFields[`${CARD_LABELS.REFERENCE_ID}:`],
         ...{
             ...((data.is_expired || data.is_sold) && {
-                [localize('Duration')]: commonFields[localize('Duration')],
+                [`${CARD_LABELS.DURATION}:`]: commonFields[`${CARD_LABELS.DURATION}:`],
             }),
         },
-        [localize('Growth rate')]: data.growth_rate ? `${getGrowthRatePercentage(data.growth_rate)}%` : '',
-        [localize('Stake')]: commonFields[localize('Stake')],
+        [`${CARD_LABELS.GROWTH_RATE}:`]: data.growth_rate ? `${getGrowthRatePercentage(data.growth_rate)}%` : '',
+        [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
         ...{
             ...(data.limit_order?.take_profit && {
-                [localize('Take Profit')]: data.limit_order?.take_profit?.order_amount
+                [CARD_LABELS.TAKE_PROFIT]: data.limit_order?.take_profit?.order_amount
                     ? `${data.limit_order.take_profit.order_amount} ${data.currency}`
-                    : localize('Not set'),
+                    : CARD_LABELS.NOT_SET,
             }),
         },
     };
@@ -116,13 +121,15 @@ const transformAccumulatorData = (data: TContractInfo) => {
 const transformVanillaData = (data: TContractInfo) => {
     const commonFields = getCommonFields(data);
     return {
-        [localize('Reference ID')]: commonFields[localize('Reference ID')],
-        [localize('Strike Price')]:
+        [`${CARD_LABELS.REFERENCE_ID}:`]: commonFields[`${CARD_LABELS.REFERENCE_ID}:`],
+        [`${CARD_LABELS.STRIKE_PRICE}:`]:
             (isResetContract(data.contract_type) ? addComma(data.entry_spot_display_value) : getBarrierValue(data)) ||
             ' - ',
-        [localize('Duration')]: `${getDurationTime(data) ?? ''} ${getDurationUnitText(getDurationPeriod(data)) ?? ''}`,
-        [localize('Payout per point')]: commonFields[localize('Payout per point')],
-        [localize('Stake')]: commonFields[localize('Stake')],
+        [`${CARD_LABELS.DURATION}:`]: `${getDurationTime(data) ?? ''} ${
+            getDurationUnitText(getDurationPeriod(data)) ?? ''
+        }`,
+        [`${CARD_LABELS.PAYOUT_PER_POINT}:`]: commonFields[`${CARD_LABELS.PAYOUT_PER_POINT}`],
+        [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
     };
 };
 

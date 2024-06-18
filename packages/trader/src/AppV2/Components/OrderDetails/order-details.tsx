@@ -25,8 +25,8 @@ const OrderDetails = ({ contract_info }: ContractInfoProps) => {
                             </div>
                             <div className='order-details__table-row-cell'>
                                 {Array.isArray(value) ? (
-                                    value.map(val => (
-                                        <Text key={val} size='sm'>
+                                    value.map((val, index) => (
+                                        <Text key={`${key}_${index}`} size='sm'>
                                             {val}
                                         </Text>
                                     ))

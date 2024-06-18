@@ -15,7 +15,7 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
             },
             {
                 key: 'leverage',
-                title: 'Leverage',
+                title: 'Leverage up to',
                 titleIndicators: {
                     displayText: '1:1000',
                     displayTextSkinColor: 'yellow-light',
@@ -56,7 +56,7 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
                     },
                 ],
                 key: 'leverage',
-                title: 'Leverage',
+                title: 'Leverage up to',
                 titleIndicators: {
                     displayText: '1:1000',
                     displayTextSkinColor: 'yellow-light',
@@ -99,7 +99,7 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
             },
             {
                 key: 'leverage',
-                title: 'Leverage',
+                title: 'Leverage up to',
                 titleIndicators: {
                     displayText: '1:1000',
                     displayTextSkinColor: 'yellow-light',

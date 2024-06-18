@@ -15,7 +15,7 @@ export const getJurisdictionMaltainvestContents = (): TJurisdictionCardItems => 
             },
             {
                 key: 'leverage',
-                title: 'Leverage',
+                title: 'Leverage up to',
                 titleIndicators: {
                     displayText: '1:30',
                     displayTextSkinColor: 'brown-dark',
@@ -67,7 +67,7 @@ export const getJurisdictionMaltainvestContents = (): TJurisdictionCardItems => 
             },
             {
                 key: 'leverage',
-                title: 'Leverage',
+                title: 'Leverage up to',
                 titleIndicators: {
                     displayText: '1:30',
                     displayTextSkinColor: 'brown-dark',

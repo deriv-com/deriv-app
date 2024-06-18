@@ -112,7 +112,7 @@ describe('<CFDPOA />', () => {
         });
     });
 
-    it('should render CFDPOA and trigger buttons', async () => {
+    it('should render duplicate document error message if has_submitted_duplicate_poa is true ', async () => {
         const setHasSubmittedDuplicatePOA = jest.fn();
         jest.spyOn(React, 'useState').mockImplementationOnce(() => [true, setHasSubmittedDuplicatePOA]);
 

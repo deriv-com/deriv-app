@@ -326,7 +326,7 @@ const getSortedCFDAvailableAccounts = (available_accounts: TModifiedTradingPlatf
     const gaming_accounts = available_accounts
         .filter(item => item.market_type === MARKET_TYPE.GAMING)
         .map(item => ({ ...item, platform: CFD_PLATFORMS.MT5 } as const));
-    return [...zero_spread_accounts, ...gaming_accounts, ...financial_accounts, ...swap_free_accounts];
+    return [...gaming_accounts, ...financial_accounts, ...swap_free_accounts, ...zero_spread_accounts];
 };
 
 // Get the maltainvest accounts for EU and DIEL clients
@@ -399,10 +399,10 @@ const getMT5DemoData = (available_accounts: TModifiedTradingPlatformAvailableAcc
         item => item.market_type === MARKET_TYPE.GAMING && item.shortcode === JURISDICTION.SVG
     );
     return [
-        ...zero_spread_demo_accounts,
         ...gaming_demo_accounts,
         ...financial_demo_accounts,
         ...swap_free_demo_accounts,
+        ...zero_spread_demo_accounts,
     ];
 };
 const getDxtradeDemoData = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {

@@ -8,7 +8,7 @@ type TContractStageText = {
 
 export const text_contract_stages = Object.freeze({
     NOT_RUNNING: 'Bot is not running',
-    RUNNING: 'Bot is running',
+    RUNNING: 'Bot running',
     STARTING: 'Bot is starting',
     PURCHASE_SENT: 'Buying contract',
     PURCHASE_RECEIVED: 'Contract bought',

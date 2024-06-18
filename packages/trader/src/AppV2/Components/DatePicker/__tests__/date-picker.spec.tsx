@@ -6,6 +6,7 @@ import DateRangePicker from '../date-picker';
 const header = 'Choose a date range';
 const footer = 'Apply';
 const mockProps = {
+    applyHandler: jest.fn(),
     isOpen: true,
     onClose: jest.fn(),
     setCustomTimeRangeFilter: jest.fn(),
@@ -27,7 +28,14 @@ describe('DateRangePicker', () => {
         expect(screen.getByText(footer)).toBeInTheDocument();
     });
 
-    it('should call setCustomTimeRangeFilter, handleDateChange and onClose if user choses some range date and clicks on Apply button', () => {
+    it('should call onClose if user clicks on overlay', () => {
+        render(<DateRangePicker {...mockProps} />);
+
+        userEvent.click(screen.getByTestId('dt-actionsheet-overlay'));
+        expect(mockProps.onClose).toBeCalled();
+    });
+
+    it('should call setCustomTimeRangeFilter, handleDateChange and applyHandler if user choses some range date and clicks on Apply button', () => {
         render(<DateRangePicker {...mockProps} />);
 
         const fromDate = screen.getByText('1');
@@ -39,10 +47,10 @@ describe('DateRangePicker', () => {
 
         expect(mockProps.setCustomTimeRangeFilter).toBeCalled();
         expect(mockProps.handleDateChange).toBeCalled();
-        expect(mockProps.onClose).toBeCalled();
+        expect(mockProps.applyHandler).toBeCalled();
     });
 
-    it('should call setCustomTimeRangeFilter, handleDateChange and onClose if user choses a single date and clicks on Apply button', () => {
+    it('should call setCustomTimeRangeFilter, handleDateChange and applyHandler if user choses a single date and clicks on Apply button', () => {
         render(<DateRangePicker {...mockProps} />);
 
         const fromDate = screen.getByText('1');
@@ -52,6 +60,6 @@ describe('DateRangePicker', () => {
 
         expect(mockProps.setCustomTimeRangeFilter).toBeCalled();
         expect(mockProps.handleDateChange).toBeCalled();
-        expect(mockProps.onClose).toBeCalled();
+        expect(mockProps.applyHandler).toBeCalled();
     });
 });

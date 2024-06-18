@@ -32,13 +32,13 @@ export const expiryDateValidator = Yup.date()
 
 export const firstNameValidator = Yup.string()
     .required('This field is required')
-    .matches(/^(?!.*\s{2,})(?!\s)[\p{L}\s'.-]{1,50}(?<!\s)$/u, 'Letters, spaces, periods, hyphens, apostrophes only.')
+    .matches(/^[a-zA-Z\s\-.'']+$/, 'Letters, spaces, periods, hyphens, apostrophes only.')
     .min(1, 'Enter no more than 50 characters.')
     .max(50, 'Enter no more than 50 characters.');
 
 export const lastNameValidator = Yup.string()
     .required('This field is required')
-    .matches(/^(?!.*\s{2,})(?!\s)[\p{L}\s'.-]{1,50}(?<!\s)$/u, 'Letters, spaces, periods, hyphens, apostrophes only.')
+    .matches(/^[a-zA-Z\s\-.'']+$/, 'Letters, spaces, periods, hyphens, apostrophes only.')
     .min(1, 'Enter no more than 50 characters.')
     .max(50, 'Enter no more than 50 characters.');
 

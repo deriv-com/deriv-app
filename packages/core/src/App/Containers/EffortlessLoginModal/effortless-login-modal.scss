@@ -6,6 +6,7 @@
     &__header {
         padding: 1.2rem 2.4rem;
         border-bottom: 1px solid var(--border-disabled);
+        text-align: end;
     }
 
     &__back-button {
@@ -16,7 +17,7 @@
         display: block;
         margin-top: 1.6rem;
 
-        .dc-icon {
+        .passkey__info-icon {
             display: block;
             margin-inline: auto;
         }
@@ -59,10 +60,10 @@
 
                         ul {
                             list-style: disc;
-                            padding-left: 1.2rem;
+                            padding-inline-start: 1.2rem;
 
                             li {
-                                margin-left: 0.8rem;
+                                margin-inline-start: 0.8rem;
 
                                 &::marker {
                                     font-size: 1.2rem;
@@ -97,10 +98,10 @@
 
                         ul {
                             list-style: disc;
-                            padding-left: 1.2rem;
+                            padding-inline-start: 1.2rem;
 
                             li {
-                                margin-left: 0.8rem;
+                                margin-inline-start: 0.8rem;
 
                                 &::marker {
                                     font-size: 1rem;

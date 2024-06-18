@@ -1,4 +1,0 @@
-dist/*.js
-*.config.*
-*.classnames.ts
-*.mock.*

@@ -8,10 +8,9 @@ import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import {
     rudderStackSendQsEditStrategyEvent,
-    rudderStackSendQsRunStrategyEvent,
     rudderStackSendQsSelectedTabEvent,
-} from '../analytics/rudderstack-quick-strategy';
-import { getQsActiveTabString } from '../analytics/utils';
+} from '../../../../analytics/rudderstack-quick-strategy';
+import { getQsActiveTabString } from '../../../../analytics/utils';
 import { STRATEGIES } from '../config';
 import { TFormData, TFormValues } from '../types';
 import FormTabs from './form-tabs';
@@ -48,25 +47,21 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
     };
 
     const onEdit = async () => {
-        rudderStackSendQsEditStrategyEvent({
-            form_values: values,
-            selected_strategy,
-            quick_strategy_tab: getQsActiveTabString(activeTab),
-        });
         await setFieldValue('action', 'EDIT');
         validateForm();
         submitForm().then((form_data: TFormData | void) => {
             if (isValid && form_data) {
+                rudderStackSendQsEditStrategyEvent({
+                    form_values: values,
+                    selected_strategy,
+                    quick_strategy_tab: getQsActiveTabString(activeTab),
+                });
                 onSubmit(form_data); // true to load and run the bot
             }
         });
     };
 
     const onRun = () => {
-        rudderStackSendQsRunStrategyEvent({
-            form_values: values,
-            selected_strategy,
-        });
         handleSubmit();
     };
 

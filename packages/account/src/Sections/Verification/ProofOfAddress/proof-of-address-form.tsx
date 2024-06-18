@@ -1,5 +1,6 @@
 import React from 'react';
 import { Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
+import { useDevice, useDevice } from '@deriv-com/ui';
 import { Loading, Button, Text, ThemedScrollbars, FormSubmitButton, Modal, HintBox } from '@deriv/components';
 import { useFileUploader } from '@deriv/hooks';
 import { validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv/shared';
@@ -17,7 +18,6 @@ import CommonMistakeExamples from '../../../Components/poa/common-mistakes/commo
 import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
 import { isServerError, validate } from '../../../Helpers/utils';
 import { getFileUploaderDescriptions } from '../../../Constants/file-uploader';
-import { useDevice } from '@deriv-com/ui';
 
 type TProofOfAddressForm = {
     className?: string;
@@ -45,8 +45,8 @@ const ProofOfAddressForm = observer(
         step_index,
         className,
     }: Partial<TProofOfAddressForm>) => {
-        const { client, notifications } = useStore();
         const { isDesktop } = useDevice();
+        const { client, notifications } = useStore();
         const { account_settings, fetchResidenceList, fetchStatesList, getChangeableFields, states_list, is_eu } =
             client;
         const {
@@ -272,7 +272,7 @@ const ProofOfAddressForm = observer(
         }
         const setOffset = (status: { msg: string }) => {
             const mobile_scroll_offset = status?.msg ? '200px' : '154px';
-            return isDesktop && is_for_cfd_modal ? '80px' : mobile_scroll_offset;
+            return !isDesktop && !is_for_cfd_modal ? mobile_scroll_offset : '80px';
         };
 
         return (
@@ -284,7 +284,7 @@ const ProofOfAddressForm = observer(
             >
                 {({ status, handleSubmit, isSubmitting, isValid }) => (
                     <>
-                        <LeaveConfirm onDirty={isDesktop ? undefined : showForm} />
+                        <LeaveConfirm onDirty={!isDesktop ? showForm : undefined} />
                         {form_state.should_show_form && (
                             <form noValidate className='account-form account-form_poa' onSubmit={handleSubmit}>
                                 <ThemedScrollbars
@@ -298,7 +298,7 @@ const ProofOfAddressForm = observer(
                                                 className='account-form_poa-submit-error'
                                                 icon='IcAlertDanger'
                                                 message={
-                                                    <Text as='p' size={isDesktop ? 'xs' : 'xxxs'}>
+                                                    <Text as='p' size={!isDesktop ? 'xxxs' : 'xs'}>
                                                         {!status?.msg && is_resubmit && (
                                                             <Localize i18n_default_text='We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.' />
                                                         )}

@@ -1,7 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { isMobile } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
+import { TPortfolioPosition } from '@deriv/stores/types';
 import { mockStore } from '@deriv/stores';
 import OpenPositions, { OpenPositionsTable } from '../open-positions';
 import ReportsProviders from '../../reports-providers';
@@ -9,6 +10,7 @@ import ReportsProviders from '../../reports-providers';
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isMobile: jest.fn(() => false),
+    isDesktop: jest.fn(() => true),
 }));
 
 jest.mock('@deriv/components', () => ({
@@ -18,257 +20,257 @@ jest.mock('@deriv/components', () => ({
 
 describe('OpenPositions', () => {
     let store = mockStore({});
-    const dataTableTestId = 'dt_data_table';
-    const filterDropdown = 'dt_dropdown_display';
+    const data_table_test_id = 'dt_data_table';
+    const filter_dropdown = 'dt_dropdown_display';
     // const loadingTestId = 'dt_loading_component';
-    // const mockedErrorMessage = 'Error message';
-    const noOpenPositionsText = 'You have no open positions yet.';
+    const mocked_error_message = 'Error message';
+    const no_open_positions_text = 'You have no open positions yet.';
+    const accumulators_position = {
+        contract_info: {
+            account_id: 112905368,
+            barrier_count: 2,
+            barrier_spot_distance: '0.726',
+            bid_price: 10.62,
+            buy_price: 10,
+            contract_id: 246179907888,
+            contract_type: 'ACCU',
+            currency: 'USD',
+            current_spot: 1184.9,
+            current_spot_display_value: '1184.90',
+            current_spot_high_barrier: '1185.626',
+            current_spot_low_barrier: '1184.174',
+            current_spot_time: 1718631006,
+            date_expiry: 1750204799,
+            date_settlement: 1750204800,
+            date_start: 1718630993,
+            display_name: 'Volatility 100 Index',
+            entry_spot: 1184.67,
+            entry_spot_display_value: '1184.67',
+            entry_tick: 1184.67,
+            entry_tick_display_value: '1184.67',
+            entry_tick_time: 1718630994,
+            expiry_time: 1750204799,
+            growth_rate: 0.01,
+            high_barrier: '1185.156',
+            id: '6838091b-05ce-7872-3131-eedddd394422',
+            is_expired: 0,
+            is_forward_starting: 0,
+            is_intraday: 0,
+            is_path_dependent: 1,
+            is_settleable: 0,
+            is_sold: 0,
+            is_valid_to_cancel: 0,
+            is_valid_to_sell: 1,
+            longcode:
+                'After the entry spot tick, your stake will grow continuously by 1% for every tick that the spot price remains within the ± 0.06126% from the previous spot price.',
+            low_barrier: '1183.704',
+            profit: 0.62,
+            profit_percentage: 6.2,
+            purchase_time: 1718630993,
+            shortcode: 'ACCU_R_100_10.00_0_0.01_1_0.000612552024_1718630993',
+            status: 'open',
+            tick_count: 230,
+            tick_passed: 6,
+            tick_stream: [
+                {
+                    epoch: 1718630994,
+                    tick: 1184.67,
+                    tick_display_value: '1184.67',
+                },
+                {
+                    epoch: 1718630996,
+                    tick: 1184.86,
+                    tick_display_value: '1184.86',
+                },
+                {
+                    epoch: 1718630998,
+                    tick: 1184.65,
+                    tick_display_value: '1184.65',
+                },
+                {
+                    epoch: 1718631000,
+                    tick: 1184.68,
+                    tick_display_value: '1184.68',
+                },
+                {
+                    epoch: 1718631002,
+                    tick: 1184.59,
+                    tick_display_value: '1184.59',
+                },
+                {
+                    epoch: 1718631004,
+                    tick: 1184.43,
+                    tick_display_value: '1184.43',
+                },
+                {
+                    epoch: 1718631006,
+                    tick: 1184.9,
+                    tick_display_value: '1184.90',
+                },
+            ],
+            transaction_ids: {
+                buy: 490754417148,
+            },
+            underlying: 'R_100',
+        },
+        details:
+            'After the entry spot tick, your stake will grow continuously by 1% for every tick that the spot price remains within the ± 0.06126% from the previous spot price.',
+        display_name: '',
+        id: 246179907888,
+        indicative: 10.62,
+        purchase: 10,
+        reference: 490754417148,
+        type: 'ACCU',
+        profit_loss: 0.62,
+        is_valid_to_sell: true,
+        current_tick: 6,
+        status: 'profit',
+        entry_spot: 1184.67,
+        high_barrier: 1185.156,
+        low_barrier: 1183.704,
+    } as TPortfolioPosition;
+    const multipliers_position = {
+        contract_info: {
+            account_id: 112905368,
+            barrier_count: 1,
+            bid_price: 9.74,
+            buy_price: 10,
+            commission: 0.11,
+            contract_id: 246179821988,
+            contract_type: 'MULTUP',
+            currency: 'USD',
+            current_spot: 1186.1,
+            current_spot_display_value: '1186.10',
+            current_spot_time: 1718630966,
+            date_expiry: 4872268799,
+            date_settlement: 4872268800,
+            date_start: 1718630940,
+            display_name: 'Volatility 100 Index',
+            entry_spot: 1186.71,
+            entry_spot_display_value: '1186.71',
+            entry_tick: 1186.71,
+            entry_tick_display_value: '1186.71',
+            entry_tick_time: 1718630942,
+            expiry_time: 4872268799,
+            id: '6838091b-05ce-7872-3131-eedddd394422',
+            is_expired: 0,
+            is_forward_starting: 0,
+            is_intraday: 0,
+            is_path_dependent: 1,
+            is_settleable: 0,
+            is_sold: 0,
+            is_valid_to_cancel: 0,
+            is_valid_to_sell: 1,
+            limit_order: {
+                stop_out: {
+                    display_name: 'Stop out',
+                    order_amount: -10,
+                    order_date: 1718630940,
+                    value: '1147.58',
+                },
+            },
+            longcode:
+                "If you select 'Up', your total profit/loss will be the percentage increase in Volatility 100 Index, multiplied by 300, minus commissions.",
+            multiplier: 30,
+            profit: -0.26,
+            profit_percentage: -2.6,
+            purchase_time: 1718630940,
+            shortcode: 'MULTUP_R_100_10.00_30_1718630940_4872268799_0_0.00_N1',
+            status: 'open',
+            transaction_ids: {
+                buy: 490754245448,
+            },
+            underlying: 'R_100',
+        },
+        details:
+            "If you select 'Up', your total profit/loss will be the percentage increase in Volatility 100 Index, multiplied by 300, minus commissions.",
+        display_name: '',
+        id: 246179821988,
+        indicative: 9.74,
+        purchase: 10,
+        reference: 490754245448,
+        type: 'MULTUP',
+        contract_update: {
+            stop_out: {
+                display_name: 'Stop out',
+                order_amount: -10,
+                order_date: 1718630940,
+                value: '1147.58',
+            },
+        },
+        entry_spot: 1186.71,
+        profit_loss: -0.26,
+        is_valid_to_sell: true,
+        status: 'loss',
+    } as TPortfolioPosition;
+    const options_position = {
+        contract_info: {
+            account_id: 112905368,
+            barrier: '1184.99',
+            barrier_count: 1,
+            bid_price: 9.52,
+            buy_price: 10,
+            contract_id: 246179185288,
+            contract_type: 'CALL',
+            currency: 'USD',
+            current_spot: 1184.95,
+            current_spot_display_value: '1184.95',
+            current_spot_time: 1718630678,
+            date_expiry: 1718652164,
+            date_settlement: 1718652164,
+            date_start: 1718630564,
+            display_name: 'Volatility 100 Index',
+            entry_spot: 1184.99,
+            entry_spot_display_value: '1184.99',
+            entry_tick: 1184.99,
+            entry_tick_display_value: '1184.99',
+            entry_tick_time: 1718630566,
+            expiry_time: 1718652164,
+            id: '6838091b-05ce-7872-3131-eedddd394422',
+            is_expired: 0,
+            is_forward_starting: 0,
+            is_intraday: 1,
+            is_path_dependent: 0,
+            is_settleable: 0,
+            is_sold: 0,
+            is_valid_to_cancel: 0,
+            is_valid_to_sell: 1,
+            longcode:
+                'Win payout if Volatility 100 Index is strictly higher than entry spot at 6 hours after contract start time.',
+            payout: 19.73,
+            profit: -0.48,
+            profit_percentage: -4.8,
+            purchase_time: 1718630564,
+            shortcode: 'CALL_R_100_19.73_1718630564_1718652164_S0P_0',
+            status: 'open',
+            transaction_ids: {
+                buy: 490752972668,
+            },
+            underlying: 'R_100',
+        },
+        details:
+            'Win payout if Volatility 100 Index is strictly higher than entry spot at 6 hours after contract start time.',
+        display_name: '',
+        id: 246179185288,
+        indicative: 9.52,
+        payout: 19.73,
+        purchase: 10,
+        reference: 490752972668,
+        type: 'CALL',
+        profit_loss: -0.48,
+        is_valid_to_sell: true,
+        status: 'loss',
+        barrier: 1184.99,
+        entry_spot: 1184.99,
+    } as TPortfolioPosition;
 
     beforeEach(() => {
         (isMobile as jest.Mock).mockReturnValue(false);
+        (isDesktop as jest.Mock).mockReturnValue(true);
 
         store = mockStore({
             portfolio: {
-                active_positions: [
-                    {
-                        contract_info: {
-                            account_id: 112905368,
-                            barrier_count: 2,
-                            barrier_spot_distance: '0.726',
-                            bid_price: 10.62,
-                            buy_price: 10,
-                            contract_id: 246179907888,
-                            contract_type: 'ACCU',
-                            currency: 'USD',
-                            current_spot: 1184.9,
-                            current_spot_display_value: '1184.90',
-                            current_spot_high_barrier: '1185.626',
-                            current_spot_low_barrier: '1184.174',
-                            current_spot_time: 1718631006,
-                            date_expiry: 1750204799,
-                            date_settlement: 1750204800,
-                            date_start: 1718630993,
-                            display_name: 'Volatility 100 Index',
-                            entry_spot: 1184.67,
-                            entry_spot_display_value: '1184.67',
-                            entry_tick: 1184.67,
-                            entry_tick_display_value: '1184.67',
-                            entry_tick_time: 1718630994,
-                            expiry_time: 1750204799,
-                            growth_rate: 0.01,
-                            high_barrier: '1185.156',
-                            id: '6838091b-05ce-7872-3131-eedddd394422',
-                            is_expired: 0,
-                            is_forward_starting: 0,
-                            is_intraday: 0,
-                            is_path_dependent: 1,
-                            is_settleable: 0,
-                            is_sold: 0,
-                            is_valid_to_cancel: 0,
-                            is_valid_to_sell: 1,
-                            longcode:
-                                'After the entry spot tick, your stake will grow continuously by 1% for every tick that the spot price remains within the ± 0.06126% from the previous spot price.',
-                            low_barrier: '1183.704',
-                            profit: 0.62,
-                            profit_percentage: 6.2,
-                            purchase_time: 1718630993,
-                            shortcode: 'ACCU_R_100_10.00_0_0.01_1_0.000612552024_1718630993',
-                            status: 'open',
-                            tick_count: 230,
-                            tick_passed: 6,
-                            tick_stream: [
-                                {
-                                    epoch: 1718630994,
-                                    tick: 1184.67,
-                                    tick_display_value: '1184.67',
-                                },
-                                {
-                                    epoch: 1718630996,
-                                    tick: 1184.86,
-                                    tick_display_value: '1184.86',
-                                },
-                                {
-                                    epoch: 1718630998,
-                                    tick: 1184.65,
-                                    tick_display_value: '1184.65',
-                                },
-                                {
-                                    epoch: 1718631000,
-                                    tick: 1184.68,
-                                    tick_display_value: '1184.68',
-                                },
-                                {
-                                    epoch: 1718631002,
-                                    tick: 1184.59,
-                                    tick_display_value: '1184.59',
-                                },
-                                {
-                                    epoch: 1718631004,
-                                    tick: 1184.43,
-                                    tick_display_value: '1184.43',
-                                },
-                                {
-                                    epoch: 1718631006,
-                                    tick: 1184.9,
-                                    tick_display_value: '1184.90',
-                                },
-                            ],
-                            transaction_ids: {
-                                buy: 490754417148,
-                            },
-                            underlying: 'R_100',
-                        },
-                        details:
-                            'After the entry spot tick, your stake will grow continuously by 1% for every tick that the spot price remains within the ± 0.06126% from the previous spot price.',
-                        display_name: '',
-                        id: 246179907888,
-                        indicative: 10.62,
-                        purchase: 10,
-                        reference: 490754417148,
-                        type: 'ACCU',
-                        profit_loss: 0.62,
-                        is_valid_to_sell: true,
-                        current_tick: 6,
-                        status: 'profit',
-                        entry_spot: 1184.67,
-                        high_barrier: 1185.156,
-                        low_barrier: 1183.704,
-                    },
-                    {
-                        contract_info: {
-                            account_id: 112905368,
-                            barrier_count: 1,
-                            bid_price: 9.74,
-                            buy_price: 10,
-                            commission: 0.11,
-                            contract_id: 246179821988,
-                            contract_type: 'MULTUP',
-                            currency: 'USD',
-                            current_spot: 1186.1,
-                            current_spot_display_value: '1186.10',
-                            current_spot_time: 1718630966,
-                            date_expiry: 4872268799,
-                            date_settlement: 4872268800,
-                            date_start: 1718630940,
-                            display_name: 'Volatility 100 Index',
-                            entry_spot: 1186.71,
-                            entry_spot_display_value: '1186.71',
-                            entry_tick: 1186.71,
-                            entry_tick_display_value: '1186.71',
-                            entry_tick_time: 1718630942,
-                            expiry_time: 4872268799,
-                            id: '6838091b-05ce-7872-3131-eedddd394422',
-                            is_expired: 0,
-                            is_forward_starting: 0,
-                            is_intraday: 0,
-                            is_path_dependent: 1,
-                            is_settleable: 0,
-                            is_sold: 0,
-                            is_valid_to_cancel: 0,
-                            is_valid_to_sell: 1,
-                            limit_order: {
-                                stop_out: {
-                                    display_name: 'Stop out',
-                                    order_amount: -10,
-                                    order_date: 1718630940,
-                                    value: '1147.58',
-                                },
-                            },
-                            longcode:
-                                "If you select 'Up', your total profit/loss will be the percentage increase in Volatility 100 Index, multiplied by 300, minus commissions.",
-                            multiplier: 30,
-                            profit: -0.26,
-                            profit_percentage: -2.6,
-                            purchase_time: 1718630940,
-                            shortcode: 'MULTUP_R_100_10.00_30_1718630940_4872268799_0_0.00_N1',
-                            status: 'open',
-                            transaction_ids: {
-                                buy: 490754245448,
-                            },
-                            underlying: 'R_100',
-                        },
-                        details:
-                            "If you select 'Up', your total profit/loss will be the percentage increase in Volatility 100 Index, multiplied by 300, minus commissions.",
-                        display_name: '',
-                        id: 246179821988,
-                        indicative: 9.74,
-                        purchase: 10,
-                        reference: 490754245448,
-                        type: 'MULTUP',
-                        contract_update: {
-                            stop_out: {
-                                display_name: 'Stop out',
-                                order_amount: -10,
-                                order_date: 1718630940,
-                                value: '1147.58',
-                            },
-                        },
-                        entry_spot: 1186.71,
-                        profit_loss: -0.26,
-                        is_valid_to_sell: true,
-                        status: 'loss',
-                    },
-                    {
-                        contract_info: {
-                            account_id: 112905368,
-                            barrier: '1184.99',
-                            barrier_count: 1,
-                            bid_price: 9.52,
-                            buy_price: 10,
-                            contract_id: 246179185288,
-                            contract_type: 'CALL',
-                            currency: 'USD',
-                            current_spot: 1184.95,
-                            current_spot_display_value: '1184.95',
-                            current_spot_time: 1718630678,
-                            date_expiry: 1718652164,
-                            date_settlement: 1718652164,
-                            date_start: 1718630564,
-                            display_name: 'Volatility 100 Index',
-                            entry_spot: 1184.99,
-                            entry_spot_display_value: '1184.99',
-                            entry_tick: 1184.99,
-                            entry_tick_display_value: '1184.99',
-                            entry_tick_time: 1718630566,
-                            expiry_time: 1718652164,
-                            id: '6838091b-05ce-7872-3131-eedddd394422',
-                            is_expired: 0,
-                            is_forward_starting: 0,
-                            is_intraday: 1,
-                            is_path_dependent: 0,
-                            is_settleable: 0,
-                            is_sold: 0,
-                            is_valid_to_cancel: 0,
-                            is_valid_to_sell: 1,
-                            longcode:
-                                'Win payout if Volatility 100 Index is strictly higher than entry spot at 6 hours after contract start time.',
-                            payout: 19.73,
-                            profit: -0.48,
-                            profit_percentage: -4.8,
-                            purchase_time: 1718630564,
-                            shortcode: 'CALL_R_100_19.73_1718630564_1718652164_S0P_0',
-                            status: 'open',
-                            transaction_ids: {
-                                buy: 490752972668,
-                            },
-                            underlying: 'R_100',
-                        },
-                        details:
-                            'Win payout if Volatility 100 Index is strictly higher than entry spot at 6 hours after contract start time.',
-                        display_name: '',
-                        id: 246179185288,
-                        indicative: 9.52,
-                        payout: 19.73,
-                        purchase: 10,
-                        reference: 490752972668,
-                        type: 'CALL',
-                        profit_loss: -0.48,
-                        is_valid_to_sell: true,
-                        status: 'loss',
-                        barrier: 1184.99,
-                        entry_spot: 1184.99,
-                    },
-                ],
+                active_positions: [accumulators_position, multipliers_position, options_position],
             },
             client: {
                 currency: 'USD',
@@ -289,76 +291,77 @@ describe('OpenPositions', () => {
         );
     };
 
-    it('should render NotificationMessages only but no filter and no DataTable if data is empty on desktop', () => {
-        store.portfolio.active_positions = [];
-        render(mockedOpenPositions());
-
-        expect(screen.getByText('NotificationMessages')).toBeInTheDocument();
-        expect(screen.queryByTestId(filterDropdown)).not.toBeInTheDocument();
-        expect(screen.queryByTestId(dataTableTestId)).not.toBeInTheDocument();
-        expect(screen.getByText(noOpenPositionsText)).toBeInTheDocument();
-    });
     it('should render filter dropdown with Options selected by default & with DataTable on desktop', () => {
         render(mockedOpenPositions());
 
         expect(screen.getByText('NotificationMessages')).toBeInTheDocument();
-        expect(screen.getByTestId(dataTableTestId)).toBeInTheDocument();
-        expect(screen.getByTestId(filterDropdown)).toHaveTextContent('Options');
-        expect(screen.getByText('0.48')).toBeInTheDocument();
-        expect(screen.queryByText('0.26')).not.toBeInTheDocument();
-        expect(screen.queryByText('0.62')).not.toBeInTheDocument();
+        expect(screen.getByTestId(filter_dropdown)).toHaveTextContent('Options');
+        expect(screen.getByTestId(data_table_test_id)).toBeInTheDocument();
     });
     it('should render filter dropdown with Options selected by default & with DataList for mobile', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
         render(mockedOpenPositions());
 
+        expect(screen.getByText('NotificationMessages')).toBeInTheDocument();
         expect(screen.getByRole('combobox')).toHaveValue('Options');
         expect(screen.getByText('DataList')).toBeInTheDocument();
+    });
+    it('should render NotificationMessages and No positions message but no filter and no DataTable if data is empty on desktop', () => {
+        store.portfolio.active_positions = [];
+        render(mockedOpenPositions());
+
+        expect(screen.getByText('NotificationMessages')).toBeInTheDocument();
+        expect(screen.queryByTestId(filter_dropdown)).not.toBeInTheDocument();
+        expect(screen.queryByTestId(data_table_test_id)).not.toBeInTheDocument();
+        expect(screen.getByText(no_open_positions_text)).toBeInTheDocument();
+    });
+    it('should render NotificationMessages and No positions message but no filter and no Datalist if data is empty on mobile', () => {
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        store.portfolio.active_positions = [];
+        render(mockedOpenPositions());
+
+        expect(screen.getByText('NotificationMessages')).toBeInTheDocument();
+        expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
+        expect(screen.queryByText('Datalist')).not.toBeInTheDocument();
+        expect(screen.getByText(no_open_positions_text)).toBeInTheDocument();
+    });
+    it('should render filter dropdown with Options selected if is_multiplier and is_accumulator are false in portfolio-store', () => {
+        render(mockedOpenPositions());
+
+        expect(screen.getByTestId(filter_dropdown)).toHaveTextContent('Options');
+        expect(screen.getByText(Math.abs(options_position.profit_loss))).toBeInTheDocument();
+        expect(screen.queryByText(Math.abs(multipliers_position.profit_loss))).not.toBeInTheDocument();
+        expect(screen.queryByText(Math.abs(accumulators_position.profit_loss))).not.toBeInTheDocument();
     });
     it('should render filter dropdown with Multipliers selected if is_multiplier is true in portfolio-store', () => {
         store.portfolio.is_multiplier = true;
         render(mockedOpenPositions());
 
-        expect(screen.getByTestId(filterDropdown)).toHaveTextContent('Multipliers');
-        expect(screen.queryByText('0.48')).not.toBeInTheDocument();
-        expect(screen.getByText('0.26')).toBeInTheDocument();
-        expect(screen.queryByText('0.62')).not.toBeInTheDocument();
+        expect(screen.getByTestId(filter_dropdown)).toHaveTextContent('Multipliers');
+        expect(screen.queryByText(Math.abs(options_position.profit_loss))).not.toBeInTheDocument();
+        expect(screen.getByText(Math.abs(multipliers_position.profit_loss))).toBeInTheDocument();
+        expect(screen.queryByText(Math.abs(accumulators_position.profit_loss))).not.toBeInTheDocument();
     });
     it('should render filter dropdown with Accumulators selected if is_accumulator is true in portfolio-store', () => {
         store.portfolio.is_accumulator = true;
         render(mockedOpenPositions());
 
-        expect(screen.getAllByTestId(filterDropdown)).toHaveLength(2);
-        expect(screen.getAllByTestId(filterDropdown)[0]).toHaveTextContent('Accumulators');
-        expect(screen.getAllByTestId(filterDropdown)[1]).toHaveTextContent('All growth rates');
-        expect(screen.queryByText('0.48')).not.toBeInTheDocument();
-        expect(screen.queryByText('0.26')).not.toBeInTheDocument();
-        expect(screen.getByText('0.62')).toBeInTheDocument();
+        expect(screen.getAllByTestId(filter_dropdown)).toHaveLength(2);
+        expect(screen.getAllByTestId(filter_dropdown)[0]).toHaveTextContent('Accumulators');
+        expect(screen.getAllByTestId(filter_dropdown)[1]).toHaveTextContent('All growth rates');
+        expect(screen.queryByText(Math.abs(options_position.profit_loss))).not.toBeInTheDocument();
+        expect(screen.queryByText(Math.abs(multipliers_position.profit_loss))).not.toBeInTheDocument();
+        expect(screen.getByText(Math.abs(accumulators_position.profit_loss))).toBeInTheDocument();
     });
+    it('should render error if it is defined', () => {
+        store.portfolio.error = mocked_error_message;
+        render(mockedOpenPositions());
 
-    // it('should render filter dropdown but no DataList if data is empty on mobile', () => {
-    //     (useReportsStore as jest.Mock).mockReturnValueOnce({
-    //         statement: {
-    //             ...useReportsStore().statement,
-    //             data: [],
-    //         },
-    //     });
-    //     (isMobile as jest.Mock).mockReturnValue(true);
-    //     render(mockedStatement());
-    //     expect(screen.getByRole('combobox')).toHaveValue('all');
-    //     expect(screen.queryByTestId(dataListTestId)).not.toBeInTheDocument();
-    // });
-    // it('should render error if it is defined', () => {
-    //     (useReportsStore as jest.Mock).mockReturnValueOnce({
-    //         statement: {
-    //             ...useReportsStore().statement,
-    //             error: mockedErrorMessage,
-    //         },
-    //     });
-    //     render(mockedStatement());
-    //     expect(screen.queryByTestId(dataTableTestId)).not.toBeInTheDocument();
-    //     expect(screen.getByText(mockedErrorMessage)).toBeInTheDocument();
-    // });
+        expect(screen.queryByTestId(data_table_test_id)).not.toBeInTheDocument();
+        expect(screen.getByText(mocked_error_message)).toBeInTheDocument();
+    });
     // it('should render a long No transactions message when data is empty & is_empty === true & has_selected_date === true', () => {
     //     (useReportsStore as jest.Mock).mockReturnValueOnce({
     //         statement: {

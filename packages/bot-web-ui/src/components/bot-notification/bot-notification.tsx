@@ -18,7 +18,7 @@ export const NotificationContent: React.FC<TNotificationContent> = ({ message, p
     }, []);
 
     return (
-        <div className='notification-content'>
+        <div className='notification-content' data-testid='dt_bot_notification'>
             <div>{message}</div>
             {primary_action && (
                 <button onClick={() => primary_action.onClick(closeToast)}>{primary_action.label}</button>

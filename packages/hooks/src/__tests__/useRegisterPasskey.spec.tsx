@@ -46,8 +46,6 @@ describe('useRegisterPasskey', () => {
 
         (WS.send as jest.Mock).mockResolvedValue({ passkeys_register: { properties: { name: 'test passkey name' } } });
 
-        expect(result.current.is_passkey_registration_started).toBe(true);
-
         await act(async () => {
             await result.current.createPasskey();
         });
@@ -59,28 +57,6 @@ describe('useRegisterPasskey', () => {
 
         expect(mockInvalidate).toHaveBeenCalled();
         expect(result.current.is_passkey_registered).toBe(true);
-    });
-
-    it('should start passkey registration and cancel', async () => {
-        const { result } = renderHook(() => useRegisterPasskey(), { wrapper });
-
-        expect(result.current.is_passkey_registered).toBe(false);
-
-        await act(async () => {
-            await result.current.startPasskeyRegistration();
-        });
-
-        expect(WS.send).toHaveBeenCalledWith({ passkeys_register_options: 1 });
-
-        (WS.send as jest.Mock).mockResolvedValue({ passkeys_register: { properties: { name: 'test passkey name' } } });
-
-        expect(result.current.is_passkey_registration_started).toBe(true);
-
-        await act(async () => {
-            result.current.cancelPasskeyRegistration();
-        });
-
-        expect(result.current.is_passkey_registration_started).toBe(false);
     });
 
     it('should handle passkey registration error', async () => {

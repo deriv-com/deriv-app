@@ -3,6 +3,7 @@ import { Button, CaptionText } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { useSettings, useVerifyEmail } from '@deriv/hooks';
 import dayjs from 'dayjs';
+import { otpRequestCountdown } from './validation';
 
 type TResendCodeTimer = {
     is_button_disabled: boolean;
@@ -47,28 +48,22 @@ const ResendCodeTimer = ({
     React.useEffect(() => {
         // @ts-expect-error this for now
         if (should_show_resend_code_button && account_settings?.phone_number_verification?.next_email_attempt) {
-            const email_otp_request_in_miliseconds = dayjs(
+            otpRequestCountdown(
                 // @ts-expect-error this for now
-                account_settings?.phone_number_verification?.next_email_attempt * 1000
+                account_settings.phone_number_verification.next_email_attempt,
+                setTitle,
+                setTimer,
+                current_time
             );
-            const next_email_otp_request = Math.round(email_otp_request_in_miliseconds.diff(current_time) / 1000);
-
-            if (next_email_otp_request > 0) {
-                setTitle(next_email_otp_request);
-                setTimer(next_email_otp_request);
-            }
             // @ts-expect-error this for now
         } else if (account_settings?.phone_number_verification?.next_attempt) {
-            const phone_otp_request_in_miliseconds = dayjs(
+            otpRequestCountdown(
                 // @ts-expect-error this for now
-                account_settings?.phone_number_verification?.next_attempt * 1000
+                account_settings.phone_number_verification.next_attempt,
+                setTitle,
+                setTimer,
+                current_time
             );
-            const next_phone_otp_request = Math.round(phone_otp_request_in_miliseconds.diff(current_time) / 1000);
-
-            if (next_phone_otp_request > 0) {
-                setTitle(next_phone_otp_request);
-                setTimer(next_phone_otp_request);
-            }
         }
     }, [
         // @ts-expect-error this for now
@@ -78,6 +73,7 @@ const ResendCodeTimer = ({
         timer,
         setTitle,
         should_show_resend_code_button,
+        current_time,
     ]);
 
     React.useEffect(() => {

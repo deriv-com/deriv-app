@@ -5,87 +5,53 @@ import { observer, useStore } from '@deriv/stores';
 import { routes, ContentFlag } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useHasSetCurrency } from '@deriv/hooks';
+import { TActiveAccount } from '@deriv/stores/types';
+import { LabelPairedChevronRightSmRegularIcon } from '@deriv/quill-icons';
+import { Button, Text } from '@deriv-com/quill-ui';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { BinaryLink } from 'App/Components/Routes';
-import { Button, CaptionText, Text } from '@deriv-com/quill-ui';
-import { getSortedAccountList, getSortedCFDList, isDemo } from '../../../../Containers/AccountSwitcher/helpers';
-import { LabelPairedChevronRightSmRegularIcon } from '@deriv/quill-icons';
 import AccountListDTraderV2 from './account-switcher-account-list-dtrader-v2';
-import { TActiveAccount } from '@deriv/stores/types';
+import AccountGroupWrapper from './account-group-warpper-dtrader-v2';
+import { getSortedAccountList, getSortedCFDList, isDemo } from '../../../../Containers/AccountSwitcher/helpers';
 
 type TAccountSwitcherDTraderV2 = RouteComponentProps & {
     is_visible?: boolean;
     history?: ReturnType<typeof useHistory>;
 };
 
-type TAccountGroupWrapper = { separator_text?: React.ReactNode };
-
-const AccountGroupWrapper = ({ children, separator_text }: React.PropsWithChildren<TAccountGroupWrapper>) => {
-    return separator_text ? (
-        <div className='acc-switcher-dtrader__accounts-list__group'>
-            <CaptionText
-                color='quill-typography__color--default'
-                className='acc-switcher-dtrader__accounts-list__title'
-                bold
-            >
-                {separator_text}
-            </CaptionText>
-            {children}
-        </div>
-    ) : (
-        <React.Fragment>{children}</React.Fragment>
-    );
-};
-
 const AccountSwitcherDTraderV2 = observer(({ is_visible, history }: TAccountSwitcherDTraderV2) => {
     const [is_closing, setIsClosing] = React.useState(false);
+    const wrapper_ref = React.useRef<HTMLDivElement>(null);
+
     const { client, ui, traders_hub } = useStore();
     const {
         available_crypto_currencies,
-        loginid: account_loginid,
         accounts,
         account_list,
         currency,
+        has_fiat,
+        has_active_real_account,
+        has_any_real_account,
+        has_maltainvest_account,
         is_eu,
         is_landing_company_loaded,
         is_low_risk,
         is_high_risk,
         is_logged_in,
         is_virtual,
-        has_fiat,
+        loginid: account_loginid,
         mt5_login_list,
         switchAccount,
         resetVirtualBalance,
-        has_active_real_account,
         upgradeable_landing_companies,
         real_account_creation_unlock_date,
-        has_any_real_account,
-        has_maltainvest_account,
     } = client;
-    const { show_eu_related_content, content_flag, selectRegion, setTogglePlatformType } = traders_hub;
-    const { openRealAccountSignup, toggleAccountsDialog, toggleSetCurrencyModal, setShouldShowCooldownModal } = ui;
-
-    const wrapper_ref = React.useRef<HTMLDivElement>(null);
+    const { content_flag, show_eu_related_content, selectRegion, setTogglePlatformType } = traders_hub;
+    const { openRealAccountSignup, setShouldShowCooldownModal, toggleAccountsDialog, toggleSetCurrencyModal } = ui;
 
     const vrtc_loginid = account_list.find(account => account.is_virtual)?.loginid ?? '';
 
     // TODO: Check unused css
-
-    // const handleLogout = async () => {
-    //     closeAccountsDialog();
-    //     if (is_positions_drawer_on) {
-    //         togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
-    //     }
-
-    //     // for DBot we need to logout first and only after this redirect to TH
-    //     if (window.location.pathname.startsWith(routes.bot)) {
-    //         await logoutClient();
-    //         history.push(routes.traders_hub);
-    //     } else {
-    //         history.push(routes.traders_hub);
-    //         await logoutClient();
-    //     }
-    // };
 
     const closeAccountsDialog = () => {
         toggleAccountsDialog(false);
@@ -374,13 +340,6 @@ const AccountSwitcherDTraderV2 = observer(({ is_visible, history }: TAccountSwit
                             fullWidth
                         />
                     )}
-                    {/* TODO: Temporary leave log out option for internal developer testing */}
-                    {/* <div id='dt_logout_button' className='acc-switcher__logout' onClick={handleLogout}>
-                        <Text color='prominent' size='xs' align='left' className='acc-switcher__logout-text'>
-                            {localize('Log out')}
-                        </Text>
-                        <Icon icon='IcLogout' className='acc-switcher__logout-icon drawer__icon' />
-                    </div> */}
                 </React.Fragment>
             ) : (
                 // TODO: it's old Loader from current production. Add new?

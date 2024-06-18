@@ -8,7 +8,7 @@ import React from 'react';
  * @return {null}
  * @constructor
  */
-const NewVersionNotification = ({ onUpdate }: { onUpdate: () => void }) => {
+const NewVersionNotification = ({ onUpdate }) => {
     React.useEffect(() => {
         const removeUpdateListener = () => {
             document.removeEventListener('UpdateAvailable', onUpdate);

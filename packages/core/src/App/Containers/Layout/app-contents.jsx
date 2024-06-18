@@ -37,11 +37,7 @@ const AppContents = observer(({ children }) => {
     const { pathname } = useLocation();
     const { is_mobile } = useDevice();
 
-    const isDTraderV2 =
-        is_dtrader_v2_enabled &&
-        is_mobile &&
-        (pathname.startsWith(routes.trade) ||
-            pathname.startsWith('/contract/') === routes.contract.startsWith('/contract/'));
+    const isDTraderV2 = is_dtrader_v2_enabled && is_mobile && pathname.startsWith(routes.trade);
 
     const tracking_status = tracking_status_cookie.get(TRACKING_STATUS_KEY);
 

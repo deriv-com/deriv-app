@@ -6,7 +6,7 @@ import { DesktopWrapper, MobileWrapper, StaticUrl } from '@deriv/components';
 import { getDecimalPlaces, platforms, routes } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
-import NewVersionNotification from 'App/Containers/new-version-notification';
+import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';

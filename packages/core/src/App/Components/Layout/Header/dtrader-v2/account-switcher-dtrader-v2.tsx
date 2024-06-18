@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { routes, ContentFlag } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useHasSetCurrency } from '@deriv/hooks';
 import { TActiveAccount } from '@deriv/stores/types';
@@ -12,7 +12,7 @@ import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/consta
 import { BinaryLink } from 'App/Components/Routes';
 import AccountListDTraderV2 from './account-switcher-account-list-dtrader-v2';
 import AccountGroupWrapper from './account-group-wrapper-dtrader-v2';
-import { getSortedAccountList, getSortedCFDList, isDemo } from '../../../../Containers/AccountSwitcher/helpers';
+import { getSortedAccountList } from '../../../../Containers/AccountSwitcher/helpers';
 
 type TAccountSwitcherDTraderV2 = RouteComponentProps & {
     history?: ReturnType<typeof useHistory>;
@@ -39,20 +39,19 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
         is_virtual,
         loginid: account_loginid,
         is_mt5_allowed,
-        mt5_login_list,
         switchAccount,
         resetVirtualBalance,
         upgradeable_landing_companies,
         real_account_creation_unlock_date,
     } = client;
-    const { content_flag, show_eu_related_content, selectRegion, setTogglePlatformType } = traders_hub;
+    const { show_eu_related_content, selectRegion, setTogglePlatformType } = traders_hub;
     const { openRealAccountSignup, setShouldShowCooldownModal, toggleAccountsDialog, toggleSetCurrencyModal } = ui;
 
     const vrtc_loginid = account_list.find(account => account.is_virtual)?.loginid ?? '';
     const has_user_set_currency = useHasSetCurrency();
     const has_cr_account = account_list.find(acc => acc.loginid?.startsWith('CR'))?.loginid;
-    // TODO: refactor
     const show_separator = is_low_risk && has_maltainvest_account;
+    // TODO: refactor
     const show_button =
         (has_active_real_account && !is_virtual && !is_closing) ||
         (is_high_risk && !has_cr_account) ||
@@ -87,20 +86,6 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
         resetVirtualBalance();
     };
 
-    const getRealMT5 = (): typeof mt5_login_list | [] => {
-        if (is_landing_company_loaded) {
-            const low_risk_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
-            if (low_risk_non_eu) {
-                return getSortedCFDList(mt5_login_list).filter(
-                    account => !isDemo(account) && account.landing_company_short !== 'maltainvest'
-                );
-            }
-
-            return getSortedCFDList(mt5_login_list).filter(account => !isDemo(account));
-        }
-        return [];
-    };
-
     const canOpenMultiple = () => {
         if (available_crypto_currencies.length < 1 && !has_fiat) return true;
         return !is_virtual;
@@ -116,23 +101,6 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
     const ableToResetBalance = (account: TActiveAccount) => {
         const account_init_balance = 10000;
         return !!account?.is_virtual && account?.balance !== account_init_balance;
-    };
-
-    const checkMultipleSvgAcc = () => {
-        const all_svg_acc: typeof mt5_login_list = [];
-        getRealMT5().map(acc => {
-            if (acc.landing_company_short === 'svg' && acc.market_type === 'synthetic') {
-                if (all_svg_acc.length) {
-                    all_svg_acc.forEach(svg_acc => {
-                        if (svg_acc.server !== acc.server) all_svg_acc.push(acc);
-                        return all_svg_acc;
-                    });
-                } else {
-                    all_svg_acc.push(acc);
-                }
-            }
-        });
-        return all_svg_acc.length > 1;
     };
 
     const checkIfUserHaveMoreAccount = (type?: string) =>
@@ -158,39 +126,21 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
             ? setAccountCurrency
             : () => openRealAccountSignup('manage');
 
-    const getAccountItem = (item: typeof account_list[0], is_demo?: boolean) => {
-        return is_demo ? (
-            <AccountListDTraderV2
-                key={item.loginid}
-                balance={accounts[item?.loginid ?? '']?.balance}
-                currency={accounts[item?.loginid ?? '']?.currency}
-                display_type='currency'
-                has_balance={'balance' in accounts[item?.loginid ?? '']}
-                has_reset_balance={ableToResetBalance(accounts[account_loginid ?? ''])}
-                is_disabled={item?.is_disabled}
-                is_virtual={item.is_virtual}
-                loginid={item.loginid}
-                redirectAccount={item.is_disabled ? undefined : () => handleSwitchAccount(item.loginid)}
-                onClickResetVirtualBalance={resetBalance}
-                selected_loginid={account_loginid}
-            />
-        ) : (
-            <AccountListDTraderV2
-                key={item.loginid}
-                balance={accounts[item?.loginid ?? '']?.balance}
-                currency={accounts[item?.loginid ?? '']?.currency}
-                display_type='currency'
-                has_balance={'balance' in accounts[item?.loginid ?? '']}
-                is_disabled={item.is_disabled}
-                is_virtual={item.is_virtual}
-                is_eu={is_eu}
-                loginid={item.loginid}
-                redirectAccount={item.is_disabled ? undefined : () => handleSwitchAccount(item.loginid)}
-                selected_loginid={account_loginid}
-                should_show_server_name={checkMultipleSvgAcc()}
-            />
-        );
-    };
+    const getAccountItem = (item: typeof account_list[0], is_demo?: boolean) => (
+        <AccountListDTraderV2
+            key={item.loginid}
+            balance={accounts[item?.loginid ?? '']?.balance}
+            currency={accounts[item?.loginid ?? '']?.currency}
+            has_balance={'balance' in accounts[item?.loginid ?? '']}
+            has_reset_balance={is_demo && ableToResetBalance(accounts[account_loginid ?? ''])}
+            is_disabled={item.is_disabled}
+            is_virtual={item.is_virtual}
+            loginid={item.loginid}
+            redirectAccount={item.is_disabled ? undefined : () => handleSwitchAccount(item.loginid)}
+            onClickResetVirtualBalance={is_demo ? resetBalance : undefined}
+            selected_loginid={account_loginid}
+        />
+    );
 
     const getAddAccountButton = (account: string, is_eu?: boolean) => (
         <div key={account} className='acc-switcher-dtrader__new-account'>

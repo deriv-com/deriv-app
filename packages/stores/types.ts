@@ -604,12 +604,6 @@ type TClientStore = {
     subscribeToExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
     unsubscribeFromExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
     unsubscribeFromAllExchangeRates: () => void;
-    obj_total_balance: {
-        amount_real?: number;
-        amount_mt5?: number;
-        amount_dxtrade?: number;
-        currency?: string;
-    };
     virtual_account_loginid?: string;
 };
 

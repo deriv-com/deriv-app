@@ -301,7 +301,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             subscribeToExchangeRate: jest.fn(),
             unsubscribeFromExchangeRate: jest.fn(),
             unsubscribeFromAllExchangeRates: jest.fn(),
-            obj_total_balance: {},
         },
         common: {
             error: common_store_error,

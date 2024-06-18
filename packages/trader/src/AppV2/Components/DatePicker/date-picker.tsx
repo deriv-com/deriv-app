@@ -6,24 +6,40 @@ import { Localize } from '@deriv/translations';
 import { DEFAULT_DATE_FORMATTING_CONFIG } from 'AppV2/Utils/positions-utils';
 
 type TDateRangePicker = {
-    handleDateChange: (values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean }) => void;
-    isOpen?: boolean;
+    applyHandler: () => void;
+    handleDateChange: (
+        values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean },
+        otherParams?: {
+            date_range?: Record<string, string | number>;
+            shouldFilterContractTypes?: boolean;
+        }
+    ) => void;
     onClose: () => void;
+    isOpen?: boolean;
     setCustomTimeRangeFilter: (newCustomTimeFilter?: string | undefined) => void;
 };
-const DateRangePicker = ({ handleDateChange, isOpen, onClose, setCustomTimeRangeFilter }: TDateRangePicker) => {
+const DateRangePicker = ({
+    applyHandler,
+    handleDateChange,
+    onClose,
+    isOpen,
+    setCustomTimeRangeFilter,
+}: TDateRangePicker) => {
     const [chosenRangeString, setChosenRangeString] = React.useState<string>();
     const [chosenRange, setChosenRange] = React.useState<(string | null | Date)[] | null | Date>([]);
 
     const onApply = () => {
         setCustomTimeRangeFilter(chosenRangeString);
         if (Array.isArray(chosenRange) && chosenRange.length) {
-            handleDateChange({
-                from: toMoment(chosenRange[0]),
-                to: chosenRange[1] ? toMoment(chosenRange[1]) : moment(chosenRange[0]).endOf('day'),
-            });
+            handleDateChange(
+                {
+                    from: toMoment(chosenRange[0]),
+                    to: chosenRange[1] ? toMoment(chosenRange[1]) : moment(chosenRange[0]).endOf('day'),
+                },
+                { shouldFilterContractTypes: true }
+            );
         }
-        onClose();
+        applyHandler();
     };
 
     const onFormattedDate = (value: string) => {
@@ -34,7 +50,7 @@ const DateRangePicker = ({ handleDateChange, isOpen, onClose, setCustomTimeRange
 
     return (
         <ActionSheet.Root isOpen={isOpen} onClose={onClose} position='left'>
-            <ActionSheet.Portal>
+            <ActionSheet.Portal shouldCloseOnDrag>
                 <ActionSheet.Header title={<Localize i18n_default_text='Choose a date range' />} />
                 <ActionSheet.Content>
                     <DatePicker

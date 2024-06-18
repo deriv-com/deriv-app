@@ -3,8 +3,6 @@ import 'Sass/app/_common/components/account-switcher-dtrader-v2.scss';
 import { LabelPairedBellLgRegularIcon } from '@deriv/quill-icons';
 import { formatMoney, moduleLoader } from '@deriv/shared';
 import { Badge } from '@deriv-com/quill-ui';
-import { LoginButton } from '../login-button';
-import { SignupButton } from '../signup-button';
 
 type TAccountActionsDTraderV2 = {
     acc_switcher_disabled_message?: string;
@@ -14,7 +12,6 @@ type TAccountActionsDTraderV2 = {
     is_acc_switcher_disabled?: boolean;
     is_eu?: boolean;
     is_acc_switcher_on?: boolean;
-    is_logged_in?: boolean;
     is_virtual?: boolean;
     notifications_count?: number;
     toggleAccountsDialog: (value?: boolean | undefined) => void;
@@ -50,42 +47,40 @@ const AccountActionsDTraderV2 = ({
     is_acc_switcher_on,
     is_acc_switcher_disabled,
     is_eu,
-    is_logged_in,
     is_virtual,
     notifications_count,
     toggleAccountsDialog,
-}: TAccountActionsDTraderV2) =>
-    is_logged_in ? (
-        <React.Fragment>
-            <AccountInfoDTraderV2
-                acc_switcher_disabled_message={acc_switcher_disabled_message}
-                account_switcher_title={account_switcher_title}
-                account_type={account_type}
-                balance={typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)}
-                currency={currency}
-                is_disabled={is_acc_switcher_disabled}
-                is_eu={is_eu}
-                is_virtual={is_virtual}
-                is_dialog_on={is_acc_switcher_on}
-                toggleDialog={toggleAccountsDialog}
-            />
-            <div className='notifications__wrapper'>
-                {notifications_count ? (
-                    <Badge
-                        color='danger'
-                        contentSize='sm'
-                        label={notifications_count.toString()}
-                        position='top-right'
-                        size='sm'
-                        variant='notification'
-                    >
-                        <LabelPairedBellLgRegularIcon className='notifications__icon' />
-                    </Badge>
-                ) : (
+}: TAccountActionsDTraderV2) => (
+    <React.Fragment>
+        <AccountInfoDTraderV2
+            acc_switcher_disabled_message={acc_switcher_disabled_message}
+            account_switcher_title={account_switcher_title}
+            account_type={account_type}
+            balance={typeof balance === 'undefined' ? balance : formatMoney(currency, balance, true)}
+            currency={currency}
+            is_disabled={is_acc_switcher_disabled}
+            is_eu={is_eu}
+            is_virtual={is_virtual}
+            is_dialog_on={is_acc_switcher_on}
+            toggleDialog={toggleAccountsDialog}
+        />
+        <div className='notifications__wrapper'>
+            {notifications_count ? (
+                <Badge
+                    color='danger'
+                    contentSize='sm'
+                    label={notifications_count.toString()}
+                    position='top-right'
+                    size='sm'
+                    variant='notification'
+                >
                     <LabelPairedBellLgRegularIcon className='notifications__icon' />
-                )}
-            </div>
-        </React.Fragment>
-    ) : null;
+                </Badge>
+            ) : (
+                <LabelPairedBellLgRegularIcon className='notifications__icon' />
+            )}
+        </div>
+    </React.Fragment>
+);
 
 export default AccountActionsDTraderV2;

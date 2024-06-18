@@ -109,13 +109,6 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
         ).length > 1;
 
     const handleRedirect = () => {
-        // TODO: temporary unused?
-        // const first_real_login_id = account_list?.find(account => /^(CR|MF)/.test(account.loginid ?? ''))?.loginid;
-        // if (!is_virtual) {
-        //     await switchAccount(virtual_account_loginid);
-        // } else if (is_virtual) {
-        //     await switchAccount(first_real_login_id);
-        // }
         toggleAccountsDialog(false);
         history.push(routes.traders_hub);
         setTogglePlatformType('cfd');

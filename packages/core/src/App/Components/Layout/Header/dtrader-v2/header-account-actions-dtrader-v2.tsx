@@ -5,7 +5,7 @@ import { getAccountTitle } from './Utils/account-switcher-dtrader-v2-utils';
 
 const HeaderAccountActionsDTraderV2 = observer(() => {
     const { client, ui, notifications } = useStore();
-    const { account_type, balance, currency, is_eu, is_logged_in, is_virtual, loginid } = client;
+    const { account_type, balance, currency, is_eu, is_virtual, loginid } = client;
     const {
         account_switcher_disabled_message,
         is_account_switcher_disabled,
@@ -25,7 +25,6 @@ const HeaderAccountActionsDTraderV2 = observer(() => {
                 is_acc_switcher_on={is_accounts_switcher_on}
                 is_acc_switcher_disabled={is_account_switcher_disabled}
                 is_eu={is_eu}
-                is_logged_in={is_logged_in}
                 is_virtual={is_virtual}
                 notifications_count={notifications_array.length}
                 toggleAccountsDialog={toggleAccountsDialog}

@@ -1,14 +1,23 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { SentEmailModal } from '@deriv/account';
+import SentEmailModal from '@deriv/account';
 import { observer, useStore } from '@deriv/stores';
 import { WS } from 'Services';
-import PropTypes from 'prop-types';
+import { TSocketError, TSocketRequest, TSocketResponse } from '@deriv/api/types';
+
+type TConfirmEmailModal = {
+    changed_email: string;
+    is_open: boolean;
+    onClose: () => void;
+    prev_email: string;
+    setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
+    setEmailValue: React.Dispatch<React.SetStateAction<string>>;
+};
 
 export const ConfirmEmailModal = observer(
-    ({ changed_email, is_open, onClose, prev_email, setErrorMessage, setEmailValue }) => {
-        const [email_request, setEmailRequest] = React.useState(null);
+    ({ changed_email, is_open, onClose, prev_email, setErrorMessage, setEmailValue }: TConfirmEmailModal) => {
+        const [email_request, setEmailRequest] = React.useState<null | TSocketRequest<'change_email'>>(null);
         const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
         const [is_modal_open, setIsModalOpen] = React.useState(is_open);
 
@@ -16,7 +25,7 @@ export const ConfirmEmailModal = observer(
         const { verification_code, setVerificationCode } = client;
 
         const handleSubmit = () => {
-            const api_request = {
+            const api_request: TSocketRequest<'change_email'> = {
                 change_email: 'verify',
                 new_email: changed_email,
                 verification_code: verification_code.request_email,
@@ -24,17 +33,19 @@ export const ConfirmEmailModal = observer(
 
             setEmailRequest(prev => ({ ...prev, ...api_request }));
 
-            WS.changeEmail(api_request).then(response => {
-                setIsModalOpen(false);
-                if (response.error) {
-                    onClose();
-                    setEmailValue(changed_email);
-                    setErrorMessage(response.error.message);
-                } else {
-                    setIsSendEmailModalOpen(true);
+            WS.changeEmail(api_request).then(
+                (response: TSocketResponse<'change_email'> & TSocketError<'change_email'>) => {
+                    setIsModalOpen(false);
+                    if (response.error) {
+                        onClose();
+                        setEmailValue(changed_email);
+                        setErrorMessage(response.error.message);
+                    } else {
+                        setIsSendEmailModalOpen(true);
+                    }
+                    setVerificationCode('', 'request_email');
                 }
-                setVerificationCode('', 'request_email');
-            });
+            );
         };
 
         const resendEmail = () => {
@@ -48,8 +59,8 @@ export const ConfirmEmailModal = observer(
                     onClose={() => setIsSendEmailModalOpen(false)}
                     identifier_title={'Change_Email'}
                     onClickSendEmail={resendEmail}
-                    has_live_chat={true}
-                    is_modal_when_mobile={true}
+                    has_live_chat
+                    is_modal_when_mobile
                 />
             );
         }
@@ -60,7 +71,6 @@ export const ConfirmEmailModal = observer(
                 title={<Localize i18n_default_text='Are you sure?' />}
                 toggleModal={onClose}
                 width='440px'
-                is_closed_on_cancel={false}
                 has_close_icon={false}
             >
                 <React.Fragment>
@@ -95,11 +105,3 @@ export const ConfirmEmailModal = observer(
         );
     }
 );
-
-ConfirmEmailModal.propTypes = {
-    changed_email: PropTypes.string,
-    is_open: PropTypes.bool,
-    onClose: PropTypes.func,
-    prev_email: PropTypes.string,
-    setErrorMessage: PropTypes.func,
-};

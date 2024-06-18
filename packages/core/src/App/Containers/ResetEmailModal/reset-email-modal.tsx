@@ -1,27 +1,31 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikErrors } from 'formik';
 import { Button, Dialog, Text, Input } from '@deriv/components';
 import { validEmail, getErrorMessages } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { ConfirmEmailModal } from '../ConfirmEmailModal/confirm-email-modal.jsx';
+import { ConfirmEmailModal } from '../ConfirmEmailModal/confirm-email-modal';
 import { observer, useStore } from '@deriv/stores';
+
+type TResetEmailInitValues = {
+    email: string;
+};
 
 const ResetEmailModal = observer(() => {
     const { ui, client } = useStore();
     const { disableApp, enableApp, is_loading, is_reset_email_modal_visible: is_visible, toggleResetEmailModal } = ui;
     const { email } = client;
     const [is_confirm_email_modal_open, setIsConfirmResetEmailModal] = React.useState(false);
-    const [email_error_msg, setEmailErrorMsg] = React.useState(null);
+    const [email_error_msg, setEmailErrorMsg] = React.useState('');
     const [email_value, setEmailValue] = React.useState('');
 
-    const handleSubmit = values => {
+    const handleSubmit = (values: TResetEmailInitValues) => {
         setEmailValue(values.email);
         setIsConfirmResetEmailModal(true);
     };
 
-    const validateReset = values => {
-        const errors = {};
+    const validateReset = (values: TResetEmailInitValues) => {
+        const errors: FormikErrors<TResetEmailInitValues> = {};
 
         if (!values.email) {
             errors.email = localize('The email input should not be empty.');
@@ -32,7 +36,7 @@ const ResetEmailModal = observer(() => {
         return errors;
     };
 
-    const reset_initial_values = { email: email_value };
+    const reset_initial_values: TResetEmailInitValues = { email: email_value };
 
     if (is_confirm_email_modal_open) {
         return (

@@ -691,6 +691,7 @@ type TUiStore = {
     is_tablet: boolean;
     is_mobile_language_menu_open: boolean;
     is_positions_drawer_on: boolean;
+    is_reset_email_modal_visible: boolean;
     is_services_error_visible: boolean;
     is_trading_assessment_for_existing_user_enabled: boolean;
     isUrlUnavailableModalVisible: boolean;
@@ -744,6 +745,7 @@ type TUiStore = {
     toggleLinkExpiredModal: (state_change: boolean) => void;
     togglePositionsDrawer: () => void;
     toggleReadyToDepositModal: () => void;
+    toggleResetEmailModal: (state_change: boolean) => void;
     toggleServicesErrorModal: (is_visible: boolean) => void;
     toggleSetCurrencyModal: () => void;
     toggleShouldShowRealAccountsList: (value: boolean) => void;

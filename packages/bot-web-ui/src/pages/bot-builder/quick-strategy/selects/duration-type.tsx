@@ -61,7 +61,7 @@ const DurationUnit: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) => {
                             {...field}
                             readOnly
                             inputMode='none'
-                            data-testid='qs_autocomplete_durationtype'
+                            data-testid='dt_qs_durationtype'
                             autoComplete='off'
                             className='qs__select'
                             value={selected_item?.text || ''}

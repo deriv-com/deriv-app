@@ -218,9 +218,7 @@ const CFDsListing = observer(() => {
                     {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
 
-                        const track_account_subtitle = is_demo
-                            ? `${existing_account.tracking_name} Demo`
-                            : existing_account.tracking_name;
+                        const track_account_subtitle = existing_account.tracking_name;
 
                         const has_mt5_account_status =
                             existing_account?.status || is_idv_revoked
@@ -332,7 +330,7 @@ const CFDsListing = observer(() => {
                 ? available_ctrader_accounts.map(account => {
                       const existing_accounts = getExistingAccounts(account.platform, account.market_type);
                       const has_existing_accounts = existing_accounts.length > 0;
-                      const track_account_name = is_demo ? `${account.name} ${'Demo'}` : account.name;
+                      const track_account_name = account.name;
                       return has_existing_accounts ? (
                           existing_accounts.map(existing_account => (
                               <TradingAppCard
@@ -429,7 +427,7 @@ const CFDsListing = observer(() => {
                 available_dxtrade_accounts?.map(account => {
                     const existing_accounts = getExistingAccounts(account.platform, account.market_type);
                     const has_existing_accounts = existing_accounts.length > 0;
-                    const track_account_name = is_demo ? `${account.name} ${'Demo'}` : account.name;
+                    const track_account_name = account.name;
 
                     return has_existing_accounts ? (
                         existing_accounts.map(existing_account => (

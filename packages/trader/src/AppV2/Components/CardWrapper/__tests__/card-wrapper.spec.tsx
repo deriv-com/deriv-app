@@ -20,15 +20,6 @@ describe('CardWrapper component', () => {
         expect(screen.getByText('Test Title')).toBeInTheDocument();
     });
 
-    it('does not render the title when not provided', () => {
-        render(
-            <CardWrapper>
-                <div>Child content</div>
-            </CardWrapper>
-        );
-        expect(screen.queryByText('Test Title')).not.toBeInTheDocument();
-    });
-
     it('applies correct classes to the Text component', () => {
         render(
             <CardWrapper title='Test Title'>

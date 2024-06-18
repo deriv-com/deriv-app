@@ -1,17 +1,17 @@
 import React from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
-import { Icon, Loading } from '@deriv/components';
+import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { routes, ContentFlag } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useHasSetCurrency } from '@deriv/hooks';
 import { TActiveAccount } from '@deriv/stores/types';
-import { LabelPairedChevronRightSmRegularIcon } from '@deriv/quill-icons';
+import { LabelPairedChevronRightSmRegularIcon, StandaloneDerivIcon } from '@deriv/quill-icons';
 import { Button, Text } from '@deriv-com/quill-ui';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { BinaryLink } from 'App/Components/Routes';
 import AccountListDTraderV2 from './account-switcher-account-list-dtrader-v2';
-import AccountGroupWrapper from './account-group-warpper-dtrader-v2';
+import AccountGroupWrapper from './account-group-wrapper-dtrader-v2';
 import { getSortedAccountList, getSortedCFDList, isDemo } from '../../../../Containers/AccountSwitcher/helpers';
 
 type TAccountSwitcherDTraderV2 = RouteComponentProps & {
@@ -55,6 +55,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
     const show_separator =
         (is_low_risk && has_maltainvest_account) ||
         ((!is_high_risk || is_eu) && has_maltainvest_account && is_low_risk);
+    const show_button = (has_active_real_account && !is_virtual && !is_closing) || !has_any_real_account;
 
     // TODO: Check unused css
 
@@ -76,6 +77,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
             return;
         }
 
+        // TODO: add loader skeleton for account switcher (check production). No Figma design
         await switchAccount(loginid);
         setIsClosing(false);
     };
@@ -191,9 +193,11 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
     };
 
     const getAddAccountButton = (account: string, is_eu?: boolean) => (
-        <div key={account} className='acc-switcher__new-account'>
-            <Icon icon='IcDeriv' size={24} />
-            <Text size='sm'>{getAccountTitle(account)}</Text>
+        <div key={account} className='acc-switcher-dtrader__new-account'>
+            <StandaloneDerivIcon iconSize='sm' />
+            <Text size='sm' className='acc-switcher-dtrader__new-account__info'>
+                {getAccountTitle(account)}
+            </Text>
             <Button
                 onClick={() => {
                     if (real_account_creation_unlock_date) {
@@ -208,7 +212,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
                 label={<Localize i18n_default_text='Add' />}
                 type='button'
                 variant='secondary'
-                size='sm'
+                size='md'
             />
         </div>
     );
@@ -232,14 +236,11 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
             {(!is_eu || is_low_risk) && (
                 <AccountGroupWrapper
                     separator_text={
-                        is_low_risk &&
-                        has_maltainvest_account &&
-                        localize(`Non-EU Deriv ${checkIfUserHaveMoreAccount('CR') ? 'accounts' : 'account'}`)
+                        is_low_risk && has_maltainvest_account
+                            ? localize(`Non-EU Deriv ${checkIfUserHaveMoreAccount('CR') ? 'accounts' : 'account'}`)
+                            : ''
                     }
                 >
-                    {/* {is_low_risk && has_maltainvest_account
-                        ? localize(`Non-EU Deriv ${checkIfUserHaveMoreAccount('CR') ? 'accounts' : 'account'}`)
-                        : localize(`Deriv ${checkIfUserHaveMoreAccount('CR') ? 'accounts' : 'account'}`)} */}
                     {(getSortedAccountList(account_list, accounts) as typeof account_list)
                         .filter(account => !account.is_virtual && account?.loginid?.startsWith('CR'))
                         .map(account => getAccountItem(account))}
@@ -252,12 +253,11 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
             {(!is_high_risk || is_eu) && has_maltainvest_account && (
                 <AccountGroupWrapper
                     separator_text={
-                        is_low_risk && localize(`EU Deriv ${checkIfUserHaveMoreAccount('MF') ? 'accounts' : 'account'}`)
+                        is_low_risk
+                            ? localize(`EU Deriv ${checkIfUserHaveMoreAccount('MF') ? 'accounts' : 'account'}`)
+                            : ''
                     }
                 >
-                    {/* {is_low_risk && has_maltainvest_account
-                        ? localize(`EU Deriv ${checkIfUserHaveMoreAccount('MF') ? 'accounts' : 'account'}`)
-                        : localize(`Deriv ${checkIfUserHaveMoreAccount('MF') ? 'accounts' : 'account'}`)} */}
                     {(getSortedAccountList(account_list, accounts) as typeof account_list)
                         .filter(account => !account.is_virtual && account?.loginid?.startsWith('MF'))
                         .map(account => getAccountItem(account))}
@@ -285,10 +285,16 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
                         </Text>
                         <LabelPairedChevronRightSmRegularIcon />
                     </BinaryLink>
-                    {has_active_real_account && !is_virtual && !is_closing && (
+                    {show_button && (
                         <Button
                             color='black'
-                            label={<Localize i18n_default_text='Manage accounts' />}
+                            label={
+                                has_any_real_account ? (
+                                    <Localize i18n_default_text='Manage accounts' />
+                                ) : (
+                                    <Localize i18n_default_text='Add real account' />
+                                )
+                            }
                             onClick={handleManageAccounts}
                             size='lg'
                             type='button'

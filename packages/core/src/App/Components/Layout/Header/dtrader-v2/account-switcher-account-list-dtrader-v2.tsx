@@ -21,13 +21,13 @@ type TAccountListDTraderV2 = {
     is_eu?: boolean;
     loginid?: string;
     market_type?: string;
-    redirectAccount?: () => void;
     onClickResetVirtualBalance?: () => Promise<void>;
+    platform?: string;
+    redirectAccount?: () => void;
     selected_loginid?: number | string;
     server?: any;
     shortcode?: string;
     sub_account_type?: string;
-    platform?: string;
     should_show_server_name?: boolean;
 };
 const AccountListDTraderV2 = ({
@@ -42,17 +42,17 @@ const AccountListDTraderV2 = ({
     is_eu,
     loginid,
     market_type,
-    redirectAccount,
     onClickResetVirtualBalance,
+    platform,
+    redirectAccount,
     selected_loginid,
     server,
     shortcode,
     sub_account_type,
-    platform,
     should_show_server_name,
 }: TAccountListDTraderV2) => (
+    // TODO: applied temporary style for disabled account. Need design
     <div
-        id={`dt_${loginid}`}
         className={classNames('acc-switcher-dtrader__account', {
             'acc-switcher-dtrader__account--selected': loginid === selected_loginid,
             'acc-switcher-dtrader__account--disabled': is_disabled,

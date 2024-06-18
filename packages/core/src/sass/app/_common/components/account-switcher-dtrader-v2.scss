@@ -33,7 +33,8 @@
         }
     }
 
-    &__account {
+    &__account,
+    &__new-account {
         display: flex;
         align-items: center;
         justify-content: space-between;

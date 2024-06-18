@@ -13,9 +13,14 @@ jobs:
         with:
           github-token: ${{ secrets.E2E_WORKFLOW_TOKEN }}
           script: |
-            github.actions.createWorkflowDispatch({
+            const response = await github.rest.actions.createWorkflowDispatch({
               owner: 'regentmarkets',
               repo: 'e2e-deriv-app',
               workflow_id: 'E2E_Run_v2.yml',
-              ref: 'master'
-            })
+              ref: 'master',
+              inputs: {
+                parameter1: 'This is a test param! It could be the PR, the label, etc',
+                // Add more parameters as needed
+              }
+            });
+            console.log('Workflow dispatched successfully:', response);

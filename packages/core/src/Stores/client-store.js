@@ -30,6 +30,7 @@ import {
     sortApiData,
     urlForLanguage,
     getAppId,
+    getUrlP2P,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
@@ -426,6 +427,9 @@ export default class ClientStore extends BaseStore {
             ],
             () => {
                 this.setCookieAccount();
+                if (!this.is_logged_in) {
+                    this.root_store.traders_hub.cleanup();
+                }
             }
         );
 
@@ -441,9 +445,14 @@ export default class ClientStore extends BaseStore {
         );
 
         reaction(
-            () => [this.is_logged_in, this.is_authorize, this.is_passkey_supported],
+            () => [this.is_logged_in, this.is_authorize, this.is_passkey_supported, this.root_store.ui?.is_mobile],
             () => {
-                if (this.is_logged_in && this.is_authorize && this.is_passkey_supported) {
+                if (
+                    this.is_logged_in &&
+                    this.is_authorize &&
+                    this.is_passkey_supported &&
+                    this.root_store.ui?.is_mobile
+                ) {
                     this.fetchShouldShowEffortlessLoginModal();
                 }
             }
@@ -1845,8 +1854,6 @@ export default class ClientStore extends BaseStore {
         // broadcastAccountChange is already called after new connection is authorized
         if (!should_switch_socket_connection) this.broadcastAccountChange();
 
-        if (!this.is_virtual) this.getLimits();
-
         runInAction(() => (this.is_switching = false));
     }
 
@@ -2004,6 +2011,9 @@ export default class ClientStore extends BaseStore {
     }
 
     async logout() {
+        // makes sure to clear the cached traders-hub data when logging out
+        localStorage.removeItem('traders_hub_store');
+
         // TODO: [add-client-action] - Move logout functionality to client store
         const response = await requestLogout();
 
@@ -2509,13 +2519,16 @@ export default class ClientStore extends BaseStore {
     syncWithLegacyPlatforms(active_loginid, client_accounts) {
         const smartTrader = {};
         const binaryBot = {};
+        const p2p = {};
 
         smartTrader.iframe = document.getElementById('localstorage-sync');
         binaryBot.iframe = document.getElementById('localstorage-sync__bot');
+        p2p.iframe = document.getElementById('localstorage-sync__p2p');
         smartTrader.origin = getUrlSmartTrader();
         binaryBot.origin = getUrlBinaryBot(false);
+        p2p.origin = getUrlP2P(false);
 
-        [smartTrader, binaryBot].forEach(platform => {
+        [smartTrader, binaryBot, p2p].forEach(platform => {
             if (platform.iframe) {
                 // Keep client.accounts in sync (in case user wasn't logged in).
                 platform.iframe.contentWindow.postMessage(
@@ -2532,6 +2545,17 @@ export default class ClientStore extends BaseStore {
                     },
                     platform.origin
                 );
+
+                if (platform === p2p) {
+                    const currentLang = LocalStore.get(LANGUAGE_KEY);
+                    platform.iframe.contentWindow.postMessage(
+                        {
+                            key: LANGUAGE_KEY,
+                            value: currentLang,
+                        },
+                        platform.origin
+                    );
+                }
             }
         });
     }
@@ -2692,34 +2716,26 @@ export default class ClientStore extends BaseStore {
     setShouldShowEffortlessLoginModal(should_show_effortless_login_modal = true) {
         this.should_show_effortless_login_modal = should_show_effortless_login_modal;
     }
+
     async fetchShouldShowEffortlessLoginModal() {
-        if (this.is_passkey_supported) {
-            try {
-                const stored_value = localStorage.getItem('show_effortless_login_modal');
-                const show_effortless_login_modal = stored_value === null || JSON.parse(stored_value) === true;
-                if (show_effortless_login_modal) {
-                    localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
-                }
+        try {
+            const stored_value = localStorage.getItem('show_effortless_login_modal');
+            const show_effortless_login_modal = stored_value === null || JSON.parse(stored_value) === true;
+
+            if (show_effortless_login_modal) {
+                localStorage.setItem('show_effortless_login_modal', JSON.stringify(true));
 
                 const data = await WS.authorized.send({ passkeys_list: 1 });
 
-                if (data?.passkeys_list) {
-                    const should_show_effortless_login_modal =
-                        this.root_store.ui.is_mobile &&
-                        !data?.passkeys_list?.length &&
-                        this.is_passkey_supported &&
-                        show_effortless_login_modal &&
-                        this.is_logged_in;
-
-                    this.setShouldShowEffortlessLoginModal(should_show_effortless_login_modal);
+                if (data?.passkeys_list?.length === 0) {
+                    this.setShouldShowEffortlessLoginModal(true);
                 } else {
                     this.setShouldShowEffortlessLoginModal(false);
+                    localStorage.setItem('show_effortless_login_modal', JSON.stringify(false));
                 }
-            } catch (e) {
-                //error handling needed
             }
-        } else {
-            this.setShouldShowEffortlessLoginModal(false);
+        } catch (e) {
+            //error handling needed
         }
     }
 

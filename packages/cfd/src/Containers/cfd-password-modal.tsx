@@ -875,7 +875,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     i18n_default_text='Your demo {{type}} account is ready.'
                     values={{
                         type: accountTypes(),
-                        deriv: is_eu_user ? 'Deriv' : 'Deriv MT5',
+                        deriv: 'Deriv MT5',
                     }}
                 />
             );

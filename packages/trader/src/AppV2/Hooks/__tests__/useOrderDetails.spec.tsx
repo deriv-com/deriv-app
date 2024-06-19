@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { CONTRACT_TYPES, TContractInfo, getCardLabels, mockContractInfo } from '@deriv/shared';
+import { CONTRACT_TYPES, TContractInfo, getCardLabelsV2 } from '@deriv/shared';
 import useOrderDetails from '../useOrderDetails';
 
 jest.mock('@deriv/translations', () => ({
@@ -43,7 +43,7 @@ const mockData: TContractInfo = {
 };
 
 describe('useOrderDetails', () => {
-    const CARD_LABELS = getCardLabels();
+    const CARD_LABELS = getCardLabelsV2();
 
     it('should return correct details for multiplier contract', () => {
         mockData.contract_type = CONTRACT_TYPES.MULTIPLIER.UP;

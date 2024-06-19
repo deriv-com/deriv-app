@@ -8,11 +8,11 @@ import {
     getGrowthRatePercentage,
     isAccumulatorContract,
     isResetContract,
-    getCardLabels,
+    getCardLabelsV2,
 } from '@deriv/shared';
 import { getBarrierValue } from 'App/Components/Elements/PositionsDrawer/helpers';
 
-const CARD_LABELS = getCardLabels();
+const CARD_LABELS = getCardLabelsV2();
 
 // Contains all key values that are used more than once in different transform objects
 const getCommonFields = (data: TContractInfo) => {

@@ -1,6 +1,6 @@
 import { Button, TButtonColor, TButtonVariant } from '@deriv-com/quill-ui';
 import { RemainingTime } from '@deriv/components';
-import { TContractInfo, getCardLabels, isMultiplierContract, isValidToCancel, isValidToSell } from '@deriv/shared';
+import { TContractInfo, getCardLabels, getCardLabelsV2, isMultiplierContract, isValidToCancel, isValidToSell } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import React from 'react';
 import { observer } from 'mobx-react';
@@ -35,7 +35,7 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const is_multiplier = isMultiplierContract(contract_type);
 
-    const cardLabels = getCardLabels();
+    const cardLabels = getCardLabelsV2();
     const bidDetails = !is_valid_to_cancel ? `@${bid_price} ${currency}` : '';
     const label = `${cardLabels.CLOSE} ${bidDetails}`;
 
@@ -62,14 +62,14 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                             onClick={() => onClickCancel(contract_id)}
                             label={
                                 <>
-                                    {getCardLabels().CANCEL}
+                                    {cardLabels.CANCEL}
                                     {'  '}
                                     <RemainingTime
                                         as='span'
                                         end_time={cancellation_date_expiry}
                                         format='mm:ss'
                                         className='color'
-                                        getCardLabels={getCardLabels}
+                                        getCardLabels={getCardLabelsV2}
                                         start_time={server_time}
                                     />
                                 </>
@@ -83,8 +83,8 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                 <Button
                     label={
                         is_valid_to_sell
-                            ? `${getCardLabels().CLOSE} @ ${FormatUtils.formatMoney(bid_price || 0)} ${currency}`
-                            : getCardLabels().RESALE_NOT_OFFERED
+                            ? `${cardLabels.CLOSE} @ ${FormatUtils.formatMoney(bid_price || 0)} ${currency}`
+                            : cardLabels.RESALE_NOT_OFFERED
                     }
                     isLoading={is_sell_requested && is_valid_to_sell}
                     onClick={is_valid_to_sell ? () => onClickSell(contract_id) : undefined}

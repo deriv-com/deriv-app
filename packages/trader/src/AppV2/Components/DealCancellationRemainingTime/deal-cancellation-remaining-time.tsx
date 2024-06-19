@@ -1,6 +1,6 @@
 import { Tag } from '@deriv-com/quill-ui';
 import { RemainingTime } from '@deriv/components';
-import { getCardLabels } from '@deriv/shared';
+import { getCardLabelsV2 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import React from 'react';
@@ -29,7 +29,7 @@ const DealCancellationRemainingTime = observer(({ format = 'mm:ss' }: DealCancel
                     <RemainingTime
                         end_time={end_time}
                         format='mm:ss'
-                        getCardLabels={getCardLabels}
+                        getCardLabels={getCardLabelsV2}
                         start_time={start_time}
                     />
                 }

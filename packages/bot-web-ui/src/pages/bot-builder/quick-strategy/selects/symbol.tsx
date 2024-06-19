@@ -116,7 +116,7 @@ const SymbolSelect: React.FC = () => {
                             {...rest_field}
                             readOnly={is_mobile}
                             inputMode='none'
-                            data-testid='qs_autocomplete_symbol'
+                            data-testid='dt_qs_symbol'
                             autoComplete='off'
                             className='qs__autocomplete'
                             value={input_value.text}

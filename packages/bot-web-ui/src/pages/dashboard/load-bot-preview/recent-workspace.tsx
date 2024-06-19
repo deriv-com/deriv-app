@@ -141,6 +141,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                 <div className='bot-list__item__actions'>
                     {MENU_DESKTOP.map(item => (
                         <div
+                            data-testid={`dt_desktop_bot_list_action-${item.type}`}
                             key={item.type}
                             className='bot-list__item__actions__action-item'
                             onClick={e => {
@@ -167,6 +168,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                 >
                     {CONTEXT_MENU_MOBILE.map(item => (
                         <div
+                            data-testid={`dt_mobile_bot_list_action-${item.type}`}
                             key={item.type}
                             className='bot-list__item__responsive__menu'
                             onClick={e => {

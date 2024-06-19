@@ -15,7 +15,7 @@ jobs:
           script: |
             const workflowInputs = {
               environment: '${{ secrets.E2E_WORKFLOW_ENV }}',
-              suite: '${{ secrets.E2E_WORKFLOW_SUITE }}'
+              suite: '${{ secrets.E2E_WORKFLOW_SUITE }}',
               triggeredByPR: 'true',
               appRegUrl: 'https://deriv-app-git-fork-suisin-deriv-suisin-upm917addswahililanguage.binary.sx'
               };

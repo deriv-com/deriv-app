@@ -173,7 +173,6 @@ const TradingAppCard = ({
                             className='title'
                             size='xs'
                             line_height='s'
-                            weight={action_type === 'get' ? 'normal' : 'bold'}
                             color={action_type === 'trade' ? 'prominent' : 'general'}
                             data-testid={
                                 action_type === 'get' || is_deriv_platform ? 'dt_platform-name' : 'dt_account-balance'

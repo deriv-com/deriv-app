@@ -9,7 +9,6 @@ jest.mock('@deriv/translations', () => ({
 
 jest.mock('@deriv/shared', () => ({
     getDurationPeriod: jest.fn(),
-    getDurationPeriod: jest.fn(),
     getDurationUnitText: jest.fn(),
     getGrowthRatePercentage: jest.fn(() => '10'),
     isAccumulatorContract: jest.fn(),

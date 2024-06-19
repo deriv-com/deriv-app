@@ -1,8 +1,8 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { render, screen } from '@testing-library/react';
 
 import RiskManagementInfoModal from '../risk-management-info-modal';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv/quill-icons', () => ({
     LabelPairedCircleInfoSmRegularIcon: () => <svg />,
@@ -38,13 +38,13 @@ describe('RiskManagementInfoModal', () => {
         );
 
         const button = screen.getByRole('button');
-        fireEvent.click(button);
+        userEvent.click(button);
 
         expect(screen.getByText(headerContent)).toBeInTheDocument();
         expect(screen.getByText(bodyContent)).toBeInTheDocument();
         expect(screen.getByText(infoMessage)).toBeInTheDocument();
 
-        fireEvent.click(button);
+        userEvent.click(button);
 
         expect(screen.queryByText(headerContent)).not.toBeInTheDocument();
     });
@@ -53,7 +53,7 @@ describe('RiskManagementInfoModal', () => {
         render(<RiskManagementInfoModal header_content={headerContent} body_content={bodyContent} />);
 
         const button = screen.getByRole('button');
-        fireEvent.click(button);
+        userEvent.click(button);
 
         expect(screen.getByText(headerContent)).toBeInTheDocument();
         expect(screen.getByText(bodyContent)).toBeInTheDocument();

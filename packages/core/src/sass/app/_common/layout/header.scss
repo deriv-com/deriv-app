@@ -437,6 +437,7 @@
     padding: var(--core-spacing-600) var(--core-spacing-50);
     .arrow {
         position: absolute;
+        cursor: pointer;
         left: var(--core-size-1200);
     }
 }

@@ -5,6 +5,7 @@ import { useStore } from '@deriv/stores';
 import React from 'react';
 import { observer } from 'mobx-react';
 import { TRegularSizesWithExtraLarge } from '@deriv-com/quill-ui/dist/types';
+import { FormatUtils } from '@deriv-com/utils';
 
 type ContractInfoProps = {
     contract_info: TContractInfo;
@@ -82,7 +83,7 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                 <Button
                     label={
                         is_valid_to_sell
-                            ? `${getCardLabels().CLOSE} @ ${bid_price?.toFixed(2)} ${currency}`
+                            ? `${getCardLabels().CLOSE} @ ${FormatUtils.formatMoney(bid_price || 0)} ${currency}`
                             : getCardLabels().RESALE_NOT_OFFERED
                     }
                     isLoading={is_sell_requested && is_valid_to_sell}

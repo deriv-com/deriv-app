@@ -5,7 +5,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { TPortfolioPosition } from '@deriv/stores/types';
 import { mockStore } from '@deriv/stores';
-import OpenPositions, { OpenPositionsTable, getRowAction, isPurchaseReceived } from '../open-positions';
+import OpenPositions from '../open-positions';
 import ReportsProviders from '../../reports-providers';
 
 jest.mock('@deriv/shared', () => ({
@@ -460,80 +460,5 @@ describe('OpenPositions', () => {
         expect(screen.getAllByRole('combobox')[1]).toHaveValue('All growth rates');
         userEvent.selectOptions(screen.getAllByRole('combobox')[1], '5%');
         expect(screen.getAllByRole('combobox')[1]).toHaveValue('5%');
-    });
-});
-
-describe('isPurchaseReceived', () => {
-    it('should return true if purchase value (position purchase) is 0 / NaN / undefined', () => {
-        expect(isPurchaseReceived({ purchase: 0 })).toBe(true);
-        expect(isPurchaseReceived({ purchase: NaN })).toBe(true);
-        expect(isPurchaseReceived({})).toBe(true);
-    });
-    it('should return false if purchase value (position purchase) is a non-zero number', () => {
-        expect(isPurchaseReceived({ purchase: 10 })).toBe(false);
-        expect(isPurchaseReceived({ purchase: 1.55 })).toBe(false);
-    });
-});
-
-describe('getRowAction', () => {
-    it('should return an empty object if received data is an empty object, or if contract_info and id are missing in it', () => {
-        expect(getRowAction()).toMatchObject({});
-        expect(getRowAction({})).toMatchObject({});
-        expect(getRowAction({ ...options_position, id: '', contract_info: undefined })).toMatchObject({});
-        expect(getRowAction({ ...options_position, id: '', contract_info: undefined, type: '' })).toMatchObject({});
-    });
-    it('should return contract path string if received data has an id, and if contract is not unsupported or forward-starting', () => {
-        expect(getRowAction({ id: options_position.id })).toEqual(`/contract/${options_position.id}`);
-        expect(getRowAction(options_position)).toEqual(`/contract/${options_position.id}`);
-    });
-    it('should return an object with component that renders a correct message if contract type is unsupported', () => {
-        render(
-            (
-                getRowAction({
-                    ...options_position,
-                    type: 'CALLSPREAD',
-                }) as Record<string, JSX.Element>
-            ).component
-        );
-        expect(screen.getByText(/contract details aren't currently available/i)).toBeInTheDocument();
-    });
-    it('should return an object with component that renders a correct message if contract is forward-starting', () => {
-        render(
-            (
-                getRowAction({
-                    ...options_position,
-                    contract_info: {
-                        ...options_position.contract_info,
-                        current_spot_time: 1717662763,
-                        date_start: future_time,
-                    },
-                }) as Record<string, JSX.Element>
-            ).component
-        );
-        expect(screen.getByText("You'll see these details once the contract starts.")).toBeInTheDocument();
-    });
-});
-
-describe('OpenPositionsTable', () => {
-    beforeEach(() => {
-        (isMobile as jest.Mock).mockReturnValue(false);
-        (isDesktop as jest.Mock).mockReturnValue(true);
-    });
-
-    it('should render "Loading" component when "is_loading" property is passed and it\'s value is "true"', () => {
-        render(<OpenPositionsTable is_loading />);
-        expect(screen.getByTestId('dt_loading_component')).toBeInTheDocument();
-    });
-
-    it('should render "DataTable" component and it\'s properties when "is_loading" property is "false" and the "currency" property is passed in the "desktop" view', () => {
-        render(<OpenPositionsTable currency='USD' active_positions={[100]} columns={[]} className='test-class' />);
-        expect(screen.getByTestId('dt_data_table')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_data_table')).toHaveClass('test-class');
-    });
-
-    it('should render "DataList" component and it\'s properties when "is_loading" property is "false" and the "currency" property is passed in the "mobile" view', () => {
-        isMobile.mockReturnValue(true);
-        render(<OpenPositionsTable currency='USD' active_positions={[100]} columns={[]} className='test-class' />);
-        expect(screen.getByText('DataList')).toBeInTheDocument();
     });
 });

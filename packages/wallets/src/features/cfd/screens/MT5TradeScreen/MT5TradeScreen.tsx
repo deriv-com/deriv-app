@@ -228,7 +228,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                                     <span className='wallets-mt5-trade-screen__ctrader-get-more-button__icon'>
                                         <LabelPairedPlusMdFillIcon fill='#000000' />
                                     </span>
-                                    <WalletText size='xs'>Get another cTrader cTrader account</WalletText>
+                                    <WalletText size='xs'>Get another cTrader account</WalletText>
                                 </button>
                             )}
                         <Accordion

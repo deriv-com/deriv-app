@@ -17,7 +17,6 @@ const useContractDetails = () => {
         if (urlContractId != contract_info.contract_id) {
             onMount(parseInt(urlContractId));
         }
-        return () => onUnmount();
     }, [location.pathname, onMount, onUnmount, contract_info.contract_id]);
 
     return {

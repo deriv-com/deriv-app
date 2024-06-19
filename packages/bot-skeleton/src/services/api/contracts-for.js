@@ -436,10 +436,18 @@ export default class ContractsFor {
 
                 if (!is_disabled && has_durations) {
                     const types = opposites[trade_type.toUpperCase()];
+                    const icons = [];
+                    const names = [];
+
+                    types.forEach(type => {
+                        icons.push(Object.keys(type)[0]);
+                        names.push(Object.values(type)[0]);
+                    });
+
                     dropdown_options.push({
-                        name: types.map(type => type[Object.keys(type)[0]]).join('/'),
+                        name: names.join('/'),
                         value: trade_type,
-                        icon: [Object.keys(types[0])[0], Object.keys(types[1])[0]],
+                        icon: icons,
                     });
                 }
             }

@@ -91,10 +91,14 @@ const PersonalDetailsForm = observer(() => {
 
     useEffect(() => {
         const init = async () => {
-            await WS.wait('get_settings');
-            await invalidate('residence_list');
-            await invalidate('states_list');
-            setIsLoading(false);
+            try {
+                // Order of API calls is important
+                await WS.wait('get_settings');
+                await invalidate('residence_list');
+                await invalidate('states_list');
+            } finally {
+                setIsLoading(false);
+            }
         };
         if (is_language_changing) {
             setIsLoading(true);

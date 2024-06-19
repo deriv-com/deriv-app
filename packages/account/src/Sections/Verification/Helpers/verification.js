@@ -16,12 +16,13 @@ export const populateVerificationStatus = account_status => {
     const is_idv_disallowed = account_status.status.some(status => status === 'idv_disallowed');
     const poa_address_mismatch = account_status.status.some(status => status === 'poa_address_mismatch');
     const poi_expiring_soon = account_status.status.some(status => status === 'poi_expiring_soon');
+    const poa_authenticated_with_idv = account_status.status.some(status => status === 'poa_authenticated_with_idv');
     const poa_expiring_soon = account_status.status.some(status => status === 'poa_expiring_soon');
 
     const has_poa = !(document && document.status === 'none');
     const has_poi = !(identity && identity.status === 'none');
     const has_poinc = !(income && income.status === 'none');
-    const has_submitted_poa = document_status === 'pending' && !allow_poa_resubmission;
+    const has_submitted_poa = document_status === 'pending' && !allow_poa_resubmission && !poa_authenticated_with_idv;
     const needs_poa = Boolean(needs_verification.length) && needs_verification.includes('document');
     const needs_poi = Boolean(needs_verification.length) && needs_verification.includes('identity');
     const needs_poinc = needs_verification.length && needs_verification.includes('income');
@@ -55,6 +56,7 @@ export const populateVerificationStatus = account_status => {
         needs_verification,
         onfido,
         poa_address_mismatch,
+        poa_authenticated_with_idv,
         poi_expiring_soon,
         poa_expiring_soon,
     };

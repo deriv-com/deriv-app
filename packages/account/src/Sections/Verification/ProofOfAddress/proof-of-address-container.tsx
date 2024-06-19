@@ -28,7 +28,8 @@ type TAuthenticationStatus = Record<
     | 'needs_poi'
     | 'poa_address_mismatch'
     | 'resubmit_poa'
-    | 'poa_expiring_soon',
+    | 'poa_expiring_soon'
+    | 'poa_authenticated_with_idv',
     boolean
 > & { document_status?: DeepRequired<GetAccountStatus>['authentication']['document']['status'] };
 
@@ -47,6 +48,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
         is_age_verified: false,
         poa_address_mismatch: false,
         poa_expiring_soon: false,
+        poa_authenticated_with_idv: false,
     });
 
     const { client, notifications, common, ui } = useStore();
@@ -69,6 +71,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
                         needs_poa,
                         needs_poi,
                         poa_address_mismatch,
+                        poa_authenticated_with_idv,
                         poa_expiring_soon,
                     } = populateVerificationStatus(get_account_status);
 
@@ -82,6 +85,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
                         needs_poa,
                         needs_poi,
                         poa_address_mismatch,
+                        poa_authenticated_with_idv,
                         poa_expiring_soon,
                     }));
                     setIsLoading(false);
@@ -114,6 +118,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
         has_submitted_poa,
         poa_address_mismatch,
         poa_expiring_soon,
+        poa_authenticated_with_idv,
     } = authentication_status;
 
     const from_platform = getPlatformRedirect(app_routing_history);
@@ -127,7 +132,8 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
             document_status &&
             ['expired', 'rejected', 'suspected'].includes(document_status)) ||
         poa_address_mismatch ||
-        poa_expiring_soon;
+        poa_expiring_soon ||
+        poa_authenticated_with_idv;
 
     const redirect_button = should_show_redirect_btn && (
         <Button

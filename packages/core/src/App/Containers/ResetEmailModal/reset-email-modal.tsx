@@ -58,7 +58,7 @@ const ResetEmailModal = observer(() => {
             validate={validateReset}
             onSubmit={handleSubmit}
         >
-            {({ errors, values, touched, isSubmitting, handleChange, setFieldTouched, status }) => (
+            {({ errors, values, touched, isSubmitting, handleBlur, handleChange, setFieldTouched, status }) => (
                 <Dialog
                     is_visible={is_visible}
                     disableApp={disableApp}
@@ -105,6 +105,7 @@ const ResetEmailModal = observer(() => {
                                                 required
                                                 disabled={false}
                                                 error={(touched.email && errors.email) || email_error_msg}
+                                                onBlur={handleBlur}
                                                 onChange={e => {
                                                     setEmailErrorMsg('');
                                                     setFieldTouched('email', true);

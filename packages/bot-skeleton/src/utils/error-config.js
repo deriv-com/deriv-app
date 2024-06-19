@@ -2,7 +2,7 @@ import { localize } from '@deriv/translations';
 
 const generateErrorMessage = (block_type, missing_space = localize('workspace')) => {
     return {
-        missing: localize('The {{block_type}} block is mandatory and cannot be deleted/disabled.', {
+        missing: localize('The {{block_type}} block is missing.', {
             block_type,
         }),
         misplaced: localize('The {{block_type}} block is misplaced from {{missing_space}}.', {

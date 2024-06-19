@@ -75,7 +75,6 @@ const ContractDetails = observer(() => {
     }
     return (
         <>
-            {' '}
             <div
                 className={classNames('contract-details', {
                     'contract-details--two-buttons': shouldShowSell && showCancelButton,

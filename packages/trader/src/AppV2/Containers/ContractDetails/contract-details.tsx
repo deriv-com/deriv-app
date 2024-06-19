@@ -29,6 +29,7 @@ import { ContractCard } from 'AppV2/Components/ContractCard';
 const ContractDetails = observer(() => {
     const { contract_info, is_loading } = useContractDetails();
     const { contract_id, currency, contract_type, limit_order } = contract_info;
+    const { take_profit, stop_loss } = limit_order ?? { take_profit: {}, stop_loss: {} };
     const [update_history, setUpdateHistory] = React.useState<TContractUpdateHistory>([]);
     const { common } = useStore();
     const { server_time } = common;
@@ -52,7 +53,7 @@ const ContractDetails = observer(() => {
 
     React.useEffect(() => {
         requestUpdatedHistory(contract_id);
-    }, [contract_id, limit_order, requestUpdatedHistory]);
+    }, [contract_id, take_profit?.order_amount, stop_loss?.order_amount, requestUpdatedHistory]);
 
     if (is_loading) return <></>;
 

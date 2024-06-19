@@ -32,7 +32,15 @@ window.Blockly = {
                     tagName: 'CATEGORY',
                     id: 'Utility',
                     getAttribute: () => 'Utility',
-                    childNodes: [],
+                    childNodes: [
+                        {
+                            tagName: 'CATEGORY',
+                            id: 'Math',
+                            getAttribute: () => 'Math',
+                            childNodes: [],
+                            children: [],
+                        },
+                    ],
                     children: [
                         {
                             tagName: 'CATEGORY',
@@ -43,6 +51,13 @@ window.Blockly = {
                         },
                     ],
                 },
+                {
+                    tagName: 'NOCATEGORY',
+                    id: 'Trade parameters',
+                    getAttribute: () => 'Trade parameters',
+                    childNodes: [],
+                    children: [],
+                },
             ],
         }),
     },
@@ -50,9 +65,9 @@ window.Blockly = {
 
 describe('Toolbox', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+    const mock_store = mockStore({});
 
     beforeEach(() => {
-        const mock_store = mockStore({});
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
 
         wrapper = ({ children }: { children: JSX.Element }) => (
@@ -100,5 +115,22 @@ describe('Toolbox', () => {
 
         userEvent.click(block_menu_subcategory);
         expect(mock_DBot_store?.flyout.is_visible).toBeFalsy();
+    });
+
+    it('should render flyout to be true when block menu subcategory item is clicked', () => {
+        render(<Toolbox />, { wrapper });
+        const block_menu_subcategory = screen.getByText('Utility');
+
+        userEvent.click(block_menu_subcategory);
+        userEvent.click(screen.getByText('Math'));
+
+        expect(mock_DBot_store?.flyout.is_visible).toBeTruthy();
+    });
+
+    it('should render without toolbox component on responsive device', () => {
+        mock_store.ui.is_mobile = true;
+        render(<Toolbox />, { wrapper });
+
+        expect(screen.queryByTestId('db-toolbox__title')).not.toBeInTheDocument();
     });
 });

@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react';
+import React from 'react';
 import { Trans } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useActiveLinkedToTradingAccount } from '@deriv/api-v2';
@@ -10,7 +10,6 @@ import { TSubscribedBalance } from '../../types';
 import { WalletLink, WalletText } from '../Base';
 import { DerivAppsSection } from '../DerivAppsSection';
 import { TradingAccountCard } from '../TradingAccountCard';
-import { WalletMarketIcon } from '../WalletMarketIcon';
 import LinkTitle from './LinkTitle';
 import './OptionsAndMultipliersListing.scss';
 

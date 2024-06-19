@@ -1,5 +1,3 @@
-import { useMemo } from 'react';
-
 import { useQuery } from '@deriv/api';
 import { TSocketRequestQueryOptions } from '@deriv/api/types';
 
@@ -12,12 +10,9 @@ const useResidenceList = (options?: TSocketRequestQueryOptions<'residence_list'>
         },
     });
 
-    // /** Modify the residence list data. */
-    const modified_residence_list = !data || !data.residence_list ? [] : data.residence_list;
-
     return {
         /** The residence list */
-        data: modified_residence_list,
+        data: data?.residence_list,
         ...residence_list_rest,
     };
 };

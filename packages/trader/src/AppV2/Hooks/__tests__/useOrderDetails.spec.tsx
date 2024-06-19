@@ -30,7 +30,6 @@ const mockData: TContractInfo = {
     contract_type: '',
     display_number_of_contracts: '1',
     commission: 5,
-    commision:5,
     limit_order: {
         take_profit: { order_amount: 200 },
         stop_loss: { order_amount: 50 },

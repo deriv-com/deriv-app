@@ -2,15 +2,6 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { useStore } from '@deriv/stores';
 
-const usePrevious = value => {
-    const ref = React.useRef();
-    React.useEffect(() => {
-        ref.current = value;
-    });
-
-    return ref.current;
-};
-
 const useContractDetails = () => {
     const store = useStore();
     const { contract_replay, contract_trade } = store;
@@ -22,8 +13,8 @@ const useContractDetails = () => {
     const location = useLocation();
 
     useEffect(() => {
-        if (!contract_info.contract_id) {
-            const urlContractId = location.pathname.split('/').pop();
+        const urlContractId = location.pathname.split('/').pop();
+        if (urlContractId != contract_info.contract_id) {
             onMount(parseInt(urlContractId));
         }
         return () => onUnmount();

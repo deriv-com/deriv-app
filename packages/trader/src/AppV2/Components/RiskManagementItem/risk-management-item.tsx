@@ -69,6 +69,7 @@ const RiskManagementItem = observer(
             clearContractUpdateConfigValues();
             if (value) {
                 setIsSheetOpen(true);
+                setStepperValue(0)
                 setIsEnabled(true);
             } else {
                 contract.onChange?.({

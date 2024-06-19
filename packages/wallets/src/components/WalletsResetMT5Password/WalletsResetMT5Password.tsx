@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
 import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordReset } from '@deriv/api-v2';
 import { CFD_PLATFORMS, PlatformDetails } from '../../features/cfd/constants';
+import useDevice from '../../hooks/useDevice';
 import { TPlatforms } from '../../types';
 import { validPassword, validPasswordMT5 } from '../../utils/password-validation';
-import { ModalWrapper, WalletButton, WalletPasswordFieldLazy, WalletText } from '../Base';
+import { ModalStepWrapper, WalletButton, WalletPasswordFieldLazy, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletError } from '../WalletError';
+import WalletsErrorMT5InvestorPassword from './WalletsErrorMT5InvestorPassword';
 import WalletSuccessResetMT5Password from './WalletSuccessResetMT5Password';
 import './WalletsResetMT5Password.scss';
 
@@ -30,7 +32,8 @@ const WalletsResetMT5Password = ({
     platform,
     verificationCode,
 }: WalletsResetMT5PasswordProps) => {
-    const { title } = PlatformDetails[platform];
+    const { isMobile } = useDevice();
+    const { title } = isInvestorPassword ? PlatformDetails.mt5Investor : PlatformDetails[platform];
     const {
         error: changePasswordError,
         isError: isChangePasswordError,
@@ -72,7 +75,9 @@ const WalletsResetMT5Password = ({
     useEffect(() => {
         if (isChangePasswordSuccess) {
             localStorage.removeItem(`verification_code.${actionParams}`); // TODO:Remove verification code from local storage
-            show(<WalletSuccessResetMT5Password title={title} />, { defaultRootId: 'wallets_modal_root' });
+            show(<WalletSuccessResetMT5Password onClick={hide} title={title} />, {
+                defaultRootId: 'wallets_modal_root',
+            });
         } else if (isChangePasswordError) {
             show(
                 <WalletError
@@ -88,26 +93,53 @@ const WalletsResetMT5Password = ({
     useEffect(() => {
         if (isChangeInvestorPasswordSuccess) {
             localStorage.removeItem(`verification_code.${actionParams}`); // TODO:Remove verification code from local storage
-            show(<WalletSuccessResetMT5Password isInvestorPassword title={title} />, {
+            show(<WalletSuccessResetMT5Password isInvestorPassword onClick={hide} title={title} />, {
                 defaultRootId: 'wallets_modal_root',
             });
         } else if (isChangeInvestorPasswordError) {
             show(
-                <WalletError
+                <WalletsErrorMT5InvestorPassword
                     errorMessage={changeInvestorPasswordError?.error?.message}
-                    onClick={hide}
-                    title={changeInvestorPasswordError?.error?.code}
+                    renderButtons={() => (
+                        <WalletButton isFullWidth={isMobile} onClick={hide}>
+                            Ok
+                        </WalletButton>
+                    )}
+                    title={title}
                 />
             );
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [platform, title, actionParams, isChangeInvestorPasswordSuccess, isChangeInvestorPasswordError]);
 
+    const renderButtons = () => (
+        <div className={'wallets-reset-mt5-password__footer'}>
+            <WalletButton isFullWidth={isMobile} onClick={() => hide()} size='lg' variant='outlined'>
+                <Trans defaults='Cancel' />
+            </WalletButton>
+            <WalletButton
+                disabled={isMT5 ? !validPasswordMT5(password) : !validPassword(password)}
+                isFullWidth={isMobile}
+                isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
+                onClick={handleSubmit}
+                size='lg'
+                variant='contained'
+            >
+                <Trans defaults='Create' />
+            </WalletButton>
+        </div>
+    );
+
     return (
-        <ModalWrapper>
+        <ModalStepWrapper
+            renderFooter={isMobile ? renderButtons : undefined}
+            shouldHideFooter={!isMobile}
+            shouldHideHeader={!isMobile}
+            title={`Manage ${title} password`}
+        >
             <div className='wallets-reset-mt5-password'>
-                <WalletText weight='bold'>
-                    {isInvestorPassword ? `Reset ${title} investor password` : `Create a new ${title} password`}
+                <WalletText align={isMobile ? 'center' : 'left'} weight='bold'>
+                    {`Create a new ${title} password`}
                 </WalletText>
                 {isMT5 && !isInvestorPassword && (
                     <WalletText size='sm'>You can use this password for all your {title} accounts.</WalletText>
@@ -119,22 +151,9 @@ const WalletsResetMT5Password = ({
                     password={password}
                 />
                 <WalletText size='sm'>{modalDescription[platform]}</WalletText>
-                <div className='wallets-reset-mt5-password__button-group'>
-                    <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
-                        <Trans defaults='Cancel' />
-                    </WalletButton>
-                    <WalletButton
-                        disabled={isMT5 ? !validPasswordMT5(password) : !validPassword(password)}
-                        isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
-                        onClick={handleSubmit}
-                        size='lg'
-                        variant='contained'
-                    >
-                        <Trans defaults='Create' />
-                    </WalletButton>
-                </div>
+                {!isMobile && renderButtons()}
             </div>
-        </ModalWrapper>
+        </ModalStepWrapper>
     );
 };
 

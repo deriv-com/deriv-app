@@ -33,15 +33,37 @@ export const expiryDateValidator = Yup.date()
 export const firstNameValidator = Yup.string()
     .required('This field is required')
     .matches(/^[a-zA-Z\s\-.'']+$/, 'Letters, spaces, periods, hyphens, apostrophes only.')
-    .min(2, 'You should enter 2-50 characters.')
-    .max(50, 'You should enter 2-50 characters.');
+    .min(1, 'Enter no more than 50 characters.')
+    .max(50, 'Enter no more than 50 characters.');
 
 export const lastNameValidator = Yup.string()
     .required('This field is required')
     .matches(/^[a-zA-Z\s\-.'']+$/, 'Letters, spaces, periods, hyphens, apostrophes only.')
-    .min(2, 'You should enter 2-50 characters.')
-    .max(50, 'You should enter 2-50 characters.');
+    .min(1, 'Enter no more than 50 characters.')
+    .max(50, 'Enter no more than 50 characters.');
 
-export const letterRequiredValidator = Yup.string()
-    .matches(/^[a-zA-Z\s\-.'']+$/, 'Only letters, space, hyphen, period, and apostrophe are allowed.')
-    .required('This field is required');
+export const addressFirstLineValidator = Yup.string()
+    .trim()
+    .required('First line of address is required.')
+    .max(70, 'Should be less than 70.')
+    .matches(
+        /^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{0,70}$/u,
+        "Use only the following special characters: . , ' : ; ( ) ° @ # / -'"
+    );
+
+export const addressSecondLineValidator = Yup.string()
+    .trim()
+    .max(70, 'Should be less than 70.')
+    .matches(
+        /^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{0,70}$/u,
+        "Use only the following special characters: . , ' : ; ( ) ° @ # / -'"
+    );
+
+export const cityValidator = Yup.string()
+    .required('Town/City is required.')
+    .max(70, 'Should be less than 70.')
+    .matches(/^[a-zA-Z\s\-.'']+$/, 'Only letters, space, hyphen, period, and apostrophe are allowed.');
+
+export const postcodeValidator = Yup.string()
+    .max(20, 'Please enter a Postal/ZIP code under 20 characters.')
+    .matches(/^[A-Za-z0-9][A-Za-z0-9\s-]*$/, 'Only letters, numbers, space, and hyphen are allowed.');

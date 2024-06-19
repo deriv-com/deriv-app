@@ -21,10 +21,10 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
     const { setValue } = quick_strategy;
     const { setFieldValue, values } = useFormikContext<TFormData>();
     const { symbol, tradetype } = values;
-    const selected = values?.type;
 
     React.useEffect(() => {
-        if (tradetype && symbol && selected !== '') {
+        if (tradetype && symbol) {
+            const selected = values?.type;
             const getContractTypes = async () => {
                 const { contracts_for } = ApiHelpers.instance as unknown as TApiHelpersInstance;
                 const categories = await contracts_for.getContractTypes(tradetype);
@@ -38,7 +38,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
             getContractTypes();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [symbol, tradetype, selected]);
+    }, [symbol, tradetype]);
 
     const handleChange = (value: string) => {
         setFieldValue?.(name, value);
@@ -81,7 +81,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
                             {...field}
                             readOnly
                             inputMode='none'
-                            data-testid='dt_qs_autocomplete_contract_type'
+                            data-testid='dt_qs_contract_type'
                             autoComplete='off'
                             className='qs__select contract-type'
                             value={selected_item?.text || ''}

@@ -11,4 +11,8 @@ export const accountOpeningReasonList = [
         text: 'Speculative',
         value: 'Speculative',
     },
+    {
+        text: 'Peer-to-peer exchange',
+        value: 'Peer-to-peer exchange',
+    },
 ];

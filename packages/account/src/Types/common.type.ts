@@ -11,19 +11,22 @@ import {
     GetFinancialAssessment,
     SetFinancialAssessmentRequest,
     IdentityVerificationAddDocumentResponse,
+    ApiToken,
 } from '@deriv/api-types';
 import { AUTH_STATUS_CODES, CFD_PLATFORMS, MT5_ACCOUNT_STATUS, Platforms } from '@deriv/shared';
 
-export type TToken = {
+export type TToken = NonNullable<ApiToken['tokens']>[0];
+
+export type TFormattedToken = Partial<{
     display_name: string;
+    formatted_scopes: string[];
     last_used: string;
-    scopes: string[];
     token: string;
-};
+}>;
 
 export type TPoaStatusProps = {
-    needs_poi: boolean;
-    redirect_button: React.ReactNode;
+    needs_poi?: boolean;
+    redirect_button?: React.ReactNode;
 };
 
 export type TAuthAccountInfo = NonNullable<Authorize['account_list']>[0] & {
@@ -108,11 +111,25 @@ export type TPOIStatus = {
     is_manual_upload?: boolean;
 };
 
-export type TPersonalDetailsForm = {
+export type TConfirmPersonalDetailsForm = Pick<
+    TPersonalDetailsBaseForm,
+    'first_name' | 'last_name' | 'date_of_birth'
+> & {
+    confirmation_checkbox?: boolean;
+};
+
+export type TPersonalDetailsBaseForm = {
     first_name: string;
     last_name: string;
     date_of_birth: string;
-    confirmation_checkbox?: boolean;
+    account_opening_reason: string;
+    salutation: string;
+    phone: string;
+    tax_residence: string;
+    tax_identification_number: string;
+    tax_identification_confirm: boolean;
+    place_of_birth: string;
+    citizen: string;
 };
 
 export type TInputFieldValues = Record<string, string>;
@@ -286,4 +303,16 @@ export type TQuestion = {
     form_control: keyof TTradingAssessmentForm;
     answer_options: { text: string; value: string }[];
     field_type?: string;
+};
+
+// Type for the list of items in a dropdown or select
+export type TListItem = {
+    /**
+     * The text of the item (e.g. 'United Kingdom', 'Germany', etc.)
+     */
+    text?: string;
+    /**
+     * The value of the item
+     */
+    value?: string;
 };

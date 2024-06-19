@@ -67,6 +67,7 @@ type TRoutes =
     | '/reports/profit'
     | '/reports'
     | '/'
+    | '/dtrader'
     | '/redirect'
     | '/settings'
     | '/reports/statement'
@@ -88,7 +89,14 @@ type TRoutes =
     | '/appstore'
     | '/appstore/traders-hub'
     | '/appstore/onboarding'
-    | '/wallets';
+    | '/wallet'
+    | '/wallet/deposit'
+    | '/wallet/withdrawal'
+    | '/wallet/account-transfer'
+    | '/wallet/reset-balance'
+    | '/wallet/transactions'
+    | '/wallet/on-ramp'
+    | '/compare-accounts';
 
 type TPopulateSettingsExtensionsMenuItem = {
     icon: string;
@@ -144,12 +152,14 @@ type BrandConfig = {
 };
 
 export type TPortfolioPosition = {
+    barrier?: number;
     contract_info: ProposalOpenContract &
         Portfolio1 & {
             contract_update?: ContractUpdate;
         };
     details?: string;
     display_name: string;
+    entry_spot?: number;
     id?: number;
     indicative: number;
     payout?: number;
@@ -159,7 +169,9 @@ export type TPortfolioPosition = {
     is_unsupported: boolean;
     contract_update: ProposalOpenContract['limit_order'];
     is_sell_requested: boolean;
+    is_valid_to_sell?: boolean;
     profit_loss: number;
+    status?: null | string;
 };
 
 type TAppRoutingHistory = {
@@ -396,7 +408,7 @@ type TClientStore = {
     getSelfExclusion: () => Promise<Partial<GetSelfExclusion>>;
     account_status: Omit<GetAccountStatus, 'status' | 'p2p_poa_required'> &
         Partial<Pick<GetAccountStatus, 'status'>> & { p2p_poa_required: number };
-    available_crypto_currencies: Array<WebsiteStatus['currencies_config']>;
+    available_crypto_currencies: Array<WebsiteStatus['currencies_config'][string] & { value: string }>;
     balance?: string | number;
     can_change_fiat_currency: boolean;
     clients_country: string;
@@ -531,7 +543,6 @@ type TClientStore = {
     landing_companies: LandingCompany;
     getChangeableFields: () => string[];
     landing_company: LandingCompany;
-    isAccountOfTypeDisabled: (account: Record<string, DetailsOfEachMT5Loginid>) => boolean;
     is_mt5_allowed: boolean;
     mt5_disabled_signup_types: {
         real: boolean;
@@ -542,10 +553,6 @@ type TClientStore = {
         demo: boolean;
     };
     dxtrade_accounts_list_error: null;
-    has_account_error_in_mt5_real_list: boolean;
-    has_account_error_in_mt5_demo_list: boolean;
-    has_account_error_in_dxtrade_real_list: boolean;
-    has_account_error_in_dxtrade_demo_list: boolean;
     has_fiat: boolean;
     is_fully_authenticated: boolean;
     updateMt5LoginList: () => Promise<void>;
@@ -661,6 +668,7 @@ type TUiStore = {
     is_additional_kyc_info_modal_open: boolean;
     is_advanced_duration: boolean;
     is_cashier_visible: boolean;
+    is_history_tab_active: boolean;
     is_wallet_modal_visible: boolean;
     is_chart_asset_info_visible?: boolean;
     is_chart_layout_default: boolean;
@@ -797,6 +805,7 @@ type TPortfolioStore = {
     barriers: TBarriers;
     error: string;
     getPositionById: (id: number) => TPortfolioPosition;
+    is_active_empty: boolean;
     is_loading: boolean;
     is_multiplier: boolean;
     is_accumulator: boolean;
@@ -836,7 +845,7 @@ type TAddContractParams = {
     limit_order?: ProposalOpenContract['limit_order'];
 };
 type TOnChartBarrierChange = null | ((barrier_1: string, barrier_2?: string) => void);
-type TOnChangeParams = { high: string | number; low?: string | number };
+type TOnChangeParams = { high: string | number; low?: string | number; title?: string; hidePriceLines?: boolean };
 type TBarriers = Array<{
     color: string;
     lineStyle: string;
@@ -856,7 +865,13 @@ type TBarriers = Array<{
     hideOffscreenBarrier?: boolean;
     isSingleBarrier?: boolean;
     onBarrierChange: (barriers: TOnChangeParams) => void;
-    updateBarriers: (high: string | number, low?: string | number, isFromChart?: boolean) => void;
+    updateBarriers: (
+        high: string | number,
+        low?: string | number,
+        title?: string,
+        hidePriceLines?: boolean,
+        isFromChart?: boolean
+    ) => void;
     updateBarrierShade: (should_display: boolean, contract_type: string) => void;
     barrier_count: number;
     default_shade: string;
@@ -994,6 +1009,7 @@ type TTradersHubStore = {
     content_flag: 'low_risk_cr_eu' | 'low_risk_cr_non_eu' | 'high_risk_cr' | 'cr_demo' | 'eu_demo' | 'eu_real' | '';
     combined_cfd_mt5_accounts: DetailsOfEachMT5Loginid &
         {
+            tracking_name: string;
             short_code_and_region: string;
             login: string;
             sub_title: string;
@@ -1055,8 +1071,6 @@ type TTradersHubStore = {
     available_cfd_accounts: TAvailableCFDAccounts[];
     available_dxtrade_accounts: TAvailableCFDAccounts[];
     available_ctrader_accounts: TAvailableCFDAccounts[];
-    toggleIsTourOpen: (is_tour_open: boolean) => void;
-    is_tour_open: boolean;
     is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;
     setMT5NotificationModal: (value: boolean) => void;

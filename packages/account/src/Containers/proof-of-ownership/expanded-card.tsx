@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { useFormikContext } from 'formik';
 import { Input, Text } from '@deriv/components';
 import { hasInvalidCharacters } from '@deriv/shared';
@@ -20,7 +20,7 @@ type TExpandedCardProps = {
  * @returns React Component
  */
 const ExpandedCard = ({ card_details }: TExpandedCardProps) => {
-    const { values, setFieldValue, errors } = useFormikContext<Partial<TProofOfOwnershipFormValue>>();
+    const { values, setFieldValue, errors } = useFormikContext<TProofOfOwnershipFormValue>();
 
     const payment_method = card_details.payment_method.toLowerCase() as TPaymentMethod;
 
@@ -79,7 +79,7 @@ const ExpandedCard = ({ card_details }: TExpandedCardProps) => {
                                         <Input
                                             label={card_details?.input_label}
                                             data-lpignore='true'
-                                            className={classNames('proof-of-ownership__card-open-inputs-cardnumber', {
+                                            className={clsx('proof-of-ownership__card-open-inputs-cardnumber', {
                                                 'proof-of-ownership-valid-identifier':
                                                     values?.[payment_method]?.[payment_id]?.payment_method_identifier &&
                                                     !errors?.[payment_method]?.[payment_id]?.payment_method_identifier,
@@ -108,16 +108,13 @@ const ExpandedCard = ({ card_details }: TExpandedCardProps) => {
                                                 <Input
                                                     label={card_details?.input_label}
                                                     data-lpignore='true'
-                                                    className={classNames(
-                                                        'proof-of-ownership__card-open-inputs-cardnumber',
-                                                        {
-                                                            'proof-of-ownership-valid-identifier':
-                                                                values?.[payment_method]?.[payment_id]
-                                                                    ?.payment_method_identifier &&
-                                                                !errors?.[payment_method]?.[payment_id]
-                                                                    ?.payment_method_identifier,
-                                                        }
-                                                    )}
+                                                    className={clsx('proof-of-ownership__card-open-inputs-cardnumber', {
+                                                        'proof-of-ownership-valid-identifier':
+                                                            values?.[payment_method]?.[payment_id]
+                                                                ?.payment_method_identifier &&
+                                                            !errors?.[payment_method]?.[payment_id]
+                                                                ?.payment_method_identifier,
+                                                    })}
                                                     type='text'
                                                     onChange={e => {
                                                         handleIdentifierChange(e.target.value.trim(), payment_id);
@@ -142,7 +139,7 @@ const ExpandedCard = ({ card_details }: TExpandedCardProps) => {
                                             </div>
                                         )}
                                         <div
-                                            className={classNames('proof-of-ownership__card-open-inputs-upload', {
+                                            className={clsx('proof-of-ownership__card-open-inputs-upload', {
                                                 expand: !card_details?.input_label,
                                                 organise: card_details?.input_label !== null,
                                             })}

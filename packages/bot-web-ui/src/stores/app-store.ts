@@ -23,6 +23,15 @@ export default class AppStore {
         makeObservable(this, {
             onMount: action,
             onUnmount: action,
+            onBeforeUnload: action,
+            registerReloadOnLanguageChange: action,
+            registerCurrencyReaction: action,
+            registerOnAccountSwitch: action,
+            registerLandingCompanyChangeReaction: action,
+            registerResidenceChangeReaction: action,
+            setDBotEngineStores: action,
+            onClickOutsideBlockly: action,
+            showDigitalOptionsMaltainvestError: action,
         });
 
         this.root_store = root_store;
@@ -56,6 +65,10 @@ export default class AppStore {
         const toggleAccountsDialog = ui?.toggleAccountsDialog;
 
         if (!client?.is_logged_in && client?.is_eu_country) {
+            if (client?.has_logged_out) {
+                window.location.href = routes.traders_hub;
+            }
+
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
         }
 
@@ -63,7 +76,7 @@ export default class AppStore {
             return false;
         }
 
-        if (window.location.pathname === routes.bot) {
+        if (window.location.pathname.includes(routes.bot)) {
             if (client.should_show_eu_error) {
                 return showDigitalOptionsUnavailableError(
                     common.showError,

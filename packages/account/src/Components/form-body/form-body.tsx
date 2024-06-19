@@ -1,18 +1,19 @@
-import React from 'react';
+// [TODO] - To be removed once CFD is configured to use the new form-body component
+import React, { PropsWithChildren, Fragment } from 'react';
 import { ScrollbarsContainer } from '../scrollbars-container/scrollbars-container';
 import { Div100vhContainer, DesktopWrapper, MobileWrapper } from '@deriv/components';
-import classNames from 'classnames';
+import clsx from 'clsx';
 
 type TFormBody = {
     scroll_offset?: string;
     className?: string;
 };
 
-export const FormBody = ({ children, scroll_offset, className }: React.PropsWithChildren<TFormBody>) => (
-    <React.Fragment>
+export const FormBody = ({ children, scroll_offset, className }: PropsWithChildren<TFormBody>) => (
+    <Fragment>
         <DesktopWrapper>
             <ScrollbarsContainer
-                className={classNames('account__scrollbars_container--grid-layout', className)}
+                className={clsx('account__scrollbars_container--grid-layout', className)}
                 scroll_offset={scroll_offset}
             >
                 {children}
@@ -20,11 +21,11 @@ export const FormBody = ({ children, scroll_offset, className }: React.PropsWith
         </DesktopWrapper>
         <MobileWrapper>
             <Div100vhContainer
-                className={classNames('account__scrollbars_container--grid-layout', className)}
+                className={clsx('account__scrollbars_container--grid-layout', className)}
                 height_offset={scroll_offset || '200px'}
             >
                 {children}
             </Div100vhContainer>
         </MobileWrapper>
-    </React.Fragment>
+    </Fragment>
 );

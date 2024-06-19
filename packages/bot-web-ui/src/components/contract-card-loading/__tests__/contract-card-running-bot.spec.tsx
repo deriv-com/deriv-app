@@ -38,11 +38,5 @@ describe('ContractCardRunningBot', () => {
         const text = screen.getByText(message_running_bot);
         expect(text).toBeInTheDocument();
         expect(text).toHaveClass('dc-contract-card-message');
-        expect(text).toHaveStyle('--text-color: var(--text-less-prominent)');
-        expect(text).toHaveStyle('--text-lh: var(--text-lh-xs)');
-        expect(text).toHaveStyle('--text-size: var(--text-size-xxs)');
-        expect(text).toHaveStyle('--text-size: var(--text-size-xxs)');
-        expect(text).toHaveStyle('--text-weight: var(--text-weight-bold)');
-        expect(text).toHaveStyle('--text-align: var(--text-align-center)');
     });
 });

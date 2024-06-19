@@ -7,33 +7,45 @@ import { useRequestPhoneNumberOTP } from '@deriv/hooks';
 import { convertPhoneTypeDisplay } from 'Helpers/utils';
 
 type TDidntGetTheCodeModal = {
-    should_show_didnt_get_the_code_modal: boolean;
-    setShouldShowDidntGetTheCodeModal: (value: boolean) => void;
-    setStartTimer: (value: boolean) => void;
     phone_verification_type: string;
+    should_show_didnt_get_the_code_modal: boolean;
+    setIsButtonDisabled: (value: boolean) => void;
+    setShouldShowDidntGetTheCodeModal: (value: boolean) => void;
     setOtpVerification: (value: { show_otp_verification: boolean; phone_verification_type: string }) => void;
+    reInitializeGetSettings: () => void;
 };
 
 const DidntGetTheCodeModal = observer(
     ({
         should_show_didnt_get_the_code_modal,
         setShouldShowDidntGetTheCodeModal,
-        setStartTimer,
+        setIsButtonDisabled,
+        reInitializeGetSettings,
         phone_verification_type,
         setOtpVerification,
     }: TDidntGetTheCodeModal) => {
-        const { requestOnSMS, requestOnWhatsApp, ...rest } = useRequestPhoneNumberOTP();
+        const { requestOnSMS, requestOnWhatsApp, is_email_verified, ...rest } = useRequestPhoneNumberOTP();
         const { ui } = useStore();
         const { is_mobile } = ui;
 
+        React.useEffect(() => {
+            //TODO: will replace error_otp_error once BE error is solved
+            if (is_email_verified) reInitializeGetSettings();
+        }, [is_email_verified, reInitializeGetSettings]);
+
+        const setDidntGetACodeButtonDisabled = () => {
+            setIsButtonDisabled(true);
+        };
+
         const handleResendCode = () => {
+            setDidntGetACodeButtonDisabled();
             phone_verification_type === VERIFICATION_SERVICES.SMS ? requestOnSMS() : requestOnWhatsApp();
             setOtpVerification({ show_otp_verification: true, phone_verification_type });
-            setStartTimer(true);
             setShouldShowDidntGetTheCodeModal(false);
         };
 
         const handleChangeOTPVerification = () => {
+            setDidntGetACodeButtonDisabled();
             const changed_phone_verification_type =
                 phone_verification_type === VERIFICATION_SERVICES.SMS
                     ? VERIFICATION_SERVICES.WHATSAPP
@@ -41,7 +53,6 @@ const DidntGetTheCodeModal = observer(
 
             phone_verification_type === VERIFICATION_SERVICES.SMS ? requestOnWhatsApp() : requestOnSMS();
 
-            setStartTimer(true);
             setOtpVerification({
                 show_otp_verification: true,
                 phone_verification_type: changed_phone_verification_type,

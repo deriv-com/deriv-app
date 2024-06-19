@@ -753,7 +753,7 @@ export default class NotificationStore extends BaseStore {
 
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
-        const { has_enabled_two_fa, setTwoFAChangedStatus, logout } = this.root_store.client;
+        const { has_enabled_two_fa, setTwoFAChangedStatus, logout, email } = this.root_store.client;
         const { setMT5NotificationModal } = this.root_store.traders_hub;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
 
@@ -1071,6 +1071,9 @@ export default class NotificationStore extends BaseStore {
                 message: <Localize i18n_default_text='Keep your account safe. Verify your phone number now.' />,
                 type: 'warning',
                 action: {
+                    onClick: () => {
+                        WS.verifyEmail(email, 'phone_number_verification');
+                    },
                     route: routes.phone_verification,
                     text: localize('Get started'),
                 },

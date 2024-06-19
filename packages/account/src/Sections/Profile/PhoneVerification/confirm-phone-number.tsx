@@ -13,8 +13,16 @@ type TConfirmPhoneNumber = {
 
 const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber) => {
     const [phone_number, setPhoneNumber] = React.useState('');
-    const { requestOnSMS, requestOnWhatsApp, error_message, setErrorMessage, setUsersPhoneNumber, ...rest } =
-        useRequestPhoneNumberOTP();
+    const [phone_verification_type, setPhoneVerificationType] = React.useState('');
+    const {
+        requestOnSMS,
+        requestOnWhatsApp,
+        error_message,
+        setErrorMessage,
+        setUsersPhoneNumber,
+        is_email_verified,
+        ...rest
+    } = useRequestPhoneNumberOTP();
     const { data: account_settings } = useSettings();
     const { ui } = useStore();
     const { setShouldShowPhoneNumberOTP } = ui;
@@ -23,19 +31,24 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
         setPhoneNumber(account_settings?.phone || '');
     }, [account_settings?.phone]);
 
+    React.useEffect(() => {
+        if (is_email_verified) {
+            setOtpVerification({ show_otp_verification: true, phone_verification_type });
+            setShouldShowPhoneNumberOTP(true);
+        }
+    }, [is_email_verified]);
+
     const handleOnChangePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPhoneNumber(e.target.value);
         validatePhoneNumber(e.target.value, setErrorMessage);
     };
 
     const handleSubmit = async (phone_verification_type: string) => {
+        setPhoneVerificationType(phone_verification_type);
         const { error } = await setUsersPhoneNumber({ phone: phone_number });
 
         if (!error) {
             phone_verification_type === VERIFICATION_SERVICES.SMS ? requestOnSMS() : requestOnWhatsApp();
-            //TODOs: Add an error checking from API here before setting setOtpVerification to true
-            setOtpVerification({ show_otp_verification: true, phone_verification_type });
-            setShouldShowPhoneNumberOTP(true);
         }
     };
 

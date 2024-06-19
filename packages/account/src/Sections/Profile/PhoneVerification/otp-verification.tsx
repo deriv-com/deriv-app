@@ -3,7 +3,7 @@ import PhoneVerificationCard from './phone-verification-card';
 import { Text, InputGroupButton } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { useSendOTPVerificationCode, useVerifyEmail } from '@deriv/hooks';
+import { useSendOTPVerificationCode, useSettings } from '@deriv/hooks';
 import { convertPhoneTypeDisplay } from 'Helpers/utils';
 import ResendCodeTimer from './resend-code-timer';
 import DidntGetTheCodeModal from './didnt-get-the-code-modal';
@@ -16,14 +16,13 @@ type TOTPVerification = {
 
 const OTPVerification = observer(({ phone_verification_type, setOtpVerification }: TOTPVerification) => {
     const { client, ui } = useStore();
-    const { account_settings, email, setVerificationCode } = client;
-    const { phone } = account_settings;
+    const { setVerificationCode } = client;
+    const { data: account_settings, invalidate } = useSettings();
     const [should_show_phone_number_verified_modal, setShouldShowPhoneNumberVerifiedModal] = React.useState(false);
     const [should_show_didnt_get_the_code_modal, setShouldShowDidntGetTheCodeModal] = React.useState(false);
-    const [start_timer, setStartTimer] = React.useState(true);
     const [otp, setOtp] = React.useState('');
+    const [is_button_disabled, setIsButtonDisabled] = React.useState(false);
 
-    const { send } = useVerifyEmail('phone_number_verification');
     const {
         sendPhoneOTPVerification,
         phone_otp_error_message,
@@ -35,23 +34,25 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     //TODO: this shall be replace by BE API call when it's ready
     const { should_show_phone_number_otp } = ui;
 
+    const reInitializeGetSettings = React.useCallback(() => {
+        invalidate('get_settings').then(() => {
+            setIsButtonDisabled(false);
+        });
+    }, [invalidate]);
+
+    React.useEffect(() => {
+        setIsButtonDisabled(true);
+        invalidate('get_settings').then(() => setIsButtonDisabled(false));
+    }, [invalidate]);
+
     React.useEffect(() => {
         if (is_phone_number_verified) {
             setShouldShowPhoneNumberVerifiedModal(true);
         } else if (is_email_verified) {
-            setVerificationCode('phone_number_verification', otp);
+            setVerificationCode(otp, 'phone_number_verification');
             setOtpVerification({ show_otp_verification: false, phone_verification_type: '' });
-        } else if (!should_show_phone_number_otp) {
-            send();
         }
-    }, [
-        should_show_phone_number_otp,
-        send,
-        is_phone_number_verified,
-        setShouldShowPhoneNumberVerifiedModal,
-        is_email_verified,
-        setOtpVerification,
-    ]);
+    }, [is_phone_number_verified, is_email_verified, setOtpVerification]);
 
     const handleGetOtpValue = (e: React.ChangeEvent<HTMLInputElement>) => {
         setOtp(e.target.value);
@@ -74,11 +75,12 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                 setShouldShowPhoneNumberVerifiedModal={setShouldShowPhoneNumberVerifiedModal}
             />
             <DidntGetTheCodeModal
+                setIsButtonDisabled={setIsButtonDisabled}
+                reInitializeGetSettings={reInitializeGetSettings}
                 should_show_didnt_get_the_code_modal={should_show_didnt_get_the_code_modal}
                 setShouldShowDidntGetTheCodeModal={setShouldShowDidntGetTheCodeModal}
                 phone_verification_type={phone_verification_type}
                 setOtpVerification={setOtpVerification}
-                setStartTimer={setStartTimer}
             />
             <Text bold>
                 {should_show_phone_number_otp ? (
@@ -94,7 +96,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                             i18n_default_text='Enter the 6-digit code sent to you via {{phone_verification_type}} at {{users_phone_number}}:'
                             values={{
                                 phone_verification_type: localize(convertPhoneTypeDisplay(phone_verification_type)),
-                                users_phone_number: phone,
+                                users_phone_number: account_settings?.phone,
                             }}
                         />
                     </Text>
@@ -103,7 +105,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                         <Text size='sm'>
                             <Localize
                                 i18n_default_text="We've sent a verification code to <0>{{users_email}}</0>."
-                                values={{ users_email: email }}
+                                values={{ users_email: account_settings?.email }}
                                 components={[<strong key={0} />]}
                             />
                         </Text>
@@ -124,12 +126,11 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                     maxLength={6}
                 />
                 <ResendCodeTimer
-                    resend_code_text={should_show_phone_number_otp ? "Didn't get the code?" : 'Resend code'}
-                    //TODOS: replace hardcoded timer when timestamp BE API is ready
-                    count_from={60}
+                    is_button_disabled={is_button_disabled}
+                    setIsButtonDisabled={setIsButtonDisabled}
+                    should_show_resend_code_button={!should_show_phone_number_otp}
                     setShouldShowDidntGetTheCodeModal={setShouldShowDidntGetTheCodeModal}
-                    start_timer={start_timer}
-                    setStartTimer={setStartTimer}
+                    reInitializeGetSettings={reInitializeGetSettings}
                 />
             </div>
         </PhoneVerificationCard>

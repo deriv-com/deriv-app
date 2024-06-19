@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useInvalidateQuery, useMutation, useQuery } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 
@@ -22,6 +22,7 @@ const useSettings = () => {
         data: data?.get_settings,
         /** Function to update user settings */
         update,
+        invalidate,
         /** The mutation related information */
         mutation: mutate_rest,
         ...rest,

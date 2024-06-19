@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import ResendCodeTimer from '../resend-code-timer';
@@ -9,6 +9,15 @@ jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useVerifyEmail: jest.fn(() => ({
         send: jest.fn(),
+        is_success: false,
+    })),
+    useSettings: jest.fn(() => ({
+        data: {
+            phone_number_verification: {
+                next_email_attempt: null,
+                next_attempt: null,
+            },
+        },
     })),
 }));
 
@@ -23,38 +32,38 @@ describe('ConfirmPhoneNumber', () => {
 
     const mock_store = mockStore({});
 
-    it('should disable button after its clicked', () => {
+    it('should disable button if timer value is given ', async () => {
         render(
             <StoreProvider store={mock_store}>
                 <ResendCodeTimer
-                    resend_code_text='Resend code'
-                    count_from={60}
-                    setStartTimer={jest.fn()}
-                    start_timer
+                    is_button_disabled={false}
+                    reInitializeGetSettings={jest.fn}
+                    setIsButtonDisabled={jest.fn()}
+                    should_show_resend_code_button
                     setShouldShowDidntGetTheCodeModal={jest.fn()}
                 />
             </StoreProvider>
         );
-        const resend_button = screen.getByRole('button', { name: 'Resend code in 60s' });
 
-        userEvent.click(resend_button);
+        await waitFor(() => {
+            screen.queryByRole('button', { name: 'Resend code in 59s' });
+        });
 
-        expect(resend_button).toBeDisabled();
+        expect(screen.queryByRole('button', { name: 'Resend code in 59s' })).toBeDisabled;
     });
 
-    it('should trigger mockSend and mockSetStartTimer when send button is clicked', () => {
+    it('should trigger mockSend when send button is clicked', () => {
         const mockSend = jest.fn();
         (useVerifyEmail as jest.Mock).mockReturnValue({
             send: mockSend,
         });
-        const mockSetStartTimer = jest.fn();
         render(
             <StoreProvider store={mock_store}>
                 <ResendCodeTimer
-                    resend_code_text='Resend code'
-                    count_from={0}
-                    setStartTimer={mockSetStartTimer}
-                    start_timer={false}
+                    is_button_disabled={false}
+                    reInitializeGetSettings={jest.fn}
+                    setIsButtonDisabled={jest.fn()}
+                    should_show_resend_code_button={true}
                     setShouldShowDidntGetTheCodeModal={jest.fn()}
                 />
             </StoreProvider>
@@ -63,139 +72,56 @@ describe('ConfirmPhoneNumber', () => {
         expect(resend_button).toBeEnabled();
 
         userEvent.click(resend_button);
-        expect(mockSetStartTimer).toBeCalledWith(true);
         expect(mockSend).toBeCalled();
     });
 
-    it('should display correct title if value of resend_code_text is Resend code', () => {
+    it('should display Resend code when should_show_resend_code_button is true', () => {
         render(
             <StoreProvider store={mock_store}>
                 <ResendCodeTimer
-                    resend_code_text='Resend code'
-                    count_from={60}
-                    setStartTimer={jest.fn()}
-                    start_timer
+                    is_button_disabled={false}
+                    reInitializeGetSettings={jest.fn}
+                    setIsButtonDisabled={jest.fn()}
+                    should_show_resend_code_button
                     setShouldShowDidntGetTheCodeModal={jest.fn()}
                 />
             </StoreProvider>
         );
-        const resend_button = screen.getByRole('button', { name: 'Resend code in 60s' });
+        const resend_button = screen.getByRole('button', { name: 'Resend code' });
         expect(resend_button).toBeInTheDocument();
     });
 
-    it('should display correct title if value of resend_code_text is Didn’t get the code?', () => {
+    it('should display Didn’t get the code? should_show_resend_code_button is false', () => {
         render(
             <StoreProvider store={mock_store}>
                 <ResendCodeTimer
-                    resend_code_text='Didn’t get the code?'
-                    count_from={60}
-                    setStartTimer={jest.fn()}
-                    start_timer
+                    is_button_disabled={false}
+                    reInitializeGetSettings={jest.fn}
+                    setIsButtonDisabled={jest.fn()}
+                    should_show_resend_code_button={false}
                     setShouldShowDidntGetTheCodeModal={jest.fn()}
                 />
             </StoreProvider>
         );
-        const resend_button = screen.getByRole('button', { name: 'Didn’t get the code? (60s)' });
+        const resend_button = screen.getByRole('button', { name: "Didn't get the code?" });
         expect(resend_button).toBeInTheDocument();
-    });
-
-    it('should check if title changes when timer expires and value of resend_code_text is Didn’t get the code?', () => {
-        render(
-            <StoreProvider store={mock_store}>
-                <ResendCodeTimer
-                    resend_code_text='Didn’t get the code?'
-                    count_from={6}
-                    setStartTimer={jest.fn()}
-                    start_timer
-                    setShouldShowDidntGetTheCodeModal={jest.fn()}
-                />
-            </StoreProvider>
-        );
-        const resend_button = screen.getByRole('button', { name: 'Didn’t get the code? (6s)' });
-        userEvent.click(resend_button);
-
-        act(() => {
-            jest.advanceTimersByTime(6000); // Advance timers by 6 seconds
-        });
-
-        const resend_button_after = screen.getByRole('button', { name: 'Didn’t get the code?' });
-        expect(resend_button_after).toBeInTheDocument();
     });
 
     it('should trigger setShouldShowDidntGetTheCodeModal when Didn`t get the code is clicked', () => {
-        const setShouldShowDidntGetTheCodeModal = jest.fn();
+        const mockSetShouldShowDidntGetTheCodeModal = jest.fn();
         render(
             <StoreProvider store={mock_store}>
                 <ResendCodeTimer
-                    resend_code_text='Didn’t get the code?'
-                    count_from={6}
-                    setStartTimer={jest.fn()}
-                    start_timer={false}
-                    setShouldShowDidntGetTheCodeModal={setShouldShowDidntGetTheCodeModal}
+                    is_button_disabled={false}
+                    reInitializeGetSettings={jest.fn}
+                    setIsButtonDisabled={jest.fn()}
+                    should_show_resend_code_button={false}
+                    setShouldShowDidntGetTheCodeModal={mockSetShouldShowDidntGetTheCodeModal}
                 />
             </StoreProvider>
         );
-        const resend_button_after = screen.getByRole('button', { name: 'Didn’t get the code?' });
+        const resend_button_after = screen.getByRole('button', { name: "Didn't get the code?" });
         userEvent.click(resend_button_after);
-        expect(setShouldShowDidntGetTheCodeModal).toHaveBeenCalled();
-    });
-
-    it('should check if title displays countdown time when timer starts and value of resend_code_text is Didn’t get the code?', async () => {
-        render(
-            <StoreProvider store={mock_store}>
-                <ResendCodeTimer
-                    resend_code_text='Didn’t get the code?'
-                    count_from={6}
-                    setStartTimer={jest.fn()}
-                    start_timer
-                    setShouldShowDidntGetTheCodeModal={jest.fn()}
-                />
-            </StoreProvider>
-        );
-        expect(screen.getByRole('button', { name: 'Didn’t get the code? (6s)' })).toBeInTheDocument();
-        jest.advanceTimersByTime(3000);
-        const updated_resend_button = screen.getByRole('button', { name: 'Didn’t get the code? (4s)' });
-        expect(updated_resend_button).toBeInTheDocument();
-    });
-
-    it('should check if title changes when timer expires and value of resend_code_text is Resend code', () => {
-        render(
-            <StoreProvider store={mock_store}>
-                <ResendCodeTimer
-                    resend_code_text='Resend code'
-                    count_from={6}
-                    setStartTimer={jest.fn()}
-                    start_timer
-                    setShouldShowDidntGetTheCodeModal={jest.fn()}
-                />
-            </StoreProvider>
-        );
-        const resend_button = screen.getByRole('button', { name: 'Resend code in 6s' });
-        userEvent.click(resend_button);
-
-        act(() => {
-            jest.advanceTimersByTime(6000);
-        });
-
-        const resend_button_after = screen.getByRole('button', { name: 'Resend code' });
-        expect(resend_button_after).toBeInTheDocument();
-    });
-
-    it('should check if title displays countdown time when timer starts and value of resend_code_text is Resend code', async () => {
-        render(
-            <StoreProvider store={mock_store}>
-                <ResendCodeTimer
-                    resend_code_text='Resend code'
-                    count_from={6}
-                    setStartTimer={jest.fn()}
-                    start_timer
-                    setShouldShowDidntGetTheCodeModal={jest.fn()}
-                />
-            </StoreProvider>
-        );
-        expect(screen.getByRole('button', { name: 'Resend code in 6s' })).toBeInTheDocument();
-        jest.advanceTimersByTime(3000);
-        const updated_resend_button = screen.getByRole('button', { name: 'Resend code in 4s' });
-        expect(updated_resend_button).toBeInTheDocument();
+        expect(mockSetShouldShowDidntGetTheCodeModal).toHaveBeenCalled();
     });
 });

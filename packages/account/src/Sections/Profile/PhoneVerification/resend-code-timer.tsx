@@ -1,64 +1,115 @@
 import React from 'react';
 import { Button, CaptionText } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
-import { useVerifyEmail } from '@deriv/hooks';
+import { useSettings, useVerifyEmail } from '@deriv/hooks';
+import dayjs from 'dayjs';
+import { otpRequestCountdown } from './validation';
 
 type TResendCodeTimer = {
-    resend_code_text: string;
-    count_from: number;
+    is_button_disabled: boolean;
+    should_show_resend_code_button: boolean;
+    setIsButtonDisabled: (value: boolean) => void;
     setShouldShowDidntGetTheCodeModal: (value: boolean) => void;
-    start_timer: boolean;
-    setStartTimer: (value: boolean) => void;
+    reInitializeGetSettings: () => void;
 };
 const ResendCodeTimer = ({
-    count_from = 60,
-    resend_code_text,
+    is_button_disabled,
+    should_show_resend_code_button,
+    setIsButtonDisabled,
     setShouldShowDidntGetTheCodeModal,
-    start_timer,
-    setStartTimer,
+    reInitializeGetSettings,
 }: TResendCodeTimer) => {
-    // TODO: calculate count_from and time units(secs or mins) using timestamp once mockApi is finalised
-    // TODO: revist start timer logic and localizing the title
-    const [timer, setTimer] = React.useState(count_from);
-    const { send } = useVerifyEmail('phone_number_verification');
-    const initial_timer_title =
-        resend_code_text === 'Resend code' ? `Resend code in ${timer}s` : `Didn’t get the code? (${timer}s)`;
-    const [timer_title, setTimerTitle] = React.useState(initial_timer_title);
+    const [timer, setTimer] = React.useState<number | undefined>();
+    const [next_otp_request, setNextOtpRequest] = React.useState('');
+    // @ts-expect-error this for now
+    const { send, is_success } = useVerifyEmail('phone_number_verification');
+    const { data: account_settings } = useSettings();
+    const current_time = dayjs();
 
-    const setTitle = (timer: number, text: string) => {
-        const title = text === 'Resend code' ? `Resend code in ${timer}s` : `Didn’t get the code? (${timer}s)`;
-        setTimerTitle(title);
-    };
+    const setTitle = React.useCallback(
+        (timer: number) => {
+            let display_time: string;
+            if (timer > 60) {
+                display_time = `${Math.round(timer / 60)}m`;
+            } else {
+                display_time = `${timer}s`;
+            }
+            should_show_resend_code_button
+                ? setNextOtpRequest(` in ${display_time}`)
+                : setNextOtpRequest(` (${display_time})`);
+        },
+        [should_show_resend_code_button]
+    );
+
+    React.useEffect(() => {
+        if (is_success) reInitializeGetSettings();
+    }, [is_success, reInitializeGetSettings]);
+
+    React.useEffect(() => {
+        // @ts-expect-error this for now
+        if (should_show_resend_code_button && account_settings?.phone_number_verification?.next_email_attempt) {
+            otpRequestCountdown(
+                // @ts-expect-error this for now
+                account_settings.phone_number_verification.next_email_attempt,
+                setTitle,
+                setTimer,
+                current_time
+            );
+            // @ts-expect-error this for now
+        } else if (account_settings?.phone_number_verification?.next_attempt) {
+            otpRequestCountdown(
+                // @ts-expect-error this for now
+                account_settings.phone_number_verification.next_attempt,
+                setTitle,
+                setTimer,
+                current_time
+            );
+        }
+    }, [
+        // @ts-expect-error this for now
+        account_settings?.phone_number_verification?.next_email_attempt,
+        // @ts-expect-error this for now
+        account_settings?.phone_number_verification?.next_attempt,
+        timer,
+        setTitle,
+        should_show_resend_code_button,
+        current_time,
+    ]);
 
     React.useEffect(() => {
         let countdown: ReturnType<typeof setInterval>;
-        if (start_timer && timer > 0) {
+        if (timer && timer > 0) {
             countdown = setInterval(() => {
-                setTimer(prevTime => prevTime - 1);
-                setTitle(timer, resend_code_text);
+                setTimer(timer - 1);
+                setTitle(timer);
             }, 1000);
         } else {
-            setStartTimer(false);
-            setTimerTitle(resend_code_text);
+            setNextOtpRequest('');
         }
 
         return () => clearInterval(countdown);
-    }, [timer, start_timer]);
+    }, [timer, setTitle]);
 
     const resendCode = () => {
-        if (resend_code_text !== 'Resend code') {
-            setShouldShowDidntGetTheCodeModal(true);
-        } else {
+        if (should_show_resend_code_button) {
+            setIsButtonDisabled(true);
             send();
-            setTimer(count_from);
-            setStartTimer(true);
+        } else {
+            setShouldShowDidntGetTheCodeModal(true);
         }
     };
 
     return (
-        <Button variant='tertiary' onClick={resendCode} disabled={start_timer} color='black'>
+        <Button variant='tertiary' onClick={resendCode} disabled={!!timer || is_button_disabled} color='black'>
             <CaptionText bold underlined>
-                <Localize i18n_default_text='{{resendCode}}' values={{ resendCode: timer_title }} />
+                {should_show_resend_code_button ? (
+                    <Localize i18n_default_text='Resend code{{resendCode}}' values={{ resendCode: next_otp_request }} />
+                ) : (
+                    <Localize
+                        i18n_default_text="Didn't get the code?{{resendCode}}"
+                        values={{ resendCode: next_otp_request }}
+                    />
+                )}
             </CaptionText>
         </Button>
     );

@@ -21,9 +21,16 @@ type TWalletMarketCurrencyIconProps = {
     isDemo: THooks.ActiveWalletAccount['is_virtual'];
     marketType?: keyof typeof mt5MarketTypeIcon;
     platform?: TPlatforms.All;
+    size?: ComponentProps<typeof WalletCurrencyCard>['size'];
 };
 
-const WalletMarketCurrencyIcon: FC<TWalletMarketCurrencyIconProps> = ({ currency, isDemo, marketType, platform }) => {
+const WalletMarketCurrencyIcon: FC<TWalletMarketCurrencyIconProps> = ({
+    currency,
+    isDemo,
+    marketType,
+    platform,
+    size = 'sm',
+}) => {
     let MarketTypeIcon: ComponentProps<typeof WalletMarketIcon>['icon'];
     if (marketType === MARKET_TYPE.ALL && platform && platform in cfdPlatformIcon) {
         MarketTypeIcon = cfdPlatformIcon[platform as keyof typeof cfdPlatformIcon];
@@ -37,13 +44,13 @@ const WalletMarketCurrencyIcon: FC<TWalletMarketCurrencyIconProps> = ({ currency
                 <WalletMarketIcon
                     className='wallets-market-currency-icon__market-icon'
                     icon={MarketTypeIcon}
-                    size='sm'
+                    size={size}
                 />
                 <WalletCurrencyCard
                     className='wallets-market-currency-icon__currency-icon'
                     currency={currency}
                     isDemo={isDemo}
-                    size='xs'
+                    size={size}
                 />
             </div>
         </div>

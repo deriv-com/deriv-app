@@ -56,7 +56,7 @@ export const defaultIcons: TIconTypes = {
 };
 
 export const roundedIconWidth = {
-    xs: 16,
+    xs: 12,
     sm: 24,
     md: 32,
     lg: 48,

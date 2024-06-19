@@ -7,6 +7,10 @@
     &--is-input {
         .wallets-transfer-form-account-card__icon {
             margin-right: 0.8rem;
+
+            .wallets-market-currency-icon__currency-icon {
+                transform: translate(-0.3rem, 0.7rem);
+            }
         }
     }
 

@@ -91,7 +91,6 @@ describe('ContractDetailsFooter', () => {
         renderFooter();
 
         const closeButton = screen.queryByRole('button');
-        console.log(closeButton?.textContent);
         expect(closeButton).toBeDisabled();
     });
 

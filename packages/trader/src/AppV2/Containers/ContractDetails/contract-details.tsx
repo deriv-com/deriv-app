@@ -85,9 +85,9 @@ const ContractDetails = observer(() => {
                 <div className='contract-card-wrapper'>
                     <ContractCard contractInfo={contract_info} serverTime={server_time} />
                 </div>
-                <div className='placeholder'>
-                    <ChartPlaceholder />
-                </div>
+
+                <ChartPlaceholder />
+
                 <DealCancellation />
                 {showRiskManagement && (
                     <CardWrapper>

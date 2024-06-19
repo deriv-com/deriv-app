@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { CONTRACT_TYPES, TContractInfo } from '@deriv/shared';
+import { CONTRACT_TYPES, TContractInfo, getCardLabelsV2 } from '@deriv/shared';
 import useOrderDetails from '../useOrderDetails';
 
 jest.mock('@deriv/translations', () => ({
@@ -9,7 +9,6 @@ jest.mock('@deriv/translations', () => ({
 
 jest.mock('@deriv/shared', () => ({
     getDurationPeriod: jest.fn(),
-    getDurationTime: jest.fn(),
     getDurationUnitText: jest.fn(),
     getGrowthRatePercentage: jest.fn(() => '10'),
     isAccumulatorContract: jest.fn(),
@@ -44,17 +43,19 @@ const mockData: TContractInfo = {
 };
 
 describe('useOrderDetails', () => {
-    it('should return correct details for Multiplier contract', () => {
+    const CARD_LABELS = getCardLabelsV2();
+
+    it('should return correct details for multiplier contract', () => {
         mockData.contract_type = CONTRACT_TYPES.MULTIPLIER.UP;
         const { result } = renderHook(() => useOrderDetails(mockData));
         expect(result.current?.details).toEqual({
-            'Reference ID': ['12345 (Buy)', '67890 (Sell)'],
-            Multiplier: '',
-            Stake: '100.00 USD',
-            Commission: '5 USD',
-            'Take Profit': '200.00 USD',
-            'Stop loss': '50.00 USD',
-            'Stop out level': '30.00 USD',
+            [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
+            [CARD_LABELS.MULTIPLIER]: '',
+            [CARD_LABELS.STAKE]: '100.00 USD',
+            [CARD_LABELS.COMMISSION]: '5 USD',
+            [CARD_LABELS.TAKE_PROFIT]: '200.00 USD',
+            [CARD_LABELS.STOP_LOSS]: '50.00 USD',
+            [CARD_LABELS.STOP_OUT_LEVEL]: '30.00 USD',
         });
     });
 
@@ -62,10 +63,10 @@ describe('useOrderDetails', () => {
         mockData.contract_type = CONTRACT_TYPES.CALL;
         const { result } = renderHook(() => useOrderDetails(mockData));
         expect(result.current?.details).toEqual({
-            'Reference ID': ['12345 (Buy)', '67890 (Sell)'],
-            Duration: '5 ticks',
-            Barrier: '1000',
-            Stake: '100.00 USD',
+            [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
+            [CARD_LABELS.DURATION]: '5 Ticks',
+            [CARD_LABELS.BARRIER]: '1000',
+            [CARD_LABELS.STAKE]: '100.00 USD',
         });
     });
 
@@ -73,12 +74,12 @@ describe('useOrderDetails', () => {
         mockData.contract_type = CONTRACT_TYPES.TURBOS.LONG;
         const { result } = renderHook(() => useOrderDetails(mockData));
         expect(result.current?.details).toEqual({
-            'Reference ID': ['12345 (Buy)', '67890 (Sell)'],
-            Duration: '5 ticks',
-            Barrier: '1000',
-            'Payout per point': '1',
-            Stake: '100.00 USD',
-            'Take Profit': '200.00 USD',
+            [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
+            [CARD_LABELS.DURATION]: '5 Ticks',
+            [CARD_LABELS.BARRIER]: '1000',
+            [CARD_LABELS.PAYOUT_PER_POINT]: '1',
+            [CARD_LABELS.STAKE]: '100.00 USD',
+            [CARD_LABELS.TAKE_PROFIT]: '200.00 USD',
         });
     });
 
@@ -86,10 +87,10 @@ describe('useOrderDetails', () => {
         mockData.contract_type = CONTRACT_TYPES.MATCH_DIFF.MATCH;
         const { result } = renderHook(() => useOrderDetails(mockData));
         expect(result.current?.details).toEqual({
-            'Reference ID': ['12345 (Buy)', '67890 (Sell)'],
-            Duration: '5 seconds',
-            Target: undefined,
-            Stake: '100.00 USD',
+            [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
+            [CARD_LABELS.DURATION]: '5 seconds',
+            [CARD_LABELS.TARGET]: undefined,
+            [CARD_LABELS.STAKE]: '100.00 USD',
         });
     });
 
@@ -97,11 +98,11 @@ describe('useOrderDetails', () => {
         mockData.contract_type = CONTRACT_TYPES.ACCUMULATOR;
         const { result } = renderHook(() => useOrderDetails(mockData));
         expect(result.current?.details).toEqual({
-            'Reference ID': ['12345 (Buy)', '67890 (Sell)'],
-            Duration: '3/5 ticks',
-            'Growth rate': '1000%',
-            Stake: '100.00 USD',
-            'Take Profit': '200 USD',
+            [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
+            [CARD_LABELS.DURATION]: '3/5 Ticks',
+            [CARD_LABELS.GROWTH_RATE]: '1000%',
+            [CARD_LABELS.STAKE]: '100.00 USD',
+            [CARD_LABELS.TAKE_PROFIT]: '200 USD',
         });
     });
 
@@ -109,11 +110,11 @@ describe('useOrderDetails', () => {
         mockData.contract_type = CONTRACT_TYPES.VANILLA.CALL;
         const { result } = renderHook(() => useOrderDetails(mockData));
         expect(result.current?.details).toEqual({
-            'Reference ID': ['12345 (Buy)', '67890 (Sell)'],
-            'Strike Price': ' - ',
-            Duration: '5 seconds',
-            'Payout per point': '1',
-            Stake: '100.00 USD',
+            [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
+            [CARD_LABELS.STRIKE_PRICE]: ' - ',
+            [CARD_LABELS.DURATION]: '5 seconds',
+            [CARD_LABELS.PAYOUT_PER_POINT]: '1',
+            [CARD_LABELS.STAKE]: '100.00 USD',
         });
     });
 
@@ -134,13 +135,13 @@ describe('useOrderDetails', () => {
         modifiedData.contract_type = CONTRACT_TYPES.MULTIPLIER.UP;
         const { result } = renderHook(() => useOrderDetails(modifiedData));
         expect(result.current?.details).toEqual({
-            'Reference ID': ['12345 (Buy)', '67890 (Sell)'],
-            Multiplier: '',
-            Stake: '100.00 USD',
-            Commission: '5 USD',
-            'Take Profit': 'Not set',
-            'Stop loss': 'Not set',
-            'Stop out level': '',
+            [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
+            [CARD_LABELS.MULTIPLIER]: '',
+            [CARD_LABELS.STAKE]: '100.00 USD',
+            [CARD_LABELS.COMMISSION]: '5 USD',
+            [CARD_LABELS.TAKE_PROFIT]: 'Not set',
+            [CARD_LABELS.STOP_LOSS]: 'Not set',
+            [CARD_LABELS.STOP_OUT_LEVEL]: '',
         });
     });
 });

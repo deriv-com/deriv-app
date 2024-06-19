@@ -13,6 +13,7 @@ jest.mock('@deriv/stores', () => ({
 
 describe('useContractDetails', () => {
     const mockOnMount = jest.fn();
+    const mockOnUnMount = jest.fn();
     const mockGetContractById = jest.fn();
     const mockContractInfo = { contract_id: null };
 
@@ -27,6 +28,7 @@ describe('useContractDetails', () => {
                     contract_info: { ...mockContractInfo, ...contractInfoOverride },
                 },
                 onMount: mockOnMount,
+                onUnmount: mockOnUnMount,
             },
             contract_trade: {
                 getContractById: mockGetContractById,
@@ -46,8 +48,11 @@ describe('useContractDetails', () => {
         expect(mockOnMount).toHaveBeenCalledWith(12345);
     });
 
-    it('should not call onMount if contract_id is available', () => {
+    it('should not call onMount if contract_id is equal to id from the url', () => {
         setupMocks({ contract_id: 67890 });
+        (useLocation as jest.Mock).mockReturnValue({
+            pathname: '//abc/contracts/67890',
+        });
 
         renderHook(() => useContractDetails());
 

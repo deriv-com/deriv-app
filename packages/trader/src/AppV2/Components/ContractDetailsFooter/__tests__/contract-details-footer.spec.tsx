@@ -2,13 +2,12 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { getCardLabels, isValidToSell, isValidToCancel, isMultiplierContract } from '@deriv/shared';
+import { isValidToSell, isValidToCancel, isMultiplierContract } from '@deriv/shared';
 import ContractDetailsFooter from '../contract-details-footer';
 import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    getCardLabels: jest.fn(),
     isValidToSell: jest.fn(),
     isValidToCancel: jest.fn(),
     isMultiplierContract: jest.fn(),
@@ -32,15 +31,6 @@ describe('ContractDetailsFooter', () => {
         common: {
             server_time: new Date(),
         },
-    });
-
-    beforeEach(() => {
-        (getCardLabels as jest.Mock).mockImplementation(() => ({
-            CLOSE: 'Close',
-            CANCEL: 'Cancel',
-            RESALE_NOT_OFFERED: 'Resale not offered',
-        }));
-        jest.clearAllMocks();
     });
 
     const renderFooter = () => {
@@ -94,6 +84,16 @@ describe('ContractDetailsFooter', () => {
         expect(mock_store.contract_replay.onClickSell).toHaveBeenCalledWith(1);
     });
 
+    it('should not call onClickSell if not valid to sell', () => {
+        (isMultiplierContract as jest.Mock).mockImplementation(() => false);
+        (isValidToSell as jest.Mock).mockImplementation(() => false);
+
+        renderFooter();
+
+        const closeButton = screen.queryByRole('button');
+        expect(closeButton).toBeDisabled();
+    });
+
     it('should disable cancel button when profit is non-negative', () => {
         (isMultiplierContract as jest.Mock).mockImplementation(() => true);
         (isValidToCancel as jest.Mock).mockImplementation(() => true);
@@ -112,20 +112,6 @@ describe('ContractDetailsFooter', () => {
 
         const cancelButton = screen.queryByRole('button', { name: /cancel/i });
         expect(cancelButton).not.toBeInTheDocument();
-    });
-
-    it('should not call onClickSell if not valid to sell', () => {
-        (isMultiplierContract as jest.Mock).mockImplementation(() => false);
-        (isValidToSell as jest.Mock).mockImplementation(() => false);
-
-        renderFooter();
-
-        const closeButton = screen.queryByRole('button', { name: /close @ 100.00 usd/i });
-        if (closeButton) {
-            userEvent.click(closeButton);
-        }
-
-        expect(mock_store.contract_replay.onClickSell).not.toHaveBeenCalled();
     });
 
     it('should render correct button label for non-multiplier contract when not valid to sell', () => {

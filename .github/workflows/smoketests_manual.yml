@@ -13,18 +13,11 @@ jobs:
         with:
           github-token: ${{ secrets.E2E_WORKFLOW_TOKEN }}
           script: |
-            const workflowInputs2 = {
-              environment: '${{ secrets.E2E_WORKFLOW_ENV }}',
-              suite: '${{ secrets.E2E_WORKFLOW.SUITE }}',
-              qabox: '""',
-              appid: '""',
-              testlink: '""',
-              testcase: '""',
-              branches: '""'
-            };
             const workflowInputs = {
-              environment: '${{ secrets.E2E_WORKFLOW_ENV }}', // Choose one from the provided options
-              suite: '${{ secrets.E2E_WORKFLOW_SUITE }}' // Choose one from the provided options
+              environment: '${{ secrets.E2E_WORKFLOW_ENV }}',
+              suite: '${{ secrets.E2E_WORKFLOW_SUITE }}'
+              triggeredByPR: 'true',
+              appRegUrl: 'https://deriv-app-git-fork-suisin-deriv-suisin-upm917addswahililanguage.binary.sx'
               };
             const response = await github.rest.actions.createWorkflowDispatch({
               owner: 'regentmarkets',

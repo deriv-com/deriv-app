@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
-import { useDevice, useDevice } from '@deriv-com/ui';
+import { useDevice } from '@deriv-com/ui';
 import { Loading, Button, Text, ThemedScrollbars, FormSubmitButton, Modal, HintBox } from '@deriv/components';
 import { useFileUploader } from '@deriv/hooks';
 import { validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv/shared';

@@ -57,7 +57,7 @@ const transformMultiplierData = (data: TContractInfo) => {
 };
 
 // For Rise
-const transformRiseData = (data: TContractInfo) => {
+const transformCallPutData = (data: TContractInfo) => {
     const commonFields = getCommonFields(data);
     return {
         [`${CARD_LABELS.REFERENCE_ID}:`]: commonFields[`${CARD_LABELS.REFERENCE_ID}:`],
@@ -145,13 +145,13 @@ const transformFunctionMap: Record<string, (data: TContractInfo) => Record<strin
     [CONTRACT_TYPES.EVEN_ODD.ODD]: transformDigitsData,
     [CONTRACT_TYPES.OVER_UNDER.OVER]: transformDigitsData,
     [CONTRACT_TYPES.OVER_UNDER.UNDER]: transformDigitsData,
-    [CONTRACT_TYPES.RESET.CALL]: transformRiseData,
-    [CONTRACT_TYPES.PUT]: transformRiseData,
-    [CONTRACT_TYPES.PUTE]: transformRiseData,
-    [CONTRACT_TYPES.CALLE]: transformRiseData,
-    [CONTRACT_TYPES.CALL]: transformRiseData,
-    [CONTRACT_TYPES.TOUCH.ONE_TOUCH]: transformRiseData,
-    [CONTRACT_TYPES.TOUCH.NO_TOUCH]: transformRiseData,
+    [CONTRACT_TYPES.RESET.CALL]: transformCallPutData,
+    [CONTRACT_TYPES.PUT]: transformCallPutData,
+    [CONTRACT_TYPES.PUTE]: transformCallPutData,
+    [CONTRACT_TYPES.CALLE]: transformCallPutData,
+    [CONTRACT_TYPES.CALL]: transformCallPutData,
+    [CONTRACT_TYPES.TOUCH.ONE_TOUCH]: transformCallPutData,
+    [CONTRACT_TYPES.TOUCH.NO_TOUCH]: transformCallPutData,
     [CONTRACT_TYPES.ACCUMULATOR]: transformAccumulatorData,
     [CONTRACT_TYPES.VANILLA.CALL]: transformVanillaData,
     [CONTRACT_TYPES.VANILLA.PUT]: transformVanillaData,

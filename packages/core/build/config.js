@@ -186,7 +186,7 @@ const generateSWConfig = () => ({
             },
         },
         {
-            urlPattern: /translations.deriv.com/,
+            urlPattern: /https:\/\/translations.deriv.com\/.*/,
             handler: 'CacheFirst',
             options: {
                 cacheName: 'translations',

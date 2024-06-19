@@ -30,7 +30,7 @@ const ResendCodeTimer = ({
         (timer: number) => {
             let display_time: string;
             if (timer > 60) {
-                display_time = `${timer / 60}m`;
+                display_time = `${Math.round(timer / 60)}m`;
             } else {
                 display_time = `${timer}s`;
             }

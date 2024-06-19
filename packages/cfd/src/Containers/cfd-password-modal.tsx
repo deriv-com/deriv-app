@@ -872,7 +872,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         if (platform === CFD_PLATFORMS.MT5) {
             return (
                 <Localize
-                    i18n_default_text='Your demo Deriv {{type}} account is ready.'
+                    i18n_default_text='Your demo Deriv MT5 {{type}} account is ready.'
                     values={{
                         type: accountTypes(),
                     }}

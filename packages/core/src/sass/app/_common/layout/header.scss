@@ -395,10 +395,8 @@
 }
 
 .header-v2 {
-    @include mobile {
-        height: $MOBILE_HEADER_DTRADER_V2_HEIGHT;
-        border-bottom: none;
-    }
+    height: $MOBILE_HEADER_DTRADER_V2_HEIGHT;
+    border-bottom: none;
 
     &__acc-info {
         display: flex;
@@ -453,5 +451,9 @@
                 transform: rotate(180deg);
             }
         }
+    }
+
+    .badge__position-top-sm {
+        top: -7px;
     }
 }

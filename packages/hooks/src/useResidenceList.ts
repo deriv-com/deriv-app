@@ -12,14 +12,8 @@ const useResidenceList = (options?: TSocketRequestQueryOptions<'residence_list'>
         },
     });
 
-    /** Modify the residence list data. */
-    const modified_residence_list = useMemo(() => {
-        if (!data || !data.residence_list) return [];
-
-        return data.residence_list.map(residence => ({
-            ...residence,
-        }));
-    }, [data]);
+    // /** Modify the residence list data. */
+    const modified_residence_list = !data || !data.residence_list ? [] : data.residence_list;
 
     return {
         /** The residence list */

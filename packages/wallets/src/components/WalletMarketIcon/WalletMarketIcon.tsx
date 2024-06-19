@@ -9,6 +9,11 @@ import {
     AccountsDmt5DerivedIcon,
     AccountsDmt5FinancialIcon,
     AccountsDmt5SwfIcon,
+    DerivProductDerivBotBrandLightLogoHorizontalIcon,
+    DerivProductDerivGoBrandLightLogoHorizontalIcon,
+    DerivProductDerivTraderBrandLightLogoHorizontalIcon,
+    PartnersProductBinaryBotBrandLightLogoHorizontalIcon,
+    PartnersProductSmarttraderBrandLightLogoIcon,
     PaymentMethodDerivP2pBrandDarkIcon,
     PaymentMethodDerivP2pBrandIcon,
 } from '@deriv/quill-icons';
@@ -26,6 +31,14 @@ const CFDPlatformIcons: TIconTypes = {
     IcWalletDerivX: AccountsDerivXIcon,
 };
 
+const AppIcons = {
+    binarybot: PartnersProductBinaryBotBrandLightLogoHorizontalIcon,
+    bot: DerivProductDerivBotBrandLightLogoHorizontalIcon,
+    derivgo: DerivProductDerivGoBrandLightLogoHorizontalIcon,
+    smarttrader: PartnersProductSmarttraderBrandLightLogoIcon,
+    trader: DerivProductDerivTraderBrandLightLogoHorizontalIcon,
+};
+
 const PlatformIcons: TIconTypes = {
     IcWalletDerivP2P: PaymentMethodDerivP2pBrandIcon,
     IcWalletDerivP2PDark: PaymentMethodDerivP2pBrandDarkIcon,
@@ -34,6 +47,7 @@ const PlatformIcons: TIconTypes = {
 };
 
 const Icons: TIconTypes = {
+    ...AppIcons,
     ...MT5MarketIcons,
     ...CFDPlatformIcons,
     ...PlatformIcons,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import { Trans } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useActiveLinkedToTradingAccount } from '@deriv/api-v2';
@@ -11,27 +11,27 @@ import { TSubscribedBalance } from '../../types';
 import { WalletLink, WalletText } from '../Base';
 import { DerivAppsSection } from '../DerivAppsSection';
 import { TradingAccountCard } from '../TradingAccountCard';
+import { WalletMarketIcon } from '../WalletMarketIcon';
 import './OptionsAndMultipliersListing.scss';
+import { object } from 'yup';
 
-type TLinkTitleProps = Pick<typeof optionsAndMultipliersContent[number], 'icon' | 'title'>;
-
-const LinkTitle: React.FC<TLinkTitleProps> = ({ icon, title }) => {
+const LinkTitle: React.FC<{ platform: ComponentProps<typeof WalletMarketIcon>['icon'] }> = ({ platform }) => {
     const handleClick = (event: React.KeyboardEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
         event.persist();
-        switch (title) {
-            case 'Deriv Trader':
+        switch (platform) {
+            case 'trader':
                 window.open(getStaticUrl(`/dtrader`));
                 break;
-            case 'Deriv Bot':
+            case 'bot':
                 window.open(getStaticUrl(`/dbot`));
                 break;
-            case 'SmartTrader':
+            case 'smarttrader':
                 window.open(getUrlSmartTrader());
                 break;
-            case 'Binary Bot':
+            case 'binarybot':
                 window.open(getUrlBinaryBot());
                 break;
-            case 'Deriv GO':
+            case 'derivgo':
                 window.open(getStaticUrl('/deriv-go'));
                 break;
             default:
@@ -50,7 +50,7 @@ const LinkTitle: React.FC<TLinkTitleProps> = ({ icon, title }) => {
                 }
             }}
         >
-            {icon}
+            <WalletMarketIcon icon={platform} size='lg' />
         </div>
     );
 };
@@ -82,18 +82,15 @@ const OptionsAndMultipliersListing: React.FC<TSubscribedBalance> = ({ balance })
             </section>
             <div className='wallets-options-and-multipliers-listing__content'>
                 {optionsAndMultipliersContent.map(account => {
-                    const { description, title } = account;
-
+                    const { description, key, redirect, title } = account;
                     return (
                         <TradingAccountCard
                             {...account}
                             disabled={!activeLinkedToTradingAccount?.loginid}
                             key={`trading-account-card-${title}`}
-                            leading={<LinkTitle icon={account.icon} title={title} />}
+                            leading={<LinkTitle platform={key} />}
                             onClick={() => {
-                                account.isExternal
-                                    ? window.open(account.redirect, '_blank')
-                                    : history.push(account.redirect as TRoute);
+                                account.isExternal ? window.open(redirect, '_blank') : history.push(redirect as TRoute);
                             }}
                             trailing={
                                 activeLinkedToTradingAccount?.loginid ? (

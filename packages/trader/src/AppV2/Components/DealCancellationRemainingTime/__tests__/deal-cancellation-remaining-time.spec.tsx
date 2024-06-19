@@ -10,7 +10,6 @@ jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     formatDuration: jest.fn(),
     getDiffDuration: jest.fn(),
-
 }));
 
 jest.mock('@deriv/stores', () => ({

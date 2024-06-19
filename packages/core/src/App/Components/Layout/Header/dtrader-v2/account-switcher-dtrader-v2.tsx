@@ -51,12 +51,8 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
     const has_user_set_currency = useHasSetCurrency();
     const has_cr_account = account_list.find(acc => acc.loginid?.startsWith('CR'))?.loginid;
     const show_separator = is_low_risk && has_maltainvest_account;
-    // TODO: refactor
     const show_button =
-        (has_active_real_account && !is_virtual && !is_closing) ||
-        (is_high_risk && !has_cr_account) ||
-        (is_low_risk && !has_cr_account && !has_maltainvest_account) ||
-        (is_eu && !is_high_risk && !is_low_risk && !has_maltainvest_account);
+        (has_active_real_account && !is_virtual && !is_closing) || (is_virtual && !has_any_real_account);
 
     const closeAccountsDialog = () => {
         toggleAccountsDialog(false);
@@ -76,7 +72,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
             return;
         }
 
-        // TODO: add loader skeleton for account switcher (check production). No Figma design
+        // TODO: need loader for account switcher while switching. Temporary have no design. Waiting for skeleton loader
         await switchAccount(loginid);
         setIsClosing(false);
     };
@@ -119,6 +115,15 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
             ? setAccountCurrency
             : () => openRealAccountSignup('manage');
 
+    const openRealAccount = () => {
+        if (real_account_creation_unlock_date) {
+            setShouldShowCooldownModal(true);
+        } else {
+            selectRegion(is_eu ? 'EU' : 'Non-EU');
+            openRealAccountSignup(is_eu && !is_low_risk ? 'maltainvest' : 'svg');
+        }
+    };
+
     const getAccountItem = (item: typeof account_list[0], is_demo?: boolean) => (
         <AccountListDTraderV2
             key={item.loginid}
@@ -135,22 +140,14 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
         />
     );
 
-    const getAddAccountButton = (account: string, is_eu?: boolean) => (
+    const getAddAccountButton = (account: string) => (
         <div key={account} className='acc-switcher-dtrader__new-account'>
             <StandaloneDerivIcon iconSize='sm' />
             <Text size='sm' className='acc-switcher-dtrader__new-account__info'>
                 {getAccountTitle(account)}
             </Text>
             <Button
-                onClick={() => {
-                    if (real_account_creation_unlock_date) {
-                        closeAccountsDialog();
-                        setShouldShowCooldownModal(true);
-                    } else {
-                        selectRegion(is_eu ? 'EU' : 'Non-EU');
-                        openRealAccountSignup(is_eu ? 'maltainvest' : 'svg');
-                    }
-                }}
+                onClick={openRealAccount}
                 color='black'
                 label={<Localize i18n_default_text='Add' />}
                 type='button'
@@ -206,7 +203,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
                         .map(account => getAccountItem(account))}
                     {getRemainingRealAccounts()
                         .filter(account => account === 'maltainvest')
-                        .map(account => getAddAccountButton(account, true))}
+                        .map(account => getAddAccountButton(account))}
                 </AccountGroupWrapper>
             )}
         </React.Fragment>
@@ -240,7 +237,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
                                     <Localize i18n_default_text='Add real account' />
                                 )
                             }
-                            onClick={handleManageAccounts}
+                            onClick={has_any_real_account ? handleManageAccounts : openRealAccount}
                             size='lg'
                             type='button'
                             variant='secondary'
@@ -249,7 +246,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
                     )}
                 </React.Fragment>
             ) : (
-                // TODO: it's old Loader from current production. Add new?
+                // TODO: temporary have no design, add old loader. Waiting for skeleton loader
                 <Loading is_fullscreen={false} />
             )}
         </div>

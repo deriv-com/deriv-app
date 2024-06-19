@@ -1,0 +1,41 @@
+.banner {
+    border-radius: var(--core-borderRadius-400);
+    padding: var(--core-spacing-800);
+    background-color: var(--core-color-solid-slate-700);
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--core-spacing-800);
+
+    &__container {
+        width: 100%;
+        height: var(--core-size-4000);
+        padding: var(--core-spacing-400);
+    }
+
+    &__currency {
+        width: var(--core-size-4000);
+        white-space: nowrap;
+
+        .icon {
+            &-2 {
+                position: relative;
+                right: var(--temp-static-spacing-7);
+            }
+            &-3 {
+                position: relative;
+                right: calc(2 * var(--temp-static-spacing-7));
+            }
+        }
+    }
+
+    &__text:is(p) {
+        flex-grow: 1;
+        color: var(--core-color-solid-slate-50);
+    }
+
+    &__arrow {
+        fill: var(--core-color-solid-slate-50);
+    }
+}

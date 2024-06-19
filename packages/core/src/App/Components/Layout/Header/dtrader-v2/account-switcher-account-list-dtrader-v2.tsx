@@ -47,7 +47,7 @@ const AccountListDTraderV2 = ({
             <Text size='sm' color='quill-typography__color--default'>
                 {getAccountTitle({ currency, loginid, is_virtual: !!is_virtual, show_no_currency: true })}
             </Text>
-            <Text size='sm' color='quill-typography__color--disabled' as='span'>
+            <Text size='sm' as='span' color='quill-typography__color--subtle'>
                 {loginid}
             </Text>
         </div>

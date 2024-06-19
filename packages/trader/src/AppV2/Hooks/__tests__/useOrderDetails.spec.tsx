@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { CONTRACT_TYPES, TContractInfo, getCardLabelsV2 } from '@deriv/shared';
+import { CONTRACT_TYPES, TContractInfo, getCardLabelsV2, mockContractInfo } from '@deriv/shared';
 import useOrderDetails from '../useOrderDetails';
 
 jest.mock('@deriv/translations', () => ({
@@ -21,7 +21,7 @@ jest.mock('App/Components/Elements/PositionsDrawer/helpers', () => ({
     getBarrierValue: jest.fn(),
 }));
 
-const mockData: TContractInfo = {
+const mockData: TContractInfo = mockContractInfo({
     transaction_ids: { buy: 12345, sell: 67890 },
     buy_price: 100,
     currency: 'USD',
@@ -40,7 +40,7 @@ const mockData: TContractInfo = {
     entry_spot_display_value: '1000',
     is_expired: 1,
     is_sold: 1,
-};
+});
 
 describe('useOrderDetails', () => {
     const CARD_LABELS = getCardLabelsV2();
@@ -88,7 +88,7 @@ describe('useOrderDetails', () => {
         const { result } = renderHook(() => useOrderDetails(mockData));
         expect(result.current?.details).toEqual({
             [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
-            [CARD_LABELS.DURATION]: '5 seconds',
+            [CARD_LABELS.DURATION]: '5 minutes',
             [CARD_LABELS.TARGET]: undefined,
             [CARD_LABELS.STAKE]: '100.00 USD',
         });
@@ -112,7 +112,7 @@ describe('useOrderDetails', () => {
         expect(result.current?.details).toEqual({
             [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
             [CARD_LABELS.STRIKE_PRICE]: ' - ',
-            [CARD_LABELS.DURATION]: '5 seconds',
+            [CARD_LABELS.DURATION]: '5 minutes',
             [CARD_LABELS.PAYOUT_PER_POINT]: '1',
             [CARD_LABELS.STAKE]: '100.00 USD',
         });

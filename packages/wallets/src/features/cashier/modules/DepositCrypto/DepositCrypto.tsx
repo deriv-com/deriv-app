@@ -28,7 +28,7 @@ const DepositCrypto = () => {
                 <DepositCryptoCurrencyDetails />
                 <DepositCryptoAddress depositCryptoAddress={depositCryptoAddress} />
                 <DepositCryptoDisclaimers />
-                <Divider color='#f2f3f4' height={2} />
+                <Divider color='var(--border-divider)' height={2} />
                 <DepositCryptoTryFiatOnRamp />
             </div>
             <div className='wallets-deposit-crypto__side-pane'>

@@ -34,7 +34,7 @@ const IdentityCardDocumentUpload = () => {
                     validationSchema={expiryDateValidator}
                 />
             </div>
-            <Divider color='#f2f3f4' height={2} />
+            <Divider color='var(--border-divider)' height={2} />
             <div className='wallets-identity-card-document-upload__document-upload'>
                 <WalletText>Next, upload the front and back of your identity card.</WalletText>
                 <div className='wallets-identity-card-document-upload__dropzone'>

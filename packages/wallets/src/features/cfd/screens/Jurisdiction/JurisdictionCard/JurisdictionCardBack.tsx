@@ -60,7 +60,7 @@ const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, ve
                         </div>
                     );
                 })}
-                <Divider color='#f2f3f4' height={2} />
+                <Divider color='var(--border-divider)' height={2} />
                 <div className='wallets-jurisdiction-card-back__border' />
                 {verificationContents.statusReferences.map((statusReference, i) => {
                     return (

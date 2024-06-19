@@ -19,7 +19,7 @@ const NIMCSlipDocumentUpload = () => {
                 name='nimcNumber'
                 validationSchema={documentRequiredValidator('NIMC slip number')}
             />
-            <Divider color='#f2f3f4' height={2} />
+            <Divider color='var(--border-divider)' height={2} />
             <div className='wallets-nimc-slip-document-upload__document-section'>
                 <WalletText>Next, upload both of the following documents.</WalletText>
                 <div className='wallets-nimc-slip-document-upload__dropzones'>

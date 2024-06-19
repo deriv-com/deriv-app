@@ -109,7 +109,7 @@ const TransferFormAccountSelection: React.FC<TProps> = ({
                                     ))}
                                 </div>
                             </div>
-                            {shouldShowDivider && <Divider color='#f2f3f4' height={4} />}
+                            {shouldShowDivider && <Divider color='var(--border-divider)' height={4} />}
                         </React.Fragment>
                     );
                 })}

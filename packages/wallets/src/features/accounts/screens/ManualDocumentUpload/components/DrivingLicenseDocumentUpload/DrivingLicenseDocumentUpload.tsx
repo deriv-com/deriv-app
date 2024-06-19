@@ -35,7 +35,7 @@ const DrivingLicenseDocumentUpload = () => {
                     validationSchema={expiryDateValidator}
                 />
             </div>
-            <Divider color='#f2f3f4' height={2} />
+            <Divider color='var(--border-divider)' height={2} />
             <div className='wallets-driving-license-document-upload__document-upload'>
                 <WalletText>Next, upload the front and back of your driving licence.</WalletText>
                 <div className='wallets-driving-license-document-upload__dropzone'>

@@ -91,7 +91,7 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
                     )}
                 </div>
             </div>
-            <Divider color='#999999' height={0.5} margin='0.4rem 2.8rem' />
+            <Divider color='var(--general-main-3)' height={0.5} margin='0.4rem 2.8rem' />
         </React.Fragment>
     );
 };

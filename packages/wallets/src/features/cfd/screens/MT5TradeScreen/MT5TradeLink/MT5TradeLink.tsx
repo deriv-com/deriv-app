@@ -54,7 +54,7 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
 
     return (
         <React.Fragment>
-            <Divider color='#f2f3f4' height={2} />
+            <Divider color='var(--border-divider)' height={2} />
             <div className='wallets-mt5-trade-link'>
                 <div className='wallets-mt5-trade-link--left'>
                     {(platform === CFD_PLATFORMS.MT5 || app === CFD_PLATFORMS.CTRADER) && (

@@ -4,17 +4,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { TPortfolioPosition } from '@deriv/stores/types';
 import { OpenPositionsTable, getRowAction, isPurchaseMissing } from '../open-positions-table';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
-    isDesktop: jest.fn(() => true),
-}));
-
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    DataList: jest.fn(() => <>DataList</>),
-}));
-
+const data_list = 'DataList';
 const future_time = Math.floor(Date.now() / 1000) + 5000;
 const options_position = {
     contract_info: {
@@ -77,12 +67,20 @@ const options_position = {
     entry_spot: 1184.99,
 } as TPortfolioPosition;
 
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    isMobile: jest.fn(() => false),
+    isDesktop: jest.fn(() => true),
+}));
+
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    DataList: jest.fn(() => <>{data_list}</>),
+}));
+
 describe('OpenPositionsTable', () => {
     const data_table_test_id = 'dt_data_table';
     const loading_test_id = 'dt_loading_component';
-    const no_open_positions_text = 'You have no open positions yet.';
-    const test_classname = 'test-class';
-
     const mocked_props: React.ComponentProps<typeof OpenPositionsTable> = {
         accumulator_rate: 'All growth rates',
         active_positions: [options_position],
@@ -142,24 +140,35 @@ describe('OpenPositionsTable', () => {
         (isDesktop as jest.Mock).mockReturnValue(true);
     });
 
-    it('should render "DataTable" component and it\'s properties when "is_loading" property is "false" and the "currency" property is passed in the "desktop" view', () => {
+    it('should render DataTable if active_positions and currency are passed on desktop', () => {
         render(<OpenPositionsTable {...mocked_props} />);
-        expect(screen.getByTestId(data_table_test_id)).toBeInTheDocument();
-        expect(screen.getByTestId(data_table_test_id)).toHaveClass(test_classname);
+        expect(screen.getByTestId(data_table_test_id)).toHaveClass(mocked_props.className);
     });
-    it('should render "DataList" component and it\'s properties when "is_loading" property is "false" and the "currency" property is passed in the "mobile" view', () => {
-        (isMobile as jest.Mock).mockReturnValue(false);
-        (isDesktop as jest.Mock).mockReturnValue(true);
+    it('should not render DataTable or Loading on desktop if currency is missing', () => {
+        render(<OpenPositionsTable {...mocked_props} currency='' />);
+        expect(screen.queryByTestId(data_table_test_id)).not.toBeInTheDocument();
+        expect(screen.queryByTestId(loading_test_id)).not.toBeInTheDocument();
+    });
+    it('should render DataList if active_positions and currency are passed on desktop on mobile', () => {
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
         render(<OpenPositionsTable {...mocked_props} />);
-        expect(screen.getByText('DataList')).toBeInTheDocument();
+        expect(screen.getByText(data_list)).toBeInTheDocument();
     });
-    it('should render "Loading" component when is_loading is true', () => {
+    it('should not render DataList or Loading on mobile if currency is missing', () => {
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        render(<OpenPositionsTable {...mocked_props} currency='' />);
+        expect(screen.queryByText(data_list)).not.toBeInTheDocument();
+        expect(screen.queryByTestId(loading_test_id)).not.toBeInTheDocument();
+    });
+    it('should render Loading when is_loading is true', () => {
         render(<OpenPositionsTable {...mocked_props} is_loading />);
         expect(screen.getByTestId(loading_test_id)).toBeInTheDocument();
     });
-    it('should render "Loading" component when is_empty is true', () => {
+    it('should render No positions message when is_empty is true', () => {
         render(<OpenPositionsTable {...mocked_props} active_positions={[]} is_empty />);
-        expect(screen.getByTestId(no_open_positions_text)).toBeInTheDocument();
+        expect(screen.getByText('You have no open positions yet.')).toBeInTheDocument();
     });
 });
 

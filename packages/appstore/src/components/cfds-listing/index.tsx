@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { Loading, Text, StaticUrl } from '@deriv/components';
 import {
@@ -316,201 +316,201 @@ const CFDsListing = observer(() => {
                 <PlatformLoader />
             )}
             {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
-                <div className='cfd-full-row'>
-                    <hr className='divider' />
-                </div>
-            )}
-            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
-                <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
-                    <Text weight='bold'>{localize('Deriv cTrader')}</Text>
-                </div>
-            )}
-            {is_landing_company_loaded
-                ? available_ctrader_accounts.map(account => {
-                      const existing_accounts = getExistingAccounts(account.platform, account.market_type);
-                      const has_existing_accounts = existing_accounts.length > 0;
-                      const track_account_name = is_demo ? `${account.name} ${'Demo'}` : account.name;
-                      return has_existing_accounts ? (
-                          existing_accounts.map(existing_account => (
-                              <TradingAppCard
-                                  action_type='multi-action'
-                                  availability={selected_region}
-                                  clickable_icon
-                                  icon={account.icon}
-                                  sub_title={account.name}
-                                  name={`${formatMoney(
-                                      existing_account.currency,
-                                      is_demo ? existing_account.display_balance : ctrader_total_balance,
-                                      true
-                                  )} ${existing_account.currency}`}
-                                  description={existing_account.display_login}
-                                  platform={account.platform}
-                                  key={`trading_app_card_${existing_account.display_login}`}
-                                  onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
-                                      const button_name = e?.currentTarget?.name;
-                                      if (button_name === 'transfer-btn') {
-                                          Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                              action: 'account_transfer',
-                                              form_name: 'traders_hub_default',
-                                              account_mode: selected_account_type,
-                                              account_name: track_account_name,
-                                          });
-                                          toggleCTraderTransferModal();
-                                      } else if (button_name === 'topup-btn') {
-                                          Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                              action: 'account_topup',
-                                              form_name: 'traders_hub_default',
-                                              account_mode: selected_account_type,
-                                              account_name: track_account_name,
-                                          });
-                                          showTopUpModal(existing_account);
-                                          setAppstorePlatform(account.platform);
-                                      } else {
-                                          Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                              action: 'account_open',
-                                              form_name: 'traders_hub_default',
-                                              account_mode: selected_account_type,
-                                              account_name: track_account_name,
-                                          });
-                                          startTrade(account.platform, existing_account);
-                                      }
-                                  }}
-                              />
-                          ))
-                      ) : (
-                          <TradingAppCard
-                              action_type='get'
-                              availability={selected_region}
-                              clickable_icon
-                              icon={account.icon}
-                              name={account.name}
-                              platform={account.platform}
-                              description={account.description}
-                              onAction={() => {
-                                  Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                      action: 'account_get',
-                                      form_name: 'traders_hub_default',
-                                      account_mode: selected_account_type,
-                                      account_name: track_account_name,
-                                  });
-                                  if ((has_no_real_account || no_CR_account) && is_real) {
-                                      openDerivRealAccountNeededModal();
-                                  } else {
-                                      setAccountType({
-                                          category: selected_account_type,
-                                          type: account.market_type,
-                                      });
-                                      setAppstorePlatform(account.platform);
-                                      getAccount();
-                                  }
-                              }}
-                              key={`trading_app_card_${account.name}`}
-                              is_new
-                          />
-                      );
-                  })
-                : !is_real && <PlatformLoader />}
-            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
-                <React.Fragment>
+                <Fragment>
                     <div className='cfd-full-row'>
                         <hr className='divider' />
                     </div>
-
-                    <div className='cfd-full-row'>
-                        <Text line_height='m' weight='bold' color='prominent'>
-                            {localize('Deriv X')}
-                        </Text>
+                    <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
+                        <Text weight='bold'>{localize('Deriv cTrader')}</Text>
                     </div>
-                </React.Fragment>
-            )}
-            {is_landing_company_loaded ? (
-                available_dxtrade_accounts?.map(account => {
-                    const existing_accounts = getExistingAccounts(account.platform, account.market_type);
-                    const has_existing_accounts = existing_accounts.length > 0;
-                    const track_account_name = is_demo ? `${account.name} ${'Demo'}` : account.name;
-
-                    return has_existing_accounts ? (
-                        existing_accounts.map(existing_account => (
-                            <TradingAppCard
-                                action_type='multi-action'
-                                availability={selected_region}
-                                clickable_icon
-                                icon={account.icon}
-                                sub_title={account.name}
-                                name={`${formatMoney(
-                                    existing_account.currency,
-                                    existing_account.display_balance,
-                                    true
-                                )} ${existing_account.currency}`}
-                                description={existing_account.login}
-                                platform={account.platform}
-                                key={`trading_app_card_${existing_account.login}`}
-                                onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
-                                    const button_name = e?.currentTarget?.name;
-
-                                    if (button_name === 'transfer-btn') {
+                    {is_landing_company_loaded ? (
+                        available_ctrader_accounts.map(account => {
+                            const existing_accounts = getExistingAccounts(account.platform, account.market_type);
+                            const has_existing_accounts = existing_accounts.length > 0;
+                            const track_account_name = is_demo ? `${account.name} ${'Demo'}` : account.name;
+                            return has_existing_accounts ? (
+                                existing_accounts.map(existing_account => (
+                                    <TradingAppCard
+                                        action_type='multi-action'
+                                        availability={selected_region}
+                                        clickable_icon
+                                        icon={account.icon}
+                                        sub_title={account.name}
+                                        name={`${formatMoney(
+                                            existing_account.currency,
+                                            is_demo ? existing_account.display_balance : ctrader_total_balance,
+                                            true
+                                        )} ${existing_account.currency}`}
+                                        description={existing_account.display_login}
+                                        platform={account.platform}
+                                        key={`trading_app_card_${existing_account.display_login}`}
+                                        onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
+                                            const button_name = e?.currentTarget?.name;
+                                            if (button_name === 'transfer-btn') {
+                                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                                    action: 'account_transfer',
+                                                    form_name: 'traders_hub_default',
+                                                    account_mode: selected_account_type,
+                                                    account_name: track_account_name,
+                                                });
+                                                toggleCTraderTransferModal();
+                                            } else if (button_name === 'topup-btn') {
+                                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                                    action: 'account_topup',
+                                                    form_name: 'traders_hub_default',
+                                                    account_mode: selected_account_type,
+                                                    account_name: track_account_name,
+                                                });
+                                                showTopUpModal(existing_account);
+                                                setAppstorePlatform(account.platform);
+                                            } else {
+                                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                                    action: 'account_open',
+                                                    form_name: 'traders_hub_default',
+                                                    account_mode: selected_account_type,
+                                                    account_name: track_account_name,
+                                                });
+                                                startTrade(account.platform, existing_account);
+                                            }
+                                        }}
+                                    />
+                                ))
+                            ) : (
+                                <TradingAppCard
+                                    action_type='get'
+                                    availability={selected_region}
+                                    clickable_icon
+                                    icon={account.icon}
+                                    name={account.name}
+                                    platform={account.platform}
+                                    description={account.description}
+                                    onAction={() => {
                                         Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                            action: 'account_transfer',
+                                            action: 'account_get',
                                             form_name: 'traders_hub_default',
                                             account_mode: selected_account_type,
                                             account_name: track_account_name,
                                         });
-                                        toggleAccountTransferModal();
-                                        setSelectedAccount(existing_account);
-                                    } else if (button_name === 'topup-btn') {
-                                        Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                            action: 'account_topup',
-                                            form_name: 'traders_hub_default',
-                                            account_mode: selected_account_type,
-                                            account_name: track_account_name,
-                                        });
-                                        showTopUpModal(existing_account);
-                                        setAppstorePlatform(account.platform);
-                                    } else {
-                                        Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                            action: 'account_open',
-                                            form_name: 'traders_hub_default',
-                                            account_mode: selected_account_type,
-                                            account_name: track_account_name,
-                                        });
-                                        startTrade(account.platform, existing_account);
-                                    }
-                                }}
-                            />
-                        ))
+                                        if ((has_no_real_account || no_CR_account) && is_real) {
+                                            openDerivRealAccountNeededModal();
+                                        } else {
+                                            setAccountType({
+                                                category: selected_account_type,
+                                                type: account.market_type,
+                                            });
+                                            setAppstorePlatform(account.platform);
+                                            getAccount();
+                                        }
+                                    }}
+                                    key={`trading_app_card_${account.name}`}
+                                    is_new
+                                />
+                            );
+                        })
                     ) : (
-                        <TradingAppCard
-                            action_type='get'
-                            availability={selected_region}
-                            clickable_icon
-                            icon={account.icon}
-                            name={account.name}
-                            platform={account.platform}
-                            description={account.description}
-                            onAction={() => {
-                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                    action: 'account_get',
-                                    form_name: 'traders_hub_default',
-                                    account_mode: selected_account_type,
-                                    account_name: track_account_name,
-                                });
-                                if ((has_no_real_account || no_CR_account) && is_real) {
-                                    openDerivRealAccountNeededModal();
-                                } else {
-                                    setAccountType({
-                                        category: selected_account_type,
-                                        type: account.market_type,
-                                    });
-                                    setAppstorePlatform(account.platform);
-                                    getAccount();
-                                }
-                            }}
-                            key={`trading_app_card_${account.name}`}
-                        />
-                    );
-                })
-            ) : (
-                <PlatformLoader />
+                        <PlatformLoader />
+                    )}
+                    <React.Fragment>
+                        <div className='cfd-full-row'>
+                            <hr className='divider' />
+                        </div>
+
+                        <div className='cfd-full-row'>
+                            <Text line_height='m' weight='bold' color='prominent'>
+                                {localize('Deriv X')}
+                            </Text>
+                        </div>
+                    </React.Fragment>
+                    {is_landing_company_loaded ? (
+                        available_dxtrade_accounts?.map(account => {
+                            const existing_accounts = getExistingAccounts(account.platform, account.market_type);
+                            const has_existing_accounts = existing_accounts.length > 0;
+                            const track_account_name = is_demo ? `${account.name} ${'Demo'}` : account.name;
+
+                            return has_existing_accounts ? (
+                                existing_accounts.map(existing_account => (
+                                    <TradingAppCard
+                                        action_type='multi-action'
+                                        availability={selected_region}
+                                        clickable_icon
+                                        icon={account.icon}
+                                        sub_title={account.name}
+                                        name={`${formatMoney(
+                                            existing_account.currency,
+                                            existing_account.display_balance,
+                                            true
+                                        )} ${existing_account.currency}`}
+                                        description={existing_account.login}
+                                        platform={account.platform}
+                                        key={`trading_app_card_${existing_account.login}`}
+                                        onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
+                                            const button_name = e?.currentTarget?.name;
+
+                                            if (button_name === 'transfer-btn') {
+                                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                                    action: 'account_transfer',
+                                                    form_name: 'traders_hub_default',
+                                                    account_mode: selected_account_type,
+                                                    account_name: track_account_name,
+                                                });
+                                                toggleAccountTransferModal();
+                                                setSelectedAccount(existing_account);
+                                            } else if (button_name === 'topup-btn') {
+                                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                                    action: 'account_topup',
+                                                    form_name: 'traders_hub_default',
+                                                    account_mode: selected_account_type,
+                                                    account_name: track_account_name,
+                                                });
+                                                showTopUpModal(existing_account);
+                                                setAppstorePlatform(account.platform);
+                                            } else {
+                                                Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                                    action: 'account_open',
+                                                    form_name: 'traders_hub_default',
+                                                    account_mode: selected_account_type,
+                                                    account_name: track_account_name,
+                                                });
+                                                startTrade(account.platform, existing_account);
+                                            }
+                                        }}
+                                    />
+                                ))
+                            ) : (
+                                <TradingAppCard
+                                    action_type='get'
+                                    availability={selected_region}
+                                    clickable_icon
+                                    icon={account.icon}
+                                    name={account.name}
+                                    platform={account.platform}
+                                    description={account.description}
+                                    onAction={() => {
+                                        Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                                            action: 'account_get',
+                                            form_name: 'traders_hub_default',
+                                            account_mode: selected_account_type,
+                                            account_name: track_account_name,
+                                        });
+                                        if ((has_no_real_account || no_CR_account) && is_real) {
+                                            openDerivRealAccountNeededModal();
+                                        } else {
+                                            setAccountType({
+                                                category: selected_account_type,
+                                                type: account.market_type,
+                                            });
+                                            setAppstorePlatform(account.platform);
+                                            getAccount();
+                                        }
+                                    }}
+                                    key={`trading_app_card_${account.name}`}
+                                />
+                            );
+                        })
+                    ) : (
+                        <PlatformLoader />
+                    )}
+                </Fragment>
             )}
         </ListingContainer>
     );

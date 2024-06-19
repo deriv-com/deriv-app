@@ -2,17 +2,18 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore, StoreProvider } from '@deriv/stores';
+import { WS } from 'Services';
 import { ConfirmEmailModal } from '../confirm-email-modal';
 
-jest.mock('@deriv/account', () => ({
-    ...jest.requireActual('@deriv/account'),
-    SentEmailModal: jest.fn(({ onClose }) => (
+jest.mock('@deriv/account', () =>
+    jest.fn(({ onClose, onClickSendEmail }) => (
         <div>
             SentEmailModal
             <button onClick={onClose}>Close</button>
+            <button onClick={onClickSendEmail}>ClickSendEmail</button>
         </div>
-    )),
-}));
+    ))
+);
 
 jest.mock('Services', () => ({
     ...jest.requireActual('Services'),
@@ -35,6 +36,7 @@ describe('ConfirmEmailModal', () => {
     });
 
     beforeEach(() => {
+        jest.clearAllMocks();
         mock_props = {
             onClose: jest.fn(),
             changed_email: 'new_test@example.com',
@@ -49,7 +51,6 @@ describe('ConfirmEmailModal', () => {
     const wrapper = ({ children }: { children: JSX.Element }) => (
         <StoreProvider store={mock_store}>{children};</StoreProvider>
     );
-
     const renderComponent = () => {
         render(<ConfirmEmailModal {...mock_props} />, { wrapper });
     };
@@ -73,25 +74,43 @@ describe('ConfirmEmailModal', () => {
         expect(mock_props.onClose).toHaveBeenCalledTimes(1);
     });
 
-    // test('should render ConfirmEmailModal and trigger confirmation', async () => {
-    //     renderComponent();
-    //
-    //     expect(screen.getByText('Are you sure?')).toBeInTheDocument();
-    //     expect(screen.getByText(/Are you sure you want to update email/i)).toBeInTheDocument();
-    //     expect(screen.getByText('test@example.com')).toBeInTheDocument();
-    //     expect(screen.getByText('new_test@example.com')).toBeInTheDocument();
-    //
-    //     userEvent.click(screen.getByRole('button', { name: 'Confirm' }));
-    //
-    //     await waitFor(() => {
-    //         expect(screen.queryByText('Are you sure?')).not.toBeInTheDocument();
-    //         expect(screen.queryByText(/Are you sure you want to update email/i)).not.toBeInTheDocument();
-    //         expect(screen.queryByText('test@example.com')).not.toBeInTheDocument();
-    //         expect(screen.queryByText('new_test@example.com')).not.toBeInTheDocument();
-    //
-    //         expect(screen.getByText('SentEmailModal')).toBeInTheDocument();
-    //         expect(mock_store.client.setVerificationCode).toHaveBeenCalledTimes(1);
-    //     });
-    //     screen.debug();
-    // });
+    test('should render ConfirmEmailModal, trigger confirmation modal and close it', async () => {
+        renderComponent();
+
+        expect(screen.getByText('Are you sure?')).toBeInTheDocument();
+        expect(screen.getByText(/Are you sure you want to update email/i)).toBeInTheDocument();
+        expect(screen.getByText('test@example.com')).toBeInTheDocument();
+        expect(screen.getByText('new_test@example.com')).toBeInTheDocument();
+
+        userEvent.click(screen.getByRole('button', { name: 'Confirm' }));
+        await waitFor(() => {
+            expect(screen.queryByText('Are you sure?')).not.toBeInTheDocument();
+            expect(screen.queryByText(/Are you sure you want to update email/i)).not.toBeInTheDocument();
+            expect(screen.queryByText('test@example.com')).not.toBeInTheDocument();
+            expect(screen.queryByText('new_test@example.com')).not.toBeInTheDocument();
+            expect(screen.getByText('SentEmailModal')).toBeInTheDocument();
+            expect(mock_store.client.setVerificationCode).toHaveBeenCalledTimes(1);
+        });
+
+        userEvent.click(screen.getByText('Close'));
+        expect(screen.queryByText('Are you sure?')).not.toBeInTheDocument();
+        expect(screen.queryByText('SentEmailModal')).not.toBeInTheDocument();
+    });
+
+    test('should render ConfirmEmailModal, trigger confirmation modal and confirm', async () => {
+        renderComponent();
+
+        expect(screen.getByText('Are you sure?')).toBeInTheDocument();
+
+        userEvent.click(screen.getByRole('button', { name: 'Confirm' }));
+        expect(WS.changeEmail).toHaveBeenCalledTimes(1);
+
+        await waitFor(() => {
+            expect(screen.queryByText('Are you sure?')).not.toBeInTheDocument();
+            expect(screen.getByText('SentEmailModal')).toBeInTheDocument();
+        });
+
+        userEvent.click(screen.getByText('ClickSendEmail'));
+        expect(WS.changeEmail).toHaveBeenCalledTimes(2);
+    });
 });

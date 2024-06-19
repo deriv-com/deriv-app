@@ -12,7 +12,7 @@ const useResidenceList = (options?: TSocketRequestQueryOptions<'residence_list'>
 
     return {
         /** The residence list */
-        data: data?.residence_list,
+        data: data?.residence_list ?? [],
         ...residence_list_rest,
     };
 };

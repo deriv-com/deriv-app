@@ -7,6 +7,19 @@ interface TDefinedMT5LandingCompanyDetails {
     shortcode: string;
 }
 
+interface TMT5MarketTypeDetails {
+    icon?: string;
+    landingCompany?: Record<TWalletLandingCompanyName, TWalletLandingCompanyDetails>;
+    name: TMarketTypes.All;
+    title: string;
+}
+
+interface TWalletLandingCompanyDetails {
+    icon: string;
+    name: TWalletLandingCompanyName;
+    title: string;
+}
+
 export const LandingCompanyDetails: Record<TDefinedMT5LandingCompanyName, TDefinedMT5LandingCompanyDetails> = {
     bvi: {
         name: 'bvi',
@@ -30,57 +43,26 @@ export const LandingCompanyDetails: Record<TDefinedMT5LandingCompanyName, TDefin
     },
 } as const;
 
-interface TMT5MarketTypeDetails {
-    icon?: {
-        dark: string;
-        light: string;
-    };
-    landingCompany?: Record<TWalletLandingCompanyName, TWalletLandingCompanyDetails>;
-    name: TMarketTypes.All;
-    title: string;
-}
-
-interface TWalletLandingCompanyDetails {
-    icon: {
-        dark: string;
-        light: string;
-    };
-    name: TWalletLandingCompanyName;
-    title: string;
-}
-
 export const MT5MarketTypeDetails: Record<TMarketTypes.All, TMT5MarketTypeDetails> = {
     all: {
-        icon: {
-            dark: 'IcWalletMt5All',
-            light: 'IcWalletMt5All',
-        },
+        icon: 'IcWalletMt5All',
         name: 'all',
         title: 'MT5 Swap-Free',
     },
     financial: {
         landingCompany: {
             malta: {
-                icon: {
-                    dark: 'IcWalletMt5CFDs',
-                    light: 'IcWalletMt5CFDs',
-                },
+                icon: 'IcWalletMt5CFDs',
                 name: 'malta',
                 title: 'MT5 CFDs',
             },
             svg: {
-                icon: {
-                    dark: 'IcWalletMt5Financial',
-                    light: 'IcWalletMt5Financial',
-                },
+                icon: 'IcWalletMt5Financial',
                 name: 'svg',
                 title: 'MT5 Financial',
             },
             virtual: {
-                icon: {
-                    dark: 'IcWalletMt5Financial',
-                    light: 'IcWalletMt5Financial',
-                },
+                icon: 'IcWalletMt5Financial',
                 name: 'virtual',
                 title: 'MT5 CFDs',
             },
@@ -89,10 +71,7 @@ export const MT5MarketTypeDetails: Record<TMarketTypes.All, TMT5MarketTypeDetail
         title: 'MT5 Financial',
     },
     synthetic: {
-        icon: {
-            dark: 'IcWalletMt5Derived',
-            light: 'IcWalletMt5Derived',
-        },
+        icon: 'IcWalletMt5Derived',
         name: 'synthetic',
         title: 'MT5 Derived',
     },
@@ -100,34 +79,22 @@ export const MT5MarketTypeDetails: Record<TMarketTypes.All, TMT5MarketTypeDetail
 
 export const PlatformDetails = {
     binary: {
-        icon: {
-            dark: 'IcWalletOptionsDark',
-            light: 'IcWalletOptionsLight',
-        },
+        icon: 'IcWalletOptionsLight',
         name: 'binary',
         title: 'BinaryBot',
     },
     ctrader: {
-        icon: {
-            dark: 'IcWalletCTrader',
-            light: 'IcWalletCTrader',
-        },
+        icon: 'IcWalletCTrader',
         name: 'ctrader',
         title: 'Deriv cTrader',
     },
     derivez: {
-        icon: {
-            dark: 'IcWalletDerivEZ',
-            light: 'IcWalletDerivEZ',
-        },
+        icon: 'IcWalletDerivEZ',
         name: 'derivez',
         title: 'DerivEZ',
     },
     dxtrade: {
-        icon: {
-            dark: 'IcWalletDerivX',
-            light: 'IcWalletDerivX',
-        },
+        icon: 'IcWalletDerivX',
         name: 'dxtrade',
         title: 'Deriv X',
     },
@@ -137,10 +104,7 @@ export const PlatformDetails = {
         title: 'Deriv MT5',
     },
     standard: {
-        icon: {
-            dark: 'IcWalletOptionsDark',
-            light: 'IcWalletOptionsLight',
-        },
+        icon: 'IcWalletOptionsLight',
         name: 'standard',
         title: 'Options',
     },

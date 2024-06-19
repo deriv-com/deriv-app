@@ -36,14 +36,14 @@ export const getTradingAppIcon = (
 
     if (accountType === mt5Platform.name) {
         if (marketType === mt5Platform.marketType.financial.name) {
-            return mt5Platform.marketType.financial.landingCompany?.[landingCompanyName].icon.light;
+            return mt5Platform.marketType.financial.landingCompany?.[landingCompanyName].icon;
         } else if (marketType === mt5Platform.marketType.synthetic.name) {
-            return mt5Platform.marketType.synthetic.icon?.light;
+            return mt5Platform.marketType.synthetic.icon;
         }
-        return mt5Platform.marketType.all.icon?.light;
+        return mt5Platform.marketType.all.icon;
     }
     //@ts-expect-error needs backend typing
-    return PlatformDetails[accountType]?.icon.light;
+    return PlatformDetails[accountType]?.icon;
 };
 
 export const getAccountName = ({

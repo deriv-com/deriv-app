@@ -90,6 +90,9 @@
     background-color: transparent;
     border-bottom: 1px solid var(--general-section-1);
     border-radius: 0;
+    span {
+        color: var(--text-prominent);
+    }
 }
 
 .dc-button-menu__toggle--active {

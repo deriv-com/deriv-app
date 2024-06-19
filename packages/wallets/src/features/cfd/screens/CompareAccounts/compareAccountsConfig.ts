@@ -31,8 +31,10 @@ const getHighlightedIconLabel = (
             platform === CFD_PLATFORMS.CTRADER
         ) {
             return 'Forex: major/minor';
+        } else if (marketType === MARKET_TYPE.SYNTHETIC) {
+            return 'Forex: standard';
         }
-        return 'Forex: standard';
+        return 'Forex: standard/micro';
     })();
 
     switch (marketType) {

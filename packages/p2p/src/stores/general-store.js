@@ -42,7 +42,7 @@ export default class GeneralStore extends BaseStore {
     is_block_user_modal_open = false;
     is_high_risk = false;
     is_listed = false;
-    is_loading = false;
+    is_loading = true;
     is_p2p_blocked_for_pa = false;
     is_p2p_user = null;
     is_restricted = false;
@@ -530,6 +530,7 @@ export default class GeneralStore extends BaseStore {
         this.setActiveIndex(0);
         this.external_stores?.notifications.refreshNotifications();
         this.external_stores?.notifications.filterNotificationMessages();
+        this.setIsLoading(true);
     }
 
     redirectTo(path_name, params = null) {

@@ -8,17 +8,7 @@ import { mockStore } from '@deriv/stores';
 import OpenPositions from '../open-positions';
 import ReportsProviders from '../../reports-providers';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
-    isDesktop: jest.fn(() => true),
-}));
-
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    DataList: jest.fn(() => <>DataList</>),
-}));
-
+const data_list = 'DataList';
 const future_time = Math.floor(Date.now() / 1000) + 5000;
 const options_position = {
     contract_info: {
@@ -81,6 +71,17 @@ const options_position = {
     entry_spot: 1184.99,
 } as TPortfolioPosition;
 
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    isMobile: jest.fn(() => false),
+    isDesktop: jest.fn(() => true),
+}));
+
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    DataList: jest.fn(() => <>{data_list}</>),
+}));
+
 describe('OpenPositions', () => {
     let store = mockStore({});
     const data_table_test_id = 'dt_data_table';
@@ -88,6 +89,16 @@ describe('OpenPositions', () => {
     const loading_test_id = 'dt_loading_component';
     const mocked_error_message = 'Error message';
     const no_open_positions_text = 'You have no open positions yet.';
+    const notifications = 'NotificationMessages';
+
+    const accumulators = 'Accumulators';
+    const multipliers = 'Multipliers';
+    const options = 'Options';
+
+    const all_growth_rates = 'All growth rates';
+    const one_percent = '1%';
+    const five_percent = '5%';
+
     const accumulators_position = {
         contract_info: {
             account_id: 112905368,
@@ -313,7 +324,7 @@ describe('OpenPositions', () => {
                 currency: 'USD',
             },
             ui: {
-                notification_messages_ui: () => <div>NotificationMessages</div>,
+                notification_messages_ui: () => <div>{notifications}</div>,
             },
         });
     });
@@ -331,8 +342,8 @@ describe('OpenPositions', () => {
     it('should render filter dropdown with Options selected by default & with DataTable on desktop', () => {
         render(mockedOpenPositions());
 
-        expect(screen.getByText('NotificationMessages')).toBeInTheDocument();
-        expect(screen.getByTestId(filter_dropdown)).toHaveTextContent('Options');
+        expect(screen.getByText(notifications)).toBeInTheDocument();
+        expect(screen.getByTestId(filter_dropdown)).toHaveTextContent(options);
         expect(screen.getByTestId(data_table_test_id)).toBeInTheDocument();
     });
     it('should render filter dropdown with Options selected by default & with DataList for mobile', () => {
@@ -340,34 +351,34 @@ describe('OpenPositions', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         render(mockedOpenPositions());
 
-        expect(screen.getByText('NotificationMessages')).toBeInTheDocument();
-        expect(screen.getByRole('combobox')).toHaveValue('Options');
-        expect(screen.getByText('DataList')).toBeInTheDocument();
+        expect(screen.getByText(notifications)).toBeInTheDocument();
+        expect(screen.getByRole('combobox')).toHaveValue(options);
+        expect(screen.getByText(data_list)).toBeInTheDocument();
     });
-    it('should render NotificationMessages and No positions message but no filter and no DataTable if positions are empty on desktop', () => {
+    it('should render notifications and No positions message but no filter and no DataTable if positions are empty on desktop', () => {
         store.portfolio.active_positions = [];
         render(mockedOpenPositions());
 
-        expect(screen.getByText('NotificationMessages')).toBeInTheDocument();
+        expect(screen.getByText(notifications)).toBeInTheDocument();
         expect(screen.queryByTestId(filter_dropdown)).not.toBeInTheDocument();
         expect(screen.queryByTestId(data_table_test_id)).not.toBeInTheDocument();
         expect(screen.getByText(no_open_positions_text)).toBeInTheDocument();
     });
-    it('should render NotificationMessages and No positions message but no filter and no Datalist if positions are empty on mobile', () => {
+    it('should render notifications and No positions message but no filter and no Datalist if positions are empty on mobile', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         (isDesktop as jest.Mock).mockReturnValue(false);
         store.portfolio.active_positions = [];
         render(mockedOpenPositions());
 
-        expect(screen.getByText('NotificationMessages')).toBeInTheDocument();
+        expect(screen.getByText(notifications)).toBeInTheDocument();
         expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
-        expect(screen.queryByText('Datalist')).not.toBeInTheDocument();
+        expect(screen.queryByText(data_list)).not.toBeInTheDocument();
         expect(screen.getByText(no_open_positions_text)).toBeInTheDocument();
     });
     it('should render filter dropdown with Options selected if is_multiplier and is_accumulator are false in portfolio-store', () => {
         render(mockedOpenPositions());
 
-        expect(screen.getByTestId(filter_dropdown)).toHaveTextContent('Options');
+        expect(screen.getByTestId(filter_dropdown)).toHaveTextContent(options);
         expect(screen.getByText(Math.abs(options_position.profit_loss))).toBeInTheDocument();
         expect(screen.queryByText(multipliers_profit)).not.toBeInTheDocument();
         expect(screen.queryByText(Math.abs(accumulators_position.profit_loss))).not.toBeInTheDocument();
@@ -376,7 +387,7 @@ describe('OpenPositions', () => {
         store.portfolio.is_multiplier = true;
         render(mockedOpenPositions());
 
-        expect(screen.getByTestId(filter_dropdown)).toHaveTextContent('Multipliers');
+        expect(screen.getByTestId(filter_dropdown)).toHaveTextContent(multipliers);
         expect(screen.queryByText(Math.abs(options_position.profit_loss))).not.toBeInTheDocument();
         expect(screen.getByText(multipliers_profit)).toBeInTheDocument();
         expect(screen.queryByText(Math.abs(accumulators_position.profit_loss))).not.toBeInTheDocument();
@@ -386,8 +397,8 @@ describe('OpenPositions', () => {
         render(mockedOpenPositions());
 
         expect(screen.getAllByTestId(filter_dropdown)).toHaveLength(2);
-        expect(screen.getAllByTestId(filter_dropdown)[0]).toHaveTextContent('Accumulators');
-        expect(screen.getAllByTestId(filter_dropdown)[1]).toHaveTextContent('All growth rates');
+        expect(screen.getAllByTestId(filter_dropdown)[0]).toHaveTextContent(accumulators);
+        expect(screen.getAllByTestId(filter_dropdown)[1]).toHaveTextContent(all_growth_rates);
         expect(screen.queryByText(Math.abs(options_position.profit_loss))).not.toBeInTheDocument();
         expect(screen.queryByText(multipliers_profit)).not.toBeInTheDocument();
         expect(screen.getByText(Math.abs(accumulators_position.profit_loss))).toBeInTheDocument();
@@ -398,9 +409,9 @@ describe('OpenPositions', () => {
         render(mockedOpenPositions());
 
         userEvent.click(screen.getByTestId(filter_dropdown));
-        expect(screen.getAllByText('Options')).toHaveLength(2); // Options is displayed twice: as a selected option and among filter options
-        expect(screen.getByText('Multipliers')).toBeInTheDocument();
-        expect(screen.queryByText('Accumulators')).not.toBeInTheDocument();
+        expect(screen.getAllByText(options)).toHaveLength(2); // Options is displayed twice: as a selected option and among filter options
+        expect(screen.getByText(multipliers)).toBeInTheDocument();
+        expect(screen.queryByText(accumulators)).not.toBeInTheDocument();
     });
     it('should render error if it is defined', () => {
         store.portfolio.error = mocked_error_message;
@@ -421,35 +432,35 @@ describe('OpenPositions', () => {
         store.portfolio.is_loading = true;
         render(mockedOpenPositions());
 
-        expect(screen.getByTestId(filter_dropdown)).toHaveTextContent('Options');
+        expect(screen.getByTestId(filter_dropdown)).toHaveTextContent(options);
         expect(screen.queryByTestId(data_table_test_id)).not.toBeInTheDocument();
         expect(screen.getByTestId(loading_test_id)).toBeInTheDocument();
     });
     it('should set Multipliers filter when it is selected from the dropdown on desktop', () => {
         render(mockedOpenPositions());
 
-        expect(screen.getByTestId(filter_dropdown)).toHaveTextContent('Options');
-        userEvent.click(screen.getByText('Options'));
-        userEvent.click(screen.getByText('Multipliers'));
-        expect(screen.getByTestId(filter_dropdown)).toHaveTextContent('Multipliers');
+        expect(screen.getByTestId(filter_dropdown)).toHaveTextContent(options);
+        userEvent.click(screen.getByText(options));
+        userEvent.click(screen.getByText(multipliers));
+        expect(screen.getByTestId(filter_dropdown)).toHaveTextContent(multipliers);
     });
     it('should set Accumulators filter when it is selected from the dropdown on mobile', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         (isDesktop as jest.Mock).mockReturnValue(false);
         render(mockedOpenPositions());
 
-        expect(screen.getByRole('combobox')).toHaveValue('Options');
-        userEvent.selectOptions(screen.getByRole('combobox'), 'Accumulators');
-        expect(screen.getAllByRole('combobox')[0]).toHaveValue('Accumulators');
+        expect(screen.getByRole('combobox')).toHaveValue(options);
+        userEvent.selectOptions(screen.getByRole('combobox'), accumulators);
+        expect(screen.getAllByRole('combobox')[0]).toHaveValue(accumulators);
     });
     it('should set 1% Growth rate filter when it is selected from the dropdown for Accumulators on desktop', () => {
         store.portfolio.is_accumulator = true;
         render(mockedOpenPositions());
 
-        expect(screen.getAllByTestId(filter_dropdown)[1]).toHaveTextContent('All growth rates');
-        userEvent.click(screen.getByText('All growth rates'));
-        userEvent.click(screen.getByText('1%'));
-        expect(screen.getAllByTestId(filter_dropdown)[1]).toHaveTextContent('1%');
+        expect(screen.getAllByTestId(filter_dropdown)[1]).toHaveTextContent(all_growth_rates);
+        userEvent.click(screen.getByText(all_growth_rates));
+        userEvent.click(screen.getByText(one_percent));
+        expect(screen.getAllByTestId(filter_dropdown)[1]).toHaveTextContent(one_percent);
     });
     it('should set 5% Growth rate filter when it is selected from the dropdown for Accumulators on mobile', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
@@ -457,8 +468,8 @@ describe('OpenPositions', () => {
         store.portfolio.is_accumulator = true;
         render(mockedOpenPositions());
 
-        expect(screen.getAllByRole('combobox')[1]).toHaveValue('All growth rates');
-        userEvent.selectOptions(screen.getAllByRole('combobox')[1], '5%');
-        expect(screen.getAllByRole('combobox')[1]).toHaveValue('5%');
+        expect(screen.getAllByRole('combobox')[1]).toHaveValue(all_growth_rates);
+        userEvent.selectOptions(screen.getAllByRole('combobox')[1], five_percent);
+        expect(screen.getAllByRole('combobox')[1]).toHaveValue(five_percent);
     });
 });

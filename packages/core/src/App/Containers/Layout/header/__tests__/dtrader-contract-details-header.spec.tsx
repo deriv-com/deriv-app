@@ -78,10 +78,3 @@ describe('DTraderV2Header', () => {
         expect(historyMock.goBack).toHaveBeenCalled();
     });
 });
-// const mockGoBack = jest.fn();
-//         jest.mock('react-router-dom', () => ({
-//             ...jest.requireActual('react-router-dom'),
-//             useHistory: () => ({
-//                 goBack: mockGoBack,
-//             }),
-//         }));

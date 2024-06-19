@@ -23,8 +23,8 @@ jobs:
               branches: '""'
             };
             const workflowInputs = {
-              environment: 'https://staging-app.deriv.com/', // Choose one from the provided options
-              suite: 'api' // Choose one from the provided options
+              environment: '${{ secrets.E2E_WORKFLOW_ENV }}', // Choose one from the provided options
+              suite: '${{ secrets.E2E_WORKFLOW_SUITE }}' // Choose one from the provided options
               };
             const response = await github.rest.actions.createWorkflowDispatch({
               owner: 'regentmarkets',

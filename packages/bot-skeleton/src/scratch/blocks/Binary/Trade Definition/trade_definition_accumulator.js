@@ -78,6 +78,10 @@ Blockly.Blocks.trade_definition_accumulator = {
 
                 const block_accumulator_take_profit = block.childValueToCode('accumulator_take_profit', 'AMOUNT');
 
+                if (block_accumulator_take_profit <= 0) {
+                    block.setDisabled(true);
+                }
+
                 if (block.type === 'accumulator_take_profit' && block_accumulator_take_profit > 0) {
                     block.setDisabled(false);
                 }

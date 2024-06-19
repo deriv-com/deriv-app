@@ -33,7 +33,6 @@ const AccountListDTraderV2 = ({
     redirectAccount,
     selected_loginid,
 }: TAccountListDTraderV2) => (
-    // TODO: applied temporary style for disabled account. Need design
     <div
         className={classNames('acc-switcher-dtrader__account', {
             'acc-switcher-dtrader__account--selected': loginid === selected_loginid,
@@ -46,7 +45,7 @@ const AccountListDTraderV2 = ({
         {getAccountIcon(currency, !!is_virtual, 'sm')}
         <div className='acc-switcher-dtrader__account__info'>
             <Text size='sm' color='quill-typography__color--default'>
-                {getAccountTitle({ currency, loginid, is_virtual: !!is_virtual })}
+                {getAccountTitle({ currency, loginid, is_virtual: !!is_virtual, show_no_currency: true })}
             </Text>
             <Text size='sm' color='quill-typography__color--disabled' as='span'>
                 {loginid}

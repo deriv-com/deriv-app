@@ -12,7 +12,7 @@ import {
     CurrencyUsdIcon,
     CurrencyEurIcon,
     CurrencyGbpIcon,
-    CurrencyPlaceholderIcon,
+    CurrencyNoneIcon,
     CurrencyDemoIcon,
     CurrencyMultiCollateralDaiIcon,
     CurrencyEursIcon,
@@ -27,10 +27,12 @@ export const getAccountTitle = ({
     currency,
     loginid,
     is_virtual,
+    show_no_currency,
 }: {
     currency?: string;
     loginid?: string;
     is_virtual?: boolean;
+    show_no_currency?: boolean;
 }) => {
     const account_type = loginid?.replace(/\d/g, '');
 
@@ -43,7 +45,7 @@ export const getAccountTitle = ({
     }
 
     if (!currency) {
-        return <Localize i18n_default_text='No currency assigned' />;
+        return show_no_currency ? <Localize i18n_default_text='No currency assigned' /> : loginid;
     }
 
     return getCurrencyName(currency);
@@ -55,7 +57,7 @@ export const getAccountIcon = (
     size?: React.ComponentProps<typeof CurrencyDemoIcon>['iconSize']
 ) => {
     if (is_virtual) return <CurrencyDemoIcon iconSize={size} />;
-    if (!currency) return <CurrencyPlaceholderIcon iconSize={size} />;
+    if (!currency) return <CurrencyNoneIcon iconSize={size} />;
 
     const key = currency.toUpperCase();
     const config = {
@@ -81,5 +83,5 @@ export const getAccountIcon = (
         XRP: <CurrencyXrpIcon iconSize={size} />,
     };
 
-    return config[key as keyof typeof config] ?? <CurrencyPlaceholderIcon iconSize={size} />;
+    return config[key as keyof typeof config] ?? <CurrencyNoneIcon iconSize={size} />;
 };

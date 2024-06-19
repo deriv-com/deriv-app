@@ -19,10 +19,9 @@ const AccountInfoDTraderV2 = ({
     is_disabled,
     toggleDialog,
 }: TAccountInfoDTraderV2) => {
-    // TODO: ask to add this part into the loader skeleton. Need design
+    // TODO: temporary have no design. Waiting for skeleton loader
     const temporary_loader = <div className='header-v2__acc-info--loader' />;
 
-    // TODO: case with disabled account switcher is taken from current production. Need design
     const action_icon = is_disabled ? (
         <LabelPairedLockCaptionRegularIcon />
     ) : (
@@ -33,7 +32,6 @@ const AccountInfoDTraderV2 = ({
         />
     );
 
-    // TODO: case without currency is taken from current production. Need design
     const account_balance = currency ? (
         `${balance} ${getCurrencyDisplayCode(currency)}`
     ) : (

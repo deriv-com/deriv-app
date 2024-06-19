@@ -103,6 +103,7 @@ export default class PortfolioStore extends BaseStore {
         if (this.has_subscribed_to_poc_and_transaction) {
             this.clearTable();
         }
+        this.is_loading = true;
         await WS.wait('authorize');
         WS.portfolio().then(this.portfolioHandler);
         WS.subscribeProposalOpenContract(null, this.proposalOpenContractQueueHandler);

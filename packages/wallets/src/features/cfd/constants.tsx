@@ -37,7 +37,7 @@ export const MarketTypeDetails = {
 export const PlatformDetails = {
     ctrader: {
         icon: <AccountsDerivCtraderIcon height={48} width={48} />,
-        link: 'https://onelink.to/hyqpv7',
+        link: 'https://onelink.to/5jgj8z',
         platform: i18n.t('ctrader') as TPlatforms.OtherAccounts,
         title: i18n.t('Deriv cTrader'),
     },
@@ -49,13 +49,13 @@ export const PlatformDetails = {
     },
     mt5: {
         icon: <AccountsDmt5DerivedIcon height={48} width={48} />,
-        link: 'https://onelink.to/grmtyx',
+        link: 'https://onelink.to/xf26jx',
         platform: i18n.t('mt5') as TPlatforms.MT5,
         title: i18n.t('Deriv MT5'),
     },
     mt5Investor: {
         icon: <AccountsDmt5DerivedIcon height={48} width={48} />,
-        link: 'https://onelink.to/grmtyx',
+        link: 'https://onelink.to/xf26jx',
         platform: i18n.t('mt5') as TPlatforms.MT5,
         title: i18n.t('Deriv MT5 investor'),
     },

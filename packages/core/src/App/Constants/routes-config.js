@@ -54,13 +54,6 @@ const Bot = React.lazy(() =>
     })
 );
 
-const TradersHub = React.lazy(() =>
-    moduleLoader(() => {
-        // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "tradershub" */ '@deriv/tradershub');
-    })
-);
-
 const P2P = React.lazy(() =>
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
@@ -259,12 +252,6 @@ const getModules = () => {
                     ],
                 },
             ],
-        },
-        {
-            path: routes.traders_hub_v2,
-            component: TradersHub,
-            is_authenticated: true,
-            getTitle: () => localize('Trader’s Hub V2'),
         },
         {
             path: routes.cashier_v2,

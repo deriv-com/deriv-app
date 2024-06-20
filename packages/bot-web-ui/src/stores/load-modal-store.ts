@@ -6,6 +6,11 @@ import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
 import { clearInjectionDiv, tabs_title } from 'Constants/load-modal';
 import { TStrategy } from 'Types';
+import {
+    rudderStackSendSwitchLoadStrategyTabEvent,
+    rudderStackSendUploadStrategyStartEvent,
+} from '../analytics/rudderstack-bot-builder';
+import { LOAD_MODAL_TABS } from '../analytics/utils';
 import RootStore from './root-store';
 
 interface ILoadModalStore {
@@ -192,6 +197,7 @@ export default class LoadModalStore implements ILoadModalStore {
         event: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent,
         is_body = true
     ): boolean => {
+        rudderStackSendUploadStrategyStartEvent({ upload_provider: 'my_computer' });
         let files;
         if (event.type === 'drop') {
             event.stopPropagation();
@@ -430,6 +436,7 @@ export default class LoadModalStore implements ILoadModalStore {
 
     setActiveTabIndex = (index: number): void => {
         this.active_index = index;
+        rudderStackSendSwitchLoadStrategyTabEvent({ load_strategy_tab: LOAD_MODAL_TABS[index] });
     };
 
     setLoadedLocalFile = (loaded_local_file: File | null): void => {

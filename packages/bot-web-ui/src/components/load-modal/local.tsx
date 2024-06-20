@@ -4,7 +4,6 @@ import { Button, Icon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendUploadStrategyStartEvent } from '../../analytics/rudderstack-bot-builder';
 import LocalFooter from './local-footer';
 import WorkspaceControl from './workspace-control';
 
@@ -67,7 +66,6 @@ const LocalComponent = observer(() => {
                     className='load-strategy__local-dropzone-area'
                     onDrop={e => {
                         handleFileChange(e, false);
-                        rudderStackSendUploadStrategyStartEvent({ upload_provider: 'my_computer' });
                     }}
                 >
                     {is_mobile ? (
@@ -90,10 +88,7 @@ const LocalComponent = observer(() => {
                                 : localize('Please upload an XML file')
                         }
                         data-testid='dt_load-strategy__local-upload'
-                        onClick={() => {
-                            file_input_ref?.current?.click();
-                            rudderStackSendUploadStrategyStartEvent({ upload_provider: 'my_computer' });
-                        }}
+                        onClick={() => file_input_ref?.current?.click()}
                         has_effect
                         primary
                         large

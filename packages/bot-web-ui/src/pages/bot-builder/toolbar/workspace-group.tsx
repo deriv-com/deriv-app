@@ -3,6 +3,7 @@ import { DesktopWrapper } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderStackSendSwitchLoadStrategyTabEvent } from '../../../analytics/rudderstack-bot-builder';
 import ToolbarIcon from './toolbar-icon';
 
 const WorkspaceGroup = observer(() => {
@@ -30,6 +31,7 @@ const WorkspaceGroup = observer(() => {
                     action={() => {
                         setPreviewOnPopup(true);
                         toggleLoadModal();
+                        rudderStackSendSwitchLoadStrategyTabEvent({ load_strategy_tab: 'recent' });
                     }}
                 />
                 <ToolbarIcon

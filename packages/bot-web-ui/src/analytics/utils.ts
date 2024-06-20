@@ -31,6 +31,13 @@ export const getSubpageName = () => {
     return 'undefined';
 };
 
+enum LOAD_MODAL_TABS_VALUE {
+    recent = 'recent',
+    local = 'local',
+    google_drive = 'google drive',
+}
+export const LOAD_MODAL_TABS = Object.values(LOAD_MODAL_TABS_VALUE);
+
 export const getTradeParameterData = ({ form_values }: TFormStrategy) => {
     if (!form_values) return;
 

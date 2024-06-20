@@ -8,6 +8,7 @@ export const rudderStackSendSwitchLoadStrategyTabEvent = ({ load_strategy_tab }:
         form_name,
         load_strategy_tab,
         subform_name: 'load_strategy',
+        subpage_name: getSubpageName(),
     });
 };
 

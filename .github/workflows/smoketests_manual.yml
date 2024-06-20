@@ -18,7 +18,10 @@ jobs:
               suite: '${{ secrets.E2E_WORKFLOW_SUITE }}',
               testcase: '',
               triggeredByPR: 'true',
-              appRegUrl: 'https://deriv-app-git-fork-aizad-deriv-aizad-wall-4421replace-re-959bfb.binary.sx/'
+              appRegUrl: 'https://deriv-app-git-fork-aizad-deriv-aizad-wall-4421replace-re-959bfb.binary.sx/',
+              issue_number: '15719',
+              user_name: 'maryia-deriv'
+              
               };
             const response = await github.rest.actions.createWorkflowDispatch({
               owner: 'regentmarkets',

@@ -24,6 +24,7 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
     const { mutate } = useVerifyEmail();
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
+    const buttonTextSize = isMobile ? 'md' : 'sm';
 
     const { title } = PlatformDetails[platform];
 
@@ -50,7 +51,7 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
             ),
             button: (
                 <div className='wallets-change-password__btn'>
-                    <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
+                    <WalletButton onClick={() => hide()} size='lg' textSize={buttonTextSize} variant='outlined'>
                         Cancel
                     </WalletButton>
                     <WalletButton
@@ -59,6 +60,7 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
                             handleClick('emailVerification');
                         }}
                         size='lg'
+                        textSize={buttonTextSize}
                     >
                         Confirm
                     </WalletButton>
@@ -69,11 +71,7 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
         introScreen: {
             bodyText: `Use this password to log in to your ${title} accounts on the desktop, web, and mobile apps.`,
             button: (
-                <WalletButton
-                    onClick={() => handleClick('confirmationScreen')}
-                    size='lg'
-                    textSize={isMobile ? 'md' : 'sm'}
-                >
+                <WalletButton onClick={() => handleClick('confirmationScreen')} size='lg' textSize={buttonTextSize}>
                     Change password
                 </WalletButton>
             ),

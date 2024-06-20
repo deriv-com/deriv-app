@@ -6,6 +6,7 @@ import { WalletButton, WalletsActionScreen, WalletText } from '../../../../../co
 import { WalletPasswordFieldLazy, WalletTextField } from '../../../../../components/Base';
 import PasswordViewerIcon from '../../../../../components/Base/WalletPasswordField/PasswordViewerIcon';
 import { useModal } from '../../../../../components/ModalProvider';
+import useDevice from '../../../../../hooks/useDevice';
 import { validPasswordMT5 } from '../../../../../utils/password-validation';
 import { PlatformDetails } from '../../../constants';
 
@@ -25,6 +26,8 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
     const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);
     const [hasCurrentPasswordFieldTouched, setHasCurrentPasswordFieldTouched] = useState(false);
     const { t } = useTranslation();
+    const { isMobile } = useDevice();
+    const buttonTextSize = isMobile ? 'md' : 'sm';
 
     const {
         error: changeInvestorPasswordError,
@@ -120,11 +123,12 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                     disabled={!values.currentPassword || !validPasswordMT5(values.newPassword)}
                                     isLoading={changeInvestorPasswordStatus === 'loading'}
                                     size='lg'
+                                    textSize={buttonTextSize}
                                     type='submit'
                                 >
                                     Change investor password
                                 </WalletButton>
-                                <WalletButton onClick={sendEmail} size='lg' variant='ghost'>
+                                <WalletButton onClick={sendEmail} size='lg' textSize={buttonTextSize} variant='ghost'>
                                     Create or reset investor password
                                 </WalletButton>
                             </div>

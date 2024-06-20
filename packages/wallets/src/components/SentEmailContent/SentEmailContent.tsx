@@ -72,7 +72,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
     const { title } = PlatformDetails[platform ?? mt5Platform];
     const titleSize = 'md';
     const descriptionSize = 'sm';
-    const didNotReceiveEmailSize = isMobile ? 'md' : 'sm';
+    const emailButtonTextSize = isMobile ? 'md' : 'sm';
     const emailReasonsSize = isMobile ? 'sm' : 'xs';
     const [count, { resetCountdown, startCountdown }] = useCountdown({
         countStart: 60,
@@ -115,13 +115,14 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
                 icon={<EmailSentIcon width={133} />}
                 renderButtons={() => (
                     <WalletButton
+                        disabled={shouldShowResendEmailReasons}
                         onClick={() => {
                             setShouldShowResendEmailReasons(true);
                         }}
                         size='lg'
                         variant='ghost'
                     >
-                        <WalletText color='error' size={didNotReceiveEmailSize} weight='bold'>
+                        <WalletText color='error' size={emailButtonTextSize} weight='bold'>
                             <Trans defaults="Didn't receive the email?" />
                         </WalletText>
                     </WalletButton>
@@ -136,7 +137,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
                             return (
                                 <div className='wallets-sent-email-content__reasons' key={emailReason.key}>
                                     {emailReason.icon}
-                                    <WalletText lineHeight='xs' size={emailReasonsSize}>
+                                    <WalletText lineHeight='sm' size={emailReasonsSize}>
                                         {emailReason.content}
                                     </WalletText>
                                 </div>
@@ -148,6 +149,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({
                         disabled={hasCountdownStarted}
                         onClick={resendEmail}
                         size='lg'
+                        textSize={emailButtonTextSize}
                         variant='contained'
                     >
                         {hasCountdownStarted ? `Resend email in ${count} seconds` : 'Resend email'}

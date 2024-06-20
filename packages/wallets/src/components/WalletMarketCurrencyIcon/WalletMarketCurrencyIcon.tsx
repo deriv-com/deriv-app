@@ -39,7 +39,7 @@ const WalletMarketCurrencyIcon: FC<TWalletMarketCurrencyIconProps> = ({
     } else MarketTypeIcon = 'IcWalletOptionsLight';
 
     return (
-        <div className='wallets-market-currency-icon'>
+        <div className='wallets-market-currency-icon' data-testid='dt_wallet_market_icon'>
             <div className='wallets-market-currency-icon__container'>
                 <WalletMarketIcon
                     className='wallets-market-currency-icon__market-icon'

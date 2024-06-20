@@ -18,9 +18,9 @@ jobs:
               suite: '${{ secrets.E2E_WORKFLOW_SUITE }}',
               testcase: '',
               triggeredByPR: 'true',
-              appRegUrl: 'https://deriv-app-git-fork-maryia-matskevich-deriv-maryia-bot-1913.binary.sx/',
-              issue_number: '15719',
-              user_name: 'maryia-deriv'
+              appRegUrl: 'https://deriv-app-git-fork-suisin-deriv-suisin-upm1116addkhmerlanguage.binary.sx/',
+              issue_number: '15714',
+              user_name: 'suisin-deriv'
               
               };
             const response = await github.rest.actions.createWorkflowDispatch({

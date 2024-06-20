@@ -43,6 +43,7 @@ export { default as useDynamicLeverage } from './useDynamicLeverage';
 export { default as useExchangeRateSubscription } from './useExchangeRateSubscription';
 export { default as useGetAccountStatus } from './useGetAccountStatus';
 export { default as useGetExchangeRate } from './useGetExchangeRate';
+export { default as useGrowthbookIsOn } from './useGrowthbookIsOn';
 export { default as useIdentityDocumentVerificationAdd } from './useIdentityDocumentVerificationAdd';
 export { default as useIsEuRegion } from './useIsEuRegion';
 export { default as useJurisdictionStatus } from './useJurisdictionStatus';

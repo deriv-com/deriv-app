@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Field, FieldProps, Formik, FormikProps } from 'formik';
 
 import { Button, Icon, Input, Loading, Text } from '@deriv/components';
-import { useCurrentAccountDetails, useExchangeRate } from '@deriv/hooks';
+import { useCurrentAccountDetails, useExchangeRate, useGrowthbookIsOn } from '@deriv/hooks';
 import { CryptoConfig, getCurrencyName } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -83,6 +83,9 @@ const WithdrawalCryptoForm = observer(() => {
     const { is_loading, percentage, percentageSelectorSelectionStatus, should_percentage_reset } = general_store;
     const account_details = useCurrentAccountDetails();
     const { handleSubscription } = useExchangeRate();
+    const [is_priority_crypto_withdrawal_enabled, isGBLoaded] = useGrowthbookIsOn({
+        featureFlag: 'priority_crypto_withdrawal',
+    });
 
     React.useEffect(() => {
         if (current_fiat_currency && crypto_currency) {
@@ -186,7 +189,7 @@ const WithdrawalCryptoForm = observer(() => {
                                 validateFromAmount={validateWithdrawFromAmount}
                                 validateToAmount={validateWithdrawToAmount}
                             />
-                            <WithdrawalCryptoPriority />
+                            {Boolean(is_priority_crypto_withdrawal_enabled) && <WithdrawalCryptoPriority />}
                             <div className='withdrawal-crypto-form__submit'>
                                 <Button
                                     className='cashier__form-submit-button'

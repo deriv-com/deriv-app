@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field, FieldProps, Formik } from 'formik';
+import { useGrowthbookIsOn } from '@deriv/api-v2';
 import { WalletButton, WalletTextField } from '../../../../../../components';
 import { useWithdrawalCryptoContext } from '../../provider';
 import { validateCryptoAddress } from '../../utils';
@@ -11,6 +12,10 @@ import './WithdrawalCryptoForm.scss';
 const WithdrawalCryptoForm: React.FC = () => {
     const { activeWallet, cryptoEstimationsFeeUniqueId, fractionalDigits, requestCryptoWithdrawal } =
         useWithdrawalCryptoContext();
+
+    const [isPriorityCryptoWithdrawalEnabled] = useGrowthbookIsOn({
+        featureFlag: 'priority_crypto_withdrawal',
+    });
 
     return (
         <Formik
@@ -52,7 +57,7 @@ const WithdrawalCryptoForm: React.FC = () => {
                         </div>
                         <WithdrawalCryptoPercentageSelector />
                         <WithdrawalCryptoAmountConverter />
-                        <WithdrawalCryptoPriority />
+                        {Boolean(isPriorityCryptoWithdrawalEnabled) && <WithdrawalCryptoPriority />}
                         <div className='wallets-withdrawal-crypto-form__submit'>
                             <WalletButton
                                 disabled={Object.keys(errors).length !== 0 || !values.cryptoAmount || isSubmitting}

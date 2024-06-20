@@ -342,7 +342,7 @@ const CreatePassword = observer(
                                 </div>
                             )}
                             {product === PRODUCT.ZEROSPREAD && account_type.category === CATEGORY.REAL && (
-                                <>
+                                <React.Fragment>
                                     <CfdPasswordModalInfo
                                         jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                                         platform={getCFDPlatformLabel(platform)}
@@ -358,7 +358,7 @@ const CreatePassword = observer(
                                             should_restrict_vanuatu_account_creation
                                         }
                                     />
-                                </>
+                                </React.Fragment>
                             )}
                             <FormSubmitButton
                                 is_disabled={!values.password || !checked || Object.keys(errors).length > 0}

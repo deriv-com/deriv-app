@@ -27,6 +27,7 @@ const MenuTitle = observer(() => {
                             {TranslationFlag[current_language] ? (
                                 TranslationFlag[current_language]('xs')
                             ) : (
+                                //TODOs: remove this when Korean flag is added to quill-icons
                                 <Icon icon={`IcFlag${current_language}`} data_testid='dt_icon' size={18} />
                             )}
                             <Text weight='bold' size='xxs' className='ic-settings-language__text'>

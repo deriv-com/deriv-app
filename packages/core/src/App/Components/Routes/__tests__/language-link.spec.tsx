@@ -5,11 +5,6 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import { TLanguageLink } from 'App/Components/Routes/language-link';
 import { LanguageLink } from '../index';
 
-jest.mock('react-i18next', () => ({
-    ...jest.requireActual('react-i18next'),
-    useTranslation: jest.fn(() => ({ i18n: { changeLanguage: jest.fn() } })),
-}));
-
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     TranslationFlag: { ID: () => <div>Indonesia Flag</div> },

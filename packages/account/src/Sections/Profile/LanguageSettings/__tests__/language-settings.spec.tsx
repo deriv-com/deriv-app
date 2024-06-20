@@ -16,11 +16,6 @@ jest.mock('@deriv/translations', () => ({
     getAllowedLanguages: jest.fn(() => ({ lang_1: 'Test Lang 1', lang_2: 'Test Lang 2' })),
 }));
 
-jest.mock('react-i18next', () => ({
-    ...jest.requireActual('react-i18next'),
-    useTranslation: jest.fn(() => ({ i18n: { changeLanguage: jest.fn() } })),
-}));
-
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     Redirect: jest.fn(() => <div>Redirect</div>),

@@ -28,6 +28,7 @@ const ToggleLanguageSettings = observer(() => {
                     {TranslationFlag[current_language] ? (
                         TranslationFlag[current_language]('xs')
                     ) : (
+                        //TODOs: remove this when Korean flag is included in quill-icons
                         <Icon icon={`IcFlag${current_language}`} data_testid='dt_icon' size={18} />
                     )}
 

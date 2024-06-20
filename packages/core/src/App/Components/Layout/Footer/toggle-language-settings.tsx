@@ -5,6 +5,7 @@ import { Icon, Modal, Popover, Text } from '@deriv/components';
 import { useTranslations, Localize } from '@deriv-com/translations';
 import 'Sass/app/modules/settings.scss';
 import LanguageSettings from '../../../Containers/SettingsModal/settings-language';
+import { TranslationFlag } from '@deriv/shared';
 
 const ToggleLanguageSettings = observer(() => {
     const { common, ui } = useStore();
@@ -25,13 +26,14 @@ const ToggleLanguageSettings = observer(() => {
                 className={toggle_settings_class}
             >
                 <Popover alignment='top' message={localize('Language')} zIndex='9999'>
-                    <Icon
-                        icon={`IcFlag${currentLang.replace('_', '-')}`}
-                        data_testid='dt_icon'
-                        className='ic-settings-language__icon'
-                        size={18}
-                    />
-                    <Text weight='bold' size='xxs'>
+                    {TranslationFlag[currentLang] ? (
+                        TranslationFlag[currentLang]('xs')
+                    ) : (
+                        //TODOs: remove this when Korean flag is included in quill-icons
+                        <Icon icon={`IcFlag${currentLang}`} data_testid='dt_icon' size={18} />
+                    )}
+
+                    <Text weight='bold' size='xxs' className='ic-settings-language__text'>
                         <Localize i18n_default_text={currentLang} />
                     </Text>
                 </Popover>

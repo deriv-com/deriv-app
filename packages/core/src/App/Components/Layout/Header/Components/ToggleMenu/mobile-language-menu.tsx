@@ -35,7 +35,6 @@ const MobileLanguageMenu = observer(({ expandSubMenu, toggleDrawer }: TMobileLan
                 {Object.keys(getAllowedLanguages(UNSUPPORTED_LANGUAGES)).map(lang => (
                     <LanguageLink
                         key={lang}
-                        icon_classname='settings-language__language-flag'
                         is_clickable
                         lang={lang}
                         toggleModal={() => {

@@ -11,12 +11,9 @@ jest.mock('@deriv-com/translations');
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isMobile: jest.fn(() => false),
+    TranslationFlag: { EN: () => <div>Language 1 Flag</div>, VI: () => <div>Language 2 Flag</div> },
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    Icon: jest.fn(() => <div>Flag Icon</div>),
-}));
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -53,11 +50,11 @@ describe('LanguageSettings', () => {
 
         expect(screen.getByText('Select Language')).toBeInTheDocument();
 
-        const flags_icons = screen.getAllByText('Flag Icon');
         const lang_1 = screen.getByText('English');
         const lang_2 = screen.getByText('Tiếng Việt');
 
-        expect(flags_icons).toHaveLength(2);
+        expect(screen.getByText(/Language 1 Flag/)).toBeInTheDocument();
+        expect(screen.getByText(/Language 2 Flag/)).toBeInTheDocument();
         expect(lang_1).toBeInTheDocument();
         expect(lang_2).toBeInTheDocument();
     });

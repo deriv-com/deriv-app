@@ -8,9 +8,9 @@ import { LanguageLink } from '../index';
 
 jest.mock('@deriv-com/translations');
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    Icon: jest.fn(() => <div data-testid='dt_mocked_icon' />),
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    TranslationFlag: { VI: () => <div>Tiếng Việt Flag</div> },
 }));
 
 jest.mock('Utils/Language', () => ({
@@ -40,7 +40,7 @@ describe('LanguageLink component', () => {
         });
 
         expect(screen.getByText('Tiếng Việt')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_mocked_icon')).toBeInTheDocument();
+        expect(screen.getByText('Tiếng Việt Flag')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_settings_language_button')).not.toBeInTheDocument();
     });
     it('should render language icon with language when clickable', async () => {
@@ -52,7 +52,7 @@ describe('LanguageLink component', () => {
 
         const lang_btn = screen.getByTestId('dt_settings_language_button');
         expect(screen.getByText('Tiếng Việt')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_mocked_icon')).toBeInTheDocument();
+        expect(screen.getByText('Tiếng Việt Flag')).toBeInTheDocument();
         expect(screen.getByTestId('dt_settings_language_button')).toBeInTheDocument();
 
         userEvent.click(lang_btn);

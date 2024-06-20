@@ -82,7 +82,9 @@ export const getPersonalDetailsInitialValues = (
         first_name: account_settings.first_name,
         last_name: account_settings.last_name,
         phone: account_settings.phone,
+        employment_status: account_settings?.employment_status,
         tax_identification_number: account_settings.tax_identification_number ?? '',
+        tax_residence: account_settings.tax_residence ?? '',
     };
 
     const isGetSettingsKey = (value: string): value is keyof GetSettings =>
@@ -101,10 +103,6 @@ export const getPersonalDetailsInitialValues = (
         initialValues.address_state = states_list.length
             ? getLocation(states_list, account_settings.address_state, 'text')
             : account_settings.address_state;
-    }
-
-    if (account_settings.employment_status) {
-        initialValues.employment_status = account_settings.employment_status;
     }
 
     if (account_settings.request_professional_status) {
@@ -163,24 +161,43 @@ export const makeSettingsRequest = (
     return request;
 };
 
-export const getPersonalDetailsValidationSchema = (is_eu: boolean, is_virtual?: boolean) => {
+export const getEmploymentAndTinValidationSchema = (residence_list: ResidenceList) => {
+    return Yup.object({
+        employment_status: Yup.string().required(localize('Employment status is required.')),
+        tax_residence: Yup.string().required(localize('Tax residence is required.')),
+        tax_identification_number: Yup.string()
+            .required(localize('TIN is required.'))
+            .max(25, localize("Tax Identification Number can't be longer than 25 characters."))
+            .matches(
+                /^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/,
+                localize('Only letters, numbers, space, hyphen, period, and forward slash are allowed.')
+            )
+            .matches(
+                /^[a-zA-Z0-9].*$/,
+                localize('Should start with letter or number and may contain a hyphen, period and slash.')
+            )
+            .test({
+                name: 'validate-tin',
+                test: (value, context) => {
+                    const { tax_residence } = context.parent;
+                    if (!tax_residence) {
+                        return context.createError({ message: localize('Please fill in tax residence.') });
+                    }
+                    const tin_format = residence_list.find(
+                        res => res.text === tax_residence && res.tin_format
+                    )?.tin_format;
+                    if (tin_format?.some(tax_regex => new RegExp(tax_regex).test(value as string))) {
+                        return context.createError({ message: localize('Tax Identification Number is invalid.') });
+                    }
+                    return true;
+                },
+            }),
+    });
+};
+
+export const getPersonalDetailsValidationSchema = (residence_list: ResidenceList, is_virtual?: boolean) => {
     if (is_virtual) return Yup.object();
-    if (!is_eu) return getBaseSchema();
-    return getBaseSchema().concat(
-        Yup.object().shape({
-            tax_identification_number: Yup.string()
-                .required(localize('TIN is required.'))
-                .max(25, localize("Tax Identification Number can't be longer than 25 characters."))
-                .matches(
-                    /^(?!^$|\s+)[A-Za-z0-9./\s-]{0,25}$/,
-                    localize('Only letters, numbers, space, hyphen, period, and forward slash are allowed.')
-                )
-                .matches(
-                    /^[a-zA-Z0-9].*$/,
-                    localize('Should start with letter or number and may contain a hyphen, period and slash.')
-                ),
-            tax_residence: Yup.string().required(localize('Tax residence is required.')),
-            employment_status: Yup.string().required(localize('Employment status is required.')),
-        })
-    );
+
+    const employment_tin_schema = getEmploymentAndTinValidationSchema(residence_list);
+    return getBaseSchema().concat(employment_tin_schema);
 };

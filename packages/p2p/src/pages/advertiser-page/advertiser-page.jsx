@@ -77,7 +77,7 @@ const AdvertiserPage = () => {
 
     const showErrorModal = eligibility_status => {
         let error_message = localize("It's either deleted or no longer active.");
-        let error_modal_title = localize('This ad is unavailable');
+        let error_modal_title = localize('This ad is currently unavailable');
 
         if (eligibility_status?.length > 0) {
             error_modal_title = '';

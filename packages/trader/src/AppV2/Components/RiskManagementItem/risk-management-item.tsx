@@ -160,7 +160,7 @@ const RiskManagementItem = observer(
                             )}
                         </ActionSheet.Content>
                         <ActionSheet.Footer
-                            isPrimaryButtonDisabled={!!errorMessage}
+                            isPrimaryButtonDisabled={!!errorMessage || finalValue == stepperValue}
                             shouldCloseOnPrimaryButtonClick
                             primaryAction={{
                                 content: <Localize i18n_default_text='Save' />,

@@ -37,7 +37,7 @@ const EntryExitDetails = ({ contract_info }: { contract_info: TContractInfo }) =
     const exitValue = exit_tick_display_value ? addComma(exit_tick_display_value) : null;
 
     return (
-        <CardWrapper title='Entry & exit details' className='entry-exit-details'>
+        <CardWrapper title={<Localize i18n_default_text='Entry & exit details' />} className='entry-exit-details'>
             <div className='entry-exit-details__table'>
                 {dateTimes.start && (
                     <EntryExitDetailRow

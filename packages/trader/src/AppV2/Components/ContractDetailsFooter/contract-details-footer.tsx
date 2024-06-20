@@ -53,7 +53,7 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                     <Button
                         label={label}
                         isLoading={is_sell_requested}
-                        disabled={is_sell_requested || (Number(profit) < 0 && is_valid_to_cancel)}
+                        disabled={Number(profit) < 0 && is_valid_to_cancel}
                         onClick={() => onClickSell(contract_id)}
                         {...buttonProps}
                     />
@@ -62,8 +62,7 @@ const ContractDetailsFooter = observer(({ contract_info }: ContractInfoProps) =>
                             onClick={() => onClickCancel(contract_id)}
                             label={
                                 <>
-                                    {cardLabels.CANCEL}
-                                    {'  '}
+                                    {cardLabels.CANCEL}{' '}
                                     <RemainingTime
                                         as='span'
                                         end_time={cancellation_date_expiry}

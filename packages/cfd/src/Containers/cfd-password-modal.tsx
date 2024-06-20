@@ -44,6 +44,7 @@ import CFDPasswordChangeContent from './cfd-password-change-content';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 
 import '../sass/cfd.scss';
+import CfdPasswordModalInfo from './cfd-password-modal-info';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -242,6 +243,8 @@ const CreatePassword = ({
     error_message,
     is_real_financial_stp,
 }: TCFDCreatePasswordProps) => {
+    const { product } = useCfdStore();
+
     return (
         <Formik
             initialValues={{
@@ -323,6 +326,11 @@ const CreatePassword = ({
                         {is_real_financial_stp && (
                             <div className='dc-modal__container_cfd-password-modal__description'>
                                 <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).' />
+                            </div>
+                        )}
+                        {product === PRODUCT.ZEROSPREAD && (
+                            <div>
+                                <CfdPasswordModalInfo />
                             </div>
                         )}
                         <FormSubmitButton

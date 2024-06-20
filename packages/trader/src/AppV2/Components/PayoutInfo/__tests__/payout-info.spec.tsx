@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import PayoutInfo from '../payout-info';
 import { TContractInfo, mockContractInfo } from '@deriv/shared';
 

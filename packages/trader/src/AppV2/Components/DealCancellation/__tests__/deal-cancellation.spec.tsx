@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import DealCancellation from '../deal-cancellation';
 import { isValidToCancel, isOpen } from '@deriv/shared';
 import { getContractDetailsConfig } from 'AppV2/Utils/contract-details-config';

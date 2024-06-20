@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import TakeProfit from '../take-profit';
 
 jest.mock('AppV2/Hooks/useContractDetails', () => ({

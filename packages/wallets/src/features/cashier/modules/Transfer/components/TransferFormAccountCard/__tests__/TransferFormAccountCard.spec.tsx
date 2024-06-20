@@ -29,6 +29,7 @@ describe('TransferFormAccountCard', () => {
     });
 
     it('should render without crashing', () => {
+        // @ts-expect-error - since this is a mock, we only need partial properties of the hook
         render(<TransferFormAccountCard account={undefined} activeWallet={undefined} type={undefined} />);
 
         expect(screen.queryByText('Test Account')).not.toBeInTheDocument();

@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { LegacyArrowRight2pxIcon } from '@deriv/quill-icons';
 import { AppCard, WalletButton, WalletCard, WalletText } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
+import { TPlatforms } from '../../../../../../types';
 import { useTransfer } from '../../provider';
 import './TransferReceipt.scss';
 
@@ -26,7 +27,7 @@ const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balan
                 device={isMobile ? 'mobile' : 'desktop'}
                 isDemoWallet={Boolean(activeWallet?.demo_account)}
                 marketType={account?.market_type}
-                platform={account?.account_type}
+                platform={account?.account_type as TPlatforms.All}
                 walletName={activeWallet?.accountName}
             />
         );

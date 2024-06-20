@@ -4,7 +4,7 @@ import WalletMarketIcon from '../WalletMarketIcon';
 
 describe('<WalletMarketIcon/>', () => {
     it('render svg properly', () => {
-        render(<WalletMarketIcon icon='IcWalletOptionsLight' />);
+        render(<WalletMarketIcon icon='standard' />);
 
         const svgElement = screen.getByTestId('dt_wallet_icon');
 

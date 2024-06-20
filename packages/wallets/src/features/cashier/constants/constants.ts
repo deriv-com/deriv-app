@@ -8,14 +8,12 @@ interface TDefinedMT5LandingCompanyDetails {
 }
 
 interface TMT5MarketTypeDetails {
-    icon?: string;
     landingCompany?: Record<TWalletLandingCompanyName, TWalletLandingCompanyDetails>;
     name: TMarketTypes.All;
     title: string;
 }
 
 interface TWalletLandingCompanyDetails {
-    icon: string;
     name: TWalletLandingCompanyName;
     title: string;
 }
@@ -45,24 +43,20 @@ export const LandingCompanyDetails: Record<TDefinedMT5LandingCompanyName, TDefin
 
 export const MT5MarketTypeDetails: Record<TMarketTypes.All, TMT5MarketTypeDetails> = {
     all: {
-        icon: 'IcWalletMt5All',
         name: 'all',
         title: 'MT5 Swap-Free',
     },
     financial: {
         landingCompany: {
             malta: {
-                icon: 'IcWalletMt5CFDs',
                 name: 'malta',
                 title: 'MT5 CFDs',
             },
             svg: {
-                icon: 'IcWalletMt5Financial',
                 name: 'svg',
                 title: 'MT5 Financial',
             },
             virtual: {
-                icon: 'IcWalletMt5Financial',
                 name: 'virtual',
                 title: 'MT5 CFDs',
             },
@@ -71,7 +65,6 @@ export const MT5MarketTypeDetails: Record<TMarketTypes.All, TMT5MarketTypeDetail
         title: 'MT5 Financial',
     },
     synthetic: {
-        icon: 'IcWalletMt5Derived',
         name: 'synthetic',
         title: 'MT5 Derived',
     },
@@ -79,22 +72,18 @@ export const MT5MarketTypeDetails: Record<TMarketTypes.All, TMT5MarketTypeDetail
 
 export const PlatformDetails = {
     binary: {
-        icon: 'IcWalletOptionsLight',
         name: 'binary',
         title: 'BinaryBot',
     },
     ctrader: {
-        icon: 'IcWalletCTrader',
         name: 'ctrader',
         title: 'Deriv cTrader',
     },
     derivez: {
-        icon: 'IcWalletDerivEZ',
         name: 'derivez',
         title: 'DerivEZ',
     },
     dxtrade: {
-        icon: 'IcWalletDerivX',
         name: 'dxtrade',
         title: 'Deriv X',
     },
@@ -104,7 +93,6 @@ export const PlatformDetails = {
         title: 'Deriv MT5',
     },
     standard: {
-        icon: 'IcWalletOptionsLight',
         name: 'standard',
         title: 'Options',
     },

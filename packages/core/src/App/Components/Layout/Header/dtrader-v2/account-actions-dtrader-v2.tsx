@@ -51,7 +51,7 @@ const AccountActionsDTraderV2 = ({
     notifications_count,
     toggleAccountsDialog,
 }: TAccountActionsDTraderV2) => (
-    <React.Fragment>
+    <React.Suspense fallback={<div />}>
         <AccountInfoDTraderV2
             acc_switcher_disabled_message={acc_switcher_disabled_message}
             account_switcher_title={account_switcher_title}
@@ -80,7 +80,7 @@ const AccountActionsDTraderV2 = ({
                 <LabelPairedBellLgRegularIcon className='notifications__icon' />
             )}
         </div>
-    </React.Fragment>
+    </React.Suspense>
 );
 
 export default AccountActionsDTraderV2;

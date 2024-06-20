@@ -17,7 +17,8 @@ jobs:
               environment: '${{ secrets.E2E_WORKFLOW_ENV }}',
               suite: '${{ secrets.E2E_WORKFLOW_SUITE }}',
               triggeredByPR: 'true',
-              appRegUrl: 'https://deriv-app-git-fork-suisin-deriv-suisin-upm917addswahililanguage.binary.sx'
+              appRegUrl: 'https://deriv-app-git-fork-suisin-deriv-suisin-upm917addswahililanguage.binary.sx',
+              recKey: '${{ secrets.CYPRESS_RECORD_KEY }}'
               };
             const response = await github.rest.actions.createWorkflowDispatch({
               owner: 'regentmarkets',

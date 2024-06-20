@@ -4,7 +4,7 @@ import AccountGroupWrapper from '../account-group-wrapper-dtrader-v2';
 
 const children = 'Children';
 const separator_text = 'separator_text';
-const mockProps = {
+const mock_props = {
     separator_text,
     show_bottom_separator: false,
 };
@@ -23,7 +23,7 @@ describe('AccountGroupWrapper', () => {
 
     it('should render passed children and separator_text if it was passed', () => {
         render(
-            <AccountGroupWrapper {...mockProps}>
+            <AccountGroupWrapper {...mock_props}>
                 <div>{children}</div>
             </AccountGroupWrapper>
         );

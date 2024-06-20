@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import Loadable from 'react-loadable';
 import AccountActionsDTraderV2 from '../account-actions-dtrader-v2';
 
-const mockProps = {
+const mock_props = {
     acc_switcher_disabled_message: 'acc_switcher_disabled_message',
     account_switcher_title: 'account_switcher_title',
     account_type: 'account_type',
@@ -16,7 +16,7 @@ const mockProps = {
     notifications_count: 0,
     toggleAccountsDialog: jest.fn(),
 };
-const mediaQueryList = {
+const media_query_list = {
     matches: true,
     addEventListener: jest.fn(),
     removeEventListener: jest.fn(),
@@ -28,18 +28,18 @@ jest.mock('@deriv/quill-icons', () => ({
 }));
 jest.mock('../account-info-dtrader-v2', () => jest.fn(() => 'AccountInfoDTraderV2'));
 
-window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
+window.matchMedia = jest.fn().mockImplementation(() => media_query_list);
 Loadable.preloadAll();
 
 describe('AccountActionsDTraderV2', () => {
     it('should render icon component without Badge count if notifications_count is falsy', () => {
-        render(<AccountActionsDTraderV2 {...mockProps} />);
+        render(<AccountActionsDTraderV2 {...mock_props} />);
 
         expect(screen.getByText('LabelPairedBellLgRegularIcon')).toBeInTheDocument();
     });
 
     it('should render icon component with Badge count if notifications_count was passed', () => {
-        render(<AccountActionsDTraderV2 {...mockProps} notifications_count={2} balance={undefined} />);
+        render(<AccountActionsDTraderV2 {...mock_props} notifications_count={2} balance={undefined} />);
 
         expect(screen.getByText('AccountInfoDTraderV2')).toBeInTheDocument();
         expect(screen.getByText('LabelPairedBellLgRegularIcon')).toBeInTheDocument();
@@ -47,7 +47,7 @@ describe('AccountActionsDTraderV2', () => {
     });
 
     it('should render component even if balance is undefined', () => {
-        render(<AccountActionsDTraderV2 {...mockProps} balance={undefined} />);
+        render(<AccountActionsDTraderV2 {...mock_props} balance={undefined} />);
 
         expect(screen.getByText('AccountInfoDTraderV2')).toBeInTheDocument();
         expect(screen.getByText('LabelPairedBellLgRegularIcon')).toBeInTheDocument();

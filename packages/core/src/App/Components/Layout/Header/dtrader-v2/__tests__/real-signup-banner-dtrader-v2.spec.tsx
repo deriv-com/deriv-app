@@ -12,14 +12,14 @@ jest.mock('@deriv/quill-icons', () => ({
     CurrencyEurIcon: jest.fn(() => mock_currency_eur_icon),
 }));
 
-const mockProps = {
+const mock_props = {
     openRealAccount: jest.fn(),
     is_eu: false,
 };
 
 describe('RealSignupBannerDTraderV2', () => {
     it('should render banner with specific for eu icons and apply specific className for their container if eu === true', () => {
-        render(<RealSignupBannerDTraderV2 {...mockProps} is_eu />);
+        render(<RealSignupBannerDTraderV2 {...mock_props} is_eu />);
 
         const eu_currency = screen.getByText(mock_currency_eur_icon);
 
@@ -29,7 +29,7 @@ describe('RealSignupBannerDTraderV2', () => {
     });
 
     it('should render banner with specific for non-eu icons and apply not specific className for their container if eu === false', () => {
-        render(<RealSignupBannerDTraderV2 {...mockProps} />);
+        render(<RealSignupBannerDTraderV2 {...mock_props} />);
 
         const non_eu_currency = screen.getByText(mock_currency_btc_icon);
 
@@ -38,10 +38,10 @@ describe('RealSignupBannerDTraderV2', () => {
         expect(screen.queryByText(mock_currency_eur_icon)).not.toBeInTheDocument();
     });
     it('should call openRealAccount when user clicks on banner', () => {
-        render(<RealSignupBannerDTraderV2 {...mockProps} />);
+        render(<RealSignupBannerDTraderV2 {...mock_props} />);
 
-        expect(mockProps.openRealAccount).not.toBeCalled();
+        expect(mock_props.openRealAccount).not.toBeCalled();
         userEvent.click(screen.getByText(mock_currency_btc_icon));
-        expect(mockProps.openRealAccount).toBeCalled();
+        expect(mock_props.openRealAccount).toBeCalled();
     });
 });

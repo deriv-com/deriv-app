@@ -241,10 +241,6 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
                                 <FormSubHeader title={localize('Details')} />
                                 {!is_virtual && (
                                     <Fragment>
-                                        <EmploymentStatusField
-                                            required
-                                            is_disabled={isFieldDisabled('employment_status')}
-                                        />
                                         <DesktopWrapper>
                                             <InputGroup className='account-form__fieldset--2-cols'>
                                                 <Input
@@ -410,9 +406,12 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
                                                     />
                                                 </fieldset>
                                             )}
-                                            {/* {'employment_status' in values && ( */}
-
-                                            {/* )} */}
+                                            {'employment_status' in values && (
+                                                <EmploymentStatusField
+                                                    required
+                                                    is_disabled={isFieldDisabled('employment_status')}
+                                                />
+                                            )}
                                         </Fragment>
                                     )}
                                     {!is_virtual && (

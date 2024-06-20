@@ -4,6 +4,7 @@ import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderStackSendUploadStrategyCompletedEvent } from '../../analytics/rudderstack-bot-builder';
 
 const LocalFooter = observer(() => {
     const { ui } = useStore();
@@ -26,6 +27,7 @@ const LocalFooter = observer(() => {
                     toggleLoadModal();
                     setPreviewOnPopup(false);
                     setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);
+                    rudderStackSendUploadStrategyCompletedEvent({ upload_provider: 'my_computer' });
                 }}
                 is_loading={is_open_button_loading}
                 has_effect

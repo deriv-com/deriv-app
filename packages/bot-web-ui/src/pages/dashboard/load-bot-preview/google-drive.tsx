@@ -4,6 +4,11 @@ import { Button, Icon, StaticUrl } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
+import {
+    rudderStackSendGoogleDriveConnectEvent,
+    rudderStackSendGoogleDriveDisconnectEvent,
+    rudderStackSendUploadStrategyStartEvent,
+} from '../../../analytics/rudderstack-bot-builder';
 
 const GoogleDrive = observer(() => {
     const { ui } = useStore();
@@ -31,11 +36,21 @@ const GoogleDrive = observer(() => {
                 </div>
                 {is_authorised ? (
                     <Button.Group>
-                        <Button text={localize('Disconnect')} onClick={onDriveConnect} has_effect secondary large />
+                        <Button
+                            text={localize('Disconnect')}
+                            onClick={() => {
+                                onDriveConnect();
+                                rudderStackSendGoogleDriveDisconnectEvent();
+                            }}
+                            has_effect
+                            secondary
+                            large
+                        />
                         <Button
                             text={localize('Open')}
                             onClick={() => {
                                 onDriveOpen();
+                                rudderStackSendUploadStrategyStartEvent({ upload_provider: 'google_drive' });
                             }}
                             is_loading={is_open_button_loading}
                             has_effect
@@ -63,7 +78,16 @@ const GoogleDrive = observer(() => {
                                 />
                             </div>
                         </div>
-                        <Button text={localize('Sign in')} onClick={onDriveConnect} has_effect primary large />
+                        <Button
+                            text={localize('Sign in')}
+                            onClick={() => {
+                                onDriveConnect();
+                                rudderStackSendGoogleDriveConnectEvent();
+                            }}
+                            has_effect
+                            primary
+                            large
+                        />
                     </React.Fragment>
                 )}
             </div>

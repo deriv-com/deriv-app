@@ -1,4 +1,3 @@
-//kept sometihings commented beacuse of mobx to integrate popup functionality here
 import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Dialog, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
@@ -7,6 +6,8 @@ import { localize } from '@deriv/translations';
 import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderStackSendUploadStrategyCompletedEvent } from '../../analytics/rudderstack-bot-builder';
+import { rudderStackSendDashboardClickEvent } from '../../analytics/rudderstack-dashboard';
 import { rudderStackSendQsOpenEvent } from '../../analytics/rudderstack-quick-strategy';
 import DashboardBotList from './load-bot-preview/dashboard-bot-list';
 import GoogleDrive from './load-bot-preview/google-drive';
@@ -56,13 +57,19 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             type: 'my-computer',
             icon: is_mobile ? 'IcLocal' : 'IcMyComputer',
             content: is_mobile ? localize('Local') : localize('My computer'),
-            method: openFileLoader,
+            method: () => {
+                openFileLoader();
+                rudderStackSendDashboardClickEvent({ dashboard_click_name: 'my_computer' });
+            },
         },
         {
             type: 'google-drive',
             icon: 'IcGoogleDriveDbot',
             content: localize('Google Drive'),
-            method: openGoogleDriveDialog,
+            method: () => {
+                openGoogleDriveDialog();
+                rudderStackSendDashboardClickEvent({ dashboard_click_name: 'google_drive' });
+            },
         },
         {
             type: 'bot-builder',
@@ -70,6 +77,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             content: localize('Bot Builder'),
             method: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
+                rudderStackSendDashboardClickEvent({ dashboard_click_name: 'bot_builder' });
             },
         },
         {
@@ -81,6 +89,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                 setFormVisibility(true);
                 // send to rs if quick strategy is opened from dashbaord
                 rudderStackSendQsOpenEvent({ subform_source: 'dashboard' });
+                rudderStackSendDashboardClickEvent({ dashboard_click_name: 'quick_strategy' });
             },
         },
     ];
@@ -135,6 +144,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                             loadFileFromLocal();
                             setFileLoaded(true);
                             setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);
+                            rudderStackSendUploadStrategyCompletedEvent({ upload_provider: 'my_computer' });
                         }}
                     />
                     <DesktopWrapper>

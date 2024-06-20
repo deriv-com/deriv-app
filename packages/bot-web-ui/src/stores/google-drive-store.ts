@@ -3,6 +3,7 @@ import { config, importExternal } from '@deriv/bot-skeleton';
 import { getLanguage, localize } from '@deriv/translations';
 import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { button_status } from 'Constants/button-status';
+import { rudderStackSendUploadStrategyCompletedEvent } from '../analytics/rudderstack-bot-builder';
 import RootStore from './root-store';
 
 export type TErrorWithStatus = Error & { status?: number };
@@ -264,6 +265,7 @@ export default class GoogleDriveStore implements IGoogleDriveStore {
 
                     resolve({ xml_doc: response.body, file_name });
                     setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);
+                    rudderStackSendUploadStrategyCompletedEvent({ upload_provider: 'google_drive' });
                 }
             };
 

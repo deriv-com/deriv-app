@@ -103,7 +103,6 @@ const ResetEmailModal = observer(() => {
                                                 placeholder={localize('Email address')}
                                                 value={values.email}
                                                 required
-                                                disabled={false}
                                                 error={(touched.email && errors.email) || email_error_msg}
                                                 onBlur={handleBlur}
                                                 onChange={e => {

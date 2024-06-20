@@ -40,7 +40,7 @@ describe('ResetEmailModal', () => {
         render(<ResetEmailModal />, { wrapper });
     };
 
-    test('renders the reset email modal', () => {
+    it('renders the reset email modal', () => {
         renderComponent();
 
         expect(screen.getByText(/Enter a new email address/i)).toBeInTheDocument();
@@ -48,7 +48,7 @@ describe('ResetEmailModal', () => {
         expect(screen.queryByText('ConfirmEmailModal')).not.toBeInTheDocument();
     });
 
-    test('validates email input', async () => {
+    it('validates email input', async () => {
         renderComponent();
 
         const emailInput = screen.getByPlaceholderText(/Email address/i);
@@ -65,7 +65,7 @@ describe('ResetEmailModal', () => {
         expect(submitButton).toBeDisabled();
     });
 
-    test('opens confirm email modal on valid email submission and handle closing', async () => {
+    it('opens confirm email modal on valid email submission and handle closing', async () => {
         renderComponent();
 
         const emailInput = screen.getByPlaceholderText(/Email address/i);

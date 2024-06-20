@@ -11,11 +11,11 @@ import {
 } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 
-type TBannerDTraderV2 = {
+type TRealSignupBannerDTraderV2 = {
     openRealAccount: () => void;
     is_eu?: boolean;
 };
-const BannerDTraderV2 = ({ openRealAccount, is_eu }: TBannerDTraderV2) => (
+const RealSignupBannerDTraderV2 = ({ openRealAccount, is_eu }: TRealSignupBannerDTraderV2) => (
     <button className='banner__container' onClick={openRealAccount}>
         <div className='banner'>
             <div
@@ -44,4 +44,4 @@ const BannerDTraderV2 = ({ openRealAccount, is_eu }: TBannerDTraderV2) => (
     </button>
 );
 
-export default BannerDTraderV2;
+export default RealSignupBannerDTraderV2;

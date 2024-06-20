@@ -6,7 +6,7 @@ import { routes } from '@deriv/shared';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import HeaderAccountActionsDTraderV2 from 'App/Components/Layout/Header/dtrader-v2/header-account-actions-dtrader-v2';
-import BannerDTraderV2 from 'App/Components/Layout/Header/dtrader-v2/banner-dtrader-v2';
+import RealSignupBannerDTraderV2 from 'App/Components/Layout/Header/dtrader-v2/real-signup-banner-dtrader-v2';
 
 const DTraderV2Header = observer(() => {
     const { ui, client, traders_hub } = useStore();
@@ -34,7 +34,7 @@ const DTraderV2Header = observer(() => {
             })}
         >
             <React.Suspense fallback={<div />}>
-                {show_banner && <BannerDTraderV2 openRealAccount={openRealAccount} is_eu={is_eu} />}
+                {show_banner && <RealSignupBannerDTraderV2 openRealAccount={openRealAccount} is_eu={is_eu} />}
                 <HeaderAccountActionsDTraderV2 />
                 {is_real_acc_signup_on && <RealAccountSignup />}
                 <SetAccountCurrencyModal />

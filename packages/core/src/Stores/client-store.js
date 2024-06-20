@@ -427,6 +427,9 @@ export default class ClientStore extends BaseStore {
             ],
             () => {
                 this.setCookieAccount();
+                if (!this.is_logged_in) {
+                    this.root_store.traders_hub.cleanup();
+                }
             }
         );
 
@@ -2008,6 +2011,9 @@ export default class ClientStore extends BaseStore {
     }
 
     async logout() {
+        // makes sure to clear the cached traders-hub data when logging out
+        localStorage.removeItem('traders_hub_store');
+
         // TODO: [add-client-action] - Move logout functionality to client store
         const response = await requestLogout();
 
@@ -2520,7 +2526,7 @@ export default class ClientStore extends BaseStore {
         p2p.iframe = document.getElementById('localstorage-sync__p2p');
         smartTrader.origin = getUrlSmartTrader();
         binaryBot.origin = getUrlBinaryBot(false);
-        p2p.origin = getUrlP2P();
+        p2p.origin = getUrlP2P(false);
 
         [smartTrader, binaryBot, p2p].forEach(platform => {
             if (platform.iframe) {
@@ -2539,6 +2545,17 @@ export default class ClientStore extends BaseStore {
                     },
                     platform.origin
                 );
+
+                if (platform === p2p) {
+                    const currentLang = LocalStore.get(LANGUAGE_KEY);
+                    platform.iframe.contentWindow.postMessage(
+                        {
+                            key: LANGUAGE_KEY,
+                            value: currentLang,
+                        },
+                        platform.origin
+                    );
+                }
             }
         });
     }

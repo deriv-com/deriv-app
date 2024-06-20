@@ -186,16 +186,6 @@ const generateSWConfig = () => ({
             },
         },
         {
-            urlPattern: /https:\/\/translations.deriv.com\/.*/,
-            handler: 'CacheFirst',
-            options: {
-                cacheName: 'translations',
-                expiration: {
-                    maxAgeSeconds: 60 * 60 * 24,
-                },
-            },
-        },
-        {
             urlPattern: ({ url }) => {
                 return url.pathname.match(/^\/js\/(?!(.*((core\.[a-z_]*-json\.)|smartcharts))).*$/);
             },

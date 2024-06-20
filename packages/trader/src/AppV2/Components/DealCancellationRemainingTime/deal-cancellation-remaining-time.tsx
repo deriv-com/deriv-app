@@ -20,23 +20,21 @@ const DealCancellationRemainingTime = observer(({ format = 'mm:ss' }: DealCancel
     }
 
     return (
-        <React.Fragment>
-            <Tag
-                className='deal-cancellation-badge'
-                color='custom'
-                data-testid='deal-cancellation-badge'
-                label={
-                    <RemainingTime
-                        end_time={end_time}
-                        format='mm:ss'
-                        getCardLabels={getCardLabelsV2}
-                        start_time={start_time}
-                    />
-                }
-                size='sm'
-                variant='custom'
-            />
-        </React.Fragment>
+        <Tag
+            className='deal-cancellation-badge'
+            color='custom'
+            data-testid='deal-cancellation-badge'
+            label={
+                <RemainingTime
+                    end_time={end_time}
+                    format='mm:ss'
+                    getCardLabels={getCardLabelsV2}
+                    start_time={start_time}
+                />
+            }
+            size='sm'
+            variant='custom'
+        />
     );
 });
 

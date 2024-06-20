@@ -19,9 +19,9 @@ const Router: React.FC = () => {
                         is_logged_in={is_logged_in}
                         language={current_language}
                         Component404={Page404}
-                        should_redirect_login={true}
+                        should_redirect_login
                         routes={traderRoutes}
-                        to={''}
+                        to=''
                         {...route}
                     />
                 ))}

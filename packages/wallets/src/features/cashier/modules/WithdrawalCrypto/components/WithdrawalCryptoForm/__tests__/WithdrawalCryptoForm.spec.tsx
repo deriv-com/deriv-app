@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { APIProvider, AuthProvider } from '@deriv/api-v2';
+import { APIProvider, AuthProvider, useGrowthbookIsOn } from '@deriv/api-v2';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useWithdrawalCryptoContext, WithdrawalCryptoProvider } from '../../../provider';
@@ -7,7 +7,12 @@ import WithdrawalCryptoForm from '../WithdrawalCryptoForm';
 
 jest.mock('../../../provider', () => ({
     ...jest.requireActual('../../../provider'),
-    useWithdrawalCryptoContext: jest.fn(),
+    useWithdrawalCryptoContext: jest.fn().mockReturnValue([]),
+}));
+
+jest.mock('@deriv/api-v2', () => ({
+    ...jest.requireActual('@deriv/api-v2'),
+    useGrowthbookIsOn: jest.fn(),
 }));
 
 jest.mock('../../../utils', () => ({
@@ -63,6 +68,8 @@ describe('WithdrawalCryptoForm', () => {
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             mockValues
         );
+
+        (useGrowthbookIsOn as jest.Mock).mockReturnValue([true]);
 
         render(<WithdrawalCryptoForm />, { wrapper });
 

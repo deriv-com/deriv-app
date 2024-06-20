@@ -1,7 +1,7 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { useCurrentAccountDetails } from '@deriv/hooks';
+import { useCurrentAccountDetails, useGrowthbookIsOn } from '@deriv/hooks';
 import WithdrawalCryptoForm from '../withdrawal-crypto-form';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
@@ -13,6 +13,7 @@ jest.mock('@deriv/hooks', () => ({
     useCurrentAccountDetails: jest.fn(() => {
         'icon';
     }),
+    useGrowthbookIsOn: jest.fn().mockReturnValue([]),
 }));
 
 jest.mock('@deriv/api', () => ({
@@ -185,6 +186,7 @@ describe('<WithdrawalCryptoForm />', () => {
     });
 
     it('crypto_estimation_fee should be displayed when checkbox is checked', async () => {
+        (useGrowthbookIsOn as jest.Mock).mockReturnValue([true]);
         const { rerender } = renderWithdrawalCryptoForm();
         const checkbox = screen.getByLabelText('Priority withdrawal');
 

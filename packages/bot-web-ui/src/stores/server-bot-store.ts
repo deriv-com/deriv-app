@@ -16,6 +16,7 @@ interface IServerBotStore {
     setValueServerBot: (form_data: any) => void;
     makeRequest: (req_schema: TRequestSchema) => Promise<TBotResponse>;
     setFormValues: (currency: string) => void;
+    setStatusBot: (status: string, bot_id: string) => void;
 }
 
 type TBotListResponse = {
@@ -69,6 +70,7 @@ export default class ServerBotStore implements IServerBotStore {
             startBot: action.bound,
             stopBot: action.bound,
             setFormValues: action.bound,
+            setStatusBot: action.bound,
         });
     }
 
@@ -131,7 +133,7 @@ export default class ServerBotStore implements IServerBotStore {
                 })
                 .catch((error: Error) => {
                     /* eslint-disable no-console */
-                    this.setNotifications(error?.error?.message)
+                    this.setNotifications(error?.error?.message);
                 });
         }, 2000);
     };
@@ -150,7 +152,7 @@ export default class ServerBotStore implements IServerBotStore {
             .catch((error: Error) => {
                 /* eslint-disable no-console */
                 console.error(error);
-                this.setNotifications(error?.error?.message)
+                this.setNotifications(error?.error?.message);
             })
             .then(() => this.getBotList());
     };
@@ -204,13 +206,14 @@ export default class ServerBotStore implements IServerBotStore {
     };
 
     notifyBot = (bot_id: string) => {
+        this.setStatusBot('started', bot_id);
         this.makeRequest({
             bot_notification: 1,
             subscribe: 1,
             bot_id,
         })
             .then(data => {
-                this.setNotifications(data?.bot_notification?.message)
+                this.setNotifications(data?.bot_notification?.message);
                 return data;
             })
             .catch((error: Error) => {
@@ -222,5 +225,9 @@ export default class ServerBotStore implements IServerBotStore {
 
     setNotifications = (notifications: string) => {
         this.notifications.push(notifications);
-    }
+    };
+
+    setStatusBot = (status: string, bot_id: string) => {
+        this.bot_list = this.bot_list.map(bot => (bot.bot_id === bot_id ? { ...bot, status } : bot));
+    };
 }

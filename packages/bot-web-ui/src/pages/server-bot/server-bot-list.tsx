@@ -75,13 +75,15 @@ const ServerBotList = () => {
                                 <p>{localize('[ Strategy parameters ]')}</p>
                             </div>
                             <div className='bot-list-contract__actions'>
-                                <Button green onClick={() => startBot(bot_id)}>
-                                    {localize('Start')}
-                                </Button>
-                                <Button primary onClick={() => stopBot(bot_id)}>
-                                    {localize('Stop')}
-                                </Button>
-                                <Button className='bot-list-btn--disabled' disabled>{localize('Pause')}</Button>
+                                {status === 'started' ? (
+                                    <Button primary onClick={() => stopBot(bot_id)}>
+                                        {localize('Stop')}
+                                    </Button>
+                                ) : (
+                                    <Button green onClick={() => startBot(bot_id)}>
+                                        {localize('Start')}
+                                    </Button>
+                                )}
                                 <Button primary onClick={() => removeBot(bot_id)}>
                                     {localize('Remove')}
                                 </Button>

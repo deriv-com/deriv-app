@@ -5,8 +5,8 @@ import { getLanguage } from '@deriv/translations';
 
 async function setBlocklyLocale() {
     const languageModule = await import(`blockly/msg/${getLanguage().toLowerCase()}.js`);
-    const Blockly = languageModule.default || languageModule;
-    window.Blockly.setLocale(Blockly);
+    const blocklyLangModule = languageModule.default || languageModule;
+    window.Blockly.setLocale(blocklyLangModule);
 }
 
 window.goog = goog;

@@ -2,6 +2,7 @@ import React from 'react';
 import {
     FlagArabLeagueIcon,
     FlagBangladeshIcon,
+    FlagCambodiaIcon,
     FlagChinaSimplifiedIcon,
     FlagChinaTraditionalIcon,
     FlagFranceIcon,
@@ -34,6 +35,7 @@ export const TranslationFlag: TTranslationFlag = {
     FR: size => <FlagFranceIcon iconSize={size} />,
     ID: size => <FlagIndonesiaIcon iconSize={size} />,
     IT: size => <FlagItalyIcon iconSize={size} />,
+    KM: size => <FlagCambodiaIcon iconSize={size} />,
     // KO: ,
     MN: size => <FlagMongoliaIcon iconSize={size} />,
     PL: size => <FlagPolandIcon iconSize={size} />,

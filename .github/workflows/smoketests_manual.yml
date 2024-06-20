@@ -16,7 +16,7 @@ jobs:
             const workflowInputs = {
               environment: '${{ secrets.E2E_WORKFLOW_ENV }}',
               suite: '${{ secrets.E2E_WORKFLOW_SUITE }}',
-              testcase: 'Toolbar.cy.js',
+              testcase: '',
               triggeredByPR: 'true',
               appRegUrl: 'https://deriv-app-git-fork-aizad-deriv-aizad-wall-4421replace-re-959bfb.binary.sx/',
               recKey: '${{ secrets.E2E_CYPRESS_RECORD_KEY }}'

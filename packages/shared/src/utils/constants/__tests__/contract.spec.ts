@@ -8,11 +8,16 @@ import {
     getContractCategoriesConfig,
     getContractTypePosition,
     getCleanedUpCategories,
+    getLocalizedBasis,
 } from '../contract';
 import { CONTRACT_TYPES, TRADE_TYPES } from '../../contract';
 
 type TGetSupportedContractsKey = keyof ReturnType<typeof getSupportedContracts>;
-const card_labels = { APPLY: 'Apply', MULTIPLIER: 'Multiplier:' };
+const card_labels = {
+    APPLY: 'Apply',
+    MULTIPLIER: 'Multiplier:',
+    TAKE_PROFIT_IS_NOT_AVAILABLE: "Take profit can't be adjusted for ongoing accumulator contracts.",
+};
 const markets_name = 'AUD/CAD';
 const unsupported_contract = {
     name: 'Spread Up',
@@ -34,10 +39,17 @@ jest.mock('../../storage', () => ({
     },
 }));
 
+describe('getLocalizedBasis', () => {
+    it('should return an object with localized basis', () => {
+        expect(getLocalizedBasis().accumulator).toEqual('Accumulators');
+    });
+});
+
 describe('getCardLabels', () => {
     it('should return an object with card labels, e.g. such as Apply or Multiplier', () => {
         expect(getCardLabels().APPLY).toEqual(card_labels.APPLY);
         expect(getCardLabels().MULTIPLIER).toEqual(card_labels.MULTIPLIER);
+        expect(getCardLabels().TAKE_PROFIT_IS_NOT_AVAILABLE).toEqual(card_labels.TAKE_PROFIT_IS_NOT_AVAILABLE);
     });
 });
 

@@ -49,7 +49,6 @@ export default class UIStore extends BaseStore {
     is_reset_trading_password_modal_visible = false;
     is_mf_verification_pending_modal_visible = false;
     // @observable is_purchase_lock_on       = false;
-
     // SmartCharts Controls
     // TODO: enable asset information
     // @observable is_chart_asset_info_visible = true;
@@ -943,6 +942,7 @@ export default class UIStore extends BaseStore {
 
     setCFDPasswordResetModal(val) {
         this.is_cfd_reset_password_modal_enabled = !!val;
+        this.is_reset_trading_password_modal_visible = !!val;
     }
 
     setSubSectionIndex(index) {

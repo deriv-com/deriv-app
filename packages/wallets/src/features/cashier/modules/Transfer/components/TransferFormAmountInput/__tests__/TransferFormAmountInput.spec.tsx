@@ -91,12 +91,6 @@ jest.mock('@deriv/api-v2', () => ({
             base_currency,
             rates: RATES[base_currency as keyof typeof RATES],
         },
-        refetch: () => ({
-            data: {
-                base_currency,
-                rates: RATES[base_currency as keyof typeof RATES],
-            },
-        }),
     })),
     useTransferBetweenAccounts: jest.fn(() => ({
         data: { accounts: ACCOUNTS },

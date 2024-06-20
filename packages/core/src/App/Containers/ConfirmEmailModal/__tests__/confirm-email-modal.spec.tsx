@@ -66,7 +66,7 @@ describe('ConfirmEmailModal', () => {
         mock_props.is_open = false;
         renderComponent();
 
-        expect(screen.queryByText(/Are you sure?/i)).not.toBeInTheDocument();
+        modal_text_content.forEach(text => expect(screen.queryByText(text)).not.toBeInTheDocument());
     });
 
     it('should render ConfirmEmailModal and trigger closing', () => {
@@ -91,7 +91,7 @@ describe('ConfirmEmailModal', () => {
         });
 
         userEvent.click(screen.getByText('Close'));
-        expect(screen.queryByText('Are you sure?')).not.toBeInTheDocument();
+        modal_text_content.forEach(text => expect(screen.queryByText(text)).not.toBeInTheDocument());
         expect(screen.queryByText('SentEmailModal')).not.toBeInTheDocument();
     });
 

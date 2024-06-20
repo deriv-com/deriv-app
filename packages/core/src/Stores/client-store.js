@@ -2048,9 +2048,8 @@ export default class ClientStore extends BaseStore {
         if (selected_account) {
             if (is_wallets_selected) {
                 active_wallet_loginid = obj_params.selected_acct;
-            } else {
-                active_loginid = obj_params.selected_acct;
             }
+            active_loginid = obj_params.selected_acct;
         }
 
         account_list.forEach(function (account) {
@@ -2095,10 +2094,9 @@ export default class ClientStore extends BaseStore {
         if (active_loginid && Object.keys(client_object).length) {
             if (selected_account && is_wallets_selected) {
                 localStorage.setItem('active_wallet_loginid', active_wallet_loginid);
-            } else {
-                localStorage.setItem('active_loginid', active_loginid);
             }
 
+            localStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
             this.syncWithLegacyPlatforms(active_loginid, this.accounts);
         }

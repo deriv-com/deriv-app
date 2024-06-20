@@ -1,15 +1,17 @@
 import React from 'react';
 import { useWalletMigration } from '@deriv/hooks';
-import { Button, Icon, Text, Modal } from '@deriv/components';
+import { Button, Text, Modal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import './wallets-upgrade-modal.scss';
+import classNames from 'classnames';
+import { getUrlBase } from '@deriv/shared';
 
 const MODAL_TRANSITION_TIMEOUT_MS = 250; // matching the default one
 
 const WalletsUpgradeModal = observer(() => {
     const { traders_hub, ui } = useStore();
-    const { toggleWalletsUpgrade } = traders_hub;
+    const { is_real_wallets_upgrade_on, toggleWalletsUpgrade } = traders_hub;
     const { is_mobile, is_desktop } = ui;
     const { is_eligible } = useWalletMigration();
     const isWalletMigrationModalClosed = localStorage.getItem('is_wallet_migration_modal_closed');
@@ -18,43 +20,55 @@ const WalletsUpgradeModal = observer(() => {
     const closeModal = () => {
         setModalOpen(false);
         localStorage.setItem('is_wallet_migration_modal_closed', 'true');
+        toggleWalletsUpgrade(false);
     };
 
     return (
         <Modal
             className='wallets-upgrade-modal'
-            is_open={is_eligible && modalOpen}
-            width='60rem'
+            is_open={(is_eligible && modalOpen) || is_real_wallets_upgrade_on}
+            width={is_mobile ? '32.8rem' : '116rem'}
             title=' '
             toggleModal={closeModal}
             transition_timeout={MODAL_TRANSITION_TIMEOUT_MS}
         >
             <Modal.Body>
                 <div className='wallets-upgrade-modal__content'>
-                    <Icon
-                        icon={`IcAppstoreWalletsUpgradeCoins${is_mobile ? 'Horizontal' : ''}`}
-                        width={is_mobile ? 190 : 300}
-                        height={is_mobile ? 80 : 300}
-                        className='wallets-upgrade-modal__image'
-                        data_testid={`dt_wallets_upgrade_coins${is_mobile ? '_horizontal' : ''}`}
-                    />
-                    <div className='wallets-upgrade-modal__description'>
-                        <Text align={is_mobile ? 'center' : 'left'} size={is_mobile ? 's' : 'm'} weight='bold'>
+                    <div className='wallets-upgrade-modal__video-container'>
+                        <video
+                            className='wallets-upgrade-modal__video'
+                            autoPlay={true}
+                            controls
+                            preload='auto'
+                            playsInline
+                            disablePictureInPicture
+                            controlsList='nodownload'
+                            src={getUrlBase('/public/videos/wallets_introduction.mp4')}
+                        />
+                    </div>
+                    <div className='wallets-upgrade-modal__text'>
+                        <Text align='center' size={is_mobile ? 's' : 'm'} weight='bold'>
                             <Localize i18n_default_text='Introducing Wallets' />
                         </Text>
-                        <Text align={is_mobile ? 'center' : 'left'} size={is_mobile ? 'xs' : 's'}>
+                        <Text align='center' size={is_mobile ? 'xs' : 's'}>
                             <Localize
-                                i18n_default_text='Enjoy seamless transactions across multiple currencies and an intuitive user interface with funds segregation.'
+                                i18n_default_text='Use Wallets to manage your funds across different currencies effortlessly.'
                                 components={[<br key={0} />]}
                             />
                         </Text>
                     </div>
+                </div>
+                <div
+                    className={classNames({
+                        'wallets-upgrade-modal__footer--desktop': !is_mobile,
+                        'wallets-upgrade-modal__footer--mobile': is_mobile,
+                    })}
+                >
                     <Button
                         large={is_desktop}
                         onClick={() => {
                             closeModal();
-                            // let this modal close before opening the next one
-                            setTimeout(() => toggleWalletsUpgrade(true), MODAL_TRANSITION_TIMEOUT_MS);
+                            // startMigration();
                         }}
                         primary
                         text={localize('Enable now')}

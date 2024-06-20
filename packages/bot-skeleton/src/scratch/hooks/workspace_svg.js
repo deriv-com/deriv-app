@@ -1,5 +1,4 @@
 import { config } from '../../constants/config';
-import { removeLimitedBlocks } from '../../utils/workspace';
 import DBotStore from '../dbot-store';
 
 /**
@@ -296,27 +295,6 @@ Blockly.WorkspaceSvg.getTopLevelWorkspaceMetrics_ = function () {
     };
 
     return metrics;
-};
-
-/**
- * Paste the provided block onto the workspace.
- * @param {!Element} xml_block XML block element.
- */
-Blockly.WorkspaceSvg.prototype.paste = function (xml_block) {
-    if (!this.rendered) {
-        return;
-    }
-
-    if (this.currentGesture_) {
-        this.currentGesture_.cancel(); // Dragging while pasting?  No.
-    }
-
-    if (xml_block.tagName.toLowerCase() === 'comment') {
-        this.pasteWorkspaceComment_(xml_block);
-    } else {
-        removeLimitedBlocks(this, xml_block.getAttribute('type'));
-        this.pasteBlock_(xml_block);
-    }
 };
 
 /**

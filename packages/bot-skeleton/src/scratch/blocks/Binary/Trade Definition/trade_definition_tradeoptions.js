@@ -9,6 +9,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     durations: [],
     init() {
         this.jsonInit(this.definition());
+        this.setInputsInline(true);
 
         // Ensure one of this type per statement-stack
         this.setNextStatement(false);
@@ -255,12 +256,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     },
     updateDurationInput(should_use_default_unit, should_update_value) {
         const { contracts_for } = ApiHelpers.instance;
-        const {
-            workspaces: {
-                indentWorkspace: { x, y },
-            },
-        } = config;
-        window.Blockly.getMainWorkspace().cleanUp(x, y);
 
         if (this.selected_trade_type === 'multiplier' && this.isDescendantOf('trade_definition')) {
             runIrreversibleEvents(() => {
@@ -351,6 +346,14 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 }
             });
         }
+        const {
+            workspaces: {
+                indentWorkspace: { x, y },
+            },
+        } = config;
+        setTimeout(() => {
+            window.Blockly.getMainWorkspace().cleanUp(x, y);
+        }, 10);
     },
     updateBarrierInputs(should_use_default_type, should_use_default_values) {
         const { contracts_for } = ApiHelpers.instance;

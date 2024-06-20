@@ -7,6 +7,11 @@ Blockly.Blocks.procedures_defreturn = {
         this.argument_var_models = [];
 
         this.jsonInit(this.definition());
+
+        if (Blockly.Msg.PROCEDURES_DEFNORETURN_COMMENT) {
+            this.setCommentText(Blockly.Msg.PROCEDURES_DEFNORETURN_COMMENT);
+        }
+
         // Enforce unique procedure names
         const nameField = this.getField('NAME');
         nameField.setValidator(Blockly.Procedures.rename);

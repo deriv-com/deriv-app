@@ -654,14 +654,6 @@ export default class BlockConversion {
                     }
                     break;
                 }
-                case 'comment': {
-                    const is_minimised = el_block_child.getAttribute('pinned') !== 'true';
-                    const comment_text = el_block_child.innerText;
-
-                    block.comment = new Blockly.WorkspaceComment(this.workspace, comment_text, 0, 0, is_minimised);
-                    block.comment.iconXY_ = { x: 0, y: 0 };
-                    break;
-                }
                 default:
                     break;
             }

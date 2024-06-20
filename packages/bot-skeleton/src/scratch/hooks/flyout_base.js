@@ -71,7 +71,7 @@ Blockly.Flyout.prototype.createBlock = function (event, original_block) {
  * @return {!Blockly.Block} The new block in the main workspace.
  * @private
  */
-Blockly.Flyout.prototype.placeNewBlock_ = function (event, old_block) {
+Blockly.Flyout.prototype.placeNewBlock_ = function (event, old_block = Blockly.getSelected()) {
     const main_workspace = this.targetWorkspace;
     const svg_root_old = old_block.getSvgRoot();
 

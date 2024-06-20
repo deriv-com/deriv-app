@@ -232,7 +232,7 @@ Blockly.Blocks.trade_definition_multiplier = {
                     duration_shadow_block.initSvg();
                     // kept this commented to fix backward compatibility issue
                     // need to fix this for mutliplier block
-                    //duration_shadow_block.render(true);
+                    duration_shadow_block.renderEfficiently();
 
                     const stake_input = duration_block.getInput('AMOUNT');
 
@@ -243,7 +243,7 @@ Blockly.Blocks.trade_definition_multiplier = {
                     stake_shadow_block.initSvg();
                     // kept this commented to fix backward compatibility issue
                     // need to fix this for mutliplier block
-                    // stake_shadow_block.render(true);
+                    stake_shadow_block.renderEfficiently();
 
                     this.dispose();
                     window.Blockly.getMainWorkspace().cleanUp(x, y);

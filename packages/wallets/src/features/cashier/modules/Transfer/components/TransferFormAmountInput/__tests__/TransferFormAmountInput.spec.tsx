@@ -248,7 +248,7 @@ describe('TransferFormAmountInput', () => {
         userEvent.tab();
         expect(field).toHaveValue('0.00000123');
     });
-    it('should call refetchExchangeRatesAndLimits when the countdown is complete', () => {
+    it('refetches exchangeRatesAndLimits when the countdown is complete', () => {
         const config = {
             fromAccount: ACCOUNTS[1], // BTC account
             fromAmount: 100,
@@ -258,7 +258,7 @@ describe('TransferFormAmountInput', () => {
         expect(mockRefetchAccountLimits).toHaveBeenCalled();
         expect(mockRefetchExchangeRates).toHaveBeenCalled();
     });
-    it('should render the component when the currency of the fromAccount is not provided', () => {
+    it('renders the component when the currency of the fromAccount is not provided', () => {
         const config = {
             fromAmount: 100,
             toAmount: 0.00000001,
@@ -266,7 +266,7 @@ describe('TransferFormAmountInput', () => {
         renderField('toAmount', 'USD', config);
         expect(screen.getByText('Estimated amount')).toBeInTheDocument();
     });
-    it('should call setValues with the same amount for the fromAmount and toAmount when the currency is the same for both accounts', () => {
+    it('calls setValues with the same amount for the fromAmount and toAmount when the currency is the same for both accounts', () => {
         const mockSetValues = jest.fn((callback: unknown) => {
             if (typeof callback === 'function') {
                 return callback();
@@ -296,7 +296,7 @@ describe('TransferFormAmountInput', () => {
         expect(returnedFromAmount).toEqual(1.1);
         expect(returnedToAmount).toEqual(1.1);
     });
-    it('should set the toAmount when isFromAmountField is true', () => {
+    it('sets the toAmount when isFromAmountField is true', () => {
         const toAccount = ACCOUNTS[1]; // BTC account
         const mockSetFieldValue = jest.fn();
         const useFormikContextSpy = jest.spyOn(Formik, 'useFormikContext');

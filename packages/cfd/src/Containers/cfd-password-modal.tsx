@@ -26,6 +26,7 @@ import {
     validPassword,
     validMT5Password,
     WS,
+    CFD_PRODUCTS_TITLE,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -332,7 +333,11 @@ const CreatePassword = ({
                         )}
                         {product === PRODUCT.ZEROSPREAD && account_type.category === CATEGORY.REAL && (
                             <>
-                                <CfdPasswordModalInfo />
+                                <CfdPasswordModalInfo
+                                    jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                                    platform={getCFDPlatformLabel(platform)}
+                                    product={CFD_PRODUCTS_TITLE.ZEROSPREAD}
+                                />
                                 <CfdPasswordModalCheckbox
                                     is_checked={checked}
                                     onCheck={() => setChecked(prev => !prev)}

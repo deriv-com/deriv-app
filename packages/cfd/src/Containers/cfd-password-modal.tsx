@@ -45,6 +45,7 @@ import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 
 import '../sass/cfd.scss';
 import CfdPasswordModalInfo from './cfd-password-modal-info';
+import CfdPasswordModalCheckbox from './cfd-password-modal-checkbox';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -243,7 +244,8 @@ const CreatePassword = ({
     error_message,
     is_real_financial_stp,
 }: TCFDCreatePasswordProps) => {
-    const { product } = useCfdStore();
+    const { product, jurisdiction_selected_shortcode } = useCfdStore();
+    const [checked, setChecked] = React.useState(false);
 
     return (
         <Formik
@@ -329,12 +331,17 @@ const CreatePassword = ({
                             </div>
                         )}
                         {product === PRODUCT.ZEROSPREAD && (
-                            <div>
+                            <>
                                 <CfdPasswordModalInfo />
-                            </div>
+                                <CfdPasswordModalCheckbox
+                                    is_checked={checked}
+                                    onCheck={() => setChecked(prev => !prev)}
+                                    jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                                />
+                            </>
                         )}
                         <FormSubmitButton
-                            is_disabled={!values.password || Object.keys(errors).length > 0}
+                            is_disabled={!values.password || !checked || Object.keys(errors).length > 0}
                             is_loading={isSubmitting}
                             label={localize('Create {{platform}} password', {
                                 platform: getCFDPlatformLabel(platform),

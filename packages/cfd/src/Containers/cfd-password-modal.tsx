@@ -244,7 +244,7 @@ const CreatePassword = ({
     error_message,
     is_real_financial_stp,
 }: TCFDCreatePasswordProps) => {
-    const { product, jurisdiction_selected_shortcode } = useCfdStore();
+    const { product, jurisdiction_selected_shortcode, account_type } = useCfdStore();
     const [checked, setChecked] = React.useState(false);
 
     return (
@@ -330,7 +330,7 @@ const CreatePassword = ({
                                 <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).' />
                             </div>
                         )}
-                        {product === PRODUCT.ZEROSPREAD && (
+                        {product === PRODUCT.ZEROSPREAD && account_type.category === CATEGORY.REAL && (
                             <>
                                 <CfdPasswordModalInfo />
                                 <CfdPasswordModalCheckbox

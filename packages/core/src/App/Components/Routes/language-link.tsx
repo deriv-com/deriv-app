@@ -1,31 +1,28 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
-import { Icon } from '@deriv/components';
 import { getAllowedLanguages } from '@deriv/translations';
+import { TranslationFlag } from '@deriv/shared';
+import { Icon } from '@deriv/components';
 
 export type TLanguageLink = {
-    icon_classname?: string;
     is_clickable?: boolean;
     lang: string;
     toggleModal?: () => void;
 };
 
-const LanguageLink = observer(({ icon_classname, is_clickable = false, lang, toggleModal }: TLanguageLink) => {
+const LanguageLink = observer(({ is_clickable = false, lang, toggleModal }: TLanguageLink) => {
     const { common } = useStore();
     const { changeSelectedLanguage, current_language } = common;
     const is_active = current_language === lang;
 
     const link: React.ReactNode = (
         <React.Fragment>
-            <Icon
-                icon={`IcFlag${lang.replace('_', '-')}`}
-                className={classNames(
-                    'settings-language__language-link-flag',
-                    'settings-language__language-flag',
-                    icon_classname
-                )}
-            />
+            {TranslationFlag[lang] ? (
+                TranslationFlag[lang]()
+            ) : (
+                <Icon icon={`IcFlag${lang}`} className='settings-language__language-flag' />
+            )}
             <span
                 className={classNames('settings-language__language-name', {
                     'settings-language__language-name--active': is_active,

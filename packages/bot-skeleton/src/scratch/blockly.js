@@ -1,13 +1,6 @@
 import goog from './goog.js';
 import * as BlocklyJavaScript from 'blockly/javascript';
 import { setColors } from './hooks/colours.js';
-import { getLanguage } from '@deriv/translations';
-
-async function setBlocklyLocale() {
-    const languageModule = await import(`blockly/msg/${getLanguage().toLowerCase()}.js`);
-    const blocklyLangModule = languageModule.default || languageModule;
-    window.Blockly.setLocale(blocklyLangModule);
-}
 
 window.goog = goog;
 
@@ -26,7 +19,6 @@ export const loadBlockly = async isDarkMode => {
         componentStyles: {},
     });
     setColors(isDarkMode);
-    setBlocklyLocale();
     await import('./hooks');
     await import('./blocks');
 };

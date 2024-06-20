@@ -246,7 +246,9 @@ const CreatePassword = ({
     is_real_financial_stp,
 }: TCFDCreatePasswordProps) => {
     const { product, jurisdiction_selected_shortcode, account_type } = useCfdStore();
-    const [checked, setChecked] = React.useState(false);
+    const [checked, setChecked] = React.useState(
+        !(product === PRODUCT.ZEROSPREAD && account_type.category === CATEGORY.REAL)
+    );
 
     return (
         <Formik

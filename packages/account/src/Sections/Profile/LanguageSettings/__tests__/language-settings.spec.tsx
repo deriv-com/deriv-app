@@ -1,3 +1,4 @@
+import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { routes } from '@deriv/shared';
@@ -7,16 +8,12 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isMobile: jest.fn(() => false),
+    TranslationFlag: { lang_1: () => <div>Language 1 Flag</div>, lang_2: () => <div>Language 2 Flag</div> },
 }));
 
 jest.mock('@deriv/translations', () => ({
     ...jest.requireActual('@deriv/translations'),
     getAllowedLanguages: jest.fn(() => ({ lang_1: 'Test Lang 1', lang_2: 'Test Lang 2' })),
-}));
-
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    Icon: jest.fn(() => <div>Flag Icon</div>),
 }));
 
 jest.mock('react-router-dom', () => ({
@@ -49,11 +46,10 @@ describe('LanguageSettings', () => {
 
         expect(screen.getByText('Select Language')).toBeInTheDocument();
 
-        const flags_icons = screen.getAllByText('Flag Icon');
         const lang_1 = screen.getByText('Test Lang 1');
         const lang_2 = screen.getByText('Test Lang 2');
-
-        expect(flags_icons).toHaveLength(2);
+        expect(screen.getByText(/Language 1 Flag/)).toBeInTheDocument();
+        expect(screen.getByText(/Language 2 Flag/)).toBeInTheDocument();
         expect(lang_1).toBeInTheDocument();
         expect(/(active)/i.test(lang_1.className)).toBeTruthy();
         expect(lang_2).toBeInTheDocument();

@@ -1,3 +1,4 @@
+import React from 'react';
 import { cleanup, render, waitFor, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
@@ -97,7 +98,7 @@ describe('<PersonalDetailsForm />', () => {
         });
     });
 
-    it('should display error for up to 50 characters length validation, for Last name when entered characters are more than 50', async () => {
+    it('should display error for up to 50 characters length validation, for last name when entered characters are more than 50', async () => {
         renderComponent();
         await waitFor(async () => {
             const last_name = screen.getByTestId('dt_last_name');

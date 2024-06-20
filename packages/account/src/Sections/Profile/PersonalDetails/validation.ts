@@ -10,8 +10,7 @@ const getBaseSchema = () =>
             .min(1, localize('Enter no more than 50 characters.'))
             .max(50, localize('Enter no more than 50 characters.'))
             .matches(
-                /^(?!.*\s{2,})(?!\s)[\p{L}\s'.-]{1,50}(?<!\s)$/u,
-
+                /^(?!.*\s{2,})[\p{L}\s'.-]{1,50}$/u,
                 localize('Letters, spaces, periods, hyphens, apostrophes only.')
             ),
         last_name: Yup.string()
@@ -19,7 +18,7 @@ const getBaseSchema = () =>
             .min(1, localize('Enter no more than 50 characters.'))
             .max(50, localize('Enter no more than 50 characters.'))
             .matches(
-                /^(?!.*\s{2,})(?!\s)[\p{L}\s'.-]{1,50}(?<!\s)$/u,
+                /^(?!.*\s{2,})[\p{L}\s'.-]{1,50}$/u,
                 localize('Letters, spaces, periods, hyphens, apostrophes only.')
             ),
         phone: Yup.string()

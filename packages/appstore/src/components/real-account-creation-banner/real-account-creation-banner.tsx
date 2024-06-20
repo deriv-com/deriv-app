@@ -37,7 +37,7 @@ const RealAccountCreationBanner = observer(() => {
             <img
                 alt='Deriv real account banner'
                 src={getUrlBase(
-                    `/public/images/common/real-account-banner-${device}-${is_dark_mode_on ? 'dark' : 'light'}.png`
+                    `/public/images/common/real-account-banner-${device}-${is_dark_mode_on ? 'dark' : 'light'}.svg`
                 )}
             />
 

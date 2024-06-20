@@ -3,7 +3,7 @@ import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { rudderStackSendSelectQsStrategyGuideEvent } from '../../bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
+import { rudderStackSendSelectQsStrategyGuideEvent } from '../../../analytics/rudderstack-tutorials';
 import { STRATEGIES } from '../../bot-builder/quick-strategy/config';
 import StrategyTabContent from '../../bot-builder/quick-strategy/form-wrappers/strategy-tab-content';
 

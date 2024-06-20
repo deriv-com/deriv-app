@@ -10,9 +10,7 @@
 
             .wallets-market-currency-icon {
                 margin-bottom: 0.4rem;
-                &__market-icon {
-                    z-index: unset;
-                }
+
                 &__currency-icon {
                     transform: translate(-0.3rem, 0.7rem);
                 }
@@ -25,7 +23,11 @@
             margin-right: 1.6rem;
 
             .wallets-market-currency-icon {
-                margin-bottom: 1rem;
+                margin-bottom: 0.4rem;
+
+                &__currency-icon {
+                    transform: translate(-0.3rem, 0.7rem);
+                }
             }
         }
     }

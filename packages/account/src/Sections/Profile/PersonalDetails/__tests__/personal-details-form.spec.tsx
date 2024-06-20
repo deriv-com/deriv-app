@@ -2,9 +2,11 @@ import React from 'react';
 import { cleanup, render, waitFor, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { PersonalDetailsForm } from '../personal-details-form';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { APIProvider } from '@deriv/api';
 import userEvent from '@testing-library/user-event';
+import { StoreProvider, mockStore } from '@deriv/stores';
+import PersonalDetailsForm from '../personal-details-form';
+import { useResidenceList } from '@deriv/hooks';
 
 afterAll(cleanup);
 jest.mock('@deriv/components', () => ({
@@ -19,18 +21,22 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     useWS: () => undefined,
 }));
 
+const residence_list = [
+    {
+        text: 'Text',
+        value: 'value',
+    },
+];
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useStatesList: jest.fn(() => ({ data: residence_list, isLoading: false })),
+    useResidenceList: jest.fn(() => ({ data: residence_list, isLoading: false })),
+}));
+
 describe('<PersonalDetailsForm />', () => {
     const history = createBrowserHistory();
 
-    const promise = Promise.resolve();
-    const fetchResidenceList = jest.fn(() => promise);
-    const fetchStatesList = jest.fn(() => promise);
-    const residence_list = [
-        {
-            text: 'Text',
-            value: 'value',
-        },
-    ];
     const mock_store = mockStore({
         client: {
             account_settings: {
@@ -42,11 +48,6 @@ describe('<PersonalDetailsForm />', () => {
                     verified: 0,
                 },
             },
-            states_list: residence_list,
-            residence_list,
-            has_residence: true,
-            fetchResidenceList,
-            fetchStatesList,
         },
     });
 
@@ -54,7 +55,9 @@ describe('<PersonalDetailsForm />', () => {
         return render(
             <Router history={history}>
                 <StoreProvider store={modified_store}>
-                    <PersonalDetailsForm history={history} />
+                    <APIProvider>
+                        <PersonalDetailsForm />
+                    </APIProvider>
                 </StoreProvider>
             </Router>
         );
@@ -207,5 +210,11 @@ describe('<PersonalDetailsForm />', () => {
             expect(screen.queryByText(value)).not.toBeInTheDocument();
         });
         expect(screen.getByText('Country of residence*')).toBeInTheDocument();
+    });
+
+    it('should display loader while fetching data', () => {
+        (useResidenceList as jest.Mock).mockImplementation(() => ({ data: [], isLoading: true }));
+        renderComponent();
+        expect(screen.getByText(/Loading/)).toBeInTheDocument();
     });
 });

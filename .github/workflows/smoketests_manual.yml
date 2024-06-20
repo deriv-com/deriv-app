@@ -18,8 +18,7 @@ jobs:
               suite: '${{ secrets.E2E_WORKFLOW_SUITE }}',
               testcase: '',
               triggeredByPR: 'true',
-              appRegUrl: 'https://deriv-app-git-fork-aizad-deriv-aizad-wall-4421replace-re-959bfb.binary.sx/',
-              recKey: '${{ secrets.E2E_CYPRESS_RECORD_KEY }}'
+              appRegUrl: 'https://deriv-app-git-fork-aizad-deriv-aizad-wall-4421replace-re-959bfb.binary.sx/'
               };
             const response = await github.rest.actions.createWorkflowDispatch({
               owner: 'regentmarkets',

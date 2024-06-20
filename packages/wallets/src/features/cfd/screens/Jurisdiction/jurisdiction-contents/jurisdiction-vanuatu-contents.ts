@@ -63,7 +63,8 @@ export const getJurisdictionVanuatuContents = (): TJurisdictionCardItems => ({
         ],
         synthetic: [
             {
-                description: 'Synthetic indices, basket indices, and derived FX',
+                description:
+                    'Forex (standard), stock indices, commodities, cryptocurrencies, synthetic indices, basket indices and derived FX',
                 key: 'assets',
                 title: 'Assets',
                 titleIndicators: {

@@ -78,7 +78,7 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
 
     return (
         <React.Fragment>
-            <Divider color='#e5e5e5' />
+            <Divider color='var(--border-divider)' />
             <div className='wallets-transactions-pending-row'>
                 <div className='wallets-transactions-pending-row__wallet-info'>
                     <WalletCurrencyCard currency={data?.currency || 'USD'} isDemo={data?.is_virtual} size='md' />

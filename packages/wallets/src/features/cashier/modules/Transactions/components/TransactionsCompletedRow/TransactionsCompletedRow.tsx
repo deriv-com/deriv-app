@@ -24,7 +24,7 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
 
     return (
         <React.Fragment>
-            <Divider color='#e5e5e5' />
+            <Divider color='var(--border-divider)' />
             <div className='wallets-transactions-completed-row'>
                 {transaction.action_type !== 'transfer' ? (
                     <TransactionsCompletedRowAccountDetails

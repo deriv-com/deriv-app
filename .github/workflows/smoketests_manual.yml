@@ -18,7 +18,7 @@ jobs:
               suite: '${{ secrets.E2E_WORKFLOW_SUITE }}',
               testcase: '',
               triggeredByPR: 'true',
-              appRegUrl: 'https://deriv-app-git-fork-aizad-deriv-aizad-wall-4421replace-re-959bfb.binary.sx/',
+              appRegUrl: 'https://deriv-app-git-fork-maryia-matskevich-deriv-maryia-bot-1913.binary.sx/',
               issue_number: '15719',
               user_name: 'maryia-deriv'
               

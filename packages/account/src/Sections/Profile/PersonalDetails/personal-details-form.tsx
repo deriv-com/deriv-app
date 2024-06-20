@@ -6,13 +6,11 @@ import {
     Button,
     Checkbox,
     DesktopWrapper,
-    Dropdown,
     FormSubmitErrorMessage,
     HintBox,
     Input,
     Loading,
     MobileWrapper,
-    SelectNative,
     Text,
 } from '@deriv/components';
 import { GetSettings } from '@deriv/api-types';
@@ -22,11 +20,10 @@ import { observer, useStore } from '@deriv/stores';
 import LeaveConfirm from 'Components/leave-confirm';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
-import { DateOfBirthField } from 'Components/forms/form-fields';
+import { DateOfBirthField, EmploymentStatusField } from 'Components/forms/form-fields';
 import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
 import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
-import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
@@ -244,6 +241,10 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
                                 <FormSubHeader title={localize('Details')} />
                                 {!is_virtual && (
                                     <Fragment>
+                                        <EmploymentStatusField
+                                            required
+                                            is_disabled={isFieldDisabled('employment_status')}
+                                        />
                                         <DesktopWrapper>
                                             <InputGroup className='account-form__fieldset--2-cols'>
                                                 <Input
@@ -409,45 +410,9 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
                                                     />
                                                 </fieldset>
                                             )}
-                                            {'employment_status' in values && (
-                                                <fieldset className='account-form__fieldset'>
-                                                    <DesktopWrapper>
-                                                        <Dropdown
-                                                            placeholder={localize('Employment status')}
-                                                            is_align_text_left
-                                                            name='employment_status'
-                                                            list={getEmploymentStatusList()}
-                                                            value={values.employment_status}
-                                                            onChange={handleChange}
-                                                            handleBlur={handleBlur}
-                                                            error={
-                                                                touched.employment_status
-                                                                    ? errors.employment_status
-                                                                    : undefined
-                                                            }
-                                                        />
-                                                    </DesktopWrapper>
-                                                    <MobileWrapper>
-                                                        <SelectNative
-                                                            className={'emp-status'}
-                                                            placeholder={localize('Please select')}
-                                                            name='employment_status'
-                                                            label={localize('Employment status')}
-                                                            list_items={getEmploymentStatusList()}
-                                                            value={values.employment_status ?? ''}
-                                                            error={
-                                                                touched.employment_status
-                                                                    ? errors.employment_status
-                                                                    : undefined
-                                                            }
-                                                            onChange={e => {
-                                                                setFieldTouched('employment_status', true);
-                                                                handleChange(e);
-                                                            }}
-                                                        />
-                                                    </MobileWrapper>
-                                                </fieldset>
-                                            )}
+                                            {/* {'employment_status' in values && ( */}
+
+                                            {/* )} */}
                                         </Fragment>
                                     )}
                                     {!is_virtual && (

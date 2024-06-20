@@ -17,9 +17,8 @@ import {
 import { getLegalEntityName, isDesktop, isMobile, routes, validPhone } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { isFieldImmutable, verifyFields } from '../../Helpers/utils';
-import { getEmploymentStatusList } from '../../Sections/Assessment/FinancialAssessment/financial-information-list';
 import FormBodySection from '../form-body-section';
-import { DateOfBirthField, FormInputField } from './form-fields';
+import { DateOfBirthField, FormInputField, EmploymentStatusField } from './form-fields';
 import FormSubHeader from '../form-sub-header';
 import InlineNoteWithIcon from '../inline-note-with-icon';
 
@@ -441,48 +440,57 @@ const PersonalDetailsForm = props => {
                                     />
                                 )}
                                 {'employment_status' in values && (
-                                    <fieldset className={clsx('account-form__fieldset', 'emp-status')}>
-                                        <DesktopWrapper>
-                                            <Dropdown
-                                                placeholder={
-                                                    is_eu_user
-                                                        ? localize('Employment status*')
-                                                        : localize('Employment status')
-                                                }
-                                                is_align_text_left
-                                                name='employment_status'
-                                                list={getEmploymentStatusList()}
-                                                value={values.employment_status}
-                                                onChange={e => {
-                                                    setFieldValue('occupation', '', true);
-                                                    handleChange(e);
-                                                }}
-                                                handleBlur={handleBlur}
-                                                error={touched.employment_status && errors.employment_status}
-                                                disabled={isFieldImmutable('employment_status', editable_fields)}
-                                            />
-                                        </DesktopWrapper>
-                                        <MobileWrapper>
-                                            <SelectNative
-                                                placeholder={localize('Please select')}
-                                                name='employment_status'
-                                                label={
-                                                    is_eu_user
-                                                        ? localize('Employment status*')
-                                                        : localize('Employment status')
-                                                }
-                                                list_items={getEmploymentStatusList()}
-                                                value={values.employment_status}
-                                                error={touched.employment_status && errors.employment_status}
-                                                onChange={e => {
-                                                    setFieldTouched('employment_status', true);
-                                                    setFieldValue('occupation', '', true);
-                                                    handleChange(e);
-                                                }}
-                                                disabled={isFieldImmutable('employment_status', editable_fields)}
-                                            />
-                                        </MobileWrapper>
-                                    </fieldset>
+                                    // <fieldset className={clsx('account-form__fieldset', 'emp-status')}>
+                                    //     <DesktopWrapper>
+                                    //         <Dropdown
+                                    //             placeholder={
+                                    //                 is_eu_user
+                                    //                     ? localize('Employment status*')
+                                    //                     : localize('Employment status')
+                                    //             }
+                                    //             is_align_text_left
+                                    //             name='employment_status'
+                                    //             list={getEmploymentStatusList()}
+                                    //             value={values.employment_status}
+                                    //             onChange={e => {
+                                    //                 setFieldValue('occupation', '', true);
+                                    //                 handleChange(e);
+                                    //             }}
+                                    //             handleBlur={handleBlur}
+                                    //             error={touched.employment_status && errors.employment_status}
+                                    //             disabled={isFieldImmutable('employment_status', editable_fields)}
+                                    //         />
+                                    //     </DesktopWrapper>
+                                    //     <MobileWrapper>
+                                    //         <SelectNative
+                                    //             placeholder={localize('Please select')}
+                                    //             name='employment_status'
+                                    //             label={
+                                    //                 is_eu_user
+                                    //                     ? localize('Employment status*')
+                                    //                     : localize('Employment status')
+                                    //             }
+                                    //             list_items={getEmploymentStatusList()}
+                                    //             value={values.employment_status}
+                                    //             error={touched.employment_status && errors.employment_status}
+                                    //             onChange={e => {
+                                    //                 setFieldTouched('employment_status', true);
+                                    //                 setFieldValue('occupation', '', true);
+                                    //                 handleChange(e);
+                                    //             }}
+                                    //             disabled={isFieldImmutable('employment_status', editable_fields)}
+                                    //         />
+                                    //     </MobileWrapper>
+                                    // </fieldset>
+
+                                    <EmploymentStatusField
+                                        required
+                                        setFieldValue={setFieldValue}
+                                        setFieldTouched={setFieldTouched}
+                                        handleChange={handleChange}
+                                        handleBlur={handleBlur}
+                                        editable_fields={editable_fields}
+                                    />
                                 )}
                                 {'tax_identification_confirm' in values && (
                                     <Checkbox

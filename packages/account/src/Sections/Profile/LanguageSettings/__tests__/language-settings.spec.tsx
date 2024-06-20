@@ -14,7 +14,6 @@ jest.mock('@deriv/shared', () => ({
     TranslationFlag: { EN: () => <div>Language 1 Flag</div>, VI: () => <div>Language 2 Flag</div> },
 }));
 
-
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     Redirect: jest.fn(() => <div>Redirect</div>),

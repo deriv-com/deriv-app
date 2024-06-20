@@ -24,6 +24,7 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('ResetEmailModal', () => {
+    const input_placeholder = /Email address/i;
     const mock_store = mockStore({
         ui: {
             is_reset_email_modal_visible: true,
@@ -44,14 +45,14 @@ describe('ResetEmailModal', () => {
         renderComponent();
 
         expect(screen.getByText(/Enter a new email address/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/Email address/i)).toBeInTheDocument();
+        expect(screen.getByPlaceholderText(input_placeholder)).toBeInTheDocument();
         expect(screen.queryByText('ConfirmEmailModal')).not.toBeInTheDocument();
     });
 
     it('validates email input', async () => {
         renderComponent();
 
-        const emailInput = screen.getByPlaceholderText(/Email address/i);
+        const emailInput = screen.getByPlaceholderText(input_placeholder);
         const submitButton = screen.getByRole('button', { name: /Confirm/i });
 
         userEvent.type(emailInput, '');
@@ -68,7 +69,7 @@ describe('ResetEmailModal', () => {
     it('opens confirm email modal on valid email submission and handle closing', async () => {
         renderComponent();
 
-        const emailInput = screen.getByPlaceholderText(/Email address/i);
+        const emailInput = screen.getByPlaceholderText(input_placeholder);
         const submitButton = screen.getByText(/Confirm/i);
 
         userEvent.type(emailInput, 'new_email@example.com');

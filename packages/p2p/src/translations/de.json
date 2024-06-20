@@ -96,7 +96,7 @@
     "892431976": "Wenn Sie Ihre Bestellung innerhalb von {{cancellation_period}} Stunde {{cancellation_limit}} Mal stornieren, werden Sie für die Nutzung von Deriv P2P für {{block_duration}} Stunden gesperrt. <br /> ({{number_of_cancels_remaining}} Stornierungen verbleiben)",
     "917359787": "Für diese Anzeige haben Sie Deriv P2P noch nicht lange genug genutzt.",
     "926446466": "Bitte legen Sie einen anderen Mindest- und/oder Höchstauftragswert fest. nnDie Reichweite Ihrer Anzeige sollte sich nicht mit einer Ihrer aktiven Anzeigen überschneiden.",
-    "929967494": "Nicht-reversible Einlagen: Einlagen aus nicht reversiblen Zahlungsmitteln.",
+    "929967494": "Nicht umkehrbare Einlagen: Einlagen aus nicht umkehrbaren Zahlungsmitteln.",
     "931661826": "Diesen QR-Code herunterladen",
     "947389294": "Wir brauchen Ihre Dokumente",
     "949859957": "Abschicken",

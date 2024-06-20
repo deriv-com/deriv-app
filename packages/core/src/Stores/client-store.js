@@ -428,6 +428,9 @@ export default class ClientStore extends BaseStore {
             ],
             () => {
                 this.setCookieAccount();
+                if (!this.is_logged_in) {
+                    this.root_store.traders_hub.cleanup();
+                }
             }
         );
 
@@ -2009,6 +2012,9 @@ export default class ClientStore extends BaseStore {
     }
 
     async logout() {
+        // makes sure to clear the cached traders-hub data when logging out
+        localStorage.removeItem('traders_hub_store');
+
         // TODO: [add-client-action] - Move logout functionality to client store
         const response = await requestLogout();
 

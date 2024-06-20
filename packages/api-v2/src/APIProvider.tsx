@@ -76,12 +76,20 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     const connectionRef = useRef<WebSocket>();
     const subscriptionsRef = useRef<Record<string, UnwrappedSubscription['subscription']>>();
     const reactQueryRef = useRef<QueryClient>();
+    const isMounted = useRef(true);
 
     // on reconnected ref
     const onReconnectedRef = useRef<() => void>();
     const onConnectedRef = useRef<() => void>();
     const isOpenRef = useRef<boolean>(false);
     const wsClientRef = useRef<WSClient>(new WSClient());
+
+    useEffect(() => {
+        isMounted.current = true;
+        return () => {
+            isMounted.current = false;
+        };
+    }, []);
 
     if (!reactQueryRef.current) {
         reactQueryRef.current = new QueryClient({
@@ -97,17 +105,21 @@ const APIProvider = ({ children }: PropsWithChildren<TAPIProviderProps>) => {
     // have to be here and not inside useEffect as there are places in code expecting this to be available
     if (!connectionRef.current) {
         connectionRef.current = initializeConnection(
-            () => setReconnect(true),
+            () => {
+                if (isMounted.current) setReconnect(true);
+            },
             () => {
                 if (!connectionRef.current) {
                     throw new Error('Connection is not set');
                 }
 
                 wsClientRef.current.setWs(connectionRef.current);
-                isOpenRef.current = true;
-                if (onConnectedRef.current) {
-                    onConnectedRef.current();
-                    onConnectedRef.current = undefined;
+                if (isMounted.current) {
+                    isOpenRef.current = true;
+                    if (onConnectedRef.current) {
+                        onConnectedRef.current();
+                        onConnectedRef.current = undefined;
+                    }
                 }
             }
         );

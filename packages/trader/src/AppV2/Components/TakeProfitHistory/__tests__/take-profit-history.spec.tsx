@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import TakeProfitHistory from '../take-profit-history';
 import { formatDate, formatTime, TContractStore } from '@deriv/shared';
 import { FormatUtils } from '@deriv-com/utils';

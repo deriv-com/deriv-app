@@ -1,6 +1,5 @@
 import React from 'react';
 import { act, render, screen, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import ContractDetails from '../contract-details';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import useOrderDetails from 'AppV2/Hooks/useOrderDetails';

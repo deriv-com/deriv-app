@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { isValidToSell, isValidToCancel, isMultiplierContract } from '@deriv/shared';
 import ContractDetailsFooter from '../contract-details-footer';

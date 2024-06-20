@@ -183,14 +183,18 @@
         gap: 0.8rem;
         margin-block-end: 0.8rem;
     }
-    &-checkbox {
+    &__checkbox {
         display: flex;
         align-self: baseline;
         margin-inline-start: -0.8rem;
         margin-block-end: 3.2rem;
+        .dc-text {
+            font-size: var(--text-size-xxs);
+            text-align: var(--text-align-left);
+        }
     }
     &-info,
-    &-checkbox {
+    &__checkbox {
         .dc-icon {
             margin-inline-start: 0;
         }

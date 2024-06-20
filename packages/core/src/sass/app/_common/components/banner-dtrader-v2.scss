@@ -18,6 +18,10 @@
         width: var(--core-size-4000);
         white-space: nowrap;
 
+        &--is-eu {
+            width: var(--core-size-2800);
+        }
+
         .icon {
             &-2 {
                 position: relative;

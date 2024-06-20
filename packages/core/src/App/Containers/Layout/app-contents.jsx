@@ -117,7 +117,8 @@ const AppContents = observer(({ children }) => {
                 'app-contents--is-hidden': platforms[platform],
                 'app-contents--is-onboarding': window.location.pathname === routes.onboarding,
                 'app-contents--is-dtrader-v2': isDTraderV2,
-                'app-contents--is-dtrader-v2--with-banner': isDTraderV2 && !has_any_real_account,
+                'app-contents--is-dtrader-v2--with-banner':
+                    isDTraderV2 && !has_any_real_account && pathname === routes.trade,
             })}
             ref={scroll_ref}
         >

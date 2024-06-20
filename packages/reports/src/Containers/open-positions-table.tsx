@@ -1,7 +1,7 @@
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
 import { getUnsupportedContracts, getContractPath, hasContractStarted } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
@@ -38,7 +38,7 @@ const EmptyPlaceholderWrapper = ({ is_empty, component_icon, children }: TEmptyP
                 is_empty={is_empty}
                 empty_message_component={EmptyTradeHistoryMessage}
                 component_icon={component_icon}
-                localized_message={localize('You have no open positions yet.')}
+                localized_message={<Localize i18n_default_text='You have no open positions yet.' />}
             />
         ) : (
             children
@@ -110,7 +110,7 @@ export const OpenPositionsTable = ({
                     is_loading={is_loading}
                     empty_message_component={EmptyTradeHistoryMessage}
                     component_icon={component_icon}
-                    localized_message={localize('You have no open positions yet.')}
+                    localized_message={<Localize i18n_default_text='You have no open positions yet.' />}
                 />
             ) : (
                 currency && (

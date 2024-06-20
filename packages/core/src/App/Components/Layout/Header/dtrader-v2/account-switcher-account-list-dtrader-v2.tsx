@@ -42,7 +42,7 @@ const AccountListDTraderV2 = ({
             if (!is_disabled) redirectAccount?.();
         }}
     >
-        {getAccountIcon(currency, !!is_virtual, 'sm')}
+        {getAccountIcon({ currency, is_virtual: !!is_virtual, size: 'sm' })}
         <div className='acc-switcher-dtrader__account__info'>
             <Text size='sm' color='quill-typography__color--default'>
                 {getAccountTitle({ currency, loginid, is_virtual: !!is_virtual, show_no_currency: true })}

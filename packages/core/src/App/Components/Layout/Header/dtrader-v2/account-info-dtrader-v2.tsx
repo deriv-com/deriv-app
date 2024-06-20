@@ -49,7 +49,7 @@ const AccountInfoDTraderV2 = ({
                     className='header-v2__acc-info__wrapper'
                     onClick={is_disabled ? undefined : () => toggleDialog()}
                 >
-                    {getAccountIcon(currency, is_virtual, 'md')}
+                    {getAccountIcon({ currency, is_virtual, size: 'md' })}
                     <div className='header-v2__acc-info'>
                         {account_switcher_title ? (
                             <div className='header-v2__acc-info__name'>

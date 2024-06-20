@@ -1,3 +1,4 @@
+import React from 'react';
 import { getCurrencyName } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import {
@@ -51,11 +52,15 @@ export const getAccountTitle = ({
     return getCurrencyName(currency);
 };
 
-export const getAccountIcon = (
-    currency?: string,
-    is_virtual?: boolean,
-    size?: React.ComponentProps<typeof CurrencyDemoIcon>['iconSize']
-) => {
+export const getAccountIcon = ({
+    currency,
+    is_virtual,
+    size,
+}: {
+    currency?: string;
+    is_virtual?: boolean;
+    size?: React.ComponentProps<typeof CurrencyDemoIcon>['iconSize'];
+}) => {
     if (is_virtual) return <CurrencyDemoIcon iconSize={size} />;
     if (!currency) return <CurrencyNoneIcon iconSize={size} />;
 

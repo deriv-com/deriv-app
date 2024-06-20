@@ -47,7 +47,7 @@ const PreferredCountriesModal = ({ country_list, eligible_countries, onApply }: 
                             <PreferredCountriesModalFooter
                                 eligible_countries={eligible_countries}
                                 onClear={() => {
-                                    setSelectedCountries(eligible_countries);
+                                    setSelectedCountries([]);
                                 }}
                                 onApply={onApplySelectedCountries}
                                 selected_countries={selected_countries}

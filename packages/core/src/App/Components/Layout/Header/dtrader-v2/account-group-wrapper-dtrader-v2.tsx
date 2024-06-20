@@ -8,8 +8,8 @@ const AccountGroupWrapper = ({
     children,
     separator_text,
     show_bottom_separator,
-}: React.PropsWithChildren<TAccountGroupWrapper>) => {
-    return separator_text ? (
+}: React.PropsWithChildren<TAccountGroupWrapper>) =>
+    separator_text ? (
         <div
             className={classNames('acc-switcher-dtrader__accounts-list__group', {
                 'acc-switcher-dtrader__accounts-list__group--separator': show_bottom_separator,
@@ -27,6 +27,5 @@ const AccountGroupWrapper = ({
     ) : (
         <React.Fragment>{children}</React.Fragment>
     );
-};
 
 export default AccountGroupWrapper;

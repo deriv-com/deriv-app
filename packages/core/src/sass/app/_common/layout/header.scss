@@ -448,7 +448,6 @@
         &__select-arrow {
             pointer-events: none;
             transform: rotate(0);
-            // TODO: check for animation quill token. Current animation was taken from production
             transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
 
             &--up {

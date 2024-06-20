@@ -19,7 +19,6 @@ const AccountInfoDTraderV2 = ({
     is_disabled,
     toggleDialog,
 }: TAccountInfoDTraderV2) => {
-    // TODO: temporary have no design. Waiting for skeleton loader
     const temporary_loader = <div className='header-v2__acc-info--loader' />;
 
     const action_icon = is_disabled ? (

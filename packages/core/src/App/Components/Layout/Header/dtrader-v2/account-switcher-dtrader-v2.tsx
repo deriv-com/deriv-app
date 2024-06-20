@@ -72,20 +72,16 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
             return;
         }
 
-        // TODO: need loader for account switcher while switching. Temporary have no design. Waiting for skeleton loader
         await switchAccount(loginid);
         setIsClosing(false);
     };
 
     const resetBalance = async () => {
         closeAccountsDialog();
-        resetVirtualBalance();
+        await resetVirtualBalance();
     };
 
-    const canOpenMultiple = () => {
-        if (available_crypto_currencies.length < 1 && !has_fiat) return true;
-        return !is_virtual;
-    };
+    const canOpenMultiple = () => (available_crypto_currencies.length < 1 && !has_fiat ? true : !is_virtual);
 
     const getRemainingRealAccounts = (): string[] | [] => {
         if (show_eu_related_content || is_virtual || !canOpenMultiple() || is_low_risk) {
@@ -246,7 +242,6 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
                     )}
                 </React.Fragment>
             ) : (
-                // TODO: temporary have no design, add old loader. Waiting for skeleton loader
                 <Loading is_fullscreen={false} />
             )}
         </div>

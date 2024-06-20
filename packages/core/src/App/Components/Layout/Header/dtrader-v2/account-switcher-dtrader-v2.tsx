@@ -36,6 +36,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
         is_low_risk,
         is_high_risk,
         is_logged_in,
+        is_logging_in,
         is_virtual,
         loginid: account_loginid,
         is_mt5_allowed,
@@ -65,13 +66,13 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
 
     const handleSwitchAccount = async (loginid?: string) => {
         setIsClosing(true);
-        closeAccountsDialog();
 
         if (account_loginid === loginid) {
             setIsClosing(false);
             return;
         }
 
+        closeAccountsDialog();
         await switchAccount(loginid);
         setIsClosing(false);
     };
@@ -206,7 +207,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
     );
 
     if (!is_logged_in) return null;
-
+    if (is_logging_in) return <Loading is_fullscreen={false} />;
     return (
         <div className='acc-switcher-dtrader__wrapper'>
             {is_landing_company_loaded ? (

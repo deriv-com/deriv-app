@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile, mockContractInfo } from '@deriv/shared';
 import { TPortfolioPosition } from '@deriv/stores/types';
 import { mockStore } from '@deriv/stores';
 import OpenPositions from '../open-positions';
@@ -11,50 +11,11 @@ import ReportsProviders from '../../reports-providers';
 const data_list = 'DataList';
 const future_time = Math.floor(Date.now() / 1000) + 5000;
 const options_position = {
-    contract_info: {
-        account_id: 112905368,
-        barrier: '1184.99',
-        barrier_count: 1,
+    contract_info: mockContractInfo({
         bid_price: 9.52,
         buy_price: 10,
-        contract_id: 246179185288,
-        contract_type: 'CALL',
-        currency: 'USD',
-        current_spot: 1184.95,
-        current_spot_display_value: '1184.95',
-        current_spot_time: 1718630678,
-        date_expiry: future_time,
-        date_settlement: future_time,
-        date_start: 1718630564,
-        display_name: 'Volatility 100 Index',
-        entry_spot: 1184.99,
-        entry_spot_display_value: '1184.99',
-        entry_tick: 1184.99,
-        entry_tick_display_value: '1184.99',
-        entry_tick_time: 1718630566,
-        expiry_time: future_time,
-        id: '6838091b-05ce-7872-3131-eedddd394422',
-        is_expired: 0,
-        is_forward_starting: 0,
-        is_intraday: 1,
-        is_path_dependent: 0,
-        is_settleable: 0,
-        is_sold: 0,
-        is_valid_to_cancel: 0,
-        is_valid_to_sell: 1,
-        longcode:
-            'Win payout if Volatility 100 Index is strictly higher than entry spot at 6 hours after contract start time.',
-        payout: 19.73,
-        profit: -0.48,
-        profit_percentage: -4.8,
-        purchase_time: 1718630564,
         shortcode: `CALL_R_100_19.73_1718630564_${future_time}_S0P_0`,
-        status: 'open',
-        transaction_ids: {
-            buy: 490752972668,
-        },
-        underlying: 'R_100',
-    },
+    }),
     details:
         'Win payout if Volatility 100 Index is strictly higher than entry spot at 6 hours after contract start time.',
     display_name: '',
@@ -100,115 +61,13 @@ describe('OpenPositions', () => {
     const five_percent = '5%';
 
     const accumulators_position = {
-        contract_info: {
-            account_id: 112905368,
-            barrier_count: 2,
-            barrier_spot_distance: '0.675',
+        contract_info: mockContractInfo({
             bid_price: 11.38,
             buy_price: 10,
-            contract_id: 246292539368,
             contract_type: 'ACCU',
-            currency: 'USD',
-            current_spot: 1100.38,
-            current_spot_display_value: '1100.38',
-            current_spot_high_barrier: '1101.055',
-            current_spot_low_barrier: '1099.705',
-            current_spot_time: 1718717010,
-            date_expiry: future_time,
-            date_settlement: future_time,
-            date_start: 1718716983,
-            display_name: 'Volatility 100 Index',
-            entry_spot: 1100.28,
-            entry_spot_display_value: '1100.28',
-            entry_tick: 1100.28,
-            entry_tick_display_value: '1100.28',
-            entry_tick_time: 1718716984,
-            expiry_time: future_time,
             growth_rate: 0.01,
-            high_barrier: '1100.714',
-            id: '51bb838f-c549-0389-9be1-ace068906f5d',
-            is_expired: 0,
-            is_forward_starting: 0,
-            is_intraday: 0,
-            is_path_dependent: 1,
-            is_settleable: 0,
-            is_sold: 0,
-            is_valid_to_cancel: 0,
-            is_valid_to_sell: 1,
-            limit_order: {
-                take_profit: {
-                    display_name: 'Take profit',
-                    order_amount: 60,
-                    order_date: 1718716983,
-                },
-            },
-            longcode:
-                'After the entry spot tick, your stake will grow continuously by 1% for every tick that the spot price remains within the ± 0.06126% from the previous spot price.',
-            low_barrier: '1099.366',
-            profit: 1.38,
-            profit_percentage: 13.8,
-            purchase_time: 1718716983,
             shortcode: 'ACCU_R_100_10.00_0_0.01_1_0.000612552024_1718716983',
-            status: 'open',
-            tick_count: 230,
-            tick_passed: 13,
-            tick_stream: [
-                {
-                    epoch: 1718716992,
-                    tick: 1099.84,
-                    tick_display_value: '1099.84',
-                },
-                {
-                    epoch: 1718716994,
-                    tick: 1099.71,
-                    tick_display_value: '1099.71',
-                },
-                {
-                    epoch: 1718716996,
-                    tick: 1100.17,
-                    tick_display_value: '1100.17',
-                },
-                {
-                    epoch: 1718716998,
-                    tick: 1100.19,
-                    tick_display_value: '1100.19',
-                },
-                {
-                    epoch: 1718717000,
-                    tick: 1100.19,
-                    tick_display_value: '1100.19',
-                },
-                {
-                    epoch: 1718717002,
-                    tick: 1100.19,
-                    tick_display_value: '1100.19',
-                },
-                {
-                    epoch: 1718717004,
-                    tick: 1099.87,
-                    tick_display_value: '1099.87',
-                },
-                {
-                    epoch: 1718717006,
-                    tick: 1099.67,
-                    tick_display_value: '1099.67',
-                },
-                {
-                    epoch: 1718717008,
-                    tick: 1100.04,
-                    tick_display_value: '1100.04',
-                },
-                {
-                    epoch: 1718717010,
-                    tick: 1100.38,
-                    tick_display_value: '1100.38',
-                },
-            ],
-            transaction_ids: {
-                buy: 490979574948,
-            },
-            underlying: 'R_100',
-        },
+        }),
         details:
             'After the entry spot tick, your stake will grow continuously by 1% for every tick that the spot price remains within the ± 0.06126% from the previous spot price.',
         display_name: 'Volatility 100 Index',
@@ -233,62 +92,12 @@ describe('OpenPositions', () => {
         low_barrier: 1099.366,
     } as TPortfolioPosition;
     const multipliers_position = {
-        contract_info: {
-            account_id: 112905368,
-            barrier_count: 1,
+        contract_info: mockContractInfo({
             bid_price: 10.09,
             buy_price: 11.29,
-            cancellation: {
-                ask_price: 1.29,
-                date_expiry: future_time,
-            },
-            commission: 0.11,
-            contract_id: 246291934908,
             contract_type: 'MULTUP',
-            currency: 'USD',
-            current_spot: 1095.68,
-            current_spot_display_value: '1095.68',
-            current_spot_time: 1718716822,
-            date_expiry: future_time,
-            date_settlement: future_time,
-            date_start: 1718716675,
-            display_name: 'Volatility 100 Index',
-            entry_spot: 1094.94,
-            entry_spot_display_value: '1094.94',
-            entry_tick: 1094.94,
-            entry_tick_display_value: '1094.94',
-            entry_tick_time: 1718716676,
-            expiry_time: future_time,
-            id: '51bb838f-c549-0389-9be1-ace068906f5d',
-            is_expired: 0,
-            is_forward_starting: 0,
-            is_intraday: 0,
-            is_path_dependent: 1,
-            is_settleable: 0,
-            is_sold: 0,
-            is_valid_to_cancel: 1,
-            is_valid_to_sell: 1,
-            limit_order: {
-                stop_out: {
-                    display_name: 'Stop out',
-                    order_amount: -10,
-                    order_date: 1718716675,
-                    value: '1058.84',
-                },
-            },
-            longcode:
-                "If you select 'Up', your total profit/loss will be the percentage increase in Volatility 100 Index, multiplied by 300, minus commissions.",
-            multiplier: 30,
-            profit: 0.09,
-            profit_percentage: 0.9,
-            purchase_time: 1718716675,
             shortcode: `MULTUP_R_100_10.00_30_1718716675_${future_time}_60m_0.00_N1`,
-            status: 'open',
-            transaction_ids: {
-                buy: 490978376408,
-            },
-            underlying: 'R_100',
-        },
+        }),
         details:
             "If you select 'Up', your total profit/loss will be the percentage increase in Volatility 100 Index, multiplied by 300, minus commissions.",
         display_name: 'Volatility 100 Index',

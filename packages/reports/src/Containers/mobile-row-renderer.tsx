@@ -61,22 +61,16 @@ export const MobileRowRenderer = ({
 
     if (is_footer) {
         return (
-            <>
-                <div className='open-positions__data-list-footer--content'>
-                    <div>
-                        <DataList.Cell row={row} column={columns_map.purchase} />
-                        <DataList.Cell row={row} column={columns_map.payout} />
-                    </div>
-                    <div>
-                        <DataList.Cell
-                            className='data-list__row-cell--amount'
-                            row={row}
-                            column={columns_map.indicative}
-                        />
-                        <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.profit} />
-                    </div>
+            <div className='open-positions__data-list-footer--content'>
+                <div>
+                    <DataList.Cell row={row} column={columns_map.purchase} />
+                    <DataList.Cell row={row} column={columns_map.payout} />
                 </div>
-            </>
+                <div>
+                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.indicative} />
+                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.profit} />
+                </div>
+            </div>
         );
     }
 

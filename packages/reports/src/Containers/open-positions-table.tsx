@@ -127,7 +127,7 @@ export const OpenPositionsTable = ({
                                     getRowSize={() => row_size}
                                     content_loader={ReportsTableRowLoader}
                                 >
-                                    <PlaceholderComponent is_loading={is_loading} />
+                                    <PlaceholderComponent />
                                 </DataTable>
                             </EmptyPlaceholderWrapper>
                         </DesktopWrapper>
@@ -142,7 +142,7 @@ export const OpenPositionsTable = ({
                                     row_gap={8}
                                     keyMapper={item => item?.id}
                                 >
-                                    <PlaceholderComponent is_loading={is_loading} />
+                                    <PlaceholderComponent />
                                 </DataList>
                             </EmptyPlaceholderWrapper>
                         </MobileWrapper>

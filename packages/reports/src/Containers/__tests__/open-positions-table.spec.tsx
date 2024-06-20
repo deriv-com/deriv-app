@@ -1,56 +1,17 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile, mockContractInfo } from '@deriv/shared';
 import { TPortfolioPosition } from '@deriv/stores/types';
 import { OpenPositionsTable, getRowAction, isPurchaseMissing } from '../open-positions-table';
 
 const data_list = 'DataList';
 const future_time = Math.floor(Date.now() / 1000) + 5000;
 const options_position = {
-    contract_info: {
-        account_id: 112905368,
-        barrier: '1184.99',
-        barrier_count: 1,
+    contract_info: mockContractInfo({
         bid_price: 9.52,
         buy_price: 10,
-        contract_id: 246179185288,
-        contract_type: 'CALL',
-        currency: 'USD',
-        current_spot: 1184.95,
-        current_spot_display_value: '1184.95',
-        current_spot_time: 1718630678,
-        date_expiry: future_time,
-        date_settlement: future_time,
-        date_start: 1718630564,
-        display_name: 'Volatility 100 Index',
-        entry_spot: 1184.99,
-        entry_spot_display_value: '1184.99',
-        entry_tick: 1184.99,
-        entry_tick_display_value: '1184.99',
-        entry_tick_time: 1718630566,
-        expiry_time: future_time,
-        id: '6838091b-05ce-7872-3131-eedddd394422',
-        is_expired: 0,
-        is_forward_starting: 0,
-        is_intraday: 1,
-        is_path_dependent: 0,
-        is_settleable: 0,
-        is_sold: 0,
-        is_valid_to_cancel: 0,
-        is_valid_to_sell: 1,
-        longcode:
-            'Win payout if Volatility 100 Index is strictly higher than entry spot at 6 hours after contract start time.',
-        payout: 19.73,
-        profit: -0.48,
-        profit_percentage: -4.8,
-        purchase_time: 1718630564,
         shortcode: `CALL_R_100_19.73_1718630564_${future_time}_S0P_0`,
-        status: 'open',
-        transaction_ids: {
-            buy: 490752972668,
-        },
-        underlying: 'R_100',
-    },
+    }),
     details:
         'Win payout if Volatility 100 Index is strictly higher than entry spot at 6 hours after contract start time.',
     display_name: '',

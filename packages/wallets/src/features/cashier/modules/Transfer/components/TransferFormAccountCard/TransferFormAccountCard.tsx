@@ -7,6 +7,7 @@ import {
     WalletText,
 } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
+import { TPlatforms } from '../../../../../../types';
 import type { TAccount } from '../../types';
 import './TransferFormAccountCard.scss';
 
@@ -41,7 +42,7 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) 
                             currency={account?.currency ?? ''}
                             isDemo={Boolean(account?.demo_account)}
                             marketType={account?.market_type}
-                            platform={account?.account_type}
+                            platform={account?.account_type as TPlatforms.All}
                             size='xs'
                         />
                     )}

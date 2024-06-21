@@ -5,15 +5,16 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import { WS } from 'Services';
 import { ConfirmEmailModal } from '../confirm-email-modal';
 
-jest.mock('@deriv/account', () =>
-    jest.fn(({ onClose, onClickSendEmail }) => (
+jest.mock('@deriv/account', () => ({
+    ...jest.requireActual('Services'),
+    SentEmailModal: jest.fn(({ onClose, onClickSendEmail }) => (
         <div>
             SentEmailModal
             <button onClick={onClose}>Close</button>
             <button onClick={onClickSendEmail}>ClickSendEmail</button>
         </div>
-    ))
-);
+    )),
+}));
 
 jest.mock('Services', () => ({
     ...jest.requireActual('Services'),

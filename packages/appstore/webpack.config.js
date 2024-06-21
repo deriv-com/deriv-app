@@ -183,6 +183,7 @@ module.exports = function (env) {
                 '@deriv/cashier': true,
                 '@deriv/cfd': true,
                 '@deriv-com/analytics': `@deriv-com/analytics`,
+                '@deriv-com/translations': '@deriv-com/translations',
             },
         ],
         //TODO: Uncomment this line when type script migrations on all packages done

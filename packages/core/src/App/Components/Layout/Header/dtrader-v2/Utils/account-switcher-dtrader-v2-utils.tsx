@@ -24,6 +24,12 @@ import {
     CurrencyXrpIcon,
 } from '@deriv/quill-icons';
 
+export const BROKER_CODE = {
+    MF: 'MF',
+    CR: 'CR',
+    VRTC: 'VRTC',
+};
+
 export const getAccountTitle = ({
     currency,
     loginid,
@@ -37,7 +43,7 @@ export const getAccountTitle = ({
 }) => {
     const account_type = loginid?.replace(/\d/g, '');
 
-    if (account_type === 'MF') {
+    if (account_type === BROKER_CODE.MF) {
         return <Localize i18n_default_text='Multipliers' />;
     }
 

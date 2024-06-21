@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { useLocation } from 'react-router-dom';
 import { observer, useStore } from '@deriv/stores';
-import { routes } from '@deriv/shared';
+import { Jurisdiction, routes } from '@deriv/shared';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import HeaderAccountActionsDTraderV2 from 'App/Components/Layout/Header/dtrader-v2/header-account-actions-dtrader-v2';
@@ -23,7 +23,7 @@ const DTraderV2Header = observer(() => {
             setShouldShowCooldownModal(true);
         } else {
             selectRegion(is_eu ? 'EU' : 'Non-EU');
-            openRealAccountSignup(is_eu ? 'maltainvest' : 'svg');
+            openRealAccountSignup(is_eu ? Jurisdiction.MALTA_INVEST : Jurisdiction.SVG);
         }
     };
 

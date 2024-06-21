@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { routes } from '@deriv/shared';
+import { Jurisdiction, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useHasSetCurrency } from '@deriv/hooks';
 import { TActiveAccount } from '@deriv/stores/types';
@@ -10,6 +10,7 @@ import { LabelPairedChevronRightSmRegularIcon, StandaloneDerivIcon } from '@deri
 import { Button, Text } from '@deriv-com/quill-ui';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { BinaryLink } from 'App/Components/Routes';
+import { BROKER_CODE } from './Utils/account-switcher-dtrader-v2-utils';
 import AccountListDTraderV2 from './account-switcher-account-list-dtrader-v2';
 import AccountGroupWrapper from './account-group-wrapper-dtrader-v2';
 import { getSortedAccountList } from '../../../../Containers/AccountSwitcher/helpers';
@@ -50,7 +51,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
 
     const vrtc_loginid = account_list.find(account => account.is_virtual)?.loginid ?? '';
     const has_user_set_currency = useHasSetCurrency();
-    const has_cr_account = account_list.find(acc => acc.loginid?.startsWith('CR'))?.loginid;
+    const has_cr_account = account_list.find(acc => acc.loginid?.startsWith(BROKER_CODE.CR))?.loginid;
     const show_separator = is_low_risk && has_maltainvest_account;
     const show_button =
         (has_active_real_account && !is_virtual && !is_closing) || (is_virtual && !has_any_real_account);
@@ -117,7 +118,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
             setShouldShowCooldownModal(true);
         } else {
             selectRegion(is_eu ? 'EU' : 'Non-EU');
-            openRealAccountSignup(is_eu && !is_low_risk ? 'maltainvest' : 'svg');
+            openRealAccountSignup(is_eu && !is_low_risk ? Jurisdiction.MALTA_INVEST : Jurisdiction.SVG);
         }
     };
 
@@ -173,33 +174,34 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
                     separator_text={
                         is_low_risk &&
                         has_maltainvest_account &&
-                        localize(`Non-EU Deriv ${checkIfUserHaveMoreAccount('CR') ? 'accounts' : 'account'}`)
+                        localize(`Non-EU Deriv ${checkIfUserHaveMoreAccount(BROKER_CODE.CR) ? 'accounts' : 'account'}`)
                     }
                     show_bottom_separator
                 >
                     {(getSortedAccountList(account_list, accounts) as typeof account_list)
-                        .filter(account => !account.is_virtual && account?.loginid?.startsWith('CR'))
+                        .filter(account => !account.is_virtual && account?.loginid?.startsWith(BROKER_CODE.CR))
                         .map(account => getAccountItem(account))}
                     {!has_cr_account &&
                         is_low_risk &&
                         has_maltainvest_account &&
                         getRemainingRealAccounts()
-                            .filter(account => account === 'svg')
+                            .filter(account => account === Jurisdiction.SVG)
                             .map(account => getAddAccountButton(account))}
                 </AccountGroupWrapper>
             )}
             {(!is_high_risk || is_eu) && has_maltainvest_account && (
                 <AccountGroupWrapper
                     separator_text={
-                        is_low_risk && localize(`EU Deriv ${checkIfUserHaveMoreAccount('MF') ? 'accounts' : 'account'}`)
+                        is_low_risk &&
+                        localize(`EU Deriv ${checkIfUserHaveMoreAccount(BROKER_CODE.MF) ? 'accounts' : 'account'}`)
                     }
                     show_bottom_separator
                 >
                     {(getSortedAccountList(account_list, accounts) as typeof account_list)
-                        .filter(account => !account.is_virtual && account?.loginid?.startsWith('MF'))
+                        .filter(account => !account.is_virtual && account?.loginid?.startsWith(BROKER_CODE.MF))
                         .map(account => getAccountItem(account))}
                     {getRemainingRealAccounts()
-                        .filter(account => account === 'maltainvest')
+                        .filter(account => account === Jurisdiction.MALTA_INVEST)
                         .map(account => getAddAccountButton(account))}
                 </AccountGroupWrapper>
             )}

@@ -58,6 +58,7 @@
         "eslint-plugin-react": "^7.22.0",
         "eslint-plugin-react-hooks": "^4.2.0",
         "file-loader": "^6.2.0",
+        "history": "^5.0.0",
         "gh-pages": "^2.1.1",
         "git-revision-webpack-plugin": "^5.0.0",
         "html-loader": "^1.3.2",

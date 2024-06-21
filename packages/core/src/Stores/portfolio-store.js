@@ -33,7 +33,7 @@ export default class PortfolioStore extends BaseStore {
     positions = [];
     all_positions = [];
     positions_map = {};
-    is_loading = false;
+    is_loading = true;
     error = '';
 
     //accumulators
@@ -472,7 +472,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     networkStatusChangeListener(is_online) {
-        this.is_loading = !is_online;
+        this.is_loading = this.is_loading || !is_online;
     }
 
     onMount() {

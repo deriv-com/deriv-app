@@ -98,13 +98,13 @@ const DTraderHeader = observer(() => {
                         <React.Fragment>
                             <DerivShortLogo />
                             <div className='header__divider' />
+                            <TradersHubHomeButton />
                             <PlatformSwitcher
                                 app_routing_history={app_routing_history}
                                 platform_config={filterPlatformsForClients(platform_config)}
                                 setTogglePlatformType={setTogglePlatformType}
                                 current_language={current_language}
                             />
-                            <TradersHubHomeButton />
                         </React.Fragment>
                     )}
                     <MenuLinks />

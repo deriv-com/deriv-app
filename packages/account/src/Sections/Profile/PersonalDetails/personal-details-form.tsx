@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect, Fragment } from 'react';
 import clsx from 'clsx';
 import { Formik, Form, FormikHelpers } from 'formik';
-import { BrowserHistory } from 'history';
-import { withRouter } from 'react-router';
+import { useHistory } from 'react-router';
 import {
     Button,
     Checkbox,
@@ -17,7 +16,7 @@ import {
     Text,
 } from '@deriv/components';
 import { GetSettings } from '@deriv/api-types';
-import { AUTH_STATUS_CODES, WS, getBrandWebsiteName, routes, useIsMounted } from '@deriv/shared';
+import { AUTH_STATUS_CODES, WS, getBrandWebsiteName, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import LeaveConfirm from 'Components/leave-confirm';
@@ -31,20 +30,20 @@ import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
+import { useInvalidateQuery } from '@deriv/api';
+import { useStatesList, useResidenceList } from '@deriv/hooks';
 
 type TRestState = {
     show_form: boolean;
-    errors?: boolean;
     api_error?: string;
-    changeable_fields?: string[];
-    form_initial_values?: Record<string, any>;
 };
 
-export const PersonalDetailsForm = observer(({ history }: { history: BrowserHistory }) => {
-    const [is_loading, setIsLoading] = useState(true);
-    const [is_state_loading, setIsStateLoading] = useState(false);
+const PersonalDetailsForm = observer(() => {
+    const [is_loading, setIsLoading] = useState(false);
     const [is_btn_loading, setIsBtnLoading] = useState(false);
     const [is_submit_success, setIsSubmitSuccess] = useState(false);
+    const invalidate = useInvalidateQuery();
+    const history = useHistory();
 
     const {
         client,
@@ -56,17 +55,17 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
     const {
         account_settings,
         account_status,
-        residence_list,
         authentication_status,
         is_eu,
         is_virtual,
-        states_list,
-        fetchStatesList,
-        fetchResidenceList,
-        has_residence,
         current_landing_company,
         updateAccountStatus,
+        residence,
     } = client;
+
+    const { data: residence_list, isLoading: is_loading_residence_list } = useResidenceList();
+
+    const { data: states_list, isLoading: is_loading_state_list } = useStatesList(residence);
 
     const {
         refreshNotifications,
@@ -78,7 +77,6 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
     const has_poa_address_mismatch = account_status?.status?.includes('poa_address_mismatch');
     const [rest_state, setRestState] = useState<TRestState>({
         show_form: true,
-        form_initial_values: {},
     });
 
     const notification_timeout = useRef<NodeJS.Timeout>();
@@ -91,29 +89,22 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
         timeout_callback: () => null,
     });
 
-    const isMounted = useIsMounted();
-
     useEffect(() => {
-        if (isMounted()) {
-            const getSettings = async () => {
-                // waits for residence to be populated
+        const init = async () => {
+            try {
+                // Order of API calls is important
                 await WS.wait('get_settings');
-
-                fetchResidenceList?.();
-
-                if (has_residence) {
-                    if (!is_language_changing) {
-                        setIsStateLoading(true);
-                        fetchStatesList().then(() => {
-                            setIsStateLoading(false);
-                        });
-                    }
-                }
-            };
-            getSettings();
+                await invalidate('residence_list');
+                await invalidate('states_list');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        if (is_language_changing) {
+            setIsLoading(true);
+            init();
         }
-        setIsLoading(false);
-    }, [account_settings, is_eu]);
+    }, [invalidate, is_language_changing]);
 
     const onSubmit = async (values: GetSettings, { setStatus, setSubmitting }: FormikHelpers<GetSettings>) => {
         setStatus({ msg: '' });
@@ -138,13 +129,11 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
             // force request to update settings cache since settings have been updated
             const response = await WS.authorized.storage.getSettings();
             if (response.error) {
-                setRestState({ ...rest_state, api_error: response.error.message });
+                setRestState(prev_state => ({ ...prev_state, api_error: response.error.message }));
                 return;
             }
             // Fetches the status of the account after update
             updateAccountStatus();
-            setRestState({ ...rest_state, ...response.get_settings });
-            setIsLoading(false);
             refreshNotifications();
             setIsBtnLoading(false);
             setIsSubmitSuccess(true);
@@ -193,7 +182,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
 
     if (api_error) return <LoadErrorMessage error_message={api_error} />;
 
-    if (is_loading || is_state_loading || !residence_list.length) {
+    if (is_loading_state_list || is_loading || is_loading_residence_list) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
@@ -202,7 +191,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
 
     const is_account_verified = is_poa_verified && is_poi_verified;
 
-    //Generate Redirection Link to user based on verifiction status
+    //Generate Redirection Link to user based on verification status
     const getRedirectionLink = () => {
         if (!is_poi_verified) {
             return '/account/proof-of-identity';
@@ -692,4 +681,4 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
     );
 });
 
-export default withRouter(PersonalDetailsForm);
+export default PersonalDetailsForm;

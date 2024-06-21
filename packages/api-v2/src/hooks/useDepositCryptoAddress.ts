@@ -1,20 +1,21 @@
-import { useCallback } from 'react';
-import useMutation from '../useMutation';
+import useAuthorizedQuery from '../useAuthorizedQuery';
 
 /** A custom hook to get the deposit crypto address. */
 const useDepositCryptoAddress = () => {
-    const { data, mutate: _mutate, ...rest } = useMutation('cashier');
-    const deposit_address = typeof data?.cashier !== 'string' ? data?.cashier?.deposit?.address : undefined;
-
-    const mutate = useCallback(
-        () => _mutate({ payload: { cashier: 'deposit', provider: 'crypto', type: 'api' } }),
-        [_mutate]
+    const { data, ...rest } = useAuthorizedQuery(
+        'cashier',
+        { cashier: 'deposit', provider: 'crypto', type: 'api' },
+        {
+            staleTime: Infinity,
+        }
     );
+
+    // typing sadly is not corret ;( so need the "as unknonw"
+    const response = data?.cashier as unknown as { deposit: { address: string } };
 
     return {
         ...rest,
-        mutate,
-        data: deposit_address,
+        data: response?.deposit?.address,
     };
 };
 

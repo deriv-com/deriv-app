@@ -15,7 +15,7 @@ const EmploymentStatusField = ({ required, is_disabled }: TEmploymentStatusField
             <div className={clsx('account-form__fieldset', 'emp-status')}>
                 <DesktopWrapper>
                     <Dropdown
-                        placeholder={required ? localize('Amina*') : localize('Employment status')}
+                        placeholder={required ? localize('Employment status*') : localize('Employment status')}
                         is_align_text_left
                         name={field.name}
                         list={getEmploymentStatusList()}

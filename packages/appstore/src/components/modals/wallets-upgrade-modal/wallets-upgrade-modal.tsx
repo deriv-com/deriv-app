@@ -7,13 +7,11 @@ import './wallets-upgrade-modal.scss';
 import classNames from 'classnames';
 import { getUrlBase } from '@deriv/shared';
 
-const MODAL_TRANSITION_TIMEOUT_MS = 250; // matching the default one
-
 const WalletsUpgradeModal = observer(() => {
     const { traders_hub, ui } = useStore();
     const { is_real_wallets_upgrade_on, toggleWalletsUpgrade } = traders_hub;
     const { is_mobile, is_desktop } = ui;
-    const { is_eligible } = useWalletMigration();
+    const { is_eligible, startMigration } = useWalletMigration();
     const isWalletMigrationModalClosed = localStorage.getItem('is_wallet_migration_modal_closed');
     const [modalOpen, setModalOpen] = React.useState(!isWalletMigrationModalClosed);
 
@@ -23,6 +21,11 @@ const WalletsUpgradeModal = observer(() => {
         toggleWalletsUpgrade(false);
     };
 
+    const handleMigration = () => {
+        closeModal();
+        startMigration();
+    };
+
     return (
         <Modal
             className='wallets-upgrade-modal'
@@ -30,11 +33,10 @@ const WalletsUpgradeModal = observer(() => {
             width={is_mobile ? '32.8rem' : '116rem'}
             title=' '
             toggleModal={closeModal}
-            transition_timeout={MODAL_TRANSITION_TIMEOUT_MS}
         >
             <Modal.Body>
                 <div className='wallets-upgrade-modal__content'>
-                    <div className='wallets-upgrade-modal__video-container'>
+                    <div className='wallets-upgrade-modal__media-container'>
                         <video
                             className='wallets-upgrade-modal__video'
                             autoPlay={true}
@@ -64,15 +66,7 @@ const WalletsUpgradeModal = observer(() => {
                         'wallets-upgrade-modal__footer--mobile': is_mobile,
                     })}
                 >
-                    <Button
-                        large={is_desktop}
-                        onClick={() => {
-                            closeModal();
-                            // startMigration();
-                        }}
-                        primary
-                        text={localize('Enable now')}
-                    />
+                    <Button large={is_desktop} onClick={handleMigration} primary text={localize('Enable now')} />
                 </div>
             </Modal.Body>
         </Modal>

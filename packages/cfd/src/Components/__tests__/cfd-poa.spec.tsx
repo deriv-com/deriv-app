@@ -111,4 +111,24 @@ describe('<CFDPOA />', () => {
             expect(mock_props.onSubmit).toHaveBeenCalled();
         });
     });
+
+    it('should render duplicate document error message if has_submitted_duplicate_poa is true ', async () => {
+        const setHasSubmittedDuplicatePOA = jest.fn();
+        jest.spyOn(React, 'useState').mockImplementationOnce(() => [true, setHasSubmittedDuplicatePOA]);
+
+        render(
+            <BrowserRouter>
+                <CFDProviders store={mock_store}>
+                    <CFDPOA {...mock_props} />
+                </CFDProviders>
+            </BrowserRouter>
+        );
+        expect(screen.getByText(/we could not verify your proof of address/i)).toBeInTheDocument();
+        expect(screen.getByText(/proof of address documents upload failed/i)).toBeInTheDocument();
+        expect(screen.getByText(/try again/i)).toBeInTheDocument();
+        const submit_btn = screen.getByRole('button', { name: 'Try again' });
+
+        userEvent.click(submit_btn);
+        expect(setHasSubmittedDuplicatePOA).toHaveBeenCalledWith(false);
+    });
 });

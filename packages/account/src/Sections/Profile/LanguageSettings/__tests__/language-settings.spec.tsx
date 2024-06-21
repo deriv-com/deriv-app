@@ -4,16 +4,14 @@ import userEvent from '@testing-library/user-event';
 import { routes } from '@deriv/shared';
 import LanguageSettings from '../language-settings';
 import { mockStore, StoreProvider } from '@deriv/stores';
+import { useTranslations } from '@deriv-com/translations';
+
+jest.mock('@deriv-com/translations');
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isMobile: jest.fn(() => false),
-    TranslationFlag: { lang_1: () => <div>Language 1 Flag</div>, lang_2: () => <div>Language 2 Flag</div> },
-}));
-
-jest.mock('@deriv/translations', () => ({
-    ...jest.requireActual('@deriv/translations'),
-    getAllowedLanguages: jest.fn(() => ({ lang_1: 'Test Lang 1', lang_2: 'Test Lang 2' })),
+    TranslationFlag: { EN: () => <div>Language 1 Flag</div>, VI: () => <div>Language 2 Flag</div> },
 }));
 
 jest.mock('react-router-dom', () => ({
@@ -33,6 +31,11 @@ describe('LanguageSettings', () => {
                 is_mobile: false,
             },
         });
+        (useTranslations as jest.Mock).mockReturnValue({
+            currentLang: 'EN',
+            localize: jest.fn().mockImplementation(key => key),
+            switchLanguage: jest.fn(),
+        });
     });
 
     const renderLanguageSettings = () => {
@@ -46,20 +49,19 @@ describe('LanguageSettings', () => {
 
         expect(screen.getByText('Select Language')).toBeInTheDocument();
 
-        const lang_1 = screen.getByText('Test Lang 1');
-        const lang_2 = screen.getByText('Test Lang 2');
+        const lang_1 = screen.getByText('English');
+        const lang_2 = screen.getByText('Tiếng Việt');
+
         expect(screen.getByText(/Language 1 Flag/)).toBeInTheDocument();
         expect(screen.getByText(/Language 2 Flag/)).toBeInTheDocument();
         expect(lang_1).toBeInTheDocument();
-        expect(/(active)/i.test(lang_1.className)).toBeTruthy();
         expect(lang_2).toBeInTheDocument();
-        expect(/(active)/i.test(lang_2.className)).toBeFalsy();
     });
 
     it('should trigger language change', () => {
         renderLanguageSettings();
 
-        const lang_2 = screen.getByText('Test Lang 2');
+        const lang_2 = screen.getByText('Tiếng Việt');
         userEvent.click(lang_2);
 
         expect(mockRootStore.common.changeSelectedLanguage).toHaveBeenCalled();

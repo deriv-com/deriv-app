@@ -340,7 +340,6 @@ const ModalManager = () => {
             {is_failed_verification_modal_visible && <FailedVerificationModal />}
             {!should_show_effortless_login_modal && (
                 <React.Fragment>
-                    {/* {(is_real_wallets_upgrade_on || is_in_progress) && <RealWalletsUpgrade />} */}
                     {is_wallet_migration_failed && <WalletsMigrationFailed />}
                     {(is_eligible || is_real_wallets_upgrade_on || is_in_progress) && <WalletsUpgradeModal />}
                 </React.Fragment>

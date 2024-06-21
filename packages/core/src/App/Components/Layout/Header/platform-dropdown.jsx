@@ -28,6 +28,7 @@ const PlatformDropdownContent = ({ platform, app_routing_history }) => {
                 exact={platform.link_to === routes.trade}
                 className='platform-dropdown__list-platform'
                 isActive={() => getActivePlatform(app_routing_history) === platform.name}
+                onClick={e => window.location.pathname.startsWith(platform.link_to) && e.preventDefault()}
             >
                 <PlatformBox platform={platform} />
             </BinaryLink>

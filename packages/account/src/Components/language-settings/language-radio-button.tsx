@@ -31,7 +31,7 @@ const LanguageRadioButton = ({ is_current_language, id, language_text, name, onC
             <label htmlFor={id} className='settings-language__language--center-label'>
                 <div>
                     {TranslationFlag[id] ? (
-                        TranslationFlag[id]()
+                        TranslationFlag[id](36, 24)
                     ) : (
                         <Icon icon={`IcFlag${id}`} className='settings-language__language-flag' />
                     )}

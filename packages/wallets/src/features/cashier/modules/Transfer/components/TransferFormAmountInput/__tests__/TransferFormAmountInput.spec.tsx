@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import React, { ComponentProps } from 'react';
-import { Formik } from 'formik';
+import * as Formik from 'formik';
 import { APIProvider } from '@deriv/api-v2';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -71,6 +71,19 @@ const ACCOUNTS: NonNullable<TAccount>[] = [
     },
 ] as NonNullable<TAccount>[];
 
+const mockRefetchExchangeRates = jest.fn(() =>
+    Promise.resolve({
+        data: {
+            base_currency: 'USD',
+            exchange_rates: {
+                rates: RATES,
+            },
+        },
+    })
+);
+
+const mockRefetchAccountLimits = jest.fn();
+
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
     useGetExchangeRate: jest.fn(({ base_currency }: { base_currency: string }) => ({
@@ -78,19 +91,36 @@ jest.mock('@deriv/api-v2', () => ({
             base_currency,
             rates: RATES[base_currency as keyof typeof RATES],
         },
-        refetch: () => ({
-            data: {
-                base_currency,
-                rates: RATES[base_currency as keyof typeof RATES],
-            },
-        }),
     })),
     useTransferBetweenAccounts: jest.fn(() => ({
         data: { accounts: ACCOUNTS },
     })),
 }));
 
-const renderField = (type: ComponentProps<typeof TransferFormAmountInput>['fieldName'], currency: string) => {
+jest.mock('usehooks-ts', () => ({
+    ...jest.requireActual('usehooks-ts'),
+    useCountdown: jest.fn(() => {
+        const count = 0;
+        const resetCountdown = jest.fn();
+        const startCountdown = jest.fn();
+        return [count, { resetCountdown, startCountdown }];
+    }),
+}));
+
+jest.mock('../../../provider', () => ({
+    ...jest.requireActual('../../../provider'),
+    useTransfer: jest.fn(() => ({
+        ...jest.requireActual('../../../provider').useTransfer(),
+        refetchAccountLimits: mockRefetchAccountLimits,
+        refetchExchangeRates: mockRefetchExchangeRates,
+    })),
+}));
+
+const renderField = (
+    type: ComponentProps<typeof TransferFormAmountInput>['fieldName'],
+    currency: string,
+    optionalConfig?: Record<string, unknown>
+) => {
     const FORM_VALUES: TInitialTransferFormValues = {
         activeAmountFieldName: type,
         fromAccount: undefined,
@@ -98,6 +128,7 @@ const renderField = (type: ComponentProps<typeof TransferFormAmountInput>['field
         toAccount: undefined,
         toAmount: 0,
         [type.replace('Amount', 'Account')]: ACCOUNTS.find(acc => acc.currency === currency),
+        ...optionalConfig,
     };
 
     render(
@@ -105,13 +136,13 @@ const renderField = (type: ComponentProps<typeof TransferFormAmountInput>['field
             <WalletsAuthProvider>
                 <TransferProvider accounts={ACCOUNTS}>
                     {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-                    <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
+                    <Formik.Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
                         {({ handleSubmit }) => (
                             <form onSubmit={handleSubmit}>
                                 <TransferFormAmountInput fieldName={type} />
                             </form>
                         )}
-                    </Formik>
+                    </Formik.Formik>
                 </TransferProvider>
             </WalletsAuthProvider>
         </APIProvider>
@@ -214,6 +245,82 @@ describe('TransferFormAmountInput', () => {
                 getData: (format: string) => (format === 'Text' ? pastedVal : ''),
             } as DataTransfer,
         });
+        userEvent.tab();
         expect(field).toHaveValue('0.00000123');
+    });
+    it('refetches exchangeRatesAndLimits when the countdown is complete', () => {
+        const config = {
+            fromAccount: ACCOUNTS[1], // BTC account
+            fromAmount: 100,
+            toAmount: 0.00000001,
+        };
+        renderField('toAmount', 'USD', config);
+        expect(mockRefetchAccountLimits).toHaveBeenCalled();
+        expect(mockRefetchExchangeRates).toHaveBeenCalled();
+    });
+    it('renders the component when the currency of the fromAccount is not provided', () => {
+        const config = {
+            fromAmount: 100,
+            toAmount: 0.00000001,
+        };
+        renderField('toAmount', 'USD', config);
+        expect(screen.getByText('Estimated amount')).toBeInTheDocument();
+    });
+    it('calls setValues with the same amount for the fromAmount and toAmount when the currency is the same for both accounts', () => {
+        const mockSetValues = jest.fn((callback: unknown) => {
+            if (typeof callback === 'function') {
+                return callback();
+            }
+        });
+        const useFormikContextSpy = jest.spyOn(Formik, 'useFormikContext');
+        (useFormikContextSpy as jest.Mock).mockImplementation(() => ({
+            errors: {},
+            isSubmitting: false,
+            isValidating: false,
+            setValues: mockSetValues,
+            submitCount: 0,
+            touched: {},
+            values: {
+                activeAmountFieldName: 'fromAmount',
+                fromAmount: 1.1,
+                toAmount: 0.00000001,
+            },
+        }));
+        const config = {
+            toAccount: ACCOUNTS[0], // USD account
+        };
+        renderField('fromAmount', 'USD', config);
+        expect(mockSetValues).toHaveBeenCalled();
+        expect(mockSetValues.mock.calls[0][0]).toBeInstanceOf(Function);
+        const { fromAmount: returnedFromAmount, toAmount: returnedToAmount } = mockSetValues.mock.results[1].value;
+        expect(returnedFromAmount).toEqual(1.1);
+        expect(returnedToAmount).toEqual(1.1);
+    });
+    it('sets the toAmount when isFromAmountField is true', () => {
+        const toAccount = ACCOUNTS[1]; // BTC account
+        const mockSetFieldValue = jest.fn();
+        const useFormikContextSpy = jest.spyOn(Formik, 'useFormikContext');
+        (useFormikContextSpy as jest.Mock).mockImplementationOnce(() => ({
+            errors: {},
+            isSubmitting: false,
+            isValidating: false,
+            setFieldValue: mockSetFieldValue,
+            setValues: jest.fn(),
+            submitCount: 0,
+            touched: {},
+            values: {
+                activeAmountFieldName: 'fromAmount',
+                fromAccount: ACCOUNTS[0], // USD account
+                fromAmount: 1000,
+                toAccount,
+                toAmount: 0.1,
+            },
+        }));
+        const config = {
+            fromAmount: 1000,
+            toAccount,
+        };
+        renderField('fromAmount', 'USD', config);
+        expect(mockSetFieldValue).toHaveBeenCalledWith('toAmount', 0.015);
     });
 });

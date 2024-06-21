@@ -6,7 +6,6 @@ import { localize } from '@deriv/translations';
 import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendUploadStrategyCompletedEvent } from '../../analytics/rudderstack-bot-builder';
 import { rudderStackSendDashboardClickEvent } from '../../analytics/rudderstack-dashboard';
 import { rudderStackSendQsOpenEvent } from '../../analytics/rudderstack-quick-strategy';
 import DashboardBotList from './load-bot-preview/dashboard-bot-list';
@@ -144,7 +143,6 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                             loadFileFromLocal();
                             setFileLoaded(true);
                             setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);
-                            rudderStackSendUploadStrategyCompletedEvent({ upload_provider: 'my_computer' });
                         }}
                     />
                     <DesktopWrapper>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import { v4 as uuidv4 } from 'uuid';
 import { config, getSavedWorkspaces, load, removeExistingWorkspace, save_types, setColors } from '@deriv/bot-skeleton';
 import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { TStores } from '@deriv/stores/types';
@@ -8,6 +9,8 @@ import { clearInjectionDiv, tabs_title } from 'Constants/load-modal';
 import { TStrategy } from 'Types';
 import {
     rudderStackSendSwitchLoadStrategyTabEvent,
+    rudderStackSendUploadStrategyCompletedEvent,
+    rudderStackSendUploadStrategyFailedEvent,
     rudderStackSendUploadStrategyStartEvent,
 } from '../analytics/rudderstack-bot-builder';
 import { LOAD_MODAL_TABS } from '../analytics/utils';
@@ -81,6 +84,7 @@ export default class LoadModalStore implements ILoadModalStore {
             dashboard_strategies: observable,
             selected_strategy_id: observable,
             current_workspace_id: observable,
+            upload_id: observable,
             preview_workspace: computed,
             selected_strategy: computed,
             tab_name: computed,
@@ -148,6 +152,7 @@ export default class LoadModalStore implements ILoadModalStore {
     is_delete_modal_open = false;
     is_strategy_removed = false;
     current_workspace_id = '';
+    upload_id = '';
 
     get preview_workspace(): Blockly.WorkspaceSvg | null {
         if (this.tab_name === tabs_title.TAB_LOCAL) return this.local_workspace;
@@ -197,7 +202,7 @@ export default class LoadModalStore implements ILoadModalStore {
         event: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent,
         is_body = true
     ): boolean => {
-        rudderStackSendUploadStrategyStartEvent({ upload_provider: 'my_computer' });
+        this.upload_id = uuidv4();
         let files;
         if (event.type === 'drop') {
             event.stopPropagation();
@@ -506,8 +511,13 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     readFile = (is_preview: boolean, drop_event: DragEvent, file: File): void => {
+        if (this.upload_id) {
+            rudderStackSendUploadStrategyStartEvent({ upload_provider: 'my_computer', upload_id: this.upload_id });
+        }
         const file_name = file?.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
+        let loaded_to_main_workspace = false;
+
         reader.onload = action(async e => {
             const load_options = {
                 block_string: e?.target?.result,
@@ -536,10 +546,18 @@ export default class LoadModalStore implements ILoadModalStore {
             } else {
                 load_options.workspace = window.Blockly.derivWorkspace;
                 load_options.file_name = file_name;
+                loaded_to_main_workspace = true;
             }
-            await load(load_options);
+
+            const result = await load(load_options);
+            if (loaded_to_main_workspace && !result?.error) {
+                rudderStackSendUploadStrategyCompletedEvent({ upload_provider: 'my_computer' });
+            } else if (loaded_to_main_workspace && result?.error) {
+                rudderStackSendUploadStrategyFailedEvent({ upload_provider: 'my_computer' });
+            }
             this.is_open_button_loading = false;
         });
+
         reader.readAsText(file);
     };
 }

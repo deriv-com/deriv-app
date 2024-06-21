@@ -12,23 +12,36 @@ export const rudderStackSendSwitchLoadStrategyTabEvent = ({ load_strategy_tab }:
     });
 };
 
-export const rudderStackSendUploadStrategyStartEvent = ({ upload_provider }: TEvents['ce_bot_form']) => {
+export const rudderStackSendUploadStrategyStartEvent = ({ upload_provider, upload_id }: TEvents['ce_bot_form']) => {
     Analytics.trackEvent('ce_bot_form', {
         action: ACTION.UPLOAD_STRATEGY_START,
         form_name,
         subform_name: 'load_strategy',
         subpage_name: getSubpageName(),
         upload_provider,
+        upload_id,
     });
 };
 
-export const rudderStackSendUploadStrategyCompletedEvent = ({ upload_provider }: TEvents['ce_bot_form']) => {
+export const rudderStackSendUploadStrategyCompletedEvent = ({ upload_provider, upload_id }: TEvents['ce_bot_form']) => {
     Analytics.trackEvent('ce_bot_form', {
         action: ACTION.UPLOAD_STRATEGY_COMPLETED,
         form_name,
         subform_name: 'load_strategy',
         subpage_name: getSubpageName(),
         upload_provider,
+        upload_id,
+    });
+};
+
+export const rudderStackSendUploadStrategyFailedEvent = ({ upload_provider, upload_id }: TEvents['ce_bot_form']) => {
+    Analytics.trackEvent('ce_bot_form', {
+        action: ACTION.UPLOAD_STRATEGY_FAILED,
+        form_name,
+        subform_name: 'load_strategy',
+        subpage_name: getSubpageName(),
+        upload_provider,
+        upload_id,
     });
 };
 

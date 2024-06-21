@@ -8,6 +8,7 @@ interface IServerBotStore {
     notifications: Array<string>;
     setNotifications: (notifications: string) => void;
     getBotList: () => void;
+    notifyBot: (bot_id: string, should_change_status: boolean) => void;
     createBot: () => void;
     removeBot: (bot_id: string) => void;
     startBot: (bot_id: string) => void;
@@ -65,6 +66,7 @@ export default class ServerBotStore implements IServerBotStore {
             setNotifications: action.bound,
             setValue: action.bound,
             getBotList: action.bound,
+            notifyBot: action.bound,
             createBot: action.bound,
             removeBot: action.bound,
             startBot: action.bound,
@@ -205,8 +207,10 @@ export default class ServerBotStore implements IServerBotStore {
             .then(() => this.getBotList());
     };
 
-    notifyBot = (bot_id: string) => {
-        this.setStatusBot('started', bot_id);
+    notifyBot = (bot_id: string, should_change_status = true) => {
+        if (should_change_status) {
+            this.setStatusBot('started', bot_id);
+        }
         this.makeRequest({
             bot_notification: 1,
             subscribe: 1,

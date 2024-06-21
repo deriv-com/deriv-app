@@ -5,7 +5,6 @@ import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import './wallets-upgrade-modal.scss';
 import classNames from 'classnames';
-import { getUrlBase } from '@deriv/shared';
 
 const WalletsUpgradeModal = observer(() => {
     const { traders_hub, ui } = useStore();
@@ -37,15 +36,11 @@ const WalletsUpgradeModal = observer(() => {
             <Modal.Body>
                 <div className='wallets-upgrade-modal__content'>
                     <div className='wallets-upgrade-modal__media-container'>
-                        <video
+                        <iframe
                             className='wallets-upgrade-modal__video'
-                            autoPlay={true}
-                            controls
-                            preload='auto'
-                            playsInline
-                            disablePictureInPicture
-                            controlsList='nodownload'
-                            src={getUrlBase('/public/videos/wallets_introduction.mp4')}
+                            src='https://customer-hhvo3ceuqt00w8g8.cloudflarestream.com/7ed5dfd27cdd290e088be8e91201a7f1/iframe?autoplay=true&preload=auto'
+                            allow='accelerometer; gyroscope; autoplay; encrypted-media;'
+                            allowFullScreen={true}
                         />
                     </div>
                     <div className='wallets-upgrade-modal__text'>

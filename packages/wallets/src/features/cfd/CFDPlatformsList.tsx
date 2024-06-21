@@ -13,6 +13,7 @@ const CFDPlatformsList: React.FC = () => {
     const { isMobile } = useDevice();
     const { t } = useTranslation();
     const history = useHistory();
+    const defaultText = 'Trade bigger positions with less capital on a wide range of global markets. <0>Learn more</0>';
 
     return (
         <div className='wallets-cfd-list'>
@@ -30,7 +31,7 @@ const CFDPlatformsList: React.FC = () => {
                                         target='_blank'
                                     />,
                                 ]}
-                                defaults='Trade bigger positions with less capital across diverse financial and derived instruments. <0>Learn more</0>'
+                                defaults={defaultText}
                             />
                         </WalletText>
                         <WalletButton
@@ -63,7 +64,7 @@ const CFDPlatformsList: React.FC = () => {
                         <WalletText size='md'>
                             <Trans
                                 components={[<WalletLink key={0} staticUrl='/trade-types/cfds/' />]}
-                                defaults='Trade bigger positions with less capital across diverse financial and derived instruments. <0>Learn more</0>'
+                                defaults={defaultText}
                             />
                         </WalletText>
                     </div>

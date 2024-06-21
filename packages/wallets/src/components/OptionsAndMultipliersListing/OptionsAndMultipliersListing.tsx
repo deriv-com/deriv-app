@@ -74,7 +74,7 @@ const OptionsAndMultipliersListing: React.FC<TSubscribedBalance> = ({ balance })
                             components={[
                                 <WalletLink key={0} staticUrl='/trade-types/options/digital-options/up-and-down/' />,
                             ]}
-                            defaults='Buy or sell at a specific time for a specific price. <0>Learn more</0>'
+                            defaults='Predict the market, profit if you’re right, risk only what you put in. <0>Learn more</0>'
                         />
                     </WalletText>
                 </div>

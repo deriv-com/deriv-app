@@ -191,6 +191,9 @@
         .dc-text {
             font-size: var(--text-size-xxs);
             text-align: var(--text-align-left);
+            & > a {
+                font-weight: bold;
+            }
         }
     }
     &-info,

@@ -68,7 +68,7 @@ export const getJurisdictionVanuatuContents = (): TJurisdictionCardItems => ({
                 key: 'assets',
                 title: 'Assets',
                 titleIndicators: {
-                    displayText: '40+',
+                    displayText: '210+',
                     displayTextSkinColor: 'red-darker',
                     type: 'displayText',
                 },

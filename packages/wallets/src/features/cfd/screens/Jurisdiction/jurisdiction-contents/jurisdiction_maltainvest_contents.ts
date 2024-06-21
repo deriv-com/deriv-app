@@ -60,7 +60,7 @@ export const getJurisdictionMaltainvestContents = (): TJurisdictionCardItems => 
                 key: 'assets',
                 title: 'Assets',
                 titleIndicators: {
-                    displayText: '140+',
+                    displayText: '210+',
                     displayTextSkinColor: 'red-light',
                     type: 'displayText',
                 },

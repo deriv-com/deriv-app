@@ -11,12 +11,12 @@ import RealSignupBannerDTraderV2 from 'App/Components/Layout/Header/dtrader-v2/r
 const DTraderV2Header = observer(() => {
     const { ui, client, traders_hub } = useStore();
     const { is_real_acc_signup_on, setShouldShowCooldownModal, openRealAccountSignup } = ui;
-    const { has_any_real_account, is_eu, real_account_creation_unlock_date } = client;
+    const { has_any_real_account, is_eu, real_account_creation_unlock_date, is_landing_company_loaded } = client;
     const { selectRegion } = traders_hub;
     const { pathname } = useLocation();
 
     const is_trading_page = pathname === routes.trade;
-    const show_banner = !has_any_real_account && is_trading_page;
+    const show_banner = !has_any_real_account && is_trading_page && is_landing_company_loaded;
 
     const openRealAccount = () => {
         if (real_account_creation_unlock_date) {

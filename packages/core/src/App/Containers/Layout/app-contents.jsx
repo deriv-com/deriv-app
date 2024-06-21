@@ -21,7 +21,7 @@ const AppContents = observer(({ children }) => {
         ui,
     } = useStore();
 
-    const { is_eu_country, is_logged_in, is_logging_in, has_any_real_account } = client;
+    const { is_eu_country, is_logged_in, is_logging_in, has_any_real_account, is_landing_company_loaded } = client;
     const {
         is_app_disabled,
         is_cashier_visible,
@@ -118,7 +118,7 @@ const AppContents = observer(({ children }) => {
                 'app-contents--is-onboarding': window.location.pathname === routes.onboarding,
                 'app-contents--is-dtrader-v2': isDTraderV2,
                 'app-contents--is-dtrader-v2--with-banner':
-                    isDTraderV2 && !has_any_real_account && pathname === routes.trade,
+                    isDTraderV2 && !has_any_real_account && pathname === routes.trade && is_landing_company_loaded,
             })}
             ref={scroll_ref}
         >

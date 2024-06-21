@@ -37,6 +37,7 @@ describe('DTraderV2Header', () => {
                 ...mockStore({}).client,
                 has_any_real_account: true,
                 is_eu: true,
+                is_landing_company_loaded: false,
             },
         };
     });
@@ -63,8 +64,9 @@ describe('DTraderV2Header', () => {
         expect(screen.getByText(real_acc_signup)).toBeInTheDocument();
     });
 
-    it('should render RealSignupBannerDTraderV2 component if has_any_real_account === false and it is is_trading_page', () => {
+    it('should render RealSignupBannerDTraderV2 component if has_any_real_account === false and it is is_trading_page and is_landing_company_loaded == true', () => {
         default_mocked_store.client.has_any_real_account = false;
+        default_mocked_store.client.is_landing_company_loaded = true;
         render(mockDTraderV2Header());
 
         expect(screen.getByText(real_signup_banner)).toBeInTheDocument();
@@ -72,6 +74,7 @@ describe('DTraderV2Header', () => {
 
     it('should call selectRegion with "EU" if user clicks on Banner and is_eu === true', () => {
         default_mocked_store.client.has_any_real_account = false;
+        default_mocked_store.client.is_landing_company_loaded = true;
         render(mockDTraderV2Header());
 
         userEvent.click(screen.getByText(real_signup_banner));
@@ -81,6 +84,7 @@ describe('DTraderV2Header', () => {
 
     it('should call selectRegion with "Non-EU" if user clicks on Banner and is_eu === false', () => {
         default_mocked_store.client.has_any_real_account = false;
+        default_mocked_store.client.is_landing_company_loaded = true;
         default_mocked_store.client.is_eu = false;
         render(mockDTraderV2Header());
 
@@ -91,6 +95,7 @@ describe('DTraderV2Header', () => {
 
     it('should call setShouldShowCooldownModal if user clicks on Banner and real_account_creation_unlock_date is truthful', () => {
         default_mocked_store.client.has_any_real_account = false;
+        default_mocked_store.client.is_landing_company_loaded = true;
         default_mocked_store.client.real_account_creation_unlock_date = 'unlock';
         render(mockDTraderV2Header());
 

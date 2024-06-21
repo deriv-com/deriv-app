@@ -47,13 +47,13 @@ const WalletsUpgradeModal = observer(() => {
                                 className='wallets-upgrade-modal__video'
                                 src={iframeSrc}
                                 allow='accelerometer; gyroscope; autoplay; encrypted-media;'
-                                allowFullScreen={true}
+                                allowFullScreen
                                 onError={() => setIframeError(true)}
                             />
                         ) : (
                             <video
                                 className='wallets-upgrade-modal__video'
-                                autoPlay={true}
+                                autoPlay
                                 controls
                                 preload='auto'
                                 playsInline

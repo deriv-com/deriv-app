@@ -193,6 +193,7 @@
             text-align: var(--text-align-left);
             & > a {
                 font-weight: bold;
+                text-transform: lowercase;
             }
         }
     }

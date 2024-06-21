@@ -85,7 +85,8 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
     );
 
     const all_market_type_available_accounts = trading_platform_available_accounts?.filter(
-        available_account => available_account.market_type === MARKET_TYPE.ALL
+        available_account =>
+            available_account.market_type === MARKET_TYPE.ALL && available_account.product === 'swap_free'
     );
 
     const is_svg_selected = jurisdiction_selected_shortcode === JURISDICTION.SVG;

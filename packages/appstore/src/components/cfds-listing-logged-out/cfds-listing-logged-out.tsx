@@ -2,7 +2,7 @@ import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { Text } from '@deriv/components';
 import { redirectToLogin } from '@deriv/shared';
-import { getLanguage, Localize } from '@deriv/translations';
+import { getLanguage, Localize, useLocalize } from '@deriv/translations';
 import { getHasDivider } from 'Constants/utils';
 import ListingContainer from 'Components/containers/listing-container';
 import TradingAppCard from 'Components/containers/trading-app-card';
@@ -11,6 +11,7 @@ import CFDsTitle from 'Components/elements/cfds-title';
 import './cfds-listing-logged-out.scss';
 
 const CFDsListingLoggedOut = observer(() => {
+    const { localize } = useLocalize();
     const { traders_hub } = useStore();
     const {
         available_dxtrade_accounts,
@@ -36,10 +37,10 @@ const CFDsListingLoggedOut = observer(() => {
                         clickable_icon
                         icon={existing_account.icon}
                         sub_title={existing_account?.sub_title}
-                        name={existing_account?.name ?? ''}
+                        name={localize(existing_account?.name) ?? ''}
                         short_code_and_region={existing_account?.short_code_and_region}
                         platform={existing_account.platform}
-                        description={existing_account.description}
+                        description={localize(existing_account.description)}
                         key={existing_account.key}
                         has_divider={!is_eu_user && getHasDivider(index, list_size, 3)}
                         onAction={() => redirectToLogin(false, getLanguage())}
@@ -67,7 +68,7 @@ const CFDsListingLoggedOut = observer(() => {
                     icon={account.icon}
                     name={account.name}
                     platform={account.platform}
-                    description={account.description}
+                    description={localize(account.description)}
                     onAction={() => redirectToLogin(false, getLanguage())}
                     key={`trading_app_card_${account.name}`}
                     market_type='all'
@@ -94,7 +95,7 @@ const CFDsListingLoggedOut = observer(() => {
                     icon={account.icon}
                     name={account.name}
                     platform={account.platform}
-                    description={account.description}
+                    description={localize(account.description)}
                     onAction={() => redirectToLogin(false, getLanguage())}
                     key={`trading_app_card_${account.name}`}
                     market_type='all'

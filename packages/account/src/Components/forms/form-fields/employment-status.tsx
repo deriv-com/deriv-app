@@ -12,9 +12,10 @@ type TEmploymentStatusFieldProps = {
 const EmploymentStatusField = ({ required, is_disabled }: TEmploymentStatusFieldProps) => (
     <Field name='employment_status'>
         {({ field, form: { setFieldValue, setFieldTouched, handleBlur, handleChange }, meta }: FieldProps) => (
-            <div className={clsx('account-form__fieldset', 'emp-status')}>
+            <div className='account-form__fieldset'>
                 <DesktopWrapper>
                     <Dropdown
+                        className='dropdown-field'
                         placeholder={required ? localize('Employment status*') : localize('Employment status')}
                         is_align_text_left
                         name={field.name}

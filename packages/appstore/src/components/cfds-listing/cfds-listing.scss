@@ -1085,6 +1085,10 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+
+            .upload_error_btn {
+                margin-top: 3.2rem;
+            }
         }
 
         @include desktop() {

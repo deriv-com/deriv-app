@@ -20,6 +20,7 @@
     &__media-container {
         width: 56.8rem;
         height: 32rem;
+        filter: drop-shadow(0px 4px 6px rgba(14, 14, 14, 0.03)) drop-shadow(0px 12px 16px rgba(14, 14, 14, 0.08));
 
         @include mobile {
             width: 28.4rem;

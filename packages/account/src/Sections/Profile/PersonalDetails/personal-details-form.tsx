@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, Fragment } from 'react';
 import clsx from 'clsx';
 import { Formik, Form, FormikHelpers } from 'formik';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { useHistory } from 'react-router';
 import {
     Button,
     Checkbox,
@@ -16,7 +16,7 @@ import {
     Text,
 } from '@deriv/components';
 import { GetSettings } from '@deriv/api-types';
-import { AUTH_STATUS_CODES, WS, getBrandWebsiteName, routes, useIsMounted } from '@deriv/shared';
+import { AUTH_STATUS_CODES, WS, getBrandWebsiteName, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import LeaveConfirm from 'Components/leave-confirm';
@@ -30,17 +30,20 @@ import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
+import { useInvalidateQuery } from '@deriv/api';
+import { useStatesList, useResidenceList } from '@deriv/hooks';
 
 type TRestState = {
     show_form: boolean;
     api_error?: string;
 };
 
-export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponentProps>) => {
-    const [is_loading, setIsLoading] = useState(true);
-    const [is_state_loading, setIsStateLoading] = useState(false);
+const PersonalDetailsForm = observer(() => {
+    const [is_loading, setIsLoading] = useState(false);
     const [is_btn_loading, setIsBtnLoading] = useState(false);
     const [is_submit_success, setIsSubmitSuccess] = useState(false);
+    const invalidate = useInvalidateQuery();
+    const history = useHistory();
 
     const {
         client,
@@ -52,17 +55,17 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
     const {
         account_settings,
         account_status,
-        residence_list,
         authentication_status,
         is_eu,
         is_virtual,
-        states_list,
-        fetchStatesList,
-        fetchResidenceList,
-        has_residence,
         current_landing_company,
         updateAccountStatus,
+        residence,
     } = client;
+
+    const { data: residence_list, isLoading: is_loading_residence_list } = useResidenceList();
+
+    const { data: states_list, isLoading: is_loading_state_list } = useStatesList(residence);
 
     const {
         refreshNotifications,
@@ -86,29 +89,22 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
         timeout_callback: () => null,
     });
 
-    const isMounted = useIsMounted();
-
     useEffect(() => {
-        if (isMounted()) {
-            const getSettings = async () => {
-                // waits for residence to be populated
+        const init = async () => {
+            try {
+                // Order of API calls is important
                 await WS.wait('get_settings');
-
-                fetchResidenceList?.();
-
-                if (has_residence) {
-                    if (!is_language_changing) {
-                        setIsStateLoading(true);
-                        fetchStatesList().then(() => {
-                            setIsStateLoading(false);
-                        });
-                    }
-                }
-            };
-            getSettings();
+                await invalidate('residence_list');
+                await invalidate('states_list');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        if (is_language_changing) {
+            setIsLoading(true);
+            init();
         }
-        setIsLoading(false);
-    }, [account_settings, is_eu]);
+    }, [invalidate, is_language_changing]);
 
     const onSubmit = async (values: GetSettings, { setStatus, setSubmitting }: FormikHelpers<GetSettings>) => {
         setStatus({ msg: '' });
@@ -138,7 +134,6 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
             }
             // Fetches the status of the account after update
             updateAccountStatus();
-            setIsLoading(false);
             refreshNotifications();
             setIsBtnLoading(false);
             setIsSubmitSuccess(true);
@@ -187,7 +182,7 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
 
     if (api_error) return <LoadErrorMessage error_message={api_error} />;
 
-    if (is_loading || is_state_loading || !residence_list.length) {
+    if (is_loading_state_list || is_loading || is_loading_residence_list) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
@@ -686,4 +681,4 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
     );
 });
 
-export default withRouter(PersonalDetailsForm);
+export default PersonalDetailsForm;

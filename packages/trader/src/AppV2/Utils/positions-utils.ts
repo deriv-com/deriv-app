@@ -1,4 +1,4 @@
-import { getSupportedContracts, getTotalProfit, isHighLow, isMultiplierContract } from '@deriv/shared';
+import { CONTRACT_TYPES, getSupportedContracts, getTotalProfit, isHighLow, isMultiplierContract } from '@deriv/shared';
 import { TPortfolioPosition } from '@deriv/stores/types';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 
@@ -19,6 +19,26 @@ export const filterPositions = (positions: (TPortfolioPosition | TClosedPosition
         if (!config) return false;
         return splittedFilter.includes('main_title' in config ? config.main_title : config.name);
     });
+};
+const contractTypesConfig = {
+    Accumulators: [CONTRACT_TYPES.ACCUMULATOR],
+    Vanillas: [CONTRACT_TYPES.VANILLA.CALL, CONTRACT_TYPES.VANILLA.PUT],
+    Turbos: [CONTRACT_TYPES.TURBOS.LONG, CONTRACT_TYPES.TURBOS.SHORT],
+    Multipliers: [CONTRACT_TYPES.MULTIPLIER.DOWN, CONTRACT_TYPES.MULTIPLIER.UP],
+    'Rise/Fall': [CONTRACT_TYPES.CALL, CONTRACT_TYPES.PUT],
+    'Higher/Lower': [CONTRACT_TYPES.CALL, CONTRACT_TYPES.PUT],
+    'Touch/No touch': [CONTRACT_TYPES.TOUCH.NO_TOUCH, CONTRACT_TYPES.TOUCH.ONE_TOUCH],
+    'Matches/Differs': [CONTRACT_TYPES.MATCH_DIFF.DIFF, CONTRACT_TYPES.MATCH_DIFF.MATCH],
+    'Even/Odd': [CONTRACT_TYPES.EVEN_ODD.EVEN, CONTRACT_TYPES.EVEN_ODD.ODD],
+    'Over/Under': [CONTRACT_TYPES.OVER_UNDER.OVER, CONTRACT_TYPES.OVER_UNDER.UNDER],
+};
+
+export const getFilteredContractTypes = (filter: string[] = []) => {
+    if (!filter.length) return [];
+    const filteredContractTypes = filter
+        .map(option => contractTypesConfig[option as keyof typeof contractTypesConfig] ?? [])
+        .flat();
+    return [...new Set(filteredContractTypes)];
 };
 
 export const getProfit = (

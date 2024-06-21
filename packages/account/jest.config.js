@@ -6,6 +6,7 @@ module.exports = {
     moduleNameMapper: {
         '\\.s(c|a)ss$': '<rootDir>/../../__mocks__/styleMock.js',
         '^.+\\.svg$': '<rootDir>/../../__mocks__/styleMock.js',
+        '@deriv-com/translations': '<rootDir>/../../__mocks__/translation.mock.js',
         '^Assets/(.*)$': '<rootDir>/src/Assets/$1',
         '^Components/(.*)$': '<rootDir>/src/Components/$1',
         '^Constants/(.*)$': '<rootDir>/src/Constants/$1',

@@ -9,7 +9,7 @@ type TIconMessageContent = {
     icon: React.ReactElement;
     is_disabled_for_mobile?: boolean;
     message: React.ReactNode;
-    text?: string | React.ReactElement;
+    text?: React.ReactNode;
 };
 
 const IconMessageContent = ({

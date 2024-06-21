@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { TApiContext, TToken } from 'Types';
+import { TApiContext, TToken } from '../../../Types';
 import ApiTokenContext from '../api-token-context';
 import ApiTokenDeleteButton from '../api-token-delete-button';
 

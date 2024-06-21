@@ -13,7 +13,7 @@ export const optionsAndMultipliersContent = [
     {
         description: i18n.t('The options and multipliers trading platform.'),
         icon: <DerivProductDerivTraderBrandLightLogoHorizontalIcon height='48' width='48' />,
-        redirect: '/',
+        redirect: '/dtrader',
         smallIcon: <DerivProductDerivTraderBrandLightLogoHorizontalIcon height='32' width='32' />,
         title: i18n.t('Deriv Trader'),
     },
@@ -41,7 +41,7 @@ export const optionsAndMultipliersContent = [
         title: i18n.t('Binary Bot'),
     },
     {
-        description: i18n.t('The mobile trading app for multipliers.'),
+        description: i18n.t('The mobile app for trading multipliers and accumulators.'),
         icon: <DerivProductDerivGoBrandLightLogoHorizontalIcon height='48' width='48' />,
         isExternal: true,
         redirect: getStaticUrl('/deriv-go'),

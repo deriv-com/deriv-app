@@ -145,7 +145,7 @@ const DxtradeEnterPasswordModal = () => {
                 marketType='all'
                 onPrimaryClick={() => {
                     hide();
-                    history.push('/wallets/cashier/transfer', { toAccountLoginId: createdAccount?.account_id });
+                    history.push('/wallet/account-transfer', { toAccountLoginId: createdAccount?.account_id });
                 }}
                 onSecondaryClick={hide}
                 platform={dxtradePlatform}

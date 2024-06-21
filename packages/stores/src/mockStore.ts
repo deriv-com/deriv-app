@@ -235,7 +235,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             landing_company: {},
             upgradeable_currencies: [],
             getChangeableFields: jest.fn(),
-            isAccountOfTypeDisabled: jest.fn(),
             is_mt5_allowed: false,
             mt5_disabled_signup_types: {
                 real: false,
@@ -246,10 +245,6 @@ const mock = (): TStores & { is_mock: boolean } => {
                 demo: false,
             },
             dxtrade_accounts_list_error: null,
-            has_account_error_in_mt5_demo_list: false,
-            has_account_error_in_mt5_real_list: false,
-            has_account_error_in_dxtrade_demo_list: false,
-            has_account_error_in_dxtrade_real_list: false,
             website_status: {
                 dx_trade_status: {
                     all: 0,
@@ -580,6 +575,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             barriers: [],
             error: '',
             getPositionById: jest.fn(),
+            is_active_empty: false,
             is_loading: false,
             is_accumulator: false,
             is_multiplier: false,
@@ -636,6 +632,16 @@ const mock = (): TStores & { is_mock: boolean } => {
                 setJurisdictionSelectedShortcode: jest.fn(),
                 setAccountType: jest.fn(),
                 setMigratedMT5Accounts: jest.fn(),
+            },
+            positions: {
+                openContractTypeFilter: [],
+                closedContractTypeFilter: [],
+                timeFilter: '',
+                customTimeRangeFilter: '',
+                setClosedContractTypeFilter: jest.fn(),
+                setOpenContractTypeFilter: jest.fn(),
+                setTimeFilter: jest.fn(),
+                setCustomTimeRangeFilter: jest.fn(),
             },
             trade: {
                 accumulator_range_list: [],

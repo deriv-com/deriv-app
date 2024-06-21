@@ -5,6 +5,7 @@ import { mockStore } from '@deriv/stores';
 import TradeStore from '../trade-store';
 import { configure } from 'mobx';
 import { ContractType } from '../Helpers/contract-type';
+import { TRootStore } from 'Types';
 
 configure({ safeDescriptors: false });
 
@@ -248,7 +249,7 @@ beforeAll(async () => {
             common: {
                 server_time: moment('2024-02-26T11:59:59.488Z'),
             },
-        }),
+        }) as unknown as TRootStore,
     });
     await ContractType.buildContractTypesConfig(symbol);
     mockedTradeStore.onMount();

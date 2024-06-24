@@ -1986,8 +1986,6 @@ export default class ClientStore extends BaseStore {
         this.dxtrade_accounts_list = [];
         this.ctrader_accounts_list = [];
         this.landing_companies = {};
-        localStorage.removeItem('readScamMessage');
-        localStorage.removeItem('isNewAccount');
         localStorage.removeItem('show_effortless_login_modal');
         LocalStore.set('marked_notifications', JSON.stringify([]));
         localStorage.setItem('active_loginid', this.loginid);

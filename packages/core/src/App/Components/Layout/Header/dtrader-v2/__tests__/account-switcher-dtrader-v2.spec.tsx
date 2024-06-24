@@ -118,7 +118,6 @@ describe('AccountSwitcherDTraderV2', () => {
                     },
                     VRTC90000880: {
                         broker: BROKER_CODE.VRTC,
-                        // created_at: 1718803885,
                         currency: 'USD',
                         currency_type: CURRENCY_TYPE.FIAT,
                         is_disabled: 0,

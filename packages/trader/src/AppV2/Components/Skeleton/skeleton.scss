@@ -1,0 +1,19 @@
+.skeleton {
+    background-color: var(--core-color-opacity-black-75);
+    border-radius: var(--core-borderRadius-400);
+
+    &.animated {
+        animation: var(--motion-duration-deliberate) ease-out var(--motion-duration-snappy) infinite pulsate;
+
+        @keyframes pulsate {
+            0%,
+            100% {
+                background-color: var(--core-color-opacity-black-75);
+            }
+            33%,
+            66% {
+                background-color: var(--core-color-opacity-black-100);
+            }
+        }
+    }
+}

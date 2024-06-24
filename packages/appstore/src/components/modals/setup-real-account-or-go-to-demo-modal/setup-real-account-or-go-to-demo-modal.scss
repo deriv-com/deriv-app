@@ -1,4 +1,4 @@
-.setup-real-account-or-go-to-demo {
+.setup-real-account-or-go-to-demo-modal {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -13,20 +13,13 @@
         border-bottom: unset;
     }
 
-    &__title-and-description {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.8rem;
+    &__title {
+        font-family: 'Ubuntu', sans-serif;
         margin-block-start: 2.4rem;
 
         @include mobile {
             margin-block-start: 1.6rem;
         }
-    }
-
-    &__title {
-        font-family: 'Ubuntu', sans-serif;
     }
 
     &__buttons {
@@ -42,7 +35,7 @@
     }
 }
 
-.dc-mobile-dialog__setup-real-account-or-go-to-demo__responsive-wrapper {
+.dc-mobile-dialog__setup-real-account-or-go-to-demo-modal__responsive-wrapper {
     height: calc(100% - 2 * $MOBILE_HEADER_HEIGHT) !important;
     display: flex;
     justify-content: center;

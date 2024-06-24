@@ -1078,6 +1078,8 @@ type TTradersHubStore = {
     startTrade: (platform?: TPlatform, existing_account?: DetailsOfEachMT5Loginid) => void;
     getAccount: () => void;
     showTopUpModal: (existing_account?: DetailsOfEachMT5Loginid) => void;
+    is_setup_real_account_or_go_to_demo_modal_visible: boolean;
+    setIsSetupRealAccountOrGoToDemoModalVisible: (value: boolean) => void;
 };
 
 type TContractReplay = {

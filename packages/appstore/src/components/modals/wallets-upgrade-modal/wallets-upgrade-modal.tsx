@@ -15,9 +15,6 @@ const WalletsUpgradeModal = observer(() => {
     const isWalletMigrationModalClosed = localStorage.getItem('is_wallet_migration_modal_closed');
     const [modalOpen, setModalOpen] = React.useState(!isWalletMigrationModalClosed);
 
-    const iframeSrc =
-        'https://customer-hhvo3ceuqt00w8g8.cloudflarestream.com/7ed5dfd27cdd290e088be8e91201a7f1/iframe?autoplay=true&preload=auto';
-
     const closeModal = () => {
         setModalOpen(false);
         localStorage.setItem('is_wallet_migration_modal_closed', 'true');
@@ -41,13 +38,14 @@ const WalletsUpgradeModal = observer(() => {
                 <div className='wallets-upgrade-modal__content'>
                     <div className='wallets-upgrade-modal__media-container'>
                         <Stream
+                            autoplay
+                            className='wallets-upgrade-modal__video'
                             controls
                             letterboxColor='transparent'
-                            src={iframeSrc}
                             preload='auto'
                             responsive={false}
+                            src='7ed5dfd27cdd290e088be8e91201a7f1'
                             width='100%'
-                            className='wallets-upgrade-modal__video'
                         />
                     </div>
                     <div className='wallets-upgrade-modal__text'>

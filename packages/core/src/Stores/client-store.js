@@ -270,7 +270,6 @@ export default class ClientStore extends BaseStore {
             is_social_signup: computed,
             isEligibleForMoreDemoMt5Svg: action.bound,
             isEligibleForMoreRealMt5: action.bound,
-            setIsCfdPoiCompleted: action.bound,
             setCitizen: action.bound,
             is_mt5_password_not_set: computed,
             is_dxtrade_password_not_set: computed,
@@ -1686,10 +1685,6 @@ export default class ClientStore extends BaseStore {
 
     setSwitched(switched) {
         this.switched = switched;
-    }
-
-    setIsCfdPoiCompleted(is_completed) {
-        this.is_cfd_poi_completed = is_completed;
     }
 
     /**

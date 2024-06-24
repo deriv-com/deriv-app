@@ -294,7 +294,6 @@ export default class ClientStore extends BaseStore {
             should_show_eu_error: computed,
             is_virtual: computed,
             is_eu: computed,
-            is_brazil: computed,
             can_upgrade: computed,
             can_upgrade_to: computed,
             virtual_account_loginid: computed,
@@ -829,10 +828,6 @@ export default class ClientStore extends BaseStore {
                   eu_shortcode_regex.test(gaming_shortcode)
                 : eu_excluded_regex.test(this.residence))
         );
-    }
-
-    get is_brazil() {
-        return this.clients_country === 'br';
     }
 
     get can_upgrade() {
@@ -1476,10 +1471,6 @@ export default class ClientStore extends BaseStore {
         }
 
         const authorize_response = await this.setUserLogin(login_new_user);
-
-        if (action_param === 'signup') {
-            this.root_store.ui.setIsNewAccount();
-        }
 
         if (search) {
             if (code_param && action_param) this.setVerificationCode(code_param, action_param);

@@ -50,6 +50,7 @@ export default class NotificationStore extends BaseStore {
     push_notifications = [];
     client_notifications = {};
     should_show_popups = true;
+    should_show_passkey_notification = false;
     trade_notifications = [];
     p2p_advertiser_info = {};
     p2p_order_props = {};
@@ -91,6 +92,7 @@ export default class NotificationStore extends BaseStore {
             setP2POrderProps: action.bound,
             setP2PRedirectTo: action.bound,
             setShouldShowPopups: action.bound,
+            should_show_passkey_notification: observable,
             should_show_popups: observable,
             showCompletedOrderNotification: action.bound,
             toggleNotificationsModal: action.bound,
@@ -404,6 +406,10 @@ export default class NotificationStore extends BaseStore {
 
             if (has_changed_two_fa) {
                 this.addNotificationMessage(this.client_notifications.has_changed_two_fa);
+            }
+
+            if (this.root_store.client.should_show_passkey_notification) {
+                this.addNotificationMessage(this.client_notifications.enable_passkey);
             }
 
             const client = accounts[loginid];
@@ -924,6 +930,17 @@ export default class NotificationStore extends BaseStore {
                 img_src: getUrlBase('/public/images/common/dp2p_banner.png'),
                 img_alt: 'Deriv P2P',
                 type: 'news',
+            },
+            enable_passkey: {
+                action: {
+                    route: routes.passkeys,
+                    text: localize('Enable passkey'),
+                },
+                key: 'enable_passkey',
+                header: localize('Level up your security!'),
+                message: localize('Strengthen your account’s security today with the latest passkeys feature.'),
+                type: 'announce',
+                should_show_again: true,
             },
             identity: {
                 key: 'identity',

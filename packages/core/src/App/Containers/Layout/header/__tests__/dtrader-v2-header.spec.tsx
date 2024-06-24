@@ -93,7 +93,7 @@ describe('DTraderV2Header', () => {
         expect(default_mocked_store.traders_hub.selectRegion).toBeCalledWith('Non-EU');
     });
 
-    it('should call setShouldShowCooldownModal if user clicks on Banner and real_account_creation_unlock_date is truthful', () => {
+    it('should call setShouldShowCooldownModal if user clicks on Banner and real_account_creation_unlock_date is truthy', () => {
         default_mocked_store.client.has_any_real_account = false;
         default_mocked_store.client.is_landing_company_loaded = true;
         default_mocked_store.client.real_account_creation_unlock_date = 'unlock';

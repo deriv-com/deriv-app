@@ -50,7 +50,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
     const { openRealAccountSignup, setShouldShowCooldownModal, toggleAccountsDialog, toggleSetCurrencyModal } = ui;
 
     const vrtc_loginid = account_list.find(account => account.is_virtual)?.loginid ?? '';
-    const has_user_set_currency = useHasSetCurrency();
+    const has_set_currency = useHasSetCurrency();
     const has_cr_account = account_list.find(acc => acc.loginid?.startsWith(BROKER_CODE.CR))?.loginid;
     const show_separator = is_low_risk && has_maltainvest_account;
     const show_button =
@@ -92,12 +92,12 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
         return [];
     };
 
-    const ableToResetBalance = (account: TActiveAccount) => {
+    const isAbleToResetBalance = (account: TActiveAccount) => {
         const account_init_balance = 10000;
         return !!account?.is_virtual && account?.balance !== account_init_balance;
     };
 
-    const checkIfUserHaveMoreAccount = (type?: string) =>
+    const hasMoreAccounts = (type?: string) =>
         getSortedAccountList(account_list, accounts).filter(
             account => !account.is_virtual && account.loginid.startsWith(type)
         ).length > 1;
@@ -109,7 +109,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
     };
 
     const handleManageAccounts =
-        has_any_real_account && (!has_user_set_currency || !currency)
+        has_any_real_account && (!has_set_currency || !currency)
             ? setAccountCurrency
             : () => openRealAccountSignup('manage');
 
@@ -128,7 +128,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
             balance={accounts[item?.loginid ?? '']?.balance}
             currency={accounts[item?.loginid ?? '']?.currency}
             has_balance={'balance' in accounts[item?.loginid ?? '']}
-            has_reset_balance={is_demo && ableToResetBalance(accounts[account_loginid ?? ''])}
+            has_reset_balance={is_demo && isAbleToResetBalance(accounts[account_loginid ?? ''])}
             is_disabled={item.is_disabled}
             is_virtual={item.is_virtual}
             loginid={item.loginid}
@@ -174,7 +174,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
                     separator_text={
                         is_low_risk &&
                         has_maltainvest_account &&
-                        localize(`Non-EU Deriv ${checkIfUserHaveMoreAccount(BROKER_CODE.CR) ? 'accounts' : 'account'}`)
+                        localize(`Non-EU Deriv ${hasMoreAccounts(BROKER_CODE.CR) ? 'accounts' : 'account'}`)
                     }
                     show_bottom_separator
                 >
@@ -192,8 +192,7 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
             {(!is_high_risk || is_eu) && has_maltainvest_account && (
                 <AccountGroupWrapper
                     separator_text={
-                        is_low_risk &&
-                        localize(`EU Deriv ${checkIfUserHaveMoreAccount(BROKER_CODE.MF) ? 'accounts' : 'account'}`)
+                        is_low_risk && localize(`EU Deriv ${hasMoreAccounts(BROKER_CODE.MF) ? 'accounts' : 'account'}`)
                     }
                     show_bottom_separator
                 >

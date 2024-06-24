@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { getAccountTitle, getAccountIcon } from '../account-switcher-dtrader-v2-utils';
 
-const mock_currency_none_icon = 'currencyNoneIcon';
+const mock_currency_none_icon = 'CurrencyNoneIcon';
 const mock_currency_demo_icon = 'CurrencyDemoIcon';
 const mock_currency_usd_icon = 'CurrencyUsdIcon';
 
@@ -67,7 +67,7 @@ describe('getAccountIcon', () => {
         expect(screen.getByText(mock_currency_none_icon)).toBeInTheDocument();
     });
 
-    it('should return specific for passed currency icon', () => {
+    it('should return an icon specific for a passed currency', () => {
         render(getAccountIcon({ ...mock_args, currency: 'USD' }));
 
         expect(screen.getByText(mock_currency_usd_icon)).toBeInTheDocument();

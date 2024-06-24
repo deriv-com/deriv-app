@@ -457,6 +457,6 @@
     }
 
     .badge__position-top-sm {
-        top: -7px;
+        top: calc(-1 * var(--temp-static-spacing-7));
     }
 }

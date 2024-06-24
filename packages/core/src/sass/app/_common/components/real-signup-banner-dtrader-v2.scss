@@ -29,7 +29,7 @@
             }
             &-3 {
                 position: relative;
-                right: calc(2 * var(--temp-static-spacing-7));
+                inset-inline-end: calc(2 * var(--temp-static-spacing-7));
             }
         }
     }

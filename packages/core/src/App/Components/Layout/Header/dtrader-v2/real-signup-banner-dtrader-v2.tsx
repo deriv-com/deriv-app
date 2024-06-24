@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import 'Sass/app/_common/components/banner-dtrader-v2.scss';
+import 'Sass/app/_common/components/real-signup-banner-dtrader-v2.scss';
 import { Text } from '@deriv-com/quill-ui';
 import {
     CurrencyBtcIcon,

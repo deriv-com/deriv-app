@@ -7,6 +7,7 @@ import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import SetupRealAccountOrGoToDemo from './setup-real-account-or-go-to-demo';
 
 const RealWalletsUpgrade = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "modal_real-wallets-upgrade" */ './real-wallets-upgrade')),
@@ -350,6 +351,7 @@ const ModalManager = () => {
                     {is_eligible && <WalletsUpgradeModal />}
                 </React.Fragment>
             )}
+            <SetupRealAccountOrGoToDemo />
         </React.Fragment>
     );
 };

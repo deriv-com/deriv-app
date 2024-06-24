@@ -91,9 +91,12 @@ export const getAddressDetailValidationSchema = (is_svg: boolean) => ({
         .matches(addressState, localize('State is not in a proper format')),
 });
 
-export const getPersonalDetailsBaseValidationSchema = () =>
+export const getPersonalDetailsBaseValidationSchema = (broker_code: string) =>
     Yup.object({
-        salutation: Yup.string().required(localize('Salutation is required.')),
+        salutation: Yup.string().when({
+            is: () => broker_code === 'maltainvest',
+            then: Yup.string().required(localize('Salutation is required.')),
+        }),
         account_opening_reason: Yup.string().required(localize('Intended use of account is required.')),
         first_name: Yup.string()
             .required(localize('First name is required.'))
@@ -120,9 +123,11 @@ export const getPersonalDetailsBaseValidationSchema = () =>
         place_of_birth: Yup.string().required(localize('Place of birth is required.')),
         citizen: Yup.string().required(localize('Citizenship is required.')),
         tax_identification_confirm: Yup.bool().oneOf([true], localize('Please confirm your tax information.')),
-        crs_confirmation: Yup.bool().test({
-            name: 'crs_confirmation',
-            test: (value, context) => (context.parent.tax_identification_number ? !!value : true),
-            message: localize('Please confirm your CRS self-certification.'),
-        }),
+        crs_confirmation: Yup.bool()
+            .test({
+                name: 'crs_confirmation',
+                test: (value, context) => (context.parent.tax_identification_number ? !!value : true),
+                message: localize('Please confirm your CRS self-certification.'),
+            })
+            .default(false),
     });

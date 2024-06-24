@@ -51,6 +51,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         real_account_creation_unlock_date,
         has_any_real_account,
         virtual_account_loginid,
+        has_maltainvest_account,
     } = client;
     const { show_eu_related_content, content_flag, selectRegion, setTogglePlatformType } = traders_hub;
     const {
@@ -98,8 +99,14 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
             togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
 
-        history.push(routes.traders_hub);
-        await logoutClient();
+        // for DBot we need to logout first and only after this redirect to TH
+        if (window.location.pathname.startsWith(routes.bot)) {
+            await logoutClient();
+            history.push(routes.traders_hub);
+        } else {
+            history.push(routes.traders_hub);
+            await logoutClient();
+        }
     };
 
     const closeAccountsDialog = () => {
@@ -246,7 +253,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                         <AccountWrapper
                             className='acc-switcher__title'
                             header={
-                                is_low_risk
+                                is_low_risk && has_maltainvest_account
                                     ? localize(`Non-EU Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
                                     : localize(`Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
                             }
@@ -314,10 +321,10 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                         <div className='acc-switcher__separator' />
                     </React.Fragment>
                 ) : null}
-                {!is_high_risk || is_eu ? (
+                {(!is_high_risk && has_maltainvest_account) || is_eu ? (
                     <AccountWrapper
                         header={
-                            is_low_risk
+                            is_low_risk && has_maltainvest_account
                                 ? localize(`EU Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)
                                 : localize(`Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)
                         }

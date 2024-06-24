@@ -1,11 +1,10 @@
 import React from 'react';
-import Chip from 'AppV2/Components/Chip';
-import { ActionSheet, Checkbox } from '@deriv-com/quill-ui';
+import { ActionSheet, Checkbox, Chip } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 
 type TContractTypeFilter = {
     contractTypeFilter: string[] | [];
-    setContractTypeFilter: (filterValues: string[]) => void;
+    onApplyContractTypeFilter: (filterValues: string[]) => void;
 };
 
 const availableContracts = [
@@ -21,7 +20,7 @@ const availableContracts = [
     { tradeType: <Localize i18n_default_text='Over/Under' />, id: 'Over/Under' },
 ];
 
-const ContractTypeFilter = ({ contractTypeFilter, setContractTypeFilter }: TContractTypeFilter) => {
+const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: TContractTypeFilter) => {
     const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
     const [changedOptions, setChangedOptions] = React.useState<string[]>(contractTypeFilter);
 
@@ -49,16 +48,17 @@ const ContractTypeFilter = ({ contractTypeFilter, setContractTypeFilter }: TCont
 
     return (
         <React.Fragment>
-            <Chip
+            <Chip.Standard
+                className='filter__chip'
                 dropdown
                 isDropdownOpen={isDropdownOpen}
                 label={getChipLabel()}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 selected={!!changedOptions.length}
-                size='sm'
+                size='md'
             />
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={onActionSheetClose} position='left'>
-                <ActionSheet.Portal>
+                <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Filter by trade types' />} />
                     <ActionSheet.Content className='filter__item__wrapper'>
                         {availableContracts.map(({ tradeType, id }) => (
@@ -79,7 +79,7 @@ const ContractTypeFilter = ({ contractTypeFilter, setContractTypeFilter }: TCont
                         isSecondaryButtonDisabled={!changedOptions.length}
                         primaryAction={{
                             content: <Localize i18n_default_text='Apply' />,
-                            onAction: () => setContractTypeFilter(changedOptions),
+                            onAction: () => onApplyContractTypeFilter(changedOptions),
                         }}
                         secondaryAction={{
                             content: <Localize i18n_default_text='Clear All' />,

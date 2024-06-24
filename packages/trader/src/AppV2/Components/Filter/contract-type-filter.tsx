@@ -5,6 +5,7 @@ import { Localize } from '@deriv/translations';
 type TContractTypeFilter = {
     contractTypeFilter: string[] | [];
     onApplyContractTypeFilter: (filterValues: string[]) => void;
+    id: string;
 };
 
 const availableContracts = [
@@ -20,7 +21,7 @@ const availableContracts = [
     <Localize i18n_default_text='Over/Under' key='Over/Under' />,
 ];
 
-const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: TContractTypeFilter) => {
+const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter, id }: TContractTypeFilter) => {
     const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
     const [changedOptions, setChangedOptions] = React.useState<string[]>(contractTypeFilter);
 
@@ -56,6 +57,7 @@ const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: T
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 selected={!!changedOptions.length}
                 size='md'
+                key={id}
             />
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={onActionSheetClose} position='left'>
                 <ActionSheet.Portal shouldCloseOnDrag>

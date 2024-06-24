@@ -139,13 +139,12 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
                             customTimeRangeFilter={customTimeRangeFilter}
                             setCustomTimeRangeFilter={setCustomTimeRangeFilter}
                             setNoMatchesFound={setNoMatchesFound}
-                            key='time_filter'
                         />
                     )}
                     <ContractTypeFilter
                         contractTypeFilter={contractTypeFilter}
                         onApplyContractTypeFilter={onApplyContractTypeFilter}
-                        key={isClosedTab ? 'contract_close' : 'contract_open'}
+                        id={isClosedTab ? 'contract_close' : 'contract_open'}
                     />
                 </div>
             )}

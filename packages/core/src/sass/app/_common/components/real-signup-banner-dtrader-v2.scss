@@ -21,16 +21,17 @@
         &--is-eu {
             width: var(--core-size-2800);
         }
+    }
 
-        .icon {
-            &-2 {
-                position: relative;
-                right: var(--temp-static-spacing-7);
-            }
-            &-3 {
-                position: relative;
-                inset-inline-end: calc(2 * var(--temp-static-spacing-7));
-            }
+    &__icon {
+        position: relative;
+
+        &:nth-child(2) {
+            inset-inline-end: var(--temp-static-spacing-7);
+        }
+
+        &:nth-child(3) {
+            inset-inline-end: calc(2 * var(--temp-static-spacing-7));
         }
     }
 

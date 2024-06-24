@@ -124,13 +124,15 @@ const TimeFilter = ({
                 className='filter__chip'
                 dropdown
                 isDropdownOpen={isDropdownOpen}
-                label={getChipLabel()}
+                // label={getChipLabel()}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 selected={isChipSelected}
                 size='md'
                 key='time_filter'
                 id='time_filter'
-            />
+            >
+                {getChipLabel()}
+            </Chip.Standard>
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={() => setIsDropdownOpen(false)} position='left'>
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Filter by trade types' />} />

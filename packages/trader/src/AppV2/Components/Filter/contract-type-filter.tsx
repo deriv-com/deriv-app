@@ -53,13 +53,15 @@ const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter, id 
                 className='filter__chip'
                 dropdown
                 isDropdownOpen={isDropdownOpen}
-                label={getChipLabel()}
+                // label={getChipLabel()}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 selected={!!changedOptions.length}
                 size='md'
                 key={id}
                 id={id}
-            />
+            >
+                {getChipLabel()}
+            </Chip.Standard>
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={onActionSheetClose} position='left'>
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Filter by trade types' />} />

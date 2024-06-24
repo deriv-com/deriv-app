@@ -129,6 +129,7 @@ const TimeFilter = ({
                 selected={isChipSelected}
                 size='md'
                 key='time_filter'
+                id='time_filter'
             />
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={() => setIsDropdownOpen(false)} position='left'>
                 <ActionSheet.Portal shouldCloseOnDrag>

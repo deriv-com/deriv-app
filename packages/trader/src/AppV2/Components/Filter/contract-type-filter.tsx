@@ -58,6 +58,7 @@ const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter, id 
                 selected={!!changedOptions.length}
                 size='md'
                 key={id}
+                id={id}
             />
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={onActionSheetClose} position='left'>
                 <ActionSheet.Portal shouldCloseOnDrag>

@@ -385,7 +385,7 @@ const CFDPersonalDetailsForm = ({
                                                                 disabled={isFieldDisabled('citizen')}
                                                                 list_items={residence_list}
                                                                 onItemSelection={(item: ResidenceList[0]) =>
-                                                                    handleItemSelection(item, 'citizen')
+                                                                    setFieldValue('citizen', item.value, true)
                                                                 }
                                                                 list_portal_id='modal_root'
                                                                 required

@@ -35,7 +35,7 @@ export default class TradersHubStore extends BaseStore {
     active_modal_wallet_id;
     is_cfd_restricted_country = false;
     is_financial_restricted_country = false;
-    is_setup_real_account_or_go_to_demo_modal_visible = true;
+    is_setup_real_account_or_go_to_demo_modal_visible = false;
 
     constructor(root_store) {
         const local_storage_properties = [

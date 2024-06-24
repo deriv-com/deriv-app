@@ -1,4 +1,5 @@
 import React from 'react';
+import { Analytics } from '@deriv-com/analytics';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { Button, Icon, Text } from '@deriv/components';
@@ -16,6 +17,16 @@ export const SetupRealAccountOrGoToDemoModalContent = observer(({ is_responsive 
     const { is_cr_demo, is_eu_demo } = useContentFlag();
 
     const onSetupRealAccountButtonClick = () => {
+        Analytics.trackEvent('ce_tradershub_popup', {
+            action: 'click_download',
+            form_name: 'traders_hub_default',
+            account_mode: 'demo',
+            popup_name: 'setup_real_or_go_demo',
+            popup_type: 'with_cta',
+            // @ts-expect-error 'cta_name' property type will be added later
+            cta_name: 'setup_real',
+        });
+
         setIsSetupRealAccountOrGoToDemoModalVisible(false);
 
         if (is_cr_demo) {
@@ -28,6 +39,16 @@ export const SetupRealAccountOrGoToDemoModalContent = observer(({ is_responsive 
     };
 
     const onToDemoButtonClick = () => {
+        Analytics.trackEvent('ce_tradershub_popup', {
+            action: 'click_download',
+            form_name: 'traders_hub_default',
+            account_mode: 'demo',
+            popup_name: 'setup_real_or_go_demo',
+            popup_type: 'with_cta',
+            // @ts-expect-error 'cta_name' property type will be added later
+            cta_name: 'go_demo',
+        });
+
         setIsSetupRealAccountOrGoToDemoModalVisible(false);
     };
 

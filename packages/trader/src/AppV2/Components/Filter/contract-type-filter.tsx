@@ -8,16 +8,16 @@ type TContractTypeFilter = {
 };
 
 const availableContracts = [
-    { tradeType: <Localize i18n_default_text='Accumulators' />, id: 'Accumulators' },
-    { tradeType: <Localize i18n_default_text='Vanillas' />, id: 'Vanillas' },
-    { tradeType: <Localize i18n_default_text='Turbos' />, id: 'Turbos' },
-    { tradeType: <Localize i18n_default_text='Multipliers' />, id: 'Multipliers' },
-    { tradeType: <Localize i18n_default_text='Rise/Fall' />, id: 'Rise/Fall' },
-    { tradeType: <Localize i18n_default_text='Higher/Lower' />, id: 'Higher/Lower' },
-    { tradeType: <Localize i18n_default_text='Touch/No touch' />, id: 'Touch/No touch' },
-    { tradeType: <Localize i18n_default_text='Matches/Differs' />, id: 'Matches/Differs' },
-    { tradeType: <Localize i18n_default_text='Even/Odd' />, id: 'Even/Odd' },
-    { tradeType: <Localize i18n_default_text='Over/Under' />, id: 'Over/Under' },
+    <Localize i18n_default_text='Accumulators' key='Accumulators' />,
+    <Localize i18n_default_text='Vanillas' key='Vanillas' />,
+    <Localize i18n_default_text='Turbos' key='Turbos' />,
+    <Localize i18n_default_text='Multipliers' key='Multipliers' />,
+    <Localize i18n_default_text='Rise/Fall' key='Rise/Fall' />,
+    <Localize i18n_default_text='Higher/Lower' key='Higher/Lower' />,
+    <Localize i18n_default_text='Touch/No touch' key='Touch/No touch' />,
+    <Localize i18n_default_text='Matches/Differs' key='Matches/Differs' />,
+    <Localize i18n_default_text='Even/Odd' key='Even/Odd' />,
+    <Localize i18n_default_text='Over/Under' key='Over/Under' />,
 ];
 
 const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: TContractTypeFilter) => {
@@ -42,7 +42,7 @@ const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: T
     const getChipLabel = () => {
         const arrayLength = contractTypeFilter.length;
         if (!arrayLength) return <Localize i18n_default_text='All trade types' />;
-        if (arrayLength === 1) return availableContracts.find(type => type.id === contractTypeFilter[0])?.tradeType;
+        if (arrayLength === 1) return availableContracts.find(type => type.key === contractTypeFilter[0])?.key;
         return <Localize i18n_default_text='{{amount}} trade types' values={{ amount: arrayLength }} />;
     };
 
@@ -62,14 +62,14 @@ const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: T
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Filter by trade types' />} />
                     <ActionSheet.Content className='filter__item__wrapper'>
-                        {availableContracts.map(({ tradeType, id }) => (
+                        {availableContracts.map(contract => (
                             <Checkbox
-                                checked={changedOptions.includes(id)}
+                                checked={changedOptions.includes(contract.key as string)}
                                 checkboxPosition='right'
                                 className='filter__item'
-                                id={id}
-                                key={id}
-                                label={tradeType}
+                                id={contract.key as string}
+                                key={contract.key}
+                                label={contract}
                                 onChange={onChange}
                                 size='md'
                             />

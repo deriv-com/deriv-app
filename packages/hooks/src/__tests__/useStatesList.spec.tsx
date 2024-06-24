@@ -1,15 +1,15 @@
-import * as React from 'react';
+import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { APIProvider, useFetch } from '@deriv/api';
+import { APIProvider, useQuery } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import useStatesList from '../useStatesList';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useFetch: jest.fn(),
+    useQuery: jest.fn(),
 }));
 
-const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'states_list'>>;
+const mockUseQuery = useQuery as jest.MockedFunction<typeof useQuery<'states_list'>>;
 
 describe('useStatesList', () => {
     const mock = mockStore({});
@@ -22,7 +22,7 @@ describe('useStatesList', () => {
 
     it('should return an empty array when the store is not ready', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({
+        mockUseQuery.mockReturnValue({
             data: {
                 states_list: [],
             },
@@ -34,7 +34,7 @@ describe('useStatesList', () => {
 
     it('should return data fetched along with correct status', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({
+        mockUseQuery.mockReturnValue({
             data: {
                 states_list: [
                     { text: 'state 1', value: 's1' },

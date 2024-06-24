@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text } from '@deriv-com/quill-ui';
-import { Loading } from '@deriv/components';
 import { StandaloneBriefcaseFillIcon, StandaloneSearchFillIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 
@@ -10,26 +9,14 @@ export type TEmptyPositionsProps = {
 };
 
 const EmptyPositions = ({ isClosedTab, noMatchesFound }: TEmptyPositionsProps) => {
-    const [showLoader, setShowLoader] = React.useState(true);
-
-    React.useEffect(() => {
-        const timeout = setTimeout(() => setShowLoader(false), 700);
-        return () => {
-            clearTimeout(timeout);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     const Icon = noMatchesFound ? StandaloneSearchFillIcon : StandaloneBriefcaseFillIcon;
 
-    if (showLoader) return <Loading />;
     return (
         <div className={`empty-positions__${isClosedTab ? 'closed' : 'open'}`}>
             <div className='icon' data-testid='dt_empty_state_icon'>
                 <Icon iconSize='2xl' />
             </div>
             <div className='message'>
-                {/* There is an issue with tokens: the 'lg' size should give 18px but it's giving 20px, it's being discussed. */}
                 <Text bold size='lg' color='quill-typography__color--subtle'>
                     {noMatchesFound && <Localize i18n_default_text='No matches found' />}
                     {!noMatchesFound &&

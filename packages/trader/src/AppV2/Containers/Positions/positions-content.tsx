@@ -144,7 +144,6 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
                     <ContractTypeFilter
                         contractTypeFilter={contractTypeFilter}
                         onApplyContractTypeFilter={onApplyContractTypeFilter}
-                        id={isClosedTab ? 'contract_close' : 'contract_open'}
                     />
                 </div>
             )}

@@ -61,7 +61,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     const shouldShowEmptyMessage = hasNoPositions || noMatchesFound;
     const shouldShowContractCards =
         !!filteredPositions.length && (isClosedTab || (filteredPositions[0]?.contract_info as TContractInfo)?.status);
-    const shouldShowLoading = isClosedTab ? isFetchingClosedPositions : is_loading;
+    const shouldShowLoading = isClosedTab ? isFetchingClosedPositions && !filterPositions.length : is_loading;
     const shouldShowTakeProfit = !isClosedTab || !!(timeFilter || customTimeRangeFilter);
 
     const onScroll = React.useCallback(

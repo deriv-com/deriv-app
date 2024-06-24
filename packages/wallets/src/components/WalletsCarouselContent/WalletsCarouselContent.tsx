@@ -29,7 +29,7 @@ const WalletsCarouselContent: React.FC = () => {
 
     const { data: walletAccountsList, isLoading: isWalletAccountsListLoading } = useMobileCarouselWalletsList();
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
-    const { data: balanceData, isLoading: isBalanceLoading } = useSubscribedBalance();
+    const { data: balanceData } = useSubscribedBalance();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
     const [selectedLoginId, setSelectedLoginId] = useState('');
@@ -231,9 +231,7 @@ const WalletsCarouselContent: React.FC = () => {
                         {walletAccountsList?.map((account, index) => (
                             <WalletCard
                                 balance={
-                                    !isBalanceLoading &&
-                                    account.loginid === activeWallet?.loginid &&
-                                    balanceData.loginid === selectedLoginId
+                                    account.loginid === activeWallet?.loginid && balanceData.loginid === selectedLoginId
                                         ? displayMoney(
                                               balanceData?.accounts?.[account.loginid]?.balance ?? account.balance,
                                               activeWallet?.currency ?? '',

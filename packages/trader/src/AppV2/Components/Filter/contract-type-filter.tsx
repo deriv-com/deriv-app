@@ -49,7 +49,6 @@ const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: T
     return (
         <React.Fragment>
             <Chip.Standard
-                key='filter__chip'
                 className='filter__chip'
                 dropdown
                 isDropdownOpen={isDropdownOpen}

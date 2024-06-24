@@ -1,13 +1,13 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
-import { useBalanceContext } from '../../providers/BalanceProvider';
+import useSubscribedBalance from '../../hooks/useSubscribedBalance';
 import { WalletText } from '../Base';
 import './WalletListCardBalance.scss';
 
 const WalletListCardBalance = () => {
     const { data: activeWallet, isInitializing: isActiveWalletInitializing } = useActiveWalletAccount();
-    const { data: balanceData, isLoading: isBalanceLoading } = useBalanceContext();
+    const { data: balanceData, isLoading: isBalanceLoading } = useSubscribedBalance();
     const showLoader = isBalanceLoading || isActiveWalletInitializing;
 
     return (

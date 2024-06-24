@@ -14,7 +14,7 @@ import {
 import { WalletCurrencyIcon, WalletGradientBackground, WalletText } from '../../../../components';
 import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
 import useDevice from '../../../../hooks/useDevice';
-import { useBalanceContext } from '../../../../providers/BalanceProvider';
+import useSubscribedBalance from '../../../../hooks/useSubscribedBalance';
 import i18n from '../../../../translations/i18n';
 import './WalletCashierHeader.scss';
 
@@ -65,7 +65,7 @@ const virtualAccountTabs = [
 
 const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const { data: activeWallet } = useActiveWalletAccount();
-    const { data: balanceData } = useBalanceContext();
+    const { data: balanceData } = useSubscribedBalance();
     const { isMobile } = useDevice();
     const activeTabRef = useRef<HTMLButtonElement>(null);
     const history = useHistory();

@@ -4,7 +4,7 @@ import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useAuthorize }
 import { displayMoney } from '@deriv/api-v2/src/utils';
 import { LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
 import useDevice from '../../hooks/useDevice';
-import { useBalanceContext } from '../../providers/BalanceProvider';
+import useSubscribedBalance from '../../hooks/useSubscribedBalance';
 import { WalletText } from '../Base';
 import { WalletListCardBadge } from '../WalletListCardBadge';
 import { WalletMarketIcon } from '../WalletMarketIcon';
@@ -13,7 +13,7 @@ const DerivAppsTradingAccount = () => {
     const { isMobile } = useDevice();
     const history = useHistory();
     const { data: authorizeData } = useAuthorize();
-    const { data: balanceData, isLoading } = useBalanceContext();
+    const { data: balanceData, isLoading } = useSubscribedBalance();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
 

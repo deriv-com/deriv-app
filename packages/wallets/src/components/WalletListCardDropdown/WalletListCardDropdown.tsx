@@ -2,8 +2,8 @@ import React, { ComponentProps, useCallback, useEffect, useMemo, useState } from
 import { Trans, useTranslation } from 'react-i18next';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
+import useSubscribedBalance from '../../hooks/useSubscribedBalance';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
-import { useBalanceContext } from '../../providers/BalanceProvider';
 import { THooks } from '../../types';
 import { WalletDropdown, WalletText } from '../Base';
 import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
@@ -16,7 +16,7 @@ const WalletListCardDropdown = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const switchWalletAccount = useWalletAccountSwitcher();
     const { t } = useTranslation();
-    const { data: balanceData } = useBalanceContext();
+    const { data: balanceData } = useSubscribedBalance();
 
     const [inputWidth, setInputWidth] = useState('auto');
     const loginId = activeWallet?.loginid;

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
-import { useBalanceContext } from '../../providers/BalanceProvider';
+import useSubscribedBalance from '../../hooks/useSubscribedBalance';
 import { AccountsList } from '../AccountsList';
 import { WalletsCarouselContent } from '../WalletsCarouselContent';
 import { WalletsCarouselHeader } from '../WalletsCarouselHeader';
@@ -12,7 +12,7 @@ const WalletsCarousel = () => {
     const [hideWalletsCarouselHeader, setHideWalletsCarouselHeader] = useState(true);
     const contentRef = useRef(null);
 
-    const { data: balanceData, isLoading: isBalanceLoading } = useBalanceContext();
+    const { data: balanceData, isLoading: isBalanceLoading } = useSubscribedBalance();
 
     const displayedBalance = useMemo(() => {
         return displayMoney?.(

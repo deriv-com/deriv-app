@@ -3,8 +3,8 @@ import useEmblaCarousel, { EmblaCarouselType, EmblaEventType } from 'embla-carou
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
+import useSubscribedBalance from '../../hooks/useSubscribedBalance';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
-import { useBalanceContext } from '../../providers/BalanceProvider';
 import { THooks } from '../../types';
 import { ProgressBar, WalletText } from '../Base';
 import { WalletsCarouselLoader } from '../SkeletonLoader';
@@ -29,7 +29,7 @@ const WalletsCarouselContent: React.FC = () => {
 
     const { data: walletAccountsList, isLoading: isWalletAccountsListLoading } = useMobileCarouselWalletsList();
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
-    const { data: balanceData, isLoading: isBalanceLoading } = useBalanceContext();
+    const { data: balanceData, isLoading: isBalanceLoading } = useSubscribedBalance();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
     const [selectedLoginId, setSelectedLoginId] = useState('');

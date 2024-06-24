@@ -19,20 +19,26 @@
 
     &__media-container {
         width: 56rem;
-        height: 32rem;
-        border-radius: $BORDER_RADIUS;
+        height: 100%;
+        min-height: 32rem;
         filter: drop-shadow(0px 4px 6px rgba(14, 14, 14, 0.03)) drop-shadow(0px 12px 16px rgba(14, 14, 14, 0.08));
 
         @include mobile {
             width: 28rem;
-            height: 16rem;
+            min-height: 15.7rem;
         }
     }
 
     &__video {
         width: 100%;
-        border-radius: $BORDER_RADIUS;
-        aspect-ratio: 16 / 9;
+
+        iframe {
+            aspect-ratio: 16 / 9;
+            border-radius: $BORDER_RADIUS;
+            @include mobile {
+                border-radius: 4px;
+            }
+        }
     }
 
     &__text {
@@ -58,7 +64,6 @@
 
 .dc-modal__container_wallets-upgrade-modal {
     border-radius: 0.8rem;
-    background: var(--system-light-7-secondary-background, #f2f3f4);
 
     & .dc-modal-header {
         @include desktop {

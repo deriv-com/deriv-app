@@ -1,11 +1,11 @@
 import React from 'react';
-import { useWalletMigration } from '@deriv/hooks';
-import { Button, Text, Modal } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
-import { localize, Localize } from '@deriv/translations';
-import './wallets-upgrade-modal.scss';
 import classNames from 'classnames';
-import { getUrlBase } from '@deriv/shared';
+import { Stream } from '@cloudflare/stream-react';
+import { Button, Text, Modal } from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
+import { observer, useStore } from '@deriv/stores';
+import { useWalletMigration } from '@deriv/hooks';
+import './wallets-upgrade-modal.scss';
 
 const WalletsUpgradeModal = observer(() => {
     const { traders_hub, ui } = useStore();
@@ -14,11 +14,9 @@ const WalletsUpgradeModal = observer(() => {
     const { is_eligible, startMigration } = useWalletMigration();
     const isWalletMigrationModalClosed = localStorage.getItem('is_wallet_migration_modal_closed');
     const [modalOpen, setModalOpen] = React.useState(!isWalletMigrationModalClosed);
-    const [iframeError, setIframeError] = React.useState(false);
 
     const iframeSrc =
         'https://customer-hhvo3ceuqt00w8g8.cloudflarestream.com/7ed5dfd27cdd290e088be8e91201a7f1/iframe?autoplay=true&preload=auto';
-    const fallbackVideoSrc = getUrlBase('/public/video/wallets_introduction.mp4');
 
     const closeModal = () => {
         setModalOpen(false);
@@ -42,26 +40,15 @@ const WalletsUpgradeModal = observer(() => {
             <Modal.Body>
                 <div className='wallets-upgrade-modal__content'>
                     <div className='wallets-upgrade-modal__media-container'>
-                        {!iframeError ? (
-                            <iframe
-                                className='wallets-upgrade-modal__video'
-                                src={iframeSrc}
-                                allow='accelerometer; gyroscope; autoplay; encrypted-media;'
-                                allowFullScreen
-                                onError={() => setIframeError(true)}
-                            />
-                        ) : (
-                            <video
-                                className='wallets-upgrade-modal__video'
-                                autoPlay
-                                controls
-                                preload='auto'
-                                playsInline
-                                disablePictureInPicture
-                                controlsList='nodownload'
-                                src={fallbackVideoSrc}
-                            />
-                        )}
+                        <Stream
+                            controls
+                            letterboxColor='transparent'
+                            src={iframeSrc}
+                            preload='auto'
+                            responsive={false}
+                            width='100%'
+                            className='wallets-upgrade-modal__video'
+                        />
                     </div>
                     <div className='wallets-upgrade-modal__text'>
                         <Text align='center' size={is_mobile ? 's' : 'm'} weight='bold'>

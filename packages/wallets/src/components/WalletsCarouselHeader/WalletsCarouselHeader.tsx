@@ -11,10 +11,9 @@ type TProps = {
     currency: string;
     hidden?: boolean;
     isDemo?: boolean;
-    isLoading?: boolean;
 };
 
-const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, isDemo, isLoading }) => {
+const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, isDemo }) => {
     const history = useHistory();
 
     return (
@@ -25,7 +24,7 @@ const WalletsCarouselHeader: React.FC<TProps> = ({ balance, currency, hidden, is
                     <WalletText color='general' size='sm'>
                         {currency} Wallet
                     </WalletText>
-                    {isLoading ? (
+                    {balance === undefined ? (
                         <div
                             className='wallets-skeleton wallets-carousel-header__balance-loader'
                             data-testid='dt_wallets_carousel_header_balance_loader'

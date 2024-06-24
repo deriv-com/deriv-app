@@ -72,6 +72,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const location = useLocation();
 
     const tabs = activeWallet?.is_virtual ? virtualAccountTabs : realAccountTabs;
+    const balance = balanceData?.accounts?.[activeWallet?.loginid ?? '']?.balance;
 
     useEffect(() => {
         if (isMobile && activeTabRef.current) {
@@ -108,15 +109,18 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                                 />
                             )}
                         </div>
-                        <WalletText color={activeWallet?.is_virtual ? 'white' : 'general'} size='xl' weight='bold'>
-                            {displayMoney?.(
-                                balanceData?.accounts?.[activeWallet?.loginid ?? '']?.balance ?? 0,
-                                activeWallet?.currency || '',
-                                {
+                        {balance === undefined ? (
+                            <div
+                                className='wallets-skeleton wallets-cashier-header__balance--loader'
+                                data-testid='dt_wallets_cashier_header_balance_loader'
+                            />
+                        ) : (
+                            <WalletText color={activeWallet?.is_virtual ? 'white' : 'general'} size='xl' weight='bold'>
+                                {displayMoney?.(balance, activeWallet?.currency || '', {
                                     fractional_digits: activeWallet?.currency_config?.fractional_digits,
-                                }
-                            )}
-                        </WalletText>
+                                })}
+                            </WalletText>
+                        )}
                     </div>
                     <div className='wallets-cashier-header__top-right-info'>
                         {activeWallet?.wallet_currency_type && (

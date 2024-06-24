@@ -16,6 +16,14 @@
         height: fit-content;
     }
 
+    &__balance {
+        &--loader {
+            width: 18.8rem;
+            height: 3.6rem;
+            opacity: 0.4;
+        }
+    }
+
     &__info {
         display: flex;
         justify-content: space-between;

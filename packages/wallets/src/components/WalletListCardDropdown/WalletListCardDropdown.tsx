@@ -39,31 +39,38 @@ const WalletListCardDropdown = () => {
     const walletList: WalletList = useMemo(() => {
         return wallets
             ?.filter(wallet => !wallet.is_virtual)
-            ?.map(wallet => ({
-                listItem: (
-                    <div className='wallets-list-card-dropdown__item'>
-                        <WalletCurrencyIcon currency={wallet.currency ?? 'USD'} rounded />
-                        <div className='wallets-list-card-dropdown__item-content'>
-                            <WalletText size='2xs'>
-                                <Trans defaults={`${wallet.currency} Wallet`} />
-                            </WalletText>
-                            <WalletText size='sm' weight='bold'>
-                                <Trans
-                                    defaults={displayMoney?.(
-                                        balanceData?.accounts?.[wallet.loginid]?.balance ?? 0,
-                                        wallet?.currency || '',
-                                        {
-                                            fractional_digits: wallet?.currency_config?.fractional_digits,
-                                        }
-                                    )}
-                                />
-                            </WalletText>
+            ?.map(wallet => {
+                const balance = balanceData?.accounts?.[wallet.loginid]?.balance;
+
+                return {
+                    listItem: (
+                        <div className='wallets-list-card-dropdown__item'>
+                            <WalletCurrencyIcon currency={wallet.currency ?? 'USD'} rounded />
+                            <div className='wallets-list-card-dropdown__item-content'>
+                                <WalletText size='2xs'>
+                                    <Trans defaults={`${wallet.currency} Wallet`} />
+                                </WalletText>
+                                {balance === undefined ? (
+                                    <div
+                                        className='wallets-skeleton wallets-list-card-dropdown__balance--loader'
+                                        data-testid='dt_wallets_list_card_dropdown_balance_loader'
+                                    />
+                                ) : (
+                                    <WalletText size='sm' weight='bold'>
+                                        <Trans
+                                            defaults={displayMoney?.(balance, wallet?.currency || '', {
+                                                fractional_digits: wallet?.currency_config?.fractional_digits,
+                                            })}
+                                        />
+                                    </WalletText>
+                                )}
+                            </div>
                         </div>
-                    </div>
-                ),
-                text: generateTitleText(wallet),
-                value: wallet.loginid,
-            }));
+                    ),
+                    text: generateTitleText(wallet),
+                    value: wallet.loginid,
+                };
+            });
     }, [balanceData?.accounts, generateTitleText, wallets]);
 
     return (

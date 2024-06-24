@@ -13,9 +13,10 @@ const DerivAppsTradingAccount = () => {
     const { isMobile } = useDevice();
     const history = useHistory();
     const { data: authorizeData } = useAuthorize();
-    const { data: balanceData, isLoading } = useSubscribedBalance();
+    const { data: balanceData } = useSubscribedBalance();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
+    const balance = balanceData?.accounts?.[activeLinkedToTradingAccount?.loginid ?? '']?.balance as number;
 
     return (
         <div className='wallets-deriv-apps-section wallets-deriv-apps-section__border'>
@@ -27,18 +28,14 @@ const DerivAppsTradingAccount = () => {
                     <WalletText size='sm'>Options</WalletText>
                     <WalletListCardBadge isDemo={activeWallet?.is_virtual} label={activeWallet?.landing_company_name} />
                 </div>
-                {isLoading ? (
+                {balance === undefined ? (
                     <div className='wallets-skeleton wallets-deriv-apps-balance-loader' />
                 ) : (
                     <WalletText size='sm' weight='bold'>
-                        {displayMoney(
-                            balanceData?.accounts?.[activeLinkedToTradingAccount?.loginid ?? '']?.balance || 0,
-                            activeLinkedToTradingAccount?.currency_config?.display_code || 'USD',
-                            {
-                                fractional_digits: activeLinkedToTradingAccount?.currency_config?.fractional_digits,
-                                preferred_language: authorizeData?.preferred_language,
-                            }
-                        )}
+                        {displayMoney(balance, activeLinkedToTradingAccount?.currency_config?.display_code || 'USD', {
+                            fractional_digits: activeLinkedToTradingAccount?.currency_config?.fractional_digits,
+                            preferred_language: authorizeData?.preferred_language,
+                        })}
                     </WalletText>
                 )}
                 <WalletText color='less-prominent' lineHeight='sm' size='xs' weight='bold'>

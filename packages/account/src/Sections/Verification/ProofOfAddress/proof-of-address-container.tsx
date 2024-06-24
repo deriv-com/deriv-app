@@ -1,7 +1,7 @@
 import React from 'react';
 import { AccountStatusResponse, GetAccountStatus } from '@deriv/api-types';
 import { Button, Loading } from '@deriv/components';
-import { WS, getPlatformRedirect, platforms, AUTH_STATUS_CODES } from '@deriv/shared';
+import { WS, getPlatformRedirect, platforms, routes, AUTH_STATUS_CODES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import Expired from '../../../Components/poa/status/expired';
@@ -133,7 +133,7 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
             ['expired', 'rejected', 'suspected'].includes(document_status)) ||
         poa_address_mismatch ||
         poa_expiring_soon ||
-        poa_authenticated_with_idv;
+        (poa_authenticated_with_idv && from_platform?.route === routes.cashier_p2p);
 
     const redirect_button = should_show_redirect_btn && (
         <Button

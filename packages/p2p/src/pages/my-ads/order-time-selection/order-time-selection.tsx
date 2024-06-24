@@ -25,6 +25,7 @@ const OrderTimeSelection = ({
     ...field
 }: TOrderTimeSelectionProps) => {
     const { values, handleChange }: TFormikContext = useFormikContext<TFormikContext>();
+    const { order_completion_time } = values;
     const { showModal } = useModalManagerContext();
     const { p2p_settings } = useP2PSettings();
     const { order_expiry_options } = p2p_settings ?? {};
@@ -37,11 +38,16 @@ const OrderTimeSelection = ({
             NonNullable<ReturnType<typeof useP2PSettings>>['p2p_settings']
         >['order_expiry_options']
     ) => {
+        const options = order_expiry_options?.map(option => ({
+            text: formatTime(option / 60),
+            value: `${option}`,
+        }));
+        if (options?.some(option => option.value === order_completion_time)) return options;
         return (
-            order_expiry_options?.map(option => ({
-                text: formatTime(option / 60),
-                value: `${option}`,
-            })) ?? []
+            options?.concat({
+                text: formatTime(Number(order_completion_time) / 60),
+                value: order_completion_time,
+            }) ?? []
         );
     };
 

@@ -5,7 +5,7 @@ import { Localize } from '@deriv/translations';
 type TContractTypeFilter = {
     contractTypeFilter: string[] | [];
     onApplyContractTypeFilter: (filterValues: string[]) => void;
-    id: string;
+    id?: string;
 };
 
 const availableContracts = [

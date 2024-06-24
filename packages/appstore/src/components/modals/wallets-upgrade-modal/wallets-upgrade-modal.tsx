@@ -30,7 +30,7 @@ const WalletsUpgradeModal = observer(() => {
         <Modal
             className='wallets-upgrade-modal'
             is_open={(is_eligible && modalOpen) || is_real_wallets_upgrade_on}
-            width={is_mobile ? '32.8rem' : '116rem'}
+            width={is_mobile ? '32.8rem' : '77rem'}
             title=' '
             toggleModal={closeModal}
         >
@@ -42,6 +42,8 @@ const WalletsUpgradeModal = observer(() => {
                             className='wallets-upgrade-modal__video'
                             controls
                             letterboxColor='transparent'
+                            loop
+                            muted
                             preload='auto'
                             responsive={false}
                             src='7ed5dfd27cdd290e088be8e91201a7f1'

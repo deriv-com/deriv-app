@@ -7,7 +7,10 @@
         gap: 3.2rem;
         max-width: 63.8rem;
         margin: 0 auto;
-        padding: 8rem 0;
+        padding-top: calc(
+            5.4rem + 3.2rem
+        ); // 5.4rem is the height of the header, 3.2rem is the padding-top of the content
+        padding-bottom: 3.2rem;
 
         @include mobile {
             gap: 1.6rem;
@@ -65,10 +68,8 @@
 .dc-modal__container_wallets-upgrade-modal {
     border-radius: 0.8rem;
 
-    & .dc-modal-header {
-        @include desktop {
-            border-bottom: 1px solid var(--border-normal);
-        }
+    &.dc-modal-header {
+        padding-bottom: 3.2rem;
     }
 
     & .dc-modal-body {

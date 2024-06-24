@@ -5,11 +5,11 @@ import { ContentFlag, setPerformanceValue } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
-import PlatformLoader from 'Components/pre-loader/platform-loader';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { BrandConfig } from 'Constants/platform-config';
 import { getHasDivider } from 'Constants/utils';
 import { Analytics } from '@deriv-com/analytics';
+import PlatformLoader from 'Components/pre-loader/platform-loader';
 
 const OptionsAndMultipliersListing = observer(() => {
     const { traders_hub, client, ui } = useStore();
@@ -115,32 +115,29 @@ const OptionsAndMultipliersListing = observer(() => {
                 </div>
             )}
 
-            {is_landing_company_loaded ? (
-                available_platforms.map((available_platform: BrandConfig, index: number) => (
-                    <TradingAppCard
-                        key={`trading_app_card_${available_platform.name}`}
-                        {...available_platform}
-                        clickable_icon
-                        action_type={
-                            is_demo || (!no_CR_account && !is_eu_user) || (has_maltainvest_account && is_eu_user)
-                                ? 'trade'
-                                : 'none'
-                        }
-                        is_deriv_platform
-                        onAction={() => {
-                            Analytics.trackEvent('ce_tradershub_dashboard_form', {
-                                action: 'account_open',
-                                form_name: 'traders_hub_default',
-                                account_mode: selected_account_type,
-                                account_name: is_demo ? `${available_platform.name} Demo` : available_platform.name,
-                            });
-                        }}
-                        has_divider={(!is_eu_user || is_demo) && getHasDivider(index, available_platforms.length, 3)}
-                    />
-                ))
-            ) : (
-                <PlatformLoader />
-            )}
+            {!available_platforms.length && <PlatformLoader />}
+            {available_platforms.map((available_platform: BrandConfig, index: number) => (
+                <TradingAppCard
+                    key={`trading_app_card_${available_platform.name}`}
+                    {...available_platform}
+                    clickable_icon
+                    action_type={
+                        is_demo || (!no_CR_account && !is_eu_user) || (has_maltainvest_account && is_eu_user)
+                            ? 'trade'
+                            : 'none'
+                    }
+                    is_deriv_platform
+                    onAction={() => {
+                        Analytics.trackEvent('ce_tradershub_dashboard_form', {
+                            action: 'account_open',
+                            form_name: 'traders_hub_default',
+                            account_mode: selected_account_type,
+                            account_name: is_demo ? `${available_platform.name} Demo` : available_platform.name,
+                        });
+                    }}
+                    has_divider={(!is_eu_user || is_demo) && getHasDivider(index, available_platforms.length, 3)}
+                />
+            ))}
         </ListingContainer>
     );
 });

@@ -17,15 +17,15 @@ import CommonMistakeExamples from '../../../Components/poa/common-mistakes/commo
 import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
 import { isServerError, validate } from '../../../Helpers/utils';
 import { getFileUploaderDescriptions } from '../../../Constants/file-uploader';
+import { API_ERROR_CODES } from '../../../Constants/api-error-codes';
 
 type TProofOfAddressForm = {
-    className?: string;
+    className: string;
     is_resubmit: boolean;
-    is_for_cfd_modal?: boolean;
-    onCancel?: () => void;
-    onSubmit: (needs_poi: boolean) => void;
-    onSubmitForCFDModal: (index: number, values: FormikValues) => void;
-    step_index: number;
+    is_for_cfd_modal: boolean;
+    onCancel: () => void;
+    onSubmit: (needs_poi: boolean, has_submitted_duplicate_poa?: boolean) => void;
+    onSubmitForCFDModal: (values: FormikValues, has_submitted_duplicate_poa?: boolean) => void;
 };
 
 type TFormInitialValues = Record<
@@ -36,14 +36,7 @@ type TFormInitialValues = Record<
 type TFormState = Record<'is_btn_loading' | 'is_submit_success' | 'should_allow_submit' | 'should_show_form', boolean>;
 
 const ProofOfAddressForm = observer(
-    ({
-        is_resubmit,
-        is_for_cfd_modal,
-        onSubmit,
-        onSubmitForCFDModal,
-        step_index,
-        className,
-    }: Partial<TProofOfAddressForm>) => {
+    ({ is_resubmit, is_for_cfd_modal, onSubmit, onSubmitForCFDModal, className }: Partial<TProofOfAddressForm>) => {
         const { client, notifications, ui } = useStore();
         const { account_settings, fetchResidenceList, fetchStatesList, getChangeableFields, states_list, is_eu } =
             client;
@@ -201,10 +194,20 @@ const ProofOfAddressForm = observer(
             // upload files
             try {
                 const api_response = await upload(document_files);
+
                 if (api_response?.warning) {
-                    setStatus({ msg: api_response?.message });
                     setFormState({ ...form_state, ...{ is_btn_loading: false } });
-                    setShouldScrollToTop(true);
+
+                    if (api_response.warning === API_ERROR_CODES.DUPLICATE_DOCUMENT) {
+                        if (is_for_cfd_modal) {
+                            onSubmitForCFDModal?.(values, true);
+                        } else {
+                            onSubmit?.(false, true);
+                        }
+                    } else {
+                        setStatus({ msg: api_response?.message });
+                        setShouldScrollToTop(true);
+                    }
                     return;
                 }
 
@@ -237,15 +240,13 @@ const ProofOfAddressForm = observer(
             } catch (error) {
                 if (isServerError(error)) {
                     setStatus({ msg: error.message });
+                    setSubmitting(false);
                     setFormState({ ...form_state, ...{ is_btn_loading: false } });
                     setShouldScrollToTop(true);
                 }
-            } finally {
-                setSubmitting(false);
-                setFormState({ ...form_state, ...{ is_btn_loading: false } });
             }
-            if (is_for_cfd_modal && typeof step_index !== 'undefined') {
-                onSubmitForCFDModal?.(step_index, values);
+            if (is_for_cfd_modal) {
+                onSubmitForCFDModal?.(values);
             }
         };
 

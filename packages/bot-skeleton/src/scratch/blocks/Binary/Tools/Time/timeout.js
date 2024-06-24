@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../../utils';
 
 Blockly.Blocks.timeout = {
     init() {
@@ -40,6 +41,11 @@ Blockly.Blocks.timeout = {
                 'This block delays execution for a given number of seconds. You can place any blocks within this block. The execution of other blocks in your strategy will be paused until the instructions in this block are carried out.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     getRequiredValueInputs() {
         return {

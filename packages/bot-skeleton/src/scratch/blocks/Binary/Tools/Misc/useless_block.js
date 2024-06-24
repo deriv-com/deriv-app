@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../../utils';
 
 Blockly.Blocks.useless_block = {
     init() {
@@ -19,6 +20,11 @@ Blockly.Blocks.useless_block = {
             nextStatement: null,
             previousStatement: null,
         });
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
 };
 

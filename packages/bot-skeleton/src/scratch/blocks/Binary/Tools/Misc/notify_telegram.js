@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { emptyTextValidator } from '../../../../utils';
+import { emptyTextValidator , modifyContextMenu } from '../../../../utils';
 
 Blockly.Blocks.notify_telegram = {
     init() {
@@ -34,6 +34,11 @@ Blockly.Blocks.notify_telegram = {
             tooltip: localize('Sends a message to Telegram'),
             category: Blockly.Categories.Miscellaneous,
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     meta() {
         return {

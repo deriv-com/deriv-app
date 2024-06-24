@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../utils';
 
 Blockly.Blocks.logic_ternary = {
     init() {
@@ -39,6 +40,11 @@ Blockly.Blocks.logic_ternary = {
             ),
             category: Blockly.Categories.Logic,
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     meta() {
         return {

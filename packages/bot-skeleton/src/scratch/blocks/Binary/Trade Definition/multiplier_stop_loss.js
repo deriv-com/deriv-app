@@ -1,6 +1,7 @@
 import { localize } from '@deriv/translations';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.multiplier_stop_loss = {
     init() {
@@ -34,6 +35,11 @@ Blockly.Blocks.multiplier_stop_loss = {
             ),
             category: Blockly.Categories.Trade_Definition,
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     meta() {
         return {

@@ -18,6 +18,11 @@ export const loadBlockly = async isDarkMode => {
         base: Blockly.Themes.Zelos,
         componentStyles: {},
     });
+    const exclude_item = ['blockInline'];
+    exclude_item.forEach(item_id => {
+        const option = Blockly.ContextMenuRegistry.registry.getItem(item_id);
+        option.preconditionFn = () => 'hidden';
+    });
     setColors(isDarkMode);
     await import('./hooks');
     await import('./blocks');

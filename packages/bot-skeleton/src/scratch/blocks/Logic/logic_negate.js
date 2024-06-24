@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../utils';
 
 Blockly.Blocks.logic_negate = {
     init() {
@@ -22,6 +23,11 @@ Blockly.Blocks.logic_negate = {
             tooltip: localize('Converts a given True or False to the opposite value'),
             category: Blockly.Categories.Logic,
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     meta() {
         return {

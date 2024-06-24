@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../../utils';
 
 Blockly.Blocks.total_runs = {
     init() {
@@ -15,6 +16,11 @@ Blockly.Blocks.total_runs = {
             tooltip: localize('Returns the number of runs'),
             category: Blockly.Categories.Miscellaneous,
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     meta() {
         return {

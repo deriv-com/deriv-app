@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.ask_price = {
     init() {
@@ -30,6 +31,11 @@ Blockly.Blocks.ask_price = {
                 'This block returns the purchase price for the selected trade type. This block can be used only in the "Purchase conditions" root block.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     onchange: Blockly.Blocks.purchase.onchange,
     populatePurchaseList: Blockly.Blocks.purchase.populatePurchaseList,

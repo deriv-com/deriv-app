@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.sell_price = {
     init() {
@@ -23,6 +24,11 @@ Blockly.Blocks.sell_price = {
                 'This block gives you the potential profit or loss if you decide to sell your contract.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     restricted_parents: ['during_purchase'],
 };

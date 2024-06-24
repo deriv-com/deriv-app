@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { plusIconDark } from '../images';
-import { runGroupedEvents } from '../../utils';
+import { runGroupedEvents, modifyContextMenu } from '../../utils';
 
 Blockly.Blocks.text_join = {
     protected_statements: ['STACK'],
@@ -37,6 +37,11 @@ Blockly.Blocks.text_join = {
             tooltip: localize('Text join'),
             category: Blockly.Categories.Text,
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     meta() {
         return {

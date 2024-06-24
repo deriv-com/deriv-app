@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../../utils';
 
 Blockly.Blocks.signal_ema_period = {
     init() {
@@ -27,6 +28,11 @@ Blockly.Blocks.signal_ema_period = {
         return {
             SIGNAL_EMA_PERIOD: null,
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
 };
 

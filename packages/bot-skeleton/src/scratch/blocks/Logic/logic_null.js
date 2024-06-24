@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../utils';
 
 Blockly.Blocks.logic_null = {
     init() {
@@ -16,6 +17,11 @@ Blockly.Blocks.logic_null = {
             tooltip: localize('This block assigns a null value to an item or statement.'),
             category: Blockly.Categories.Logic,
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     meta() {
         return {

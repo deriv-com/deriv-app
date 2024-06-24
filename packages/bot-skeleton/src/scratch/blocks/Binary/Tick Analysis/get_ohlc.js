@@ -1,5 +1,6 @@
 import { localize } from '@deriv/translations';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.get_ohlc = {
     init() {
@@ -42,6 +43,11 @@ Blockly.Blocks.get_ohlc = {
         return {
             CANDLEINDEX: null,
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
 };
 Blockly.JavaScript.javascriptGenerator.forBlock.get_ohlc = block => {

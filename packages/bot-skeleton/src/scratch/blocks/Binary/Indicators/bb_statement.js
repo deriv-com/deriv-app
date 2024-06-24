@@ -1,5 +1,6 @@
 import { localize } from '@deriv/translations';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.bb_statement = {
     protected_statements: ['STATEMENT'],
@@ -69,6 +70,11 @@ Blockly.Blocks.bb_statement = {
                 }
             });
         }
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
 };
 

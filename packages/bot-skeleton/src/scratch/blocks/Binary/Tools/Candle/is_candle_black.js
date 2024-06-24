@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../../utils';
 
 Blockly.Blocks.is_candle_black = {
     init() {
@@ -30,6 +31,11 @@ Blockly.Blocks.is_candle_black = {
                 'This block returns “True” if the last candle is black. It can be placed anywhere on the canvas except within the Trade parameters root block.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     getRequiredValueInputs() {
         return {

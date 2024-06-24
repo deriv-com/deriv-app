@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.tick_analysis = {
     init() {
@@ -36,6 +37,11 @@ Blockly.Blocks.tick_analysis = {
                 'check The content of this block is called on every tick. Place this block outside of any root block.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
 };
 

@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.sma_statement = {
     protected_statements: ['STATEMENT'],
@@ -38,6 +39,11 @@ Blockly.Blocks.sma_statement = {
             nextStatement: null,
             category: Blockly.Categories.Indicators,
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     meta() {
         return {

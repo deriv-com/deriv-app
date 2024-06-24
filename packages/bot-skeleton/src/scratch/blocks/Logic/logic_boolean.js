@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../utils';
 
 Blockly.Blocks.logic_boolean = {
     init() {
@@ -32,6 +33,11 @@ Blockly.Blocks.logic_boolean = {
             display_name: localize('True-False'),
             description: localize('This is a single block that returns a boolean value, either true or false.'),
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
 };
 

@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { emptyTextValidator } from '../../utils';
+import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
 Blockly.Blocks.text_isEmpty = {
     init() {
@@ -23,6 +23,11 @@ Blockly.Blocks.text_isEmpty = {
             tooltip: localize('Tests if a given text string is empty'),
             category: Blockly.Categories.Text,
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     meta() {
         return {

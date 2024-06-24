@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { emptyTextValidator } from '../../utils';
+import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
 Blockly.Blocks.text_changeCase = {
     init() {
@@ -34,6 +34,11 @@ Blockly.Blocks.text_changeCase = {
             tooltip: localize('Changes text case accordingly'),
             category: Blockly.Categories.Text,
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     meta() {
         return {

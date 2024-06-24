@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../../utils';
 
 Blockly.Blocks.block_holder = {
     init() {
@@ -28,6 +29,11 @@ Blockly.Blocks.block_holder = {
             tooltip: localize('Put your blocks in here to prevent them from being removed'),
             category: Blockly.Categories.Miscellaneous,
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     meta() {
         return {

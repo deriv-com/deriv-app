@@ -1,5 +1,6 @@
 import { localize } from '@deriv/translations';
 import { config } from '../../../../../constants/config';
+import { modifyContextMenu } from '../../../../utils';
 
 Blockly.Blocks.balance = {
     init() {
@@ -43,6 +44,11 @@ Blockly.Blocks.balance = {
                 'This block gives you the balance of your account either as a number or a string of text.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
 };
 

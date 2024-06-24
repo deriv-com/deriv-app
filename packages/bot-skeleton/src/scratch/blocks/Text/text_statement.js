@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { minusIconDark } from '../images';
-import { runIrreversibleEvents } from '../../utils';
+import { runIrreversibleEvents, modifyContextMenu } from '../../utils';
 
 Blockly.Blocks.text_statement = {
     required_parent_type: 'text_join',
@@ -26,6 +26,11 @@ Blockly.Blocks.text_statement = {
             nextStatement: null,
             category: Blockly.Categories.Text,
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     meta() {
         return {

@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../utils';
 
 Blockly.Blocks.text = {
     init() {
@@ -22,6 +23,11 @@ Blockly.Blocks.text = {
             tooltip: localize('Enter some text here'),
             category: Blockly.Categories.Text,
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     meta() {
         return {

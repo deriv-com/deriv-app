@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { emptyTextValidator } from '../../utils';
+import { emptyTextValidator, modifyContextMenu } from '../../utils';
 
 Blockly.Blocks.text_indexOf = {
     init() {
@@ -50,6 +50,11 @@ Blockly.Blocks.text_indexOf = {
                 'Searches through a string of text for a specific occurrence of a given character or word, and returns the position.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     getRequiredValueInputs() {
         return {

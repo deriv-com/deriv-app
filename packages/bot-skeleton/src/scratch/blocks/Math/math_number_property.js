@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../utils';
 
 Blockly.Blocks.math_number_property = {
     init() {
@@ -77,6 +78,11 @@ Blockly.Blocks.math_number_property = {
             //commented this line breaks the backward compatibiliy
             //this.removeInput('DIVISOR');
         }
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     getRequiredValueInputs() {
         return {

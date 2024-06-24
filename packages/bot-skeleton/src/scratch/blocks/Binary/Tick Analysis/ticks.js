@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.ticks = {
     init() {
@@ -21,6 +22,11 @@ Blockly.Blocks.ticks = {
             display_name: localize('Tick list'),
             description: localize('This block gives you a list of the last 1000 tick values.'),
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
 };
 
@@ -45,6 +51,11 @@ Blockly.Blocks.ticks_string = {
             display_name: localize('Tick List String'),
             description: localize('Tick List String Description'),
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     onchange: Blockly.Blocks.ticks.onchange,
 };

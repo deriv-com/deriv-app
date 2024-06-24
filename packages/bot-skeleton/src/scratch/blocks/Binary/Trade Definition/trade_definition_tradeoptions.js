@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
 import DBotStore from '../../../dbot-store';
-import { runIrreversibleEvents, runGroupedEvents } from '../../../utils';
+import { runIrreversibleEvents, runGroupedEvents, modifyContextMenu } from '../../../utils';
 import { config } from '../../../../constants/config';
 import ApiHelpers from '../../../../services/api/api-helpers';
 
@@ -67,6 +67,11 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 'Define your trade options such as duration and stake. Some options are only applicable for certain trade types.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     onchange(event) {
         if (event.type === 'change') {

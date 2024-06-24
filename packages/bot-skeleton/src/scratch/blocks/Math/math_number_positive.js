@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../utils';
 
 Blockly.Blocks.math_number_positive = {
     init: Blockly.Blocks.math_number.init,
@@ -14,6 +15,11 @@ Blockly.Blocks.math_number_positive = {
             return undefined;
         }
         return null;
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
 };
 

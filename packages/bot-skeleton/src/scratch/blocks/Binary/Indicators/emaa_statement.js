@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.emaa_statement = {
     protected_statements: ['STATEMENT'],
@@ -48,6 +49,11 @@ Blockly.Blocks.emaa_statement = {
         };
     },
     onchange: Blockly.Blocks.bb_statement.onchange,
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
+    },
 };
 
 Blockly.JavaScript.javascriptGenerator.forBlock.emaa_statement = block => {

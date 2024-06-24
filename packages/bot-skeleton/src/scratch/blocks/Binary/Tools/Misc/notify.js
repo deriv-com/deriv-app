@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { emptyTextValidator } from '../../../../utils';
+import { emptyTextValidator, modifyContextMenu } from '../../../../utils';
 import { config } from '../../../../../constants/config';
 
 Blockly.Blocks.notify = {
@@ -41,6 +41,11 @@ Blockly.Blocks.notify = {
             tooltip: localize('Displays a notification and optionally play selected sound'),
             category: Blockly.Categories.Miscellaneous,
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     meta() {
         return {

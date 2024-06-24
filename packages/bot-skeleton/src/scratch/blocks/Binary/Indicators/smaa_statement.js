@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.smaa_statement = {
     protected_statements: ['STATEMENT'],
@@ -46,6 +47,11 @@ Blockly.Blocks.smaa_statement = {
                 'Similar to SMA, this block gives you the entire SMA line containing a list of all values for a given period.'
             ),
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     onchange: Blockly.Blocks.bb_statement.onchange,
 };

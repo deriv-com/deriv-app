@@ -596,3 +596,27 @@ export const removeExtraInput = instance => {
         remove_last_input(collapsed_input);
     }
 };
+
+const downloadBlock = () => {
+    const xml_block = Blockly?.getSelected()?.svgGroup_;
+    const xml_text = Blockly.Xml.domToPrettyText(xml_block);
+    saveAs({ data: xml_text, type: 'text/xml;charset=utf-8', filename: 'block.xml' });
+};
+
+export const modifyContextMenu = (menu, exclude_items = [], include_items = []) => {
+    for (let i = menu.length - 1; i >= 0; i--) {
+        if (exclude_items.includes(menu[i].text)) {
+            menu.splice(i, 1);
+        } else {
+            menu[i].text = localize(menu[i].text);
+        }
+    }
+
+    include_items.forEach(item => {
+        menu.push({
+            text: localize(item),
+            enabled: true,
+            callback: () => downloadBlock(),
+        });
+    });
+};

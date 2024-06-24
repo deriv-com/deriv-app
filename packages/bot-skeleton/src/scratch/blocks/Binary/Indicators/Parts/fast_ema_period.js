@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../../utils';
 
 Blockly.Blocks.fast_ema_period = {
     init() {
@@ -20,6 +21,11 @@ Blockly.Blocks.fast_ema_period = {
 
         this.setMovable(false);
         this.setDeletable(false);
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     onchange: Blockly.Blocks.input_list.onchange,
     allowed_parents: ['macda_statement'],

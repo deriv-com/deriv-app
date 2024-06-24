@@ -83,7 +83,7 @@ Blockly.Blocks.procedures_defnoreturn = {
         if (!this.workspace || Blockly.derivWorkspace.isFlyout_ || !allowedEvents.includes(event.type)) {
             return;
         }
-        if (event.type === Blockly.Events.BLOCK_CHANGE) {
+        if (event.type === Blockly.Events.BLOCK_CREATE || Blockly.Events.BLOCK_CHANGE) {
             // Sync names between definition- and execution-block
             if (event.blockId === this.id && event.name === 'NAME') {
                 this.getProcedureCallers().forEach(block => {

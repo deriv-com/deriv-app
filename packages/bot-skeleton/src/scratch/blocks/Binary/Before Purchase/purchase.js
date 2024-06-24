@@ -1,5 +1,6 @@
 import { localize } from '@deriv/translations';
 import { getContractTypeOptions } from '../../../shared';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Workspace.prototype.getTradeDefinitionBlock = function () {
     return this.getAllBlocks(true).find(b => b.type === 'trade_definition');
@@ -77,6 +78,11 @@ Blockly.Blocks.purchase = {
                 should_pretend_empty: true,
             });
         }
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     restricted_parents: ['before_purchase'],
 };

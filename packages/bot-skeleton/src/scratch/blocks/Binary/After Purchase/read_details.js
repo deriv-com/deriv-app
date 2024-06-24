@@ -1,5 +1,6 @@
 import { localize } from '@deriv/translations';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.read_details = {
     init() {
@@ -29,6 +30,11 @@ Blockly.Blocks.read_details = {
             display_name: localize('Contract details'),
             description: localize('This block gives you information about your last contract.'),
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     restricted_parents: ['after_purchase'],
 };

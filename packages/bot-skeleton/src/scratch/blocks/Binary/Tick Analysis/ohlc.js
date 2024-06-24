@@ -1,5 +1,6 @@
 import { localize } from '@deriv/translations';
 import { config } from '../../../../constants/config';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.ohlc = {
     init() {
@@ -31,6 +32,11 @@ Blockly.Blocks.ohlc = {
             display_name: localize('Get candle list'),
             description: localize('This block gives you a list of candles within a selected time interval.'),
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
 };
 

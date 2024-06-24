@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { runIrreversibleEvents } from '../../../../utils';
+import { runIrreversibleEvents, modifyContextMenu } from '../../../../utils';
 
 Blockly.Blocks.input_list = {
     init() {
@@ -76,6 +76,11 @@ Blockly.Blocks.input_list = {
         return {
             INPUT_LIST: null,
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
 };
 

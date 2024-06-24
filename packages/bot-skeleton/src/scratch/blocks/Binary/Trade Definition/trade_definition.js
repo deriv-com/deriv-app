@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { defineContract } from '../../images';
 import DBotStore from '../../../dbot-store';
-import { runIrreversibleEvents, removeExtraInput } from '../../../utils';
+import { runIrreversibleEvents, removeExtraInput, modifyContextMenu } from '../../../utils';
 import { removeErrorHandlingEventListener, initErrorHandlingListener } from '../../../../utils';
 import { config } from '../../../../constants/config';
 
@@ -110,7 +110,14 @@ Blockly.Blocks.trade_definition = {
             key_words: localize('market, trade type, contract type'),
         };
     },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
+    },
     onchange(event) {
+        // modifyContextMenu(event, 'trade_definition', this);
+
         if (event.type === Blockly.Events.SELECTED && !this.isInit) {
             this.isInit = true;
             initErrorHandlingListener('keydown');

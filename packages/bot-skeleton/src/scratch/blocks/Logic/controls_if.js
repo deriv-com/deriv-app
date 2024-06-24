@@ -1,5 +1,6 @@
 import { localize } from '@deriv/translations';
 import { plusIconDark, minusIconDark } from '../images';
+import { modifyContextMenu } from '../../utils';
 
 Blockly.Blocks.controls_if = {
     init() {
@@ -47,6 +48,11 @@ Blockly.Blocks.controls_if = {
             tooltip: localize('Conditional block'),
             category: Blockly.Categories.Logic,
         };
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
     meta() {
         return {

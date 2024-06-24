@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { finishSign } from '../../images';
-import { removeExtraInput } from '../../../utils';
+import { modifyContextMenu, removeExtraInput } from '../../../utils';
 
 Blockly.Blocks.after_purchase = {
     init() {
@@ -63,6 +63,11 @@ Blockly.Blocks.after_purchase = {
         ) {
             removeExtraInput(this);
         }
+    },
+    customContextMenu(menu) {
+        const exclude_item = [];
+        const include_items = ['Download Block'];
+        modifyContextMenu(menu, exclude_item, include_items);
     },
 };
 

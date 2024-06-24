@@ -4,6 +4,7 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { Button, Icon, Text } from '@deriv/components';
 import { useContentFlag } from '@deriv/hooks';
+import { Jurisdiction } from '@deriv/shared';
 
 type TModalContent = {
     is_responsive?: boolean;
@@ -30,10 +31,10 @@ export const SetupRealAccountOrGoToDemoModalContent = observer(({ is_responsive 
         setIsSetupRealAccountOrGoToDemoModalVisible(false);
 
         if (is_cr_demo) {
-            openRealAccountSignup('svg');
+            openRealAccountSignup(Jurisdiction.SVG);
             setIsFromSignupAccount(false);
         } else if (is_eu_demo) {
-            openRealAccountSignup('maltainvest');
+            openRealAccountSignup(Jurisdiction.MALTA_INVEST);
             setIsFromSignupAccount(false);
         }
     };

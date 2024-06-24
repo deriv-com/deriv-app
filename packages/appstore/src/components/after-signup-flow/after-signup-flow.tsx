@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useContentFlag, useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
+import { Jurisdiction } from '@deriv/shared';
 
 const AfterSignupFlow = observer(() => {
     const { client, ui, traders_hub } = useStore();
@@ -25,10 +26,10 @@ const AfterSignupFlow = observer(() => {
             // move the user directly to setup real account
             if (direct_to_real_account_creation && !show_setup_real_or_go_demo) {
                 if (is_cr_demo) {
-                    openRealAccountSignup('svg');
+                    openRealAccountSignup(Jurisdiction.SVG);
                     setIsFromSignupAccount(false);
                 } else if (is_eu_demo) {
-                    openRealAccountSignup('maltainvest');
+                    openRealAccountSignup(Jurisdiction.MALTA_INVEST);
                     setIsFromSignupAccount(false);
                 }
             }

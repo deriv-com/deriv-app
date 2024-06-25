@@ -17,7 +17,6 @@
             @include mobile {
                 display: flex;
                 width: 100%;
-                flex-wrap: unset;
             }
         }
         &__button:not(:last-child) {

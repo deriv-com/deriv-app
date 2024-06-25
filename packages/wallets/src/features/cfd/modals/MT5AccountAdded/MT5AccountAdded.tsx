@@ -5,7 +5,7 @@ import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from 
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
-import { companyNamesAndUrls, MarketTypeDetails, PlatformDetails } from '../../constants';
+import { CFD_PLATFORMS, companyNamesAndUrls, MARKET_TYPE, MarketTypeDetails, PlatformDetails } from '../../constants';
 import { CFDSuccess } from '../../screens/CFDSuccess';
 
 type TProps = {
@@ -37,7 +37,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
         !addedAccount;
 
     const marketTypeTitle =
-        marketType === 'all' && Object.keys(PlatformDetails).includes(platform)
+        marketType === MARKET_TYPE.ALL && platform in PlatformDetails && platform !== CFD_PLATFORMS.MT5
             ? PlatformDetails[platform].title
             : MarketTypeDetails[marketType].title;
     const selectedJurisdiction = getModalState('selectedJurisdiction');

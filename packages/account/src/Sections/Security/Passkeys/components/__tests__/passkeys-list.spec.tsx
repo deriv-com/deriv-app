@@ -1,7 +1,7 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import PasskeysList from '../passkeys-list';
+import { PasskeysList } from '../passkeys-list';
 
 const passkey_name_1 = 'Test Passkey 1';
 const passkey_name_2 = 'Test Passkey 2';
@@ -27,16 +27,23 @@ const mock_passkeys_list: React.ComponentProps<typeof PasskeysList>['passkeys_li
     },
 ];
 
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    getOSNameWithUAParser: () => 'test OS',
+}));
+
 describe('PasskeysList', () => {
     it('renders the passkeys and calls the correct function when the button is clicked', () => {
         const mockOnPrimaryButtonClick = jest.fn();
         const mockOnSecondaryButtonClick = jest.fn();
+        const mockOnPasskeyMenuClick = jest.fn();
 
         render(
             <PasskeysList
                 passkeys_list={mock_passkeys_list}
                 onPrimaryButtonClick={mockOnPrimaryButtonClick}
                 onSecondaryButtonClick={mockOnSecondaryButtonClick}
+                onPasskeyMenuClick={mockOnPasskeyMenuClick}
             />
         );
 

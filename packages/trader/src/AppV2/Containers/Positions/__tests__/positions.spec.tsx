@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { ReportsStoreProvider } from '../../../../../../reports/src/Stores/useReportsStores';
@@ -11,13 +12,15 @@ const defaultMockStore = mockStore({});
 describe('Positions', () => {
     it('should render component', () => {
         render(
-            <TraderProviders store={defaultMockStore}>
-                <ReportsStoreProvider>
-                    <ModulesProvider store={defaultMockStore}>
-                        <Positions />
-                    </ModulesProvider>
-                </ReportsStoreProvider>
-            </TraderProviders>
+            <BrowserRouter>
+                <TraderProviders store={defaultMockStore}>
+                    <ReportsStoreProvider>
+                        <ModulesProvider store={defaultMockStore}>
+                            <Positions />
+                        </ModulesProvider>
+                    </ReportsStoreProvider>
+                </TraderProviders>
+            </BrowserRouter>
         );
 
         const tabs = screen.getAllByRole('tab');

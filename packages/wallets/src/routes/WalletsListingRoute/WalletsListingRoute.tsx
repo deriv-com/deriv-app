@@ -1,6 +1,12 @@
 import React, { lazy, useEffect } from 'react';
 import { useAuthorize, useBalanceSubscription } from '@deriv/api-v2';
-import { Loader, WalletListHeader, WalletsAddMoreCarousel, WalletTourGuide } from '../../components';
+import {
+    WalletListHeader,
+    WalletsAddMoreCarousel,
+    WalletsCardLoader,
+    WalletsResponsiveLoader,
+    WalletTourGuide,
+} from '../../components';
 import ResetMT5PasswordHandler from '../../features/cfd/ResetMT5PasswordHandler';
 import useDevice from '../../hooks/useDevice';
 import './WalletsListingRoute.scss';
@@ -26,11 +32,11 @@ const WalletsListingRoute: React.FC = () => {
         <div className='wallets-listing-route'>
             <WalletListHeader />
             {isMobile ? (
-                <React.Suspense fallback={<Loader />}>
+                <React.Suspense fallback={<WalletsResponsiveLoader />}>
                     <LazyWalletsCarousel balance={{ ...rest }} />
                 </React.Suspense>
             ) : (
-                <React.Suspense fallback={<Loader />}>
+                <React.Suspense fallback={<WalletsCardLoader />}>
                     <LazyDesktopWalletsList balance={{ ...rest }} />
                 </React.Suspense>
             )}

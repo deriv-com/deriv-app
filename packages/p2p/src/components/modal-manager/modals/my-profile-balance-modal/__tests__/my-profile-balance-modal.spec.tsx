@@ -29,13 +29,16 @@ describe('<MyProfileBalanceModal />', () => {
     it('should render MyProfileBalanceModal', () => {
         render(<MyProfileBalanceModal />);
 
-        expect(screen.getByText('Available Deriv P2P Balance')).toBeInTheDocument();
+        expect(screen.getByText('Deriv P2P balance')).toBeInTheDocument();
         expect(
-            screen.getByText('Your Deriv P2P balance only includes deposits that can’t be reversed.')
+            screen.getByText('P2P deposits: Funds received from buying USD from another Deriv P2P user.')
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText('Non-reversible deposits: Deposits from non-reversible payment methods.')
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'Deposits via cards and the following payment methods aren’t included: Maestro, Diners Club, ZingPay, Skrill, Neteller, Ozow, and UPI QR.'
+                'Note: Funds deposited using reversible payment methods, like credit cards, Maestro, Diners Club, ZingPay, Skrill, Neteller, Ozow, and UPI QR will not appear in your P2P balance.'
             )
         ).toBeInTheDocument();
     });

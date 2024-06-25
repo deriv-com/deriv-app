@@ -15,6 +15,31 @@ import './traders-hub.scss';
 
 const RealAccountCreationBanner = lazy(() => import('Components/real-account-creation-banner'));
 
+type OrderedPlatformSectionsProps = {
+    is_cfd_visible?: boolean;
+    is_options_and_multipliers_visible?: boolean;
+};
+
+const OrderedPlatformSections = observer(
+    ({ is_cfd_visible = true, is_options_and_multipliers_visible = true }: OrderedPlatformSectionsProps) => {
+        const {
+            traders_hub: { selected_region, is_eu_user },
+        } = useStore();
+
+        return (
+            <div
+                data-testid='dt_traders_hub'
+                className={classNames('traders-hub__main-container', {
+                    'traders-hub__main-container-reversed': is_eu_user || selected_region === 'EU',
+                })}
+            >
+                {is_options_and_multipliers_visible && <OptionsAndMultipliersListing />}
+                {is_cfd_visible && <CFDsListing />}
+            </div>
+        );
+    }
+);
+
 const TradersHub = observer(() => {
     const { isDesktop } = useDevice();
     const { traders_hub, client, ui } = useStore();
@@ -107,25 +132,9 @@ const TradersHub = observer(() => {
     };
     if (!is_logged_in) return null;
 
-    const OrderedPlatformSections = ({ is_cfd_visible = true, is_options_and_multipliers_visible = true }) => {
-        return (
-            <div
-                data-testid='dt_traders_hub'
-                className={classNames('traders-hub__main-container', {
-                    'traders-hub__main-container-reversed': is_eu_user,
-                })}
-            >
-                {is_options_and_multipliers_visible && <OptionsAndMultipliersListing />}
-                {is_cfd_visible && <CFDsListing />}
-            </div>
-        );
-    };
-
     const getOrderedPlatformSections = () => {
         if (is_mt5_allowed) {
-            return isDesktop ? (
-                <OrderedPlatformSections />
-            ) : (
+            return (
                 <OrderedPlatformSections
                     is_cfd_visible={selected_platform_type === 'cfd'}
                     is_options_and_multipliers_visible={selected_platform_type === 'options'}
@@ -135,23 +144,30 @@ const TradersHub = observer(() => {
         return <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />;
     };
 
+    const desktopContent = !is_landing_company_loaded ? (
+        <OrderedPlatformSections />
+    ) : (
+        <OrderedPlatformSections is_cfd_visible={is_mt5_allowed} />
+    );
+
     const mobileTabletContent = (
         <React.Fragment>
-            {is_mt5_allowed ? (
-                is_landing_company_loaded ? (
+            {is_landing_company_loaded ? (
+                is_mt5_allowed && (
                     <ButtonToggle
                         buttons_arr={is_eu_user ? platform_toggle_options_eu : platform_toggle_options}
                         className='traders-hub__button-toggle'
                         has_rounded_button
                         is_traders_hub={window.location.pathname === routes.traders_hub}
-                        name='platforn_type'
+                        name='platform_type'
                         onChange={platformTypeChange}
                         value={selected_platform_type}
                     />
-                ) : (
-                    <ButtonToggleLoader />
                 )
             ) : (
+                <ButtonToggleLoader />
+            )}
+            {is_landing_company_loaded && !is_mt5_allowed && (
                 <div className='traders-hub--mt5-not-allowed'>
                     <Text size='s' weight='bold' color='prominent'>
                         <Localize i18n_default_text='Multipliers' />
@@ -181,7 +197,7 @@ const TradersHub = observer(() => {
                     )}
 
                     <MainTitleBar />
-                    {isDesktop ? getOrderedPlatformSections() : mobileTabletContent}
+                    {isDesktop ? desktopContent : mobileTabletContent}
                     <ModalManager />
                 </div>
             </Div100vhContainer>

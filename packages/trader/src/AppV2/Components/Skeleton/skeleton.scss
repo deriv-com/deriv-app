@@ -1,6 +1,6 @@
 .skeleton {
     background-color: var(--core-color-opacity-black-75);
-    border-radius: var(--core-borderRadius-400);
+    border-radius: var(--semantic-borderRadius-md);
 
     &.animated {
         animation: var(--motion-duration-moderate) ease-out alternate infinite pulsate;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormikValues, useFormikContext } from 'formik';
 import {
     EmploymentStatusField,
@@ -12,15 +12,10 @@ import { getLegalEntityName } from '@deriv/shared';
 
 type TEmploymentTaxDetailsContainerProps = {
     editable_fields: string[];
-    should_close_tooltip: boolean;
-    setShouldCloseTooltip: (should_close_tooltip: boolean) => void;
+    parent_ref: React.RefObject<HTMLDivElement>;
 };
 
-const EmploymentTaxDetailsContainer = ({
-    editable_fields,
-    should_close_tooltip,
-    setShouldCloseTooltip,
-}: TEmploymentTaxDetailsContainerProps) => {
+const EmploymentTaxDetailsContainer = ({ editable_fields, parent_ref }: TEmploymentTaxDetailsContainerProps) => {
     const { values, setFieldValue, touched, errors } = useFormikContext<FormikValues>();
 
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = useState(false);
@@ -38,63 +33,72 @@ const EmploymentTaxDetailsContainer = ({
         return !tax_residence_ref.current?.contains(target) && !tin_ref.current?.contains(target);
     };
 
+    const closeToolTips = () => {
+        setIsTaxResidencePopoverOpen(false);
+        setIsTinPopoverOpen(false);
+    };
+
+    useEffect(() => {
+        const parent_element = parent_ref.current;
+
+        if (parent_element) {
+            parent_element.addEventListener('scroll', closeToolTips);
+        }
+
+        return () => {
+            if (parent_element) {
+                parent_element.removeEventListener('scroll', closeToolTips);
+            }
+        };
+    }, [parent_ref]);
+
     useOnClickOutside(tax_residence_ref, () => setIsTaxResidencePopoverOpen(false), validateClickOutside);
     useOnClickOutside(tin_ref, () => setIsTinPopoverOpen(false), validateClickOutside);
 
-    React.useEffect(() => {
-        if (should_close_tooltip) {
-            setIsTaxResidencePopoverOpen(false);
-            setIsTinPopoverOpen(false);
-            setShouldCloseTooltip(false);
-        }
-    }, [should_close_tooltip, setShouldCloseTooltip]);
-
     return (
         <div>
-            {'employment_status' in values && (
-                <EmploymentStatusField required is_disabled={isFieldImmutable('employment_status', editable_fields)} />
-            )}
-            {'tax_residence' in values && (
-                <div ref={tax_residence_ref}>
-                    <TaxResidenceField
-                        disabled={isFieldImmutable('tax_residence', editable_fields)}
-                        is_tax_residence_popover_open={is_tax_residence_popover_open}
-                        setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
-                        setIsTinPopoverOpen={setIsTinPopoverOpen}
-                    />
-                </div>
-            )}
-
-            {'tax_identification_number' in values && (
-                <div ref={tin_ref}>
-                    <TaxIdentificationNumberField
-                        disabled={isFieldImmutable('tax_identification_number', editable_fields)}
-                        is_tin_popover_open={is_tin_popover_open}
-                        setIsTinPopoverOpen={setIsTinPopoverOpen}
-                        setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
-                    />
-                </div>
-            )}
-            {'tax_identification_confirm' in values && (
-                <Checkbox
-                    name='tax_identification_confirm'
-                    className='details-form__tin-confirm'
-                    data-lpignore
-                    onChange={() =>
-                        setFieldValue('tax_identification_confirm', !values.tax_identification_confirm, true)
-                    }
-                    value={values.tax_identification_confirm}
-                    label={localize(
-                        'I hereby confirm that the tax information I provided is true and complete. I will also inform {{legal_entity_name}} about any changes to this information.',
-                        {
-                            legal_entity_name: getLegalEntityName('maltainvest'),
-                        }
-                    )}
-                    withTabIndex={0}
-                    data-testid='tax_identification_confirm'
-                    has_error={!!(touched.tax_identification_confirm && errors.tax_identification_confirm)}
+            {/* {'employment_status' in values && ( */}
+            <EmploymentStatusField required is_disabled={isFieldImmutable('employment_status', editable_fields)} />
+            {/* )} */}
+            {/* {'tax_residence' in values && ( */}
+            <div ref={tax_residence_ref}>
+                <TaxResidenceField
+                    disabled={isFieldImmutable('tax_residence', editable_fields)}
+                    is_tax_residence_popover_open={is_tax_residence_popover_open}
+                    setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
+                    setIsTinPopoverOpen={setIsTinPopoverOpen}
                 />
-            )}
+            </div>
+            {/* )} */}
+
+            {/* {'tax_identification_number' in values && ( */}
+            <div ref={tin_ref}>
+                <TaxIdentificationNumberField
+                    disabled={isFieldImmutable('tax_identification_number', editable_fields)}
+                    is_tin_popover_open={is_tin_popover_open}
+                    setIsTinPopoverOpen={setIsTinPopoverOpen}
+                    setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
+                />
+            </div>
+            {/* )} */}
+            {/* {'tax_identification_confirm' in values && ( */}
+            <Checkbox
+                name='tax_identification_confirm'
+                className='details-form__tin-confirm'
+                data-lpignore
+                onChange={() => setFieldValue('tax_identification_confirm', !values.tax_identification_confirm, true)}
+                value={values.tax_identification_confirm}
+                label={localize(
+                    'I hereby confirm that the tax information I provided is true and complete. I will also inform {{legal_entity_name}} about any changes to this information.',
+                    {
+                        legal_entity_name: getLegalEntityName('maltainvest'),
+                    }
+                )}
+                withTabIndex={0}
+                data-testid='tax_identification_confirm'
+                has_error={!!(touched.tax_identification_confirm && errors.tax_identification_confirm)}
+            />
+            {/* )} */}
         </div>
     );
 };

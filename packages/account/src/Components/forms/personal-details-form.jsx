@@ -38,38 +38,18 @@ const PersonalDetailsForm = props => {
         salutation_list,
         is_rendered_for_onfido,
         is_qualified_for_poa,
-        should_close_tooltip,
-        setShouldCloseTooltip,
         class_name,
         states_list,
         side_note,
         no_confirmation_needed,
         mismatch_status,
+        parent_ref,
     } = props;
     const autocomplete_value = 'none';
     // need to put this check related to DIEL clients
     const is_svg_only = is_svg && !is_eu_user;
 
-    // const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
-    // const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
-
     const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched } = useFormikContext();
-
-    // const handleToolTipStatus = React.useCallback(() => {
-    //     if (is_tax_residence_popover_open) {
-    //         setIsTaxResidencePopoverOpen(false);
-    //     }
-    //     if (is_tin_popover_open) {
-    //         setIsTinPopoverOpen(false);
-    //     }
-    // }, [is_tax_residence_popover_open, is_tin_popover_open]);
-
-    // React.useEffect(() => {
-    //     if (should_close_tooltip) {
-    //         handleToolTipStatus();
-    //         setShouldCloseTooltip(false);
-    //     }
-    // }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
 
     const getNameAndDobLabels = () => {
         const is_asterisk_needed = is_svg || is_eu_user || is_rendered_for_onfido || is_rendered_for_idv;
@@ -421,8 +401,7 @@ const PersonalDetailsForm = props => {
                                 <FormSubHeader title={localize('Tax information')} />
                                 <EmploymentTaxDetailsContainer
                                     editable_fields={editable_fields}
-                                    should_close_tooltip={should_close_tooltip}
-                                    setShouldCloseTooltip={setShouldCloseTooltip}
+                                    parent_ref={parent_ref}
                                 />
                             </React.Fragment>
                         )}
@@ -476,11 +455,7 @@ const PersonalDetailsForm = props => {
                                 required
                             />
                         )}
-                        <EmploymentTaxDetailsContainer
-                            editable_fields={editable_fields}
-                            should_close_tooltip={should_close_tooltip}
-                            setShouldCloseTooltip={setShouldCloseTooltip}
-                        />
+                        <EmploymentTaxDetailsContainer editable_fields={editable_fields} parent_ref={parent_ref} />
                         {'account_opening_reason' in values && (
                             <AccountOpeningReasonField
                                 account_opening_reason_list={account_opening_reason_list}

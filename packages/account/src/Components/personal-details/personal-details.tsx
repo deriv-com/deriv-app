@@ -1,4 +1,4 @@
-import { useState, Fragment, useCallback, useMemo, useEffect } from 'react';
+import { Fragment, useCallback, useMemo, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import { Form, Formik } from 'formik';
 import { Analytics, TEvents } from '@deriv-com/analytics';
@@ -78,7 +78,6 @@ const PersonalDetails = observer(
             ui: { is_mobile, is_desktop },
         } = useStore();
         const { account_status, account_settings, residence, real_account_signup_target } = props;
-        const [should_close_tooltip, setShouldCloseTooltip] = useState(false);
 
         const handleCancel = (values: TPersonalDetailsSectionForm) => {
             const current_step = getCurrentStep() - 1;
@@ -98,6 +97,7 @@ const PersonalDetails = observer(
             },
             [is_eu_user, real_account_signup_target]
         );
+        const scroll_div_ref = useRef(null);
 
         useEffect(() => {
             trackEvent({
@@ -120,8 +120,6 @@ const PersonalDetails = observer(
         });
 
         const IDV_NOT_APPLICABLE_OPTION = useMemo(() => getIDVNotApplicableOption(), []);
-
-        const closeToolTip = () => setShouldCloseTooltip(true);
 
         const schema = useMemo(
             () =>
@@ -177,7 +175,6 @@ const PersonalDetails = observer(
                                     ref={setRef}
                                     onSubmit={handleSubmit}
                                     autoComplete='off'
-                                    onClick={closeToolTip}
                                     data-testid='personal_details_form'
                                 >
                                     <ScrollToFieldWithError
@@ -194,8 +191,8 @@ const PersonalDetails = observer(
                                     >
                                         <ThemedScrollbars
                                             height={height}
-                                            onScroll={closeToolTip}
                                             testId='dt_personal_details_container'
+                                            refSetter={scroll_div_ref}
                                         >
                                             <div className={clsx('details-form__elements', 'personal-details-form')}>
                                                 {is_rendered_for_idv && (
@@ -229,8 +226,6 @@ const PersonalDetails = observer(
                                                     closeRealAccountSignup={closeRealAccountSignup}
                                                     salutation_list={salutation_list}
                                                     account_opening_reason_list={account_opening_reason_list}
-                                                    should_close_tooltip={should_close_tooltip}
-                                                    setShouldCloseTooltip={setShouldCloseTooltip}
                                                     inline_note_text={
                                                         <Localize
                                                             i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
@@ -240,6 +235,7 @@ const PersonalDetails = observer(
                                                     no_confirmation_needed={
                                                         values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
                                                     }
+                                                    parent_ref={scroll_div_ref}
                                                 />
                                             </div>
                                         </ThemedScrollbars>

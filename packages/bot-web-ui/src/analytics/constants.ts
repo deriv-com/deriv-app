@@ -15,8 +15,8 @@ export enum ACTION {
     UPLOAD_STRATEGY_START = 'upload_strategy_start',
     UPLOAD_STRATEGY_COMPLETED = 'upload_strategy_completed',
     UPLOAD_STRATEGY_FAILED = 'upload_strategy_failed',
-    GOOGLEDRIVE_CONNECT = 'googledrive_connect',
-    GOOGLEDRIVE_DISCONNECT = 'googledrive_disconnect',
+    GOOGLE_DRIVE_CONNECT = 'google_drive_connect',
+    GOOGLE_DRIVE_DISCONNECT = 'google_drive_disconnect',
     SWITCH_LOAD_STRATEGY_TAB = 'switch_load_strategy_tab',
 }
 

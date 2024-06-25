@@ -354,6 +354,11 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     onDriveOpen = async () => {
+        const { google_drive } = this.root_store;
+        if (google_drive) {
+            google_drive.upload_id = uuidv4();
+        }
+        rudderStackSendUploadStrategyStartEvent({ upload_provider: 'google_drive', upload_id: google_drive.upload_id });
         const { loadFile } = this.root_store.google_drive;
         const { xml_doc, file_name } = await loadFile();
         await load({
@@ -556,6 +561,7 @@ export default class LoadModalStore implements ILoadModalStore {
             } else if (loaded_to_main_workspace && result?.error) {
                 rudderStackSendUploadStrategyFailedEvent({
                     upload_provider: 'my_computer',
+                    upload_id: this.upload_id,
                     upload_type,
                     error_message: result.error,
                 });

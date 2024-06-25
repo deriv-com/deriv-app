@@ -61,7 +61,7 @@ export const rudderStackSendUploadStrategyFailedEvent = ({
 
 export const rudderStackSendGoogleDriveConnectEvent = () => {
     Analytics.trackEvent('ce_bot_form', {
-        action: ACTION.GOOGLEDRIVE_CONNECT,
+        action: ACTION.GOOGLE_DRIVE_CONNECT,
         form_name,
         subpage_name: getSubpageName(),
     });
@@ -69,7 +69,7 @@ export const rudderStackSendGoogleDriveConnectEvent = () => {
 
 export const rudderStackSendGoogleDriveDisconnectEvent = () => {
     Analytics.trackEvent('ce_bot_form', {
-        action: ACTION.GOOGLEDRIVE_DISCONNECT,
+        action: ACTION.GOOGLE_DRIVE_DISCONNECT,
         form_name,
         subpage_name: getSubpageName(),
     });

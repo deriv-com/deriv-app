@@ -7,7 +7,6 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import {
     rudderStackSendGoogleDriveConnectEvent,
     rudderStackSendGoogleDriveDisconnectEvent,
-    rudderStackSendUploadStrategyStartEvent,
 } from '../../../analytics/rudderstack-bot-builder';
 
 const GoogleDrive = observer(() => {
@@ -50,7 +49,6 @@ const GoogleDrive = observer(() => {
                             text={localize('Open')}
                             onClick={() => {
                                 onDriveOpen();
-                                rudderStackSendUploadStrategyStartEvent({ upload_provider: 'google_drive' });
                             }}
                             is_loading={is_open_button_loading}
                             has_effect

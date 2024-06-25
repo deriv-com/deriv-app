@@ -31,7 +31,11 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({ transac
                                 transaction={transaction}
                             />
                             <Divider
-                                color={index < filteredTransactions.length - 1 && index < 2 ? '#e6e9e9' : '#d6dadb'}
+                                color={
+                                    index < filteredTransactions.length - 1 && index < 2
+                                        ? 'var(--wallets-banner-border-color)'
+                                        : 'var(--general-active)'
+                                }
                             />
                         </React.Fragment>
                     ))}

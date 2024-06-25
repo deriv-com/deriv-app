@@ -53,7 +53,7 @@ const TransactionStatus: React.FC<TTransactionStatus> = ({ transactionType }) =>
                 </WalletText>
                 {isError && <LegacyWarningIcon iconSize='xs' />}
             </div>
-            <Divider />
+            <Divider color='var(--general-active)' />
             <div className='wallets-transaction-status__body'>
                 {isLoading && (
                     <div className='wallets-transaction-status__loader'>

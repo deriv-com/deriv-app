@@ -11,7 +11,7 @@ const TransactionStatusError: React.FC<TTransactionStatusError> = ({ refresh }) 
         <WalletText lineHeight='sm' size='xs'>
             Unfortunately, we cannot retrieve the information at this time.
         </WalletText>
-        <Divider />
+        <Divider color='var(--general-active)' />
         <WalletButton isFullWidth={true} onClick={refresh} size='sm' variant='outlined'>
             Refresh
         </WalletButton>

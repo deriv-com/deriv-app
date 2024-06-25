@@ -163,7 +163,9 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
                                         }}
                                         title={row.title}
                                     />
-                                    {index < rows.length - 1 && <Divider color='var(--border-divider)' height={2} />}
+                                    {index < rows.length - 1 && (
+                                        <Divider color='var(--wallets-banner-border-color)' height={2} />
+                                    )}
                                 </React.Fragment>
                             );
                         })}

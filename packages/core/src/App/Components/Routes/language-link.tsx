@@ -2,9 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import { Icon } from '@deriv/components';
-import { TranslationFlag } from '@deriv/shared';
+import { TranslationFlag, UNSUPPORTED_LANGUAGES } from '@deriv/shared';
 import { getAllowedLanguages, useTranslations } from '@deriv-com/translations';
-import { UNSUPPORTED_LANGUAGES } from '@deriv/shared';
 
 export type TLanguageLink = {
     is_clickable?: boolean;
@@ -21,7 +20,7 @@ const LanguageLink = observer(({ is_clickable = false, lang, toggleModal }: TLan
     const link: React.ReactNode = (
         <React.Fragment>
             {TranslationFlag[lang] ? (
-                TranslationFlag[lang]()
+                TranslationFlag[lang](36, 24)
             ) : (
                 <Icon icon={`IcFlag${lang}`} className='settings-language__language-flag' />
             )}
@@ -50,8 +49,8 @@ const LanguageLink = observer(({ is_clickable = false, lang, toggleModal }: TLan
                     data-testid='dt_settings_language_button'
                     id={`dt_settings_${lang}_button`}
                     key={lang}
-                    onClick={() => {
-                        changeSelectedLanguage(lang);
+                    onClick={async () => {
+                        await changeSelectedLanguage(lang);
                         switchLanguage(lang);
                         toggleModal?.();
                     }}

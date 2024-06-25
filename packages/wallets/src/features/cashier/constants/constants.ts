@@ -66,7 +66,7 @@ export const MT5MarketTypeDetails: Record<TMarketTypes.All, TMT5MarketTypeDetail
     },
     synthetic: {
         name: 'synthetic',
-        title: 'MT5 Derived',
+        title: 'MT5 Standard',
     },
 } as const;
 

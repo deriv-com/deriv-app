@@ -18,6 +18,7 @@ import AddOptionsAccount from 'Components/add-options-account';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import CompareAccount from 'Components/compare-account';
+import CFDsDescription from 'Components/elements/cfds-description';
 import { getHasDivider } from 'Constants/utils';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import './cfds-listing.scss';
@@ -194,16 +195,7 @@ const CFDsListing = observer(() => {
                     </div>
                 )
             }
-            description={
-                <Text size='xs' line_height='s'>
-                    <Localize
-                        i18n_default_text={
-                            'Trade bigger positions with less capital across diverse financial and derived instruments. <0>Learn more</0>'
-                        }
-                        components={[<StaticUrl key={0} className='options' href='/trade-types/cfds' />]}
-                    />
-                </Text>
-            }
+            description={<CFDsDescription />}
         >
             {isMobile() && <CompareAccount accounts_sub_text={accounts_sub_text} />}
             <AddDerivAccount />

@@ -43,6 +43,10 @@ const TakeProfit = observer((props: TTakeProfitProps) => {
         }
     };
 
+    const take_profit_tooltip = (
+        <Localize i18n_default_text='When your profit reaches or exceeds this amount, your trade will be closed automatically.' />
+    );
+
     return (
         <Fieldset className='trade-container__fieldset'>
             <InputWithCheckbox
@@ -69,7 +73,14 @@ const TakeProfit = observer((props: TTakeProfitProps) => {
                 onChange={changeValue}
                 setCurrentFocus={setCurrentFocus}
                 tooltip_label={
-                    <Localize i18n_default_text='When your profit reaches or exceeds this amount, your trade will be closed automatically.' />
+                    is_accumulator ? (
+                        <React.Fragment>
+                            {take_profit_tooltip}{' '}
+                            <Localize i18n_default_text="Take profit can't be adjusted after your contract starts." />
+                        </React.Fragment>
+                    ) : (
+                        take_profit_tooltip
+                    )
                 }
                 tooltip_alignment='left'
                 error_message_alignment='left'

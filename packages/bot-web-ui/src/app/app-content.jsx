@@ -133,7 +133,7 @@ const AppContent = observer(() => {
     ) : (
         <>
             <BlocklyLoading />
-            <div className='bot-dashboard bot'>
+            <div className='bot-dashboard bot' data-testid='dt_bot_dashboard'>
                 <Audio />
                 <BotNotificationMessages />
                 <Main />

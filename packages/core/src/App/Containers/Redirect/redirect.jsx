@@ -15,6 +15,7 @@ const Redirect = observer(() => {
 
     const {
         openRealAccountSignup,
+        setCFDPasswordResetModal,
         setResetTradingPasswordModalOpen,
         toggleAccountSignupModal,
         toggleResetPasswordModal,
@@ -111,6 +112,7 @@ const Redirect = observer(() => {
                         break;
                     case '3':
                         pathname = routes.passwords;
+                        setCFDPasswordResetModal(true);
                         break;
                     default:
                         break;

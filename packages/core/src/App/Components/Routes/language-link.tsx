@@ -49,8 +49,8 @@ const LanguageLink = observer(({ is_clickable = false, lang, toggleModal }: TLan
                     data-testid='dt_settings_language_button'
                     id={`dt_settings_${lang}_button`}
                     key={lang}
-                    onClick={() => {
-                        changeSelectedLanguage(lang);
+                    onClick={async () => {
+                        await changeSelectedLanguage(lang);
                         switchLanguage(lang);
                         toggleModal?.();
                     }}

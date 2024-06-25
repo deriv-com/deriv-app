@@ -50,6 +50,7 @@ export const SetupRealAccountOrGoToDemoModalContent = observer(({ is_responsive 
             cta_name: 'go_demo',
         });
 
+        setIsFromSignupAccount(false);
         setIsSetupRealAccountOrGoToDemoModalVisible(false);
     };
 

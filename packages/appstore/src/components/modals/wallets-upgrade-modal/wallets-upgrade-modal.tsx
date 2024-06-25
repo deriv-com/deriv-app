@@ -30,7 +30,7 @@ const WalletsUpgradeModal = observer(() => {
         <Modal
             className='wallets-upgrade-modal'
             is_open={(is_eligible && modalOpen) || is_real_wallets_upgrade_on}
-            width={is_mobile ? '32.8rem' : '77rem'}
+            width={is_mobile ? '32.8rem' : '77.6rem'}
             title=' '
             toggleModal={closeModal}
         >

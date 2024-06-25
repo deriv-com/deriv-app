@@ -13,7 +13,11 @@ const mock_store = mockStore({
     ui: { is_desktop: true },
 });
 
-jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
+jest.mock('@deriv/quill-icons', () => ({
+    ...jest.requireActual('@deriv/quill-icons'),
+    DerivLightUploadPoiIcon: () => 'DerivLightUploadPoiIcon',
+}));
+
 jest.mock('Helpers/utils', () => ({
     ...jest.requireActual('Helpers/utils'),
     getDocumentData: jest.fn((country_code, key) => {

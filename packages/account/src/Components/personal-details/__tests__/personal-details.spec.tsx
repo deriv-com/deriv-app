@@ -10,7 +10,10 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import { Analytics } from '@deriv-com/analytics';
 import { FormikErrors } from 'formik';
 
-jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
+jest.mock('@deriv/quill-icons', () => ({
+    ...jest.requireActual('@deriv/quill-icons'),
+    DerivLightNameDobPoiIcon: () => 'DerivLightNameDobPoiIcon',
+}));
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),

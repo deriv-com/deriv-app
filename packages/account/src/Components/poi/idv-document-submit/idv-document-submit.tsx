@@ -21,7 +21,7 @@ import {
     validate,
     validateName,
 } from '../../../Helpers/utils';
-import PoiNameDobExample from '../../../Assets/ic-poi-name-dob-example.svg';
+import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import IDVForm from '../../forms/idv-form';
 import PersonalDetailsForm from '../../forms/personal-details-form';
 import FormBody from '../../form-body';
@@ -55,7 +55,7 @@ const IdvDocumentSubmit = observer(
         const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
         const shouldSkipIdv = (document_id?: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;
         const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
-        const side_note_image = <PoiNameDobExample />;
+        const side_note_image = <DerivLightNameDobPoiIcon />;
 
         const form_initial_values = filterObjProperties(account_settings, visible_settings) as {
             [Property in keyof TConfirmPersonalDetailsForm]: string;

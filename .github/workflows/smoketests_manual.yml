@@ -14,6 +14,7 @@ jobs:
           github-token: ${{ secrets.E2E_WORKFLOW_TOKEN }}
           script: |
             const workflowInputs = {
+              environment: '${{ secrets.E2E_WORKFLOW_ENV }}',
               suite: '${{ secrets.E2E_WORKFLOW_SUITE }}',
               appRegUrl: 'https://deriv-app-git-fork-maryia-matskevich-deriv-maryia-bot-1913.binary.sx/',
               issue_number: '15719',

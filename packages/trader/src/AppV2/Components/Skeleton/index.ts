@@ -1,4 +1,4 @@
-import Skeleton from './skeleton';
 import './skeleton.scss';
 
-export default Skeleton;
+export { default as Skeleton } from './skeleton';
+export { VARIANT } from './skeleton';

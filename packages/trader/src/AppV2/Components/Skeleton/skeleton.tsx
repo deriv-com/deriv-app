@@ -5,12 +5,19 @@ type TSkeletonProps = {
     animated?: boolean;
     width?: string;
     height?: string;
+    variant?: 'icon';
 };
 
-const Skeleton = ({ animated = true, width, height }: TSkeletonProps) => {
+export const VARIANT = {
+    ICON: 'icon',
+} as const;
+
+const Skeleton = ({ animated = true, width, height, variant }: TSkeletonProps) => {
+    const getDefaultSize = () => (variant === VARIANT.ICON ? '32px' : '100%');
+
     const style: React.CSSProperties = {
-        width: width ?? '100%',
-        height: height ?? '100%',
+        width: width ?? getDefaultSize(),
+        height: height ?? getDefaultSize(),
     };
 
     return <div className={clsx('skeleton', animated && 'animated')} style={style} />;

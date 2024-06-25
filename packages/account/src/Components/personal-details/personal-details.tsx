@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useMemo, useEffect, useRef } from 'react';
+import { Fragment, useCallback, useMemo, useEffect } from 'react';
 import clsx from 'clsx';
 import { Form, Formik } from 'formik';
 import { Analytics, TEvents } from '@deriv-com/analytics';
@@ -97,7 +97,6 @@ const PersonalDetails = observer(
             },
             [is_eu_user, real_account_signup_target]
         );
-        const scroll_div_ref = useRef(null);
 
         useEffect(() => {
             trackEvent({
@@ -189,11 +188,7 @@ const PersonalDetails = observer(
                                         height_offset='100px'
                                         is_disabled={is_desktop}
                                     >
-                                        <ThemedScrollbars
-                                            height={height}
-                                            testId='dt_personal_details_container'
-                                            refSetter={scroll_div_ref}
-                                        >
+                                        <ThemedScrollbars height={height} testId='dt_personal_details_container'>
                                             <div className={clsx('details-form__elements', 'personal-details-form')}>
                                                 {is_rendered_for_idv && (
                                                     <Fragment>
@@ -235,7 +230,6 @@ const PersonalDetails = observer(
                                                     no_confirmation_needed={
                                                         values?.document_type?.id === IDV_NOT_APPLICABLE_OPTION.id
                                                     }
-                                                    parent_ref={scroll_div_ref}
                                                 />
                                             </div>
                                         </ThemedScrollbars>

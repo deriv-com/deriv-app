@@ -1,9 +1,14 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+//@ts-nocheck [TODO] - Need to fix typescript errors in Autocomplete & SelectNative components
+
 import { Field, FieldProps } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
 import { DesktopWrapper, MobileWrapper, Autocomplete, SelectNative, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
 import { useResidenceList } from '@deriv/hooks';
+import { TItem } from '@deriv/components/src/components/dropdown-list';
+import { ChangeEvent } from 'react';
 
 type TTaxResidenceFieldProps = {
     required?: boolean;
@@ -31,11 +36,10 @@ const TaxResidenceField = ({
                             {...field}
                             data-lpignore='true'
                             autoComplete='none' // prevent chrome autocomplete
-                            // @ts-expect-error This needs to fixed in AutoComplete component
                             label={required ? localize('Tax residence*') : localize('Tax residence')}
                             error={meta.touched ? meta.error : undefined}
                             list_items={residence_list}
-                            onItemSelection={item =>
+                            onItemSelection={(item: TItem) =>
                                 setFieldValue(
                                     'tax_residence',
                                     (item as ResidenceList[0]).value ? (item as ResidenceList[0]).text : '',
@@ -54,12 +58,11 @@ const TaxResidenceField = ({
                             placeholder={required ? localize('Tax residence*') : localize('Tax residence')}
                             name={field.name}
                             label={required ? localize('Tax residence*') : localize('Tax residence')}
-                            // @ts-expect-error This needs to fixed in SelectNative component
                             list_items={residence_list}
                             value={field.value}
                             use_text
                             error={meta.touched ? meta.error : ''}
-                            onChange={e => {
+                            onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                                 field.onChange(e);
                                 setFieldValue('tax_residence', e.target.value, true);
                             }}

@@ -1,5 +1,5 @@
 import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
-import { TSchema, generateValidationFunction, getDefaultFields, toMoment } from '@deriv/shared';
+import { TSchema, getDefaultFields, toMoment } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { shouldShowIdentityInformation } from 'Helpers/utils';
 import { TUpgradeInfo } from 'Types';
@@ -127,16 +127,6 @@ const personalDetailsConfig = <T>(
         body: PersonalDetails,
         form_value: getDefaultFields(real_account_signup_target, config),
         props: {
-            validate: generateValidationFunction(
-                real_account_signup_target,
-                transformConfig(config, {
-                    real_account_signup_target,
-                    residence_list,
-                    account_settings,
-                    account_status,
-                    residence,
-                })
-            ),
             is_svg: upgrade_info?.can_upgrade_to === 'svg',
             account_opening_reason_list: [
                 {

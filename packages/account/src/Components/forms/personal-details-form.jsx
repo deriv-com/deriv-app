@@ -18,7 +18,6 @@ import { Localize, localize } from '@deriv/translations';
 import { isFieldImmutable, verifyFields } from '../../Helpers/utils';
 import FormBodySection from '../form-body-section';
 import { DateOfBirthField, FormInputField } from './form-fields';
-import EmploymentTaxDetailsContainer from '../../Containers/employment-tax-details-container';
 import FormSubHeader from '../form-sub-header';
 import InlineNoteWithIcon from '../inline-note-with-icon';
 
@@ -43,7 +42,6 @@ const PersonalDetailsForm = props => {
         side_note,
         no_confirmation_needed,
         mismatch_status,
-        parent_ref,
     } = props;
     const autocomplete_value = 'none';
     // need to put this check related to DIEL clients
@@ -396,15 +394,6 @@ const PersonalDetailsForm = props => {
                                 required
                             />
                         )}
-                        {!is_svg_only && ('tax_residence' in values || 'tax_identification_number' in values) && (
-                            <React.Fragment>
-                                <FormSubHeader title={localize('Tax information')} />
-                                <EmploymentTaxDetailsContainer
-                                    editable_fields={editable_fields}
-                                    parent_ref={parent_ref}
-                                />
-                            </React.Fragment>
-                        )}
                         {!is_svg_only && 'account_opening_reason' in values && (
                             <AccountOpeningReasonField
                                 required
@@ -455,7 +444,6 @@ const PersonalDetailsForm = props => {
                                 required
                             />
                         )}
-                        <EmploymentTaxDetailsContainer editable_fields={editable_fields} parent_ref={parent_ref} />
                         {'account_opening_reason' in values && (
                             <AccountOpeningReasonField
                                 account_opening_reason_list={account_opening_reason_list}

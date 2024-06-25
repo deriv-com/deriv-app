@@ -41,7 +41,7 @@ export const getEmploymentAndTaxValidationSchema = (residence_list: ResidenceLis
                     const tin_format = residence_list.find(
                         res => res.text === tax_residence && res.tin_format
                     )?.tin_format;
-                    if (tin_format?.some(tax_regex => new RegExp(tax_regex).test(value as string))) {
+                    if (!tin_format?.some(tax_regex => new RegExp(tax_regex).test(value as string))) {
                         return context.createError({ message: localize('Tax Identification Number is invalid.') });
                     }
                     return true;

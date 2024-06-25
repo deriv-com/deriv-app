@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { FormikValues, useFormikContext } from 'formik';
 import {
     EmploymentStatusField,
@@ -21,8 +21,8 @@ const EmploymentTaxDetailsContainer = ({ editable_fields, parent_ref }: TEmploym
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = useState(false);
 
-    const tax_residence_ref = React.useRef<HTMLDivElement>(null);
-    const tin_ref = React.useRef<HTMLDivElement>(null);
+    const tax_residence_ref = useRef<HTMLDivElement>(null);
+    const tin_ref = useRef<HTMLDivElement>(null);
 
     const validateClickOutside = (event: MouseEvent) => {
         const target = event?.target as HTMLElement;
@@ -56,11 +56,8 @@ const EmploymentTaxDetailsContainer = ({ editable_fields, parent_ref }: TEmploym
     useOnClickOutside(tin_ref, () => setIsTinPopoverOpen(false), validateClickOutside);
 
     return (
-        <div>
-            {/* {'employment_status' in values && ( */}
+        <Fragment>
             <EmploymentStatusField required is_disabled={isFieldImmutable('employment_status', editable_fields)} />
-            {/* )} */}
-            {/* {'tax_residence' in values && ( */}
             <div ref={tax_residence_ref}>
                 <TaxResidenceField
                     disabled={isFieldImmutable('tax_residence', editable_fields)}
@@ -69,9 +66,6 @@ const EmploymentTaxDetailsContainer = ({ editable_fields, parent_ref }: TEmploym
                     setIsTinPopoverOpen={setIsTinPopoverOpen}
                 />
             </div>
-            {/* )} */}
-
-            {/* {'tax_identification_number' in values && ( */}
             <div ref={tin_ref}>
                 <TaxIdentificationNumberField
                     disabled={isFieldImmutable('tax_identification_number', editable_fields)}
@@ -80,8 +74,6 @@ const EmploymentTaxDetailsContainer = ({ editable_fields, parent_ref }: TEmploym
                     setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                 />
             </div>
-            {/* )} */}
-            {/* {'tax_identification_confirm' in values && ( */}
             <Checkbox
                 name='tax_identification_confirm'
                 className='details-form__tin-confirm'
@@ -98,8 +90,7 @@ const EmploymentTaxDetailsContainer = ({ editable_fields, parent_ref }: TEmploym
                 data-testid='tax_identification_confirm'
                 has_error={!!(touched.tax_identification_confirm && errors.tax_identification_confirm)}
             />
-            {/* )} */}
-        </div>
+        </Fragment>
     );
 };
 

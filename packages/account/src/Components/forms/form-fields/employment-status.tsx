@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import React from 'react';
 import { Field, FieldProps } from 'formik';
 import { DesktopWrapper, Dropdown, MobileWrapper, SelectNative } from '@deriv/components';
 import { localize } from '@deriv/translations';
@@ -21,7 +21,7 @@ const EmploymentStatusField = ({ required, is_disabled }: TEmploymentStatusField
                         name={field.name}
                         list={getEmploymentStatusList()}
                         value={field.value}
-                        onChange={e => {
+                        onChange={(e: { target: { name: string; value: string } }) => {
                             setFieldValue(field.name, e.target?.value, true);
                             handleChange(e);
                         }}
@@ -38,7 +38,7 @@ const EmploymentStatusField = ({ required, is_disabled }: TEmploymentStatusField
                         list_items={getEmploymentStatusList()}
                         value={field.value}
                         error={meta.touched ? meta.error : undefined}
-                        onChange={e => {
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                             setFieldTouched('employment_status', true);
                             handleChange(e);
                         }}

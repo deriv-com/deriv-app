@@ -53,7 +53,6 @@ const PersonalDetailsForm = observer(() => {
         account_settings,
         account_status,
         authentication_status,
-        is_eu,
         is_virtual,
         current_landing_company,
         updateAccountStatus,

@@ -13,17 +13,12 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
-import { getLegalEntityName, isMobile, routes, validPhone } from '@deriv/shared';
+import { isMobile, routes, validPhone } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { isFieldImmutable, verifyFields } from '../../Helpers/utils';
 import FormBodySection from '../form-body-section';
-import {
-    DateOfBirthField,
-    FormInputField,
-    EmploymentStatusField,
-    TaxResidenceField,
-    TaxIdentificationNumberField,
-} from './form-fields';
+import { DateOfBirthField, FormInputField } from './form-fields';
+import EmploymentTaxDetailsContainer from '../../Containers/employment-tax-details-container';
 import FormSubHeader from '../form-sub-header';
 import InlineNoteWithIcon from '../inline-note-with-icon';
 
@@ -55,26 +50,26 @@ const PersonalDetailsForm = props => {
     // need to put this check related to DIEL clients
     const is_svg_only = is_svg && !is_eu_user;
 
-    const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
-    const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
+    // const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
+    // const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
 
     const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched } = useFormikContext();
 
-    const handleToolTipStatus = React.useCallback(() => {
-        if (is_tax_residence_popover_open) {
-            setIsTaxResidencePopoverOpen(false);
-        }
-        if (is_tin_popover_open) {
-            setIsTinPopoverOpen(false);
-        }
-    }, [is_tax_residence_popover_open, is_tin_popover_open]);
+    // const handleToolTipStatus = React.useCallback(() => {
+    //     if (is_tax_residence_popover_open) {
+    //         setIsTaxResidencePopoverOpen(false);
+    //     }
+    //     if (is_tin_popover_open) {
+    //         setIsTinPopoverOpen(false);
+    //     }
+    // }, [is_tax_residence_popover_open, is_tin_popover_open]);
 
-    React.useEffect(() => {
-        if (should_close_tooltip) {
-            handleToolTipStatus();
-            setShouldCloseTooltip(false);
-        }
-    }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
+    // React.useEffect(() => {
+    //     if (should_close_tooltip) {
+    //         handleToolTipStatus();
+    //         setShouldCloseTooltip(false);
+    //     }
+    // }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
 
     const getNameAndDobLabels = () => {
         const is_asterisk_needed = is_svg || is_eu_user || is_rendered_for_onfido || is_rendered_for_idv;
@@ -424,56 +419,11 @@ const PersonalDetailsForm = props => {
                         {!is_svg_only && ('tax_residence' in values || 'tax_identification_number' in values) && (
                             <React.Fragment>
                                 <FormSubHeader title={localize('Tax information')} />
-                                {'tax_residence' in values && (
-                                    <TaxResidenceField
-                                        required
-                                        setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
-                                        setIsTinPopoverOpen={setIsTinPopoverOpen}
-                                        is_tax_residence_popover_open={is_tax_residence_popover_open}
-                                        disabled={isFieldImmutable('tax_residence', editable_fields)}
-                                    />
-                                )}
-                                {'tax_identification_number' in values && (
-                                    <TaxIdentificationNumberField
-                                        is_tin_popover_open={is_tin_popover_open}
-                                        setIsTinPopoverOpen={setIsTinPopoverOpen}
-                                        setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
-                                        disabled={isFieldImmutable('tax_identification_number', editable_fields)}
-                                        required
-                                    />
-                                )}
-                                {'employment_status' in values && (
-                                    <EmploymentStatusField
-                                        required
-                                        is_disabled={isFieldImmutable('employment_status', editable_fields)}
-                                    />
-                                )}
-                                {'tax_identification_confirm' in values && (
-                                    <Checkbox
-                                        name='tax_identification_confirm'
-                                        className='details-form__tin-confirm'
-                                        data-lpignore
-                                        onChange={() =>
-                                            setFieldValue(
-                                                'tax_identification_confirm',
-                                                !values.tax_identification_confirm,
-                                                true
-                                            )
-                                        }
-                                        value={values.tax_identification_confirm}
-                                        label={localize(
-                                            'I hereby confirm that the tax information I provided is true and complete. I will also inform {{legal_entity_name}} about any changes to this information.',
-                                            {
-                                                legal_entity_name: getLegalEntityName('maltainvest'),
-                                            }
-                                        )}
-                                        withTabIndex={0}
-                                        data-testid='tax_identification_confirm'
-                                        has_error={
-                                            !!(touched.tax_identification_confirm && errors.tax_identification_confirm)
-                                        }
-                                    />
-                                )}
+                                <EmploymentTaxDetailsContainer
+                                    editable_fields={editable_fields}
+                                    should_close_tooltip={should_close_tooltip}
+                                    setShouldCloseTooltip={setShouldCloseTooltip}
+                                />
                             </React.Fragment>
                         )}
                         {!is_svg_only && 'account_opening_reason' in values && (
@@ -526,24 +476,11 @@ const PersonalDetailsForm = props => {
                                 required
                             />
                         )}
-                        {'tax_residence' in values && (
-                            <TaxResidenceField
-                                setFieldValue={setFieldValue}
-                                disabled={isFieldImmutable('tax_residence', editable_fields)}
-                                residence_list={residence_list}
-                                setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
-                                setIsTinPopoverOpen={setIsTinPopoverOpen}
-                                is_tax_residence_popover_open={is_tax_residence_popover_open}
-                            />
-                        )}
-                        {'tax_identification_number' in values && (
-                            <TaxIdentificationNumberField
-                                is_tin_popover_open={is_tin_popover_open}
-                                setIsTinPopoverOpen={setIsTinPopoverOpen}
-                                setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
-                                disabled={isFieldImmutable('tax_identification_number', editable_fields)}
-                            />
-                        )}
+                        <EmploymentTaxDetailsContainer
+                            editable_fields={editable_fields}
+                            should_close_tooltip={should_close_tooltip}
+                            setShouldCloseTooltip={setShouldCloseTooltip}
+                        />
                         {'account_opening_reason' in values && (
                             <AccountOpeningReasonField
                                 no_header

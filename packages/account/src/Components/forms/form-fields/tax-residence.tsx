@@ -30,11 +30,16 @@ const TaxResidenceField = ({
                             {...field}
                             data-lpignore='true'
                             autoComplete='none' // prevent chrome autocomplete
+                            // @ts-expect-error This needs to fixed in AutoComplete component
                             label={required ? localize('Tax residence*') : localize('Tax residence')}
                             error={meta.touched ? meta.error : undefined}
                             list_items={residence_list}
-                            onItemSelection={(item: ResidenceList[0]) =>
-                                setFieldValue('tax_residence', item.value ? item.text : '', true)
+                            onItemSelection={item =>
+                                setFieldValue(
+                                    'tax_residence',
+                                    (item as ResidenceList[0]).value ? (item as ResidenceList[0]).text : '',
+                                    true
+                                )
                             }
                             list_portal_id='modal_root'
                             data-testid='tax_residence'
@@ -48,6 +53,7 @@ const TaxResidenceField = ({
                             placeholder={required ? localize('Tax residence*') : localize('Tax residence')}
                             name={field.name}
                             label={required ? localize('Tax residence*') : localize('Tax residence')}
+                            // @ts-expect-error This needs to fixed in SelectNative component
                             list_items={residence_list}
                             value={field.value}
                             use_text

@@ -205,7 +205,6 @@ const PersonalDetails = observer(
                                 ref={setRef}
                                 onSubmit={handleSubmit}
                                 autoComplete='off'
-                                onClick={closeToolTip}
                                 data-testid='personal_details_form'
                             >
                                 <ScrollToFieldWithError

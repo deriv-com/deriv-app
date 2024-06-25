@@ -121,7 +121,10 @@ export const getPersonalDetailsBaseValidationSchema = (broker_code: string) =>
             .max(35, localize('You should enter 9-35 characters.'))
             .matches(phoneNumber, localize('Please enter a valid phone number (e.g. +15417541234).')),
         place_of_birth: Yup.string().required(localize('Place of birth is required.')),
-        citizen: Yup.string().required(localize('Citizenship is required.')),
+        citizen: Yup.string().when({
+            is: () => broker_code === 'maltainvest',
+            then: Yup.string().required(localize('Citizenship is required.')),
+        }),
         tax_identification_confirm: Yup.bool().oneOf([true], localize('Please confirm your tax information.')),
         crs_confirmation: Yup.bool()
             .test({

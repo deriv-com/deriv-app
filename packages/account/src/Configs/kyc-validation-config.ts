@@ -1,10 +1,11 @@
 import { localize } from '@deriv-com/translations';
-import Yup from 'yup';
+import * as Yup from 'yup';
 import { AnyObject } from 'yup/lib/types';
 import { isAdditionalDocumentValid, isDocumentNumberValid } from '../Helpers/utils';
+import { TDocument } from 'Types';
 
 const validateDocumentNumber = (documentNumber: string, context: Yup.TestContext<AnyObject>) => {
-    const result = isDocumentNumberValid(documentNumber, context.parent.documentType);
+    const result = isDocumentNumberValid(documentNumber, context.parent.document_type);
 
     if (result) {
         return context.createError({ message: result });
@@ -13,7 +14,7 @@ const validateDocumentNumber = (documentNumber: string, context: Yup.TestContext
 };
 
 const validateAdditionalDocumentNumber = (additional_document_number: string, context: Yup.TestContext<AnyObject>) => {
-    const result = isAdditionalDocumentValid(context.parent.documentType, additional_document_number);
+    const result = isAdditionalDocumentValid(context.parent.document_type, additional_document_number);
     if (result) {
         return context.createError({ message: result });
     }
@@ -22,7 +23,7 @@ const validateAdditionalDocumentNumber = (additional_document_number: string, co
 
 export const getIDVFormValidationSchema = () => {
     return Yup.object({
-        additionalDocument: Yup.string()
+        document_additional: Yup.string()
             .test({
                 name: 'testAdditionalDocumentNumber',
                 test: (value, context) => {
@@ -30,7 +31,7 @@ export const getIDVFormValidationSchema = () => {
                 },
             })
             .default(''),
-        documentNumber: Yup.string()
+        document_number: Yup.string()
             .test({
                 name: 'testDocumentNumber',
                 test: (value, context) => {
@@ -38,6 +39,6 @@ export const getIDVFormValidationSchema = () => {
                 },
             })
             .default(''),
-        documentType: Yup.string().required(localize('Please select a document type.')),
+        document_type: Yup.mixed<TDocument>().required(localize('Please select a document type.')),
     });
 };

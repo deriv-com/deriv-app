@@ -21,6 +21,7 @@ const TaxResidenceField = ({
     disabled,
 }: TTaxResidenceFieldProps) => {
     const { data: residence_list } = useResidenceList();
+
     return (
         <Field name='tax_residence'>
             {({ field, form: { setFieldValue }, meta }: FieldProps) => (

@@ -88,7 +88,6 @@ const TradingAppCard = ({
             case MT5_ACCOUNT_STATUS.UNAVAILABLE:
                 return setAccountUnavailableModal(true);
             default:
-                return null;
         }
     };
 
@@ -212,7 +211,7 @@ const TradingAppCard = ({
                     >
                         {is_existing_real_ctrader_account ? '' : app_desc}
                     </Text>
-                    {mt5_acc_auth_status && (
+                    {mt5_acc_auth_status && action_type === 'multi-action' && (
                         <StatusBadge
                             className='trading-app-card__acc_status_badge'
                             account_status={mt5_acc_auth_status}

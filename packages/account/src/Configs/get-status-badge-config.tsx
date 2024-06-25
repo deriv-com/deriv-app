@@ -80,6 +80,16 @@ const getStatusBadgeConfig = (
                 text: <Localize i18n_default_text='<0>Account closed</0>' components={[BadgeTextComponent]} />,
                 icon: 'IcAlertWarning',
             };
+        case MT5_ACCOUNT_STATUS.SERVER_MAINTENANCE:
+            return {
+                text: <Localize i18n_default_text='<0>Server maintenance</0>' components={[BadgeTextComponent]} />,
+                icon: 'IcAlertWarning',
+            };
+        case MT5_ACCOUNT_STATUS.UNAVAILABLE:
+            return {
+                text: <Localize i18n_default_text='<0>Unavailable</0>' components={[BadgeTextComponent]} />,
+                icon: 'IcAlertWarning',
+            };
         default:
             return {
                 text: '',

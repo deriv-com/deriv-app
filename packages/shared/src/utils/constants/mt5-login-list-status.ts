@@ -6,4 +6,6 @@ export const MT5_ACCOUNT_STATUS = Object.freeze({
     PENDING: 'pending',
     POA_PENDING: 'poa_pending',
     POA_VERIFIED: 'poa_verified',
+    SERVER_MAINTENANCE: 'server_maintenance',
+    UNAVAILABLE: 'unavailable',
 });

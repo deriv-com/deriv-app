@@ -145,8 +145,16 @@ const CFDsListing = observer(() => {
                     }
                     return null;
             }
+        } else {
+            switch (current_acc_status) {
+                case 'server_maintenance':
+                    return MT5_ACCOUNT_STATUS.SERVER_MAINTENANCE;
+                case 'unavailable':
+                    return MT5_ACCOUNT_STATUS.UNAVAILABLE;
+                default:
+            }
         }
-        return null;
+        return '';
     };
 
     const no_real_mf_account_eu_regulator = no_MF_account && is_eu_user && is_real;
@@ -228,7 +236,7 @@ const CFDsListing = observer(() => {
                                       existing_account?.status,
                                       existing_account?.landing_company_short
                                   )
-                                : 'unavailable';
+                                : 'server_maintenance';
                         return (
                             <TradingAppCard
                                 action_type={existing_account.action_type}

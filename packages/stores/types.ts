@@ -239,7 +239,6 @@ type TActiveAccount = TAccount & {
 type TTradingPlatformAvailableAccount = {
     market_type: 'financial' | 'gaming' | 'all';
     name: string;
-    product?: string;
     requirements: {
         after_first_deposit: {
             financial_assessment: string[];

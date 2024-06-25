@@ -47,4 +47,11 @@ describe('LinkTitle', () => {
             expect(global.open).toHaveBeenCalledWith(expectedUrl);
         }
     );
+
+    it('should render and handle click events for platform $platform correctly', () => {
+        render(<LinkTitle platform={''} />, { wrapper });
+        expect(screen.getByTestId('dt_wallet_link_title')).toBeInTheDocument();
+        fireEvent.click(screen.getByTestId('dt_wallet_link_title'));
+        expect(global.open).not.toHaveBeenCalledWith();
+    });
 });

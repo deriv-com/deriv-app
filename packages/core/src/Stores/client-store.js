@@ -2041,6 +2041,7 @@ export default class ClientStore extends BaseStore {
         };
         const client_object = {};
         const selected_account = obj_params?.selected_acct;
+        const verification_code = obj_params?.code;
         const is_wallets_selected = selected_account?.startsWith('CRW');
         let active_loginid;
         let active_wallet_loginid;
@@ -2048,6 +2049,7 @@ export default class ClientStore extends BaseStore {
         if (selected_account) {
             if (is_wallets_selected) {
                 active_wallet_loginid = obj_params.selected_acct;
+                this.setVerificationCode(verification_code, payment_withdraw);
             }
             active_loginid = obj_params.selected_acct;
         }
@@ -2113,7 +2115,7 @@ export default class ClientStore extends BaseStore {
             let search_params = new URLSearchParams(window.location.search);
 
             search_params.forEach((value, key) => {
-                const account_keys = ['acct', 'token', 'cur'];
+                const account_keys = ['acct', 'token', 'cur', 'code'];
                 const is_account_param = account_keys.some(
                     account_key => key?.includes(account_key) && key !== 'affiliate_token'
                 );

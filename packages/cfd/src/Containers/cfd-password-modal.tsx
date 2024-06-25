@@ -552,6 +552,7 @@ const CFDPasswordForm = observer(
                             )}
                             {product === PRODUCT.ZEROSPREAD && account_type.category === CATEGORY.REAL && (
                                 <CfdPasswordModalTnc
+                                    className='cfd-password-modal-tnc--bottom'
                                     platform={platform}
                                     checked={checked}
                                     onCheck={() => setChecked(prev => !prev)}

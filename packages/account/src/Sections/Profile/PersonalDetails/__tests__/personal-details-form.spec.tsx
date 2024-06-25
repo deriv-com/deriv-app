@@ -1,9 +1,12 @@
+import React from 'react';
 import { cleanup, render, waitFor, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { PersonalDetailsForm } from '../personal-details-form';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { APIProvider } from '@deriv/api';
 import userEvent from '@testing-library/user-event';
+import { StoreProvider, mockStore } from '@deriv/stores';
+import PersonalDetailsForm from '../personal-details-form';
+import { useResidenceList } from '@deriv/hooks';
 
 afterAll(cleanup);
 jest.mock('@deriv/components', () => ({
@@ -18,18 +21,22 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     useWS: () => undefined,
 }));
 
+const residence_list = [
+    {
+        text: 'Text',
+        value: 'value',
+    },
+];
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useStatesList: jest.fn(() => ({ data: residence_list, isLoading: false })),
+    useResidenceList: jest.fn(() => ({ data: residence_list, isLoading: false })),
+}));
+
 describe('<PersonalDetailsForm />', () => {
     const history = createBrowserHistory();
 
-    const promise = Promise.resolve();
-    const fetchResidenceList = jest.fn(() => promise);
-    const fetchStatesList = jest.fn(() => promise);
-    const residence_list = [
-        {
-            text: 'Text',
-            value: 'value',
-        },
-    ];
     const mock_store = mockStore({
         client: {
             account_settings: {
@@ -38,11 +45,6 @@ describe('<PersonalDetailsForm />', () => {
                 citizen: 'Thailand',
                 email_consent: 1,
             },
-            states_list: residence_list,
-            residence_list,
-            has_residence: true,
-            fetchResidenceList,
-            fetchStatesList,
         },
     });
 
@@ -50,7 +52,9 @@ describe('<PersonalDetailsForm />', () => {
         return render(
             <Router history={history}>
                 <StoreProvider store={modified_store}>
-                    <PersonalDetailsForm history={history} />
+                    <APIProvider>
+                        <PersonalDetailsForm />
+                    </APIProvider>
                 </StoreProvider>
             </Router>
         );
@@ -97,21 +101,21 @@ describe('<PersonalDetailsForm />', () => {
         });
     });
 
-    it('should display error for 2-50 characters length validation, for First name when entered characters are less than 2', async () => {
+    it('should display error for up to 50 characters length validation, for last name when entered characters are more than 50', async () => {
         renderComponent();
-        await waitFor(() => {
+        await waitFor(async () => {
             const last_name = screen.getByTestId('dt_last_name');
-            userEvent.type(last_name, 'b');
-            expect(screen.getByText(/You should enter 2-50 characters./)).toBeInTheDocument();
+            await userEvent.type(last_name, 'ABCDEFGHIJKLMNOP.QRSTU VWXYZabcdefghi-jklmnopqrstuvwxyzh-shs');
+            expect(screen.getByText(/Enter no more than 50 characters./)).toBeInTheDocument();
         });
     });
 
     it('should display error for the regex validation, for First name when unacceptable characters are entered', async () => {
         renderComponent();
 
-        await waitFor(() => {
+        await waitFor(async () => {
             const first_name = screen.getByTestId('dt_first_name');
-            userEvent.type(first_name, 'test 3');
+            await userEvent.type(first_name, 'test 3');
             expect(screen.getByText('Letters, spaces, periods, hyphens, apostrophes only.')).toBeInTheDocument();
         });
     });
@@ -203,5 +207,11 @@ describe('<PersonalDetailsForm />', () => {
             expect(screen.queryByText(value)).not.toBeInTheDocument();
         });
         expect(screen.getByText('Country of residence*')).toBeInTheDocument();
+    });
+
+    it('should display loader while fetching data', () => {
+        (useResidenceList as jest.Mock).mockImplementation(() => ({ data: [], isLoading: true }));
+        renderComponent();
+        expect(screen.getByText(/Loading/)).toBeInTheDocument();
     });
 });

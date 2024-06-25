@@ -266,6 +266,14 @@
     }
 }
 
+.cfd-jurisdiction-card--synthetic {
+    &__footnotes-container {
+        @include desktop {
+            min-height: 11rem;
+        }
+    }
+}
+
 .cfd-card {
     &-perspective {
         -webkit-perspective: 100rem;
@@ -395,6 +403,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        min-height: 2.55rem;
     }
     &-disabled {
         &-flat {
@@ -1076,6 +1085,10 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+
+            .upload_error_btn {
+                margin-top: 3.2rem;
+            }
         }
 
         @include desktop() {

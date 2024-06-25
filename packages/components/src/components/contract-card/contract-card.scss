@@ -497,14 +497,15 @@
             transform: translateY(-8px);
         }
         &--has-cancel-btn {
-            justify-content: space-between;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
 
-            .dc-btn--cancel {
+            .dc-btn {
                 /*rtl:ignore*/
-                margin-left: 0.8rem;
-                max-width: 10.5rem;
+                padding: 0 0.5rem;
+
+                &--cancel {
+                    width: 100%;
+                }
             }
         }
         .dc-remaining-time {

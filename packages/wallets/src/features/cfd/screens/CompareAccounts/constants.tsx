@@ -2,7 +2,7 @@ import React from 'react';
 import {
     AccountsDerivXIcon,
     AccountsDmt5CfdsIcon,
-    AccountsDmt5DerivedIcon,
+    AccountsDmt5StandardIcon,
     AccountsDmt5FinancialIcon,
     AccountsDmt5SwfIcon,
     PartnersProductDerivCtraderBrandLightLogoHorizontalIcon,
@@ -10,7 +10,7 @@ import {
 import { CFD_PLATFORMS, MARKET_TYPE } from '../../constants';
 
 export const ACCOUNT_ICONS = {
-    [MARKET_TYPE.SYNTHETIC]: <AccountsDmt5DerivedIcon iconSize='lg' />,
+    [MARKET_TYPE.SYNTHETIC]: <AccountsDmt5StandardIcon iconSize='lg' />,
     [MARKET_TYPE.FINANCIAL]: <AccountsDmt5FinancialIcon iconSize='lg' />,
     [MARKET_TYPE.ALL]: <AccountsDmt5SwfIcon iconSize='lg' />,
     [CFD_PLATFORMS.DXTRADE]: <AccountsDerivXIcon iconSize='lg' />,

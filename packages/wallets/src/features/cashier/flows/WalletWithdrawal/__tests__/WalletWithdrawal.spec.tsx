@@ -36,10 +36,11 @@ jest.mock('../../../../../components', () => ({
     Loader: jest.fn(() => <div>Loading</div>),
 }));
 
+const mockSwitchAccount = jest.fn();
 jest.mock('@deriv/api-v2', () => ({
     ...jest.requireActual('@deriv/api-v2'),
     useActiveWalletAccount: jest.fn(),
-    useAuthorize: jest.fn(() => ({ switchAccount: jest.fn() })),
+    useAuthorize: jest.fn(() => ({ switchAccount: mockSwitchAccount })),
     useBalance: jest.fn(),
 }));
 
@@ -64,6 +65,7 @@ describe('WalletWithdrawal', () => {
             data: {
                 accounts: {
                     CR42069: { balance: 100 },
+                    CR69420: { balance: 50 },
                 },
             },
             isLoading: false,
@@ -79,13 +81,28 @@ describe('WalletWithdrawal', () => {
         });
     });
 
+    it('should call switch account for the loginid in url params', () => {
+        mockUseActiveWalletAccount.mockReturnValue({
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+            data: {
+                balance: 100,
+                currency: 'USD',
+                loginid: 'CR69420',
+            },
+        });
+
+        render(<WalletWithdrawal />, { wrapper });
+
+        expect(screen.getByText('WithdrawalVerificationModule')).toBeInTheDocument();
+        expect(mockSwitchAccount).toHaveBeenCalledWith('CR42069');
+    });
+
     it('should remove the `verification` param from the window url', () => {
         const replaceStateSpy = jest.spyOn(window.history, 'replaceState');
         mockUseActiveWalletAccount.mockReturnValue({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
                 balance: 100,
-
                 currency: 'USD',
                 loginid: 'CR42069',
             },
@@ -120,7 +137,6 @@ describe('WalletWithdrawal', () => {
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
                 balance: 100,
-
                 currency: 'USD',
                 loginid: 'CR42069',
             },

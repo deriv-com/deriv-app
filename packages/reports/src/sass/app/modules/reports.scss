@@ -958,7 +958,7 @@ $side-padding: 1.2em;
             /* stylelint-disable-next-line declaration-colon-space-after */
             grid-template-columns:
                 minmax(85px, 1fr) minmax(125px, 1fr) minmax(65px, 1fr) minmax(105px, 1fr) minmax(100px, 1fr)
-                minmax(105px, 1fr) minmax(105px, 1fr) minmax(105px, 1fr) minmax(125px, 1fr) minmax(90px, 1fr);
+                minmax(105px, 1fr) minmax(105px, 1fr) minmax(105px, 1fr) minmax(125px, 1fr) minmax(120px, 1fr);
 
             &-action {
                 display: flex;
@@ -973,6 +973,10 @@ $side-padding: 1.2em;
                     height: 2.4rem;
                     padding: 0 0.8rem;
                     min-width: 93px;
+
+                    &--cancel {
+                        padding: 0 0.2rem;
+                    }
 
                     .dc-btn__text {
                         font-size: 1.2rem;

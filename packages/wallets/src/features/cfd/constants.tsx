@@ -2,8 +2,8 @@ import React from 'react';
 import {
     AccountsDerivCtraderIcon,
     AccountsDerivXIcon,
-    AccountsDmt5DerivedIcon,
     AccountsDmt5FinancialIcon,
+    AccountsDmt5StandardIcon,
     AccountsDmt5SwfIcon,
     DerivProductDerivXBrandDarkWordmarkIcon,
     LabelPairedLinuxXlIcon,
@@ -14,29 +14,30 @@ import {
 } from '@deriv/quill-icons';
 import i18n from '../../translations/i18n';
 import { TPlatforms } from '../../types';
+import { ctraderLinks, whiteLabelLinks } from './screens/MT5TradeScreen/MT5TradeLink/urlConfig';
 
 export const MarketTypeDetails = {
     all: {
-        description: i18n.t('Swap-free CFDs on selected financial and derived instruments.'),
+        description: i18n.t('Swap-free CFDs on selected financial and derived instruments'),
         icon: <AccountsDmt5SwfIcon height={48} width={48} />,
         title: i18n.t('Swap-Free'),
     },
     financial: {
-        description: i18n.t('CFDs on financial instruments.'),
+        description: i18n.t('CFDs on financial instruments'),
         icon: <AccountsDmt5FinancialIcon height={48} width={48} />,
         title: i18n.t('Financial'),
     },
     synthetic: {
-        description: i18n.t('CFDs on derived instruments.'),
-        icon: <AccountsDmt5DerivedIcon height={48} width={48} />,
-        title: i18n.t('Derived'),
+        description: i18n.t('CFDs on derived and financial instruments'),
+        icon: <AccountsDmt5StandardIcon height={48} width={48} />,
+        title: i18n.t('Standard'),
     },
 } as const;
 
 export const PlatformDetails = {
     ctrader: {
         icon: <AccountsDerivCtraderIcon height={48} width={48} />,
-        link: 'https://onelink.to/hyqpv7',
+        link: 'https://onelink.to/5jgj8z',
         platform: i18n.t('ctrader') as TPlatforms.OtherAccounts,
         title: i18n.t('Deriv cTrader'),
     },
@@ -47,14 +48,14 @@ export const PlatformDetails = {
         title: i18n.t('Deriv X'),
     },
     mt5: {
-        icon: <AccountsDmt5DerivedIcon height={48} width={48} />,
-        link: 'https://onelink.to/grmtyx',
+        icon: <AccountsDmt5StandardIcon height={48} width={48} />,
+        link: 'https://onelink.to/xf26jx',
         platform: i18n.t('mt5') as TPlatforms.MT5,
         title: i18n.t('Deriv MT5'),
     },
     mt5Investor: {
-        icon: <AccountsDmt5DerivedIcon height={48} width={48} />,
-        link: 'https://onelink.to/grmtyx',
+        icon: <AccountsDmt5StandardIcon height={48} width={48} />,
+        link: 'https://onelink.to/xf26jx',
         platform: i18n.t('mt5') as TPlatforms.MT5,
         title: i18n.t('Deriv MT5 investor'),
     },
@@ -75,31 +76,31 @@ export const companyNamesAndUrls = {
 export const AppToContentMapper = {
     ctrader: {
         icon: <LabelPairedWindowsXlIcon />,
-        link: 'https://getctrader.com/deriv/ctrader-deriv-setup.exe',
+        link: ctraderLinks.windows,
         text: i18n.t('Download'),
         title: i18n.t('CTrader Windows App'),
     },
     linux: {
         icon: <LabelPairedLinuxXlIcon />,
-        link: 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
+        link: whiteLabelLinks.linux,
         text: i18n.t('Learn more'),
         title: i18n.t('MetaTrader 5 Linux app'),
     },
     macos: {
         icon: <LabelPairedMacosXlIcon />,
-        link: 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg',
+        link: whiteLabelLinks.macos,
         text: i18n.t('Download'),
         title: i18n.t('MetaTrader 5 MacOS app'),
     },
     web: {
         icon: <PartnersProductDerivMt5BrandLightLogoHorizontalIcon height={32} width={32} />,
-        link: '',
+        link: whiteLabelLinks.webtrader_url,
         text: i18n.t('Open'),
         title: i18n.t('MetaTrader 5 web'),
     },
     windows: {
         icon: <LabelPairedWindowsXlIcon />,
-        link: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
+        link: whiteLabelLinks.windows,
         text: i18n.t('Download'),
         title: i18n.t('MetaTrader 5 Windows app'),
     },
@@ -123,6 +124,18 @@ export const CFD_PLATFORMS = {
     CTRADER: 'ctrader',
     DXTRADE: 'dxtrade',
     MT5: 'mt5',
+} as const;
+
+export const DESKTOP_PLATFORMS = {
+    LINUX: 'linux',
+    MACOS: 'macos',
+    WINDOWS: 'windows',
+} as const;
+
+export const MOBILE_PLATFORMS = {
+    ANDROID: 'android',
+    HAUWEI: 'huawei',
+    IOS: 'ios',
 } as const;
 
 export const MARKET_TYPE = {

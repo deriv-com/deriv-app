@@ -6,7 +6,7 @@ import OptionsAndMultipliersListing from '../OptionsAndMultipliersListing';
 
 const mockHistoryPush = jest.fn();
 jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'), // Use actual for all non-overridden methods
+    ...jest.requireActual('react-router-dom'),
     useHistory: () => ({
         push: mockHistoryPush,
     }),

@@ -202,7 +202,7 @@ const CFDPasswordChange = observer(
                             </div>
                             <div className='cfd-password-change__footer-button'>
                                 <FormSubmitButton
-                                    is_disabled={!values.old_password || !values.new_password || !isValid}
+                                    is_disabled={!values.old_password || !values.new_password || !isValid || !checked}
                                     has_cancel={has_cancel_button}
                                     is_absolute={is_mobile}
                                     cancel_label={localize('Forgot password?')}

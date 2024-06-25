@@ -12,20 +12,20 @@ type TAccordionStrategyGroupProps = {
 };
 
 type TDescriptionContent = {
-    item: TDescriptionItem[];
+    item: TDescriptionItem[] | string;
     font_size: string;
 };
 
-const DescriptionContent = ({ item, font_size }: TDescriptionContent) => {
-    const content_data: TDescriptionItem[] = Array.isArray(item) ? item : (item as TDescriptionItem[]).slice(1);
-
+export const DescriptionContent = ({ item, font_size }: TDescriptionContent) => {
+    const content_data: TDescriptionItem[] | string = Array.isArray(item) ? item : item.slice(1);
     return (
         <>
-            {content_data?.map(item => (
-                <React.Fragment key={item.id}>
-                    <StrategyDescription item={item} font_size={font_size} />
-                </React.Fragment>
-            ))}
+            {Array.isArray(content_data) &&
+                content_data?.map(item => (
+                    <React.Fragment key={item.id}>
+                        <StrategyDescription item={item} font_size={font_size} />
+                    </React.Fragment>
+                ))}
         </>
     );
 };
@@ -48,7 +48,7 @@ const AccordionStrategyGroup = observer(
         return (
             <>
                 {Array.isArray(grouped_objects_by_title) &&
-                    (grouped_objects_by_title as TDescriptionItem[][]).map((data: TDescriptionItem[], key: number) => {
+                    (grouped_objects_by_title as TDescriptionItem[][]).map((data: TDescriptionItem[]) => {
                         const subtitle_value = data?.[0]?.content?.[0] ?? '';
                         return (
                             <Accordion

@@ -9,7 +9,7 @@ const useP2PAdvertInfo = (id: string) => {
     const { subscribe, data, unsubscribe, ...rest } = useSubscription('p2p_advert_info');
 
     React.useEffect(() => {
-        subscribe({ payload: { id } });
+        if (id) subscribe({ payload: { id } });
 
         return () => unsubscribe();
     }, [subscribe]);

@@ -1,5 +1,6 @@
 import { action, extendObservable, observable, makeObservable, runInAction } from 'mobx';
 import {
+    ChartBarrierStore,
     isAccumulatorContract,
     isDigitContract,
     isEnded,
@@ -10,6 +11,7 @@ import {
     isTurbosContract,
     getDigitInfo,
     getDisplayStatus,
+    getLimitOrder,
     WS,
     getContractUpdateConfig,
     getContractValidationRules,
@@ -21,10 +23,9 @@ import {
     getEndTime,
     BARRIER_COLORS,
     getContractStatus,
+    setLimitOrderBarriers,
 } from '@deriv/shared';
 import { getChartConfig } from './Helpers/logic';
-import { setLimitOrderBarriers, getLimitOrder } from './Helpers/limit-orders';
-import { ChartBarrierStore } from './chart-barrier-store';
 import { createChartMarkers, calculateMarker, getAccumulatorMarkers } from './Helpers/chart-markers';
 import BaseStore from './base-store';
 
@@ -292,7 +293,7 @@ export default class ContractStore extends BaseStore {
                     barriers: this.barriers_array,
                     contract_info,
                     contract_type,
-                    is_over: true,
+                    is_over: !contract_info.sell_time,
                 });
             }
         }

@@ -7,18 +7,18 @@ const getBaseSchema = () =>
     Yup.object().shape({
         first_name: Yup.string()
             .required(localize('First name is required.'))
-            .min(2, localize('You should enter 2-50 characters.'))
-            .max(50, localize('You should enter 2-50 characters.'))
+            .min(1, localize('Enter no more than 50 characters.'))
+            .max(50, localize('Enter no more than 50 characters.'))
             .matches(
-                /^(?!.*\s{2,})[\p{L}\s'.-]{2,50}$/u,
+                /^(?!.*\s{2,})[\p{L}\s'.-]{1,50}$/u,
                 localize('Letters, spaces, periods, hyphens, apostrophes only.')
             ),
         last_name: Yup.string()
             .required(localize('Last name is required.'))
-            .min(2, localize('You should enter 2-50 characters.'))
-            .max(50, localize('You should enter 2-50 characters.'))
+            .min(1, localize('Enter no more than 50 characters.'))
+            .max(50, localize('Enter no more than 50 characters.'))
             .matches(
-                /^(?!.*\s{2,})[\p{L}\s'.-]{2,50}$/u,
+                /^(?!.*\s{2,})[\p{L}\s'.-]{1,50}$/u,
                 localize('Letters, spaces, periods, hyphens, apostrophes only.')
             ),
         phone: Yup.string()
@@ -63,7 +63,7 @@ export const getPersonalDetailsInitialValues = (
     account_settings: GetSettings,
     residence_list: ResidenceList,
     states_list: StatesList,
-    is_virtual: boolean
+    is_virtual?: boolean
 ): GetSettings => {
     const virtualAccountInitialValues: GetSettings = {
         email_consent: account_settings.email_consent ?? 0,
@@ -163,7 +163,7 @@ export const makeSettingsRequest = (
     return request;
 };
 
-export const getPersonalDetailsValidationSchema = (is_eu: boolean, is_virtual: boolean) => {
+export const getPersonalDetailsValidationSchema = (is_eu: boolean, is_virtual?: boolean) => {
     if (is_virtual) return Yup.object();
     if (!is_eu) return getBaseSchema();
     return getBaseSchema().concat(

@@ -287,8 +287,9 @@ const mockedActivePositions = [
 ] as TPortfolioPosition[];
 
 describe('getFilteredContractTypes', () => {
-    it('should return empty array if filters are empty', () => {
+    it('should return empty array if filters are empty or undefined', () => {
         expect(getFilteredContractTypes([])).toEqual([]);
+        expect(getFilteredContractTypes()).toEqual([]);
     });
 
     it('should return empty array if contract type filter does not exist in config', () => {

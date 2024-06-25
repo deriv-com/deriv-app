@@ -4,7 +4,7 @@ import { Text } from '@deriv-com/quill-ui';
 import { LabelPairedArrowLeftSmBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import { useHistory, useLocation } from 'react-router-dom';
-import { isEmptyObject } from '@deriv/shared';
+import { isEmptyObject, routes } from '@deriv/shared';
 
 const DTraderContractDetailsHeader = observer(() => {
     const { state } = useLocation();
@@ -14,7 +14,9 @@ const DTraderContractDetailsHeader = observer(() => {
 
     const handleBack = () => {
         const is_from_table_row = !isEmptyObject(state) ? state.from_table_row : false;
-        return is_from_table_row ? history.goBack() : routeBackInApp(history);
+        // console.log('routes.is_from_table_row', is_from_table_row);
+        return history.goBack();
+        // return is_from_table_row ? history.goBack() : routeBackInApp(history);
     };
 
     return (

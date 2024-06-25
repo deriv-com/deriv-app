@@ -7,12 +7,7 @@ import './setup-real-account-or-go-to-demo-modal.scss';
 
 const SetupRealAccountOrGoToDemoModal = observer(() => {
     const { traders_hub } = useStore();
-    const { is_setup_real_account_or_go_to_demo_modal_visible, setIsSetupRealAccountOrGoToDemoModalVisible } =
-        traders_hub;
-
-    const closeModal = () => {
-        setIsSetupRealAccountOrGoToDemoModalVisible(false);
-    };
+    const { is_setup_real_account_or_go_to_demo_modal_visible } = traders_hub;
 
     useEffect(() => {
         if (is_setup_real_account_or_go_to_demo_modal_visible) {
@@ -29,12 +24,7 @@ const SetupRealAccountOrGoToDemoModal = observer(() => {
     return (
         <Fragment>
             <DesktopWrapper>
-                <Modal
-                    is_open={is_setup_real_account_or_go_to_demo_modal_visible}
-                    toggleModal={closeModal}
-                    width='400px'
-                    has_close_icon={false}
-                >
+                <Modal is_open={is_setup_real_account_or_go_to_demo_modal_visible} width='400px' has_close_icon={false}>
                     <SetupRealAccountOrGoToDemoModalContent />
                 </Modal>
             </DesktopWrapper>
@@ -42,7 +32,6 @@ const SetupRealAccountOrGoToDemoModal = observer(() => {
                 <MobileDialog
                     portal_element_id='modal_root'
                     visible={is_setup_real_account_or_go_to_demo_modal_visible}
-                    onClose={closeModal}
                     has_close_icon={false}
                     has_full_height
                     header_classname='setup-real-account-or-go-to-demo-modal__responsive-header'

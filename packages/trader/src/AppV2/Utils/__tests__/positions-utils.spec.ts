@@ -300,18 +300,29 @@ describe('getFilteredContractTypes', () => {
             CONTRACT_TYPES.VANILLA.CALL,
             CONTRACT_TYPES.VANILLA.PUT,
         ]);
-        expect(getFilteredContractTypes(['Rise/Fall'])).toEqual([CONTRACT_TYPES.CALL, CONTRACT_TYPES.PUT]);
+        expect(getFilteredContractTypes(['Rise/Fall'])).toEqual([
+            CONTRACT_TYPES.CALL,
+            CONTRACT_TYPES.PUT,
+            CONTRACT_TYPES.CALLE,
+            CONTRACT_TYPES.PUTE,
+        ]);
     });
 
     it('should return array with contract type filters without duplicates', () => {
         expect(getFilteredContractTypes(['Rise/Fall', 'Higher/Lower'])).toEqual([
             CONTRACT_TYPES.CALL,
             CONTRACT_TYPES.PUT,
+            CONTRACT_TYPES.CALLE,
+            CONTRACT_TYPES.PUTE,
         ]);
     });
 });
 
 describe('filterPositions', () => {
+    it('should return positions if filter array was empty', () => {
+        expect(filterPositions(mockedActivePositions, [])).toEqual(mockedActivePositions);
+    });
+
     it('should filter positions based on passed filter array', () => {
         expect(filterPositions(mockedActivePositions, ['Multipliers'])).toEqual([mockedActivePositions[1]]);
 

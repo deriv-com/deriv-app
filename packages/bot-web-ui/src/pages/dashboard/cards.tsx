@@ -7,7 +7,7 @@ import { localize } from '@deriv/translations';
 import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendQsOpenEventFromDashboard } from '../bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
+import { rudderStackSendQsOpenEvent } from '../../analytics/rudderstack-quick-strategy';
 import DashboardBotList from './load-bot-preview/dashboard-bot-list';
 import GoogleDrive from './load-bot-preview/google-drive';
 
@@ -37,11 +37,6 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
     } = dashboard;
     const { handleFileChange, loadFileFromLocal } = load_modal;
     const { setFormVisibility } = quick_strategy;
-
-    const sendToRudderStackOnQuickStrategyIconClick = () => {
-        // send to rs if quick strategy is opened from dashbaord
-        rudderStackSendQsOpenEventFromDashboard();
-    };
 
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
@@ -84,7 +79,8 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             method: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
                 setFormVisibility(true);
-                sendToRudderStackOnQuickStrategyIconClick();
+                // send to rs if quick strategy is opened from dashbaord
+                rudderStackSendQsOpenEvent({ subform_source: 'dashboard' });
             },
         },
     ];

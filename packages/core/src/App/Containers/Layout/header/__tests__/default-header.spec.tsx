@@ -26,6 +26,7 @@ jest.mock('react-router-dom', () => ({
 }));
 jest.mock('../header-account-actions', () => jest.fn(() => <div>Mocked Header Account Action</div>));
 jest.mock('../deriv-short-logo', () => jest.fn(() => <div>Deriv Short Logo</div>));
+jest.mock('../traders-hub-home-button', () => jest.fn(() => <div>TradersHub Home Button</div>));
 
 describe('DefaultHeader', () => {
     const mock_store = mockStore({ ui: { is_real_acc_signup_on: true } });

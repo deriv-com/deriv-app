@@ -40,8 +40,8 @@ const cumulativeAccountLimitsMessageFn = ({
         !targetAccount.currency ||
         !sourceAccount.currencyConfig ||
         !targetAccount.currencyConfig ||
-        !allowedSumUSD ||
-        !availableSumUSD
+        (allowedSumUSD !== 0 && !allowedSumUSD) ||
+        (availableSumUSD !== 0 && !availableSumUSD)
     )
         return null;
 

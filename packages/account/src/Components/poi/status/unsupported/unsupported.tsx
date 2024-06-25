@@ -38,6 +38,7 @@ type TUnsupported = {
         submissions_left: number;
     };
     is_for_mt5?: boolean;
+    is_resubmission?: boolean;
 };
 
 const Unsupported = ({
@@ -52,6 +53,7 @@ const Unsupported = ({
     handleViewComplete,
     onfido,
     is_for_mt5,
+    is_resubmission,
     ...props
 }: TUnsupported) => {
     const [detail, setDetail] = React.useState<number | null>(null);
@@ -102,7 +104,7 @@ const Unsupported = ({
                 <Localize i18n_default_text='Please upload one of the following documents:' />
             </Text>
             <Documents documents={documents} toggleDetail={toggleDetail} />
-            {!is_for_mt5 && (
+            {!is_for_mt5 && !is_resubmission && (
                 <FormFooter className='proof-of-identity__footer'>
                     <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
                         <Localize i18n_default_text='Back' />

@@ -14,6 +14,9 @@ export const routes = {
     dxtrade: '/derivx',
     bot: '/bot',
     trade: '/dtrader',
+    markets: '/dtrader/markets',
+    trader_positions: '/dtrader/positions',
+    trader_menu: '/dtrader/menu',
     smarttrader: getUrlSmartTrader(),
     binarybot: getUrlBinaryBot(),
 
@@ -94,10 +97,6 @@ export const routes = {
     wallets_compare_accounts: '/compare-accounts',
     wallets_on_ramp: '/wallet/on-ramp',
     wallets_reset_balance: '/wallet/reset-balance',
-
-    // Traders Hub
-    traders_hub_v2: '/traders-hub',
-    compare_accounts: '/traders-hub/compare-accounts',
 
     // Cashier V2
     cashier_v2: '/cashier-v2',

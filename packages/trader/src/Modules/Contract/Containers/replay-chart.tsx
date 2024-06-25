@@ -48,7 +48,7 @@ const ReplayChart = observer(
         const from_platform = getPlatformRedirect(app_routing_history);
         const should_force_light_theme = from_platform.name === 'DBot';
         const settings = {
-            language: current_language.toLowerCase(),
+            language: current_language,
             theme: is_dark_theme && !should_force_light_theme ? 'dark' : 'light',
             position: is_chart_layout_default ? 'bottom' : 'left',
             countdown: is_chart_countdown_visible,

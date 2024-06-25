@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useAuthorize, useDepositCryptoAddress } from '@deriv/api-v2';
+import React from 'react';
+import { useDepositCryptoAddress } from '@deriv/api-v2';
 import { Loader } from '../../../../components';
 import { Divider } from '../../../../components/Base';
 import { isServerError } from '../../../../utils/utils';
@@ -12,15 +12,8 @@ import DepositCryptoTryFiatOnRamp from './components/DepositCryptoTryFiatOnRamp/
 import './DepositCrypto.scss';
 
 const DepositCrypto = () => {
-    const { isSuccess: isAuthorizeSuccess } = useAuthorize();
-    const { data: depositCryptoAddress, error, isLoading, mutate: mutateDepositCrypto } = useDepositCryptoAddress();
+    const { data: depositCryptoAddress, error, isLoading } = useDepositCryptoAddress();
     const depositCryptoError = error?.error;
-
-    useEffect(() => {
-        if (isAuthorizeSuccess) {
-            mutateDepositCrypto();
-        }
-    }, [isAuthorizeSuccess, mutateDepositCrypto]);
 
     if (isLoading) return <Loader />;
 

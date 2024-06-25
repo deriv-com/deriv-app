@@ -10,6 +10,7 @@ const languages = {
     ID: 'Indonesian',
     IT: 'Italiano',
     KO: '한국어',
+    MN: 'Монгол',
     PL: 'Polish',
     PT: 'Português',
     SW: 'Kiswahili',

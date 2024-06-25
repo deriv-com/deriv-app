@@ -39,6 +39,9 @@ const DurationUnit: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) => {
                     setCurrentDurationMinMax(durations?.[0]?.min, durations?.[0]?.max);
                 } else {
                     const duration = duration_units?.find((duration: TDurationUnitItem) => duration.value === selected);
+                    // Keep these lines to ensure the duration resets to default (e.g., for changing from GOLD/USD to GBP/NZD).
+                    setFieldValue?.('duration', duration?.min);
+                    setValue('duration', duration?.min ?? 0);
                     setCurrentDurationMinMax(duration?.min, duration?.max);
                 }
             };

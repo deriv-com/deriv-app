@@ -31,6 +31,8 @@ const getHighlightedIconLabel = (
             platform === CFD_PLATFORMS.CTRADER
         ) {
             return 'Forex: major/minor';
+        } else if (marketType === MARKET_TYPE.SYNTHETIC) {
+            return 'Forex: standard';
         }
         return 'Forex: standard/micro';
     })();
@@ -38,11 +40,11 @@ const getHighlightedIconLabel = (
     switch (marketType) {
         case MARKET_TYPE.SYNTHETIC:
             return [
-                { highlighted: false, icon: 'Forex', text: forexLabel },
+                { highlighted: true, icon: 'Forex', text: forexLabel },
                 { highlighted: false, icon: 'Stocks', text: 'Stocks' },
-                { highlighted: false, icon: 'StockIndices', text: 'Stock indices' },
-                { highlighted: false, icon: 'Commodities', text: 'Commodities' },
-                { highlighted: false, icon: 'Cryptocurrencies', text: 'Cryptocurrencies' },
+                { highlighted: true, icon: 'StockIndices', text: 'Stock indices' },
+                { highlighted: true, icon: 'Commodities', text: 'Commodities' },
+                { highlighted: true, icon: 'Cryptocurrencies', text: 'Cryptocurrencies' },
                 { highlighted: false, icon: 'ETF', text: 'ETFs' },
                 { highlighted: true, icon: 'Synthetics', text: 'Synthetic indices' },
                 { highlighted: true, icon: 'Baskets', text: 'Basket indices' },
@@ -171,7 +173,7 @@ const getJurisdictionDescription = (shortcode?: string) => {
                 regulator: 'Labuan Financial Services Authority',
                 regulator_description: 'Regulator/External dispute resolution',
                 regulator_license: '(License no. MB/18/0024)',
-                spread: '1.4 pips',
+                spread: '0.6 pips',
             };
         case MARKET_TYPE_SHORTCODE.FINANCIAL_MALTAINVEST:
             return {

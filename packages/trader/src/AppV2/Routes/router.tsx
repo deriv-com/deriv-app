@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter, Switch } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import { UILoader, RouteWithSubroutes } from '@deriv/components';
 import traderRoutes from './routes';
 import { observer, useStore } from '@deriv/stores';
@@ -12,22 +12,20 @@ const Router: React.FC = () => {
 
     return (
         <Suspense fallback={<UILoader />}>
-            <BrowserRouter>
-                <Switch>
-                    {traderRoutes.map((route, index) => (
-                        <RouteWithSubroutes
-                            key={index}
-                            is_logged_in={is_logged_in}
-                            language={current_language}
-                            Component404={Page404}
-                            should_redirect_login={true}
-                            routes={traderRoutes}
-                            to={''}
-                            {...route}
-                        />
-                    ))}
-                </Switch>
-            </BrowserRouter>
+            <Switch>
+                {traderRoutes.map((route, index) => (
+                    <RouteWithSubroutes
+                        key={index}
+                        is_logged_in={is_logged_in}
+                        language={current_language}
+                        Component404={Page404}
+                        should_redirect_login
+                        routes={traderRoutes}
+                        to=''
+                        {...route}
+                    />
+                ))}
+            </Switch>
         </Suspense>
     );
 };

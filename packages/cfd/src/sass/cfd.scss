@@ -182,6 +182,10 @@
         align-items: flex-start;
         gap: 0.8rem;
         margin-block-end: 0.8rem;
+        &__icon {
+            flex-basis: 16px;
+            max-width: 16px;
+        }
     }
     &__checkbox {
         display: flex;

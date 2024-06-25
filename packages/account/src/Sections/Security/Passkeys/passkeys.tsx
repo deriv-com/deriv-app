@@ -25,7 +25,7 @@ export type TPasskey = {
     last_used: number;
     created_at?: number;
     stored_on?: string;
-    passkey_id?: string;
+    passkey_id: string;
     icon?: string;
 };
 export type TOnPasskeyMenuClick = (
@@ -34,6 +34,7 @@ export type TOnPasskeyMenuClick = (
 ) => void;
 export type TCurrentManagedPasskey = {
     id: TPasskey['id'];
+    passkey_id: TPasskey['passkey_id'];
     name: TPasskey['name'];
 };
 
@@ -55,6 +56,7 @@ const Passkeys = observer(() => {
     const [is_snackbar_open, setIsSnackbarOpen] = useState(false);
     const [current_managed_passkey, setCurrentManagedPasskey] = useState<TCurrentManagedPasskey>({
         id: 0,
+        passkey_id: '',
         name: '',
     });
 
@@ -146,7 +148,7 @@ const Passkeys = observer(() => {
 
     const onPasskeyMenuClick = (passkey_managing_status: TPasskeysStatus, passkey_data: TCurrentManagedPasskey) => {
         if (passkey_managing_status === PASSKEY_STATUS_CODES.REMOVING) {
-            removePasskey(passkey_data.id);
+            removePasskey(passkey_data.passkey_id);
             return;
         }
         if (passkey_managing_status !== PASSKEY_STATUS_CODES.LIST && is_snackbar_open) {

@@ -26,6 +26,7 @@ describe('PasskeysStatusContainer', () => {
     const mock_current_managed_passkey: ComponentProps<typeof PasskeysStatusContainer>['current_managed_passkey'] = {
         id: 777,
         name: 'test passkey name',
+        passkey_id: 'test_passkey_id',
     };
 
     const renderComponent = (passkey_status: TPasskeysStatus) => {

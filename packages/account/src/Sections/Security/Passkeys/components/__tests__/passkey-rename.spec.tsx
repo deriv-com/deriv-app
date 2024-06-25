@@ -10,6 +10,7 @@ describe('PasskeyRename', () => {
     const mock_current_managed_passkey: ComponentProps<typeof PasskeysStatusContainer>['current_managed_passkey'] = {
         id: 777,
         name: init_passkey_name,
+        passkey_id: 'test_passkey_id',
     };
     const validation_error = 'Only 3-30 characters allowed.';
     const mockOnPrimaryButtonClick = jest.fn();

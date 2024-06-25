@@ -1,36 +1,63 @@
-export type TProcessedSymbolItem = {
-    symbol: string;
-    name: string;
-    market: string;
-    market_display_name: string;
-    subgroup: string;
-    subgroup_display_name: string;
-    submarket: string;
+import { ActiveSymbols } from '@deriv/api-types';
+import { localize } from '@deriv/translations';
+
+type SubmarketGroup = {
     submarket_display_name: string;
-    exchange_is_open: boolean;
-    decimal_places: number;
+    items: ActiveSymbols[];
 };
 
-/**
- *
- * @param {TProcessedSymbolItem} symbol_object
- * @returns {string} concatenation of market name, market subgroup name (if has a subgroup) & submarket name.
- * E.g.: 'derived-baskets-forex_basket', where 'Derived' is a market, 'Baskets' is a market subgroup,
- * and 'Forex basket' is a submarket.
- */
-export const getSymbolMarketCategory = (symbol_object: TProcessedSymbolItem) => {
-    const { market_display_name, submarket_display_name, subgroup } = symbol_object || {};
-    if (!market_display_name) return '';
-    const market = market_display_name.replace(' ', '_');
-    const submarket = submarket_display_name.replace(' ', '_');
-    if (subgroup && subgroup !== 'none') {
-        return `${market}-${subgroup}-${submarket}`.toLowerCase();
+type SubgroupGroup = {
+    subgroup_display_name: string;
+    submarkets: Record<string, SubmarketGroup>;
+};
+
+type MarketGroup = {
+    market_display_name: string;
+    subgroups: Record<string, SubgroupGroup>;
+};
+
+export const categorizeSymbols = (symbols: ActiveSymbols[]): Record<string, MarketGroup> => {
+    if (symbols.length === 0) {
+        return {};
     }
-    return `${market}-${submarket}`.toLowerCase();
-};
+    let categorizedSymbols = symbols.reduce((acc: Record<string, MarketGroup>, symbol: ActiveSymbols) => {
+        //@ts-expect-error type is correct but not sure why its complaining
+        const { market, market_display_name, subgroup, subgroup_display_name, submarket, submarket_display_name } =
+            symbol;
 
-export const stringToSlug = (str: string) =>
-    str
-        .toLowerCase()
-        .replace(/[^\w ]+/g, '')
-        .replace(/ +/g, '-');
+        if (!acc[market]) {
+            acc[market] = {
+                market_display_name,
+                subgroups: {},
+            };
+        }
+
+        if (!acc[market].subgroups[subgroup]) {
+            acc[market].subgroups[subgroup] = {
+                subgroup_display_name,
+                submarkets: {},
+            };
+        }
+
+        if (!acc[market].subgroups[subgroup].submarkets[submarket]) {
+            acc[market].subgroups[subgroup].submarkets[submarket] = {
+                submarket_display_name,
+                items: [],
+            };
+        }
+
+        acc[market].subgroups[subgroup].submarkets[submarket].items.push(symbol);
+
+        return acc;
+    }, {});
+
+    categorizedSymbols = {
+        all: {
+            market_display_name: localize('All'),
+            subgroups: {},
+            ...categorizedSymbols,
+        },
+        ...categorizedSymbols,
+    };
+    return categorizedSymbols;
+};

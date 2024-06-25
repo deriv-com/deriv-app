@@ -10,8 +10,7 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import { useDropzone } from 'react-dropzone';
-import { DerivLightIcCloudUploadIcon, LegacyClose2pxIcon } from '@deriv/quill-icons';
-import DropzoneFrame from '../../public/images/dropzone-frame.svg';
+import { DerivLightDropzoneFrameIcon, DerivLightIcCloudUploadIcon, LegacyClose2pxIcon } from '@deriv/quill-icons';
 import { IconButton, WalletButton, WalletText } from '../Base';
 import './Dropzone.scss';
 
@@ -161,7 +160,7 @@ const Dropzone: React.FC<TProps> = ({
                                     style={{ backgroundImage: `url(${file.preview})` }}
                                 >
                                     {/* TODO: Change implementation to use quill icons after version update */}
-                                    {hasFrame && <DropzoneFrame />}
+                                    {hasFrame && <DerivLightDropzoneFrameIcon height='80px' width='130px' />}
                                     <IconButton
                                         className='wallets-dropzone__remove-file'
                                         data-testid='dt_remove-button'

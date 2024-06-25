@@ -41,9 +41,18 @@ export default class TradersHubStore extends BaseStore {
     is_wallet_migration_failed = false;
     active_modal_tab;
     active_modal_wallet_id;
+    is_cfd_restricted_country = false;
+    is_financial_restricted_country = false;
 
     constructor(root_store) {
-        super({ root_store });
+        const local_storage_properties = [
+            'available_platforms',
+            'selected_region',
+            'is_cfd_restricted_country',
+            'is_financial_restricted_country',
+        ];
+        const store_name = 'traders_hub_store';
+        super({ root_store, local_storage_properties, store_name });
 
         makeObservable(this, {
             account_type_card: observable,
@@ -70,6 +79,8 @@ export default class TradersHubStore extends BaseStore {
             open_failed_verification_for: observable,
             is_real_wallets_upgrade_on: observable,
             is_wallet_migration_failed: observable,
+            is_cfd_restricted_country: observable,
+            is_financial_restricted_country: observable,
             closeModal: action.bound,
             content_flag: computed,
             getAccount: action.bound,
@@ -115,6 +126,7 @@ export default class TradersHubStore extends BaseStore {
             showTopUpModal: action.bound,
             toggleWalletsUpgrade: action.bound,
             setWalletsMigrationFailedPopup: action.bound,
+            cleanup: action.bound,
         });
 
         reaction(
@@ -125,6 +137,7 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.client.mt5_login_list,
                 this.root_store.client.dxtrade_accounts_list,
                 this.root_store.client.ctrader_accounts_list,
+                this.root_store.client.is_landing_company_loaded,
                 this.is_demo_low_risk,
                 this.root_store.modules?.cfd?.current_list,
                 this.root_store.client.landing_companies,
@@ -320,6 +333,8 @@ export default class TradersHubStore extends BaseStore {
     }
 
     getAvailablePlatforms() {
+        if (!this.root_store.client.is_landing_company_loaded) return this.available_platforms;
+
         const appstore_platforms = getAppstorePlatforms();
         if ((this.financial_restricted_countries || this.is_eu_user) && !this.is_demo_low_risk) {
             this.available_platforms = appstore_platforms.filter(platform =>
@@ -439,13 +454,23 @@ export default class TradersHubStore extends BaseStore {
     get financial_restricted_countries() {
         const { financial_company, gaming_company } = this.root_store.client.landing_companies;
 
-        return financial_company?.shortcode === 'svg' && !gaming_company;
+        const is_restricted =
+            this.is_financial_restricted_country || (financial_company?.shortcode === 'svg' && !gaming_company);
+        // update the flag in the store
+        this.is_financial_restricted_country = is_restricted;
+
+        return is_restricted;
     }
 
     get CFDs_restricted_countries() {
         const { financial_company, gaming_company } = this.root_store.client.landing_companies;
 
-        return gaming_company?.shortcode === 'svg' && !financial_company;
+        const is_restricted =
+            this.is_cfd_restricted_country || (gaming_company?.shortcode === 'svg' && !financial_company);
+        // update the flag in the store
+        this.is_cfd_restricted_country = is_restricted;
+
+        return is_restricted;
     }
 
     getAvailableMt5Accounts() {
@@ -830,5 +855,17 @@ export default class TradersHubStore extends BaseStore {
 
     setWalletsMigrationFailedPopup(value) {
         this.is_wallet_migration_failed = value;
+    }
+
+    cleanup() {
+        if (
+            !localStorage.getItem('active_loginid') ||
+            (!this.root_store.client.is_logged_in && localStorage.getItem('active_loginid') === 'null')
+        ) {
+            localStorage.removeItem('traders_hub_store');
+            this.is_cfd_restricted_country = false;
+            this.is_financial_restricted_country = false;
+            this.available_platforms = [];
+        }
     }
 }

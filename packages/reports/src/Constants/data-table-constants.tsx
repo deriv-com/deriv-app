@@ -33,9 +33,9 @@ const map = {
     transfer: 'transfer',
 } as const;
 
-export type TKeys = keyof typeof map;
+export type TKeys = string;
 
-const getModeFromValue = (key: TKeys) => map[key] || map.default;
+const getModeFromValue = (key: string) => map[key as keyof typeof map] || map.default;
 
 type TAccumulatorOpenPositionstemplateProps = Omit<
     TMultiplierOpenPositionstemplateProps,

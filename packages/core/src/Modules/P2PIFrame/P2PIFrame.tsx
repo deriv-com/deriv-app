@@ -2,7 +2,7 @@ import React from 'react';
 import { getUrlP2P } from '@deriv/shared';
 
 const P2PIFrame = () => {
-    const base_link = getUrlP2P();
+    const base_link = getUrlP2P(false);
 
     return (
         <iframe

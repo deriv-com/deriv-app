@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 //@ts-nocheck [TODO] - Need to fix typescript errors in OnfidoUpload component
 import React from 'react';
-import { Loading, Icon, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Loading, Icon, Text, Button } from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
 import { WS } from '@deriv/shared';
 import { UploadComplete } from '../upload-complete/upload-complete';
-import PoiUnsupportedFailed from '../../../poi-unsupported-failed';
+import POIManualUploadFailed from '../../../poi-manual-upload-failed';
+import { API_ERROR_CODES } from '../../../../Constants/api-error-codes';
 import uploadFile from '../../../file-uploader-container/upload-file';
 import OnfidoUpload from '../../../../Sections/Verification/ProofOfIdentity/onfido-sdk-view-container';
 
@@ -74,7 +75,9 @@ const DetailComponent = ({
                 })
                     .then(response => {
                         file_to_upload_index += 1;
-                        if (response.warning || response.error) {
+                        if (response?.warning === API_ERROR_CODES.DUPLICATE_DOCUMENT) {
+                            setStatus(STATUS.IS_DUPLICATE_UPLOAD);
+                        } else if (response?.warning || response.error) {
                             is_any_failed = true;
                             setStatus(STATUS.IS_FAILED);
                             setError(
@@ -122,7 +125,20 @@ const DetailComponent = ({
         case STATUS.IS_COMPLETED:
             return <UploadComplete is_from_external={true} needs_poa={false} is_manual_upload />;
         case STATUS.IS_FAILED:
-            return <PoiUnsupportedFailed error={response_error} />;
+            return <POIManualUploadFailed error={response_error} />;
+        case STATUS.IS_DUPLICATE_UPLOAD:
+            return (
+                <POIManualUploadFailed
+                    error={
+                        <Localize i18n_default_text='It seems you’ve submitted this document before. Upload a new document.' />
+                    }
+                >
+                    <Button onClick={onClickBack} large primary className='upload_error_btn'>
+                        <Localize i18n_default_text='Try Again' />
+                    </Button>
+                </POIManualUploadFailed>
+            );
+
         default:
             return (
                 <React.Fragment>

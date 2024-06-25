@@ -13,7 +13,7 @@ import {
     rudderStackSendUploadStrategyFailedEvent,
     rudderStackSendUploadStrategyStartEvent,
 } from '../analytics/rudderstack-bot-builder';
-import { LOAD_MODAL_TABS } from '../analytics/utils';
+import { getStrategyType, LOAD_MODAL_TABS } from '../analytics/utils';
 import RootStore from './root-store';
 
 interface ILoadModalStore {
@@ -550,10 +550,15 @@ export default class LoadModalStore implements ILoadModalStore {
             }
 
             const result = await load(load_options);
+            const upload_type = getStrategyType(load_options?.block_string as string);
             if (loaded_to_main_workspace && !result?.error) {
-                rudderStackSendUploadStrategyCompletedEvent({ upload_provider: 'my_computer' });
+                rudderStackSendUploadStrategyCompletedEvent({ upload_provider: 'my_computer', upload_type });
             } else if (loaded_to_main_workspace && result?.error) {
-                rudderStackSendUploadStrategyFailedEvent({ upload_provider: 'my_computer' });
+                rudderStackSendUploadStrategyFailedEvent({
+                    upload_provider: 'my_computer',
+                    upload_type,
+                    error_message: result.error,
+                });
             }
             this.is_open_button_loading = false;
         });

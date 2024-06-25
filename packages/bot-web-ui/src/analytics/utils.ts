@@ -51,3 +51,16 @@ export const getTradeParameterData = ({ form_values }: TFormStrategy) => {
         initial_stake: hasStoredText(stored_texts?.stake) ? stored_texts?.stake : stake,
     };
 };
+
+export const getStrategyType = (block_string: string) => {
+    try {
+        const xmlDoc = new DOMParser().parseFromString(block_string, 'application/xml');
+        if (xmlDoc.getElementsByTagName('xml').length) {
+            const root = xmlDoc.documentElement;
+            const isDbotValue = root.getAttribute('is_dbot');
+            return isDbotValue === 'true' ? 'new' : 'old';
+        }
+    } catch (e) {
+        return 'old';
+    }
+};

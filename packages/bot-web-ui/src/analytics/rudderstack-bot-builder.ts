@@ -23,7 +23,11 @@ export const rudderStackSendUploadStrategyStartEvent = ({ upload_provider, uploa
     });
 };
 
-export const rudderStackSendUploadStrategyCompletedEvent = ({ upload_provider, upload_id }: TEvents['ce_bot_form']) => {
+export const rudderStackSendUploadStrategyCompletedEvent = ({
+    upload_provider,
+    upload_id,
+    upload_type,
+}: TEvents['ce_bot_form']) => {
     Analytics.trackEvent('ce_bot_form', {
         action: ACTION.UPLOAD_STRATEGY_COMPLETED,
         form_name,
@@ -31,10 +35,17 @@ export const rudderStackSendUploadStrategyCompletedEvent = ({ upload_provider, u
         subpage_name: getSubpageName(),
         upload_provider,
         upload_id,
+        upload_type,
     });
 };
 
-export const rudderStackSendUploadStrategyFailedEvent = ({ upload_provider, upload_id }: TEvents['ce_bot_form']) => {
+export const rudderStackSendUploadStrategyFailedEvent = ({
+    upload_provider,
+    upload_id,
+    upload_type,
+    error_message,
+    error_code,
+}: TEvents['ce_bot_form']) => {
     Analytics.trackEvent('ce_bot_form', {
         action: ACTION.UPLOAD_STRATEGY_FAILED,
         form_name,
@@ -42,6 +53,9 @@ export const rudderStackSendUploadStrategyFailedEvent = ({ upload_provider, uplo
         subpage_name: getSubpageName(),
         upload_provider,
         upload_id,
+        upload_type,
+        error_message,
+        error_code,
     });
 };
 

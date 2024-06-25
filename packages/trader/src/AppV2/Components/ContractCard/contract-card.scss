@@ -227,6 +227,37 @@
             opacity: var(--core-opacity-1300);
         }
     }
+    &-loader {
+        width: 100%;
+        height: 10.4rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: var(--semantic-spacing-gap-md);
+        flex-shrink: 0;
+        padding: var(--semantic-spacing-general-md);
+        border-radius: var(--semantic-borderRadius-md);
+        background-color: var(--component-modal-bg);
+
+        .details,
+        .status-and-profit {
+            display: flex;
+            gap: var(--core-spacing-400);
+            align-items: center;
+        }
+        .status-and-profit {
+            justify-content: space-between;
+        }
+        .title {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            gap: var(--semantic-spacing-general-xs);
+        }
+        .stake {
+            align-self: flex-end;
+        }
+    }
 }
 
 .contract-cards {

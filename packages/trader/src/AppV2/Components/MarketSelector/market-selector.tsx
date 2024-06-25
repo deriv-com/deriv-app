@@ -1,20 +1,17 @@
 import { ActionSheet, Tab, Text } from '@deriv-com/quill-ui';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 // import { Localize, localize } from '@deriv/translations';
 import React, { useState } from 'react';
 import MarketSelectorSearchField from '../MarketSelectorSearchField';
 import { Localize } from '@deriv/translations';
-
-const tabs = [
-    { id: 'abc', title: 'cde', content: 'fornow' },
-    { id: 'abcde', title: 'cde', content: 'some' },
-    { id: 'abcfg', title: 'cde', content: 'kewl' },
-];
+import MarketCategoriesTabs from '../MarketCategoriesTabs';
+import SymbolNotFound from '../SymbolNotFound';
+import clsx from 'clsx';
 
 const MarketSelector = observer(() => {
-    const { ui } = useStore();
     const [isOpen, setIsOpen] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
+    const notFound = true;
 
     return (
         <React.Fragment>
@@ -22,7 +19,13 @@ const MarketSelector = observer(() => {
             <ActionSheet.Root isOpen={isOpen}>
                 <ActionSheet.Portal>
                     <MarketSelectorSearchField isSearching={isSearching} setIsSearching={setIsSearching} />
-                    <Tab.Container contentStyle='hug' size='md' className=''>
+                    <Tab.Container
+                        contentStyle='hug'
+                        size='md'
+                        className={clsx('market-selector__content', {
+                            // 'market-selector__content--not-found': notFound,
+                        })}
+                    >
                         {isSearching ? (
                             <Text
                                 size='sm'
@@ -32,18 +35,8 @@ const MarketSelector = observer(() => {
                                 <Localize i18n_default_text='Try searching for markets or keywords' />
                             </Text>
                         ) : (
-                            <React.Fragment>
-                                <Tab.List>
-                                    {tabs.map(({ id, title }) => (
-                                        <Tab.Trigger key={id}>{title}</Tab.Trigger>
-                                    ))}
-                                </Tab.List>
-                                <Tab.Content className=''>
-                                    {tabs.map(({ id, content }) => (
-                                        <Tab.Panel key={id}>{content}</Tab.Panel>
-                                    ))}
-                                </Tab.Content>
-                            </React.Fragment>
+                            // <SymbolNotFound searchTerm='yello' />
+                            <MarketCategoriesTabs />
                         )}
                     </Tab.Container>
                 </ActionSheet.Portal>

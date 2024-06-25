@@ -31,7 +31,7 @@ export type TCurrentManagedPasskey = {
 
 const Passkeys = observer(() => {
     const { client, ui, common, notifications } = useStore();
-    const { is_passkey_supported } = client;
+    const { is_passkey_supported, setShouldShowPasskeyNotification } = client;
     const { is_mobile } = ui;
     const { removeNotificationByKey } = notifications;
     const is_network_on = common.network_status.class === 'online';
@@ -90,6 +90,7 @@ const Passkeys = observer(() => {
 
     useEffect(() => {
         if (is_passkey_registered) {
+            setShouldShowPasskeyNotification(false);
             removeNotificationByKey({ key: 'enable_passkey' });
             passkeysMenuActionEventTrack('create_passkey_finished');
             setPasskeyStatus(PASSKEY_STATUS_CODES.CREATED);

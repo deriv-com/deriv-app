@@ -124,7 +124,6 @@ export default class ProfitTableStore extends BaseStore {
     }
 
     async onMount(shouldFilterContractTypes) {
-        const loginid = this.client_loginid;
         this.assertHasValidCache(this.client_loginid, this.clearDateFilter, WS.forgetAll.bind(null, 'proposal'));
         this.client_loginid = this.root_store.client.loginid;
         this.onSwitchAccount(this.accountSwitcherListener);
@@ -135,8 +134,7 @@ export default class ProfitTableStore extends BaseStore {
         If we already have a cache for a period and if we sell a contract that was purchased in that period
         then the sold contract won't be there in profit_table when visited again unless we fetch it again.
         Caching will only work if the date filtering happens based on `sell_time` of a contract in BE. */
-        if (loginid) this.clearTable();
-        this.fetchNextBatch(shouldFilterContractTypes, !loginid);
+        this.fetchNextBatch(shouldFilterContractTypes, true);
     }
 
     /* DO NOT call clearDateFilter() upon unmounting the component, date filters should stay

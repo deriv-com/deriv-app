@@ -14,9 +14,7 @@ const DTraderContractDetailsHeader = observer(() => {
 
     const handleBack = () => {
         const is_from_table_row = !isEmptyObject(state) ? state.from_table_row : false;
-        // console.log('routes.is_from_table_row', is_from_table_row);
-        return history.goBack();
-        // return is_from_table_row ? history.goBack() : routeBackInApp(history);
+        return is_from_table_row ? history.goBack() : routeBackInApp(history);
     };
 
     return (

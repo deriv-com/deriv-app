@@ -6,7 +6,7 @@ import PositionsContent from './positions-content';
 
 const Positions = () => {
     // TODO: move to utils
-    const getPositionURLParams = () => {
+    const getTabIndexFromURL = () => {
         const searchParams = new URLSearchParams(window.location.search);
         if (searchParams.toString()) {
             const current_opened_tab = [...searchParams.values()];
@@ -15,18 +15,17 @@ const Positions = () => {
         return 0;
     };
     // TODO: move to utils
-    const setPositionURLParams = (new_value: string) => {
+    const setPositionURLParams = (tab_name: string) => {
         const searchParams = new URLSearchParams(window.location.search);
-        searchParams.set('tab_name', new_value);
+        searchParams.set('tab_name', tab_name);
         if (searchParams.toString()) {
             const newQuery = `${window.location.pathname}?${searchParams.toString()}`;
             window.history.replaceState({}, document.title, newQuery);
-            // history.push(newQuery);
         }
     };
 
     const [hasButtonsDemo, setHasButtonsDemo] = React.useState(true);
-    const [activeTab, setActiveTab] = React.useState(getPositionURLParams() || 0);
+    const [activeTab, setActiveTab] = React.useState(getTabIndexFromURL());
 
     const tabs = [
         {

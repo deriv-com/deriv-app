@@ -16,6 +16,16 @@
         height: fit-content;
     }
 
+    &__loader {
+        width: 14rem;
+        height: 3.6rem;
+
+        @include mobile {
+            width: 12rem;
+            height: 2.6rem;
+        }
+    }
+
     &__info {
         display: flex;
         justify-content: space-between;
@@ -118,7 +128,6 @@
         @include mobile {
             height: 4rem;
             min-width: 7.2rem;
-            padding-inline: 2.4rem;
         }
 
         &--active {

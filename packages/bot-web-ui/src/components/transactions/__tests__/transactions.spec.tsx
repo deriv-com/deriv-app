@@ -2,7 +2,9 @@ import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { transaction_elements } from 'Constants/transactions';
 import { mock_ws } from 'Utils/mock';
+import { mock_contract } from 'Utils/mock/contract';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import Transactions from '../transactions';
@@ -25,24 +27,6 @@ jest.mock('Utils/session-storage', () => ({
         },
     ]),
 }));
-
-const mock_contract = {
-    transaction_ids: { buy: '12345', sell: '6789' },
-    underlying: 'EURUSD',
-    entry_tick: 1.2345,
-    exit_tick: 1.6789,
-    entry_tick_time: '5pm',
-    exit_tick_time: '6pm',
-    date_start: 10,
-    tick_count: 100,
-    buy_price: 50,
-    currency: 'USD',
-    profit: 30,
-    barrier: 3,
-    is_completed: true,
-    contract_type: 'CALL',
-    shortcode: 'CALL_BARRIER',
-};
 
 Object.defineProperties(window.HTMLElement.prototype, {
     offsetHeight: {
@@ -104,32 +88,41 @@ describe('Transactions', () => {
     });
 
     it('should render transactions with contract rows', () => {
-        mock_DBot_store?.transactions?.transactions.push(
-            {
-                type: 'contract',
-                data: {
-                    ...mock_contract,
-                },
-            },
-            {
-                type: 'divider',
-                data: {
-                    ...mock_contract,
-                },
-            }
-        );
+        mock_store.client.is_logged_in = true;
+        mock_store.client.loginid = 'cr1';
+        if (mock_DBot_store)
+            mock_DBot_store.transactions.elements = {
+                cr1: [
+                    {
+                        type: transaction_elements.CONTRACT,
+                        data: {
+                            contract_id: 22,
+                            ...mock_contract,
+                        },
+                    },
+                    {
+                        type: transaction_elements.DIVIDER,
+                    },
+                ],
+            };
 
         render(<Transactions is_drawer_open />, { wrapper });
         expect(screen.getByText('1.2345')).toBeInTheDocument();
     });
 
     it('should render transactions component with transaction element type null', () => {
-        mock_DBot_store?.transactions?.transactions.push({
-            type: '',
-            data: {
-                ...mock_contract,
-            },
-        });
+        if (mock_DBot_store)
+            mock_DBot_store.transactions.elements = {
+                cr1: [
+                    {
+                        type: transaction_elements.CONTRACT,
+                        data: {
+                            contract_id: 22,
+                            ...mock_contract,
+                        },
+                    },
+                ],
+            };
 
         render(<Transactions is_drawer_open />, { wrapper });
         expect(screen.getByText('Buy price and P/L')).toBeInTheDocument();

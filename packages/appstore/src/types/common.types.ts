@@ -1,7 +1,5 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { useAvailableWallets, useWalletsList } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
-
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { RegionAvailability } from 'Constants/platform-config';
 
@@ -28,7 +26,7 @@ export type TMarketType = 'financial' | 'synthetic' | 'all';
 export type TVisibilityChecker = (platform: TPlatform) => boolean;
 
 export type TMissingRealAccount = {
-    onClickSignup: () => void;
+    onClickSignup: VoidFunction;
 };
 
 export type TMt5StatusServerType = Record<'all' | 'platform' | 'server_number', number>;
@@ -88,7 +86,7 @@ export type TTradingPlatformAvailableAccount = {
 };
 
 export type TCFDAccountsProps = {
-    isDerivedVisible: TVisibilityChecker;
+    isStandardVisible: TVisibilityChecker;
     isFinancialVisible: TVisibilityChecker;
     has_cfd_account_error: (platform: TPlatform) => boolean;
     current_list: Record<string, TDetailsOfEachMT5Loginid>;
@@ -96,10 +94,10 @@ export type TCFDAccountsProps = {
     has_real_account?: boolean;
 };
 
-export type TCFDPlatforms = 'Derived' | 'Financial' | 'Deriv X' | 'CFDs';
+export type TCFDPlatforms = 'Standard' | 'Financial' | 'Deriv X' | 'CFDs';
 
 export type TStaticAccountProps = {
-    name: 'Derived' | 'Financial' | 'Deriv X' | 'CFDs';
+    name: 'Standard' | 'Financial' | 'Deriv X' | 'CFDs';
     description: string;
     is_visible: boolean;
     disabled: boolean;
@@ -108,7 +106,7 @@ export type TStaticAccountProps = {
 };
 
 export type TIconTypes =
-    | 'Derived'
+    | 'Standard'
     | 'Financial'
     | 'BinaryBot'
     | 'BinaryBotBlue'
@@ -187,9 +185,6 @@ export type TLinkedTo = {
     currency?: string;
 };
 
-export type TWalletAccount = NonNullable<ReturnType<typeof useWalletsList>['data']>[number];
-export type TWalletInfo = NonNullable<ReturnType<typeof useAvailableWallets>['data']>[number];
-
 export type TTransferAccount = {
     active_wallet_icon: string | undefined;
     account_type?: 'wallet' | 'trading' | 'dxtrade' | 'mt5' | 'binary' | 'ctrader';
@@ -225,15 +220,14 @@ export type TWalletButton = {
     name: Parameters<ReturnType<typeof useStore>['traders_hub']['setWalletModalActiveTab']>[0];
     text: string;
     icon: string;
-    action: () => void;
+    action: VoidFunction;
 };
 
 export type TWalletSteps = {
-    handleBack: () => void;
-    handleClose: () => void;
-    handleNext: () => void;
-    is_disabled: boolean;
-    toggleCheckbox: () => void;
+    handleBack: VoidFunction;
+    handleClose: VoidFunction;
+    handleNext: VoidFunction;
+    is_migrating: boolean;
     upgradeToWallets: (value: boolean) => void;
 };
 
@@ -241,4 +235,11 @@ export type TRealWalletsUpgradeSteps = {
     wallet_upgrade_steps: TWalletSteps & {
         current_step: number;
     };
+};
+
+export type TTrustpilotWidgetData = {
+    stars: number;
+    trustScore: number;
+    numberOfReviews: string;
+    error?: string;
 };

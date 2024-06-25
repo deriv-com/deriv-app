@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CFDPlatformsList } from '../../features';
 import useDevice from '../../hooks/useDevice';
+import { TSubscribedBalance } from '../../types';
 import { OptionsAndMultipliersListing } from '../OptionsAndMultipliersListing';
 import {
     WalletsPrimaryTabList,
@@ -9,17 +10,10 @@ import {
     WalletsPrimaryTabPanels,
     WalletsPrimaryTabs,
 } from '../WalletsPrimaryTabs';
-import { WalletMobileTourGuide } from '../WalletTourGuide';
 import './AccountsList.scss';
 
-type TProps = {
-    isWalletSettled?: boolean;
-};
-
-const AccountsList = ({ isWalletSettled }: TProps) => {
+const AccountsList: FC<TSubscribedBalance> = ({ balance }) => {
     const { isMobile } = useDevice();
-    const [isMT5PlatformListLoaded, setIsMT5PlatformListLoaded] = useState(false);
-    const [isOptionsAndMultipliersLoaded, setIsOptionsAndMultipliersLoaded] = useState(false);
     const { t } = useTranslation();
 
     if (isMobile) {
@@ -28,19 +22,12 @@ const AccountsList = ({ isWalletSettled }: TProps) => {
                 <WalletsPrimaryTabList list={[t('CFDs'), t('Options')]} />
                 <WalletsPrimaryTabPanels>
                     <WalletsPrimaryTabPanel>
-                        <CFDPlatformsList onMT5PlatformListLoaded={setIsMT5PlatformListLoaded} />
+                        <CFDPlatformsList />
                     </WalletsPrimaryTabPanel>
                     <WalletsPrimaryTabPanel>
-                        <OptionsAndMultipliersListing
-                            onOptionsAndMultipliersLoaded={setIsOptionsAndMultipliersLoaded}
-                        />
+                        <OptionsAndMultipliersListing balance={balance} />
                     </WalletsPrimaryTabPanel>
                 </WalletsPrimaryTabPanels>
-                <WalletMobileTourGuide
-                    isMT5PlatformListLoaded={isMT5PlatformListLoaded}
-                    isOptionsAndMultipliersLoaded={isOptionsAndMultipliersLoaded}
-                    isWalletSettled={isWalletSettled}
-                />
             </WalletsPrimaryTabs>
         );
     }
@@ -49,7 +36,7 @@ const AccountsList = ({ isWalletSettled }: TProps) => {
         <div className='wallets-accounts-list' data-testid='dt_desktop_accounts_list'>
             <div className='wallets-accounts-list__content'>
                 <CFDPlatformsList />
-                <OptionsAndMultipliersListing />
+                <OptionsAndMultipliersListing balance={balance} />
             </div>
         </div>
     );

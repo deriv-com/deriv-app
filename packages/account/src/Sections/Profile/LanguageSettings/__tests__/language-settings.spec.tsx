@@ -1,38 +1,17 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useStoreWalletAccountsList } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import LanguageSettings from '../language-settings';
 import { mockStore, StoreProvider } from '@deriv/stores';
+import { useTranslations } from '@deriv-com/translations';
 
-const mockedUseStoreWalletAccountsList = useStoreWalletAccountsList as jest.MockedFunction<
-    typeof useStoreWalletAccountsList
->;
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useStoreWalletAccountsList: jest.fn(() => ({ has_wallet: false })),
-}));
+jest.mock('@deriv-com/translations');
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isMobile: jest.fn(() => false),
-}));
-
-jest.mock('@deriv/translations', () => ({
-    ...jest.requireActual('@deriv/translations'),
-    getAllowedLanguages: jest.fn(() => ({ lang_1: 'Test Lang 1', lang_2: 'Test Lang 2' })),
-}));
-
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    Icon: jest.fn(() => <div>Flag Icon</div>),
-}));
-
-jest.mock('react-i18next', () => ({
-    ...jest.requireActual('react-i18next'),
-    useTranslation: jest.fn(() => ({ i18n: { changeLanguage: jest.fn() } })),
+    TranslationFlag: { EN: () => <div>Language 1 Flag</div>, VI: () => <div>Language 2 Flag</div> },
 }));
 
 jest.mock('react-router-dom', () => ({
@@ -52,6 +31,11 @@ describe('LanguageSettings', () => {
                 is_mobile: false,
             },
         });
+        (useTranslations as jest.Mock).mockReturnValue({
+            currentLang: 'EN',
+            localize: jest.fn().mockImplementation(key => key),
+            switchLanguage: jest.fn(),
+        });
     });
 
     const renderLanguageSettings = () => {
@@ -65,21 +49,19 @@ describe('LanguageSettings', () => {
 
         expect(screen.getByText('Select Language')).toBeInTheDocument();
 
-        const flags_icons = screen.getAllByText('Flag Icon');
-        const lang_1 = screen.getByText('Test Lang 1');
-        const lang_2 = screen.getByText('Test Lang 2');
+        const lang_1 = screen.getByText('English');
+        const lang_2 = screen.getByText('Tiếng Việt');
 
-        expect(flags_icons).toHaveLength(2);
+        expect(screen.getByText(/Language 1 Flag/)).toBeInTheDocument();
+        expect(screen.getByText(/Language 2 Flag/)).toBeInTheDocument();
         expect(lang_1).toBeInTheDocument();
-        expect(/(active)/i.test(lang_1.className)).toBeTruthy();
         expect(lang_2).toBeInTheDocument();
-        expect(/(active)/i.test(lang_2.className)).toBeFalsy();
     });
 
     it('should trigger language change', () => {
         renderLanguageSettings();
 
-        const lang_2 = screen.getByText('Test Lang 2');
+        const lang_2 = screen.getByText('Tiếng Việt');
         userEvent.click(lang_2);
 
         expect(mockRootStore.common.changeSelectedLanguage).toHaveBeenCalled();
@@ -99,8 +81,7 @@ describe('LanguageSettings', () => {
     });
 
     it('should redirect when the user tries to reach `/account/languages` route having wallet accounts', () => {
-        //@ts-expect-error since this is a mock, we only need partial properties of useStoreWalletAccountsList data
-        mockedUseStoreWalletAccountsList.mockReturnValueOnce({ has_wallet: true });
+        mockRootStore.client.has_wallet = true;
         Object.defineProperty(window, 'location', {
             configurable: true,
             value: { pathname: routes.languages },

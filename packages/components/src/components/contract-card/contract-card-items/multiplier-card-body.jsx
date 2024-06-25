@@ -44,6 +44,7 @@ const MultiplierCardBody = ({
                     'dc-contract-card-items-wrapper': !is_mobile,
                     'dc-contract-card-items-wrapper--has-progress-slider': has_progress_slider && !is_sold,
                 })}
+                data-testid='dt_multiplier_card_body'
             >
                 <ContractCardItem header={CONTRACT_COST} className='dc-contract-card__stake'>
                     <Money amount={buy_price - cancellation_price} currency={currency} />
@@ -97,8 +98,8 @@ const MultiplierCardBody = ({
                         <ToggleCardDialog
                             contract_id={contract_info.contract_id}
                             getCardLabels={getCardLabels}
-                            is_valid_to_cancel={is_valid_to_cancel}
-                            should_show_cancellation_warning={should_show_cancellation_warning}
+                            is_risk_management_edition_disabled={is_valid_to_cancel}
+                            should_show_warning={should_show_cancellation_warning}
                             toggleCancellationWarning={toggleCancellationWarning}
                             {...toggle_card_dialog_props}
                         />

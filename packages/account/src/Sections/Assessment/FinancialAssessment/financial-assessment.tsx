@@ -1,4 +1,7 @@
-import classNames from 'classnames';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+//@ts-nocheck [TODO] - Need to fix typescript errors
+
+import clsx from 'clsx';
 import React from 'react';
 import { Formik, FormikHelpers } from 'formik';
 import { useHistory, withRouter } from 'react-router';
@@ -14,7 +17,7 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
-import { routes, platforms, WS, EMPLOYMENT_VALUES, shouldHideOccupationField } from '@deriv/shared';
+import { routes, platforms, WS, shouldHideOccupationField } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import LeaveConfirm from 'Components/leave-confirm';
@@ -508,12 +511,12 @@ const FinancialAssessment = observer(() => {
                                                     }
                                                     onChange={e => {
                                                         setFieldTouched('employment_status', true);
-                                                        handleChange(e);
                                                         setFieldValue(
                                                             'occupation',
                                                             '',
                                                             !shouldHideOccupationField(e.target.value)
                                                         );
+                                                        handleChange(e);
                                                     }}
                                                 />
                                             </MobileWrapper>
@@ -1041,7 +1044,7 @@ const FinancialAssessment = observer(() => {
                                 )}
                                 <Button
                                     type='button'
-                                    className={classNames('account-form__footer-btn', {
+                                    className={clsx('account-form__footer-btn', {
                                         'dc-btn--green': is_submit_success,
                                     })}
                                     onClick={() => onClickSubmit(handleSubmit)}

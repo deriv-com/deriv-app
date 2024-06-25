@@ -1,5 +1,4 @@
 // TODO: Remove once mobile team has changed this link
-import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 

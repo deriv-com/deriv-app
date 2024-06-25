@@ -4,6 +4,7 @@ import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderStackSendTutorialSearchEvent } from '../../../../analytics/rudderstack-tutorials';
 
 type TSearchInput = {
     faq_value: string;
@@ -22,6 +23,7 @@ const SearchInput = observer(({ faq_value, setFaqSearchContent, prev_active_tuto
             value => {
                 filterTuotrialTab(value);
                 setActiveTabTutorial(3);
+                rudderStackSendTutorialSearchEvent({ search_term: value });
                 if (value === '') {
                     setActiveTabTutorial(prev_active_tutorials);
                 }

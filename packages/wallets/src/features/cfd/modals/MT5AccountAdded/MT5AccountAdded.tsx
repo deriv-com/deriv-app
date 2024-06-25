@@ -5,7 +5,7 @@ import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from 
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
-import { companyNamesAndUrls, MarketTypeDetails, PlatformDetails } from '../../constants';
+import { CFD_PLATFORMS, companyNamesAndUrls, MARKET_TYPE, MarketTypeDetails, PlatformDetails } from '../../constants';
 import { CFDSuccess } from '../../screens/CFDSuccess';
 
 type TProps = {
@@ -15,23 +15,31 @@ type TProps = {
 };
 
 const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
-    const { data: activeWallet } = useActiveWalletAccount();
-    const { isMobile } = useDevice();
-    const history = useHistory();
+    const { data: activeWallet, isLoading: isActiveWalletAccountLoading } = useActiveWalletAccount();
+    const { data: mt5Accounts, isLoading: isMT5AccountsListLoading } = useMT5AccountsList();
+    const { data: poiData, isLoading: isPOILoading } = usePOI();
+    const { data: poaData, isLoading: isPOALoading } = usePOA();
     const { getVerificationStatus, isSuccess } = useJurisdictionStatus();
-    const { data: mt5Accounts } = useMT5AccountsList();
+
+    const history = useHistory();
+    const { isMobile } = useDevice();
     const { getModalState, hide } = useModal();
-    const { data: poiData } = usePOI();
-    const { data: poaData } = usePOA();
+
     const addedAccount = mt5Accounts?.find(acc => acc.login === account?.login);
-    const verificationStatus = getVerificationStatus(addedAccount?.landing_company_short, addedAccount?.status);
-    const poiService = poiData?.is_pending ? poiData?.previous?.service : poiData?.current?.service;
+
+    const isLoading =
+        isActiveWalletAccountLoading ||
+        isMT5AccountsListLoading ||
+        isPOILoading ||
+        !poiData ||
+        isPOALoading ||
+        !poaData ||
+        !addedAccount;
+
     const marketTypeTitle =
-        marketType === 'all' && Object.keys(PlatformDetails).includes(platform)
+        marketType === MARKET_TYPE.ALL && platform in PlatformDetails && platform !== CFD_PLATFORMS.MT5
             ? PlatformDetails[platform].title
             : MarketTypeDetails[marketType].title;
-    const isPOIVerified = poiData?.status === 'verified';
-    const isPOAVerified = poaData?.status === 'verified';
     const selectedJurisdiction = getModalState('selectedJurisdiction');
     const landingCompanyName = `(${
         companyNamesAndUrls?.[selectedJurisdiction as keyof typeof companyNamesAndUrls]?.shortcode
@@ -50,7 +58,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                         <WalletButton
                             onClick={() => {
                                 hide();
-                                history.push(`/wallets/cashier/transfer`, { toAccountLoginId: addedAccount?.loginid });
+                                history.push('/wallet/account-transfer', { toAccountLoginId: addedAccount?.loginid });
                             }}
                             size={isMobile ? 'lg' : 'md'}
                         >
@@ -70,15 +78,26 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
         [hide, history, addedAccount?.loginid, isMobile]
     );
 
-    const renderMainContent = useMemo(() => {
-        const renderSuccessDescription = () => {
-            if (isDemo) {
-                return `Let's practise trading with ${activeWallet?.display_balance} virtual funds.`;
-            }
-            return `Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your ${marketTypeTitle} ${landingCompanyName} account to start trading.`;
-        };
+    const renderSuccessDescription = useMemo(() => {
+        if (isDemo) {
+            return `Let's practise trading with ${addedAccount?.display_balance} virtual funds.`;
+        }
+        return `Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your ${marketTypeTitle} ${landingCompanyName} account to start trading.`;
+    }, [
+        activeWallet?.wallet_currency_type,
+        addedAccount?.display_balance,
+        isDemo,
+        landingCompanyName,
+        marketTypeTitle,
+    ]);
 
-        if (!isSuccess) return null;
+    const renderMainContent = useMemo(() => {
+        if (!isSuccess || isLoading) return null;
+
+        const verificationStatus = getVerificationStatus(addedAccount.landing_company_short, addedAccount.status);
+        const poiService = poiData.is_pending ? poiData.previous?.service : poiData.current?.service;
+        const isPOIVerified = poiData.status === 'verified';
+        const isPOAVerified = poaData.status === 'verified';
 
         if (!verificationStatus.is_not_applicable && !isPOIVerified && !isPOAVerified) {
             if (poiService === 'idv') {
@@ -87,9 +106,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                         description={`We need a few minutes to review your documents before you can start trading with your ${marketTypeTitle} ${
                             isDemo ? ' demo' : landingCompanyName
                         } account. You’ll get an in-app notification as soon as this is done.`}
-                        displayBalance={
-                            mt5Accounts?.find(account => account.market_type === marketType)?.display_balance ?? '0.00'
-                        }
+                        displayBalance={addedAccount?.display_balance}
                         landingCompany={selectedJurisdiction}
                         marketType={marketType}
                         platform={platform}
@@ -105,9 +122,7 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                         description={`We need 1-3 days to review your documents before you can start trading with your ${marketTypeTitle} ${
                             isDemo ? ' demo' : landingCompanyName
                         } account. You’ll get an email as soon as this is done.`}
-                        displayBalance={
-                            mt5Accounts?.find(account => account.market_type === marketType)?.display_balance ?? '0.00'
-                        }
+                        displayBalance={addedAccount?.display_balance}
                         landingCompany={selectedJurisdiction}
                         marketType={marketType}
                         platform={platform}
@@ -120,10 +135,8 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
 
         return (
             <CFDSuccess
-                description={renderSuccessDescription()}
-                displayBalance={
-                    mt5Accounts?.find(account => account.market_type === marketType)?.display_balance ?? '0.00'
-                }
+                description={renderSuccessDescription}
+                displayBalance={addedAccount?.display_balance}
                 landingCompany={selectedJurisdiction}
                 marketType={marketType}
                 platform={platform}
@@ -132,22 +145,25 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
             />
         );
     }, [
-        activeWallet?.display_balance,
-        activeWallet?.wallet_currency_type,
+        addedAccount?.display_balance,
+        addedAccount?.landing_company_short,
+        addedAccount?.status,
+        getVerificationStatus,
         isDemo,
-        isPOAVerified,
-        isPOIVerified,
+        isLoading,
         isSuccess,
         landingCompanyName,
         marketType,
         marketTypeTitle,
-        mt5Accounts,
         platform,
-        poiService,
+        poaData?.status,
+        poiData,
         renderAccountSuccessButton,
+        renderSuccessDescription,
         selectedJurisdiction,
-        verificationStatus.is_not_applicable,
     ]);
+
+    if (isLoading) return null;
 
     if (isMobile) {
         return <ModalStepWrapper renderFooter={renderAccountSuccessButton}>{renderMainContent}</ModalStepWrapper>;

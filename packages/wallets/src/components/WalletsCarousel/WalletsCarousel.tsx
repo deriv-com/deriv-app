@@ -1,16 +1,28 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useActiveWalletAccount } from '@deriv/api-v2';
+import { displayMoney } from '@deriv/api-v2/src/utils';
+import { TSubscribedBalance } from '../../types';
 import { AccountsList } from '../AccountsList';
-import { WalletText } from '../Base';
 import { WalletsCarouselContent } from '../WalletsCarouselContent';
 import { WalletsCarouselHeader } from '../WalletsCarouselHeader';
 import './WalletsCarousel.scss';
 
-const WalletsCarousel: React.FC = () => {
-    const [isWalletSettled, setIsWalletSettled] = useState(true);
-    const [hideWalletsCarouselHeader, setHideWalletsCarouselHeader] = useState(false);
-    const contentRef = useRef(null);
+const WalletsCarousel: React.FC<TSubscribedBalance> = ({ balance }) => {
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
+    const [hideWalletsCarouselHeader, setHideWalletsCarouselHeader] = useState(true);
+    const contentRef = useRef(null);
+
+    const { data: balanceData, isLoading: isBalanceLoading } = balance;
+
+    const displayedBalance = useMemo(() => {
+        return displayMoney?.(
+            balanceData?.accounts?.[activeWallet?.loginid ?? '']?.balance ?? 0,
+            activeWallet?.currency || '',
+            {
+                fractional_digits: activeWallet?.currency_config?.fractional_digits,
+            }
+        );
+    }, [balanceData, activeWallet]);
 
     // useEffect hook to handle event for hiding/displaying WalletsCarouselHeader
     // walletsCarouselHeader will be displayed when WalletsCarouselContent is almost out of viewport
@@ -38,27 +50,23 @@ const WalletsCarousel: React.FC = () => {
     }, []);
 
     return (
-        <React.Fragment>
-            {!isActiveWalletLoading && (
-                <WalletsCarouselHeader
-                    balance={activeWallet?.display_balance}
-                    currency={activeWallet?.currency || 'USD'}
-                    hidden={hideWalletsCarouselHeader}
-                    isDemo={activeWallet?.is_virtual}
-                />
-            )}
-            <div className='wallets-carousel'>
-                <div className='wallets-carousel__header'>
-                    <WalletText size='xl' weight='bold'>
-                        Trader&apos;s Hub
-                    </WalletText>
-                </div>
+        <div className='wallets-carousel'>
+            <div className='wallets-carousel__header'>
+                {!isActiveWalletLoading && (
+                    <WalletsCarouselHeader
+                        balance={displayedBalance}
+                        currency={activeWallet?.currency || 'USD'}
+                        hidden={hideWalletsCarouselHeader}
+                        isDemo={activeWallet?.is_virtual}
+                        isLoading={isBalanceLoading}
+                    />
+                )}
                 <div ref={contentRef}>
-                    <WalletsCarouselContent onWalletSettled={setIsWalletSettled} />
+                    <WalletsCarouselContent />
                 </div>
-                <AccountsList isWalletSettled={isWalletSettled} />
             </div>
-        </React.Fragment>
+            <AccountsList balance={balance} />
+        </div>
     );
 };
 

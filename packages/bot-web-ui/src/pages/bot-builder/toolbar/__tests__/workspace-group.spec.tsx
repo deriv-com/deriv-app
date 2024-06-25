@@ -18,6 +18,9 @@ const mockOnUndoClick = jest.fn();
 const mockOnZoomInOutClick = jest.fn();
 const mockToggleLoadModal = jest.fn();
 const mockToggleSaveModal = jest.fn();
+const mockChartModalVisibility = jest.fn();
+const mockSetPreviewOnPopup = jest.fn();
+const mockSetTradingViewModalVisibility = jest.fn();
 
 describe('WorkspaceGroup', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element;
@@ -53,6 +56,12 @@ describe('WorkspaceGroup', () => {
                 },
                 tab_name: '',
             },
+            dashboard: {
+                ...mock_DBot_store.dashboard,
+                setChartModalVisibility: mockChartModalVisibility,
+                setPreviewOnPopup: mockSetPreviewOnPopup,
+                setTradingViewModalVisibility: mockSetTradingViewModalVisibility,
+            },
         };
 
         wrapper = ({ children }: { children: JSX.Element }) => (
@@ -87,6 +96,7 @@ describe('WorkspaceGroup', () => {
         const import_button = screen.getByTestId('dt_toolbar_import_button');
         userEvent.click(import_button);
         expect(mockToggleLoadModal).toBeCalledTimes(1);
+        expect(mockSetPreviewOnPopup).toBeCalledWith(true);
     });
 
     it('should call toggleSaveModal function on clicking save icon', () => {
@@ -105,6 +115,24 @@ describe('WorkspaceGroup', () => {
         const sort_button = screen.getByTestId('dt_toolbar_sort_button');
         userEvent.click(sort_button);
         expect(mockOnSortClick).toBeCalledTimes(1);
+    });
+
+    it('should call setChartModalVisibility function on clicking charts icon', () => {
+        render(<WorkspaceGroup />, {
+            wrapper,
+        });
+        const chart_button = screen.getByTestId('dt_toolbar_chart_button');
+        userEvent.click(chart_button);
+        expect(mockChartModalVisibility).toBeCalledTimes(1);
+    });
+
+    it('should call setTradingViewModalVisibility function on clicking tradingview chart icon', () => {
+        render(<WorkspaceGroup />, {
+            wrapper,
+        });
+        const tradingview_chart_button = screen.getByTestId('dt_toolbar_tradingview_chart_button');
+        userEvent.click(tradingview_chart_button);
+        expect(mockSetTradingViewModalVisibility).toBeCalledTimes(1);
     });
 
     it('should call onUndoClick function with false on clicking undo icon', () => {

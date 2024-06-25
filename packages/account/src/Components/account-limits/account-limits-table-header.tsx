@@ -1,5 +1,5 @@
-import * as React from 'react';
-import classNames from 'classnames';
+import React from 'react';
+import clsx from 'clsx';
 import { Text } from '@deriv/components';
 
 type TAccountLimitsTableHeader = {
@@ -14,7 +14,7 @@ const AccountLimitsTableHeader = ({
 }: React.PropsWithChildren<Partial<TAccountLimitsTableHeader>>) => {
     return (
         <th
-            className={classNames('da-account-limits__table-header', {
+            className={clsx('da-account-limits__table-header', {
                 'da-account-limits__table-header--left': align !== 'right',
                 'da-account-limits__table-header--right': align === 'right',
             })}

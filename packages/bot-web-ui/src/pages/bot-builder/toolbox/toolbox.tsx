@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { rudderStackSendQsOpenEvent } from '../../../analytics/rudderstack-quick-strategy';
 import { useDBotStore } from '../../../stores/useDBotStore';
 import ToolbarButton from '../toolbar/toolbar-button';
 import SearchBox from './search-box';
@@ -41,6 +42,8 @@ const Toolbox = observer(() => {
 
     const handleQuickStrategyOpen = () => {
         setFormVisibility(true);
+        // send to rs if quick strategy is opened from bot builder (desktop)
+        rudderStackSendQsOpenEvent({ subform_source: 'bot_builder' });
     };
 
     if (!is_mobile) {

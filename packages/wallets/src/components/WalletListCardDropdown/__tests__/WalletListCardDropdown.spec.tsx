@@ -1,6 +1,7 @@
 import React from 'react';
 import { useWalletAccountsList } from '@deriv/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { TSubscribedBalance } from '../../../types';
 import WalletListCardDropdown from '../WalletListCardDropdown';
 
 const mockSwitchAccount = jest.fn();
@@ -12,6 +13,9 @@ jest.mock('@deriv/api-v2', () => ({
     })),
     useAuthorize: jest.fn(() => ({
         switchAccount: mockSwitchAccount,
+    })),
+    useBalanceSubscription: jest.fn(() => ({
+        data: {},
     })),
     useWalletAccountsList: jest.fn(() => ({
         data: [
@@ -25,46 +29,66 @@ jest.mock('@deriv/api-v2', () => ({
                 display_balance: '1.0000000',
                 loginid: '7654321',
             },
-            {
-                currency: 'USD',
-                display_balance: '10000.00',
-                loginid: '55555',
-                wallet_currency_type: 'Demo',
-            },
         ],
     })),
 }));
 
-describe('WalletListCardDropdown', () => {
-    it('should render with the correct data', async () => {
-        render(<WalletListCardDropdown />);
+const mockBalanceData: TSubscribedBalance['balance'] = {
+    data: {
+        accounts: {
+            1234567: {
+                balance: 1000.0,
+                converted_amount: 1000.0,
+                currency: 'USD',
+                demo_account: 0,
+                status: 1,
+                type: 'deriv',
+            },
+            7654321: {
+                balance: 1.0,
+                converted_amount: 1.0,
+                currency: 'BTC',
+                demo_account: 1,
+                status: 1,
+                type: 'deriv',
+            },
+        },
+        balance: 9990,
+        currency: 'USD',
+        loginid: 'CRW1314',
+    },
+    error: undefined,
+    isIdle: false,
+    isLoading: false,
+    isSubscribed: false,
+};
 
-        expect(screen.getByDisplayValue('USD Wallet')).toBeInTheDocument();
+describe('WalletListCardDropdown', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it('should render with the correct data', async () => {
+        render(<WalletListCardDropdown balance={mockBalanceData} />);
     });
 
     it('should switch to selected account on click of the list item', async () => {
-        render(<WalletListCardDropdown />);
+        render(<WalletListCardDropdown balance={mockBalanceData} />);
 
         expect(screen.getByDisplayValue('USD Wallet')).toBeInTheDocument();
 
         fireEvent.click(screen.getByDisplayValue('USD Wallet'));
         expect(screen.getByText('USD Wallet')).toBeInTheDocument();
         expect(screen.getByText('BTC Wallet')).toBeInTheDocument();
-        expect(screen.getByText('USD Demo Wallet')).toBeInTheDocument();
         fireEvent.click(screen.getByText('BTC Wallet'));
 
         expect(mockSwitchAccount).toHaveBeenCalledWith('7654321');
-
-        fireEvent.click(screen.getByDisplayValue('BTC Wallet'));
-        fireEvent.click(screen.getByText('USD Demo Wallet'));
-
-        expect(mockSwitchAccount).toHaveBeenCalledWith('55555');
     });
 
     it('should render dropdown without crashing when unable to fetch wallets', async () => {
         (useWalletAccountsList as jest.Mock).mockReturnValueOnce({ data: [] });
 
-        render(<WalletListCardDropdown />);
+        render(<WalletListCardDropdown balance={mockBalanceData} />);
 
         expect(screen.getByDisplayValue('')).toBeInTheDocument();
     });

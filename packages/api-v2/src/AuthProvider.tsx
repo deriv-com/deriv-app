@@ -3,7 +3,8 @@ import { useAPIContext } from './APIProvider';
 
 import { getAccountsFromLocalStorage, getActiveLoginIDFromLocalStorage, getToken } from '@deriv/utils';
 import useMutation from './useMutation';
-import { TSocketResponseData } from '../types';
+import { TSocketSubscribableEndpointNames, TSocketResponseData, TSocketRequestPayload } from '../types';
+import useAPI from './useAPI';
 
 // Define the type for the context state
 type AuthContextType = {
@@ -17,6 +18,19 @@ type AuthContextType = {
     refetch: () => void;
     isFetching: boolean;
     error: unknown;
+    isSwitching: boolean;
+    isInitializing: boolean;
+    subscribe: <T extends TSocketSubscribableEndpointNames>(
+        name: T,
+        payload?: TSocketRequestPayload<T>
+    ) =>
+        | {
+              subscribe: (
+                  onData: (response: any) => void,
+                  onError: (response: any) => void
+              ) => { unsubscribe?: VoidFunction };
+          }
+        | undefined;
 };
 
 type LoginToken = {
@@ -95,14 +109,42 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
 
     const { mutateAsync } = useMutation('authorize');
 
-    const { queryClient, setOnReconnected, setOnConnected } = useAPIContext();
+    const { queryClient, setOnReconnected, setOnConnected, derivAPI } = useAPIContext();
 
     const [isLoading, setIsLoading] = useState(true);
+    const [isSwitching, setIsSwitching] = useState(false);
+    const [isInitializing, setIsInitializing] = useState(true);
     const [isSuccess, setIsSuccess] = useState(false);
     const [isError, setIsError] = useState(false);
     const [isFetching, setIsFetching] = useState(false);
+    const [isAuthorized, setIsAuthorized] = useState(false);
 
     const [data, setData] = useState<TSocketResponseData<'authorize'> | null>();
+
+    const { subscribe: _subscribe } = useAPI();
+
+    const subscribe = useCallback(
+        <T extends TSocketSubscribableEndpointNames>(
+            name: T,
+            payload?: TSocketRequestPayload<T>
+        ):
+            | {
+                  subscribe: (
+                      // The type will be handled by the `useSubscription` hook.
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      onData: (response: any) => void,
+                      // The type will be handled by the `useSubscription` hook.
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      onError: (response: any) => void
+                  ) => { unsubscribe?: VoidFunction };
+              }
+            | undefined => {
+            if (isAuthorized && derivAPI.connection.readyState == 1) {
+                return derivAPI?.subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) });
+            }
+        },
+        [derivAPI, isAuthorized]
+    );
 
     const processAuthorizeResponse = useCallback(
         (authorizeResponse: TSocketResponseData<'authorize'>) => {
@@ -131,13 +173,16 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
     }, []);
 
     useEffect(() => {
-        setOnReconnected(() => {
-            mutateAsync({ payload: { authorize: getToken(loginid || '') ?? '' } });
+        setOnReconnected(async () => {
+            setIsAuthorized(false);
+            await mutateAsync({ payload: { authorize: getToken(loginid || '') ?? '' } });
+            setIsAuthorized(true);
         });
     }, [loginid]);
 
     function initialize() {
         setIsLoading(true);
+        setIsInitializing(true);
         setIsSuccess(false);
 
         const { promise, cleanup } = waitForLoginAndTokenWithTimeout(cookieTimeout, loginIDKey, selectDefaultAccount);
@@ -147,26 +192,35 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
         promise
             .then(async ({ token }) => {
                 setIsLoading(true);
+                setIsInitializing(true);
                 setIsFetching(true);
+                setIsAuthorized(false);
                 await mutateAsync({ payload: { authorize: token || '' } })
                     .then(res => {
+                        setIsAuthorized(true);
                         processAuthorizeResponse(res);
                         setIsLoading(false);
+                        setIsInitializing(false);
                         setIsSuccess(true);
                         setLoginid(res?.authorize?.loginid ?? '');
                     })
                     .catch(() => {
+                        setIsAuthorized(false);
                         setIsLoading(false);
+                        setIsInitializing(false);
                         setIsError(true);
                     })
                     .finally(() => {
                         setIsLoading(false);
+                        setIsInitializing(false);
                         setIsFetching(false);
                     });
             })
             .catch(() => {
                 if (isMounted) {
+                    setIsAuthorized(false);
                     setIsLoading(false);
+                    setIsInitializing(false);
                     setIsError(true);
                 }
             });
@@ -185,12 +239,16 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             queryClient.cancelQueries();
 
             setIsLoading(true);
+            setIsSwitching(true);
 
+            setIsAuthorized(false);
             const authorizeResponse = await mutateAsync({ payload: { authorize: getToken(newLoginId) ?? '' } });
+            setIsAuthorized(true);
             setLoginid(newLoginId);
             processAuthorizeResponse(authorizeResponse);
 
             setIsLoading(false);
+            setIsSwitching(false);
         },
         [loginid, mutateAsync, processAuthorizeResponse, queryClient]
     );
@@ -210,8 +268,11 @@ const AuthProvider = ({ loginIDKey, children, cookieTimeout, selectDefaultAccoun
             isSuccess: isSuccess && !isLoading,
             error: isError,
             loginid,
+            isSwitching,
+            isInitializing,
+            subscribe,
         };
-    }, [data, switchAccount, refetch, isLoading, isError, isFetching, isSuccess, loginid]);
+    }, [data, switchAccount, refetch, isLoading, isError, isFetching, isSuccess, loginid, subscribe]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
@@ -220,6 +281,7 @@ export default AuthProvider;
 
 export const useAuthContext = () => {
     const context = useContext(AuthContext);
+
     if (!context) {
         throw new Error('useAuthContext must be used within APIProvider');
     }

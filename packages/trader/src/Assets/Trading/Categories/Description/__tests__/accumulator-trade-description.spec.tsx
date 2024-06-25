@@ -11,6 +11,7 @@ describe('<AccumulatorTradeDescription />', () => {
                 /Your stake will continue to grow as long as the current spot price remains within a specified/i
             )
         ).toBeInTheDocument();
+        expect(screen.getByText(/This feature is unavailable for ongoing accumulator contracts./i)).toBeInTheDocument();
     });
     it('Ensure clicking on definition works', () => {
         const onClick = jest.fn();

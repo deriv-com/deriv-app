@@ -49,11 +49,14 @@ const mock = {
         standpoint: {
             svg: false,
         },
-        is_uk: false,
         is_virtual: false,
         is_switching: false,
         landing_company_shortcode: '',
         logout: jest.fn(),
+        getLimits: () =>
+            Promise.resolve({
+                get_limits: {},
+            }),
     },
     ui: {
         is_tablet: false,
@@ -81,6 +84,7 @@ describe('<SelfExclusion />', () => {
     it('should render SelfExclusion component for virtual account', () => {
         store = mockStore({
             client: {
+                ...mock.client,
                 is_virtual: true,
             },
         });
@@ -133,6 +137,7 @@ describe('<SelfExclusion />', () => {
     it('Should trigger session_duration_limit input and show error if the value is greater than 60480 or does not show if less than 60480', async () => {
         store = mockStore({
             client: {
+                ...mock.client,
                 is_eu: true,
             },
         });

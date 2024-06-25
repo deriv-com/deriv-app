@@ -2,10 +2,10 @@ import throttle from 'lodash.throttle';
 import { action, computed, observable, reaction, makeObservable, override } from 'mobx';
 import { computedFn } from 'mobx-utils';
 import {
+    ChartBarrierStore,
     isAccumulatorContract,
     isEmptyObject,
     isEnded,
-    isUserSold,
     isValidToSell,
     isMultiplierContract,
     getCurrentTick,
@@ -22,11 +22,10 @@ import {
     TRADE_TYPES,
     removeBarrier,
     routes,
+    setLimitOrderBarriers,
 } from '@deriv/shared';
 import { Money } from '@deriv/components';
 import { Analytics } from '@deriv-com/analytics';
-import { ChartBarrierStore } from './chart-barrier-store';
-import { setLimitOrderBarriers } from './Helpers/limit-orders';
 
 import BaseStore from './base-store';
 
@@ -34,7 +33,7 @@ export default class PortfolioStore extends BaseStore {
     positions = [];
     all_positions = [];
     positions_map = {};
-    is_loading = false;
+    is_loading = true;
     error = '';
 
     //accumulators
@@ -407,9 +406,6 @@ export default class PortfolioStore extends BaseStore {
             this.positions[i].contract_info.entry_spot = this.positions[i].entry_spot;
         }
 
-        // remove exit_spot for manually sold contracts
-        if (isUserSold(contract_response)) this.positions[i].exit_spot = '-';
-
         this.positions[i].is_loading = false;
 
         if (
@@ -476,7 +472,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     networkStatusChangeListener(is_online) {
-        this.is_loading = !is_online;
+        this.is_loading = this.is_loading || !is_online;
     }
 
     onMount() {

@@ -6,9 +6,6 @@
 
     @include mobile {
         animation: popup 0.2s;
-    }
-
-    @include mobile {
         width: calc(100vw - 3.2rem);
     }
 
@@ -17,5 +14,11 @@
         top: 2.4rem;
         right: 2rem;
         cursor: pointer;
+    }
+
+    &--fullscreen {
+        height: calc(var(--wallets-vh, 1vh) * 100);
+        width: 100vw;
+        border-radius: 0;
     }
 }

@@ -86,6 +86,28 @@ const CFDPasswordModal = makeLazyLoader(
     () => <Loading />
 )();
 
+const MT5ServerMaintenanceModal = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "modal_cfd_cfd-password-modal" */ '@deriv/cfd/src/Containers/mt5-server-maintenance-modal'
+                )
+        ),
+    () => <Loading />
+)();
+
+const MT5AccountUnavailableModal = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "modal_cfd_cfd-password-modal" */ '@deriv/cfd/src/Containers/mt5-account-unavailable-modal'
+                )
+        ),
+    () => <Loading />
+)();
+
 const CFDDbviOnBoarding = makeLazyLoader(
     () =>
         moduleLoader(
@@ -207,6 +229,8 @@ const ModalManager = () => {
         is_cfd_success_dialog_enabled,
         is_sent_email_modal_enabled,
         is_ctrader_transfer_modal_visible,
+        is_server_maintenance_modal_visible,
+        is_account_unavailable_modal_visible,
     } = modules.cfd;
     const {
         enableApp,
@@ -296,6 +320,8 @@ const ModalManager = () => {
 
     return (
         <React.Fragment>
+            {is_server_maintenance_modal_visible && <MT5ServerMaintenanceModal />}
+            {is_account_unavailable_modal_visible && <MT5AccountUnavailableModal />}
             {is_jurisdiction_modal_visible && <JurisdictionModal openPasswordModal={openRealPasswordModal} />}
             {should_show_cfd_password_modal && <CFDPasswordModal platform={platform} />}
             {is_cfd_verification_modal_visible && <CFDDbviOnBoarding />}

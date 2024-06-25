@@ -54,7 +54,7 @@ const TradingAppCard = ({
     const { setIsVerificationModalVisible } = ui;
     const { is_eu_user, is_demo_low_risk, content_flag, is_real, selected_account_type } = traders_hub;
     const { current_language } = common;
-    const { is_account_being_created } = cfd;
+    const { is_account_being_created, setAccountUnavailableModal, setServerMaintenanceModal } = cfd;
     const { account_status: { authentication } = {} } = client;
 
     const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
@@ -83,6 +83,10 @@ const TradingAppCard = ({
             case MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION:
             case MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION:
                 return setIsOpenPositionSvgModalOpen(!is_open_position_svg_modal_open);
+            case MT5_ACCOUNT_STATUS.SERVER_MAINTENANCE:
+                return setServerMaintenanceModal(true);
+            case MT5_ACCOUNT_STATUS.UNAVAILABLE:
+                return setAccountUnavailableModal(true);
             default:
                 return null;
         }

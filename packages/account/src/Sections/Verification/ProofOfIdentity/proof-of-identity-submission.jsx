@@ -208,6 +208,7 @@ const POISubmission = observer(
                                 handleViewComplete={handleViewComplete}
                                 onfido={onfido}
                                 handleBack={handleBack}
+                                is_resubmission={needs_resubmission}
                             />
                         );
                     default:

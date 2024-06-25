@@ -34,6 +34,7 @@ declare module 'react-router-dom' {
             state: Record<string, unknown>;
         };
         push: (path: TRouteTypes.TRoutes) => void;
+        goBack: () => void;
     };
 
     export function useRouteMatch(path: TRouteTypes.TRoutes): boolean;

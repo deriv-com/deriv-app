@@ -11,13 +11,13 @@ import {
     pick,
 } from '@deriv/shared';
 import Button from '../../button';
-import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import InputWithCheckbox from '../../input-wth-checkbox';
 import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
 import { TGetCardLables, TToastConfig } from '../../types';
 import ArrowIndicator from '../../arrow-indicator';
 import Text from '../../text';
+import { useDevice } from '@deriv-com/ui';
 
 export type TGeneralContractCardBodyProps = {
     addToast: (toast_config: TToastConfig) => void;
@@ -70,7 +70,6 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
         current_focus,
         error_message_alignment,
         getCardLabels,
-        isMobile,
         is_turbos,
         is_accumulator,
         onMouseLeave,
@@ -79,6 +78,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
         toggleDialog,
         totalProfit,
     } = props;
+    const { isDesktop } = useDevice();
 
     React.useEffect(() => {
         return () => contract.clearContractUpdateConfigValues();
@@ -169,7 +169,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             classNameInlinePrefix='dc-contract-card-dialog__input--currency'
             currency={currency}
             error_messages={error_messages.take_profit}
-            is_input_hidden={isMobile && !has_contract_update_take_profit}
+            is_input_hidden={!isDesktop && !has_contract_update_take_profit}
             is_single_currency
             is_negative_disabled
             defaultChecked={has_contract_update_take_profit}
@@ -180,7 +180,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             value={contract_profit_or_loss.contract_update_take_profit}
             is_disabled={is_multiplier && !!is_valid_to_cancel}
             setCurrentFocus={setCurrentFocus}
-            tooltip_alignment={isMobile ? 'left' : 'right'}
+            tooltip_alignment={!isDesktop ? 'left' : 'right'}
             tooltip_label={
                 <Localize i18n_default_text='When your profit reaches or exceeds this amount, your trade will be closed automatically.' />
             }
@@ -198,7 +198,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             currency={currency}
             defaultChecked={has_contract_update_stop_loss}
             error_messages={error_messages.stop_loss}
-            is_input_hidden={isMobile && !has_contract_update_stop_loss}
+            is_input_hidden={!isDesktop && !has_contract_update_stop_loss}
             is_single_currency
             is_negative_disabled
             label={getCardLabels().STOP_LOSS}
@@ -209,7 +209,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             value={contract_profit_or_loss.contract_update_stop_loss}
             is_disabled={!!is_valid_to_cancel}
             setCurrentFocus={setCurrentFocus}
-            tooltip_alignment={isMobile ? 'left' : 'right'}
+            tooltip_alignment={!isDesktop ? 'left' : 'right'}
             tooltip_label={
                 <Localize i18n_default_text='When your loss reaches or exceeds this amount, your trade will be closed automatically.' />
             }
@@ -218,7 +218,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
 
     return (
         <React.Fragment>
-            <MobileWrapper>
+            {!isDesktop && (
                 <div className='dc-contract-card-dialog__total-profit'>
                     <Text color='less-prominent' size='xs' weight='bold'>
                         {getCardLabels().TOTAL_PROFIT_LOSS}
@@ -239,7 +239,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
                         )}
                     </div>
                 </div>
-            </MobileWrapper>
+            )}
             <div
                 className={classNames('dc-contract-card-dialog__form', {
                     'dc-contract-card-dialog__form--no-stop-loss': is_accumulator || is_turbos,

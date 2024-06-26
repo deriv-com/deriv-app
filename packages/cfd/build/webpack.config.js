@@ -62,7 +62,7 @@ module.exports = function (env) {
                 maxAsyncRequests: 30,
                 maxInitialRequests: 3,
                 minChunks: 1,
-                minSize: 30000,
+                minSize: 50000,
                 minSizeReduction: 102400,
             },
         },

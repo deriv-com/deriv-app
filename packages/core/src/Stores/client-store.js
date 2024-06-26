@@ -2049,7 +2049,6 @@ export default class ClientStore extends BaseStore {
         if (selected_account) {
             if (is_wallets_selected) {
                 active_wallet_loginid = obj_params.selected_acct;
-                this.setVerificationCode(verification_code, 'payment_withdraw');
             }
             active_loginid = obj_params.selected_acct;
         }
@@ -2096,6 +2095,9 @@ export default class ClientStore extends BaseStore {
         if (active_loginid && Object.keys(client_object).length) {
             if (selected_account && is_wallets_selected) {
                 localStorage.setItem('active_wallet_loginid', active_wallet_loginid);
+                if (verification_code) {
+                    localStorage.setItem('verification_code.payment_withdraw', verification_code);
+                }
             }
 
             localStorage.setItem('active_loginid', active_loginid);

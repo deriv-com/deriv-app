@@ -1,6 +1,6 @@
 /* eslint-disable sort-keys */
 import React, { CSSProperties } from 'react';
-import { horizontalCurrencyIcons, roundedCurrencyIcons } from '../../constants/icons';
+import { fiatIcons, horizontalCurrencyIcons, roundedCurrencyIcons } from '../../constants/icons';
 import { THooks } from '../../types';
 
 export const roundedIconWidth = {
@@ -18,8 +18,6 @@ export const defaultIconWidth = {
     lg: 90,
     xl: 120,
 } as const;
-
-export const fiatIcons = ['AUD', 'EUR', 'GBP', 'USD'] as const;
 
 type TWalletCurrencyIconsProps = {
     className?: string;

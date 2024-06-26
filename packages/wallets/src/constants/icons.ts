@@ -54,6 +54,8 @@ export const PlatformIcons: TIconTypes = {
 };
 
 // Currencies icons
+export const fiatIcons = ['AUD', 'EUR', 'GBP', 'USD'] as const;
+
 export const roundedCurrencyIcons: TCurrencyIconTypes = {
     AUD: CurrencyAudIcon,
     BTC: CurrencyBtcIcon,

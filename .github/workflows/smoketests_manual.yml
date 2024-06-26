@@ -23,19 +23,19 @@ on:
         description: Select the Url for a specific PR
         options:
         - https://deriv-app-git-fork-maryia-matskevich-deriv-maryia-bot-1913.binary.sx/
-        - https://deriv-app-git-fork-maryia-matskevich-deriv-maryia-bot-1913.binary.sx/
+        - https://deriv-app-git-fork-suisin-deriv-suisin-upm1116addkhmerlanguage.binary.sx
       iissue_number:
         type: choice
         description: Issue Number
         options:
         - '15719'
-        - '15719'
+        - '15714'
       iuser_name:
         type: choice
         description: User name
         options:
         - maryia-deriv
-        - maryia-deriv
+        - suisin-deriv
 
 
 jobs:

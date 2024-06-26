@@ -52,8 +52,6 @@ const Passkeys = observer(() => {
     } = useRegisterPasskey();
     const { is_passkey_renamed, passkey_renaming_error, renamePasskey } = useRenamePasskey();
 
-    const should_show_passkeys = is_passkey_supported && isMobile;
-    const error = passkeys_list_error || passkey_registration_error || passkey_renaming_error;
     const [passkey_status, setPasskeyStatus] = useState<TPasskeysStatus>(PASSKEY_STATUS_CODES.LIST);
     const [is_reminder_modal_open, setIsReminderModalOpen] = useState(false);
     const [is_error_modal_open, setIsErrorModalOpen] = useState(false);
@@ -63,6 +61,9 @@ const Passkeys = observer(() => {
         name: '',
     });
 
+    const should_show_passkeys = is_passkey_supported && isMobile;
+    const error = passkeys_list_error || passkey_registration_error || passkey_renaming_error;
+
     useEffect(() => {
         if (is_passkeys_list_loading || passkey_status === PASSKEY_STATUS_CODES.CREATED) return;
         if (!passkeys_list?.length) {
@@ -70,7 +71,7 @@ const Passkeys = observer(() => {
         } else {
             setPasskeyStatus(PASSKEY_STATUS_CODES.LIST);
         }
-    }, [is_passkeys_list_loading, passkeys_list?.length, passkey_status]);
+    }, [is_passkeys_list_loading, passkeys_list?.length]);
 
     useEffect(() => {
         if (is_passkey_renamed) {

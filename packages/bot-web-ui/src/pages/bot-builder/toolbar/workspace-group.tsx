@@ -54,12 +54,14 @@ const WorkspaceGroup = observer(() => {
                             popover_message={localize('Charts')}
                             icon='IcChartsTabDbot'
                             icon_id='db-toolbar__charts-button'
+                            data_testid='dt_toolbar_chart_button'
                             action={() => setChartModalVisibility()}
                         />
                         <ToolbarIcon
                             popover_message={localize('Trading View Chart')}
                             icon='IcTradingViewChart'
                             icon_id='db-toolbar__tradingview-button'
+                            data_testid='dt_toolbar_tradingview_chart_button'
                             action={() => setTradingViewModalVisibility()}
                         />
                     </>

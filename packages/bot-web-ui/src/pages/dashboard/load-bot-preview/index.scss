@@ -351,20 +351,27 @@
         display: flex;
         justify-content: center;
         width: 100%;
-        @include mobile-or-tablet-screen {
+        @include mobile-screen {
             display: unset;
         }
     }
+
     &__wrapper {
         width: 623px;
-        @include mobile-or-tablet-screen {
+
+        @include tablet-screen {
+            width: 600px;
+        }
+        @include mobile-screen {
             width: unset;
         }
     }
+
     &__table {
         height: calc(100vh - 57rem);
         overflow: auto;
     }
+
     &__title {
         font-size: var(--text-size-s);
         font-weight: 700;
@@ -375,6 +382,7 @@
             margin: 0 !important;
         }
     }
+
     &__header {
         @extend .flex-align-center;
         border-bottom: 1px solid var(--border-divider);
@@ -391,6 +399,7 @@
                 padding: 0;
             }
         }
+
         &__time-stamp {
             width: 20%;
             padding: 0.8rem 1.6rem;
@@ -399,6 +408,7 @@
                 padding: 0;
             }
         }
+
         &__load-type {
             width: 25%;
             padding: 0.8rem 1.6rem;
@@ -408,6 +418,7 @@
             }
         }
     }
+
     &__item {
         @extend .flex-align-center;
         border-bottom: 1px solid var(--border-divider);

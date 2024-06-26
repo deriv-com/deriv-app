@@ -137,12 +137,8 @@
             .title {
                 text-align: center;
                 height: 7.2;
-                @include mobile-screen {
+                @include mobile-or-tablet-screen {
                     height: auto;
-                }
-
-                @include tablet-screen {
-                    padding-top: 1.6rem;
                 }
             }
             .subtitle {
@@ -187,10 +183,6 @@
                 height: calc(100vh - 19rem);
                 align-items: flex-start;
                 padding: 1.6rem;
-            }
-
-            @include tablet-screen {
-                padding: 0 6rem;
             }
 
             .quick-panel {

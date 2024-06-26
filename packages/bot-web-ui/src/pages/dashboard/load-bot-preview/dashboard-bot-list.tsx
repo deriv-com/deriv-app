@@ -86,7 +86,6 @@ const DashboardBotList = observer(() => {
                 </div>
             </div>
             <DeleteDialog setStrategies={setDashboardStrategies} />
-            {!is_desktop && <SaveModal />}
         </div>
     );
 });

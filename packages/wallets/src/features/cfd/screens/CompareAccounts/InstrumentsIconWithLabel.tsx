@@ -11,7 +11,6 @@ type TInstrumentsIcon = {
 };
 
 const InstrumentsIconWithLabel = ({ highlighted, icon, isAsterisk, text }: TInstrumentsIcon) => {
-    const InstrumentIcon = InstrumentsIcons[icon];
     return (
         <div
             className='wallets-compare-accounts-instrument-icon'
@@ -20,7 +19,7 @@ const InstrumentsIconWithLabel = ({ highlighted, icon, isAsterisk, text }: TInst
                 opacity: highlighted ? '' : '0.2',
             }}
         >
-            <InstrumentIcon height={24} width={24} />
+            {InstrumentsIcons[icon]}
             <div className='wallets-compare-accounts-trading-instruments__text'>
                 <WalletText align='left' as='p' lineHeight='xs' size='xs' weight='bold'>
                     {text}

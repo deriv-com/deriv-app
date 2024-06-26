@@ -2,35 +2,18 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
-import { useFeatureFlags } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 
 const TradersHubHomeButton = observer(() => {
-    const { client, ui } = useStore();
-    const { has_wallet } = client;
+    const { ui } = useStore();
     const { is_dark_mode_on } = ui;
     const history = useHistory();
     const location = useLocation();
     const { pathname } = location;
-    const { is_next_tradershub_enabled } = useFeatureFlags();
 
-    let TradersHubIcon;
-    if (has_wallet) {
-        TradersHubIcon = 'IcAppstoreTradersHubHomeUpdated';
-    } else if (is_dark_mode_on) {
-        TradersHubIcon = 'IcAppstoreHomeDark';
-    } else {
-        TradersHubIcon = 'IcAppstoreTradersHubHome';
-    }
-
-    const redirectRoutes = () => {
-        if (is_next_tradershub_enabled) {
-            return routes.traders_hub_v2;
-        }
-        return routes.traders_hub;
-    };
+    const TradersHubIcon = is_dark_mode_on ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHomeUpdated';
 
     return (
         <div
@@ -39,7 +22,7 @@ const TradersHubHomeButton = observer(() => {
                 'traders-hub-header__tradershub--active':
                     pathname === routes.traders_hub || pathname === routes.traders_hub_v2,
             })}
-            onClick={() => history.push(redirectRoutes())}
+            onClick={() => history.push(routes.traders_hub)}
         >
             <div className='traders-hub-header__tradershub--home-logo'>
                 <Icon icon={TradersHubIcon} size={is_dark_mode_on ? 15 : 17} />

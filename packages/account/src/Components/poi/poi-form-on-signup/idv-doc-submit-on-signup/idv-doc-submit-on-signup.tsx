@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { Formik, FormikValues, FormikHelpers, FormikErrors, Form } from 'formik';
-import { Localize, localize } from '@deriv/translations';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button } from '@deriv/components';
 import {
@@ -9,6 +8,7 @@ import {
     removeEmptyPropertiesFromObject,
     getIDVNotApplicableOption,
 } from '@deriv/shared';
+import { useTranslations, Localize } from '@deriv-com/translations';
 import PoiNameDobExample from '../../../../Assets/ic-poi-name-dob-example.svg';
 import FormSubHeader from '../../../form-sub-header';
 import IDVForm from '../../../forms/idv-form';
@@ -22,7 +22,7 @@ import {
     validate,
     validateName,
 } from '../../../../Helpers/utils';
-import { TIDVFormValues, TPersonalDetailsForm } from '../../../../Types';
+import { TIDVFormValues, TConfirmPersonalDetailsForm } from '../../../../Types';
 
 type TIdvDocSubmitOnSignup = {
     citizen_data: FormikValues;
@@ -34,7 +34,7 @@ type TIdvDocSubmitOnSignup = {
     residence_list: ResidenceList;
 };
 
-type TIDVDocFormType = TIDVFormValues & TPersonalDetailsForm;
+type TIDVDocFormType = TIDVFormValues & TConfirmPersonalDetailsForm;
 
 export const IdvDocSubmitOnSignup = ({
     citizen_data,
@@ -43,6 +43,7 @@ export const IdvDocSubmitOnSignup = ({
     getChangeableFields,
     residence_list,
 }: TIdvDocSubmitOnSignup) => {
+    const { localize } = useTranslations();
     const side_note_image = <PoiNameDobExample />;
     const validateFields = (values: TIDVDocFormType) => {
         const errors: FormikErrors<Omit<TIDVDocFormType, 'document_type'> & { document_type?: string }> = {};

@@ -81,9 +81,8 @@
 
         &--wallets {
             width: 47rem;
-
             @include mobile {
-                width: 14rem;
+                width: auto;
             }
         }
     }

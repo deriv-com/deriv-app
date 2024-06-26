@@ -75,7 +75,7 @@
         height: 1.6em;
         @extend %inline-icon;
     }
-    @media (max-width: 768px) {
+    @include mobile-screen {
         display: none;
     }
 }

@@ -1,17 +1,16 @@
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { Text } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 
 type TOptionsTitle = {
     is_eu_user: boolean;
 };
 
-const OptionsTitle = observer(({ is_eu_user }: TOptionsTitle) => {
-    const { ui } = useStore();
-    const { is_mobile } = ui;
+const OptionsTitle = ({ is_eu_user }: TOptionsTitle) => {
+    const { isDesktop } = useDevice();
 
-    if (is_mobile) return null;
+    if (!isDesktop) return null;
     return is_eu_user ? (
         <Text size='sm' weight='bold' color='prominent'>
             <Localize i18n_default_text='Multipliers' />
@@ -21,6 +20,6 @@ const OptionsTitle = observer(({ is_eu_user }: TOptionsTitle) => {
             <Localize i18n_default_text='Options' />
         </Text>
     );
-});
+};
 
 export default OptionsTitle;

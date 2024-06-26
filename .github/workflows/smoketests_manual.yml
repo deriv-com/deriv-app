@@ -71,13 +71,14 @@ jobs:
             suite: '${{ secrets.E2E_WORKFLOW_SUITE }}',
             appRegUrl: 'https://deriv-app-git-fork-maryia-matskevich-deriv-maryia-bot-1913.binary.sx/',
             issue_number: '15719',
-            user_name: 'maryia-deriv'
+            user_name: 'maryia-deriv',
+            parallel: 'true'
             };
           const response = await github.rest.actions.createWorkflowDispatch({
             owner: 'regentmarkets',
             repo: 'e2e-deriv-app',
             workflow_id: 'E2E_Run_PR.yml',
-            ref: 'master',
+            ref: 'mark/pr-commit-v2',
             inputs: workflowInputs
           });
           console.log('Workflow dispatched successfully:', response);

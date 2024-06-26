@@ -27,6 +27,12 @@
         padding: 2.4rem;
         gap: 1.6rem;
 
+        &-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
         &-description {
             display: flex;
             align-items: center;
@@ -74,6 +80,11 @@
             align-items: start;
             gap: 0.8rem;
         }
+    }
+
+    &__transfer-btn {
+        display: flex;
+        justify-content: flex-end;
     }
 
     &__links {

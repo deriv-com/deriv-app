@@ -116,13 +116,13 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
 
     return (
         <div className='wallets-mt5-trade-screen'>
-            <div className='wallets-mt5-trade-screen__details'>
-                <div className='wallets-mt5-trade-screen__details-header'>
-                    <div className='wallets-mt5-trade-screen__details-description'>
-                        <div className='wallets-mt5-trade-screen__details-description__icon'>
+            <div className='wallets-mt5-trade-screen__content'>
+                <div className='wallets-mt5-trade-screen__content-header'>
+                    <div className='wallets-mt5-trade-screen__description'>
+                        <div className='wallets-mt5-trade-screen__description-icon'>
                             {platform === mt5Platform ? marketTypeIcon : platformIcon}
                         </div>
-                        <div className='wallets-mt5-trade-screen__details-description__details'>
+                        <div className='wallets-mt5-trade-screen__description-details'>
                             <div className='wallets-mt5-trade-screen__label'>
                                 <WalletText lineHeight='3xs' size={isDesktop ? 'sm' : 'md'}>
                                     {platform === mt5Platform ? marketTypeTitle : platformTitle}{' '}
@@ -134,14 +134,14 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                                 {platform !== ctraderPlatform && loginId}
                             </WalletText>
                         </div>
-                        <div className='wallets-mt5-trade-screen__details-description__balance'>
+                        <div className='wallets-mt5-trade-screen__description-balance'>
                             {shouldShowAccountBalance && (
                                 <WalletText weight='bold'>{details?.display_balance}</WalletText>
                             )}
                             {migrationMessage}
                         </div>
                     </div>
-                    <div className='wallets-mt5-trade-screen__transfer-btn'>
+                    <div className='wallets-mt5-trade-screen__content-header-btn'>
                         <WalletButton
                             ariaLabel='account-transfer'
                             icon={<LabelPairedArrowUpArrowDownMdBoldIcon fill='#FFF' height={18} width={14} />}
@@ -159,7 +159,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                     </div>
                 </div>
 
-                <div className='wallets-mt5-trade-screen__details-clipboards'>
+                <div className='wallets-mt5-trade-screen__content-clipboards'>
                     {getModalState('platform') === mt5Platform && details?.platform === mt5Platform && (
                         <Fragment>
                             <MT5TradeDetailsItem label='Broker' value={details?.landing_company ?? ''} />
@@ -185,7 +185,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                     )}
                 </div>
 
-                <div className='wallets-mt5-trade-screen__details-maintenance'>
+                <div className='wallets-mt5-trade-screen__content-maintenance'>
                     <LabelPairedCircleExclamationMdFillIcon fill='#FFAD3A' />
                     <WalletText color='less-prominent' size={isDesktop ? '2xs' : 'xs'}>
                         {

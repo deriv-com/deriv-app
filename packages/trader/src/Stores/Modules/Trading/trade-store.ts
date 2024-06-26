@@ -1,6 +1,7 @@
 import * as Symbol from './Actions/symbol';
 import {
     WS,
+    ChartBarrierStore,
     cloneObject,
     convertDurationLimit,
     extractInfoFromShortcode,
@@ -23,6 +24,7 @@ import {
     isVanillaContract,
     pickDefaultSymbol,
     resetEndTimeOnVolatilityIndices,
+    setLimitOrderBarriers,
     showDigitalOptionsUnavailableError,
     showUnavailableLocationError,
     getCurrencyDisplayCode,
@@ -51,9 +53,7 @@ import { createProposalRequests, getProposalErrorField, getProposalInfo } from '
 import { getHoveredColor } from './Helpers/barrier-utils';
 import BaseStore from '../../base-store';
 import { TRootStore, TTextValueNumber, TTextValueStrings } from 'Types';
-import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import debounce from 'lodash.debounce';
-import { setLimitOrderBarriers } from './Helpers/limit-orders';
 import {
     ActiveSymbols,
     ActiveSymbolsRequest,
@@ -1564,6 +1564,13 @@ export default class TradeStore extends BaseStore {
     onMount() {
         this.root_store.notifications.removeTradeNotifications();
         if (this.is_trade_component_mounted && this.should_skip_prepost_lifecycle) {
+            const { chart_type, granularity } = this.root_store.contract_trade;
+            setTradeURLParams({
+                chartType: chart_type,
+                granularity,
+                symbol: this.symbol,
+                contractType: this.contract_type,
+            });
             return;
         }
         this.root_store.notifications.setShouldShowPopups(false);

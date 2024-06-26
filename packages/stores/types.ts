@@ -104,6 +104,8 @@ type TPopulateSettingsExtensionsMenuItem = {
     value: <T extends object>(props: T) => JSX.Element;
 };
 
+type TProduct = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx';
+
 type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 
 type TIconTypes =
@@ -251,6 +253,7 @@ type TTradingPlatformAvailableAccount = {
     sub_account_type: string;
     max_count?: number;
     available_count?: number;
+    product: TProduct;
 };
 
 type TAvailableCFDAccounts = {
@@ -691,6 +694,7 @@ type TUiStore = {
     is_tablet: boolean;
     is_mobile_language_menu_open: boolean;
     is_positions_drawer_on: boolean;
+    is_reset_email_modal_visible: boolean;
     is_services_error_visible: boolean;
     is_trading_assessment_for_existing_user_enabled: boolean;
     isUrlUnavailableModalVisible: boolean;
@@ -744,6 +748,7 @@ type TUiStore = {
     toggleLinkExpiredModal: (state_change: boolean) => void;
     togglePositionsDrawer: () => void;
     toggleReadyToDepositModal: () => void;
+    toggleResetEmailModal: (state_change: boolean) => void;
     toggleServicesErrorModal: (is_visible: boolean) => void;
     toggleSetCurrencyModal: () => void;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
@@ -845,7 +850,7 @@ type TAddContractParams = {
     limit_order?: ProposalOpenContract['limit_order'];
 };
 type TOnChartBarrierChange = null | ((barrier_1: string, barrier_2?: string) => void);
-type TOnChangeParams = { high: string | number; low?: string | number };
+type TOnChangeParams = { high: string | number; low?: string | number; title?: string; hidePriceLines?: boolean };
 type TBarriers = Array<{
     color: string;
     lineStyle: string;
@@ -865,7 +870,13 @@ type TBarriers = Array<{
     hideOffscreenBarrier?: boolean;
     isSingleBarrier?: boolean;
     onBarrierChange: (barriers: TOnChangeParams) => void;
-    updateBarriers: (high: string | number, low?: string | number, isFromChart?: boolean) => void;
+    updateBarriers: (
+        high: string | number,
+        low?: string | number,
+        title?: string,
+        hidePriceLines?: boolean,
+        isFromChart?: boolean
+    ) => void;
     updateBarrierShade: (should_display: boolean, contract_type: string) => void;
     barrier_count: number;
     default_shade: string;
@@ -1017,6 +1028,7 @@ type TTradersHubStore = {
             availability?: TRegionAvailability;
             description?: string;
             market_type?: 'all' | 'financial' | 'synthetic';
+            product: TProduct;
         }[];
     openModal: (modal_id: string, props?: unknown) => void;
     selected_account: {

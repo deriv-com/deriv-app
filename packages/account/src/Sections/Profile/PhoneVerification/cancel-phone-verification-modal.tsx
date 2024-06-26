@@ -17,11 +17,14 @@ const CancelPhoneVerificationModal = observer(
     }: TCancelPhoneVerificationModal) => {
         const history = useHistory();
         const handleCancelButton = () => {
+            setVerificationCode('', 'phone_number_verification');
+            setShouldShowPhoneNumberOTP(false);
             setShouldShowCancelVerificationModal(false);
             history.goBack();
         };
-        const { ui } = useStore();
-        const { is_mobile } = ui;
+        const { ui, client } = useStore();
+        const { is_mobile, setShouldShowPhoneNumberOTP } = ui;
+        const { setVerificationCode } = client;
 
         return (
             <Modal

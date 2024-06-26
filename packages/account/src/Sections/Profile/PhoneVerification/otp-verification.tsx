@@ -47,6 +47,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
 
     React.useEffect(() => {
         if (is_phone_number_verified) {
+            reInitializeGetSettings();
             setShouldShowPhoneNumberVerifiedModal(true);
         } else if (is_email_verified) {
             setVerificationCode(otp, 'phone_number_verification');
@@ -60,7 +61,6 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     };
 
     const handleVerifyOTP = () => {
-        //TODO: inplement function to verify OTP when BE API is ready
         if (should_show_phone_number_otp) {
             sendPhoneOTPVerification(otp);
         } else {

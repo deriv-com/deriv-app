@@ -14,6 +14,7 @@ type TConfirmPhoneNumber = {
 const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber) => {
     const [phone_number, setPhoneNumber] = React.useState('');
     const [phone_verification_type, setPhoneVerificationType] = React.useState('');
+    const [is_button_loading, setIsButtonLoading] = React.useState(false);
     const {
         requestOnSMS,
         requestOnWhatsApp,
@@ -21,6 +22,7 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
         setErrorMessage,
         setUsersPhoneNumber,
         is_email_verified,
+        email_otp_error,
         ...rest
     } = useRequestPhoneNumberOTP();
     const { data: account_settings } = useSettings();
@@ -32,11 +34,15 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
     }, [account_settings?.phone]);
 
     React.useEffect(() => {
+        if (email_otp_error) {
+            setIsButtonLoading(false);
+        }
         if (is_email_verified) {
+            setIsButtonLoading(false);
             setOtpVerification({ show_otp_verification: true, phone_verification_type });
             setShouldShowPhoneNumberOTP(true);
         }
-    }, [is_email_verified]);
+    }, [is_email_verified, email_otp_error]);
 
     const handleOnChangePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPhoneNumber(e.target.value);
@@ -44,6 +50,7 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
     };
 
     const handleSubmit = async (phone_verification_type: string) => {
+        setIsButtonLoading(true);
         setPhoneVerificationType(phone_verification_type);
         const { error } = await setUsersPhoneNumber({ phone: phone_number });
 
@@ -73,12 +80,21 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
                     fullWidth
                     size='lg'
                     onClick={() => handleSubmit(VERIFICATION_SERVICES.SMS)}
+                    isLoading={is_button_loading}
+                    disabled={is_button_loading}
                 >
                     <Text bold>
                         <Localize i18n_default_text='Get code via SMS' />
                     </Text>
                 </Button>
-                <Button color='black' fullWidth size='lg' onClick={() => handleSubmit(VERIFICATION_SERVICES.WHATSAPP)}>
+                <Button
+                    color='black'
+                    fullWidth
+                    size='lg'
+                    onClick={() => handleSubmit(VERIFICATION_SERVICES.WHATSAPP)}
+                    isLoading={is_button_loading}
+                    disabled={is_button_loading}
+                >
                     <Text color='white' bold>
                         <Localize i18n_default_text='Get code via WhatsApp' />
                     </Text>

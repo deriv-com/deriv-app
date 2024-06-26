@@ -29,7 +29,6 @@ const DidntGetTheCodeModal = observer(
         const { is_mobile } = ui;
 
         React.useEffect(() => {
-            //TODO: will replace error_otp_error once BE error is solved
             if (is_email_verified) reInitializeGetSettings();
         }, [is_email_verified, reInitializeGetSettings]);
 

@@ -54,7 +54,7 @@ jobs:
         fi
         
     - name: Trigger another deriv-app smoke tests from regentmarkets
-      if: ${{ github.event.inputs.idraft == 'false' && env.TEST_SUITE != '<do not run>'}}
+      if: ${{ github.event.inputs.idraft == 'false' && env.TEST_SUITE != '<do not run>' }}
       uses: actions/github-script@v6
       with:
         github-token: ${{ secrets.E2E_WORKFLOW_TOKEN }}

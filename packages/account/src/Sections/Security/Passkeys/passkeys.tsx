@@ -148,7 +148,7 @@ const Passkeys = observer(() => {
 
     const onPasskeyMenuClick = (passkey_managing_status: TPasskeysStatus, passkey_data: TCurrentManagedPasskey) => {
         if (passkey_managing_status === PASSKEY_STATUS_CODES.REMOVING) {
-            removePasskey(passkey_data.passkey_id);
+            removePasskey(passkey_data.id, passkey_data.passkey_id);
             return;
         }
         if (passkey_managing_status !== PASSKEY_STATUS_CODES.LIST && is_snackbar_open) {

@@ -5,6 +5,7 @@ import { Text, Icon, PageOverlay, DesktopWrapper, MobileWrapper, CFDCompareAccou
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
+import { useIsRtl } from '@deriv/hooks';
 import CFDCompareAccountsCard from './cfd-compare-accounts-card';
 import {
     getSortedCFDAvailableAccounts,
@@ -18,6 +19,7 @@ import {
 import { REGION } from '../../Helpers/cfd-config';
 
 const CompareCFDs = observer(() => {
+    const is_rtl = useIsRtl();
     const history = useHistory();
     const store = useStore();
     const { client, traders_hub } = store;
@@ -106,7 +108,7 @@ const CompareCFDs = observer(() => {
                         })}
                     >
                         <div className='card-list'>
-                            <CFDCompareAccountsCarousel>
+                            <CFDCompareAccountsCarousel isRtl={is_rtl}>
                                 {all_cfd_available_accounts.map(item => (
                                     <CFDCompareAccountsCard
                                         trading_platforms={item}
@@ -148,7 +150,7 @@ const CompareCFDs = observer(() => {
                             'compare-cfd-account-container__card-count--mobile': card_count < 2,
                         })}
                     >
-                        <CFDCompareAccountsCarousel>
+                        <CFDCompareAccountsCarousel isRtl={is_rtl}>
                             {all_cfd_available_accounts.map(item => (
                                 <CFDCompareAccountsCard
                                     trading_platforms={item}

@@ -9,9 +9,10 @@ import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import platform_config from 'App/Constants/platform-config';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import HeaderAccountActions from './header-account-actions';
 import DerivShortLogo from './deriv-short-logo';
+import TradersHubHomeButton from './traders-hub-home-button';
 
 const DefaultHeader = observer(() => {
     const { client, common, notifications, traders_hub, ui } = useStore();
@@ -38,6 +39,8 @@ const DefaultHeader = observer(() => {
     } = ui;
 
     const history = useHistory();
+    const location = useLocation();
+    const should_hide_platform_switcher = location.pathname === routes.traders_hub;
 
     const addUpdateNotification = () => addNotificationMessage(client_notifications?.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -91,15 +94,18 @@ const DefaultHeader = observer(() => {
                         <React.Fragment>
                             <DerivShortLogo />
                             <div className='header__divider' />
-                            <PlatformSwitcher
-                                app_routing_history={app_routing_history}
-                                is_landing_company_loaded={is_landing_company_loaded}
-                                is_logged_in={is_logged_in}
-                                is_logging_in={is_logging_in}
-                                platform_config={filterPlatformsForClients(platform_config)}
-                                setTogglePlatformType={setTogglePlatformType}
-                                current_language={current_language}
-                            />
+                            <TradersHubHomeButton />
+                            {!should_hide_platform_switcher && (
+                                <PlatformSwitcher
+                                    app_routing_history={app_routing_history}
+                                    is_landing_company_loaded={is_landing_company_loaded}
+                                    is_logged_in={is_logged_in}
+                                    is_logging_in={is_logging_in}
+                                    platform_config={filterPlatformsForClients(platform_config)}
+                                    setTogglePlatformType={setTogglePlatformType}
+                                    current_language={current_language}
+                                />
+                            )}
                         </React.Fragment>
                     )}
                     <MenuLinks />

@@ -30,25 +30,21 @@ import {
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 
-import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import { TProducts } from '../Components/props.types';
 import SuccessDialog from '../Components/success-dialog.jsx';
-import MigrationSuccessModal from '../Components/migration-success-modal';
-import {
-    getDxCompanies,
-    getFormattedJurisdictionCode,
-    getMtCompanies,
-    TDxCompanies,
-    TMtCompanies,
-} from '../Stores/Modules/CFD/Helpers/cfd-config';
-import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import CFDPasswordModalTitle from './cfd-password-modal-title';
-import { CFD_PLATFORMS, JURISDICTION, CATEGORY } from '../Helpers/cfd-config';
+import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import MigrationSuccessModal from '../Components/migration-success-modal';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { CFD_PLATFORMS, JURISDICTION, CATEGORY, PRODUCT } from '../Helpers/cfd-config';
+import { getDxCompanies, getMtCompanies, TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 
-import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 import CFDPasswordChange from './cfd-password-change';
 import CFDPasswordChangeContent from './cfd-password-change-content';
+import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 
 import '../sass/cfd.scss';
+import CfdPasswordModalTnc from './cfd-password-modal-tnc';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -65,6 +61,7 @@ type TIconTypeProps = {
     platform: string;
     type?: string;
     show_eu_related_content: boolean;
+    product?: TProducts;
 };
 
 type TCFDPasswordFormReusedProps = {
@@ -170,7 +167,7 @@ const ReviewMessageForMT5 = ({
     return null;
 };
 
-const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconTypeProps) => {
+const IconType = React.memo(({ platform, type, show_eu_related_content, product }: TIconTypeProps) => {
     const traders_hub = window.location.pathname === routes.traders_hub;
     if (platform === CFD_PLATFORMS.DXTRADE) {
         return <Icon icon='IcRebrandingDxtradeDashboard' size={128} />;
@@ -180,8 +177,11 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
         }
         switch (type) {
             case 'synthetic':
-                return <TradingPlatformIcon icon='Derived' size={128} />;
+                return <TradingPlatformIcon icon='Standard' size={128} />;
             case 'all':
+                if (product === PRODUCT.ZEROSPREAD) {
+                    return <TradingPlatformIcon icon='ZeroSpread' size={128} />;
+                }
                 return <TradingPlatformIcon icon='SwapFree' size={128} />;
             case 'financial':
                 if (show_eu_related_content) {
@@ -194,8 +194,11 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
     } else {
         switch (type) {
             case 'synthetic':
-                return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
+                return <Icon icon='IcMt5StandardPlatform' size={128} />;
             case 'all':
+                if (product === PRODUCT.ZEROSPREAD) {
+                    return <Icon icon='IcMt5ZeroSpread' size={128} />;
+                }
                 return <Icon icon='IcMt5SwapFreePlatform' size={128} />;
             case 'financial':
                 if (show_eu_related_content) {
@@ -240,6 +243,11 @@ const CreatePassword = ({
     error_message,
     is_real_financial_stp,
 }: TCFDCreatePasswordProps) => {
+    const { product, account_type } = useCfdStore();
+    const [checked, setChecked] = React.useState(
+        !(product === PRODUCT.ZEROSPREAD && account_type.category === CATEGORY.REAL)
+    );
+
     return (
         <Formik
             initialValues={{
@@ -323,8 +331,15 @@ const CreatePassword = ({
                                 <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).' />
                             </div>
                         )}
+                        {product === PRODUCT.ZEROSPREAD && account_type.category === CATEGORY.REAL && (
+                            <CfdPasswordModalTnc
+                                platform={platform}
+                                checked={checked}
+                                onCheck={() => setChecked(prev => !prev)}
+                            />
+                        )}
                         <FormSubmitButton
-                            is_disabled={!values.password || Object.keys(errors).length > 0}
+                            is_disabled={!values.password || !checked || Object.keys(errors).length > 0}
                             is_loading={isSubmitting}
                             label={localize('Create {{platform}} password', {
                                 platform: getCFDPlatformLabel(platform),
@@ -405,6 +420,10 @@ const CFDPasswordForm = observer(
     }: TCFDPasswordFormProps) => {
         const { ui } = useStore();
         const { is_mobile } = ui;
+        const { product, account_type } = useCfdStore();
+        const [checked, setChecked] = React.useState(
+            !(product === PRODUCT.ZEROSPREAD && account_type.category === CATEGORY.REAL)
+        );
 
         const button_label = React.useMemo(() => {
             if (error_type === 'PasswordReset') {
@@ -531,9 +550,17 @@ const CFDPasswordForm = observer(
                                     />
                                 </Text>
                             )}
+                            {product === PRODUCT.ZEROSPREAD && account_type.category === CATEGORY.REAL && (
+                                <CfdPasswordModalTnc
+                                    className='cfd-password-modal-tnc--bottom'
+                                    platform={platform}
+                                    checked={checked}
+                                    onCheck={() => setChecked(prev => !prev)}
+                                />
+                            )}
                         </div>
                         <FormSubmitButton
-                            is_disabled={!values.password}
+                            is_disabled={!values.password || !checked}
                             has_cancel={has_cancel_button}
                             cancel_label={cancel_button_label}
                             onCancel={handleCancel}
@@ -582,6 +609,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         submitMt5Password,
         submitCFDPassword,
         new_account_response,
+        product,
         setMigratedMT5Accounts,
         is_mt5_password_changed_modal_visible,
         is_mt5_password_invalid_format_modal_visible,
@@ -809,10 +837,9 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         let type_label = '';
         switch (platform) {
             case CFD_PLATFORMS.MT5:
-                type_label =
-                    getMtCompanies(show_eu_related_content)[category as keyof TMtCompanies][
-                        type as keyof TMtCompanies['demo' | 'real']
-                    ].short_title;
+                type_label = getMtCompanies(show_eu_related_content, product)[category as keyof TMtCompanies][
+                    type as keyof TMtCompanies['demo' | 'real']
+                ].short_title;
                 break;
             case CFD_PLATFORMS.DXTRADE:
                 type_label =
@@ -870,9 +897,10 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         if (platform === CFD_PLATFORMS.MT5) {
             return (
                 <Localize
-                    i18n_default_text='Your demo {{type}} account is ready.'
+                    i18n_default_text='Your demo {{deriv}} {{type}} account is ready.'
                     values={{
                         type: accountTypes(),
+                        deriv: 'Deriv MT5',
                     }}
                 />
             );
@@ -1022,6 +1050,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         platform={platform}
                         type={account_type.type}
                         show_eu_related_content={show_eu_related_content}
+                        product={product}
                     />
                 }
                 icon_size='xlarge'

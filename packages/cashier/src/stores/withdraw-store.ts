@@ -281,7 +281,9 @@ export default class WithdrawStore {
     async check10kLimit() {
         const { client } = this.root_store;
 
-        const remainder = (await client.getLimits())?.get_limits?.remainder;
+        await this.WS.wait('get_limits');
+
+        const remainder = client.account_limits?.remainder;
         this.setMaxWithdrawAmount(Number(remainder));
         const min_withdrawal = getMinWithdrawal(client.currency);
         const is_limit_reached = !!(typeof remainder !== 'undefined' && +remainder < min_withdrawal);

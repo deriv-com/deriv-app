@@ -13,8 +13,10 @@ import fr from 'Translations/fr.json';
 import id from 'Translations/id.json';
 import it from 'Translations/it.json';
 import ko from 'Translations/ko.json';
+import mn from 'Translations/mn.json';
 import pl from 'Translations/pl.json';
 import pt from 'Translations/pt.json';
+import sw from 'Translations/sw.json';
 import ru from 'Translations/ru.json';
 import si from 'Translations/si.json';
 import th from 'Translations/th.json';
@@ -47,8 +49,10 @@ const i18n_config = {
         ID: { translations: { ...id } },
         IT: { translations: { ...it } },
         KO: { translations: { ...ko } },
+        MN: { translations: { ...mn } },
         PL: { translations: { ...pl } },
         PT: { translations: { ...pt } },
+        SW: { translations: { ...sw } },
         RU: { translations: { ...ru } },
         SI: { translations: { ...si } },
         TH: { translations: { ...th } },

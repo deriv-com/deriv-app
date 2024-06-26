@@ -49,7 +49,7 @@ export const TransitionBlocker = ({ dirty, onDirty }: TTransitionBlocker) => {
     const [next_location, setNextLocation] = React.useState<{ pathname: string } | null>(null);
     const history = useHistory();
     const { isMobile } = useDevice();
-  
+
     React.useEffect(() => {
         return () => unblock();
         // eslint-disable-next-line react-hooks/exhaustive-deps

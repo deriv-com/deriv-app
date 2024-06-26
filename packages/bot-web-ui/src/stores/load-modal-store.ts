@@ -50,7 +50,7 @@ interface ILoadModalStore {
     onToggleDeleteDialog: (is_delete_modal_open: boolean) => void;
     onZoomInOutClick: (is_zoom_in: string) => void;
     previewRecentStrategy: (workspace_id: string) => void;
-    setActiveTabIndex: (index: number) => void;
+    setActiveTabIndex: (index: number, is_default: boolean) => void;
     setLoadedLocalFile: (loaded_local_file: File | null) => void;
     setDashboardStrategies: (strategies: Array<TStrategy>) => void;
     setRecentStrategies: (recent_strategies: TStrategy[]) => void;
@@ -389,7 +389,7 @@ export default class LoadModalStore implements ILoadModalStore {
             this.local_workspace = null;
         }
 
-        this.setActiveTabIndex(0); // Reset to first tab.
+        this.setActiveTabIndex(0, true); // Reset to first tab.
         this.setLoadedLocalFile(null);
     };
 
@@ -444,9 +444,11 @@ export default class LoadModalStore implements ILoadModalStore {
         this.refreshStrategiesTheme();
     };
 
-    setActiveTabIndex = (index: number): void => {
+    setActiveTabIndex = (index: number, is_default: boolean): void => {
         this.active_index = index;
-        rudderStackSendSwitchLoadStrategyTabEvent({ load_strategy_tab: LOAD_MODAL_TABS[index] });
+        if (!is_default) {
+            rudderStackSendSwitchLoadStrategyTabEvent({ load_strategy_tab: LOAD_MODAL_TABS[index] });
+        }
     };
 
     setLoadedLocalFile = (loaded_local_file: File | null): void => {
@@ -516,7 +518,7 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     readFile = (is_preview: boolean, drop_event: DragEvent, file: File): void => {
-        if (this.upload_id) {
+        if (this.upload_id && is_preview) {
             rudderStackSendUploadStrategyStartEvent({ upload_provider: 'my_computer', upload_id: this.upload_id });
         }
         const file_name = file?.name.replace(/\.[^/.]+$/, '');

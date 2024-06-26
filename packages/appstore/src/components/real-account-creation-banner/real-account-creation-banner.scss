@@ -1,0 +1,40 @@
+.real-account-creation-banner {
+    position: relative;
+    width: 100%;
+    margin-bottom: 2.4rem;
+    display: flex;
+
+    @include mobile-or-tablet-screen {
+        align-items: center;
+    }
+
+    img {
+        width: 100%;
+        object-fit: contain;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        padding: 3rem 4.8rem;
+        width: 50rem;
+
+        @include mobile-screen {
+            padding: 1.4rem 1.6rem;
+            width: 25rem;
+            top: auto;
+        }
+
+        @include tablet-screen {
+            padding: 2.4rem 1.6rem;
+            width: 27rem;
+            top: auto;
+        }
+    }
+}

@@ -123,6 +123,8 @@ import type {
     P2PAdvertUpdateResponse,
     P2PChatCreateRequest,
     P2PChatCreateResponse,
+    P2PCountryListRequest,
+    P2PCountryListResponse,
     P2POrderCancelRequest,
     P2POrderCancelResponse,
     P2POrderConfirmRequest,
@@ -2236,6 +2238,41 @@ type PasskeyRegisterResponse = {
     req_id?: number;
     [k: string]: unknown;
 };
+type PasskeysRenameRequest = {
+    passkeys_rename: 1;
+    id: number;
+    name: string;
+    req_id?: number;
+};
+type PasskeysRenameResponse = {
+    passkeys_rename?: 1 | 0;
+    echo_req: {
+        [k: string]: unknown;
+    };
+    msg_type: 'passkeys_rename';
+    req_id?: number;
+    [k: string]: unknown;
+};
+
+type ChangeEmailRequest = {
+    change_email: 'verify' | 'update';
+    new_email: string;
+    new_password?: string;
+    verification_code: string;
+    loginid?: string;
+    passthrough?: {
+        [k: string]: unknown;
+    };
+    req_id?: number;
+};
+type ChangeEmailResponse = {
+    change_email: 0 | 1;
+    echo_req: {
+        [k: string]: unknown;
+    };
+    msg_type: 'change_email';
+    req_id?: number;
+};
 
 type TSocketEndpoints = {
     active_symbols: {
@@ -2301,6 +2338,10 @@ type TSocketEndpoints = {
     cashier: {
         request: CashierInformationRequest;
         response: CashierInformationResponse;
+    };
+    change_email: {
+        request: ChangeEmailRequest;
+        response: ChangeEmailResponse;
     };
     contract_update_history: {
         request: UpdateContractHistoryRequest;
@@ -2494,6 +2535,10 @@ type TSocketEndpoints = {
         request: P2PChatCreateRequest;
         response: P2PChatCreateResponse;
     };
+    p2p_country_list: {
+        request: P2PCountryListRequest;
+        response: P2PCountryListResponse;
+    };
     p2p_order_cancel: {
         request: P2POrderCancelRequest;
         response: P2POrderCancelResponse;
@@ -2533,6 +2578,10 @@ type TSocketEndpoints = {
     passkeys_list: {
         request: PasskeysListRequest;
         response: PasskeysListResponse;
+    };
+    passkeys_rename: {
+        request: PasskeysRenameRequest;
+        response: PasskeysRenameResponse;
     };
     passkeys_register_options: {
         request: PasskeysRegisterOptionsRequest;
@@ -2745,7 +2794,7 @@ export type TSocketResponseData<T extends TSocketEndpointNames> = Omit<
     'req_id' | 'msg_type' | 'echo_req' | 'subscription'
 >;
 
-type TSocketRequest<T extends TSocketEndpointNames> = TSocketEndpoints[T]['request'];
+export type TSocketRequest<T extends TSocketEndpointNames> = TSocketEndpoints[T]['request'];
 
 type TRemovableEndpointName<T extends TSocketEndpointNames> = T extends KeysMatching<TSocketRequest<T>, 1> ? T : never;
 

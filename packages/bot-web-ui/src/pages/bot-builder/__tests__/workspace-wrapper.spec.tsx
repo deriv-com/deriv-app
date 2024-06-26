@@ -63,7 +63,7 @@ describe('WorkspaceWrapper', () => {
         });
 
         it('should render WorkspaceWrapper with Toolbar component', () => {
-            const toolbar_component = screen.getByTestId('dashboard__toolbar');
+            const toolbar_component = screen.getByTestId('dt_dashboard_toolbar');
 
             expect(toolbar_component).toBeInTheDocument();
         });

@@ -27,7 +27,7 @@ const ToolbarWidgets = ({ position, updateChartType, updateGranularity }: TToolb
                 />
             )}
             {isDesktop && !isTabletOs && <DrawTools portalNodeId='modal_root' />}
-            {!isMobile && <Share portalNodeId='modal_root' />}
+            {isDesktop && !isTabletOs && <Share portalNodeId='modal_root' />}
         </ToolbarWidget>
     );
 };

@@ -203,7 +203,7 @@ export const getCurrentTick = (contract_info: TContractInfo) => {
     const current_tick =
         isDigitContract(contract_info.contract_type) || isAsiansContract(contract_info.contract_type)
             ? tick_stream.length
-            : tick_stream.length - 1;
+            : contract_info.tick_passed ?? tick_stream.length - 1;
     return !current_tick || current_tick < 0 ? 0 : current_tick;
 };
 

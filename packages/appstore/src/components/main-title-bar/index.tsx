@@ -4,7 +4,7 @@ import { ContentFlag, makeLazyLoader, moduleLoader } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
-import { useFeatureFlags, useWalletMigration } from '@deriv/hooks';
+import { useWalletMigration } from '@deriv/hooks';
 import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
 import BookBanner from 'Components/banners/book-banner';
 import AccountTypeDropdown from './account-type-dropdown';
@@ -23,15 +23,17 @@ const WalletsBanner = makeLazyLoader(
 const MainTitleBar = () => {
     const { isDesktop } = useDevice();
     const { traders_hub, client } = useStore();
-    const { is_landing_company_loaded, is_switching } = client;
+    const { is_landing_company_loaded, is_switching, has_maltainvest_account } = client;
     const { state: wallet_migration_state } = useWalletMigration();
     const { selected_region, handleTabItemClick, toggleRegulatorsCompareModal, content_flag } = traders_hub;
-    const { is_next_wallet_enabled } = useFeatureFlags();
 
     const is_low_risk_cr_real_account =
         content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
     const show_wallets_banner =
-        is_next_wallet_enabled && wallet_migration_state && wallet_migration_state !== 'ineligible';
+        wallet_migration_state === 'eligible' ||
+        wallet_migration_state === 'in_progress' ||
+        wallet_migration_state === 'migrated' ||
+        wallet_migration_state === 'failed';
 
     const [active_index, setActiveIndex] = React.useState(0);
     React.useEffect(() => {
@@ -50,7 +52,9 @@ const MainTitleBar = () => {
                         </Text>
                         <AccountTypeDropdown />
                     </div>
-                    {is_low_risk_cr_real_account && is_landing_company_loaded && <RegulatorSwitcher />}
+                    {is_low_risk_cr_real_account && has_maltainvest_account && is_landing_company_loaded && (
+                        <RegulatorSwitcher />
+                    )}
                     <AssetSummary />
                 </div>
             ) : (
@@ -62,7 +66,7 @@ const MainTitleBar = () => {
                         <div className='main-title-bar-mobile--account-type-dropdown'>
                             <AccountTypeDropdown />
                         </div>
-                        {is_low_risk_cr_real_account && is_landing_company_loaded && (
+                        {is_low_risk_cr_real_account && has_maltainvest_account && is_landing_company_loaded ? (
                             <div className='main-title-bar-mobile--regulator'>
                                 {!is_switching ? (
                                     <>
@@ -92,7 +96,7 @@ const MainTitleBar = () => {
                                     </div>
                                 )}
                             </div>
-                        )}
+                        ) : null}
                     </div>
                     <AssetSummary />
                 </React.Fragment>

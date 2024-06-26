@@ -1,14 +1,13 @@
 import React from 'react';
-import { isDesktop, isMobile } from '@deriv/shared';
 import ContractCardDialog from './contract-card-dialog';
 import ContractUpdateForm, { TGeneralContractCardBodyProps } from './contract-update-form';
 import Icon from '../../icon';
-import DesktopWrapper from '../../desktop-wrapper';
 import MobileDialog from '../../mobile-dialog';
-import MobileWrapper from '../../mobile-wrapper';
 import Popover from '../../popover';
 import Div100vhContainer from '../../div100vh-container';
 import './sass/contract-card-dialog.scss';
+import { useDevice } from '@deriv-com/ui';
+import classNames from 'classnames';
 
 export type TToggleCardDialogProps = Pick<
     TGeneralContractCardBodyProps,
@@ -22,11 +21,11 @@ export type TToggleCardDialogProps = Pick<
     | 'setCurrentFocus'
 > & {
     contract_id?: number;
-    is_valid_to_cancel?: boolean;
-    should_show_cancellation_warning?: boolean;
-    toggleCancellationWarning?: () => void;
+    is_risk_management_edition_disabled?: boolean;
     is_accumulator?: boolean;
     is_turbos?: boolean;
+    should_show_warning?: boolean;
+    toggleCancellationWarning?: () => void;
     totalProfit: number;
 };
 
@@ -35,18 +34,21 @@ const ToggleCardDialog = ({
     contract_id,
     getCardLabels,
     getContractById,
-    is_valid_to_cancel,
-    should_show_cancellation_warning,
+    is_risk_management_edition_disabled,
+    is_accumulator,
+    should_show_warning,
     toggleCancellationWarning,
     ...passthrough_props
 }: TToggleCardDialogProps) => {
     const [is_visible, setIsVisible] = React.useState(false);
     const [top, setTop] = React.useState(0);
     const [left, setLeft] = React.useState(0);
-
+    const { isDesktop } = useDevice();
     const toggle_ref = React.useRef<HTMLButtonElement>(null);
     const dialog_ref = React.useRef<HTMLDivElement>(null);
     const contract = getContractById(Number(contract_id));
+
+    const is_risk_management_disabled = should_show_warning && is_risk_management_edition_disabled;
 
     React.useEffect(() => {
         if (is_visible && toggle_ref?.current && dialog_ref?.current) {
@@ -78,18 +80,22 @@ const ToggleCardDialog = ({
         toggleCancellationWarning?.();
     };
 
+    const notificationText =
+        getCardLabels()[is_accumulator ? 'TAKE_PROFIT_IS_NOT_AVAILABLE' : 'TAKE_PROFIT_LOSS_NOT_AVAILABLE'];
+
     const toggleDialog = (e: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
-        if (isMobile() && should_show_cancellation_warning && is_valid_to_cancel) {
+
+        if (!isDesktop && is_risk_management_disabled) {
             addToast({
-                key: 'deal_cancellation_active',
-                content: getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE,
+                key: 'risk_management_is_disabled',
+                content: notificationText,
                 type: 'error',
             });
         }
 
-        if (is_valid_to_cancel) return;
+        if (is_risk_management_edition_disabled) return;
 
         setIsVisible(!is_visible);
     };
@@ -100,34 +106,65 @@ const ToggleCardDialog = ({
         <Icon
             className='dc-contract-card-dialog-toggle__icon'
             icon='IcEdit'
-            color={is_valid_to_cancel ? 'disabled' : ''}
+            color={is_risk_management_edition_disabled ? 'disabled' : ''}
             size={12}
         />
     );
 
     return (
         <div onClick={handleClick}>
-            {is_valid_to_cancel && should_show_cancellation_warning && isDesktop() ? (
+            {is_risk_management_disabled && isDesktop ? (
                 <Popover
                     alignment='right'
                     classNameBubble='dc-contract-card-dialog__popover-bubble'
-                    className='dc-contract-card-dialog__popover'
+                    className={classNames('dc-contract-card-dialog__popover', {
+                        'dc-contract-card-dialog__popover--accumulator': is_accumulator,
+                    })}
                     is_bubble_hover_enabled
                     margin={2}
                     zIndex='2'
-                    message={getCardLabels().TAKE_PROFIT_LOSS_NOT_AVAILABLE}
+                    message={notificationText}
                     onBubbleClose={onPopoverClose}
                 >
-                    <button ref={toggle_ref} className='dc-contract-card-dialog-toggle' onClick={toggleDialogWrapper}>
+                    <button
+                        ref={toggle_ref}
+                        className='dc-contract-card-dialog-toggle'
+                        onClick={toggleDialogWrapper}
+                        disabled={is_risk_management_disabled}
+                    >
                         {edit_icon}
                     </button>
                 </Popover>
             ) : (
-                <button ref={toggle_ref} className='dc-contract-card-dialog-toggle' onClick={toggleDialogWrapper}>
+                <button
+                    ref={toggle_ref}
+                    className={classNames('dc-contract-card-dialog-toggle', {
+                        'dc-contract-card-dialog-toggle--disabled': is_risk_management_disabled,
+                    })}
+                    onClick={toggleDialogWrapper}
+                >
                     {edit_icon}
                 </button>
             )}
-            <MobileWrapper>
+            {isDesktop ? (
+                <ContractCardDialog
+                    ref={dialog_ref}
+                    is_visible={is_visible}
+                    left={left}
+                    top={top}
+                    toggle_ref={toggle_ref}
+                    toggleDialog={toggleDialogWrapper}
+                >
+                    <ContractUpdateForm
+                        addToast={addToast}
+                        contract={contract}
+                        getCardLabels={getCardLabels}
+                        getContractById={getContractById}
+                        toggleDialog={toggleDialogWrapper}
+                        {...passthrough_props}
+                    />
+                </ContractCardDialog>
+            ) : (
                 <MobileDialog
                     portal_element_id='modal_root'
                     visible={is_visible}
@@ -146,26 +183,7 @@ const ToggleCardDialog = ({
                         />
                     </Div100vhContainer>
                 </MobileDialog>
-            </MobileWrapper>
-            <DesktopWrapper>
-                <ContractCardDialog
-                    ref={dialog_ref}
-                    is_visible={is_visible}
-                    left={left}
-                    top={top}
-                    toggle_ref={toggle_ref}
-                    toggleDialog={toggleDialogWrapper}
-                >
-                    <ContractUpdateForm
-                        addToast={addToast}
-                        contract={contract}
-                        getCardLabels={getCardLabels}
-                        getContractById={getContractById}
-                        toggleDialog={toggleDialogWrapper}
-                        {...passthrough_props}
-                    />
-                </ContractCardDialog>
-            </DesktopWrapper>
+            )}
         </div>
     );
 };

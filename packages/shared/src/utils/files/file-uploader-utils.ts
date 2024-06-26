@@ -45,11 +45,11 @@ export const readFiles = (
     getFileReadErrorMessage: (t: string) => string,
     settings?: Partial<TSettings>
 ) => {
-    const promises: Array<Promise<Partial<TFileObject> | { message: string }>> = [];
+    const promises: Array<Promise<Partial<TFileObject> & { message?: string }>> = [];
 
     files.forEach(f => {
         const fr = new FileReader();
-        const promise = new Promise<Partial<TFileObject> | { message: string }>(resolve => {
+        const promise = new Promise<Partial<TFileObject> & { message?: string }>(resolve => {
             fr.onload = () => {
                 const file_metadata = {
                     filename: f.name,

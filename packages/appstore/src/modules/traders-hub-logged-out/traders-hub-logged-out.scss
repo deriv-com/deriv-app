@@ -1,0 +1,28 @@
+.traders-hub-logged-out {
+    max-width: 120rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    margin: auto;
+    padding: 4rem;
+
+    @include mobile-or-tablet-screen {
+        max-width: 60rem;
+        padding: 2rem;
+        width: 100%;
+    }
+
+    &__eu-user {
+        @include mobile-or-tablet-screen {
+            min-height: 650px;
+        }
+    }
+
+    &__mobile {
+        overflow: scroll !important;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+}

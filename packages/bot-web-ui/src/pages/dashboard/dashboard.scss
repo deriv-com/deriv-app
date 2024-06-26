@@ -124,10 +124,8 @@
             }
         }
         &__header {
-            padding: 1.6rem;
-            margin-top: 4.8rem;
             &--listed {
-                margin-top: 0.6rem;
+                margin-bottom: 0.8rem;
             }
             @include mobile-or-tablet-screen {
                 height: auto;
@@ -144,9 +142,10 @@
                 text-align: center;
                 margin-top: 1.6rem;
                 &__has-list {
+                    text-align: center;
                     margin-top: 0;
-                    text-align: start;
                     @include mobile-screen {
+                        text-align: start;
                         width: 85%;
                     }
 
@@ -173,12 +172,13 @@
             position: relative;
 
             @include desktop-screen {
-                padding: 1.6rem 0 0;
+                padding: 80px 216px 0;
             }
 
             @include mobile-or-tablet-screen {
                 height: calc(100vh - 19rem);
                 align-items: flex-start;
+                padding: 1.6rem;
             }
 
             @include tablet-screen {
@@ -208,34 +208,6 @@
 
             &--minimized {
                 height: 3.6rem;
-            }
-        }
-
-        &__centered {
-            @include flex-center;
-            flex-direction: column;
-
-            @include tablet-screen {
-                width: 100%;
-            }
-
-            @include mobile-or-tablet-screen {
-                width: 100%;
-                padding: 0 1rem;
-            }
-
-            &--not-listed {
-                @include desktop-screen {
-                    width: 100%;
-                    margin-top: 4.8rem;
-                }
-            }
-
-            &--listed {
-                align-items: initial;
-                justify-content: flex-start;
-                padding: 0.4rem 2.4rem;
-                height: 100%;
             }
         }
 
@@ -333,14 +305,6 @@
         }
 
         &__table {
-            @include mobile-screen {
-                width: calc(100% - 9.3rem);
-            }
-
-            @include tablet-screen {
-                max-width: 60rem;
-            }
-
             &--minimized {
                 width: 100%;
             }
@@ -350,6 +314,7 @@
                 word-wrap: break-word;
                 font-size: 1.3rem;
                 text-align: center;
+                padding: 3.2rem;
 
                 @include mobile-or-tablet-screen {
                     flex-wrap: wrap;
@@ -361,6 +326,7 @@
                     @include mobile-or-tablet-screen {
                         display: flex;
                         flex-flow: unset;
+                        padding: 2.4rem 0 1.6rem;
                     }
                 }
             }
@@ -374,7 +340,7 @@
             &__block {
                 @include flex-center;
                 flex-direction: column;
-                padding-inline-end: 2.4rem;
+                padding-inline-end: 4rem;
 
                 @include mobile-or-tablet-screen {
                     padding: 1rem;
@@ -388,7 +354,6 @@
                     width: 9.1rem;
                     word-wrap: break-word;
                     text-align: center;
-                    height: 4.2rem;
                     @include mobile-or-tablet-screen {
                         height: auto;
                     }
@@ -422,9 +387,14 @@
 
 .user-guide {
     position: absolute;
-    inset-inline-end: 1.6rem;
+    inset-inline-end: 2.4rem;
     top: 1.8rem;
     z-index: 1;
+
+    @include mobile-or-tablet-screen {
+        inset-inline-end: 1.6rem;
+    }
+
     &__button {
         @include flex-center;
         padding: 0.8rem 1.4rem;

@@ -1,21 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import QRCode from 'qrcode.react';
-import { useAuthorize, useDepositCryptoAddress } from '@deriv/api-v2';
+import { useDepositCryptoAddress } from '@deriv/api-v2';
 import { Text, useDevice } from '@deriv-com/ui';
 import { Clipboard } from '../../../../components';
 import { DepositCryptoAddressLoader } from '../DepositCryptoAddressLoader';
 import styles from './DepositCryptoAddress.module.scss';
 
 const DepositCryptoAddress = () => {
-    const { data: depositCryptoAddress, isLoading, mutate } = useDepositCryptoAddress();
-    const { isSuccess: isAuthorizeSuccess } = useAuthorize();
+    const { data: depositCryptoAddress, isLoading } = useDepositCryptoAddress();
     const { isMobile } = useDevice();
-
-    useEffect(() => {
-        if (isAuthorizeSuccess) {
-            mutate();
-        }
-    }, [isAuthorizeSuccess, mutate]);
 
     if (isLoading)
         return (

@@ -1,0 +1,15 @@
+.cfds-listing-logged-out {
+    &__cfd-full-row {
+        user-select: none;
+        display: grid;
+        width: 100%;
+        grid-column: 1 / span 3;
+    }
+
+    &__divider {
+        width: 100%;
+        height: 1px;
+        background-color: var(--general-hover);
+        border: none;
+    }
+}

@@ -11,7 +11,14 @@ import './AvailableCTraderAccountsList.scss';
 
 const AvailableCTraderAccountsList: React.FC = () => {
     const { hide, show } = useModal();
-    const { data: createdAccount, error, mutate, status } = useCreateOtherCFDAccount();
+    const {
+        data: createdAccount,
+        error,
+        isLoading: isCFDAccountCreationLoading,
+        isSuccess: isCFDAccountCreationSuccess,
+        mutate,
+        status,
+    } = useCreateOtherCFDAccount();
     const { data: activeWallet } = useActiveWalletAccount();
     const { t } = useTranslation();
 
@@ -32,7 +39,6 @@ const AvailableCTraderAccountsList: React.FC = () => {
             show(
                 <CTraderSuccessModal
                     createdAccount={createdAccount}
-                    displayBalance={activeWallet?.display_balance || ''}
                     isDemo={accountType === 'demo'}
                     walletCurrencyType={activeWallet?.wallet_currency_type || 'USD'}
                 />
@@ -52,10 +58,9 @@ const AvailableCTraderAccountsList: React.FC = () => {
 
     return (
         <TradingAccountCard
+            disabled={isCFDAccountCreationLoading || isCFDAccountCreationSuccess}
             leading={<div className='wallets-available-ctrader__icon'>{PlatformDetails.ctrader.icon}</div>}
-            onClick={() => {
-                onSubmit();
-            }}
+            onClick={onSubmit}
             trailing={
                 <div className='wallets-available-ctrader__icon'>
                     <LabelPairedChevronRightCaptionRegularIcon width={16} />
@@ -64,7 +69,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
         >
             <div className='wallets-available-ctrader__details'>
                 <WalletText size='sm'>{PlatformDetails.ctrader.title}</WalletText>
-                <WalletText size='xs'>{t('This account offers CFDs on a feature-rich trading platform.')}</WalletText>
+                <WalletText size='xs'>{t('CFDs on financial and derived instruments with copy trading.')}</WalletText>
             </div>
         </TradingAccountCard>
     );

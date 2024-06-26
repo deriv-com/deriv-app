@@ -5,7 +5,7 @@ import { useP2PAdvertiserAdverts } from 'Hooks';
 import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
 import { useP2PAdvertInfo } from '@deriv/hooks';
-import { daysSince, isEmptyObject, isMobile, routes } from '@deriv/shared';
+import { daysSince, isDesktop, isEmptyObject, isMobile, routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 
 import { Localize, localize } from 'Components/i18next';
@@ -18,9 +18,9 @@ import TradeBadge from 'Components/trade-badge';
 import UserAvatar from 'Components/user/user-avatar';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
-import { getErrorMessage, getErrorModalTitle, getWidth } from 'Utils/block-user';
 import { useStores } from 'Stores';
-
+import { getEligibilityMessage } from 'Utils/adverts';
+import { getErrorMessage, getErrorModalTitle, getWidth } from 'Utils/block-user';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
@@ -73,16 +73,24 @@ const AdvertiserPage = () => {
     // rating_average_decimal converts rating_average to 1 d.p number
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
 
-    const { data: p2p_advert_info } = useP2PAdvertInfo(counterparty_advert_id);
+    const { data: p2p_advert_info, isLoading, isSubscribed } = useP2PAdvertInfo(counterparty_advert_id);
 
-    const showErrorModal = () => {
+    const showErrorModal = eligibility_status => {
+        let error_message = localize("It's either deleted or no longer active.");
+        let error_modal_title = localize('This ad is unavailable');
+
+        if (eligibility_status?.length > 0) {
+            error_modal_title = '';
+            error_message = getEligibilityMessage(eligibility_status);
+        }
+
         setCounterpartyAdvertId('');
         showModal({
             key: 'ErrorModal',
             props: {
-                error_message: "It's either deleted or no longer active.",
+                error_message,
                 error_modal_button_text: 'OK',
-                error_modal_title: 'This ad is unavailable',
+                error_modal_title,
                 onClose: () => {
                     hideModal({ should_hide_all_modals: true });
                 },
@@ -93,28 +101,43 @@ const AdvertiserPage = () => {
 
     const setShowAdvertInfo = React.useCallback(
         () => {
-            if (p2p_advert_info) {
-                const { is_active, is_buy, is_visible } = p2p_advert_info || {};
+            const { eligibility_status, is_active, is_buy, is_eligible, is_visible } = p2p_advert_info || {};
+            if (isSubscribed && p2p_advert_info) {
                 const advert_type = is_buy ? 1 : 0;
 
-                if (is_active && is_visible) {
+                if (is_active && is_visible && is_eligible) {
                     advertiser_page_store.setActiveIndex(advert_type);
                     advertiser_page_store.handleTabItemClick(advert_type);
                     buy_sell_store.setSelectedAdState(p2p_advert_info);
                     showModal({ key: 'BuySellModal' });
                 } else {
-                    showErrorModal();
+                    showErrorModal(eligibility_status);
                 }
+            } else {
+                showErrorModal();
             }
         },
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [p2p_advert_info]
+        [isSubscribed, p2p_advert_info]
     );
 
     React.useEffect(() => {
-        if (is_advertiser && !is_barred && is_my_advert !== null && !is_my_advert) setShowAdvertInfo();
-    }, [counterparty_advert_id, setShowAdvertInfo, is_my_advert]);
+        if (is_advertiser && !is_barred && is_my_advert !== null && !is_my_advert) {
+            if (isLoading && isDesktop()) {
+                showModal({ key: 'LoadingModal' });
+            } else if (counterparty_advert_id) {
+                setShowAdvertInfo();
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [counterparty_advert_id, isLoading, setShowAdvertInfo, is_my_advert]);
+
+    // Update the selected advert state when the advert info is updated through subscription.
+    React.useEffect(() => {
+        if (p2p_advert_info) buy_sell_store.setSelectedAdState(p2p_advert_info);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [p2p_advert_info]);
 
     React.useEffect(() => {
         if (location.search || counterparty_advertiser_id) {
@@ -192,6 +215,7 @@ const AdvertiserPage = () => {
             disposeBlockUnblockUserErrorReaction();
             advertiser_page_store.onUnmount();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [advertiser_details_name, counterparty_advertiser_info]);
 
     useRegisterModalProps({

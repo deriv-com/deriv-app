@@ -18,9 +18,6 @@ type TNoEmailContentItem = {
     content: string | React.ReactElement;
 };
 
-// TODO replace these types to real after implementing TS for livechat in core
-type TWindowLiveChatWidget = Window & typeof globalThis & { LiveChatWidget?: { call: (param: string) => void } };
-
 const getNoEmailContentStrings = (): TNoEmailContentItem[] => {
     return [
         {
@@ -93,8 +90,7 @@ const SentEmailModal = ({
     const onLiveChatClick = () => {
         onClose();
 
-        // TODO fix types after implementing TS for livechat in core
-        (window as TWindowLiveChatWidget).LiveChatWidget?.call('maximize');
+        window.LiveChatWidget?.call('maximize');
     };
 
     const live_chat = has_live_chat ? (

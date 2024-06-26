@@ -9,6 +9,7 @@ import 'react-calendar/dist/Calendar.css';
 import './DatePicker.scss';
 
 interface TDatePickerProps extends TFlowFieldProps {
+    displayFormat?: string;
     maxDate?: Date;
     minDate?: Date;
     mobileAlignment?: 'above' | 'below';
@@ -18,6 +19,7 @@ interface TDatePickerProps extends TFlowFieldProps {
 const DatePicker = ({
     defaultValue,
     disabled,
+    displayFormat = 'YYYY-MM-DD',
     label,
     maxDate,
     message,
@@ -28,8 +30,9 @@ const DatePicker = ({
     validationSchema,
 }: TDatePickerProps) => {
     const [selectedDate, setSelectedDate] = useState<Date | null>(defaultValue ? new Date(defaultValue) : null);
-    const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
+    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const datePickerRef = useRef<HTMLDivElement>(null);
+    const inputeDateRef = useRef<HTMLInputElement>(null);
 
     const toggleCalendar = () => {
         setIsCalendarOpen(prevState => !prevState);
@@ -56,10 +59,13 @@ const DatePicker = ({
         <div className='wallets-datepicker' ref={datePickerRef}>
             <FlowTextField
                 disabled={disabled}
+                inputMode='none'
                 label={label}
                 message={message}
                 name={name}
                 onClick={toggleCalendar}
+                onKeyDown={e => e.preventDefault()}
+                ref={inputeDateRef}
                 renderRightIcon={() => (
                     <button
                         className='wallets-datepicker__button'
@@ -71,9 +77,9 @@ const DatePicker = ({
                     </button>
                 )}
                 showMessage
-                type='date'
+                type='text'
                 validationSchema={validationSchema}
-                value={selectedDate !== null ? unixToDateString(selectedDate) : ''}
+                value={selectedDate !== null ? unixToDateString(selectedDate, displayFormat) : ''}
             />
             {isCalendarOpen && (
                 <div
@@ -82,6 +88,7 @@ const DatePicker = ({
                 >
                     <Calendar
                         formatShortWeekday={customFormatShortWeekday}
+                        inputRef={inputeDateRef}
                         maxDate={maxDate}
                         minDate={minDate}
                         onChange={handleDateChange}

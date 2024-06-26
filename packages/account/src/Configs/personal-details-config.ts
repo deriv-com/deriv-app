@@ -28,7 +28,7 @@ export const personal_details_config = ({
     residence_list,
     account_settings,
     real_account_signup_target,
-}: TPersonalDetailsConfig) => {
+}: TPersonalDetailsConfig): TSchema => {
     if (!residence_list || !account_settings) {
         return {};
     }
@@ -51,7 +51,7 @@ export const personal_details_config = ({
             default_value: account_settings.first_name ?? '',
             rules: [
                 ['req', localize('First name is required.')],
-                ['length', localize('First name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
+                ['length', localize('Enter no more than 50 characters.'), { min: 1, max: 50 }],
                 ['name', getErrorMessages().name()],
             ],
         },
@@ -60,7 +60,7 @@ export const personal_details_config = ({
             default_value: account_settings.last_name ?? '',
             rules: [
                 ['req', localize('Last name is required.')],
-                ['length', localize('Last name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
+                ['length', localize('Enter no more than 50 characters.'), { min: 1, max: 50 }],
                 ['name', getErrorMessages().name()],
             ],
         },
@@ -304,14 +304,13 @@ const personalDetailsConfig = <T>(
 
 const transformConfig = (
     config: TSchema,
-    { real_account_signup_target, residence_list, account_settings, account_status, residence }: TPersonalDetailsConfig
+    { real_account_signup_target, residence_list, account_status, residence }: TPersonalDetailsConfig
 ) => {
     // Remove IDV for non supporting SVG countries
     if (
         !shouldShowIdentityInformation({
             account_status,
-            account_settings,
-            residence,
+            citizen: residence,
             residence_list,
             real_account_signup_target,
         })

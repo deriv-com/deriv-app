@@ -2,14 +2,16 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { ActiveSymbols } from '@deriv/api-types';
-import { getEndTime, isMobile, isDesktop } from '@deriv/shared';
+import { getEndTime, isMobile, isDesktop, isCryptoContract, mockContractInfo, toMoment } from '@deriv/shared';
 import ContractDrawerCard from '../contract-drawer-card';
 import TraderProviders from '../../../../../trader-providers';
 
 const mocked_props: React.ComponentProps<typeof ContractDrawerCard> = {
     contract_update: undefined,
     contract_info: {
+        date_expiry: 1699709000,
         profit: 8.78,
+        purchase_time: 1699708064,
         validation_error: 'This contract has been sold',
         shortcode: 'CALL_1HZ100V_19.54_1699708064_10T_S0P_0',
         underlying: '1HZ100V',
@@ -27,13 +29,14 @@ const mocked_props: React.ComponentProps<typeof ContractDrawerCard> = {
     onSwipedUp: jest.fn(),
     onSwipedDown: jest.fn(),
     result: 'won',
+    server_time: toMoment(),
     toggleContractAuditDrawer: jest.fn(),
 };
 
 const default_mock_store = {
     modules: {
         trade: {
-            active_symbols: [{ symbol: '1HZ100V' }] as ActiveSymbols,
+            active_symbols: [{ symbol: '1HZ100V' }, { symbol: 'cryETHUSD' }] as ActiveSymbols,
         },
     },
 };
@@ -86,5 +89,40 @@ describe('<ContractDrawerCard />', () => {
         expect(screen.getByText(/Contract value/i)).toBeInTheDocument();
         expect(screen.getByText(/Stake/i)).toBeInTheDocument();
         expect(screen.getByText(/Potential payout/i)).toBeInTheDocument();
+    });
+    it('should render multipliers card body for crypto with proper styles if does/does not have progress slider on mobile/desktop', () => {
+        (getEndTime as jest.Mock).mockReturnValue(false);
+        (isCryptoContract as jest.Mock).mockReturnValue(true);
+        const has_progress_slider_classname = 'dc-contract-card-items-wrapper--has-progress-slider';
+        const mobile_progress_slider = 'dt_progress_slider_mobile';
+        const multiplier_card_body = 'dt_multiplier_card_body';
+        const future_time = Math.floor(Date.now() / 1000) + 500000;
+        const new_props = {
+            ...mocked_props,
+            contract_info: mockContractInfo({
+                contract_type: 'MULTUP',
+                date_expiry: future_time,
+                date_settlement: future_time,
+                expiry_time: future_time,
+                is_sold: 0,
+                multiplier: 10,
+                purchase_time: 1718880285,
+                shortcode: `MULTUP_CRYETHUSD_34.23_10_1718880285_${future_time}_0_0.00_N1`,
+                underlying: 'cryETHUSD',
+            }),
+            is_mobile: true,
+            is_multiplier: true,
+            result: 'purchased',
+        };
+
+        const { rerender } = render(mockContractDrawerCard(new_props));
+        // it has progress slider on mobile:
+        expect(screen.getByTestId(mobile_progress_slider)).toBeInTheDocument();
+        expect(screen.getByTestId(multiplier_card_body)).toHaveClass(has_progress_slider_classname);
+
+        rerender(mockContractDrawerCard({ ...new_props, is_mobile: false }));
+        // it does not have progress slider on desktop:
+        expect(screen.queryByTestId(mobile_progress_slider)).not.toBeInTheDocument();
+        expect(screen.getByTestId(multiplier_card_body)).not.toHaveClass(has_progress_slider_classname);
     });
 });

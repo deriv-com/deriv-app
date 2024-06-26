@@ -23,6 +23,6 @@ describe('<ContinueTradingButton/>', () => {
         renderWithRouter(<ContinueTradingButton />);
         const continue_btn_text = screen.getByTestId('continue_btn_text');
         fireEvent.click(continue_btn_text);
-        expect(history.location.pathname).toBe(routes.root);
+        expect(history.location.pathname).toBe(routes.trade);
     });
 });

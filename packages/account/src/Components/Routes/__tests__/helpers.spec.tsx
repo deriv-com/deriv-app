@@ -27,19 +27,19 @@ describe('helpers', () => {
         const routes_config = [
             {
                 path: 'test/path/1',
-                component: 'TestComponent_1',
+                component: () => <div>TestComponent_1</div>,
             },
             {
                 path: 'test/path/2',
-                component: 'TestComponent_2',
+                component: () => <div>TestComponent_2</div>,
                 routes: [
                     {
                         path: 'test/path/subroute_1',
-                        component: 'TestSubComponent_1',
+                        component: () => <div>TestSubComponent_1</div>,
                     },
                     {
                         path: 'test/path/subroute_2',
-                        component: 'TestSubComponent_2',
+                        component: () => <div>TestSubComponent_2</div>,
                     },
                 ],
             },
@@ -50,18 +50,18 @@ describe('helpers', () => {
 
         path = 'test/path/1';
         expect(typeof findRouteByPath(path, routes_config)).toBe('object');
-        expect(findRouteByPath(path, routes_config).path).toBe('test/path/1');
-        expect(findRouteByPath(path, routes_config).component).toBe('TestComponent_1');
+        expect(findRouteByPath(path, routes_config)?.path).toBe('test/path/1');
+        expect(findRouteByPath(path, routes_config)?.component).toBeDefined();
 
         path = 'test/path/subroute_2';
         expect(typeof findRouteByPath(path, routes_config)).toBe('object');
-        expect(findRouteByPath(path, routes_config).path).toBe('test/path/subroute_2');
-        expect(findRouteByPath(path, routes_config).component).toBe('TestSubComponent_2');
+        expect(findRouteByPath(path, routes_config)?.path).toBe('test/path/subroute_2');
+        expect(findRouteByPath(path, routes_config)?.component).toBeDefined();
     });
 
     it('getPath should return expected path', () => {
         let route_path = '/test/path/:param_1';
-        expect(getPath(route_path, { param_1: 1234567890 })).toBe('/test/path/1234567890');
+        expect(getPath(route_path, { param_1: '1234567890' })).toBe('/test/path/1234567890');
 
         route_path = '/test/path/:param_1:param_2';
         expect(getPath(route_path, { param_1: 'first', param_2: 'second' })).toBe('/test/path/firstsecond');

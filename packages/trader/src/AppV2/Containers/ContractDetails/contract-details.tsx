@@ -25,6 +25,7 @@ import {
 import classNames from 'classnames';
 import ContractDetailsFooter from 'AppV2/Components/ContractDetailsFooter';
 import { ContractCard } from 'AppV2/Components/ContractCard';
+import ContractDetailsLoader from './contract-details-loader';
 
 const ContractDetails = observer(() => {
     const { contract_info, is_loading } = useContractDetails();
@@ -55,7 +56,7 @@ const ContractDetails = observer(() => {
         requestUpdatedHistory(contract_id);
     }, [contract_id, take_profit?.order_amount, stop_loss?.order_amount, requestUpdatedHistory]);
 
-    if (is_loading) return <></>;
+    if (is_loading) return <ContractDetailsLoader />;
 
     const isMultiplier = isMultiplierContract(contract_info.contract_type);
 

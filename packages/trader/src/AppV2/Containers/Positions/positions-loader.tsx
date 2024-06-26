@@ -18,7 +18,7 @@ const PositionsLoader = ({ isClosedTab }: TPositionsLoaderProps) => {
                     return <Skeleton key={idx} width={idx === 0 ? '112px' : '68px'} height='22px' />;
                 })}
             </div>
-            <div className='skeleton-contract-card-list'>
+            <div className='skeleton-contract-cards'>
                 {Array.from(new Array(7)).map((_, idx) => (
                     <Skeleton key={idx} height='104px' />
                 ))}

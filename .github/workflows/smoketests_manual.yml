@@ -36,6 +36,12 @@ on:
         options:
         - maryia-deriv
         - suisin-deriv
+      iparallel:
+        type: choice
+        description: Parallel
+        options:
+        - 'true'
+        - 'false'
 
 
 jobs:
@@ -65,7 +71,7 @@ jobs:
             appRegUrl: '${{ github.event.inputs.iappRegUrl }}',
             issue_number: '${{ github.event.inputs.iissue_number }}',
             user_name: '${{ github.event.inputs.iuser_name }}',
-            parallel: 'true'
+            parallel: '${{ github.event.inputs.iparallel }}'
             };
           const response = await github.rest.actions.createWorkflowDispatch({
             owner: 'regentmarkets',

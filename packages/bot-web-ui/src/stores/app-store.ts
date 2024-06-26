@@ -308,9 +308,6 @@ export default class AppStore {
 
     registerResidenceChangeReaction = () => {
         const { client } = this.core;
-        //!this.is_logged_in && this.is_eu_country
-        //this.website_status.clients_country
-        // console.log('country_code: ', client.account_settings.country_code, client?.clients_country);
 
         this.disposeResidenceChangeReaction = reaction(
             () => client.account_settings.country_code,

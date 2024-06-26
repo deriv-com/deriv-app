@@ -27,6 +27,7 @@ type TEmploymentTaxInfoProps = {
     goToPreviousStep: () => void;
     goToNextStep: () => void;
     residence_list: ResidenceList;
+    real_account_signup_target: string;
     value: FormikValues;
 };
 
@@ -41,6 +42,7 @@ const EmploymentTaxInfo = observer(
         onSubmit,
         goToPreviousStep,
         goToNextStep,
+        real_account_signup_target,
     }: TEmploymentTaxInfoProps) => {
         const {
             ui: { is_desktop, is_mobile },
@@ -98,6 +100,9 @@ const EmploymentTaxInfo = observer(
                                             <EmploymentTaxDetailsContainer
                                                 editable_fields={editable_fields}
                                                 parent_ref={scroll_div_ref}
+                                                should_display_long_message={
+                                                    real_account_signup_target === 'maltainvest'
+                                                }
                                             />
                                         </ThemedScrollbars>
                                     </Div100vhContainer>

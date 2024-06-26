@@ -148,9 +148,16 @@
     }
     &__tin-confirm {
         margin-left: -5px;
+        align-items: flex-start;
 
-        .dc-checkbox__box {
-            align-self: baseline;
+        .dc-checkbox {
+            &__box {
+                align-self: baseline;
+            }
+
+            &__label {
+                text-align: justify;
+            }
         }
     }
     .dc-page-error__container {

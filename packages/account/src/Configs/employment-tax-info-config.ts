@@ -50,6 +50,7 @@ const getEmploymentTaxIfoConfig = (
         form_value: getDefaultFields(real_account_signup_target, config),
         props: {
             disabled_items: account_settings?.immutable_fields,
+            real_account_signup_target,
         },
         passthrough: ['residence_list'],
     };

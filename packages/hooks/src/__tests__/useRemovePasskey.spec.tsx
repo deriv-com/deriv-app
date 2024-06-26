@@ -42,10 +42,10 @@ describe('useRemovePasskey', () => {
         expect(mockOnSuccess).not.toHaveBeenCalled();
 
         await act(async () => {
-            result.current.removePasskey(123);
+            result.current.removePasskey(123, 'test_id');
         });
 
-        expect(WS.send).toHaveBeenCalledWith({ passkeys_options: 1 });
+        expect(WS.send).toHaveBeenCalledWith({ passkeys_options: 1, passkey_id: 'test_id' });
         expect(WS.send).toHaveBeenCalledWith({
             passkeys_revoke: 1,
             publicKeyCredential: 'authenticator_response',
@@ -63,10 +63,10 @@ describe('useRemovePasskey', () => {
         expect(mockOnSuccess).not.toHaveBeenCalled();
 
         await act(async () => {
-            result.current.removePasskey(123);
+            result.current.removePasskey(123, 'test_id');
         });
 
-        expect(WS.send).toHaveBeenCalledWith({ passkeys_options: 1 });
+        expect(WS.send).toHaveBeenCalledWith({ passkeys_options: 1, passkey_id: 'test_id' });
         expect(result.current.passkey_removing_error).toBe(ws_error);
         expect(mockOnSuccess).not.toHaveBeenCalled();
     });

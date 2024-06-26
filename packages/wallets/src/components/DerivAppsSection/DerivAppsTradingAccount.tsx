@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveLinkedToTradingAccount, useActiveWalletAccount, useAuthorize } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
-import { LabelPairedArrowsRotateSmBoldIcon, LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
+import { LabelPairedArrowUpArrowDownSmBoldIcon } from '@deriv/quill-icons';
 import useDevice from '../../hooks/useDevice';
 import { TSubscribedBalance } from '../../types';
 import { WalletText } from '../Base';
@@ -48,18 +48,12 @@ const DerivAppsTradingAccount: React.FC<TSubscribedBalance> = ({ balance }) => {
             <button
                 className='wallets-deriv-apps-section__button'
                 onClick={() => {
-                    activeWallet?.is_virtual
-                        ? history.push('/wallet/reset-balance')
-                        : history.push('/wallet/account-transfer', {
-                              toAccountLoginId: activeLinkedToTradingAccount?.loginid,
-                          });
+                    history.push('/wallet/account-transfer', {
+                        toAccountLoginId: activeLinkedToTradingAccount?.loginid,
+                    });
                 }}
             >
-                {activeWallet?.is_virtual ? (
-                    <LabelPairedArrowsRotateSmBoldIcon />
-                ) : (
-                    <LabelPairedArrowUpArrowDownSmBoldIcon />
-                )}
+                <LabelPairedArrowUpArrowDownSmBoldIcon />
             </button>
         </div>
     );

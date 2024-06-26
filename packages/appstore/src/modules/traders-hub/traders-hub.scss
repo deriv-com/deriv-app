@@ -35,9 +35,8 @@
 
     &__button-toggle {
         margin-top: 3rem;
-        border-radius: $BORDER_RADIUS;
         padding: 0.4rem;
-        background-color: var(--general-section-1);
+        background-color: transparent;
     }
 
     &--mobile {
@@ -85,4 +84,19 @@
         backface-visibility: hidden;
         background: var(--general-main-1);
     }
+}
+
+.dc-button-menu__toggle {
+    background-color: transparent;
+    border-bottom: 1px solid var(--general-section-1);
+    border-radius: 0;
+    span {
+        color: var(--text-prominent);
+    }
+}
+
+.dc-button-menu__toggle--active {
+    background-color: transparent;
+    border-bottom: 1px solid var(--button-primary-default);
+    border-radius: 0;
 }

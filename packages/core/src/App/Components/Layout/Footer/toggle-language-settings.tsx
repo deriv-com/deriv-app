@@ -27,7 +27,7 @@ const ToggleLanguageSettings = observer(() => {
             >
                 <Popover alignment='top' message={localize('Language')} zIndex='9999'>
                     {TranslationFlag[currentLang] ? (
-                        TranslationFlag[currentLang]('xs')
+                        TranslationFlag[currentLang](18, 12)
                     ) : (
                         //TODOs: remove this when Korean flag is included in quill-icons
                         <Icon icon={`IcFlag${currentLang}`} data_testid='dt_icon' size={18} />

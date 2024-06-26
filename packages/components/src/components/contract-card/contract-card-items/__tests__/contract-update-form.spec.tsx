@@ -1,12 +1,13 @@
 import React from 'react';
 import { configure, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CONTRACT_TYPES, mockContractInfo, getCardLabels, isMobile } from '@deriv/shared';
+import { CONTRACT_TYPES, mockContractInfo, getCardLabels } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 import ContractUpdateForm from '../contract-update-form';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
 const contract_info = mockContractInfo({
@@ -200,7 +201,7 @@ describe('ContractUpdateForm', () => {
         expect(apply_button).toBeDisabled();
     });
     it('should render correct Total profit/loss, unchecked checkboxes without inputs & popover icons on mobile', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
         const newProps = {
             ...mock_props,
             contract: {

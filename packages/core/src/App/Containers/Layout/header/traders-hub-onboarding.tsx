@@ -5,6 +5,7 @@ import { Icon, Popover } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { isTabletOs } from '@deriv/shared';
 
 const TradersHubOnboarding = observer(() => {
     const history = useHistory();
@@ -19,23 +20,31 @@ const TradersHubOnboarding = observer(() => {
         }
     };
 
+    const onboardingIcon = (
+        <Icon
+            data_testid='dt_traders_hub_onboarding_icon'
+            icon={is_dark_mode_on ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
+            size={20}
+            onClick={onClickHandler}
+        />
+    );
+
     return (
         <div data-testid='dt_traders_hub_onboarding'>
             <div className='traders-hub-header__tradershub--onboarding--logo'>
-                <Popover
-                    classNameBubble='account-settings-toggle__tooltip'
-                    alignment='bottom'
-                    message={!is_mobile && <Localize i18n_default_text='View tutorial' />}
-                    should_disable_pointer_events
-                    zIndex='9999'
-                >
-                    <Icon
-                        data_testid='dt_traders_hub_onboarding_icon'
-                        icon={is_dark_mode_on ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
-                        size={20}
-                        onClick={onClickHandler}
-                    />
-                </Popover>
+                {isTabletOs ? (
+                    onboardingIcon
+                ) : (
+                    <Popover
+                        classNameBubble='account-settings-toggle__tooltip'
+                        alignment='bottom'
+                        message={!is_mobile && <Localize i18n_default_text='View tutorial' />}
+                        should_disable_pointer_events
+                        zIndex='9999'
+                    >
+                        {onboardingIcon}
+                    </Popover>
+                )}
             </div>
         </div>
     );

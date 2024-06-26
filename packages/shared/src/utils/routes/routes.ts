@@ -101,3 +101,18 @@ export const routes = {
     // Cashier V2
     cashier_v2: '/cashier-v2',
 };
+
+export const DISABLE_LANDSCAPE_BLOCKER_ROUTES = [
+    routes.trade,
+    routes.onboarding,
+    routes.compare_cfds,
+    routes.reports,
+    /** because contract route has dynamic id */
+    '/contract',
+];
+
+export const isDisabledLandscapeBlockerRoute = (path: string) => {
+    // can't use routes.traders_hub for the next check because all routes starts with '/'
+    if (path === routes.traders_hub) return true;
+    return DISABLE_LANDSCAPE_BLOCKER_ROUTES.some(route => path.startsWith(route));
+};

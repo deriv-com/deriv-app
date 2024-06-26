@@ -24,8 +24,8 @@ jobs:
             const response = await github.rest.actions.createWorkflowDispatch({
               owner: 'regentmarkets',
               repo: 'e2e-deriv-app',
-              workflow_id: 'E2E_Run_v2.yml',
-              ref: 'rajendra/appRegisterTest',
+              workflow_id: 'E2E_Run_PR.yml',
+              ref: 'markodonnell-deriv-tests-from-PR',
               inputs: workflowInputs
             });
             console.log('Workflow dispatched successfully:', response);

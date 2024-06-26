@@ -1,11 +1,7 @@
 import React, { FC, Fragment, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api-v2';
-import {
-    LabelPairedArrowsRotateMdBoldIcon,
-    LabelPairedArrowUpArrowDownMdBoldIcon,
-    LabelPairedCircleExclamationMdFillIcon,
-} from '@deriv/quill-icons';
+import { LabelPairedArrowUpArrowDownMdBoldIcon, LabelPairedCircleExclamationMdFillIcon } from '@deriv/quill-icons';
 import { WalletListCardBadge } from '../../../../components';
 import { InlineMessage, WalletButton, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
@@ -146,37 +142,20 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                         </div>
                     </div>
                     <div className='wallets-mt5-trade-screen__transfer-btn'>
-                        {activeWalletData?.is_virtual ? (
-                            <WalletButton
-                                ariaLabel='reset-balance'
-                                icon={<LabelPairedArrowsRotateMdBoldIcon fill='#FFF' height={18} width={12} />}
-                                key='reset-balance'
-                                onClick={() => {
-                                    hide();
-                                    history.push('/wallet/reset-balance');
-                                }}
-                                rounded='md'
-                                size='sm'
-                                textSize={isDesktop ? 'xs' : 'sm'}
-                            >
-                                Reset balance
-                            </WalletButton>
-                        ) : (
-                            <WalletButton
-                                ariaLabel='account-transfer'
-                                icon={<LabelPairedArrowUpArrowDownMdBoldIcon fill='#FFF' height={18} width={14} />}
-                                key='account-transfer'
-                                onClick={() => {
-                                    hide();
-                                    history.push('/wallet/account-transfer', { toAccountLoginId: details?.login });
-                                }}
-                                rounded='md'
-                                size='sm'
-                                textSize={isDesktop ? 'xs' : 'sm'}
-                            >
-                                Transfer
-                            </WalletButton>
-                        )}
+                        <WalletButton
+                            ariaLabel='account-transfer'
+                            icon={<LabelPairedArrowUpArrowDownMdBoldIcon fill='#FFF' height={18} width={14} />}
+                            key='account-transfer'
+                            onClick={() => {
+                                hide();
+                                history.push('/wallet/account-transfer', { toAccountLoginId: details?.login });
+                            }}
+                            rounded='md'
+                            size='sm'
+                            textSize={isDesktop ? 'xs' : 'sm'}
+                        >
+                            Transfer
+                        </WalletButton>
                     </div>
                 </div>
 

@@ -6,14 +6,7 @@ import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import './WalletCurrencyCard.scss';
 
-type TProps = {
-    className?: string;
-    currency: THooks.WalletAccountsList['wallet_currency_type'];
-    isDemo?: ComponentProps<typeof WalletGradientBackground>['isDemo'];
-    size: keyof typeof RoundedIconSizes;
-};
-
-const RoundedIconSizes = {
+const roundedIconWidth = {
     xs: '12',
     sm: '16',
     md: '24',
@@ -21,7 +14,7 @@ const RoundedIconSizes = {
     xl: '48',
 } as const;
 
-const HorizontalIconSizes = {
+const defaultIconWidth = {
     xs: '18',
     sm: '30',
     md: '43',
@@ -29,9 +22,16 @@ const HorizontalIconSizes = {
     xl: '83',
 } as const;
 
+type TProps = {
+    className?: string;
+    currency: THooks.WalletAccountsList['wallet_currency_type'];
+    isDemo?: ComponentProps<typeof WalletGradientBackground>['isDemo'];
+    size: keyof typeof defaultIconWidth | keyof typeof roundedIconWidth;
+};
+
 const WalletCurrencyCard: React.FC<TProps> = ({ className, currency, isDemo, size = 'lg' }: TProps) => {
     const isFiat = fiatIcons.includes(currency as typeof fiatIcons[number]);
-    const IconSize = isFiat ? RoundedIconSizes[size] : HorizontalIconSizes[size];
+    const IconSize = isFiat ? roundedIconWidth[size] : defaultIconWidth[size];
     return (
         <WalletGradientBackground bodyClassName={className} currency={currency} isDemo={isDemo} type='card'>
             <div className={`wallets-currency-card wallets-currency-card--${size}`}>

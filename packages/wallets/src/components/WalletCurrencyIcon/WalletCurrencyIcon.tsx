@@ -4,7 +4,7 @@ import { fiatIcons, horizontalCurrencyIcons, roundedCurrencyIcons } from '../../
 import { THooks } from '../../types';
 
 export const roundedIconWidth = {
-    xs: 12,
+    xs: 16,
     sm: 24,
     md: 32,
     lg: 48,

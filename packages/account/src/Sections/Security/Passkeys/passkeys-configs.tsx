@@ -43,6 +43,7 @@ export const isNotSupportedError = (error: TServerError) => error?.name === 'Not
 
 // the errors are connected with terminating the registration process or setting up the unlock method from user side
 export const excluded_error_names = ['NotAllowedError', 'AbortError', 'NotReadableError', 'UnknownError'];
+export const excluded_error_codes = ['ERROR_AUTHENTICATOR_PREVIOUSLY_REGISTERED'];
 
 export const passkeysMenuActionEventTrack = (
     action: string,

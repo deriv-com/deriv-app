@@ -10,6 +10,7 @@ import { PasskeyReminderModal } from './components/passkey-reminder-modal';
 import { PasskeysStatusContainer } from './components/passkeys-status-container';
 import {
     clearRefTimeOut,
+    excluded_error_codes,
     excluded_error_names,
     isNotExistedPasskey,
     PASSKEY_STATUS_CODES,
@@ -109,7 +110,13 @@ const Passkeys = observer(() => {
     useEffect(() => {
         if (error) {
             passkeysMenuActionEventTrack('error', { error_message: (error as TServerError)?.message });
-            if (excluded_error_names.some(name => name === (error as TServerError).name)) return;
+
+            const should_hide_error =
+                excluded_error_names.some(name => name === (error as TServerError).name) ||
+                excluded_error_codes.some(code => code === (error as TServerError).code);
+
+            if (should_hide_error) return;
+
             if (isNotExistedPasskey(error as TServerError)) {
                 setPasskeyStatus(PASSKEY_STATUS_CODES.VERIFYING);
                 return;

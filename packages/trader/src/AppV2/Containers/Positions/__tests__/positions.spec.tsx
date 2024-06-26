@@ -11,8 +11,8 @@ import userEvent from '@testing-library/user-event';
 
 const defaultMockStore = mockStore({});
 const TAB_NAME = {
-    Open: 'Open',
-    Closed: 'Closed',
+    OPEN: 'Open',
+    CLOSED: 'Closed',
 };
 
 jest.mock('../positions-content', () => jest.fn(() => 'mockPositionsContent'));
@@ -47,18 +47,18 @@ describe('Positions', () => {
         expect(openTab).toHaveAttribute('aria-selected', 'true');
         expect(closedTab).toHaveAttribute('aria-selected', 'false');
 
-        expect(screen.getByText(TAB_NAME.Open)).toBeInTheDocument();
-        expect(screen.getByText(TAB_NAME.Closed)).toBeInTheDocument();
+        expect(screen.getByText(TAB_NAME.OPEN)).toBeInTheDocument();
+        expect(screen.getByText(TAB_NAME.CLOSED)).toBeInTheDocument();
     });
 
     it('should call setPositionURLParams with appropriate argument if user clicks on Closed tab', () => {
         const mockSetPositionURLParams = jest.spyOn(utils, 'setPositionURLParams') as jest.Mock;
         render(mockPositions());
 
-        userEvent.click(screen.getByText(TAB_NAME.Closed));
-        expect(mockSetPositionURLParams).toBeCalledWith(TAB_NAME.Closed.toLowerCase());
+        userEvent.click(screen.getByText(TAB_NAME.CLOSED));
+        expect(mockSetPositionURLParams).toBeCalledWith(TAB_NAME.CLOSED.toLowerCase());
 
-        userEvent.click(screen.getByText(TAB_NAME.Open));
-        expect(mockSetPositionURLParams).toBeCalledWith(TAB_NAME.Open.toLowerCase());
+        userEvent.click(screen.getByText(TAB_NAME.OPEN));
+        expect(mockSetPositionURLParams).toBeCalledWith(TAB_NAME.OPEN.toLowerCase());
     });
 });

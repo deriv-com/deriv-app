@@ -12,9 +12,7 @@ import userEvent from '@testing-library/user-event';
 const defaultMockStore = mockStore({});
 const TAB_NAME = {
     Open: 'Open',
-    open: 'open',
     Closed: 'Closed',
-    closed: 'closed',
 };
 
 jest.mock('../positions-content', () => jest.fn(() => 'mockPositionsContent'));
@@ -53,14 +51,14 @@ describe('Positions', () => {
         expect(screen.getByText(TAB_NAME.Closed)).toBeInTheDocument();
     });
 
-    it('should call setPositionURLParams with appropriate argument if user clicks on Close tab', () => {
+    it('should call setPositionURLParams with appropriate argument if user clicks on Closed tab', () => {
         const mockSetPositionURLParams = jest.spyOn(utils, 'setPositionURLParams') as jest.Mock;
         render(mockPositions());
 
         userEvent.click(screen.getByText(TAB_NAME.Closed));
-        expect(mockSetPositionURLParams).toBeCalledWith(TAB_NAME.closed);
+        expect(mockSetPositionURLParams).toBeCalledWith(TAB_NAME.Closed.toLowerCase());
 
         userEvent.click(screen.getByText(TAB_NAME.Open));
-        expect(mockSetPositionURLParams).toBeCalledWith(TAB_NAME.open);
+        expect(mockSetPositionURLParams).toBeCalledWith(TAB_NAME.Open.toLowerCase());
     });
 });

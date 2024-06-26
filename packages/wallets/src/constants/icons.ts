@@ -6,13 +6,28 @@ import {
     AccountsDmt5DerivedIcon,
     AccountsDmt5FinancialIcon,
     AccountsDmt5SwfIcon,
+    CurrencyAudIcon,
+    CurrencyBtcIcon,
+    CurrencyEthIcon,
+    CurrencyEurIcon,
+    CurrencyGbpIcon,
+    CurrencyLtcIcon,
+    CurrencyUsdcIcon,
+    CurrencyUsdIcon,
+    CurrencyUsdtIcon,
     DerivProductDerivBotBrandLightLogoHorizontalIcon,
     DerivProductDerivGoBrandLightLogoHorizontalIcon,
     DerivProductDerivTraderBrandLightLogoHorizontalIcon,
     PartnersProductBinaryBotBrandLightLogoHorizontalIcon,
     PartnersProductSmarttraderBrandLightLogoIcon,
+    PaymentMethodBitcoinBrandIcon,
+    PaymentMethodDerivDemoBrandDarkIcon,
+    PaymentMethodEthereumBrandIcon,
+    PaymentMethodLitecoinBrandIcon,
+    PaymentMethodTetherUsdtBrandIcon,
+    PaymentMethodUsdCoinBrandIcon,
 } from '@deriv/quill-icons';
-import { TIconTypes } from '../types';
+import { TCurrencyIconTypes, TIconTypes } from '../types';
 
 export const AppIcons: TIconTypes = {
     binarybot: PartnersProductBinaryBotBrandLightLogoHorizontalIcon,
@@ -36,4 +51,32 @@ export const MT5MarketIcons: TIconTypes = {
 
 export const PlatformIcons: TIconTypes = {
     standard: AccountsDerivAccountLightIcon,
+};
+
+// Currencies icons
+export const roundedCurrencyIcons: TCurrencyIconTypes = {
+    AUD: CurrencyAudIcon,
+    BTC: CurrencyBtcIcon,
+    ETH: CurrencyEthIcon,
+    EUR: CurrencyEurIcon,
+    eUSDT: CurrencyUsdtIcon,
+    GBP: CurrencyGbpIcon,
+    LTC: CurrencyLtcIcon,
+    tUSDT: CurrencyUsdtIcon,
+    USD: CurrencyUsdIcon,
+    USDC: CurrencyUsdcIcon,
+    USDT: CurrencyUsdtIcon,
+    UST: CurrencyUsdtIcon,
+};
+
+export const horizontalCurrencyIcons: TCurrencyIconTypes = {
+    BTC: PaymentMethodBitcoinBrandIcon,
+    DEMO: PaymentMethodDerivDemoBrandDarkIcon,
+    ETH: PaymentMethodEthereumBrandIcon,
+    eUSDT: PaymentMethodTetherUsdtBrandIcon,
+    LTC: PaymentMethodLitecoinBrandIcon,
+    tUSDT: PaymentMethodTetherUsdtBrandIcon,
+    USDC: PaymentMethodUsdCoinBrandIcon,
+    USDT: PaymentMethodTetherUsdtBrandIcon,
+    UST: PaymentMethodTetherUsdtBrandIcon,
 };

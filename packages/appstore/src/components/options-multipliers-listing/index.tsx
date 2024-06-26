@@ -10,6 +10,7 @@ import { BrandConfig } from 'Constants/platform-config';
 import { getHasDivider } from 'Constants/utils';
 import { Analytics } from '@deriv-com/analytics';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
+import OptionsDescription from 'Components/elements/options-description';
 
 const OptionsAndMultipliersListing = observer(() => {
     const { traders_hub, client, ui } = useStore();
@@ -62,29 +63,7 @@ const OptionsAndMultipliersListing = observer(() => {
     return (
         <ListingContainer
             title={<OptionsTitle />}
-            description={
-                low_risk_cr_non_eu || high_risk_cr || cr_demo ? (
-                    <Text size='xs' line_height='s'>
-                        <Localize
-                            i18n_default_text='Buy or sell at a specific time for a specific price. <0>Learn more</0>'
-                            components={[
-                                <StaticUrl
-                                    key={0}
-                                    className='options'
-                                    href='trade-types/options/digital-options/up-and-down/'
-                                />,
-                            ]}
-                        />
-                    </Text>
-                ) : (
-                    <Text size='xs' line_height='s'>
-                        <Localize
-                            i18n_default_text='Multipliers let you trade with leverage and limit your risk to your stake. <0>Learn more</0>'
-                            components={[<StaticUrl key={0} className='options' href='trade-types/multiplier/' />]}
-                        />
-                    </Text>
-                )
-            }
+            description={<OptionsDescription is_eu_user={!(low_risk_cr_non_eu || high_risk_cr || cr_demo)} />}
             is_deriv_platform
         >
             {is_real && (no_CR_account || no_MF_account) && (

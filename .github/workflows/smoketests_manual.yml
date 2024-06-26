@@ -36,13 +36,6 @@ on:
         options:
         - maryia-deriv
         - suisin-deriv
-      iparallel:
-        type: choice
-        description: Parallel
-        options:
-        - 'true'
-        - 'false'
-
 
 jobs:
   trigger-workflow:
@@ -70,8 +63,7 @@ jobs:
             suite: '${{ env.TEST_SUITE }}',
             appRegUrl: '${{ github.event.inputs.iappRegUrl }}',
             issue_number: '${{ github.event.inputs.iissue_number }}',
-            user_name: '${{ github.event.inputs.iuser_name }}',
-            parallel: '${{ github.event.inputs.iparallel }}'
+            user_name: '${{ github.event.inputs.iuser_name }}'
             };
           const response = await github.rest.actions.createWorkflowDispatch({
             owner: 'regentmarkets',

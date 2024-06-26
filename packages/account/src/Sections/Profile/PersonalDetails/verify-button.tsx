@@ -7,8 +7,11 @@ import { routes } from '@deriv/shared';
 import { Popover, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { useVerifyEmail } from '@deriv/hooks';
+import { getTimestamp } from '../PhoneVerification/validation';
+import dayjs from 'dayjs';
 
 export const VerifyButton = observer(() => {
+    const current_time = dayjs();
     const [open_popover, setOpenPopover] = React.useState(false);
     const { client, ui } = useStore();
     const { is_mobile } = ui;
@@ -17,9 +20,10 @@ export const VerifyButton = observer(() => {
     const { verified: phone_number_verified } = phone_number_verification;
     const history = useHistory();
     const { send } = useVerifyEmail('phone_number_verification');
+    const next_email_timestamp = getTimestamp(phone_number_verification?.next_email_attempt, current_time);
 
     const redirectToPhoneVerification = () => {
-        send();
+        if (!next_email_timestamp) send();
         history.push(routes.phone_verification);
     };
 

@@ -2211,10 +2211,12 @@ export default class ClientStore extends BaseStore {
 
     setVerificationCode(code, action) {
         this.verification_code[action] = code;
-        if (code) {
-            LocalStore.set(`verification_code.${action}`, code);
-        } else {
-            LocalStore.remove(`verification_code.${action}`);
+        if (action !== 'phone_number_verification') {
+            if (code) {
+                LocalStore.set(`verification_code.${action}`, code);
+            } else {
+                LocalStore.remove(`verification_code.${action}`);
+            }
         }
         if (action === 'signup') {
             // TODO: add await if error handling needs to happen before AccountSignup is initialised

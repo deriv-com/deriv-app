@@ -5,6 +5,7 @@ import { useHistory } from 'react-router';
 import { observer, useStore } from '@deriv/stores';
 import { LabelPairedCircleXmarkLgRegularIcon } from '@deriv/quill-icons';
 import { useVerifyEmail } from '@deriv/hooks';
+import { routes } from '@deriv/shared';
 
 type TVerificationLinkExpiredModal = {
     should_show_verification_link_expired_modal: boolean;
@@ -19,7 +20,7 @@ const VerificationLinkExpiredModal = observer(
         const history = useHistory();
         const handleCancelButton = () => {
             setShouldShowVerificationLinkExpiredModal(false);
-            history.goBack();
+            history.push(routes.personal_details);
         };
         const { send } = useVerifyEmail('phone_number_verification');
         const handleSendNewLinkButton = () => {

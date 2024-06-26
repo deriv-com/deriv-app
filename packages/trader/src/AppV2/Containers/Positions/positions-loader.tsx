@@ -1,6 +1,5 @@
 import React from 'react';
 import { Skeleton } from 'AppV2/Components/Skeleton';
-import { ContractCardLoader } from 'AppV2/Components/ContractCard';
 
 type TPositionsLoaderProps = {
     isClosedTab?: boolean;
@@ -21,7 +20,7 @@ const PositionsLoader = ({ isClosedTab }: TPositionsLoaderProps) => {
             </div>
             <div className='skeleton-contract-card-list'>
                 {Array.from(new Array(7)).map((_, idx) => (
-                    <ContractCardLoader key={idx} />
+                    <Skeleton key={idx} height='104px' />
                 ))}
             </div>
         </div>

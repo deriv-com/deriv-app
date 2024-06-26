@@ -82,7 +82,7 @@
             overflow-y: auto;
             overflow-x: hidden;
             height: 100%;
-            max-height: calc(100% - 6.4rem);
+            max-height: calc(100vh - 6.4rem);
             padding: 1rem;
         }
     }
@@ -172,6 +172,47 @@
         }
         .dc-form-submit-button {
             margin-bottom: 2.2rem;
+        }
+    }
+    &-tnc {
+        margin-block-end: 3.2rem;
+        &--bottom {
+            @include mobile {
+                margin-top: auto;
+                margin-bottom: 7.5rem;
+            }
+        }
+    }
+    &-info {
+        border-radius: 0.4rem;
+        background: $color-status-information;
+        display: flex;
+        padding: 0.8rem;
+        align-items: flex-start;
+        gap: 0.8rem;
+        margin-block-end: 0.8rem;
+        &__icon {
+            flex-basis: 1.6rem;
+            max-width: 1.6rem;
+        }
+    }
+    &__checkbox {
+        display: flex;
+        align-self: baseline;
+        margin-inline-start: -0.8rem;
+        .dc-text {
+            font-size: var(--text-size-xxs);
+            text-align: var(--text-align-left);
+            & > a {
+                font-weight: bold;
+                text-transform: lowercase;
+            }
+        }
+    }
+    &-info,
+    &__checkbox {
+        .dc-icon {
+            margin-inline-start: 0;
         }
     }
 }

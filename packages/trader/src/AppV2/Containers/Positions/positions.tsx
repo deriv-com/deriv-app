@@ -1,29 +1,11 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Tab } from '@deriv-com/quill-ui';
+import { getTabIndexFromURL, setPositionURLParams } from 'AppV2/Utils/positions-utils';
 import BottomNav from 'AppV2/Components/BottomNav';
 import PositionsContent from './positions-content';
 
 const Positions = () => {
-    // TODO: move to utils
-    const getTabIndexFromURL = () => {
-        const searchParams = new URLSearchParams(window.location.search);
-        if (searchParams.toString()) {
-            const current_opened_tab = [...searchParams.values()];
-            return current_opened_tab[0] === 'open' ? 0 : 1;
-        }
-        return 0;
-    };
-    // TODO: move to utils
-    const setPositionURLParams = (tab_name: string) => {
-        const searchParams = new URLSearchParams(window.location.search);
-        searchParams.set('tab_name', tab_name);
-        if (searchParams.toString()) {
-            const newQuery = `${window.location.pathname}?${searchParams.toString()}`;
-            window.history.replaceState({}, document.title, newQuery);
-        }
-    };
-
     const [hasButtonsDemo, setHasButtonsDemo] = React.useState(true);
     const [activeTab, setActiveTab] = React.useState(getTabIndexFromURL());
 
@@ -55,8 +37,8 @@ const Positions = () => {
             <div className='positions-page'>
                 <Tab.Container
                     contentStyle='fill'
-                    size='md'
                     className='positions-page__tabs'
+                    size='md'
                     selectedTabIndex={activeTab}
                     onChangeTab={onChangeTab}
                 >

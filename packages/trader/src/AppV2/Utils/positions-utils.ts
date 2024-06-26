@@ -55,3 +55,21 @@ export const getProfit = (
 export const getTotalPositionsProfit = (positions: (TPortfolioPosition | TClosedPosition)[]) => {
     return positions.reduce((sum, { contract_info }) => sum + Number(getProfit(contract_info)), 0);
 };
+
+export const getTabIndexFromURL = () => {
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.toString()) {
+        const current_opened_tab = [...searchParams.values()];
+        return current_opened_tab[0] === 'open' ? 0 : 1;
+    }
+    return 0;
+};
+
+export const setPositionURLParams = (tab_name: string) => {
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set('tab_name', tab_name);
+    if (searchParams.toString()) {
+        const newQuery = `${window.location.pathname}?${searchParams.toString()}`;
+        window.history.replaceState({}, document.title, newQuery);
+    }
+};

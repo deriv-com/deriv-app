@@ -30,7 +30,7 @@ type TContractCardProps = TContractCardStatusTimerProps & {
     onClick?: (e?: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>) => void;
     onCancel?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
     onClose?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
-    redirectTo?: string | any;
+    redirectTo?: string | React.ComponentProps<typeof NavLink>['to'];
     serverTime?: TRootStore['common']['server_time'];
 };
 

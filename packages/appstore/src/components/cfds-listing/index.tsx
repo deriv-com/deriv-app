@@ -67,7 +67,7 @@ const CFDsListing = observer(() => {
         financial_restricted_countries,
     } = traders_hub;
 
-    const { setAccountType, toggleCTraderTransferModal } = cfd;
+    const { setAccountType, toggleCTraderTransferModal, setProduct } = cfd;
     const {
         account_status,
         is_landing_company_loaded,
@@ -211,9 +211,7 @@ const CFDsListing = observer(() => {
                     {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
 
-                        const track_account_subtitle = is_demo
-                            ? `${existing_account.tracking_name} Demo`
-                            : existing_account.tracking_name;
+                        const track_account_subtitle = existing_account.tracking_name;
 
                         const has_mt5_account_status =
                             existing_account?.status || is_idv_revoked
@@ -227,6 +225,7 @@ const CFDsListing = observer(() => {
                                 action_type={existing_account.action_type}
                                 availability={selected_region}
                                 clickable_icon
+                                is_new
                                 icon={existing_account.icon}
                                 sub_title={existing_account?.sub_title}
                                 name={!has_mt5_account_status ? existing_account?.name : ''}
@@ -252,11 +251,13 @@ const CFDsListing = observer(() => {
                                                 category: selected_account_type,
                                                 type: existing_account.market_type,
                                             });
+                                            setProduct(existing_account.product);
                                             setAppstorePlatform(existing_account.platform);
                                             getAccount();
                                         }
                                     } else if (existing_account.action_type === 'multi-action') {
                                         const button_name = e?.currentTarget?.name;
+                                        setProduct(existing_account.product);
                                         if (button_name === 'transfer-btn') {
                                             Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                                 action: 'account_transfer',

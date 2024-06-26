@@ -392,12 +392,13 @@ describe('getTradeURLParams', () => {
 });
 
 describe('setPositionURLParams', () => {
+    const spyHistoryReplaceState = jest.spyOn(window.history, 'replaceState');
+
     afterEach(() => {
         jest.clearAllMocks();
     });
 
     it('should set tab_name query param into URL based on the received value', () => {
-        const spyHistoryReplaceState = jest.spyOn(window.history, 'replaceState');
         setPositionURLParams(TAB_NAME.OPEN);
         expect(spyHistoryReplaceState).toBeCalledWith(
             {},
@@ -407,7 +408,6 @@ describe('setPositionURLParams', () => {
     });
 
     it('should set tab_name query param into URL based on the received value', () => {
-        const spyHistoryReplaceState = jest.spyOn(window.history, 'replaceState');
         setPositionURLParams(TAB_NAME.CLOSED);
         expect(spyHistoryReplaceState).toBeCalledWith(
             {},

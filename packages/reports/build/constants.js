@@ -20,6 +20,7 @@ const {
 } = require('./loaders-config');
 
 const ALIASES = {
+    'react/jsx-runtime': 'react/jsx-runtime.js',
     _common: path.resolve(__dirname, '../src/_common'),
     Constants: path.resolve(__dirname, '../src/Constants'),
     Components: path.resolve(__dirname, '../src/Components'),

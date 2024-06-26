@@ -2,7 +2,6 @@ import React, { Fragment, useEffect } from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { Loading, Text, StaticUrl } from '@deriv/components';
 import {
-    isMobile,
     formatMoney,
     getAuthenticationStatusInfo,
     Jurisdiction,
@@ -11,6 +10,7 @@ import {
     moduleLoader,
     setPerformanceValue,
 } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 import { localize, Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import ListingContainer from 'Components/containers/listing-container';
@@ -35,6 +35,7 @@ const MigrationBanner = makeLazyLoader(
 )();
 
 const CFDsListing = observer(() => {
+    const { isDesktop } = useDevice();
     const {
         client,
         modules: { cfd },
@@ -186,18 +187,18 @@ const CFDsListing = observer(() => {
     return (
         <ListingContainer
             title={
-                !isMobile() && (
+                isDesktop && (
                     <div className='cfd-accounts__title'>
                         <Text size='sm' weight='bold' color='prominent'>
                             {localize('CFDs')}
                         </Text>
-                        <CompareAccount accounts_sub_text={accounts_sub_text} is_desktop={!isMobile()} />
+                        <CompareAccount accounts_sub_text={accounts_sub_text} is_desktop />
                     </div>
                 )
             }
             description={<CFDsDescription />}
         >
-            {isMobile() && <CompareAccount accounts_sub_text={accounts_sub_text} />}
+            {!isDesktop && <CompareAccount accounts_sub_text={accounts_sub_text} />}
             <AddDerivAccount />
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
                 <Text line_height='m' weight='bold' color='prominent'>

@@ -159,6 +159,6 @@ describe('WalletCard', () => {
             </APIProvider>
         );
         const icon = screen.getByTestId('dt_wallet_currency_icon');
-        expect(icon).toHaveAttribute('width', '12');
+        expect(icon).toHaveAttribute('width', '16');
     });
 });

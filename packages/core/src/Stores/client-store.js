@@ -2049,7 +2049,7 @@ export default class ClientStore extends BaseStore {
         if (selected_account) {
             if (is_wallets_selected) {
                 active_wallet_loginid = obj_params.selected_acct;
-                this.setVerificationCode(verification_code, payment_withdraw);
+                this.setVerificationCode(verification_code, 'payment_withdraw');
             }
             active_loginid = obj_params.selected_acct;
         }

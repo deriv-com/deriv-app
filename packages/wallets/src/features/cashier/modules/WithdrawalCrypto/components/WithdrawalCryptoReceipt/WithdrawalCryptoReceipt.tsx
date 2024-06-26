@@ -2,7 +2,6 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { LegacyArrowDown2pxIcon } from '@deriv/quill-icons';
 import { WalletButton, WalletCard, WalletText } from '../../../../../../components';
-import { LandingCompanyDetails } from '../../../../constants';
 import { TWithdrawalReceipt } from '../../types';
 import { WithdrawalCryptoDestinationAddress } from './components';
 import './WithdrawalCryptoReceipt.scss';

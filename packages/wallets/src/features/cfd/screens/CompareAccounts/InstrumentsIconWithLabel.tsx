@@ -1,16 +1,19 @@
 import React from 'react';
+import useDevice from '../../../../hooks/useDevice';
 import { WalletText } from '../../../../components';
-import InstrumentsIcons from '../../../../public/images/tradingInstruments';
+import getInstrumentsIcons from '../../../../public/images/tradingInstruments';
 import './InstrumentsIconWithLabel.scss';
 
 type TInstrumentsIcon = {
     highlighted: boolean;
-    icon: keyof typeof InstrumentsIcons;
+    icon: keyof ReturnType<typeof getInstrumentsIcons>;
     isAsterisk?: boolean;
     text: string;
 };
 
 const InstrumentsIconWithLabel = ({ highlighted, icon, isAsterisk, text }: TInstrumentsIcon) => {
+    const { isMobile } = useDevice();
+
     return (
         <div
             className='wallets-compare-accounts-instrument-icon'
@@ -19,9 +22,9 @@ const InstrumentsIconWithLabel = ({ highlighted, icon, isAsterisk, text }: TInst
                 opacity: highlighted ? '' : '0.2',
             }}
         >
-            {InstrumentsIcons[icon]}
+            {getInstrumentsIcons(isMobile)[icon]}
             <div className='wallets-compare-accounts-trading-instruments__text'>
-                <WalletText align='left' as='p' lineHeight='xs' size='xs' weight='bold'>
+                <WalletText align='left' as='p' lineHeight='xs' size='xs' weight={isMobile ? 'normal' : 'bold'}>
                     {text}
                 </WalletText>
             </div>

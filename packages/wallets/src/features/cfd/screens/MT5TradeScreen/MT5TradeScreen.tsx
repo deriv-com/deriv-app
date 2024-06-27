@@ -148,7 +148,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                             key='account-transfer'
                             onClick={() => {
                                 hide();
-                                history.push('/wallet/account-transfer', { toAccountLoginId: details?.login });
+                                history.push('/wallet/account-transfer', { toAccountLoginId: details?.loginid });
                             }}
                             rounded='md'
                             size='sm'

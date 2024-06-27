@@ -12,7 +12,7 @@ const useTinValidations = () => {
         );
 
         return {
-            tin_validations: data?.tin_validations,
+            tin_validation_config: data?.tin_validations,
             mutate,
             ...rest,
         };

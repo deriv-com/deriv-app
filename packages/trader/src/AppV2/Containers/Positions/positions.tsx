@@ -1,7 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Tab } from '@deriv-com/quill-ui';
-import { getTabIndexFromURL, setPositionURLParams } from 'AppV2/Utils/positions-utils';
+import { getTabIndexFromURL, setPositionURLParams, TAB_NAME } from 'AppV2/Utils/positions-utils';
 import BottomNav from 'AppV2/Components/BottomNav';
 import PositionsContent from './positions-content';
 
@@ -11,12 +11,12 @@ const Positions = () => {
 
     const tabs = [
         {
-            id: 'open',
+            id: TAB_NAME.OPEN.toLowerCase(),
             title: <Localize i18n_default_text='Open' />,
             content: <PositionsContent hasButtonsDemo={hasButtonsDemo} setHasButtonsDemo={setHasButtonsDemo} />,
         },
         {
-            id: 'closed',
+            id: TAB_NAME.CLOSED.toLowerCase(),
             title: <Localize i18n_default_text='Closed' />,
             content: <PositionsContent isClosedTab />,
         },

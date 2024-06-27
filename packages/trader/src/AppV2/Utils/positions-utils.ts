@@ -8,6 +8,11 @@ export const DEFAULT_DATE_FORMATTING_CONFIG = {
     year: 'numeric',
 } as Record<string, string>;
 
+export const TAB_NAME = {
+    OPEN: 'Open',
+    CLOSED: 'Closed',
+};
+
 export const filterPositions = (positions: (TPortfolioPosition | TClosedPosition)[], filter: string[]) => {
     // Split contract type names with '/' (e.g. Rise/Fall)
     const splittedFilter = filter.map(option => (option.includes('/') ? option.split('/') : option)).flat();
@@ -60,7 +65,7 @@ export const getTabIndexFromURL = () => {
     const searchParams = new URLSearchParams(window.location.search);
     if (searchParams.toString()) {
         const current_opened_tab = [...searchParams.values()];
-        return current_opened_tab[0] === 'open' ? 0 : 1;
+        return current_opened_tab[0] === TAB_NAME.OPEN.toLowerCase() ? 0 : 1;
     }
     return 0;
 };

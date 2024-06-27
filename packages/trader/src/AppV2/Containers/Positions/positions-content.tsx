@@ -7,7 +7,7 @@ import { TPortfolioPosition } from '@deriv/stores/types';
 import { ContractCardList, ContractCardsSections } from 'AppV2/Components/ContractCard';
 import { ContractTypeFilter, TimeFilter } from 'AppV2/Components/Filter';
 import TotalProfitLoss from 'AppV2/Components/TotalProfitLoss';
-import { filterPositions, getTotalPositionsProfit } from '../../Utils/positions-utils';
+import { filterPositions, getTotalPositionsProfit, TAB_NAME } from '../../Utils/positions-utils';
 import { TReportsStore, useReportsStore } from '../../../../../reports/src/Stores/useReportsStores';
 import useTradeTypeFilter from 'AppV2/Hooks/useTradeTypeFilter';
 import useTimeFilter from 'AppV2/Hooks/useTimeFilter';
@@ -126,7 +126,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     if (shouldShowLoading || (!shouldShowContractCards && !shouldShowEmptyMessage)) return <Loading />;
     return (
         <div
-            className={`positions-page__${isClosedTab ? 'closed' : 'open'}`}
+            className={`positions-page__${isClosedTab ? TAB_NAME.CLOSED.toLowerCase() : TAB_NAME.OPEN.toLowerCase()}`}
             onScroll={isClosedTab ? onScroll : undefined}
         >
             {!hasNoPositions && (

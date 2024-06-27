@@ -7,12 +7,8 @@ import {
     getTotalPositionsProfit,
     getTabIndexFromURL,
     setPositionURLParams,
+    TAB_NAME,
 } from '../positions-utils';
-
-const TAB_NAME = {
-    OPEN: 'open',
-    CLOSED: 'closed',
-};
 
 const mockedActivePositions = [
     {
@@ -376,12 +372,12 @@ describe('getTradeURLParams', () => {
     });
 
     it('should return 0 if it is an open tab in location.search', () => {
-        location.search = `?tab_name=${TAB_NAME.OPEN}`;
+        location.search = `?tab_name=${TAB_NAME.OPEN.toLowerCase()}`;
         expect(getTabIndexFromURL()).toBe(0);
     });
 
     it('should return 1 if it is a closed tab in location.search', () => {
-        location.search = `?tab_name=${TAB_NAME.CLOSED}`;
+        location.search = `?tab_name=${TAB_NAME.CLOSED.toLowerCase()}`;
         expect(getTabIndexFromURL()).toBe(1);
     });
 

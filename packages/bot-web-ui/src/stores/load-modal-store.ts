@@ -561,7 +561,11 @@ export default class LoadModalStore implements ILoadModalStore {
             const result = await load(load_options);
             const upload_type = getStrategyType(load_options?.block_string as string);
             if (!is_preview && !result?.error) {
-                rudderStackSendUploadStrategyCompletedEvent({ upload_provider: 'my_computer', upload_type });
+                rudderStackSendUploadStrategyCompletedEvent({
+                    upload_provider: 'my_computer',
+                    upload_type,
+                    upload_id: this.upload_id,
+                });
             } else if (!is_preview && result?.error) {
                 rudderStackSendUploadStrategyFailedEvent({
                     upload_provider: 'my_computer',

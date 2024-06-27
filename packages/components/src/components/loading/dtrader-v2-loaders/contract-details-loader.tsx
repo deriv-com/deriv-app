@@ -1,6 +1,6 @@
 import React from 'react';
-import { ContractCardLoader } from 'AppV2/Components/ContractCard';
-import { Skeleton } from 'AppV2/Components/Skeleton';
+import ContractCardLoader from './contract-card-loader';
+import { Skeleton } from '../../skeleton';
 
 const ContractDetailsLoader = () => {
     return (

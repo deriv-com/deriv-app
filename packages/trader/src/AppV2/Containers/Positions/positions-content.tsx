@@ -1,6 +1,7 @@
 import React from 'react';
 import { TContractInfo } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { Loading } from '@deriv/components';
 import { EmptyPositions, TEmptyPositionsProps } from 'AppV2/Components/EmptyPositions';
 import { TPortfolioPosition } from '@deriv/stores/types';
 import { ContractCardList, ContractCardsSections } from 'AppV2/Components/ContractCard';
@@ -10,7 +11,6 @@ import { filterPositions, getTotalPositionsProfit } from '../../Utils/positions-
 import { TReportsStore, useReportsStore } from '../../../../../reports/src/Stores/useReportsStores';
 import useTradeTypeFilter from 'AppV2/Hooks/useTradeTypeFilter';
 import useTimeFilter from 'AppV2/Hooks/useTimeFilter';
-import PositionsLoader from './positions-loader';
 
 type TPositionsContentProps = Omit<TEmptyPositionsProps, 'noMatchesFound'> & {
     hasButtonsDemo?: boolean;
@@ -124,7 +124,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     }, []);
 
     if (shouldShowLoading || (!shouldShowContractCards && !shouldShowEmptyMessage))
-        return <PositionsLoader isClosedTab={isClosedTab} />;
+        return <Loading.DTraderV2 is_closed_tab={isClosedTab} />;
     return (
         <div
             className={`positions-page__${isClosedTab ? 'closed' : 'open'}`}

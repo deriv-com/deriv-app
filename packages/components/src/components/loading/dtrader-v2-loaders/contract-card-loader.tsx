@@ -1,5 +1,5 @@
 import React from 'react';
-import { Skeleton, VARIANT } from '../Skeleton';
+import { Skeleton, VARIANT } from '../../skeleton';
 
 const ContractCardLoader = () => (
     <div className='contract-card-loader'>

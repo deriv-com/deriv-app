@@ -18,16 +18,10 @@ const BinaryRoutes = observer(props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location]);
 
-    const getDTraderV2Loader = () => {
-        if (window.location.pathname === routes.trade) return <>TRADE PAGE LOADER</>;
-        if (window.location.pathname === routes.trader_positions) return <>OPEN POSITIONS PAGE LOADER</>;
-        if (window.location.pathname.startsWith('/contract/')) return <>C.DETAILS PAGE LOADER</>;
-        return <Loading />;
-    };
     const getLoader = () => {
         const should_show_dtrader_v2_loader =
             JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '').data.dtrader_v2 && isMobile;
-        if (should_show_dtrader_v2_loader) return getDTraderV2Loader();
+        if (should_show_dtrader_v2_loader) return <Loading.DTraderV2 />;
         return <Loading />;
     };
 

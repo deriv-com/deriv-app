@@ -1,20 +1,20 @@
 import React from 'react';
-import { Skeleton } from 'AppV2/Components/Skeleton';
+import { Skeleton } from '../../skeleton';
 
 type TPositionsLoaderProps = {
-    isClosedTab?: boolean;
+    is_closed_tab?: boolean;
 };
 
-const PositionsLoader = ({ isClosedTab }: TPositionsLoaderProps) => {
+const PositionsLoader = ({ is_closed_tab }: TPositionsLoaderProps) => {
     return (
         <div className='positions-loader'>
             <div className='skeleton-box__filters'>
-                {Array.from(new Array(isClosedTab ? 2 : 1)).map((_, idx) => {
+                {Array.from(new Array(is_closed_tab ? 2 : 1)).map((_, idx) => {
                     return <Skeleton key={idx} width={144} height={32} />;
                 })}
             </div>
             <div className='skeleton-box__total-pnl-or-date'>
-                {Array.from(new Array(isClosedTab ? 1 : 2)).map((_, idx) => {
+                {Array.from(new Array(is_closed_tab ? 1 : 2)).map((_, idx) => {
                     return <Skeleton key={idx} width={idx === 0 ? 112 : 68} height={22} />;
                 })}
             </div>

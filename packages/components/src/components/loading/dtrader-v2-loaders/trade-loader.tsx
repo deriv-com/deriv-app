@@ -1,5 +1,5 @@
 import React from 'react';
-import { Skeleton } from 'AppV2/Components/Skeleton';
+import { Skeleton } from '../../skeleton';
 
 const TradeLoader = () => {
     return (

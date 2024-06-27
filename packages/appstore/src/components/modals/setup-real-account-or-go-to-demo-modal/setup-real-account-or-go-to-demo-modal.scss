@@ -4,7 +4,7 @@
     align-items: center;
     padding: 2.4rem;
 
-    @include mobile {
+    @include mobile-screen {
         padding: 1.6rem;
         width: 100%;
     }
@@ -17,7 +17,7 @@
         font-family: 'Ubuntu', sans-serif;
         margin-block-start: 2.4rem;
 
-        @include mobile {
+        @include mobile-screen {
             margin-block-start: 1.6rem;
         }
     }
@@ -29,7 +29,7 @@
         margin-block-start: 2.4rem;
         width: 100%;
 
-        @include mobile {
+        @include mobile-screen {
             margin-block-start: 4rem;
         }
     }

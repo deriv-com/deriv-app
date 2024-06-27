@@ -1,11 +1,13 @@
 import React, { Fragment, useEffect } from 'react';
 import { Analytics } from '@deriv-com/analytics';
+import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
-import { DesktopWrapper, MobileWrapper, Modal, MobileDialog } from '@deriv/components';
+import { Modal, MobileDialog } from '@deriv/components';
 import { SetupRealAccountOrGoToDemoModalContent } from './setup-real-account-or-go-to-demo-modal-content';
 import './setup-real-account-or-go-to-demo-modal.scss';
 
 const SetupRealAccountOrGoToDemoModal = observer(() => {
+    const { isMobile } = useDevice();
     const { traders_hub } = useStore();
     const { is_setup_real_account_or_go_to_demo_modal_visible } = traders_hub;
 
@@ -23,12 +25,7 @@ const SetupRealAccountOrGoToDemoModal = observer(() => {
 
     return (
         <Fragment>
-            <DesktopWrapper>
-                <Modal is_open={is_setup_real_account_or_go_to_demo_modal_visible} width='400px' has_close_icon={false}>
-                    <SetupRealAccountOrGoToDemoModalContent />
-                </Modal>
-            </DesktopWrapper>
-            <MobileWrapper>
+            {isMobile ? (
                 <MobileDialog
                     portal_element_id='modal_root'
                     visible={is_setup_real_account_or_go_to_demo_modal_visible}
@@ -39,7 +36,11 @@ const SetupRealAccountOrGoToDemoModal = observer(() => {
                 >
                     <SetupRealAccountOrGoToDemoModalContent is_responsive />
                 </MobileDialog>
-            </MobileWrapper>
+            ) : (
+                <Modal is_open={is_setup_real_account_or_go_to_demo_modal_visible} width='400px' has_close_icon={false}>
+                    <SetupRealAccountOrGoToDemoModalContent />
+                </Modal>
+            )}
         </Fragment>
     );
 });

@@ -11,15 +11,18 @@ jest.mock('@deriv/hooks', () => ({
 }));
 
 describe('AfterSignupFlow', () => {
-    it('should render correctly', () => {
-        const mock = mockStore({});
+    const mockDefault = mockStore({});
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
+    const wrapper = (mock: ReturnType<typeof mockStore> = mockDefault) => {
+        const Component = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
+        return Component;
+    };
 
+    it('should render correctly', () => {
         const { container } = render(<AfterSignupFlow />, {
-            wrapper,
+            wrapper: wrapper(),
         });
         expect(container).toBeInTheDocument();
     });
@@ -46,12 +49,8 @@ describe('AfterSignupFlow', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
         render(<AfterSignupFlow />, {
-            wrapper,
+            wrapper: wrapper(mock),
         });
 
         expect(mockedOpenRealAccountSignup).not.toBeCalled();
@@ -82,12 +81,8 @@ describe('AfterSignupFlow', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
         render(<AfterSignupFlow />, {
-            wrapper,
+            wrapper: wrapper(mock),
         });
 
         expect(mockedOpenRealAccountSignup).toBeCalled();
@@ -118,12 +113,8 @@ describe('AfterSignupFlow', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
         render(<AfterSignupFlow />, {
-            wrapper,
+            wrapper: wrapper(mock),
         });
 
         expect(mockedOpenRealAccountSignup).toBeCalled();
@@ -154,12 +145,8 @@ describe('AfterSignupFlow', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
         render(<AfterSignupFlow />, {
-            wrapper,
+            wrapper: wrapper(mock),
         });
 
         expect(mockedOpenRealAccountSignup).not.toBeCalled();

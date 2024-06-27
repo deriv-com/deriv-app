@@ -20,19 +20,22 @@ jest.mock('@deriv-com/analytics', () => ({
 }));
 
 describe('SetupRealAccountOrGoToDemoModalContent', () => {
+    const mockDefault = mockStore({});
+
+    const wrapper = (mock: ReturnType<typeof mockStore> = mockDefault) => {
+        const Component = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+        return Component;
+    };
+
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
     it('Should render correctly in desktop', () => {
-        const mock = mockStore({});
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
         const { container } = render(<SetupRealAccountOrGoToDemoModalContent />, {
-            wrapper,
+            wrapper: wrapper(),
         });
 
         const title = screen.getByText(/start your trading journey/i);
@@ -42,14 +45,8 @@ describe('SetupRealAccountOrGoToDemoModalContent', () => {
     });
 
     it('Should render correctly in responsive', () => {
-        const mock = mockStore({});
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
         const { container } = render(<SetupRealAccountOrGoToDemoModalContent is_responsive />, {
-            wrapper,
+            wrapper: wrapper(),
         });
 
         const title = screen.getByText(/start your trading journey/i);
@@ -77,14 +74,10 @@ describe('SetupRealAccountOrGoToDemoModalContent', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
         const mockTrack = Analytics.trackEvent;
 
         const { container } = render(<SetupRealAccountOrGoToDemoModalContent />, {
-            wrapper,
+            wrapper: wrapper(mock),
         });
 
         const setup_btn = screen.getByRole('button', {
@@ -126,14 +119,10 @@ describe('SetupRealAccountOrGoToDemoModalContent', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
         const mockTrack = Analytics.trackEvent;
 
         const { container } = render(<SetupRealAccountOrGoToDemoModalContent />, {
-            wrapper,
+            wrapper: wrapper(mock),
         });
 
         const setup_btn = screen.getByRole('button', {
@@ -171,14 +160,10 @@ describe('SetupRealAccountOrGoToDemoModalContent', () => {
             },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
         const mockTrack = Analytics.trackEvent;
 
         const { container } = render(<SetupRealAccountOrGoToDemoModalContent />, {
-            wrapper,
+            wrapper: wrapper(mock),
         });
 
         const demo_btn = screen.getByRole('button', {

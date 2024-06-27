@@ -49,6 +49,8 @@ jobs:
           echo "TEST_SUITE=dbot" >> $GITHUB_ENV
         elif [[ "${{ github.event.inputs.ilabel }}" == *"P2P"* ]]; then
           echo "TEST_SUITE=P2P" >> $GITHUB_ENV
+        elif [[ "${{ github.event.inputs.ilabel }}" == *"Wallets"* ]]; then
+          echo "TEST_SUITE=Wallets" >> $GITHUB_ENV
         else
           echo "TEST_SUITE=<do not run>" >> $GITHUB_ENV
         fi

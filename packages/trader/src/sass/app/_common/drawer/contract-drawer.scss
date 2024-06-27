@@ -65,7 +65,7 @@ $header-height: 4em;
         display: flex;
         flex-direction: column;
 
-        @include desktop {
+        @include tablet-or-desktop-screen {
             height: 100%;
         }
     }
@@ -128,4 +128,8 @@ $header-height: 4em;
             }
         }
     }
+}
+
+.cq-chart-title .cq-menu-dropdown {
+    left: 0 !important;
 }

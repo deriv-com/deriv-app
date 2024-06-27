@@ -38,10 +38,10 @@ const LanguageSettings = observer(() => {
                             language_text={value}
                             is_current_language={currentLang === language_key}
                             name='language-radio-group'
-                            onChange={() => {
+                            onChange={async () => {
                                 // [TODO]: Remove changeSelectedLanguage() when whole app starts to use @deriv-com/translations
                                 // This function also helps in informing language change to BE
-                                changeSelectedLanguage(language_key);
+                                await changeSelectedLanguage(language_key);
                                 switchLanguage(language_key);
                             }}
                         />

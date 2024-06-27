@@ -30,7 +30,14 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     const { common, client, portfolio } = useStore();
     const { server_time = undefined } = isClosedTab ? {} : common; // Server time is required only to update cards timers in Open positions
     const { currency } = client;
-    const { active_positions, is_active_empty, onClickCancel, onClickSell, onMount: onOpenTabMount } = portfolio;
+    const {
+        active_positions,
+        is_active_empty,
+        is_loading,
+        onClickCancel,
+        onClickSell,
+        onMount: onOpenTabMount,
+    } = portfolio;
     const {
         clearTable,
         data,
@@ -54,6 +61,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     const shouldShowEmptyMessage = hasNoPositions || noMatchesFound;
     const shouldShowContractCards =
         !!filteredPositions.length && (isClosedTab || (filteredPositions[0]?.contract_info as TContractInfo)?.status);
+    const shouldShowLoading = isClosedTab ? isFetchingClosedPositions : is_loading;
     const shouldShowTakeProfit = !isClosedTab || !!(timeFilter || customTimeRangeFilter);
 
     const onScroll = React.useCallback(
@@ -115,7 +123,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (!shouldShowContractCards && !shouldShowEmptyMessage) return <Loading />;
+    if (shouldShowLoading || (!shouldShowContractCards && !shouldShowEmptyMessage)) return <Loading />;
     return (
         <div
             className={`positions-page__${isClosedTab ? 'closed' : 'open'}`}

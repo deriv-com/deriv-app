@@ -18,13 +18,7 @@ describe('<BinaryRoutes />', () => {
     const history = createBrowserHistory();
 
     it('should render BinaryRoutes with mocked route component', () => {
-        const mock = mockStore({
-            modules: {
-                common: {
-                    current_language: 'EN',
-                },
-            },
-        });
+        const mock = mockStore({});
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );

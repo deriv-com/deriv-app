@@ -20,7 +20,7 @@ jest.mock('react-router-dom', () => ({
         <div>
             <span>{`path param: ${path}`}</span>
             <span>{`exact param: ${exact}`}</span>
-            {render && render({ location: { pathname: path } })}
+            {render?.({ location: { pathname: path } })}
         </div>
     )),
     Redirect: jest.fn(({ to }) => <div>{`Redirect to: ${to}`}</div>),

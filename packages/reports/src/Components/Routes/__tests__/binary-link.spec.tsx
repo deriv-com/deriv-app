@@ -22,22 +22,18 @@ describe('<BinaryLink />', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
+    const mockRoute = {
+        path: '/test-route',
+        exact: true,
+    };
 
     it('should render "children" when passed in', () => {
         (normalizePath as jest.Mock).mockReturnValue('/test-route');
-        const mockRoute = {
-            path: '/test-route',
-            exact: true,
-        };
         (findRouteByPath as jest.Mock).mockReturnValue(mockRoute);
         render(<MockBinaryLink to='/test-route' />);
         expect(screen.getByTestId('dt_child')).toBeInTheDocument();
     });
     it('should have "active_class" when passed in', () => {
-        const mockRoute = {
-            path: '/test-route',
-            exact: true,
-        };
         (findRouteByPath as jest.Mock).mockReturnValue(mockRoute);
         (normalizePath as jest.Mock).mockReturnValue('/test-route');
 
@@ -47,10 +43,6 @@ describe('<BinaryLink />', () => {
         expect(link).toHaveClass('active_class');
     });
     it('should render "NavLink" when valid "to" property is passed', () => {
-        const mockRoute = {
-            path: '/test-route',
-            exact: true,
-        };
         (findRouteByPath as jest.Mock).mockReturnValue(mockRoute);
         (normalizePath as jest.Mock).mockReturnValue('/test-route');
 

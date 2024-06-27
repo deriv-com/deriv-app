@@ -10,7 +10,6 @@ $side-padding: 1.2em;
         width: 100%;
         display: flex;
         justify-content: space-between;
-
         flex-direction: column-reverse;
 
         &-filter {
@@ -29,7 +28,7 @@ $side-padding: 1.2em;
         }
 
         @include desktop-screen {
-            padding: 0 2.4rem 1.6rem 0;
+            padding: 0 2.4rem 0 0;
             align-items: center;
         }
 

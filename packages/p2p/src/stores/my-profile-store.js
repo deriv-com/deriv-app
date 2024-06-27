@@ -296,6 +296,7 @@ export default class MyProfileStore extends BaseStore {
                     });
                 }
             }
+            advertiser_page_store.setIsLoading(false);
         });
     }
 

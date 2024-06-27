@@ -6,7 +6,7 @@ import { button_status } from 'Constants/button-status';
 import {
     rudderStackSendUploadStrategyCompletedEvent,
     rudderStackSendUploadStrategyFailedEvent,
-} from '../analytics/rudderstack-bot-builder';
+} from '../analytics/rudderstack-common-events';
 import { getStrategyType } from '../analytics/utils';
 import RootStore from './root-store';
 

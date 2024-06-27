@@ -7,12 +7,12 @@ import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
 import { clearInjectionDiv, tabs_title } from 'Constants/load-modal';
 import { TStrategy } from 'Types';
+import { rudderStackSendSwitchLoadStrategyTabEvent } from '../analytics/rudderstack-bot-builder';
 import {
-    rudderStackSendSwitchLoadStrategyTabEvent,
     rudderStackSendUploadStrategyCompletedEvent,
     rudderStackSendUploadStrategyFailedEvent,
     rudderStackSendUploadStrategyStartEvent,
-} from '../analytics/rudderstack-bot-builder';
+} from '../analytics/rudderstack-common-events';
 import { getStrategyType, LOAD_MODAL_TABS } from '../analytics/utils';
 import RootStore from './root-store';
 
@@ -447,7 +447,11 @@ export default class LoadModalStore implements ILoadModalStore {
     setActiveTabIndex = (index: number, is_default: boolean): void => {
         this.active_index = index;
         if (!is_default) {
-            rudderStackSendSwitchLoadStrategyTabEvent({ load_strategy_tab: LOAD_MODAL_TABS[index] });
+            const { ui } = this.core;
+            const { is_mobile } = ui;
+            rudderStackSendSwitchLoadStrategyTabEvent({
+                load_strategy_tab: LOAD_MODAL_TABS[index + (is_mobile ? 1 : 0)],
+            });
         }
     };
 
@@ -523,7 +527,6 @@ export default class LoadModalStore implements ILoadModalStore {
         }
         const file_name = file?.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
-        let loaded_to_main_workspace = false;
 
         reader.onload = action(async e => {
             const load_options = {
@@ -553,14 +556,13 @@ export default class LoadModalStore implements ILoadModalStore {
             } else {
                 load_options.workspace = window.Blockly.derivWorkspace;
                 load_options.file_name = file_name;
-                loaded_to_main_workspace = true;
             }
 
             const result = await load(load_options);
             const upload_type = getStrategyType(load_options?.block_string as string);
-            if (loaded_to_main_workspace && !result?.error) {
+            if (!is_preview && !result?.error) {
                 rudderStackSendUploadStrategyCompletedEvent({ upload_provider: 'my_computer', upload_type });
-            } else if (loaded_to_main_workspace && result?.error) {
+            } else if (!is_preview && result?.error) {
                 rudderStackSendUploadStrategyFailedEvent({
                     upload_provider: 'my_computer',
                     upload_id: this.upload_id,

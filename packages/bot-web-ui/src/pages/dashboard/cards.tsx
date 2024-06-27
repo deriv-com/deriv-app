@@ -6,8 +6,8 @@ import { localize } from '@deriv/translations';
 import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderStackSendOpenEvent } from '../../analytics/rudderstack-common-events';
 import { rudderStackSendDashboardClickEvent } from '../../analytics/rudderstack-dashboard';
-import { rudderStackSendQsOpenEvent } from '../../analytics/rudderstack-quick-strategy';
 import DashboardBotList from './load-bot-preview/dashboard-bot-list';
 import GoogleDrive from './load-bot-preview/google-drive';
 
@@ -87,7 +87,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
                 setFormVisibility(true);
                 // send to rs if quick strategy is opened from dashbaord
-                rudderStackSendQsOpenEvent({ subform_source: 'dashboard' });
+                rudderStackSendOpenEvent({ subform_source: 'dashboard', subform_name: 'quick_strategy' });
                 rudderStackSendDashboardClickEvent({ dashboard_click_name: 'quick_strategy' });
             },
         },

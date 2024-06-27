@@ -225,7 +225,6 @@ export default class BuySellStore extends BaseStore {
                     },
                 });
             } else {
-                // if (!general_store.isCurrentModal('BuySellModal'))
                 general_store.showModal({ key: 'BuySellModal', props: {} });
                 this.form_props.setErrorMessage(message);
                 this.setFormErrorCode(code);

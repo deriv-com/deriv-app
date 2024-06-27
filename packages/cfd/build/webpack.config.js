@@ -21,6 +21,8 @@ module.exports = function (env) {
             MT5MigrationModal: 'Containers/mt5-migration-modal',
             CFDPasswordManagerModal: 'Containers/cfd-password-manager-modal.tsx',
             CFDFinancialStpRealAccountSignup: 'Containers/cfd-financial-stp-real-account-signup.tsx',
+            getDXTradeWebTerminalLink: 'Helpers/constants.ts',
+            getCTraderWebTerminalLink: 'Helpers/constants.ts',
             CTraderTransferModal: 'Containers/ctrader-transfer-modal',
         },
         mode: IS_RELEASE ? 'production' : 'development',

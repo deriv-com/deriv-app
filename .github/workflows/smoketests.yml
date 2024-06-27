@@ -33,7 +33,7 @@ jobs:
           echo "TEST_SUITE=<do not run>" >> $GITHUB_ENV
         fi
         
-    - name: Trigger another deriv-app smoke tests from regentmarkets
+    - name: Trigger deriv-app smoke tests from regentmarkets
       if: ${{ github.event.issue.draft == false && env.TEST_SUITE != '<do not run>' }}
       uses: actions/github-script@v6
       with:

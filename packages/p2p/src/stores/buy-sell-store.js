@@ -208,7 +208,7 @@ export default class BuySellStore extends BaseStore {
                     key: 'ErrorModal',
                     props: {
                         error_message: message,
-                        error_modal_button_text: 'Create new order',
+                        error_modal_button_text: localize('Create new order'),
                         error_modal_title: (
                             <Text weight='bold'>
                                 <Localize i18n_default_text='Order unsuccessful' />

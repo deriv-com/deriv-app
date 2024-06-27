@@ -1,8 +1,9 @@
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
+import { DataList, DataTable } from '@deriv/components';
 import { getUnsupportedContracts, getContractPath, hasContractStarted } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
+import { useDevice } from '@deriv-com/ui';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
 import PlaceholderComponent from '../Components/placeholder-component';
@@ -92,6 +93,7 @@ export const OpenPositionsTable = ({
     row_size,
     totals,
 }: TOpenPositionsTable) => {
+    const { isDesktop } = useDevice();
     React.useEffect(() => {
         Analytics.trackEvent('ce_reports_form', {
             action: 'choose_report_type',
@@ -115,8 +117,8 @@ export const OpenPositionsTable = ({
             ) : (
                 currency && (
                     <div className='reports__content'>
-                        <DesktopWrapper>
-                            <EmptyPlaceholderWrapper component_icon={component_icon} is_empty={is_empty}>
+                        <EmptyPlaceholderWrapper component_icon={component_icon} is_empty={is_empty}>
+                            {isDesktop ? (
                                 <DataTable
                                     className={className}
                                     columns={columns}
@@ -129,10 +131,7 @@ export const OpenPositionsTable = ({
                                 >
                                     <PlaceholderComponent />
                                 </DataTable>
-                            </EmptyPlaceholderWrapper>
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            <EmptyPlaceholderWrapper component_icon={component_icon} is_empty={is_empty}>
+                            ) : (
                                 <DataList
                                     className={className}
                                     data_source={active_positions}
@@ -144,8 +143,8 @@ export const OpenPositionsTable = ({
                                 >
                                     <PlaceholderComponent />
                                 </DataList>
-                            </EmptyPlaceholderWrapper>
-                        </MobileWrapper>
+                            )}
+                        </EmptyPlaceholderWrapper>
                     </div>
                 )
             )}

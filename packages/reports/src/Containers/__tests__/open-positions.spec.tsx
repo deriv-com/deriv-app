@@ -2,7 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { isDesktop, isMobile, mockContractInfo } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
+import { mockContractInfo } from '@deriv/shared';
 import { TPortfolioPosition } from '@deriv/stores/types';
 import { mockStore } from '@deriv/stores';
 import OpenPositions from '../open-positions';
@@ -32,10 +33,8 @@ const options_position = {
     entry_spot: 1184.99,
 } as TPortfolioPosition;
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
-    isDesktop: jest.fn(() => true),
+jest.mock('@deriv-com/ui', () => ({
+    useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
 jest.mock('@deriv/components', () => ({
@@ -122,8 +121,7 @@ describe('OpenPositions', () => {
     const multipliers_profit = '1.20';
 
     beforeEach(() => {
-        (isMobile as jest.Mock).mockReturnValue(false);
-        (isDesktop as jest.Mock).mockReturnValue(true);
+        (useDevice as jest.Mock).mockImplementation(() => ({ isDesktop: true }));
 
         store = mockStore({
             portfolio: {
@@ -156,8 +154,7 @@ describe('OpenPositions', () => {
         expect(screen.getByTestId(data_table_test_id)).toBeInTheDocument();
     });
     it('should render filter dropdown with Options selected by default & with DataList for mobile', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        (isDesktop as jest.Mock).mockReturnValue(false);
+        (useDevice as jest.Mock).mockImplementation(() => ({ isDesktop: false }));
         render(mockedOpenPositions());
 
         expect(screen.getByText(notifications)).toBeInTheDocument();
@@ -174,8 +171,7 @@ describe('OpenPositions', () => {
         expect(screen.getByText(no_open_positions_text)).toBeInTheDocument();
     });
     it('should render notifications and No positions message but no filter and no Datalist if positions are empty on mobile', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        (isDesktop as jest.Mock).mockReturnValue(false);
+        (useDevice as jest.Mock).mockImplementation(() => ({ isDesktop: false }));
         store.portfolio.active_positions = [];
         render(mockedOpenPositions());
 
@@ -254,8 +250,7 @@ describe('OpenPositions', () => {
         expect(screen.getByTestId(filter_dropdown)).toHaveTextContent(multipliers);
     });
     it('should set Accumulators filter when it is selected from the dropdown on mobile', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        (isDesktop as jest.Mock).mockReturnValue(false);
+        (useDevice as jest.Mock).mockImplementation(() => ({ isDesktop: false }));
         render(mockedOpenPositions());
 
         expect(screen.getByRole('combobox')).toHaveValue(options);
@@ -272,8 +267,7 @@ describe('OpenPositions', () => {
         expect(screen.getAllByTestId(filter_dropdown)[1]).toHaveTextContent(one_percent);
     });
     it('should set 5% Growth rate filter when it is selected from the dropdown for Accumulators on mobile', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        (isDesktop as jest.Mock).mockReturnValue(false);
+        (useDevice as jest.Mock).mockImplementation(() => ({ isDesktop: false }));
         store.portfolio.is_accumulator = true;
         render(mockedOpenPositions());
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, DataList, usePrevious, SelectNative, Dropdown } from '@deriv/components';
+import { DataList, usePrevious, SelectNative, Dropdown } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
 import {
     isAccumulatorContract,
-    isMobile,
     isMultiplierContract,
     getTotalProfit,
     getGrowthRatePercentage,
@@ -187,6 +187,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
 
     const [has_accumulator_contract, setHasAccumulatorContract] = React.useState(false);
     const [has_multiplier_contract, setHasMultiplierContract] = React.useState(false);
+    const { isDesktop } = useDevice();
     const previous_active_positions = usePrevious(active_positions);
     const contract_types = [
         { text: localize('Options'), is_default: !is_multiplier && !is_accumulator },
@@ -292,6 +293,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                 onClickSell,
                 getPositionById,
                 server_time,
+                isDesktop,
             });
         }
         if (is_accumulator_selected) {
@@ -299,9 +301,10 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
                 currency,
                 onClickSell,
                 getPositionById,
+                isDesktop,
             });
         }
-        return getOpenPositionsColumnsTemplate(currency);
+        return getOpenPositionsColumnsTemplate(currency, isDesktop);
     };
 
     const columns = getColumns();
@@ -336,14 +339,14 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
 
     const getOpenPositionsTable = () => {
         let classname = 'open-positions';
-        let row_size = isMobile() ? 5 : 63;
+        let row_size = isDesktop ? 63 : 5;
 
         if (is_accumulator_selected) {
             classname = 'open-positions-accumulator open-positions';
-            row_size = isMobile() ? 3 : 68;
+            row_size = isDesktop ? 68 : 3;
         } else if (is_multiplier_selected) {
             classname = 'open-positions-multiplier open-positions';
-            row_size = isMobile() ? 3 : 68;
+            row_size = isDesktop ? 68 : 3;
         }
 
         return (
@@ -360,70 +363,66 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     return (
         <React.Fragment>
             <NotificationMessages />
-            {active_positions.length !== 0 && (
-                <React.Fragment>
-                    <DesktopWrapper>
-                        <div
-                            className={
-                                is_accumulator_selected
-                                    ? 'open-positions__accumulator-container'
-                                    : 'open-positions__contract-types-selector-container'
-                            }
-                        >
-                            <div className='open-positions__accumulator-container__contract-dropdown'>
+            {active_positions.length !== 0 &&
+                (isDesktop ? (
+                    <div
+                        className={
+                            is_accumulator_selected
+                                ? 'open-positions__accumulator-container'
+                                : 'open-positions__contract-types-selector-container'
+                        }
+                    >
+                        <div className='open-positions__accumulator-container__contract-dropdown'>
+                            <Dropdown
+                                is_align_text_left
+                                name='contract_types'
+                                list={contract_types_list}
+                                value={contract_type_value}
+                                onChange={e => setContractTypeValue(e.target.value)}
+                            />
+                        </div>
+                        {is_accumulator_selected && !hide_accu_in_dropdown && (
+                            <div className='open-positions__accumulator-container__rates-dropdown'>
                                 <Dropdown
                                     is_align_text_left
-                                    name='contract_types'
-                                    list={contract_types_list}
-                                    value={contract_type_value}
-                                    onChange={e => setContractTypeValue(e.target.value)}
+                                    name='accumulator_rates'
+                                    list={accumulators_rates_list}
+                                    value={accumulator_rate}
+                                    onChange={e => setAccumulatorRate(e.target.value)}
                                 />
                             </div>
-                            {is_accumulator_selected && !hide_accu_in_dropdown && (
-                                <div className='open-positions__accumulator-container__rates-dropdown'>
-                                    <Dropdown
-                                        is_align_text_left
-                                        name='accumulator_rates'
-                                        list={accumulators_rates_list}
-                                        value={accumulator_rate}
-                                        onChange={e => setAccumulatorRate(e.target.value)}
-                                    />
-                                </div>
-                            )}
-                        </div>
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <div
-                            className={
-                                is_accumulator_selected
-                                    ? 'open-positions__accumulator-container--mobile'
-                                    : 'open-positions__contract-types-selector-container--mobile'
+                        )}
+                    </div>
+                ) : (
+                    <div
+                        className={
+                            is_accumulator_selected
+                                ? 'open-positions__accumulator-container--mobile'
+                                : 'open-positions__contract-types-selector-container--mobile'
+                        }
+                    >
+                        <SelectNative
+                            className='open-positions__accumulator-container-mobile__contract-dropdown'
+                            list_items={contract_types_list}
+                            value={contract_type_value}
+                            should_show_empty_option={false}
+                            onChange={(e: React.ChangeEvent<HTMLSelectElement> & { target: { value: string } }) =>
+                                setContractTypeValue(e.target.value)
                             }
-                        >
+                        />
+                        {is_accumulator_selected && !hide_accu_in_dropdown && (
                             <SelectNative
-                                className='open-positions__accumulator-container-mobile__contract-dropdown'
-                                list_items={contract_types_list}
-                                value={contract_type_value}
+                                className='open-positions__accumulator-container--mobile__rates-dropdown'
+                                list_items={accumulators_rates_list}
+                                value={accumulator_rate}
                                 should_show_empty_option={false}
                                 onChange={(e: React.ChangeEvent<HTMLSelectElement> & { target: { value: string } }) =>
-                                    setContractTypeValue(e.target.value)
+                                    setAccumulatorRate(e.target.value)
                                 }
                             />
-                            {is_accumulator_selected && !hide_accu_in_dropdown && (
-                                <SelectNative
-                                    className='open-positions__accumulator-container--mobile__rates-dropdown'
-                                    list_items={accumulators_rates_list}
-                                    value={accumulator_rate}
-                                    should_show_empty_option={false}
-                                    onChange={(
-                                        e: React.ChangeEvent<HTMLSelectElement> & { target: { value: string } }
-                                    ) => setAccumulatorRate(e.target.value)}
-                                />
-                            )}
-                        </div>
-                    </MobileWrapper>
-                </React.Fragment>
-            )}
+                        )}
+                    </div>
+                ))}
             {getOpenPositionsTable()}
         </React.Fragment>
     );

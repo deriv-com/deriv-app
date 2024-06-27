@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { isDesktop, isMobile, mockContractInfo } from '@deriv/shared';
+import { mockContractInfo } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 import { TPortfolioPosition } from '@deriv/stores/types';
 import { OpenPositionsTable, getRowAction, isPurchaseMissing } from '../open-positions-table';
 
@@ -28,10 +29,8 @@ const options_position = {
     entry_spot: 1184.99,
 } as TPortfolioPosition;
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
-    isDesktop: jest.fn(() => true),
+jest.mock('@deriv-com/ui', () => ({
+    useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
 jest.mock('@deriv/components', () => ({
@@ -96,11 +95,6 @@ describe('OpenPositionsTable', () => {
         },
     };
 
-    beforeEach(() => {
-        (isMobile as jest.Mock).mockReturnValue(false);
-        (isDesktop as jest.Mock).mockReturnValue(true);
-    });
-
     it('should render DataTable if active_positions and currency are passed on desktop', () => {
         render(<OpenPositionsTable {...mocked_props} />);
         expect(screen.getByTestId(data_table_test_id)).toHaveClass(mocked_props.className);
@@ -111,14 +105,12 @@ describe('OpenPositionsTable', () => {
         expect(screen.queryByTestId(loading_test_id)).not.toBeInTheDocument();
     });
     it('should render DataList if active_positions and currency are passed on desktop on mobile', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        (isDesktop as jest.Mock).mockReturnValue(false);
+        (useDevice as jest.Mock).mockImplementation(() => ({ isDesktop: false }));
         render(<OpenPositionsTable {...mocked_props} />);
         expect(screen.getByText(data_list)).toBeInTheDocument();
     });
     it('should not render DataList or Loading on mobile if currency is missing', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        (isDesktop as jest.Mock).mockReturnValue(false);
+        (useDevice as jest.Mock).mockImplementation(() => ({ isDesktop: false }));
         render(<OpenPositionsTable {...mocked_props} currency='' />);
         expect(screen.queryByText(data_list)).not.toBeInTheDocument();
         expect(screen.queryByTestId(loading_test_id)).not.toBeInTheDocument();

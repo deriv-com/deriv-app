@@ -18,7 +18,7 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T, id
     const idle_timeout = useRef<NodeJS.Timeout>();
     const { subscribe: _subscribe } = useAuthContext();
 
-    const subscribe = useCallback((...props: TSocketAcceptableProps<T>) => {
+    const subscribe = useCallback(async (...props: TSocketAcceptableProps<T>) => {
         const prop = props?.[0];
         const payload = prop && 'payload' in prop ? (prop.payload as TSocketRequestPayload<T>) : undefined;
 
@@ -32,7 +32,7 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T, id
         }, idle_time);
 
         try {
-            subscriber.current = _subscribe(name, payload)?.subscribe(
+            subscriber.current = await _subscribe(name, payload)?.subscribe(
                 response => {
                     setData(response);
                     setIsLoading(false);

@@ -28,7 +28,7 @@ type AuthContextType = {
               subscribe: (
                   onData: (response: any) => void,
                   onError: (response: any) => void
-              ) => { unsubscribe?: VoidFunction };
+              ) => Promise<{ unsubscribe: () => Promise<void> }>;
           }
         | undefined;
 };

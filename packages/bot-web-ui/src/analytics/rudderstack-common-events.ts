@@ -27,6 +27,14 @@ export const rudderStackSendCloseEvent = ({
     });
 };
 
+export const rudderStackSendRunBotEvent = () => {
+    Analytics.trackEvent('ce_bot_form', {
+        action: ACTION.RUN_BOT,
+        form_name,
+        subpage_name: getSubpageName(),
+    });
+};
+
 export const rudderStackSendUploadStrategyStartEvent = ({ upload_provider, upload_id }: TEvents['ce_bot_form']) => {
     Analytics.trackEvent('ce_bot_form', {
         action: ACTION.UPLOAD_STRATEGY_START,

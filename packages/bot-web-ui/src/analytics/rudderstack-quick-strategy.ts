@@ -36,11 +36,3 @@ export const rudderStackSendQsSelectedTabEvent = ({ quick_strategy_tab }: TEvent
         quick_strategy_tab,
     });
 };
-
-export const rudderStackSendRunBotEvent = () => {
-    Analytics.trackEvent('ce_bot_form', {
-        action: ACTION.RUN_BOT,
-        form_name,
-        subpage_name: getSubpageName(),
-    });
-};

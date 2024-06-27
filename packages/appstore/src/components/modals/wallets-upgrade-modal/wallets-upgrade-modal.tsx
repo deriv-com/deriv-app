@@ -46,7 +46,7 @@ const WalletsUpgradeModal = observer(() => {
                             muted
                             preload='auto'
                             responsive={false}
-                            src='7ed5dfd27cdd290e088be8e91201a7f1'
+                            src='25df7df0d0af48090b086cd6f103d8f3'
                             width='100%'
                         />
                     </div>

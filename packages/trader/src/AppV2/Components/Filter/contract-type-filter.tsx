@@ -1,24 +1,12 @@
 import React from 'react';
 import { ActionSheet, Checkbox, Chip } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
+import { availableContracts } from 'AppV2/Utils/trade-types-utils';
 
 type TContractTypeFilter = {
     contractTypeFilter: string[] | [];
     onApplyContractTypeFilter: (filterValues: string[]) => void;
 };
-
-const availableContracts = [
-    { tradeType: <Localize i18n_default_text='Accumulators' />, id: 'Accumulators' },
-    { tradeType: <Localize i18n_default_text='Vanillas' />, id: 'Vanillas' },
-    { tradeType: <Localize i18n_default_text='Turbos' />, id: 'Turbos' },
-    { tradeType: <Localize i18n_default_text='Multipliers' />, id: 'Multipliers' },
-    { tradeType: <Localize i18n_default_text='Rise/Fall' />, id: 'Rise/Fall' },
-    { tradeType: <Localize i18n_default_text='Higher/Lower' />, id: 'Higher/Lower' },
-    { tradeType: <Localize i18n_default_text='Touch/No touch' />, id: 'Touch/No touch' },
-    { tradeType: <Localize i18n_default_text='Matches/Differs' />, id: 'Matches/Differs' },
-    { tradeType: <Localize i18n_default_text='Even/Odd' />, id: 'Even/Odd' },
-    { tradeType: <Localize i18n_default_text='Over/Under' />, id: 'Over/Under' },
-];
 
 const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: TContractTypeFilter) => {
     const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);

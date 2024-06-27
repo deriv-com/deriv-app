@@ -62,20 +62,20 @@ export default class AppStore {
 
     throwErrorForExceptionCountries = (client_country: string) => {
         const { client, common } = this.core;
-        const not_allowed_clients_country = [
-            ['au', 'Australian'],
-            ['no', 'Norwegian'],
-            ['jp', 'Japanese'],
-            ['sg', 'Singaporean'],
-        ];
-        not_allowed_clients_country.map(country => {
-            if (country[0] === client_country) {
-                return showDigitalOptionsUnavailableError(
-                    common.showError,
-                    this.getErrorForEuClients(client.is_logged_in, country[1])
-                );
-            }
-        });
+
+        const not_allowed_clients_country: { [key: string]: string } = {
+            au: 'Australian',
+            no: 'Norwegian',
+            jp: 'Japanese',
+            sg: 'Singaporean',
+        };
+
+        if (Object.prototype.hasOwnProperty.call(not_allowed_clients_country, client_country)) {
+            return showDigitalOptionsUnavailableError(
+                common.showError,
+                this.getErrorForEuClients(client.is_logged_in, not_allowed_clients_country[client_country])
+            );
+        }
     };
 
     handleErrorForEu = (show_default_error = false) => {

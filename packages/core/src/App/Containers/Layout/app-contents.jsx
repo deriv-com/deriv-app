@@ -37,9 +37,8 @@ const AppContents = observer(({ children }) => {
 
     const { is_dtrader_v2_enabled } = useFeatureFlags();
     const { pathname } = useLocation();
-    const { is_mobile } = useDevice();
 
-    const isDTraderV2 = is_dtrader_v2_enabled && is_mobile && pathname.startsWith(routes.trade);
+    const isDTraderV2 = is_dtrader_v2_enabled && isMobile && pathname.startsWith(routes.trade);
 
     const tracking_status = tracking_status_cookie.get(TRACKING_STATUS_KEY);
 

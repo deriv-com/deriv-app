@@ -15,17 +15,14 @@ import './AccountsList.scss';
 type TProps = {
     accountsActiveTabIndex?: number;
     balance: TSubscribedBalance['balance'];
-    setAccountsActiveTabIndex?: React.Dispatch<React.SetStateAction<number>>;
+    onTabClickHandler?: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, balance, setAccountsActiveTabIndex }) => {
+const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, balance, onTabClickHandler }) => {
     const { isMobile } = useDevice();
     const { t } = useTranslation();
 
-    const onChangeTabHandler = useCallback(
-        (activeTab: number) => setAccountsActiveTabIndex?.(activeTab),
-        [setAccountsActiveTabIndex]
-    );
+    const onChangeTabHandler = useCallback((activeTab: number) => onTabClickHandler?.(activeTab), [onTabClickHandler]);
 
     if (isMobile) {
         return (

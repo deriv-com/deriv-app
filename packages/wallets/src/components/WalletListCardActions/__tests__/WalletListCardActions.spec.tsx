@@ -147,7 +147,7 @@ describe('WalletListCardActions', () => {
         expect(history.location.pathname).toBe('/wallet/reset-balance');
     });
 
-    it('should pass `accountsActiveTabIndex` in history state, when we redirect the user to the new page in mobile view for REAL wallet', () => {
+    it('passes `accountsActiveTabIndex` in history state, when we redirect the user to the new page in mobile view for REAL wallet', () => {
         const realWalletButtons = ['deposit', 'withdrawal', 'account-transfer'];
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: {
@@ -172,7 +172,7 @@ describe('WalletListCardActions', () => {
         });
     });
 
-    it('should pass `accountsActiveTabIndex` in history state, when we redirect the user to the new page in mobile view for DEMO wallet', () => {
+    it('passes `accountsActiveTabIndex` in history state, when we redirect the user to the new page in mobile view for DEMO wallet', () => {
         const demoWalletButtons = ['reset-balance', 'account-transfer'];
         (useActiveWalletAccount as jest.Mock).mockReturnValue({
             data: {

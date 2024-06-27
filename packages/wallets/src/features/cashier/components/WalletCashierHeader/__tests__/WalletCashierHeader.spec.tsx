@@ -116,7 +116,7 @@ describe('<WalletCashierHeader/>', () => {
         expect(screen.getByText('Transactions')).toBeInTheDocument();
     });
 
-    it('should', () => {
+    it('redirects to the root route with `accountsActiveTabIndex` history state, when the user closes cashier overlay', () => {
         render(<WalletCashierHeader hideWalletDetails={false} />, { wrapper });
 
         const closeBtn = screen.getByTestId('dt_close_btn');

@@ -71,7 +71,7 @@ const WalletsCarousel: React.FC<TSubscribedBalance> = ({ balance }) => {
             <AccountsList
                 accountsActiveTabIndex={accountsActiveTabIndex}
                 balance={balance}
-                setAccountsActiveTabIndex={setAccountsActiveTabIndex}
+                onTabClickHandler={setAccountsActiveTabIndex}
             />
         </div>
     );

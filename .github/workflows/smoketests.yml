@@ -25,7 +25,7 @@ jobs:
     - name: Set env vars
       id: set-env-vars
       run: |
-        if [[ "${{ github.event.issue.labels.*.name }}" == *"dbot"* ]]; then
+        if [[ "${{ github.event.issue.labels.*.name }}" == *"Bot"* ]]; then
           echo "TEST_SUITE=dbot" >> $GITHUB_ENV
         elif [[ "${{ github.event.issue.labels.*.name }}" == *"P2P"* ]]; then
           echo "TEST_SUITE=P2P" >> $GITHUB_ENV

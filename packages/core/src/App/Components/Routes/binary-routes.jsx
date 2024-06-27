@@ -5,7 +5,6 @@ import getRoutesConfig from 'App/Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
-import { routes } from '@deriv/shared';
 
 const BinaryRoutes = observer(props => {
     const { ui, gtm } = useStore();

@@ -5,7 +5,6 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TradersHubOnboarding from '../traders-hub-onboarding';
-import { routes } from '@deriv/shared';
 import { TCoreStores } from '@deriv/stores/types';
 
 describe('TradersHubOnboarding', () => {

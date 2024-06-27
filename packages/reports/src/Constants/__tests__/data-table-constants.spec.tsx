@@ -66,7 +66,7 @@ jest.mock('@deriv/components', () => ({
 
 describe('getStatementTableColumnsTemplate', () => {
     const currency = 'USD';
-    const columns = getStatementTableColumnsTemplate(currency);
+    const columns = getStatementTableColumnsTemplate(currency, true);
 
     it('should return the correct number of columns', () => {
         expect(columns).toHaveLength(7);

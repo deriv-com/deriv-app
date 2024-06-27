@@ -44,7 +44,7 @@ export const IdvDocSubmitOnSignup = ({
     residence_list,
 }: TIdvDocSubmitOnSignup) => {
     const { localize } = useTranslations();
-    const side_note_image = <DerivLightNameDobPoiIcon />;
+    const side_note_image = <DerivLightNameDobPoiIcon height='195px' width='285px' />;
     const validateFields = (values: TIDVDocFormType) => {
         const errors: FormikErrors<Omit<TIDVDocFormType, 'document_type'> & { document_type?: string }> = {};
         const { document_type, document_number, document_additional } = values;

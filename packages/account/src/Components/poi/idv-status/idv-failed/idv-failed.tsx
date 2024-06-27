@@ -86,7 +86,7 @@ const IdvFailed = ({
 
     const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig>({
         required_fields: [],
-        side_note_image: <DerivLightNameDobPoiIcon />,
+        side_note_image: <DerivLightNameDobPoiIcon height='195px' width='285px' />,
         failure_message: null,
         inline_note_text: null,
     });

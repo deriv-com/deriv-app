@@ -23,7 +23,7 @@ const CommonMistakeExamplePartials = ({ description, image }: TCommonMistakeExam
     <div className='common-mistake-examples__content-layout'>
         {image}
         <div className='common-mistake-examples__content-description'>
-            <LegacyLossIcon />
+            <LegacyLossIcon iconSize='xs' />
             <Text size='xxxs' line_height='s' role='document'>
                 {description}
             </Text>

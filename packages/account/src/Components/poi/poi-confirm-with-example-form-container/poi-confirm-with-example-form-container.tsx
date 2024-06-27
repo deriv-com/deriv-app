@@ -49,7 +49,7 @@ const PoiConfirmWithExampleFormContainer = ({
         api_error: '',
     });
 
-    const side_note_image = <DerivLightNameDobPoiIcon />;
+    const side_note_image = <DerivLightNameDobPoiIcon height='195px' width='285px' />;
 
     React.useEffect(() => {
         const initializeFormValues = () => {

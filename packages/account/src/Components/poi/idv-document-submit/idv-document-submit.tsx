@@ -55,7 +55,7 @@ const IdvDocumentSubmit = observer(
         const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
         const shouldSkipIdv = (document_id?: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;
         const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
-        const side_note_image = <DerivLightNameDobPoiIcon />;
+        const side_note_image = <DerivLightNameDobPoiIcon height='195px' width='285px' />;
 
         const form_initial_values = filterObjProperties(account_settings, visible_settings) as {
             [Property in keyof TConfirmPersonalDetailsForm]: string;

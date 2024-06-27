@@ -8,9 +8,10 @@ on:
         type: choice
         description: Run smoke or full test suite
         options:
-        - P2P, Wallets
+        - P2P
         - dbot, Traders
         - Traders
+        - Wallets
         - dbot
       idraft:
         type: choice

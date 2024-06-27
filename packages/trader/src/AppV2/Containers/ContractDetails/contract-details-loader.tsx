@@ -28,7 +28,21 @@ const ContractDetailsLoader = () => {
             </div>
             <div className='skeleton-box__details'>
                 <Skeleton width='136px' height='24px' />
-                <Skeleton paragraph={{ rows: 2 }} height='18px' />
+                <div>
+                    {Array.from(new Array(2)).map((_, idx) => {
+                        return (
+                            <div key={idx} className='skeleton-box__details-row'>
+                                <Skeleton width='88px' height='18px' />
+                                <div className='skeleton-box__details-column'>
+                                    <Skeleton width='88px' height='22px' />
+                                    {Array.from(new Array(idx === 0 ? 1 : 2)).map((_, idx) => (
+                                        <Skeleton key={idx} width='72px' height='16px' />
+                                    ))}
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
         </div>
     );

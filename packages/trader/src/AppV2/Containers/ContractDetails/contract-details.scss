@@ -24,7 +24,6 @@
         flex-direction: column;
         gap: var(--semantic-spacing-general-sm);
         height: 100%;
-        overflow-y: auto; // to remove later
 
         .skeleton-box,
         .skeleton-box__chart,
@@ -54,6 +53,12 @@
                         border-bottom: 1px solid var(--core-color-solid-slate-75);
                         padding-bottom: var(--semantic-spacing-general-sm);
                     }
+                }
+                &-column {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
+                    gap: var(--semantic-spacing-general-2xs);
                 }
             }
         }

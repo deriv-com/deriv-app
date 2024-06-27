@@ -68,18 +68,18 @@ $TABS_HEIGHT: var(--core-size-2400);
     display: flex;
     flex-direction: column;
 
-    .skeleton {
-        &-filters,
-        &-total-pnl-or-date {
+    .skeleton-box {
+        &__filters,
+        &__total-pnl-or-date {
             display: flex;
             gap: var(--semantic-spacing-gap-md);
             margin: var(--semantic-spacing-gap-md) 0;
             padding: 0 var(--semantic-spacing-gap-md);
         }
-        &-total-pnl-or-date {
+        &__total-pnl-or-date {
             justify-content: space-between;
         }
-        &-contract-cards {
+        &__contract-cards {
             width: 100%;
             display: flex;
             flex-direction: column;

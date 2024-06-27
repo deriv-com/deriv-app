@@ -7,6 +7,11 @@ import { RouteComponentProps, Router } from 'react-router-dom';
 import { MemoryHistory, createMemoryHistory } from 'history';
 import { routes } from '@deriv/shared';
 
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: false })),
+}));
+
 describe('<TradeFooterExtensions>', () => {
     let mock_store: ReturnType<typeof mockStore>,
         router_prop: Partial<RouteComponentProps>,

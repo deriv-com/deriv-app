@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { toJS } from 'mobx';
-import { DesktopWrapper, MobileWrapper, Popover, Text } from '@deriv/components';
+import { Popover, Text } from '@deriv/components';
 import { TickSpotData } from '@deriv/api-types';
 import { getMarketNamesMap, useIsMounted, isContractElapsed, TContractStore } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
@@ -9,6 +9,7 @@ import { Bounce, SlideIn } from 'App/Components/Animations';
 import { DigitSpot, LastDigitPrediction } from '../LastDigitPrediction';
 import 'Sass/app/modules/contract/digits.scss';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { useDevice } from '@deriv-com/ui';
 
 type TTraderStore = ReturnType<typeof useTraderStore>;
 type TOnChangeStatus = { status: string | null | undefined; current_tick: number | null };
@@ -127,6 +128,7 @@ const Digits = React.memo((props: TDigits) => {
     const [is_won, setIsWon] = React.useState<boolean>();
     const [is_lost, setIsLost] = React.useState<boolean>();
     const isMounted = useIsMounted();
+    const { isMobile } = useDevice();
 
     const { contract_info, digits_array, is_digit_contract, is_trade_page, underlying } = props;
 
@@ -157,55 +159,55 @@ const Digits = React.memo((props: TDigits) => {
         );
     };
 
-    return (
-        <React.Fragment>
-            <DesktopWrapper>
-                <SlideIn
-                    is_visible={(digits_array || is_digit_contract) && isMounted()}
-                    className='digits__container'
-                    keyname='digits'
-                    type='bottom'
+    if (isMobile) {
+        return (
+            <div className='digits__container'>
+                <Bounce
+                    is_visible={!!(is_digit_contract && status && spot && !!contract_info.entry_tick)}
+                    className={classNames('digits__digit-spot', {
+                        'digits__digit-spot--is-trading': is_trade_page,
+                    })}
+                    keyname='digits__digit-spot'
                 >
                     {is_trade_page && (
-                        <div className='digits__tooltip-container'>
-                            <Popover
-                                alignment='top'
-                                classNameBubble='digits__tooltip-bubble'
-                                icon='info'
-                                id='dt_last_digits_info_tooltip'
-                                margin={4}
-                                message={getPopoverMessage()}
-                            />
-                        </div>
+                        <Text size='xs' align='center' className='digits__digit-spot-value'>
+                            <Localize i18n_default_text='Tick {{current_tick}} - ' values={{ current_tick }} />
+                        </Text>
                     )}
-                    <DigitsWrapper {...props} />
-                </SlideIn>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <div className='digits__container'>
-                    <Bounce
-                        is_visible={!!(is_digit_contract && status && spot && !!contract_info.entry_tick)}
-                        className={classNames('digits__digit-spot', {
-                            'digits__digit-spot--is-trading': is_trade_page,
-                        })}
-                        keyname='digits__digit-spot'
-                    >
-                        {is_trade_page && (
-                            <Text size='xs' align='center' className='digits__digit-spot-value'>
-                                <Localize i18n_default_text='Tick {{current_tick}} - ' values={{ current_tick }} />
-                            </Text>
-                        )}
-                        <DigitSpot
-                            current_spot={spot}
-                            is_lost={is_lost}
-                            is_selected_winning={is_selected_winning}
-                            is_won={is_won}
-                        />
-                    </Bounce>
-                    <DigitsWrapper {...props} onChangeStatus={onChangeStatus} onLastDigitSpot={onLastDigitSpot} />
+                    <DigitSpot
+                        current_spot={spot}
+                        is_lost={is_lost}
+                        is_selected_winning={is_selected_winning}
+                        is_won={is_won}
+                    />
+                </Bounce>
+                <DigitsWrapper {...props} onChangeStatus={onChangeStatus} onLastDigitSpot={onLastDigitSpot} />
+            </div>
+        );
+    }
+
+    return (
+        <SlideIn
+            is_visible={(digits_array || is_digit_contract) && isMounted()}
+            className='digits__container'
+            keyname='digits'
+            type='bottom'
+        >
+            {is_trade_page && (
+                <div className='digits__tooltip-container'>
+                    <Popover
+                        alignment='top'
+                        classNameBubble='digits__tooltip-bubble'
+                        icon='info'
+                        id='dt_last_digits_info_tooltip'
+                        margin={4}
+                        message={getPopoverMessage()}
+                        zIndex='100'
+                    />
                 </div>
-            </MobileWrapper>
-        </React.Fragment>
+            )}
+            <DigitsWrapper {...props} />
+        </SlideIn>
     );
 });
 

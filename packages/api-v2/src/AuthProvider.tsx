@@ -23,14 +23,12 @@ type AuthContextType = {
     subscribe: <T extends TSocketSubscribableEndpointNames>(
         name: T,
         payload?: TSocketRequestPayload<T>
-    ) =>
-        | {
-              subscribe: (
-                  onData: (response: any) => void,
-                  onError: (response: any) => void
-              ) => Promise<{ unsubscribe: () => Promise<void> }>;
-          }
-        | undefined;
+    ) => {
+        subscribe: (
+            onData: (response: any) => void,
+            onError: (response: any) => void
+        ) => Promise<{ unsubscribe: () => Promise<void> }>;
+    };
 };
 
 type LoginToken = {

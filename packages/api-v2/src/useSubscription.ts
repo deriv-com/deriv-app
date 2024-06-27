@@ -28,11 +28,10 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T, id
 
         idle_timeout.current = setTimeout(() => {
             setIdle(true);
-            setIsLoading(false);
         }, idle_time);
 
         try {
-            subscriber.current = await _subscribe(name, payload)?.subscribe(
+            subscriber.current = await _subscribe(name, payload).subscribe(
                 response => {
                     setData(response);
                     setIsLoading(false);

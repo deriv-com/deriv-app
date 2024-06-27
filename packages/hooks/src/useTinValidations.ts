@@ -1,17 +1,21 @@
-import { useQuery } from '@deriv/api';
-import { TSocketRequestQueryOptions } from '@deriv/api/types';
+import { useMutation } from '@deriv/api';
+import { useCallback } from 'react';
 
-const useTinValidations = (tax_residence: string, options?: TSocketRequestQueryOptions<'tin_validations'>) => {
-    const { data, ...rest } = useQuery('tin_validations', {
-        payload: { tax_residence },
-        options: {
-            enabled: !!tax_residence,
-            staleTime: Infinity,
-            ...options,
-        },
-    });
+const useTinValidations = () => {
+    const { data, mutate: _mutate, ...rest } = useMutation('tin_validations');
 
-    return { ...rest, data: data?.tin_validations ?? [] };
+        const mutate = useCallback(
+            (tax_residence:string) => _mutate({ payload: 
+                { tax_residence }
+             }),
+            [_mutate]
+        );
+
+        return {
+            tin_validations: data?.tin_validations,
+            mutate,
+            ...rest,
+        };
 };
 
 export default useTinValidations;

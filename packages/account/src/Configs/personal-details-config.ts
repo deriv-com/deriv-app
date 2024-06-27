@@ -83,10 +83,6 @@ export const personal_details_config = ({
             default_value: false,
             supported_in: ['svg'],
         },
-        crs_confirmation: {
-            default_value: false,
-            supported_in: ['svg'],
-        },
     };
 
     if (real_account_signup_target !== 'maltainvest') {

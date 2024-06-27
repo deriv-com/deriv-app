@@ -38,34 +38,6 @@ module.exports = function (env) {
             moduleIds: 'named',
             minimize: IS_RELEASE,
             minimizer: MINIMIZERS,
-            splitChunks: {
-                automaticNameDelimiter: '~',
-                cacheGroups: {
-                    default: {
-                        minChunks: 2,
-                        priority: -20,
-                        reuseExistingChunk: true,
-                    },
-                    defaultVendors: {
-                        idHint: 'vendors',
-                        priority: -10,
-                        test: /[\\/]node_modules[\\/]/,
-                    },
-                    assets: {
-                        chunks: 'all',
-                        name: 'assets',
-                        test: /[\\/]Assets[\\/]/,
-                        reuseExistingChunk: true,
-                        idHint: 'assets',
-                    },
-                },
-                chunks: 'all',
-                maxAsyncRequests: 30,
-                maxInitialRequests: 3,
-                minChunks: 1,
-                minSize: 102400,
-                minSizeReduction: 102400,
-            },
         },
         output: {
             filename: 'cfd/js/[name].js',

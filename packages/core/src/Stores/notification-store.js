@@ -41,6 +41,7 @@ import {
     poi_notifications,
 } from './Helpers/client-notifications';
 import BaseStore from './base-store';
+import { Analytics } from '@deriv-com/analytics';
 
 export default class NotificationStore extends BaseStore {
     is_notifications_visible = false;
@@ -1588,6 +1589,12 @@ export default class NotificationStore extends BaseStore {
     }
 
     toggleNotificationsModal() {
+        Analytics.trackEvent('ce_notification_form', {
+            action: this.is_notifications_visible ? 'close' : 'open',
+            form_name: 'ce_notification_form',
+            notification_num: this.notifications.length,
+        });
+
         this.is_notifications_visible = !this.is_notifications_visible;
     }
 

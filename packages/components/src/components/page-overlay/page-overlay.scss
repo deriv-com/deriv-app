@@ -96,6 +96,8 @@
 
         @include mobile-or-tablet-screen {
             width: 100%;
+            display: flex;
+            justify-content: center;
         }
     }
     @include mobile-or-tablet-screen {

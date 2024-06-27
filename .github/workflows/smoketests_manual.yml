@@ -41,6 +41,7 @@ jobs:
   trigger-workflow:
     runs-on: ubuntu-latest
     steps:
+
     - name: Set env vars
       id: set-env-vars
       run: |

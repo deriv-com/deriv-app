@@ -16,9 +16,7 @@ import SetCurrency from './set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
 import { Analytics } from '@deriv-com/analytics';
-import 'Sass/details-form.scss';
 import 'Sass/account-wizard.scss';
-import 'Sass/real-account-signup.scss';
 
 const AccountWizard = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-wizard-modal" */ './account-wizard.jsx'))
@@ -280,10 +278,10 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
     );
 
     React.useEffect(() => {
-        if (is_real_acc_signup_on) {
+        if (is_real_acc_signup_on && real_account_signup_target === 'svg') {
             trackEvent({ action: 'open' });
         }
-    }, [is_real_acc_signup_on, trackEvent]);
+    }, [is_real_acc_signup_on, real_account_signup_target, trackEvent]);
 
     const getModalHeight = () => {
         if (is_from_restricted_country) return '304px';

@@ -165,7 +165,6 @@
         &-extensions {
             display: flex;
             align-items: center;
-            overflow: hidden;
         }
 
         &-logo {
@@ -284,7 +283,7 @@
         height: 100%;
         align-self: center;
 
-        @media (max-width: 520px) {
+        @include mobile-or-tablet-screen {
             display: none;
         }
     }
@@ -427,5 +426,17 @@
             justify-content: center;
             gap: var(--semantic-spacing-gap-sm);
         }
+    }
+}
+
+.contract-details-header-v2 {
+    display: flex;
+    justify-content: center;
+    height: var(--core-spacing-2400);
+    padding: var(--core-spacing-600) var(--core-spacing-50);
+    .arrow {
+        position: absolute;
+        cursor: pointer;
+        left: var(--core-size-1200);
     }
 }

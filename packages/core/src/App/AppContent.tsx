@@ -1,10 +1,10 @@
 import React from 'react';
 import { useRemoteConfig } from '@deriv/api';
-import { DesktopWrapper } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 import BinaryBotIFrame from 'Modules/BinaryBotIFrame';
+import P2PIFrame from 'Modules/P2PIFrame';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import AppToastMessages from './Containers/app-toast-messages.jsx';
@@ -14,6 +14,7 @@ import Header from './Containers/Layout/header';
 import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
 import Devtools from './Devtools';
+import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 import initDatadog from '../Utils/Datadog';
 import { ThemeProvider } from '@deriv-com/quill-ui';
 import { useGrowthbookIsOn } from '@deriv/hooks';
@@ -59,6 +60,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
 
     return (
         <ThemeProvider theme={store.ui.is_dark_mode_on ? 'dark' : 'light'}>
+            <LandscapeBlocker />
             <Header />
             <ErrorBoundary root_store={store}>
                 <AppContents>
@@ -66,14 +68,13 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
                     <Routes passthrough={passthrough} />
                 </AppContents>
             </ErrorBoundary>
-            <DesktopWrapper>
-                <Footer />
-            </DesktopWrapper>
+            <Footer />
             <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>
             <SmartTraderIFrame />
             <BinaryBotIFrame />
+            <P2PIFrame />
             <AppToastMessages />
             <Devtools />
         </ThemeProvider>

@@ -4,7 +4,7 @@ import { useStore } from '@deriv/stores';
 import { ActiveSymbols } from '@deriv/api-types';
 
 const useActiveSymbols = () => {
-    const [activeSymbols, setActiveSymbols] = useState<ActiveSymbols[] | []>([]);
+    const [activeSymbols, setActiveSymbols] = useState<ActiveSymbols | []>([]);
     const { client } = useStore();
     const { is_logged_in } = client;
 

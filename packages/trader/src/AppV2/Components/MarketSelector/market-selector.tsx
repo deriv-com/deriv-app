@@ -4,7 +4,7 @@ import { observer } from '@deriv/stores';
 import React, { useState } from 'react';
 import MarketSelectorSearchField from '../MarketSelectorSearchField';
 import { Localize } from '@deriv/translations';
-import MarketCategoriesTabs from '../MarketCategoriesTabs';
+import MarketCategories from '../MarketCategories';
 import SymbolNotFound from '../SymbolNotFound';
 import clsx from 'clsx';
 
@@ -17,7 +17,7 @@ const MarketSelector = observer(() => {
         <React.Fragment>
             <button onClick={() => setIsOpen(!isOpen)}>button</button>
             <ActionSheet.Root isOpen={isOpen}>
-                <ActionSheet.Portal>
+                <ActionSheet.Portal shouldCloseOnDrag>
                     <MarketSelectorSearchField isSearching={isSearching} setIsSearching={setIsSearching} />
                     <Tab.Container
                         contentStyle='hug'
@@ -36,7 +36,7 @@ const MarketSelector = observer(() => {
                             </Text>
                         ) : (
                             // <SymbolNotFound searchTerm='yello' />
-                            <MarketCategoriesTabs />
+                            <MarketCategories />
                         )}
                     </Tab.Container>
                 </ActionSheet.Portal>

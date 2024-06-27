@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeLazyLoader, moduleLoader } from '@deriv/shared';
+import { makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 
 const App = makeLazyLoader(
@@ -20,7 +20,42 @@ const App = makeLazyLoader(
             }
             return import(/* webpackChunkName: "trader-app", webpackPreload: true */ './App/index');
         }),
-    () => <Loading />
+    () => {
+        const getDTraderV2Loader = () => {
+            if (window.location.pathname === routes.trade)
+                return (
+                    <>
+                        {Array.from(new Array(6)).map((_, idx) => (
+                            <div key={idx}>TRADE PAGE LOADER</div>
+                        ))}
+                    </>
+                );
+            if (window.location.pathname === routes.trader_positions)
+                return (
+                    <>
+                        {Array.from(new Array(6)).map((_, idx) => (
+                            <div key={idx}>OPEN POSITIONS PAGE LOADER</div>
+                        ))}
+                    </>
+                );
+            if (window.location.pathname.startsWith('/contract/'))
+                return (
+                    <>
+                        {Array.from(new Array(6)).map((_, idx) => (
+                            <div key={idx}>C.DETAILS PAGE LOADER</div>
+                        ))}
+                    </>
+                );
+            return <Loading />;
+        };
+        const getLoader = () => {
+            const should_show_dtrader_v2_loader =
+                JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '').data.dtrader_v2 && window.innerWidth < 600;
+            if (should_show_dtrader_v2_loader) return getDTraderV2Loader();
+            return <Loading />;
+        };
+        return getLoader();
+    }
 )();
 
 export default App;

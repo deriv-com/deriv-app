@@ -12,7 +12,6 @@
         position: relative;
         min-width: 32.8rem;
         min-height: 50rem;
-        margin: auto;
         @include mobile {
             height: fit-content;
         }

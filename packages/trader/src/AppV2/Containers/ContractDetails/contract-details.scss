@@ -34,7 +34,7 @@
             background-color: var(--component-modal-bg);
 
             &__chart {
-                height: 360px;
+                min-height: 360px;
                 padding: var(--semantic-spacing-general-sm);
             }
             &__details {

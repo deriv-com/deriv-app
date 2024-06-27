@@ -50,7 +50,7 @@
                 }
             }
             &__chart {
-                height: 400px;
+                min-height: 400px;
                 padding: var(--semantic-spacing-general-sm);
             }
         }

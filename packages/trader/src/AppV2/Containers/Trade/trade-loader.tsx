@@ -6,25 +6,25 @@ const TradeLoader = () => {
         <div className='trade-loader'>
             <div className='skeleton-box__trade-types'>
                 {Array.from(new Array(6)).map((_, idx) => (
-                    <Skeleton key={idx} width='88px' height='32px' />
+                    <Skeleton key={idx} width={88} height={32} />
                 ))}
             </div>
             <div className='skeleton-box__market'>
-                <Skeleton width='200px' height='42px' />
+                <Skeleton width={200} height={42} />
             </div>
             <div className='skeleton-box__trade-params'>
                 <div className='skeleton-box__trade-params-row'>
-                    <Skeleton width='96px' height='24px' />
-                    <Skeleton width='96px' height='32px' />
+                    <Skeleton width={96} height={24} />
+                    <Skeleton width={96} height={32} />
                 </div>
                 <div className='skeleton-box__trade-params-column'>
                     {Array.from(new Array(3)).map((_, idx) => (
-                        <Skeleton key={idx} height='56px' />
+                        <Skeleton key={idx} height={56} />
                     ))}
                 </div>
             </div>
             <div className='skeleton-box__chart'>
-                <Skeleton height='384px' />
+                <Skeleton />
             </div>
         </div>
     );

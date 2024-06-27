@@ -6,14 +6,14 @@ const ContractCardLoader = () => (
         <div className='details'>
             <Skeleton variant={VARIANT.ICON} />
             <div className='title'>
-                <Skeleton width='88px' height='18px' />
-                <Skeleton width='128px' height='18px' />
+                <Skeleton width={88} height={18} />
+                <Skeleton width={128} height={18} />
             </div>
-            <Skeleton className='stake' width='56px' height='18px' />
+            <Skeleton className='stake' width={56} height={18} />
         </div>
         <div className='status-and-profit'>
-            <Skeleton width='96px' height='24px' />
-            <Skeleton width='72px' height='22px' />
+            <Skeleton width={96} height={24} />
+            <Skeleton width={72} height={22} />
         </div>
     </div>
 );

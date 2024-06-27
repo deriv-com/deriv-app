@@ -11,6 +11,7 @@ const Trade = observer(() => {
     React.useEffect(() => {
         onMount();
         return onUnmount;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return <BottomNav>{active_symbols.length ? <Text size='sm'>Trade</Text> : <TradeLoader />}</BottomNav>;

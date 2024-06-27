@@ -27,6 +27,14 @@
     &__button {
         padding: var(--component-actionSheet-spacing-padding-lg);
     }
+    // TODO: temporary placeholder
+    &__video-placeholder {
+        height: 90px;
+        border-top: 1px solid var(--core-color-opacity-black-100);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 .description {

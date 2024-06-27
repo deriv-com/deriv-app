@@ -4,17 +4,23 @@ import { Localize } from '@deriv/translations';
 import { LabelPairedPresentationScreenSmRegularIcon } from '@deriv/quill-icons';
 import { availableContracts, CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
 import TradeDescription from './trade-description';
+import Definition from './definition';
 
 type TGuide = {
     is_minimalistic_look?: boolean;
 };
 
 const Guide = ({ is_minimalistic_look = false }: TGuide) => {
-    const [is_action_sheet_opened, setIsActionSheetOpened] = React.useState(false);
+    const [is_description_opened, setIsDescriptionOpened] = React.useState(false);
     const [selected_contract_type, setSelectedContractType] = React.useState(CONTRACT_LIST.ACCUMULATORS);
+    const [selected_definition, setSelectedDefinition] = React.useState<string>();
 
     const onChipSelect = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         setSelectedContractType((e.target as EventTarget & HTMLButtonElement).textContent ?? '');
+    };
+
+    const onDefinitionClick = (definition: string) => {
+        setSelectedDefinition(definition);
     };
 
     return (
@@ -27,11 +33,11 @@ const Guide = ({ is_minimalistic_look = false }: TGuide) => {
                 label={is_minimalistic_look ? '' : <Localize i18n_default_text='Guide' />}
                 icon={<LabelPairedPresentationScreenSmRegularIcon />}
                 iconPosition='start'
-                onClick={() => setIsActionSheetOpened(true)}
+                onClick={() => setIsDescriptionOpened(true)}
             />
             <ActionSheet.Root
-                isOpen={is_action_sheet_opened}
-                onClose={() => setIsActionSheetOpened(false)}
+                isOpen={is_description_opened}
+                onClose={() => setIsDescriptionOpened(false)}
                 position='left'
             >
                 <ActionSheet.Portal shouldCloseOnDrag>
@@ -51,19 +57,28 @@ const Guide = ({ is_minimalistic_look = false }: TGuide) => {
                             ))}
                         </div>
                         <div className='guide__contract-description'>
-                            <TradeDescription contract_type={selected_contract_type} />
+                            <TradeDescription
+                                contract_type={selected_contract_type}
+                                onDefinitionClick={onDefinitionClick}
+                            />
+                            <div className='guide__video-placeholder'>
+                                <Text>Coolest video ever</Text>
+                            </div>
                         </div>
                     </ActionSheet.Content>
                     <ActionSheet.Footer
                         alignment='vertical'
                         primaryAction={{
                             content: <Localize i18n_default_text='Got it' />,
-                            onAction: () => setIsActionSheetOpened(false),
+                            onAction: () => setIsDescriptionOpened(false),
                         }}
                         className='guide__button'
                     />
                 </ActionSheet.Portal>
             </ActionSheet.Root>
+            {selected_definition && (
+                <Definition definition={selected_definition} onClose={() => setSelectedDefinition('')} />
+            )}
         </React.Fragment>
     );
 };

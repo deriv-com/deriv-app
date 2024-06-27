@@ -4,12 +4,18 @@ import { Localize } from '@deriv/translations';
 import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
 import AccumulatorsTradeDescription from './Description/accumulators-trade-description';
 
-const TradeDescription = ({ contract_type }: { contract_type: string }) => {
+const TradeDescription = ({
+    contract_type,
+    onDefinitionClick,
+}: {
+    contract_type: string;
+    onDefinitionClick: (definition: string) => void;
+}) => {
     let TradeTypeTemplate;
     if (contract_type) {
         switch (contract_type) {
             case CONTRACT_LIST.ACCUMULATORS:
-                TradeTypeTemplate = <AccumulatorsTradeDescription />;
+                TradeTypeTemplate = <AccumulatorsTradeDescription onDefinitionClick={onDefinitionClick} />;
                 break;
             default:
                 TradeTypeTemplate = (

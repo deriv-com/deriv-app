@@ -26,3 +26,13 @@ export const availableContracts = [
     { tradeType: <Localize i18n_default_text='Even/Odd' />, id: CONTRACT_LIST['EVEN/ODD'] },
     { tradeType: <Localize i18n_default_text='Over/Under' />, id: CONTRACT_LIST['OVER/UNDER'] },
 ];
+
+// TODO: add Localize?
+export const GLOSSARY = {
+    GROWTH_RATE: 'Growth rate',
+    PAYOUT: 'Payout',
+    PREVIOUS_SPOT_PRICE: 'Previous spot price',
+    RANGE: 'Range',
+    SLIPPAGE_RISK: 'Slippage risk',
+    TAKE_PROFIT: 'Take profit',
+};

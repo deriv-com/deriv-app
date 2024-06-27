@@ -11,4 +11,8 @@
             }
         }
     }
+    &-paragraph {
+        display: flex;
+        flex-direction: column;
+    }
 }

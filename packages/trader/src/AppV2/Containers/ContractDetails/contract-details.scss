@@ -20,6 +20,43 @@
     &-loader {
         background-color: var(--core-color-solid-slate-75);
         padding: var(--core-spacing-800) var(--core-spacing-400) var(--core-spacing-400);
+        display: flex;
+        flex-direction: column;
+        gap: var(--semantic-spacing-general-sm);
+        height: 100%;
+        overflow-y: auto; // to remove later
+
+        .skeleton-box,
+        .skeleton-box__chart,
+        .skeleton-box__details {
+            display: flex;
+            flex-direction: column;
+            border-radius: var(--semantic-borderRadius-md);
+            background-color: var(--component-modal-bg);
+
+            &__chart {
+                height: 360px;
+                padding: var(--semantic-spacing-general-sm);
+            }
+            &__details {
+                padding: var(--semantic-spacing-general-md);
+                gap: var(--semantic-spacing-general-md);
+
+                &-row {
+                    display: flex;
+                    justify-content: space-between;
+                    padding-top: var(--semantic-spacing-general-sm);
+
+                    &:first-child {
+                        padding-top: unset;
+                    }
+                    &:not(:last-child) {
+                        border-bottom: 1px solid var(--core-color-solid-slate-75);
+                        padding-bottom: var(--semantic-spacing-general-sm);
+                    }
+                }
+            }
+        }
     }
 }
 

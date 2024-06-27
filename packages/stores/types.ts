@@ -104,6 +104,8 @@ type TPopulateSettingsExtensionsMenuItem = {
     value: <T extends object>(props: T) => JSX.Element;
 };
 
+type TProduct = 'swap_free' | 'zero_spread' | 'ctrader' | 'derivx';
+
 type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 
 type TIconTypes =
@@ -238,7 +240,6 @@ export type TActiveAccount = TAccount & {
 type TTradingPlatformAvailableAccount = {
     market_type: 'financial' | 'gaming' | 'all';
     name: string;
-    product?: string;
     requirements: {
         after_first_deposit: {
             financial_assessment: string[];
@@ -253,6 +254,7 @@ type TTradingPlatformAvailableAccount = {
     sub_account_type: string;
     max_count?: number;
     available_count?: number;
+    product: TProduct;
 };
 
 type TAvailableCFDAccounts = {
@@ -1030,6 +1032,7 @@ type TTradersHubStore = {
             availability?: TRegionAvailability;
             description?: string;
             market_type?: 'all' | 'financial' | 'synthetic';
+            product: TProduct;
         }[];
     openModal: (modal_id: string, props?: unknown) => void;
     selected_account: {
@@ -1085,6 +1088,7 @@ type TTradersHubStore = {
     startTrade: (platform?: TPlatform, existing_account?: DetailsOfEachMT5Loginid) => void;
     getAccount: () => void;
     showTopUpModal: (existing_account?: DetailsOfEachMT5Loginid) => void;
+    is_regulators_compare_modal_visible: boolean;
 };
 
 type TContractReplay = {

@@ -13,7 +13,7 @@ export const jurisdictionVerificationContents = (): TJurisdictionVerificationCon
         },
         identityDocument: {
             icon: 'IcIdentityDocumentVerification',
-            text: `A copy of your identity document (eg. identity card, passport, deiver's license)`,
+            text: `A copy of your identity document (eg. identity card, passport, driver's license)`,
         },
         nameAndAddress: {
             icon: 'IcNameAndAddressVerification',

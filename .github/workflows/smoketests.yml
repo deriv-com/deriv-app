@@ -11,15 +11,10 @@ permissions:
 on: 
     issue_comment:
         types: [edited]
-        
-jobs:
-  cypress-run:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false 
-      matrix:
-        containers: [1,2]
 
+jobs:
+  trigger-workflow:
+    runs-on: ubuntu-latest
     steps:
     - name: Capture Vercel preview URL
       id: vercel_preview_url
@@ -27,107 +22,36 @@ jobs:
       with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
-    - name: Checkout external repository with Cypress tests
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-      with:
-        repository: deriv-com/e2e-deriv-app
-
-    - name: Cypress run
-      # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action
-      if: ${{ github.event.issue.draft == false && contains(github.event.issue.labels.*.name, 'Wallets') }}
-      uses: cypress-io/github-action@97d526c9027e1b1eedde4f37196aebe8834005ef
-      with:
-        # Records to Cypress Cloud 
-        # https://docs.cypress.io/guides/cloud/projects#Set-up-a-project-to-record
-        record: true
-        parallel: true # Runs test in parallel using settings above
-        spec: cypress/e2e/smoke/Wallets/*.cy.js
-        group: 'Smoke Tests'
-        
-      env:
-        # For recording and parallelization to work you must set your CYPRESS_RECORD_KEY
-        # in GitHub repo → Settings → Secrets → Actions
-        CYPRESS_RECORD_KEY: ${{ secrets.E2E_CYPRESS_RECORD_KEY }}
-        # Creating a token https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # Set Base Url from client_payload.
-        CYPRESS_BASE_URL: https://staging-app.deriv.com/
-        # Send PR details to Cypress test run
-        COMMIT_INFO_MESSAGE: PR "${{ github.event.issue.number }}" Changed By "${{ github.event.issue.user.login }}" in Labels "${join(github.event.issue.labels.*.name, ', ')}" (draft? "${{ github.event.issue.draft }}")
-
-        # Set login env variables
-        E2E_OAUTH_URL: ${{ secrets.E2E_OAUTH_URL }}
-        E2E_CONFIG_APPID: ${{ secrets.E2E_CONFIG_APPID }}
-        E2E_CONFIG_SERVER: ${{ secrets.E2E_CONFIG_SERVER }}
-        E2E_MT5_LOGIN: ${{ secrets.E2E_MT5_LOGIN }}
-        E2E_MT5_PASSWORD: ${{ secrets.E2E_MT5_PASSWORD }}
-        E2E_MT5_BASEURL: ${{ secrets.E2E_MT5_BASEURL }}
-        E2E_STD_CONFIG_SERVER: ${{ env.QA_SERVER || secrets.E2E_STD_CONFIG_SERVER }}
-        E2E_STD_CONFIG_APPID: ${{ github.event.inputs.appid || secrets.E2E_STD_CONFIG_APPID }}
-        E2E_DOUGHFLOW_CONFIG_SERVER: ${{ secrets.E2E_DOUGHFLOW_CONFIG_SERVER }}
-        E2E_DOUGHFLOW_CONFIG_APPID: ${{ secrets.E2E_DOUGHFLOW_CONFIG_APPID }}
-        E2E_QABOX_URL: ${{ secrets.E2E_QABOX_URL }}
-        E2E_MAIN_QABOX_URL: ${{ secrets.E2E_MAIN_QABOX_URL }}
-        E2E_QABOX_LOGIN: ${{ secrets.E2E_QABOX_LOGIN }}
-        E2E_QABOX_PASSWORD: ${{ secrets.E2E_QABOX_PASSWORD }}
-        TEST_SUITE: ${{ github.event.inputs.suite }}
-        E2E_DERIV_LOGIN_PROD: ${{secrets.E2E_DERIV_LOGIN_PROD}}
-        E2E_DERIV_PASSWORD_PROD: ${{secrets.E2E_DERIV_PASSWORD_PROD }}
-        E2E_PROD_SERVER: ${{secrets.E2E_PROD_SERVER}}
-        E2E_PROD_APPID: ${{secrets.E2E_PROD_APPID}}
-        E2E_LOGIN_ID_P2P_FIXEDRATE: ${{ secrets.E2E_LOGIN_ID_P2P_FIXEDRATE }}
-        E2E_P2P_FLOATING: ${{secrets.E2E_P2P_FLOATING}}
-        E2E_LOGIN_ID_P2P_STANDARDACCOUNTWITHADS: ${{secrets.E2E_LOGIN_ID_P2P_STANDARDACCOUNTWITHADS}}
-        E2E_LOGIN_ID_P2P_STANDARDACCOUNTWITHOUTADS: ${{secrets.E2E_LOGIN_ID_P2P_STANDARDACCOUNTWITHOUTADS}}
-        E2E_LOGIN_ID_P2P_FLOATINGRATE_SELLAD_1: ${{secrets.E2E_LOGIN_ID_P2P_FLOATINGRATE_SELLAD_1}}
-        E2E_LOGIN_ID_P2P_FLOATINGRATE_SELLAD_2: ${{secrets.E2E_LOGIN_ID_P2P_FLOATINGRATE_SELLAD_2}}
-        E2E_LOGIN_ID_P2P_EMPTYSTATE: ${{secrets.E2E_LOGIN_ID_P2P_EMPTYSTATE}}
-        E2E_LOGIN_ID_P2P_SORT: ${{secrets.E2E_LOGIN_ID_P2P_SORT}}
-        E2E_CRYPTO: ${{secrets.E2E_CRYPTO}}
-        E2E_STG_APPID: ${{secrets.E2E_STG_APPID}}
-        E2E_PSWD_P2P: ${{secrets.E2E_PSWD_P2P}}
-        E2E_CASHIER_WITHDRAWAL_PROD: ${{secrets.E2E_CASHIER_WITHDRAWAL_PROD}}
-        E2E_CASHIER_PROD_PASSWORD: ${{secrets.E2E_CASHIER_PROD_PASSWORD}}
-        E2E_LOGIN_ID_DBOT: ${{secrets.E2E_LOGIN_ID_DBOT}}
-        E2E_LOGIN_ID_PROD_DBOT: ${{secrets.E2E_LOGIN_ID_PROD_DBOT}}
-        E2E_QA_ACCOUNT_PASSWORD: ${{secrets.E2E_QA_ACCOUNT_PASSWORD}}
-        E2E_LOGIN_ID_CASHIER_LEGACY: ${{secrets.E2E_LOGIN_ID_CASHIER_LEGACY}}
-        E2E_LOGIN_ID_CASHIER_LEGACY_NON_USD: ${{secrets.E2E_LOGIN_ID_CASHIER_LEGACY_NON_USD}}
-        E2E_MAILISK_NAMESPACE: ${{secrets.E2E_MAILISK_NAMESPACE}}
-        E2E_MAILISK_API_KEY: ${{secrets.E2E_MAILISK_API_KEY}}
-        E2E_DIEL_LOGIN: ${{secrets.E2E_DIEL_LOGIN}}
-        E2E_EU_LOGIN: ${{secrets.E2E_EU_LOGIN}}
-        E2E_APP_REGISTER_URL: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
-        E2E_RUN_FROM_PR: ${{secrets.E2E_RUN_FROM_PR}}
-        E2E_DERIV_LOGIN_WALLET_MOBILE : ${{ secrets.E2E_DERIV_LOGIN_WALLET_MOBILE }}
-        E2E_WALLET_MIGRATION_NEWCLIENT : ${{ secrets.E2E_WALLET_MIGRATION_NEWCLIENT }}
-        E2E_WALLET_MIGRATION_NO_VRTC : ${{ secrets.E2E_WALLET_MIGRATION_NO_VRTC }}
-        E2E_WALLET_MIGRATION_VRTCONLY : ${{ secrets.E2E_WALLET_MIGRATION_VRTCONLY }}
-        E2E_WALLET_MIGRATION_NO_CURRENCY : ${{ secrets.E2E_WALLET_MIGRATION_NO_CURRENCY }}
-        E2E_WALLET_MIGRATION_NON_USD : ${{ secrets.E2E_WALLET_MIGRATION_NON_USD }}
-        E2E_WALLET_MIGRATION_P2P : ${{ secrets.E2E_WALLET_MIGRATION_P2P }}
-        E2E_WALLET_MIGRATION_PA : ${{ secrets.E2E_WALLET_MIGRATION_PA }}
-        E2E_WALLET_MIGRATION_PA_CLIENT : ${{ secrets.E2E_WALLET_MIGRATION_PA_CLIENT }}
-        E2E_DERIV_LOGIN_WALLET: ${{ secrets.E2E_DERIV_LOGIN_WALLET }}
-        E2E_WALLETS_LOGIN_PROD: ${{ secrets.E2E_WALLETS_LOGIN_PROD }}
-        E2E_WALLETS_PASSWORD_PROD: ${{ secrets.E2E_WALLETS_PASSWORD_PROD }}
-
-    - name: Set comments message
-      id: set_msg 
-      if: always() && ${{ github.event.issue.draft == false && contains(github.event.issue.labels.*.name, 'Wallets') }}
+    - name: Set env vars
+      id: set-env-vars
       run: |
-        # Using shell script to conditionally set the message
-        if [[ "${{ job.status }}" == "success" ]]; then
-          echo "msg=:rocket: Smoke test run (${{ matrix.containers }}) passed successfully!" >> $GITHUB_OUTPUT
+        if [[ "${{ github.event.issue.labels.*.name }}" == *"Bot"* ]]; then
+          echo "TEST_SUITE=dbot" >> $GITHUB_ENV
+        elif [[ "${{ github.event.issue.labels.*.name }}" == *"P2P"* ]]; then
+          echo "TEST_SUITE=P2P" >> $GITHUB_ENV
+        elif [[ "${{ github.event.issue.labels.*.name }}" == *"Wallets"* ]]; then
+          echo "TEST_SUITE=Wallets" >> $GITHUB_ENV
         else
-          # echo "msg=:x: Smoke test run (${{ matrix.containers }}) failed. See logs for details: [Visit Action](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}})" >> $GITHUB_OUTPUT
+          echo "TEST_SUITE=<do not run>" >> $GITHUB_ENV
         fi
         
-    - name: Leave comment
-      if: always() && ${{ github.event.issue.draft == false && contains(github.event.issue.labels.*.name, 'Wallets') }}
-      uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31
+    - name: Trigger deriv-app smoke tests from regentmarkets
+      if: ${{ github.event.issue.draft == false && env.TEST_SUITE != '<do not run>' }}
+      uses: actions/github-script@v6
       with:
-        header: Smoke tests status update
-        number: ${{ github.event.issue.number }}
-        message: "${{ steps.set_msg.outputs.msg }}"
-        recreate: true
+        github-token: ${{ secrets.E2E_WORKFLOW_TOKEN }}
+        script: |
+          const workflowInputs = {
+            environment: '${{ secrets.E2E_WORKFLOW_ENV }}',
+            suite: '${{ env.TEST_SUITE }}',
+            appRegUrl: '${{ steps.vercel_preview_url.outputs.vercel_preview_url }}',
+            issue_number: '${{ github.event.issue.number }}',
+            user_name: '${{ github.event.issue.user.login }}'
+            };
+          const response = await github.rest.actions.createWorkflowDispatch({
+            owner: 'regentmarkets',
+            repo: 'e2e-deriv-app',
+            workflow_id: 'E2E_Run_PR.yml',
+            ref: 'mark/pr-commit-v2',
+            inputs: workflowInputs
+          });

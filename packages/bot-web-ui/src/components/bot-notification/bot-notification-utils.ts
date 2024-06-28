@@ -20,13 +20,14 @@ export type TAction = {
 };
 
 export type TNotificationStyle = {
-    type: TypeOptions;
-    position: ToastPosition;
-    autoClose: number;
-    hideProgressBar: boolean;
-    closeOnClick: boolean;
-    pauseOnHover: boolean;
+    type?: TypeOptions;
+    position?: ToastPosition;
+    autoClose?: number;
+    hideProgressBar?: boolean;
+    closeOnClick?: boolean;
+    pauseOnHover?: boolean;
     pauseOnFocusLoss?: boolean;
+    closeButton?: boolean;
 };
 
 export enum NOTIFICATION_TYPE {
@@ -40,6 +41,7 @@ export const notification_message = {
     block_delete: localize('You’ve just deleted a block.'),
     [NOTIFICATION_TYPE.BOT_IMPORT]: localize('You’ve successfully imported a bot.'),
     [NOTIFICATION_TYPE.BOT_DELETE]: localize('You’ve successfully deleted a bot.'),
+    strategy_conversion: localize('To avoid re-import delays, save this strategy as an XML file from Deriv Bot.'),
 };
 
 export const notification_style = {

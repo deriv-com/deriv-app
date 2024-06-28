@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { DesktopWrapper, Dialog, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderStackSendQsOpenEvent } from '../../analytics/rudderstack-quick-strategy';
@@ -25,30 +24,29 @@ type TCardArray = {
 
 const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => {
     const { dashboard, load_modal, quick_strategy } = useDBotStore();
-    const {
-        onCloseDialog,
-        dialog_options,
-        is_dialog_open,
-        setActiveTab,
-        setFileLoaded,
-        setPreviewOnPopup,
-        setOpenSettings,
-        showVideoDialog,
-    } = dashboard;
-    const { handleFileChange, loadFileFromLocal } = load_modal;
+    const { onCloseDialog, dialog_options, is_dialog_open, setActiveTab, setPreviewOnPopup } = dashboard;
+    const { toggleLoadModal, setActiveTabIndex } = load_modal;
     const { setFormVisibility } = quick_strategy;
 
-    const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
-    const file_input_ref = React.useRef<HTMLInputElement | null>(null);
-
     const openGoogleDriveDialog = () => {
-        showVideoDialog({
-            type: 'google',
-        });
+        setActiveTab(DBOT_TABS.BOT_BUILDER);
+        // Added the setTimeout to maintain sequence as tab change was contradicting with load modal open
+        const timerId = setTimeout(() => {
+            toggleLoadModal();
+            setActiveTabIndex(is_mobile ? 1 : 2);
+            clearTimeout(timerId);
+        }, 0);
     };
 
     const openFileLoader = () => {
-        file_input_ref?.current?.click();
+        setActiveTab(DBOT_TABS.BOT_BUILDER);
+        // Added the setTimeout to maintain sequence as tab change was contradicting with load modal open
+        setActiveTab(DBOT_TABS.BOT_BUILDER);
+        const timerId = setTimeout(() => {
+            toggleLoadModal();
+            setActiveTabIndex(is_mobile ? 0 : 1);
+            clearTimeout(timerId);
+        }, 0);
     };
 
     const actions: TCardArray[] = [
@@ -125,18 +123,6 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                             </div>
                         );
                     })}
-                    <input
-                        type='file'
-                        ref={file_input_ref}
-                        accept='application/xml, text/xml'
-                        hidden
-                        onChange={e => {
-                            setIsFileSupported(handleFileChange(e, false));
-                            loadFileFromLocal();
-                            setFileLoaded(true);
-                            setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);
-                        }}
-                    />
                     <DesktopWrapper>
                         <Dialog
                             title={dialog_options.title}
@@ -167,7 +153,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                         </MobileFullPageModal>
                     </MobileWrapper>
                 </div>
-                <DashboardBotList is_file_supported={is_file_supported} />
+                <DashboardBotList />
             </div>
         ),
         // eslint-disable-next-line react-hooks/exhaustive-deps

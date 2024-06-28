@@ -34,7 +34,6 @@ jobs:
             echo "TEST_SUITE=Wallets" >> $GITHUB_ENV
         else
             echo "TEST_SUITE=<do not run>" >> $GITHUB_ENV
-        fi "TEST_SUITE=<do not run>" >> $GITHUB_ENV
         fi
         
     - name: Trigger deriv-app smoke tests from regentmarkets

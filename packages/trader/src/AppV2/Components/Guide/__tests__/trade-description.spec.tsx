@@ -67,7 +67,7 @@ describe('<TradeDescription />', () => {
         expect(screen.getByText(/mockVanillasTradeDescription/i)).toBeInTheDocument();
     });
 
-    it('Ensure description is not found is rendered when trade category does not exist', () => {
+    it('should render "description is not found" when contract_type was not passed', () => {
         render(<TradeDescription contract_type='some_trade_type' onTermClick={jest.fn()} />);
         expect(screen.getByText(/Description not found./i)).toBeInTheDocument();
     });

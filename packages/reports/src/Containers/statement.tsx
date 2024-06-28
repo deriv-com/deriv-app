@@ -1,6 +1,7 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, DataList, DataTable, Text, Clipboard, usePrevious } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
+import { DataList, DataTable, Text, Clipboard, usePrevious } from '@deriv/components';
 import {
     capitalizeFirstLetter,
     extractInfoFromShortcode,
@@ -154,6 +155,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
     const prev_action_type = usePrevious(action_type);
     const prev_date_from = usePrevious(date_from);
     const prev_date_to = usePrevious(date_to);
+    const { isDesktop } = useDevice();
 
     React.useEffect(() => {
         onMount();
@@ -198,7 +200,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
 
     if (error) return <p>{error}</p>;
 
-    const columns: TGetStatementTableColumnsTemplate = getStatementTableColumnsTemplate(currency);
+    const columns: TGetStatementTableColumnsTemplate = getStatementTableColumnsTemplate(currency, isDesktop);
     const columns_map = columns.reduce((map, item) => {
         map[item.col_index as TColIndex] = item;
         return map;
@@ -264,7 +266,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
                         />
                     ) : (
                         <div className='reports__content'>
-                            <DesktopWrapper>
+                            {isDesktop ? (
                                 <DataTable
                                     className='statement'
                                     columns={columns}
@@ -278,8 +280,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
                                 >
                                     <PlaceholderComponent is_loading={is_loading} />
                                 </DataTable>
-                            </DesktopWrapper>
-                            <MobileWrapper>
+                            ) : (
                                 <DataList
                                     className='statement'
                                     data_source={data}
@@ -293,7 +294,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
                                 >
                                     <PlaceholderComponent is_loading={is_loading} />
                                 </DataList>
-                            </MobileWrapper>
+                            )}
                         </div>
                     )}
                 </React.Fragment>

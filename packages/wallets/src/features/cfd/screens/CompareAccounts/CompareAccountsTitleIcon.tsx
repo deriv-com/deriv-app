@@ -29,11 +29,11 @@ type TMarketWithShortCode = `${TMarketType}_${string}`;
 const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms.OtherAccounts, isDemo?: boolean) => {
     switch (shortCode) {
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_SVG:
-            return isDemo ? 'Derived Demo' : 'Derived - SVG';
+            return isDemo ? 'Standard Demo' : 'Standard - SVG';
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_BVI:
-            return 'Derived - BVI';
+            return 'Standard - BVI';
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_VANUATU:
-            return 'Derived - Vanuatu';
+            return 'Standard - Vanuatu';
         case MARKET_TYPE_SHORTCODE.FINANCIAL_SVG:
             return isDemo ? 'Financial Demo' : 'Financial - SVG';
         case MARKET_TYPE_SHORTCODE.FINANCIAL_BVI:

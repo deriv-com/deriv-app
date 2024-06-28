@@ -17,7 +17,6 @@ module.exports = function (env) {
             CFDServerErrorDialog: 'Containers/cfd-server-error-dialog.tsx',
             CFDTopUpDemoModal: 'Containers/cfd-top-up-demo-modal.tsx',
             MT5TradeModal: 'Containers/mt5-trade-modal.tsx',
-            TradeModal: 'Containers/ctrader-derivx-trade-modal.tsx', // need to check
             MT5MigrationModal: 'Containers/mt5-migration-modal',
             CFDPasswordManagerModal: 'Containers/cfd-password-manager-modal.tsx',
             CTraderTransferModal: 'Containers/ctrader-transfer-modal',

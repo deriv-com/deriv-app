@@ -20,7 +20,6 @@ module.exports = function (env) {
             TradeModal: 'Containers/ctrader-derivx-trade-modal.tsx', // need to check
             MT5MigrationModal: 'Containers/mt5-migration-modal',
             CFDPasswordManagerModal: 'Containers/cfd-password-manager-modal.tsx',
-            CFDFinancialStpRealAccountSignup: 'Containers/cfd-financial-stp-real-account-signup.tsx', // need to check
             CTraderTransferModal: 'Containers/ctrader-transfer-modal',
         },
         mode: IS_RELEASE ? 'production' : 'development',

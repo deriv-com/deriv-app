@@ -248,6 +248,7 @@
     "2142425493": "ID Anúncio",
     "2145292295": "Avalie",
     "-1540251249": "Comprar {{ account_currency }}",
+    "-962824159": "Criar nova encomenda",
     "-2026152535": "Encomenda sem sucesso",
     "-1267880283": "{{field_name}} é obrigatório",
     "-2019083683": "{{field_name}} pode incluir apenas letras, números, espaços e qualquer um destes símbolos: -+.,'#@():;",

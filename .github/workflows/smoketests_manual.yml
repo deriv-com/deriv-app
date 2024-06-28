@@ -17,9 +17,9 @@ jobs:
           const workflowInputs = {
             environment: '${{ secrets.E2E_WORKFLOW_ENV }}',
             suite: '${{ secrets.E2E_WORKFLOW_ENV }}',
-            appRegUrl: '${{ github.event.inputs.iappRegUrl }}',
-            issue_number: '${{ github.event.inputs.iissue_number }}',
-            user_name: '${{ github.event.inputs.iuser_name }}'
+            appRegUrl: 'https://deriv-app-git-fork-maryia-matskevich-deriv-maryia-bot-1913.binary.sx/',
+            issue_number: '15719',
+            user_name: 'maryia-deriv'
             };
           const response = await github.rest.actions.createWorkflowDispatch({
             owner: 'regentmarkets',

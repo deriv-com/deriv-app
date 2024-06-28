@@ -4,6 +4,7 @@
     "description": "Deriv content",
     "main": "dist/cfd/js/cfd.js",
     "private": true,
+    "sideEffects": false,
     "scripts": {
         "analyze:stats": "f () { NODE_OPTIONS='-r ts-node/register' webpack --progress --config \"./build/webpack.config.js\" --env base=$1 --profile --json=stats.json; }; f",
         "analyze:build": "webpack-bundle-analyzer --no-open -m static -r treemap.html stats.json ./dist && webpack-bundle-analyzer -m json stats.json ./dist",

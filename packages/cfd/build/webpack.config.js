@@ -10,17 +10,17 @@ module.exports = function (env) {
         entry: {
             cfd: path.resolve(__dirname, '../src', 'index.tsx'),
             CFDStore: 'Stores/Modules/CFD/cfd-store',
-            JurisdictionModal: 'Containers/jurisdiction-modal/jurisdiction-modal.tsx',
+            JurisdictionModal: 'Containers/jurisdiction-modal/jurisdiction-modal.tsx', // need to check
             CFDPasswordModal: 'Containers/cfd-password-modal.tsx',
             CFDDbviOnBoarding: 'Containers/cfd-dbvi-onboarding.tsx',
             CFDResetPasswordModal: 'Containers/cfd-reset-password-modal.tsx',
             CFDServerErrorDialog: 'Containers/cfd-server-error-dialog.tsx',
             CFDTopUpDemoModal: 'Containers/cfd-top-up-demo-modal.tsx',
             MT5TradeModal: 'Containers/mt5-trade-modal.tsx',
-            TradeModal: 'Containers/ctrader-derivx-trade-modal.tsx',
+            TradeModal: 'Containers/ctrader-derivx-trade-modal.tsx', // need to check
             MT5MigrationModal: 'Containers/mt5-migration-modal',
             CFDPasswordManagerModal: 'Containers/cfd-password-manager-modal.tsx',
-            CFDFinancialStpRealAccountSignup: 'Containers/cfd-financial-stp-real-account-signup.tsx',
+            CFDFinancialStpRealAccountSignup: 'Containers/cfd-financial-stp-real-account-signup.tsx', // need to check
             CTraderTransferModal: 'Containers/ctrader-transfer-modal',
         },
         mode: IS_RELEASE ? 'production' : 'development',
@@ -36,6 +36,8 @@ module.exports = function (env) {
             moduleIds: 'named',
             minimize: IS_RELEASE,
             minimizer: MINIMIZERS,
+            innerGraph: true,
+            sideEffects: true,
         },
         output: {
             filename: 'cfd/js/[name].js',

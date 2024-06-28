@@ -164,7 +164,6 @@ const ProfitTable = observer(({ component_icon }: TProfitTable) => {
             </>
         );
     };
-
     // TODO: Uncomment and update this when DTrader 2.0 development starts:
     // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='l'>I am Profit Table for DTrader 2.0.</Text>;
     return (

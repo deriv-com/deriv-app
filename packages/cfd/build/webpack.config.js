@@ -69,6 +69,7 @@ module.exports = function (env) {
                 '@deriv/stores': '@deriv/stores',
                 formik: 'formik',
                 'react-transition-group': 'react-transition-group',
+                classnames: 'classnames',
             },
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,

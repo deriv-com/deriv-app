@@ -70,10 +70,12 @@ export default class AppStore {
             sg: 'Singaporean',
         };
 
-        if (Object.prototype.hasOwnProperty.call(not_allowed_clients_country, client_country)) {
+        const country_name = not_allowed_clients_country[client_country];
+
+        if (country_name) {
             return showDigitalOptionsUnavailableError(
                 common.showError,
-                this.getErrorForEuClients(client.is_logged_in, not_allowed_clients_country[client_country])
+                this.getErrorForEuClients(client.is_logged_in, country_name)
             );
         }
     };

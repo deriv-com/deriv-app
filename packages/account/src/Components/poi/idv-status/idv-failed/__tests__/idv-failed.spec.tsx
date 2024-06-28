@@ -30,15 +30,7 @@ jest.mock('Components/forms/idv-form', () => jest.fn(() => <div>IDVForm</div>));
 jest.mock('@deriv/quill-icons', () => ({
     ...jest.requireActual('@deriv/quill-icons'),
     DerivLightNamePoiIcon: () => 'DerivLightNamePoiIcon',
-}));
-
-jest.mock('@deriv/quill-icons', () => ({
-    ...jest.requireActual('@deriv/quill-icons'),
     DerivLightNameDobPoiIcon: () => 'DerivLightNameDobPoiIcon',
-}));
-
-jest.mock('@deriv/quill-icons', () => ({
-    ...jest.requireActual('@deriv/quill-icons'),
     DerivLightDobPoiIcon: () => 'DerivLightDobPoiIcon',
 }));
 

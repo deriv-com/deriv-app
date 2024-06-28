@@ -26,7 +26,6 @@ type TEmploymentTaxInfoProps = {
     ) => void;
     goToPreviousStep: () => void;
     goToNextStep: () => void;
-    residence_list: ResidenceList;
     real_account_signup_target: string;
     value: FormikValues;
 };
@@ -35,7 +34,6 @@ const EmploymentTaxInfo = observer(
     ({
         disabled_items,
         value,
-        residence_list,
         getCurrentStep,
         onSave,
         onCancel,
@@ -49,6 +47,7 @@ const EmploymentTaxInfo = observer(
         } = useStore();
 
         const scroll_div_ref = useRef(null);
+        const { tin_validation_config, mutate } = useTinValidations();
 
         const editable_fields = useMemo(
             () =>
@@ -58,7 +57,7 @@ const EmploymentTaxInfo = observer(
             [disabled_items]
         );
 
-        const schema = getEmploymentAndTaxValidationSchema(residence_list);
+        const schema = getEmploymentAndTaxValidationSchema(tin_validation_config);
 
         const handleCancel = (values: FormikValues) => {
             const current_step = (getCurrentStep?.() || 1) - 1;
@@ -103,6 +102,7 @@ const EmploymentTaxInfo = observer(
                                                 should_display_long_message={
                                                     real_account_signup_target === 'maltainvest'
                                                 }
+                                                handleChange={mutate}
                                             />
                                         </ThemedScrollbars>
                                     </Div100vhContainer>

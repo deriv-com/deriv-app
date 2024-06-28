@@ -1,6 +1,7 @@
 import React from 'react';
 import { MarketGroup } from 'AppV2/Utils/symbol-categories-utils';
 import { Tab, Text, CaptionText } from '@deriv-com/quill-ui';
+import SymbolIconsMapper from '../SymbolIconsMapper/symbol-icons-mapper';
 
 type TMarketCategory = {
     category: MarketGroup;
@@ -27,6 +28,7 @@ const MarketCategory = ({ category }: TMarketCategory) => {
                                 <div className='market-category-items'>
                                     {submarket.items.map(item => (
                                         <div key={item.display_name} className='market-category-item'>
+                                            <SymbolIconsMapper symbol={item.symbol} theme='light' />
                                             <Text size='sm'>{item.display_name}</Text>
                                         </div>
                                     ))}

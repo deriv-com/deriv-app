@@ -1,6 +1,5 @@
 import React from 'react';
 import { Formik } from 'formik';
-import * as Yup from 'yup';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -10,33 +9,6 @@ import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import QSInput from '../qs-input';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
-
-// jest.mock('formik', () => ({
-//     ...jest.requireActual('formik'),
-//     useFormikContext: () => ({
-//         setFieldValue: jest.fn(),
-//         setValue: jest.fn(),
-//         setFieldTouched: jest.fn(),
-//         // onChange: jest.fn(),
-//         // submitForm: jest.fn(() =>
-//         //     Promise.resolve({
-//         //         symbol: '1HZ100V',
-//         //         durationtype: 't',
-//         //         stake: '1',
-//         //         loss: '1',
-//         //         profit: '1',
-//         //         size: '5.1',
-//         //         duration: 2,
-//         //         unit: '1',
-//         //         max_stake: 10,
-//         //         boolean_max_stake: false,
-//         //         last_digit_prediction: 1,
-//         //         tradetype: 'callput',
-//         //         type: 'CALL',
-//         //     })
-//         // ),
-//     }),
-// }));
 
 describe('<QSInput />', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
@@ -61,13 +33,7 @@ describe('<QSInput />', () => {
         wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>
                 <DBotStoreProvider ws={mock_ws} mock={mock_DBot_store}>
-                    <Formik
-                        initialValues={initial_value}
-                        // validationSchema={Yup.object().shape({
-                        //     duration: Yup.number().min(1, 'Minimum value should be more than 0'),
-                        // })}
-                        onSubmit={mock_onSubmit}
-                    >
+                    <Formik initialValues={initial_value} onSubmit={mock_onSubmit}>
                         {children}
                     </Formik>
                 </DBotStoreProvider>

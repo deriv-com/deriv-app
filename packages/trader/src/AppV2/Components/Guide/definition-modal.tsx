@@ -4,12 +4,12 @@ import { Localize, localize } from '@deriv/translations';
 
 type TDefinition = { definition: string; onClose: () => void };
 
-const Definition = ({ definition, onClose }: TDefinition) => {
+const DefinitionModal = ({ definition, onClose }: TDefinition) => {
     return (
         <ActionSheet.Root isOpen={!!definition} onClose={onClose} position='left'>
             <ActionSheet.Portal shouldCloseOnDrag>
                 <ActionSheet.Content className='guide__wrapper'>
-                    <Heading.H4 className='guide__title'>{localize(definition ?? '')}</Heading.H4>
+                    <Heading.H4 className='guide__title'>{localize(definition)}</Heading.H4>
                     <div>
                         <Text>
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed asperiores, voluptates qui
@@ -31,4 +31,4 @@ const Definition = ({ definition, onClose }: TDefinition) => {
     );
 };
 
-export default Definition;
+export default DefinitionModal;

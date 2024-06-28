@@ -7,7 +7,7 @@ const useTinValidations = () => {
     const mutate = useCallback((tax_residence: string) => _mutate({ payload: { tax_residence } }), [_mutate]);
 
     return {
-        tin_validation_config: data?.tin_validations,
+        tin_validation_config: data?.tin_validations ?? {},
         mutate,
         ...rest,
     };

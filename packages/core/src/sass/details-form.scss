@@ -140,26 +140,7 @@
             }
         }
     }
-    &__tin-warn-divider {
-        height: 5rem;
-        @include mobile {
-            height: 6rem;
-        }
-    }
-    &__tin-confirm {
-        margin-left: -5px;
-        align-items: flex-start;
 
-        .dc-checkbox {
-            &__box {
-                align-self: baseline;
-            }
-
-            &__label {
-                text-align: justify;
-            }
-        }
-    }
     .dc-page-error__container {
         height: 100%;
     }

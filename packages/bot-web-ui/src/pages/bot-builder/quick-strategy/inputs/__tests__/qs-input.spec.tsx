@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';

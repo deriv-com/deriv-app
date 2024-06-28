@@ -1,15 +1,11 @@
 import { act } from '@testing-library/react';
 import { validatePhoneNumber } from '../validation';
-import dayjs from 'dayjs';
 
 describe('validatePhoneNumber', () => {
-    let setErrorMessage: jest.Mock, setTitleMock: jest.Mock, setTimerMock: jest.Mock, current_time: dayjs.Dayjs;
+    let setErrorMessage: jest.Mock;
 
     beforeEach(() => {
         setErrorMessage = jest.fn();
-        setTitleMock = jest.fn();
-        setTimerMock = jest.fn();
-        current_time = dayjs();
     });
 
     it('should set an empty error message for a valid phone number', async () => {

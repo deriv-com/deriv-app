@@ -32,7 +32,7 @@ const MT5TradeModal = observer(
         const { platform } = common;
         const { is_mobile } = ui;
 
-        const { mt5_trade_account, dxtrade_tokens, ctrader_tokens } = useCfdStore();
+        const { mt5_trade_account, dxtrade_tokens, ctrader_tokens, product } = useCfdStore();
 
         const CFDTradeModal = () => {
             if (platform === 'mt5') {
@@ -42,6 +42,8 @@ const MT5TradeModal = observer(
                         show_eu_related_content={show_eu_related_content}
                         onPasswordManager={onPasswordManager}
                         toggleModal={toggleModal}
+                        product={product}
+                        is_demo={is_demo}
                     />
                 );
             }

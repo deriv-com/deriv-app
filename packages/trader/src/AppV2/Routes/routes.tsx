@@ -5,6 +5,7 @@ import Markets from 'AppV2/Containers/Markets';
 import Positions from 'AppV2/Containers/Positions';
 import Menu from 'AppV2/Containers/Menu';
 import { TRouteConfig } from 'Types';
+import ContractDetails from 'AppV2/Containers/ContractDetails';
 
 type TRouteConfigExtended = Omit<TRouteConfig, 'routes'> & {
     path: string;
@@ -27,6 +28,12 @@ const traderRoutes: TRouteConfigExtended[] = [
     {
         path: routes.trader_positions,
         component: Positions,
+        is_authenticated: true,
+        default: false,
+    },
+    {
+        path: routes.contract,
+        component: ContractDetails,
         is_authenticated: true,
         default: false,
     },

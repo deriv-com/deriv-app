@@ -59,13 +59,18 @@
     }
 }
 
+.trade-loader,
+.positions-loader,
+.contract-details-loader {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .trade-loader {
     background-color: var(--core-color-opacity-black-75);
     padding: var(--core-spacing-800) var(--core-spacing-400) var(--core-spacing-400);
-    display: flex;
-    flex-direction: column;
     gap: var(--semantic-spacing-general-sm);
-    height: 100%;
     position: relative;
 
     .skeleton-box,
@@ -118,9 +123,7 @@
 
 .positions-loader {
     width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+    background-color: var(--core-color-solid-slate-75);
 
     .skeleton-box {
         &__filters,
@@ -129,6 +132,13 @@
             gap: var(--semantic-spacing-gap-md);
             margin: var(--semantic-spacing-gap-md) 0;
             padding: 0 var(--semantic-spacing-gap-md);
+        }
+        &__tabs {
+            display: flex;
+            background-color: var(--component-modal-bg);
+            width: 100%;
+            justify-content: space-around;
+            padding: 13px 0;
         }
         &__total-pnl-or-date {
             justify-content: space-between;
@@ -146,10 +156,7 @@
 .contract-details-loader {
     background-color: var(--core-color-solid-slate-75);
     padding: var(--core-spacing-800) var(--core-spacing-400) var(--core-spacing-400);
-    display: flex;
-    flex-direction: column;
     gap: var(--semantic-spacing-general-sm);
-    height: 100%;
 
     .skeleton-box,
     .skeleton-box__chart,

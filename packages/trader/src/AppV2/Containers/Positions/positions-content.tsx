@@ -124,7 +124,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     }, []);
 
     if (shouldShowLoading || (!shouldShowContractCards && !shouldShowEmptyMessage))
-        return <Loading.DTraderV2 is_closed_tab={isClosedTab} />;
+        return <Loading.DTraderV2 is_positions is_closed_tab={isClosedTab} />;
     return (
         <div
             className={`positions-page__${isClosedTab ? 'closed' : 'open'}`}

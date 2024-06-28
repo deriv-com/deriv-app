@@ -5,6 +5,7 @@ import getRoutesConfig from 'App/Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
+import { routes } from '@deriv/shared';
 
 const BinaryRoutes = observer(props => {
     const { ui, gtm } = useStore();
@@ -20,7 +21,14 @@ const BinaryRoutes = observer(props => {
     const getLoader = () => {
         const should_show_dtrader_v2_loader =
             JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '').data.dtrader_v2 && isMobile;
-        if (should_show_dtrader_v2_loader) return <Loading.DTraderV2 />;
+        if (should_show_dtrader_v2_loader)
+            return (
+                <Loading.DTraderV2
+                    initial_app_loading
+                    is_contract_details={window.location.pathname.startsWith('/contract/')}
+                    is_positions={window.location.pathname === routes.trader_positions}
+                />
+            );
         return <Loading />;
     };
 

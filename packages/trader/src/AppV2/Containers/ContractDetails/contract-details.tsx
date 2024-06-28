@@ -56,7 +56,7 @@ const ContractDetails = observer(() => {
         requestUpdatedHistory(contract_id);
     }, [contract_id, take_profit?.order_amount, stop_loss?.order_amount, requestUpdatedHistory]);
 
-    if (is_loading) return <Loading.DTraderV2 />;
+    if (is_loading) return <Loading.DTraderV2 is_contract_details />;
 
     const isMultiplier = isMultiplierContract(contract_info.contract_type);
 

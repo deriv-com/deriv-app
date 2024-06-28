@@ -29,15 +29,29 @@ export const AVAILABLE_CONTRACTS = [
 
 // TODO: add Localize?
 export const TERM = {
+    DEAL_CANCELLATION: 'Deal cancellation',
+    ENTRY_SPOT: 'Entry spot',
+    EXIT_SPOT: 'Exit spot',
     GROWTH_RATE: 'Growth rate',
     PAYOUT: 'Payout',
     PREVIOUS_SPOT_PRICE: 'Previous spot price',
     RANGE: 'Range',
     SLIPPAGE_RISK: 'Slippage risk',
+    STOP_OUT_LEVEL: 'Stop out level',
+    STOP_LOSS: 'Stop loss',
     TAKE_PROFIT: 'Take profit',
 };
 
 export const DEFINITION = {
+    [TERM.DEAL_CANCELLATION]: (
+        <Localize i18n_default_text='If you select this feature, you can cancel your trade within a chosen time frame if the asset price moves against your favour. You will get your stake back without profit/loss. We charge a small fee for this. Take profit and stop loss are disabled when deal cancellation is active.' />
+    ),
+    [TERM.ENTRY_SPOT]: (
+        <Localize i18n_default_text='We use current-tick-execution mechanism, which is the latest asset price when the trade opening is processed by our servers for Volatility Index, Basket Indices, Jump Indices and Crash/Boom Indices.' />
+    ),
+    [TERM.EXIT_SPOT]: (
+        <Localize i18n_default_text='The latest asset price when the trade closure is processed by our servers.' />
+    ),
     [TERM.GROWTH_RATE]: (
         <Localize i18n_default_text='You can choose a growth rate with values of 1%, 2%, 3%, 4%, and 5%.' />
     ),
@@ -46,8 +60,17 @@ export const DEFINITION = {
     [TERM.RANGE]: (
         <Localize i18n_default_text='It is a percentage of the previous spot price. The percentage rate is based on your choice of the index and the growth rate.' />
     ),
-    [TERM.SLIPPAGE_RISK]: (
-        <Localize i18n_default_text='The spot price may change by the time your order reaches our servers. When this happens, your payout may be affected.' />
+    [TERM.SLIPPAGE_RISK]: (is_accumulator?: boolean) =>
+        is_accumulator ? (
+            <Localize i18n_default_text='The spot price may change by the time your order reaches our servers. When this happens, your payout may be affected.' />
+        ) : (
+            <Localize i18n_default_text='Slippage happens when the asset price changes by the time it reaches our servers.' />
+        ),
+    [TERM.STOP_OUT_LEVEL]: (
+        <Localize i18n_default_text='Your trade will be closed automatically at the nearest available asset price when your loss reaches a certain percentage of your stake, but your loss never exceeds your stake. This percentage depends on the chosen underlying asset and the Multiplier.' />
+    ),
+    [TERM.STOP_LOSS]: (
+        <Localize i18n_default_text='If you select this feature, your trade will be closed automatically at the nearest available asset price when your loss reaches or exceeds the stop loss amount. Your loss may be more than the amount you entered depending on the market price at closing.' />
     ),
     [TERM.TAKE_PROFIT]: (
         <Localize i18n_default_text='If you select this feature, your trade will be closed automatically at the nearest available asset price when your profit reaches or exceeds the take profit amount. Your profit may be more than the amount you entered depending on the market price at closing.' />

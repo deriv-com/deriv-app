@@ -42,7 +42,11 @@ const Guide = ({ is_minimalistic_look = false }: TGuide) => {
                 onTermClick={onTermClick}
                 selected_contract_type={selected_contract_type}
             />
-            <DefinitionModal term={selected_term ?? ''} onClose={() => setSelectedTerm('')} />
+            <DefinitionModal
+                term={selected_term ?? ''}
+                onClose={() => setSelectedTerm('')}
+                is_accumulators={selected_contract_type === CONTRACT_LIST.ACCUMULATORS}
+            />
         </React.Fragment>
     );
 };

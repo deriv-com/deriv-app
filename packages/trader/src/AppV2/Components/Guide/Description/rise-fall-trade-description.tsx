@@ -4,7 +4,7 @@ import { Text } from '@deriv-com/quill-ui';
 
 const RiseFallTradeDescription = () => {
     const content = [
-        { type: 'heading', text: <Localize i18n_default_text={'Rise'} /> },
+        { type: 'heading', text: <Localize i18n_default_text='Rise' /> },
         {
             type: 'paragraph',
             text: (
@@ -14,7 +14,7 @@ const RiseFallTradeDescription = () => {
                 />
             ),
         },
-        { type: 'heading', text: <Localize i18n_default_text={'Fall'} /> },
+        { type: 'heading', text: <Localize i18n_default_text='Fall' /> },
         {
             type: 'paragraph',
             text: (
@@ -24,14 +24,13 @@ const RiseFallTradeDescription = () => {
                 />
             ),
         },
-        { type: 'heading', text: <Localize i18n_default_text={'Additional Information'} /> },
+        { type: 'heading', text: <Localize i18n_default_text='Additional Information' /> },
         {
             type: 'paragraph',
             text: (
                 <Localize
                     i18n_default_text='If you select "<0>Allow equals</0>", you win the payout if exit spot is higher than or equal to entry spot for "Rise". Similarly, you win the payout if exit spot is lower than or equal to entry spot for "Fall".'
                     components={[<span className='description__content--bold' key={0} />]}
-                    key='3'
                 />
             ),
         },

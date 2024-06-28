@@ -68,6 +68,10 @@
         padding: var(--component-actionSheet-spacing-padding-lg);
     }
 
+    &__paragraph {
+        padding-block-end: var(--component-actionSheet-spacing-padding-md);
+    }
+
     &__button {
         padding: var(--component-actionSheet-spacing-padding-lg);
     }

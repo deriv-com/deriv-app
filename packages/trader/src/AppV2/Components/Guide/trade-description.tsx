@@ -4,7 +4,9 @@ import { Localize } from '@deriv/translations';
 import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
 import AccumulatorsTradeDescription from './Description/accumulators-trade-description';
 import RiseFallTradeDescription from './Description/rise-fall-trade-description';
-import MultiplierTradeDescription from './Description/multipliers-trade-description';
+import MultiplierTradeDescriptions from './Description/multipliers-trade-description';
+import VanillasTradeDescription from './Description/vanillas-trade-description';
+import TurbosTradeDescription from './Description/turbos-trade-description';
 
 const TradeDescription = ({
     contract_type,
@@ -22,7 +24,13 @@ const TradeDescription = ({
             TradeTypeTemplate = <RiseFallTradeDescription />;
             break;
         case CONTRACT_LIST.MULTIPLIERS:
-            TradeTypeTemplate = <MultiplierTradeDescription onTermClick={onTermClick} />;
+            TradeTypeTemplate = <MultiplierTradeDescriptions onTermClick={onTermClick} />;
+            break;
+        case CONTRACT_LIST.VANILLAS:
+            TradeTypeTemplate = <VanillasTradeDescription onTermClick={onTermClick} />;
+            break;
+        case CONTRACT_LIST.TURBOS:
+            TradeTypeTemplate = <TurbosTradeDescription onTermClick={onTermClick} />;
             break;
         default:
             TradeTypeTemplate = (

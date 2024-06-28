@@ -3,7 +3,7 @@ import { Localize } from '@deriv/translations';
 import { Text } from '@deriv-com/quill-ui';
 import { TERM } from 'AppV2/Utils/trade-types-utils';
 
-const MultiplierTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
+const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
     const content = [
         {
             type: 'paragraph',
@@ -132,4 +132,4 @@ const MultiplierTradeDescription = ({ onTermClick }: { onTermClick: (term: strin
     );
 };
 
-export default MultiplierTradeDescription;
+export default MultipliersTradeDescription;

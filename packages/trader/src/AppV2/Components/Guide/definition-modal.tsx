@@ -10,7 +10,7 @@ const DefinitionModal = ({ contract_type, term, onClose }: TDefinition) => (
         <ActionSheet.Portal shouldCloseOnDrag>
             <ActionSheet.Content className='definition__wrapper'>
                 <Heading.H4 className='definition__title'>{localize(term)}</Heading.H4>
-                <Text>{getTermDefinition({ term, contract_type })}</Text>
+                <Text as='div'>{getTermDefinition({ term, contract_type })}</Text>
             </ActionSheet.Content>
             <ActionSheet.Footer
                 alignment='vertical'

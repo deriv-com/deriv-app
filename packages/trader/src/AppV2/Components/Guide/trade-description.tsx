@@ -7,6 +7,7 @@ import RiseFallTradeDescription from './Description/rise-fall-trade-description'
 import MultiplierTradeDescriptions from './Description/multipliers-trade-description';
 import VanillasTradeDescription from './Description/vanillas-trade-description';
 import TurbosTradeDescription from './Description/turbos-trade-description';
+import HigherLowerTradeDescription from './Description/higher-lower-trade-description';
 
 const TradeDescription = ({
     contract_type,
@@ -31,6 +32,9 @@ const TradeDescription = ({
             break;
         case CONTRACT_LIST.TURBOS:
             TradeTypeTemplate = <TurbosTradeDescription onTermClick={onTermClick} />;
+            break;
+        case CONTRACT_LIST['HIGHER/LOWER']:
+            TradeTypeTemplate = <HigherLowerTradeDescription />;
             break;
         default:
             TradeTypeTemplate = (

@@ -2,24 +2,24 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Text } from '@deriv-com/quill-ui';
 
-const RiseFallTradeDescription = () => {
+const HigherLowerTradeDescription = () => {
     const content = [
-        { type: 'heading', text: <Localize i18n_default_text='Rise' /> },
+        { type: 'heading', text: <Localize i18n_default_text='Higher' /> },
         {
             type: 'paragraph',
             text: (
                 <Localize
-                    i18n_default_text='If you select "<0>Rise</0>", you win the payout if the exit spot is strictly higher than the entry spot.'
+                    i18n_default_text='If you select “<0>Higher</0>”, you win the payout if the exit spot is strictly higher than the barrier.'
                     components={[<span className='description__content--bold' key={0} />]}
                 />
             ),
         },
-        { type: 'heading', text: <Localize i18n_default_text='Fall' /> },
+        { type: 'heading', text: <Localize i18n_default_text='Lower' /> },
         {
             type: 'paragraph',
             text: (
                 <Localize
-                    i18n_default_text='If you select "<0>Fall</0>", you win the payout if the exit spot is strictly lower than the entry spot.'
+                    i18n_default_text='If you select “<0>Lower</0>”, you win the payout if the exit spot is strictly lower than the barrier.'
                     components={[<span className='description__content--bold' key={0} />]}
                 />
             ),
@@ -27,12 +27,7 @@ const RiseFallTradeDescription = () => {
         { type: 'heading', text: <Localize i18n_default_text='Additional Information' /> },
         {
             type: 'paragraph',
-            text: (
-                <Localize
-                    i18n_default_text='If you select "<0>Allow equals</0>", you win the payout if exit spot is higher than or equal to entry spot for "Rise". Similarly, you win the payout if exit spot is lower than or equal to entry spot for "Fall".'
-                    components={[<span className='description__content--bold' key={0} />]}
-                />
-            ),
+            text: <Localize i18n_default_text='If the exit spot is equal to the barrier, you don’t win the payout.' />,
         },
     ];
     return (
@@ -58,4 +53,4 @@ const RiseFallTradeDescription = () => {
     );
 };
 
-export default RiseFallTradeDescription;
+export default HigherLowerTradeDescription;

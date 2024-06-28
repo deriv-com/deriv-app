@@ -80,6 +80,7 @@ const AccumulatorsTradeDescription = ({ onTermClick }: { onTermClick: (term: str
                     key={paragraph.props.i18n_default_text}
                     size='sm'
                     className='description__paragraph--accumulators'
+                    color='quill-typography__color--prominent'
                 >
                     {paragraph}
                 </Text>

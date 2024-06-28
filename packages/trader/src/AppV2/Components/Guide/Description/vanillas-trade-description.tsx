@@ -109,7 +109,13 @@ const VanillasTradeDescription = ({ onTermClick }: { onTermClick: (term: string)
                         {text}
                     </Text>
                 ) : (
-                    <Text as='p' key={text.props.i18n_default_text} size='sm' className='description__paragraph'>
+                    <Text
+                        as='p'
+                        key={text.props.i18n_default_text}
+                        size='sm'
+                        className='description__paragraph'
+                        color='quill-typography__color--prominent'
+                    >
                         {text}
                     </Text>
                 )

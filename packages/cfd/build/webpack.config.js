@@ -69,6 +69,8 @@ module.exports = function (env) {
                 '@deriv/deriv-api': '@deriv/deriv-api',
                 '@deriv/hooks': '@deriv/hooks',
                 '@deriv/stores': '@deriv/stores',
+                formik: 'formik',
+                classnames: 'classnames',
             },
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,

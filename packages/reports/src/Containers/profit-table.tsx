@@ -24,7 +24,7 @@ type TDataListCell = React.ComponentProps<typeof DataList.Cell>;
 
 type TGetProfitTableColumnsTemplate = ReturnType<typeof getProfitTableColumnsTemplate>;
 
-const getRowAction = (row_obj: { [key: string]: unknown }) => {
+export const getRowAction = (row_obj: { [key: string]: unknown }) => {
     const contract_type = extractInfoFromShortcode(row_obj?.shortcode as string)
         ?.category?.toString()
         .toUpperCase();
@@ -164,6 +164,7 @@ const ProfitTable = observer(({ component_icon }: TProfitTable) => {
             </>
         );
     };
+
     // TODO: Uncomment and update this when DTrader 2.0 development starts:
     // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='l'>I am Profit Table for DTrader 2.0.</Text>;
     return (

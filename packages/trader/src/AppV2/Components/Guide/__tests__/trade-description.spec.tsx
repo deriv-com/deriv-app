@@ -16,7 +16,7 @@ jest.mock('../Description/touch-no-touch-trade-description', () => jest.fn(() =>
 jest.mock('../Description/turbos-trade-description', () => jest.fn(() => 'mockTurbosTradeDescription'));
 jest.mock('../Description/vanillas-trade-description', () => jest.fn(() => 'mockVanillasTradeDescription'));
 
-describe('<TradeDescription />', () => {
+describe('TradeDescription', () => {
     it('should render mockAccumulatorTradeDescription when trade category is "CONTRACT_LIST.ACCUMULATORS"', () => {
         render(<TradeDescription contract_type={CONTRACT_LIST.ACCUMULATORS} onTermClick={jest.fn()} />);
         expect(screen.getByText(/mockAccumulatorTradeDescription/i)).toBeInTheDocument();

@@ -81,7 +81,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                 <Popover
                                     alignment='bottom'
                                     message={error}
-                                    is_open={is_mobile ? !!error : !!error && has_focus}
+                                    is_open={is_mobile ? !!error : has_focus && !!error}
                                     zIndex='9999'
                                     classNameBubble='qs__warning-bubble'
                                     has_error

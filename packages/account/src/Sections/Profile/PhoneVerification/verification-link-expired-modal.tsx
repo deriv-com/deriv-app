@@ -1,10 +1,9 @@
-import React from 'react';
 import { Modal, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
 import { observer, useStore } from '@deriv/stores';
 import { LabelPairedCircleXmarkLgRegularIcon } from '@deriv/quill-icons';
-import { useVerifyEmail } from '@deriv/hooks';
+import { usePhoneNumberVerificationSetTimer, useVerifyEmail } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 
 type TVerificationLinkExpiredModal = {
@@ -18,17 +17,20 @@ const VerificationLinkExpiredModal = observer(
         setShouldShowVerificationLinkExpiredModal,
     }: TVerificationLinkExpiredModal) => {
         const history = useHistory();
+        const { ui } = useStore();
+        //@ts-expect-error ignore this until we add it in GetSettings api types
+        const { send } = useVerifyEmail('phone_number_verification');
+        const { is_mobile } = ui;
+        const { next_otp_request } = usePhoneNumberVerificationSetTimer();
+
         const handleCancelButton = () => {
             setShouldShowVerificationLinkExpiredModal(false);
             history.push(routes.personal_details);
         };
-        const { send } = useVerifyEmail('phone_number_verification');
         const handleSendNewLinkButton = () => {
             send();
             setShouldShowVerificationLinkExpiredModal(false);
         };
-        const { ui } = useStore();
-        const { is_mobile } = ui;
 
         return (
             <Modal
@@ -36,7 +38,12 @@ const VerificationLinkExpiredModal = observer(
                 showHandleBar
                 isOpened={should_show_verification_link_expired_modal}
                 primaryButtonCallback={handleSendNewLinkButton}
-                primaryButtonLabel={<Localize i18n_default_text='Send new link' />}
+                primaryButtonLabel={
+                    <Localize
+                        i18n_default_text='Send new link {{next_email_attempt_timestamp}}'
+                        values={{ next_email_attempt_timestamp: next_otp_request }}
+                    />
+                }
                 disableCloseOnOverlay
                 showSecondaryButton
                 secondaryButtonLabel={<Localize i18n_default_text='Cancel' />}

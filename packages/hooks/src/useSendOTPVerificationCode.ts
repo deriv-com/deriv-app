@@ -4,7 +4,7 @@ import { TSocketError } from '@deriv/api/types';
 import { localize } from '@deriv/translations';
 import useRequestPhoneNumberOTP from './useRequestPhoneNumberOTP';
 
-/** A hook for requesting OTP which is sent on whatsapp or sms platforms */
+/** A hook for verifying Phone Number OTP and Email OTP */
 const useSendOTPVerificationCode = () => {
     const [phone_otp_error_message, setPhoneOtpErrorMessage] = React.useState('');
     const {

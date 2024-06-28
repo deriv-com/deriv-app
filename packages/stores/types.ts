@@ -533,6 +533,12 @@ type TClientStore = {
     account_settings: GetSettings & {
         upload_file?: string;
         poi_state?: string;
+        phone_number_verification?: {
+            verified?: 0 | 1;
+            next_attempt?: number;
+            next_email_attempt?: number;
+            next_verify_attempt?: number;
+        };
     };
     residence_list: ResidenceList;
     should_restrict_bvi_account_creation: boolean;

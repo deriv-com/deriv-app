@@ -6,24 +6,24 @@ import { useHistory } from 'react-router';
 import { routes } from '@deriv/shared';
 import { Popover, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { useVerifyEmail } from '@deriv/hooks';
-import { getTimestamp } from '../PhoneVerification/validation';
-import dayjs from 'dayjs';
+import { usePhoneNumberVerificationSetTimer, useVerifyEmail } from '@deriv/hooks';
+import classNames from 'classnames';
 
 export const VerifyButton = observer(() => {
-    const current_time = dayjs();
     const [open_popover, setOpenPopover] = React.useState(false);
     const { client, ui } = useStore();
     const { is_mobile } = ui;
     const { account_settings } = client;
     const { phone_number_verification } = account_settings;
-    const { verified: phone_number_verified } = phone_number_verification;
+    const phone_number_verified = phone_number_verification?.verified;
     const history = useHistory();
+    //@ts-expect-error remove this comment when types are added in GetSettings api types
     const { send } = useVerifyEmail('phone_number_verification');
-    const next_email_timestamp = getTimestamp(phone_number_verification?.next_email_attempt, current_time);
+    const { next_otp_request } = usePhoneNumberVerificationSetTimer();
 
     const redirectToPhoneVerification = () => {
-        if (!next_email_timestamp) send();
+        if (next_otp_request) return;
+        send();
         history.push(routes.phone_verification);
     };
 
@@ -65,10 +65,16 @@ export const VerifyButton = observer(() => {
                     size='xxs'
                     weight='bold'
                     color='red'
-                    className='account-form__phone-verification-btn--not-verified'
+                    className={classNames('account-form__phone-verification-btn--not-verified', {
+                        'account-form__phone-verification-btn--not-verified--disabled': !!next_otp_request,
+                    })}
+                    disabled={true}
                     onClick={redirectToPhoneVerification}
                 >
-                    <Localize i18n_default_text='Verify' />
+                    <Localize
+                        i18n_default_text='Verify {{next_email_attempt_timestamp}}'
+                        values={{ next_email_attempt_timestamp: next_otp_request }}
+                    />
                 </Text>
             )}
         </div>

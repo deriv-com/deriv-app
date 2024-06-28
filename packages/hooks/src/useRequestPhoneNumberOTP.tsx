@@ -40,7 +40,7 @@ const useRequestPhoneNumberOTP = () => {
             },
         });
     };
-    //TODOs: need to wait confirmation from the team whether to stay at phone number page when refresh or restart the email verification process again
+
     const requestOnWhatsApp = () => {
         mutate({
             payload: {

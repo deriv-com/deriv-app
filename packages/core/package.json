@@ -129,6 +129,7 @@
         "canvas-toBlob": "^1.0.0",
         "classnames": "^2.2.6",
         "crc-32": "^1.2.0",
+        "dayjs": "^1.11.10",
         "dotenv-webpack": "^8.0.1",
         "extend": "^3.0.2",
         "formik": "^2.1.4",

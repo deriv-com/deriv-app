@@ -107,18 +107,12 @@ const DEFINITION = {
         }
         return <Localize i18n_default_text='Payout is the sum of your initial stake and profit.' />;
     },
-    [TERM.PAYOUT_PER_POINT]: (contract_type: string) => {
-        if (contract_type === CONTRACT_LIST.VANILLAS) {
-            return (
-                <Localize i18n_default_text='We calculate this based on the strike price and duration you’ve selected.' />
-            );
-        }
-        if (contract_type === CONTRACT_LIST.TURBOS) {
-            return (
-                <Localize i18n_default_text='The amount you choose to receive at expiry for every point of change between the final price and the barrier. ' />
-            );
-        }
-    },
+    [TERM.PAYOUT_PER_POINT]: (contract_type: string) =>
+        contract_type === CONTRACT_LIST.VANILLAS ? (
+            <Localize i18n_default_text='We calculate this based on the strike price and duration you’ve selected.' />
+        ) : (
+            <Localize i18n_default_text='The amount you choose to receive at expiry for every point of change between the final price and the barrier. ' />
+        ),
     [TERM.PREVIOUS_SPOT_PRICE]: <Localize i18n_default_text='Spot price on the previous tick.' />,
     [TERM.RANGE]: (
         <Localize i18n_default_text='It is a percentage of the previous spot price. The percentage rate is based on your choice of the index and the growth rate.' />

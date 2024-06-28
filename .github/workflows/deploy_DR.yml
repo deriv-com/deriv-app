@@ -1,4 +1,4 @@
-name: Deriv App Staging Workflow
+name: Deriv App Vercel DR Workflow
 on:
   pull_request:
     branches:

@@ -16,8 +16,9 @@ const {
 } = ValidationConstants.patterns;
 const { addressPermittedSpecialCharacters } = ValidationConstants.messagesHints;
 
-export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) =>
-    Yup.object({
+export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) =>{
+    console.log('tin_config: ', tin_config);
+    return Yup.object({
         employment_status: Yup.string().required(localize('Employment status is required.')),
         tax_residence: Yup.string().when('employment_status', {
             is: (employment_status: string) =>
@@ -73,6 +74,7 @@ export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) 
                 },
             }),
     });
+}
 
 export const getAddressDetailValidationSchema = (is_svg: boolean) =>
     Yup.object({

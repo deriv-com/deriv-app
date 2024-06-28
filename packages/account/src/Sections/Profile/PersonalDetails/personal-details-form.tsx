@@ -44,7 +44,7 @@ const PersonalDetailsForm = observer(() => {
     const invalidate = useInvalidateQuery();
     const history = useHistory();
 
-    const { tin_validation_config,mutate } = useTinValidations()
+    const { tin_validation_config, mutate } = useTinValidations();
 
     console.log('PersonalDetails Form');
 
@@ -211,12 +211,7 @@ const PersonalDetailsForm = observer(() => {
         return undefined;
     };
 
-    const PersonalDetailSchema = getPersonalDetailsValidationSchema(
-        residence_list,
-        is_virtual,
-        is_svg,
-        tin_validation_config
-    );
+    const PersonalDetailSchema = getPersonalDetailsValidationSchema(is_virtual, is_svg, tin_validation_config);
 
     const initialValues = getPersonalDetailsInitialValues(account_settings, residence_list, states_list, is_virtual);
 

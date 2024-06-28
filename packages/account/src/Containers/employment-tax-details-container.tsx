@@ -27,8 +27,11 @@ const EmploymentTaxDetailsContainer = observer(
     }: TEmploymentTaxDetailsContainerProps) => {
         const { values, setFieldValue, touched, errors } = useFormikContext<FormikValues>();
 
+        console.log('values: ', values);
+
         const {
             ui: { is_mobile },
+            client:{residence_list}
         } = useStore();
 
         const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = useState(false);
@@ -50,6 +53,15 @@ const EmploymentTaxDetailsContainer = observer(
             setIsTaxResidencePopoverOpen(false);
             setIsTinPopoverOpen(false);
         };
+
+        useEffect(() => {
+            if (values.tax_residence) {
+                const tax_residence = residence_list.find(item => item.value === values.tax_residence)?.value;
+                if(tax_residence){
+                handleChange(tax_residence)
+                }
+            }
+        }, [handleChange, values.tax_residence]);
 
         useEffect(() => {
             const parent_element = parent_ref?.current;
@@ -77,7 +89,7 @@ const EmploymentTaxDetailsContainer = observer(
                         is_tax_residence_popover_open={is_tax_residence_popover_open}
                         setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                         setIsTinPopoverOpen={setIsTinPopoverOpen}
-                        onUpdate={handleChange}
+                        // onUpdate={handleChange}
                     />
                 </div>
                 <div ref={tin_ref} className='account-form__fieldset'>

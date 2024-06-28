@@ -16,7 +16,7 @@ type TTaxResidenceFieldProps = {
     setIsTinPopoverOpen: (is_open: boolean) => void;
     is_tax_residence_popover_open: boolean;
     disabled: boolean;
-    onUpdate: (value: string) => void;
+    // onUpdate: (value: string) => void;
 };
 
 const TaxResidenceField = ({
@@ -47,9 +47,9 @@ const TaxResidenceField = ({
                                     (item as ResidenceList[0]).value ? (item as ResidenceList[0]).text : '',
                                     true
                                 );
-                                if ((item as ResidenceList[0]).value) {
-                                    onUpdate((item as ResidenceList[0]).value);
-                                }
+                                // if ((item as ResidenceList[0]).value) {
+                                //     onUpdate((item as ResidenceList[0]).value);
+                                // }
                             }}
                             list_portal_id='modal_root'
                             data-testid='tax_residence'
@@ -70,9 +70,9 @@ const TaxResidenceField = ({
                             onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                                 field.onChange(e);
                                 setFieldValue('tax_residence', e.target.value, true);
-                                if (e.target.value) {
-                                    onUpdate(e.target.value);
-                                }
+                                // if (e.target.value) {
+                                //     onUpdate(e.target.value);
+                                // }
                             }}
                             required={required}
                             data_testid='tax_residence_mobile'

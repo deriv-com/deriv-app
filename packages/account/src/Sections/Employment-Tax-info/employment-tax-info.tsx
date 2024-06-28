@@ -7,10 +7,10 @@ import clsx from 'clsx';
 import { localize } from '@deriv-com/translations';
 import EmploymentTaxDetailsContainer from '../../Containers/employment-tax-details-container';
 import { getEmploymentAndTaxValidationSchema } from '../../Configs/user-profile-validation-config';
-import { ResidenceList } from '@deriv/api-types';
 import ScrollToFieldWithError from '../../Components/forms/scroll-to-field-with-error';
 import { observer, useStore } from '@deriv/stores';
 import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, ThemedScrollbars } from '@deriv/components';
+import { useTinValidations } from '@deriv/hooks';
 import './employment-tax-info.scss';
 
 type TEmploymentTaxInfoProps = {

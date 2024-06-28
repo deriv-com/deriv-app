@@ -43,9 +43,9 @@ const Guide = ({ is_minimalistic_look = false }: TGuide) => {
                 selected_contract_type={selected_contract_type}
             />
             <DefinitionModal
+                contract_type={selected_contract_type}
                 term={selected_term ?? ''}
                 onClose={() => setSelectedTerm('')}
-                is_accumulators={selected_contract_type === CONTRACT_LIST.ACCUMULATORS}
             />
         </React.Fragment>
     );

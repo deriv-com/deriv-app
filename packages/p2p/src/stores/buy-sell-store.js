@@ -207,9 +207,8 @@ export default class BuySellStore extends BaseStore {
                 general_store.showModal({
                     key: 'ErrorModal',
                     props: {
-                        error_message:
-                            'We’re unable to create your order because the market rate has moved too much. Please try creating a new order.',
-                        error_modal_button_text: 'Create new order',
+                        error_message: message,
+                        error_modal_button_text: localize('Create new order'),
                         error_modal_title: (
                             <Text weight='bold'>
                                 <Localize i18n_default_text='Order unsuccessful' />
@@ -226,8 +225,7 @@ export default class BuySellStore extends BaseStore {
                     },
                 });
             } else {
-                if (!general_store.isCurrentModal('BuySellModal'))
-                    general_store.showModal({ key: 'BuySellModal', props: {} });
+                general_store.showModal({ key: 'BuySellModal', props: {} });
                 this.form_props.setErrorMessage(message);
                 this.setFormErrorCode(code);
             }

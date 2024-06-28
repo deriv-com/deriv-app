@@ -48,7 +48,3 @@ export const SpotLightHeader = ({ children }: PropsWithChildren) => (
         {children}
     </WalletText>
 );
-
-export const getFiatWalletLoginId = (wallets?: THooks.WalletAccountsList[]) => {
-    return wallets?.find(wallet => typeof wallet.is_crypto === 'boolean' && !wallet.is_crypto)?.loginid;
-};

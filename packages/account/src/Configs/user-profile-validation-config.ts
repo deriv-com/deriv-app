@@ -1,8 +1,8 @@
 import { localize } from '@deriv-com/translations';
-import { ResidenceList } from '@deriv/api-types';
 import * as Yup from 'yup';
 import { ValidationConstants } from '@deriv-com/utils';
 import { toMoment } from '@deriv/shared';
+import { TinValidations } from '@deriv/api/types';
 
 const {
     taxIdentificationNumber,
@@ -16,12 +16,31 @@ const {
 } = ValidationConstants.patterns;
 const { addressPermittedSpecialCharacters } = ValidationConstants.messagesHints;
 
-export const getEmploymentAndTaxValidationSchema = (residence_list: ResidenceList) =>
+export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) =>
     Yup.object({
         employment_status: Yup.string().required(localize('Employment status is required.')),
-        tax_residence: Yup.string().required(localize('Tax residence is required.')),
+        tax_residence: Yup.string().when('employment_status', {
+            is: (employment_status: string) =>
+                tin_config?.tin_employment_status_bypass?.includes(employment_status) &&
+                Boolean(tin_config?.is_tin_mandatory),
+            then: Yup.string().required(localize('Tax residence is required.')),
+            otherwise: Yup.string().notRequired(),
+        }),
+        tax_identification_confirm: Yup.bool().when('employment_status', {
+            is: (employment_status: string) =>
+                tin_config?.tin_employment_status_bypass?.includes(employment_status) &&
+                Boolean(tin_config?.is_tin_mandatory),
+            then: Yup.bool().oneOf([true], localize('Please confirm your tax information.')),
+            otherwise: Yup.bool().notRequired(),
+        }),
         tax_identification_number: Yup.string()
-            .required(localize('TIN is required.'))
+            .when('employment_status', {
+                is: (employment_status: string) =>
+                    tin_config?.tin_employment_status_bypass?.includes(employment_status) &&
+                    Boolean(tin_config?.is_tin_mandatory),
+                then: Yup.string().required(localize('TIN is required.')),
+                otherwise: Yup.string().notRequired(),
+            })
             .max(25, localize("Tax Identification Number can't be longer than 25 characters."))
             .matches(
                 taxIdentificationNumber,
@@ -38,10 +57,16 @@ export const getEmploymentAndTaxValidationSchema = (residence_list: ResidenceLis
                     if (!tax_residence) {
                         return context.createError({ message: localize('Please fill in tax residence.') });
                     }
-                    const tin_format = residence_list.find(
-                        res => res.text === tax_residence && res.tin_format
-                    )?.tin_format;
-                    if (!tin_format?.some(tax_regex => new RegExp(tax_regex).test(value as string))) {
+
+                    if (!tin_config?.tin_format?.some(tax_regex => new RegExp(tax_regex).test(value as string))) {
+                        return context.createError({ message: localize('Tax Identification Number is invalid.') });
+                    }
+
+                    if (
+                        !tin_config?.invalid_patterns?.some(invalid_pattern =>
+                            new RegExp(invalid_pattern).test(value as string)
+                        )
+                    ) {
                         return context.createError({ message: localize('Tax Identification Number is invalid.') });
                     }
                     return true;
@@ -49,49 +74,50 @@ export const getEmploymentAndTaxValidationSchema = (residence_list: ResidenceLis
             }),
     });
 
-export const getAddressDetailValidationSchema = (is_svg: boolean) => ({
-    address_city: Yup.string()
-        .required(localize('City is required'))
-        .max(99, localize('Only 99 characters, please.'))
-        .matches(addressCity, localize('Only letters, periods, hyphens, apostrophes, and spaces, please.')),
-    address_line_1: Yup.string()
-        .required(localize('First line of address is required'))
-        .max(70, localize('Only 70 characters, please.'))
-        .matches(
-            address,
-            `${localize('Use only the following special characters:')} ${addressPermittedSpecialCharacters}`
-        )
-        .when({
-            is: () => is_svg,
-            then: Yup.string().test(
-                'po_box',
-                localize('P.O. Box is not accepted in address'),
-                value => !postalOfficeBoxNumber.test(value ?? '')
-            ),
-        }),
-    address_line_2: Yup.string()
-        .max(70, localize('Only 70 characters, please.'))
-        .matches(
-            address,
-            `${localize('Use only the following special characters:')} ${addressPermittedSpecialCharacters}`
-        )
-        .when({
-            is: () => is_svg,
-            then: Yup.string().test(
-                'po_box',
-                localize('P.O. Box is not accepted in address'),
-                value => !postalOfficeBoxNumber.test(value ?? '')
-            ),
-        }),
-    address_postcode: Yup.string()
-        .max(20, localize('Please enter a postal/ZIP code under 20 characters.'))
-        .matches(postalCode, localize('Only letters, numbers, space and hyphen are allowed.')),
-    address_state: Yup.string()
-        .required(localize('State is required'))
-        .matches(addressState, localize('State is not in a proper format')),
-});
+export const getAddressDetailValidationSchema = (is_svg: boolean) =>
+    Yup.object({
+        address_city: Yup.string()
+            .required(localize('City is required'))
+            .max(99, localize('Only 99 characters, please.'))
+            .matches(addressCity, localize('Only letters, periods, hyphens, apostrophes, and spaces, please.')),
+        address_line_1: Yup.string()
+            .required(localize('First line of address is required'))
+            .max(70, localize('Only 70 characters, please.'))
+            .matches(
+                address,
+                `${localize('Use only the following special characters:')} ${addressPermittedSpecialCharacters}`
+            )
+            .when({
+                is: () => is_svg,
+                then: Yup.string().test(
+                    'po_box',
+                    localize('P.O. Box is not accepted in address'),
+                    value => !postalOfficeBoxNumber.test(value ?? '')
+                ),
+            }),
+        address_line_2: Yup.string()
+            .max(70, localize('Only 70 characters, please.'))
+            .matches(
+                address,
+                `${localize('Use only the following special characters:')} ${addressPermittedSpecialCharacters}`
+            )
+            .when({
+                is: () => is_svg,
+                then: Yup.string().test(
+                    'po_box',
+                    localize('P.O. Box is not accepted in address'),
+                    value => !postalOfficeBoxNumber.test(value ?? '')
+                ),
+            }),
+        address_postcode: Yup.string()
+            .max(20, localize('Please enter a postal/ZIP code under 20 characters.'))
+            .matches(postalCode, localize('Only letters, numbers, space and hyphen are allowed.')),
+        address_state: Yup.string()
+            .required(localize('State is required'))
+            .matches(addressState, localize('State is not in a proper format')),
+    });
 
-export const getPersonalDetailsBaseValidationSchema = (broker_code: string) =>
+export const getPersonalDetailsBaseValidationSchema = (broker_code?: string) =>
     Yup.object({
         salutation: Yup.string().when({
             is: () => broker_code === 'maltainvest',
@@ -125,12 +151,4 @@ export const getPersonalDetailsBaseValidationSchema = (broker_code: string) =>
             is: () => broker_code === 'maltainvest',
             then: Yup.string().required(localize('Citizenship is required.')),
         }),
-        tax_identification_confirm: Yup.bool().oneOf([true], localize('Please confirm your tax information.')),
-        crs_confirmation: Yup.bool()
-            .test({
-                name: 'crs_confirmation',
-                test: (value, context) => (context.parent.tax_identification_number ? !!value : true),
-                message: localize('Please confirm your CRS self-certification.'),
-            })
-            .default(false),
     });

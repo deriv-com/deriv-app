@@ -28,8 +28,9 @@ import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
 import { useInvalidateQuery } from '@deriv/api';
-import { useStatesList, useResidenceList } from '@deriv/hooks';
+import { useStatesList, useResidenceList, useTinValidations } from '@deriv/hooks';
 import EmploymentTaxDetailsContainer from 'Containers/employment-tax-details-container';
+import { isFieldImmutable } from 'Helpers/utils';
 
 type TRestState = {
     show_form: boolean;
@@ -42,6 +43,10 @@ const PersonalDetailsForm = observer(() => {
     const [is_submit_success, setIsSubmitSuccess] = useState(false);
     const invalidate = useInvalidateQuery();
     const history = useHistory();
+
+    const { tin_validation_config,mutate } = useTinValidations()
+
+    console.log('PersonalDetails Form');
 
     const {
         client,
@@ -58,6 +63,7 @@ const PersonalDetailsForm = observer(() => {
         current_landing_company,
         updateAccountStatus,
         residence,
+        is_svg,
     } = client;
 
     const { data: residence_list, isLoading: is_loading_residence_list } = useResidenceList();
@@ -176,6 +182,12 @@ const PersonalDetailsForm = observer(() => {
         return !!account_settings?.immutable_fields?.includes(name);
     };
 
+    const employment_tax_editable_fields = ['employment_status', 'tax_residence', 'tax_identification_number'].filter(
+        field => isFieldImmutable(field, account_settings?.immutable_fields)
+    );
+
+    console.log('employment_tax_editable_fields: ', employment_tax_editable_fields);
+
     const { api_error, show_form } = rest_state;
 
     if (api_error) return <LoadErrorMessage error_message={api_error} />;
@@ -199,9 +211,16 @@ const PersonalDetailsForm = observer(() => {
         return undefined;
     };
 
-    const PersonalDetailSchema = getPersonalDetailsValidationSchema(residence_list, is_virtual);
+    const PersonalDetailSchema = getPersonalDetailsValidationSchema(
+        residence_list,
+        is_virtual,
+        is_svg,
+        tin_validation_config
+    );
 
     const initialValues = getPersonalDetailsInitialValues(account_settings, residence_list, states_list, is_virtual);
+
+    console.log('initialValuess: ', initialValues);
 
     return (
         <Formik
@@ -373,8 +392,9 @@ const PersonalDetailsForm = observer(() => {
                                     <Fragment>
                                         <FormSubHeader title={localize('Employment and tax information')} />
                                         <EmploymentTaxDetailsContainer
-                                            editable_fields={[]}
+                                            editable_fields={employment_tax_editable_fields}
                                             parent_ref={scroll_div_ref}
+                                            handleChange={mutate}
                                         />
                                         {!is_virtual && (
                                             <Fragment>

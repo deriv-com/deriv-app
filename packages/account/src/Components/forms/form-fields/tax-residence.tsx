@@ -16,6 +16,7 @@ type TTaxResidenceFieldProps = {
     setIsTinPopoverOpen: (is_open: boolean) => void;
     is_tax_residence_popover_open: boolean;
     disabled: boolean;
+    onUpdate: (value: string) => void;
 };
 
 const TaxResidenceField = ({
@@ -24,6 +25,7 @@ const TaxResidenceField = ({
     setIsTinPopoverOpen,
     is_tax_residence_popover_open,
     disabled,
+    onUpdate,
 }: TTaxResidenceFieldProps) => {
     const { data: residence_list } = useResidenceList();
 
@@ -39,13 +41,16 @@ const TaxResidenceField = ({
                             label={required ? localize('Tax residence*') : localize('Tax residence')}
                             error={meta.touched ? meta.error : undefined}
                             list_items={residence_list}
-                            onItemSelection={(item: TItem) =>
+                            onItemSelection={(item: TItem) => {
                                 setFieldValue(
                                     'tax_residence',
                                     (item as ResidenceList[0]).value ? (item as ResidenceList[0]).text : '',
                                     true
-                                )
-                            }
+                                );
+                                if ((item as ResidenceList[0]).value) {
+                                    onUpdate((item as ResidenceList[0]).value);
+                                }
+                            }}
                             list_portal_id='modal_root'
                             data-testid='tax_residence'
                             disabled={disabled}
@@ -65,6 +70,9 @@ const TaxResidenceField = ({
                             onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                                 field.onChange(e);
                                 setFieldValue('tax_residence', e.target.value, true);
+                                if (e.target.value) {
+                                    onUpdate(e.target.value);
+                                }
                             }}
                             required={required}
                             data_testid='tax_residence_mobile'

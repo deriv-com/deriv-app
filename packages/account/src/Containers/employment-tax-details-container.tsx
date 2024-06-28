@@ -15,10 +15,16 @@ type TEmploymentTaxDetailsContainerProps = {
     editable_fields: string[];
     parent_ref: React.RefObject<HTMLDivElement>;
     should_display_long_message?: boolean;
+    handleChange: (value: string) => void;
 };
 
 const EmploymentTaxDetailsContainer = observer(
-    ({ editable_fields, parent_ref, should_display_long_message }: TEmploymentTaxDetailsContainerProps) => {
+    ({
+        editable_fields,
+        parent_ref,
+        should_display_long_message,
+        handleChange,
+    }: TEmploymentTaxDetailsContainerProps) => {
         const { values, setFieldValue, touched, errors } = useFormikContext<FormikValues>();
 
         const {
@@ -71,6 +77,7 @@ const EmploymentTaxDetailsContainer = observer(
                         is_tax_residence_popover_open={is_tax_residence_popover_open}
                         setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                         setIsTinPopoverOpen={setIsTinPopoverOpen}
+                        onUpdate={handleChange}
                     />
                 </div>
                 <div ref={tin_ref} className='account-form__fieldset'>

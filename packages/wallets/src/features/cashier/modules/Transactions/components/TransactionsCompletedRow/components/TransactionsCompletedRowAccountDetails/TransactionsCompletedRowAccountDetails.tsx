@@ -6,7 +6,7 @@ import { getMarketType } from '../../../../../../helpers';
 import './TransactionsCompletedRowAccountDetails.scss';
 
 type TProps = {
-    accountType: TPlatforms.All;
+    accountType: string;
     actionType: NonNullable<(THooks.InfiniteTransactions | THooks.Transactions)['action_type']>;
     currency: string;
     displayAccountName: string;
@@ -42,7 +42,7 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
                     currency={currency}
                     isDemo={isDemo}
                     marketType={marketType ?? MARKET_TYPE.ALL}
-                    platform={accountType}
+                    platform={accountType as TPlatforms.All}
                 />
             )}
             <div className='wallets-transactions-completed-row-account-details__type-and-wallet-name'>

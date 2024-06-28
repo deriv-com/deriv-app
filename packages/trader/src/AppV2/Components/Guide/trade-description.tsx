@@ -8,6 +8,10 @@ import MultiplierTradeDescriptions from './Description/multipliers-trade-descrip
 import VanillasTradeDescription from './Description/vanillas-trade-description';
 import TurbosTradeDescription from './Description/turbos-trade-description';
 import HigherLowerTradeDescription from './Description/higher-lower-trade-description';
+import TouchNoTouchTradeDescription from './Description/touch-no-touch-trade-description';
+import MatchesDiffersTradeDescription from './Description/matches-differs-trade-description';
+import EvenOddTradeDescription from './Description/even-odd-trade-description';
+import OverUnderTradeDescription from './Description/over-under-trade-description';
 
 const TradeDescription = ({
     contract_type,
@@ -35,6 +39,18 @@ const TradeDescription = ({
             break;
         case CONTRACT_LIST['HIGHER/LOWER']:
             TradeTypeTemplate = <HigherLowerTradeDescription />;
+            break;
+        case CONTRACT_LIST['TOUCH/NO TOUCH']:
+            TradeTypeTemplate = <TouchNoTouchTradeDescription />;
+            break;
+        case CONTRACT_LIST['MATCHES/DIFFERS']:
+            TradeTypeTemplate = <MatchesDiffersTradeDescription />;
+            break;
+        case CONTRACT_LIST['EVEN/ODD']:
+            TradeTypeTemplate = <EvenOddTradeDescription />;
+            break;
+        case CONTRACT_LIST['OVER/UNDER']:
+            TradeTypeTemplate = <OverUnderTradeDescription />;
             break;
         default:
             TradeTypeTemplate = (

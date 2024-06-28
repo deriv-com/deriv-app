@@ -60,4 +60,15 @@ describe('Cards', () => {
         expect(mock_DBot_store?.dashboard.setActiveTab(DBOT_TABS.BOT_BUILDER));
         expect(mock_DBot_store?.quick_strategy.is_open).toBeTruthy();
     });
+
+    it('should render the Google Drive upload modal on google drive shortcut icon click', () => {
+        render(<Cards has_dashboard_strategies={false} is_mobile={true} />, {
+            wrapper,
+        });
+
+        const google_drive = screen.getByTestId('dt_google-drive');
+        userEvent.click(google_drive);
+
+        expect(mock_DBot_store?.dashboard.is_dialog_open).toBeTruthy();
+    });
 });

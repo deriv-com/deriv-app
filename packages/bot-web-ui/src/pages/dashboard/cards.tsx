@@ -108,6 +108,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                                 })}
                             >
                                 <Icon
+                                    data_testid={`dt_${icons.type}`}
                                     className={classNames('tab__dashboard__table__images', {
                                         'tab__dashboard__table__images--minimized': has_dashboard_strategies,
                                     })}

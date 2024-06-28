@@ -158,3 +158,27 @@ export const getTermDefinition = ({ contract_type, term }: { contract_type: stri
     if (typeof result === 'function') return result(contract_type);
     return result ?? '';
 };
+
+export const parseContractDescription = (
+    content: {
+        type: string;
+        text: JSX.Element;
+    }[]
+) =>
+    content.map(({ type, text }) =>
+        type === 'heading' ? (
+            <Text key={text.props.i18n_default_text} bold size='md' className='description__heading'>
+                {text}
+            </Text>
+        ) : (
+            <Text
+                as='p'
+                key={text.props.i18n_default_text}
+                size='sm'
+                className='description__paragraph'
+                color='quill-typography__color--prominent'
+            >
+                {text}
+            </Text>
+        )
+    );

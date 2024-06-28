@@ -1,7 +1,6 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { Text } from '@deriv-com/quill-ui';
-import { TERM } from 'AppV2/Utils/trade-types-utils';
+import { TERM, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const TurbosTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
     const content = [
@@ -121,27 +120,7 @@ const TurbosTradeDescription = ({ onTermClick }: { onTermClick: (term: string) =
         },
     ];
 
-    return (
-        <React.Fragment>
-            {content.map(({ type, text }) =>
-                type === 'heading' ? (
-                    <Text key={text.props.i18n_default_text} bold size='md' className='description__heading'>
-                        {text}
-                    </Text>
-                ) : (
-                    <Text
-                        as='p'
-                        key={text.props.i18n_default_text}
-                        size='sm'
-                        className='description__paragraph'
-                        color='quill-typography__color--prominent'
-                    >
-                        {text}
-                    </Text>
-                )
-            )}
-        </React.Fragment>
-    );
+    return <React.Fragment>{parseContractDescription(content)}</React.Fragment>;
 };
 
 export default TurbosTradeDescription;

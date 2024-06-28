@@ -33,7 +33,7 @@ const DescriptionModal = ({
         CONTRACT_LIST['OVER/UNDER'],
     ];
 
-    const ordered_contract_list = AVAILABLE_CONTRACTS.toSorted(
+    const ordered_contract_list = [...AVAILABLE_CONTRACTS].sort(
         (a, b) => order.findIndex(item => item === a.id) - order.findIndex(item => item === b.id)
     );
 

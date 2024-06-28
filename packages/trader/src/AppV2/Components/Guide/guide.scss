@@ -58,3 +58,17 @@
         }
     }
 }
+
+.definition {
+    &__title {
+        margin-block-end: var(--component-actionSheet-spacing-padding-lg);
+    }
+
+    &__wrapper {
+        padding: var(--component-actionSheet-spacing-padding-lg);
+    }
+
+    &__button {
+        padding: var(--component-actionSheet-spacing-padding-lg);
+    }
+}

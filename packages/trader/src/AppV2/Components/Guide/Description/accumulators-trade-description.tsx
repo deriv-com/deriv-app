@@ -1,9 +1,9 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Text } from '@deriv-com/quill-ui';
-import { GLOSSARY } from 'AppV2/Utils/trade-types-utils';
+import { TERM } from 'AppV2/Utils/trade-types-utils';
 
-const AccumulatorsTradeDescription = ({ onDefinitionClick }: { onDefinitionClick: (definition: string) => void }) => {
+const AccumulatorsTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
     const content = [
         <Localize
             i18n_default_text='Accumulators allow you to express a view on the range of movement of an index and grow your stake exponentially at a fixed <0>growth rate</0>.'
@@ -11,8 +11,8 @@ const AccumulatorsTradeDescription = ({ onDefinitionClick }: { onDefinitionClick
                 <span
                     className='description__content--definition'
                     key={0}
-                    onClick={() => onDefinitionClick(GLOSSARY.GROWTH_RATE)}
-                    onKeyDown={() => onDefinitionClick(GLOSSARY.GROWTH_RATE)}
+                    onClick={() => onTermClick(TERM.GROWTH_RATE)}
+                    onKeyDown={() => onTermClick(TERM.GROWTH_RATE)}
                 />,
             ]}
             key='1'
@@ -23,14 +23,14 @@ const AccumulatorsTradeDescription = ({ onDefinitionClick }: { onDefinitionClick
                 <span
                     className='description__content--definition'
                     key={0}
-                    onClick={() => onDefinitionClick(GLOSSARY.RANGE)}
-                    onKeyDown={() => onDefinitionClick(GLOSSARY.RANGE)}
+                    onClick={() => onTermClick(TERM.RANGE)}
+                    onKeyDown={() => onTermClick(TERM.RANGE)}
                 />,
                 <span
                     className='description__content--definition'
                     key={1}
-                    onClick={() => onDefinitionClick(GLOSSARY.PREVIOUS_SPOT_PRICE)}
-                    onKeyDown={() => onDefinitionClick(GLOSSARY.PREVIOUS_SPOT_PRICE)}
+                    onClick={() => onTermClick(TERM.PREVIOUS_SPOT_PRICE)}
+                    onKeyDown={() => onTermClick(TERM.PREVIOUS_SPOT_PRICE)}
                 />,
             ]}
             key='2'
@@ -41,8 +41,8 @@ const AccumulatorsTradeDescription = ({ onDefinitionClick }: { onDefinitionClick
                 <span
                     className='description__content--definition'
                     key={0}
-                    onClick={() => onDefinitionClick(GLOSSARY.PAYOUT)}
-                    onKeyDown={() => onDefinitionClick(GLOSSARY.PAYOUT)}
+                    onClick={() => onTermClick(TERM.PAYOUT)}
+                    onKeyDown={() => onTermClick(TERM.PAYOUT)}
                 />,
             ]}
             key='3'
@@ -53,8 +53,8 @@ const AccumulatorsTradeDescription = ({ onDefinitionClick }: { onDefinitionClick
                 <span
                     className='description__content--definition'
                     key={0}
-                    onClick={() => onDefinitionClick(GLOSSARY.TAKE_PROFIT)}
-                    onKeyDown={() => onDefinitionClick(GLOSSARY.TAKE_PROFIT)}
+                    onClick={() => onTermClick(TERM.TAKE_PROFIT)}
+                    onKeyDown={() => onTermClick(TERM.TAKE_PROFIT)}
                 />,
             ]}
             key='4'
@@ -65,8 +65,8 @@ const AccumulatorsTradeDescription = ({ onDefinitionClick }: { onDefinitionClick
                 <span
                     className='description__content--definition'
                     key={0}
-                    onClick={() => onDefinitionClick(GLOSSARY.SLIPPAGE_RISK)}
-                    onKeyDown={() => onDefinitionClick(GLOSSARY.SLIPPAGE_RISK)}
+                    onClick={() => onTermClick(TERM.SLIPPAGE_RISK)}
+                    onKeyDown={() => onTermClick(TERM.SLIPPAGE_RISK)}
                 />,
             ]}
             key='5'

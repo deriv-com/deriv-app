@@ -13,14 +13,14 @@ type TGuide = {
 const Guide = ({ is_minimalistic_look = false }: TGuide) => {
     const [is_description_opened, setIsDescriptionOpened] = React.useState(false);
     const [selected_contract_type, setSelectedContractType] = React.useState(CONTRACT_LIST['RISE/FALL']);
-    const [selected_definition, setSelectedDefinition] = React.useState<string>();
+    const [selected_term, setSelectedTerm] = React.useState<string>();
 
     const onChipSelect = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         setSelectedContractType((e.target as EventTarget & HTMLButtonElement).textContent ?? '');
     };
 
-    const onDefinitionClick = (definition: string) => {
-        setSelectedDefinition(definition);
+    const onTermClick = (term: string) => {
+        setSelectedTerm(term);
     };
 
     return (
@@ -39,10 +39,10 @@ const Guide = ({ is_minimalistic_look = false }: TGuide) => {
                 is_open={is_description_opened}
                 onClose={() => setIsDescriptionOpened(false)}
                 onChipSelect={onChipSelect}
-                onDefinitionClick={onDefinitionClick}
+                onTermClick={onTermClick}
                 selected_contract_type={selected_contract_type}
             />
-            <DefinitionModal definition={selected_definition ?? ''} onClose={() => setSelectedDefinition('')} />
+            <DefinitionModal term={selected_term ?? ''} onClose={() => setSelectedTerm('')} />
         </React.Fragment>
     );
 };

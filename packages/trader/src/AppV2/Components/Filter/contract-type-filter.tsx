@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActionSheet, Checkbox, Chip } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
-import { availableContracts } from 'AppV2/Utils/trade-types-utils';
+import { AVAILABLE_CONTRACTS } from 'AppV2/Utils/trade-types-utils';
 
 type TContractTypeFilter = {
     contractTypeFilter: string[] | [];
@@ -30,7 +30,7 @@ const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: T
     const getChipLabel = () => {
         const arrayLength = contractTypeFilter.length;
         if (!arrayLength) return <Localize i18n_default_text='All trade types' />;
-        if (arrayLength === 1) return availableContracts.find(type => type.id === contractTypeFilter[0])?.tradeType;
+        if (arrayLength === 1) return AVAILABLE_CONTRACTS.find(type => type.id === contractTypeFilter[0])?.tradeType;
         return <Localize i18n_default_text='{{amount}} trade types' values={{ amount: arrayLength }} />;
     };
 
@@ -49,7 +49,7 @@ const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: T
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Filter by trade types' />} />
                     <ActionSheet.Content className='filter__item__wrapper'>
-                        {availableContracts.map(({ tradeType, id }) => (
+                        {AVAILABLE_CONTRACTS.map(({ tradeType, id }) => (
                             <Checkbox
                                 checked={changedOptions.includes(id)}
                                 checkboxPosition='right'

@@ -1,14 +1,14 @@
 import React from 'react';
 import { ActionSheet, Heading, Chip, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
-import { availableContracts, CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
+import { AVAILABLE_CONTRACTS, CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
 import TradeDescription from './trade-description';
 
 type TDescriptionModal = {
     is_open?: boolean;
     onClose: () => void;
     onChipSelect: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-    onDefinitionClick: (definition: string) => void;
+    onTermClick: (term: string) => void;
     selected_contract_type: string;
 };
 
@@ -16,7 +16,7 @@ const DescriptionModal = ({
     is_open,
     onClose,
     onChipSelect,
-    onDefinitionClick,
+    onTermClick,
     selected_contract_type,
 }: TDescriptionModal) => {
     //TODO: temporary, until we'll have ordered list, coming from contract type selection
@@ -32,7 +32,8 @@ const DescriptionModal = ({
         CONTRACT_LIST['EVEN/ODD'],
         CONTRACT_LIST['OVER/UNDER'],
     ];
-    const ordered_contract_list = availableContracts.toSorted(
+
+    const ordered_contract_list = AVAILABLE_CONTRACTS.toSorted(
         (a, b) => order.findIndex(item => item === a.id) - order.findIndex(item => item === b.id)
     );
 
@@ -55,10 +56,7 @@ const DescriptionModal = ({
                         ))}
                     </div>
                     <div className='guide__contract-description'>
-                        <TradeDescription
-                            contract_type={selected_contract_type}
-                            onDefinitionClick={onDefinitionClick}
-                        />
+                        <TradeDescription contract_type={selected_contract_type} onTermClick={onTermClick} />
                         <div className='guide__video-placeholder'>
                             <Text>Coolest video ever</Text>
                         </div>

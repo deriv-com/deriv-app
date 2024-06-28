@@ -7,15 +7,15 @@ import RiseFallTradeDescription from './Description/rise-fall-trade-description'
 
 const TradeDescription = ({
     contract_type,
-    onDefinitionClick,
+    onTermClick,
 }: {
     contract_type: string;
-    onDefinitionClick: (definition: string) => void;
+    onTermClick: (term: string) => void;
 }) => {
     let TradeTypeTemplate;
     switch (contract_type) {
         case CONTRACT_LIST.ACCUMULATORS:
-            TradeTypeTemplate = <AccumulatorsTradeDescription onDefinitionClick={onDefinitionClick} />;
+            TradeTypeTemplate = <AccumulatorsTradeDescription onTermClick={onTermClick} />;
             break;
         case CONTRACT_LIST['RISE/FALL']:
             TradeTypeTemplate = <RiseFallTradeDescription />;

@@ -248,6 +248,7 @@
     "2142425493": "İlan Kimliği",
     "2145292295": "Değerlendir",
     "-1540251249": "Satın al {{ account_currency }}",
+    "-962824159": "Yeni sipariş oluştur",
     "-2026152535": "Sipariş başarısız",
     "-1267880283": "{{field_name}} gereklidir",
     "-2019083683": "{{field_name}} yalnızca harf, sayı, boşluk ve bu simgelerden herhangi birini içerebilir: -+.,'#@():;",

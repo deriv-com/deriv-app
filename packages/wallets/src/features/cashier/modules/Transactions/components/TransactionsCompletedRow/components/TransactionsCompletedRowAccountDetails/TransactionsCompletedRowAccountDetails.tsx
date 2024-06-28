@@ -1,26 +1,19 @@
 import React from 'react';
-import {
-    WalletCurrencyCard,
-    WalletListCardBadge,
-    WalletMarketCurrencyIcon,
-    WalletText,
-} from '../../../../../../../../components';
-import { THooks, TPlatforms, TWalletLandingCompanyName } from '../../../../../../../../types';
+import { WalletCurrencyCard, WalletMarketCurrencyIcon, WalletText } from '../../../../../../../../components';
+import { THooks, TPlatforms } from '../../../../../../../../types';
 import { MARKET_TYPE } from '../../../../../../../cfd/constants';
 import { getMarketType } from '../../../../../../helpers';
 import './TransactionsCompletedRowAccountDetails.scss';
 
 type TProps = {
-    accountType: string;
+    accountType: TPlatforms.All;
     actionType: NonNullable<(THooks.InfiniteTransactions | THooks.Transactions)['action_type']>;
     currency: string;
     displayAccountName: string;
     displayActionType: string;
     isDemo: boolean;
     isInterWallet?: boolean;
-    landingCompanyName?: TWalletLandingCompanyName;
     mt5Group?: string;
-    mt5LandingCompanyName?: string;
 };
 
 const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
@@ -31,9 +24,7 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
     displayActionType,
     isDemo,
     isInterWallet = false,
-    landingCompanyName,
     mt5Group,
-    mt5LandingCompanyName,
 }) => {
     const marketType = getMarketType(mt5Group);
 
@@ -51,7 +42,7 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
                     currency={currency}
                     isDemo={isDemo}
                     marketType={marketType ?? MARKET_TYPE.ALL}
-                    platform={accountType as TPlatforms.All}
+                    platform={accountType}
                 />
             )}
             <div className='wallets-transactions-completed-row-account-details__type-and-wallet-name'>
@@ -62,7 +53,6 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
                     <WalletText color='general' size='xs' weight='bold'>
                         {displayAccountName}
                     </WalletText>
-                    {!isDemo && <WalletListCardBadge label={mt5LandingCompanyName ?? landingCompanyName} />}
                 </div>
             </div>
         </div>

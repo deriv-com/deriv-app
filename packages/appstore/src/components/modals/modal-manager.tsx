@@ -86,12 +86,12 @@ const CFDPasswordModal = makeLazyLoader(
     () => <Loading />
 )();
 
-const MT5ServerMaintenanceModal = makeLazyLoader(
+const CFDServerMaintenanceModal = makeLazyLoader(
     () =>
         moduleLoader(
             () =>
                 import(
-                    /* webpackChunkName: "modal_cfd_cfd-password-modal" */ '@deriv/cfd/src/Containers/mt5-server-maintenance-modal'
+                    /* webpackChunkName: "modal_cfd_cfd-password-modal" */ '@deriv/cfd/src/Containers/cfd-server-maintenance-modal'
                 )
         ),
     () => <Loading />
@@ -320,7 +320,7 @@ const ModalManager = () => {
 
     return (
         <React.Fragment>
-            {is_server_maintenance_modal_visible && <MT5ServerMaintenanceModal />}
+            {is_server_maintenance_modal_visible && <CFDServerMaintenanceModal />}
             {is_account_unavailable_modal_visible && <MT5AccountUnavailableModal />}
             {is_jurisdiction_modal_visible && <JurisdictionModal openPasswordModal={openRealPasswordModal} />}
             {should_show_cfd_password_modal && <CFDPasswordModal platform={platform} />}

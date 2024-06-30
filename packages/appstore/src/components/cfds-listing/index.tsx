@@ -256,6 +256,7 @@ const CFDsListing = observer(() => {
                                             account_mode: selected_account_type,
                                             account_name: track_account_subtitle,
                                         });
+                                        setAppstorePlatform(existing_account.platform);
                                         if (has_mt5_account_status === MT5_ACCOUNT_STATUS.SERVER_MAINTENANCE)
                                             return setServerMaintenanceModal(true);
                                         if (has_mt5_account_status === MT5_ACCOUNT_STATUS.UNAVAILABLE)

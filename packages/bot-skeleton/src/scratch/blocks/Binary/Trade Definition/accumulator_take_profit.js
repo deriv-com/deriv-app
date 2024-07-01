@@ -3,18 +3,18 @@ import { getCurrencyDisplayCode } from '@deriv/shared';
 import { config } from '../../../../constants/config';
 
 const description = localize(
-    'Your contract is closed automatically when your loss is more than or equals to this amount. This block can only be used with the multipliers trade type.'
+    'Your contract is closed automatically when your profit is more than or equals to this amount. This block can only be used with the accumulator trade type.'
 );
 
-Blockly.Blocks.multiplier_stop_loss = {
+Blockly.Blocks.accumulator_take_profit = {
     init() {
         this.jsonInit(this.definition());
     },
     definition() {
         return {
-            message0: localize('Stop Loss: {{ currency }} {{ stop_loss }}', {
+            message0: localize('Take Profit: {{ currency }} {{ take_profit }}', {
                 currency: '%1',
-                stop_loss: '%2',
+                take_profit: '%2',
             }),
             args0: [
                 {
@@ -39,7 +39,7 @@ Blockly.Blocks.multiplier_stop_loss = {
     },
     meta() {
         return {
-            display_name: localize('Stop loss (Multiplier)'),
+            display_name: localize('Take Profit (Accumulator)'),
             description,
         };
     },
@@ -54,7 +54,7 @@ Blockly.Blocks.multiplier_stop_loss = {
             this.setCurrency();
         }
     },
-    restricted_parents: ['trade_definition_multiplier'],
+    restricted_parents: ['trade_definition_accumulator'],
     setCurrency: Blockly.Blocks.trade_definition_tradeoptions.setCurrency,
     getRequiredValueInputs() {
         const field_input = this.getInput('AMOUNT');
@@ -62,7 +62,7 @@ Blockly.Blocks.multiplier_stop_loss = {
             return {
                 AMOUNT: input => {
                     const input_number = Number(input);
-                    this.error_message = localize('Stop loss must be a positive number.');
+                    this.error_message = localize('Take profit must be a positive number.');
                     return !isNaN(input_number) && input_number <= 0;
                 },
             };
@@ -71,4 +71,4 @@ Blockly.Blocks.multiplier_stop_loss = {
     },
 };
 
-Blockly.JavaScript.multiplier_stop_loss = () => {};
+Blockly.JavaScript.accumulator_take_profit = () => {};

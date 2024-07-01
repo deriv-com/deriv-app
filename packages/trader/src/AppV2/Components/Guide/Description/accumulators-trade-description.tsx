@@ -1,9 +1,24 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
+import { Loading } from '@deriv/components';
 import { Text } from '@deriv-com/quill-ui';
+import { useDevice } from '@deriv-com/ui';
+import { getUrlBase } from '@deriv/shared';
 import { TERM } from 'AppV2/Utils/trade-types-utils';
 
 const AccumulatorsTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
+    const [is_loading, setIsLoading] = React.useState(true);
+    const { isMobile } = useDevice();
+    // memoize file paths for videos and open the modal only after we get them
+    const getVideoSource = React.useCallback(
+        (extension: string) => {
+            return getUrlBase(`/public/videos/accumulators_manual_${isMobile ? 'mobile' : 'desktop'}.${extension}`);
+        },
+        [isMobile]
+    );
+
+    const mp4_src = React.useMemo(() => getVideoSource('mp4'), [getVideoSource]);
+    const webm_src = React.useMemo(() => getVideoSource('webm'), [getVideoSource]);
     const content = [
         <Localize
             i18n_default_text='Accumulators allow you to express a view on the range of movement of an index and grow your stake exponentially at a fixed <0>growth rate</0>.'
@@ -75,6 +90,21 @@ const AccumulatorsTradeDescription = ({ onTermClick }: { onTermClick: (term: str
                     {paragraph}
                 </Text>
             ))}
+            {is_loading && <Loading is_fullscreen={false} />}
+            <video
+                autoPlay
+                data-testid='dt_accumulators_stats_manual_video'
+                loop
+                onLoadedData={() => setIsLoading(false)}
+                playsInline
+                preload='auto'
+                width={isMobile ? 296 : 563}
+            >
+                {/* a browser will select a source with extension it recognizes */}
+                <source src={mp4_src} type='video/mp4' />
+                <source src={webm_src} type='video/webm' />
+                <Localize i18n_default_text='Unfortunately, your browser does not support the video.' />
+            </video>
         </React.Fragment>
     );
 };

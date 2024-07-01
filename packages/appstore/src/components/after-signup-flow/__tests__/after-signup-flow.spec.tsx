@@ -11,7 +11,24 @@ jest.mock('@deriv/hooks', () => ({
 }));
 
 describe('AfterSignupFlow', () => {
-    const mockDefault = mockStore({});
+    const mockedOpenRealAccountSignup = jest.fn();
+    const mockedSetIsFromSignupAccount = jest.fn();
+    const mockedSetIsSetupRealAccountOrGoToDemoModalVisible = jest.fn();
+
+    const mockDefault = mockStore({
+        client: {
+            is_logged_in: true,
+            has_active_real_account: false,
+        },
+        ui: {
+            is_from_signup_account: true,
+            openRealAccountSignup: mockedOpenRealAccountSignup,
+            setIsFromSignupAccount: mockedSetIsFromSignupAccount,
+        },
+        traders_hub: {
+            setIsSetupRealAccountOrGoToDemoModalVisible: mockedSetIsSetupRealAccountOrGoToDemoModalVisible,
+        },
+    });
 
     const wrapper = (mock: ReturnType<typeof mockStore> = mockDefault) => {
         const Component = ({ children }: { children: JSX.Element }) => (
@@ -20,37 +37,15 @@ describe('AfterSignupFlow', () => {
         return Component;
     };
 
-    it('should render correctly', () => {
-        const { container } = render(<AfterSignupFlow />, {
-            wrapper: wrapper(),
-        });
-        expect(container).toBeInTheDocument();
+    afterEach(() => {
+        jest.clearAllMocks();
     });
 
     it('check if growthbook feature flags are false', () => {
         (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValue([false, true]);
 
-        const mockedOpenRealAccountSignup = jest.fn();
-        const mockedSetIsFromSignupAccount = jest.fn();
-        const mockedSetIsSetupRealAccountOrGoToDemoModalVisible = jest.fn();
-
-        const mock = mockStore({
-            client: {
-                is_logged_in: true,
-                has_active_real_account: false,
-            },
-            ui: {
-                is_from_signup_account: true,
-                openRealAccountSignup: mockedOpenRealAccountSignup,
-                setIsFromSignupAccount: mockedSetIsFromSignupAccount,
-            },
-            traders_hub: {
-                setIsSetupRealAccountOrGoToDemoModalVisible: mockedSetIsSetupRealAccountOrGoToDemoModalVisible,
-            },
-        });
-
         render(<AfterSignupFlow />, {
-            wrapper: wrapper(mock),
+            wrapper: wrapper(),
         });
 
         expect(mockedOpenRealAccountSignup).not.toBeCalled();
@@ -62,27 +57,8 @@ describe('AfterSignupFlow', () => {
         (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValueOnce([true, true]);
         (useContentFlag as jest.Mock).mockReturnValue({ is_cr_demo: true, is_eu_demo: false });
 
-        const mockedOpenRealAccountSignup = jest.fn();
-        const mockedSetIsFromSignupAccount = jest.fn();
-        const mockedSetIsSetupRealAccountOrGoToDemoModalVisible = jest.fn();
-
-        const mock = mockStore({
-            client: {
-                is_logged_in: true,
-                has_active_real_account: false,
-            },
-            ui: {
-                is_from_signup_account: true,
-                openRealAccountSignup: mockedOpenRealAccountSignup,
-                setIsFromSignupAccount: mockedSetIsFromSignupAccount,
-            },
-            traders_hub: {
-                setIsSetupRealAccountOrGoToDemoModalVisible: mockedSetIsSetupRealAccountOrGoToDemoModalVisible,
-            },
-        });
-
         render(<AfterSignupFlow />, {
-            wrapper: wrapper(mock),
+            wrapper: wrapper(),
         });
 
         expect(mockedOpenRealAccountSignup).toBeCalled();
@@ -94,27 +70,8 @@ describe('AfterSignupFlow', () => {
         (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValueOnce([true, true]);
         (useContentFlag as jest.Mock).mockReturnValue({ is_cr_demo: false, is_eu_demo: true });
 
-        const mockedOpenRealAccountSignup = jest.fn();
-        const mockedSetIsFromSignupAccount = jest.fn();
-        const mockedSetIsSetupRealAccountOrGoToDemoModalVisible = jest.fn();
-
-        const mock = mockStore({
-            client: {
-                is_logged_in: true,
-                has_active_real_account: false,
-            },
-            ui: {
-                is_from_signup_account: true,
-                openRealAccountSignup: mockedOpenRealAccountSignup,
-                setIsFromSignupAccount: mockedSetIsFromSignupAccount,
-            },
-            traders_hub: {
-                setIsSetupRealAccountOrGoToDemoModalVisible: mockedSetIsSetupRealAccountOrGoToDemoModalVisible,
-            },
-        });
-
         render(<AfterSignupFlow />, {
-            wrapper: wrapper(mock),
+            wrapper: wrapper(),
         });
 
         expect(mockedOpenRealAccountSignup).toBeCalled();
@@ -126,27 +83,8 @@ describe('AfterSignupFlow', () => {
         (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValueOnce([false, true]);
         (useGrowthbookGetFeatureValue as jest.Mock).mockReturnValueOnce([true, true]);
 
-        const mockedOpenRealAccountSignup = jest.fn();
-        const mockedSetIsFromSignupAccount = jest.fn();
-        const mockedSetIsSetupRealAccountOrGoToDemoModalVisible = jest.fn();
-
-        const mock = mockStore({
-            client: {
-                is_logged_in: true,
-                has_active_real_account: false,
-            },
-            ui: {
-                is_from_signup_account: true,
-                openRealAccountSignup: mockedOpenRealAccountSignup,
-                setIsFromSignupAccount: mockedSetIsFromSignupAccount,
-            },
-            traders_hub: {
-                setIsSetupRealAccountOrGoToDemoModalVisible: mockedSetIsSetupRealAccountOrGoToDemoModalVisible,
-            },
-        });
-
         render(<AfterSignupFlow />, {
-            wrapper: wrapper(mock),
+            wrapper: wrapper(),
         });
 
         expect(mockedOpenRealAccountSignup).not.toBeCalled();

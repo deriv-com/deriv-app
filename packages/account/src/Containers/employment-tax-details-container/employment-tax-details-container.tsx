@@ -52,7 +52,7 @@ const EmploymentTaxDetailsContainer = ({
 
     useEffect(() => {
         if (values.tax_residence) {
-            const tax_residence = residence_list.find(item => item.value === values.tax_residence)?.value;
+            const tax_residence = residence_list.find(item => item.text === values.tax_residence)?.value;
             if (tax_residence) {
                 handleChange(tax_residence);
             }

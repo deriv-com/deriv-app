@@ -519,43 +519,50 @@ const PlaceOfBirthField = ({ handleChange, setFieldValue, disabled, residence_li
     );
 };
 
-const AccountOpeningReasonField = ({ required, account_opening_reason_list, setFieldValue, disabled }) => (
-    <Field name='account_opening_reason'>
-        {({ field, meta }) => (
-            <React.Fragment>
-                <DesktopWrapper>
-                    <Dropdown
-                        placeholder={
-                            required ? localize('Intended use of account*') : localize('Intended use of account')
-                        }
-                        name={field.name}
-                        disabled={disabled}
-                        is_align_text_left
-                        list={account_opening_reason_list}
-                        {...field}
-                        error={meta.touched && meta.error}
-                        list_portal_id='modal_root'
-                        required
-                    />
-                </DesktopWrapper>
-                <MobileWrapper>
-                    <SelectNative
-                        placeholder={localize('Please select')}
-                        name={field.name}
-                        label={required ? localize('Intended use of account*') : localize('Intended use of account')}
-                        list_items={account_opening_reason_list}
-                        error={meta.touched && meta.error}
-                        onChange={e => {
-                            field.onChange(e);
-                            setFieldValue('account_opening_reason', e.target.value, true);
-                        }}
-                        {...field}
-                        required
-                        data_testid='account_opening_reason_mobile'
-                        disabled={disabled}
-                    />
-                </MobileWrapper>
-            </React.Fragment>
-        )}
-    </Field>
-);
+const AccountOpeningReasonField = ({ no_header, required, account_opening_reason_list, setFieldValue, disabled }) => {
+    const { isDesktop } = useDevice();
+    return (
+        <React.Fragment>
+            {!no_header && <FormSubHeader title={localize('Account opening reason')} />}
+            <Field name='account_opening_reason'>
+                {({ field, meta }) => (
+                    <React.Fragment>
+                        {isDesktop ? (
+                            <Dropdown
+                                placeholder={
+                                    required ? localize('Account opening reason*') : localize('Account opening reason')
+                                }
+                                name={field.name}
+                                disabled={disabled}
+                                is_align_text_left
+                                list={account_opening_reason_list}
+                                {...field}
+                                error={meta.touched && meta.error}
+                                list_portal_id='modal_root'
+                                required
+                            />
+                        ) : (
+                            <SelectNative
+                                placeholder={localize('Please select')}
+                                name={field.name}
+                                label={
+                                    required ? localize('Account opening reason*') : localize('Account opening reason')
+                                }
+                                list_items={account_opening_reason_list}
+                                error={meta.touched && meta.error}
+                                onChange={e => {
+                                    field.onChange(e);
+                                    setFieldValue('account_opening_reason', e.target.value, true);
+                                }}
+                                {...field}
+                                required
+                                data_testid='account_opening_reason_mobile'
+                                disabled={disabled}
+                            />
+                        )}
+                    </React.Fragment>
+                )}
+            </Field>
+        </React.Fragment>
+    );
+};

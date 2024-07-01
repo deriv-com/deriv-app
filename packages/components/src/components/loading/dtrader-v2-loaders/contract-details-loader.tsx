@@ -4,7 +4,7 @@ import { Skeleton } from '../../skeleton';
 
 const ContractDetailsLoader = () => {
     return (
-        <div className='contract-details-loader'>
+        <div className='contract-details-loader' data-testid='dt_contract_details_loader'>
             <ContractCardLoader />
             <div className='skeleton-box__chart'>
                 <Skeleton />

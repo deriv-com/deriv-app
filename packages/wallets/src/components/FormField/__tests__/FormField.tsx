@@ -3,7 +3,7 @@ import Yup from 'yup';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FlowProvider } from '../../FlowProvider';
-import FlowTextField from '../FlowTextField';
+import FormField from '../FormField';
 
 const mockUseFlow = {
     setFormValues: jest.fn(),
@@ -23,7 +23,7 @@ jest.mock('yup', () => ({
     }),
 }));
 
-describe('FlowTextField', () => {
+describe('FormField', () => {
     it('should set field value with default value provided', async () => {
         await act(async () => {
             render(
@@ -32,10 +32,10 @@ describe('FlowTextField', () => {
                         test: 'default',
                     }}
                     screens={{
-                        test: <FlowTextField name='test' />,
+                        test: <FormField name='test' />,
                     }}
                 >
-                    {() => <FlowTextField defaultValue='default' name='test' />}
+                    {() => <FormField defaultValue='default' name='test' />}
                 </FlowProvider>
             );
         });
@@ -56,10 +56,10 @@ describe('FlowTextField', () => {
                         test: 'default',
                     }}
                     screens={{
-                        test: <FlowTextField name='test' />,
+                        test: <FormField name='test' />,
                     }}
                 >
-                    {() => <FlowTextField defaultValue='default' name='test' />}
+                    {() => <FormField defaultValue='default' name='test' />}
                 </FlowProvider>
             );
         });
@@ -79,10 +79,10 @@ describe('FlowTextField', () => {
                         test: 'default',
                     }}
                     screens={{
-                        test: <FlowTextField name='test' />,
+                        test: <FormField name='test' />,
                     }}
                 >
-                    {() => <FlowTextField defaultValue='default' name='test' validationSchema={validationSchema} />}
+                    {() => <FormField defaultValue='default' name='test' validationSchema={validationSchema} />}
                 </FlowProvider>
             );
         });
@@ -106,10 +106,10 @@ describe('FlowTextField', () => {
                         test: 'default',
                     }}
                     screens={{
-                        test: <FlowTextField name='test' />,
+                        test: <FormField name='test' />,
                     }}
                 >
-                    {() => <FlowTextField defaultValue='default' name='test' validationSchema={validationSchema} />}
+                    {() => <FormField defaultValue='default' name='test' validationSchema={validationSchema} />}
                 </FlowProvider>
             );
         });
@@ -131,12 +131,10 @@ describe('FlowTextField', () => {
                         test: 'default',
                     }}
                     screens={{
-                        test: <FlowTextField name='test' />,
+                        test: <FormField name='test' />,
                     }}
                 >
-                    {() => (
-                        <FlowTextField defaultValue='default' errorMessage='Field is required' isInvalid name='test' />
-                    )}
+                    {() => <FormField defaultValue='default' errorMessage='Field is required' isInvalid name='test' />}
                 </FlowProvider>
             );
         });
@@ -154,10 +152,10 @@ describe('FlowTextField', () => {
                         test: 'default',
                     }}
                     screens={{
-                        test: <FlowTextField name='test' />,
+                        test: <FormField name='test' />,
                     }}
                 >
-                    {() => <FlowTextField defaultValue='default' disabled name='test' />}
+                    {() => <FormField defaultValue='default' disabled name='test' />}
                 </FlowProvider>
             );
         });

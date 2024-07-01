@@ -1,12 +1,11 @@
 import React from 'react';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
-import { MobileWrapper, Text } from '@deriv/components';
+import { Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import DeleteDialog from './delete-dialog';
 import RecentWorkspace from './recent-workspace';
-import SaveModal from './save-modal';
 import './index.scss';
 
 type THeader = {
@@ -86,9 +85,6 @@ const DashboardBotList = observer(() => {
                 </div>
             </div>
             <DeleteDialog setStrategies={setDashboardStrategies} />
-            <MobileWrapper>
-                <SaveModal />
-            </MobileWrapper>
         </div>
     );
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, Icon, MobileWrapper, Modal, Text } from '@deriv/components';
+import { Icon, Modal, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -68,30 +68,25 @@ const InfoPanel = observer(() => {
         </div>
     );
 
-    return (
-        <>
-            <DesktopWrapper>
-                {!active_tour && (
-                    <div
-                        className={classNames('tab__dashboard__info-panel', {
-                            'tab__dashboard__info-panel--active': is_info_panel_visible,
-                        })}
-                    >
-                        {renderInfo()}
-                    </div>
-                )}
-            </DesktopWrapper>
-            <MobileWrapper>
-                <Modal
-                    className='statistics__modal statistics__modal--mobile'
-                    is_open={is_info_panel_visible}
-                    toggleModal={handleClose}
-                    width={'440px'}
-                >
-                    <Modal.Body>{renderInfo()}</Modal.Body>
-                </Modal>
-            </MobileWrapper>
-        </>
+    return is_desktop ? (
+        !active_tour && (
+            <div
+                className={classNames('tab__dashboard__info-panel', {
+                    'tab__dashboard__info-panel--active': is_info_panel_visible,
+                })}
+            >
+                {renderInfo()}
+            </div>
+        )
+    ) : (
+        <Modal
+            className='statistics__modal statistics__modal--mobile'
+            is_open={is_info_panel_visible}
+            toggleModal={handleClose}
+            width={'440px'}
+        >
+            <Modal.Body>{renderInfo()}</Modal.Body>
+        </Modal>
     );
 });
 

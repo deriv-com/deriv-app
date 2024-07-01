@@ -5,7 +5,7 @@ import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
-import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
+import { Dialog, Tabs } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import TradingViewModal from 'Components/trading-view-chart/trading-view-modal';
@@ -178,15 +178,18 @@ const AppWrapper = observer(() => {
                     </Tabs>
                 </div>
             </div>
-            <DesktopWrapper>
-                <div className='main__run-strategy-wrapper'>
-                    <RunStrategy />
-                    <RunPanel />
-                </div>
-                <ChartModal />
-                <TradingViewModal />
-            </DesktopWrapper>
-            <MobileWrapper>{!is_open && <RunPanel />}</MobileWrapper>
+            {is_desktop ? (
+                <>
+                    <div className='main__run-strategy-wrapper'>
+                        <RunStrategy />
+                        <RunPanel />
+                    </div>
+                    <ChartModal />
+                    <TradingViewModal />
+                </>
+            ) : (
+                !is_open && <RunPanel />
+            )}
             <Dialog
                 cancel_button_text={cancel_button_text || localize('Cancel')}
                 className='dc-dialog__wrapper--fixed'

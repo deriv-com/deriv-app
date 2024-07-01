@@ -64,6 +64,7 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     buy_sell_store: {
         show_advertiser_page: true,
         hideAdvertiserPage: jest.fn(),
+        setSelectedAdState: jest.fn(),
         setShowAdvertiserPage: jest.fn(),
     },
     my_profile_store: {

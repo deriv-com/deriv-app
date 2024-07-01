@@ -1,9 +1,9 @@
 import React from 'react';
 import PhoneVerificationCard from './phone-verification-card';
-import { Button, Text, TextField } from '@deriv-com/quill-ui';
+import { Button, Snackbar, Text, TextField } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { useRequestPhoneNumberOTP, useSettings } from '@deriv/hooks';
+import { usePhoneNumberVerificationSetTimer, useRequestPhoneNumberOTP, useSettings } from '@deriv/hooks';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 import { validatePhoneNumber } from './validation';
 
@@ -24,9 +24,10 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
         is_email_verified,
         email_otp_error,
     } = useRequestPhoneNumberOTP();
-    const { data: account_settings } = useSettings();
+    const { data: account_settings, invalidate } = useSettings();
     const { ui } = useStore();
     const { setShouldShowPhoneNumberOTP } = ui;
+    const { next_otp_request } = usePhoneNumberVerificationSetTimer(true);
 
     React.useEffect(() => {
         setPhoneNumber(account_settings?.phone || '');
@@ -34,14 +35,14 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
 
     React.useEffect(() => {
         if (email_otp_error) {
-            setIsButtonLoading(false);
+            invalidate('get_settings').then(() => setIsButtonLoading(false));
         }
         if (is_email_verified) {
             setIsButtonLoading(false);
             setOtpVerification({ show_otp_verification: true, phone_verification_type });
             setShouldShowPhoneNumberOTP(true);
         }
-    }, [is_email_verified, email_otp_error]);
+    }, [is_email_verified, email_otp_error, invalidate]);
 
     const handleOnChangePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPhoneNumber(e.target.value);
@@ -79,8 +80,7 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
                     fullWidth
                     size='lg'
                     onClick={() => handleSubmit(VERIFICATION_SERVICES.SMS)}
-                    isLoading={is_button_loading}
-                    disabled={is_button_loading}
+                    disabled={is_button_loading || !!next_otp_request}
                 >
                     <Text bold>
                         <Localize i18n_default_text='Get code via SMS' />
@@ -91,14 +91,24 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
                     fullWidth
                     size='lg'
                     onClick={() => handleSubmit(VERIFICATION_SERVICES.WHATSAPP)}
-                    isLoading={is_button_loading}
-                    disabled={is_button_loading}
+                    disabled={is_button_loading || !!next_otp_request}
                 >
                     <Text color='white' bold>
                         <Localize i18n_default_text='Get code via WhatsApp' />
                     </Text>
                 </Button>
             </div>
+            <Snackbar
+                hasCloseButton={false}
+                //@ts-expect-error ignore for now
+                message={
+                    <Localize
+                        i18n_default_text='An error occurred. Request a new OTP in {{next_phone_number_attempt_timestamp}}.'
+                        values={{ next_phone_number_attempt_timestamp: next_otp_request }}
+                    />
+                }
+                isVisible={!!next_otp_request}
+            />
         </PhoneVerificationCard>
     );
 });

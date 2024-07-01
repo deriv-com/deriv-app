@@ -18,7 +18,7 @@ const otpRequestCountdown = (
 };
 
 /** A hook for calculating email verification otp and phone number otp timer */
-const usePhoneNumberVerificationSetTimer = () => {
+const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = false) => {
     const { client, ui } = useStore();
     const { account_settings } = client;
     const { should_show_phone_number_otp } = ui;
@@ -31,27 +31,38 @@ const usePhoneNumberVerificationSetTimer = () => {
         (timer: number) => {
             let display_time: string;
             if (timer > 60) {
-                display_time = `${Math.round(timer / 60)}m`;
+                display_time = is_from_request_phone_number_otp
+                    ? `${Math.round(timer / 60)} minutes`
+                    : `${Math.round(timer / 60)}m`;
             } else {
-                display_time = `${timer}s`;
+                display_time = is_from_request_phone_number_otp ? `${timer} seconds` : `${timer}s`;
             }
-            should_show_phone_number_otp
-                ? setNextOtpRequest(` (${display_time})`)
-                : setNextOtpRequest(` in ${display_time}`);
+            if (should_show_phone_number_otp) {
+                setNextOtpRequest(` (${display_time})`);
+            } else if (is_from_request_phone_number_otp) {
+                setNextOtpRequest(` ${display_time}`);
+            } else {
+                setNextOtpRequest(` in ${display_time}`);
+            }
         },
-        [should_show_phone_number_otp]
+        [should_show_phone_number_otp, is_from_request_phone_number_otp]
     );
 
     React.useEffect(() => {
-        if (phone_number_verification?.next_email_attempt) {
+        if (
+            !should_show_phone_number_otp &&
+            !is_from_request_phone_number_otp &&
+            phone_number_verification?.next_email_attempt
+        ) {
             otpRequestCountdown(phone_number_verification.next_email_attempt, setTitle, setTimer, current_time);
-        } else if (should_show_phone_number_otp && phone_number_verification?.next_attempt) {
+        } else if (phone_number_verification?.next_attempt) {
             otpRequestCountdown(phone_number_verification.next_attempt, setTitle, setTimer, current_time);
         }
     }, [
         current_time,
         phone_number_verification?.next_email_attempt,
         phone_number_verification?.next_attempt,
+        is_from_request_phone_number_otp,
         setTitle,
         should_show_phone_number_otp,
     ]);

@@ -121,5 +121,12 @@
                 width: 100%;
             }
         }
+
+        @include desktop {
+            .snackbar {
+                margin-bottom: 3.2rem;
+                width: fit-content;
+            }
+        }
     }
 }

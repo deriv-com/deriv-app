@@ -2,7 +2,7 @@ import React from 'react';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { useRequestPhoneNumberOTP, useSettings } from '@deriv/hooks';
+import { usePhoneNumberVerificationSetTimer, useRequestPhoneNumberOTP, useSettings } from '@deriv/hooks';
 import ConfirmPhoneNumber from '../confirm-phone-number';
 
 jest.mock('@deriv/hooks', () => ({
@@ -16,6 +16,10 @@ jest.mock('@deriv/hooks', () => ({
     })),
     useSettings: jest.fn(() => ({
         data: {},
+        invalidate: jest.fn(),
+    })),
+    usePhoneNumberVerificationSetTimer: jest.fn(() => ({
+        next_otp_request: undefined,
     })),
 }));
 
@@ -27,6 +31,8 @@ describe('ConfirmPhoneNumber', () => {
     });
 
     const mockSetOtp = jest.fn();
+    const whatsapp_button_text = 'Get code via WhatsApp';
+    const sms_button_text = 'Get code via SMS';
 
     it('should render ConfirmPhoneNumber', () => {
         (useSettings as jest.Mock).mockReturnValue({
@@ -41,8 +47,8 @@ describe('ConfirmPhoneNumber', () => {
         expect(screen.getByText('Confirm your phone number')).toBeInTheDocument();
         expect(phone_number_textfield).toBeInTheDocument();
         expect(phone_number_textfield).toHaveValue('+0123456789');
-        expect(screen.getByRole('button', { name: 'Get code via SMS' })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Get code via WhatsApp' })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: sms_button_text })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: whatsapp_button_text })).toBeInTheDocument();
     });
 
     it('should call setErrorMessage when the user presses a key', async () => {
@@ -87,7 +93,7 @@ describe('ConfirmPhoneNumber', () => {
                 <ConfirmPhoneNumber setOtpVerification={mockSetOtp} />
             </StoreProvider>
         );
-        const whatsapp_btn = screen.getByRole('button', { name: 'Get code via WhatsApp' });
+        const whatsapp_btn = screen.getByRole('button', { name: whatsapp_button_text });
         await userEvent.click(whatsapp_btn);
         expect(mock_handle_error).toBeCalledTimes(1);
     });
@@ -104,7 +110,7 @@ describe('ConfirmPhoneNumber', () => {
                 <ConfirmPhoneNumber setOtpVerification={mockSetOtp} />
             </StoreProvider>
         );
-        const whatsapp_btn = screen.getByRole('button', { name: 'Get code via WhatsApp' });
+        const whatsapp_btn = screen.getByRole('button', { name: whatsapp_button_text });
         await act(async () => userEvent.click(whatsapp_btn));
         expect(mockWhatsappButtonClick).toHaveBeenCalled();
     });
@@ -121,8 +127,31 @@ describe('ConfirmPhoneNumber', () => {
                 <ConfirmPhoneNumber setOtpVerification={mockSetOtp} />
             </StoreProvider>
         );
-        const sms_btn = screen.getByRole('button', { name: 'Get code via SMS' });
+        const sms_btn = screen.getByRole('button', { name: sms_button_text });
         await act(async () => userEvent.click(sms_btn));
         expect(mockSmsButtonClick).toHaveBeenCalled();
+    });
+
+    it('should make both buttons disabled if next_otp_request text is provided', async () => {
+        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_otp_request: '60 seconds' });
+        render(
+            <StoreProvider store={store}>
+                <ConfirmPhoneNumber setOtpVerification={mockSetOtp} />
+            </StoreProvider>
+        );
+        const sms_btn = screen.getByRole('button', { name: sms_button_text });
+        const whatsapp_btn = screen.getByRole('button', { name: whatsapp_button_text });
+        expect(sms_btn).toBeDisabled();
+        expect(whatsapp_btn).toBeDisabled();
+    });
+
+    it('should get snackbar text when next_otp_request text is provided', async () => {
+        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_otp_request: '60 seconds' });
+        render(
+            <StoreProvider store={store}>
+                <ConfirmPhoneNumber setOtpVerification={mockSetOtp} />
+            </StoreProvider>
+        );
+        expect(screen.getByText(/An error occurred. Request a new OTP in 60 seconds./));
     });
 });

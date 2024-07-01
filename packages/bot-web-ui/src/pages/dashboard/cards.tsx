@@ -31,15 +31,20 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
     const switchTabOnLoadModalOpen = () => {
         // Added the setInterval to maintain sequence as tab change was contradicting with load modal open
         const timerId = setInterval(() => {
-            const load_modal_element = document.getElementsByClassName('load-strategy__wrapper');
-            if (load_modal_element.length > 0 && load_modal_element[0]) {
-                const element = load_modal_element[0];
-                const style = window.getComputedStyle(element);
-                // Only switch tab when the load modal is fully visible
-                if (style?.opacity === '1') {
-                    setActiveTab(DBOT_TABS.BOT_BUILDER);
-                    clearInterval(timerId);
+            if (is_mobile) {
+                const load_modal_element = document.getElementsByClassName('load-strategy__wrapper');
+                if (load_modal_element.length > 0 && load_modal_element[0]) {
+                    const element = load_modal_element[0];
+                    const style = window.getComputedStyle(element);
+                    // Only switch tab when the load modal is fully visible
+                    if (style?.opacity === '1') {
+                        setActiveTab(DBOT_TABS.BOT_BUILDER);
+                        clearInterval(timerId);
+                    }
                 }
+            } else {
+                setActiveTab(DBOT_TABS.BOT_BUILDER);
+                clearInterval(timerId);
             }
         }, 0);
     };

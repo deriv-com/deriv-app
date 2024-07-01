@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 //@ts-nocheck [TODO] - Need to fix typescript errors in Autocomplete & SelectNative components
 
+import { ChangeEvent } from 'react';
 import { Field, FieldProps } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
-import { DesktopWrapper, MobileWrapper, Autocomplete, SelectNative, Popover } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { isDesktop } from '@deriv/shared';
+import { Autocomplete, SelectNative, Popover } from '@deriv/components';
 import { useResidenceList } from '@deriv/hooks';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
-import { ChangeEvent } from 'react';
+import { useTranslations } from '@deriv-com/translations';
 
 type TTaxResidenceFieldProps = {
     required?: boolean;
@@ -26,12 +25,14 @@ const TaxResidenceField = ({
     disabled,
 }: TTaxResidenceFieldProps) => {
     const { data: residence_list } = useResidenceList();
+    const { isDesktop } = useDevice();
+    const { localize } = useTranslations();
 
     return (
         <Field name='tax_residence'>
             {({ field, form: { setFieldValue }, meta }: FieldProps) => (
                 <div className='details-form__tax'>
-                    <DesktopWrapper>
+                    {isDesktop ? (
                         <Autocomplete
                             {...field}
                             data-lpignore='true'
@@ -51,8 +52,7 @@ const TaxResidenceField = ({
                             disabled={disabled}
                             required={required}
                         />
-                    </DesktopWrapper>
-                    <MobileWrapper>
+                    ) : (
                         <SelectNative
                             {...field}
                             placeholder={required ? localize('Tax residence*') : localize('Tax residence')}
@@ -70,7 +70,7 @@ const TaxResidenceField = ({
                             data_testid='tax_residence_mobile'
                             disabled={disabled}
                         />
-                    </MobileWrapper>
+                    )}
                     <div
                         data-testid='tax_residence_pop_over'
                         onClick={e => {
@@ -80,7 +80,7 @@ const TaxResidenceField = ({
                         }}
                     >
                         <Popover
-                            alignment={isDesktop() ? 'right' : 'left'}
+                            alignment={isDesktop ? 'right' : 'left'}
                             icon='info'
                             message={localize(
                                 'The country in which you meet the criteria for paying taxes. Usually the country in which you physically reside.'

@@ -19,7 +19,7 @@ const PhoneVerificationPage = observer(() => {
     const [is_loading, setIsLoading] = React.useState(false);
     const [should_show_cancel_verification_modal, setShouldShowCancelVerificationModal] = React.useState(false);
     const [should_show_verification_link_expired_modal, setShouldShowVerificationLinkExpiredModal] =
-        React.useState(true);
+        React.useState(false);
     const handleBackButton = () => {
         setShouldShowCancelVerificationModal(true);
     };

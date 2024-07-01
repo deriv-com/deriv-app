@@ -1,9 +1,10 @@
+import React from 'react';
 import { Modal, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
 import { observer, useStore } from '@deriv/stores';
 import { LabelPairedCircleXmarkLgRegularIcon } from '@deriv/quill-icons';
-import { usePhoneNumberVerificationSetTimer, useVerifyEmail } from '@deriv/hooks';
+import { usePhoneNumberVerificationSetTimer, useSettings, useVerifyEmail } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 
 type TVerificationLinkExpiredModal = {
@@ -19,18 +20,23 @@ const VerificationLinkExpiredModal = observer(
         const history = useHistory();
         const { ui } = useStore();
         //@ts-expect-error ignore this until we add it in GetSettings api types
-        const { send } = useVerifyEmail('phone_number_verification');
+        const { send, is_success } = useVerifyEmail('phone_number_verification');
         const { is_mobile } = ui;
         const { next_otp_request } = usePhoneNumberVerificationSetTimer();
+        const { invalidate } = useSettings();
 
         const handleCancelButton = () => {
             setShouldShowVerificationLinkExpiredModal(false);
             history.push(routes.personal_details);
         };
+
         const handleSendNewLinkButton = () => {
             send();
-            setShouldShowVerificationLinkExpiredModal(false);
         };
+
+        React.useEffect(() => {
+            if (is_success) invalidate('get_settings').then(() => setShouldShowVerificationLinkExpiredModal(false));
+        }, [is_success, invalidate]);
 
         return (
             <Modal

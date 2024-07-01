@@ -64,14 +64,6 @@ describe('VerificationLinkExpiredModal', () => {
         expect(screen.getByText(/Get another link to verify your number./)).toBeInTheDocument();
     });
 
-    it('should render only mockSetShowVerificationLinkExpiredModal when Send new link is clicked', () => {
-        renderComponent();
-        const cancelButton = screen.getByRole('button', { name: buttons[0] });
-        userEvent.click(cancelButton);
-        expect(mockSetShowVerificationLinkExpiredModal).toBeCalledTimes(1);
-        expect(mock_push_function).not.toBeCalled();
-    });
-
     it('should render mockSetShowVerificationLinkExpiredModal and mock_back_router when Cancel is clicked', () => {
         renderComponent();
         const cancelButton = screen.getByRole('button', { name: buttons[1] });

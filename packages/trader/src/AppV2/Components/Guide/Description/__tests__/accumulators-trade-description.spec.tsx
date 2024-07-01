@@ -20,7 +20,7 @@ describe('AccumulatorsTradeDescription', () => {
         const onTermClick = jest.fn();
         render(<AccumulatorsTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByText(TERM.GROWTH_RATE));
+        userEvent.click(screen.getByText(/growth rate/i));
 
         expect(onTermClick).toHaveBeenCalled();
     });

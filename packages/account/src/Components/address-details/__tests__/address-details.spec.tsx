@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormikProps } from 'formik';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { useDevice, useDevice } from '@deriv-com/ui';
+import { useDevice } from '@deriv-com/ui';
 import { useStatesList } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import AddressDetails, { TAddressDetailFormProps } from '../address-details';

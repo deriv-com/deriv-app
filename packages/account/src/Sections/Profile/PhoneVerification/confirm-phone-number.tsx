@@ -100,7 +100,7 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
             </div>
             <Snackbar
                 hasCloseButton={false}
-                //@ts-expect-error ignore for now
+                //@ts-expect-error need to update message to use React.ReactNode from quill-ui
                 message={
                     <Localize
                         i18n_default_text='An error occurred. Request a new OTP in {{next_phone_number_attempt_timestamp}}.'

@@ -31,7 +31,6 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
         is_email_verified,
         sendEmailOTPVerification,
     } = useSendOTPVerificationCode();
-    //TODO: this shall be replace by BE API call when it's ready
     const { should_show_phone_number_otp } = ui;
 
     const reInitializeGetSettings = React.useCallback(() => {

@@ -14,7 +14,7 @@ type TMarketCategoryItem = {
 };
 
 const MarketCategoryItem = ({ item, selectedSymbol, setSelectedSymbol, setIsOpen }: TMarketCategoryItem) => {
-    const favorite = true;
+    const favorite = false;
     const handleSelect = (e: React.MouseEvent<HTMLSpanElement>) => {
         const symbol = (e.target as HTMLSpanElement).getAttribute('data-symbol');
         setSelectedSymbol(symbol ?? '');
@@ -47,7 +47,14 @@ const MarketCategoryItem = ({ item, selectedSymbol, setSelectedSymbol, setIsOpen
             {favorite ? (
                 <StandaloneStarFillIcon fill='var(--core-color-solid-mustard-700)' iconSize='sm' />
             ) : (
-                <StandaloneStarRegularIcon fill='#000000' iconSize='sm' />
+                <StandaloneStarRegularIcon
+                    fill={
+                        selectedSymbol === item.symbol
+                            ? 'var(--semantic-color-slate-solid-textIcon-inverse-highest)'
+                            : 'var(--semantic-color-monochrome-textIcon-normal-mid)'
+                    }
+                    iconSize='sm'
+                />
             )}
         </div>
     );

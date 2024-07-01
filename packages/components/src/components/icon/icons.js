@@ -111,6 +111,7 @@ import './cashier/ic-cashier-card-dark.svg';
 import './cashier/ic-cashier-card-light.svg';
 import './cashier/ic-cashier-cebuana-lhuillier-dark.svg';
 import './cashier/ic-cashier-cebuana-lhuillier-light.svg';
+import './cashier/ic-cashier-chevron-up.svg';
 import './cashier/ic-cashier-cimb-niaga.svg';
 import './cashier/ic-cashier-cimbniaga-dark.svg';
 import './cashier/ic-cashier-cimbniaga-light.svg';

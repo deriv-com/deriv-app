@@ -1,6 +1,7 @@
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 
-import { DesktopWrapper, Div100vhContainer, MobileWrapper, Modal, PageOverlay, UILoader } from '@deriv/components';
+import { Div100vhContainer, Modal, PageOverlay, UILoader } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 
@@ -26,13 +27,13 @@ type TMT5TradeModalProps = {
 
 const MT5TradeModal = observer(
     ({ is_eu_user, is_open, onPasswordManager, toggleModal, is_demo }: TMT5TradeModalProps) => {
-        const { traders_hub, common, ui } = useStore();
+        const { isDesktop } = useDevice();
+        const { traders_hub, common } = useStore();
 
         const { show_eu_related_content } = traders_hub;
         const { platform } = common;
-        const { is_mobile } = ui;
 
-        const { mt5_trade_account, dxtrade_tokens, ctrader_tokens } = useCfdStore();
+        const { mt5_trade_account, dxtrade_tokens, ctrader_tokens, product } = useCfdStore();
 
         const CFDTradeModal = () => {
             if (platform === 'mt5') {
@@ -42,6 +43,8 @@ const MT5TradeModal = observer(
                         show_eu_related_content={show_eu_related_content}
                         onPasswordManager={onPasswordManager}
                         toggleModal={toggleModal}
+                        product={product}
+                        is_demo={is_demo}
                     />
                 );
             }
@@ -55,14 +58,14 @@ const MT5TradeModal = observer(
                     platform={platform}
                     ctrader_tokens={ctrader_tokens}
                     dxtrade_tokens={dxtrade_tokens}
-                    is_mobile={is_mobile}
+                    is_mobile={!isDesktop}
                 />
             );
         };
 
         return (
             <React.Suspense fallback={<UILoader />}>
-                <DesktopWrapper>
+                {isDesktop ? (
                     <Modal
                         is_open={is_open}
                         title={localize('Trade')}
@@ -73,8 +76,7 @@ const MT5TradeModal = observer(
                     >
                         <CFDTradeModal />
                     </Modal>
-                </DesktopWrapper>
-                <MobileWrapper>
+                ) : (
                     <PageOverlay
                         is_open={is_open}
                         portal_id='deriv_app'
@@ -86,7 +88,7 @@ const MT5TradeModal = observer(
                             <CFDTradeModal />
                         </Div100vhContainer>
                     </PageOverlay>
-                </MobileWrapper>
+                )}
             </React.Suspense>
         );
     }

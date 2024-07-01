@@ -9,6 +9,7 @@ const mocked_props = {
         platform: 'mt5',
         market_type: 'gaming',
         shortcode: 'svg',
+        product: '',
     },
     is_eu_user: false,
     is_demo: false,
@@ -60,8 +61,18 @@ describe('<CFDCompareAccountsTitleIcon />', () => {
         mocked_props.trading_platforms.platform = 'mt5';
         mocked_props.trading_platforms.market_type = 'all';
         mocked_props.trading_platforms.shortcode = 'svg';
+        mocked_props.trading_platforms.product = 'swap_free';
         render(<CFDCompareAccountsTitleIcon {...mocked_props} />);
         expect(screen.getByText('Swap-Free - SVG')).toBeInTheDocument();
+    });
+
+    test('should render correct title for Zero Spread market type and shortcode', () => {
+        mocked_props.trading_platforms.platform = 'mt5';
+        mocked_props.trading_platforms.market_type = 'all';
+        mocked_props.trading_platforms.shortcode = 'bvi';
+        mocked_props.trading_platforms.product = 'zero_spread';
+        render(<CFDCompareAccountsTitleIcon {...mocked_props} />);
+        expect(screen.getByText('Zero Spread - BVI')).toBeInTheDocument();
     });
 
     test('should render correct title for Deriv X market type and shortcode', () => {
@@ -105,13 +116,25 @@ describe('<CFDCompareAccountsTitleIcon />', () => {
         mocked_props.trading_platforms.platform = 'mt5';
         mocked_props.trading_platforms.market_type = 'all';
         mocked_props.trading_platforms.shortcode = 'svg';
+        mocked_props.trading_platforms.product = 'swap_free';
         mocked_props.is_demo = true;
         mocked_props.is_eu_user = false;
         render(<CFDCompareAccountsTitleIcon {...mocked_props} />);
         expect(screen.getByText('Swap-Free Demo')).toBeInTheDocument();
     });
 
-    test('should render correct title for Swap-Free with correct market type and shortcode demo account', () => {
+    test('should render correct title for Zero Spread with correct market type and shortcode demo account', () => {
+        mocked_props.trading_platforms.platform = 'mt5';
+        mocked_props.trading_platforms.market_type = 'all';
+        mocked_props.trading_platforms.shortcode = 'bvi';
+        mocked_props.trading_platforms.product = 'zero_spread';
+        mocked_props.is_demo = true;
+        mocked_props.is_eu_user = false;
+        render(<CFDCompareAccountsTitleIcon {...mocked_props} />);
+        expect(screen.getByText('Zero Spread Demo')).toBeInTheDocument();
+    });
+
+    test('should render correct title for DerivX with correct market type and shortcode demo account', () => {
         mocked_props.trading_platforms.platform = 'dxtrade';
         mocked_props.trading_platforms.market_type = 'all';
         mocked_props.trading_platforms.shortcode = 'svg';

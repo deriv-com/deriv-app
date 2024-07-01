@@ -51,6 +51,8 @@ import type {
     CountriesListResponse,
     CryptocurrencyConfigurationsRequest,
     CryptocurrencyConfigurationsResponse,
+    CryptocurrencyEstimationsRequest,
+    CryptocurrencyEstimationsResponse,
     DocumentUploadRequest,
     DocumentUploadResponse,
     EconomicCalendarRequest,
@@ -2344,6 +2346,10 @@ type TSocketEndpoints = {
     crypto_config: {
         request: CryptocurrencyConfigurationsRequest;
         response: CryptocurrencyConfigurationsResponse;
+    };
+    crypto_estimations: {
+        request: CryptocurrencyEstimationsRequest;
+        response: CryptocurrencyEstimationsResponse;
     };
     document_upload: {
         request: DocumentUploadRequest;

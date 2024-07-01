@@ -165,7 +165,6 @@
         &-extensions {
             display: flex;
             align-items: center;
-            overflow: hidden;
         }
 
         &-logo {
@@ -184,7 +183,7 @@
         &--hidden {
             display: none;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             .acc-info__separator {
                 display: none;
             }
@@ -284,7 +283,7 @@
         height: 100%;
         align-self: center;
 
-        @media (max-width: 520px) {
+        @include mobile-or-tablet-screen {
             display: none;
         }
     }
@@ -373,7 +372,7 @@
         margin-right: 0.8rem;
         vertical-align: middle;
     }
-    @include mobile {
+    @include mobile-or-tablet-screen {
         height: $MOBILE_HEADER_HEIGHT;
 
         .header__menu-left,
@@ -427,5 +426,17 @@
             justify-content: center;
             gap: var(--semantic-spacing-gap-sm);
         }
+    }
+}
+
+.contract-details-header-v2 {
+    display: flex;
+    justify-content: center;
+    height: var(--core-spacing-2400);
+    padding: var(--core-spacing-600) var(--core-spacing-50);
+    .arrow {
+        position: absolute;
+        cursor: pointer;
+        left: var(--core-size-1200);
     }
 }

@@ -210,6 +210,10 @@ $MIN_HEIGHT_FLOATING: calc(
                 .account-form__fieldset {
                     margin-top: 0.8rem;
                     margin-bottom: 2rem;
+
+                    .dc-dropdown-container {
+                        margin-top: unset;
+                    }
                 }
             }
         }

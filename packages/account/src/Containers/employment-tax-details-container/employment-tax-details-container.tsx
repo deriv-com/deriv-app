@@ -36,6 +36,8 @@ const EmploymentTaxDetailsContainer = ({
     const tax_residence_ref = useRef<HTMLDivElement>(null);
     const tin_ref = useRef<HTMLDivElement>(null);
 
+    console.log('errors: ', errors, values);
+
     const validateClickOutside = (event: MouseEvent) => {
         const target = event?.target as HTMLElement;
         if (target.tagName === 'A') {
@@ -104,7 +106,7 @@ const EmploymentTaxDetailsContainer = ({
 
             <div ref={tax_residence_ref} className='account-form__fieldset'>
                 <TaxResidenceField
-                    disabled={isFieldImmutable('tax_residence', editable_fields || values.confirm_no_tax_details)}
+                    disabled={isFieldImmutable('tax_residence', editable_fields) || values.confirm_no_tax_details}
                     is_tax_residence_popover_open={is_tax_residence_popover_open}
                     setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                     setIsTinPopoverOpen={setIsTinPopoverOpen}
@@ -112,10 +114,9 @@ const EmploymentTaxDetailsContainer = ({
             </div>
             <div ref={tin_ref} className='account-form__fieldset'>
                 <TaxIdentificationNumberField
-                    disabled={isFieldImmutable(
-                        'tax_identification_number',
-                        editable_fields || values.confirm_no_tax_details
-                    )}
+                    disabled={
+                        isFieldImmutable('tax_identification_number', editable_fields) || values.confirm_no_tax_details
+                    }
                     is_tin_popover_open={is_tin_popover_open}
                     setIsTinPopoverOpen={setIsTinPopoverOpen}
                     setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}

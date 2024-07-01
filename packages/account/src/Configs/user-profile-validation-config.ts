@@ -19,15 +19,28 @@ const { addressPermittedSpecialCharacters } = ValidationConstants.messagesHints;
 export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) => {
     return Yup.object({
         employment_status: Yup.string().required(localize('Employment status is required.')),
-        tax_residence: Yup.string(),
-        tax_identification_confirm: Yup.bool().when(['tax_identification_number', 'tax_residence'], {
-            is: (tax_identification_number: string, tax_residence: string) => {
-                return tax_identification_number && tax_residence;
-            },
-            then: Yup.bool().required().oneOf([true]),
-            otherwise: Yup.bool().notRequired(),
+        tax_residence: Yup.string().when('confirm_no_tax_details', {
+            is: (confirm_no_tax_details: boolean) => confirm_no_tax_details,
+            then: Yup.string().notRequired(),
+            otherwise: Yup.string().required(localize('Tax residence is required.')),
         }),
+        confirm_no_tax_details: Yup.bool(),
+        tax_identification_confirm: Yup.bool().when(
+            ['tax_identification_number', 'tax_residence', 'confirm_no_tax_details'],
+            {
+                is: (tax_identification_number: string, tax_residence: string, confirm_no_tax_details: boolean) => {
+                    return (tax_identification_number && tax_residence) || !confirm_no_tax_details;
+                },
+                then: Yup.bool().required().oneOf([true]),
+                otherwise: Yup.bool().notRequired(),
+            }
+        ),
         tax_identification_number: Yup.string()
+            .when('confirm_no_tax_details', {
+                is: (confirm_no_tax_details: boolean) => confirm_no_tax_details,
+                then: Yup.string().notRequired(),
+                otherwise: Yup.string().required(localize('Tax Identification Number is required.')),
+            })
             .max(25, localize("Tax Identification Number can't be longer than 25 characters."))
             .matches(
                 taxIdentificationNumber,

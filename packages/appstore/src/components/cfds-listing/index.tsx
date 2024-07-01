@@ -150,16 +150,12 @@ const CFDsListing = observer(() => {
                         return MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION;
                     } else if (current_acc_status === 'migrated_without_position') {
                         return MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION;
+                    } else if (current_acc_status === 'under_maintenance') {
+                        return MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
+                    } else if (current_acc_status === 'unavailable') {
+                        return MT5_ACCOUNT_STATUS.UNAVAILABLE;
                     }
                     return null;
-            }
-        } else {
-            switch (current_acc_status) {
-                case 'server_maintenance':
-                    return MT5_ACCOUNT_STATUS.SERVER_MAINTENANCE;
-                case 'unavailable':
-                    return MT5_ACCOUNT_STATUS.UNAVAILABLE;
-                default:
             }
         }
         return '';
@@ -233,7 +229,7 @@ const CFDsListing = observer(() => {
                                       existing_account?.status,
                                       existing_account?.landing_company_short
                                   )
-                                : 'server_maintenance';
+                                : '';
                         return (
                             <TradingAppCard
                                 action_type={existing_account.action_type}
@@ -257,7 +253,8 @@ const CFDsListing = observer(() => {
                                             account_name: track_account_subtitle,
                                         });
                                         setAppstorePlatform(existing_account.platform);
-                                        if (has_mt5_account_status === MT5_ACCOUNT_STATUS.SERVER_MAINTENANCE)
+
+                                        if (has_mt5_account_status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE)
                                             return setServerMaintenanceModal(true);
                                         if (has_mt5_account_status === MT5_ACCOUNT_STATUS.UNAVAILABLE)
                                             return setAccountUnavailableModal(true);

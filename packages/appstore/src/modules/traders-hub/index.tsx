@@ -1,8 +1,9 @@
 import React, { lazy, Suspense } from 'react';
-import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
-import { isDesktop, routes, checkServerMaintenance, startPerformanceEventTimer } from '@deriv/shared';
+import { ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
+import { routes, checkServerMaintenance, startPerformanceEventTimer } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import CFDsListing from 'Components/cfds-listing';
 import ModalManager from 'Components/modals/modal-manager';
 import MainTitleBar from 'Components/main-title-bar';
@@ -40,12 +41,12 @@ const OrderedPlatformSections = observer(
 );
 
 const TradersHub = observer(() => {
+    const { isDesktop } = useDevice();
     const { traders_hub, client, ui } = useStore();
     const {
         notification_messages_ui: Notifications,
         openRealAccountSignup,
         is_from_signup_account,
-        is_mobile,
         setIsFromSignupAccount,
     } = ui;
     const {
@@ -143,9 +144,43 @@ const TradersHub = observer(() => {
         return <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />;
     };
 
+    const desktopContent = !is_landing_company_loaded ? (
+        <OrderedPlatformSections />
+    ) : (
+        <OrderedPlatformSections is_cfd_visible={is_mt5_allowed} />
+    );
+
+    const mobileTabletContent = (
+        <React.Fragment>
+            {is_landing_company_loaded ? (
+                is_mt5_allowed && (
+                    <ButtonToggle
+                        buttons_arr={is_eu_user ? platform_toggle_options_eu : platform_toggle_options}
+                        className='traders-hub__button-toggle'
+                        has_rounded_button
+                        is_traders_hub={window.location.pathname === routes.traders_hub}
+                        name='platform_type'
+                        onChange={platformTypeChange}
+                        value={selected_platform_type}
+                    />
+                )
+            ) : (
+                <ButtonToggleLoader />
+            )}
+            {is_landing_company_loaded && !is_mt5_allowed && (
+                <div className='traders-hub--mt5-not-allowed'>
+                    <Text size='s' weight='bold' color='prominent'>
+                        <Localize i18n_default_text='Multipliers' />
+                    </Text>
+                </div>
+            )}
+            {getOrderedPlatformSections()}
+        </React.Fragment>
+    );
+
     return (
         <React.Fragment>
-            <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop()}>
+            <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop}>
                 {can_show_notify && <Notifications />}
                 <div
                     id='traders-hub'
@@ -162,44 +197,13 @@ const TradersHub = observer(() => {
                     )}
 
                     <MainTitleBar />
-                    <DesktopWrapper>
-                        {!is_landing_company_loaded ? (
-                            <OrderedPlatformSections />
-                        ) : (
-                            <OrderedPlatformSections is_cfd_visible={is_mt5_allowed} />
-                        )}
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        {is_landing_company_loaded ? (
-                            is_mt5_allowed && (
-                                <ButtonToggle
-                                    buttons_arr={is_eu_user ? platform_toggle_options_eu : platform_toggle_options}
-                                    className='traders-hub__button-toggle'
-                                    has_rounded_button
-                                    is_traders_hub={window.location.pathname === routes.traders_hub}
-                                    name='platform_type'
-                                    onChange={platformTypeChange}
-                                    value={selected_platform_type}
-                                />
-                            )
-                        ) : (
-                            <ButtonToggleLoader />
-                        )}
-                        {is_landing_company_loaded && !is_mt5_allowed && (
-                            <div className='traders-hub--mt5-not-allowed'>
-                                <Text size='s' weight='bold' color='prominent'>
-                                    <Localize i18n_default_text='Multipliers' />
-                                </Text>
-                            </div>
-                        )}
-                        {getOrderedPlatformSections()}
-                    </MobileWrapper>
+                    {isDesktop ? desktopContent : mobileTabletContent}
                     <ModalManager />
                 </div>
             </Div100vhContainer>
             {is_eu_user && (
                 <div data-testid='dt_traders_hub_disclaimer' className='disclaimer'>
-                    <Text align='left' className='disclaimer-text' size={is_mobile ? 'xxxs' : 'xs'}>
+                    <Text align='left' className='disclaimer-text' size={!isDesktop ? 'xxxs' : 'xs'}>
                         <Localize i18n_default_text='The products offered on our website are complex derivative products that carry a significant risk of potential loss. CFDs are complex instruments with a high risk of losing money rapidly due to leverage. 67.28% of retail investor accounts lose money when trading CFDs with this provider. You should consider whether you understand how these products work and whether you can afford to take the high risk of losing your money.' />
                     </Text>
                     <div className='disclaimer__bottom-plug' />

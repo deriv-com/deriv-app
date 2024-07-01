@@ -572,7 +572,7 @@
     }
 
     &--existing-user {
-        @include desktop() {
+        @include desktop-screen {
             margin-top: 9.2rem;
         }
 
@@ -648,7 +648,7 @@
             margin: 1.6rem 0;
         }
 
-        @include desktop() {
+        @include desktop-screen {
             padding: 0 2rem;
         }
         .dc-radio-group {
@@ -666,7 +666,7 @@
         display: flex;
         flex-direction: column;
         width: 100%;
-        @include desktop() {
+        @include desktop-screen {
             padding: 0 3rem;
         }
     }
@@ -754,7 +754,7 @@
             }
 
             .dc-dropdown__display .dc-dropdown__display-placeholder-text-limit-fit {
-                @include desktop() {
+                @include desktop-screen {
                     white-space: inherit;
                     text-overflow: unset;
                 }
@@ -805,7 +805,7 @@
         width: 0;
         height: 0;
     }
-    @include desktop {
+    @include desktop-screen {
         padding-bottom: unset;
     }
 }

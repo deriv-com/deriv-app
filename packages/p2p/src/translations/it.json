@@ -248,6 +248,7 @@
     "2142425493": "ID annuncio",
     "2145292295": "Valuta",
     "-1540251249": "Acquista {{ account_currency }}",
+    "-962824159": "Creare un nuovo ordine",
     "-2026152535": "Ordine non andato a buon fine",
     "-1267880283": "{{field_name}} è obbligatorio",
     "-2019083683": "{{field_name}} può comprendere solo lettere, numeri, spazi e i seguenti simboli: -+.,'#@():;",

@@ -24,23 +24,6 @@ const wrapper = ({ children }: PropsWithChildren) => (
 );
 
 describe('AvailableDxtradeAccountsList', () => {
-    let $root: HTMLDivElement, $modalContainer: HTMLDivElement;
-
-    beforeEach(() => {
-        jest.clearAllMocks();
-
-        $root = document.createElement('div');
-        $root.id = 'root';
-        $modalContainer = document.createElement('div');
-        $modalContainer.id = 'wallets_modal_root';
-        document.body.appendChild($root);
-        document.body.appendChild($modalContainer);
-    });
-
-    afterEach(() => {
-        document.body.removeChild($root);
-        document.body.removeChild($modalContainer);
-    });
     it('should render', () => {
         render(<AvailableDxtradeAccountsList />, { wrapper });
         expect(screen.getByTestId('dt_icon-dxtrade')).toBeInTheDocument();

@@ -2025,6 +2025,7 @@ export default class ClientStore extends BaseStore {
         };
         const client_object = {};
         const selected_account = obj_params?.selected_acct;
+        const verification_code = obj_params?.code;
         const is_wallets_selected = selected_account?.startsWith('CRW');
         let active_loginid;
         let active_wallet_loginid;
@@ -2032,9 +2033,8 @@ export default class ClientStore extends BaseStore {
         if (selected_account) {
             if (is_wallets_selected) {
                 active_wallet_loginid = obj_params.selected_acct;
-            } else {
-                active_loginid = obj_params.selected_acct;
             }
+            active_loginid = obj_params.selected_acct;
         }
 
         account_list.forEach(function (account) {
@@ -2079,10 +2079,12 @@ export default class ClientStore extends BaseStore {
         if (active_loginid && Object.keys(client_object).length) {
             if (selected_account && is_wallets_selected) {
                 localStorage.setItem('active_wallet_loginid', active_wallet_loginid);
-            } else {
-                localStorage.setItem('active_loginid', active_loginid);
+                if (verification_code) {
+                    localStorage.setItem('verification_code.payment_withdraw', verification_code);
+                }
             }
 
+            localStorage.setItem('active_loginid', active_loginid);
             localStorage.setItem('client.accounts', JSON.stringify(client_object));
             this.syncWithLegacyPlatforms(active_loginid, this.accounts);
         }
@@ -2099,7 +2101,7 @@ export default class ClientStore extends BaseStore {
             let search_params = new URLSearchParams(window.location.search);
 
             search_params.forEach((value, key) => {
-                const account_keys = ['acct', 'token', 'cur'];
+                const account_keys = ['acct', 'token', 'cur', 'code'];
                 const is_account_param = account_keys.some(
                     account_key => key?.includes(account_key) && key !== 'affiliate_token'
                 );

@@ -16,23 +16,20 @@ const TurbosTradeDescription = ({ onTermClick }: { onTermClick: (term: string) =
                 <Localize
                     i18n_default_text='You receive a <0>payout</0> at <1>expiry</1> if the spot price never touches or breaches the <2>barrier</2> during the contract period. If it does, your contract will be terminated early.'
                     components={[
-                        <span
+                        <button
                             className='description__content--definition'
                             key={0}
                             onClick={() => onTermClick(TERM.PAYOUT)}
-                            onKeyDown={() => onTermClick(TERM.PAYOUT)}
                         />,
-                        <span
+                        <button
                             className='description__content--definition'
                             key={1}
                             onClick={() => onTermClick(TERM.EXPIRY)}
-                            onKeyDown={() => onTermClick(TERM.EXPIRY)}
                         />,
-                        <span
+                        <button
                             className='description__content--definition'
                             key={2}
                             onClick={() => onTermClick(TERM.BARRIER)}
-                            onKeyDown={() => onTermClick(TERM.BARRIER)}
                         />,
                     ]}
                 />
@@ -74,17 +71,15 @@ const TurbosTradeDescription = ({ onTermClick }: { onTermClick: (term: string) =
                 <Localize
                     i18n_default_text='Your payout is equal to the <0>payout per point</0> multiplied by the difference between the <1>final price</1> and the barrier. You will only earn a profit if your payout is higher than your initial stake.'
                     components={[
-                        <span
+                        <button
                             className='description__content--definition'
                             key={0}
                             onClick={() => onTermClick(TERM.PAYOUT_PER_POINT)}
-                            onKeyDown={() => onTermClick(TERM.PAYOUT_PER_POINT)}
                         />,
-                        <span
+                        <button
                             className='description__content--definition'
                             key={1}
                             onClick={() => onTermClick(TERM.FINAL_PRICE)}
-                            onKeyDown={() => onTermClick(TERM.FINAL_PRICE)}
                         />,
                     ]}
                 />
@@ -96,11 +91,10 @@ const TurbosTradeDescription = ({ onTermClick }: { onTermClick: (term: string) =
                 <Localize
                     i18n_default_text='You may sell the contract up to 15 seconds before expiry. If you do, we’ll pay you the <0>contract value</0>.'
                     components={[
-                        <span
+                        <button
                             className='description__content--definition'
                             key={0}
                             onClick={() => onTermClick(TERM.CONTRACT_VALUE)}
-                            onKeyDown={() => onTermClick(TERM.CONTRACT_VALUE)}
                         />,
                     ]}
                 />

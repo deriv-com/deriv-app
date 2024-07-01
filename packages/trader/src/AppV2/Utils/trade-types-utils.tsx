@@ -71,16 +71,13 @@ const DEFINITION = {
     [TERM.EXPIRY]: (
         <React.Fragment>
             <Text className='definition__paragraph'>
-                <Localize i18n_default_text='This is when your contract will expire based on the duration or end time you’ve selected.' />
-            </Text>
-            <Text className='definition__paragraph'>
-                <Localize i18n_default_text='If the duration is more than 24 hours, the cut-off time and expiry date will apply instead.' />
+                <Localize i18n_default_text='This is when your contract will expire based on the duration or end time you’ve selected. If the duration is more than 24 hours, the cut-off time and expiry date will apply instead.' />
             </Text>
             <Text>
                 <Localize i18n_default_text='Cut off time:' />
             </Text>
             <Text className='definition__paragraph'>
-                <Localize i18n_default_text='Contracts will expire at exactly 23:59:59 GMT +0 on your selected expiry date.' />
+                <Localize i18n_default_text='Contracts will expire at exactly 23:59:59 GMT on your selected expiry date.' />
             </Text>
             <Text>
                 <Localize i18n_default_text='Expiry date:' />

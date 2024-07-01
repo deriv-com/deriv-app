@@ -46,11 +46,10 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
                 <Localize
                     i18n_default_text='Your contract will be closed when the <0>stop out level</0> is reached.'
                     components={[
-                        <span
+                        <button
                             className='description__content--definition'
                             key={0}
                             onClick={() => onTermClick(TERM.STOP_OUT_LEVEL)}
-                            onKeyDown={() => onTermClick(TERM.STOP_OUT_LEVEL)}
                         />,
                     ]}
                 />
@@ -62,23 +61,20 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
                 <Localize
                     i18n_default_text='Additional features are available to manage your positions: “<0>Take profit</0>”, “<1>Stop loss</1>” and “<2>Deal cancellation</2>” allow you to adjust your level of risk aversion.'
                     components={[
-                        <span
+                        <button
                             className='description__content--definition'
                             key={0}
                             onClick={() => onTermClick(TERM.TAKE_PROFIT)}
-                            onKeyDown={() => onTermClick(TERM.TAKE_PROFIT)}
                         />,
-                        <span
+                        <button
                             className='description__content--definition'
                             key={1}
                             onClick={() => onTermClick(TERM.STOP_LOSS)}
-                            onKeyDown={() => onTermClick(TERM.STOP_LOSS)}
                         />,
-                        <span
+                        <button
                             className='description__content--definition'
                             key={2}
                             onClick={() => onTermClick(TERM.DEAL_CANCELLATION)}
-                            onKeyDown={() => onTermClick(TERM.DEAL_CANCELLATION)}
                         />,
                     ]}
                 />
@@ -90,11 +86,10 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
                 <Localize
                     i18n_default_text='You can close your trade anytime. However, be aware of <0>slippage risk</0>.'
                     components={[
-                        <span
+                        <button
                             className='description__content--definition'
                             key={0}
                             onClick={() => onTermClick(TERM.SLIPPAGE_RISK)}
-                            onKeyDown={() => onTermClick(TERM.SLIPPAGE_RISK)}
                         />,
                     ]}
                 />

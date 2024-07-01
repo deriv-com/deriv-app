@@ -16,11 +16,56 @@ describe('AccumulatorsTradeDescription', () => {
         expect(screen.getByText(/This feature is unavailable for ongoing accumulator contracts./i)).toBeInTheDocument();
     });
 
-    it('should call onTermClick if user clicks on term', () => {
+    it('should call onTermClick if user clicks on term "growth rate"', () => {
         const onTermClick = jest.fn();
         render(<AccumulatorsTradeDescription onTermClick={onTermClick} />);
 
-        userEvent.click(screen.getByText(/growth rate/i));
+        userEvent.click(screen.getByRole('button', { name: TERM.GROWTH_RATE.toLowerCase() }));
+
+        expect(onTermClick).toHaveBeenCalled();
+    });
+
+    it('should call onTermClick if user clicks on term "range"', () => {
+        const onTermClick = jest.fn();
+        render(<AccumulatorsTradeDescription onTermClick={onTermClick} />);
+
+        userEvent.click(screen.getByRole('button', { name: TERM.RANGE.toLowerCase() }));
+
+        expect(onTermClick).toHaveBeenCalled();
+    });
+
+    it('should call onTermClick if user clicks on term "previous spot price"', () => {
+        const onTermClick = jest.fn();
+        render(<AccumulatorsTradeDescription onTermClick={onTermClick} />);
+
+        userEvent.click(screen.getByRole('button', { name: TERM.PREVIOUS_SPOT_PRICE.toLowerCase() }));
+
+        expect(onTermClick).toHaveBeenCalled();
+    });
+
+    it('should call onTermClick if user clicks on term "payout"', () => {
+        const onTermClick = jest.fn();
+        render(<AccumulatorsTradeDescription onTermClick={onTermClick} />);
+
+        userEvent.click(screen.getByRole('button', { name: TERM.PAYOUT.toLowerCase() }));
+
+        expect(onTermClick).toHaveBeenCalled();
+    });
+
+    it('should call onTermClick if user clicks on term "Take profit"', () => {
+        const onTermClick = jest.fn();
+        render(<AccumulatorsTradeDescription onTermClick={onTermClick} />);
+
+        userEvent.click(screen.getByRole('button', { name: TERM.TAKE_PROFIT }));
+
+        expect(onTermClick).toHaveBeenCalled();
+    });
+
+    it('should call onTermClick if user clicks on term "slippage risk"', () => {
+        const onTermClick = jest.fn();
+        render(<AccumulatorsTradeDescription onTermClick={onTermClick} />);
+
+        userEvent.click(screen.getByRole('button', { name: TERM.SLIPPAGE_RISK.toLowerCase() }));
 
         expect(onTermClick).toHaveBeenCalled();
     });

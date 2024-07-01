@@ -24,13 +24,13 @@ const wrapper = ({ children }: PropsWithChildren) => (
 );
 
 describe('AvailableDxtradeAccountsList', () => {
-    it('should render', () => {
+    it('render component', () => {
         render(<AvailableDxtradeAccountsList />, { wrapper });
         expect(screen.getByTestId('dt_icon-dxtrade')).toBeInTheDocument();
         expect(screen.getByText('Deriv X')).toBeInTheDocument();
     });
 
-    it('should call show modal when clicked', () => {
+    it('show modal popup upon clicking on the component', () => {
         render(<AvailableDxtradeAccountsList />, { wrapper });
         const tradingAccountCard = screen.getByRole('button');
         userEvent.click(tradingAccountCard);

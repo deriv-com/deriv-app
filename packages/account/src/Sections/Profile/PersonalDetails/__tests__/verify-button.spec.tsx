@@ -66,8 +66,8 @@ describe('VerifyButton', () => {
     });
 
     it('should render Verified text', () => {
-        // @ts-expect-error this for now
-        mock_store.client.account_settings.phone_number_verification?.verified = 1;
+        if (mock_store.client.account_settings.phone_number_verification)
+            mock_store.client.account_settings.phone_number_verification.verified = 1;
         renderWithRouter(
             <StoreProvider store={mock_store}>
                 <VerifyButton />
@@ -78,8 +78,8 @@ describe('VerifyButton', () => {
     });
 
     it('should render popover text when popover is clicked', () => {
-        // @ts-expect-error this for now
-        mock_store.client.account_settings.phone_number_verification.verified = 1;
+        if (mock_store.client.account_settings.phone_number_verification)
+            mock_store.client.account_settings.phone_number_verification.verified = 1;
         renderWithRouter(
             <StoreProvider store={mock_store}>
                 <VerifyButton />
@@ -92,8 +92,8 @@ describe('VerifyButton', () => {
     });
 
     it('should render live chat window when live chat is clicked', () => {
-        // @ts-expect-error this for now
-        mock_store.client.account_settings.phone_number_verification.verified = 1;
+        if (mock_store.client.account_settings.phone_number_verification)
+            mock_store.client.account_settings.phone_number_verification.verified = 1;
         window.LC_API = {
             open_chat_window: jest.fn(),
             on_chat_ended: jest.fn(),

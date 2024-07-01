@@ -1,12 +1,12 @@
 import React from 'react';
 import { FormikProps } from 'formik';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { useDevice, useDevice } from '@deriv-com/ui';
 import { useStatesList } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import AddressDetails, { TAddressDetailFormProps } from '../address-details';
 import userEvent from '@testing-library/user-event';
 import { splitValidationResultTypes } from 'Components/real-account-signup/helpers/utils';
-import { useDevice } from '@deriv-com/ui';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
@@ -39,6 +39,11 @@ jest.mock('@deriv/components', () => {
         Loading: jest.fn(() => 'mockedLoading'),
     };
 });
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true, isMobile: false })),
+}));
 
 const mockedSplitValidationResultTypes = splitValidationResultTypes as jest.MockedFunction<
     typeof splitValidationResultTypes

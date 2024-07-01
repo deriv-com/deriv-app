@@ -4,8 +4,8 @@
 import { RefObject, useState, Fragment } from 'react';
 import clsx from 'clsx';
 import { Formik, Field, FormikProps, FormikHelpers, FormikHandlers, FormikState, FieldProps } from 'formik';
+import { useDevice, useDevice } from '@deriv-com/ui';
 import { StatesList } from '@deriv/api-types';
-import { useDevice } from '@deriv-com/ui';
 import {
     Autocomplete,
     AutoHeightWrapper,

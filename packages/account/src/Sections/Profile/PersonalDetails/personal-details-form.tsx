@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, Fragment } from 'react';
 import clsx from 'clsx';
 import { Formik, Form, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router';
+import { useDevice, useDevice } from '@deriv-com/ui';
 import {
     Button,
     Checkbox,
@@ -28,7 +29,6 @@ import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
-import { useDevice } from '@deriv-com/ui';
 import { useInvalidateQuery } from '@deriv/api';
 import { useStatesList, useResidenceList } from '@deriv/hooks';
 
@@ -38,6 +38,7 @@ type TRestState = {
 };
 
 const PersonalDetailsForm = observer(() => {
+    const { isDesktop } = useDevice();
     const [is_loading, setIsLoading] = useState(false);
     const [is_btn_loading, setIsBtnLoading] = useState(false);
     const [is_submit_success, setIsSubmitSuccess] = useState(false);

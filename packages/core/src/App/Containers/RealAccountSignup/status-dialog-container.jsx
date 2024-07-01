@@ -2,8 +2,9 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { useDevice } from '@deriv-com/ui';
 import { Div100vhContainer, Icon } from '@deriv/components';
-import { routes, isDesktop, isMobile } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { EXPERIAN, getExperianResult } from './helpers/constants';
 import { DialogHeading } from './helpers/dialog-heading.jsx';
 import { DialogMessage } from './helpers/dialog-message.jsx';
@@ -21,6 +22,7 @@ const CloseIcon = ({ closeModal }) => (
 );
 
 const StatusDialogContainer = observer(({ closeModal, currency, history, icon_size }) => {
+    const { isDesktop } = useDevice();
     const { client } = useStore();
     const { landing_company_shortcode, is_fully_authenticated } = client;
     const closeModalAndOpenCashier = () => {
@@ -50,8 +52,8 @@ const StatusDialogContainer = observer(({ closeModal, currency, history, icon_si
         });
 
     return (
-        <Div100vhContainer className='status-dialog' is_disabled={isDesktop()} height_offset='40px'>
-            {isDesktop() && <CloseIcon closeModal={closeModal} />}
+        <Div100vhContainer className='status-dialog' is_disabled={isDesktop} height_offset='40px'>
+            {isDesktop && <CloseIcon closeModal={closeModal} />}
             <div
                 className={classNames('status-dialog__header', {
                     'status-dialog__header--large': icon_size === 'large',
@@ -65,7 +67,7 @@ const StatusDialogContainer = observer(({ closeModal, currency, history, icon_si
             </div>
             <div
                 className={classNames('status-dialog__body', {
-                    'status-dialog__body--no-grow': isMobile(),
+                    'status-dialog__body--no-grow': !isDesktop,
                 })}
             >
                 <DialogHeading />

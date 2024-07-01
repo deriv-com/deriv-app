@@ -754,7 +754,7 @@
             }
 
             .dc-dropdown__display .dc-dropdown__display-placeholder-text-limit-fit {
-                @include desktop() {
+                @include desktop-screen {
                     white-space: inherit;
                     text-overflow: unset;
                 }
@@ -805,7 +805,7 @@
         width: 0;
         height: 0;
     }
-    @include desktop {
+    @include desktop-screen {
         padding-bottom: unset;
     }
 }

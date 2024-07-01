@@ -78,7 +78,9 @@ const LocalComponent = observer(() => {
                 />
 
                 <SectionMessage
-                    message='Importing XML files from Binary Bot and other third-party platforms may take longer.'
+                    message={localize(
+                        'Importing XML files from Binary Bot and other third-party platforms may take longer.'
+                    )}
                     size='md'
                     status='warning'
                     title=''

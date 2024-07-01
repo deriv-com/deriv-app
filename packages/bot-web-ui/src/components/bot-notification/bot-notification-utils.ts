@@ -41,7 +41,7 @@ export const notification_message = {
     block_delete: localize('You’ve just deleted a block.'),
     [NOTIFICATION_TYPE.BOT_IMPORT]: localize('You’ve successfully imported a bot.'),
     [NOTIFICATION_TYPE.BOT_DELETE]: localize('You’ve successfully deleted a bot.'),
-    strategy_conversion: localize('To avoid re-import delays, save this strategy as an XML file from Deriv Bot.'),
+    strategy_conversion: localize('Save this strategy as an XML file from Deriv Bot for faster re-imports.'),
 };
 
 export const notification_style = {

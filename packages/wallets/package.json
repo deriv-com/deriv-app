@@ -15,6 +15,7 @@
         "translate": "sh ./scripts/update-translations.sh"
     },
     "dependencies": {
+        "@deriv-com/ui": "^1.28.1",
         "@deriv-com/utils": "^0.0.25",
         "@deriv/api-v2": "^1.0.0",
         "@deriv/integration": "^1.0.0",
@@ -40,8 +41,7 @@
         "react-router-dom": "^5.2.0",
         "react-transition-group": "4.4.2",
         "usehooks-ts": "^2.7.0",
-        "yup": "^0.32.11",
-        "@deriv-com/ui": "^1.28.1"
+        "yup": "^0.32.11"
     },
     "devDependencies": {
         "@testing-library/react": "^12.0.0",

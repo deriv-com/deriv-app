@@ -36,6 +36,7 @@ module.exports = function (env) {
             minimizer: MINIMIZERS,
             innerGraph: true,
             sideEffects: true,
+            useExports: true,
         },
         output: {
             filename: 'cfd/js/[name].js',

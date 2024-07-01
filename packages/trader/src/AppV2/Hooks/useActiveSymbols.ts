@@ -3,19 +3,29 @@ import { WS, pickDefaultSymbol } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { ActiveSymbols } from '@deriv/api-types';
 
-const useActiveSymbols = () => {
+type TUseActiveSymbols = {
+    contract_type?: string[];
+    barrier_category?: string[];
+};
+
+const useActiveSymbols = ({ contract_type = [], barrier_category = [] }: TUseActiveSymbols) => {
     const [activeSymbols, setActiveSymbols] = useState<ActiveSymbols | []>([]);
     const { client } = useStore();
     const { is_logged_in } = client;
     const default_symbol_ref = useRef<string>('');
+    const request = {
+        active_symbols: 'brief',
+        contract_type,
+        barrier_category,
+    };
 
     const fetchActiveSymbols = useCallback(async () => {
         let response;
 
         if (is_logged_in) {
-            response = await WS.authorized.activeSymbols();
+            response = await WS.authorized.activeSymbols(request);
         } else {
-            response = await WS.activeSymbols();
+            response = await WS.activeSymbols(request);
         }
 
         const { active_symbols, error } = response;

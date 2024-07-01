@@ -14,7 +14,7 @@ type TMarketCategories = {
 
 const MarketCategories = ({ selectedSymbol, setSelectedSymbol, setIsOpen }: TMarketCategories) => {
     // console.log(setIsOpen, 'yo')
-    const { activeSymbols } = useActiveSymbols();
+    const { activeSymbols } = useActiveSymbols({});
     const categorizedSymbols = categorizeSymbols(activeSymbols);
 
     return (

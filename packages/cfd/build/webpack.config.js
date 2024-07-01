@@ -52,9 +52,37 @@ module.exports = function (env) {
                     },
                     assets: {
                         chunks: 'all',
-                        name: 'assets',
                         test: /[\\/]Assets[\\/]/,
                         idHint: 'assets',
+                    },
+                    utilities: {
+                        name: 'utilities',
+                        test: module => {
+                            // Access the resource path of the module
+                            const { resource } = module;
+                            if (!resource) return false;
+
+                            // Define inclusion patterns for Helpers and Constants directories
+                            const includePatterns = [
+                                /[\\/]Helpers[\\/]/, // Include Helpers directory
+                                /[\\/]Constants[\\/]/, // Include Constants directory
+                            ];
+
+                            // Define exclusion patterns to ensure other directories are not included
+                            const excludePatterns = [
+                                /[\\/]Stores[\\/]/, // Exclude all files within the Stores directory
+                            ];
+
+                            // Check if the module should be included
+                            const shouldBeIncluded = includePatterns.some(pattern => pattern.test(resource));
+
+                            // Check if the module should be excluded
+                            const shouldBeExcluded = excludePatterns.some(pattern => pattern.test(resource));
+
+                            return shouldBeIncluded && !shouldBeExcluded;
+                        },
+                        chunks: 'all',
+                        enforce: true,
                     },
                 },
                 minChunks: 1,

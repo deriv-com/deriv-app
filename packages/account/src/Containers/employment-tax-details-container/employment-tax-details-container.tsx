@@ -26,7 +26,7 @@ const EmploymentTaxDetailsContainer = ({
     should_display_long_message,
     handleChange,
 }: TEmploymentTaxDetailsContainerProps) => {
-    const { values, setFieldValue, touched, errors } = useFormikContext<FormikValues>();
+    const { values, setFieldValue, touched, errors, setValues } = useFormikContext<FormikValues>();
     const { isMobile } = useDevice();
     const { data: residence_list } = useResidenceList();
 
@@ -35,8 +35,6 @@ const EmploymentTaxDetailsContainer = ({
 
     const tax_residence_ref = useRef<HTMLDivElement>(null);
     const tin_ref = useRef<HTMLDivElement>(null);
-
-    console.log("Ref: ",{values,errors})
 
     const validateClickOutside = (event: MouseEvent) => {
         const target = event?.target as HTMLElement;
@@ -95,7 +93,18 @@ const EmploymentTaxDetailsContainer = ({
                 name='confirm_no_tax_details'
                 className='employment_tax_detail_field-checkbox'
                 data-lpignore
-                onChange={() => setFieldValue('confirm_no_tax_details', !values.confirm_no_tax_details, true)}
+                onChange={() =>
+                    setValues(
+                        {
+                            ...values,
+                            confirm_no_tax_details: !values.confirm_no_tax_details,
+                            tax_residence: '',
+                            tax_identification_number: '',
+                            tax_identification_confirm: false,
+                        },
+                        true
+                    )
+                }
                 value={values.confirm_no_tax_details}
                 label={localize('I do not have tax information')}
                 withTabIndex={0}

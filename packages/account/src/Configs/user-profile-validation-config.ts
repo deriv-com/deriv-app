@@ -54,7 +54,7 @@ export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) 
                 name: 'validate-tin',
                 test: (value, context) => {
                     const { tax_residence } = context.parent;
-                    if (!tax_residence) {
+                    if (value && !tax_residence) {
                         return context.createError({ message: localize('Please fill in tax residence.') });
                     }
 

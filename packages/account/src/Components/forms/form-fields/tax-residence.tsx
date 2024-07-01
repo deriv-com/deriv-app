@@ -8,6 +8,7 @@ import { Autocomplete, SelectNative, Popover } from '@deriv/components';
 import { useResidenceList } from '@deriv/hooks';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useTranslations } from '@deriv-com/translations';
+import { useDevice } from '@deriv-com/ui';
 
 type TTaxResidenceFieldProps = {
     required?: boolean;

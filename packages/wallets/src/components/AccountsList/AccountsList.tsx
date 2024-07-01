@@ -13,16 +13,14 @@ const AccountsList: FC<TSubscribedBalance> = ({ balance }) => {
 
     if (isMobile) {
         return (
-            <div className='wallets-accounts-list'>
-                <Tabs activeTab='CFDs' className='wallets-accounts-list__tabs'>
-                    <Tab className='wallets-accounts-list__tab' title={t('CFDs')}>
-                        <CFDPlatformsList />
-                    </Tab>
-                    <Tab className='wallets-accounts-list__tab' title={t('Options')}>
-                        <OptionsAndMultipliersListing balance={balance} />
-                    </Tab>
-                </Tabs>
-            </div>
+            <Tabs activeTab='CFDs' className='wallets-accounts-list__tabs' wrapperClassName='wallets-accounts-list'>
+                <Tab className='wallets-accounts-list__tab' title={t('CFDs')}>
+                    <CFDPlatformsList />
+                </Tab>
+                <Tab className='wallets-accounts-list__tab' title={t('Options')}>
+                    <OptionsAndMultipliersListing balance={balance} />
+                </Tab>
+            </Tabs>
         );
     }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormikProps } from 'formik';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { useDevice } from '@deriv-com/ui';
 import { useStatesList } from '@deriv/hooks';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
@@ -37,6 +38,11 @@ jest.mock('@deriv/components', () => {
         Loading: jest.fn(() => 'mockedLoading'),
     };
 });
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true, isMobile: false })),
+}));
 
 const mockedSplitValidationResultTypes = splitValidationResultTypes as jest.MockedFunction<
     typeof splitValidationResultTypes
@@ -103,6 +109,7 @@ describe('<AddressDetails/>', () => {
     beforeEach(() => {
         (isDesktop as jest.Mock).mockReturnValue(true);
         (isMobile as jest.Mock).mockReturnValue(false);
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: true, isMobile: false });
         jest.clearAllMocks();
     });
 
@@ -117,6 +124,7 @@ describe('<AddressDetails/>', () => {
     });
 
     it('should render AddressDetails component for mobile', async () => {
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true, isDesktop: false });
         const new_store_config: TStores = {
             ...store,
             ui: {
@@ -211,6 +219,8 @@ describe('<AddressDetails/>', () => {
     it('should render AddressDetails component with states_list for mobile', async () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true, isDesktop: false });
+
         (useStatesList as jest.Mock).mockReturnValue({
             data: [
                 { text: 'State 1', value: 'State 1' },

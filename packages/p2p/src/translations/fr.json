@@ -248,6 +248,7 @@
     "2142425493": "Identifiant de l'annonce",
     "2145292295": "Taux",
     "-1540251249": "Acheter {{ account_currency }}",
+    "-962824159": "Créer une nouvelle commande",
     "-2026152535": "Commande infructueuse",
     "-1267880283": "Le champ {{field_name}} est obligatoire",
     "-2019083683": "Le champ {{field_name}} ne peut comporter que des lettres, des chiffres, des espaces et l'un des symboles suivants : -+.,'#@():;",

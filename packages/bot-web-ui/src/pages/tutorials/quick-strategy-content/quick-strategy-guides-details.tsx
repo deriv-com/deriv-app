@@ -25,8 +25,8 @@ const QuickStrategyGuidesDetail = observer(
         const { is_mobile } = ui;
         const text_size = is_mobile ? 'xs' : 's';
 
-        const qs_guide = document.querySelector('.tutorials-mobile__qs-guide');
         const scrollToTop = () => {
+            const qs_guide = document.querySelector('.tutorials-mobile__qs-guide');
             if (qs_guide) {
                 qs_guide.scrollTop = 0;
             }

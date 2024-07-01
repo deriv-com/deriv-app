@@ -1,7 +1,8 @@
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
-import { getCFDAccountKey, isMobile } from '@deriv/shared';
+import { getCFDAccountKey } from '@deriv/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, Money, Text, ExpansionPanel, Button } from '@deriv/components';
 import SpecBox from '../Components/specbox';
@@ -84,6 +85,7 @@ const CTraderDerivXTradeModal = ({
     platform,
     is_mobile,
 }: TTradeModalProps) => {
+    const { isDesktop } = useDevice();
     const {
         ui,
         client,
@@ -148,7 +150,7 @@ const CTraderDerivXTradeModal = ({
                         align='center'
                         as='p'
                         className='cfd-trade-modal__download-center-text'
-                        size={isMobile() ? 'xxxs' : 'xxs'}
+                        size={!isDesktop ? 'xxxs' : 'xxs'}
                         weight='bold'
                     >
                         {localize('Download Deriv X on your phone to trade with the Deriv X account')}
@@ -160,7 +162,7 @@ const CTraderDerivXTradeModal = ({
                         align='center'
                         as='p'
                         className='cfd-trade-modal__download-center-text'
-                        size={isMobile() ? 'xxxs' : 'xxs'}
+                        size={!isDesktop ? 'xxxs' : 'xxs'}
                         weight='bold'
                     >
                         {localize('Download cTrader on your phone to trade with the Deriv cTrader account')}
@@ -330,7 +332,7 @@ const CTraderDerivXTradeModal = ({
                 <div className='cfd-trade-modal__maintenance'>
                     <Icon
                         icon='IcAlertWarning'
-                        size={isMobile() ? 28 : 24}
+                        size={!isDesktop ? 28 : 24}
                         className='cfd-trade-modal__maintenance-icon'
                     />
                     <div className='cfd-trade-modal__maintenance-text'>
@@ -397,7 +399,7 @@ const CTraderDerivXTradeModal = ({
                 <div className='cfd-trade-modal__download-center-options--mobile-links'>
                     <div className='cfd-trade-modal__download-center-options--mobile-links--apple'>
                         <a href={mobileDownloadLink(platform, 'ios')} target='_blank' rel='noopener noreferrer'>
-                            <Icon icon='IcInstallationApple' width={isMobile() ? '160' : '130'} height={40} />
+                            <Icon icon='IcInstallationApple' width={!isDesktop ? '160' : '130'} height={40} />
                         </a>
                     </div>
                     <a href={mobileDownloadLink(platform, 'android')} target='_blank' rel='noopener noreferrer'>
@@ -410,7 +412,7 @@ const CTraderDerivXTradeModal = ({
                         </a>
                     )}
                 </div>
-                {!isMobile() && (
+                {isDesktop && (
                     <div className='cfd-trade-modal__download-center-options--qrcode'>
                         {getPlatformQRCode(platform)}
                     </div>

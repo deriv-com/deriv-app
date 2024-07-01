@@ -81,11 +81,9 @@ import {
 
 type TSymbolIconsMapper = {
     symbol: string;
-    theme: string;
 };
 
-const SymbolIconsMapper = ({ symbol, theme }: TSymbolIconsMapper) => {
-    const fill = theme === 'light' ? '#000000' : '#ffffff';
+const SymbolIconsMapper = ({ symbol }: TSymbolIconsMapper) => {
     const iconSize = 'md';
 
     const iconMap = {
@@ -169,7 +167,7 @@ const SymbolIconsMapper = ({ symbol, theme }: TSymbolIconsMapper) => {
     };
 
     const IconComponent = iconMap[symbol as keyof typeof iconMap];
-    return IconComponent ? <IconComponent fill={fill} iconSize={iconSize} /> : null;
+    return IconComponent ? <IconComponent iconSize={iconSize} /> : null;
 };
 
 export default SymbolIconsMapper;

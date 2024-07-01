@@ -5,7 +5,14 @@ import { categorizeSymbols } from 'AppV2/Utils/symbol-categories-utils';
 import MarketCategory from '../MarketCategory';
 import MarketCategoryTab from '../MarketCategoryTab/market-category-tab';
 
-const MarketCategories = () => {
+type TMarketCategories = {
+    selectedSymbol: string;
+    setSelectedSymbol: (input: string) => void;
+    setIsOpen: (input: boolean) => void;
+};
+
+const MarketCategories = ({ selectedSymbol, setSelectedSymbol, setIsOpen }: TMarketCategories) => {
+    // console.log(setIsOpen, 'yo')
     const { activeSymbols } = useActiveSymbols();
     const categorizedSymbols = categorizeSymbols(activeSymbols);
 
@@ -18,7 +25,13 @@ const MarketCategories = () => {
             </Tab.List>
             <Tab.Content className='market-categories__list'>
                 {Object.values(categorizedSymbols).map(category => (
-                    <MarketCategory key={category.market} category={category} />
+                    <MarketCategory
+                        key={category.market}
+                        category={category}
+                        selectedSymbol={selectedSymbol}
+                        setSelectedSymbol={setSelectedSymbol}
+                        setIsOpen={setIsOpen}
+                    />
                 ))}
             </Tab.Content>
         </React.Fragment>

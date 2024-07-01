@@ -1,18 +1,26 @@
 import { ActionSheet, Tab, Text } from '@deriv-com/quill-ui';
 import { observer } from '@deriv/stores';
-// import { Localize, localize } from '@deriv/translations';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MarketSelectorSearchField from '../MarketSelectorSearchField';
 import { Localize } from '@deriv/translations';
 import MarketCategories from '../MarketCategories';
 import SymbolNotFound from '../SymbolNotFound';
 import clsx from 'clsx';
+import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 
 const MarketSelector = observer(() => {
+    const { default_symbol } = useActiveSymbols();
     const [isOpen, setIsOpen] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
     const notFound = true;
+    const [selectedSymbol, setSelectedSymbol] = useState(default_symbol);
 
+    useEffect(() => {
+        setSelectedSymbol(default_symbol);
+    }, [default_symbol]);
+
+    // const something = localStorage.getItem('cq-favorites');
+    // console.log(something)
     return (
         <React.Fragment>
             <button onClick={() => setIsOpen(!isOpen)}>button</button>
@@ -36,7 +44,11 @@ const MarketSelector = observer(() => {
                             </Text>
                         ) : (
                             // <SymbolNotFound searchTerm='yello' />
-                            <MarketCategories />
+                            <MarketCategories
+                                selectedSymbol={selectedSymbol}
+                                setSelectedSymbol={setSelectedSymbol}
+                                setIsOpen={setIsOpen}
+                            />
                         )}
                     </Tab.Container>
                 </ActionSheet.Portal>

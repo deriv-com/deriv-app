@@ -1,13 +1,17 @@
 import React from 'react';
 import { MarketGroup } from 'AppV2/Utils/symbol-categories-utils';
 import { Tab, Text, CaptionText } from '@deriv-com/quill-ui';
-import SymbolIconsMapper from '../SymbolIconsMapper/symbol-icons-mapper';
+import MarketCategoryItem from '../MarketCategoryItem';
+import { ActiveSymbols } from '@deriv/api-types';
 
 type TMarketCategory = {
     category: MarketGroup;
+    selectedSymbol: string;
+    setSelectedSymbol: (input: string) => void;
+    setIsOpen: (input: boolean) => void;
 };
 
-const MarketCategory = ({ category }: TMarketCategory) => {
+const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen }: TMarketCategory) => {
     return (
         <Tab.Panel key={category.market_display_name}>
             {Object.entries(category.subgroups).map(([subgroupKey, subgroup]) => {
@@ -26,11 +30,14 @@ const MarketCategory = ({ category }: TMarketCategory) => {
                                     {submarket.submarket_display_name}
                                 </CaptionText>
                                 <div className='market-category-items'>
-                                    {submarket.items.map(item => (
-                                        <div key={item.display_name} className='market-category-item'>
-                                            <SymbolIconsMapper symbol={item.symbol} theme='light' />
-                                            <Text size='sm'>{item.display_name}</Text>
-                                        </div>
+                                    {submarket.items.map((item: ActiveSymbols[0]) => (
+                                        <MarketCategoryItem
+                                            item={item}
+                                            key={item.display_name}
+                                            selectedSymbol={selectedSymbol}
+                                            setSelectedSymbol={setSelectedSymbol}
+                                            setIsOpen={setIsOpen}
+                                        />
                                     ))}
                                 </div>
                             </div>

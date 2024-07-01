@@ -16,7 +16,9 @@ const Guide = ({ is_minimalistic_look = false }: TGuide) => {
     const [selected_term, setSelectedTerm] = React.useState<string>();
 
     const onChipSelect = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        setSelectedContractType((e.target as EventTarget & HTMLButtonElement).textContent ?? '');
+        const new_selected_contract = (e.target as EventTarget & HTMLButtonElement).textContent ?? '';
+        // TODO: temporary replacement, waiting for designers solution
+        setSelectedContractType(new_selected_contract === 'Touch/No touch' ? 'Touch/No Touch' : new_selected_contract);
     };
 
     const onTermClick = (term: string) => {

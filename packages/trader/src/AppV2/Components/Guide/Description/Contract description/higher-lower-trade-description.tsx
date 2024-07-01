@@ -1,6 +1,6 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { parseContractDescription } from 'AppV2/Utils/trade-types-utils';
+import { CONTRACT_LIST, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const HigherLowerTradeDescription = () => {
     const content = [
@@ -14,6 +14,10 @@ const HigherLowerTradeDescription = () => {
                 />
             ),
         },
+        {
+            type: 'video',
+            text: CONTRACT_LIST.ACCUMULATORS,
+        },
         { type: 'heading', text: <Localize i18n_default_text='Lower' /> },
         {
             type: 'paragraph',
@@ -23,6 +27,10 @@ const HigherLowerTradeDescription = () => {
                     components={[<span className='description__content--bold' key={0} />]}
                 />
             ),
+        },
+        {
+            type: 'video',
+            text: CONTRACT_LIST.ACCUMULATORS,
         },
         { type: 'heading', text: <Localize i18n_default_text='Additional Information' /> },
         {

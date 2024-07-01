@@ -1,6 +1,6 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { parseContractDescription } from 'AppV2/Utils/trade-types-utils';
+import { CONTRACT_LIST, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const EvenOddTradeDescription = () => {
     const content = [
@@ -14,6 +14,10 @@ const EvenOddTradeDescription = () => {
                 />
             ),
         },
+        {
+            type: 'video',
+            text: CONTRACT_LIST.ACCUMULATORS,
+        },
         { type: 'heading', text: <Localize i18n_default_text='Odd' /> },
         {
             type: 'paragraph',
@@ -23,6 +27,10 @@ const EvenOddTradeDescription = () => {
                     components={[<span className='description__content--bold' key={0} />]}
                 />
             ),
+        },
+        {
+            type: 'video',
+            text: CONTRACT_LIST.ACCUMULATORS,
         },
     ];
     return <React.Fragment>{parseContractDescription(content)}</React.Fragment>;

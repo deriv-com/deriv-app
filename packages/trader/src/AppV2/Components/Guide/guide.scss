@@ -42,6 +42,10 @@
         padding-block-end: var(--component-actionSheet-spacing-padding-sm);
     }
 
+    &__general {
+        padding-block-end: var(--component-actionSheet-spacing-padding-md);
+    }
+
     &__heading {
         padding-block-end: var(--component-actionSheet-spacing-padding-sm);
     }
@@ -84,6 +88,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-block-end: var(--component-actionSheet-spacing-padding-sm);
+        margin-block-end: var(--component-actionSheet-spacing-padding-md);
+
+        &--accumulator {
+            margin-block-end: var(--component-actionSheet-spacing-padding-sm);
+        }
     }
 }

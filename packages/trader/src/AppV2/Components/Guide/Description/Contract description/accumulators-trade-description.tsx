@@ -1,8 +1,6 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { Text } from '@deriv-com/quill-ui';
-import { CONTRACT_LIST, TERM } from 'AppV2/Utils/trade-types-utils';
-import VideoFragment from '../video-fragment';
+import { CONTRACT_LIST, TERM, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const AccumulatorsTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
     const content = [
@@ -92,33 +90,7 @@ const AccumulatorsTradeDescription = ({ onTermClick }: { onTermClick: (term: str
         },
     ];
 
-    return (
-        <React.Fragment>
-            {content.map(({ type, text }) => {
-                if (type === 'heading' && typeof text !== 'string')
-                    return (
-                        <Text key={text.props.i18n_default_text} bold size='md' className='description__heading'>
-                            {text}
-                        </Text>
-                    );
-                if (type === 'paragraph' && typeof text !== 'string')
-                    return (
-                        <Text
-                            as='p'
-                            key={text.props.i18n_default_text}
-                            size='sm'
-                            className='description__paragraph'
-                            color='quill-typography__color--prominent'
-                        >
-                            {text}
-                        </Text>
-                    );
-
-                if (type === 'video' && typeof text === 'string')
-                    return <VideoFragment contract_type={text} key={text} />;
-            })}
-        </React.Fragment>
-    );
+    return <React.Fragment>{parseContractDescription(content)}</React.Fragment>;
 };
 
 export default AccumulatorsTradeDescription;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { parseContractDescription } from 'AppV2/Utils/trade-types-utils';
+import { CONTRACT_LIST, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const MatchesDiffersTradeDescription = () => {
     const content = [
@@ -14,6 +14,10 @@ const MatchesDiffersTradeDescription = () => {
                 />
             ),
         },
+        {
+            type: 'video',
+            text: CONTRACT_LIST.ACCUMULATORS,
+        },
         { type: 'heading', text: <Localize i18n_default_text='Differs' /> },
         {
             type: 'paragraph',
@@ -23,6 +27,10 @@ const MatchesDiffersTradeDescription = () => {
                     components={[<span className='description__content--bold' key={0} />]}
                 />
             ),
+        },
+        {
+            type: 'video',
+            text: CONTRACT_LIST.ACCUMULATORS,
         },
     ];
     return <React.Fragment>{parseContractDescription(content)}</React.Fragment>;

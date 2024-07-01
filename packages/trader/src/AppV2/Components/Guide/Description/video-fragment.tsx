@@ -1,9 +1,11 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Localize } from '@deriv/translations';
 import { Loading } from '@deriv/components';
 import { Text } from '@deriv-com/quill-ui';
 import { useDevice } from '@deriv-com/ui';
 import { getUrlBase } from '@deriv/shared';
+import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
 
 type TVideoFragment = {
     contract_type: string;
@@ -26,7 +28,12 @@ const VideoFragment = ({ contract_type }: TVideoFragment) => {
     const webm_src = React.useMemo(() => getVideoSource('webm'), [getVideoSource]);
 
     return (
-        <div className='video-fragment__wrapper'>
+        <div
+            className={classNames('video-fragment__wrapper', {
+                'video-fragment__wrapper--accumulator':
+                    contract_type.toLowerCase() === CONTRACT_LIST.ACCUMULATORS.toLowerCase(),
+            })}
+        >
             {is_loading && <Loading is_fullscreen={false} />}
             <video
                 autoPlay

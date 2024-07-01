@@ -1,11 +1,11 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { TERM, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
+import { CONTRACT_LIST, TERM, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
     const content = [
         {
-            type: 'paragraph',
+            type: 'general',
             text: (
                 <Localize i18n_default_text='Use multipliers to leverage your potential returns. Predict if the asset price will move upward (bullish) or downward (bearish). We’ll charge a commission when you open a multipliers trade.' />
             ),
@@ -24,6 +24,10 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
             ),
         },
         {
+            type: 'video',
+            text: CONTRACT_LIST.ACCUMULATORS,
+        },
+        {
             type: 'heading',
             text: <Localize i18n_default_text='Down' />,
         },
@@ -35,6 +39,10 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
                     components={[<span className='description__content--bold' key={0} />]}
                 />
             ),
+        },
+        {
+            type: 'video',
+            text: CONTRACT_LIST.ACCUMULATORS,
         },
         {
             type: 'heading',

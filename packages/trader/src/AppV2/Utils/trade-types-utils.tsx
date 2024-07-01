@@ -1,6 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Text } from '@deriv-com/quill-ui';
+import VideoFragment from 'AppV2/Components/Guide/Description/video-fragment';
 
 export const CONTRACT_LIST = {
     ACCUMULATORS: 'Accumulators',
@@ -153,23 +154,29 @@ export const getTermDefinition = ({ contract_type, term }: { contract_type: stri
 export const parseContractDescription = (
     content: {
         type: string;
-        text: JSX.Element;
+        text: JSX.Element | string;
     }[]
 ) =>
-    content.map(({ type, text }) =>
-        type === 'heading' ? (
-            <Text key={text.props.i18n_default_text} bold size='md' className='description__heading'>
-                {text}
-            </Text>
-        ) : (
-            <Text
-                as='p'
-                key={text.props.i18n_default_text}
-                size='sm'
-                className='description__paragraph'
-                color='quill-typography__color--prominent'
-            >
-                {text}
-            </Text>
-        )
-    );
+    content.map(({ type, text }, index) => {
+        if (type === 'heading' && typeof text !== 'string')
+            return (
+                <Text key={text.props.i18n_default_text} bold size='md' className='description__heading'>
+                    {text}
+                </Text>
+            );
+        if ((type === 'paragraph' || type === 'general') && typeof text !== 'string')
+            return (
+                <Text
+                    as='p'
+                    key={text.props.i18n_default_text}
+                    size='sm'
+                    className={`description__${type === 'paragraph' ? 'paragraph' : 'general'}`}
+                    color='quill-typography__color--prominent'
+                >
+                    {text}
+                </Text>
+            );
+
+        if (type === 'video' && typeof text === 'string')
+            return <VideoFragment contract_type={text} key={text + index} />;
+    });

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { TERM, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
+import { CONTRACT_LIST, TERM, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const VanillasTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
     const content = [
         {
-            type: 'paragraph',
+            type: 'general',
             text: (
                 <Localize i18n_default_text='Vanilla options allow you to predict an upward (bullish) or downward (bearish) direction of the underlying asset by purchasing a “Call” or a “Put”.' />
             ),
@@ -46,6 +46,10 @@ const VanillasTradeDescription = ({ onTermClick }: { onTermClick: (term: string)
             ),
         },
         {
+            type: 'video',
+            text: CONTRACT_LIST.ACCUMULATORS,
+        },
+        {
             type: 'heading',
             text: <Localize i18n_default_text='Put' />,
         },
@@ -57,6 +61,10 @@ const VanillasTradeDescription = ({ onTermClick }: { onTermClick: (term: string)
                     components={[<span className='description__content--bold' key={0} />]}
                 />
             ),
+        },
+        {
+            type: 'video',
+            text: CONTRACT_LIST.ACCUMULATORS,
         },
         {
             type: 'heading',

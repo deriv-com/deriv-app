@@ -44,6 +44,11 @@ module.exports = function (env) {
                         priority: -20,
                         reuseExistingChunk: true,
                     },
+                    defaultVendors: {
+                        idHint: 'vendors',
+                        priority: -10,
+                        test: /[\\/]node_modules[\\/]/,
+                    },
                     assets: {
                         name: 'assets',
                         test: /[\\/]Assets[\\/]/,

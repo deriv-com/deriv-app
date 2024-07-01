@@ -2,16 +2,16 @@ import React from 'react';
 import { Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
-import AccumulatorsTradeDescription from './Description/accumulators-trade-description';
-import RiseFallTradeDescription from './Description/rise-fall-trade-description';
-import MultiplierTradeDescriptions from './Description/multipliers-trade-description';
-import VanillasTradeDescription from './Description/vanillas-trade-description';
-import TurbosTradeDescription from './Description/turbos-trade-description';
-import HigherLowerTradeDescription from './Description/higher-lower-trade-description';
-import TouchNoTouchTradeDescription from './Description/touch-no-touch-trade-description';
-import MatchesDiffersTradeDescription from './Description/matches-differs-trade-description';
-import EvenOddTradeDescription from './Description/even-odd-trade-description';
-import OverUnderTradeDescription from './Description/over-under-trade-description';
+import AccumulatorsTradeDescription from './Contract description/accumulators-trade-description';
+import RiseFallTradeDescription from './Contract description/rise-fall-trade-description';
+import MultiplierTradeDescriptions from './Contract description/multipliers-trade-description';
+import VanillasTradeDescription from './Contract description/vanillas-trade-description';
+import TurbosTradeDescription from './Contract description/turbos-trade-description';
+import HigherLowerTradeDescription from './Contract description/higher-lower-trade-description';
+import TouchNoTouchTradeDescription from './Contract description/touch-no-touch-trade-description';
+import MatchesDiffersTradeDescription from './Contract description/matches-differs-trade-description';
+import EvenOddTradeDescription from './Contract description/even-odd-trade-description';
+import OverUnderTradeDescription from './Contract description/over-under-trade-description';
 
 const TradeDescription = ({
     contract_type,

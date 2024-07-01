@@ -9,7 +9,7 @@ export const CONTRACT_LIST = {
     MULTIPLIERS: 'Multipliers',
     'RISE/FALL': 'Rise/Fall',
     'HIGHER/LOWER': 'Higher/Lower',
-    'TOUCH/NO TOUCH': 'Touch/No touch',
+    'TOUCH/NO TOUCH': 'Touch/No Touch',
     'MATCHES/DIFFERS': 'Matches/Differs',
     'EVEN/ODD': 'Even/Odd',
     'OVER/UNDER': 'Over/Under',

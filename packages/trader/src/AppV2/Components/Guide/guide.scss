@@ -73,3 +73,17 @@
         padding: var(--component-actionSheet-spacing-padding-lg);
     }
 }
+
+.video-fragment {
+    // TODO: temporary, waiting for real video
+    width: 248px;
+    height: 161px;
+    object-fit: initial;
+
+    &__wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-block-end: var(--component-actionSheet-spacing-padding-sm);
+    }
+}

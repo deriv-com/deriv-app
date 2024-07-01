@@ -150,9 +150,10 @@ const RiskManagementItem = observer(
                                     textAlignment='center'
                                     status={errorMessage ? 'error' : 'neutral'}
                                     name={type}
-                                    unitRight={currency}
+                                    unit={currency}
                                     value={Math.abs(stepperValue)}
                                     onChange={onChange}
+                                    unitPlacement='right'
                                     decimals={0}
                                     message={errorMessage}
                                 />

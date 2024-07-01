@@ -32,9 +32,13 @@
 
         .dc-datepicker {
             margin-left: 2.4rem;
+
+            @include mobile-or-tablet-screen {
+                margin-left: unset;
+            }
         }
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             .dc-input {
                 margin-bottom: 2rem;
             }
@@ -188,7 +192,7 @@
         .dc-btn:not(:last-of-type) {
             margin-right: 0.8rem;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             height: auto;
             padding-bottom: unset;
 

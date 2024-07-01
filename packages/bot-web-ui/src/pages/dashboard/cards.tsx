@@ -41,7 +41,6 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
     const openFileLoader = () => {
         setActiveTab(DBOT_TABS.BOT_BUILDER);
         // Added the setTimeout to maintain sequence as tab change was contradicting with load modal open
-        setActiveTab(DBOT_TABS.BOT_BUILDER);
         const timerId = setTimeout(() => {
             toggleLoadModal();
             setActiveTabIndex(is_mobile ? 0 : 1);

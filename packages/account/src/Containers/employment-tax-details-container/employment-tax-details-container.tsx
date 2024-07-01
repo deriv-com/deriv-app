@@ -36,8 +36,6 @@ const EmploymentTaxDetailsContainer = ({
     const tax_residence_ref = useRef<HTMLDivElement>(null);
     const tin_ref = useRef<HTMLDivElement>(null);
 
-    console.log('errors: ', errors, values);
-
     const validateClickOutside = (event: MouseEvent) => {
         const target = event?.target as HTMLElement;
         if (target.tagName === 'A') {

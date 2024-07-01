@@ -55,7 +55,7 @@ const DescriptionModal = ({
                             </Chip.Selectable>
                         ))}
                     </div>
-                    <div className='guide__contract-description'>
+                    <div className='guide__contract-description' key={selected_contract_type}>
                         <TradeDescription contract_type={selected_contract_type} onTermClick={onTermClick} />
                         <div className='guide__video-placeholder'>
                             <Text>Coolest video ever</Text>

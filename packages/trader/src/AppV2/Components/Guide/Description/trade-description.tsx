@@ -1,17 +1,79 @@
 import React from 'react';
 import { Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
+import { makeLazyLoader, moduleLoader } from '@deriv/shared';
+import { Loading } from '@deriv/components';
 import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
-import AccumulatorsTradeDescription from './Contract description/accumulators-trade-description';
-import RiseFallTradeDescription from './Contract description/rise-fall-trade-description';
-import MultiplierTradeDescriptions from './Contract description/multipliers-trade-description';
-import VanillasTradeDescription from './Contract description/vanillas-trade-description';
-import TurbosTradeDescription from './Contract description/turbos-trade-description';
-import HigherLowerTradeDescription from './Contract description/higher-lower-trade-description';
-import TouchNoTouchTradeDescription from './Contract description/touch-no-touch-trade-description';
-import MatchesDiffersTradeDescription from './Contract description/matches-differs-trade-description';
-import EvenOddTradeDescription from './Contract description/even-odd-trade-description';
-import OverUnderTradeDescription from './Contract description/over-under-trade-description';
+import AccumulatorsTradeDescription from './ContractDescription/accumulators-trade-description';
+import MultiplierTradeDescriptions from './ContractDescription/multipliers-trade-description';
+import VanillasTradeDescription from './ContractDescription/vanillas-trade-description';
+import TurbosTradeDescription from './ContractDescription/turbos-trade-description';
+
+const RiseFallTradeDescription = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "rise-fall-trade-description" */ './ContractDescription/rise-fall-trade-description'
+                )
+        ),
+    () => <Loading />
+)();
+
+const HigherLowerTradeDescription = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "higher-lower-trade-description" */ './ContractDescription/higher-lower-trade-description'
+                )
+        ),
+    () => <Loading />
+)();
+
+const TouchNoTouchTradeDescription = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "touch-no-touch-trade-description" */ './ContractDescription/touch-no-touch-trade-description'
+                )
+        ),
+    () => <Loading />
+)();
+
+const MatchesDiffersTradeDescription = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "matches-differs-trade-description" */ './ContractDescription/matches-differs-trade-description'
+                )
+        ),
+    () => <Loading />
+)();
+
+const EvenOddTradeDescription = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "even-odd-trade-description" */ './ContractDescription/even-odd-trade-description'
+                )
+        ),
+    () => <Loading />
+)();
+
+const OverUnderTradeDescription = makeLazyLoader(
+    () =>
+        moduleLoader(
+            () =>
+                import(
+                    /* webpackChunkName: "over-under-trade-description" */ './ContractDescription/over-under-trade-description'
+                )
+        ),
+    () => <Loading />
+)();
 
 const TradeDescription = ({
     contract_type,

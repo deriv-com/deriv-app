@@ -65,6 +65,7 @@ const EmploymentTaxInfo = ({
         <Formik
             initialValues={{ ...value }}
             validationSchema={schema}
+            validateOnMount
             onSubmit={(values, actions) => {
                 const current_step = getCurrentStep() - 1;
                 onSave(current_step, values);

@@ -20,6 +20,7 @@ import FormBodySection from '../form-body-section';
 import { DateOfBirthField, FormInputField } from './form-fields';
 import FormSubHeader from '../form-sub-header';
 import InlineNoteWithIcon from '../inline-note-with-icon';
+import { useResidenceList } from '@deriv/hooks';
 
 const PersonalDetailsForm = props => {
     const {
@@ -30,7 +31,6 @@ const PersonalDetailsForm = props => {
         is_rendered_for_idv,
         editable_fields = [],
         has_real_account,
-        residence_list,
         is_fully_authenticated,
         account_opening_reason_list,
         closeRealAccountSignup,
@@ -47,7 +47,9 @@ const PersonalDetailsForm = props => {
     // need to put this check related to DIEL clients
     const is_svg_only = is_svg && !is_eu_user;
 
-    const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched } = useFormikContext();
+    const { errors, touched, values, setFieldValue, handleChange, handleBlur } = useFormikContext();
+
+    const { data: residence_list } = useResidenceList();
 
     const getNameAndDobLabels = () => {
         const is_asterisk_needed = is_svg || is_eu_user || is_rendered_for_onfido || is_rendered_for_idv;

@@ -1,7 +1,6 @@
 import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
 import { TSchema, getDefaultFields, toMoment } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { shouldShowIdentityInformation } from 'Helpers/utils';
 import { TUpgradeInfo } from 'Types';
 
 type TPersonalDetailsConfig = {
@@ -158,25 +157,6 @@ const personalDetailsConfig = <T>(
         passthrough: ['residence_list', 'is_fully_authenticated', 'has_real_account'],
         icon: 'IcDashboardPersonalDetails',
     };
-};
-
-const transformConfig = (
-    config: TSchema,
-    { real_account_signup_target, residence_list, account_status, residence }: TPersonalDetailsConfig
-) => {
-    // Remove IDV for non supporting SVG countries
-    if (
-        !shouldShowIdentityInformation({
-            account_status,
-            citizen: residence,
-            residence_list,
-            real_account_signup_target,
-        })
-    ) {
-        delete config.document_type;
-        delete config.document_number;
-    }
-    return config;
 };
 
 export default personalDetailsConfig;

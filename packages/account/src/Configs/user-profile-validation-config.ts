@@ -20,7 +20,13 @@ export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) 
     return Yup.object({
         employment_status: Yup.string().required(localize('Employment status is required.')),
         tax_residence: Yup.string(),
-        tax_identification_confirm: Yup.bool(),
+        tax_identification_confirm: Yup.bool().when(['tax_identification_number', 'tax_residence'], {
+            is: (tax_identification_number: string, tax_residence: string) => {
+                return tax_identification_number && tax_residence;
+            },
+            then: Yup.bool().required().oneOf([true]),
+            otherwise: Yup.bool().notRequired(),
+        }),
         tax_identification_number: Yup.string()
             .max(25, localize("Tax Identification Number can't be longer than 25 characters."))
             .matches(
@@ -44,7 +50,7 @@ export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) 
                     }
 
                     if (
-                        !tin_config?.invalid_patterns?.some(invalid_pattern =>
+                        tin_config?.invalid_patterns?.some(invalid_pattern =>
                             new RegExp(invalid_pattern).test(value as string)
                         )
                     ) {

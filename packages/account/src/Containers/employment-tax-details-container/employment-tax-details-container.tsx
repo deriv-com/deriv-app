@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { FormikValues, useFormikContext } from 'formik';
 import {
     EmploymentStatusField,
@@ -57,7 +57,7 @@ const EmploymentTaxDetailsContainer = ({
                 handleChange(tax_residence);
             }
         }
-    }, [handleChange, values.tax_residence]);
+    }, [handleChange, values.tax_residence, residence_list]);
 
     useEffect(() => {
         const parent_element = parent_ref?.current;
@@ -72,6 +72,15 @@ const EmploymentTaxDetailsContainer = ({
             }
         };
     }, [parent_ref]);
+
+    const is_tax_details_confirm_disabled = useMemo(
+        () =>
+            (isFieldImmutable('tax_identification_number', editable_fields) &&
+                isFieldImmutable('tax_residence', editable_fields)) ||
+            !values.tax_identification_number ||
+            !values.tax_residence,
+        [editable_fields, values.tax_identification_number, values.tax_residence]
+    );
 
     useOnClickOutside(tax_residence_ref, () => setIsTaxResidencePopoverOpen(false), validateClickOutside);
     useOnClickOutside(tin_ref, () => setIsTinPopoverOpen(false), validateClickOutside);
@@ -99,7 +108,6 @@ const EmploymentTaxDetailsContainer = ({
                     is_tax_residence_popover_open={is_tax_residence_popover_open}
                     setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                     setIsTinPopoverOpen={setIsTinPopoverOpen}
-                    // onUpdate={handleChange}
                 />
             </div>
             <div ref={tin_ref} className='account-form__fieldset'>
@@ -134,7 +142,7 @@ const EmploymentTaxDetailsContainer = ({
                 has_error={!!(touched.tax_identification_confirm && errors.tax_identification_confirm)}
                 label_font_size={isMobile ? 'xxs' : 'xs'}
                 label_line_height='m'
-                disabled={values.confirm_no_tax_details}
+                disabled={values.confirm_no_tax_details || is_tax_details_confirm_disabled}
             />
         </Fragment>
     );

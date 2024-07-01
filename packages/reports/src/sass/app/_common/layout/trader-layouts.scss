@@ -1,42 +1,44 @@
 /** @define app-contents; weak */
 .app-contents {
     &--show-positions-drawer:not(&--is-mobile) {
-        .trade-container {
-            .chart-container {
-                width: 100%;
+        @include desktop-screen {
+            .trade-container {
+                .chart-container {
+                    width: 100%;
 
-                .sc-navigation-widget,
-                .cq-top-ui-widgets,
-                .sc-toolbar-widget,
-                .stx-panel-control {
-                    transform: translate3d(248px, 0, 0);
-                    @include rtl {
-                        transform: translate3d(-248px, 0, 0);
+                    .sc-navigation-widget,
+                    .cq-top-ui-widgets,
+                    .sc-toolbar-widget,
+                    .stx-panel-control {
+                        transform: translate3d(248px, 0, 0);
+                        @include rtl {
+                            transform: translate3d(-248px, 0, 0);
+                        }
                     }
-                }
-                .cq-chart-controls {
-                    transform: translate3d(130px, 0, 0) !important;
-                }
-                .cq-bottom-ui-widgets {
-                    .digits__container,
-                    .accumulators-stats {
-                        transform: translate3d(130px, 0, 0) !important;
-                    }
-                }
-                .cq-chart-control-left {
                     .cq-chart-controls {
-                        transform: translate3d(248px, 0, 0) !important;
+                        transform: translate3d(130px, 0, 0) !important;
                     }
                     .cq-bottom-ui-widgets {
                         .digits__container,
                         .accumulators-stats {
-                            transform: translate3d(170px, 40px, 0) !important;
+                            transform: translate3d(130px, 0, 0) !important;
                         }
                     }
-                }
-                &__loader {
-                    .barspinner {
-                        transform: translate3d(130px, 0, 0) !important;
+                    .cq-chart-control-left {
+                        .cq-chart-controls {
+                            transform: translate3d(248px, 0, 0) !important;
+                        }
+                        .cq-bottom-ui-widgets {
+                            .digits__container,
+                            .accumulators-stats {
+                                transform: translate3d(170px, 40px, 0) !important;
+                            }
+                        }
+                    }
+                    &__loader {
+                        .barspinner {
+                            transform: translate3d(130px, 0, 0) !important;
+                        }
                     }
                 }
             }

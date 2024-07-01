@@ -24,7 +24,7 @@ const DidntGetTheCodeModal = observer(
         phone_verification_type,
         setOtpVerification,
     }: TDidntGetTheCodeModal) => {
-        const { requestOnSMS, requestOnWhatsApp, is_email_verified, ...rest } = useRequestPhoneNumberOTP();
+        const { requestOnSMS, requestOnWhatsApp, is_email_verified } = useRequestPhoneNumberOTP();
         const { ui } = useStore();
         const { is_mobile } = ui;
 

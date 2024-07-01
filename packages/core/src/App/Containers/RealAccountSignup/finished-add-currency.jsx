@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
+import { useDevice } from '@deriv-com/ui';
 import { Button, Div100vhContainer, Icon, Text } from '@deriv/components';
-import { isDesktop, isMobile, routes } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
 const FinishedAddCurrency = ({
@@ -14,6 +15,7 @@ const FinishedAddCurrency = ({
     onSubmit,
     setIsDeposit,
 }) => {
+    const { isDesktop } = useDevice();
     const IconNextCurrency = () => <Icon icon={`IcCurrency-${current.toLowerCase()}`} height={120} width={90} />;
     const IconWon = ({ className }) => <Icon className={className} icon='IcCheckmarkCircle' color='green' />;
 
@@ -34,21 +36,21 @@ const FinishedAddCurrency = ({
 
     return (
         <React.Fragment>
-            {isDesktop() && (
+            {isDesktop && (
                 <div onClick={onCancel} className='finished-add-currency__close'>
                     <Icon icon='IcCross' />
                 </div>
             )}
-            <Div100vhContainer className='finished-add-currency__dialog' is_disabled={isDesktop()} height_offset='40px'>
+            <Div100vhContainer className='finished-add-currency__dialog' is_disabled={isDesktop} height_offset='40px'>
                 <div
                     className={classNames('status-dialog__header', {
-                        'status-dialog__header--center': isMobile(),
+                        'status-dialog__header--center': !isDesktop,
                     })}
                 >
                     <IconNextCurrency />
                     <IconWon className='bottom-right-overlay' />
                 </div>
-                <div className={classNames('status-dialog__body', { 'status-dialog__body--no-grow': isMobile() })}>
+                <div className={classNames('status-dialog__body', { 'status-dialog__body--no-grow': !isDesktop })}>
                     <Text as='h2' align='center' className='status-dialog__message-header' weight='bold'>
                         <Localize i18n_default_text='Your account is ready' />
                     </Text>

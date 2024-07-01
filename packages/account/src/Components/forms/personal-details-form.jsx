@@ -23,6 +23,7 @@ import InlineNoteWithIcon from '../inline-note-with-icon';
 import { useDevice } from '@deriv-com/ui';
 
 const PersonalDetailsForm = props => {
+    const { isDesktop } = useDevice();
     const {
         inline_note_text,
         is_virtual,
@@ -54,7 +55,6 @@ const PersonalDetailsForm = props => {
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
 
     const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched } = useFormikContext();
-    const { isDesktop } = useDevice();
 
     const handleToolTipStatus = React.useCallback(() => {
         if (is_tax_residence_popover_open) {

@@ -8,8 +8,8 @@ declare global {
     }
 }
 
-export const MAX_MOBILE_WIDTH = 926; // iPhone 12 Pro Max has the world largest viewport size of 428 x 926
-export const MAX_TABLET_WIDTH = 1081;
+export const MAX_MOBILE_WIDTH = 600;
+export const MAX_TABLET_WIDTH = 1279;
 
 export const isTouchDevice = () =>
     'ontouchstart' in window ||

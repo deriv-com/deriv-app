@@ -20,14 +20,14 @@ export type TAction = {
 };
 
 export type TNotificationStyle = {
-    type?: TypeOptions;
-    position?: ToastPosition;
-    autoClose?: number;
-    hideProgressBar?: boolean;
-    closeOnClick?: boolean;
-    pauseOnHover?: boolean;
-    pauseOnFocusLoss?: boolean;
-    closeButton?: boolean;
+    type: TypeOptions;
+    position: ToastPosition;
+    autoClose: number;
+    hideProgressBar: boolean;
+    closeOnClick: boolean;
+    pauseOnHover: boolean;
+    pauseOnFocusLoss: boolean;
+    closeButton: boolean;
 };
 
 export enum NOTIFICATION_TYPE {

@@ -591,6 +591,8 @@
     &__button-group {
         display: flex;
         padding: 0 1.6rem;
+        align-items: center;
+        justify-content: center;
 
         button {
             height: 4rem;

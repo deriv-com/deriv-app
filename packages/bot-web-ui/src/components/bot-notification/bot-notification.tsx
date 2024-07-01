@@ -27,7 +27,11 @@ export const NotificationContent: React.FC<TNotificationContent> = ({ message, p
     );
 };
 
-export const botNotification = (message: string, primary_action?: TAction, custom_style?: TNotificationStyle) => {
+export const botNotification = (
+    message: string,
+    primary_action?: TAction,
+    custom_style?: Partial<TNotificationStyle>
+) => {
     return toast(
         ({ closeToast }) => (
             <NotificationContent message={message} primary_action={primary_action} closeToast={closeToast} />

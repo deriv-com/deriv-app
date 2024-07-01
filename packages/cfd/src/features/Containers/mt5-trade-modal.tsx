@@ -1,6 +1,6 @@
 import React from 'react';
-
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { useDevice } from '@deriv-com/ui';
 import { Icon, Money, Text } from '@deriv/components';
 import {
     getCFDAccountDisplay,
@@ -8,7 +8,6 @@ import {
     getCFDPlatformLabel,
     getPlatformSettings,
     getUrlBase,
-    isMobile,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { getWebtraderUrl, getPlatformMt5DownloadLink } from '../../Helpers/constants';
@@ -52,6 +51,8 @@ const DMT5TradeModal = ({
     onPasswordManager,
     toggleModal,
 }: TMT5TradeModalProps) => {
+    const { isDesktop } = useDevice();
+
     const getCompanyShortcode = () => {
         if (
             (mt5_trade_account.account_type === CATEGORY.DEMO &&
@@ -144,7 +145,7 @@ const DMT5TradeModal = ({
                 <div className='cfd-trade-modal__maintenance'>
                     <Icon
                         icon='IcAlertWarning'
-                        size={isMobile() ? 28 : 20}
+                        size={!isDesktop ? 28 : 20}
                         className='cfd-trade-modal__maintenance-icon'
                     />
                     <div className='cfd-trade-modal__maintenance-text'>
@@ -226,7 +227,7 @@ const DMT5TradeModal = ({
                 align='center'
                 as='div'
                 className='cfd-trade-modal__download-center-text'
-                size={isMobile() ? 'xxxs' : 'xxs'}
+                size={!isDesktop ? 'xxxs' : 'xxs'}
                 weight='bold'
             >
                 {localize(

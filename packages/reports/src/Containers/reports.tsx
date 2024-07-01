@@ -1,19 +1,11 @@
 import React from 'react';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
-import {
-    DesktopWrapper,
-    Div100vhContainer,
-    FadeWrapper,
-    Loading,
-    MobileWrapper,
-    PageOverlay,
-    SelectNative,
-    VerticalTab,
-} from '@deriv/components';
+import { Div100vhContainer, FadeWrapper, Loading, PageOverlay, SelectNative, VerticalTab } from '@deriv/components';
 import { getSelectedRoute } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { Analytics } from '@deriv-com/analytics';
+import { useDevice } from '@deriv-com/ui';
 import { TRoute } from 'Types';
 import 'Sass/app/modules/reports.scss';
 
@@ -37,6 +29,7 @@ const Reports = observer(({ history, location, routes }: TReports) => {
     const { is_logged_in, is_logging_in } = client;
     const { is_from_derivgo, routeBackInApp } = common;
     const { is_reports_visible, setReportsTabIndex, reports_route_tab_index, toggleReports } = ui;
+    const { isDesktop } = useDevice();
 
     React.useEffect(() => {
         Analytics.trackEvent('ce_reports_form', {
@@ -100,7 +93,7 @@ const Reports = observer(({ history, location, routes }: TReports) => {
         <FadeWrapper is_visible={is_reports_visible} className='reports-page-wrapper' keyname='reports-page-wrapper'>
             <div className='reports'>
                 <PageOverlay header={localize('Reports')} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
-                    <DesktopWrapper>
+                    {isDesktop ? (
                         <VerticalTab
                             is_floating
                             current_path={location.pathname}
@@ -110,8 +103,7 @@ const Reports = observer(({ history, location, routes }: TReports) => {
                             vertical_tab_index={selected_route.default ? 0 : reports_route_tab_index}
                             list={menu_options()}
                         />
-                    </DesktopWrapper>
-                    <MobileWrapper>
+                    ) : (
                         <Div100vhContainer className='reports__mobile-wrapper' height_offset='80px'>
                             <SelectNative
                                 className='reports__route-selection'
@@ -129,7 +121,7 @@ const Reports = observer(({ history, location, routes }: TReports) => {
                                 <selected_route.component icon_component={selected_route.icon_component} />
                             )}
                         </Div100vhContainer>
-                    </MobileWrapper>
+                    )}
                 </PageOverlay>
             </div>
         </FadeWrapper>

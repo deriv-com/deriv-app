@@ -2,17 +2,8 @@ import { useState, useRef, useEffect, Fragment } from 'react';
 import clsx from 'clsx';
 import { Formik, Form, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router';
-import {
-    Button,
-    Checkbox,
-    DesktopWrapper,
-    FormSubmitErrorMessage,
-    HintBox,
-    Input,
-    Loading,
-    MobileWrapper,
-    Text,
-} from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
+import { Button, Checkbox,FormSubmitErrorMessage, HintBox, Input, Loading, Text } from '@deriv/components';
 import { GetSettings } from '@deriv/api-types';
 import { AUTH_STATUS_CODES, WS, getBrandWebsiteName, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -38,6 +29,7 @@ type TRestState = {
 };
 
 const PersonalDetailsForm = observer(() => {
+    const { isDesktop } = useDevice();
     const [is_loading, setIsLoading] = useState(false);
     const [is_btn_loading, setIsBtnLoading] = useState(false);
     const [is_submit_success, setIsSubmitSuccess] = useState(false);
@@ -51,7 +43,6 @@ const PersonalDetailsForm = observer(() => {
     const {
         client,
         notifications,
-        ui,
         common: { is_language_changing },
     } = useStore();
 
@@ -76,7 +67,6 @@ const PersonalDetailsForm = observer(() => {
         showPOAAddressMismatchFailureNotification,
     } = notifications;
 
-    const { is_mobile } = ui;
     const has_poa_address_mismatch = account_status?.status?.includes('poa_address_mismatch');
     const [rest_state, setRestState] = useState<TRestState>({
         show_form: true,
@@ -238,7 +228,7 @@ const PersonalDetailsForm = observer(() => {
                 dirty,
             }) => (
                 <Fragment>
-                    <LeaveConfirm onDirty={is_mobile ? showForm : undefined} />
+                    <LeaveConfirm onDirty={isDesktop ? undefined : showForm} />
                     {show_form && (
                         <Form
                             noValidate
@@ -246,11 +236,11 @@ const PersonalDetailsForm = observer(() => {
                             onSubmit={handleSubmit}
                             data-testid='dt_account_personal_details_section'
                         >
-                            <FormBody scroll_offset={is_mobile ? '199px' : '80px'}>
+                            <FormBody scroll_offset={isDesktop ? '80px' : '199px'}>
                                 <FormSubHeader title={localize('Details')} />
                                 {!is_virtual && (
                                     <Fragment>
-                                        <DesktopWrapper>
+                                        {isDesktop ? (
                                             <InputGroup className='account-form__fieldset--2-cols'>
                                                 <Input
                                                     data-lpignore='true'
@@ -281,41 +271,42 @@ const PersonalDetailsForm = observer(() => {
                                                     data-testid='dt_last_name'
                                                 />
                                             </InputGroup>
-                                        </DesktopWrapper>
-                                        <MobileWrapper>
-                                            <fieldset className='account-form__fieldset'>
-                                                <Input
-                                                    data-lpignore='true'
-                                                    type='text'
-                                                    name='first_name'
-                                                    id='first_name_mobile'
-                                                    label={localize('First name*')}
-                                                    value={values.first_name}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    required
-                                                    disabled={isFieldDisabled('first_name')}
-                                                    error={errors.first_name}
-                                                    data-testid='dt_first_name'
-                                                />
-                                            </fieldset>
-                                            <fieldset className='account-form__fieldset'>
-                                                <Input
-                                                    data-lpignore='true'
-                                                    type='text'
-                                                    name='last_name'
-                                                    id='last_name_mobile'
-                                                    label={localize('Last name*')}
-                                                    value={values.last_name}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    required
-                                                    disabled={isFieldDisabled('last_name')}
-                                                    error={errors.last_name}
-                                                    data-testid='dt_last_name'
-                                                />
-                                            </fieldset>
-                                        </MobileWrapper>
+                                        ) : (
+                                            <Fragment>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        name='first_name'
+                                                        id='first_name_mobile'
+                                                        label={localize('First name*')}
+                                                        value={values.first_name}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        disabled={isFieldDisabled('first_name')}
+                                                        error={errors.first_name}
+                                                        data-testid='dt_first_name'
+                                                    />
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        name='last_name'
+                                                        id='last_name_mobile'
+                                                        label={localize('Last name*')}
+                                                        value={values.last_name}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        disabled={isFieldDisabled('last_name')}
+                                                        error={errors.last_name}
+                                                        data-testid='dt_last_name'
+                                                    />
+                                                </fieldset>
+                                            </Fragment>
+                                        )}
                                         {'place_of_birth' in values && (
                                             <fieldset className='account-form__fieldset'>
                                                 <FormSelectField
@@ -597,7 +588,7 @@ const PersonalDetailsForm = observer(() => {
                                         className='account-form__footer-note'
                                         size='xxs'
                                         color='prominent'
-                                        align={is_mobile ? 'center' : 'right'}
+                                        align={isDesktop ? 'right' : 'center'}
                                     >
                                         {localize(
                                             'Please make sure your information is correct or it may affect your trading experience.'

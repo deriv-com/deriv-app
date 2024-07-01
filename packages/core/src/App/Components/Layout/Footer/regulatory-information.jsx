@@ -25,18 +25,25 @@ const MFRegulatoryInformation = () => (
     </div>
 );
 
-export const RegulatoryInformation = ({ landing_company, is_eu, show_eu_related_content }) => {
+export const RegulatoryInformation = ({ landing_company, is_eu, show_eu_related_content, showPopover }) => {
     const [should_show_modal, showModal] = React.useState(false);
     if (!is_eu || (is_eu && !show_eu_related_content)) return null;
     const is_mf = landing_company === 'maltainvest';
+    const content = (
+        <a onClick={() => showModal(true)}>
+            <Icon icon='IcRegulatoryInformation' className='footer__icon ic-deriv__icon' />
+        </a>
+    );
 
     return (
         <div className='footer__link'>
-            <Popover alignment='top' message={localize('Regulatory Information')} zIndex={9999}>
-                <a onClick={() => showModal(true)}>
-                    <Icon icon='IcRegulatoryInformation' className='footer__icon ic-deriv__icon' />
-                </a>
-            </Popover>
+            {showPopover ? (
+                <Popover alignment='top' message={localize('Regulatory Information')} zIndex={9999}>
+                    {content}
+                </Popover>
+            ) : (
+                content
+            )}
             <Modal
                 is_open={should_show_modal}
                 small

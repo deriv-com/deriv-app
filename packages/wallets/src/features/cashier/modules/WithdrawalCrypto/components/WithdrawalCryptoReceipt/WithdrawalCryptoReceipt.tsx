@@ -14,7 +14,7 @@ type TProps = {
 
 const WithdrawalCryptoReceipt: React.FC<TProps> = ({ onClose, withdrawalReceipt }) => {
     const history = useHistory();
-    const { address, amount, currency } = withdrawalReceipt;
+    const { address, amount, amountReceived, currency, transactionFee } = withdrawalReceipt;
 
     return (
         <div className='wallets-withdrawal-crypto-receipt'>
@@ -29,9 +29,20 @@ const WithdrawalCryptoReceipt: React.FC<TProps> = ({ onClose, withdrawalReceipt 
                 <WithdrawalCryptoDestinationAddress address={address} />
             </div>
             <div className='wallets-withdrawal-crypto-receipt__withdrawal-info'>
-                <WalletText align='center' size='xl' weight='bold'>
-                    {amount} {currency}
-                </WalletText>
+                <div className='wallets-withdrawal-crypto-receipt__amount-received-info'>
+                    <WalletText align='center' as='p' size='sm'>
+                        Amount received
+                    </WalletText>
+                    <WalletText align='center' size='xl' weight='bold'>
+                        {transactionFee ? amountReceived : amount} {currency}
+                    </WalletText>
+                    {transactionFee && (
+                        <WalletText align='center' as='p' size='sm'>
+                            (Transaction fee: {transactionFee} {currency})
+                        </WalletText>
+                    )}
+                </div>
+
                 <WalletText align='center' as='p'>
                     Your withdrawal is currently in review. It will be processed within 24 hours. We&rsquo;ll send you
                     an email once your transaction has been processed.

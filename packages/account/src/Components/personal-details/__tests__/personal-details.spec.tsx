@@ -2,14 +2,18 @@ import React, { ComponentProps, ReactNode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { isDesktop, isMobile } from '@deriv/shared';
-// import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
 import { shouldShowIdentityInformation } from '../../../Helpers/utils';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { Analytics } from '@deriv-com/analytics';
 import { FormikErrors } from 'formik';
 import { getIDVFormValidationSchema } from '../../../Configs/kyc-validation-config';
+import { useDevice } from '@deriv-com/ui';
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
 
@@ -17,20 +21,6 @@ jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Popover: jest.fn(props => props.is_open && <span>{props.message}</span>),
 }));
-
-// [TODO] - To be removed when PersonalDetailsForm is migrated to TSX
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
-    isDesktop: jest.fn(() => true),
-}));
-
-// jest.mock('../../real-account-signup/helpers/utils.ts', () => ({
-//     splitValidationResultTypes: jest.fn(() => ({
-//         warnings: mock_warnings,
-//         errors: mock_errors,
-//     })),
-// }));
 
 jest.mock('react-dom', () => ({
     ...jest.requireActual('react-dom'),
@@ -614,12 +604,11 @@ describe('<PersonalDetails/>', () => {
 
     it('should display proper data in mobile mode', () => {
         // [TODO] - Remove this when PersonalDetailsForm is migrated to TSX
-        (isMobile as jest.Mock).mockReturnValue(true);
-        (isDesktop as jest.Mock).mockReturnValue(false);
-        const mock_store = mockStore({ ui: { is_mobile: true, is_desktop: false } });
-        const new_props = { ...mock_props, is_svg: false };
 
-        renderwithRouter({ props: new_props, store: mock_store });
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
+
+        const new_props = { ...mock_props, is_svg: false };
+        renderwithRouter({ props: new_props });
 
         expect(screen.getByRole('radio', { name: /mr/i })).toBeInTheDocument();
         expect(screen.getByRole('radio', { name: /ms/i })).toBeInTheDocument();
@@ -642,12 +631,11 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should select correct dropdown options in mobile mode', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-        (isDesktop as jest.Mock).mockReturnValue(false);
-        const mock_store = mockStore({ ui: { is_mobile: true, is_desktop: false } });
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
+
         const new_props = { ...mock_props, is_svg: false };
 
-        renderwithRouter({ props: new_props, store: mock_store });
+        renderwithRouter({ props: new_props });
         const place_of_birth_mobile = screen.queryByTestId('place_of_birth_mobile');
 
         expect(place_of_birth_mobile).toBeInTheDocument();
@@ -722,8 +710,7 @@ describe('<PersonalDetails/>', () => {
 
     it('should submit the form if there is no validation error on mobile', async () => {
         // [TODO] - Remove this when PersonalDetailsForm is migrated to TSX
-        (isMobile as jest.Mock).mockReturnValue(true);
-        (isDesktop as jest.Mock).mockReturnValue(false);
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
 
         // (splitValidationResultTypes as jest.Mock).mockReturnValue({ warnings: {}, errors: {} });
         const new_props = {

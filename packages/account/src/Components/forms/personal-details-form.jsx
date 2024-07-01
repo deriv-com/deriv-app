@@ -2,18 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { Field, useFormikContext } from 'formik';
-import {
-    Autocomplete,
-    Checkbox,
-    DesktopWrapper,
-    Dropdown,
-    InlineMessage,
-    MobileWrapper,
-    RadioGroup,
-    SelectNative,
-    Text,
-} from '@deriv/components';
-import { isMobile, routes, validPhone } from '@deriv/shared';
+import { Autocomplete, Checkbox, Dropdown, InlineMessage, RadioGroup, SelectNative, Text } from '@deriv/components';
+import { routes, validPhone } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { isFieldImmutable, verifyFields } from '../../Helpers/utils';
 import FormBodySection from '../form-body-section';
@@ -21,8 +11,10 @@ import { DateOfBirthField, FormInputField } from './form-fields';
 import FormSubHeader from '../form-sub-header';
 import InlineNoteWithIcon from '../inline-note-with-icon';
 import { useResidenceList } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 
 const PersonalDetailsForm = props => {
+    const { isDesktop } = useDevice();
     const {
         inline_note_text,
         is_virtual,
@@ -110,7 +102,7 @@ const PersonalDetailsForm = props => {
                     <InlineNoteWithIcon
                         icon='IcAlertWarning'
                         message={poa_clarification_message}
-                        font_size={isMobile() ? 'xxxs' : 'xs'}
+                        font_size={isDesktop ? 'xs' : 'xxxs'}
                     />
                 )}
                 <FormBodySection
@@ -122,7 +114,7 @@ const PersonalDetailsForm = props => {
                     <fieldset className='account-form__fieldset'>
                         {'salutation' in values && !is_eu_user && (
                             <div>
-                                <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
+                                <Text size={isDesktop ? 'xxs' : 'xs'} align={!isDesktop && 'center'}>
                                     {is_virtual ? (
                                         localize(
                                             'Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your account settings.'
@@ -268,7 +260,7 @@ const PersonalDetailsForm = props => {
                         {'address_state' in values &&
                             (states_list?.length ? (
                                 <React.Fragment>
-                                    <DesktopWrapper>
+                                    {isDesktop ? (
                                         <Field name='address_state'>
                                             {({ field }) => (
                                                 <Autocomplete
@@ -285,8 +277,7 @@ const PersonalDetailsForm = props => {
                                                 />
                                             )}
                                         </Field>
-                                    </DesktopWrapper>
-                                    <MobileWrapper>
+                                    ) : (
                                         <SelectNative
                                             placeholder={localize('Please select')}
                                             label={localize('State/Province')}
@@ -296,7 +287,7 @@ const PersonalDetailsForm = props => {
                                             use_text
                                             onChange={e => setFieldValue('address_state', e.target.value, true)}
                                         />
-                                    </MobileWrapper>
+                                    )}
                                 </React.Fragment>
                             ) : (
                                 <FormInputField
@@ -338,7 +329,7 @@ const PersonalDetailsForm = props => {
                             <Field name='citizen'>
                                 {({ field }) => (
                                     <React.Fragment>
-                                        <DesktopWrapper>
+                                        {isDesktop ? (
                                             <Autocomplete
                                                 {...field}
                                                 data-lpignore='true'
@@ -359,8 +350,7 @@ const PersonalDetailsForm = props => {
                                                 required
                                                 data-testid='citizenship'
                                             />
-                                        </DesktopWrapper>
-                                        <MobileWrapper>
+                                        ) : (
                                             <SelectNative
                                                 placeholder={localize('Citizenship')}
                                                 name={field.name}
@@ -383,7 +373,7 @@ const PersonalDetailsForm = props => {
                                                 should_hide_disabled_options={false}
                                                 data_testid='citizenship_mobile'
                                             />
-                                        </MobileWrapper>
+                                        )}
                                     </React.Fragment>
                                 )}
                             </Field>
@@ -417,7 +407,7 @@ const PersonalDetailsForm = props => {
                         label={
                             <Localize i18n_default_text='I confirm that the name and date of birth above match my chosen identity document' />
                         }
-                        label_font_size={isMobile() ? 'xxs' : 'xs'}
+                        label_font_size={isDesktop ? 'xs' : 'xxs'}
                         disabled={is_confirmation_checkbox_disabled}
                         onChange={handleChange}
                         has_error={!!(touched.confirmation_checkbox && errors.confirmation_checkbox)}
@@ -480,50 +470,54 @@ const PhoneField = ({ value, editable_fields, has_real_account, required }) => (
     />
 );
 
-const PlaceOfBirthField = ({ handleChange, setFieldValue, disabled, residence_list, required }) => (
-    <Field name='place_of_birth'>
-        {({ field, meta }) => (
-            <React.Fragment>
-                <DesktopWrapper>
-                    <Autocomplete
-                        {...field}
-                        disabled={disabled}
-                        data-lpignore='true'
-                        autoComplete='none' // prevent chrome autocomplete
-                        type='text'
-                        label={required ? localize('Place of birth*') : localize('Place of birth')}
-                        error={meta.touched && meta.error}
-                        list_items={residence_list}
-                        onItemSelection={({ value, text }) => setFieldValue('place_of_birth', value ? text : '', true)}
-                        required
-                        data-testid='place_of_birth'
-                    />
-                </DesktopWrapper>
-                <MobileWrapper>
-                    <SelectNative
-                        placeholder={required ? localize('Place of birth') : localize('Place of birth')}
-                        name={field.name}
-                        disabled={disabled}
-                        label={required ? localize('Place of birth*') : localize('Place of birth')}
-                        list_items={residence_list}
-                        value={field.value}
-                        use_text
-                        error={meta.touched && meta.error}
-                        onChange={e => {
-                            handleChange(e);
-                            setFieldValue('place_of_birth', e.target.value, true);
-                        }}
-                        {...field}
-                        list_portal_id='modal_root'
-                        required
-                        should_hide_disabled_options={false}
-                        data_testid='place_of_birth_mobile'
-                    />
-                </MobileWrapper>
-            </React.Fragment>
-        )}
-    </Field>
-);
+const PlaceOfBirthField = ({ handleChange, setFieldValue, disabled, residence_list, required }) => {
+    const { isDesktop } = useDevice();
+    return (
+        <Field name='place_of_birth'>
+            {({ field, meta }) => (
+                <React.Fragment>
+                    {isDesktop ? (
+                        <Autocomplete
+                            {...field}
+                            disabled={disabled}
+                            data-lpignore='true'
+                            autoComplete='none' // prevent chrome autocomplete
+                            type='text'
+                            label={required ? localize('Place of birth*') : localize('Place of birth')}
+                            error={meta.touched && meta.error}
+                            list_items={residence_list}
+                            onItemSelection={({ value, text }) =>
+                                setFieldValue('place_of_birth', value ? text : '', true)
+                            }
+                            required
+                            data-testid='place_of_birth'
+                        />
+                    ) : (
+                        <SelectNative
+                            placeholder={required ? localize('Place of birth') : localize('Place of birth')}
+                            name={field.name}
+                            disabled={disabled}
+                            label={required ? localize('Place of birth*') : localize('Place of birth')}
+                            list_items={residence_list}
+                            value={field.value}
+                            use_text
+                            error={meta.touched && meta.error}
+                            onChange={e => {
+                                handleChange(e);
+                                setFieldValue('place_of_birth', e.target.value, true);
+                            }}
+                            {...field}
+                            list_portal_id='modal_root'
+                            required
+                            should_hide_disabled_options={false}
+                            data_testid='place_of_birth_mobile'
+                        />
+                    )}
+                </React.Fragment>
+            )}
+        </Field>
+    );
+};
 
 const AccountOpeningReasonField = ({ required, account_opening_reason_list, setFieldValue, disabled }) => (
     <Field name='account_opening_reason'>

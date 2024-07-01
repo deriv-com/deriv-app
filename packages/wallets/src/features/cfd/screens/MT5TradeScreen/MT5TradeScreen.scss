@@ -31,13 +31,12 @@
         }
 
         &-icon {
-            &>svg {
+            & > svg {
                 width: 2.4rem;
                 height: 2.4rem;
             }
         }
     }
-
 
     &__content {
         display: flex;
@@ -81,7 +80,6 @@
             gap: 0.8rem;
         }
     }
-
 
     &__links {
         width: 100%;

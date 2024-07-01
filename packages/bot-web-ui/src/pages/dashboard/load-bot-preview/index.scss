@@ -413,7 +413,7 @@
             width: 25%;
             padding: 0.8rem 1.6rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding: 0;
             }
         }
@@ -461,7 +461,7 @@
             width: 25%;
             padding: 0.8rem 1.6rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding: 0;
             }
 

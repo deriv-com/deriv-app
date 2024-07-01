@@ -392,7 +392,7 @@
     top: 1.8rem;
     z-index: 1;
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         inset-inline-end: 1.6rem;
     }
 

@@ -1,4 +1,28 @@
-import { localize } from '@deriv/translations';
+// import { localize } from '@deriv/translations';
+let localize;
+// import('@deriv/translations')
+// .then(module => {
+//     console.log(module);
+//     localize = module.localize;
+// }).catch(error => {
+//     if (error.message.includes('Cannot find module')) {
+//         console.error('Package "some-package" is not installed.');
+//     }
+//     localize = (stringValue) => stringValue;
+// });
+(async () => {
+    try {
+      const translations  = await import('@deriv/translations');
+      localize = translations?.localize;
+    } catch (error) {
+        localize = (stringValue) => stringValue;
+      // eslint-disable-next-line no-console
+      console.warn('Could not load translations.', error);
+    }
+    if(!localize) {
+        localize = (stringValue) => stringValue;
+    }
+  })();
 
 const CRYPTO_CURRENCIES = ['BTC', 'ETH', 'LTC', 'BCH', 'UST'];
 

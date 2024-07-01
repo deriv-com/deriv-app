@@ -1,7 +1,7 @@
 import React from 'react';
 import { action, computed, makeObservable, observable, reaction, runInAction } from 'mobx';
 import { error_types, message_types, unrecoverable_errors } from '@deriv/bot-skeleton';
-import { observer } from '@vinuderiv/bot-trade-engine/tradeEngine/utils/observer';
+import { observer } from '@deriv/bot-trade-engine/tradeEngine/utils/observer';
 import { isSafari, mobileOSDetect } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { contract_stages } from 'Constants/contract-stage';

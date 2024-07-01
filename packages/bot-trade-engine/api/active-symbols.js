@@ -1,6 +1,21 @@
-import { localize } from '@deriv/translations';
-import PendingPromise from './../tradeEngine/utils/pending-promise.js';
-import { config } from './../constants/config.js';
+import PendingPromise from "../tradeEngine/utils/pending-promise.js";
+import { config } from "../constants/config.js";
+import { localize } from "@deriv/translations";
+
+// let localize;
+// (async () => {
+//     try {
+//       const translations  = await import('@deriv/translations');
+//       localize = translations?.localize;
+//     } catch (error) {
+//         localize = (stringValue) => stringValue;
+//       // eslint-disable-next-line no-console
+//       console.warn('Could not load translations.', error);
+//     }
+//     if(!localize) {
+//         localize = (stringValue) => stringValue;
+//     }
+//   })();
 
 export default class ActiveSymbols {
     constructor(ws, trading_times) {

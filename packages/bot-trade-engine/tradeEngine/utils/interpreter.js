@@ -1,10 +1,12 @@
-import { cloneThorough, isMultiplierContract } from '@deriv/shared';
+import { cloneThorough } from '../../shared';
 import JSInterpreter from '@deriv/js-interpreter';
 import { createScope } from './cliTools';
 import Interface from '../Interface';
 import { unrecoverable_errors } from '../../constants/messages';
 import { observer as globalObserver } from './observer';
 import { api_base } from '../../api/api-base';
+
+const isMultiplierContract = (contract_type = '') => /MULT/i.test(contract_type);
 
 JSInterpreter.prototype.takeStateSnapshot = function () {
     const newStateStack = cloneThorough(this.stateStack, undefined, undefined, undefined, true);

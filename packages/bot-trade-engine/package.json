@@ -4,7 +4,8 @@
 "version": "1.0.0",
 "main": "dist/js",
 "dependencies": {
-    "@deriv/indicators": "^1.0.0"
+    "@deriv/indicators": "^1.0.0",
+    "moment": "^2.29.2"
 },
 "devDependencies": {
 },

@@ -1,5 +1,5 @@
 import { datadogLogs } from '@datadog/browser-logs';
-import { formatDate, formatTime } from '@deriv/shared';
+import { formatDate, formatTime } from '../shared';
 
 const DATADOG_CLIENT_TOKEN_LOGS = process.env.DATADOG_CLIENT_TOKEN_LOGS ?? '';
 const isProduction = process.env.NODE_ENV === 'production';

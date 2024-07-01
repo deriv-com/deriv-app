@@ -1,6 +1,21 @@
-import { localize } from '@deriv/translations';
 import { notify } from '../utils/broadcast';
-import { observer as globalObserver } from './../utils/observer';
+import { observer as globalObserver } from "../utils/observer";
+import { localize } from '@deriv/translations';
+
+// let localize;
+// (async () => {
+//     try {
+//       const translations  = await import('@deriv/translations');
+//       localize = translations?.localize;
+//     } catch (error) {
+//         localize = (stringValue) => stringValue;
+//       // eslint-disable-next-line no-console
+//       console.warn('Could not load translations.', error);
+//     }
+//     if(!localize) {
+//         localize = (stringValue) => stringValue;
+//     }
+//   })();
 
 const getMiscInterface = tradeEngine => {
     return {

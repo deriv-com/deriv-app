@@ -1,9 +1,9 @@
-import { getRoundedNumber } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { getRoundedNumber } from '../../shared';
 import { info, log } from '../utils/broadcast';
-import { createError } from './../utils/error';
-import { observer as globalObserver } from './../utils/observer';
+import { createError } from '../utils/error';
+import { observer as globalObserver } from '../utils/observer';
 import { log_types } from '../../constants/messages';
+import { localize } from '@deriv/translations';
 
 const skeleton = {
     totalProfit: 0,
@@ -15,6 +15,21 @@ const skeleton = {
 };
 
 const globalStat = {};
+
+// let localize;
+// (async () => {
+//     try {
+//       const translations  = await import('@deriv/translations');
+//       localize = translations?.localize;
+//     } catch (error) {
+//         localize = (stringValue) => stringValue;
+//       // eslint-disable-next-line no-console
+//       console.warn('Could not load translations.', error);
+//     }
+//     if(!localize) {
+//         localize = (stringValue) => stringValue;
+//     }
+//   })();
 
 export default Engine =>
     class Total extends Engine {

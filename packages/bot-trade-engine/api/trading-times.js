@@ -1,4 +1,4 @@
-import PendingPromise from './../tradeEngine/utils/pending-promise.js';
+import PendingPromise from "../tradeEngine/utils/pending-promise.js";
 
 export default class TradingTimes {
     constructor({ ws, server_time }) {

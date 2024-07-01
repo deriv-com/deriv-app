@@ -57,6 +57,9 @@ module.exports = function (env) {
                         idHint: 'assets',
                     },
                 },
+                minChunks: 1,
+                minSize: 35000,
+                minSizeReduction: 40000,
             },
         },
         output: {

@@ -22,9 +22,7 @@ const usePhoneNumberVerificationSetTimer = () => {
     const { client, ui } = useStore();
     const { account_settings } = client;
     const { should_show_phone_number_otp } = ui;
-    //@ts-expect-error ignore for now
     const { phone_number_verification } = account_settings;
-    const { next_email_attempt, next_attempt } = phone_number_verification;
     const [timer, setTimer] = React.useState<number | undefined>();
     const [next_otp_request, setNextOtpRequest] = React.useState('');
     const current_time = dayjs();
@@ -45,12 +43,18 @@ const usePhoneNumberVerificationSetTimer = () => {
     );
 
     React.useEffect(() => {
-        if (next_email_attempt) {
-            otpRequestCountdown(next_email_attempt, setTitle, setTimer, current_time);
-        } else if (should_show_phone_number_otp && next_attempt) {
-            otpRequestCountdown(next_attempt, setTitle, setTimer, current_time);
+        if (phone_number_verification?.next_email_attempt) {
+            otpRequestCountdown(phone_number_verification.next_email_attempt, setTitle, setTimer, current_time);
+        } else if (should_show_phone_number_otp && phone_number_verification?.next_attempt) {
+            otpRequestCountdown(phone_number_verification.next_attempt, setTitle, setTimer, current_time);
         }
-    }, [current_time, next_email_attempt, next_attempt, setTitle, should_show_phone_number_otp]);
+    }, [
+        current_time,
+        phone_number_verification?.next_email_attempt,
+        phone_number_verification?.next_attempt,
+        setTitle,
+        should_show_phone_number_otp,
+    ]);
 
     React.useEffect(() => {
         let countdown: ReturnType<typeof setInterval>;

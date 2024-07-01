@@ -37,6 +37,7 @@ const VerificationLinkExpiredModal = observer(
                 isMobile={is_mobile}
                 showHandleBar
                 isOpened={should_show_verification_link_expired_modal}
+                isPrimaryButtonDisabled={!!next_otp_request}
                 primaryButtonCallback={handleSendNewLinkButton}
                 primaryButtonLabel={
                     <Localize

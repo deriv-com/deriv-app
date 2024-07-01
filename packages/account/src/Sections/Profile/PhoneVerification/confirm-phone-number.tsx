@@ -23,7 +23,6 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
         setUsersPhoneNumber,
         is_email_verified,
         email_otp_error,
-        ...rest
     } = useRequestPhoneNumberOTP();
     const { data: account_settings } = useSettings();
     const { ui } = useStore();

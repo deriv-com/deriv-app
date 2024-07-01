@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    IllustrativeBasketIcon,
+    IllustrativeBasketIndicesIcon,
     IllustrativeCommoditiesIcon,
     IllustrativeCryptocurrenciesIcon,
     IllustrativeDerivedFxIcon,
@@ -15,7 +15,7 @@ const getInstrumentsIcons = (isMobile: boolean) => {
     const size = isMobile ? { height: 16, width: 16 } : { height: 24, width: 24 };
 
     return {
-        Baskets: <IllustrativeBasketIcon {...size} />,
+        Baskets: <IllustrativeBasketIndicesIcon {...size} />,
         Commodities: <IllustrativeCommoditiesIcon {...size} />,
         Cryptocurrencies: <IllustrativeCryptocurrenciesIcon {...size} />,
         DerivedFX: <IllustrativeDerivedFxIcon {...size} />,

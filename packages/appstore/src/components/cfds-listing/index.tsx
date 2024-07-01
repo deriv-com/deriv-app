@@ -6,12 +6,13 @@ import {
     getAuthenticationStatusInfo,
     Jurisdiction,
     MT5_ACCOUNT_STATUS,
+    TRADING_PLATFORM_STATUS,
     makeLazyLoader,
     moduleLoader,
     setPerformanceValue,
 } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import ListingContainer from 'Components/containers/listing-container';
 import AddOptionsAccount from 'Components/add-options-account';
@@ -151,9 +152,9 @@ const CFDsListing = observer(() => {
                     } else if (current_acc_status === 'migrated_without_position') {
                         return MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION;
                     } else if (current_acc_status === 'under_maintenance') {
-                        return MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
+                        return TRADING_PLATFORM_STATUS.UNDER_MAINTENANCE;
                     } else if (current_acc_status === 'unavailable') {
-                        return MT5_ACCOUNT_STATUS.UNAVAILABLE;
+                        return TRADING_PLATFORM_STATUS.UNAVAILABLE;
                     }
                     return null;
             }
@@ -254,9 +255,9 @@ const CFDsListing = observer(() => {
                                         });
                                         setAppstorePlatform(existing_account.platform);
 
-                                        if (has_mt5_account_status === MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE)
+                                        if (has_mt5_account_status === TRADING_PLATFORM_STATUS.UNDER_MAINTENANCE)
                                             return setServerMaintenanceModal(true);
-                                        if (has_mt5_account_status === MT5_ACCOUNT_STATUS.UNAVAILABLE)
+                                        if (has_mt5_account_status === TRADING_PLATFORM_STATUS.UNAVAILABLE)
                                             return setAccountUnavailableModal(true);
                                         if (real_account_creation_unlock_date && no_real_mf_account_eu_regulator) {
                                             setShouldShowCooldownModal(true);

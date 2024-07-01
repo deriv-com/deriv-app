@@ -22,6 +22,7 @@ import {
     getUrlBinaryBot,
     MT5_ACCOUNT_STATUS,
     CFD_PRODUCTS_TITLE,
+    TRADING_PLATFORM_STATUS,
 } from '@deriv/shared';
 import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
 import './trading-app-card.scss';
@@ -83,9 +84,9 @@ const TradingAppCard = ({
             case MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION:
             case MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION:
                 return setIsOpenPositionSvgModalOpen(!is_open_position_svg_modal_open);
-            case MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE:
+            case TRADING_PLATFORM_STATUS.UNDER_MAINTENANCE:
                 return setServerMaintenanceModal(true);
-            case MT5_ACCOUNT_STATUS.UNAVAILABLE:
+            case TRADING_PLATFORM_STATUS.UNAVAILABLE:
                 return setAccountUnavailableModal(true);
             default:
         }

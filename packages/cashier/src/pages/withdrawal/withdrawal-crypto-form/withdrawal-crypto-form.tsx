@@ -2,7 +2,7 @@ import React from 'react';
 import { Field, FieldProps, Formik, FormikProps } from 'formik';
 
 import { Button, InlineMessage, Input, Loading, Text } from '@deriv/components';
-import { useExchangeRate } from '@deriv/hooks';
+import { useExchangeRate, useGrowthbookIsOn } from '@deriv/hooks';
 import { CryptoConfig, getCurrencyName } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -11,6 +11,7 @@ import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
 import PercentageSelector from '../../../components/percentage-selector';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import { TReactChangeEvent } from '../../../types';
+import WithdrawalCryptoPriority from '../withdrawal-crypto-priority';
 
 import './withdrawal-crypto-form.scss';
 
@@ -20,6 +21,7 @@ type THeaderProps = {
 
 type TFormValues = {
     address: string;
+    priority_withdrawal: boolean;
 };
 
 const MIN_ADDRESS_LENGTH = 25;
@@ -90,6 +92,9 @@ const WithdrawalCryptoForm = observer(() => {
     } = crypto_fiat_converter;
     const { is_loading, percentage, percentageSelectorSelectionStatus, should_percentage_reset } = general_store;
     const { handleSubscription } = useExchangeRate();
+    const [is_priority_crypto_withdrawal_enabled, isGBLoaded] = useGrowthbookIsOn({
+        featureFlag: 'priority_crypto_withdrawal',
+    });
 
     React.useEffect(() => {
         if (current_fiat_currency && crypto_currency) {
@@ -127,6 +132,7 @@ const WithdrawalCryptoForm = observer(() => {
             <Formik
                 initialValues={{
                     address: '',
+                    priority_withdrawal: false,
                 }}
                 onSubmit={() => requestWithdraw(verification_code)}
             >
@@ -188,6 +194,7 @@ const WithdrawalCryptoForm = observer(() => {
                                 validateFromAmount={validateWithdrawFromAmount}
                                 validateToAmount={validateWithdrawToAmount}
                             />
+                            {Boolean(is_priority_crypto_withdrawal_enabled) && <WithdrawalCryptoPriority />}
                             <div className='withdrawal-crypto-form__submit'>
                                 <Button
                                     className='cashier__form-submit-button'

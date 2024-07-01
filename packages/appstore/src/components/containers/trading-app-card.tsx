@@ -84,7 +84,7 @@ const TradingAppCard = ({
             case MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION:
             case MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION:
                 return setIsOpenPositionSvgModalOpen(!is_open_position_svg_modal_open);
-            case TRADING_PLATFORM_STATUS.UNDER_MAINTENANCE:
+            case MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE:
                 return setServerMaintenanceModal(true);
             case TRADING_PLATFORM_STATUS.UNAVAILABLE:
                 return setAccountUnavailableModal(true);

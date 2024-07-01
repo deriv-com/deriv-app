@@ -10,6 +10,7 @@ import {
     makeLazyLoader,
     moduleLoader,
     setPerformanceValue,
+    WS,
 } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
 import { localize } from '@deriv/translations';
@@ -98,6 +99,22 @@ const CFDsListing = observer(() => {
     const { has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
     const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
 
+    const getTradingPlatformStatus = async (platform?: string) => {
+        const { trading_platform_status: tradingPlatformStatus } = await WS.send({ trading_platform_status: 1 });
+        const status = tradingPlatformStatus.find((p: { platform: string }) => p.platform === platform)?.status;
+
+        switch (status) {
+            case TRADING_PLATFORM_STATUS.MAINTENANCE:
+                return setServerMaintenanceModal(true);
+            case TRADING_PLATFORM_STATUS.UNAVAILABLE:
+                return setAccountUnavailableModal(true);
+            case TRADING_PLATFORM_STATUS.ACTIVE:
+                return getAccount();
+            default:
+                break;
+        }
+    };
+
     const getMT5AccountAuthStatus = (current_acc_status?: string | null, jurisdiction?: string) => {
         if (jurisdiction) {
             switch (jurisdiction) {
@@ -152,7 +169,7 @@ const CFDsListing = observer(() => {
                     } else if (current_acc_status === 'migrated_without_position') {
                         return MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION;
                     } else if (current_acc_status === 'under_maintenance') {
-                        return TRADING_PLATFORM_STATUS.UNDER_MAINTENANCE;
+                        return MT5_ACCOUNT_STATUS.UNDER_MAINTENANCE;
                     } else if (current_acc_status === 'unavailable') {
                         return TRADING_PLATFORM_STATUS.UNAVAILABLE;
                     }
@@ -223,7 +240,6 @@ const CFDsListing = observer(() => {
                         const list_size = combined_cfd_mt5_accounts.length;
 
                         const track_account_subtitle = existing_account.tracking_name;
-
                         const has_mt5_account_status =
                             existing_account?.status || is_idv_revoked
                                 ? getMT5AccountAuthStatus(
@@ -253,12 +269,6 @@ const CFDsListing = observer(() => {
                                             account_mode: selected_account_type,
                                             account_name: track_account_subtitle,
                                         });
-                                        setAppstorePlatform(existing_account.platform);
-
-                                        if (has_mt5_account_status === TRADING_PLATFORM_STATUS.UNDER_MAINTENANCE)
-                                            return setServerMaintenanceModal(true);
-                                        if (has_mt5_account_status === TRADING_PLATFORM_STATUS.UNAVAILABLE)
-                                            return setAccountUnavailableModal(true);
                                         if (real_account_creation_unlock_date && no_real_mf_account_eu_regulator) {
                                             setShouldShowCooldownModal(true);
                                         } else if (no_real_cr_non_eu_regulator || no_real_mf_account_eu_regulator) {
@@ -270,7 +280,7 @@ const CFDsListing = observer(() => {
                                             });
                                             setProduct(existing_account.product);
                                             setAppstorePlatform(existing_account.platform);
-                                            getAccount();
+                                            getTradingPlatformStatus(existing_account.platform);
                                         }
                                     } else if (existing_account.action_type === 'multi-action') {
                                         const button_name = e?.currentTarget?.name;
@@ -410,7 +420,7 @@ const CFDsListing = observer(() => {
                                                 type: account.market_type,
                                             });
                                             setAppstorePlatform(account.platform);
-                                            getAccount();
+                                            getTradingPlatformStatus(account.platform);
                                         }
                                     }}
                                     key={`trading_app_card_${account.name}`}
@@ -496,7 +506,7 @@ const CFDsListing = observer(() => {
                                     name={account.name}
                                     platform={account.platform}
                                     description={account.description}
-                                    onAction={() => {
+                                    onAction={async () => {
                                         Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                             action: 'account_get',
                                             form_name: 'traders_hub_default',
@@ -511,7 +521,7 @@ const CFDsListing = observer(() => {
                                                 type: account.market_type,
                                             });
                                             setAppstorePlatform(account.platform);
-                                            getAccount();
+                                            getTradingPlatformStatus(account.platform);
                                         }
                                     }}
                                     key={`trading_app_card_${account.name}`}

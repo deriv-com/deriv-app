@@ -1,6 +1,5 @@
 /**
- * this comes from mt5_login_list
- * it is specific to MT5 and also have under_maintenance and unavailable from trading_platform_status
+ * this comes from mt5_login_list endpoint
  */
 export const MT5_ACCOUNT_STATUS = Object.freeze({
     FAILED: 'failed',
@@ -15,12 +14,11 @@ export const MT5_ACCOUNT_STATUS = Object.freeze({
 });
 
 /**
- * this comes from trading_platform_status
- * it is specific to CFD platforms
+ * this comes from trading_platform_status endpoint
  */
 export const TRADING_PLATFORM_STATUS = Object.freeze({
     ACTIVE: 'active',
     DISABLED: 'disabled',
-    UNDER_MAINTENANCE: 'under_maintenance',
+    MAINTENANCE: 'maintenance',
     UNAVAILABLE: 'unavailable',
 });

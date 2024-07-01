@@ -45,16 +45,17 @@ module.exports = function (env) {
                         reuseExistingChunk: true,
                     },
                     defaultVendors: {
+                        chunks: 'all',
                         idHint: 'vendors',
                         priority: -10,
                         test: /[\\/]node_modules[\\/]/,
                     },
                     assets: {
+                        chunks: 'all',
                         name: 'assets',
                         test: /[\\/]Assets[\\/]/,
                         idHint: 'assets',
                     },
-                    chunks: 'all',
                 },
             },
         },

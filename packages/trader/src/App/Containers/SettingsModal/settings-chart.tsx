@@ -1,6 +1,6 @@
 import React from 'react';
 import { Checkbox, InlineMessage } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import MediaItem, { MediaHeading, MediaIcon, MediaDescription } from 'App/Components/Elements/Media';
 import { observer, useStore } from '@deriv/stores';
 
@@ -50,7 +50,7 @@ const ChartSettings = observer(() => {
                             id='dt_settings_interval_checkbox'
                             defaultChecked={is_countdown_visible}
                             disabled={granularity === 0}
-                            label={localize('Display remaining time for each interval')}
+                            label={<Localize i18n_default_text='Display remaining time for each interval' />}
                             onChange={e => {
                                 if ('checked' in e.target) {
                                     setCountdown(e.target.checked);

@@ -266,34 +266,3 @@ export const CryptoConfig = (() => {
         },
     };
 })();
-
-export const getMinWithdrawal = (currency) => {
-    return isCryptocurrency(currency) ? getPropertyValue(CryptoConfig.get(), [currency, 'min_withdrawal']) || 0.002 : 1;
-};
-
-export const getTransferFee = (currency_from, currency_to) => {
-    const transfer_fee = getPropertyValue(currencies_config, [
-        currency_from,
-        'transfer_between_accounts',
-        'fees',
-        currency_to,
-    ]);
-    return `${typeof transfer_fee === 'undefined' ? '1' : transfer_fee}%`;
-};
-
-export const getCurrencyDisplayCode = (currency = '') => {
-    // eslint-disable-next-line
-    if (currency !== 'eUSDT' && currency !== 'tUSDT') currency = currency.toUpperCase();
-    return getPropertyValue(CryptoConfig.get(), [currency, 'display_code']) || currency;
-};
-
-export const getCurrencyName = (currency = '') =>
-    currency === 'USDT' ? 'Tether Omni' : getPropertyValue(currencies_config, [currency, 'name']) || '';
-
-export const getMinPayout = (currency) => {
-    return getPropertyValue(currencies_config, [currency, 'stake_default']);
-};
-
-export const getCurrencies = () => {
-    return currencies_config;
-};

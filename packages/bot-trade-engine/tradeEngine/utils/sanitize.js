@@ -1,21 +1,6 @@
 import { createError } from './error';
 import { localize } from '@deriv/translations';
 
-// let localize;
-// (async () => {
-//     try {
-//       const translations  = await import('@deriv/translations');
-//       localize = translations?.localize;
-//     } catch (error) {
-//         localize = (stringValue) => stringValue;
-//       // eslint-disable-next-line no-console
-//       console.warn('Could not load translations.', error);
-//     }
-//     if(!localize) {
-//         localize = (stringValue) => stringValue;
-//     }
-//   })();
-
 const isPositiveNumber = num => Number.isFinite(num) && num > 0;
 
 const isPositiveInteger = num => isPositiveNumber(num) && Number.isInteger(num);

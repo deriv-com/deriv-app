@@ -16,21 +16,6 @@ const skeleton = {
 
 const globalStat = {};
 
-// let localize;
-// (async () => {
-//     try {
-//       const translations  = await import('@deriv/translations');
-//       localize = translations?.localize;
-//     } catch (error) {
-//         localize = (stringValue) => stringValue;
-//       // eslint-disable-next-line no-console
-//       console.warn('Could not load translations.', error);
-//     }
-//     if(!localize) {
-//         localize = (stringValue) => stringValue;
-//     }
-//   })();
-
 export default Engine =>
     class Total extends Engine {
         constructor() {

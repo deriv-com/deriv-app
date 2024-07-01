@@ -1,0 +1,15 @@
+.contract-details-footer {
+    &--container {
+        padding: var(--semantic-spacing-general-md);
+        background-color: var(--core-color-solid-slate-50);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: var(--semantic-spacing-gap-md);
+        width: 100%;
+        box-shadow: var(--core-elevation-shadow-210);
+        position: fixed;
+        bottom: 0;
+    }
+}

@@ -258,7 +258,48 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         } = config;
         Blockly.derivWorkspace.cleanUp(x, y);
 
-        if (this.selected_trade_type === 'multiplier' && this.isDescendantOf('trade_definition')) {
+        if (this.selected_trade_type === 'accumulator' && this.isDescendantOf('trade_definition')) {
+            runIrreversibleEvents(() => {
+                runGroupedEvents(false, () => {
+                    const accumulator_block = this.workspace.newBlock('trade_definition_accumulator');
+                    accumulator_block.initSvg();
+                    accumulator_block.render();
+
+                    const trade_definition_block = this.workspace.getTradeDefinitionBlock();
+                    const parent_connection = trade_definition_block.getInput('SUBMARKET').connection;
+
+                    const child_connection = accumulator_block.previousConnection;
+                    parent_connection.connect(child_connection);
+
+                    const stake_input = accumulator_block.getInput('AMOUNT');
+                    const stake_shadow_block = this.workspace.newBlock('math_number_positive');
+                    stake_shadow_block.setShadow(true);
+                    stake_shadow_block.setFieldValue(1, 'NUM');
+                    stake_shadow_block.outputConnection.connect(stake_input.connection);
+                    stake_shadow_block.initSvg();
+                    stake_shadow_block.render();
+
+                    const take_profit_block = this.workspace.newBlock('accumulator_take_profit');
+                    const take_profit_input = take_profit_block.getInput('AMOUNT');
+
+                    const take_profit_shadow_block = this.workspace.newBlock('math_number_positive');
+                    take_profit_shadow_block.setShadow(true);
+                    take_profit_shadow_block.setFieldValue(0, 'NUM');
+                    take_profit_block.setDisabled(true);
+                    take_profit_shadow_block.outputConnection.connect(take_profit_input.connection);
+                    take_profit_shadow_block.initSvg();
+                    take_profit_shadow_block.render();
+
+                    accumulator_block
+                        .getLastConnectionInStatement('ACCUMULATOR_PARAMS')
+                        .connect(take_profit_block.previousConnection);
+                    take_profit_block.initSvg();
+                    take_profit_block.render();
+
+                    this.dispose();
+                });
+            });
+        } else if (this.selected_trade_type === 'multiplier' && this.isDescendantOf('trade_definition')) {
             runIrreversibleEvents(() => {
                 runGroupedEvents(false, () => {
                     const multiplier_block = this.workspace.newBlock('trade_definition_multiplier');

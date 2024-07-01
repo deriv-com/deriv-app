@@ -13,7 +13,7 @@ import { api_base } from '@deriv/bot-skeleton';
 const ServerBot = observer(() => {
     const DBotStores = useDBotStore();
     const {
-        server_bot: { getBotList, bot_list, createBot, notifications, setNotifications },
+        server_bot: { getBotList, bot_list, createBot, notifications, setNotifications, setStatusBot },
     } = DBotStores;
 
     const [add_btn_active, setAddBtnActive] = useState(false);
@@ -21,17 +21,12 @@ const ServerBot = observer(() => {
     const { is_virtual } = client;
 
     React.useEffect(() => {
-        setTimeout(() => getBotList(), 2000);
+        if (!bot_list[0]) {
+            setTimeout(() => getBotList(), 2000);
+        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_virtual]);
-
-    React.useEffect(() => {
-        if (!bot_list[0]) {
-            getBotList();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const handleMessage = ({ data }) => {
         if (data?.msg_type === 'bot_notification' && !data?.error) {
@@ -64,6 +59,7 @@ const ServerBot = observer(() => {
                 );
             }
             if (data.bot_notification.msg_type === 'stop') {
+                setStatusBot('stopped', data.echo_req.bot_id);
                 setNotifications(`msg_type: ${data.bot_notification.msg_type} reason: ${bot_notification_msg.reason}`);
             }
         }

@@ -2,6 +2,7 @@ import React, { ComponentProps, ReactNode } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useDevice } from '@deriv-com/ui';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
@@ -9,6 +10,11 @@ import { shouldShowIdentityInformation, isDocumentTypeValid, isAdditionalDocumen
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { Analytics } from '@deriv-com/analytics';
 import { FormikErrors } from 'formik';
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
 
@@ -613,6 +619,7 @@ describe('<PersonalDetails/>', () => {
         // [TODO] - Remove this when PersonalDetailsForm is migrated to TSX
         (isMobile as jest.Mock).mockReturnValue(true);
         (isDesktop as jest.Mock).mockReturnValue(false);
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         const mock_store = mockStore({ ui: { is_mobile: true, is_desktop: false } });
         const new_props = { ...mock_props, is_svg: false };
 
@@ -642,6 +649,7 @@ describe('<PersonalDetails/>', () => {
     it('should select correct dropdown options in mobile mode', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         (isDesktop as jest.Mock).mockReturnValue(false);
+        (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         const mock_store = mockStore({ ui: { is_mobile: true, is_desktop: false } });
         const new_props = { ...mock_props, is_svg: false };
 

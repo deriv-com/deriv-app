@@ -40,8 +40,26 @@ const ServerBotList = () => {
     const { is_mobile } = ui;
     const DBotStores = useDBotStore();
     const {
-        server_bot: { bot_list, removeBot, startBot, stopBot },
+        server_bot: { bot_list, removeBot, startBot, stopBot, notifyBot },
     } = DBotStores;
+    const is_bot_filled_list = !!bot_list[0];
+
+    React.useEffect(() => {
+        if (is_bot_filled_list) {
+            subscribeToBot();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_bot_filled_list]);
+
+    const subscribeToBot = () => {
+        if (bot_list && bot_list.length > 0) {
+            bot_list.forEach((bot: TBotListItem) => {
+                if (bot.status === 'running') {
+                    notifyBot(bot.bot_id, false);
+                }
+            });
+        }
+    };
 
     return (
         <div className='bot-list__wrapper'>
@@ -75,13 +93,15 @@ const ServerBotList = () => {
                                 <p>{localize('[ Strategy parameters ]')}</p>
                             </div>
                             <div className='bot-list-contract__actions'>
-                                <Button green onClick={() => startBot(bot_id)}>
-                                    {localize('Start')}
-                                </Button>
-                                <Button primary onClick={() => stopBot(bot_id)}>
-                                    {localize('Stop')}
-                                </Button>
-                                <Button className='bot-list-btn--disabled' disabled>{localize('Pause')}</Button>
+                                {status === 'started' || status === 'running' ? (
+                                    <Button primary onClick={() => stopBot(bot_id)}>
+                                        {localize('Stop')}
+                                    </Button>
+                                ) : (
+                                    <Button green onClick={() => startBot(bot_id)}>
+                                        {localize('Start')}
+                                    </Button>
+                                )}
                                 <Button primary onClick={() => removeBot(bot_id)}>
                                     {localize('Remove')}
                                 </Button>

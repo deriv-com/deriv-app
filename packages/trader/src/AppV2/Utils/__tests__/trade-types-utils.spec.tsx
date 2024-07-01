@@ -82,11 +82,17 @@ describe('parseContractDescription', () => {
                 <Localize i18n_default_text='If you select “Even”, you will win the payout if the last digit of the last tick is an even number (i.e. 2, 4, 6, 8, or 0).' />
             ),
         },
+        { type: 'general', text: <Localize i18n_default_text='Some general text' /> },
+        {
+            type: 'video',
+            text: CONTRACT_LIST.ACCUMULATORS,
+        },
     ];
 
     it('should parse passed content', () => {
         render(<div>{parseContractDescription(mock_content)}</div>);
 
         expect(screen.getByText(/If you select “Even”/i)).toBeInTheDocument();
+        expect(screen.getByText(/Some general text/i)).toBeInTheDocument();
     });
 });

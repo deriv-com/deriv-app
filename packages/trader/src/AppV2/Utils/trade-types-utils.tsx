@@ -29,7 +29,6 @@ export const AVAILABLE_CONTRACTS = [
     { tradeType: <Localize i18n_default_text='Over/Under' />, id: CONTRACT_LIST['OVER/UNDER'] },
 ];
 
-// TODO: add Localize?
 export const TERM = {
     BARRIER: 'Barrier',
     CONTRACT_VALUE: 'Contract value',
@@ -176,7 +175,7 @@ export const parseContractDescription = (
                     {text}
                 </Text>
             );
-
+        // TODO: do not forget to remove this key after getting real gifs
         if (type === 'video' && typeof text === 'string')
             return <VideoFragment contract_type={text} key={text + index} />;
     });

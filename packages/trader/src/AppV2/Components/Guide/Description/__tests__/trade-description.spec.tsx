@@ -3,18 +3,24 @@ import { render, screen } from '@testing-library/react';
 import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
 import TradeDescription from '../trade-description';
 
-jest.mock('../Description/accumulators-trade-description', () => jest.fn(() => 'mockAccumulatorTradeDescription'));
-jest.mock('../Description/even-odd-trade-description', () => jest.fn(() => 'mockEvenOddTradeDescription'));
-jest.mock('../Description/higher-lower-trade-description', () => jest.fn(() => 'mockHigherLowerTradeDescription'));
-jest.mock('../Description/matches-differs-trade-description', () =>
+jest.mock('../Contract description/accumulators-trade-description', () =>
+    jest.fn(() => 'mockAccumulatorTradeDescription')
+);
+jest.mock('../Contract description/even-odd-trade-description', () => jest.fn(() => 'mockEvenOddTradeDescription'));
+jest.mock('../Contract description/higher-lower-trade-description', () =>
+    jest.fn(() => 'mockHigherLowerTradeDescription')
+);
+jest.mock('../Contract description/matches-differs-trade-description', () =>
     jest.fn(() => 'mockMatchesDiffersTradeDescription')
 );
-jest.mock('../Description/multipliers-trade-description', () => jest.fn(() => 'mockMultipliersTradeDescription'));
-jest.mock('../Description/over-under-trade-description', () => jest.fn(() => 'mockOverUnderTradeDescription'));
-jest.mock('../Description/rise-fall-trade-description', () => jest.fn(() => 'mockRiseFallTradeDescription'));
-jest.mock('../Description/touch-no-touch-trade-description', () => jest.fn(() => 'mockTouchTradeDescription'));
-jest.mock('../Description/turbos-trade-description', () => jest.fn(() => 'mockTurbosTradeDescription'));
-jest.mock('../Description/vanillas-trade-description', () => jest.fn(() => 'mockVanillasTradeDescription'));
+jest.mock('../Contract description/multipliers-trade-description', () =>
+    jest.fn(() => 'mockMultipliersTradeDescription')
+);
+jest.mock('../Contract description/over-under-trade-description', () => jest.fn(() => 'mockOverUnderTradeDescription'));
+jest.mock('../Contract description/rise-fall-trade-description', () => jest.fn(() => 'mockRiseFallTradeDescription'));
+jest.mock('../Contract description/touch-no-touch-trade-description', () => jest.fn(() => 'mockTouchTradeDescription'));
+jest.mock('../Contract description/turbos-trade-description', () => jest.fn(() => 'mockTurbosTradeDescription'));
+jest.mock('../Contract description/vanillas-trade-description', () => jest.fn(() => 'mockVanillasTradeDescription'));
 
 describe('TradeDescription', () => {
     it('should render mockAccumulatorTradeDescription when trade category is "CONTRACT_LIST.ACCUMULATORS"', () => {

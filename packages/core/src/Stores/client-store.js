@@ -294,7 +294,6 @@ export default class ClientStore extends BaseStore {
             should_show_eu_error: computed,
             is_virtual: computed,
             is_eu: computed,
-            is_brazil: computed,
             can_upgrade: computed,
             can_upgrade_to: computed,
             virtual_account_loginid: computed,
@@ -829,10 +828,6 @@ export default class ClientStore extends BaseStore {
                   eu_shortcode_regex.test(gaming_shortcode)
                 : eu_excluded_regex.test(this.residence))
         );
-    }
-
-    get is_brazil() {
-        return this.clients_country === 'br';
     }
 
     get can_upgrade() {
@@ -1477,10 +1472,6 @@ export default class ClientStore extends BaseStore {
 
         const authorize_response = await this.setUserLogin(login_new_user);
 
-        if (action_param === 'signup') {
-            this.root_store.ui.setIsNewAccount();
-        }
-
         if (search) {
             if (code_param && action_param) this.setVerificationCode(code_param, action_param);
             document.addEventListener('DOMContentLoaded', () => {
@@ -1995,8 +1986,6 @@ export default class ClientStore extends BaseStore {
         this.dxtrade_accounts_list = [];
         this.ctrader_accounts_list = [];
         this.landing_companies = {};
-        localStorage.removeItem('readScamMessage');
-        localStorage.removeItem('isNewAccount');
         localStorage.removeItem('show_effortless_login_modal');
         LocalStore.set('marked_notifications', JSON.stringify([]));
         localStorage.setItem('active_loginid', this.loginid);

@@ -11,6 +11,7 @@ import { localize } from '@deriv/translations';
 import { getLegalEntityName } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
 import { useResidenceList } from '@deriv/hooks';
+import './employment-tax-details-container.scss';
 
 type TEmploymentTaxDetailsContainerProps = {
     editable_fields: string[];
@@ -81,7 +82,7 @@ const EmploymentTaxDetailsContainer = ({
 
             <Checkbox
                 name='confirm_no_tax_details'
-                className='details-form__tin-confirm'
+                className='employment_tax_detail_field-checkbox'
                 data-lpignore
                 onChange={() => setFieldValue('confirm_no_tax_details', !values.confirm_no_tax_details, true)}
                 value={values.confirm_no_tax_details}
@@ -114,7 +115,7 @@ const EmploymentTaxDetailsContainer = ({
             </div>
             <Checkbox
                 name='tax_identification_confirm'
-                className='details-form__tin-confirm'
+                className='employment_tax_detail_field-checkbox'
                 data-lpignore
                 onChange={() => setFieldValue('tax_identification_confirm', !values.tax_identification_confirm, true)}
                 value={values.tax_identification_confirm}

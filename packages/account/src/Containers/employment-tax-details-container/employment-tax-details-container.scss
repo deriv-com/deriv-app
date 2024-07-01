@@ -1,7 +1,7 @@
 .employment_tax_detail_field {
-    align-items: flex-start;
-
     &-checkbox {
+        align-items: flex-start;
+        margin: 1.6rem auto;
         &__box {
             align-self: baseline;
         }

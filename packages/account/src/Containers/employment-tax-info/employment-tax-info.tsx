@@ -6,7 +6,7 @@ import { Form, Formik, FormikValues } from 'formik';
 import clsx from 'clsx';
 import { localize } from '@deriv-com/translations';
 import { useDevice } from '@deriv-com/ui';
-import EmploymentTaxDetailsContainer from '../../Containers/employment-tax-details-container';
+import EmploymentTaxDetailsContainer from '../employment-tax-details-container';
 import { getEmploymentAndTaxValidationSchema } from '../../Configs/user-profile-validation-config';
 import ScrollToFieldWithError from '../../Components/forms/scroll-to-field-with-error';
 import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, ThemedScrollbars } from '@deriv/components';

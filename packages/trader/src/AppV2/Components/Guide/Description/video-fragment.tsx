@@ -35,11 +35,12 @@ const VideoFragment = ({ contract_type }: TVideoFragment) => {
             {is_loading && <Loading is_fullscreen={false} />}
             <video
                 autoPlay
+                className='video-fragment'
+                data-testid='dt_video_fragment'
                 loop
                 onLoadedData={() => setIsLoading(false)}
                 playsInline
                 preload='auto'
-                className='video-fragment'
             >
                 {/* a browser will select a source with extension it recognizes */}
                 <source src={mp4_src} type='video/mp4' />

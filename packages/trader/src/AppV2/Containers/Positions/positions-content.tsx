@@ -7,7 +7,7 @@ import { TPortfolioPosition } from '@deriv/stores/types';
 import { ContractCardList, ContractCardsSections } from 'AppV2/Components/ContractCard';
 import { ContractTypeFilter, TimeFilter } from 'AppV2/Components/Filter';
 import TotalProfitLoss from 'AppV2/Components/TotalProfitLoss';
-import { filterPositions, getTotalPositionsProfit } from '../../Utils/positions-utils';
+import { filterPositions, getTotalPositionsProfit, TAB_NAME } from '../../Utils/positions-utils';
 import { TReportsStore, useReportsStore } from '../../../../../reports/src/Stores/useReportsStores';
 import useTradeTypeFilter from 'AppV2/Hooks/useTradeTypeFilter';
 import useTimeFilter from 'AppV2/Hooks/useTimeFilter';
@@ -61,17 +61,12 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     const shouldShowEmptyMessage = hasNoPositions || noMatchesFound;
     const shouldShowContractCards =
         !!filteredPositions.length && (isClosedTab || (filteredPositions[0]?.contract_info as TContractInfo)?.status);
-    const shouldShowLoading = isClosedTab ? isFetchingClosedPositions : is_loading;
+    const shouldShowLoading = isClosedTab ? isFetchingClosedPositions && !filterPositions.length : is_loading;
     const shouldShowTakeProfit = !isClosedTab || !!(timeFilter || customTimeRangeFilter);
 
-    const onScroll = React.useCallback(
-        (e: React.UIEvent<HTMLDivElement>) => {
-            if (isClosedTab) {
-                handleScroll(e, true);
-            }
-        },
-        [handleScroll, isClosedTab]
-    );
+    const onScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        if (isClosedTab) handleScroll(e, true);
+    };
 
     const contractCards = isClosedTab ? (
         <ContractCardsSections
@@ -126,7 +121,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     if (shouldShowLoading || (!shouldShowContractCards && !shouldShowEmptyMessage)) return <Loading />;
     return (
         <div
-            className={`positions-page__${isClosedTab ? 'closed' : 'open'}`}
+            className={`positions-page__${isClosedTab ? TAB_NAME.CLOSED.toLowerCase() : TAB_NAME.OPEN.toLowerCase()}`}
             onScroll={isClosedTab ? onScroll : undefined}
         >
             {!hasNoPositions && (

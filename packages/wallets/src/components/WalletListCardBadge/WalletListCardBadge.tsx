@@ -17,7 +17,7 @@ const WalletListCardBadge: React.FC<TProps> = ({ isDemo, label }) => {
     const formattedLabel = label === 'virtual' ? 'Demo' : label?.toUpperCase();
 
     return (
-        <div className={className}>
+        <div className={className} data-testid='dt_wallet_list_card_badge'>
             <WalletText color={isDemo ? 'white' : 'general'} size='2xs' weight='bold'>
                 {formattedLabel}
             </WalletText>

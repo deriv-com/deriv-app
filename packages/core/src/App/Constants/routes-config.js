@@ -61,13 +61,6 @@ const P2P = React.lazy(() =>
     })
 );
 
-const P2P_V2 = React.lazy(() =>
-    moduleLoader(() => {
-        // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "p2p-v2" */ '@deriv/p2p-v2');
-    })
-);
-
 const Cashier_V2 = React.lazy(() =>
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
@@ -259,12 +252,6 @@ const getModules = () => {
                     ],
                 },
             ],
-        },
-        {
-            path: routes.cashier_p2p_v2,
-            component: P2P_V2,
-            getTitle: () => localize('P2P-V2'),
-            is_authenticated: true,
         },
         {
             path: routes.cashier_v2,

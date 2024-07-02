@@ -268,7 +268,7 @@ const VideoPlayer = ({ className, data_testid, height, is_mobile, src }: TVideoP
             data-testid={data_testid}
         >
             <Stream
-                autoplay={should_autoplay}
+                autoplay={should_autoplay && !is_dragging.current}
                 height={height ?? (is_mobile ? '184.5px' : '270px')}
                 letterboxColor='transparent'
                 muted={is_muted}

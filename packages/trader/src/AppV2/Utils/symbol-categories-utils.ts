@@ -87,6 +87,11 @@ export const categorizeSymbols = (symbols: ActiveSymbols): Record<string, Market
 
     // Assign a new category called 'all' with the same data shape as the rest of the categories for rendering
     categorizedSymbols = {
+        favorites: {
+            market: 'favorites',
+            market_display_name: localize('Favorites'),
+            subgroups: {},
+        },
         all: {
             market: 'all',
             market_display_name: localize('All'),

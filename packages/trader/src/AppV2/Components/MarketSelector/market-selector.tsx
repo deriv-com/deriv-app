@@ -19,8 +19,6 @@ const MarketSelector = observer(() => {
         setSelectedSymbol(default_symbol);
     }, [default_symbol]);
 
-    // const something = localStorage.getItem('cq-favorites');
-    // console.log(something)
     return (
         <React.Fragment>
             <button onClick={() => setIsOpen(!isOpen)}>button</button>
@@ -33,6 +31,7 @@ const MarketSelector = observer(() => {
                         className={clsx('market-selector__content', {
                             // 'market-selector__content--not-found': notFound,
                         })}
+                        selectedTabIndex={1}
                     >
                         {isSearching ? (
                             <Text

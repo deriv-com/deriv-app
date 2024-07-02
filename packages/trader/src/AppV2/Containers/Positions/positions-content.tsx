@@ -64,14 +64,9 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     const shouldShowLoading = isClosedTab ? isFetchingClosedPositions : is_loading;
     const shouldShowTakeProfit = !isClosedTab || !!(timeFilter || customTimeRangeFilter);
 
-    const onScroll = React.useCallback(
-        (e: React.UIEvent<HTMLDivElement>) => {
-            if (isClosedTab) {
-                handleScroll(e, true);
-            }
-        },
-        [handleScroll, isClosedTab]
-    );
+    const onScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        if (isClosedTab) handleScroll(e, true);
+    };
 
     const contractCards = isClosedTab ? (
         <ContractCardsSections

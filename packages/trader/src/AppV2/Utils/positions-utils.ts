@@ -9,6 +9,7 @@ export const DEFAULT_DATE_FORMATTING_CONFIG = {
 } as Record<string, string>;
 
 export const filterPositions = (positions: (TPortfolioPosition | TClosedPosition)[], filter: string[]) => {
+    if (!filter.length) return positions;
     // Split contract type names with '/' (e.g. Rise/Fall)
     const splittedFilter = filter.map(option => (option.includes('/') ? option.split('/') : option)).flat();
 
@@ -25,7 +26,7 @@ const contractTypesConfig = {
     Vanillas: [CONTRACT_TYPES.VANILLA.CALL, CONTRACT_TYPES.VANILLA.PUT],
     Turbos: [CONTRACT_TYPES.TURBOS.LONG, CONTRACT_TYPES.TURBOS.SHORT],
     Multipliers: [CONTRACT_TYPES.MULTIPLIER.DOWN, CONTRACT_TYPES.MULTIPLIER.UP],
-    'Rise/Fall': [CONTRACT_TYPES.CALL, CONTRACT_TYPES.PUT],
+    'Rise/Fall': [CONTRACT_TYPES.CALL, CONTRACT_TYPES.PUT, CONTRACT_TYPES.CALLE, CONTRACT_TYPES.PUTE],
     'Higher/Lower': [CONTRACT_TYPES.CALL, CONTRACT_TYPES.PUT],
     'Touch/No touch': [CONTRACT_TYPES.TOUCH.NO_TOUCH, CONTRACT_TYPES.TOUCH.ONE_TOUCH],
     'Matches/Differs': [CONTRACT_TYPES.MATCH_DIFF.DIFF, CONTRACT_TYPES.MATCH_DIFF.MATCH],

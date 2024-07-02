@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import clsx from 'clsx';
 import { MobileWrapper, Toast } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 
 type TToastPopUp = {
     portal_id?: string;
@@ -36,6 +37,7 @@ export const ToastPopup = ({
  */
 const NetworkStatusToastError = ({ status, portal_id, message }: TNetworkStatusToastError) => {
     const [is_open, setIsOpen] = useState(false);
+    const { isDesktop } = useDevice();
     const new_portal_id = document.getElementById(portal_id);
 
     if (!new_portal_id || !message) return null;
@@ -49,7 +51,7 @@ const NetworkStatusToastError = ({ status, portal_id, message }: TNetworkStatusT
     }
 
     return createPortal(
-        <MobileWrapper>
+        !isDesktop && (
             <Toast
                 className={clsx({
                     'dc-toast--blinker': status === 'blinker',
@@ -60,7 +62,7 @@ const NetworkStatusToastError = ({ status, portal_id, message }: TNetworkStatusT
             >
                 {message}
             </Toast>
-        </MobileWrapper>,
+        ),
         new_portal_id
     );
 };

@@ -8,5 +8,4 @@ module.exports = {
         '^.+\\.svg$': '<rootDir>/../../__mocks__/styleMock.js',
     },
     modulePathIgnorePatterns: ['/icon/', '/.out/'],
-    transformIgnorePatterns: ['/node_modules/(?!(@deriv-com/ui)).+\\.js$'],
 };

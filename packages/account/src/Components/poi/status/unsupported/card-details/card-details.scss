@@ -201,6 +201,7 @@
         .dc-btn:not(:last-of-type) {
             margin-right: 0.8rem;
         }
+
         @include mobile-or-tablet-screen {
             height: auto;
             padding-bottom: unset;

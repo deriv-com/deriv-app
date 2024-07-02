@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActionSheet, Checkbox, Chip } from '@deriv-com/quill-ui';
+import { ActionSheet, Checkbox, Chip, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { AVAILABLE_CONTRACTS } from 'AppV2/Utils/trade-types-utils';
 
@@ -29,9 +29,9 @@ const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: T
 
     const getChipLabel = () => {
         const arrayLength = contractTypeFilter.length;
-        if (!arrayLength) return <Localize i18n_default_text='All trade types' />;
+        if (!arrayLength) return <Localize i18n_default_text='All trade types' key='All trade types' />;
         if (arrayLength === 1) return AVAILABLE_CONTRACTS.find(type => type.id === contractTypeFilter[0])?.tradeType;
-        return <Localize i18n_default_text='{{amount}} trade types' values={{ amount: arrayLength }} />;
+        return <Localize i18n_default_text='{{amount}} trade types' values={{ amount: arrayLength }} key='Amount' />;
     };
 
     return (
@@ -40,11 +40,12 @@ const ContractTypeFilter = ({ contractTypeFilter, onApplyContractTypeFilter }: T
                 className='filter__chip'
                 dropdown
                 isDropdownOpen={isDropdownOpen}
-                label={getChipLabel()}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 selected={!!changedOptions.length}
                 size='md'
-            />
+            >
+                <Text size='sm'>{getChipLabel()}</Text>
+            </Chip.Standard>
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={onActionSheetClose} position='left'>
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Filter by trade types' />} />

@@ -248,6 +248,7 @@
     "2142425493": "ID de anuncio",
     "2145292295": "Calificar",
     "-1540251249": "Comprar {{ account_currency }}",
+    "-962824159": "Crear un nuevo pedido",
     "-2026152535": "Pedido fallido",
     "-1267880283": "Se requiere {{field_name}}",
     "-2019083683": "{{field_name}} solo puede incluir letras, números, espacios y cualquiera de estos símbolos: -+.,'#@():;",

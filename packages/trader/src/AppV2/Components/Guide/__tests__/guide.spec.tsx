@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import Loadable from 'react-loadable';
 import { CONTRACT_LIST, TERM, AVAILABLE_CONTRACTS } from 'AppV2/Utils/trade-types-utils';
 import Guide from '../guide';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 const mediaQueryList = {
     matches: true,
@@ -15,8 +16,20 @@ window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
 Loadable.preloadAll();
 
 describe('Guide', () => {
+    const renderGuide = (mockProps?: React.ComponentProps<typeof Guide>) => {
+        render(
+            <StoreProvider store={mockStore({})}>
+                <Guide {...mockProps} />
+            </StoreProvider>
+        );
+    };
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
     it('should render component', () => {
-        render(<Guide />);
+        renderGuide();
 
         expect(screen.getByText('Guide')).toBeInTheDocument();
         expect(screen.getByText('Trade types')).toBeInTheDocument();
@@ -24,7 +37,7 @@ describe('Guide', () => {
     });
 
     it('should render minimalistic component if is_minimalistic_look === true', () => {
-        render(<Guide is_minimalistic_look />);
+        renderGuide({ is_minimalistic_look: true });
 
         expect(screen.queryByText('Guide')).not.toBeInTheDocument();
         expect(screen.getByText('Trade types')).toBeInTheDocument();
@@ -38,7 +51,7 @@ describe('Guide', () => {
             .mockImplementationOnce(() => [CONTRACT_LIST['RISE/FALL'], mockSelectedContractType])
             .mockImplementationOnce(() => ['', jest.fn()]);
 
-        render(<Guide />);
+        renderGuide();
 
         userEvent.click(screen.getByText('Guide'));
 
@@ -47,7 +60,7 @@ describe('Guide', () => {
     });
 
     it('should render term definition if user clicked on it', () => {
-        render(<Guide />);
+        renderGuide();
 
         const term_definition = 'You can choose a growth rate with values of 1%, 2%, 3%, 4%, and 5%.';
         expect(screen.queryByText(term_definition)).not.toBeInTheDocument();

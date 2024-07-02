@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { runIrreversibleEvents } from '../../../utils';
-import ApiHelpers from '@deriv/bot-trade-engine/api/api-helpers';
+import ApiHelpers from '@vinuderiv/bot-trade-engine/api/api-helpers';
 
 /* eslint-disable */
 Blockly.Blocks.trade_definition_market = {

@@ -3,6 +3,7 @@ import { ActionSheet, Heading, Chip, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { AVAILABLE_CONTRACTS, CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
 import TradeDescription from './Description/trade-description';
+import VideoPreview from './Description/video-preview';
 
 type TDescriptionModal = {
     is_open?: boolean;
@@ -57,9 +58,7 @@ const DescriptionModal = ({
                     </div>
                     <div className='guide__contract-description' key={selected_contract_type}>
                         <TradeDescription contract_type={selected_contract_type} onTermClick={onTermClick} />
-                        <div className='guide__video-placeholder'>
-                            <Text>Coolest video ever</Text>
-                        </div>
+                        <VideoPreview />
                     </div>
                 </ActionSheet.Content>
                 <ActionSheet.Footer

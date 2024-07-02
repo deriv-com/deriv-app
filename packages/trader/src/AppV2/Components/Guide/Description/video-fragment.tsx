@@ -25,7 +25,7 @@ const VideoFragment = ({ contract_type }: TVideoFragment) => {
 
     const mp4_src = React.useMemo(() => getVideoSource('mp4'), [getVideoSource]);
     const webm_src = React.useMemo(() => getVideoSource('webm'), [getVideoSource]);
-
+    // TODO: do not forget to remove this === 'accumulators'
     return (
         <div
             className={classNames('video-fragment__wrapper', {

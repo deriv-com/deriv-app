@@ -33,6 +33,11 @@
         gap: 0.8rem;
     }
 
+    &__amount-received-info {
+        display: flex;
+        flex-direction: column;
+    }
+
     &__actions {
         display: flex;
         gap: 0.8rem;

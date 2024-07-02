@@ -12,7 +12,7 @@ import {
     ProofOfAddress,
     ProofOfOwnership,
     Account,
-    ClosingAccount,
+    // ClosingAccount,
     DeactivateAccount,
     ProofOfIncome,
 } from '../Sections';
@@ -66,6 +66,10 @@ const TwoFactorAuthentication = makeLazyLoader(
 )();
 const SelfExclusion = makeLazyLoader(
     () => moduleLoader(() => import('../Sections/Security/SelfExclusion')),
+    () => <Loading />
+)();
+const ClosingAccount = makeLazyLoader(
+    () => moduleLoader(() => import('../Sections/Security/ClosingAccount')),
     () => <Loading />
 )();
 

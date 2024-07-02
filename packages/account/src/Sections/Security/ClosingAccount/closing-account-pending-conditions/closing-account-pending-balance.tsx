@@ -10,7 +10,7 @@ import {
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { TCFDPlatform, TDetailsOfDerivXAccount, TDetailsOfMT5Account } from 'Types';
+import { TCFDPlatform, TDetailsOfDerivXAccount, TDetailsOfMT5Account } from '../../../../Types';
 import ClosingAccountPendingWrapper from './closing-account-pending-wrapper';
 import ClosingAccountPendingContent from './closing-account-pending-content';
 

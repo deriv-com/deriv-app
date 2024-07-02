@@ -10,7 +10,7 @@ import {
     TDetailsOfDerivXAccount,
     TDetailsOfMT5Account,
     TDetailsOfCtraderAccount,
-} from 'Types';
+} from '../../../../Types';
 import ClosingAccountPendingContent from './closing-account-pending-content';
 import ClosingAccountPendingWrapper from './closing-account-pending-wrapper';
 import ClosingAccountPendingBalance from './closing-account-pending-balance';

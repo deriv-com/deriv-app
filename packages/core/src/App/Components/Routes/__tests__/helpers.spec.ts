@@ -23,8 +23,8 @@ describe('Helpers', () => {
         });
         it('should return route_info when path is in routes_config and is not nested', () => {
             const comp = Helpers.findRouteByPath(routes.redirect, getRoutesConfig());
-            expect(comp.path).toEqual(routes.redirect);
-            expect(comp.component).toEqual(Redirect);
+            expect(comp?.path).toEqual(routes.redirect);
+            expect(comp?.component).toEqual(Redirect);
         });
     });
 
@@ -45,7 +45,7 @@ describe('Helpers', () => {
 
     describe('getPath', () => {
         it('should return param values in params as a part of path', () => {
-            expect(Helpers.getPath('/contract/:contract_id', { contract_id: 37511105068 })).toBe(
+            expect(Helpers.getPath('/contract/:contract_id', { contract_id: '37511105068' })).toBe(
                 '/contract/37511105068'
             );
             expect(
@@ -62,7 +62,7 @@ describe('Helpers', () => {
 
     describe('getContractPath', () => {
         it('should return the path of contract with contract_id passed', () => {
-            expect(Helpers.getContractPath(1234)).toBe('/contract/1234');
+            expect(Helpers.getContractPath('1234')).toBe('/contract/1234');
         });
     });
 });

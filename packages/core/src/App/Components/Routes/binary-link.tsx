@@ -1,15 +1,22 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { findRouteByPath, normalizePath } from './helpers';
 import getRoutesConfig from '../../Constants/routes-config';
 import { observer, useStore } from '@deriv/stores';
 
+type TBinaryLinkProps = Omit<React.HTMLProps<HTMLAnchorElement>, 'title' | 'ref'> &
+    React.PropsWithChildren<{
+        active_class?: string;
+        className?: string;
+        to?: string;
+        onClick?: () => void;
+    }>;
+
 // TODO: solve circular dependency problem
 // when binary link is imported into components present in routes config
 // or into their descendants
-const BinaryLink = observer(({ active_class, to, children, href, ...props }) => {
+const BinaryLink = observer(({ active_class, to, children, href, ...props }: TBinaryLinkProps) => {
     const { common } = useStore();
     const { has_error, error } = common;
     const setError = error.setError;
@@ -27,10 +34,10 @@ const BinaryLink = observer(({ active_class, to, children, href, ...props }) => 
                 [`${active_class}__link-wrapper`]: !!active_class,
             })}
             onClick={() => {
-                if (has_error) setError(false, null);
+                if (has_error) setError?.(false, null);
             }}
         >
-            <NavLink to={path} activeClassName={active_class || 'active'} exact={route.exact} {...props}>
+            <NavLink to={path} activeClassName={active_class || 'active'} exact={route?.exact} {...props}>
                 {children}
             </NavLink>
         </span>
@@ -40,12 +47,5 @@ const BinaryLink = observer(({ active_class, to, children, href, ...props }) => 
         </a>
     );
 });
-
-BinaryLink.propTypes = {
-    active_class: PropTypes.string,
-    children: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
-    href: PropTypes.string,
-    to: PropTypes.string,
-};
 
 export default BinaryLink;

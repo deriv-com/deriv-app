@@ -7,8 +7,8 @@ type TPlaceholderComponent = {
     has_selected_date?: boolean;
     is_empty?: boolean;
     is_loading?: boolean;
-    localized_message?: string;
-    localized_period_message?: string;
+    localized_message?: React.ReactNode;
+    localized_period_message?: React.ReactNode;
 };
 
 const PlaceholderComponent = ({

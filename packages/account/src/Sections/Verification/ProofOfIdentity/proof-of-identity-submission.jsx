@@ -24,7 +24,6 @@ const POISubmission = observer(
         onStateChange,
         redirect_button,
         residence_list,
-        setIsCfdPoiCompleted,
         should_show_mismatch_form,
     }) => {
         const {
@@ -203,7 +202,6 @@ const POISubmission = observer(
                             <Unsupported
                                 country_code={selected_country.value}
                                 is_from_external={is_from_external}
-                                setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                                 allow_poi_resubmission={allow_poi_resubmission}
                                 handleViewComplete={handleViewComplete}
                                 onfido={onfido}

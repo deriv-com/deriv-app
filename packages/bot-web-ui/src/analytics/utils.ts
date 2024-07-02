@@ -1,12 +1,14 @@
 import { STRATEGIES } from '../pages/bot-builder/quick-strategy/config';
 import { STORED_ITEM_NOT_FOUND, TFormStrategy } from './constants';
 
+export const rudderstack_text_error = 'Rudderstack: unable to get dropdown text';
+
 export const getRsDropdownTextFromLocalStorage = () => {
     try {
         return JSON.parse(localStorage?.getItem('qs-analytics') ?? '{}');
     } catch (error) {
         // eslint-disable-next-line no-console
-        console.error('Rudderstack: unable to get dropdown text');
+        console.error(rudderstack_text_error);
         return {};
     }
 };

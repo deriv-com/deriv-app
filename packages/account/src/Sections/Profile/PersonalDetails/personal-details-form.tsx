@@ -226,7 +226,7 @@ const PersonalDetailsForm = observer(() => {
                 dirty,
             }) => (
                 <Fragment>
-                    <LeaveConfirm onDirty={!isDesktop ? showForm : undefined} />
+                    <LeaveConfirm onDirty={isDesktop ? undefined : showForm} />
                     {show_form && (
                         <Form
                             noValidate
@@ -234,7 +234,7 @@ const PersonalDetailsForm = observer(() => {
                             onSubmit={handleSubmit}
                             data-testid='dt_account_personal_details_section'
                         >
-                            <FormBody scroll_offset={!isDesktop ? '199px' : '80px'}>
+                            <FormBody scroll_offset={isDesktop ? '80px' : '199px'}>
                                 <FormSubHeader title={localize('Details')} />
                                 {!is_virtual && (
                                     <Fragment>
@@ -658,7 +658,7 @@ const PersonalDetailsForm = observer(() => {
                                         className='account-form__footer-note'
                                         size='xxs'
                                         color='prominent'
-                                        align={!isDesktop ? 'center' : 'right'}
+                                        align={isDesktop ? 'right' : 'center'}
                                     >
                                         {localize(
                                             'Please make sure your information is correct or it may affect your trading experience.'

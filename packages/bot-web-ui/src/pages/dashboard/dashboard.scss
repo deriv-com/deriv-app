@@ -316,8 +316,11 @@
                 text-align: center;
                 padding: 3.2rem;
 
-                @include mobile-or-tablet-screen {
+                @include mobile-screen {
                     flex-wrap: wrap;
+                }
+
+                @include tablet-screen {
                     padding: 2.4rem 0 0;
                 }
 
@@ -327,6 +330,7 @@
                     @include mobile-or-tablet-screen {
                         display: flex;
                         flex-flow: unset;
+                        justify-content: space-around;
                         padding: 2.4rem 0 1.6rem;
                     }
                 }
@@ -361,6 +365,8 @@
                 }
 
                 &--minimized {
+                    width: 6.4rem;
+
                     & .dc-text {
                         width: 8rem;
                         text-align: center;

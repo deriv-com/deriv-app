@@ -57,6 +57,14 @@ module.exports = function (env) {
                         idHint: 'assets',
                         enforce: true,
                     },
+                    internalCFDStoreUsage: {
+                        test: module => {
+                            const isStoreModule = module.resource && module.resource.includes('Stores');
+                            return isStoreModule;
+                        },
+                        chunks: chunk => chunk.name !== 'CFDStore', // Do not include if chunk is CFDStore
+                        enforce: true,
+                    },
                     utilities: {
                         name: 'utilities',
                         test: module => {
@@ -72,7 +80,7 @@ module.exports = function (env) {
 
                             // Define exclusion patterns to ensure other directories are not included
                             const excludePatterns = [
-                                /[\\/]Stores[\\/]/, // Exclude all files within the Stores directory
+                                /[\\/]Stores[\\/]/, // Since there is a Helpers directory inside Stores, the Stores directory has been excluded.
                             ];
 
                             // Check if the module should be included

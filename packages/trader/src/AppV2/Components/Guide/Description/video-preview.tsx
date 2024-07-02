@@ -16,7 +16,12 @@ const VideoPreview = ({ contract_type, toggleVideoPlayer, video_src }: TVideoPre
 
     return (
         <div className='guide-video__wrapper'>
-            <div className='guide-video__preview' onClick={toggleVideoPlayer} onKeyDown={toggleVideoPlayer}>
+            <div
+                className='guide-video__preview'
+                data-testid='dt_video_preview'
+                onClick={toggleVideoPlayer}
+                onKeyDown={toggleVideoPlayer}
+            >
                 <Stream
                     autoplay={false}
                     controls={false}

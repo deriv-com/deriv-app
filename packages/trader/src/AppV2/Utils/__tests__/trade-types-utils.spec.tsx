@@ -1,6 +1,13 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { getTermDefinition, parseContractDescription, CONTRACT_LIST, TERM } from '../trade-types-utils';
+import {
+    getTermDefinition,
+    parseContractDescription,
+    CONTRACT_LIST,
+    TERM,
+    getDescriptionVideoId,
+    DESCRIPTION_VIDEO_ID,
+} from '../trade-types-utils';
 import { Localize } from '@deriv/translations';
 
 describe('getTermDefinition', () => {
@@ -94,5 +101,56 @@ describe('parseContractDescription', () => {
 
         expect(screen.getByText(/If you select “Even”/i)).toBeInTheDocument();
         expect(screen.getByText(/Some general text/i)).toBeInTheDocument();
+    });
+});
+
+describe('getDescriptionVideoId', () => {
+    it('should return an id for Vanillas description video in light theme', () => {
+        expect(getDescriptionVideoId(CONTRACT_LIST.VANILLAS, false)).toEqual(
+            DESCRIPTION_VIDEO_ID[CONTRACT_LIST.VANILLAS].light
+        );
+    });
+    it('should return an id for Accumulator description video in light theme', () => {
+        expect(getDescriptionVideoId(CONTRACT_LIST.ACCUMULATORS, false)).toEqual(
+            DESCRIPTION_VIDEO_ID[CONTRACT_LIST.ACCUMULATORS].light
+        );
+    });
+    it('should return an id for High/Low description video in light theme', () => {
+        expect(getDescriptionVideoId(CONTRACT_LIST['HIGHER/LOWER'], false)).toEqual(
+            DESCRIPTION_VIDEO_ID[CONTRACT_LIST['HIGHER/LOWER']].light
+        );
+    });
+    it('should return an id for Matches/Differs description video in light theme', () => {
+        expect(getDescriptionVideoId(CONTRACT_LIST['MATCHES/DIFFERS'], false)).toEqual(
+            DESCRIPTION_VIDEO_ID[CONTRACT_LIST['MATCHES/DIFFERS']].light
+        );
+    });
+    it('should return an id for Over/Under description video in light theme', () => {
+        expect(getDescriptionVideoId(CONTRACT_LIST['OVER/UNDER'], false)).toEqual(
+            DESCRIPTION_VIDEO_ID[CONTRACT_LIST['OVER/UNDER']].light
+        );
+    });
+    it('should return an id for Rise/Fall description video in light theme', () => {
+        expect(getDescriptionVideoId(CONTRACT_LIST['RISE/FALL'], false)).toEqual(
+            DESCRIPTION_VIDEO_ID[CONTRACT_LIST['RISE/FALL']].light
+        );
+    });
+    it('should return an id for Multipliers description video in dark theme', () => {
+        expect(getDescriptionVideoId(CONTRACT_LIST.MULTIPLIERS, true)).toEqual(
+            DESCRIPTION_VIDEO_ID[CONTRACT_LIST.MULTIPLIERS].dark
+        );
+    });
+    it('should return an id for Touch/No Touch description video in light theme', () => {
+        expect(getDescriptionVideoId(CONTRACT_LIST['TOUCH/NO TOUCH'], false)).toEqual(
+            DESCRIPTION_VIDEO_ID[CONTRACT_LIST['TOUCH/NO TOUCH']].light
+        );
+    });
+    it('should return an id for Even/Odd description video in dark theme', () => {
+        expect(getDescriptionVideoId(CONTRACT_LIST['EVEN/ODD'], true)).toEqual(
+            DESCRIPTION_VIDEO_ID[CONTRACT_LIST['EVEN/ODD']].dark
+        );
+    });
+    it('should return undefined when called with empty arguments', () => {
+        expect(getDescriptionVideoId()).toEqual(undefined);
     });
 });

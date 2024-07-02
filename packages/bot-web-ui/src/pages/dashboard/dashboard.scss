@@ -333,6 +333,9 @@
                         justify-content: space-around;
                         padding: 2.4rem 0 1.6rem;
                     }
+                    @include mobile-screen {
+                        justify-content: space-around;
+                    }
                 }
             }
 
@@ -365,8 +368,9 @@
                 }
 
                 &--minimized {
-                    width: 6.4rem;
-
+                    @include mobile-screen {
+                        width: 6.4rem;
+                    }
                     & .dc-text {
                         width: 8rem;
                         text-align: center;

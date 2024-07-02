@@ -179,6 +179,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                                     <Icon icon={item.icon} />
                                 </div>
                                 <Text
+                                    data-testid={`dt_mobile_bot_list_action-${item.type}`}
                                     color='prominent'
                                     className='bot-list__item__responsive__menu__item'
                                     as='p'

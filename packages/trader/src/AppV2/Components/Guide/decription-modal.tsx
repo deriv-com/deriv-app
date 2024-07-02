@@ -58,7 +58,7 @@ const DescriptionModal = ({
                     </div>
                     <div className='guide__contract-description' key={selected_contract_type}>
                         <TradeDescription contract_type={selected_contract_type} onTermClick={onTermClick} />
-                        <VideoPreview />
+                        <VideoPreview contract_type={selected_contract_type} />
                     </div>
                 </ActionSheet.Content>
                 <ActionSheet.Footer

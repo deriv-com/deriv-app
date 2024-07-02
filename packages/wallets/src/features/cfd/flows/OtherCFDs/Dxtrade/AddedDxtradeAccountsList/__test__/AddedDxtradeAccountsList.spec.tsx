@@ -36,7 +36,7 @@ describe('AddedDxtradeAccountsList', () => {
         document.body.removeChild($modalContainer);
     });
 
-    it('renders TradingAccountCard with DxTrade accounts', () => {
+    it('renders TradingAccountCard with DxTrade accounts.', () => {
         render(
             <Router history={history}>
                 <ModalProvider>
@@ -51,7 +51,7 @@ describe('AddedDxtradeAccountsList', () => {
         });
     });
 
-    it('should show modal on click of DxTrade account', () => {
+    it('shows MT5TradeModal component when clicking on AddedDxtradeAccountsList within the TradingAccountCard component.', () => {
         render(
             <Router history={history}>
                 <ModalProvider>

@@ -14,7 +14,8 @@ const useSendOTPVerificationCode = () => {
         isSuccess: is_phone_number_verified,
         ...rest
     } = useMutation('phone_number_verify');
-    const { sendEmailOTPVerification, email_otp_error, is_email_verified } = useRequestPhoneNumberOTP();
+    const { sendEmailOTPVerification, email_otp_error, is_email_verified, requestOnSMS, requestOnWhatsApp } =
+        useRequestPhoneNumberOTP();
 
     const formatPhoneOtpError = (error: TSocketError<'phone_number_verify'>['error']) => {
         switch (error.code) {
@@ -68,6 +69,8 @@ const useSendOTPVerificationCode = () => {
         data,
         sendPhoneOTPVerification,
         sendEmailOTPVerification,
+        requestOnSMS,
+        requestOnWhatsApp,
         email_otp_error,
         phone_otp_error,
         phone_otp_error_message,

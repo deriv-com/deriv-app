@@ -3,14 +3,18 @@ import { Button, Modal, Text } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
-import { useRequestPhoneNumberOTP } from '@deriv/hooks';
 import { convertPhoneTypeDisplay } from 'Helpers/utils';
+import { TSocketError } from '@deriv/api/types';
 
 type TDidntGetTheCodeModal = {
     phone_verification_type: string;
     should_show_didnt_get_the_code_modal: boolean;
     setIsButtonDisabled: (value: boolean) => void;
     setShouldShowDidntGetTheCodeModal: (value: boolean) => void;
+    requestOnSMS: () => void;
+    requestOnWhatsApp: () => void;
+    is_email_verified: boolean;
+    email_otp_error: TSocketError<'phone_number_challenge'> | null;
     setOtpVerification: (value: { show_otp_verification: boolean; phone_verification_type: string }) => void;
     reInitializeGetSettings: () => void;
 };
@@ -21,10 +25,13 @@ const DidntGetTheCodeModal = observer(
         setShouldShowDidntGetTheCodeModal,
         setIsButtonDisabled,
         reInitializeGetSettings,
+        requestOnSMS,
+        requestOnWhatsApp,
         phone_verification_type,
+        is_email_verified,
+        email_otp_error,
         setOtpVerification,
     }: TDidntGetTheCodeModal) => {
-        const { requestOnSMS, requestOnWhatsApp, is_email_verified, email_otp_error } = useRequestPhoneNumberOTP();
         const { ui } = useStore();
         const { is_mobile } = ui;
 

@@ -56,6 +56,8 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
 
         if (!error) {
             phone_verification_type === VERIFICATION_SERVICES.SMS ? requestOnSMS() : requestOnWhatsApp();
+        } else {
+            setIsButtonLoading(false);
         }
     };
 

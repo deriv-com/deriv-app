@@ -30,6 +30,9 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
         is_phone_number_verified,
         is_email_verified,
         sendEmailOTPVerification,
+        requestOnSMS,
+        requestOnWhatsApp,
+        email_otp_error,
     } = useSendOTPVerificationCode();
     const { should_show_phone_number_otp } = ui;
 
@@ -76,6 +79,10 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
             <DidntGetTheCodeModal
                 setIsButtonDisabled={setIsButtonDisabled}
                 reInitializeGetSettings={reInitializeGetSettings}
+                requestOnSMS={requestOnSMS}
+                requestOnWhatsApp={requestOnWhatsApp}
+                email_otp_error={email_otp_error}
+                is_email_verified={is_email_verified}
                 should_show_didnt_get_the_code_modal={should_show_didnt_get_the_code_modal}
                 setShouldShowDidntGetTheCodeModal={setShouldShowDidntGetTheCodeModal}
                 phone_verification_type={phone_verification_type}

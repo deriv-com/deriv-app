@@ -12,8 +12,8 @@ import classNames from 'classnames';
 export const VerifyButton = observer(() => {
     const [open_popover, setOpenPopover] = React.useState(false);
     const { client, ui } = useStore();
-    const { is_mobile } = ui;
-    const { account_settings } = client;
+    const { is_mobile, setShouldShowPhoneNumberOTP } = ui;
+    const { account_settings, setVerificationCode } = client;
     const { phone_number_verification } = account_settings;
     const phone_number_verified = phone_number_verification?.verified;
     const history = useHistory();
@@ -23,6 +23,8 @@ export const VerifyButton = observer(() => {
 
     const redirectToPhoneVerification = () => {
         if (next_otp_request) return;
+        setVerificationCode('', 'phone_number_verification');
+        setShouldShowPhoneNumberOTP(false);
         send();
         history.push(routes.phone_verification);
     };

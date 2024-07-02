@@ -37,10 +37,10 @@ const usePhoneNumberVerificationSetTimer = (is_from_request_phone_number_otp = f
             } else {
                 display_time = is_from_request_phone_number_otp ? `${timer} seconds` : `${timer}s`;
             }
-            if (should_show_phone_number_otp) {
-                setNextOtpRequest(` (${display_time})`);
-            } else if (is_from_request_phone_number_otp) {
+            if (is_from_request_phone_number_otp) {
                 setNextOtpRequest(` ${display_time}`);
+            } else if (should_show_phone_number_otp) {
+                setNextOtpRequest(` (${display_time})`);
             } else {
                 setNextOtpRequest(` in ${display_time}`);
             }

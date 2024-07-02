@@ -516,7 +516,7 @@ export default class LoadModalStore implements ILoadModalStore {
                 showIncompatibleStrategyDialog: false,
             };
             const ref = document?.getElementById('load-strategy__blockly-container');
-            const upload_type = getStrategyType(load_options?.block_string as string);
+            const upload_type = getStrategyType(load_options?.block_string ?? '');
             if (is_preview && ref) {
                 this.local_workspace = Blockly.inject(ref, {
                     media: `${__webpack_public_path__}media/`, // eslint-disable-line
@@ -531,7 +531,7 @@ export default class LoadModalStore implements ILoadModalStore {
                 if (load_options.workspace) {
                     (load_options.workspace as any).RTL = isDbotRTL();
                 }
-                this.imported_strategy_type = upload_type as string;
+                this.imported_strategy_type = upload_type;
             } else {
                 load_options.workspace = window.Blockly.derivWorkspace;
                 load_options.file_name = file_name;

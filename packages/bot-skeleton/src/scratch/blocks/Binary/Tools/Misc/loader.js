@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { loadBlocksFromRemote, runIrreversibleEvents } from '../../../../utils';
-import { observer as globalObserver } from '@vinuderiv/bot-trade-engine/tradeEngine/utils/observer';
+import { observer as globalObserver } from '@vinuderiv/bot-trade-engine';
 import { log_types } from '../../../../../constants/messages';
 
 Blockly.Blocks.loader = {

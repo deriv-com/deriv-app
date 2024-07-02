@@ -3,6 +3,17 @@ import { localize } from '@deriv/translations';
 Blockly.Blocks.variables_get = {
     init() {
         this.jsonInit(this.definition());
+
+        this.inputList.forEach(input_list => {
+            input_list.fieldRow.forEach(fieldRow => {
+                setTimeout(() => {
+                    if (fieldRow?.borderRect_ || fieldRow.clickTarget_) {
+                        const target_block = fieldRow?.borderRect_ || fieldRow.clickTarget_;
+                        Blockly.utils.dom.addClass(target_block, 'blocklyVariableGet');
+                    }
+                }, 0);
+            });
+        });
     },
     definition() {
         return {

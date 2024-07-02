@@ -102,10 +102,10 @@ export default class ToolboxStore {
     // eslint-disable-next-line class-methods-use-this
     adjustWorkspace() {
         // NOTE: added this load modal open check to prevent scroll when load modal is open
-        if (!this.is_workspace_scroll_adjusted && !this.root_store.load_modal.is_load_modal_open) {
+        if (!this.is_workspace_scroll_adjusted) {
             this.is_workspace_scroll_adjusted = true;
             setTimeout(() => {
-                const workspace = window.Blockly.derivWorkspace;
+                const workspace = window.Blockly.getMainWorkspace();
                 const toolbox_width = document.getElementById('gtm-toolbox')?.getBoundingClientRect().width || 0;
                 const block_canvas_rect = workspace.svgBlockCanvas_?.getBoundingClientRect(); // eslint-disable-line
 

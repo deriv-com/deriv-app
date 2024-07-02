@@ -224,20 +224,10 @@ export const loadBlocks = (xml, drop_event, event_group, workspace) => {
     }
 };
 
-export const loadWorkspace = async (xml, event_group, workspace) => {
-    Blockly.WorkspaceSvg.prototype.asyncClear = function () {
-        const { setLoading } = DBotStore.instance;
-        setLoading(true);
-
-        return new Promise(resolve => {
-            this.clear();
-            setLoading(false);
-            resolve();
-        });
-    };
+export const loadWorkspace = (xml, event_group, workspace) => {
     Blockly.Events.setGroup(event_group);
-    await workspace.asyncClear();
     Blockly.Xml.domToWorkspace(xml, workspace);
+    workspace.cleanUp();
 };
 
 const loadBlocksFromHeader = (xml_string, block) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDevice } from '@deriv-com/ui';
 import { MobileFullPageModal, Modal, Text } from '@deriv/components';
-import { useHasMFAccountDeposited } from '@deriv/hooks';
+import { useHasMFAccountDeposited, useCryptoTransactions, useCurrentCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import DepositFiatIframe from '@deriv/cashier/src/modules/deposit-fiat/components/deposit-fiat-iframe/deposit-fiat-iframe';
@@ -10,10 +10,15 @@ import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
 const OneTimeDepositModal = observer(() => {
     const { isDesktop } = useDevice();
     const { client, ui } = useStore();
-    const { loginid } = client;
+    const { loginid, is_cr_account, is_mf_account, is_logged_in, currency } = client;
     const { should_show_one_time_deposit_modal, setShouldShowOneTimeDepositModal, toggleAccountSuccessModal } = ui;
     const liveChat = useLiveChat(false, loginid);
-    const { has_mf_account_deposited } = useHasMFAccountDeposited();
+    const currency_config = useCurrentCurrencyConfig();
+    // const { has_mf_account_deposited } = useHasMFAccountDeposited();
+    const has_mf_account_deposited = false;
+    const { data: crypto_transactions } = useCryptoTransactions(
+        is_logged_in && is_cr_account && currency_config?.is_crypto
+    );
 
     React.useEffect(() => {
         if (has_mf_account_deposited) {
@@ -53,7 +58,7 @@ const OneTimeDepositModal = observer(() => {
                     />
                 </Text>
             </div>
-            <DepositFiatIframe />
+            {/* <DepositFiatIframe /> */}
         </div>
     );
 

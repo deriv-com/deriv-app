@@ -48,6 +48,7 @@ const TradersHub = observer(() => {
         openRealAccountSignup,
         is_from_signup_account,
         setIsFromSignupAccount,
+        setShouldShowOneTimeDepositModal,
     } = ui;
     const {
         is_landing_company_loaded,
@@ -104,6 +105,10 @@ const TradersHub = observer(() => {
     React.useEffect(() => {
         if (is_eu_user) setTogglePlatformType('cfd');
     }, [is_eu_user, setTogglePlatformType]);
+
+    React.useEffect(() => {
+        if (is_logged_in) setTimeout(() => setShouldShowOneTimeDepositModal(true), 2000);
+    }, [is_logged_in, setShouldShowOneTimeDepositModal]);
 
     React.useLayoutEffect(() => {
         startPerformanceEventTimer('option_multiplier_section_loading_time');

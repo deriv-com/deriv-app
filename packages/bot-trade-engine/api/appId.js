@@ -3,21 +3,6 @@ import { getAppId, getSocketURL } from '../shared';
 import APIMiddleware from './api-middleware';
 import { getLanguage } from '@deriv/translations';
 
-// let getLanguage;
-// (async () => {
-//     try {
-//         const translations = await import('@deriv/translations');
-//         getLanguage = translations?.getLanguage;
-//     } catch (error) {
-//         getLanguage = 'en';
-//         // eslint-disable-next-line no-console
-//         console.warn('Could not load translations.', error);
-//     }
-//     if (!getLanguage) {
-//         getLanguage = 'en';
-//     }
-// })();
-
 export const generateDerivApiInstance = (website_name = 'Deriv') => {
     const socket_url = `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
     const deriv_socket = new WebSocket(socket_url);

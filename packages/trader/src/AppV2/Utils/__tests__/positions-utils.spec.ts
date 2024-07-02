@@ -1,6 +1,14 @@
 import { TPortfolioPosition } from '@deriv/stores/types';
-import { CONTRACT_TYPES } from '@deriv/shared';
-import { getFilteredContractTypes, filterPositions, getProfit, getTotalPositionsProfit } from '../positions-utils';
+import { CONTRACT_TYPES, routes } from '@deriv/shared';
+import {
+    filterPositions,
+    getFilteredContractTypes,
+    getProfit,
+    getTotalPositionsProfit,
+    getTabIndexFromURL,
+    setPositionURLParams,
+    TAB_NAME,
+} from '../positions-utils';
 
 const mockedActivePositions = [
     {
@@ -349,5 +357,70 @@ describe('getProfit', () => {
 describe('getTotalPositionsProfit', () => {
     it('should return correct total profit, based on all positions', () => {
         expect(getTotalPositionsProfit(mockedActivePositions)).toEqual(-12.27);
+    });
+});
+
+describe('getTradeURLParams', () => {
+    const originalWindowLocation = window.location;
+
+    beforeEach(() => {
+        Object.defineProperty(window, 'location', {
+            configurable: true,
+            enumerable: true,
+            value: {
+                hostname: 'https://localhost:8443/',
+                pathname: routes.trader_positions,
+            },
+        });
+    });
+
+    afterEach(() => {
+        Object.defineProperty(window, 'location', {
+            configurable: true,
+            enumerable: true,
+            value: originalWindowLocation,
+        });
+        location.search = '';
+    });
+
+    it('should return 0 if it is an open tab in location.search', () => {
+        location.search = `?tab_name=${TAB_NAME.OPEN.toLowerCase()}`;
+        expect(getTabIndexFromURL()).toBe(0);
+    });
+
+    it('should return 1 if it is a closed tab in location.search', () => {
+        location.search = `?tab_name=${TAB_NAME.CLOSED.toLowerCase()}`;
+        expect(getTabIndexFromURL()).toBe(1);
+    });
+
+    it('should return 0 if there is no appropriate query param', () => {
+        location.search = '';
+        expect(getTabIndexFromURL()).toBe(0);
+    });
+});
+
+describe('setPositionURLParams', () => {
+    const spyHistoryReplaceState = jest.spyOn(window.history, 'replaceState');
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
+    it('should set tab_name query param into URL based on the received value', () => {
+        setPositionURLParams(TAB_NAME.OPEN);
+        expect(spyHistoryReplaceState).toBeCalledWith(
+            {},
+            document.title,
+            `${routes.trader_positions}?tab_name=${TAB_NAME.OPEN}`
+        );
+    });
+
+    it('should set tab_name query param into URL based on the received value', () => {
+        setPositionURLParams(TAB_NAME.CLOSED);
+        expect(spyHistoryReplaceState).toBeCalledWith(
+            {},
+            document.title,
+            `${routes.trader_positions}?tab_name=${TAB_NAME.CLOSED}`
+        );
     });
 });

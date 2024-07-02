@@ -1,9 +1,8 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Field, FieldProps, Formik, FormikProps } from 'formik';
 
-import { Button, Icon, Input, Loading, Text } from '@deriv/components';
-import { useCurrentAccountDetails, useExchangeRate, useGrowthbookIsOn } from '@deriv/hooks';
+import { Button, InlineMessage, Input, Loading, Text } from '@deriv/components';
+import { useExchangeRate, useGrowthbookIsOn } from '@deriv/hooks';
 import { CryptoConfig, getCurrencyName } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -34,28 +33,39 @@ const Header = ({ currency }: THeaderProps) => {
     const currency_display_code = CryptoConfig.get()[currency].display_code;
 
     return (
-        <Text
-            as='h2'
-            color='prominent'
-            weight='bold'
-            align='center'
-            className='cashier__header cashier__content-header'
-        >
-            <Localize
-                i18n_default_text='Withdraw {{currency}} ({{currency_symbol}}) to your wallet'
-                values={{
-                    currency: currency_name,
-                    currency_symbol: currency_display_code,
-                }}
-            />
-        </Text>
+        <>
+            <Text
+                as='h2'
+                color='prominent'
+                weight='bold'
+                align='center'
+                className='cashier__header cashier__content-header'
+            >
+                <Localize
+                    i18n_default_text='Withdraw {{currency}} ({{currency_symbol}}) to your wallet'
+                    values={{
+                        currency: currency_name,
+                        currency_symbol: currency_display_code,
+                    }}
+                />
+            </Text>
+            <InlineMessage>
+                <Text as='ul' className='withdrawal-crypto-form__inline-list' size='xxs'>
+                    <li>
+                        <Localize i18n_default_text='Do not enter an address linked to an initial coin offering (ICO) purchase or crowdsale. If you do, the initial coin offering (ICO) tokens will not be credited into your account.' />
+                    </li>
+                    <li>
+                        <Localize i18n_default_text='Please note that your maximum and minimum withdrawal limits aren’t fixed. They change due to the high volatility of cryptocurrency.' />
+                    </li>
+                </Text>
+            </InlineMessage>
+        </>
     );
 };
 
 const WithdrawalCryptoForm = observer(() => {
     const [arrow_icon_direction, setArrowIconDirection] = React.useState<'right' | 'left'>('right');
-    const { client, ui } = useStore();
-    const { is_mobile } = ui;
+    const { client } = useStore();
     const {
         balance,
         currency,
@@ -81,7 +91,6 @@ const WithdrawalCryptoForm = observer(() => {
         resetConverter,
     } = crypto_fiat_converter;
     const { is_loading, percentage, percentageSelectorSelectionStatus, should_percentage_reset } = general_store;
-    const account_details = useCurrentAccountDetails();
     const { handleSubscription } = useExchangeRate();
     const [is_priority_crypto_withdrawal_enabled, isGBLoaded] = useGrowthbookIsOn({
         featureFlag: 'priority_crypto_withdrawal',
@@ -119,11 +128,7 @@ const WithdrawalCryptoForm = observer(() => {
 
     return (
         <div className='withdrawal-crypto-form__wrapper' data-testid='dt_withdrawal_crypto_form'>
-            {!is_mobile && <Header currency={currency} />}
-            <div className={classNames({ 'withdrawal-crypto-form__icon': is_mobile })}>
-                <Icon icon={`IcCurrency-${account_details?.icon?.toLowerCase()}`} size={is_mobile ? 64 : 128} />
-            </div>
-            {is_mobile && <Header currency={currency} />}
+            <Header currency={currency} />
             <Formik
                 initialValues={{
                     address: '',

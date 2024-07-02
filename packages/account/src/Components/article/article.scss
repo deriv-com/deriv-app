@@ -5,6 +5,9 @@
     height: fit-content;
     border-radius: 8px;
 
+    @include desktop-screen {
+        margin-inline-start: 1.2rem;
+    }
     @include mobile-or-tablet-screen {
         width: calc(100% - 3.2rem);
         margin: 1.6rem;

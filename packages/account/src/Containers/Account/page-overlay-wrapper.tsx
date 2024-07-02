@@ -2,11 +2,12 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Analytics } from '@deriv-com/analytics';
 import { PageOverlay, VerticalTab } from '@deriv/components';
-import { getOSNameWithUAParser, getSelectedRoute, getStaticUrl, routes as shared_routes } from '@deriv/shared';
+import { getOSNameWithUAParser, getSelectedRoute, routes as shared_routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import TradingHubLogout from './tradinghub-logout';
 import { TRoute } from '../../Types';
+import { useDevice } from '@deriv-com/ui';
 
 type RouteItems = React.ComponentProps<typeof VerticalTab>['list'];
 
@@ -22,10 +23,10 @@ type PageOverlayWrapperProps = {
  */
 const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperProps) => {
     const history = useHistory();
-    const { client, common, ui } = useStore();
-    const { is_mobile } = ui;
+    const { client, common } = useStore();
     const { logout } = client;
     const { is_from_derivgo } = common;
+    const { isDesktop } = useDevice();
 
     const passkeysMenuCloseActionEventTrack = React.useCallback(() => {
         Analytics.trackEvent('ce_passkey_account_settings_form', {
@@ -53,11 +54,11 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });
 
     const onClickLogout = () => {
-        history.push(shared_routes.index);
-        logout().then(() => (window.location.href = getStaticUrl('/')));
+        history.push(shared_routes.traders_hub);
+        logout();
     };
 
-    if (is_mobile && selected_route) {
+    if (!isDesktop && selected_route) {
         const RouteComponent = selected_route.component as React.ElementType<{ component_icon: string | undefined }>;
         return (
             <PageOverlay
@@ -83,6 +84,7 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
                 list={subroutes as RouteItems}
                 list_groups={list_groups}
                 extra_content={<TradingHubLogout handleOnLogout={onClickLogout} />}
+                is_sidebar_enabled={isDesktop}
             />
         </PageOverlay>
     );

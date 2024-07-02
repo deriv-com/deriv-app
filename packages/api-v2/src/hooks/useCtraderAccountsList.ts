@@ -26,8 +26,8 @@ const useCtraderAccountsList = () => {
                     ...account,
                     /** Account's currency config information */
                     currency_config: account.currency ? getConfig(account.currency) : undefined,
-                    /** The id of the cTrader account */
-                    id: account.account_id,
+                    /** The login id of the cTrader account */
+                    loginid: account.account_id,
                     /** indicating whether the account is a virtual-money account. */
                     is_virtual: account.account_type === 'demo',
                     /** Landing company shortcode the account belongs to. */
@@ -35,7 +35,7 @@ const useCtraderAccountsList = () => {
                     /** The platform of the account */
                     platform: 'ctrader' as const,
                     /** Formatted display balance */
-                    formatted_balance: displayMoney(account.balance || 0, account.currency || 'USD', {
+                    display_balance: displayMoney(account.balance || 0, account.currency || 'USD', {
                         preferred_language: authorize_data?.preferred_language,
                     }),
                     /** Converted balance from the exchange rate */

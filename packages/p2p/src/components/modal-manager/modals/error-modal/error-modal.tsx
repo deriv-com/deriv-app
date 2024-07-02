@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Button, Modal, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
@@ -11,6 +12,7 @@ type TErrorModalProps = {
     error_modal_title?: string;
     has_close_icon?: boolean;
     onClose?: () => void;
+    text_size?: string;
 };
 
 const ErrorModal = ({
@@ -19,6 +21,7 @@ const ErrorModal = ({
     error_modal_title,
     has_close_icon,
     onClose,
+    text_size = 's',
 }: TErrorModalProps) => {
     const { hideModal, is_modal_open } = useModalManagerContext();
     const { isDesktop } = useDevice();
@@ -32,8 +35,14 @@ const ErrorModal = ({
             toggleModal={onClose ?? hideModal}
             width={isDesktop ? '40rem' : '90rem'}
         >
-            <Modal.Body className='error-modal__body'>
-                <Text size='xs'>{error_message}</Text>
+            <Modal.Body
+                className={classNames('error-modal__body', {
+                    'error-modal__body--has-title': error_modal_title,
+                })}
+            >
+                <Text size={text_size}>
+                    <Localize i18n_default_text={error_message} />
+                </Text>
             </Modal.Body>
             <Modal.Footer>
                 <Button large primary onClick={onClose ?? hideModal}>

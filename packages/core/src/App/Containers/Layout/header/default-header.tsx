@@ -13,6 +13,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import HeaderAccountActions from './header-account-actions';
 import { useDevice } from '@deriv-com/ui';
 import DerivShortLogo from './deriv-short-logo';
+import TradersHubHomeButton from './traders-hub-home-button';
 
 const DefaultHeader = observer(() => {
     const { client, common, notifications, traders_hub, ui } = useStore();
@@ -94,6 +95,7 @@ const DefaultHeader = observer(() => {
                         <React.Fragment>
                             <DerivShortLogo />
                             <div className='header__divider' />
+                            <TradersHubHomeButton />
                             {!should_hide_platform_switcher && (
                                 <PlatformSwitcher
                                     app_routing_history={app_routing_history}

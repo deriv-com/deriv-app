@@ -8,11 +8,6 @@ import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
-const RealWalletsUpgrade = makeLazyLoader(
-    () => moduleLoader(() => import(/* webpackChunkName: "modal_real-wallets-upgrade" */ './real-wallets-upgrade')),
-    () => <Loading />
-)();
-
 const FailedVerificationModal = makeLazyLoader(
     () =>
         moduleLoader(
@@ -212,8 +207,7 @@ const ModalManager = () => {
         enableApp,
         disableApp,
         is_reset_trading_password_modal_visible,
-        setResetTradingPasswordModalOpen,
-        is_cfd_reset_password_modal_enabled,
+        setCFDPasswordResetModal,
         is_top_up_virtual_open,
         is_top_up_virtual_success,
         is_mt5_migration_modal_open,
@@ -223,7 +217,6 @@ const ModalManager = () => {
         is_account_transfer_modal_open,
         toggleAccountTransferModal,
         is_real_wallets_upgrade_on,
-        is_account_type_modal_visible,
         is_failed_verification_modal_visible,
         is_regulators_compare_modal_visible,
         is_wallet_migration_failed,
@@ -330,7 +323,7 @@ const ModalManager = () => {
                     platform={trading_platform_dxtrade_password_reset ? 'dxtrade' : 'mt5'}
                     enableApp={enableApp}
                     disableApp={disableApp}
-                    toggleResetTradingPasswordModal={setResetTradingPasswordModalOpen}
+                    toggleResetTradingPasswordModal={setCFDPasswordResetModal}
                     is_visible={is_reset_trading_password_modal_visible}
                     is_loading={is_populating_mt5_account_list}
                     verification_code={trading_platform_dxtrade_password_reset || trading_platform_mt5_password_reset}
@@ -347,9 +340,8 @@ const ModalManager = () => {
             {is_failed_verification_modal_visible && <FailedVerificationModal />}
             {!should_show_effortless_login_modal && (
                 <React.Fragment>
-                    {(is_real_wallets_upgrade_on || is_in_progress) && <RealWalletsUpgrade />}
                     {is_wallet_migration_failed && <WalletsMigrationFailed />}
-                    {is_eligible && <WalletsUpgradeModal />}
+                    {(is_eligible || is_real_wallets_upgrade_on || is_in_progress) && <WalletsUpgradeModal />}
                 </React.Fragment>
             )}
         </React.Fragment>

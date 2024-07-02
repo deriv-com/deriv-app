@@ -32,11 +32,10 @@ window.Blockly = {
 
 describe('WorkspaceWrapper', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+    const mock_store = mockStore({});
 
     beforeEach(() => {
-        const mock_store = mockStore({});
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
-
         act(() => {
             mock_DBot_store?.blockly_store?.setLoading(false);
             mock_DBot_store?.flyout.setVisibility(true);
@@ -52,6 +51,7 @@ describe('WorkspaceWrapper', () => {
     });
 
     describe('should render WorkspaceWrapper with inner components', () => {
+        mock_store.ui.is_desktop = true;
         beforeEach(() => {
             render(<WorkspaceWrapper />, { wrapper });
         });
@@ -63,7 +63,7 @@ describe('WorkspaceWrapper', () => {
         });
 
         it('should render WorkspaceWrapper with Toolbar component', () => {
-            const toolbar_component = screen.getByTestId('dashboard__toolbar');
+            const toolbar_component = screen.getByTestId('dt_dashboard_toolbar');
 
             expect(toolbar_component).toBeInTheDocument();
         });

@@ -1,15 +1,15 @@
 //kept sometihings commented beacuse of mobx to integrate popup functionality here
 import React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, Dialog, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { Dialog, Icon, MobileFullPageModal, Text } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { rudderStackSendQsOpenEventFromDashboard } from '../bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
+import { rudderStackSendQsOpenEvent } from '../../analytics/rudderstack-quick-strategy';
+import DashboardBotList from './load-bot-preview/dashboard-bot-list';
 import GoogleDrive from './load-bot-preview/google-drive';
-import Recent from './load-bot-preview/recent';
 
 type TCardProps = {
     has_dashboard_strategies: boolean;
@@ -25,6 +25,8 @@ type TCardArray = {
 
 const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => {
     const { dashboard, load_modal, quick_strategy } = useDBotStore();
+    const { ui } = useStore();
+    const { is_desktop } = ui;
     const {
         onCloseDialog,
         dialog_options,
@@ -37,11 +39,6 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
     } = dashboard;
     const { handleFileChange, loadFileFromLocal } = load_modal;
     const { setFormVisibility } = quick_strategy;
-
-    const sendToRudderStackOnQuickStrategyIconClick = () => {
-        // send to rs if quick strategy is opened from dashbaord
-        rudderStackSendQsOpenEventFromDashboard();
-    };
 
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
@@ -84,7 +81,8 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             method: () => {
                 setActiveTab(DBOT_TABS.BOT_BUILDER);
                 setFormVisibility(true);
-                sendToRudderStackOnQuickStrategyIconClick();
+                // send to rs if quick strategy is opened from dashbaord
+                rudderStackSendQsOpenEvent({ subform_source: 'dashboard' });
             },
         },
     ];
@@ -141,7 +139,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                             setOpenSettings(NOTIFICATION_TYPE.BOT_IMPORT);
                         }}
                     />
-                    <DesktopWrapper>
+                    {is_desktop ? (
                         <Dialog
                             title={dialog_options.title}
                             is_visible={is_dialog_open}
@@ -152,8 +150,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                         >
                             <GoogleDrive />
                         </Dialog>
-                    </DesktopWrapper>
-                    <MobileWrapper>
+                    ) : (
                         <MobileFullPageModal
                             is_modal_open={is_dialog_open}
                             className='load-strategy__wrapper'
@@ -169,9 +166,9 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                                 <GoogleDrive />
                             </div>
                         </MobileFullPageModal>
-                    </MobileWrapper>
+                    )}
                 </div>
-                <Recent is_file_supported={is_file_supported} />
+                <DashboardBotList is_file_supported={is_file_supported} />
             </div>
         ),
         // eslint-disable-next-line react-hooks/exhaustive-deps

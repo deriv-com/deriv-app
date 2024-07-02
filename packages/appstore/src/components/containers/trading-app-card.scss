@@ -47,9 +47,9 @@
             height: fit-content;
             width: fit-content;
             margin-inline-start: 1rem;
-            background-color: var(--brand-red-coral);
-            color: var(--text-colored-background);
-            border-radius: $BORDER_RADIUS * 4;
+            background-color: $color-yellow-4;
+            color: $color-yellow-5;
+            border-radius: $BORDER_RADIUS;
         }
     }
 

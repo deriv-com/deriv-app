@@ -6,9 +6,6 @@
 
     @include mobile {
         animation: popup 0.2s;
-    }
-
-    @include mobile {
         width: calc(100vw - 3.2rem);
     }
 

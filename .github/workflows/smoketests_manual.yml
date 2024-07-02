@@ -1,0 +1,35 @@
+name: Run Smoke Tests - Manually
+run-name: Manual run of tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+  trigger-workflow:
+    runs-on: ubuntu-latest
+    steps:
+        
+    - name: Trigger deriv-app smoke tests from regentmarkets
+      uses: actions/github-script@v6
+      env: 
+        E2E_WORKFLOW_SUITE: ${{ secrets.E2E_WORKFLOW_SUITE }}
+        E2E_WORKFLOW_ENV: ${{ secrets.E2E_WORKFLOW_ENV }}
+      with:
+        github-token: ${{ secrets.E2E_WORKFLOW_TOKEN }}
+        script: |
+          const workflowInputs = {
+            environment: $E2E_WORKFLOW_ENV,
+            suite: $E2E_WORKFLOW_SUITE,
+            appRegUrl: 'https://deriv-app-git-fork-maryia-matskevich-deriv-maryia-bot-1913.binary.sx/',
+            issue_number: '15719',
+            user_name: 'maryia-deriv'
+            };
+          const response = await github.rest.actions.createWorkflowDispatch({
+            owner: 'regentmarkets',
+            repo: 'e2e-deriv-app',
+            workflow_id: 'E2E_Run_PR.yml',
+            ref: 'mark/pr-commit-v2',
+            inputs: workflowInputs
+          });
+          console.log('Workflow dispatched successfully:', response);
+

@@ -7,8 +7,8 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 
 import DerivComLogo from 'Assets/ic-brand-deriv-red.svg';
-import FormSubHeader from 'Components/form-sub-header';
-import SentEmailModal from 'Components/sent-email-modal';
+import FormSubHeader from '../../../Components/form-sub-header';
+import SentEmailModal from '../../../Components/sent-email-modal';
 
 import PlatformDescription from './platform-description';
 

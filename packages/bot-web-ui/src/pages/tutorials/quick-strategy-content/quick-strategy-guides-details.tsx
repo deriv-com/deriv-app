@@ -3,7 +3,7 @@ import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { rudderStackSendSelectQsStrategyGuideEvent } from '../../bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
+import { rudderStackSendSelectQsStrategyGuideEvent } from '../../../analytics/rudderstack-tutorials';
 import { STRATEGIES } from '../../bot-builder/quick-strategy/config';
 import StrategyTabContent from '../../bot-builder/quick-strategy/form-wrappers/strategy-tab-content';
 
@@ -22,8 +22,8 @@ type TQuickStrategyGuides = {
 const QuickStrategyGuidesDetail = observer(
     ({ quick_strategy_tab_content, tutorial_selected_strategy, setTutorialSelectedStrategy }: TQuickStrategyGuides) => {
         const { ui } = useStore();
-        const { is_mobile } = ui;
-        const text_size = is_mobile ? 'xs' : 's';
+        const { is_desktop } = ui;
+        const text_size = is_desktop ? 's' : 'xs';
 
         return (
             <>

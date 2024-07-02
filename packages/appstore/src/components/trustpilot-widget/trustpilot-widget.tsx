@@ -14,6 +14,8 @@ const TrustpilotWidget = () => {
     useEffect(() => {
         const getTrustpilotData = async () => {
             const res = await fetchTrustpilotData();
+            console.log('res: ', res);
+
             setTrustpilotData(res);
         };
 

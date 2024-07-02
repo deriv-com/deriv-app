@@ -9,7 +9,7 @@ export const fetchTrustpilotData = async () => {
 
     try {
         const appName = 'deriv.com';
-        const apiKey = process.env.TRUSTPILOT_API_KEY;
+        const apiKey = '1r8zJRzpGhWKWh6VuiAje4HWPVhEg3Hj';
 
         if (!appName || !apiKey) {
             return {
@@ -20,6 +20,8 @@ export const fetchTrustpilotData = async () => {
 
         const url = `https://api.trustpilot.com/v1/business-units/find?name=${appName}&apikey=${apiKey}`;
         const response = await fetch(url);
+
+        console.log('response: ', response);
 
         if (!response.ok) {
             return {

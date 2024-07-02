@@ -36,7 +36,61 @@ module.exports = function (env) {
             minimizer: MINIMIZERS,
             innerGraph: true,
             sideEffects: true,
-            useExports: true,
+            usedExports: true,
+            splitChunks: {
+                automaticNameDelimiter: '~',
+                cacheGroups: {
+                    default: {
+                        minChunks: 2,
+                        priority: -20,
+                        reuseExistingChunk: true,
+                    },
+                    defaultVendors: {
+                        chunks: 'all',
+                        idHint: 'vendors',
+                        priority: -10,
+                        test: /[\\/]node_modules[\\/]/,
+                    },
+                    assets: {
+                        chunks: 'all',
+                        test: /[\\/]Assets[\\/]/,
+                        idHint: 'assets',
+                        enforce: true,
+                    },
+                    utilities: {
+                        name: 'utilities',
+                        test: module => {
+                            // Access the resource path of the module
+                            const { resource } = module;
+                            if (!resource) return false;
+
+                            // Define inclusion patterns for Helpers and Constants directories
+                            const includePatterns = [
+                                /[\\/]Helpers[\\/]/, // Include Helpers directory
+                                /[\\/]Constants[\\/]/, // Include Constants directory
+                            ];
+
+                            // Define exclusion patterns to ensure other directories are not included
+                            const excludePatterns = [
+                                /[\\/]Stores[\\/]/, // Exclude all files within the Stores directory
+                            ];
+
+                            // Check if the module should be included
+                            const shouldBeIncluded = includePatterns.some(pattern => pattern.test(resource));
+
+                            // Check if the module should be excluded
+                            const shouldBeExcluded = excludePatterns.some(pattern => pattern.test(resource));
+
+                            return shouldBeIncluded && !shouldBeExcluded;
+                        },
+                        chunks: 'all',
+                        enforce: true,
+                    },
+                },
+                minChunks: 1,
+                minSize: 35000,
+                minSizeReduction: 40000,
+            },
         },
         output: {
             filename: 'cfd/js/[name].js',
@@ -53,8 +107,6 @@ module.exports = function (env) {
                 'react-dom': 'react-dom',
                 'react-router-dom': 'react-router-dom',
                 'react-router': 'react-router',
-                'react-qrcode': 'react-qrcode',
-                'react-transition-group': 'react-transition-group',
                 mobx: 'mobx',
                 '@deriv/shared': '@deriv/shared',
                 '@deriv/components': '@deriv/components',
@@ -69,15 +121,13 @@ module.exports = function (env) {
                 '@deriv/hooks': '@deriv/hooks',
                 '@deriv/stores': '@deriv/stores',
                 formik: 'formik',
+                'react-transition-group': 'react-transition-group',
                 classnames: 'classnames',
             },
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,
             /^@deriv\/translations\/.+$/,
             /^@deriv\/account\/.+$/,
-            /^@deriv-com\/translations\/.+$/,
-            /^@deriv-com\/analytics\/.+$/,
-            /^@deriv-com\/utils\/.+$/,
         ],
         target: 'web',
         plugins: plugins(base, false),

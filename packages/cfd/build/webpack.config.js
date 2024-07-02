@@ -54,6 +54,7 @@ module.exports = function (env) {
                         chunks: 'all',
                         test: /[\\/]Assets[\\/]/,
                         idHint: 'assets',
+                        enforce: true,
                     },
                     utilities: {
                         name: 'utilities',

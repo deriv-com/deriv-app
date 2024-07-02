@@ -11,6 +11,9 @@
             }
         }
     }
+    &.text {
+        border-radius: unset;
+    }
     &-paragraph {
         display: flex;
         flex-direction: column;

@@ -9,11 +9,12 @@ type TSkeletonProps = {
         rows: number;
         width?: string | number;
     };
-    variant?: 'icon';
+    variant?: typeof VARIANT[keyof typeof VARIANT];
 } & React.CSSProperties;
 
 export const VARIANT = {
     ICON: 'icon',
+    TEXT: 'text',
 } as const;
 
 const Skeleton = ({
@@ -51,7 +52,7 @@ const Skeleton = ({
             </div>
         );
     }
-    return <div className={clsx(className, 'skeleton', animated && 'animated')} style={style} />;
+    return <div className={clsx(className, 'skeleton', animated && 'animated', variant)} style={style} />;
 };
 
 export default Skeleton;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Skeleton } from '../../skeleton';
+import { Skeleton, VARIANT } from '../../skeleton';
 
 const TradeLoader = () => {
     return (
@@ -14,7 +14,7 @@ const TradeLoader = () => {
             </div>
             <div className='skeleton-box__trade-params'>
                 <div className='skeleton-box__trade-params-row'>
-                    <Skeleton width={96} height={24} />
+                    <Skeleton variant={VARIANT.TEXT} width={96} height={24} />
                     <Skeleton width={96} height={32} />
                 </div>
                 <div className='skeleton-box__trade-params-column'>

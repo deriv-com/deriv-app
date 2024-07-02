@@ -41,7 +41,6 @@ jest.mock('Components/poi/status/expired', () => jest.fn(() => 'mockedExpired'))
 
 const mock_props = {
     onStateChange: jest.fn(),
-    setIsCfdPoiCompleted: jest.fn(),
     is_from_external: false,
     height: '200',
 };

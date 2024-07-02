@@ -1,6 +1,6 @@
 import React from 'react';
 import { setColors, api_base } from '@deriv/bot-skeleton';
-import {ServerTime, ApiHelpers} from '@vinuderiv/bot-trade-engine';
+import { ServerTime, ApiHelpers } from '@vinuderiv/bot-trade-engine';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import TransactionDetailsModal from 'Components/transaction-details';

@@ -30,7 +30,7 @@ const ProgressSliderMobile = ({
 }: TProgressSliderMobileProps) => {
     const percentage = getTimePercentage(server_time, Number(start_time), Number(expiry_time));
     return (
-        <div className={classNames('dc-progress-slider-mobile', className)}>
+        <div className={classNames('dc-progress-slider-mobile', className)} data-testid='dt_progress_slider_mobile'>
             {ticks_count ? (
                 <ProgressTicksMobile
                     current_tick={current_tick}

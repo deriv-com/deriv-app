@@ -21,6 +21,7 @@ import {
     getUrlSmartTrader,
     getUrlBinaryBot,
     MT5_ACCOUNT_STATUS,
+    CFD_PRODUCTS_TITLE,
 } from '@deriv/shared';
 import OpenPositionsSVGModal from '../modals/open-positions-svg-modal';
 import './trading-app-card.scss';
@@ -59,7 +60,6 @@ const TradingAppCard = ({
     const { account_status: { authentication } = {} } = client;
 
     const [is_open_position_svg_modal_open, setIsOpenPositionSvgModalOpen] = React.useState(false);
-    const demo_label = localize('Demo');
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -161,15 +161,10 @@ const TradingAppCard = ({
                             color='prominent'
                             data-testid='dt_cfd-account-name'
                         >
-                            {!is_real && sub_title ? `${sub_title} ${demo_label}` : sub_title}
+                            {sub_title}
                         </Text>
                         {short_code_and_region && (
-                            <Text
-                                weight='bolder'
-                                size='xxxs'
-                                line_height='s'
-                                className='trading-app-card__details__short-code'
-                            >
+                            <Text size='xxxs' line_height='s' className='trading-app-card__details__short-code'>
                                 {short_code_and_region}
                             </Text>
                         )}
@@ -179,21 +174,15 @@ const TradingAppCard = ({
                             className='title'
                             size='xs'
                             line_height='s'
-                            weight='bold'
                             color={action_type === 'trade' ? 'prominent' : 'general'}
                             data-testid={
                                 action_type === 'get' || is_deriv_platform ? 'dt_platform-name' : 'dt_account-balance'
                             }
                         >
-                            {!is_real && !sub_title && !is_deriv_platform ? `${name} ${demo_label}` : name}
+                            {name}
                         </Text>
-                        {is_new && (
-                            <Text
-                                className='trading-app-card__details__new'
-                                weight='bolder'
-                                size='xxxs'
-                                line_height='s'
-                            >
+                        {is_new && name === CFD_PRODUCTS_TITLE.ZEROSPREAD && (
+                            <Text className='trading-app-card__details__new' weight='bolder' size='xxs' line_height='s'>
                                 <Localize i18n_default_text='NEW!' />;
                             </Text>
                         )}

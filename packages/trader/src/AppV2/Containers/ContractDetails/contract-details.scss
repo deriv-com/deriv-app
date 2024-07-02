@@ -1,0 +1,50 @@
+.contract-details {
+    background-color: rgb(245, 247, 249);
+    padding: var(--core-spacing-400);
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    gap: var(--semantic-spacing-general-sm);
+    height: 100vh;
+    padding-bottom: var(--semantic-spacing-general-4xl);
+    &--two-buttons {
+        padding-bottom: 186px;
+    }
+
+    &--one-button {
+        padding-bottom: 130px;
+    }
+    .contract-card-wrapper {
+        margin-top: var(--core-spacing-200);
+    }
+}
+.placeholder {
+    background-color: var(--core-color-solid-slate-50);
+}
+
+.contract-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--core-color-solid-slate-50);
+    border-radius: var(--core-borderRadius-500);
+    padding: var(--core-spacing-800);
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+    }
+
+    .last-row {
+        margin-top: var(--core-spacing-400);
+        .red {
+            color: var(--core-color-solid-coral-600);
+        }
+    }
+}

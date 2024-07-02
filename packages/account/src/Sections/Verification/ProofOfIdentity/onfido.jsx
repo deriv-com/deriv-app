@@ -13,7 +13,6 @@ const Onfido = ({
     onfido,
     redirect_button,
     manual,
-    setIsCfdPoiCompleted,
     country_code,
     handleViewComplete,
 }) => {
@@ -37,7 +36,6 @@ const Onfido = ({
                     <Unsupported
                         manual={manual}
                         is_from_external={is_from_external}
-                        setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                         country_code={country_code}
                         handleViewComplete={handleViewComplete}
                         onfido={onfido}

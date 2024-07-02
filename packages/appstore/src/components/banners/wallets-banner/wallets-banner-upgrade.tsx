@@ -26,7 +26,7 @@ const WalletsBannerUpgrade = observer(() => {
                     large
                     onClick={() => toggleWalletsUpgrade(true)}
                 >
-                    <Localize i18n_default_text='Enable now' />
+                    <Localize i18n_default_text="Let's go" />
                 </Button>
             </div>
             <Icon

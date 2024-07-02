@@ -41,6 +41,19 @@ describe('WithdrawalCryptoReceipt', () => {
         expect(reviewTextElement).toBeInTheDocument();
     });
 
+    it('should render the component with withdrawal information', () => {
+        const withdrawalReceiptWithFee = {
+            ...mockWithdrawalReceipt,
+            transactionFee: '0.0001',
+        };
+
+        render(<WithdrawalCryptoReceipt onClose={() => jest.fn()} withdrawalReceipt={withdrawalReceiptWithFee} />, {
+            wrapper,
+        });
+        const transactionFeeElement = screen.getByText(/Transaction fee/);
+        expect(transactionFeeElement).toBeInTheDocument();
+    });
+
     it('should trigger the close function when the "Close" button is clicked', () => {
         const onCloseMock = jest.fn();
 

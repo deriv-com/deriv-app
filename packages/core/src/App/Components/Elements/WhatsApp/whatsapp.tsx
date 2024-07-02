@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
 import { whatsapp_url } from '@deriv/shared';
 
-const WhatsApp = () => {
+const WhatsApp = ({ showPopover }: { showPopover?: boolean }) => {
     const liveChat = useLiveChat();
 
     if (!liveChat.isReady) return null;
@@ -17,9 +17,18 @@ const WhatsApp = () => {
             target='_blank'
             rel='noreferrer'
         >
-            <Popover classNameBubble='whatsapp__tooltip' alignment='top' message={localize('WhatsApp')} zIndex={9999}>
+            {showPopover ? (
+                <Popover
+                    classNameBubble='whatsapp__tooltip'
+                    alignment='top'
+                    message={localize('WhatsApp')}
+                    zIndex='9999'
+                >
+                    <Icon icon='IcWhatsApp' className='footer__icon' />
+                </Popover>
+            ) : (
                 <Icon icon='IcWhatsApp' className='footer__icon' />
-            </Popover>
+            )}
         </a>
     );
 };

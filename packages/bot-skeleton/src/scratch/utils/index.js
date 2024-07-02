@@ -435,7 +435,7 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
         scroll_x += -20;
         scroll_y += is_chronological ? scroll_amount : -scroll_amount;
     }
-    const is_RTL = Blockly.derivWorkspace.RTL;
+    const is_RTL = workspace.RTL;
     if (is_RTL) {
         // For RTL scroll we need to adjust the scroll amount
         scroll_x = scroll_amount;
@@ -456,8 +456,8 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
         if (window.innerWidth < 768) {
             workspace.scrollbar.set(0, scroll_y);
             const calc_scroll =
-                Blockly.derivWorkspace.svgBlockCanvas_?.getBoundingClientRect().width -
-                Blockly.derivWorkspace.svgBlockCanvas_?.getBoundingClientRect().left +
+                workspace.svgBlockCanvas_?.getBoundingClientRect().width -
+                workspace.svgBlockCanvas_?.getBoundingClientRect().left +
                 60;
             workspace.scrollbar.set(calc_scroll, scroll_y);
             return;

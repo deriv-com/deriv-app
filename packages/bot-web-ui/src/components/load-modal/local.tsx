@@ -19,7 +19,7 @@ const LocalComponent = observer(() => {
 
     const file_input_ref = React.useRef<HTMLInputElement>(null);
     const [is_file_supported, setIsFileSupported] = React.useState(true);
-    const { is_mobile } = ui;
+    const { is_desktop } = ui;
     const { is_loading } = blockly_store;
 
     useEffect(() => {
@@ -56,7 +56,7 @@ const LocalComponent = observer(() => {
                         </div>
                     </div>
                 </div>
-                {is_mobile && (
+                {!is_desktop && (
                     <div className='load-strategy__local-footer'>
                         <LocalFooter />
                     </div>
@@ -94,11 +94,9 @@ const LocalComponent = observer(() => {
                         handleFileChange(e, false);
                     }}
                 >
-                    {is_mobile ? (
-                        <Icon icon='IcLocal' className='load-strategy__local-icon' size={is_mobile ? 96 : 128} />
-                    ) : (
+                    {is_desktop ? (
                         <React.Fragment>
-                            <Icon icon='IcPc' className='load-strategy__local-icon' size={is_mobile ? 96 : 128} />
+                            <Icon icon='IcPc' className='load-strategy__local-icon' size={is_desktop ? 128 : 96} />
                             <div className='load-strategy__local-title'>
                                 <Localize i18n_default_text='Drag your XML file here' />
                             </div>
@@ -106,6 +104,8 @@ const LocalComponent = observer(() => {
                                 <Localize i18n_default_text='or, if you prefer...' />
                             </div>
                         </React.Fragment>
+                    ) : (
+                        <Icon icon='IcLocal' className='load-strategy__local-icon' size={is_desktop ? 128 : 96} />
                     )}
                     <Button
                         text={

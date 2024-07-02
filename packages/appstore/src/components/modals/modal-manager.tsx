@@ -8,11 +8,6 @@ import { useStores } from 'Stores';
 import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
-const RealWalletsUpgrade = makeLazyLoader(
-    () => moduleLoader(() => import(/* webpackChunkName: "modal_real-wallets-upgrade" */ './real-wallets-upgrade')),
-    () => <Loading />
-)();
-
 const FailedVerificationModal = makeLazyLoader(
     () =>
         moduleLoader(
@@ -345,9 +340,8 @@ const ModalManager = () => {
             {is_failed_verification_modal_visible && <FailedVerificationModal />}
             {!should_show_effortless_login_modal && (
                 <React.Fragment>
-                    {(is_real_wallets_upgrade_on || is_in_progress) && <RealWalletsUpgrade />}
                     {is_wallet_migration_failed && <WalletsMigrationFailed />}
-                    {is_eligible && <WalletsUpgradeModal />}
+                    {(is_eligible || is_real_wallets_upgrade_on || is_in_progress) && <WalletsUpgradeModal />}
                 </React.Fragment>
             )}
         </React.Fragment>

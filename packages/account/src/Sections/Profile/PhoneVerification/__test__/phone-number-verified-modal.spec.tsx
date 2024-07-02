@@ -1,7 +1,6 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
 import PhoneNumberVerifiedModal from '../phone-number-verified-modal';
 import userEvent from '@testing-library/user-event';
 import { routes } from '@deriv/shared';
@@ -17,11 +16,6 @@ jest.mock('react-router', () => ({
 
 describe('PhoneNumberVerifiedModal', () => {
     let modal_root_el: HTMLElement;
-    const mock_store = mockStore({
-        ui: {
-            is_mobile: false,
-        },
-    });
 
     beforeAll(() => {
         modal_root_el = document.createElement('div');
@@ -38,12 +32,10 @@ describe('PhoneNumberVerifiedModal', () => {
     const renderModal = () => {
         render(
             <MemoryRouter>
-                <StoreProvider store={mock_store}>
-                    <PhoneNumberVerifiedModal
-                        should_show_phone_number_verified_modal
-                        setShouldShowPhoneNumberVerifiedModal={mockSetShouldShowPhoneNumberVerifiedModal}
-                    />
-                </StoreProvider>
+                <PhoneNumberVerifiedModal
+                    should_show_phone_number_verified_modal
+                    setShouldShowPhoneNumberVerifiedModal={mockSetShouldShowPhoneNumberVerifiedModal}
+                />
             </MemoryRouter>
         );
     };

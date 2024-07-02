@@ -1,12 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import DidntGetTheCodeModal from '../didnt-get-the-code-modal';
-import { StoreProvider, mockStore } from '@deriv/stores';
 import userEvent from '@testing-library/user-event';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 
 describe('DidntGetTheCodeModal', () => {
-    const mock_store = mockStore({});
     const mockSetShouldShowDidntGetTheCodeModal = jest.fn();
     const mockSetOtpVerification = jest.fn();
     const mockReInitializeGetSettings = jest.fn();
@@ -17,20 +15,18 @@ describe('DidntGetTheCodeModal', () => {
 
     const renderComponent = (phone_verification_type: string) => {
         render(
-            <StoreProvider store={mock_store}>
-                <DidntGetTheCodeModal
-                    setIsButtonDisabled={mockSetIsButtonDisabled}
-                    reInitializeGetSettings={mockReInitializeGetSettings}
-                    should_show_didnt_get_the_code_modal={true}
-                    phone_verification_type={phone_verification_type}
-                    setShouldShowDidntGetTheCodeModal={mockSetShouldShowDidntGetTheCodeModal}
-                    setOtpVerification={mockSetOtpVerification}
-                    requestOnWhatsApp={mockRequestOnWhatsApp}
-                    requestOnSMS={mockRequestOnSms}
-                    email_otp_error={null}
-                    is_email_verified={false}
-                />
-            </StoreProvider>
+            <DidntGetTheCodeModal
+                setIsButtonDisabled={mockSetIsButtonDisabled}
+                reInitializeGetSettings={mockReInitializeGetSettings}
+                should_show_didnt_get_the_code_modal={true}
+                phone_verification_type={phone_verification_type}
+                setShouldShowDidntGetTheCodeModal={mockSetShouldShowDidntGetTheCodeModal}
+                setOtpVerification={mockSetOtpVerification}
+                requestOnWhatsApp={mockRequestOnWhatsApp}
+                requestOnSMS={mockRequestOnSms}
+                email_otp_error={null}
+                is_email_verified={false}
+            />
         );
     };
 

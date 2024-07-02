@@ -47,6 +47,7 @@ const OneTimeDepositModal = observer(() => {
                                 size={!isDesktop ? 'xs' : 's'}
                                 color='loss-danger'
                                 onClick={onLiveChatClick}
+                                data-testid='dt_live_chat'
                             />,
                         ]}
                     />

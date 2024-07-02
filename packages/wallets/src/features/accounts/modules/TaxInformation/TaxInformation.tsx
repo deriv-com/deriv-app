@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useMemo } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useResidenceList, useSettings } from '@deriv/api-v2';
@@ -31,37 +31,18 @@ const TaxInformation = () => {
         return countryCodeToPatternMapping;
     }, [isResidenceListSuccess, residenceList]);
 
-    // const tinValidator = useMemo(() => {
-    //     const patternStr = countryCodeToPatternMapper[formValues?.taxResidence];
-    //     try {
-    //         if (patternStr) {
-    //             Yup.string()
-    //                 .required('Please fill in Tax identification number')
-    //                 .matches(new RegExp(patternStr), 'The format is incorrect.')
-    //                 .validateSync(formValues?.taxIdentificationNumber);
-    //         } else {
-    //             Yup.string()
-    //                 .required('Please fill in Tax identification number')
-    //                 .validateSync(formValues?.taxIdentificationNumber);
-    //         }
-    //     } catch (err) {
-    //         return (err as Yup.ValidationError).message;
-    //     }
-    // }, [countryCodeToPatternMapper, formValues?.taxIdentificationNumber, formValues?.taxResidence]);
+    const getTinValidator = (pattern: string) => {
+        if (pattern) {
+            return Yup.string()
+                .required('Please fill in Tax identification number.')
+                .matches(new RegExp(pattern), 'The format is incorrect.');
+        }
+    };
 
-    // useEffect(() => {
-    //     if (settings && isResidenceListSuccess) {
-    //         setFormValues('citizenship', settings.citizen);
-    //         setFormValues('placeOfBirth', settings.place_of_birth);
-    //         setFormValues('taxResidence', settings.tax_residence);
-    //         setFormValues('accountOpeningReason', settings.account_opening_reason);
-    //     }
-    // }, [settings, setFormValues, isResidenceListSuccess]);
-
-    const Footer = ({ onSubmit }: { onSubmit: () => void }) => {
+    const Footer = ({ disabled, onSubmit }: { disabled: boolean; onSubmit: () => void }) => {
         return (
             <div className='wallets-tax-information__footer'>
-                <WalletButton onClick={onSubmit} type='submit'>
+                <WalletButton disabled={disabled} onClick={onSubmit} type='submit'>
                     Next
                 </WalletButton>
             </div>
@@ -73,7 +54,7 @@ const TaxInformation = () => {
             accountOpeningReason: settings.account_opening_reason,
             citizenship: settings.citizen,
             placeOfBirth: settings.place_of_birth,
-            taxIdentificationNumber: settings.tax_identification_number,
+            taxIdentificationNumber: settings.tax_identification_number ?? '',
             taxResidence: settings.tax_residence,
         }),
         [
@@ -97,18 +78,19 @@ const TaxInformation = () => {
                     values.taxIdentificationNumber
                 )
                     update({
+                        // @ts-expect-error broken api types for residenceList call
+                        account_opening_reason: values.accountOpeningReason,
                         citizen: values.citizenship,
                         place_of_birth: values.placeOfBirth,
-                        tax_residence: values.taxResidence,
-                        account_opening_reason: values.accountOpeningReason,
                         tax_identification_number: values.taxIdentificationNumber,
+                        tax_residence: values.taxResidence,
                     });
             }}
         >
-            {({ handleSubmit, setFieldValue, values }) => {
+            {({ handleSubmit, isValid, setFieldValue, values }) => {
                 return (
                     <ModalStepWrapper
-                        renderFooter={() => <Footer onSubmit={handleSubmit} />}
+                        renderFooter={() => <Footer disabled={!isValid} onSubmit={handleSubmit} />}
                         title='Add a real MT5 account'
                     >
                         <div className='wallets-tax-information'>
@@ -184,18 +166,15 @@ const TaxInformation = () => {
                                             onSelect={selectedItem => {
                                                 setFieldValue('taxResidence', selectedItem);
                                             }}
+                                            value={values.taxResidence ?? ''}
                                             variant='comboBox'
                                         />
                                         <FormField
-                                            // errorMessage={
-                                            //     !values?.taxResidence ? 'Please fill in tax residence' : tinValidator
-                                            // }
-                                            isInvalid={
-                                                !values.taxResidence || !values.taxIdentificationNumber /* ||
-                                                Boolean(tinValidator) */
-                                            }
                                             label='Tax identification number*'
                                             name='taxIdentificationNumber'
+                                            validationSchema={getTinValidator(
+                                                countryCodeToPatternMapper[values.taxResidence ?? '']
+                                            )}
                                         />
                                         <WalletDropdown
                                             label='Account opening reason*'
@@ -204,6 +183,7 @@ const TaxInformation = () => {
                                             onSelect={selectedItem =>
                                                 setFieldValue('accountOpeningReason', selectedItem)
                                             }
+                                            value={values.accountOpeningReason ?? ''}
                                             variant='comboBox'
                                         />
                                     </div>

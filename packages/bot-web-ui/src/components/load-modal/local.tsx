@@ -81,7 +81,7 @@ const LocalComponent = observer(() => {
                     message={localize(
                         'Importing XML files from Binary Bot and other third-party platforms may take longer.'
                     )}
-                    size='md'
+                    size='sm'
                     status='warning'
                     title=''
                     className='load-strategy__section_message'

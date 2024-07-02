@@ -146,3 +146,19 @@
         }
     }
 }
+
+.modal-player {
+    padding: unset;
+    border: unset;
+    overflow: hidden;
+
+    &::backdrop {
+        background-color: var(--core-color-opacity-black-600);
+    }
+
+    &__wrapper {
+        .player__controls__wrapper {
+            bottom: 0;
+        }
+    }
+}

@@ -224,8 +224,9 @@ export const loadBlocks = (xml, drop_event, event_group, workspace) => {
     }
 };
 
-export const loadWorkspace = (xml, event_group, workspace) => {
+export const loadWorkspace = async (xml, event_group, workspace) => {
     Blockly.Events.setGroup(event_group);
+    await workspace.asyncClear();
     Blockly.Xml.domToWorkspace(xml, workspace);
     workspace.cleanUp();
 };

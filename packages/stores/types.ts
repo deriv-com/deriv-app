@@ -606,6 +606,8 @@ type TClientStore = {
     subscribeToExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
     unsubscribeFromExchangeRate: (base_currency: string, target_currency: string) => Promise<void>;
     unsubscribeFromAllExchangeRates: () => void;
+    is_cr_account: boolean;
+    is_mf_account: boolean;
 };
 
 type TCommonStoreError = {

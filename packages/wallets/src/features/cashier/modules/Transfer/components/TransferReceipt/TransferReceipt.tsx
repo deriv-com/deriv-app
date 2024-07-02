@@ -22,6 +22,7 @@ const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balan
         return (
             <AppCard
                 activeWalletCurrency={activeWallet?.currency}
+                appName={account?.accountName}
                 balance={balance}
                 cardSize='md'
                 device={isMobile ? 'mobile' : 'desktop'}

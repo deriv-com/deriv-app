@@ -7,8 +7,8 @@ import './PoaScreen.scss';
 
 const PoaScreen: React.FC = () => (
     <div className='wallets-poa'>
-        <IDVDocumentUpload />
         <PersonalDetails />
+        <IDVDocumentUpload />
         <AddressSection />
         <DocumentSubmission />
     </div>

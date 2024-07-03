@@ -74,6 +74,7 @@ type TAutoComplete = {
  * @param has_real_account - has real account
  * @returns react node
  */
+
 const AddressDetails = observer(
     ({
         getCurrentStep,

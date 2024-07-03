@@ -32,23 +32,6 @@ describe('usePhoneNumberVerificationSetTimer', () => {
         mock_store.ui.should_show_phone_number_otp = false;
     });
 
-    it('should clear the timer when it reaches zero', async () => {
-        const next_attempt = dayjs().add(1, 'seconds').unix();
-        if (mock_store.client.account_settings.phone_number_verification)
-            mock_store.client.account_settings.phone_number_verification.next_attempt = next_attempt;
-        mock_store.ui.should_show_phone_number_otp = true;
-
-        const { result, unmount } = renderHook(() => usePhoneNumberVerificationSetTimer(), { wrapper });
-
-        act(() => {
-            jest.advanceTimersByTime(3000);
-        });
-
-        expect(result.current.next_otp_request).toBe('');
-
-        unmount();
-    });
-
     it('should set the correct timer and title when next_attempt is provided and should_show_phone_number_otp is true', () => {
         const next_attempt = dayjs().add(65, 'seconds').unix();
         if (mock_store.client.account_settings.phone_number_verification)

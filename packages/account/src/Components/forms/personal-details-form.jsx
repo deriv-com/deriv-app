@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { Field, useFormikContext } from 'formik';
-import { useDevice } from '@deriv-com/ui';
 import {
     Autocomplete,
     Checkbox,
@@ -21,6 +20,7 @@ import FormBodySection from '../form-body-section';
 import { DateOfBirthField, FormInputField } from './form-fields';
 import FormSubHeader from '../form-sub-header';
 import InlineNoteWithIcon from '../inline-note-with-icon';
+import { useDevice } from '@deriv-com/ui';
 
 const PersonalDetailsForm = props => {
     const { isDesktop } = useDevice();
@@ -131,7 +131,7 @@ const PersonalDetailsForm = props => {
                     <InlineNoteWithIcon
                         icon='IcAlertWarning'
                         message={poa_clarification_message}
-                        font_size={!isDesktop ? 'xxxs' : 'xs'}
+                        font_size={isDesktop ? 'xs' : 'xxxs'}
                     />
                 )}
                 <FormBodySection
@@ -143,7 +143,7 @@ const PersonalDetailsForm = props => {
                     <fieldset className='account-form__fieldset'>
                         {'salutation' in values && !is_eu_user && (
                             <div>
-                                <Text size={!isDesktop ? 'xs' : 'xxs'} align={!isDesktop && 'center'}>
+                                <Text size={isDesktop ? 'xxs' : 'xs'} align={!isDesktop && 'center'}>
                                     {is_virtual ? (
                                         localize(
                                             'Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your account settings.'
@@ -530,7 +530,7 @@ const PersonalDetailsForm = props => {
                         label={
                             <Localize i18n_default_text='I confirm that the name and date of birth above match my chosen identity document' />
                         }
-                        label_font_size={!isDesktop ? 'xxs' : 'xs'}
+                        label_font_size={isDesktop ? 'xs' : 'xxs'}
                         disabled={is_confirmation_checkbox_disabled}
                         onChange={handleChange}
                         has_error={!!(touched.confirmation_checkbox && errors.confirmation_checkbox)}
@@ -596,7 +596,7 @@ const PersonalDetailsForm = props => {
                                 label={
                                     <Localize i18n_default_text='I confirm that my tax information is accurate and complete.' />
                                 }
-                                label_font_size={!isDesktop ? 'xxs' : 'xs'}
+                                label_font_size={isDesktop ? 'xs' : 'xxs'}
                                 onChange={e => {
                                     setFieldValue('crs_confirmation', e.target.checked, true);
                                     setFieldTouched('crs_confirmation', true);
@@ -629,7 +629,6 @@ const PhoneField = ({ value, editable_fields, has_real_account, required }) => (
 
 const PlaceOfBirthField = ({ handleChange, setFieldValue, disabled, residence_list, required }) => {
     const { isDesktop } = useDevice();
-
     return (
         <Field name='place_of_birth'>
             {({ field, meta }) => (
@@ -687,7 +686,6 @@ const TaxResidenceField = ({
     disabled,
 }) => {
     const { isDesktop } = useDevice();
-
     return (
         <Field name='tax_residence'>
             {({ field, meta }) => (
@@ -761,7 +759,6 @@ const TaxIdentificationNumberField = ({
     required = false,
 }) => {
     const { isDesktop } = useDevice();
-
     return (
         <div className='details-form__tax'>
             <FormInputField
@@ -810,7 +807,6 @@ const TaxIdentificationNumberField = ({
 
 const AccountOpeningReasonField = ({ no_header, required, account_opening_reason_list, setFieldValue, disabled }) => {
     const { isDesktop } = useDevice();
-
     return (
         <React.Fragment>
             {!no_header && <FormSubHeader title={localize('Account opening reason')} />}

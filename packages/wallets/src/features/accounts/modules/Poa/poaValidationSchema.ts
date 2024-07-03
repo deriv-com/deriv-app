@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-export const addressSectionValidationSchema = Yup.object().shape({
+export const poaValidationSchema = Yup.object().shape({
     firstLine: Yup.string()
         .trim()
         .required('First line of address is required.')
@@ -9,6 +9,7 @@ export const addressSectionValidationSchema = Yup.object().shape({
             /^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{0,70}$/u,
             "Use only the following special characters: . , ' : ; ( ) ° @ # / -'"
         ),
+    poaDocument: Yup.mixed().required(),
     secondLine: Yup.string()
         .trim()
         .max(70, 'Should be less than 70.')

@@ -7,3 +7,5 @@ export type TAddressDetails = {
     townCityLine: THooks.AccountSettings['address_city'];
     zipCodeLine: THooks.AccountSettings['address_postcode'];
 };
+
+export type TPoaDocument = { poaDocument?: File };

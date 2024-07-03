@@ -10,13 +10,9 @@ import { TranslationFlag } from '@deriv/shared';
 
 const ToggleLanguageSettings = observer(({ showPopover }: { showPopover?: boolean }) => {
     const { common, ui } = useStore();
-    const { currentLang, switchLanguage } = useTranslations();
+    const { currentLang } = useTranslations();
     const { is_language_settings_modal_on, toggleLanguageSettingsModal } = ui;
-    const { is_language_changing, current_language } = common;
-
-    React.useEffect(() => {
-        switchLanguage(current_language);
-    }, [current_language, switchLanguage]);
+    const { is_language_changing } = common;
 
     const toggle_settings_class = classNames('ic-language', 'footer__link', {
         'ic-settings--active': is_language_settings_modal_on,
@@ -56,7 +52,7 @@ const ToggleLanguageSettings = observer(({ showPopover }: { showPopover?: boolea
             <Modal
                 id='dt_settings_modal'
                 is_open={is_language_settings_modal_on}
-                title={localize('Select Language')}
+                title={localize('Select language')}
                 toggleModal={toggleLanguageSettingsModal}
                 width='616px'
                 should_header_stick_body={false}

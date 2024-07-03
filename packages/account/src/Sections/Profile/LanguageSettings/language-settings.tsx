@@ -12,14 +12,8 @@ const LanguageSettings = observer(() => {
     const { switchLanguage, currentLang, localize } = useTranslations();
     const { has_wallet } = client;
     // [TODO]: Remove changeSelectedLanguage() when whole app starts to use @deriv-com/translations
-    const { changeSelectedLanguage, current_language } = common;
+    const { changeSelectedLanguage } = common;
     const { isDesktop } = useDevice();
-
-    // [TODO]: Remove useEffect() when whole app starts to use @deriv-com/translations
-    // This is required to sync language state b/w footer language icon and Language settings
-    useEffect(() => {
-        switchLanguage(current_language);
-    }, [current_language, switchLanguage]);
 
     if (!isDesktop || has_wallet) {
         return <Redirect to={routes.traders_hub} />;

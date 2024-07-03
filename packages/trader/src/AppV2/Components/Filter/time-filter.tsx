@@ -1,19 +1,27 @@
 import React from 'react';
-import Chip from 'AppV2/Components/Chip';
+import moment from 'moment';
 import { toMoment } from '@deriv/shared';
-import { ActionSheet, RadioGroup } from '@deriv-com/quill-ui';
+import { ActionSheet, Chip, RadioGroup, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import CustomDateFilterButton from './custom-time-filter-button';
 import DateRangePicker from 'AppV2/Components/DatePicker';
 
 type TTimeFilter = {
     customTimeRangeFilter?: string;
-    handleDateChange: (values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean }) => void;
+    handleDateChange: (
+        values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean },
+        otherParams?: {
+            date_range?: Record<string, string | number>;
+            shouldFilterContractTypes?: boolean;
+        }
+    ) => void;
     setTimeFilter: (newTimeFilter?: string | undefined) => void;
     setCustomTimeRangeFilter: (newCustomTimeFilter?: string | undefined) => void;
     setNoMatchesFound: React.Dispatch<React.SetStateAction<boolean>>;
     timeFilter?: string;
 };
+
+type TDateChangeArguments = Record<string, { from: moment.Moment; to: moment.Moment }>;
 
 const timeFilterList = [
     {
@@ -70,35 +78,40 @@ const TimeFilter = ({
         setTimeFilter(value);
         setIsDropdownOpen(false);
 
-        if (value === 'Today') {
-            handleDateChange({
+        const dateChangeArguments: TDateChangeArguments = {
+            Today: {
                 from: toMoment().startOf('day'),
                 to: toMoment().endOf('day'),
-                is_batch: true,
-            });
-        } else if (value === 'Yesterday') {
-            handleDateChange({
+            },
+            Yesterday: {
                 from: toMoment().subtract(1, 'days').startOf('day'),
                 to: toMoment().subtract(1, 'days').endOf('day'),
-                is_batch: true,
-            });
-        } else {
-            handleDateChange({
+            },
+            default: {
                 from: toMoment().startOf('day').subtract(Number(value), 'day').add(1, 's'),
                 to: toMoment().endOf('day'),
-                is_batch: true,
-            });
-        }
+            },
+        };
+
+        handleDateChange(
+            { ...(dateChangeArguments[value] ?? dateChangeArguments.default), is_batch: true },
+            {
+                shouldFilterContractTypes: true,
+            }
+        );
     };
 
     const onReset = () => {
         setTimeFilter('');
         setCustomTimeRangeFilter('');
         setIsDropdownOpen(false);
-        handleDateChange({
-            to: toMoment().endOf('day'),
-            is_batch: true,
-        });
+        handleDateChange(
+            {
+                to: toMoment().endOf('day'),
+                is_batch: true,
+            },
+            { shouldFilterContractTypes: true }
+        );
         setNoMatchesFound(false);
     };
 
@@ -107,16 +120,18 @@ const TimeFilter = ({
 
     return (
         <React.Fragment>
-            <Chip
+            <Chip.Standard
+                className='filter__chip'
                 dropdown
                 isDropdownOpen={isDropdownOpen}
-                label={getChipLabel()}
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 selected={isChipSelected}
-                size='sm'
-            />
+                size='md'
+            >
+                <Text size='sm'>{getChipLabel()}</Text>
+            </Chip.Standard>
             <ActionSheet.Root isOpen={isDropdownOpen} onClose={() => setIsDropdownOpen(false)} position='left'>
-                <ActionSheet.Portal>
+                <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Header title={<Localize i18n_default_text='Filter by trade types' />} />
                     <ActionSheet.Content className='filter__item__wrapper'>
                         <RadioGroup
@@ -146,12 +161,13 @@ const TimeFilter = ({
             </ActionSheet.Root>
             {showDatePicker && (
                 <DateRangePicker
-                    handleDateChange={handleDateChange}
-                    isOpen={showDatePicker}
-                    onClose={() => {
+                    applyHandler={() => {
                         setShowDatePicker(false);
                         setIsDropdownOpen(false);
                     }}
+                    handleDateChange={handleDateChange}
+                    isOpen={showDatePicker}
+                    onClose={() => setShowDatePicker(false)}
                     setCustomTimeRangeFilter={setCustomTimeRangeFilter}
                 />
             )}

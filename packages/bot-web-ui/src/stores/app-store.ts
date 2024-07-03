@@ -76,7 +76,7 @@ export default class AppStore {
             return false;
         }
 
-        if (window.location.pathname === routes.bot) {
+        if (window.location.pathname.includes(routes.bot)) {
             if (client.should_show_eu_error) {
                 return showDigitalOptionsUnavailableError(
                     common.showError,
@@ -244,6 +244,7 @@ export default class AppStore {
                         b =>
                             b.type === 'trade_definition_tradeoptions' ||
                             b.type === 'trade_definition_multiplier' ||
+                            b.type === 'trade_definition_accumulator' ||
                             (b.isDescendantOf('trade_definition_multiplier') && b.category_ === 'trade_parameters')
                     );
 

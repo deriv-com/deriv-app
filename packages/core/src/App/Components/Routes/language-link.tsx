@@ -34,7 +34,7 @@ const LanguageLink = observer(({ is_clickable = false, lang, toggleModal }: TLan
         </React.Fragment>
     );
 
-    const handleLanguageChange = async (lang:string) => {
+    const handleLanguageChange = async (lang: string) => {
         await changeSelectedLanguage(lang);
         switchLanguage(lang);
         toggleModal?.();
@@ -57,7 +57,7 @@ const LanguageLink = observer(({ is_clickable = false, lang, toggleModal }: TLan
                     id={`dt_settings_${lang}_button`}
                     key={lang}
                     onClick={async () => {
-                        await handleLanguageChange(lang)
+                        await handleLanguageChange(lang);
                     }}
                     className={classNames('settings-language__language-link', {
                         'settings-language__language-link--active': is_active,

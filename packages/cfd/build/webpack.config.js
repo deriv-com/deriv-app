@@ -53,11 +53,12 @@ module.exports = function (env) {
                     },
                     assets: {
                         chunks: 'all',
+                        name: 'assets',
                         test: /[\\/]Assets[\\/]/,
-                        idHint: 'assets',
                         enforce: true,
                     },
                     internalCFDStoreUsage: {
+                        name: 'internalCFDStoreUsage',
                         test: module => {
                             const isStoreModule = module.resource && module.resource.includes('Stores');
                             return isStoreModule;

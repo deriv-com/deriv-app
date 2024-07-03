@@ -1,9 +1,9 @@
 import React from 'react';
 import PhoneVerificationCard from './phone-verification-card';
-import { Button, Text, TextField } from '@deriv-com/quill-ui';
+import { Button, Snackbar, Text, TextField } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { useRequestPhoneNumberOTP, useSettings } from '@deriv/hooks';
+import { usePhoneNumberVerificationSetTimer, useRequestPhoneNumberOTP, useSettings } from '@deriv/hooks';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 import { validatePhoneNumber } from './validation';
 
@@ -14,6 +14,7 @@ type TConfirmPhoneNumber = {
 const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber) => {
     const [phone_number, setPhoneNumber] = React.useState('');
     const [phone_verification_type, setPhoneVerificationType] = React.useState('');
+    const [is_button_loading, setIsButtonLoading] = React.useState(false);
     const {
         requestOnSMS,
         requestOnWhatsApp,
@@ -21,22 +22,27 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
         setErrorMessage,
         setUsersPhoneNumber,
         is_email_verified,
-        ...rest
+        email_otp_error,
     } = useRequestPhoneNumberOTP();
-    const { data: account_settings } = useSettings();
+    const { data: account_settings, invalidate } = useSettings();
     const { ui } = useStore();
     const { setShouldShowPhoneNumberOTP } = ui;
+    const { next_otp_request } = usePhoneNumberVerificationSetTimer(true);
 
     React.useEffect(() => {
         setPhoneNumber(account_settings?.phone || '');
     }, [account_settings?.phone]);
 
     React.useEffect(() => {
+        if (email_otp_error) {
+            invalidate('get_settings').then(() => setIsButtonLoading(false));
+        }
         if (is_email_verified) {
+            setIsButtonLoading(false);
             setOtpVerification({ show_otp_verification: true, phone_verification_type });
             setShouldShowPhoneNumberOTP(true);
         }
-    }, [is_email_verified]);
+    }, [is_email_verified, email_otp_error, invalidate]);
 
     const handleOnChangePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPhoneNumber(e.target.value);
@@ -44,11 +50,14 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
     };
 
     const handleSubmit = async (phone_verification_type: string) => {
+        setIsButtonLoading(true);
         setPhoneVerificationType(phone_verification_type);
         const { error } = await setUsersPhoneNumber({ phone: phone_number });
 
         if (!error) {
             phone_verification_type === VERIFICATION_SERVICES.SMS ? requestOnSMS() : requestOnWhatsApp();
+        } else {
+            setIsButtonLoading(false);
         }
     };
 
@@ -73,17 +82,35 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
                     fullWidth
                     size='lg'
                     onClick={() => handleSubmit(VERIFICATION_SERVICES.SMS)}
+                    disabled={is_button_loading || !!next_otp_request}
                 >
                     <Text bold>
                         <Localize i18n_default_text='Get code via SMS' />
                     </Text>
                 </Button>
-                <Button color='black' fullWidth size='lg' onClick={() => handleSubmit(VERIFICATION_SERVICES.WHATSAPP)}>
+                <Button
+                    color='black'
+                    fullWidth
+                    size='lg'
+                    onClick={() => handleSubmit(VERIFICATION_SERVICES.WHATSAPP)}
+                    disabled={is_button_loading || !!next_otp_request}
+                >
                     <Text color='white' bold>
                         <Localize i18n_default_text='Get code via WhatsApp' />
                     </Text>
                 </Button>
             </div>
+            <Snackbar
+                hasCloseButton={false}
+                //@ts-expect-error need to update message to use React.ReactNode from quill-ui
+                message={
+                    <Localize
+                        i18n_default_text='An error occurred. Request a new OTP in {{next_phone_number_attempt_timestamp}}.'
+                        values={{ next_phone_number_attempt_timestamp: next_otp_request }}
+                    />
+                }
+                isVisible={!!next_otp_request}
+            />
         </PhoneVerificationCard>
     );
 });

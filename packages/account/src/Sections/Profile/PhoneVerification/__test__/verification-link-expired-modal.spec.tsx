@@ -3,13 +3,22 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import VerificationLinkExpiredModal from '../verification-link-expired-modal';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { routes } from '@deriv/shared';
+import { usePhoneNumberVerificationSetTimer } from '@deriv/hooks';
 
-const mock_back_router = jest.fn();
+const mock_push_function = jest.fn();
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
     useHistory: () => ({
-        goBack: mock_back_router,
+        push: mock_push_function,
     }),
+}));
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    usePhoneNumberVerificationSetTimer: jest.fn(() => ({
+        next_otp_request: '',
+    })),
 }));
 
 describe('VerificationLinkExpiredModal', () => {
@@ -18,7 +27,7 @@ describe('VerificationLinkExpiredModal', () => {
 
     beforeEach(() => {
         mockSetShowVerificationLinkExpiredModal.mockClear();
-        mock_back_router.mockClear();
+        mock_push_function.mockClear();
     });
 
     beforeAll(() => {
@@ -55,19 +64,17 @@ describe('VerificationLinkExpiredModal', () => {
         expect(screen.getByText(/Get another link to verify your number./)).toBeInTheDocument();
     });
 
-    it('should render only mockSetShowVerificationLinkExpiredModal when Send new link is clicked', () => {
-        renderComponent();
-        const cancelButton = screen.getByRole('button', { name: buttons[0] });
-        userEvent.click(cancelButton);
-        expect(mockSetShowVerificationLinkExpiredModal).toBeCalledTimes(1);
-        expect(mock_back_router).not.toBeCalled();
-    });
-
     it('should render mockSetShowVerificationLinkExpiredModal and mock_back_router when Cancel is clicked', () => {
         renderComponent();
         const cancelButton = screen.getByRole('button', { name: buttons[1] });
         userEvent.click(cancelButton);
         expect(mockSetShowVerificationLinkExpiredModal).toBeCalledTimes(1);
-        expect(mock_back_router).toBeCalledTimes(1);
+        expect(mock_push_function).toBeCalledWith(routes.personal_details);
+    });
+
+    it('should show in 60s which is coming from usePhoneNumberVerificationSetTimer', () => {
+        (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_otp_request: ' in 60s' });
+        renderComponent();
+        expect(screen.getByText(/in 60s/)).toBeInTheDocument();
     });
 });

@@ -1,15 +1,11 @@
 import { act } from '@testing-library/react';
-import { otpRequestCountdown, validatePhoneNumber } from '../validation';
-import dayjs from 'dayjs';
+import { validatePhoneNumber } from '../validation';
 
 describe('validatePhoneNumber', () => {
-    let setErrorMessage: jest.Mock, setTitleMock: jest.Mock, setTimerMock: jest.Mock, current_time: dayjs.Dayjs;
+    let setErrorMessage: jest.Mock;
 
     beforeEach(() => {
         setErrorMessage = jest.fn();
-        setTitleMock = jest.fn();
-        setTimerMock = jest.fn();
-        current_time = dayjs();
     });
 
     it('should set an empty error message for a valid phone number', async () => {
@@ -58,23 +54,5 @@ describe('validatePhoneNumber', () => {
             validatePhoneNumber(invalidPhoneNumber, setErrorMessage);
         });
         expect(setErrorMessage).toHaveBeenCalledWith(['Please enter a valid phone number.']);
-    });
-
-    it('should set title and timer correctly if next_request is greater than 0', () => {
-        const nextAttemptTimestamp = current_time.add(60, 'seconds').unix();
-
-        otpRequestCountdown(nextAttemptTimestamp, setTitleMock, setTimerMock, current_time);
-
-        expect(setTitleMock).toHaveBeenCalledWith(60);
-        expect(setTimerMock).toHaveBeenCalledWith(60);
-    });
-
-    it('should not set title and timer if next_request is less than or equal to 0', () => {
-        const nextAttemptTimestamp = current_time.subtract(60, 'seconds').unix();
-
-        otpRequestCountdown(nextAttemptTimestamp, setTitleMock, setTimerMock, current_time);
-
-        expect(setTitleMock).not.toHaveBeenCalled();
-        expect(setTimerMock).not.toHaveBeenCalled();
     });
 });

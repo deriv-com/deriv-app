@@ -3,7 +3,7 @@ import { withRouter } from 'react-router';
 import { observer, useStore } from '@deriv/stores';
 import { BinaryRoutes } from '../Components/Routes';
 import ErrorComponent from '../Components/error-component';
-import { ThemeProvider } from '@deriv-com/quill-ui';
+import { SnackbarController, SnackbarProvider, ThemeProvider } from '@deriv-com/quill-ui';
 
 const Routes = observer(() => {
     const { client, common, ui } = useStore();
@@ -16,7 +16,10 @@ const Routes = observer(() => {
 
     return (
         <ThemeProvider theme={is_dark_mode_on ? 'dark' : 'light'}>
-            <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} />
+            <SnackbarProvider>
+                <SnackbarController />
+                <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} />
+            </SnackbarProvider>
         </ThemeProvider>
     );
 });

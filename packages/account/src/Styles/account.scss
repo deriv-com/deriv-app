@@ -471,6 +471,11 @@ $MIN_HEIGHT_FLOATING: calc(
                 padding-top: 0.6rem;
                 padding-inline-end: 1.2rem;
                 cursor: pointer;
+
+                &--disabled {
+                    cursor: not-allowed;
+                    color: rgba(#ff444f, 0.5);
+                }
             }
 
             &--verified {

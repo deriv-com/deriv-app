@@ -374,7 +374,7 @@ const PersonalDetailsForm = observer(() => {
                                             error={errors.phone}
                                             disabled={
                                                 isFieldDisabled('phone') ||
-                                                account_settings?.phone_number_verification?.verified
+                                                !!account_settings?.phone_number_verification?.verified
                                             }
                                             data-testid='dt_phone'
                                         />

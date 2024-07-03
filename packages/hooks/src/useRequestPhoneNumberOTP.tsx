@@ -27,7 +27,11 @@ const useRequestPhoneNumberOTP = () => {
         mutation: { mutateAsync: updateSettings },
     } = useSettings();
 
-    //TODOs: need to wait confirmation from the team whether to stay at phone number page when refresh or restart the email verification process again
+    React.useEffect(() => {
+        //@ts-expect-error will fix this later
+        if (email_otp_error) formatError(email_otp_error);
+    }, [email_otp_error]);
+
     const requestOnSMS = () => {
         mutate({
             payload: {
@@ -36,7 +40,7 @@ const useRequestPhoneNumberOTP = () => {
             },
         });
     };
-    //TODOs: need to wait confirmation from the team whether to stay at phone number page when refresh or restart the email verification process again
+
     const requestOnWhatsApp = () => {
         mutate({
             payload: {

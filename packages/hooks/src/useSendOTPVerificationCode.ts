@@ -4,7 +4,7 @@ import { TSocketError } from '@deriv/api/types';
 import { localize } from '@deriv/translations';
 import useRequestPhoneNumberOTP from './useRequestPhoneNumberOTP';
 
-/** A hook for requesting OTP which is sent on whatsapp or sms platforms */
+/** A hook for verifying Phone Number OTP and Email OTP */
 const useSendOTPVerificationCode = () => {
     const [phone_otp_error_message, setPhoneOtpErrorMessage] = React.useState('');
     const {
@@ -14,7 +14,8 @@ const useSendOTPVerificationCode = () => {
         isSuccess: is_phone_number_verified,
         ...rest
     } = useMutation('phone_number_verify');
-    const { sendEmailOTPVerification, email_otp_error, is_email_verified } = useRequestPhoneNumberOTP();
+    const { sendEmailOTPVerification, email_otp_error, is_email_verified, requestOnSMS, requestOnWhatsApp } =
+        useRequestPhoneNumberOTP();
 
     const formatPhoneOtpError = (error: TSocketError<'phone_number_verify'>['error']) => {
         switch (error.code) {
@@ -68,6 +69,8 @@ const useSendOTPVerificationCode = () => {
         data,
         sendPhoneOTPVerification,
         sendEmailOTPVerification,
+        requestOnSMS,
+        requestOnWhatsApp,
         email_otp_error,
         phone_otp_error,
         phone_otp_error_message,

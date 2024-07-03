@@ -4,6 +4,7 @@ import { Localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
 import { observer, useStore } from '@deriv/stores';
 import { LabelPairedCircleXmarkLgRegularIcon } from '@deriv/quill-icons';
+import { useDevice } from '@deriv-com/ui';
 
 type TCancelPhoneVerificationModal = {
     should_show_cancel_verification_modal: boolean;
@@ -17,15 +18,19 @@ const CancelPhoneVerificationModal = observer(
     }: TCancelPhoneVerificationModal) => {
         const history = useHistory();
         const handleCancelButton = () => {
+            setVerificationCode('', 'phone_number_verification');
+            setShouldShowPhoneNumberOTP(false);
             setShouldShowCancelVerificationModal(false);
             history.goBack();
         };
-        const { ui } = useStore();
-        const { is_mobile } = ui;
+        const { ui, client } = useStore();
+        const { setShouldShowPhoneNumberOTP } = ui;
+        const { isMobile } = useDevice();
+        const { setVerificationCode } = client;
 
         return (
             <Modal
-                isMobile={is_mobile}
+                isMobile={isMobile}
                 showHandleBar
                 isOpened={should_show_cancel_verification_modal}
                 primaryButtonCallback={() => setShouldShowCancelVerificationModal(false)}

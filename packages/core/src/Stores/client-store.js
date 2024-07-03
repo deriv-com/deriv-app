@@ -437,11 +437,11 @@ export default class ClientStore extends BaseStore {
             async () => {
                 const language = getRedirectionLanguage(this.account_settings?.preferred_language, this.is_new_session);
                 window.history.replaceState({}, document.title, urlForLanguage(language));
-
-                if (
+                const should_update_preferred_language =
                     language !== this.account_settings?.preferred_language &&
-                    this.preferred_language !== this.account_settings?.preferred_language
-                ) {
+                    this.preferred_language !== this.account_settings?.preferred_language;
+
+                if (should_update_preferred_language) {
                     this.setPreferredLanguage(language);
                     await WS.setSettings({
                         set_settings: 1,

@@ -19,6 +19,13 @@ const LanguageSettings = observer(() => {
         return <Redirect to={routes.traders_hub} />;
     }
 
+    const handleLanguageChange = async (language_key:string) => {
+        // [TODO]: Remove changeSelectedLanguage() when whole app starts to use @deriv-com/translations
+        // This function also helps in informing language change to BE
+        await changeSelectedLanguage(language_key);
+        switchLanguage(language_key);
+    };
+
     const allowed_languages: Record<string, string> = getAllowedLanguages(UNSUPPORTED_LANGUAGES);
     return (
         <div className='settings-language'>
@@ -33,10 +40,7 @@ const LanguageSettings = observer(() => {
                             is_current_language={currentLang === language_key}
                             name='language-radio-group'
                             onChange={async () => {
-                                // [TODO]: Remove changeSelectedLanguage() when whole app starts to use @deriv-com/translations
-                                // This function also helps in informing language change to BE
-                                await changeSelectedLanguage(language_key);
-                                switchLanguage(language_key);
+                                await handleLanguageChange(language_key);
                             }}
                         />
                     );

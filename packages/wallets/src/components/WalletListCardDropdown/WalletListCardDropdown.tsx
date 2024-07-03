@@ -12,9 +12,10 @@ import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import './WalletListCardDropdown.scss';
 
 type WalletList = {
-    listItem: React.ReactNode;
+    currency?: string;
+    currencyConfig?: THooks.CurrencyConfig;
+    loginid: string;
     text: React.ReactNode;
-    value: string;
 }[];
 
 const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
@@ -41,32 +42,13 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
             wallets
                 ?.filter(wallet => !wallet.is_virtual)
                 .map(wallet => ({
-                    listItem: (
-                        <div className='wallets-listcard-dropdown__list-item'>
-                            <WalletCurrencyIcon currency={wallet.currency ?? 'USD'} rounded />
-                            <div className='wallets-listcard-dropdown__list-content'>
-                                <WalletText size='2xs'>
-                                    <Trans defaults={`${wallet.currency} Wallet`} />
-                                </WalletText>
-                                <WalletText size='sm' weight='bold'>
-                                    <Trans
-                                        defaults={displayMoney?.(
-                                            balanceData?.accounts?.[wallet.loginid]?.balance ?? 0,
-                                            wallet?.currency || '',
-                                            {
-                                                fractional_digits: wallet?.currency_config?.fractional_digits,
-                                            }
-                                        )}
-                                    />
-                                </WalletText>
-                            </div>
-                        </div>
-                    ),
+                    currency: wallet.currency,
+                    currencyConfig: wallet.currency_config,
+                    loginid: wallet.loginid,
                     text: generateTitleText(wallet),
-                    value: wallet.loginid,
                 })) ?? []
         );
-    }, [balanceData?.accounts, generateTitleText, wallets]);
+    }, [generateTitleText, wallets]);
 
     const handleInputClick = useCallback(() => {
         setIsOpen(prevIsOpen => !prevIsOpen);
@@ -123,13 +105,32 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
                             {walletList.map((wallet, index) => (
                                 <li
                                     className={classNames('wallets-listcard-dropdown__item', {
-                                        'wallets-listcard-dropdown__item--active': loginId === wallet.value,
+                                        'wallets-listcard-dropdown__item--active': loginId === wallet.loginid,
                                     })}
                                     id={`wallets-listcard-dropdown__item-${index}`}
-                                    key={wallet.value}
-                                    onClick={() => handleItemClick(wallet.value, reactNodeToString(wallet.text))}
+                                    key={wallet.loginid}
+                                    onClick={() => handleItemClick(wallet.loginid, reactNodeToString(wallet.text))}
                                 >
-                                    {wallet.listItem}
+                                    <div className='wallets-listcard-dropdown__list-item'>
+                                        <WalletCurrencyIcon currency={wallet.currency ?? 'USD'} rounded />
+                                        <div className='wallets-listcard-dropdown__list-content'>
+                                            <WalletText size='2xs'>
+                                                <Trans defaults={`${wallet.currency} Wallet`} />
+                                            </WalletText>
+                                            <WalletText size='sm' weight='bold'>
+                                                <Trans
+                                                    defaults={displayMoney?.(
+                                                        balanceData?.accounts?.[wallet.loginid]?.balance ?? 0,
+                                                        wallet?.currency || '',
+                                                        {
+                                                            fractional_digits:
+                                                                wallet?.currencyConfig?.fractional_digits,
+                                                        }
+                                                    )}
+                                                />
+                                            </WalletText>
+                                        </div>
+                                    </div>
                                 </li>
                             ))}
                         </ul>

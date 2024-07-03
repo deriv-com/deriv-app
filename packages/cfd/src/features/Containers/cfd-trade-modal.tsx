@@ -1,5 +1,6 @@
 import React from 'react';
-import { DesktopWrapper, Div100vhContainer, Modal, MobileWrapper, PageOverlay, UILoader } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
+import { Div100vhContainer, Modal, PageOverlay, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import OtherCFDsTradeModal from './other-cfds-trade-modal';
@@ -23,11 +24,11 @@ type TCFDTradeModalProps = {
 
 const CFDTradeModal = observer(
     ({ is_eu_user, is_open, onPasswordManager, toggleModal, is_demo }: TCFDTradeModalProps) => {
-        const { traders_hub, common, ui } = useStore();
+        const { isDesktop } = useDevice();
+        const { traders_hub, common } = useStore();
 
         const { show_eu_related_content } = traders_hub;
         const { platform } = common;
-        const { is_mobile } = ui;
 
         const { mt5_trade_account, dxtrade_tokens, ctrader_tokens, loadCTraderTokens } = useCfdStore();
 
@@ -52,7 +53,7 @@ const CFDTradeModal = observer(
                     platform={platform}
                     ctrader_tokens={ctrader_tokens}
                     dxtrade_tokens={dxtrade_tokens}
-                    is_mobile={is_mobile}
+                    is_mobile={!isDesktop}
                     ctraderTokenCall={loadCTraderTokens}
                 />
             );
@@ -60,7 +61,7 @@ const CFDTradeModal = observer(
 
         return (
             <React.Suspense fallback={<UILoader />}>
-                <DesktopWrapper>
+                {isDesktop ? (
                     <Modal
                         is_open={is_open}
                         title={localize('Trade')}
@@ -71,8 +72,7 @@ const CFDTradeModal = observer(
                     >
                         <CFDTradeModal />
                     </Modal>
-                </DesktopWrapper>
-                <MobileWrapper>
+                ) : (
                     <PageOverlay
                         is_open={is_open}
                         portal_id='deriv_app'
@@ -84,7 +84,7 @@ const CFDTradeModal = observer(
                             <CFDTradeModal />
                         </Div100vhContainer>
                     </PageOverlay>
-                </MobileWrapper>
+                )}
             </React.Suspense>
         );
     }

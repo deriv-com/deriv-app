@@ -1,5 +1,7 @@
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const DefinePlugin = require('webpack').DefinePlugin;
+const Dotenv = require('dotenv-webpack');
 // const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
@@ -65,6 +67,12 @@ module.exports = function (env) {
             },
             extensions: ['.ts', '.tsx', '.js'],
         },
+        plugins: [
+            new Dotenv(),
+            new DefinePlugin({
+                'process.env.TRUSTPILOT_API_KEY': JSON.stringify(process.env.TRUSTPILOT_API_KEY),
+            }),
+        ],
         module: {
             rules: [
                 {

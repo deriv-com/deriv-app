@@ -1,0 +1,41 @@
+.side-note-faq {
+    &__accordion {
+        padding-bottom: 1.6rem;
+
+        .dc-accordion__item {
+            border-bottom: 1px solid var(--border-normal-3);
+            font-size: var(--text-size-xxs);
+
+            &--open {
+                .dc-accordion__item-header {
+                    font-weight: var(--text-weight-bold);
+                }
+            }
+
+            &-header {
+                display: flex;
+                justify-content: space-between;
+                padding: 0.8rem 0;
+            }
+
+            &-content {
+                padding: 0 0 0.4rem;
+            }
+        }
+
+        &-list {
+            list-style-type: decimal;
+            padding: 1.6rem 0 0 1.5rem;
+
+            li {
+                &:not(:last-child) {
+                    margin-bottom: 1.5rem;
+                }
+
+                &::marker {
+                    font-weight: var(--text-weight-bold);
+                }
+            }
+        }
+    }
+}

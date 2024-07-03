@@ -12,10 +12,17 @@ import './CryptoTransaction.scss';
 
 type TCryptoTransaction = {
     currencyDisplayCode: THooks.CurrencyConfig['code'];
-    transaction: THooks.CryptoTransactions;
+    currencyDisplayFraction?: THooks.CurrencyConfig['fractional_digits'];
+    // TODO: Remove transaction_fee from transaction type once API is updated
+    /* eslint-disable-next-line camelcase */
+    transaction: THooks.CryptoTransactions & { transaction_fee?: number };
 };
 
-const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: currency, transaction }) => {
+const CryptoTransaction: React.FC<TCryptoTransaction> = ({
+    currencyDisplayCode: currency,
+    currencyDisplayFraction,
+    transaction,
+}) => {
     const { hide, show } = useModal();
     const { isMobile } = useDevice();
 
@@ -87,6 +94,11 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
                     {moment.unix(transaction.submit_date).utc().format('MMM D, YYYY')}
                 </WalletText>
             </div>
+            {transaction?.transaction_fee && (
+                <WalletText color='less-prominent' lineHeight='xs' size='2xs'>
+                    Transaction fee: {Number(transaction.transaction_fee).toFixed(currencyDisplayFraction)} {currency}
+                </WalletText>
+            )}
             <WalletText lineHeight='2xs' size='2xs'>
                 Address:{' '}
                 <a

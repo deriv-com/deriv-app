@@ -140,6 +140,22 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                     </Shadow>
                 </Value>
             </Block>
+            <Block type='trade_definition_accumulator'>
+                <Field name='GROWTHRATE_LIST' />
+                <Field name='CURRENCY_LIST'>USD</Field>
+                <Value name='AMOUNT'>
+                    <Shadow type='math_number'>
+                        <Field name='NUM'>1</Field>
+                    </Shadow>
+                </Value>
+            </Block>
+            <Block type='accumulator_take_profit'>
+                <Value name='AMOUNT'>
+                    <Shadow type='math_number'>
+                        <Field name='NUM'>0</Field>
+                    </Shadow>
+                </Value>
+            </Block>
         </Category>
         <Category id='purchase_conditions' name={localize('Purchase conditions')}>
             <Block type='before_purchase' />

@@ -132,11 +132,12 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
                                     <Trans defaults='Select Wallet' />
                                 </WalletText>
                             </div>
-                            {items.map(item => (
+                            {items.map((item, index) => (
                                 <li
                                     className={classNames('wallets-listcard-dropdown__item', {
                                         'wallets-listcard-dropdown__item--active': loginId === item.value,
                                     })}
+                                    id={`wallets-listcard-dropdown__item-${index}`}
                                     key={item.value}
                                     onClick={() => handleItemClick(item.value, reactNodeToString(item.text))}
                                 >

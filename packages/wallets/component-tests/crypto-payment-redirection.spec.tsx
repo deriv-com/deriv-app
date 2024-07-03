@@ -31,7 +31,7 @@ test.describe('Wallets - Crypto withdrawal', () => {
         await page.goto(`${baseURL}/`);
 
         await page.click('.wallets-textfield__field--listcard');
-        await page.click('#downshift-0-item-1');
+        await page.click('#wallets-listcard-dropdown__item-1');
     });
 
     test('render withdrawal form with all elements', async ({ baseURL, page }) => {

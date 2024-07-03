@@ -31,7 +31,11 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({
     const { isDynamicLeverageVisible } = useDynamicLeverageModalState();
     const [isJurisdictionScreenHidden] = useDebounceValue(isDynamicLeverageVisible, 600);
     const jurisdictions = useMemo(
-        () => data?.filter(account => account.market_type === marketType).map(account => account.shortcode) || [],
+        () =>
+            data
+                // @ts-ignore
+                ?.filter(account => account.market_type === marketType && account.product !== 'zero_spread')
+                .map(account => account.shortcode) || [],
         [data, marketType]
     );
     const addedJurisdictions = useMemo(

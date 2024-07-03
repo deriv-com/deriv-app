@@ -70,7 +70,7 @@ const DerivPassword = observer(() => {
                         />
                     </Text>
                     <div className='passwords-platform__logo-container'>
-                        <BrandDerivLogoCoralIcon />
+                        <BrandDerivLogoCoralIcon height='23px' width='23px' />
                         <Text line_height='l' size='xs' weight='bold'>
                             {brand_website_name}
                         </Text>

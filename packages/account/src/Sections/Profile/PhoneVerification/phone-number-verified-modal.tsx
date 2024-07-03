@@ -1,4 +1,3 @@
-import React from 'react';
 import { useHistory } from 'react-router';
 import { Modal, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';

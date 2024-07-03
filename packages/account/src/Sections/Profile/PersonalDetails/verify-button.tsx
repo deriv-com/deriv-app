@@ -8,6 +8,7 @@ import { Popover, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { usePhoneNumberVerificationSetTimer, useVerifyEmail } from '@deriv/hooks';
 import classNames from 'classnames';
+import './verify-button.scss';
 
 export const VerifyButton = observer(() => {
     const [open_popover, setOpenPopover] = React.useState(false);
@@ -30,9 +31,9 @@ export const VerifyButton = observer(() => {
     };
 
     return (
-        <div className='account-form__phone-verification-btn'>
+        <div className='phone-verification-btn'>
             {phone_number_verified ? (
-                <div className='account-form__phone-verification-btn--verified'>
+                <div className='phone-verification-btn--verified'>
                     <LegacyWonIcon iconSize='xs' />
                     <CaptionText bold color='#4bb4b3'>
                         <Localize i18n_default_text='Verified' />
@@ -67,8 +68,8 @@ export const VerifyButton = observer(() => {
                     size='xxs'
                     weight='bold'
                     color='red'
-                    className={classNames('account-form__phone-verification-btn--not-verified', {
-                        'account-form__phone-verification-btn--not-verified--disabled': !!next_otp_request,
+                    className={classNames('phone-verification-btn--not-verified', {
+                        'phone-verification-btn--not-verified--disabled': !!next_otp_request,
                     })}
                     disabled={true}
                     onClick={redirectToPhoneVerification}

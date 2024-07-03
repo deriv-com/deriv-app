@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect, useState, useCallback, Fragment } from 'react';
 import PhoneVerificationCard from './phone-verification-card';
 import { Text, InputGroupButton } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
@@ -18,10 +18,10 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     const { client, ui } = useStore();
     const { setVerificationCode } = client;
     const { data: account_settings, invalidate } = useSettings();
-    const [should_show_phone_number_verified_modal, setShouldShowPhoneNumberVerifiedModal] = React.useState(false);
-    const [should_show_didnt_get_the_code_modal, setShouldShowDidntGetTheCodeModal] = React.useState(false);
-    const [otp, setOtp] = React.useState('');
-    const [is_button_disabled, setIsButtonDisabled] = React.useState(false);
+    const [should_show_phone_number_verified_modal, setShouldShowPhoneNumberVerifiedModal] = useState(false);
+    const [should_show_didnt_get_the_code_modal, setShouldShowDidntGetTheCodeModal] = useState(false);
+    const [otp, setOtp] = useState('');
+    const [is_button_disabled, setIsButtonDisabled] = useState(false);
 
     const {
         sendPhoneOTPVerification,
@@ -36,18 +36,18 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
     } = useSendOTPVerificationCode();
     const { should_show_phone_number_otp } = ui;
 
-    const reInitializeGetSettings = React.useCallback(() => {
+    const reInitializeGetSettings = useCallback(() => {
         invalidate('get_settings').then(() => {
             setIsButtonDisabled(false);
         });
     }, [invalidate]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setIsButtonDisabled(true);
         invalidate('get_settings').then(() => setIsButtonDisabled(false));
     }, [invalidate]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (is_phone_number_verified) {
             reInitializeGetSettings();
             setShouldShowPhoneNumberVerifiedModal(true);
@@ -107,7 +107,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                         />
                     </Text>
                 ) : (
-                    <React.Fragment>
+                    <Fragment>
                         <Text size='sm'>
                             <Localize
                                 i18n_default_text="We've sent a verification code to <0>{{users_email}}</0>."
@@ -118,7 +118,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                         <Text size='sm'>
                             <Localize i18n_default_text='Enter the code or click the link in the email to verify that the account belongs to you.' />
                         </Text>
-                    </React.Fragment>
+                    </Fragment>
                 )}
             </div>
             <div className='phone-verification__card--email-verification-otp-container'>

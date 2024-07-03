@@ -758,7 +758,7 @@
 
         @include mobile-or-tablet-screen {
             overflow-y: scroll;
-            padding: 2.4rem;
+            padding: 0 1.6rem;
 
             &--status {
                 height: 100%;

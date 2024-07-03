@@ -43,8 +43,7 @@ const AppWithoutTranslation = ({ root_store }) => {
         root_store.modules.attachModule('cfd', new CFDStore({ root_store, WS }));
     };
     const { current_language } = root_store.common;
-    const { preferred_language } = root_store.client;
-    const language = current_language ?? preferred_language ?? getInitialLanguage();
+    const language = current_language ?? getInitialLanguage();
 
     React.useEffect(() => {
         const dir = i18n.dir(i18n.language.toLowerCase());

@@ -85,6 +85,7 @@ export default class ClientStore extends BaseStore {
     has_enabled_two_fa = false;
     has_changed_two_fa = false;
     landing_companies = {};
+    is_new_session = false;
 
     // All possible landing companies of user between all
     standpoint = {
@@ -433,12 +434,17 @@ export default class ClientStore extends BaseStore {
 
         reaction(
             () => [this.account_settings],
-            () => {
-                const language = getRedirectionLanguage(this.account_settings?.preferred_language);
+            async () => {
+                const language = getRedirectionLanguage(this.account_settings?.preferred_language, this.is_new_session);
                 window.history.replaceState({}, document.title, urlForLanguage(language));
 
                 this.setPreferredLanguage(language);
-                LocalStore.set(LANGUAGE_KEY, language);
+                if (language !== this.account_settings?.preferred_language) {
+                    await WS.setSettings({
+                        set_settings: 1,
+                        preferred_language: language,
+                    });
+                }
             }
         );
 
@@ -1333,6 +1339,7 @@ export default class ClientStore extends BaseStore {
         this.root_store.notifications.removeNotificationByKey({
             key: 'currency',
         });
+        console.log('Init updateAccountCurrency');
         await this.init();
     }
 
@@ -1438,6 +1445,7 @@ export default class ClientStore extends BaseStore {
      * We initially fetch things from local storage, and then do everything inside the store.
      */
     async init(login_new_user) {
+        console.log('Calling client init: ', login_new_user);
         // delete walletsOnboarding key after page refresh
         /** will be removed later when header for the wallets is created) */
         localStorage.removeItem('walletsOnboarding');
@@ -1470,6 +1478,7 @@ export default class ClientStore extends BaseStore {
         }
 
         const authorize_response = await this.setUserLogin(login_new_user);
+        console.log('Authorize response: ', authorize_response);
 
         if (search) {
             if (code_param && action_param) this.setVerificationCode(code_param, action_param);
@@ -1548,9 +1557,12 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 this.is_populating_account_list = false;
             });
-            const language = getRedirectionLanguage(authorize_response.authorize.preferred_language);
+            const language = getRedirectionLanguage(
+                authorize_response.authorize.preferred_language,
+                this.is_new_session
+            );
             const stored_language = LocalStore.get(LANGUAGE_KEY);
-            if (language !== 'EN' && stored_language && language !== stored_language) {
+            if (stored_language && language !== stored_language) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));
                 await this.root_store.common.changeSelectedLanguage(language);
             }
@@ -1834,7 +1846,7 @@ export default class ClientStore extends BaseStore {
 
         // set local storage
         this.root_store.gtm.setLoginFlag();
-
+        console.log('Init switchAccountHandler');
         await this.init();
 
         // broadcastAccountChange is already called after new connection is authorized
@@ -2105,12 +2117,17 @@ export default class ClientStore extends BaseStore {
                 const is_account_param = account_keys.some(
                     account_key => key?.includes(account_key) && key !== 'affiliate_token'
                 );
+                console.log('is_account_param: ', { is_account_param, key, value });
 
                 if (is_account_param) {
                     obj_params[key] = value;
                     is_social_signup_provider = true;
                 }
             });
+
+            this.is_new_session = Object.keys(obj_params).length > 0;
+
+            console.log('Account Params: ', { login_new_user, obj_params });
 
             // delete account query params - but keep other query params (e.g. utm)
             Object.keys(obj_params).forEach(key => search_params.delete(key));
@@ -2121,6 +2138,7 @@ export default class ClientStore extends BaseStore {
         }
 
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
+        console.log('is_client_logging_in: ', is_client_logging_in);
 
         if (is_client_logging_in) {
             this.setIsLoggingIn(true);
@@ -2319,6 +2337,7 @@ export default class ClientStore extends BaseStore {
             token1: oauth_token,
             curr1: currency,
         };
+        console.log('Init switchToNewlyCreatedAccount');
         await this.init(new_user_login);
         this.broadcastAccountChange();
     }

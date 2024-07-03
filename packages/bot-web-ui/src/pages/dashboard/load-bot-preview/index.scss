@@ -370,6 +370,10 @@
     &__table {
         height: calc(100vh - 57rem);
         overflow: auto;
+
+        @include mobile-screen {
+            height: calc(100vh - 46rem);
+        }
     }
 
     &__title {

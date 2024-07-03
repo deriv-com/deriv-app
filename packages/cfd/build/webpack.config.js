@@ -124,7 +124,6 @@ module.exports = function (env) {
                 '@deriv-com/utils': '@deriv-com/utils',
                 '@deriv/api': '@deriv/api',
                 '@deriv/api-types': '@deriv/api-types',
-                '@deriv/deriv-api': '@deriv/deriv-api',
                 '@deriv/hooks': '@deriv/hooks',
                 '@deriv/stores': '@deriv/stores',
                 formik: 'formik',

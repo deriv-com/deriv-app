@@ -15,12 +15,12 @@
         }
 
         &__footer {
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 display: flex;
                 width: 100%;
             }
         }
-
+      
         &__button {
             @include mobile {
                 margin-inline-start: 0;

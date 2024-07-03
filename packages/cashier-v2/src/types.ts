@@ -27,6 +27,7 @@ export namespace TErrorTypes {
 
 declare module 'react-router-dom' {
     export function useHistory(): {
+        goBack: () => void;
         location: {
             hash: string;
             pathname: TRouteTypes.TRoutes;
@@ -34,7 +35,6 @@ declare module 'react-router-dom' {
             state: Record<string, unknown>;
         };
         push: (path: TRouteTypes.TRoutes) => void;
-        goBack: () => void;
     };
 
     export function useRouteMatch(path: TRouteTypes.TRoutes): boolean;

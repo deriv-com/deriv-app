@@ -1,19 +1,21 @@
 import React from 'react';
 import { FormikProps } from 'formik';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { useDevice } from '@deriv-com/ui';
 import { useStatesList } from '@deriv/hooks';
-import { isDesktop, isMobile } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import AddressDetails, { TAddressDetailFormProps } from '../address-details';
-import { TStores } from '@deriv/stores/types';
 import userEvent from '@testing-library/user-event';
 import { splitValidationResultTypes } from 'Components/real-account-signup/helpers/utils';
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     getLocation: jest.fn().mockReturnValue('Default test state'),
-    isDesktop: jest.fn(),
-    isMobile: jest.fn(),
     makeCancellablePromise: jest.fn(() => ({ cancel: jest.fn(), promise: Promise.resolve('resolved') })),
 }));
 
@@ -37,6 +39,11 @@ jest.mock('@deriv/components', () => {
         Loading: jest.fn(() => 'mockedLoading'),
     };
 });
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true, isMobile: false })),
+}));
 
 const mockedSplitValidationResultTypes = splitValidationResultTypes as jest.MockedFunction<
     typeof splitValidationResultTypes
@@ -92,17 +99,15 @@ describe('<AddressDetails/>', () => {
         expect(screen.queryByLabelText(address_town)).not.toBeInTheDocument();
     };
 
-    const renderComponent = ({ props = mock_props, store_config = store }) => {
+    const renderComponent = ({ props = mock_props }) => {
         return render(
-            <StoreProvider store={store_config}>
+            <StoreProvider store={store}>
                 <AddressDetails {...props} />
             </StoreProvider>
         );
     };
 
     beforeEach(() => {
-        (isDesktop as jest.Mock).mockReturnValue(true);
-        (isMobile as jest.Mock).mockReturnValue(false);
         jest.clearAllMocks();
     });
 
@@ -117,15 +122,9 @@ describe('<AddressDetails/>', () => {
     });
 
     it('should render AddressDetails component for mobile', async () => {
-        const new_store_config: TStores = {
-            ...store,
-            ui: {
-                ...store.ui,
-                is_mobile: true,
-            },
-        };
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
 
-        renderComponent({ store_config: new_store_config });
+        renderComponent({});
 
         await waitFor(() => {
             svgCommonRenderCheck();
@@ -209,8 +208,7 @@ describe('<AddressDetails/>', () => {
     });
 
     it('should render AddressDetails component with states_list for mobile', async () => {
-        (isDesktop as jest.Mock).mockReturnValue(false);
-        (isMobile as jest.Mock).mockReturnValue(true);
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         (useStatesList as jest.Mock).mockReturnValue({
             data: [
                 { text: 'State 1', value: 'State 1' },
@@ -218,14 +216,7 @@ describe('<AddressDetails/>', () => {
             ],
             isFetched: true,
         });
-        const new_store_config: TStores = {
-            ...store,
-            ui: {
-                ...store.ui,
-                is_mobile: true,
-            },
-        };
-        renderComponent({ store_config: new_store_config });
+        renderComponent({});
 
         expect(screen.getByText('Default test state')).toBeInTheDocument();
         const address_state_input: HTMLInputElement = screen.getByRole('combobox');

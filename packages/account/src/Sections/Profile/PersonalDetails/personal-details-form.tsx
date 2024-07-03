@@ -372,10 +372,7 @@ const PersonalDetailsForm = observer(() => {
                                             onBlur={handleBlur}
                                             required
                                             error={errors.phone}
-                                            disabled={
-                                                isFieldDisabled('phone') ||
-                                                !!account_settings?.phone_number_verification?.verified
-                                            }
+                                            disabled={isFieldDisabled('phone')}
                                             data-testid='dt_phone'
                                         />
                                         <VerifyButton />

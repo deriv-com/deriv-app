@@ -34,8 +34,6 @@ module.exports = function (env) {
             moduleIds: 'named',
             minimize: IS_RELEASE,
             minimizer: MINIMIZERS,
-            innerGraph: true,
-            sideEffects: true,
             usedExports: true,
             splitChunks: {
                 automaticNameDelimiter: '~',

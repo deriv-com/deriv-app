@@ -5,6 +5,8 @@ import { Localize } from '@deriv/translations';
 import SymbolIconsMapper from '../SymbolIconsMapper/symbol-icons-mapper';
 import { ActiveSymbols } from '@deriv/api-types';
 import clsx from 'clsx';
+import { observer } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
 type TMarketCategoryItem = {
     item: ActiveSymbols[0];
@@ -13,27 +15,13 @@ type TMarketCategoryItem = {
     setIsOpen: (input: boolean) => void;
 };
 
-const MarketCategoryItem = ({ item, selectedSymbol, setSelectedSymbol, setIsOpen }: TMarketCategoryItem) => {
+const MarketCategoryItem = observer(({ item, selectedSymbol, setSelectedSymbol, setIsOpen }: TMarketCategoryItem) => {
     const [isFavorite, setIsFavorite] = useState(false);
+    const { favoriteSymbols, setFavoriteSymbols, removeFavoriteSymbol } = useTraderStore();
 
     useEffect(() => {
-        const favoritesJson = localStorage.getItem('cq-favorites');
-
-        if (favoritesJson) {
-            const favorites = JSON.parse(favoritesJson);
-            const chartFavorites = favorites['chartTitle&Comparison'];
-
-            if (chartFavorites && Array.isArray(chartFavorites)) {
-                setIsFavorite(chartFavorites.includes(item.symbol));
-            }
-        } else {
-            const initialFavorites = {
-                indicators: [],
-                'chartTitle&Comparison': [],
-            };
-            localStorage.setItem('cq-favorites', JSON.stringify(initialFavorites));
-        }
-    }, [item.symbol, setIsFavorite]);
+        setIsFavorite(favoriteSymbols.includes(item.symbol));
+    }, [favoriteSymbols, item.symbol]);
 
     const handleSelect = (e: React.MouseEvent<HTMLSpanElement>) => {
         const symbol = (e.target as HTMLSpanElement).getAttribute('data-symbol');
@@ -44,28 +32,14 @@ const MarketCategoryItem = ({ item, selectedSymbol, setSelectedSymbol, setIsOpen
     const toggleFavorites = (e: React.MouseEvent<HTMLSpanElement>) => {
         const symbol = (e.currentTarget as HTMLSpanElement).getAttribute('data-symbol');
         if (!symbol) return;
-
-        const chartFavorites = localStorage.getItem('cq-favorites');
-        let favorites;
-
-        if (!chartFavorites) {
-            favorites = { indicators: [], 'chartTitle&Comparison': [symbol] };
-            localStorage.setItem('cq-favorites', JSON.stringify(favorites));
-            return;
-        }
-
-        favorites = JSON.parse(chartFavorites);
-        const { 'chartTitle&Comparison': currentFavorites } = favorites;
-
-        const symbolIndex = currentFavorites.indexOf(symbol);
+        const symbolIndex = favoriteSymbols.indexOf(symbol);
 
         if (symbolIndex !== -1) {
-            favorites['chartTitle&Comparison'] = currentFavorites.filter((favSymbol: string) => favSymbol !== symbol);
+            removeFavoriteSymbol(symbol);
         } else {
-            favorites['chartTitle&Comparison'] = [...currentFavorites, symbol];
+            setFavoriteSymbols([...favoriteSymbols, symbol]);
         }
-        setIsFavorite(!isFavorite);
-        localStorage.setItem('cq-favorites', JSON.stringify(favorites));
+        setIsFavorite(favoriteSymbols.includes(symbol));
     };
 
     return (
@@ -109,6 +83,6 @@ const MarketCategoryItem = ({ item, selectedSymbol, setSelectedSymbol, setIsOpen
             </span>
         </div>
     );
-};
+});
 
 export default MarketCategoryItem;

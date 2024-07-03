@@ -10,6 +10,7 @@ import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 
 const MarketSelector = observer(() => {
     const { default_symbol } = useActiveSymbols({});
+
     const [isOpen, setIsOpen] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
     const notFound = true;

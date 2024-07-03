@@ -1,5 +1,6 @@
 import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 import { ActiveSymbols } from '@deriv/api-types';
+import { useTraderStore } from 'Stores/useTraderStores';
 
 type MarketOrderMap = {
     [key: string]: number;
@@ -7,12 +8,10 @@ type MarketOrderMap = {
 
 export const useGetFavoriteSymbols = () => {
     const { activeSymbols } = useActiveSymbols({});
-    const chart_favorites = localStorage.getItem('cq-favorites');
-    if (!chart_favorites) return [];
+    const { favoriteSymbols } = useTraderStore();
 
-    const client_favorite_markets: string[] = JSON.parse(chart_favorites)['chartTitle&Comparison'];
-    const client_favorite_list = client_favorite_markets
-        .map(client_fav_symbol => activeSymbols.find(symbol_info => symbol_info.symbol === client_fav_symbol))
+    const client_favorite_list = favoriteSymbols
+        ?.map(client_fav_symbol => activeSymbols.find(symbol_info => symbol_info.symbol === client_fav_symbol))
         .filter((symbol_info): symbol_info is ActiveSymbols[0] => symbol_info !== undefined);
 
     const market_sorting_order = ['synthetic_index', 'forex', 'indices', 'cryptocurrency', 'commodities'];

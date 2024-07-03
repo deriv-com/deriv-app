@@ -15,7 +15,7 @@ type TMarketCategory = {
 const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen }: TMarketCategory) => {
     return (
         <React.Fragment>
-            <Tab.Panel key={category.market_display_name}>
+            <Tab.Panel key={category.market_display_name} className='market-category-panel'>
                 {category.market !== 'favorites' ? (
                     Object.entries(category.subgroups).map(([subgroupKey, subgroup]) => (
                         <div key={subgroupKey} className='market-category-content--container'>

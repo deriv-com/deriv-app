@@ -6,6 +6,7 @@ import React from 'react';
 const SymbolNotFound = ({ searchTerm }: { searchTerm?: string }) => {
     return (
         <div className='symbol-not-found--container'>
+            {/* //TODO fill needs to use some quill token dont know which one yet */}
             <StandaloneSearchRegularIcon
                 // fill='#var(--core-color-solid-slate-200)'
                 fill='#acbacb'

@@ -19,7 +19,7 @@ const LanguageSettings = observer(() => {
         return <Redirect to={routes.traders_hub} />;
     }
 
-    const handleLanguageChange = async (language_key:string) => {
+    const handleLanguageChange = async (language_key: string) => {
         // [TODO]: Remove changeSelectedLanguage() when whole app starts to use @deriv-com/translations
         // This function also helps in informing language change to BE
         await changeSelectedLanguage(language_key);

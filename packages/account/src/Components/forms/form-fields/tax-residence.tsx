@@ -48,7 +48,6 @@ const TaxResidenceField = ({
                                     true
                                 );
                             }}
-                            list_portal_id='modal_root'
                             data-testid='tax_residence'
                             disabled={disabled}
                             required={required}

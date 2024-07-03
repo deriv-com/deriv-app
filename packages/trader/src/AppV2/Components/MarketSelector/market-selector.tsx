@@ -1,7 +1,7 @@
 import { ActionSheet, Tab, Text } from '@deriv-com/quill-ui';
 import { observer } from '@deriv/stores';
 import React, { useState, useEffect } from 'react';
-import MarketSelectorSearchField from '../MarketSelectorSearchField';
+import SymbolsSearchField from '../SymbolsSearchField';
 import { Localize } from '@deriv/translations';
 import MarketCategories from '../MarketCategories';
 import SymbolNotFound from '../SymbolNotFound';
@@ -25,7 +25,7 @@ const MarketSelector = observer(() => {
             <button onClick={() => setIsOpen(!isOpen)}>button</button>
             <ActionSheet.Root isOpen={isOpen}>
                 <ActionSheet.Portal shouldCloseOnDrag>
-                    <MarketSelectorSearchField isSearching={isSearching} setIsSearching={setIsSearching} />
+                    <SymbolsSearchField isSearching={isSearching} setIsSearching={setIsSearching} />
                     <Tab.Container
                         contentStyle='hug'
                         size='md'
@@ -38,7 +38,7 @@ const MarketSelector = observer(() => {
                             <Text
                                 size='sm'
                                 color='quill-typography__color--subtle'
-                                className='market-selector__search--suggestion'
+                                className='symbols__search--suggestion'
                             >
                                 <Localize i18n_default_text='Try searching for markets or keywords' />
                             </Text>

@@ -4,11 +4,11 @@ import clsx from 'clsx';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 
-type TMarketSelectorSearchField = {
+type TSymbolsSearchField = {
     isSearching: boolean;
     setIsSearching: (input: boolean) => void;
 };
-const MarketSelectorSearchField = observer(({ isSearching, setIsSearching }: TMarketSelectorSearchField) => {
+const SymbolsSearchField = observer(({ isSearching, setIsSearching }: TSymbolsSearchField) => {
     const { ui } = useStore();
     const { is_dark_mode_on } = ui;
     const [searchValue, setSearchValue] = useState('');
@@ -35,8 +35,8 @@ const MarketSelectorSearchField = observer(({ isSearching, setIsSearching }: TMa
 
     return (
         <div
-            className={clsx('market-selector__search--wrapper', {
-                'market-selector__search--isFocused': isSearching,
+            className={clsx('symbols__search--wrapper', {
+                'symbols__search--isFocused': isSearching,
             })}
         >
             <SearchField
@@ -62,4 +62,4 @@ const MarketSelectorSearchField = observer(({ isSearching, setIsSearching }: TMa
     );
 });
 
-export default MarketSelectorSearchField;
+export default SymbolsSearchField;

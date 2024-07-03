@@ -92,12 +92,9 @@ const EmploymentTaxDetailsContainer = ({
     const should_show_no_tax_details_checkbox =
         !is_tin_mandatory && tin_employment_status_bypass?.includes(values.employment_status);
 
-    const is_tax_info_fields_disabled = useMemo(
-        () => (field_name: string) => {
-            return isFieldImmutable(field_name, editable_fields) || !!values.confirm_no_tax_details;
-        },
-        [editable_fields, values.confirm_no_tax_details]
-    );
+    const isTaxInfoDisabled = (field_name: string) =>
+        isFieldImmutable(field_name, editable_fields) || !!values.confirm_no_tax_details;
+
     return (
         <Fragment>
             <EmploymentStatusField required is_disabled={isFieldImmutable('employment_status', editable_fields)} />
@@ -129,7 +126,7 @@ const EmploymentTaxDetailsContainer = ({
             )}
             <div ref={tax_residence_ref} className='account-form__fieldset'>
                 <TaxResidenceField
-                    disabled={is_tax_info_fields_disabled('tax_residence')}
+                    disabled={isTaxInfoDisabled('tax_residence')}
                     is_tax_residence_popover_open={is_tax_residence_popover_open}
                     setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                     setIsTinPopoverOpen={setIsTinPopoverOpen}
@@ -137,7 +134,7 @@ const EmploymentTaxDetailsContainer = ({
             </div>
             <div ref={tin_ref} className='account-form__fieldset'>
                 <TaxIdentificationNumberField
-                    disabled={is_tax_info_fields_disabled('tax_identification_number')}
+                    disabled={isTaxInfoDisabled('tax_identification_number')}
                     is_tin_popover_open={is_tin_popover_open}
                     setIsTinPopoverOpen={setIsTinPopoverOpen}
                     setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}

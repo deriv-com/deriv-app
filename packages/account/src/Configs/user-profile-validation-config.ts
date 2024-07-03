@@ -58,11 +58,15 @@ export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) 
                         return context.createError({ message: localize('Please fill in tax residence.') });
                     }
 
-                    if (!tin_config?.tin_format?.some(tax_regex => new RegExp(tax_regex).test(value as string))) {
+                    if (
+                        value &&
+                        !tin_config?.tin_format?.some(tax_regex => new RegExp(tax_regex).test(value as string))
+                    ) {
                         return context.createError({ message: localize('Tax Identification Number is invalid.') });
                     }
 
                     if (
+                        value &&
                         tin_config?.invalid_patterns?.some(invalid_pattern =>
                             new RegExp(invalid_pattern).test(value as string)
                         )

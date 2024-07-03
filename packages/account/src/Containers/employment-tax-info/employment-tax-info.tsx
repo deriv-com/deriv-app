@@ -98,6 +98,7 @@ const EmploymentTaxInfo = ({
                                             parent_ref={scroll_div_ref}
                                             should_display_long_message={real_account_signup_target === 'maltainvest'}
                                             handleChange={mutate}
+                                            tin_validation_config={tin_validation_config}
                                         />
                                     </ThemedScrollbars>
                                 </Div100vhContainer>

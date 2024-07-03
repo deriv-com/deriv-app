@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { Formik, Form, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router';
 import { useDevice } from '@deriv-com/ui';
-import { Button, Checkbox,FormSubmitErrorMessage, HintBox, Input, Loading, Text } from '@deriv/components';
+import { Button, Checkbox, FormSubmitErrorMessage, HintBox, Input, Loading, Text } from '@deriv/components';
 import { GetSettings } from '@deriv/api-types';
 import { AUTH_STATUS_CODES, WS, getBrandWebsiteName, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -37,8 +37,6 @@ const PersonalDetailsForm = observer(() => {
     const history = useHistory();
 
     const { tin_validation_config, mutate } = useTinValidations();
-
-    console.log('PersonalDetails Form');
 
     const {
         client,
@@ -176,8 +174,6 @@ const PersonalDetailsForm = observer(() => {
         field => isFieldImmutable(field, account_settings?.immutable_fields)
     );
 
-    console.log('employment_tax_editable_fields: ', employment_tax_editable_fields);
-
     const { api_error, show_form } = rest_state;
 
     if (api_error) return <LoadErrorMessage error_message={api_error} />;
@@ -204,8 +200,6 @@ const PersonalDetailsForm = observer(() => {
     const PersonalDetailSchema = getPersonalDetailsValidationSchema(is_virtual, is_svg, tin_validation_config);
 
     const initialValues = getPersonalDetailsInitialValues(account_settings, residence_list, states_list, is_virtual);
-
-    console.log('initialValuess: ', initialValues);
 
     return (
         <Formik
@@ -381,6 +375,7 @@ const PersonalDetailsForm = observer(() => {
                                             editable_fields={employment_tax_editable_fields}
                                             parent_ref={scroll_div_ref}
                                             handleChange={mutate}
+                                            tin_validation_config={tin_validation_config}
                                         />
                                         {!is_virtual && (
                                             <Fragment>

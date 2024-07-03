@@ -12,18 +12,21 @@ import { getLegalEntityName } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
 import { useResidenceList } from '@deriv/hooks';
 import './employment-tax-details-container.scss';
+import { TinValidations } from '@deriv/api/types';
 
 type TEmploymentTaxDetailsContainerProps = {
     editable_fields: string[];
     parent_ref: React.RefObject<HTMLDivElement>;
     should_display_long_message?: boolean;
     handleChange: (value: string) => void;
+    tin_validation_config: TinValidations;
 };
 
 const EmploymentTaxDetailsContainer = ({
     editable_fields,
     parent_ref,
     should_display_long_message,
+    tin_validation_config,
     handleChange,
 }: TEmploymentTaxDetailsContainerProps) => {
     const { values, setFieldValue, touched, errors, setValues } = useFormikContext<FormikValues>();
@@ -78,44 +81,55 @@ const EmploymentTaxDetailsContainer = ({
             (isFieldImmutable('tax_identification_number', editable_fields) &&
                 isFieldImmutable('tax_residence', editable_fields)) ||
             !values.tax_identification_number ||
-            !values.tax_residence,
-        [editable_fields, values.tax_identification_number, values.tax_residence]
+            !values.tax_residence ||
+            !!values.confirm_no_tax_details,
+        [editable_fields, values.tax_identification_number, values.tax_residence, values.confirm_no_tax_details]
     );
 
     useOnClickOutside(tax_residence_ref, () => setIsTaxResidencePopoverOpen(false), validateClickOutside);
     useOnClickOutside(tin_ref, () => setIsTinPopoverOpen(false), validateClickOutside);
+    const { is_tin_mandatory, tin_employment_status_bypass } = tin_validation_config;
+    const should_show_no_tax_details_checkbox =
+        !is_tin_mandatory && tin_employment_status_bypass?.includes(values.employment_status);
 
+    const is_tax_info_fields_disabled = useMemo(
+        () => (field_name: string) => {
+            return isFieldImmutable(field_name, editable_fields) || !!values.confirm_no_tax_details;
+        },
+        [editable_fields, values.confirm_no_tax_details]
+    );
     return (
         <Fragment>
             <EmploymentStatusField required is_disabled={isFieldImmutable('employment_status', editable_fields)} />
 
-            <Checkbox
-                name='confirm_no_tax_details'
-                className='employment_tax_detail_field-checkbox'
-                data-lpignore
-                onChange={() =>
-                    setValues(
-                        {
-                            ...values,
-                            confirm_no_tax_details: !values.confirm_no_tax_details,
-                            tax_residence: '',
-                            tax_identification_number: '',
-                            tax_identification_confirm: false,
-                        },
-                        true
-                    )
-                }
-                value={values.confirm_no_tax_details}
-                label={localize('I do not have tax information')}
-                withTabIndex={0}
-                data-testid='confirm_no_tax_details'
-                label_font_size={isMobile ? 'xxs' : 'xs'}
-                label_line_height='m'
-            />
-
+            {should_show_no_tax_details_checkbox && (
+                <Checkbox
+                    name='confirm_no_tax_details'
+                    className='employment_tax_detail_field-checkbox'
+                    data-lpignore
+                    onChange={() =>
+                        setValues(
+                            {
+                                ...values,
+                                confirm_no_tax_details: !values.confirm_no_tax_details,
+                                tax_residence: '',
+                                tax_identification_number: '',
+                                tax_identification_confirm: false,
+                            },
+                            true
+                        )
+                    }
+                    value={values.confirm_no_tax_details}
+                    label={localize('I do not have tax information')}
+                    withTabIndex={0}
+                    data-testid='confirm_no_tax_details'
+                    label_font_size={isMobile ? 'xxs' : 'xs'}
+                    label_line_height='m'
+                />
+            )}
             <div ref={tax_residence_ref} className='account-form__fieldset'>
                 <TaxResidenceField
-                    disabled={isFieldImmutable('tax_residence', editable_fields) || values.confirm_no_tax_details}
+                    disabled={is_tax_info_fields_disabled('tax_residence')}
                     is_tax_residence_popover_open={is_tax_residence_popover_open}
                     setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
                     setIsTinPopoverOpen={setIsTinPopoverOpen}
@@ -123,9 +137,7 @@ const EmploymentTaxDetailsContainer = ({
             </div>
             <div ref={tin_ref} className='account-form__fieldset'>
                 <TaxIdentificationNumberField
-                    disabled={
-                        isFieldImmutable('tax_identification_number', editable_fields) || values.confirm_no_tax_details
-                    }
+                    disabled={is_tax_info_fields_disabled('tax_identification_number')}
                     is_tin_popover_open={is_tin_popover_open}
                     setIsTinPopoverOpen={setIsTinPopoverOpen}
                     setIsTaxResidencePopoverOpen={setIsTaxResidencePopoverOpen}
@@ -152,7 +164,7 @@ const EmploymentTaxDetailsContainer = ({
                 has_error={!!(touched.tax_identification_confirm && errors.tax_identification_confirm)}
                 label_font_size={isMobile ? 'xxs' : 'xs'}
                 label_line_height='m'
-                disabled={values.confirm_no_tax_details || is_tax_details_confirm_disabled}
+                disabled={is_tax_details_confirm_disabled}
             />
         </Fragment>
     );

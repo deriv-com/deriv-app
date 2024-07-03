@@ -24,12 +24,10 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
     const { t } = useTranslation();
 
     const { data: balanceData } = balance;
+    const loginId = activeWallet?.loginid;
     const [inputWidth, setInputWidth] = useState('auto');
     const [isOpen, setIsOpen] = useState(false);
-    const [items, setItems] = useState<WalletList>([]);
     const [selectedText, setSelectedText] = useState('');
-
-    const loginId = activeWallet?.loginid;
 
     const generateTitleText = useCallback(
         (wallet: THooks.WalletAccountsList) => {
@@ -70,9 +68,15 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
         );
     }, [balanceData?.accounts, generateTitleText, wallets]);
 
-    useEffect(() => {
-        setItems(walletList);
-    }, [walletList]);
+    const handleInputClick = useCallback(() => {
+        setIsOpen(prevIsOpen => !prevIsOpen);
+    }, []);
+
+    const handleItemClick = (value: string, text: string) => {
+        switchWalletAccount(value);
+        setSelectedText(text);
+        setIsOpen(false);
+    };
 
     useEffect(() => {
         if (loginId && wallets) {
@@ -85,21 +89,6 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
         }
     }, [generateTitleText, loginId, wallets]);
 
-    const handleInputClick = useCallback(() => {
-        setIsOpen(prevIsOpen => !prevIsOpen);
-    }, []);
-
-    const handleItemClick = (value: string, text: string) => {
-        switchWalletAccount(value);
-        setSelectedText(text);
-        setIsOpen(false);
-    };
-
-    const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const text = e.target.value.toLowerCase();
-        setItems(walletList.filter(item => reactNodeToString(item.text).toLowerCase().includes(text)));
-    };
-
     return (
         <React.Fragment>
             {walletList.length > 0 && (
@@ -108,7 +97,6 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
                         inputWidth={inputWidth}
                         name='wallets-list-card-dropdown'
                         onClickCapture={handleInputClick}
-                        onKeyUp={() => handleFilterChange}
                         readOnly
                         renderRightIcon={() => (
                             <button
@@ -132,16 +120,16 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
                                     <Trans defaults='Select Wallet' />
                                 </WalletText>
                             </div>
-                            {items.map((item, index) => (
+                            {walletList.map((wallet, index) => (
                                 <li
                                     className={classNames('wallets-listcard-dropdown__item', {
-                                        'wallets-listcard-dropdown__item--active': loginId === item.value,
+                                        'wallets-listcard-dropdown__item--active': loginId === wallet.value,
                                     })}
                                     id={`wallets-listcard-dropdown__item-${index}`}
-                                    key={item.value}
-                                    onClick={() => handleItemClick(item.value, reactNodeToString(item.text))}
+                                    key={wallet.value}
+                                    onClick={() => handleItemClick(wallet.value, reactNodeToString(wallet.text))}
                                 >
-                                    {item.listItem}
+                                    {wallet.listItem}
                                 </li>
                             ))}
                         </ul>

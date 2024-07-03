@@ -22,7 +22,6 @@ const CompareAccountsScreen = () => {
                 <CompareAccountsCarousel>
                     {mt5Accounts?.map(
                         item =>
-                            // @ts-ignore
                             item.product !== 'zero_spread' && (
                                 <CompareAccountsCard
                                     isDemo={isDemo}

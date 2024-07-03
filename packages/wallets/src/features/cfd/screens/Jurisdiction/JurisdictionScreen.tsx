@@ -33,7 +33,6 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({
     const jurisdictions = useMemo(
         () =>
             data
-                // @ts-ignore
                 ?.filter(account => account.market_type === marketType && account.product !== 'zero_spread')
                 .map(account => account.shortcode) || [],
         [data, marketType]

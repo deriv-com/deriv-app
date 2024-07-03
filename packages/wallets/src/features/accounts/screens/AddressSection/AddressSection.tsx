@@ -1,7 +1,9 @@
 import React from 'react';
 import { useSettings, useStatesList } from '@deriv/api-v2';
+import { LegacyChevronDown1pxIcon } from '@deriv/quill-icons';
+import { Dropdown } from '@deriv-com/ui';
 import { FlowTextField, useFlow } from '../../../../components';
-import { InlineMessage, WalletDropdown, WalletText } from '../../../../components/Base';
+import { InlineMessage, WalletText } from '../../../../components/Base';
 import {
     addressFirstLineValidator,
     addressSecondLineValidator,
@@ -49,7 +51,10 @@ const AddressSection: React.FC = () => {
                     name='townCityLine'
                     validationSchema={cityValidator}
                 />
-                <WalletDropdown
+                <Dropdown
+                    dropdownIcon={<LegacyChevronDown1pxIcon iconSize='xs' />}
+                    errorMessage=' '
+                    isFullWidth
                     label='State/Province'
                     list={statesList}
                     listHeight='sm'

@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import * as Yup from 'yup';
 import { usePOI, useResidenceList, useSettings } from '@deriv/api-v2';
-import { FlowTextField, useFlow, WalletDropdown, WalletText } from '../../../../components';
+import { LegacyChevronDown1pxIcon } from '@deriv/quill-icons';
+import { Dropdown } from '@deriv-com/ui';
+import { FlowTextField, useFlow, WalletText } from '../../../../components';
 import { InlineMessage } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { THooks } from '../../../../types';
@@ -121,13 +123,15 @@ const IDVDocumentUpload = () => {
                 <div className='wallets-idv-document-upload__title'>
                     <WalletText weight='bold'>Identity verification</WalletText>
                 </div>
-                <WalletDropdown
-                    errorMessage={'Document type is required'}
+                <Dropdown
+                    dropdownIcon={<LegacyChevronDown1pxIcon iconSize='xs' />}
+                    errorMessage='Document type is required'
+                    isFullWidth
                     isRequired
                     label='Choose the document type'
                     list={documentsDropdownList}
                     name='documentType'
-                    onChange={inputValue => {
+                    onSearch={inputValue => {
                         setFormValues('documentType', textToValueMapper[inputValue]);
                     }}
                     onSelect={selectedItem => {

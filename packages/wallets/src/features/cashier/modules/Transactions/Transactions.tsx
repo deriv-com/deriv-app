@@ -2,8 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
-import { LegacyFilter1pxIcon } from '@deriv/quill-icons';
-import { ToggleSwitch, WalletDropdown, WalletText } from '../../../../components';
+import { LegacyChevronDown1pxIcon, LegacyFilter1pxIcon } from '@deriv/quill-icons';
+import { Dropdown } from '@deriv-com/ui';
+import { ToggleSwitch, WalletText } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
 import { TransactionsCompleted, TransactionsCompletedDemoResetBalance, TransactionsPending } from './components';
 import './Transactions.scss';
@@ -86,13 +87,22 @@ const Transactions = () => {
                         <ToggleSwitch onChange={() => setIsPendingActive(!isPendingActive)} value={isPendingActive} />
                     </div>
                 )}
-                <WalletDropdown
+                <Dropdown
+                    dropdownIcon={
+                        <LegacyChevronDown1pxIcon data-testid='dt_wallets_transactions_dropdown_icon' iconSize='xs' />
+                    }
                     icon={<LegacyFilter1pxIcon iconSize='xs' />}
+                    isFullWidth
                     label='Filter'
                     list={filterOptionsList}
                     name='wallets-transactions__dropdown'
-                    onSelect={value => setFilterValue(value)}
+                    onSelect={value => {
+                        if (typeof value === 'string') {
+                            setFilterValue(value);
+                        }
+                    }}
                     value={filterValue}
+                    variant='comboBox'
                 />
             </div>
             {isPendingActive && (

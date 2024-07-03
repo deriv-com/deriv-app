@@ -21,9 +21,15 @@
         }
     }
 
-    & .wallets-dropdown,
+    /* stylelint-disable-next-line selector-class-pattern */
+    & .deriv-dropdown,
     & .wallets-textfield {
         max-width: 68rem;
+    }
+
+    /* stylelint-disable-next-line selector-class-pattern */
+    & .deriv-input__container {
+        width: 100%; /* Remove after @deriv-com/ui dropdown component refactored */
     }
 
     &__buttons {

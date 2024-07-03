@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     gap: 1.6rem;
-
+    overflow-y: auto;
     &__hidden {
         display: none;
     }

@@ -47,3 +47,4 @@ jobs:
         REMOTE_CONFIG_URL: ${{ vars.REMOTE_CONFIG_URL }}
         ISSUE_NUMBER: ${{ github.event.pull_request.number }}
         TRUSTPILOT_API_KEY: ${{ secrets.TRUSTPILOT_API_KEY }}
+        BUNDLE_SIZE_TOKEN: ${{ secrets.BUNDLE_SIZE_TOKEN }}

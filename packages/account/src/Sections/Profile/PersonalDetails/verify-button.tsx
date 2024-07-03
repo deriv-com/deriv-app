@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { CaptionText } from '@deriv-com/quill-ui';
 import { observer, useStore } from '@deriv/stores';
 import { LegacyWonIcon } from '@deriv/quill-icons';
@@ -7,19 +8,20 @@ import { routes } from '@deriv/shared';
 import { Popover, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { usePhoneNumberVerificationSetTimer, useVerifyEmail } from '@deriv/hooks';
-import classNames from 'classnames';
+import { useDevice } from '@deriv-com/ui';
 import './verify-button.scss';
 
 export const VerifyButton = observer(() => {
     const [open_popover, setOpenPopover] = React.useState(false);
     const { client, ui } = useStore();
-    const { is_mobile, setShouldShowPhoneNumberOTP } = ui;
+    const { setShouldShowPhoneNumberOTP } = ui;
     const { account_settings, setVerificationCode } = client;
     const { phone_number_verification } = account_settings;
     const phone_number_verified = phone_number_verification?.verified;
     const history = useHistory();
     //@ts-expect-error remove this comment when types are added in GetSettings api types
     const { send } = useVerifyEmail('phone_number_verification');
+    const { isMobile } = useDevice();
     const { next_otp_request } = usePhoneNumberVerificationSetTimer();
 
     const redirectToPhoneVerification = () => {
@@ -40,7 +42,7 @@ export const VerifyButton = observer(() => {
                     </CaptionText>
                     <Popover
                         data_testid='dt_phone_verification_popover'
-                        alignment={is_mobile ? 'top' : 'right'}
+                        alignment={isMobile ? 'top' : 'right'}
                         className='phone-verification__popover'
                         icon='info'
                         is_open={open_popover}
@@ -68,7 +70,7 @@ export const VerifyButton = observer(() => {
                     size='xxs'
                     weight='bold'
                     color='red'
-                    className={classNames('phone-verification-btn--not-verified', {
+                    className={clsx('phone-verification-btn--not-verified', {
                         'phone-verification-btn--not-verified--disabled': !!next_otp_request,
                     })}
                     disabled={true}

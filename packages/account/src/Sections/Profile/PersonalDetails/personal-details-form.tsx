@@ -361,11 +361,10 @@ const PersonalDetailsForm = observer(() => {
                                             name='phone'
                                             id={'phone'}
                                             label={localize('Phone number*')}
-                                            className={
-                                                account_settings?.phone_number_verification?.verified
-                                                    ? 'account-form__fieldset--phone'
-                                                    : ''
-                                            }
+                                            className={clsx({
+                                                'account-form__fieldset--phone':
+                                                    account_settings?.phone_number_verification?.verified,
+                                            })}
                                             //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
                                             value={values.phone}
                                             onChange={handleChange}

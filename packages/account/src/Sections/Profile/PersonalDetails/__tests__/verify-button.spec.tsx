@@ -49,9 +49,7 @@ describe('VerifyButton', () => {
             </StoreProvider>
         );
         expect(screen.getByText('Verify in 60s')).toBeInTheDocument();
-        expect(screen.getByText('Verify in 60s')).toHaveClass(
-            'account-form__phone-verification-btn--not-verified--disabled'
-        );
+        expect(screen.getByText('Verify in 60s')).toHaveClass('phone-verification-btn--not-verified--disabled');
     });
 
     it('should redirect user to phone-verification page when clicked on Verify Button', () => {

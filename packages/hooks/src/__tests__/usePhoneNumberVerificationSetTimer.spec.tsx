@@ -1,5 +1,5 @@
 import React from 'react';
-import { renderHook, act, WaitFor } from '@testing-library/react-hooks';
+import { renderHook, act } from '@testing-library/react-hooks';
 import dayjs from 'dayjs';
 import usePhoneNumberVerificationSetTimer from '../usePhoneNumberVerificationSetTimer'; // Adjust the path as necessary
 import { StoreProvider, mockStore } from '@deriv/stores';
@@ -32,7 +32,7 @@ describe('usePhoneNumberVerificationSetTimer', () => {
         mock_store.ui.should_show_phone_number_otp = false;
     });
 
-    it('should clear the timer when it reaches zero', () => {
+    it('should clear the timer when it reaches zero', async () => {
         const next_attempt = dayjs().add(1, 'seconds').unix();
         if (mock_store.client.account_settings.phone_number_verification)
             mock_store.client.account_settings.phone_number_verification.next_attempt = next_attempt;
@@ -41,14 +41,14 @@ describe('usePhoneNumberVerificationSetTimer', () => {
         const { result } = renderHook(() => usePhoneNumberVerificationSetTimer(), { wrapper });
 
         act(() => {
-            jest.advanceTimersByTime(2000);
+            jest.advanceTimersByTime(3000);
         });
 
         expect(result.current.next_otp_request).toBe('');
     });
 
     it('should set the correct timer and title when next_attempt is provided and should_show_phone_number_otp is true', () => {
-        const next_attempt = dayjs().add(90, 'seconds').unix();
+        const next_attempt = dayjs().add(65, 'seconds').unix();
         if (mock_store.client.account_settings.phone_number_verification)
             mock_store.client.account_settings.phone_number_verification.next_attempt = next_attempt;
         mock_store.ui.should_show_phone_number_otp = true;

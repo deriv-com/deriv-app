@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Tag, Text } from '@deriv-com/quill-ui';
+import { Tag, Text, useSnackbar } from '@deriv-com/quill-ui';
 import { StandaloneStarFillIcon, StandaloneStarRegularIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import SymbolIconsMapper from '../SymbolIconsMapper/symbol-icons-mapper';
@@ -18,6 +18,7 @@ type TMarketCategoryItem = {
 const MarketCategoryItem = observer(({ item, selectedSymbol, setSelectedSymbol, setIsOpen }: TMarketCategoryItem) => {
     const [isFavorite, setIsFavorite] = useState(false);
     const { favoriteSymbols, setFavoriteSymbols, removeFavoriteSymbol } = useTraderStore();
+    const { addSnackbar } = useSnackbar();
 
     useEffect(() => {
         setIsFavorite(favoriteSymbols.includes(item.symbol));
@@ -36,8 +37,27 @@ const MarketCategoryItem = observer(({ item, selectedSymbol, setSelectedSymbol, 
 
         if (symbolIndex !== -1) {
             removeFavoriteSymbol(symbol);
+            addSnackbar({
+                icon: (
+                    <StandaloneStarRegularIcon
+                        fill={
+                            selectedSymbol === item.symbol
+                                ? 'var(--semantic-color-slate-solid-textIcon-inverse-highest)'
+                                : 'var(--semantic-color-monochrome-textIcon-normal-mid)'
+                        }
+                        iconSize='sm'
+                    />
+                ),
+                message: 'Added to favorites',
+                hasCloseButton: false,
+            });
         } else {
             setFavoriteSymbols([...favoriteSymbols, symbol]);
+            addSnackbar({
+                icon: <StandaloneStarFillIcon fill='var(--core-color-solid-mustard-700)' iconSize='sm' />,
+                message: 'Added to favorites',
+                hasCloseButton: false,
+            });
         }
         setIsFavorite(favoriteSymbols.includes(symbol));
     };

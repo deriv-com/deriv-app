@@ -87,23 +87,28 @@ const Transactions = () => {
                         <ToggleSwitch onChange={() => setIsPendingActive(!isPendingActive)} value={isPendingActive} />
                     </div>
                 )}
-                <Dropdown
-                    dropdownIcon={
-                        <LegacyChevronDown1pxIcon data-testid='dt_wallets_transactions_dropdown_icon' iconSize='xs' />
-                    }
-                    icon={<LegacyFilter1pxIcon iconSize='xs' />}
-                    isFullWidth
-                    label='Filter'
-                    list={filterOptionsList}
-                    name='wallets-transactions__dropdown'
-                    onSelect={value => {
-                        if (typeof value === 'string') {
-                            setFilterValue(value);
+                <div className='wallets-transactions__dropdown'>
+                    <Dropdown
+                        dropdownIcon={
+                            <LegacyChevronDown1pxIcon
+                                data-testid='dt_wallets_transactions_dropdown_icon'
+                                iconSize='xs'
+                            />
                         }
-                    }}
-                    value={filterValue}
-                    variant='comboBox'
-                />
+                        icon={<LegacyFilter1pxIcon iconSize='xs' />}
+                        isFullWidth
+                        label='Filter'
+                        list={filterOptionsList}
+                        name='wallets-transactions__dropdown'
+                        onSelect={value => {
+                            if (typeof value === 'string') {
+                                setFilterValue(value);
+                            }
+                        }}
+                        value={filterValue}
+                        variant='comboBox'
+                    />
+                </div>
             </div>
             {isPendingActive && (
                 <TransactionsPending filter={filtersMapper.pending[filterValue] as TTransactionsPendingFilter} />

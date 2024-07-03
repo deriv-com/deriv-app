@@ -32,12 +32,8 @@
         gap: 1.6rem;
         margin-top: 0.8rem;
 
-        /* stylelint-disable-next-line selector-class-pattern */
-        & .deriv-dropdown,
-        & .wallets-textfield {
-            @include desktop {
-                max-width: 40rem;
-            }
+        @include desktop {
+            max-width: 40rem;
         }
 
         /* stylelint-disable-next-line selector-class-pattern */

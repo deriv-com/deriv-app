@@ -7,6 +7,7 @@ export * from './DesktopWalletsList';
 export * from './Dropzone';
 export * from './FadedAnimatedList';
 export * from './FlowProvider';
+export * from './FormDropdown';
 export * from './FormField';
 export * from './Loader';
 export * from './OptionsAndMultipliersListing';

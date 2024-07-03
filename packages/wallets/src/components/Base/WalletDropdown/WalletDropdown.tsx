@@ -8,7 +8,7 @@ import { WalletText } from '../WalletText';
 import WalletTextField, { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
 import './WalletDropdown.scss';
 
-type TProps = {
+export type TWalletDropdownProps = {
     disabled?: boolean;
     errorMessage?: WalletTextFieldProps['errorMessage'];
     icon?: React.ReactNode;
@@ -24,6 +24,7 @@ type TProps = {
     listHeight?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     name: WalletTextFieldProps['name'];
     onChange?: (inputValue: string) => void;
+    onFocus?: () => void;
     onSelect: (value: string) => void;
     showListHeader?: boolean;
     showMessageContainer?: boolean;
@@ -32,7 +33,7 @@ type TProps = {
     variant?: 'comboBox' | 'prompt';
 };
 
-const WalletDropdown: React.FC<TProps> = ({
+const WalletDropdown: React.FC<TWalletDropdownProps> = ({
     disabled,
     errorMessage,
     icon = false,
@@ -44,6 +45,7 @@ const WalletDropdown: React.FC<TProps> = ({
     listHeight = 'md',
     name,
     onChange,
+    onFocus,
     onSelect,
     showListHeader = false,
     showMessageContainer = true,
@@ -122,7 +124,10 @@ const WalletDropdown: React.FC<TProps> = ({
                     label={label}
                     name={name}
                     onClickCapture={handleInputClick}
-                    onFocus={() => setHasSelected(true)}
+                    onFocus={() => {
+                        setHasSelected(true);
+                        if (onFocus) onFocus();
+                    }}
                     onKeyUp={() => setShouldFilterList(true)}
                     placeholder={reactNodeToString(label)}
                     readOnly={variant !== 'comboBox'}

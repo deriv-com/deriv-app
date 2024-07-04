@@ -12,7 +12,6 @@ import {
     ProofOfAddress,
     ProofOfOwnership,
     Account,
-    // ClosingAccount,
     DeactivateAccount,
     ProofOfIncome,
 } from '../Sections';

@@ -21,10 +21,18 @@
 
     &__accounts-list {
         overflow-y: scroll;
-        max-height: calc(90vh - 128px);
+        max-height: calc(90vh - 52px);
 
         &--with-button {
-            max-height: calc(90vh - 192px);
+            max-height: calc(90vh - 116px);
+        }
+
+        &--with-cfd-banner {
+            max-height: calc(90vh - 106px);
+        }
+
+        &--with-both {
+            max-height: calc(90vh - 170px);
         }
 
         &__group {

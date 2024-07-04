@@ -217,6 +217,8 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
                     <div
                         className={classNames('acc-switcher-dtrader__accounts-list', {
                             'acc-switcher-dtrader__accounts-list--with-button': show_button,
+                            'acc-switcher-dtrader__accounts-list--with-cfd-banner': is_mt5_allowed,
+                            'acc-switcher-dtrader__accounts-list--with-both': show_button && is_mt5_allowed,
                         })}
                     >
                         {real_accounts}

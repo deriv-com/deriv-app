@@ -210,9 +210,12 @@ runs:
       PACKAGE_SIZES=$(echo '${{ steps.diff.outputs.package_sizes }}' | jq -c .)
       BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
       
-      DATADOG_API_KEY="${{ inputs.BUNDLE_SIZE_TOKEN }}"
-      DATADOG_METRICS_URL="https://api.datadoghq.com/api/v1/series?api_key=$DATADOG_API_KEY"
+      BUNDLE_SIZE_TOKEN="${{ inputs.BUNDLE_SIZE_TOKEN }}"
+      DATADOG_METRICS_URL="https://api.datadoghq.com/api/v1/series?api_key=$BUNDLE_SIZE_TOKEN"
       
+      # print out length of BUNDLE_SIZE_TOKEN in order to validate its presence
+      echo "Length of BUNDLE_SIZE_TOKEN: ${#BUNDLE_SIZE_TOKEN}"
+
       # Send each package size as a separate metric
       for row in $(echo "${PACKAGE_SIZES}" | jq -r 'to_entries[] | @base64'); do
         _jq() {

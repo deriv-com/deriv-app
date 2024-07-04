@@ -1,5 +1,6 @@
 import React from 'react';
 import { AutoHeightWrapper } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
 import {
     WS,
     isVerificationServiceSupported,
@@ -27,6 +28,7 @@ const POISubmissionForMT5 = observer(
         residence_list,
         identity_last_attempt,
     }) => {
+        const { isDesktop } = useDevice();
         const [submission_status, setSubmissionStatus] = React.useState(); // submitting
         const [submission_service, setSubmissionService] = React.useState();
         const [idv_mismatch_status, setIdvMismatchStatus] = React.useState(null);
@@ -163,7 +165,7 @@ const POISubmissionForMT5 = observer(
                                         country_code={country_code}
                                         documents_supported={documents_supported}
                                         handleViewComplete={handlePOIComplete}
-                                        height={height}
+                                        height={isDesktop ? 620 : height}
                                     />
                                 </div>
                             )}

@@ -23,12 +23,6 @@ const Skeleton = ({
     variant,
     ...css_properties
 }: TSkeletonProps) => {
-    const style: React.CSSProperties = {
-        width: width ?? '100%',
-        height: height ?? '100%',
-        ...css_properties,
-    };
-
     if (VARIANT.PARAGRAPH && rows) {
         return (
             <div className='skeleton-paragraph' style={{ gap: gap ?? 8 }}>
@@ -38,8 +32,8 @@ const Skeleton = ({
                             key={idx}
                             className={clsx(className, 'skeleton', animated && 'animated')}
                             style={{
-                                width: idx === rows - 1 ? 96 : style.width,
-                                height: style.height,
+                                width: idx === rows - 1 ? 96 : width,
+                                height,
                             }}
                         />
                     );
@@ -47,7 +41,12 @@ const Skeleton = ({
             </div>
         );
     }
-    return <div className={clsx(className, 'skeleton', animated && 'animated', variant)} style={style} />;
+    return (
+        <div
+            className={clsx(className, 'skeleton', animated && 'animated', variant)}
+            style={{ width, height, ...css_properties }}
+        />
+    );
 };
 
 export default Skeleton;

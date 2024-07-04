@@ -25,8 +25,8 @@ const BinaryRoutes = observer(props => {
             return (
                 <Loading.DTraderV2
                     initial_app_loading
-                    is_contract_details={window.location.pathname.startsWith('/contract/')}
-                    is_positions={window.location.pathname === routes.trader_positions}
+                    is_contract_details={location.pathname.startsWith('/contract/')}
+                    is_positions={location.pathname === routes.trader_positions}
                 />
             );
         return <Loading />;

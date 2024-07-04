@@ -4,9 +4,26 @@ import { useFeatureFlags } from '@deriv/hooks';
 import { useReadLocalStorage } from 'usehooks-ts';
 import { makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useDevice } from '@deriv/components';
+import { Loading } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
+import classNames from 'classnames';
 
-const HeaderFallback = () => <div className='header' />;
+const HeaderFallback = () => {
+    const { isMobile } = useDevice();
+    const location = useLocation();
+    const should_show_dtrader_v2_loader =
+        JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '').data.dtrader_v2 && isMobile;
+    const is_contract_details = location.pathname.startsWith('/contract/');
+    const is_positions = location.pathname === routes.trader_positions;
+
+    return (
+        <div className={classNames('header', { 'header-v2': should_show_dtrader_v2_loader })}>
+            {should_show_dtrader_v2_loader && !is_contract_details ? (
+                <Loading.DTraderV2 is_header is_positions={is_positions} />
+            ) : null}
+        </div>
+    );
+};
 
 const DefaultHeader = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "default-header" */ './default-header')),
@@ -53,7 +70,7 @@ const Header = observer(() => {
     const { client } = useStore();
     const { accounts, has_wallet, is_logged_in, setAccounts, loginid, switchAccount } = client;
     const { pathname } = useLocation();
-    const { is_mobile } = useDevice();
+    const { isMobile } = useDevice();
 
     const is_wallets_cashier_route = pathname.includes(routes.wallets);
 
@@ -89,11 +106,11 @@ const Header = observer(() => {
             case pathname === routes.onboarding:
                 result = null;
                 break;
-            case is_dtrader_v2_enabled && is_mobile && pathname.startsWith(routes.trade):
+            case is_dtrader_v2_enabled && isMobile && pathname.startsWith(routes.trade):
                 result = <DTraderV2Header />;
                 break;
             case is_dtrader_v2_enabled &&
-                is_mobile &&
+                isMobile &&
                 pathname.startsWith('/contract/') === routes.contract.startsWith('/contract/'):
                 result = <DTraderV2ContractDetailsHeader />;
                 break;

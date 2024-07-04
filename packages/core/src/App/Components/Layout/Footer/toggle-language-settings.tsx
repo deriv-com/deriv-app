@@ -14,9 +14,9 @@ const ToggleLanguageSettings = observer(({ showPopover }: { showPopover?: boolea
     const { is_language_settings_modal_on, toggleLanguageSettingsModal } = ui;
     const { is_language_changing, current_language } = common;
 
-        React.useEffect(() => {
-            switchLanguage(current_language);
-        }, [current_language, switchLanguage]);
+    React.useEffect(() => {
+        switchLanguage(current_language);
+    }, [current_language, switchLanguage]);
 
     const toggle_settings_class = classNames('ic-language', 'footer__link', {
         'ic-settings--active': is_language_settings_modal_on,

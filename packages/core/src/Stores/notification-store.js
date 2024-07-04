@@ -12,7 +12,7 @@ import {
     getMarketName,
     getPathname,
     getPlatformSettings,
-    getTimestamp,
+    shouldShowPhoneVerificationNotification,
     getStaticUrl,
     getTotalProfit,
     getTradeTypeName,
@@ -342,7 +342,10 @@ export default class NotificationStore extends BaseStore {
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.trustpilot?.key
         );
-        const is_next_email_attempt_timer_running = getTimestamp(next_email_attempt, current_time);
+        const is_next_email_attempt_timer_running = shouldShowPhoneVerificationNotification(
+            next_email_attempt,
+            current_time
+        );
         const show_phone_number_verification_notification =
             !is_phone_number_verified && !is_next_email_attempt_timer_running;
         let has_missing_required_field;

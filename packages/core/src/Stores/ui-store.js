@@ -130,7 +130,6 @@ export default class UIStore extends BaseStore {
     promptFn = () => {};
 
     //phone number verification
-    //TODO: remove when BE API is ready
     should_show_phone_number_otp = false;
 
     //warn user if they want to close create real account modal

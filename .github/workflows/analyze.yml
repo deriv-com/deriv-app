@@ -7,7 +7,6 @@ on:
     branches:
       - master
 
-
 jobs:
   build_and_test:
     name: Analyze Bundle

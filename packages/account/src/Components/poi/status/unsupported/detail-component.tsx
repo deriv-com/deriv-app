@@ -29,7 +29,6 @@ type TDetailComponent = {
     handleComplete?: () => void;
     is_onfido_supported?: boolean;
     is_from_external?: boolean;
-    setIsCfdPoiCompleted?: () => void;
     is_for_mt5?: boolean;
     handlePOIforMT5Complete?: () => void;
 };
@@ -43,7 +42,6 @@ const DetailComponent = ({
     handleComplete,
     is_onfido_supported,
     is_from_external,
-    setIsCfdPoiCompleted,
     is_for_mt5,
     handlePOIforMT5Complete,
     ...props
@@ -172,7 +170,6 @@ const DetailComponent = ({
                             onComplete={onComplete}
                             goToCards={onClickBack}
                             is_from_external={is_from_external}
-                            setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                         />
                     )}
                 </React.Fragment>

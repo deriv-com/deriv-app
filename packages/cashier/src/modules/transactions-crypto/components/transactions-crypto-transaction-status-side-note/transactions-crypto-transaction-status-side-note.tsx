@@ -28,6 +28,7 @@ const TransactionsCryptoTransactionStatusSideNote: React.FC = observer(() => {
             address_url_display,
             confirmation_display,
             transaction_hash_display,
+            transaction_fee = '',
         } = cryptoTransactionMapper(last_transaction);
 
         return (
@@ -49,6 +50,18 @@ const TransactionsCryptoTransactionStatusSideNote: React.FC = observer(() => {
                             date: submit_date_display,
                         })}
                     </Text>
+                    {transaction_fee && (
+                        <Text
+                            size='xxxs'
+                            color='less-prominent'
+                            className='transactions-crypto-transaction-status-side-note__transaction-fee'
+                        >
+                            {localize('Transaction fee: {{amount}} {{currency}}', {
+                                amount: Number(transaction_fee).toFixed(currency_config?.fractional_digits),
+                                currency: currency_config?.display_code,
+                            })}
+                        </Text>
+                    )}
                     <Text size={'xxxs'}>
                         <Localize
                             i18n_default_text='Address: <0>{{value}}</0>'

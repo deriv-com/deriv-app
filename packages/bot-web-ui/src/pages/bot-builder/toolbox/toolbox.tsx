@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { rudderStackSendQsOpenEvent } from '../../../analytics/rudderstack-quick-strategy';
+import { rudderStackSendOpenEvent } from '../../../analytics/rudderstack-common-events';
 import { useDBotStore } from '../../../stores/useDBotStore';
 import ToolbarButton from '../toolbar/toolbar-button';
 import SearchBox from './search-box';
@@ -11,7 +11,7 @@ import { ToolboxItems } from './toolbox-items';
 
 const Toolbox = observer(() => {
     const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { is_desktop } = ui;
     const { toolbox, flyout, quick_strategy } = useDBotStore();
     const {
         hasSubCategory,
@@ -43,10 +43,10 @@ const Toolbox = observer(() => {
     const handleQuickStrategyOpen = () => {
         setFormVisibility(true);
         // send to rs if quick strategy is opened from bot builder (desktop)
-        rudderStackSendQsOpenEvent({ subform_source: 'bot_builder' });
+        rudderStackSendOpenEvent({ subform_source: 'bot_builder', subform_name: 'quick_strategy' });
     };
 
-    if (!is_mobile) {
+    if (is_desktop) {
         return (
             <div className='db-toolbox' data-testid='dashboard__toolbox'>
                 <ToolbarButton

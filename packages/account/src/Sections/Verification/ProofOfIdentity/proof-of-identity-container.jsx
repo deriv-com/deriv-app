@@ -19,7 +19,7 @@ import Verified from '../../../Components/poi/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification';
 
 const ProofOfIdentityContainer = observer(
-    ({ height, is_from_external, onStateChange, setIsCfdPoiCompleted, getChangeableFields, updateAccountStatus }) => {
+    ({ height, is_from_external, onStateChange, getChangeableFields, updateAccountStatus }) => {
         const history = useHistory();
         const [api_error, setAPIError] = React.useState();
         const [has_require_submission, setHasRequireSubmission] = React.useState(false);
@@ -167,7 +167,6 @@ const ProofOfIdentityContainer = observer(
                     redirect_button={redirect_button}
                     refreshNotifications={refreshNotifications}
                     residence_list={residence_list}
-                    setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                     updateAccountStatus={updateAccountStatus}
                     should_show_mismatch_form={should_show_mismatch_form}
                 />
@@ -233,7 +232,6 @@ const ProofOfIdentityContainer = observer(
                         needs_poa={needs_poa}
                         onfido={onfido}
                         manual={manual}
-                        setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                         redirect_button={redirect_button}
                         country_code={country_code}
                         handleViewComplete={handleManualSubmit}
@@ -245,7 +243,6 @@ const ProofOfIdentityContainer = observer(
                         manual={manual}
                         country_code={country_code}
                         is_from_external={is_from_external}
-                        setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                         needs_poa={needs_poa}
                         redirect_button={redirect_button}
                         handleRequireSubmission={handleRequireSubmission}

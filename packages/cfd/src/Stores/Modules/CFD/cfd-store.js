@@ -20,6 +20,7 @@ export default class CFDStore extends BaseStore {
     jurisdiction_selected_shortcode = '';
     is_compare_accounts_visible = false;
     is_mt5_trade_modal_visible = false;
+    product = '';
 
     account_type = {
         category: '',
@@ -58,6 +59,7 @@ export default class CFDStore extends BaseStore {
     real_synthetic_accounts_existing_data = [];
     real_financial_accounts_existing_data = [];
     real_swapfree_accounts_existing_data = [];
+    real_zerospread_accounts_existing_data = [];
 
     migrated_mt5_accounts = [];
 
@@ -86,6 +88,7 @@ export default class CFDStore extends BaseStore {
             current_account: observable,
             is_cfd_verification_modal_visible: observable,
             error_type: observable,
+            product: observable,
             dxtrade_tokens: observable,
             ctrader_tokens: observable,
             migrated_mt5_accounts: observable,
@@ -112,6 +115,7 @@ export default class CFDStore extends BaseStore {
             beginRealSignupForMt5: action.bound,
             enableMt5FinancialStpModal: action.bound,
             setAccountType: action.bound,
+            setProduct: action.bound,
             setCurrentAccount: action.bound,
             setMT5TradeAccount: action.bound,
             setIsAccountBeingCreated: action.bound,
@@ -150,9 +154,9 @@ export default class CFDStore extends BaseStore {
 
     get account_title() {
         return this.account_type.category
-            ? getMtCompanies(this.root_store.traders_hub.show_eu_related_content)[this.account_type.category][
-                  this.account_type.type
-              ].title
+            ? getMtCompanies(this.root_store.traders_hub.show_eu_related_content, this.product)[
+                  this.account_type.category
+              ][this.account_type.type].title
             : '';
     }
 
@@ -189,13 +193,12 @@ export default class CFDStore extends BaseStore {
                 ...account,
             };
         });
-
         return list;
     }
 
     // eslint-disable-next-line class-methods-use-this
     get mt5_companies() {
-        return getMtCompanies(this.root_store.client.is_eu);
+        return getMtCompanies(this.root_store.client.is_eu, this.product);
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -209,6 +212,7 @@ export default class CFDStore extends BaseStore {
                 return this.real_synthetic_accounts_existing_data?.some(
                     account => account.landing_company_short === this.jurisdiction_selected_shortcode
                 );
+            // here
             case 'all':
                 return this.real_swapfree_accounts_existing_data?.some(
                     account => account.landing_company_short === this.jurisdiction_selected_shortcode
@@ -458,9 +462,15 @@ export default class CFDStore extends BaseStore {
             phone,
             state: address_state,
             zipCode: address_postcode,
-            ...(this.account_type.type === 'all' ? { sub_account_category: 'swap_free' } : {}),
+            ...(this.account_type.type === 'all'
+                ? this.product === 'swap_free'
+                    ? { product: 'swap_free' }
+                    : { product: 'zero_spread' }
+                : {}),
             ...(values.server ? { server: values.server } : {}),
-            ...(this.jurisdiction_selected_shortcode ? { company: this.jurisdiction_selected_shortcode } : {}),
+            ...(this.jurisdiction_selected_shortcode && this.account_type.category === 'real'
+                ? { company: this.jurisdiction_selected_shortcode }
+                : {}),
             ...(this.jurisdiction_selected_shortcode !== Jurisdiction.LABUAN
                 ? type_request
                 : {
@@ -516,6 +526,10 @@ export default class CFDStore extends BaseStore {
 
     setAccountType(account_type) {
         this.account_type = account_type;
+    }
+
+    setProduct(product) {
+        this.product = product;
     }
 
     setCurrentAccount(data, meta) {

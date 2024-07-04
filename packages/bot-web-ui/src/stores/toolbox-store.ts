@@ -102,10 +102,9 @@ export default class ToolboxStore {
     // eslint-disable-next-line class-methods-use-this
     adjustWorkspace() {
         // NOTE: added this load modal open check to prevent scroll when load modal is open
-        const workspace = this.root_store.load_modal.is_load_modal_open
-            ? window.Blockly.getMainWorkspace()
-            : window.Blockly.derivWorkspace;
-        if (!this.is_workspace_scroll_adjusted && workspace) {
+        const is_load_modal_open = this.root_store.load_modal.is_load_modal_open;
+        const workspace = is_load_modal_open ? window.Blockly.getMainWorkspace() : window.Blockly.derivWorkspace;
+        if (!this.is_workspace_scroll_adjusted && !is_load_modal_open) {
             this.is_workspace_scroll_adjusted = true;
             setTimeout(() => {
                 const toolbox_width = document.getElementById('gtm-toolbox')?.getBoundingClientRect().width || 0;
@@ -131,6 +130,14 @@ export default class ToolboxStore {
 
                 this.is_workspace_scroll_adjusted = false;
             }, 300);
+        } else if (is_load_modal_open) {
+            if (workspace?.RTL) {
+                const scroll_y = 380;
+                const workspace_metrics = workspace.getMetrics();
+                const block_canvas_space =
+                    workspace_metrics.scrollWidth + workspace_metrics.viewLeft - workspace_metrics.viewWidth;
+                workspace.scrollbar.set(block_canvas_space, scroll_y);
+            }
         }
     }
 

@@ -211,10 +211,16 @@ runs:
       BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
       
       BUNDLE_SIZE_TOKEN="${{ inputs.BUNDLE_SIZE_TOKEN }}"
-      DATADOG_METRICS_URL="https://api.datadoghq.com/api/v1/series?api_key=$BUNDLE_SIZE_TOKEN"
+      DATADOG_METRICS_URL="https://api.datadoghq.com/api/v1/series"
       
-      # print out length of BUNDLE_SIZE_TOKEN in order to validate its presence
+      # Print out part of the BUNDLE_SIZE_TOKEN to validate its presence
+      echo "BUNDLE_SIZE_TOKEN starts with: ${BUNDLE_SIZE_TOKEN:0:4}... (redacted)"
       echo "Length of BUNDLE_SIZE_TOKEN: ${#BUNDLE_SIZE_TOKEN}"
+
+      if [ -z "$BUNDLE_SIZE_TOKEN" ]; then
+        echo "Error: BUNDLE_SIZE_TOKEN is not set."
+        exit 1
+      fi
 
       # Send each package size as a separate metric
       for row in $(echo "${PACKAGE_SIZES}" | jq -r 'to_entries[] | @base64'); do
@@ -225,7 +231,7 @@ runs:
         PACKAGE_NAME=$(_jq '.key')
         PACKAGE_SIZE=$(_jq '.value.newSize')
 
-        curl -X POST -H "Content-type: application/json" \
+        RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Content-type: application/json" -H "DD-API-KEY: $BUNDLE_SIZE_TOKEN" \
           -d '{
                 "series": [{
                   "metric": "package.size.'$PACKAGE_NAME'",
@@ -235,5 +241,12 @@ runs:
                   "tags": ["env:production", "branch:'$BRANCH_NAME'"]
                 }]
               }' \
-          $DATADOG_METRICS_URL
+          $DATADOG_METRICS_URL)
+
+        if [ "$RESPONSE" -ne 202 ]; then
+          echo "Error: Failed to send data to Datadog for package $PACKAGE_NAME. Response code: $RESPONSE"
+          exit 1
+        else
+          echo "Successfully sent data for package $PACKAGE_NAME"
+        fi
       done

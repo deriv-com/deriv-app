@@ -6,7 +6,7 @@ import { routes } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { Snackbar, Button } from '@deriv-com/quill-ui';
+import { Snackbar } from '@deriv-com/quill-ui';
 import { PasskeyErrorModal } from './components/passkey-error-modal';
 import { PasskeyReminderModal } from './components/passkey-reminder-modal';
 import { PasskeysStatusContainer } from './components/passkeys-status-container';
@@ -207,19 +207,12 @@ const Passkeys = observer(() => {
             />
             <PasskeyErrorModal error={error} is_modal_open={is_error_modal_open} onButtonClick={onCloseErrorModal} />
             <Snackbar
-                message={'network status'}
+                hasCloseButton={false}
+                message='network status'
                 isVisible
                 actionText=''
                 // onActionClick={() => {}}
                 // onCloseAction={() => {}}
-            />
-            <Button
-                // onClick={() => {}}
-                color='black'
-                label={<Localize i18n_default_text='test button' />}
-                type='button'
-                variant='primary'
-                size='md'
             />
         </Fragment>
     );

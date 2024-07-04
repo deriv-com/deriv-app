@@ -12,12 +12,12 @@ import { TSummaryCardProps } from './summary-card.types';
 const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCardProps) => {
     const { summary_card, run_panel } = useDBotStore();
     const { ui, common } = useStore();
-    const { is_contract_completed, is_contract_inactive, is_multiplier } = summary_card;
+    const { is_contract_completed, is_contract_inactive, is_multiplier, is_accumulator } = summary_card;
     const { onClickSell, is_sell_requested } = run_panel;
     const { addToast, current_focus, removeToast, setCurrentFocus } = ui;
     const { server_time } = common;
 
-    const { is_mobile } = ui;
+    const { is_desktop } = ui;
 
     const card_header = (
         <ContractCard.Header
@@ -39,8 +39,9 @@ const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCa
             error_message_alignment='left'
             getCardLabels={getCardLabels}
             getContractById={() => summary_card}
-            is_mobile={is_mobile}
+            is_mobile={!is_desktop}
             is_multiplier={is_multiplier}
+            is_accumulator={is_accumulator}
             is_sold={is_contract_completed}
             removeToast={removeToast}
             server_time={server_time}
@@ -69,11 +70,11 @@ const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCa
     return (
         <div
             className={classNames('db-summary-card', {
-                'db-summary-card--mobile': is_mobile,
+                'db-summary-card--mobile': !is_desktop,
                 'db-summary-card--inactive': is_contract_inactive && !is_contract_loading && !contract_info,
                 'db-summary-card--is-loading': is_contract_loading,
                 'db-summary-card--completed': is_contract_completed,
-                'db-summary-card--completed-mobile': is_contract_completed && is_mobile,
+                'db-summary-card--completed-mobile': is_contract_completed && !is_desktop,
             })}
             data-testid='dt_mock_summary_card'
         >

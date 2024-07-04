@@ -34,6 +34,8 @@ const useDxtradeAccountsList = () => {
                     is_virtual: account.account_type === 'demo',
                     /** Landing company shortcode the account belongs to. */
                     landing_company_name: account.landing_company_short,
+                    /** The login id of the Deriv X account */
+                    loginid: account.account_id,
                     /** The platform of the account */
                     platform: 'dxtrade' as const,
                     /** Converted balance from the exchange rate */

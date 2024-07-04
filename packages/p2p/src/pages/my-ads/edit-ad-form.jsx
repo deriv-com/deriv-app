@@ -7,10 +7,10 @@ import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import { ad_type } from 'Constants/floating-rate';
+import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AdWizard from './ad-wizard';
 import './edit-ad-form.scss';
-import { localize } from 'Components/i18next';
 
 const EditAdFormWrapper = ({ children }) => {
     if (isMobile()) {

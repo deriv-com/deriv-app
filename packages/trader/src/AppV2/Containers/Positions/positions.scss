@@ -33,6 +33,21 @@ $TABS_HEIGHT: var(--core-size-2400);
                         display: flex;
                         flex-direction: column;
                         overflow-y: scroll;
+
+                        .bottom-loader {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: 100%;
+                            height: 72px;
+                            animation: rotate 1s linear infinite;
+
+                            @keyframes rotate {
+                                to {
+                                    -webkit-transform: rotate(360deg);
+                                }
+                            }
+                        }
                     }
                 }
             }

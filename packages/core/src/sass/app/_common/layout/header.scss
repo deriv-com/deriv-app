@@ -427,6 +427,13 @@
                 &__icon {
                     fill: var(--core-color-opacity-black-600);
                 }
+                &__wrapper {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 36px;
+                    height: 36px;
+                }
             }
         }
 
@@ -446,11 +453,6 @@
                 transform: rotate(180deg);
             }
         }
-    }
-
-    .badge__position-top-sm {
-        top: calc(-1 * var(--temp-static-spacing-7));
-        inset-inline-end: calc(-1 * var(--temp-static-spacing-7));
     }
 }
 

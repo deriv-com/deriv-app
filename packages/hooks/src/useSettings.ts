@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { useInvalidateQuery, useMutation, useQuery } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 
@@ -15,7 +14,7 @@ const useSettings = () => {
     const { mutate, ...mutate_rest } = useMutation('set_settings', { onSuccess: () => invalidate('get_settings') });
     const invalidate = useInvalidateQuery();
 
-    const update = useCallback((payload: TSetSettingsPayload) => mutate({ payload }), [mutate]);
+    const update = (payload: TSetSettingsPayload) => mutate({ payload });
 
     return {
         /** The settings response. */

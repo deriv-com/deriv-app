@@ -471,6 +471,7 @@ const mock = (): TStores & { is_mock: boolean } => {
         },
         traders_hub: {
             getAccount: jest.fn(),
+            getTradingPlatformStatus: jest.fn(),
             closeModal: jest.fn(),
             combined_cfd_mt5_accounts: [],
             available_cfd_accounts: [],

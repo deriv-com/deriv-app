@@ -3,6 +3,8 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const IgnorePlugin = require('webpack').IgnorePlugin;
 const TerserPlugin = require('terser-webpack-plugin');
+const DefinePlugin = require('webpack').DefinePlugin;
+const Dotenv = require('dotenv-webpack');
 // const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
@@ -85,6 +87,12 @@ module.exports = function (env) {
             },
             extensions: ['.ts', '.tsx', '.js'],
         },
+        plugins: [
+            new Dotenv(),
+            new DefinePlugin({
+                'process.env.TRUSTPILOT_API_KEY': JSON.stringify(process.env.TRUSTPILOT_API_KEY),
+            }),
+        ],
         module: {
             rules: [
                 {
@@ -203,6 +211,7 @@ module.exports = function (env) {
                 '@deriv/cashier': true,
                 '@deriv/cfd': true,
                 '@deriv-com/analytics': `@deriv-com/analytics`,
+                '@deriv-com/translations': '@deriv-com/translations',
             },
         ],
         plugins,

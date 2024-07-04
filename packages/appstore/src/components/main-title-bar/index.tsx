@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, DesktopWrapper, MobileWrapper, Tabs, Icon, Loading } from '@deriv/components';
+import { Text, Tabs, Icon, Loading } from '@deriv/components';
 import { ContentFlag, makeLazyLoader, moduleLoader } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import { useDevice } from '@deriv-com/ui';
 import { useWalletMigration } from '@deriv/hooks';
 import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
 import BookBanner from 'Components/banners/book-banner';
@@ -20,14 +21,19 @@ const WalletsBanner = makeLazyLoader(
 )();
 
 const MainTitleBar = () => {
+    const { isDesktop } = useDevice();
     const { traders_hub, client } = useStore();
-    const { is_landing_company_loaded, is_switching } = client;
+    const { is_landing_company_loaded, is_switching, has_maltainvest_account } = client;
     const { state: wallet_migration_state } = useWalletMigration();
     const { selected_region, handleTabItemClick, toggleRegulatorsCompareModal, content_flag } = traders_hub;
 
     const is_low_risk_cr_real_account =
         content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
-    const show_wallets_banner = wallet_migration_state && wallet_migration_state !== 'ineligible';
+    const show_wallets_banner =
+        wallet_migration_state === 'eligible' ||
+        wallet_migration_state === 'in_progress' ||
+        wallet_migration_state === 'migrated' ||
+        wallet_migration_state === 'failed';
 
     const [active_index, setActiveIndex] = React.useState(0);
     React.useEffect(() => {
@@ -38,7 +44,7 @@ const MainTitleBar = () => {
         <React.Fragment>
             <BookBanner />
             {show_wallets_banner && <WalletsBanner />}
-            <DesktopWrapper>
+            {isDesktop ? (
                 <div className='main-title-bar'>
                     <div className='main-title-bar__right'>
                         <Text size='m' weight='bold' color='prominent'>
@@ -46,52 +52,55 @@ const MainTitleBar = () => {
                         </Text>
                         <AccountTypeDropdown />
                     </div>
-                    {is_low_risk_cr_real_account && is_landing_company_loaded && <RegulatorSwitcher />}
+                    {is_low_risk_cr_real_account && has_maltainvest_account && is_landing_company_loaded && (
+                        <RegulatorSwitcher />
+                    )}
                     <AssetSummary />
                 </div>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <Text weight='bold' className='main-title-bar__text' color='prominent'>
-                    <Localize i18n_default_text="Trader's Hub" />
-                </Text>
-                <div className='main-title-bar-mobile'>
-                    <div className='main-title-bar-mobile--account-type-dropdown'>
-                        <AccountTypeDropdown />
-                    </div>
-                    {is_low_risk_cr_real_account && is_landing_company_loaded ? (
-                        <div className='main-title-bar-mobile--regulator'>
-                            {!is_switching ? (
-                                <>
-                                    <div
-                                        className='main-title-bar-mobile--regulator--compare-modal'
-                                        onClick={() => toggleRegulatorsCompareModal()}
-                                    >
-                                        <Icon icon='IcInfoOutline' />
-                                    </div>
-                                    <Tabs
-                                        active_index={active_index}
-                                        onTabItemClick={(index: number) => {
-                                            setActiveIndex(index);
-                                            handleTabItemClick(index);
-                                        }}
-                                        top
-                                        is_scrollable
-                                        is_overflow_hidden
-                                    >
-                                        <div label={localize('Non-EU')} />
-                                        <div label={localize('EU')} />
-                                    </Tabs>
-                                </>
-                            ) : (
-                                <div className='main-title-bar-mobile--regulator__container content-loader'>
-                                    <RegulationsSwitcherLoader />
-                                </div>
-                            )}
+            ) : (
+                <React.Fragment>
+                    <Text weight='bold' className='main-title-bar__text' color='prominent'>
+                        <Localize i18n_default_text="Trader's Hub" />
+                    </Text>
+                    <div className='main-title-bar-mobile'>
+                        <div className='main-title-bar-mobile--account-type-dropdown'>
+                            <AccountTypeDropdown />
                         </div>
-                    ) : null}
-                </div>
-                <AssetSummary />
-            </MobileWrapper>
+                        {is_low_risk_cr_real_account && has_maltainvest_account && is_landing_company_loaded ? (
+                            <div className='main-title-bar-mobile--regulator'>
+                                {!is_switching ? (
+                                    <>
+                                        <div
+                                            className='main-title-bar-mobile--regulator--compare-modal'
+                                            onClick={() => toggleRegulatorsCompareModal()}
+                                        >
+                                            <Icon icon='IcInfoOutline' />
+                                        </div>
+                                        <Tabs
+                                            active_index={active_index}
+                                            onTabItemClick={(index: number) => {
+                                                setActiveIndex(index);
+                                                handleTabItemClick(index);
+                                            }}
+                                            top
+                                            is_scrollable
+                                            is_overflow_hidden
+                                        >
+                                            <div label={localize('Non-EU')} />
+                                            <div label={localize('EU')} />
+                                        </Tabs>
+                                    </>
+                                ) : (
+                                    <div className='main-title-bar-mobile--regulator__container content-loader'>
+                                        <RegulationsSwitcherLoader />
+                                    </div>
+                                )}
+                            </div>
+                        ) : null}
+                    </div>
+                    <AssetSummary />
+                </React.Fragment>
+            )}
         </React.Fragment>
     );
 };

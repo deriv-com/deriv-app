@@ -1,0 +1,22 @@
+.risk-management-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--semantic-spacing-gap-lg);
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        gap: var(--semantic-spacing-gap-md);
+    }
+
+    &__title {
+        display: flex;
+        gap: var(--semantic-spacing-gap-md);
+    }
+
+    .deal-cancellation-badge {
+        background-color: var(--semantic-color-monochrome-surface-normal-lowest);
+        border-radius: var(--semantic-borderRadius-sm);
+    }
+}

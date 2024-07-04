@@ -14,11 +14,7 @@ jest.mock('@deriv/shared', () => ({
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
-    useDevice: jest.fn(() => ({
-        isDesktop: false,
-        isMobile: true,
-        isTablet: false,
-    })),
+    useDevice: jest.fn(() => ({ isMobile: true })),
 }));
 
 describe('VideoFragment', () => {

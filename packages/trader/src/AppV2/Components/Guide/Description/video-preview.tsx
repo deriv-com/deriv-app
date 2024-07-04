@@ -23,8 +23,6 @@ const VideoPreview = ({ contract_type, toggleVideoPlayer, video_src }: TVideoPre
                 onKeyDown={toggleVideoPlayer}
             >
                 <Stream
-                    autoplay={false}
-                    controls={false}
                     className='guide-video'
                     letterboxColor='transparent'
                     muted

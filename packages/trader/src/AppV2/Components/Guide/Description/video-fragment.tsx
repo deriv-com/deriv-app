@@ -37,6 +37,7 @@ const VideoFragment = ({ contract_type }: TVideoFragment) => {
                 onLoadedData={() => setIsLoading(false)}
                 playsInline
                 preload='auto'
+                muted
             >
                 {/* a browser will select a source with extension it recognizes */}
                 <source src={mp4_src} type='video/mp4' />

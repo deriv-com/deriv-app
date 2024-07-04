@@ -208,11 +208,9 @@ const Passkeys = observer(() => {
             <PasskeyErrorModal error={error} is_modal_open={is_error_modal_open} onButtonClick={onCloseErrorModal} />
             <Snackbar
                 hasCloseButton={false}
-                message='network status'
+                message={<Localize i18n_default_text='Network status' />}
                 isVisible
                 actionText=''
-                // onActionClick={() => {}}
-                // onCloseAction={() => {}}
             />
         </Fragment>
     );

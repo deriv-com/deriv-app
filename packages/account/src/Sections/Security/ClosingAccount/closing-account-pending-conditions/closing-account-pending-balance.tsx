@@ -19,7 +19,7 @@ type TClosingAccountPendingBalanceProps = {
     account_balance: TDetailsOfMT5Account[] | TDetailsOfDerivXAccount[];
 };
 
-type TShortcode = Parameters<typeof getCFDAccountDisplay>[0]['shortcode'];
+type TShortcode = Exclude<TDetailsOfMT5Account['landing_company_short'], 'seychelles'>;
 
 const ClosingAccountPendingBalance = observer(({ platform, account_balance }: TClosingAccountPendingBalanceProps) => {
     const { traders_hub } = useStore();

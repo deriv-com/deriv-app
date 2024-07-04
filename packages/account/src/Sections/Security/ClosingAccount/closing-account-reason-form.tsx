@@ -2,7 +2,7 @@ import React from 'react';
 import { Field, Form, Formik, FormikErrors, FieldProps, FormikValues } from 'formik';
 import { Checkbox, FormSubmitButton, Input, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { TClosingAccountFormValues } from 'Types';
+import { TClosingAccountFormValues } from '../../../Types';
 import {
     CHARACTER_LIMIT_FOR_CLOSING_ACCOUNT,
     MAX_ALLOWED_REASONS_FOR_CLOSING_ACCOUNT,
@@ -11,7 +11,7 @@ import {
     SET_TOTAL_ACCUMULATED_CHARACTERS,
     SET_TOTAL_CHECKBOX_CHECKED,
     getCloseAccountReasonsList,
-} from 'Constants/closing-account-config';
+} from '../../../Constants/closing-account-config';
 
 type TClosingAccountReasonFormProps = {
     onBackClick: () => void;
@@ -208,7 +208,9 @@ const ClosingAccountReasonForm = ({ onBackClick, onConfirmClick }: TClosingAccou
                                 name='other_trading_platforms'
                                 value={values.other_trading_platforms}
                                 max_characters={CHARACTER_LIMIT_FOR_CLOSING_ACCOUNT}
-                                onChange={e => handleInputChange(e, values.other_trading_platforms, handleChange)}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    handleInputChange(e, values.other_trading_platforms, handleChange)
+                                }
                                 onPaste={handleInputPaste}
                             />
                         )}
@@ -225,7 +227,9 @@ const ClosingAccountReasonForm = ({ onBackClick, onConfirmClick }: TClosingAccou
                                 name='do_to_improve'
                                 value={values.do_to_improve}
                                 max_characters={CHARACTER_LIMIT_FOR_CLOSING_ACCOUNT}
-                                onChange={e => handleInputChange(e, values.do_to_improve, handleChange)}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                                    handleInputChange(e, values.do_to_improve, handleChange)
+                                }
                                 onPaste={handleInputPaste}
                             />
                         )}

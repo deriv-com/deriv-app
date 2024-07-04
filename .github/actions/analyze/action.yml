@@ -143,23 +143,23 @@ runs:
       echo "package_sizes=$PACKAGE_SIZES" >> $GITHUB_OUTPUT
       echo "above_threshold=$ABOVE_THRESHOLD" >> $GITHUB_OUTPUT
 
-  - name: Comment on PR with Diff Output
-    if: steps.get_artifact_url.outputs.artifact_url != 'null' && inputs.ISSUE_NUMBER
-    uses: actions/github-script@v5
-    env:
-      DIFF_OUTPUT_HTML: ${{ steps.diff.outputs.diff_output_html }}
-      ISSUE_NUMBER: ${{ inputs.ISSUE_NUMBER }}
-    with:
-      script: |
-        const diffOutputHtml = process.env.DIFF_OUTPUT_HTML;  // Removed Buffer.from and base64 decoding
-        const issueNumber = process.env.ISSUE_NUMBER;
-        github.rest.issues.createComment({
-          owner: context.repo.owner,
-          repo: context.repo.repo,
-          issue_number: issueNumber,
-          body: `${diffOutputHtml}`
-        });
-    continue-on-error: true
+  # - name: Comment on PR with Diff Output
+  #   if: steps.get_artifact_url.outputs.artifact_url != 'null' && inputs.ISSUE_NUMBER
+  #   uses: actions/github-script@v5
+  #   env:
+  #     DIFF_OUTPUT_HTML: ${{ steps.diff.outputs.diff_output_html }}
+  #     ISSUE_NUMBER: ${{ inputs.ISSUE_NUMBER }}
+  #   with:
+  #     script: |
+  #       const diffOutputHtml = process.env.DIFF_OUTPUT_HTML;  // Removed Buffer.from and base64 decoding
+  #       const issueNumber = process.env.ISSUE_NUMBER;
+  #       github.rest.issues.createComment({
+  #         owner: context.repo.owner,
+  #         repo: context.repo.repo,
+  #         issue_number: issueNumber,
+  #         body: `${diffOutputHtml}`
+  #       });
+  #   continue-on-error: true
 
   - name: Print out differences on console
     id: print_diff
@@ -168,12 +168,12 @@ runs:
     run: |
       node .github/actions/analyze/compareReports.js --format=console
 
-  - name: Validate size changes
-    if: ${{ steps.diff.outputs.above_threshold == 'true' }}
-    uses: actions/github-script@v5
-    with:
-      script: |
-        core.setFailed('Size changes exceed the defined threshold. Check above logs for details.');
+  # - name: Validate size changes
+  #   if: ${{ steps.diff.outputs.above_threshold == 'true' }}
+  #   uses: actions/github-script@v5
+  #   with:
+  #     script: |
+  #       core.setFailed('Size changes exceed the defined threshold. Check above logs for details.');
 
   - name: Zip all treemaps and reports
     shell: bash

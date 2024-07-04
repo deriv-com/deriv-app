@@ -506,7 +506,7 @@ const CFDsListing = observer(() => {
                                     name={account.name}
                                     platform={account.platform}
                                     description={account.description}
-                                    onAction={async () => {
+                                    onAction={() => {
                                         Analytics.trackEvent('ce_tradershub_dashboard_form', {
                                             action: 'account_get',
                                             form_name: 'traders_hub_default',

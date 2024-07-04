@@ -6,7 +6,7 @@ import { TAuthStatusCodes, TMT5AccountStatus } from '../Types/common.type';
 import { Link } from 'react-router-dom';
 
 const getStatusBadgeConfig = (
-    mt5_account_status: TMT5AccountStatus, // TODO: rename to be more generic for ctrader and dxtrade
+    mt5_account_status: TMT5AccountStatus,
     openFailedVerificationModal?: (selected_account_type: string) => void,
     selected_account_type?: string,
     setIsVerificationModalVisible?: (value: boolean) => void,

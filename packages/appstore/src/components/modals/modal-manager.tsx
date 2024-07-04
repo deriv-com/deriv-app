@@ -91,7 +91,7 @@ const CFDServerMaintenanceModal = makeLazyLoader(
         moduleLoader(
             () =>
                 import(
-                    /* webpackChunkName: "modal_cfd_cfd-password-modal" */ '@deriv/cfd/src/Containers/cfd-server-maintenance-modal'
+                    /* webpackChunkName: "modal_cfd_cfd-server-maintenance-modal" */ '@deriv/cfd/src/Containers/cfd-server-maintenance-modal'
                 )
         ),
     () => <Loading />
@@ -102,7 +102,7 @@ const MT5AccountUnavailableModal = makeLazyLoader(
         moduleLoader(
             () =>
                 import(
-                    /* webpackChunkName: "modal_cfd_cfd-password-modal" */ '@deriv/cfd/src/Containers/mt5-account-unavailable-modal'
+                    /* webpackChunkName: "modal_cfd_mt5-account-unavailable-modal" */ '@deriv/cfd/src/Containers/mt5-account-unavailable-modal'
                 )
         ),
     () => <Loading />

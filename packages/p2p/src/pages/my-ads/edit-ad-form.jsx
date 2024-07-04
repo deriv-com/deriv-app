@@ -10,6 +10,7 @@ import { ad_type } from 'Constants/floating-rate';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AdWizard from './ad-wizard';
 import './edit-ad-form.scss';
+import { localize } from 'Components/i18next';
 
 const EditAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -22,9 +23,9 @@ const EditAdFormWrapper = ({ children }) => {
 const EditAdForm = ({ country_list }) => {
     const { my_ads_store, my_profile_store } = useStores();
     const steps = [
-        { header: { title: 'Edit ad type and amount' } },
-        { header: { title: 'Edit payment details' } },
-        { header: { title: 'Edit ad conditions' } },
+        { header: { title: localize('Edit ad type and amount') } },
+        { header: { title: localize('Edit payment details') } },
+        { header: { title: localize('Edit ad conditions') } },
     ];
 
     const {

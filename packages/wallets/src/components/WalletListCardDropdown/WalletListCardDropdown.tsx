@@ -12,9 +12,9 @@ import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import './WalletListCardDropdown.scss';
 
 type WalletList = {
-    currency?: string;
-    currencyConfig?: THooks.CurrencyConfig;
-    loginid: string;
+    currency: THooks.WalletAccountsList['currency'];
+    currencyConfig: THooks.WalletAccountsList['currency_config'];
+    loginid: THooks.WalletAccountsList['loginid'];
     text: React.ReactNode;
 }[];
 

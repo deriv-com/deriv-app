@@ -38,7 +38,7 @@
         z-index: 2;
         border-radius: 0.4rem;
         background: var(--system-light-8-primary-background, #fff);
-        box-shadow: 0 3.2rem 6.4rem 0 rgba(14, 14, 14, 0.14);
+        box-shadow: 0 3.2rem 6.4rem 0 var(--shadow-menu, rgba(0, 0, 0, 0.16));
         overflow-y: auto;
         width: 26.9rem;
         padding: 0 0.8rem;
@@ -47,7 +47,7 @@
         &-header {
             padding: 1rem;
             margin-bottom: 0.4rem;
-            border-bottom: 0.1rem solid #f2f3f4;
+            border-bottom: 0.1rem solid var(--general-section-1, #f2f3f4);
             width: 100%;
         }
 
@@ -57,7 +57,7 @@
     }
 
     &__item {
-        padding: 10px 16px;
+        padding: 1rem 1.6rem;
         width: 100%;
         z-index: 2;
         height: 6.4rem;

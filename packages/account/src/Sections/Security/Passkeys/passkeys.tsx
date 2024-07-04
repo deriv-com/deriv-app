@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import { InlineMessage, Loading } from '@deriv/components';
 import { useGetPasskeysList, useRegisterPasskey, useRenamePasskey } from '@deriv/hooks';
@@ -6,12 +6,13 @@ import { routes } from '@deriv/shared';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { Snackbar } from '@deriv-com/quill-ui';
 import { PasskeyErrorModal } from './components/passkey-error-modal';
 import { PasskeyReminderModal } from './components/passkey-reminder-modal';
 import { PasskeysStatusContainer } from './components/passkeys-status-container';
 import { clearTimeOut, PASSKEY_STATUS_CODES, passkeysMenuActionEventTrack, TPasskeysStatus } from './passkeys-configs';
 import './passkeys.scss';
+import { NetworkStatusToastPopup } from 'Components/network-status-toast-popup/network-status-toast-popup';
+import { Snackbar } from '@deriv-com/quill-ui';
 
 export type TPasskey = {
     id: number;
@@ -206,12 +207,6 @@ const Passkeys = observer(() => {
                 toggleModal={onCloseReminderModal}
             />
             <PasskeyErrorModal error={error} is_modal_open={is_error_modal_open} onButtonClick={onCloseErrorModal} />
-            <Snackbar
-                hasCloseButton={false}
-                message={<Localize i18n_default_text='Network status' />}
-                isVisible
-                actionText=''
-            />
         </Fragment>
     );
 });

@@ -25,7 +25,7 @@ const MenuTitle = observer(() => {
                     {!is_mobile_language_menu_open && (
                         <React.Fragment>
                             {TranslationFlag[current_language] ? (
-                                TranslationFlag[current_language]('xs')
+                                TranslationFlag[current_language](22, 16)
                             ) : (
                                 //TODOs: remove this when Korean flag is added to quill-icons
                                 <Icon icon={`IcFlag${current_language}`} data_testid='dt_icon' size={18} />

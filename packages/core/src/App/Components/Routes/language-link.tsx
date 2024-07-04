@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
-import { getAllowedLanguages } from '@deriv/translations';
-import { TranslationFlag } from '@deriv/shared';
 import { Icon } from '@deriv/components';
+import { TranslationFlag, UNSUPPORTED_LANGUAGES } from '@deriv/shared';
+import { getAllowedLanguages, useTranslations } from '@deriv-com/translations';
 
 export type TLanguageLink = {
     is_clickable?: boolean;
@@ -13,13 +13,14 @@ export type TLanguageLink = {
 
 const LanguageLink = observer(({ is_clickable = false, lang, toggleModal }: TLanguageLink) => {
     const { common } = useStore();
-    const { changeSelectedLanguage, current_language } = common;
-    const is_active = current_language === lang;
+    const { currentLang, switchLanguage } = useTranslations();
+    const { changeSelectedLanguage } = common;
+    const is_active = currentLang === lang;
 
     const link: React.ReactNode = (
         <React.Fragment>
             {TranslationFlag[lang] ? (
-                TranslationFlag[lang]()
+                TranslationFlag[lang](36, 24)
             ) : (
                 <Icon icon={`IcFlag${lang}`} className='settings-language__language-flag' />
             )}
@@ -28,7 +29,7 @@ const LanguageLink = observer(({ is_clickable = false, lang, toggleModal }: TLan
                     'settings-language__language-name--active': is_active,
                 })}
             >
-                {getAllowedLanguages()[lang]}
+                {getAllowedLanguages(UNSUPPORTED_LANGUAGES)[lang]}
             </span>
         </React.Fragment>
     );
@@ -48,8 +49,9 @@ const LanguageLink = observer(({ is_clickable = false, lang, toggleModal }: TLan
                     data-testid='dt_settings_language_button'
                     id={`dt_settings_${lang}_button`}
                     key={lang}
-                    onClick={() => {
-                        changeSelectedLanguage(lang);
+                    onClick={async () => {
+                        await changeSelectedLanguage(lang);
+                        switchLanguage(lang);
                         toggleModal?.();
                     }}
                     className={classNames('settings-language__language-link', {

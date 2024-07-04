@@ -44,6 +44,7 @@ const MultiplierCardBody = ({
                     'dc-contract-card-items-wrapper': !is_mobile,
                     'dc-contract-card-items-wrapper--has-progress-slider': has_progress_slider && !is_sold,
                 })}
+                data-testid='dt_multiplier_card_body'
             >
                 <ContractCardItem header={CONTRACT_COST} className='dc-contract-card__stake'>
                     <Money amount={buy_price - cancellation_price} currency={currency} />

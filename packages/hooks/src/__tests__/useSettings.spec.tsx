@@ -17,6 +17,9 @@ describe('useSettings', () => {
     const mockStoreData = mockStore({
         client: { is_authorize: true },
     });
+    const wrapper = ({ children }: { children: JSX.Element }) => (
+        <StoreProvider store={mockStoreData}>{children}</StoreProvider>
+    );
 
     beforeEach(() => {
         (useInvalidateQuery as jest.Mock).mockReturnValue(mockInvalidateQuery);
@@ -38,10 +41,6 @@ describe('useSettings', () => {
             isLoading: false,
             error: null,
         });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockStoreData}>{children}</StoreProvider>
-        );
 
         const { result } = renderHook(() => useSettings(), { wrapper });
 
@@ -69,10 +68,6 @@ describe('useSettings', () => {
             error: null,
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockStoreData}>{children}</StoreProvider>
-        );
-
         const { result } = renderHook(() => useSettings(), { wrapper });
 
         expect(result.current.data).toEqual({
@@ -87,10 +82,6 @@ describe('useSettings', () => {
             isLoading: false,
             error: null,
         });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockStoreData}>{children}</StoreProvider>
-        );
 
         const { result } = renderHook(() => useSettings(), { wrapper });
 

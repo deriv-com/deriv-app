@@ -1,11 +1,11 @@
 import React from 'react';
 import BottomNav from 'AppV2/Components/BottomNav';
-import MarketSelector from 'AppV2/Components/MarketSelector';
+import ActiveSymbolsList from 'AppV2/Components/ActiveSymbolsList';
 
 const Trade = () => {
     return (
         <BottomNav>
-            <MarketSelector />
+            <ActiveSymbolsList />
         </BottomNav>
     );
 };

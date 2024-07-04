@@ -6,7 +6,7 @@ import MarketCategories from '../MarketCategories';
 import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 import SymbolsSearchResult from '../SymbolsSearchResult';
 
-const MarketSelector = observer(() => {
+const ActiveSymbolsList = observer(() => {
     const { default_symbol } = useActiveSymbols({});
 
     const [isOpen, setIsOpen] = useState(false);
@@ -32,7 +32,7 @@ const MarketSelector = observer(() => {
                     <Tab.Container
                         contentStyle='hug'
                         size='md'
-                        className='market-selector__content'
+                        className='active-symbols-list__content'
                         selectedTabIndex={1}
                     >
                         {isSearching ? (
@@ -56,4 +56,4 @@ const MarketSelector = observer(() => {
     );
 });
 
-export default MarketSelector;
+export default ActiveSymbolsList;

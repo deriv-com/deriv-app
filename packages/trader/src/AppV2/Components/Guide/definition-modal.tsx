@@ -6,7 +6,7 @@ import { getTermDefinition } from 'AppV2/Utils/trade-types-utils';
 type TDefinitionModal = { contract_type: string; term: string; onClose: () => void };
 
 const DefinitionModal = ({ contract_type, term, onClose }: TDefinitionModal) => (
-    <ActionSheet.Root isOpen={!!term} onClose={onClose} position='left'>
+    <ActionSheet.Root isOpen={!!term} onClose={onClose} position='left' expandable={false}>
         <ActionSheet.Portal shouldCloseOnDrag>
             <ActionSheet.Content className='definition__wrapper'>
                 <Heading.H4 className='definition__title'>{term}</Heading.H4>

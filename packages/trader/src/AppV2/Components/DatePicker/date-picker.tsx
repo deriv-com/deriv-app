@@ -49,7 +49,7 @@ const DateRangePicker = ({
     };
 
     return (
-        <ActionSheet.Root isOpen={isOpen} onClose={onClose} position='left'>
+        <ActionSheet.Root isOpen={isOpen} onClose={onClose} position='left' expandable={false}>
             <ActionSheet.Portal shouldCloseOnDrag>
                 <ActionSheet.Header title={<Localize i18n_default_text='Choose a date range' />} />
                 <ActionSheet.Content>

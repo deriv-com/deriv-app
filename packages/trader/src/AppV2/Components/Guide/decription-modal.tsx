@@ -53,7 +53,7 @@ const DescriptionModal = observer(
 
         return (
             <React.Fragment>
-                <ActionSheet.Root isOpen={is_open} onClose={onClose} position='left'>
+                <ActionSheet.Root isOpen={is_open} onClose={onClose} position='left' expandable={false}>
                     <ActionSheet.Portal shouldCloseOnDrag>
                         <ActionSheet.Content className='guide__wrapper'>
                             <Heading.H4 className='guide__title'>

@@ -67,7 +67,12 @@ const AccountInfoDTraderV2 = ({
                     </div>
                 </button>
             </AccountInfoWrapper>
-            <ActionSheet.Root isOpen={is_dialog_on} onClose={() => toggleDialog(false)} position='left'>
+            <ActionSheet.Root
+                isOpen={is_dialog_on}
+                onClose={() => toggleDialog(false)}
+                position='left'
+                expandable={false}
+            >
                 <ActionSheet.Portal shouldCloseOnDrag>
                     <ActionSheet.Content>
                         <AccountSwitcherDTraderV2 />

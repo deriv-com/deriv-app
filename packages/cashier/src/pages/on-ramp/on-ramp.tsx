@@ -56,7 +56,7 @@ const OnRampInfo = () => (
 );
 
 const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
-    const { common, client } = useStore();
+    const { common, client, ui } = useStore();
     const { onramp, general_store } = useCashierStore();
     const {
         filtered_onramp_providers,
@@ -71,6 +71,7 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
     const { is_cashier_onboarding, is_loading, cashier_route_tab_index } = general_store;
     const is_cashier_locked = useCashierLocked();
     const { is_switching } = client;
+    const { is_desktop } = ui;
     const { routeTo } = common;
     const is_deposit_locked = useDepositLocked();
 
@@ -114,7 +115,7 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
     return (
         <React.Fragment>
             <div className='cashier__wrapper cashier__wrapper--align-left on-ramp'>
-                {isMobile() && (
+                {!is_desktop && (
                     <React.Fragment>
                         <SelectNative
                             data_testid='dt_on_ramp_select_native'
@@ -134,8 +135,8 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
                     </React.Fragment>
                 )}
                 <Text
-                    color={isMobile() ? 'less-prominent' : 'general'}
-                    weight={isMobile() ? 'normal' : 'bold'}
+                    color={is_desktop ? 'general' : 'less-prominent'}
+                    weight={is_desktop ? 'bold' : 'normal'}
                     align='center'
                     line_height='m'
                     className='on-ramp__page-header'

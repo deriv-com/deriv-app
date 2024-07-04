@@ -56,14 +56,17 @@
             align-items: center;
         }
         &--is-mobile {
-            // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
-            @media (max-width: 926px) {
-                width: 100vw;
-            }
+            width: 100vw;
 
             @include mobile {
-                width: 100vw;
                 margin-top: 4rem;
+            }
+
+            @include tablet-screen {
+                max-width: 60rem;
+            }
+
+            @include mobile-or-tablet-screen {
                 .dc-collapsible {
                     position: relative;
                     background-color: var(--general-section-1);

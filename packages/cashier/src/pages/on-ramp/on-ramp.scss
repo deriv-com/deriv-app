@@ -1,10 +1,14 @@
 .on-ramp {
+    @include tablet-screen {
+        max-width: 60rem;
+    }
+
     &__page-header {
-        margin-bottom: 1.7rem;
+        margin-bottom: 1.6rem;
 
         // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
-        @media (max-width: 926px) {
-            margin: 1.7rem;
+        @include mobile-or-tablet-screen {
+            margin: 1.6rem;
         }
     }
     &__info {

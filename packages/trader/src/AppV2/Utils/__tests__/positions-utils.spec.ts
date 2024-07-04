@@ -5,7 +5,6 @@ import {
     getFilteredContractTypes,
     getProfit,
     getTotalPositionsProfit,
-    getTabIndexFromURL,
     setPositionURLParams,
     TAB_NAME,
 } from '../positions-utils';
@@ -357,45 +356,6 @@ describe('getProfit', () => {
 describe('getTotalPositionsProfit', () => {
     it('should return correct total profit, based on all positions', () => {
         expect(getTotalPositionsProfit(mockedActivePositions)).toEqual(-12.27);
-    });
-});
-
-describe('getTradeURLParams', () => {
-    const originalWindowLocation = window.location;
-
-    beforeEach(() => {
-        Object.defineProperty(window, 'location', {
-            configurable: true,
-            enumerable: true,
-            value: {
-                hostname: 'https://localhost:8443/',
-                pathname: routes.trader_positions,
-            },
-        });
-    });
-
-    afterEach(() => {
-        Object.defineProperty(window, 'location', {
-            configurable: true,
-            enumerable: true,
-            value: originalWindowLocation,
-        });
-        location.search = '';
-    });
-
-    it('should return 0 if it is an open tab in location.search', () => {
-        location.search = `?tab_name=${TAB_NAME.OPEN.toLowerCase()}`;
-        expect(getTabIndexFromURL()).toBe(0);
-    });
-
-    it('should return 1 if it is a closed tab in location.search', () => {
-        location.search = `?tab_name=${TAB_NAME.CLOSED.toLowerCase()}`;
-        expect(getTabIndexFromURL()).toBe(1);
-    });
-
-    it('should return 0 if there is no appropriate query param', () => {
-        location.search = '';
-        expect(getTabIndexFromURL()).toBe(0);
     });
 });
 

@@ -4,12 +4,10 @@ import { Loading } from '@deriv/components';
 import getRoutesConfig from 'App/Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 import { observer, useStore } from '@deriv/stores';
-import { useDevice } from '@deriv-com/ui';
-import { routes } from '@deriv/shared';
+import { getPositionsV2TabIndexFromURL, isDTraderV2, routes } from '@deriv/shared';
 
 const BinaryRoutes = observer(props => {
     const { ui, gtm } = useStore();
-    const { isMobile } = useDevice();
     const { promptFn, prompt_when } = ui;
     const { pushDataLayer } = gtm;
     const location = useLocation();
@@ -19,14 +17,13 @@ const BinaryRoutes = observer(props => {
     }, [location]);
 
     const getLoader = () => {
-        const should_show_dtrader_v2_loader =
-            JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '').data.dtrader_v2 && isMobile;
-        if (should_show_dtrader_v2_loader)
+        if (isDTraderV2())
             return (
                 <Loading.DTraderV2
                     initial_app_loading
                     is_contract_details={location.pathname.startsWith('/contract/')}
                     is_positions={location.pathname === routes.trader_positions}
+                    is_closed_tab={getPositionsV2TabIndexFromURL() === 1}
                 />
             );
         return <Loading />;

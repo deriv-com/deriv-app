@@ -3,7 +3,7 @@ import { Skeleton } from '../../skeleton';
 
 const TradeLoader = () => {
     return (
-        <div className='trade-loader'>
+        <div className='loading-dtrader-v2__trade'>
             <div className='skeleton-box__trade-types' data-testid='dt_trade_loader'>
                 {Array.from(new Array(6)).map((_, idx) => (
                     <Skeleton key={idx} width={88} height={32} />

@@ -2,25 +2,20 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { useFeatureFlags } from '@deriv/hooks';
 import { useReadLocalStorage } from 'usehooks-ts';
-import { makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
+import { isDTraderV2, makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Loading } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
 import classNames from 'classnames';
 
 const HeaderFallback = () => {
-    const { isMobile } = useDevice();
     const location = useLocation();
-    const should_show_dtrader_v2_loader =
-        JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '').data.dtrader_v2 && isMobile;
     const is_contract_details = location.pathname.startsWith('/contract/');
     const is_positions = location.pathname === routes.trader_positions;
 
     return (
-        <div className={classNames('header', { 'header-v2': should_show_dtrader_v2_loader })}>
-            {should_show_dtrader_v2_loader && !is_contract_details ? (
-                <Loading.DTraderV2 is_header is_positions={is_positions} />
-            ) : null}
+        <div className={classNames('header', { 'header-v2': isDTraderV2() })}>
+            {isDTraderV2() && !is_contract_details && <Loading.DTraderV2 is_header is_positions={is_positions} />}
         </div>
     );
 };

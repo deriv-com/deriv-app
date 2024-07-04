@@ -8,7 +8,7 @@ type TPositionsLoaderProps = {
 
 const PositionsLoader = ({ initial_app_loading, is_closed_tab }: TPositionsLoaderProps) => {
     return (
-        <div className='positions-loader' data-testid='dt_positions_loader'>
+        <div className='loading-dtrader-v2__positions' data-testid='dt_positions_loader'>
             {initial_app_loading && (
                 <div className='skeleton-box__tabs'>
                     {Array.from(new Array(2)).map((_, idx) => {

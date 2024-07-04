@@ -1,16 +1,10 @@
-.symbols {
-    &__search {
-        &--suggestion {
-            text-align: center;
-            margin: var(--core-spacing-800) var(--core-spacing-2400) 0 var(--core-spacing-2400);
-        }
-        &--wrapper {
-            display: flex;
-            align-items: center;
-            padding: var(--core-spacing-400) var(--core-spacing-800);
-        }
-        &--isFocused {
-            padding: var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-800);
-        }
+.symbols-search-field {
+    &--container {
+        display: flex;
+        align-items: center;
+        padding: var(--core-spacing-400) var(--core-spacing-800);
+    }
+    &--isFocused {
+        padding: var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-800);
     }
 }

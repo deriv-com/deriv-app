@@ -533,6 +533,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 display: flex;
                 align-items: center;
                 margin-bottom: 0.8rem;
+                gap: 1rem;
             }
         }
 
@@ -645,7 +646,6 @@ $MIN_HEIGHT_FLOATING: calc(
         &__container {
             @include mobile-or-tablet-screen {
                 margin-inline: auto;
-                margin-block-start: 1.6rem;
             }
         }
         &__list {
@@ -734,9 +734,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 display: flex;
                 justify-content: center;
                 width: 100%;
-                @include mobile-or-tablet-screen {
-                    margin-block-start: 1.6rem;
-                }
 
                 &-full-width {
                     width: calc(100vw - 33rem);
@@ -1758,17 +1755,14 @@ $MIN_HEIGHT_FLOATING: calc(
                 flex-direction: column;
 
                 .dc-form-submit-button {
-                    margin: 0.8rem 0;
-                    background-color: var(--general-main-1);
-
-                    @include mobile-or-tablet-screen {
-                        position: fixed;
-                        bottom: 0;
-                        background: var(--general-main-1);
-                        width: 100vw;
-                        margin: unset;
-                        padding: 0.8rem 1.6rem;
-                    }
+                    position: fixed;
+                    bottom: 0;
+                    background: var(--general-main-1);
+                    width: 100vw;
+                    margin: unset;
+                    padding: 0.8rem 1.6rem;
+                    left: 0;
+                    right: 0;
                 }
             }
         }

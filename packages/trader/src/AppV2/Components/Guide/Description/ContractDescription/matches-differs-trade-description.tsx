@@ -1,9 +1,9 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { CONTRACT_LIST, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
+import { CONTRACT_LIST, getContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const MatchesDiffersTradeDescription = () => {
-    const [matches, differs] = CONTRACT_LIST['MATCHES/DIFFERS'].split('/');
+    const [matches, differs] = CONTRACT_LIST.MATCHES_DIFFERS.split('/');
     const content = [
         { type: 'heading', text: <Localize i18n_default_text='Matches' /> },
         {
@@ -34,7 +34,7 @@ const MatchesDiffersTradeDescription = () => {
             text: differs,
         },
     ];
-    return <React.Fragment>{parseContractDescription(content)}</React.Fragment>;
+    return <React.Fragment>{getContractDescription(content)}</React.Fragment>;
 };
 
 export default MatchesDiffersTradeDescription;

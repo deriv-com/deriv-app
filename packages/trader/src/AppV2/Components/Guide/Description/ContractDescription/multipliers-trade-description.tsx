@@ -1,6 +1,6 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { CONTRACT_LIST, TERM, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
+import { CONTRACT_LIST, TERM, getContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
     const content = [
@@ -117,7 +117,7 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
         },
     ];
 
-    return <React.Fragment>{parseContractDescription(content)}</React.Fragment>;
+    return <React.Fragment>{getContractDescription(content)}</React.Fragment>;
 };
 
 export default MultipliersTradeDescription;

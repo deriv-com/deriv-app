@@ -2,11 +2,11 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import {
     getTermDefinition,
-    parseContractDescription,
+    getContractDescription,
     CONTRACT_LIST,
     TERM,
-    getDescriptionVideoId,
-    DESCRIPTION_VIDEO_ID,
+    getDescriptionVideoIds,
+    DESCRIPTION_VIDEO_IDS,
 } from '../trade-types-utils';
 import { Localize } from '@deriv/translations';
 
@@ -80,7 +80,7 @@ describe('getTermDefinition', () => {
     });
 });
 
-describe('parseContractDescription', () => {
+describe('getContractDescription', () => {
     const mock_content = [
         { type: 'heading', text: <Localize i18n_default_text='Even' /> },
         {
@@ -97,60 +97,60 @@ describe('parseContractDescription', () => {
     ];
 
     it('should parse passed content', () => {
-        render(<div>{parseContractDescription(mock_content)}</div>);
+        render(<div>{getContractDescription(mock_content)}</div>);
 
         expect(screen.getByText(/If you select “Even”/i)).toBeInTheDocument();
         expect(screen.getByText(/Some general text/i)).toBeInTheDocument();
     });
 });
 
-describe('getDescriptionVideoId', () => {
+describe('DESCRIPTION_VIDEO_IDS', () => {
     it('should return an id for Vanillas description video in light theme', () => {
-        expect(getDescriptionVideoId(CONTRACT_LIST.VANILLAS, false)).toEqual(
-            DESCRIPTION_VIDEO_ID[CONTRACT_LIST.VANILLAS].light
+        expect(getDescriptionVideoIds(CONTRACT_LIST.VANILLAS, false)).toEqual(
+            DESCRIPTION_VIDEO_IDS[CONTRACT_LIST.VANILLAS].light
         );
     });
     it('should return an id for Accumulator description video in light theme', () => {
-        expect(getDescriptionVideoId(CONTRACT_LIST.ACCUMULATORS, false)).toEqual(
-            DESCRIPTION_VIDEO_ID[CONTRACT_LIST.ACCUMULATORS].light
+        expect(getDescriptionVideoIds(CONTRACT_LIST.ACCUMULATORS, false)).toEqual(
+            DESCRIPTION_VIDEO_IDS[CONTRACT_LIST.ACCUMULATORS].light
         );
     });
     it('should return an id for High/Low description video in light theme', () => {
-        expect(getDescriptionVideoId(CONTRACT_LIST['HIGHER/LOWER'], false)).toEqual(
-            DESCRIPTION_VIDEO_ID[CONTRACT_LIST['HIGHER/LOWER']].light
+        expect(getDescriptionVideoIds(CONTRACT_LIST.HIGHER_LOWER, false)).toEqual(
+            DESCRIPTION_VIDEO_IDS[CONTRACT_LIST.HIGHER_LOWER].light
         );
     });
     it('should return an id for Matches/Differs description video in light theme', () => {
-        expect(getDescriptionVideoId(CONTRACT_LIST['MATCHES/DIFFERS'], false)).toEqual(
-            DESCRIPTION_VIDEO_ID[CONTRACT_LIST['MATCHES/DIFFERS']].light
+        expect(getDescriptionVideoIds(CONTRACT_LIST.MATCHES_DIFFERS, false)).toEqual(
+            DESCRIPTION_VIDEO_IDS[CONTRACT_LIST.MATCHES_DIFFERS].light
         );
     });
     it('should return an id for Over/Under description video in light theme', () => {
-        expect(getDescriptionVideoId(CONTRACT_LIST['OVER/UNDER'], false)).toEqual(
-            DESCRIPTION_VIDEO_ID[CONTRACT_LIST['OVER/UNDER']].light
+        expect(getDescriptionVideoIds(CONTRACT_LIST.OVER_UNDER, false)).toEqual(
+            DESCRIPTION_VIDEO_IDS[CONTRACT_LIST.OVER_UNDER].light
         );
     });
     it('should return an id for Rise/Fall description video in light theme', () => {
-        expect(getDescriptionVideoId(CONTRACT_LIST['RISE/FALL'], false)).toEqual(
-            DESCRIPTION_VIDEO_ID[CONTRACT_LIST['RISE/FALL']].light
+        expect(getDescriptionVideoIds(CONTRACT_LIST.RISE_FALL, false)).toEqual(
+            DESCRIPTION_VIDEO_IDS[CONTRACT_LIST.RISE_FALL].light
         );
     });
     it('should return an id for Multipliers description video in dark theme', () => {
-        expect(getDescriptionVideoId(CONTRACT_LIST.MULTIPLIERS, true)).toEqual(
-            DESCRIPTION_VIDEO_ID[CONTRACT_LIST.MULTIPLIERS].dark
+        expect(getDescriptionVideoIds(CONTRACT_LIST.MULTIPLIERS, true)).toEqual(
+            DESCRIPTION_VIDEO_IDS[CONTRACT_LIST.MULTIPLIERS].dark
         );
     });
     it('should return an id for Touch/No Touch description video in light theme', () => {
-        expect(getDescriptionVideoId(CONTRACT_LIST['TOUCH/NO TOUCH'], false)).toEqual(
-            DESCRIPTION_VIDEO_ID[CONTRACT_LIST['TOUCH/NO TOUCH']].light
+        expect(getDescriptionVideoIds(CONTRACT_LIST.TOUCH_NO_TOUCH, false)).toEqual(
+            DESCRIPTION_VIDEO_IDS[CONTRACT_LIST.TOUCH_NO_TOUCH].light
         );
     });
     it('should return an id for Even/Odd description video in dark theme', () => {
-        expect(getDescriptionVideoId(CONTRACT_LIST['EVEN/ODD'], true)).toEqual(
-            DESCRIPTION_VIDEO_ID[CONTRACT_LIST['EVEN/ODD']].dark
+        expect(getDescriptionVideoIds(CONTRACT_LIST.EVEN_ODD, true)).toEqual(
+            DESCRIPTION_VIDEO_IDS[CONTRACT_LIST.EVEN_ODD].dark
         );
     });
     it('should return undefined when called with empty arguments', () => {
-        expect(getDescriptionVideoId()).toEqual(undefined);
+        expect(getDescriptionVideoIds()).toEqual(undefined);
     });
 });

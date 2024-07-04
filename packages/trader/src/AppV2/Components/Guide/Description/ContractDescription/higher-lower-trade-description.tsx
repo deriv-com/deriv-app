@@ -1,9 +1,9 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { CONTRACT_LIST, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
+import { CONTRACT_LIST, getContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const HigherLowerTradeDescription = () => {
-    const [higher, lower] = CONTRACT_LIST['HIGHER/LOWER'].split('/');
+    const [higher, lower] = CONTRACT_LIST.HIGHER_LOWER.split('/');
     const content = [
         { type: 'heading', text: <Localize i18n_default_text='Higher' /> },
         {
@@ -39,7 +39,7 @@ const HigherLowerTradeDescription = () => {
             text: <Localize i18n_default_text='If the exit spot is equal to the barrier, you don’t win the payout.' />,
         },
     ];
-    return <React.Fragment>{parseContractDescription(content)}</React.Fragment>;
+    return <React.Fragment>{getContractDescription(content)}</React.Fragment>;
 };
 
 export default HigherLowerTradeDescription;

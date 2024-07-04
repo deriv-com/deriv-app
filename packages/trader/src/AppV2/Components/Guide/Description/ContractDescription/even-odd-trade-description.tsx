@@ -1,9 +1,9 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { CONTRACT_LIST, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
+import { CONTRACT_LIST, getContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const EvenOddTradeDescription = () => {
-    const [even, odd] = CONTRACT_LIST['EVEN/ODD'].split('/');
+    const [even, odd] = CONTRACT_LIST.EVEN_ODD.split('/');
     const content = [
         { type: 'heading', text: <Localize i18n_default_text='Even' /> },
         {
@@ -34,7 +34,7 @@ const EvenOddTradeDescription = () => {
             text: odd,
         },
     ];
-    return <React.Fragment>{parseContractDescription(content)}</React.Fragment>;
+    return <React.Fragment>{getContractDescription(content)}</React.Fragment>;
 };
 
 export default EvenOddTradeDescription;

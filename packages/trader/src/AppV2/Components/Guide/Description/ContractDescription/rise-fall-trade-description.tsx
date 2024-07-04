@@ -1,9 +1,9 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { CONTRACT_LIST, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
+import { CONTRACT_LIST, getContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const RiseFallTradeDescription = () => {
-    const [rise, fall] = CONTRACT_LIST['RISE/FALL'].split('/');
+    const [rise, fall] = CONTRACT_LIST.RISE_FALL.split('/');
     const content = [
         { type: 'heading', text: <Localize i18n_default_text='Rise' /> },
         {
@@ -44,7 +44,7 @@ const RiseFallTradeDescription = () => {
             ),
         },
     ];
-    return <React.Fragment>{parseContractDescription(content)}</React.Fragment>;
+    return <React.Fragment>{getContractDescription(content)}</React.Fragment>;
 };
 
 export default RiseFallTradeDescription;

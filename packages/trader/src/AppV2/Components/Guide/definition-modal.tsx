@@ -1,15 +1,15 @@
 import React from 'react';
 import { ActionSheet, Heading, Text } from '@deriv-com/quill-ui';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { getTermDefinition } from 'AppV2/Utils/trade-types-utils';
 
-type TDefinition = { contract_type: string; term: string; onClose: () => void };
+type TDefinitionModal = { contract_type: string; term: string; onClose: () => void };
 
-const DefinitionModal = ({ contract_type, term, onClose }: TDefinition) => (
+const DefinitionModal = ({ contract_type, term, onClose }: TDefinitionModal) => (
     <ActionSheet.Root isOpen={!!term} onClose={onClose} position='left'>
         <ActionSheet.Portal shouldCloseOnDrag>
             <ActionSheet.Content className='definition__wrapper'>
-                <Heading.H4 className='definition__title'>{localize(term)}</Heading.H4>
+                <Heading.H4 className='definition__title'>{term}</Heading.H4>
                 <Text as='div'>{getTermDefinition({ term, contract_type })}</Text>
             </ActionSheet.Content>
             <ActionSheet.Footer

@@ -2,7 +2,7 @@ import React from 'react';
 import { Stream } from '@cloudflare/stream-react';
 import { CaptionText } from '@deriv-com/quill-ui';
 import { LabelPairedPlayMdFillIcon } from '@deriv/quill-icons';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
 
 type TVideoPreview = {
@@ -40,7 +40,11 @@ const VideoPreview = ({ contract_type, toggleVideoPlayer, video_src }: TVideoPre
             </div>
             <div className='guide-video__description'>
                 <CaptionText bold color='quill-typography__color--default'>
-                    {localize(`How to trade ${contract_type}?`)}
+                    <Localize
+                        i18n_default_text='How to trade {{contract_type}}?'
+                        values={{ contract_type }}
+                        shouldUnescape
+                    />
                 </CaptionText>
                 <CaptionText>
                     <Localize i18n_default_text='Watch this video to learn about this trade type.' />

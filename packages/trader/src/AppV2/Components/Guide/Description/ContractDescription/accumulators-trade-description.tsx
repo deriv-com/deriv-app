@@ -1,6 +1,6 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { CONTRACT_LIST, TERM, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
+import { CONTRACT_LIST, TERM, getContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const AccumulatorsTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
     const content = [
@@ -90,7 +90,7 @@ const AccumulatorsTradeDescription = ({ onTermClick }: { onTermClick: (term: str
         },
     ];
 
-    return <React.Fragment>{parseContractDescription(content)}</React.Fragment>;
+    return <React.Fragment>{getContractDescription(content)}</React.Fragment>;
 };
 
 export default AccumulatorsTradeDescription;

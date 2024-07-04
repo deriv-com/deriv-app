@@ -1,9 +1,9 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { CONTRACT_LIST, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
+import { CONTRACT_LIST, getContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const OverUnderTradeDescription = () => {
-    const [over, under] = CONTRACT_LIST['OVER/UNDER'].split('/');
+    const [over, under] = CONTRACT_LIST.OVER_UNDER.split('/');
     const content = [
         { type: 'heading', text: <Localize i18n_default_text='Over' /> },
         {
@@ -34,7 +34,7 @@ const OverUnderTradeDescription = () => {
             text: under,
         },
     ];
-    return <React.Fragment>{parseContractDescription(content)}</React.Fragment>;
+    return <React.Fragment>{getContractDescription(content)}</React.Fragment>;
 };
 
 export default OverUnderTradeDescription;

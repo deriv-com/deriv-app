@@ -3,7 +3,7 @@ import { ActionSheet, Heading, Chip, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { clickAndKeyEventHandler } from '@deriv/shared';
-import { AVAILABLE_CONTRACTS, CONTRACT_LIST, getDescriptionVideoId } from 'AppV2/Utils/trade-types-utils';
+import { AVAILABLE_CONTRACTS, CONTRACT_LIST, getDescriptionVideoIds } from 'AppV2/Utils/trade-types-utils';
 import VideoPlayer from 'App/Components/Elements/VideoPlayer';
 import TradeDescription from './Description/trade-description';
 import VideoPreview from './Description/video-preview';
@@ -24,19 +24,19 @@ const DescriptionModal = observer(
         const { ui } = useStore();
         const { is_dark_mode_on } = ui;
 
-        const video_src = getDescriptionVideoId(selected_contract_type, is_dark_mode_on);
+        const video_src = getDescriptionVideoIds(selected_contract_type, is_dark_mode_on);
         //TODO: temporary, until we'll have ordered list, coming from contract type selection
         const order = [
-            CONTRACT_LIST['RISE/FALL'],
+            CONTRACT_LIST.RISE_FALL,
             CONTRACT_LIST.ACCUMULATORS,
             CONTRACT_LIST.MULTIPLIERS,
             CONTRACT_LIST.VANILLAS,
             CONTRACT_LIST.TURBOS,
-            CONTRACT_LIST['HIGHER/LOWER'],
-            CONTRACT_LIST['TOUCH/NO TOUCH'],
-            CONTRACT_LIST['MATCHES/DIFFERS'],
-            CONTRACT_LIST['EVEN/ODD'],
-            CONTRACT_LIST['OVER/UNDER'],
+            CONTRACT_LIST.HIGHER_LOWER,
+            CONTRACT_LIST.TOUCH_NO_TOUCH,
+            CONTRACT_LIST.MATCHES_DIFFERS,
+            CONTRACT_LIST.EVEN_ODD,
+            CONTRACT_LIST.OVER_UNDER,
         ];
 
         const toggleVideoPlayer = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {

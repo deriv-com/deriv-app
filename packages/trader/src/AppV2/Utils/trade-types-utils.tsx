@@ -1,7 +1,8 @@
 import React from 'react';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { Text } from '@deriv-com/quill-ui';
 import VideoFragment from 'AppV2/Components/Guide/Description/video-fragment';
+import { DESCRIPTION_VIDEO_ID } from 'Modules/Trading/Helpers/video-config';
 
 type TDtraderVideoUrl = {
     [key: string]: TVideoVariants;
@@ -17,12 +18,12 @@ export const CONTRACT_LIST = {
     VANILLAS: 'Vanillas',
     TURBOS: 'Turbos',
     MULTIPLIERS: 'Multipliers',
-    'RISE/FALL': 'Rise/Fall',
-    'HIGHER/LOWER': 'Higher/Lower',
-    'TOUCH/NO TOUCH': 'Touch/No Touch',
-    'MATCHES/DIFFERS': 'Matches/Differs',
-    'EVEN/ODD': 'Even/Odd',
-    'OVER/UNDER': 'Over/Under',
+    RISE_FALL: 'Rise/Fall',
+    HIGHER_LOWER: 'Higher/Lower',
+    TOUCH_NO_TOUCH: 'Touch/No Touch',
+    MATCHES_DIFFERS: 'Matches/Differs',
+    EVEN_ODD: 'Even/Odd',
+    OVER_UNDER: 'Over/Under',
 };
 
 export const AVAILABLE_CONTRACTS = [
@@ -30,32 +31,32 @@ export const AVAILABLE_CONTRACTS = [
     { tradeType: <Localize i18n_default_text='Vanillas' />, id: CONTRACT_LIST.VANILLAS },
     { tradeType: <Localize i18n_default_text='Turbos' />, id: CONTRACT_LIST.TURBOS },
     { tradeType: <Localize i18n_default_text='Multipliers' />, id: CONTRACT_LIST.MULTIPLIERS },
-    { tradeType: <Localize i18n_default_text='Rise/Fall' />, id: CONTRACT_LIST['RISE/FALL'] },
-    { tradeType: <Localize i18n_default_text='Higher/Lower' />, id: CONTRACT_LIST['HIGHER/LOWER'] },
-    { tradeType: <Localize i18n_default_text='Touch/No Touch' />, id: CONTRACT_LIST['TOUCH/NO TOUCH'] },
-    { tradeType: <Localize i18n_default_text='Matches/Differs' />, id: CONTRACT_LIST['MATCHES/DIFFERS'] },
-    { tradeType: <Localize i18n_default_text='Even/Odd' />, id: CONTRACT_LIST['EVEN/ODD'] },
-    { tradeType: <Localize i18n_default_text='Over/Under' />, id: CONTRACT_LIST['OVER/UNDER'] },
+    { tradeType: <Localize i18n_default_text='Rise/Fall' />, id: CONTRACT_LIST.RISE_FALL },
+    { tradeType: <Localize i18n_default_text='Higher/Lower' />, id: CONTRACT_LIST.HIGHER_LOWER },
+    { tradeType: <Localize i18n_default_text='Touch/No Touch' />, id: CONTRACT_LIST.TOUCH_NO_TOUCH },
+    { tradeType: <Localize i18n_default_text='Matches/Differs' />, id: CONTRACT_LIST.MATCHES_DIFFERS },
+    { tradeType: <Localize i18n_default_text='Even/Odd' />, id: CONTRACT_LIST.EVEN_ODD },
+    { tradeType: <Localize i18n_default_text='Over/Under' />, id: CONTRACT_LIST.OVER_UNDER },
 ];
 
 export const TERM = {
-    BARRIER: 'Barrier',
-    CONTRACT_VALUE: 'Contract value',
-    DEAL_CANCELLATION: 'Deal cancellation',
-    ENTRY_SPOT: 'Entry spot',
-    EXIT_SPOT: 'Exit spot',
-    EXPIRY: 'Expiry',
-    FINAL_PRICE: 'Final price',
-    GROWTH_RATE: 'Growth rate',
-    PAYOUT: 'Payout',
-    PAYOUT_PER_POINT: 'Payout per point',
-    PREVIOUS_SPOT_PRICE: 'Previous spot price',
-    RANGE: 'Range',
-    SLIPPAGE_RISK: 'Slippage risk',
-    STOP_OUT_LEVEL: 'Stop out level',
-    STOP_LOSS: 'Stop loss',
-    STRIKE_PRICE: 'Strike price',
-    TAKE_PROFIT: 'Take profit',
+    BARRIER: localize('Barrier'),
+    CONTRACT_VALUE: localize('Contract value'),
+    DEAL_CANCELLATION: localize('Deal cancellation'),
+    ENTRY_SPOT: localize('Entry spot'),
+    EXIT_SPOT: localize('Exit spot'),
+    EXPIRY: localize('Expiry'),
+    FINAL_PRICE: localize('Final price'),
+    GROWTH_RATE: localize('Growth rate'),
+    PAYOUT: localize('Payout'),
+    PAYOUT_PER_POINT: localize('Payout per point'),
+    PREVIOUS_SPOT_PRICE: localize('Previous spot price'),
+    RANGE: localize('Range'),
+    SLIPPAGE_RISK: localize('Slippage risk'),
+    STOP_OUT_LEVEL: localize('Stop out level'),
+    STOP_LOSS: localize('Stop loss'),
+    STRIKE_PRICE: localize('Strike price'),
+    TAKE_PROFIT: localize('Take profit'),
 };
 
 const DEFINITION = {
@@ -159,7 +160,7 @@ export const getTermDefinition = ({ contract_type, term }: { contract_type: stri
     return result ?? '';
 };
 
-export const parseContractDescription = (
+export const getContractDescription = (
     content: {
         type: string;
         text: JSX.Element | string;
@@ -178,7 +179,7 @@ export const parseContractDescription = (
                     as='p'
                     key={text.props.i18n_default_text}
                     size='sm'
-                    className={`description__${type === 'paragraph' ? 'paragraph' : 'general'}`}
+                    className={`description__${type}`}
                     color='quill-typography__color--prominent'
                 >
                     {text}
@@ -188,48 +189,44 @@ export const parseContractDescription = (
             return <VideoFragment contract_type={text} key={text + index} />;
     });
 
-/* The video upload feature is not available yet. The following video ids are taken from CF Stream account.
-        If considered necessary later, the current approach can be replaced with HTTP-request to fetch videos by their file names. */
-export const DESCRIPTION_VIDEO_ID: TDtraderVideoUrl = {
+export const DESCRIPTION_VIDEO_IDS: TDtraderVideoUrl = {
     [CONTRACT_LIST.ACCUMULATORS]: {
-        light: 'c1d64d5ffaf449e3326d387a70621a4c',
-        dark: '9657e4adcfd9274d41a042b7b6c42d60',
+        light: DESCRIPTION_VIDEO_ID.accumulator.light,
+        dark: DESCRIPTION_VIDEO_ID.accumulator.dark,
     },
-    [CONTRACT_LIST['EVEN/ODD']]: {
-        light: 'a3930b0a535c4f23daea5cf98a718941',
-        dark: 'e311e25dd68761d6ab73e8158ec83ea4',
+    [CONTRACT_LIST.EVEN_ODD]: {
+        light: DESCRIPTION_VIDEO_ID.even_odd.light,
+        dark: DESCRIPTION_VIDEO_ID.even_odd.dark,
     },
-    [CONTRACT_LIST['HIGHER/LOWER']]: {
-        light: 'f528c662c377601908a741ae2aedaec6',
-        dark: '4c05445e1bd28f3f9f95b0ab566c4f9b',
+    [CONTRACT_LIST.HIGHER_LOWER]: {
+        light: DESCRIPTION_VIDEO_ID.high_low.light,
+        dark: DESCRIPTION_VIDEO_ID.high_low.dark,
     },
-    [CONTRACT_LIST['MATCHES/DIFFERS']]: {
-        light: '8693a02397d284ffcf0608e4fda702d9',
-
-        dark: '2e56ad7ea67bf3f9a869de6336df1796',
+    [CONTRACT_LIST.MATCHES_DIFFERS]: {
+        light: DESCRIPTION_VIDEO_ID.match_diff.light,
+        dark: DESCRIPTION_VIDEO_ID.match_diff.dark,
     },
     [CONTRACT_LIST.MULTIPLIERS]: {
-        light: 'bca032791da88023e81ebf7341226f83',
-        dark: '3d10e25e2e0eaaf96d1874aae257029f',
+        light: DESCRIPTION_VIDEO_ID.multiplier.light,
+        dark: DESCRIPTION_VIDEO_ID.multiplier.dark,
     },
-    [CONTRACT_LIST['OVER/UNDER']]: {
-        light: '9e2be907cba9b38352890e52cfd8cbaf',
-
-        dark: '4b31fc188c2f365faa310f7e34715af7',
+    [CONTRACT_LIST.OVER_UNDER]: {
+        light: DESCRIPTION_VIDEO_ID.over_under.light,
+        dark: DESCRIPTION_VIDEO_ID.over_under.dark,
     },
-    [CONTRACT_LIST['RISE/FALL']]: {
-        light: '7719c7e5436f58e59ab47510445108ba',
-        dark: 'b72ef7ec914afe3dbb2a1601cad3a76f',
+    [CONTRACT_LIST.RISE_FALL]: {
+        light: DESCRIPTION_VIDEO_ID.rise_fall.light,
+        dark: DESCRIPTION_VIDEO_ID.rise_fall.dark,
     },
-    [CONTRACT_LIST['TOUCH/NO TOUCH']]: {
-        light: 'c781a6844f37a3308fe8774b4450dfc9',
-        dark: 'c91f2b9859dc95ce8eecf7df327aaf00',
+    [CONTRACT_LIST.TOUCH_NO_TOUCH]: {
+        light: DESCRIPTION_VIDEO_ID.touch.light,
+        dark: DESCRIPTION_VIDEO_ID.touch.dark,
     },
     [CONTRACT_LIST.VANILLAS]: {
-        light: '9b8b6ae67d3a720e4aee2665889d17fb',
-        dark: '8f04e9d768b8e08a1d87830c95c6b9c8',
+        light: DESCRIPTION_VIDEO_ID.vanilla.light,
+        dark: DESCRIPTION_VIDEO_ID.vanilla.dark,
     },
 };
 
-export const getDescriptionVideoId = (contract_type = '', is_dark_theme = false) =>
-    DESCRIPTION_VIDEO_ID[contract_type]?.[is_dark_theme ? 'dark' : 'light'];
+export const getDescriptionVideoIds = (contract_type = '', is_dark_theme = false) =>
+    DESCRIPTION_VIDEO_IDS[contract_type]?.[is_dark_theme ? 'dark' : 'light'];

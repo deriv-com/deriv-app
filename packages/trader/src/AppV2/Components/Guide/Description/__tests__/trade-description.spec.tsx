@@ -31,18 +31,18 @@ describe('TradeDescription', () => {
         expect(screen.getByText(/mockAccumulatorTradeDescription/i)).toBeInTheDocument();
     });
 
-    it('should render mockEvenOddTradeDescription when trade category is "CONTRACT_LIST[EVEN/ODD]"', () => {
-        render(<TradeDescription contract_type={CONTRACT_LIST['EVEN/ODD']} onTermClick={jest.fn()} />);
+    it('should render mockEvenOddTradeDescription when trade category is "CONTRACT_LIST.EVEN_ODD"', () => {
+        render(<TradeDescription contract_type={CONTRACT_LIST.EVEN_ODD} onTermClick={jest.fn()} />);
         expect(screen.getByText(/mockEvenOddTradeDescription/i)).toBeInTheDocument();
     });
 
-    it('should render mockHigherLowerTradeDescription when trade category is "CONTRACT_LIST[HIGHER/LOWER]"', () => {
-        render(<TradeDescription contract_type={CONTRACT_LIST['HIGHER/LOWER']} onTermClick={jest.fn()} />);
+    it('should render mockHigherLowerTradeDescription when trade category is "CONTRACT_LIST.HIGHER_LOWER"', () => {
+        render(<TradeDescription contract_type={CONTRACT_LIST.HIGHER_LOWER} onTermClick={jest.fn()} />);
         expect(screen.getByText(/mockHigherLowerTradeDescription/i)).toBeInTheDocument();
     });
 
-    it('should render mockMatchesDiffersTradeDescription when trade category is "CONTRACT_LIST[MATCHES/DIFFERS]"', () => {
-        render(<TradeDescription contract_type={CONTRACT_LIST['MATCHES/DIFFERS']} onTermClick={jest.fn()} />);
+    it('should render mockMatchesDiffersTradeDescription when trade category is "CONTRACT_LIST.MATCHES_DIFFERS"', () => {
+        render(<TradeDescription contract_type={CONTRACT_LIST.MATCHES_DIFFERS} onTermClick={jest.fn()} />);
         expect(screen.getByText(/mockMatchesDiffersTradeDescription/i)).toBeInTheDocument();
     });
 
@@ -51,18 +51,18 @@ describe('TradeDescription', () => {
         expect(screen.getByText(/mockMultipliersTradeDescription/i)).toBeInTheDocument();
     });
 
-    it('should render mockOverUnderTradeDescription when trade category is "CONTRACT_LIST[OVER/UNDER]"', () => {
-        render(<TradeDescription contract_type={CONTRACT_LIST['OVER/UNDER']} onTermClick={jest.fn()} />);
+    it('should render mockOverUnderTradeDescription when trade category is "CONTRACT_LIST.OVER_UNDER"', () => {
+        render(<TradeDescription contract_type={CONTRACT_LIST.OVER_UNDER} onTermClick={jest.fn()} />);
         expect(screen.getByText(/mockOverUnderTradeDescription/i)).toBeInTheDocument();
     });
 
-    it('should render mockRiseFallTradeDescription when trade category is "CONTRACT_LIST[RISE/FALL]"', () => {
-        render(<TradeDescription contract_type={CONTRACT_LIST['RISE/FALL']} onTermClick={jest.fn()} />);
+    it('should render mockRiseFallTradeDescription when trade category is "CONTRACT_LIST.RISE_FALL"', () => {
+        render(<TradeDescription contract_type={CONTRACT_LIST.RISE_FALL} onTermClick={jest.fn()} />);
         expect(screen.getByText(/mockRiseFallTradeDescription/i)).toBeInTheDocument();
     });
 
-    it('should render mockTouchTradeDescription when trade category is "CONTRACT_LIST[TOUCH/NO TOUCH]"', () => {
-        render(<TradeDescription contract_type={CONTRACT_LIST['TOUCH/NO TOUCH']} onTermClick={jest.fn()} />);
+    it('should render mockTouchTradeDescription when trade category is "CONTRACT_LIST.TOUCH_NO_TOUCH"', () => {
+        render(<TradeDescription contract_type={CONTRACT_LIST.TOUCH_NO_TOUCH} onTermClick={jest.fn()} />);
         expect(screen.getByText(/mockTouchTradeDescription/i)).toBeInTheDocument();
     });
 

@@ -7,8 +7,8 @@ const Trade = () => {
     return (
         <BottomNav>
             <Text size='sm'>Trade</Text>
+            <Guide has_label />
             <Guide />
-            <Guide is_minimalistic_look />
         </BottomNav>
     );
 };

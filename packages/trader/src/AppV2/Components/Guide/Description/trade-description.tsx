@@ -131,7 +131,7 @@ const TradeDescription = ({
         case CONTRACT_LIST.ACCUMULATORS:
             TradeTypeTemplate = <AccumulatorsTradeDescription onTermClick={onTermClick} />;
             break;
-        case CONTRACT_LIST['RISE/FALL']:
+        case CONTRACT_LIST.RISE_FALL:
             TradeTypeTemplate = <RiseFallTradeDescription />;
             break;
         case CONTRACT_LIST.MULTIPLIERS:
@@ -143,19 +143,19 @@ const TradeDescription = ({
         case CONTRACT_LIST.TURBOS:
             TradeTypeTemplate = <TurbosTradeDescription onTermClick={onTermClick} />;
             break;
-        case CONTRACT_LIST['HIGHER/LOWER']:
+        case CONTRACT_LIST.HIGHER_LOWER:
             TradeTypeTemplate = <HigherLowerTradeDescription />;
             break;
-        case CONTRACT_LIST['TOUCH/NO TOUCH']:
+        case CONTRACT_LIST.TOUCH_NO_TOUCH:
             TradeTypeTemplate = <TouchNoTouchTradeDescription />;
             break;
-        case CONTRACT_LIST['MATCHES/DIFFERS']:
+        case CONTRACT_LIST.MATCHES_DIFFERS:
             TradeTypeTemplate = <MatchesDiffersTradeDescription />;
             break;
-        case CONTRACT_LIST['EVEN/ODD']:
+        case CONTRACT_LIST.EVEN_ODD:
             TradeTypeTemplate = <EvenOddTradeDescription />;
             break;
-        case CONTRACT_LIST['OVER/UNDER']:
+        case CONTRACT_LIST.OVER_UNDER:
             TradeTypeTemplate = <OverUnderTradeDescription />;
             break;
         default:

@@ -16,7 +16,7 @@ window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
 Loadable.preloadAll();
 
 describe('Guide', () => {
-    const renderGuide = (mockProps?: React.ComponentProps<typeof Guide>) => {
+    const renderGuide = (mockProps: React.ComponentProps<typeof Guide> = { has_label: true }) => {
         render(
             <StoreProvider store={mockStore({})}>
                 <Guide {...mockProps} />
@@ -36,8 +36,8 @@ describe('Guide', () => {
         AVAILABLE_CONTRACTS.forEach(({ id }) => expect(screen.getByText(id)).toBeInTheDocument());
     });
 
-    it('should render minimalistic component if is_minimalistic_look === true', () => {
-        renderGuide({ is_minimalistic_look: true });
+    it('should render component without label if has_label === false', () => {
+        renderGuide({ has_label: false });
 
         expect(screen.queryByText('Guide')).not.toBeInTheDocument();
         expect(screen.getByText('Trade types')).toBeInTheDocument();
@@ -48,7 +48,7 @@ describe('Guide', () => {
         const mockSelectedContractType = jest.fn();
         jest.spyOn(React, 'useState')
             .mockImplementationOnce(() => [false, jest.fn()])
-            .mockImplementationOnce(() => [CONTRACT_LIST['RISE/FALL'], mockSelectedContractType])
+            .mockImplementationOnce(() => [CONTRACT_LIST.RISE_FALL, mockSelectedContractType])
             .mockImplementationOnce(() => ['', jest.fn()]);
 
         renderGuide();

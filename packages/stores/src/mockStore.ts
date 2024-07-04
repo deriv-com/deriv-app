@@ -471,6 +471,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             setAccountSwitcherDisabledMessage: jest.fn(),
             toggleUrlUnavailableModal: jest.fn(),
             is_set_currency_modal_visible: false,
+            should_show_deposit_now_or_later_modal: false,
+            setShouldShowDepositNowOrLaterModal: jest.fn(),
         },
         traders_hub: {
             getAccount: jest.fn(),

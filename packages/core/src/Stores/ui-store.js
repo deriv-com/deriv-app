@@ -152,6 +152,7 @@ export default class UIStore extends BaseStore {
     // add crypto accounts
     should_show_cancel = false;
 
+    should_show_deposit_now_or_later_modal = false;
     should_show_risk_warning_modal = false;
     should_show_appropriateness_warning_modal = false;
     should_show_risk_accept_modal = false;
@@ -296,6 +297,7 @@ export default class UIStore extends BaseStore {
             real_account_signup: observable,
             reports_route_tab_index: observable,
             settings_extension: observable,
+            should_show_deposit_now_or_later_modal: observable,
             should_show_appropriateness_warning_modal: observable,
             should_show_assessment_complete_modal: observable,
             should_show_cancel: observable,
@@ -418,6 +420,7 @@ export default class UIStore extends BaseStore {
             toggleKycInformationSubmittedModal: action.bound,
             toggleMT5MigrationModal: action.bound,
             toggleUrlUnavailableModal: action.bound,
+            setShouldShowDepositNowOrLaterModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -968,5 +971,9 @@ export default class UIStore extends BaseStore {
 
     toggleUrlUnavailableModal(value) {
         this.isUrlUnavailableModalVisible = value;
+    }
+
+    setShouldShowDepositNowOrLaterModal(value) {
+        this.should_show_deposit_now_or_later_modal = value;
     }
 }

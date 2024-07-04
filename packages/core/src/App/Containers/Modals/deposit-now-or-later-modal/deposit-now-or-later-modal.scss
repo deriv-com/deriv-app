@@ -1,0 +1,18 @@
+.deposit-now-or-later-modal {
+    &.dc-dialog__wrapper {
+        z-index: 99999;
+    }
+
+    .dc-dialog {
+        @include mobile-screen {
+            &__dialog {
+                padding: 1.6rem;
+                margin: 0 1.6rem;
+            }
+        }
+    }
+
+    .dc-dialog__header-wrapper {
+        margin-top: unset;
+    }
+}

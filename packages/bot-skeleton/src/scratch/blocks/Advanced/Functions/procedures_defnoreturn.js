@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { plusIconLight } from '../../images';
-import { removeExtraInput } from '../../../utils';
+import { removeExtraInput, modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.procedures_defnoreturn = {
     init() {
@@ -277,6 +277,7 @@ Blockly.Blocks.procedures_defnoreturn = {
      * @this Blockly.Block
      */
     customContextMenu(options) {
+        modifyContextMenu(options);
         if (Blockly.derivWorkspace.isFlyout_) {
             return;
         }

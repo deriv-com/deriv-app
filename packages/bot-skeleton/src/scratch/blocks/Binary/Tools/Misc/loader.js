@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { loadBlocksFromRemote, runIrreversibleEvents , modifyContextMenu } from '../../../../utils';
+import { loadBlocksFromRemote, runIrreversibleEvents, modifyContextMenu } from '../../../../utils';
 import { observer as globalObserver } from '../../../../../utils/observer';
 import { LogTypes } from '../../../../../constants/messages';
 
@@ -27,9 +27,7 @@ Blockly.Blocks.loader = {
         };
     },
     customContextMenu(menu) {
-        const exclude_item = [];
-        const include_items = ['Download Block'];
-        modifyContextMenu(menu, exclude_item, include_items);
+        modifyContextMenu(menu);
     },
     meta() {
         return {

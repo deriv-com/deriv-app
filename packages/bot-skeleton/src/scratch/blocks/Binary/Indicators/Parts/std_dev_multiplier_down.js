@@ -30,9 +30,7 @@ Blockly.Blocks.std_dev_multiplier_down = {
         };
     },
     customContextMenu(menu) {
-        const exclude_item = [];
-        const include_items = ['Download Block'];
-        modifyContextMenu(menu, exclude_item, include_items);
+        modifyContextMenu(menu);
     },
 };
 

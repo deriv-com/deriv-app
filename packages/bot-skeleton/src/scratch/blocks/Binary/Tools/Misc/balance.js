@@ -46,9 +46,7 @@ Blockly.Blocks.balance = {
         };
     },
     customContextMenu(menu) {
-        const exclude_item = [];
-        const include_items = ['Download Block'];
-        modifyContextMenu(menu, exclude_item, include_items);
+        modifyContextMenu(menu);
     },
 };
 

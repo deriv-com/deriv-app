@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { emptyTextValidator , modifyContextMenu } from '../../../../utils';
+import { emptyTextValidator, modifyContextMenu } from '../../../../utils';
 
 Blockly.Blocks.notify_telegram = {
     init() {
@@ -36,9 +36,7 @@ Blockly.Blocks.notify_telegram = {
         };
     },
     customContextMenu(menu) {
-        const exclude_item = [];
-        const include_items = ['Download Block'];
-        modifyContextMenu(menu, exclude_item, include_items);
+        modifyContextMenu(menu);
     },
     meta() {
         return {

@@ -26,9 +26,7 @@ Blockly.Blocks.sell_price = {
         };
     },
     customContextMenu(menu) {
-        const exclude_item = [];
-        const include_items = ['Download Block'];
-        modifyContextMenu(menu, exclude_item, include_items);
+        modifyContextMenu(menu);
     },
     restricted_parents: ['during_purchase'],
 };

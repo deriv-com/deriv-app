@@ -595,20 +595,61 @@ const downloadBlock = () => {
     saveAs({ data: xml_text, type: 'text/xml;charset=utf-8', filename: 'block.xml' });
 };
 
-export const modifyContextMenu = (menu, exclude_items = [], include_items = []) => {
-    for (let i = menu.length - 1; i >= 0; i--) {
-        if (exclude_items.includes(menu[i].text)) {
-            menu.splice(i, 1);
-        } else {
-            menu[i].text = localize(menu[i].text);
+const download_option = {
+    text: localize('Download Block'),
+    enabled: true,
+    callback: downloadBlock,
+};
+
+//add comment
+//collapse block
+//disable block
+//download block
+
+export const excludeOptionFromContextMenu = (menu, exclude_items) => {
+    if (exclude_items && exclude_items.length > 0) {
+        for (let i = menu.length - 1; i >= 0; i--) {
+            const menu_text = localize(menu[i].text);
+            if (exclude_items.includes(menu_text)) {
+                menu.splice(i, 1);
+            } else {
+                menu[i].text = menu_text;
+            }
         }
     }
+};
 
+const common_included_items = [download_option];
+
+const all_context_menu_options = [
+    localize('Duplicate'),
+    localize('Add Comment'),
+    localize('Collapse Block'),
+    localize('Expand Block'),
+    localize('Disable Block'),
+    localize('Download Block'),
+];
+
+// Need for later
+// const deleteLocaleText = localize("Delete");
+// const blocksLocaleText = localize("Blocks");
+// const deleteBlocksLocaleText = localize("Delete Blocks");
+// const deleteBlocksLocalePattern = new RegExp(`^${deleteLocaleText} \\d+ ${blocksLocaleText}$`);
+
+export const modifyContextMenu = (menu, add_new_items = []) => {
+    const include_items = [...common_included_items, ...add_new_items];
     include_items.forEach(item => {
         menu.push({
-            text: localize(item),
-            enabled: true,
-            callback: () => downloadBlock(),
+            text: item.text,
+            enabled: item.enabled,
+            callback: item.callback,
         });
     });
+
+    for (let i = 0; i < menu.length; i++) {
+        const localized_text = localize(menu[i].text);
+        if (all_context_menu_options.includes(localized_text)) {
+            menu[i].text = localized_text;
+        }
+    }
 };

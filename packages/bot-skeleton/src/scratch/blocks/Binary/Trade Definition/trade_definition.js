@@ -111,9 +111,7 @@ Blockly.Blocks.trade_definition = {
         };
     },
     customContextMenu(menu) {
-        const exclude_item = [];
-        const include_items = ['Download Block'];
-        modifyContextMenu(menu, exclude_item, include_items);
+        modifyContextMenu(menu);
     },
     onchange(event) {
         // modifyContextMenu(event, 'trade_definition', this);

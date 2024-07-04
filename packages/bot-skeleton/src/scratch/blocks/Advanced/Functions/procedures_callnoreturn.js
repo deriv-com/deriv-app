@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { modifyContextMenu } from '../../../utils';
 
 Blockly.Blocks.procedures_callnoreturn = {
     init() {
@@ -315,6 +316,7 @@ Blockly.Blocks.procedures_callnoreturn = {
      * @this Blockly.Block
      */
     customContextMenu(options) {
+        modifyContextMenu(options);
         const name = this.getProcedureCall();
         const { workspace } = this;
 

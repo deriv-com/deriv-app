@@ -23,9 +23,7 @@ Blockly.Blocks.fast_ema_period = {
         this.setDeletable(false);
     },
     customContextMenu(menu) {
-        const exclude_item = [];
-        const include_items = ['Download Block'];
-        modifyContextMenu(menu, exclude_item, include_items);
+        modifyContextMenu(menu);
     },
     onchange: Blockly.Blocks.input_list.onchange,
     allowed_parents: ['macda_statement'],

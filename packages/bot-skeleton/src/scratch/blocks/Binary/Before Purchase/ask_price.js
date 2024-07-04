@@ -33,9 +33,7 @@ Blockly.Blocks.ask_price = {
         };
     },
     customContextMenu(menu) {
-        const exclude_item = [];
-        const include_items = ['Download Block'];
-        modifyContextMenu(menu, exclude_item, include_items);
+        modifyContextMenu(menu);
     },
     onchange: Blockly.Blocks.purchase.onchange,
     populatePurchaseList: Blockly.Blocks.purchase.populatePurchaseList,

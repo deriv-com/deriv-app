@@ -45,9 +45,7 @@ Blockly.Blocks.get_ohlc = {
         };
     },
     customContextMenu(menu) {
-        const exclude_item = [];
-        const include_items = ['Download Block'];
-        modifyContextMenu(menu, exclude_item, include_items);
+        modifyContextMenu(menu);
     },
 };
 Blockly.JavaScript.javascriptGenerator.forBlock.get_ohlc = block => {

@@ -24,9 +24,7 @@ Blockly.Blocks.period = {
     },
     onchange: Blockly.Blocks.input_list.onchange,
     customContextMenu(menu) {
-        const exclude_item = [];
-        const include_items = ['Download Block'];
-        modifyContextMenu(menu, exclude_item, include_items);
+        modifyContextMenu(menu);
     },
     allowed_parents: [
         'bb_statement',

@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { emptyTextValidator , modifyContextMenu } from '../../../../utils';
+import { emptyTextValidator, modifyContextMenu } from '../../../../utils';
 
 Blockly.Blocks.console = {
     init() {
@@ -51,9 +51,7 @@ Blockly.Blocks.console = {
         };
     },
     customContextMenu(menu) {
-        const exclude_item = [];
-        const include_items = ['Download Block'];
-        modifyContextMenu(menu, exclude_item, include_items);
+        modifyContextMenu(menu);
     },
 };
 

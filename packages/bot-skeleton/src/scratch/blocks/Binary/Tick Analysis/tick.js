@@ -24,9 +24,7 @@ Blockly.Blocks.tick = {
         };
     },
     customContextMenu(menu) {
-        const exclude_item = [];
-        const include_items = ['Download Block'];
-        modifyContextMenu(menu, exclude_item, include_items);
+        modifyContextMenu(menu);
     },
 };
 
@@ -53,9 +51,7 @@ Blockly.Blocks.tick_string = {
         };
     },
     customContextMenu(menu) {
-        const exclude_item = [];
-        const include_items = ['Download Block'];
-        modifyContextMenu(menu, exclude_item, include_items);
+        modifyContextMenu(menu);
     },
     onchange: Blockly.Blocks.tick.onchange,
 };

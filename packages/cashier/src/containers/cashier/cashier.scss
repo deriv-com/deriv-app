@@ -9,6 +9,8 @@
         width: 100%;
 
         &-header {
+            padding: 0 0 3.2rem;
+
             @include mobile-or-tablet-screen {
                 padding: 1.6rem;
             }
@@ -28,13 +30,6 @@
             line-height: 1.43;
             @include mobile {
                 height: inherit;
-            }
-
-            // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
-            @media (max-width: 926px) {
-                width: auto;
-                height: auto;
-                margin: 0 1.6rem;
             }
 
             .inline-icon .color1-fill {

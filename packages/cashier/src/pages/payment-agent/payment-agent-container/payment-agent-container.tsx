@@ -79,11 +79,11 @@ const PaymentAgentContainer = observer(({ is_deposit }: TPaymentAgentContainer) 
     return (
         <React.Fragment>
             {!has_payment_agent_search_warning && (
-                <SideNote className='payment-agent-list__side-note' has_title={false} is_mobile>
+                <SideNote className='payment-agent-list__side-note' has_title={false}>
                     <PaymentAgentDisclaimer />
                 </SideNote>
             )}
-            <SideNote className='payment-agent-list__side-note-second' has_title={false} is_mobile>
+            <SideNote className='payment-agent-list__side-note-second' has_title={false}>
                 <MissingPaymentMethodNote />
             </SideNote>
             <div className='payment-agent-list__list-header'>

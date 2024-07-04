@@ -59,7 +59,7 @@ const PaymentAgentReceipt = observer(({ history }: TPaymentAgentReceipt) => {
 
     return (
         <div className='cashier__wrapper--align-center payment-agent-receipt'>
-            <SideNote className='payment-agent-list__side-note' is_mobile>
+            <SideNote className='payment-agent-list__side-note'>
                 <PaymentAgentDisclaimer />
             </SideNote>
             <Text

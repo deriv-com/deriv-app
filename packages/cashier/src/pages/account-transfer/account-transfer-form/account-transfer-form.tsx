@@ -16,7 +16,6 @@ import {
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-
 import AccountPlatformIcon from '../../../components/account-platform-icon';
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
 import ErrorDialog from '../../../components/error-dialog';
@@ -26,9 +25,7 @@ import { useCashierStore } from '../../../stores/useCashierStores';
 import { TAccount, TAccountsList, TError, TReactChangeEvent } from '../../../types';
 import AccountTransferReceipt from '../account-transfer-receipt/account-transfer-receipt';
 import { useMFAccountStatus, useExchangeRate } from '@deriv/hooks';
-
 import AccountTransferNote from './account-transfer-form-side-note';
-
 import './account-transfer-form.scss';
 
 type TAccountTransferFormProps = {
@@ -757,7 +754,7 @@ const AccountTransferForm = observer(
                                             </div>
                                         </div>
                                         {!is_from_outside_cashier && (
-                                            <SideNote title={<Localize i18n_default_text='Notes' />} is_mobile>
+                                            <SideNote title={<Localize i18n_default_text='Notes' />}>
                                                 <AccountTransferNote
                                                     allowed_transfers_count={{
                                                         internal: internal_remaining_transfers?.allowed,

@@ -21,7 +21,11 @@
 
     &__accounts-list {
         overflow-y: scroll;
-        max-height: 430px;
+        max-height: calc(90vh - 128px);
+
+        &--with-button {
+            max-height: calc(90vh - 192px);
+        }
 
         &__group {
             padding-block: var(--core-spacing-400);

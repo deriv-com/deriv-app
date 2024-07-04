@@ -1,5 +1,6 @@
 import React from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
+import classNames from 'classnames';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Jurisdiction, routes } from '@deriv/shared';
@@ -213,7 +214,11 @@ const AccountSwitcherDTraderV2 = observer(({ history }: TAccountSwitcherDTraderV
         <div className='acc-switcher-dtrader__wrapper'>
             {is_landing_company_loaded ? (
                 <React.Fragment>
-                    <div className='acc-switcher-dtrader__accounts-list'>
+                    <div
+                        className={classNames('acc-switcher-dtrader__accounts-list', {
+                            'acc-switcher-dtrader__accounts-list--with-button': show_button,
+                        })}
+                    >
                         {real_accounts}
                         {demo_account}
                     </div>

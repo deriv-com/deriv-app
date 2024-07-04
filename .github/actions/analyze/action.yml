@@ -237,7 +237,6 @@ runs:
                   "metric": "package.size.'$PACKAGE_NAME'",
                   "points": [['$(date +%s)', '$PACKAGE_SIZE']],
                   "type": "gauge",
-                  "host": "your_host_name",
                   "tags": ["env:production", "branch:'$BRANCH_NAME'"]
                 }]
               }' \

@@ -19,11 +19,7 @@ const LanguageLink = observer(({ is_clickable = false, lang, toggleModal }: TLan
 
     const link: React.ReactNode = (
         <React.Fragment>
-            {TranslationFlag[lang] ? (
-                TranslationFlag[lang](36, 24)
-            ) : (
-                <Icon icon={`IcFlag${lang}`} className='settings-language__language-flag' />
-            )}
+            {TranslationFlag[lang](36, 24)}
             <span
                 className={classNames('settings-language__language-name', {
                     'settings-language__language-name--active': is_active,

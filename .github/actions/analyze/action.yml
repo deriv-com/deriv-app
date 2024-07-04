@@ -135,7 +135,7 @@ runs:
     shell: bash
     run: |
       DIFF_OUTPUT_HTML=$(node .github/actions/analyze/compareReports.js --format=html)
-      PACKAGE_SIZES=$(node .github/actions/analyze/compareReports.js --format=json)
+      PACKAGE_SIZES=$(node .github/actions/analyze/compareReports.js --format=json | jq -R -s .)
       ABOVE_THRESHOLD=$(node .github/actions/analyze/compareReports.js --format=boolean) || { echo "Threshold check failed"; exit 1; }
 
       # Output results to GITHUB_OUTPUT
@@ -225,7 +225,7 @@ runs:
           -d '{
                 "series": [{
                   "metric": "package.size.'$PACKAGE_NAME'",
-                  "points": [['$(date +%s)', $PACKAGE_SIZE]],
+                  "points": [['$(date +%s)', '$PACKAGE_SIZE']],
                   "type": "gauge",
                   "host": "your_host_name",
                   "tags": ["env:production", "branch:'$BRANCH_NAME'"]

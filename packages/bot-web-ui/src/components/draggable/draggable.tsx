@@ -177,6 +177,7 @@ const Draggable: React.FC<TDraggableProps> = ({
             isResizing.current = false;
             if (draggableContentBody?.style) {
                 Object.assign(draggableContentBody.style, previousStyle);
+                draggableContentBody.style.pointerEvents = '';
             }
             if (boundaryRef) {
                 window.removeEventListener('mousemove', handleMouseMove);

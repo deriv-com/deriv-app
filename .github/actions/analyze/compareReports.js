@@ -29,6 +29,8 @@ function main() {
         } else {
             console.log('false');
         }
+    } else if (format === 'json') {
+        console.log(JSON.stringify(sizes));
     }
 }
 

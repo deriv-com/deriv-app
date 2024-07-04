@@ -18,10 +18,6 @@ describe('VerifyButton', () => {
         (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_otp_request: '' });
     });
     const history = createBrowserHistory();
-    const renderWithRouter = (component: React.ReactElement) => {
-        return render(<Router history={history}>{component}</Router>);
-    };
-
     const mock_store = mockStore({
         client: {
             account_settings: {
@@ -32,32 +28,30 @@ describe('VerifyButton', () => {
         },
     });
 
-    it('should render Verify Button', () => {
-        renderWithRouter(
-            <StoreProvider store={mock_store}>
-                <VerifyButton />
-            </StoreProvider>
+    const renderWithRouter = () => {
+        return render(
+            <Router history={history}>
+                <StoreProvider store={mock_store}>
+                    <VerifyButton />
+                </StoreProvider>
+            </Router>
         );
+    };
+
+    it('should render Verify Button', () => {
+        renderWithRouter();
         expect(screen.getByText('Verify')).toBeInTheDocument();
     });
 
     it('should render Verify Button with countdown timer return from usePhoneNumberSetTimer and should have disabled class', () => {
         (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_otp_request: 'in 60s' });
-        renderWithRouter(
-            <StoreProvider store={mock_store}>
-                <VerifyButton />
-            </StoreProvider>
-        );
+        renderWithRouter();
         expect(screen.getByText('Verify in 60s')).toBeInTheDocument();
         expect(screen.getByText('Verify in 60s')).toHaveClass('phone-verification-btn--not-verified--disabled');
     });
 
     it('should redirect user to phone-verification page when clicked on Verify Button', () => {
-        renderWithRouter(
-            <StoreProvider store={mock_store}>
-                <VerifyButton />
-            </StoreProvider>
-        );
+        renderWithRouter();
         const verifyButton = screen.getByText('Verify');
         userEvent.click(verifyButton);
         expect(history.location.pathname).toBe(routes.phone_verification);
@@ -66,11 +60,7 @@ describe('VerifyButton', () => {
     it('should render Verified text', () => {
         if (mock_store.client.account_settings.phone_number_verification)
             mock_store.client.account_settings.phone_number_verification.verified = 1;
-        renderWithRouter(
-            <StoreProvider store={mock_store}>
-                <VerifyButton />
-            </StoreProvider>
-        );
+        renderWithRouter();
         expect(screen.getByText('Verified')).toBeInTheDocument();
         expect(screen.getByTestId('dt_phone_verification_popover')).toBeInTheDocument();
     });
@@ -78,11 +68,7 @@ describe('VerifyButton', () => {
     it('should render popover text when popover is clicked', () => {
         if (mock_store.client.account_settings.phone_number_verification)
             mock_store.client.account_settings.phone_number_verification.verified = 1;
-        renderWithRouter(
-            <StoreProvider store={mock_store}>
-                <VerifyButton />
-            </StoreProvider>
-        );
+        renderWithRouter();
         const popover = screen.getByTestId('dt_phone_verification_popover');
         userEvent.click(popover);
         expect(screen.getByText(/To change your verified phone number, contact us via/)).toBeInTheDocument();
@@ -97,11 +83,7 @@ describe('VerifyButton', () => {
             on_chat_ended: jest.fn(),
         };
 
-        renderWithRouter(
-            <StoreProvider store={mock_store}>
-                <VerifyButton />
-            </StoreProvider>
-        );
+        renderWithRouter();
         const popover = screen.getByTestId('dt_phone_verification_popover');
         userEvent.click(popover);
         const livechat = screen.getByText(/live chat/);

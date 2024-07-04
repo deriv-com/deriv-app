@@ -31,7 +31,7 @@ type TProps = {
 
 const WalletCurrencyCard: React.FC<TProps> = ({ className, currency, isDemo, size = 'lg' }: TProps) => {
     const isFiat = fiatIcons.includes(currency as typeof fiatIcons[number]);
-    const IconSize = isFiat ? roundedIconWidth[size] : defaultIconWidth[size];
+    const IconSize = isFiat && !isDemo ? roundedIconWidth[size] : defaultIconWidth[size];
     return (
         <WalletGradientBackground bodyClassName={className} currency={currency} isDemo={isDemo} type='card'>
             <div className={`wallets-currency-card wallets-currency-card--${size}`}>

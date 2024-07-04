@@ -142,12 +142,6 @@
             }
         }
 
-        .cashier__content-header {
-            @include mobile {
-                padding-top: 2.4rem;
-            }
-        }
-
         .account-transfer-form__input {
             min-width: 36rem;
             height: 6.5rem;

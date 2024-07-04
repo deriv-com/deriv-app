@@ -54,7 +54,6 @@ const CFDsListing = observer(() => {
         startTrade,
         is_real,
         getExistingAccounts,
-        getAccount,
         selected_account_type,
         is_eu_user,
         is_demo_low_risk,
@@ -67,15 +66,10 @@ const CFDsListing = observer(() => {
         setSelectedAccount,
         CFDs_restricted_countries,
         financial_restricted_countries,
+        getTradingPlatformStatus,
     } = traders_hub;
 
-    const {
-        setAccountType,
-        toggleCTraderTransferModal,
-        setAccountUnavailableModal,
-        setServerMaintenanceModal,
-        setProduct,
-    } = cfd;
+    const { setAccountType, toggleCTraderTransferModal, setProduct } = cfd;
     const {
         account_status,
         is_landing_company_loaded,
@@ -98,22 +92,6 @@ const CFDsListing = observer(() => {
 
     const { has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
     const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
-
-    const getTradingPlatformStatus = async (platform?: string) => {
-        const { trading_platform_status: tradingPlatformStatus } = await WS.send({ trading_platform_status: 1 });
-        const status = tradingPlatformStatus.find((p: { platform: string }) => p.platform === platform)?.status;
-
-        switch (status) {
-            case TRADING_PLATFORM_STATUS.MAINTENANCE:
-                return setServerMaintenanceModal(true);
-            case TRADING_PLATFORM_STATUS.UNAVAILABLE:
-                return setAccountUnavailableModal(true);
-            case TRADING_PLATFORM_STATUS.ACTIVE:
-                return getAccount();
-            default:
-                break;
-        }
-    };
 
     const getMT5AccountAuthStatus = (current_acc_status?: string | null, jurisdiction?: string) => {
         if (jurisdiction) {

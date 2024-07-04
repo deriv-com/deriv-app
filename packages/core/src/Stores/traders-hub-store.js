@@ -8,6 +8,8 @@ import {
     getAppstorePlatforms,
     getCFDAvailableAccount,
     getAuthenticationStatusInfo,
+    TRADING_PLATFORM_STATUS,
+    WS,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import BaseStore from './base-store';
@@ -84,6 +86,7 @@ export default class TradersHubStore extends BaseStore {
             closeModal: action.bound,
             content_flag: computed,
             getAccount: action.bound,
+            getTradingPlatformStatus: action.bound,
             getAvailableCFDAccounts: action.bound,
             getAvailableDxtradeAccounts: action.bound,
             getAvailableCTraderAccounts: action.bound,
@@ -699,6 +702,25 @@ export default class TradersHubStore extends BaseStore {
             this.openDemoCFDAccount(account_type, platform);
         } else {
             this.openRealAccount(account_type, platform);
+        }
+    }
+
+    async getTradingPlatformStatus(platform) {
+        const { modules } = this.root_store;
+        const { setServerMaintenanceModal, setAccountUnavailableModal } = modules.cfd;
+
+        const { trading_platform_status: tradingPlatformStatus } = await WS.send({ trading_platform_status: 1 });
+        const status = tradingPlatformStatus.find(platformStatus => platformStatus.platform === platform)?.status;
+
+        switch (status) {
+            case TRADING_PLATFORM_STATUS.MAINTENANCE:
+                return setServerMaintenanceModal(true);
+            case TRADING_PLATFORM_STATUS.UNAVAILABLE:
+                return setAccountUnavailableModal(true);
+            case TRADING_PLATFORM_STATUS.ACTIVE:
+                return this.getAccount();
+            default:
+                break;
         }
     }
 

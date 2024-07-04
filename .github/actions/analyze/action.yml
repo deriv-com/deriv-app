@@ -135,13 +135,14 @@ runs:
     shell: bash
     run: |
       DIFF_OUTPUT_HTML=$(node .github/actions/analyze/compareReports.js --format=html)
-      PACKAGE_SIZES=$(node .github/actions/analyze/compareReports.js --format=json | jq -R -s .)
+      PACKAGE_SIZES=$(node .github/actions/analyze/compareReports.js --format=json | jq -c .)
       ABOVE_THRESHOLD=$(node .github/actions/analyze/compareReports.js --format=boolean) || { echo "Threshold check failed"; exit 1; }
 
       # Output results to GITHUB_OUTPUT
       echo "diff_output_html=$DIFF_OUTPUT_HTML" >> $GITHUB_OUTPUT
       echo "package_sizes=$PACKAGE_SIZES" >> $GITHUB_OUTPUT
       echo "above_threshold=$ABOVE_THRESHOLD" >> $GITHUB_OUTPUT
+
 
   # - name: Comment on PR with Diff Output
   #   if: steps.get_artifact_url.outputs.artifact_url != 'null' && inputs.ISSUE_NUMBER

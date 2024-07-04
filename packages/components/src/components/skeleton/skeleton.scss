@@ -11,8 +11,9 @@
             }
         }
     }
-    &.text {
-        border-radius: unset;
+    &.icon {
+        width: 32px;
+        height: 32px;
     }
     &-paragraph {
         display: flex;

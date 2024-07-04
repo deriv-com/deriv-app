@@ -1,6 +1,6 @@
 import React from 'react';
 import ContractCardLoader from './contract-card-loader';
-import { Skeleton } from '../../skeleton';
+import { Skeleton, VARIANT } from '../../skeleton';
 
 const ContractDetailsLoader = () => {
     return (
@@ -24,7 +24,7 @@ const ContractDetailsLoader = () => {
             </div>
             <div className='skeleton-box__details'>
                 <Skeleton width={136} height={24} />
-                <Skeleton paragraph={{ rows: 2 }} height={18} />
+                <Skeleton variant={VARIANT.PARAGRAPH} rows={2} height={18} />
             </div>
             <div className='skeleton-box__details'>
                 <Skeleton width={136} height={24} />

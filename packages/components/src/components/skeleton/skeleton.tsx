@@ -4,46 +4,41 @@ import React from 'react';
 type TSkeletonProps = {
     animated?: boolean;
     className?: string;
-    paragraph?: {
-        gap?: string | number;
-        rows: number;
-        width?: string | number;
-    };
+    rows?: number;
     variant?: typeof VARIANT[keyof typeof VARIANT];
 } & React.CSSProperties;
 
 export const VARIANT = {
     ICON: 'icon',
-    TEXT: 'text',
+    PARAGRAPH: 'paragraph',
 } as const;
 
 const Skeleton = ({
     animated = true,
     className,
+    gap,
     height,
-    paragraph,
+    rows,
     width,
     variant,
     ...css_properties
 }: TSkeletonProps) => {
-    const getDefaultSize = () => (variant === VARIANT.ICON ? 32 : '100%');
-
     const style: React.CSSProperties = {
-        width: width ?? getDefaultSize(),
-        height: height ?? getDefaultSize(),
+        width: width ?? '100%',
+        height: height ?? '100%',
         ...css_properties,
     };
 
-    if (paragraph?.rows) {
+    if (VARIANT.PARAGRAPH && rows) {
         return (
-            <div className='skeleton-paragraph' style={{ gap: paragraph.gap ?? 8 }}>
-                {Array.from(new Array(paragraph.rows)).map((_, idx) => {
+            <div className='skeleton-paragraph' style={{ gap: gap ?? 8 }}>
+                {Array.from(new Array(rows)).map((_, idx) => {
                     return (
                         <div
                             key={idx}
                             className={clsx(className, 'skeleton', animated && 'animated')}
                             style={{
-                                width: idx === paragraph.rows - 1 ? 96 : paragraph.width ?? style.width,
+                                width: idx === rows - 1 ? 96 : style.width,
                                 height: style.height,
                             }}
                         />

@@ -207,7 +207,7 @@ runs:
   - name: Send package sizes to Datadog
     shell: bash
     run: |
-      PACKAGE_SIZES=$(echo "${{ steps.diff.outputs.package_sizes }}" | jq -c '.')
+      PACKAGE_SIZES=$(echo '${{ steps.diff.outputs.package_sizes }}' | jq -c .)
       BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
       
       DATADOG_API_KEY="${{ inputs.BUNDLE_SIZE_TOKEN }}"

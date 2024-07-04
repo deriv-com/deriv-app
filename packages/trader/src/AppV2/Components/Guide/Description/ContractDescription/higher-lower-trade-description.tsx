@@ -3,6 +3,7 @@ import { Localize } from '@deriv/translations';
 import { CONTRACT_LIST, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const HigherLowerTradeDescription = () => {
+    const [higher, lower] = CONTRACT_LIST['HIGHER/LOWER'].split('/');
     const content = [
         { type: 'heading', text: <Localize i18n_default_text='Higher' /> },
         {
@@ -16,7 +17,7 @@ const HigherLowerTradeDescription = () => {
         },
         {
             type: 'video',
-            text: CONTRACT_LIST.ACCUMULATORS,
+            text: higher,
         },
         { type: 'heading', text: <Localize i18n_default_text='Lower' /> },
         {
@@ -30,7 +31,7 @@ const HigherLowerTradeDescription = () => {
         },
         {
             type: 'video',
-            text: CONTRACT_LIST.ACCUMULATORS,
+            text: lower,
         },
         { type: 'heading', text: <Localize i18n_default_text='Additional Information' /> },
         {

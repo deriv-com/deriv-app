@@ -25,7 +25,7 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
         },
         {
             type: 'video',
-            text: CONTRACT_LIST.ACCUMULATORS,
+            text: `${CONTRACT_LIST.MULTIPLIERS}_up`,
         },
         {
             type: 'heading',
@@ -42,7 +42,7 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
         },
         {
             type: 'video',
-            text: CONTRACT_LIST.ACCUMULATORS,
+            text: `${CONTRACT_LIST.MULTIPLIERS}_down`,
         },
         {
             type: 'heading',

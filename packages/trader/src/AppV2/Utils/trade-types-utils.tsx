@@ -184,7 +184,6 @@ export const parseContractDescription = (
                     {text}
                 </Text>
             );
-        // TODO: do not forget to remove this key after getting real gifs
         if (type === 'video' && typeof text === 'string')
             return <VideoFragment contract_type={text} key={text + index} />;
     });

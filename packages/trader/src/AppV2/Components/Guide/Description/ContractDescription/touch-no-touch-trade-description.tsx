@@ -3,6 +3,7 @@ import { Localize } from '@deriv/translations';
 import { CONTRACT_LIST, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const TouchNoTouchTradeDescription = () => {
+    const [touch, no_touch] = CONTRACT_LIST['TOUCH/NO TOUCH'].split('/');
     const content = [
         { type: 'heading', text: <Localize i18n_default_text='Touch' /> },
         {
@@ -16,7 +17,7 @@ const TouchNoTouchTradeDescription = () => {
         },
         {
             type: 'video',
-            text: CONTRACT_LIST.ACCUMULATORS,
+            text: touch,
         },
         { type: 'heading', text: <Localize i18n_default_text='No Touch' /> },
         {
@@ -30,7 +31,7 @@ const TouchNoTouchTradeDescription = () => {
         },
         {
             type: 'video',
-            text: CONTRACT_LIST.ACCUMULATORS,
+            text: no_touch.split(' ').join('_'),
         },
     ];
     return <React.Fragment>{parseContractDescription(content)}</React.Fragment>;

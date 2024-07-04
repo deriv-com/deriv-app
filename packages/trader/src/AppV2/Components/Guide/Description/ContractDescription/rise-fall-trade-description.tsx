@@ -3,6 +3,7 @@ import { Localize } from '@deriv/translations';
 import { CONTRACT_LIST, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const RiseFallTradeDescription = () => {
+    const [rise, fall] = CONTRACT_LIST['RISE/FALL'].split('/');
     const content = [
         { type: 'heading', text: <Localize i18n_default_text='Rise' /> },
         {
@@ -16,7 +17,7 @@ const RiseFallTradeDescription = () => {
         },
         {
             type: 'video',
-            text: CONTRACT_LIST.ACCUMULATORS,
+            text: rise,
         },
         { type: 'heading', text: <Localize i18n_default_text='Fall' /> },
         {
@@ -30,7 +31,7 @@ const RiseFallTradeDescription = () => {
         },
         {
             type: 'video',
-            text: CONTRACT_LIST.ACCUMULATORS,
+            text: fall,
         },
         { type: 'heading', text: <Localize i18n_default_text='Additional Information' /> },
         {

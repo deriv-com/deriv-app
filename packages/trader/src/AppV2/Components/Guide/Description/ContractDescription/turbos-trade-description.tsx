@@ -50,7 +50,7 @@ const TurbosTradeDescription = ({ onTermClick }: { onTermClick: (term: string) =
         },
         {
             type: 'video',
-            text: CONTRACT_LIST.ACCUMULATORS,
+            text: `${CONTRACT_LIST.TURBOS}_up`,
         },
         {
             type: 'heading',
@@ -67,7 +67,7 @@ const TurbosTradeDescription = ({ onTermClick }: { onTermClick: (term: string) =
         },
         {
             type: 'video',
-            text: CONTRACT_LIST.ACCUMULATORS,
+            text: `${CONTRACT_LIST.TURBOS}_down`,
         },
         {
             type: 'heading',

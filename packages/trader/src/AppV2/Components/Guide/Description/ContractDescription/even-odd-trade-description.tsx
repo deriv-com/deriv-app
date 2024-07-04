@@ -3,6 +3,7 @@ import { Localize } from '@deriv/translations';
 import { CONTRACT_LIST, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const EvenOddTradeDescription = () => {
+    const [even, odd] = CONTRACT_LIST['EVEN/ODD'].split('/');
     const content = [
         { type: 'heading', text: <Localize i18n_default_text='Even' /> },
         {
@@ -16,7 +17,7 @@ const EvenOddTradeDescription = () => {
         },
         {
             type: 'video',
-            text: CONTRACT_LIST.ACCUMULATORS,
+            text: even,
         },
         { type: 'heading', text: <Localize i18n_default_text='Odd' /> },
         {
@@ -30,7 +31,7 @@ const EvenOddTradeDescription = () => {
         },
         {
             type: 'video',
-            text: CONTRACT_LIST.ACCUMULATORS,
+            text: odd,
         },
     ];
     return <React.Fragment>{parseContractDescription(content)}</React.Fragment>;

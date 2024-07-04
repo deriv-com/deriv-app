@@ -47,7 +47,7 @@ const VanillasTradeDescription = ({ onTermClick }: { onTermClick: (term: string)
         },
         {
             type: 'video',
-            text: CONTRACT_LIST.ACCUMULATORS,
+            text: `${CONTRACT_LIST.VANILLAS}_call`,
         },
         {
             type: 'heading',
@@ -64,7 +64,7 @@ const VanillasTradeDescription = ({ onTermClick }: { onTermClick: (term: string)
         },
         {
             type: 'video',
-            text: CONTRACT_LIST.ACCUMULATORS,
+            text: `${CONTRACT_LIST.VANILLAS}_put`,
         },
         {
             type: 'heading',

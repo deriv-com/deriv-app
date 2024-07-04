@@ -3,6 +3,7 @@ import { Localize } from '@deriv/translations';
 import { CONTRACT_LIST, parseContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const OverUnderTradeDescription = () => {
+    const [over, under] = CONTRACT_LIST['OVER/UNDER'].split('/');
     const content = [
         { type: 'heading', text: <Localize i18n_default_text='Over' /> },
         {
@@ -16,7 +17,7 @@ const OverUnderTradeDescription = () => {
         },
         {
             type: 'video',
-            text: CONTRACT_LIST.ACCUMULATORS,
+            text: over,
         },
         { type: 'heading', text: <Localize i18n_default_text='Under' /> },
         {
@@ -30,7 +31,7 @@ const OverUnderTradeDescription = () => {
         },
         {
             type: 'video',
-            text: CONTRACT_LIST.ACCUMULATORS,
+            text: under,
         },
     ];
     return <React.Fragment>{parseContractDescription(content)}</React.Fragment>;

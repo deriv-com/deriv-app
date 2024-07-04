@@ -301,6 +301,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             subscribeToExchangeRate: jest.fn(),
             unsubscribeFromExchangeRate: jest.fn(),
             unsubscribeFromAllExchangeRates: jest.fn(),
+            virtual_account_loginid: '',
             is_cr_account: false,
             is_mf_account: false,
         },

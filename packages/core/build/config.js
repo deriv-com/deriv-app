@@ -92,10 +92,6 @@ const copyConfig = base => {
             to: 'wallets',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/p2p-v2/dist/p2p-v2'),
-            to: 'p2p-v2',
-        },
-        {
             from: path.resolve(__dirname, '../node_modules/@deriv/cashier-v2/dist/cashier-v2'),
             to: 'cashier-v2',
         },

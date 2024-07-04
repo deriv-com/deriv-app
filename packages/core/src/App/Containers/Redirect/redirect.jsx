@@ -63,7 +63,12 @@ const Redirect = observer(() => {
             break;
         }
         case 'request_email': {
-            toggleResetEmailModal(true);
+            if (!is_logging_in && !is_logged_in) {
+                redirectToLogin(is_logged_in, getLanguage());
+                redirected_to_route = true;
+            } else {
+                toggleResetEmailModal(true);
+            }
             break;
         }
         case 'social_email_change': {

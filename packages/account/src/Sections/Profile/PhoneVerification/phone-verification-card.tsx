@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import clsx from 'clsx';
 import React from 'react';
 
 type TPhoneVerificationCard = {
@@ -6,7 +6,7 @@ type TPhoneVerificationCard = {
 };
 
 const PhoneVerificationCard = ({ children, is_small_card }: React.PropsWithChildren<TPhoneVerificationCard>) => (
-    <div className={classNames('phone-verification__card', { 'phone-verification__card--small-card': is_small_card })}>
+    <div className={clsx('phone-verification__card', { 'phone-verification__card--small-card': is_small_card })}>
         {children}
     </div>
 );

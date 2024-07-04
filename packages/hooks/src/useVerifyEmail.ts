@@ -33,8 +33,8 @@ const useVerifyEmail = (
     );
 
     return {
+        WS,
         is_loading: WS.isLoading,
-        is_success: WS.isSuccess,
         error: WS.error,
         data: WS.data,
         counter: counter.count,

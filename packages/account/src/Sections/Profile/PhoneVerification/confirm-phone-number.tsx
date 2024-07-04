@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import PhoneVerificationCard from './phone-verification-card';
 import { Button, Snackbar, Text, TextField } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
@@ -12,9 +12,9 @@ type TConfirmPhoneNumber = {
 };
 
 const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber) => {
-    const [phone_number, setPhoneNumber] = React.useState('');
-    const [phone_verification_type, setPhoneVerificationType] = React.useState('');
-    const [is_button_loading, setIsButtonLoading] = React.useState(false);
+    const [phone_number, setPhoneNumber] = useState('');
+    const [phone_verification_type, setPhoneVerificationType] = useState('');
+    const [is_button_loading, setIsButtonLoading] = useState(false);
     const {
         requestOnSMS,
         requestOnWhatsApp,
@@ -29,11 +29,11 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
     const { setShouldShowPhoneNumberOTP } = ui;
     const { next_otp_request } = usePhoneNumberVerificationSetTimer(true);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setPhoneNumber(account_settings?.phone || '');
     }, [account_settings?.phone]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (email_otp_error) {
             invalidate('get_settings').then(() => setIsButtonLoading(false));
         }
@@ -44,7 +44,7 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
         }
     }, [is_email_verified, email_otp_error, invalidate]);
 
-    const handleOnChangePhoneNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleOnChangePhoneNumber = (e: ChangeEvent<HTMLInputElement>) => {
         setPhoneNumber(e.target.value);
         validatePhoneNumber(e.target.value, setErrorMessage);
     };

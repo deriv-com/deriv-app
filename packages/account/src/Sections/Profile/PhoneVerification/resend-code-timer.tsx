@@ -18,12 +18,12 @@ const ResendCodeTimer = ({
     reInitializeGetSettings,
 }: TResendCodeTimer) => {
     // @ts-expect-error this for now
-    const { send, is_success } = useVerifyEmail('phone_number_verification');
+    const { send, WS } = useVerifyEmail('phone_number_verification');
     const { next_otp_request } = usePhoneNumberVerificationSetTimer();
 
     React.useEffect(() => {
-        if (is_success) reInitializeGetSettings();
-    }, [is_success, reInitializeGetSettings]);
+        if (WS.isSuccess) reInitializeGetSettings();
+    }, [WS.isSuccess, reInitializeGetSettings]);
 
     const resendCode = () => {
         if (should_show_resend_code_button) {

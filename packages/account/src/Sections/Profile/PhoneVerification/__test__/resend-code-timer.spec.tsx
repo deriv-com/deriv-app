@@ -9,7 +9,9 @@ jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useVerifyEmail: jest.fn(() => ({
         send: jest.fn(),
-        is_success: false,
+        WS: {
+            isSuccess: false,
+        },
     })),
     useSettings: jest.fn(() => ({
         data: {
@@ -25,6 +27,10 @@ jest.mock('@deriv/hooks', () => ({
 }));
 
 describe('ConfirmPhoneNumber', () => {
+    beforeEach(() => {
+        (useVerifyEmail as jest.Mock).mockReturnValue({ send: jest.fn(), WS: { isSuccess: false } });
+    });
+
     afterEach(() => {
         jest.clearAllMocks();
         (usePhoneNumberVerificationSetTimer as jest.Mock).mockReturnValue({ next_otp_request: '' });
@@ -68,6 +74,7 @@ describe('ConfirmPhoneNumber', () => {
         const mockSend = jest.fn();
         (useVerifyEmail as jest.Mock).mockReturnValue({
             send: mockSend,
+            WS: { isSuccess: false },
         });
         render(
             <StoreProvider store={mock_store}>

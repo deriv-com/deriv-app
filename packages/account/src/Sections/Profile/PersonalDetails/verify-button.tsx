@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import clsx from 'clsx';
 import { CaptionText } from '@deriv-com/quill-ui';
 import { observer, useStore } from '@deriv/stores';
@@ -12,7 +12,7 @@ import { useDevice } from '@deriv-com/ui';
 import './verify-button.scss';
 
 export const VerifyButton = observer(() => {
-    const [open_popover, setOpenPopover] = React.useState(false);
+    const [open_popover, setOpenPopover] = useState(false);
     const { client, ui } = useStore();
     const { setShouldShowPhoneNumberOTP } = ui;
     const { account_settings, setVerificationCode } = client;

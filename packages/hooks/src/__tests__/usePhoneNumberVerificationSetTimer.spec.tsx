@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderHook, act } from '@testing-library/react-hooks';
 import dayjs from 'dayjs';
-import usePhoneNumberVerificationSetTimer from '../usePhoneNumberVerificationSetTimer'; // Adjust the path as necessary
+import usePhoneNumberVerificationSetTimer from '../usePhoneNumberVerificationSetTimer';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
 const mock_store = mockStore({

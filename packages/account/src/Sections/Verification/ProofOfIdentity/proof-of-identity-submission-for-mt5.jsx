@@ -154,7 +154,7 @@ const POISubmissionForMT5 = observer(
                     const documents_supported = Object.keys(doc_obj).map(d => doc_obj[d].display_name);
 
                     return (
-                        <AutoHeightWrapper default_height={620} height_offset={50}>
+                        <AutoHeightWrapper height_offset={50}>
                             {({ setRef, height }) => (
                                 <div ref={setRef} style={{ height }}>
                                     <OnfidoUpload

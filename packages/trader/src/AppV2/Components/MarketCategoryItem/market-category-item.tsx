@@ -7,6 +7,7 @@ import { ActiveSymbols } from '@deriv/api-types';
 import clsx from 'clsx';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { onChangeSymbolAsync } from 'Stores/Modules/Trading/Actions/symbol';
 
 type TMarketCategoryItem = {
     item: ActiveSymbols[0];
@@ -24,9 +25,10 @@ const MarketCategoryItem = observer(({ item, selectedSymbol, setSelectedSymbol, 
         setIsFavorite(favoriteSymbols.includes(item.symbol));
     }, [favoriteSymbols, item.symbol]);
 
-    const handleSelect = (e: React.MouseEvent<HTMLSpanElement>) => {
+    const handleSelect = async (e: React.MouseEvent<HTMLSpanElement>) => {
         const symbol = (e.target as HTMLSpanElement).getAttribute('data-symbol');
         setSelectedSymbol(symbol ?? '');
+        await onChangeSymbolAsync(symbol ?? '');
         setIsOpen(false);
     };
 
@@ -48,7 +50,7 @@ const MarketCategoryItem = observer(({ item, selectedSymbol, setSelectedSymbol, 
                         iconSize='sm'
                     />
                 ),
-                message: 'Added to favorites',
+                message: 'Removed from favorites',
                 hasCloseButton: false,
             });
         } else {

@@ -1,5 +1,7 @@
-.active-symbol-list {
+.active-symbols-list {
     &__content {
         height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 }

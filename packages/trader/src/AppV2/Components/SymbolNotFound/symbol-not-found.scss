@@ -5,7 +5,7 @@
         justify-content: center;
         align-items: center;
         padding: 0 var(--core-spacing-2400);
-        height: 100%;
+        margin-block: auto;
     }
     &--content {
         display: flex;

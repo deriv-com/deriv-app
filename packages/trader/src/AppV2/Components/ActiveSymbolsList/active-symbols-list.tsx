@@ -6,10 +6,14 @@ import MarketCategories from '../MarketCategories';
 import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 import SymbolsSearchResult from '../SymbolsSearchResult';
 
-const ActiveSymbolsList = observer(() => {
+type TActiveSymbolsList = {
+    isOpen: boolean;
+    setIsOpen: (input: boolean) => void;
+};
+
+const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) => {
     const { default_symbol } = useActiveSymbols({});
 
-    const [isOpen, setIsOpen] = useState(false);
     const [isSearching, setIsSearching] = useState(false);
     const [selectedSymbol, setSelectedSymbol] = useState(default_symbol);
     const [searchValue, setSearchValue] = useState('');
@@ -20,9 +24,8 @@ const ActiveSymbolsList = observer(() => {
 
     return (
         <React.Fragment>
-            <button onClick={() => setIsOpen(!isOpen)}>button</button>
             <ActionSheet.Root isOpen={isOpen}>
-                <ActionSheet.Portal shouldCloseOnDrag>
+                <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen>
                     <SymbolsSearchField
                         searchValue={searchValue}
                         setSearchValue={setSearchValue}

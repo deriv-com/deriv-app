@@ -2,12 +2,11 @@
     &--container {
         padding: var(--core-spacing-400) 0;
     }
-    &--zero {
+    &--no-fav {
         display: flex;
         padding: 0 var(--core-spacing-2400);
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 100%;
     }
 }

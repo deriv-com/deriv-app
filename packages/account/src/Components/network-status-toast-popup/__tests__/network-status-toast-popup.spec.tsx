@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import NetworkStatusToastPopup from '../network-status-toast-popup';
@@ -50,17 +50,44 @@ describe('NetworkStatusToastPopup', () => {
     });
 
     it('should render NetworkStatusToastPopup when trying to connect', async () => {
+        jest.useFakeTimers();
+
         mock_store.common.network_status.class = connecting.toLowerCase();
         mock_store.common.network_status.tooltip = connecting;
 
-        render(<NetworkStatusToastPopup />, { wrapper });
+        const { rerender } = render(
+            <StoreProvider store={mock_store}>
+                <NetworkStatusToastPopup />
+            </StoreProvider>
+        );
 
         expect(screen.queryByText(offline)).not.toBeInTheDocument();
         expect(screen.queryByText(online)).not.toBeInTheDocument();
         expect(screen.getByText(connecting)).toBeInTheDocument();
 
-        mock_store.common.network_status.class = online.toLowerCase();
-        mock_store.common.network_status.tooltip = online;
+        const mock_store_updated = mockStore({
+            common: { network_status: { class: online.toLowerCase(), tooltip: online } },
+        });
+
+        rerender(
+            <StoreProvider store={mock_store_updated}>
+                <NetworkStatusToastPopup />
+            </StoreProvider>
+        );
+
+        expect(screen.queryByText(offline)).not.toBeInTheDocument();
+        expect(screen.queryByText(connecting)).not.toBeInTheDocument();
+        expect(screen.getByText(online)).toBeInTheDocument();
+
+        act(() => {
+            jest.advanceTimersByTime(1500);
+        });
+
+        expect(screen.queryByText(offline)).not.toBeInTheDocument();
+        expect(screen.queryByText(connecting)).not.toBeInTheDocument();
+        expect(screen.queryByText(online)).not.toBeInTheDocument();
+
+        jest.useRealTimers();
     });
 
     it('should not render NetworkStatusToastPopup when no message', () => {

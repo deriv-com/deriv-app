@@ -2,8 +2,9 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import classNames from 'classnames';
+import { useDevice } from '@deriv-com/ui';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
-import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, Text, UILoader } from '@deriv/components';
+import { Button, MobileDialog, Modal, Text, UILoader } from '@deriv/components';
 import { WS, moduleLoader, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
@@ -16,9 +17,7 @@ import SetCurrency from './set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
 import { Analytics } from '@deriv-com/analytics';
-import 'Sass/details-form.scss';
 import 'Sass/account-wizard.scss';
-import 'Sass/real-account-signup.scss';
 
 const AccountWizard = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-wizard-modal" */ './account-wizard.jsx'))
@@ -60,6 +59,7 @@ const WizardHeading = ({ currency, real_account_signup_target }) => {
 };
 
 const RealAccountSignup = observer(({ history, state_index, is_trading_experience_incomplete }) => {
+    const { isDesktop } = useDevice();
     const { ui, client, traders_hub, modules } = useStore();
     const {
         available_crypto_currencies,
@@ -618,7 +618,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         <React.Fragment>
             {is_real_acc_signup_on && (
                 <React.Fragment>
-                    <DesktopWrapper>
+                    {isDesktop ? (
                         <Modal
                             id='real_account_signup_modal'
                             className={classNames('real-account-signup-modal', {
@@ -666,8 +666,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                                 deposit_target={deposit_target}
                             />
                         </Modal>
-                    </DesktopWrapper>
-                    <MobileWrapper>
+                    ) : (
                         <MobileDialog
                             portal_element_id='modal_root'
                             wrapper_classname='account-signup-mobile-dialog'
@@ -697,7 +696,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
                                 deposit_target={deposit_target}
                             />
                         </MobileDialog>
-                    </MobileWrapper>
+                    )}
                 </React.Fragment>
             )}
         </React.Fragment>

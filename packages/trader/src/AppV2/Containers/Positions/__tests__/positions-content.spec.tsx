@@ -11,6 +11,7 @@ import { TPortfolioPosition } from '@deriv/stores/types';
 const contractTypeFilter = 'Filter by trade types';
 const contractCardList = 'ContractCardList';
 const emptyPositions = 'EmptyPositions';
+const loaderTestId = 'dt_initial_loader';
 const totalProfitLoss = 'Total profit/loss:';
 
 const mediaQueryList = {
@@ -292,7 +293,14 @@ describe('PositionsContent', () => {
         defaultMockStore = mockStore({});
         render(mockPositionsContent());
 
-        expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
+        expect(screen.getByTestId(loaderTestId)).toBeInTheDocument();
+    });
+
+    it('should render loader if is_loading is true in portfolio-store', () => {
+        defaultMockStore = mockStore({ portfolio: { ...defaultMockStore.portfolio, is_loading: true } });
+        render(mockPositionsContent());
+
+        expect(screen.getByTestId(loaderTestId)).toBeInTheDocument();
     });
 
     it('should render EmptyPositions if data has loaded but user has no open positions', () => {

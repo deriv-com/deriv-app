@@ -2,6 +2,7 @@ import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { TranslationFlag } from '@deriv/shared';
 
 const MenuTitle = observer(() => {
     const { client, common, ui } = useStore();
@@ -23,13 +24,13 @@ const MenuTitle = observer(() => {
                 >
                     {!is_mobile_language_menu_open && (
                         <React.Fragment>
-                            <Icon
-                                icon={`IcFlag${current_language.replace('_', '-')}`}
-                                data_testid='dt_icon'
-                                className='ic-settings-language__icon'
-                                size={22}
-                            />
-                            <Text weight='bold' size='xxs'>
+                            {TranslationFlag[current_language] ? (
+                                TranslationFlag[current_language](22, 16)
+                            ) : (
+                                //TODOs: remove this when Korean flag is added to quill-icons
+                                <Icon icon={`IcFlag${current_language}`} data_testid='dt_icon' size={18} />
+                            )}
+                            <Text weight='bold' size='xxs' className='ic-settings-language__text'>
                                 <Localize i18n_default_text={current_language} />
                             </Text>
                         </React.Fragment>

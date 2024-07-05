@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import { Formik, FormikValues, FormikHelpers, FormikErrors, Form } from 'formik';
-import { Localize, localize } from '@deriv/translations';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button } from '@deriv/components';
 import {
@@ -9,7 +8,8 @@ import {
     removeEmptyPropertiesFromObject,
     getIDVNotApplicableOption,
 } from '@deriv/shared';
-import PoiNameDobExample from '../../../../Assets/ic-poi-name-dob-example.svg';
+import { useTranslations, Localize } from '@deriv-com/translations';
+import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import FormSubHeader from '../../../form-sub-header';
 import IDVForm from '../../../forms/idv-form';
 import PersonalDetailsForm from '../../../forms/personal-details-form.jsx';
@@ -43,7 +43,8 @@ export const IdvDocSubmitOnSignup = ({
     getChangeableFields,
     residence_list,
 }: TIdvDocSubmitOnSignup) => {
-    const side_note_image = <PoiNameDobExample />;
+    const { localize } = useTranslations();
+    const side_note_image = <DerivLightNameDobPoiIcon height='195px' width='285px' />;
     const validateFields = (values: TIDVDocFormType) => {
         const errors: FormikErrors<Omit<TIDVDocFormType, 'document_type'> & { document_type?: string }> = {};
         const { document_type, document_number, document_additional } = values;

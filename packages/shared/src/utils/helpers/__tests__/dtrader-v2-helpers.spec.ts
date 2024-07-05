@@ -6,8 +6,6 @@ describe('getPositionsV2TabIndexFromURL', () => {
 
     beforeEach(() => {
         Object.defineProperty(window, 'location', {
-            configurable: true,
-            enumerable: true,
             value: {
                 hostname: 'https://localhost:8443/',
                 pathname: routes.trader_positions,
@@ -17,8 +15,6 @@ describe('getPositionsV2TabIndexFromURL', () => {
 
     afterEach(() => {
         Object.defineProperty(window, 'location', {
-            configurable: true,
-            enumerable: true,
             value: originalWindowLocation,
         });
         location.search = '';

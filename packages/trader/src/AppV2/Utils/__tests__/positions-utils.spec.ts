@@ -360,6 +360,24 @@ describe('getTotalPositionsProfit', () => {
 });
 
 describe('setPositionURLParams', () => {
+    const originalWindowLocation = window.location;
+
+    beforeEach(() => {
+        Object.defineProperty(window, 'location', {
+            value: {
+                hostname: 'https://localhost:8443/',
+                pathname: routes.trader_positions,
+            },
+        });
+    });
+
+    afterEach(() => {
+        Object.defineProperty(window, 'location', {
+            value: originalWindowLocation,
+        });
+        location.search = '';
+    });
+
     const spyHistoryReplaceState = jest.spyOn(window.history, 'replaceState');
 
     afterEach(() => {

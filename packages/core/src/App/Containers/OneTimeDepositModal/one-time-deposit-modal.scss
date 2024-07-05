@@ -23,6 +23,14 @@
             width: 100%;
             padding: 2rem;
         }
+
+        &-crypto {
+            gap: 2.4rem;
+
+            @include mobile-or-tablet-screen {
+                gap: 1.6rem;
+            }
+        }
     }
 
     &__livechat {

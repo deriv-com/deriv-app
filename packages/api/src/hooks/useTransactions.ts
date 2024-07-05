@@ -9,7 +9,7 @@ import { displayMoney } from '../utils';
 type TFilter = NonNullable<TSocketRequestPayload<'statement'>['payload']>['action_type'];
 
 /** A custom hook to get the summary of account transactions */
-const useTransactions = (defaultFilter: TFilter) => {
+const useTransactions = () => {
     const {
         data: { preferred_language },
         isFetching,
@@ -20,7 +20,7 @@ const useTransactions = (defaultFilter: TFilter) => {
     const display_code = account?.currency_config?.display_code || 'USD';
     const fractional_digits = account?.currency_config?.fractional_digits || 2;
 
-    const [filter, setFilter] = useState<TFilter>(defaultFilter);
+    const [filter, setFilter] = useState<TFilter>();
     const { data, remove, ...rest } = useQuery('statement', {
         options: {
             enabled: !isFetching && isSuccess,

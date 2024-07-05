@@ -1,38 +1,31 @@
 import React from 'react';
 import { useDevice } from '@deriv-com/ui';
 import { Dialog, Text } from '@deriv/components';
-import { useHasMFAccountDeposited } from '@deriv/hooks';
 import { Localize, localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import './deposit-now-or-later-modal.scss';
 
 const DepositNowOrLaterModal = observer(() => {
     const { isMobile } = useDevice();
-    const { ui } = useStore();
+    const { client, ui } = useStore();
+    const { is_mf_account } = client;
     const {
         should_show_deposit_now_or_later_modal,
         setShouldShowDepositNowOrLaterModal,
         setShouldShowOneTimeDepositModal,
-        // setShouldTriggerTourGuide,
-        // toggleAccountSuccessModal,
-        // setIsVerificationModalVisible,
-        // setIsFromSuccessDepositModal,
+        toggleAccountSuccessModal,
     } = ui;
 
     const onConfirmModal = () => {
-        // if (has_mf_account_deposited) {
-        //     setIsFromSuccessDepositModal(true);
-        // }
-        // toggleAccountSuccessModal();
-        // setIsVerificationModalVisible(true); // route to poi-poa modal
         setShouldShowDepositNowOrLaterModal(false);
     };
 
     const onClose = () => {
-        // toggleAccountSuccessModal();
-        // setShouldTriggerTourGuide(true); // route to onboarding -switch accounts
         setShouldShowDepositNowOrLaterModal(false);
         setShouldShowOneTimeDepositModal(false);
+
+        // for MF accounts we need to show success modal
+        if (is_mf_account) toggleAccountSuccessModal();
     };
 
     return (

@@ -1,9 +1,8 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { CONTRACT_LIST, getContractDescription } from 'AppV2/Utils/trade-types-utils';
+import { getContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const TouchNoTouchTradeDescription = () => {
-    const [touch, no_touch] = CONTRACT_LIST.TOUCH_NO_TOUCH.split('/');
     const content = [
         { type: 'heading', text: <Localize i18n_default_text='Touch' /> },
         {
@@ -17,7 +16,7 @@ const TouchNoTouchTradeDescription = () => {
         },
         {
             type: 'video',
-            text: touch,
+            text: 'touch',
         },
         { type: 'heading', text: <Localize i18n_default_text='No Touch' /> },
         {
@@ -31,7 +30,7 @@ const TouchNoTouchTradeDescription = () => {
         },
         {
             type: 'video',
-            text: no_touch.split(' ').join('_'),
+            text: 'no_touch',
         },
     ];
     return <React.Fragment>{getContractDescription(content)}</React.Fragment>;

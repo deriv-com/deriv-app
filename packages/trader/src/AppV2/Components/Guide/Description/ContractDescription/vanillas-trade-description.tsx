@@ -1,6 +1,6 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { CONTRACT_LIST, TERM, getContractDescription } from 'AppV2/Utils/trade-types-utils';
+import { TERM, getContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const VanillasTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
     const content = [
@@ -47,7 +47,7 @@ const VanillasTradeDescription = ({ onTermClick }: { onTermClick: (term: string)
         },
         {
             type: 'video',
-            text: `${CONTRACT_LIST.VANILLAS}_call`,
+            text: 'vanillas_call',
         },
         {
             type: 'heading',
@@ -64,7 +64,7 @@ const VanillasTradeDescription = ({ onTermClick }: { onTermClick: (term: string)
         },
         {
             type: 'video',
-            text: `${CONTRACT_LIST.VANILLAS}_put`,
+            text: 'vanillas_put',
         },
         {
             type: 'heading',

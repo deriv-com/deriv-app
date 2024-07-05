@@ -126,47 +126,47 @@ const TradeDescription = ({
     contract_type: string;
     onTermClick: (term: string) => void;
 }) => {
-    let TradeTypeTemplate;
+    let trade_type_template;
     switch (contract_type) {
         case CONTRACT_LIST.ACCUMULATORS:
-            TradeTypeTemplate = <AccumulatorsTradeDescription onTermClick={onTermClick} />;
+            trade_type_template = <AccumulatorsTradeDescription onTermClick={onTermClick} />;
             break;
         case CONTRACT_LIST.RISE_FALL:
-            TradeTypeTemplate = <RiseFallTradeDescription />;
+            trade_type_template = <RiseFallTradeDescription />;
             break;
         case CONTRACT_LIST.MULTIPLIERS:
-            TradeTypeTemplate = <MultiplierTradeDescriptions onTermClick={onTermClick} />;
+            trade_type_template = <MultiplierTradeDescriptions onTermClick={onTermClick} />;
             break;
         case CONTRACT_LIST.VANILLAS:
-            TradeTypeTemplate = <VanillasTradeDescription onTermClick={onTermClick} />;
+            trade_type_template = <VanillasTradeDescription onTermClick={onTermClick} />;
             break;
         case CONTRACT_LIST.TURBOS:
-            TradeTypeTemplate = <TurbosTradeDescription onTermClick={onTermClick} />;
+            trade_type_template = <TurbosTradeDescription onTermClick={onTermClick} />;
             break;
         case CONTRACT_LIST.HIGHER_LOWER:
-            TradeTypeTemplate = <HigherLowerTradeDescription />;
+            trade_type_template = <HigherLowerTradeDescription />;
             break;
         case CONTRACT_LIST.TOUCH_NO_TOUCH:
-            TradeTypeTemplate = <TouchNoTouchTradeDescription />;
+            trade_type_template = <TouchNoTouchTradeDescription />;
             break;
         case CONTRACT_LIST.MATCHES_DIFFERS:
-            TradeTypeTemplate = <MatchesDiffersTradeDescription />;
+            trade_type_template = <MatchesDiffersTradeDescription />;
             break;
         case CONTRACT_LIST.EVEN_ODD:
-            TradeTypeTemplate = <EvenOddTradeDescription />;
+            trade_type_template = <EvenOddTradeDescription />;
             break;
         case CONTRACT_LIST.OVER_UNDER:
-            TradeTypeTemplate = <OverUnderTradeDescription />;
+            trade_type_template = <OverUnderTradeDescription />;
             break;
         default:
-            TradeTypeTemplate = (
+            trade_type_template = (
                 <Text as='p'>
                     <Localize i18n_default_text='Description not found.' />
                 </Text>
             );
             break;
     }
-    return <React.Fragment>{TradeTypeTemplate}</React.Fragment>;
+    return <React.Fragment>{trade_type_template}</React.Fragment>;
 };
 
 export default TradeDescription;

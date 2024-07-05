@@ -1,6 +1,6 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { CONTRACT_LIST, TERM, getContractDescription } from 'AppV2/Utils/trade-types-utils';
+import { TERM, getContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const TurbosTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
     const content = [
@@ -50,7 +50,7 @@ const TurbosTradeDescription = ({ onTermClick }: { onTermClick: (term: string) =
         },
         {
             type: 'video',
-            text: `${CONTRACT_LIST.TURBOS}_up`,
+            text: 'turbos_up',
         },
         {
             type: 'heading',
@@ -67,7 +67,7 @@ const TurbosTradeDescription = ({ onTermClick }: { onTermClick: (term: string) =
         },
         {
             type: 'video',
-            text: `${CONTRACT_LIST.TURBOS}_down`,
+            text: 'turbos_down',
         },
         {
             type: 'heading',

@@ -190,42 +190,15 @@ export const getContractDescription = (
     });
 
 export const DESCRIPTION_VIDEO_IDS: TDtraderVideoUrl = {
-    [CONTRACT_LIST.ACCUMULATORS]: {
-        light: DESCRIPTION_VIDEO_ID.accumulator.light,
-        dark: DESCRIPTION_VIDEO_ID.accumulator.dark,
-    },
-    [CONTRACT_LIST.EVEN_ODD]: {
-        light: DESCRIPTION_VIDEO_ID.even_odd.light,
-        dark: DESCRIPTION_VIDEO_ID.even_odd.dark,
-    },
-    [CONTRACT_LIST.HIGHER_LOWER]: {
-        light: DESCRIPTION_VIDEO_ID.high_low.light,
-        dark: DESCRIPTION_VIDEO_ID.high_low.dark,
-    },
-    [CONTRACT_LIST.MATCHES_DIFFERS]: {
-        light: DESCRIPTION_VIDEO_ID.match_diff.light,
-        dark: DESCRIPTION_VIDEO_ID.match_diff.dark,
-    },
-    [CONTRACT_LIST.MULTIPLIERS]: {
-        light: DESCRIPTION_VIDEO_ID.multiplier.light,
-        dark: DESCRIPTION_VIDEO_ID.multiplier.dark,
-    },
-    [CONTRACT_LIST.OVER_UNDER]: {
-        light: DESCRIPTION_VIDEO_ID.over_under.light,
-        dark: DESCRIPTION_VIDEO_ID.over_under.dark,
-    },
-    [CONTRACT_LIST.RISE_FALL]: {
-        light: DESCRIPTION_VIDEO_ID.rise_fall.light,
-        dark: DESCRIPTION_VIDEO_ID.rise_fall.dark,
-    },
-    [CONTRACT_LIST.TOUCH_NO_TOUCH]: {
-        light: DESCRIPTION_VIDEO_ID.touch.light,
-        dark: DESCRIPTION_VIDEO_ID.touch.dark,
-    },
-    [CONTRACT_LIST.VANILLAS]: {
-        light: DESCRIPTION_VIDEO_ID.vanilla.light,
-        dark: DESCRIPTION_VIDEO_ID.vanilla.dark,
-    },
+    [CONTRACT_LIST.ACCUMULATORS]: DESCRIPTION_VIDEO_ID.accumulator,
+    [CONTRACT_LIST.EVEN_ODD]: DESCRIPTION_VIDEO_ID.even_odd,
+    [CONTRACT_LIST.HIGHER_LOWER]: DESCRIPTION_VIDEO_ID.high_low,
+    [CONTRACT_LIST.MATCHES_DIFFERS]: DESCRIPTION_VIDEO_ID.match_diff,
+    [CONTRACT_LIST.MULTIPLIERS]: DESCRIPTION_VIDEO_ID.multiplier,
+    [CONTRACT_LIST.OVER_UNDER]: DESCRIPTION_VIDEO_ID.over_under,
+    [CONTRACT_LIST.RISE_FALL]: DESCRIPTION_VIDEO_ID.rise_fall,
+    [CONTRACT_LIST.TOUCH_NO_TOUCH]: DESCRIPTION_VIDEO_ID.touch,
+    [CONTRACT_LIST.VANILLAS]: DESCRIPTION_VIDEO_ID.vanilla,
 };
 
 export const getDescriptionVideoIds = (contract_type = '', is_dark_theme = false) =>

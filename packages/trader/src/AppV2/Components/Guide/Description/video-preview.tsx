@@ -12,6 +12,7 @@ type TVideoPreview = {
 };
 
 const VideoPreview = ({ contract_type, toggleVideoPlayer, video_src }: TVideoPreview) => {
+    // This check should be removed after adding a new video for Turbos
     if (contract_type === CONTRACT_LIST.TURBOS) return null;
 
     return (

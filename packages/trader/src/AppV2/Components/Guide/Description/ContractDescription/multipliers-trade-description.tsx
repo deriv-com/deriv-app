@@ -1,6 +1,6 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { CONTRACT_LIST, TERM, getContractDescription } from 'AppV2/Utils/trade-types-utils';
+import { TERM, getContractDescription } from 'AppV2/Utils/trade-types-utils';
 
 const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
     const content = [
@@ -25,7 +25,7 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
         },
         {
             type: 'video',
-            text: `${CONTRACT_LIST.MULTIPLIERS}_up`,
+            text: 'multipliers_up',
         },
         {
             type: 'heading',
@@ -42,7 +42,7 @@ const MultipliersTradeDescription = ({ onTermClick }: { onTermClick: (term: stri
         },
         {
             type: 'video',
-            text: `${CONTRACT_LIST.MULTIPLIERS}_down`,
+            text: 'multipliers_down',
         },
         {
             type: 'heading',

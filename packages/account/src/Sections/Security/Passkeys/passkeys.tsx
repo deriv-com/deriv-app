@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import { InlineMessage, Loading } from '@deriv/components';
 import { useGetPasskeysList, useRegisterPasskey, useRenamePasskey } from '@deriv/hooks';
@@ -11,8 +11,6 @@ import { PasskeyReminderModal } from './components/passkey-reminder-modal';
 import { PasskeysStatusContainer } from './components/passkeys-status-container';
 import { clearTimeOut, PASSKEY_STATUS_CODES, passkeysMenuActionEventTrack, TPasskeysStatus } from './passkeys-configs';
 import './passkeys.scss';
-import { NetworkStatusToastPopup } from 'Components/network-status-toast-popup/network-status-toast-popup';
-import { Snackbar } from '@deriv-com/quill-ui';
 
 export type TPasskey = {
     id: number;

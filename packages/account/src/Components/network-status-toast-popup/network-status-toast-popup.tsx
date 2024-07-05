@@ -1,9 +1,9 @@
+import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import { Snackbar } from '@deriv-com/quill-ui';
 import './network-status-toast-popup.scss';
-import { useState } from 'react';
 
 type TNetworkStatusToast = {
     status: string;

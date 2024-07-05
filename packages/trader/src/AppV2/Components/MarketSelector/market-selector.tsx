@@ -6,26 +6,31 @@ import { CaptionText, Tag, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { observer } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
 const MarketSelector = observer(() => {
     const [isOpen, setIsOpen] = useState(false);
-    const { default_symbol } = useActiveSymbols({});
+    const { default_symbol, activeSymbols } = useActiveSymbols({});
+    const { symbol: storeSymbol } = useTraderStore();
+    const currentSymbol = activeSymbols.find(symbol => symbol.symbol === storeSymbol);
 
     return (
         <React.Fragment>
             <div className='market-selector--container' onClick={() => setIsOpen(!isOpen)}>
                 <div className='market-selector'>
-                    <SymbolIconsMapper symbol={default_symbol} />
+                    <SymbolIconsMapper symbol={storeSymbol ?? default_symbol} />
                     <div className='market-selector-info'>
                         <div className='market-selector-info__label'>
-                            <Text bold>Netherlands 25</Text>
-                            <Tag
-                                label={<Localize i18n_default_text='CLOSED' />}
-                                color='error'
-                                variant='fill'
-                                showIcon={false}
-                                size='sm'
-                            />
+                            <Text bold>{currentSymbol?.display_name}</Text>
+                            {!currentSymbol?.exchange_is_open && (
+                                <Tag
+                                    label={<Localize i18n_default_text='CLOSED' />}
+                                    color='error'
+                                    variant='fill'
+                                    showIcon={false}
+                                    size='sm'
+                                />
+                            )}
                             <LabelPairedChevronDownMdRegularIcon />
                         </div>
                         <CaptionText className='market-selector-info__price'>1234</CaptionText>

@@ -7,7 +7,6 @@ import { ActiveSymbols } from '@deriv/api-types';
 import clsx from 'clsx';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { onChangeSymbolAsync } from 'Stores/Modules/Trading/Actions/symbol';
 
 type TMarketCategoryItem = {
     item: ActiveSymbols[0];
@@ -18,7 +17,7 @@ type TMarketCategoryItem = {
 
 const MarketCategoryItem = observer(({ item, selectedSymbol, setSelectedSymbol, setIsOpen }: TMarketCategoryItem) => {
     const [isFavorite, setIsFavorite] = useState(false);
-    const { favoriteSymbols, setFavoriteSymbols, removeFavoriteSymbol } = useTraderStore();
+    const { favoriteSymbols, setFavoriteSymbols, removeFavoriteSymbol, onChange: onSymbolChange } = useTraderStore();
     const { addSnackbar } = useSnackbar();
 
     useEffect(() => {
@@ -28,7 +27,7 @@ const MarketCategoryItem = observer(({ item, selectedSymbol, setSelectedSymbol, 
     const handleSelect = async (e: React.MouseEvent<HTMLSpanElement>) => {
         const symbol = (e.target as HTMLSpanElement).getAttribute('data-symbol');
         setSelectedSymbol(symbol ?? '');
-        await onChangeSymbolAsync(symbol ?? '');
+        await onSymbolChange({ target: { name: 'symbol', value: symbol } });
         setIsOpen(false);
     };
 

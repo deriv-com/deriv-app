@@ -6,7 +6,6 @@ const Trade = () => {
     return (
         <BottomNav>
             <MarketSelector />
-            {/* <div>yo</div> */}
         </BottomNav>
     );
 };

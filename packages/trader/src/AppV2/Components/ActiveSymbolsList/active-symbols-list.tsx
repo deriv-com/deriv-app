@@ -5,6 +5,7 @@ import SymbolsSearchField from '../SymbolsSearchField';
 import MarketCategories from '../MarketCategories';
 import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
 import SymbolsSearchResult from '../SymbolsSearchResult';
+import { useTraderStore } from 'Stores/useTraderStores';
 
 type TActiveSymbolsList = {
     isOpen: boolean;
@@ -17,10 +18,11 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
     const [isSearching, setIsSearching] = useState(false);
     const [selectedSymbol, setSelectedSymbol] = useState(default_symbol);
     const [searchValue, setSearchValue] = useState('');
+    const { symbol } = useTraderStore();
 
     useEffect(() => {
-        setSelectedSymbol(default_symbol);
-    }, [default_symbol]);
+        setSelectedSymbol(symbol ?? default_symbol);
+    }, [symbol, default_symbol]);
 
     return (
         <React.Fragment>

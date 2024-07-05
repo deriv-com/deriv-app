@@ -12,7 +12,7 @@ type TUseActiveSymbols = {
 //TODO: contract_type and barrier_category need to come from trade-store after calling contracts_for
 const useActiveSymbols = ({ contract_type = [], barrier_category = [] }: TUseActiveSymbols) => {
     const [activeSymbols, setActiveSymbols] = useState<ActiveSymbols | []>([]);
-    const { client } = useStore();
+    const { client, modules } = useStore();
     const { is_logged_in } = client;
 
     const trader = useTraderStore();
@@ -44,6 +44,7 @@ const useActiveSymbols = ({ contract_type = [], barrier_category = [] }: TUseAct
         } else {
             setActiveSymbols(active_symbols);
             default_symbol_ref.current = (await pickDefaultSymbol(active_symbols)) ?? '';
+            modules.trade.onChange({ target: { name: 'symbol', value: default_symbol_ref.current } });
         }
     }, [is_logged_in, trader, contract_type, barrier_category]);
 

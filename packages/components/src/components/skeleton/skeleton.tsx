@@ -25,12 +25,13 @@ const Skeleton = ({
 }: TSkeletonProps) => {
     if (VARIANT.PARAGRAPH && rows) {
         return (
-            <div className='skeleton-paragraph' style={{ gap: gap ?? 8 }}>
+            <div className='skeleton-paragraph' data-testid='dt_skeleton_paragraph' style={{ gap: gap ?? 8 }}>
                 {Array.from(new Array(rows)).map((_, idx) => {
                     return (
                         <div
                             key={idx}
                             className={clsx(className, 'skeleton', animated && 'animated')}
+                            data-testid='dt_skeleton'
                             style={{
                                 width: idx === rows - 1 ? 96 : width,
                                 height,
@@ -44,6 +45,7 @@ const Skeleton = ({
     return (
         <div
             className={clsx(className, 'skeleton', animated && 'animated', variant)}
+            data-testid='dt_skeleton'
             style={{ width, height, ...css_properties }}
         />
     );

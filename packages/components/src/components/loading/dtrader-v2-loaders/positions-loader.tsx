@@ -10,7 +10,7 @@ const PositionsLoader = ({ initial_app_loading, is_closed_tab }: TPositionsLoade
     return (
         <div className='loading-dtrader-v2__positions' data-testid='dt_positions_loader'>
             {initial_app_loading && (
-                <div className='skeleton-box__tabs'>
+                <div className='skeleton-box__tabs' data-testid='dt_tabs_skeleton'>
                     {Array.from(new Array(2)).map((_, idx) => {
                         return <Skeleton key={idx} width={56} height={22} />;
                     })}

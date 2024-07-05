@@ -6,7 +6,7 @@ type THeaderLoaderProps = {
 };
 
 const HeaderLoader = ({ show_notifications_skeleton }: THeaderLoaderProps) => (
-    <div className='loading-dtrader-v2__header'>
+    <div className='loading-dtrader-v2__header' data-testid='dt_header_loader'>
         <Skeleton width={144} height={36} />
         {show_notifications_skeleton && <Skeleton variant={VARIANT.ICON} />}
     </div>

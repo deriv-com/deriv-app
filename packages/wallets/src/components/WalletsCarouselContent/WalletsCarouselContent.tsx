@@ -271,7 +271,6 @@ const WalletsCarouselContent: React.FC<TProps> = ({ accountsActiveTabIndex }) =>
                                 isCarouselContent
                                 isDemo={account.is_virtual}
                                 key={`wallet-card-${account.loginid}`}
-                                landingCompanyName={account.landing_company_name}
                                 onClick={() => handleCardClick(account, index)}
                             />
                         ))}

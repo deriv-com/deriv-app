@@ -56,6 +56,22 @@ describe('<WalletCashierHeader/>', () => {
         expect(balanceElement).toBeInTheDocument();
     });
 
+    it('should display default content with badge for demo', () => {
+        (useActiveWalletAccount as jest.Mock).mockReturnValue({
+            data: {
+                currency: 'USD',
+                is_virtual: true,
+                loginid: 'CR1',
+            },
+        });
+
+        render(<WalletCashierHeader hideWalletDetails={false} />, { wrapper });
+
+        expect(screen.getByText('USD Wallet')).toBeInTheDocument();
+        expect(screen.getByText('10.00 USD')).toBeInTheDocument();
+        expect(screen.getByText('Demo')).toBeInTheDocument();
+    });
+
     it('should subscribe to the balance call when the header mounts', () => {
         const mockSubscribe = jest.fn();
 

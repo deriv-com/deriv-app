@@ -70,12 +70,11 @@ describe('AccountsList', () => {
             isMobile: true,
             isTablet: false,
         });
+
         render(<AccountsList accountsActiveTabIndex={0} balance={mockBalanceData} onTabClickHandler={jest.fn()} />, {
             wrapper,
         });
-        expect(screen.getByTestId('dt_tabs')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_tab_list')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_tab_panels')).toBeInTheDocument();
+
         expect(screen.getByText('CFDs')).toBeInTheDocument();
         expect(screen.getByText('Options')).toBeInTheDocument();
         expect(screen.getByText('Compare accounts')).toBeInTheDocument();
@@ -87,10 +86,11 @@ describe('AccountsList', () => {
             isMobile: true,
             isTablet: false,
         });
+
         render(<AccountsList accountsActiveTabIndex={0} balance={mockBalanceData} onTabClickHandler={jest.fn()} />, {
             wrapper,
         });
-        expect(screen.getByTestId('dt_tab_panels')).toBeInTheDocument();
+
         expect(screen.getByText('CFDs')).toBeInTheDocument();
         expect(screen.getAllByText('Options')[0]).toBeInTheDocument();
 

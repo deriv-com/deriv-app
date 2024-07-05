@@ -7,9 +7,13 @@ import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import TutorialsTabDesktop from '../tutorials-tab-desktop';
 
-jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
-jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
+
+let mockFunction: boolean | jest.Mock;
+jest.mock('lodash.debounce', () => (fn: jest.Mock) => {
+    if (!mockFunction) mockFunction = fn;
+    return mockFunction;
+});
 
 const userGuideContent = [
     {

@@ -1,16 +1,13 @@
 import React, { FC, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Tab, Tabs } from '@deriv-com/ui';
 import { CFDPlatformsList } from '../../features';
 import useDevice from '../../hooks/useDevice';
 import { TSubscribedBalance } from '../../types';
 import { OptionsAndMultipliersListing } from '../OptionsAndMultipliersListing';
-import {
-    WalletsPrimaryTabList,
-    WalletsPrimaryTabPanel,
-    WalletsPrimaryTabPanels,
-    WalletsPrimaryTabs,
-} from '../WalletsPrimaryTabs';
 import './AccountsList.scss';
+
+const tabs = ['CFDs', 'Options'];
 
 type TProps = {
     accountsActiveTabIndex?: number;
@@ -26,21 +23,19 @@ const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, balance, onTabClickH
 
     if (isMobile) {
         return (
-            <WalletsPrimaryTabs
-                className='wallets-accounts-list'
-                initialActiveTabIndex={accountsActiveTabIndex}
-                onChangeTabHandler={onChangeTabHandler}
+            <Tabs
+                activeTab={tabs[accountsActiveTabIndex]}
+                className='wallets-accounts-list__tabs'
+                onChange={onChangeTabHandler}
+                wrapperClassName='wallets-accounts-list'
             >
-                <WalletsPrimaryTabList list={[t('CFDs'), t('Options')]} />
-                <WalletsPrimaryTabPanels>
-                    <WalletsPrimaryTabPanel>
-                        <CFDPlatformsList />
-                    </WalletsPrimaryTabPanel>
-                    <WalletsPrimaryTabPanel>
-                        <OptionsAndMultipliersListing balance={balance} />
-                    </WalletsPrimaryTabPanel>
-                </WalletsPrimaryTabPanels>
-            </WalletsPrimaryTabs>
+                <Tab className='wallets-accounts-list__tab' title={t('CFDs')}>
+                    <CFDPlatformsList />
+                </Tab>
+                <Tab className='wallets-accounts-list__tab' title={t('Options')}>
+                    <OptionsAndMultipliersListing balance={balance} />
+                </Tab>
+            </Tabs>
         );
     }
 

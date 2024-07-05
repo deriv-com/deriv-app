@@ -110,7 +110,7 @@ describe('<SymbolSelect />', () => {
     });
 
     it('should input to be empty when the user clicks to type something', () => {
-        mockStore({ ui: { is_mobile: false, is_desktop: true } });
+        mockStore({ ui: { is_mobile: false } });
         render(<SymbolSelect />, {
             wrapper,
         });

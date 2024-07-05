@@ -8,7 +8,7 @@ const NoSearchResult = observer(() => {
     const { dashboard } = useDBotStore();
     const { faq_search_value } = dashboard;
     return (
-        <div className='dc-tabs__content dc-tabs__content--no-result'>
+        <div className='dc-tabs__content dc-tabs__content--no-result' data-testid='no-search-result'>
             <Icon icon='IcDbotNoSearchResult' size={80} />
             <Text className='dc-tabs__content--no-result__title' as='h1' weight='bold' line_height='xxs'>
                 <Localize i18n_default_text='No results found' />

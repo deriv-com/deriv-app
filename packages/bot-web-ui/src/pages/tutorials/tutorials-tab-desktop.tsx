@@ -32,7 +32,7 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
     }, [active_tab_tutorials]);
 
     return (
-        <div className='dc-tabs__wrapper'>
+        <div className='dc-tabs__wrapper' data-testid='tutorials-tab-desktop'>
             <div className='dc-tabs__wrapper__group'>
                 <Icon
                     className='search-icon'

@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import SearchIcon from '../search-icon';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -43,6 +44,7 @@ describe('SearchIcon', () => {
         render(<SearchIcon {...mocked_props} search='' />);
 
         const search_icon = screen.getByText('Icon');
+        userEvent.click(search_icon);
 
         expect(search_icon).toBeInTheDocument();
         expect(search_icon).toHaveAttribute('data-testid-icon', 'IcSearch');

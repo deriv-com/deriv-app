@@ -121,7 +121,12 @@ const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: T
                         scrollToTop();
                     }}
                 />
-                <Icon onClick={onHandleChangeMobile} className='search-icon' icon='IcSearch' />
+                <Icon
+                    onClick={onHandleChangeMobile}
+                    className='search-icon'
+                    icon='IcSearch'
+                    data_testid='search-icon'
+                />
             </div>
             <div
                 className={classNames({

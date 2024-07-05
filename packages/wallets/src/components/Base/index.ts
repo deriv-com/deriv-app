@@ -1,4 +1,3 @@
-export * from '../WalletsPrimaryTabs';
 export * from './ATMAmountInput';
 export * from './IconButton';
 export * from './InlineMessage';

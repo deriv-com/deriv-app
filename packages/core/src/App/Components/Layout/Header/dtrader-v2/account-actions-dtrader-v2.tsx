@@ -45,7 +45,7 @@ const AccountActionsDTraderV2 = ({
     account_type,
     balance,
     currency,
-    has_notifications_icon,
+    has_notifications_icon = true,
     is_acc_switcher_on,
     is_acc_switcher_disabled,
     is_eu,

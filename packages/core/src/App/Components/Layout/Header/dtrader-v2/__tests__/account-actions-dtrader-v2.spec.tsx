@@ -22,10 +22,7 @@ const media_query_list = {
     removeEventListener: jest.fn(),
 };
 
-jest.mock('@deriv/quill-icons', () => ({
-    ...jest.requireActual('@deriv/quill-icons'),
-    LabelPairedBellLgRegularIcon: jest.fn(() => 'LabelPairedBellLgRegularIcon'),
-}));
+jest.mock('../notifications-icon-dtrader-v2', () => jest.fn(() => 'NotificationsIconDTraderV2'));
 jest.mock('../account-info-dtrader-v2', () => jest.fn(() => 'AccountInfoDTraderV2'));
 
 window.matchMedia = jest.fn().mockImplementation(() => media_query_list);
@@ -35,14 +32,14 @@ describe('AccountActionsDTraderV2', () => {
     it('should render icon component without Badge count if notifications_count is falsy', () => {
         render(<AccountActionsDTraderV2 {...mock_props} />);
 
-        expect(screen.getByText('LabelPairedBellLgRegularIcon')).toBeInTheDocument();
+        expect(screen.getByText('NotificationsIconDTraderV2')).toBeInTheDocument();
     });
 
     it('should render icon component with Badge count if notifications_count was passed', () => {
         render(<AccountActionsDTraderV2 {...mock_props} notifications_count={2} balance={undefined} />);
 
         expect(screen.getByText('AccountInfoDTraderV2')).toBeInTheDocument();
-        expect(screen.getByText('LabelPairedBellLgRegularIcon')).toBeInTheDocument();
+        expect(screen.getByText('NotificationsIconDTraderV2')).toBeInTheDocument();
         expect(screen.getByText('2')).toBeInTheDocument();
     });
 
@@ -50,6 +47,12 @@ describe('AccountActionsDTraderV2', () => {
         render(<AccountActionsDTraderV2 {...mock_props} balance={undefined} />);
 
         expect(screen.getByText('AccountInfoDTraderV2')).toBeInTheDocument();
-        expect(screen.getByText('LabelPairedBellLgRegularIcon')).toBeInTheDocument();
+        expect(screen.getByText('NotificationsIconDTraderV2')).toBeInTheDocument();
+    });
+
+    it('should not render notifications icon if has_notifications_icon is false', () => {
+        render(<AccountActionsDTraderV2 {...mock_props} has_notifications_icon={false} />);
+
+        expect(screen.queryByText('NotificationsIconDTraderV2')).not.toBeInTheDocument();
     });
 });

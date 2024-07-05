@@ -4,9 +4,9 @@ import { useFeatureFlags } from '@deriv/hooks';
 import { useReadLocalStorage } from 'usehooks-ts';
 import { isDTraderV2, makeLazyLoader, moduleLoader, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Loading } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
 import classNames from 'classnames';
+import DTraderV2HeaderLoader from './dtrader-v2-header-loader';
 
 const HeaderFallback = () => {
     const location = useLocation();
@@ -15,7 +15,9 @@ const HeaderFallback = () => {
 
     return (
         <div className={classNames('header', { 'header-v2': isDTraderV2() })}>
-            {isDTraderV2() && !is_contract_details && <Loading.DTraderV2 is_header is_positions={is_positions} />}
+            {isDTraderV2() && !is_contract_details && (
+                <DTraderV2HeaderLoader show_notifications_skeleton={!is_positions} />
+            )}
         </div>
     );
 };

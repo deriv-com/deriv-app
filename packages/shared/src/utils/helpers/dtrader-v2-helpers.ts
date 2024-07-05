@@ -1,5 +1,5 @@
-/* Intended for keeping utils related to dtrader_v2 that are shared between various packages
- temporarily, until trader package is separated into its own repo. */
+/* TODO: remove this component after /trader package is separated into its own repo.
+It's used to keep dtrader_v2 utils that are currently shared between various packages. */
 
 export const POSITIONS_V2_TAB_NAME = {
     OPEN: 'Open',

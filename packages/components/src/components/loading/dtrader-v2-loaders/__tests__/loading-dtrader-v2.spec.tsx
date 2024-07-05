@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import LoadingDTraderV2 from '../../loading-dtrader-v2';
 
 describe('LoadingDTraderV2', () => {
-    const skeleton_testid = 'dt_skeleton';
     const tabs_skeleton_testid = 'dt_tabs_skeleton';
 
     it('should render Trade page loader by default', () => {
@@ -11,18 +10,7 @@ describe('LoadingDTraderV2', () => {
         expect(screen.getByTestId('dt_trade_loader')).toBeInTheDocument();
     });
 
-    it('should render Header loader if is_header={true} with 2 skeletons by default', () => {
-        render(<LoadingDTraderV2 is_header />);
-        expect(screen.getByTestId('dt_header_loader')).toBeInTheDocument();
-        expect(screen.getAllByTestId(skeleton_testid)).toHaveLength(2);
-    });
-
-    it('should render Header loader if is_header={true} with 1 skeleton if is_positions={true}', () => {
-        render(<LoadingDTraderV2 is_header is_positions />);
-        expect(screen.getByTestId(skeleton_testid)).toBeInTheDocument();
-    });
-
-    it('should render Positions page loader for Open tab by default if is_positions={true} and is_header={false}, without Tabs skeleton if initial_app_loading={false}', () => {
+    it('should render Positions page loader for Open tab by default if is_positions={true}, without Tabs skeleton if initial_app_loading={false}', () => {
         render(<LoadingDTraderV2 is_positions />);
         expect(screen.getByTestId('dt_positions_loader')).toBeInTheDocument();
         expect(screen.queryByTestId(tabs_skeleton_testid)).not.toBeInTheDocument();

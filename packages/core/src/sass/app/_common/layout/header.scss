@@ -454,6 +454,11 @@
             }
         }
     }
+    &__loader {
+        display: flex;
+        justify-content: space-between;
+        padding: var(--core-spacing-300) var(--semantic-spacing-general-md);
+    }
 }
 
 .contract-details-header-v2 {

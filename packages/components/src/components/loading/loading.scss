@@ -60,11 +60,6 @@
 }
 
 .loading-dtrader-v2 {
-    &__header {
-        display: flex;
-        justify-content: space-between;
-        padding: var(--core-spacing-300) var(--semantic-spacing-general-md);
-    }
     &__trade,
     &__positions,
     &__contract-details {

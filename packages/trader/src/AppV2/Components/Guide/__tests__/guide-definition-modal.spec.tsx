@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
 import { TERM } from 'AppV2/Utils/contract-description-utils';
-import DefinitionModal from '../definition-modal';
+import GuideDefinitionModal from '../guide-definition-modal';
 
 const mockProps = {
     contract_type: CONTRACT_LIST.ACCUMULATORS,
@@ -17,9 +17,9 @@ const mediaQueryList = {
 
 window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
 
-describe('DefinitionModal', () => {
+describe('GuideDefinitionModal', () => {
     it('should render a proper content, based on passed props (e.g. for "growth rate" term - a proper explanation)', () => {
-        render(<DefinitionModal {...mockProps} />);
+        render(<GuideDefinitionModal {...mockProps} />);
 
         expect(screen.getByText(TERM.GROWTH_RATE)).toBeInTheDocument();
         expect(

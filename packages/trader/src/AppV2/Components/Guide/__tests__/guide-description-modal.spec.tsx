@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { CONTRACT_LIST, AVAILABLE_CONTRACTS } from 'AppV2/Utils/trade-types-utils';
-import DescriptionModal from '../decription-modal';
+import GuideDescriptionModal from '../guide-description-modal';
 import userEvent from '@testing-library/user-event';
 
 const mockProps = {
@@ -24,7 +24,7 @@ describe('DescriptionModal', () => {
     const renderDescriptionModal = () => {
         render(
             <StoreProvider store={mockStore({})}>
-                <DescriptionModal {...mockProps} />
+                <GuideDescriptionModal {...mockProps} />
             </StoreProvider>
         );
     };

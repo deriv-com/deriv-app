@@ -16,7 +16,9 @@
     }
 
     &__wrapper {
-        padding: var(--component-actionSheet-spacing-padding-lg) var(--component-actionSheet-spacing-padding-lg) 0;
+        &--content {
+            padding: var(--component-actionSheet-spacing-padding-lg) var(--component-actionSheet-spacing-padding-lg) 0;
+        }
     }
 
     &__contract-description {

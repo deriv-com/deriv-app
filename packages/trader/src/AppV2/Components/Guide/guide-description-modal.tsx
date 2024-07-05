@@ -9,7 +9,7 @@ import VideoPlayer from 'App/Components/Elements/VideoPlayer';
 import TradeDescription from './Description/trade-description';
 import VideoPreview from './Description/video-preview';
 
-type TDescriptionModal = {
+type TGuideDescriptionModal = {
     is_open?: boolean;
     onClose: () => void;
     onChipSelect: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
@@ -17,8 +17,8 @@ type TDescriptionModal = {
     selected_contract_type: string;
 };
 
-const DescriptionModal = observer(
-    ({ is_open, onClose, onChipSelect, onTermClick, selected_contract_type }: TDescriptionModal) => {
+const GuideDescriptionModal = observer(
+    ({ is_open, onClose, onChipSelect, onTermClick, selected_contract_type }: TGuideDescriptionModal) => {
         const [is_video_player_opened, setIsVideoPlayerOpened] = React.useState(false);
         const modal_ref = React.useRef<HTMLDialogElement>(null);
 
@@ -56,7 +56,7 @@ const DescriptionModal = observer(
             <React.Fragment>
                 <ActionSheet.Root isOpen={is_open} onClose={onClose} position='left' expandable={false}>
                     <ActionSheet.Portal shouldCloseOnDrag>
-                        <ActionSheet.Content className='guide__wrapper'>
+                        <ActionSheet.Content className='guide__wrapper--content'>
                             <Heading.H4 className='guide__title'>
                                 <Localize i18n_default_text='Trade types' />
                             </Heading.H4>
@@ -113,4 +113,4 @@ const DescriptionModal = observer(
     }
 );
 
-export default DescriptionModal;
+export default GuideDescriptionModal;

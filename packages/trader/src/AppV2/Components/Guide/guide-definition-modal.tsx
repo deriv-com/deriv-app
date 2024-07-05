@@ -3,9 +3,9 @@ import { ActionSheet, Heading, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import { getTermDefinition } from 'AppV2/Utils/contract-description-utils';
 
-type TDefinitionModal = { contract_type: string; term: string; onClose: () => void };
+type TGuideDefinitionModal = { contract_type: string; term: string; onClose: () => void };
 
-const DefinitionModal = ({ contract_type, term, onClose }: TDefinitionModal) => (
+const GuideDefinitionModal = ({ contract_type, term, onClose }: TGuideDefinitionModal) => (
     <ActionSheet.Root isOpen={!!term} onClose={onClose} position='left' expandable={false}>
         <ActionSheet.Portal shouldCloseOnDrag>
             <ActionSheet.Content className='definition__wrapper'>
@@ -24,4 +24,4 @@ const DefinitionModal = ({ contract_type, term, onClose }: TDefinitionModal) => 
     </ActionSheet.Root>
 );
 
-export default DefinitionModal;
+export default GuideDefinitionModal;

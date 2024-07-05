@@ -3,8 +3,8 @@ import { Button } from '@deriv-com/quill-ui';
 import { LabelPairedPresentationScreenSmRegularIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
-import DefinitionModal from './definition-modal';
-import DescriptionModal from './decription-modal';
+import GuideDefinitionModal from './guide-definition-modal';
+import GuideDescriptionModal from './guide-description-modal';
 
 type TGuide = {
     has_label?: boolean;
@@ -28,14 +28,14 @@ const Guide = ({ has_label = false }: TGuide) => {
                 onClick={() => setIsDescriptionOpened(true)}
                 variant={has_label ? 'secondary' : 'tertiary'}
             />
-            <DescriptionModal
+            <GuideDescriptionModal
                 is_open={is_description_opened}
                 onClose={() => setIsDescriptionOpened(false)}
                 onChipSelect={onChipSelect}
                 onTermClick={setSelectedTerm}
                 selected_contract_type={selected_contract_type}
             />
-            <DefinitionModal
+            <GuideDefinitionModal
                 contract_type={selected_contract_type}
                 term={selected_term ?? ''}
                 onClose={() => setSelectedTerm('')}

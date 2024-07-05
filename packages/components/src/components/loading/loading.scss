@@ -77,6 +77,7 @@
         padding: 0 var(--core-spacing-400);
         gap: var(--semantic-spacing-general-sm);
         position: relative;
+        overflow-x: hidden;
 
         .skeleton-box,
         .skeleton-box__trade-types,

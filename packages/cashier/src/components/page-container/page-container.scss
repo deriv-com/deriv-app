@@ -48,11 +48,11 @@
         gap: 2.4rem;
 
         @include mobile {
-            padding: 1.6rem;
+            padding: 1.6rem 0;
         }
 
         @include tablet-screen {
-            padding: 2.4rem;
+            padding: 2.4rem 0;
         }
     }
 }

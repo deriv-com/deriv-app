@@ -146,7 +146,7 @@ const PaymentAgentContainer = observer(({ is_deposit }: TPaymentAgentContainer) 
             {is_search_loading ? (
                 <Loading is_fullscreen={false} className='payment-agent-list__search-loader' />
             ) : (
-                <React.Fragment>
+                <div>
                     {has_payment_agent_search_warning ? (
                         <PaymentAgentSearchWarning />
                     ) : (
@@ -161,7 +161,7 @@ const PaymentAgentContainer = observer(({ is_deposit }: TPaymentAgentContainer) 
                             );
                         })
                     )}
-                </React.Fragment>
+                </div>
             )}
         </React.Fragment>
     );

@@ -12,7 +12,7 @@
             padding: 0 0 3.2rem;
 
             @include mobile-or-tablet-screen {
-                padding: 1.6rem;
+                padding: 2.4rem 0 0;
             }
         }
     }
@@ -50,6 +50,7 @@
         }
         &--is-mobile {
             width: 100vw;
+            padding: 0 1.6rem;
 
             @include tablet-screen {
                 max-width: 60rem;

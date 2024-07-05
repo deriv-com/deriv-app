@@ -14,8 +14,8 @@
         }
     }
     &.icon {
-        width: 32px;
-        height: 32px;
+        width: var(--size-generic-md);
+        height: var(--size-generic-md);
     }
     &-paragraph {
         display: flex;

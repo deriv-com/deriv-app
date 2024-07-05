@@ -46,7 +46,7 @@ const ContractCardsSections = ({ isLoadingMore, hasBottomMargin, positions }: TC
                 ))}
             </div>
             {isLoadingMore && (
-                <div className='bottom-loader'>
+                <div className='load-more-spinner' data-testid='dt_load_more_spinner'>
                     <StandaloneLoaderBoldIcon iconSize='md' />
                 </div>
             )}

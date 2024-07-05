@@ -72,7 +72,7 @@ describe('ContractCardsSections', () => {
     it('should render Loading when isLoading true', () => {
         render(<ContractCardsSections {...mockProps} isLoadingMore />);
 
-        const loader = screen.getByTestId('dt_initial_loader');
+        const loader = screen.getByTestId('dt_load_more_spinner');
         expect(loader).toBeInTheDocument();
     });
 });

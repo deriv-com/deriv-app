@@ -63,7 +63,7 @@
     &__header {
         display: flex;
         justify-content: space-between;
-        padding: 6px 16px;
+        padding: var(--core-spacing-300) var(--semantic-spacing-general-md);
     }
     &__trade,
     &__positions,

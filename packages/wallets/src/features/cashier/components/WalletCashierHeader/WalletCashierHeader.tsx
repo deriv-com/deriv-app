@@ -71,6 +71,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const location = useLocation();
 
     const tabs = activeWallet?.is_virtual ? virtualAccountTabs : realAccountTabs;
+    const isDemo = activeWallet?.is_virtual;
 
     useEffect(() => {
         if (isMobile && activeTabRef.current) {
@@ -91,7 +92,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
         <WalletGradientBackground
             currency={activeWallet?.currency}
             device={isMobile ? 'mobile' : 'desktop'}
-            isDemo={activeWallet?.is_virtual}
+            isDemo={isDemo}
             theme='light'
             type='header'
         >
@@ -103,23 +104,15 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                                 'wallets-cashier-header__details--hide-details': hideWalletDetails,
                             })}
                         >
-                            <WalletText
-                                color={activeWallet?.is_virtual ? 'system-dark-2-general-text' : 'general'}
-                                size='md'
-                            >
+                            <WalletText color={isDemo ? 'system-dark-2-general-text' : 'general'} size='md'>
                                 {activeWallet?.currency} Wallet
                             </WalletText>
-                            {activeWallet?.landing_company_name && (
-                                <WalletListCardBadge
-                                    isDemo={activeWallet?.is_virtual}
-                                    label={activeWallet?.landing_company_name}
-                                />
-                            )}
+                            {isDemo && <WalletListCardBadge isDemo={isDemo} label='virtual' />}
                         </div>
                         {isLoading ? (
                             <div className='wallets-skeleton wallets-cashier-header__loader' />
                         ) : (
-                            <WalletText color={activeWallet?.is_virtual ? 'white' : 'general'} size='xl' weight='bold'>
+                            <WalletText color={isDemo ? 'white' : 'general'} size='xl' weight='bold'>
                                 {displayMoney?.(balanceData?.balance ?? 0, activeWallet?.currency || '', {
                                     fractional_digits: activeWallet?.currency_config?.fractional_digits,
                                 })}
@@ -145,7 +138,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                         )}
                         <LegacyClose2pxIcon
                             className={classNames('wallets-cashier-header__close-icon', {
-                                'wallets-cashier-header__close-icon--white': activeWallet?.is_virtual,
+                                'wallets-cashier-header__close-icon--white': isDemo,
                             })}
                             iconSize='xs'
                             onClick={() => history.push('/')}
@@ -170,17 +163,13 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                                 <div
                                     className={classNames('wallets-cashier-header__tab-icon', {
                                         'wallets-cashier-header__tab-icon--system-dark-2-general-text':
-                                            activeWallet?.is_virtual && !isActiveTab,
+                                            isDemo && !isActiveTab,
                                     })}
                                 >
                                     {tab.icon}
                                 </div>
                                 <WalletText
-                                    color={
-                                        activeWallet?.is_virtual && !isActiveTab
-                                            ? 'system-dark-2-general-text'
-                                            : 'general'
-                                    }
+                                    color={isDemo && !isActiveTab ? 'system-dark-2-general-text' : 'general'}
                                     size='sm'
                                     weight={isActiveTab ? 'bold' : 'normal'}
                                 >

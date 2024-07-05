@@ -27,6 +27,7 @@ describe('InfoPanel', () => {
     });
 
     it('should render the InfoPanel component', () => {
+        mock_store.ui.is_desktop = true;
         const { container } = render(<InfoPanel />, {
             wrapper,
         });
@@ -51,11 +52,18 @@ describe('InfoPanel', () => {
     });
 
     it('should render the tutorial tab and FAQ tab', () => {
-        mock_store.ui.is_mobile = true;
         render(<InfoPanel />, { wrapper });
 
         const faq_tab = screen.getByText('What is Deriv Bot?');
         userEvent.click(faq_tab);
         expect(mock_DBot_store?.dashboard.setActiveTabTutorial(1));
+    });
+
+    it('should not render to tutorial tab and FAQ tab if no link is present', () => {
+        render(<InfoPanel />, { wrapper });
+
+        const text = screen.getByText('Check out these guides and FAQs to learn more about building your bot:');
+        userEvent.click(text);
+        expect(mock_DBot_store?.dashboard.setActiveTab(DBOT_TABS.TUTORIAL)).toBeUndefined();
     });
 });

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useCopyToClipboard } from 'usehooks-ts';
-import { Tooltip, useDevice } from '@deriv-com/ui';
+import { Tooltip } from '@deriv-com/ui';
 import Copy from '../../assets/images/copy.svg';
 import CheckmarkCircle from '../../assets/images/ic-checkmark-circle.svg';
 import styles from './Clipboard.module.scss';
@@ -13,7 +13,6 @@ type TProps = {
 const Clipboard: React.FC<TProps> = ({ popoverAlignment, textCopy }) => {
     const [, copy] = useCopyToClipboard();
     const [isCopied, setIsCopied] = useState(false);
-    const { isMobile } = useDevice();
     let timeoutClipboard: ReturnType<typeof setTimeout>;
 
     const onClick = () => {
@@ -30,11 +29,7 @@ const Clipboard: React.FC<TProps> = ({ popoverAlignment, textCopy }) => {
     }, []);
 
     return (
-        <Tooltip
-            message={isCopied ? 'Copied!' : 'Copy'}
-            position={popoverAlignment}
-            triggerAction={isMobile ? 'click' : 'hover'}
-        >
+        <Tooltip as='div' tooltipContent={isCopied ? 'Copied!' : 'Copy'} tooltipPosition={popoverAlignment}>
             <button className={styles.button} onClick={onClick}>
                 {isCopied ? <CheckmarkCircle /> : <Copy />}
             </button>

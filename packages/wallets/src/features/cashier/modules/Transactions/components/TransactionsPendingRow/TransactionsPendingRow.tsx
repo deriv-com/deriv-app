@@ -1,10 +1,10 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
-import { useHover } from 'usehooks-ts';
 import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api-v2';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
-import { Tooltip, WalletButton, WalletText } from '../../../../../../components/Base';
+import { Tooltip } from '@deriv-com/ui';
+import { WalletButton, WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
 import useDevice from '../../../../../../hooks/useDevice';
@@ -22,9 +22,6 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
     const { isMobile } = useDevice();
     const displayCode = useMemo(() => data?.currency_config?.display_code || 'USD', [data]);
     const modal = useModal();
-
-    const statusRef = useRef(null);
-    const isStatusHovered = useHover(statusRef);
 
     const { mutate } = useCancelCryptoTransaction();
 
@@ -168,12 +165,16 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     className='wallets-transactions-pending-row__transaction-status-button'
                     data-testid='dt_transaction_status_button'
                     onClick={onMobileStatusClick}
-                    ref={statusRef}
                 >
                     <Tooltip
-                        alignment='left'
-                        isVisible={!isMobile && isStatusHovered}
-                        message={transaction.description}
+                        as='div'
+                        tooltipContainerClassName={
+                            isMobile
+                                ? 'wallets-transactions-pending-row__tooltip--hidden'
+                                : 'wallets-transactions-pending-row__tooltip'
+                        }
+                        tooltipContent={transaction.description}
+                        tooltipPosition='left'
                     >
                         <div
                             className={classNames(

@@ -279,7 +279,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     stake_shadow_block.setFieldValue(1, 'NUM');
                     stake_shadow_block.outputConnection.connect(stake_input.connection);
                     stake_shadow_block.initSvg();
-                    stake_shadow_block.render();
+                    stake_shadow_block.renderEfficiently();
 
                     const take_profit_block = this.workspace.newBlock('accumulator_take_profit');
                     const take_profit_input = take_profit_block.getInput('AMOUNT');
@@ -290,13 +290,13 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     take_profit_block.setDisabled(true);
                     take_profit_shadow_block.outputConnection.connect(take_profit_input.connection);
                     take_profit_shadow_block.initSvg();
-                    take_profit_shadow_block.render();
+                    take_profit_shadow_block.renderEfficiently();
 
                     accumulator_block
                         .getLastConnectionInStatement('ACCUMULATOR_PARAMS')
                         .connect(take_profit_block.previousConnection);
                     take_profit_block.initSvg();
-                    take_profit_block.render();
+                    take_profit_block.renderEfficiently();
 
                     this.dispose();
                 });

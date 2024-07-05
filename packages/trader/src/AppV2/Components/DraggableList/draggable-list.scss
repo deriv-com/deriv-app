@@ -5,23 +5,25 @@
         align-items: center;
         padding: var(--core-spacing-200) var(--core-spacing-800);
         margin-bottom: var(--core-spacing-500);
-        border: var(--core-spacing-75) solid rgba(246, 247, 248, 1);
-        background-color: rgba(246, 247, 248, 1);
+        border: var(--core-spacing-75) solid var(--core-color-solid-slate-75);
+        background-color: var(--core-color-solid-slate-75);
         height: var(--core-spacing-2400);
         border-radius: var(--core-spacing-500);
 
         &__title {
             font-size: var(--core-fontSize-75);
         }
+
+        &__left {
+            display: flex;
+            align-items: center;
+        }
     }
 
     &-category {
         margin-bottom: var(--core-spacing-1000);
 
-        h2 {
-            font-weight: bold;
-            color: rgba(0, 0, 0, 0.72);
-            font-size: var(--core-fontSize-75);
+        &-title {
             margin-bottom: var(--core-spacing-500);
         }
 

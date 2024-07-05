@@ -83,7 +83,6 @@ const LocalComponent = observer(() => {
                     )}
                     size='sm'
                     status='warning'
-                    title=''
                     className='load-strategy__section_message'
                 />
 

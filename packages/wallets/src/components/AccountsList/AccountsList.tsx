@@ -24,7 +24,7 @@ const AccountsList: FC<TProps> = ({ accountsActiveTabIndex, balance, onTabClickH
     if (isMobile) {
         return (
             <Tabs
-                activeTab={tabs[accountsActiveTabIndex]}
+                activeTab={tabs[accountsActiveTabIndex ?? 0]}
                 className='wallets-accounts-list__tabs'
                 onChange={onChangeTabHandler}
                 wrapperClassName='wallets-accounts-list'

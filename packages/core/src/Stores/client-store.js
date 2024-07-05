@@ -410,6 +410,7 @@ export default class ClientStore extends BaseStore {
             unsubscribeFromExchangeRate: action.bound,
             unsubscribeFromAllExchangeRates: action.bound,
             setExchangeRates: action.bound,
+            setTradersHubLoading: action.bound,
         });
 
         reaction(
@@ -1645,6 +1646,10 @@ export default class ClientStore extends BaseStore {
         this.landing_companies = response.landing_company;
         this.is_landing_company_loaded = true;
         this.setStandpoint(this.landing_companies);
+    }
+
+    setTradersHubLoading(state) {
+        this.is_landing_company_loaded = state;
     }
 
     setStandpoint(landing_companies) {

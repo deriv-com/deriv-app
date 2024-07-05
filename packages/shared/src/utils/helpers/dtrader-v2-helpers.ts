@@ -16,4 +16,4 @@ export const getPositionsV2TabIndexFromURL = () => {
 };
 
 export const isDTraderV2 = () =>
-    JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2 && window.innerWidth < 600;
+    !!JSON.parse(localStorage.getItem('FeatureFlagsStore') ?? '{}')?.data?.dtrader_v2 && window.innerWidth < 600;

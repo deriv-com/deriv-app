@@ -28,6 +28,10 @@ describe('Positions', () => {
         );
     };
 
+    beforeAll(() => {
+        Element.prototype.scrollTo = jest.fn();
+    });
+
     afterEach(() => {
         jest.clearAllMocks();
     });

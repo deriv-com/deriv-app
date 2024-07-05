@@ -5,7 +5,7 @@ import { observer, useStore } from '@deriv/stores';
 import { LegacyWonIcon } from '@deriv/quill-icons';
 import { useHistory } from 'react-router';
 import { routes } from '@deriv/shared';
-import { Popover, Text } from '@deriv/components';
+import { OpenLiveChatLink, Popover, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { usePhoneNumberVerificationSetTimer, useVerifyEmail } from '@deriv/hooks';
 import { useDevice } from '@deriv-com/ui';
@@ -51,14 +51,8 @@ export const VerifyButton = observer(() => {
                         message={
                             <Text size='xxs'>
                                 <Localize
-                                    i18n_default_text='To change your verified phone number, contact us via <0>live chat</0>.'
-                                    components={[
-                                        <a
-                                            key={0}
-                                            className='link link--orange'
-                                            onClick={() => window.LC_API.open_chat_window()}
-                                        />,
-                                    ]}
+                                    i18n_default_text='To change your verified phone number, contact us via <0></0>.'
+                                    components={[<OpenLiveChatLink text_size='xxs' key={0} />]}
                                 />
                             </Text>
                         }

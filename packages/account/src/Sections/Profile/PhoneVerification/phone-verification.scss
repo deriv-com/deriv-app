@@ -67,7 +67,7 @@
             }
 
             &__livechat {
-                color: var(--core-color-solid-red-900, #c40000);
+                color: var(--core-color-solid-red-900, $color-red-12);
                 font-weight: bold;
                 text-decoration: underline;
                 &:hover {

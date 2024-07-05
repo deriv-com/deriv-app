@@ -5,6 +5,7 @@ import { Loading } from '@deriv/components';
 import { Text } from '@deriv-com/quill-ui';
 import { useDevice } from '@deriv-com/ui';
 import { getUrlBase } from '@deriv/shared';
+import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
 
 type TVideoFragment = {
     contract_type: string;
@@ -25,7 +26,8 @@ const VideoFragment = ({ contract_type }: TVideoFragment) => {
     return (
         <div
             className={classNames('video-fragment__wrapper', {
-                'video-fragment__wrapper--accumulator': contract_type.toLowerCase() === 'accumulators',
+                'video-fragment__wrapper--accumulator':
+                    contract_type.toLowerCase() === CONTRACT_LIST.ACCUMULATORS.toLowerCase(),
             })}
         >
             {is_loading && <Loading is_fullscreen={false} />}

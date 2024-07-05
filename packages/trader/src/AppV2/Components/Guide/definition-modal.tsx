@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActionSheet, Heading, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
-import { getTermDefinition } from 'AppV2/Utils/trade-types-utils';
+import { getTermDefinition } from 'AppV2/Utils/contract-description-utils';
 
 type TDefinitionModal = { contract_type: string; term: string; onClose: () => void };
 

@@ -2,7 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Loadable from 'react-loadable';
-import { CONTRACT_LIST, TERM, AVAILABLE_CONTRACTS } from 'AppV2/Utils/trade-types-utils';
+import { CONTRACT_LIST, AVAILABLE_CONTRACTS } from 'AppV2/Utils/trade-types-utils';
+import { TERM } from 'AppV2/Utils/contract-description-utils';
 import Guide from '../guide';
 import { StoreProvider, mockStore } from '@deriv/stores';
 

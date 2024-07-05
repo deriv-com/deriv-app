@@ -1,6 +1,6 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { TERM, getContractDescription } from 'AppV2/Utils/trade-types-utils';
+import { TERM, getContractDescription } from 'AppV2/Utils/contract-description-utils';
 
 const TurbosTradeDescription = ({ onTermClick }: { onTermClick: (term: string) => void }) => {
     const content = [

@@ -39,11 +39,8 @@ const VideoPreview = ({ contract_type, toggleVideoPlayer, video_src }: TVideoPre
             </div>
             <div className='guide-video__description'>
                 <CaptionText bold color='quill-typography__color--default'>
-                    <Localize
-                        i18n_default_text='How to trade {{contract_type}}?'
-                        values={{ contract_type }}
-                        shouldUnescape
-                    />
+                    <Localize i18n_default_text='How to trade ' />
+                    {contract_type}?
                 </CaptionText>
                 <CaptionText>
                     <Localize i18n_default_text='Watch this video to learn about this trade type.' />

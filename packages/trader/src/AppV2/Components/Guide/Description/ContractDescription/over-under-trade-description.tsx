@@ -1,6 +1,7 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { CONTRACT_LIST, getContractDescription } from 'AppV2/Utils/trade-types-utils';
+import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
+import { getContractDescription } from 'AppV2/Utils/contract-description-utils';
 
 const OverUnderTradeDescription = () => {
     const [over, under] = CONTRACT_LIST.OVER_UNDER.split('/');

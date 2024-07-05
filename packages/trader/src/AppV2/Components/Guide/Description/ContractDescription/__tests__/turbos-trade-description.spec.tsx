@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { TERM } from 'AppV2/Utils/trade-types-utils';
+import { TERM } from 'AppV2/Utils/contract-description-utils';
 import TurbosTradeDescription from '../turbos-trade-description';
 
 describe('TurbosTradeDescription', () => {

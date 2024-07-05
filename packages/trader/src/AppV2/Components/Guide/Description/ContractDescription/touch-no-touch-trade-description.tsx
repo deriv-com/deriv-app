@@ -1,6 +1,6 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { getContractDescription } from 'AppV2/Utils/trade-types-utils';
+import { getContractDescription } from 'AppV2/Utils/contract-description-utils';
 
 const TouchNoTouchTradeDescription = () => {
     const content = [

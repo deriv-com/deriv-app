@@ -3,11 +3,11 @@ import { screen, render } from '@testing-library/react';
 import {
     getTermDefinition,
     getContractDescription,
-    CONTRACT_LIST,
     TERM,
     getDescriptionVideoIds,
     DESCRIPTION_VIDEO_IDS,
-} from '../trade-types-utils';
+} from '../contract-description-utils';
+import { CONTRACT_LIST } from '../trade-types-utils';
 import { Localize } from '@deriv/translations';
 
 describe('getTermDefinition', () => {

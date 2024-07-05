@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { CONTRACT_LIST, TERM } from 'AppV2/Utils/trade-types-utils';
+import { CONTRACT_LIST } from 'AppV2/Utils/trade-types-utils';
+import { TERM } from 'AppV2/Utils/contract-description-utils';
 import DefinitionModal from '../definition-modal';
 
 const mockProps = {

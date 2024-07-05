@@ -1,4 +1,4 @@
-.wallets-compare-accounts-title-icon {
+.wallets-compare-accounts-title {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -12,12 +12,11 @@
     }
 
     &__tooltip {
-        transform: translateX(-80%);
+        width: 19rem;
+        z-index: 9999;
 
-        .wallets-tooltip__arrow {
-            &--bottom {
-                margin-left: 60%;
-            }
+        @include mobile {
+            width: 16rem;
         }
     }
 }

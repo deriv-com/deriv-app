@@ -3,19 +3,19 @@ import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautif
 import { Text } from '@deriv-com/quill-ui';
 import DraggableListItem from './draggable-list-item';
 
-interface DraggableListItem {
+export type DraggableListItem = {
     id: string;
     title: string;
     icon?: React.ReactNode;
 }
 
-interface DraggableListCategory {
+export type DraggableListCategory = {
     id: string;
     title?: string;
     items: DraggableListItem[];
 }
 
-interface DraggableListProps {
+export type DraggableListProps = {
     categories: DraggableListCategory[];
     onRightIconClick: (item: DraggableListItem) => void;
 }

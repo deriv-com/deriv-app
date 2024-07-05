@@ -1,7 +1,7 @@
 import React from 'react';
 import { StandaloneGripDotsVerticalBoldIcon, StandaloneCircleMinusFillIcon } from '@deriv/quill-icons';
 
-interface DraggableListItemProps {
+type DraggableListItemProps = {
     title: string;
     leftIcon?: React.ReactNode;
     rightIcon?: React.ReactNode;

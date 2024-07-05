@@ -2716,6 +2716,20 @@ export default class ClientStore extends BaseStore {
                 if (data?.passkeys_list?.length === 0) {
                     this.setShouldShowEffortlessLoginModal(true);
                 } else {
+                    const domain = /deriv\.(com|dev)/.test(window.location.hostname)
+                        ? deriv_urls.DERIV_HOST_NAME
+                        : window.location.hostname;
+
+                    const expirationDate = new Date();
+                    expirationDate.setFullYear(expirationDate.getFullYear() + 1); // Set to expire in 1 year
+
+                    Cookies.set('passkeys_available', 'true', {
+                        expires: expirationDate,
+                        path: '/',
+                        domain,
+                        secure: true,
+                        sameSite: 'None',
+                    });
                     this.setShouldShowEffortlessLoginModal(false);
                     localStorage.setItem('show_effortless_login_modal', JSON.stringify(false));
                 }

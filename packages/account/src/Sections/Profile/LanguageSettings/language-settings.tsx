@@ -4,7 +4,6 @@ import { observer, useStore } from '@deriv/stores';
 import { useTranslations, getAllowedLanguages } from '@deriv-com/translations';
 import FormSubHeader from '../../../Components/form-sub-header';
 import LanguageRadioButton from '../../../Components/language-settings';
-import { useEffect } from 'react';
 import { useDevice } from '@deriv-com/ui';
 
 const LanguageSettings = observer(() => {

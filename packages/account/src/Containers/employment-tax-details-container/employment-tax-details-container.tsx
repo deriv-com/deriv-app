@@ -149,7 +149,7 @@ const EmploymentTaxDetailsContainer = ({
                 label={
                     should_display_long_message
                         ? localize(
-                              'I hereby confirm that the tax information I provided is true and complete. I will also inform {{legal_entity_name}} about any changes to this information.',
+                              'I hereby confirm that the tax information provided is true and complete. I will also inform {{legal_entity_name}} about any changes to this information.',
                               {
                                   legal_entity_name: getLegalEntityName('maltainvest'),
                               }

@@ -519,18 +519,19 @@ const PlaceOfBirthField = ({ handleChange, setFieldValue, disabled, residence_li
     );
 };
 
-const AccountOpeningReasonField = ({ no_header, required, account_opening_reason_list, setFieldValue, disabled }) => {
+const AccountOpeningReasonField = ({ required, account_opening_reason_list, setFieldValue, disabled }) => {
     const { isDesktop } = useDevice();
     return (
         <React.Fragment>
-            {!no_header && <FormSubHeader title={localize('Account opening reason')} />}
             <Field name='account_opening_reason'>
                 {({ field, meta }) => (
                     <React.Fragment>
                         {isDesktop ? (
                             <Dropdown
                                 placeholder={
-                                    required ? localize('Account opening reason*') : localize('Account opening reason')
+                                    required
+                                        ? localize('Intended use of account*')
+                                        : localize('Intended use of account')
                                 }
                                 name={field.name}
                                 disabled={disabled}
@@ -546,7 +547,9 @@ const AccountOpeningReasonField = ({ no_header, required, account_opening_reason
                                 placeholder={localize('Please select')}
                                 name={field.name}
                                 label={
-                                    required ? localize('Account opening reason*') : localize('Account opening reason')
+                                    required
+                                        ? localize('Intended use of account*')
+                                        : localize('Intended use of account')
                                 }
                                 list_items={account_opening_reason_list}
                                 error={meta.touched && meta.error}

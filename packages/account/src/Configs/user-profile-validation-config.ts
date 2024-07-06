@@ -22,7 +22,6 @@ export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) 
         tax_residence: Yup.string().when('confirm_no_tax_details', {
             is: (confirm_no_tax_details: boolean) => confirm_no_tax_details,
             then: Yup.string().notRequired(),
-            otherwise: Yup.string().required(localize('Tax residence is required.')),
         }),
         confirm_no_tax_details: Yup.bool(),
         tax_identification_confirm: Yup.bool().when(
@@ -39,7 +38,6 @@ export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) 
             .when('confirm_no_tax_details', {
                 is: (confirm_no_tax_details: boolean) => confirm_no_tax_details,
                 then: Yup.string().notRequired(),
-                otherwise: Yup.string().required(localize('Tax Identification Number is required.')),
             })
             .max(25, localize("Tax Identification Number can't be longer than 25 characters."))
             .matches(
@@ -62,7 +60,10 @@ export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) 
                         value &&
                         !tin_config?.tin_format?.some(tax_regex => new RegExp(tax_regex).test(value as string))
                     ) {
-                        return context.createError({ message: localize('Tax Identification Number is invalid.') });
+                        console.log('Error');
+                        return context.createError({
+                            message: localize('Tax identification number is not properly formatted.'),
+                        });
                     }
 
                     if (
@@ -71,7 +72,9 @@ export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) 
                             new RegExp(invalid_pattern).test(value as string)
                         )
                     ) {
-                        return context.createError({ message: localize('Tax Identification Number is invalid.') });
+                        return context.createError({
+                            message: localize('Tax identification number is not properly formatted.'),
+                        });
                     }
                     return true;
                 },

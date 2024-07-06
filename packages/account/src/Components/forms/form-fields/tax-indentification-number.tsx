@@ -21,8 +21,8 @@ const TaxIdentificationNumberField = ({
     <div className='details-form__tax'>
         <FormInputField
             name='tax_identification_number'
-            label={required ? localize('Tax Identification Number*') : localize('Tax Identification Number')}
-            placeholder={localize('Tax Identification Number')}
+            label={required ? localize('Tax identification number*') : localize('Tax identification number')}
+            placeholder={localize('Tax identification number')}
             data-testid='tax_identification_number'
             disabled={disabled}
             required={required}

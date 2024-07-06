@@ -39,7 +39,7 @@ export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) 
                 is: (confirm_no_tax_details: boolean) => confirm_no_tax_details,
                 then: Yup.string().notRequired(),
             })
-            .max(25, localize("Tax Identification Number can't be longer than 25 characters."))
+            .max(25, localize("Tax identification number can't be longer than 25 characters."))
             .matches(
                 taxIdentificationNumber,
                 localize('Only letters, numbers, space, hyphen, period, and forward slash are allowed.')
@@ -58,6 +58,7 @@ export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) 
 
                     if (
                         value &&
+                        tin_config?.tin_format?.length &&
                         !tin_config?.tin_format?.some(tax_regex => new RegExp(tax_regex).test(value as string))
                     ) {
                         console.log('Error');
@@ -68,6 +69,7 @@ export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) 
 
                     if (
                         value &&
+                        tin_config?.invalid_patterns?.length &&
                         tin_config?.invalid_patterns?.some(invalid_pattern =>
                             new RegExp(invalid_pattern).test(value as string)
                         )

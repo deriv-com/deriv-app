@@ -37,7 +37,7 @@ const TaxResidenceField = ({
                         <Autocomplete
                             {...field}
                             data-lpignore='true'
-                            autoComplete='none' // prevent chrome autocomplete
+                            autoComplete='off' // prevent chrome autocomplete
                             label={required ? localize('Tax residence*') : localize('Tax residence')}
                             error={meta.touched ? meta.error : undefined}
                             list_items={residence_list}

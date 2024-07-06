@@ -7,6 +7,7 @@ import { BreakpointProvider } from '@deriv/quill-design';
 import { APIProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
+import { Loading } from '@deriv/components';
 import {
     POIProvider,
     initFormErrorMessages,
@@ -28,7 +29,6 @@ import 'Sass/app.scss';
 const AppWithoutTranslation = ({ root_store }) => {
     const i18nInstance = initializeI18n({
         cdnUrl: `${process.env.CROWDIN_URL}/${process.env.ACC_TRANSLATION_PATH}`, // https://translations.deriv.com/deriv-app-accounts/staging/translations
-        useSuspense: false,
     });
     const l = window.location;
     const base = l.pathname.split('/')[1];
@@ -115,7 +115,9 @@ const AppWithoutTranslation = ({ root_store }) => {
                                 <POIProvider>
                                     <P2PSettingsProvider>
                                         <TranslationProvider defaultLang={language} i18nInstance={i18nInstance}>
-                                            <AppContent passthrough={platform_passthrough} />
+                                            <React.Suspense fallback={<Loading />}>
+                                                <AppContent passthrough={platform_passthrough} />
+                                            </React.Suspense>
                                         </TranslationProvider>
                                     </P2PSettingsProvider>
                                 </POIProvider>

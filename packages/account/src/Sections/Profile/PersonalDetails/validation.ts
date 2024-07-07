@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import * as Yup from 'yup';
-import { getLocation, toMoment } from '@deriv/shared';
+import { formatDate, getLocation, toMoment } from '@deriv/shared';
 import { GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
 import {
     getAddressDetailValidationSchema,
@@ -28,7 +28,7 @@ export const getPersonalDetailsInitialValues = (
         address_line_2: account_settings.address_line_2 ?? '',
         address_postcode: account_settings.address_postcode ?? '',
         address_state: '',
-        date_of_birth: account_settings.date_of_birth,
+        date_of_birth: formatDate(account_settings.date_of_birth, 'YYYY-MM-DD'),
         first_name: account_settings.first_name,
         last_name: account_settings.last_name,
         phone: account_settings.phone,

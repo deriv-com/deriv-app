@@ -9,5 +9,8 @@
         &__label {
             text-align: justify;
         }
+        .dc-checkbox__box {
+            margin-inline-start: unset;
+        }
     }
 }

@@ -63,6 +63,12 @@ const EmploymentTaxDetailsContainer = ({
     }, [handleChange, values.tax_residence, residence_list]);
 
     useEffect(() => {
+        if (!values.tax_residence || !values.tax_identification_number) {
+            setFieldValue('tax_identification_confirm', false, true);
+        }
+    }, [values.tax_residence, values.tax_identification_number, setFieldValue]);
+
+    useEffect(() => {
         const parent_element = parent_ref?.current;
 
         if (parent_element) {
@@ -90,7 +96,8 @@ const EmploymentTaxDetailsContainer = ({
     useOnClickOutside(tin_ref, () => setIsTinPopoverOpen(false), validateClickOutside);
     const { is_tin_mandatory, tin_employment_status_bypass } = tin_validation_config;
     const should_show_no_tax_details_checkbox =
-        !is_tin_mandatory && tin_employment_status_bypass?.includes(values.employment_status);
+        (!is_tin_mandatory && tin_employment_status_bypass?.includes(values.employment_status)) ||
+        values.confirm_no_tax_details;
 
     const isTaxInfoDisabled = (field_name: string) =>
         isFieldImmutable(field_name, editable_fields) || !!values.confirm_no_tax_details;

@@ -29,7 +29,7 @@ const EmploymentTaxDetailsContainer = ({
     tin_validation_config,
     handleChange,
 }: TEmploymentTaxDetailsContainerProps) => {
-    const { values, setFieldValue, touched, errors, setValues } = useFormikContext<FormikValues>();
+    const { values, setFieldValue, touched, errors, setValues, validateField } = useFormikContext<FormikValues>();
     const { isMobile } = useDevice();
     const { data: residence_list } = useResidenceList();
 
@@ -82,6 +82,13 @@ const EmploymentTaxDetailsContainer = ({
         };
     }, [parent_ref]);
 
+    useEffect(() => {
+        if (tin_validation_config) {
+            // This is to trigger re-validation of TIN field when the validation config changes
+            validateField('tax_identification_number');
+        }
+    }, [tin_validation_config, validateField]);
+
     const is_tax_details_confirm_disabled = useMemo(
         () =>
             (isFieldImmutable('tax_identification_number', editable_fields) &&
@@ -93,8 +100,11 @@ const EmploymentTaxDetailsContainer = ({
     );
 
     useOnClickOutside(tax_residence_ref, () => setIsTaxResidencePopoverOpen(false), validateClickOutside);
+
     useOnClickOutside(tin_ref, () => setIsTinPopoverOpen(false), validateClickOutside);
+
     const { is_tin_mandatory, tin_employment_status_bypass } = tin_validation_config;
+
     const should_show_no_tax_details_checkbox =
         (!is_tin_mandatory && tin_employment_status_bypass?.includes(values.employment_status)) ||
         values.confirm_no_tax_details;

@@ -68,6 +68,7 @@ export default class LoadModalStore implements ILoadModalStore {
     root_store: RootStore;
     core: TStores;
     previewed_strategy_id = '';
+    imported_strategy_type = 'pending';
 
     constructor(root_store: RootStore, core: TStores) {
         makeObservable(this, {
@@ -96,6 +97,7 @@ export default class LoadModalStore implements ILoadModalStore {
             handleFileChange: action.bound,
             loadFileFromRecent: action.bound,
             loadFileFromLocal: action.bound,
+            imported_strategy_type: observable,
             onActiveIndexChange: action.bound,
             onDriveConnect: action.bound,
             onDriveOpen: action.bound,
@@ -202,6 +204,7 @@ export default class LoadModalStore implements ILoadModalStore {
         event: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent,
         is_body = true
     ): boolean => {
+        this.imported_strategy_type = 'pending';
         this.upload_id = uuidv4();
         let files;
         if (event.type === 'drop') {
@@ -539,6 +542,7 @@ export default class LoadModalStore implements ILoadModalStore {
                 showIncompatibleStrategyDialog: false,
             };
             const ref = document?.getElementById('load-strategy__blockly-container');
+            const upload_type = getStrategyType(load_options?.block_string ?? '');
             if (is_preview && ref) {
                 this.local_workspace = Blockly.inject(ref, {
                     media: `${__webpack_public_path__}media/`, // eslint-disable-line
@@ -553,13 +557,13 @@ export default class LoadModalStore implements ILoadModalStore {
                 if (load_options.workspace) {
                     (load_options.workspace as any).RTL = isDbotRTL();
                 }
+                this.imported_strategy_type = upload_type;
             } else {
                 load_options.workspace = window.Blockly.derivWorkspace;
                 load_options.file_name = file_name;
             }
 
             const result = await load(load_options);
-            const upload_type = getStrategyType(load_options?.block_string as string);
             if (!is_preview && !result?.error) {
                 rudderStackSendUploadStrategyCompletedEvent({
                     upload_provider: 'my_computer',

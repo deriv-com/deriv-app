@@ -206,6 +206,7 @@ runs:
 
   - name: Send package sizes to Datadog
     shell: bash
+    continue-on-error: true
     run: |
       PACKAGE_SIZES=$(echo '${{ steps.diff.outputs.package_sizes }}' | jq -c .)
       BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)

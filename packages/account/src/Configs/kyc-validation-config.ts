@@ -47,6 +47,16 @@ export const getIDVFormValidationSchema = () => {
                 },
             })
             .default(''),
-        document_type: Yup.mixed<TDocument>().required(localize('Please select a document type.')),
+        document_type: Yup.mixed<TDocument>().test({
+            name: 'validate-document-type',
+            test: (input, context) => {
+                if (input && input.value) {
+                    return true;
+                }
+                return context.createError({
+                    message: localize('Please select a document type.'),
+                });
+            },
+        }),
     });
 };

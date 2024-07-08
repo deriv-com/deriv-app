@@ -7,7 +7,7 @@ import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { DBOT_TABS } from 'Constants/bot-contents';
-import { rudderStackSendQsCloseEvent } from '../../../analytics/rudderstack-quick-strategy';
+import { rudderStackSendCloseEvent } from '../../../analytics/rudderstack-common-events';
 import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
 import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
 import LossThresholdWarningDialog from './parts/loss-threshold-warning-dialog';
@@ -220,7 +220,7 @@ export const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) =
 const QuickStrategy = observer(() => {
     const { quick_strategy } = useDBotStore();
     const { ui } = useStore();
-    const { is_mobile } = ui;
+    const { is_desktop } = ui;
     const { is_open, setFormVisibility, form_data, selected_strategy } = quick_strategy;
 
     const active_tab_ref = useRef<HTMLDivElement>(null);
@@ -230,7 +230,8 @@ const QuickStrategy = observer(() => {
             active_tab_ref.current?.querySelector('.active')?.textContent?.toLowerCase() === 'learn more'
                 ? 'learn more'
                 : 'trade parameters';
-        rudderStackSendQsCloseEvent({
+        rudderStackSendCloseEvent({
+            subform_name: 'quick_strategy',
             quick_strategy_tab: active_tab,
             selected_strategy,
             form_values: form_data as TFormValues,
@@ -246,7 +247,13 @@ const QuickStrategy = observer(() => {
         <FormikWrapper>
             <FormikForm>
                 <LossThresholdWarningDialog />
-                {is_mobile ? (
+                {is_desktop ? (
+                    <Modal className='modal--strategy' is_open={is_open} width='72rem'>
+                        <DesktopFormWrapper onClickClose={handleClose} active_tab_ref={active_tab_ref}>
+                            <Form />
+                        </DesktopFormWrapper>
+                    </Modal>
+                ) : (
                     <MobileFullPageModal
                         is_modal_open={is_open}
                         className='quick-strategy__wrapper'
@@ -258,12 +265,6 @@ const QuickStrategy = observer(() => {
                             <Form />
                         </MobileFormWrapper>
                     </MobileFullPageModal>
-                ) : (
-                    <Modal className='modal--strategy' is_open={is_open} width='72rem'>
-                        <DesktopFormWrapper onClickClose={handleClose} active_tab_ref={active_tab_ref}>
-                            <Form />
-                        </DesktopFormWrapper>
-                    </Modal>
                 )}
             </FormikForm>
         </FormikWrapper>

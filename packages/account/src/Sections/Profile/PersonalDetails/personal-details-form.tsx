@@ -22,6 +22,7 @@ import { useInvalidateQuery } from '@deriv/api';
 import { useStatesList, useResidenceList, useTinValidations } from '@deriv/hooks';
 import EmploymentTaxDetailsContainer from 'Containers/employment-tax-details-container';
 import { isFieldImmutable } from 'Helpers/utils';
+import { PersonalDetailsValueTypes } from 'Types';
 
 type TRestState = {
     show_form: boolean;
@@ -98,7 +99,10 @@ const PersonalDetailsForm = observer(() => {
         }
     }, [invalidate, is_language_changing]);
 
-    const onSubmit = async (values: GetSettings, { setStatus, setSubmitting }: FormikHelpers<GetSettings>) => {
+    const onSubmit = async (
+        values: PersonalDetailsValueTypes,
+        { setStatus, setSubmitting }: FormikHelpers<GetSettings>
+    ) => {
         setStatus({ msg: '' });
         const request = makeSettingsRequest({ ...values }, residence_list, states_list, is_virtual);
         setIsBtnLoading(true);

@@ -1,4 +1,3 @@
-import { localize } from '@deriv/translations';
 import * as Yup from 'yup';
 import { formatDate, getLocation, toMoment } from '@deriv/shared';
 import { GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
@@ -8,13 +7,14 @@ import {
     getEmploymentAndTaxValidationSchema,
 } from 'Configs/user-profile-validation-config';
 import { TinValidations } from '@deriv/api/types';
+import { PersonalDetailsValueTypes } from 'Types';
 
 export const getPersonalDetailsInitialValues = (
     account_settings: GetSettings,
     residence_list: ResidenceList,
     states_list: StatesList,
     is_virtual?: boolean
-): GetSettings => {
+) => {
     const virtualAccountInitialValues: GetSettings = {
         email_consent: account_settings.email_consent ?? 0,
         residence: account_settings.residence,
@@ -34,7 +34,10 @@ export const getPersonalDetailsInitialValues = (
         phone: account_settings.phone,
         employment_status: account_settings?.employment_status,
         tax_identification_number: account_settings.tax_identification_number ?? '',
-        tax_residence: account_settings.tax_residence ?? '',
+        tax_residence:
+            (account_settings?.tax_residence
+                ? residence_list.find(item => item.value === account_settings?.tax_residence)?.text
+                : account_settings?.residence) || '',
     };
 
     const isGetSettingsKey = (value: string): value is keyof GetSettings =>
@@ -63,7 +66,7 @@ export const getPersonalDetailsInitialValues = (
 };
 
 export const makeSettingsRequest = (
-    settings: GetSettings,
+    settings: PersonalDetailsValueTypes,
     residence_list: ResidenceList,
     states_list: StatesList,
     is_virtual: boolean
@@ -107,6 +110,11 @@ export const makeSettingsRequest = (
             ? getLocation(states_list, request.address_state, 'value')
             : request.address_state;
     }
+    delete request.tax_identification_confirm;
+
+    // TODO: need to check with BE
+    // if(request.confirm_no_tax_details)
+    delete request.confirm_no_tax_details;
 
     return request;
 };

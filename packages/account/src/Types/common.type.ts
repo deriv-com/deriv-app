@@ -12,6 +12,7 @@ import {
     SetFinancialAssessmentRequest,
     IdentityVerificationAddDocumentResponse,
     ApiToken,
+    GetSettings,
 } from '@deriv/api-types';
 import { AUTH_STATUS_CODES, CFD_PLATFORMS, MT5_ACCOUNT_STATUS, Platforms } from '@deriv/shared';
 
@@ -315,4 +316,9 @@ export type TListItem = {
      * The value of the item
      */
     value?: string;
+};
+
+export type PersonalDetailsValueTypes = GetSettings & {
+    tax_identification_confirm?: boolean;
+    confirm_no_tax_details?: boolean;
 };

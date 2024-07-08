@@ -61,7 +61,6 @@ export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) 
                         tin_config?.tin_format?.length &&
                         !tin_config?.tin_format?.some(tax_regex => new RegExp(tax_regex).test(value as string))
                     ) {
-                        console.log('Error');
                         return context.createError({
                             message: localize('Tax identification number is not properly formatted.'),
                         });
@@ -122,9 +121,7 @@ export const getAddressDetailValidationSchema = (is_svg: boolean) =>
         address_postcode: Yup.string()
             .max(20, localize('Please enter a postal/ZIP code under 20 characters.'))
             .matches(postalCode, localize('Only letters, numbers, space and hyphen are allowed.')),
-        address_state: Yup.string()
-            .required(localize('State is required'))
-            .matches(addressState, localize('State is not in a proper format')),
+        address_state: Yup.string().matches(addressState, localize('State is not in a proper format')),
     });
 
 export const getPersonalDetailsBaseValidationSchema = (broker_code?: string) =>

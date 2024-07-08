@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
-import { Button } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { api_base } from '@deriv/bot-skeleton';
+import { Button, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import './server-bot.scss';
+import Notifications from './notifications';
 import ServerBotList from './server-bot-list';
 import ServerQSForm from './server-qs-form';
-import Chart from '../chart';
-import Notifications from './notifications';
-import { api_base } from '@deriv/bot-skeleton';
+import './server-bot.scss';
 
 const ServerBot = observer(() => {
-    const DBotStores = useDBotStore();
     const {
         server_bot: { getBotList, bot_list, createBot, notifications, setNotifications, setStatusBot },
-    } = DBotStores;
+    } = useDBotStore();
 
     const [add_btn_active, setAddBtnActive] = useState(false);
-    const { client } = useStore();
+    const { client, ui } = useStore();
+    const { is_mobile } = ui;
     const { is_virtual } = client;
 
     React.useEffect(() => {
@@ -71,23 +70,25 @@ const ServerBot = observer(() => {
     }, [api_base?.api]);
 
     return (
-        <div className='server-bot'>
-            <Button onClick={() => setAddBtnActive(true)} green>
-                {localize('+ add bot')}
-            </Button>
-            <div>
-                <div className='server-bot-list'>
+        <>
+            <div className='server-bot'>
+                <div className='server-bot__list'>
+                    <div className='server-bot__list__actions'>
+                        <Text size={is_mobile ? 'xs' : 's'} weight='bold'>
+                            <Localize i18n_default_text='Your bots:' />
+                        </Text>
+                        <Button onClick={() => setAddBtnActive(true)} green>
+                            {localize('+ Create Bot')}
+                        </Button>
+                    </div>
                     <ServerBotList />
                 </div>
-                <div>
-                    <div className='chart-modal-dialog' data-testid='chart-modal-dialog'>
-                        <Chart show_digits_stats={false} />
-                    </div>
+                <div className='server-bot__item'>
+                    {notifications.length !== 0 && <Notifications notifications={notifications} />}
                 </div>
             </div>
-            {notifications.length !== 0 && <Notifications notifications={notifications} />}
             <ServerQSForm add_btn_active={add_btn_active} setAddBtnActive={setAddBtnActive} createBot={createBot} />
-        </div>
+        </>
     );
 });
 

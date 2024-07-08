@@ -1,7 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 import { api_base } from '@deriv/bot-skeleton';
+import { initial_req_schema, TBotList, TBotListItem, TRequestSchema } from '../pages/server-bot/request_schema';
 import RootStore from './root-store';
-import { initial_req_schema, TRequestSchema, TBotList, TBotListItem } from '../pages/server-bot/request_schema';
 
 interface IServerBotStore {
     bot_list: TBotListItem[];
@@ -130,8 +130,8 @@ export default class ServerBotStore implements IServerBotStore {
                     bot_list: 1,
                 })
                 .then((data: TBotListResponse) => {
-                    this.bot_list = data.bot_list.bot_listing;
-                    return data.bot_list.bot_listing;
+                    this.bot_list = data.bot_list.bot_list;
+                    return data.bot_list.bot_list;
                 })
                 .catch((error: Error) => {
                     /* eslint-disable no-console */

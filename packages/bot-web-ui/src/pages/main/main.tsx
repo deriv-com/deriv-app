@@ -180,16 +180,10 @@ const AppWrapper = observer(() => {
                             </div>
                         </div>
                         {is_next_server_bot_enabled ? (
-                            <div
-                                icon='IcDashboardComponentTab'
-                                label={<Localize i18n_default_text='Server bot' />}
-                                id='id-server-bot'
-                            >
+                            <div icon='IcDashboardComponentTab' label={localize('Server Side Bot')} id='id-server-bot'>
                                 <ServerBot />
                             </div>
-                        ) : (
-                            <></>
-                        )}
+                        ) : null}
                     </Tabs>
                 </div>
             </div>

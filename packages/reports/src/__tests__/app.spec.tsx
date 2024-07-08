@@ -12,7 +12,7 @@ jest.mock('../Containers/routes', () => jest.fn(() => <div>{routes}</div>));
 jest.mock('../Components/Modals/trade-modals.tsx', () => jest.fn(() => <div>{trade_modals}</div>));
 
 describe('App', () => {
-    it('should render the component without Trade Modals if it was not load', () => {
+    it('should render the component without Trade Modals if it was not loaded', () => {
         render(<App passthrough={{ root_store }} />);
 
         expect(screen.getByText(routes)).toBeInTheDocument();

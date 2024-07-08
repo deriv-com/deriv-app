@@ -5,7 +5,7 @@ import { useReportsStore } from 'Stores/useReportsStores';
 import ReportsProviders from '../../reports-providers';
 
 describe('useReportsStore', () => {
-    it('useReportsStore should return the store if used inside ReportsProviders', () => {
+    it('useReportsStore should return the store if it was used inside ReportsProviders', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <ReportsProviders store={mockStore({})}>{children}</ReportsProviders>
         );
@@ -18,7 +18,7 @@ describe('useReportsStore', () => {
         expect(current.statement).toBeTruthy();
     });
 
-    it('useReportsStore should throw error if used outside of ReportsProviders', () => {
+    it('useReportsStore should throw error if it was used outside of ReportsProviders', () => {
         const { result } = renderHook(() => useReportsStore());
 
         expect(result.error).toEqual(new Error('useReportsStore must be used within ReportsStoreProvider'));

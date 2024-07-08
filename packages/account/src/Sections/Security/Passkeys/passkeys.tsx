@@ -9,7 +9,13 @@ import { Localize } from '@deriv/translations';
 import { PasskeyErrorModal } from './components/passkey-error-modal';
 import { PasskeyReminderModal } from './components/passkey-reminder-modal';
 import { PasskeysStatusContainer } from './components/passkeys-status-container';
-import { clearTimeOut, PASSKEY_STATUS_CODES, passkeysMenuActionEventTrack, TPasskeysStatus } from './passkeys-configs';
+import {
+    clearTimeOut,
+    PASSKEY_STATUS_CODES,
+    passkeysMenuActionEventTrack,
+    setPasskeysStatusToCookie,
+    TPasskeysStatus,
+} from './passkeys-configs';
 import './passkeys.scss';
 
 export type TPasskey = {
@@ -92,6 +98,7 @@ const Passkeys = observer(() => {
         if (is_passkey_registered) {
             passkeysMenuActionEventTrack('create_passkey_finished');
             setPasskeyStatus(PASSKEY_STATUS_CODES.CREATED);
+            setPasskeysStatusToCookie('available');
         }
     }, [is_passkey_registered]);
 

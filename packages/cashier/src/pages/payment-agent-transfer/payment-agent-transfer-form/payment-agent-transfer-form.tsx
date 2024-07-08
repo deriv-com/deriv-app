@@ -56,8 +56,9 @@ const validateTransfer = (
 };
 
 const PaymentAgentTransferForm = observer(() => {
-    const { client } = useStore();
+    const { client, ui } = useStore();
     const { balance, currency } = client;
+    const { is_desktop } = ui;
     const { payment_agent_transfer: payment_agent_transfer_store } = useCashierStore();
     const {
         confirm: { amount, description, client_id: transfer_to },
@@ -101,7 +102,7 @@ const PaymentAgentTransferForm = observer(() => {
             className='cashier__wrapper payment-agent-transfer-form__container'
             data-testid='dt_payment_agent_transfer_form_container'
         >
-            <DesktopWrapper>
+            {is_desktop && (
                 <Text
                     as='h2'
                     color='prominent'
@@ -111,7 +112,7 @@ const PaymentAgentTransferForm = observer(() => {
                 >
                     <Localize i18n_default_text='Transfer to client' />
                 </Text>
-            </DesktopWrapper>
+            )}
             <Formik
                 initialValues={initial_transfer_form_values}
                 isInitialValid={!Object.keys(validateTransferPassthrough(initial_transfer_form_values)).length}

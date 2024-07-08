@@ -122,7 +122,7 @@ const AccountTransferForm = observer(
             traders_hub: { closeAccountTransferModal },
         } = useStore();
 
-        const { is_mobile } = ui;
+        const { is_desktop } = ui;
         const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
         const mf_account_status = useMFAccountStatus();
         const { account_transfer, crypto_fiat_converter, general_store } = useCashierStore();
@@ -195,7 +195,7 @@ const AccountTransferForm = observer(
                     <Localize
                         i18n_default_text='<0>Verify your account to transfer funds.</0> <1>Verify now</1>'
                         components={[
-                            <Text color='var(--status-info)' key={0} size={is_mobile ? 'xxxs' : 'xxs'} />,
+                            <Text color='var(--status-info)' key={0} size={is_desktop ? 'xxs' : 'xxxs'} />,
                             <Link
                                 className='account-transfer-form__link'
                                 key={1}
@@ -208,7 +208,7 @@ const AccountTransferForm = observer(
 
             if (is_mf_status_pending)
                 return (
-                    <Text color='var(--status-info)' size={is_mobile ? 'xxxs' : 'xxs'}>
+                    <Text color='var(--status-info)' size={is_desktop ? 'xxs' : 'xxxs'}>
                         <Localize i18n_default_text='Unavailable as your documents are still under review' />
                     </Text>
                 );
@@ -572,7 +572,7 @@ const AccountTransferForm = observer(
                                                 label={localize('To')}
                                                 list={to_accounts}
                                                 list_height='404'
-                                                initial_height_offset={is_mobile ? 160 : 180}
+                                                initial_height_offset={is_desktop ? 180 : 160}
                                                 name='transfer_to'
                                                 value={selected_to.value}
                                                 onChange={(e: TReactChangeEvent) => {
@@ -753,7 +753,7 @@ const AccountTransferForm = observer(
                                                 </Button>
                                             </div>
                                         </div>
-                                        {!is_from_outside_cashier && (
+                                        {!is_desktop && !is_from_outside_cashier && (
                                             <SideNote title={<Localize i18n_default_text='Notes' />}>
                                                 <AccountTransferNote
                                                     allowed_transfers_count={{

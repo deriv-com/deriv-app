@@ -52,8 +52,9 @@ const validateWithdrawal = (values: TValidateWithdrawalValueProps, { balance, cu
 };
 
 const PaymentAgentUnlistedWithdrawForm = observer(({ setIsUnlistedWithdraw }: TPaymentAgentUnlistedWithdrawForm) => {
-    const { client } = useStore();
+    const { client, ui } = useStore();
     const { balance, currency } = client;
+    const { is_desktop } = ui;
     const verification_code = client.verification_code.payment_agent_withdraw;
     const { payment_agent } = useCashierStore();
     const { error, onMountPaymentAgentWithdraw: onMount, requestTryPaymentAgentWithdraw } = payment_agent;
@@ -86,9 +87,11 @@ const PaymentAgentUnlistedWithdrawForm = observer(({ setIsUnlistedWithdraw }: TP
                     <Localize i18n_default_text='Back to list' />
                 </Text>
             </div>
-            <SideNote className='payment-agent-list__side-note' has_title={false}>
-                <PaymentAgentDisclaimer />
-            </SideNote>
+            {!is_desktop && (
+                <SideNote className='payment-agent-list__side-note' has_title={false}>
+                    <PaymentAgentDisclaimer />
+                </SideNote>
+            )}
             <Formik
                 initialValues={{
                     account_number: '',

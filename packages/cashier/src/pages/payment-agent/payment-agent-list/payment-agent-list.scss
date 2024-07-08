@@ -18,16 +18,13 @@
             grid-gap: 0.8rem;
             .dc-tabs__list--header--tabs--desktop {
                 @include mobile-or-tablet-screen {
-                    position: fixed;
+                    display: flex;
+                    justify-content: center;
                     background-color: var(--general-main-1);
                     width: 100%;
-                    left: 0;
                     z-index: 2;
                     padding: 1.6rem 5rem;
                 }
-            }
-            .dc-tabs__content {
-                margin-top: 7.2rem;
             }
         }
         &-hide-tabs {

@@ -47,10 +47,11 @@ const PaymentAgentDetails = ({ email, phone_numbers, urls }: TPaymentAgentDetail
 };
 
 const PaymentAgentReceipt = observer(({ history }: TPaymentAgentReceipt) => {
-    const { client, common } = useStore();
+    const { client, common, ui } = useStore();
     const { payment_agent: payment_agent_store } = useCashierStore();
     const { currency } = client;
     const { is_from_derivgo } = common;
+    const { is_desktop } = ui;
     const { receipt, resetPaymentAgent } = payment_agent_store;
 
     React.useEffect(() => {
@@ -59,9 +60,11 @@ const PaymentAgentReceipt = observer(({ history }: TPaymentAgentReceipt) => {
 
     return (
         <div className='cashier__wrapper--align-center payment-agent-receipt'>
-            <SideNote className='payment-agent-list__side-note'>
-                <PaymentAgentDisclaimer />
-            </SideNote>
+            {!is_desktop && (
+                <SideNote className='payment-agent-list__side-note'>
+                    <PaymentAgentDisclaimer />
+                </SideNote>
+            )}
             <Text
                 as='h1'
                 align='center'

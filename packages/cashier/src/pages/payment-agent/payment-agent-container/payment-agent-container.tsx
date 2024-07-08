@@ -33,7 +33,7 @@ const PaymentAgentSearchWarning = () => {
 
 const PaymentAgentContainer = observer(({ is_deposit }: TPaymentAgentContainer) => {
     const { ui } = useStore();
-    const { app_contents_scroll_ref, is_dark_mode_on } = ui;
+    const { app_contents_scroll_ref, is_dark_mode_on, is_desktop } = ui;
     const { payment_agent: payment_agent_store } = useCashierStore();
     const {
         has_payment_agent_search_warning,
@@ -78,14 +78,18 @@ const PaymentAgentContainer = observer(({ is_deposit }: TPaymentAgentContainer) 
 
     return (
         <React.Fragment>
-            {!has_payment_agent_search_warning && (
-                <SideNote className='payment-agent-list__side-note' has_title={false}>
-                    <PaymentAgentDisclaimer />
-                </SideNote>
+            {!is_desktop && (
+                <React.Fragment>
+                    {!has_payment_agent_search_warning && (
+                        <SideNote className='payment-agent-list__side-note' has_title={false}>
+                            <PaymentAgentDisclaimer />
+                        </SideNote>
+                    )}
+                    <SideNote className='payment-agent-list__side-note-second' has_title={false}>
+                        <MissingPaymentMethodNote />
+                    </SideNote>
+                </React.Fragment>
             )}
-            <SideNote className='payment-agent-list__side-note-second' has_title={false}>
-                <MissingPaymentMethodNote />
-            </SideNote>
             <div className='payment-agent-list__list-header'>
                 {is_deposit ? (
                     <Text as='p' line_height='s' size='xs'>

@@ -9,7 +9,7 @@ import { useDevice } from '@deriv-com/ui';
 import EmploymentTaxDetailsContainer from '../employment-tax-details-container';
 import { getEmploymentAndTaxValidationSchema } from '../../Configs/user-profile-validation-config';
 import ScrollToFieldWithError from '../../Components/forms/scroll-to-field-with-error';
-import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, ThemedScrollbars } from '@deriv/components';
+import { Div100vhContainer, FormSubmitButton, Modal, ThemedScrollbars } from '@deriv/components';
 import { useTinValidations } from '@deriv/hooks';
 import './employment-tax-info.scss';
 
@@ -74,47 +74,37 @@ const EmploymentTaxInfo = ({
         >
             {({ handleSubmit, isSubmitting, values }) => {
                 return (
-                    <AutoHeightWrapper default_height={350} height_offset={!isMobile ? 80 : null}>
-                        {({ setRef, height }) => (
-                            <Form
-                                ref={setRef}
-                                onSubmit={handleSubmit}
-                                noValidate
-                                className='employment-tax-info__layout'
+                    <Form onSubmit={handleSubmit} noValidate className='employment-tax-info__layout'>
+                        <ScrollToFieldWithError />
+                        <Div100vhContainer
+                            height_offset='110px'
+                            is_disabled={!isMobile}
+                            className={clsx('details-form')}
+                        >
+                            <ThemedScrollbars
+                                refSetter={scroll_div_ref}
+                                className={clsx('details-form__elements', 'employment-tax-info__form')}
                             >
-                                <ScrollToFieldWithError />
-                                <Div100vhContainer
-                                    height_offset='110px'
-                                    is_disabled={!isMobile}
-                                    className='details-form'
-                                >
-                                    <ThemedScrollbars
-                                        height={height}
-                                        refSetter={scroll_div_ref}
-                                        className={clsx('details-form__elements', 'employment-tax-info__form')}
-                                    >
-                                        <EmploymentTaxDetailsContainer
-                                            editable_fields={editable_fields}
-                                            parent_ref={scroll_div_ref}
-                                            should_display_long_message={real_account_signup_target === 'maltainvest'}
-                                            handleChange={mutate}
-                                            tin_validation_config={tin_validation_config}
-                                        />
-                                    </ThemedScrollbars>
-                                </Div100vhContainer>
-                                <Modal.Footer has_separator is_bypassed={isMobile}>
-                                    <FormSubmitButton
-                                        is_disabled={isSubmitting}
-                                        label={localize('Next')}
-                                        is_absolute={isMobile}
-                                        has_cancel
-                                        cancel_label={localize('Previous')}
-                                        onCancel={() => handleCancel(values)}
-                                    />
-                                </Modal.Footer>
-                            </Form>
-                        )}
-                    </AutoHeightWrapper>
+                                <EmploymentTaxDetailsContainer
+                                    editable_fields={editable_fields}
+                                    parent_ref={scroll_div_ref}
+                                    should_display_long_message={real_account_signup_target === 'maltainvest'}
+                                    handleChange={mutate}
+                                    tin_validation_config={tin_validation_config}
+                                />
+                            </ThemedScrollbars>
+                        </Div100vhContainer>
+                        <Modal.Footer has_separator is_bypassed={isMobile}>
+                            <FormSubmitButton
+                                is_disabled={isSubmitting}
+                                label={localize('Next')}
+                                is_absolute={isMobile}
+                                has_cancel
+                                cancel_label={localize('Previous')}
+                                onCancel={() => handleCancel(values)}
+                            />
+                        </Modal.Footer>
+                    </Form>
                 );
             }}
         </Formik>

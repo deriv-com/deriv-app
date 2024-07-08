@@ -10,5 +10,9 @@
     &__layout {
         display: flex;
         flex-direction: column;
+
+        .details-form {
+            display: flex;
+        }
     }
 }

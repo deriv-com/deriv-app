@@ -13,6 +13,10 @@
     & .dc-tabs {
         width: 100%;
 
+        & > div {
+            overflow-x: auto;
+        }
+
         &::-webkit-scrollbar {
             display: none;
         }

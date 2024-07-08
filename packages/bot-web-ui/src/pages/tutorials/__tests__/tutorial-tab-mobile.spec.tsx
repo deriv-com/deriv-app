@@ -139,7 +139,7 @@ describe('<TutorialsTabDesktop />', () => {
         expect(inputElement.value).toBe(checkinputValue);
     });
 
-    it('when onHandleChangeMobile() is clicked, it should make the search visible', () => {
+    it('should make the search visible on click of onHandleChangeMobile()', () => {
         const search_icon = screen.getByTestId('search-icon');
 
         userEvent.click(search_icon);
@@ -148,7 +148,7 @@ describe('<TutorialsTabDesktop />', () => {
         expect(search).toHaveClass('tutorials-mobile__select--show-search');
     });
 
-    it('when onChangeHandle() is changed active_tutorials should be different', () => {
+    it('should change active_tutorial on click of onChangeHandle()', () => {
         const select = screen.getByTestId('id-tutorials-select');
         const prev_active_tutorials = mock_DBot_store.dashboard.active_tab_tutorials;
 

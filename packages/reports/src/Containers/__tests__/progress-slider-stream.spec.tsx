@@ -35,7 +35,7 @@ describe('ProgressSliderStream', () => {
     });
 
     it('should be empty if server_time is undefined', () => {
-        mocked_store.common.server_time = null as unknown as moment.Moment;
+        mocked_store.common.server_time = undefined as unknown as moment.Moment;
         const { container } = render(mockedProgressSliderStream());
         expect(container).toBeEmptyDOMElement();
     });

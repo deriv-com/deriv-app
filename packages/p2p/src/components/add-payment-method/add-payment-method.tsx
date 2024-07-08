@@ -44,7 +44,7 @@ const AddPaymentMethod = ({
                                     hideModal();
                                 }
                             }}
-                            page_title={localize('Add payment method')}
+                            page_title={localize('Add payment method ')}
                         />
                     )}
                 </DesktopWrapper>

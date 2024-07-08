@@ -23,15 +23,17 @@ const PoiPoaDocsSubmitted = ({
     openPasswordModal,
 }: TPoiPoaDocsSubmitted) => {
     const [is_loading, setIsLoading] = React.useState(false);
+
     React.useEffect(() => {
+        const fetchAccountStatus = async () => {
+            await updateAccountStatus();
+            setIsLoading(false);
+        };
         setIsLoading(true);
-        updateAccountStatus()
-            .then(() => {
-                setIsLoading(false);
-            })
-            .finally(() => setIsLoading(false));
-        //eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        fetchAccountStatus();
+
+        return () => setIsLoading(false);
+    }, [updateAccountStatus]);
 
     const onSubmit = () => {
         onClickOK();
@@ -53,6 +55,7 @@ const PoiPoaDocsSubmitted = ({
         }
         return localize('We’ll review your documents and notify you of its status within 5 minutes.');
     };
+
     return is_loading ? (
         <Loading is_fullscreen={false} />
     ) : (
@@ -66,4 +69,5 @@ const PoiPoaDocsSubmitted = ({
         </IconMessageContent>
     );
 };
+
 export default PoiPoaDocsSubmitted;

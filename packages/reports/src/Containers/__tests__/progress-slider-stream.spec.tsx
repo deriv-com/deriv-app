@@ -6,9 +6,11 @@ import { MemoryRouter } from 'react-router-dom';
 import ReportsProviders from '../../reports-providers';
 import ProgressSliderStream from '../progress-slider-stream';
 
+const progress_slider = 'ProgressSlider';
+
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
-    ProgressSlider: jest.fn(() => <div>ProgressSlider</div>),
+    ProgressSlider: jest.fn(() => <div>{progress_slider}</div>),
 }));
 
 describe('ProgressSliderStream', () => {
@@ -29,7 +31,7 @@ describe('ProgressSliderStream', () => {
 
     it('should render ProgressSlider', () => {
         render(mockedProgressSliderStream());
-        expect(screen.getByText('ProgressSlider')).toBeInTheDocument();
+        expect(screen.getByText(progress_slider)).toBeInTheDocument();
     });
 
     it('should be empty if server_time is undefined', () => {
@@ -42,6 +44,6 @@ describe('ProgressSliderStream', () => {
         mocked_props.contract_info = undefined as unknown as Required<TContractInfo>;
         const { container } = render(mockedProgressSliderStream());
         expect(container).not.toBeEmptyDOMElement();
-        expect(screen.queryByText('ProgressSlider')).not.toBeInTheDocument();
+        expect(screen.queryByText(progress_slider)).not.toBeInTheDocument();
     });
 });

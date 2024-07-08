@@ -19,7 +19,7 @@ describe('App', () => {
         expect(screen.queryByText(trade_modals)).not.toBeInTheDocument();
     });
 
-    it('should render the component', async () => {
+    it('should render the component with Trade Modals', async () => {
         render(<App passthrough={{ root_store }} />);
 
         await waitFor(() => Loadable.preloadReady());

@@ -27,9 +27,8 @@ export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) 
         tax_identification_confirm: Yup.bool().when(
             ['tax_identification_number', 'tax_residence', 'confirm_no_tax_details'],
             {
-                is: (tax_identification_number: string, tax_residence: string, confirm_no_tax_details: boolean) => {
-                    return (tax_identification_number && tax_residence) || !confirm_no_tax_details;
-                },
+                is: (tax_identification_number: string, tax_residence: string, confirm_no_tax_details: boolean) =>
+                    tax_identification_number && tax_residence && !confirm_no_tax_details,
                 then: Yup.bool().required().oneOf([true]),
                 otherwise: Yup.bool().notRequired(),
             }

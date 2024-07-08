@@ -1,8 +1,8 @@
 import { mockStore } from '@deriv/stores';
 import { configure } from 'mobx';
-import moment from 'moment';
 import ProfitTableStore from '../profit-store';
 import { TCoreStores } from '@deriv/stores/types';
+import { toMoment, WS } from '@deriv/shared';
 
 configure({ safeDescriptors: false });
 
@@ -58,6 +58,7 @@ jest.mock('@deriv/shared', () => {
 
 describe('ProfitTableStore', () => {
     let mockedProfitTableStore: ProfitTableStore;
+
     const multiplier_contract = {
         app_id: 16929,
         buy_price: 11.29,
@@ -101,15 +102,75 @@ describe('ProfitTableStore', () => {
 
     beforeEach(() => {
         mockedProfitTableStore = new ProfitTableStore({
-            root_store: mockStore({
-                common: {
-                    server_time: moment('2024-02-26T11:59:59.488Z'),
-                },
-            }) as TCoreStores,
+            root_store: mockStore({}) as TCoreStores,
         });
         mockedProfitTableStore.onMount();
     });
 
+    describe('is_empty', () => {
+        it('should return true if is_loading={false} and data is empty', () => {
+            mockedProfitTableStore.is_loading = false;
+            mockedProfitTableStore.data = [];
+
+            expect(mockedProfitTableStore.is_empty).toBe(true);
+        });
+        it('should return false if is_loading={false} but data is non-empty', () => {
+            expect(mockedProfitTableStore.data).toEqual([multiplier_contract, rise_contract]);
+            expect(mockedProfitTableStore.is_loading).toEqual(false);
+
+            expect(mockedProfitTableStore.is_empty).toBe(false);
+        });
+        it('should return false if is_loading={true} but data is non-empty', () => {
+            expect(mockedProfitTableStore.data).toEqual([multiplier_contract, rise_contract]);
+            mockedProfitTableStore.is_loading = true;
+
+            expect(mockedProfitTableStore.is_empty).toBe(false);
+        });
+    });
+    describe('has_selected_date', () => {
+        it('should return true if date_from or date_to is truthy', () => {
+            expect(mockedProfitTableStore.date_from).toBeNull();
+            expect(mockedProfitTableStore.date_to).toBe(toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix());
+
+            expect(mockedProfitTableStore.has_selected_date).toBe(true);
+        });
+        it('should return false if date_from and date_to are both falsy', () => {
+            expect(mockedProfitTableStore.date_from).toBeNull();
+            // @ts-expect-error TODO: remove the comment after profit-store is migrated to TS
+            mockedProfitTableStore.date_to = null;
+
+            expect(mockedProfitTableStore.has_selected_date).toBe(false);
+        });
+    });
+    describe('shouldFetchNextBatch', () => {
+        it('should return true if has_loaded_all={false} and is_loading={false}', () => {
+            expect(mockedProfitTableStore.is_loading).toBe(false);
+            mockedProfitTableStore.has_loaded_all = false;
+
+            expect(mockedProfitTableStore.shouldFetchNextBatch()).toBe(true);
+        });
+        it('should return false if has_loaded_all or is_loading are true', () => {
+            expect(mockedProfitTableStore.is_loading).toBe(false);
+            expect(mockedProfitTableStore.has_loaded_all).toBe(true);
+
+            expect(mockedProfitTableStore.shouldFetchNextBatch()).toBe(false);
+        });
+    });
+    describe('onUnmount', () => {
+        it('should call disposeSwitchAccount and unsubscribe from proposal API', () => {
+            const spyDisposeSwitchAccount = jest.spyOn(mockedProfitTableStore, 'disposeSwitchAccount');
+            const spyWSForgetAll = jest.spyOn(WS, 'forgetAll');
+            mockedProfitTableStore.onUnmount();
+
+            expect(spyDisposeSwitchAccount).toHaveBeenCalled();
+            expect(spyWSForgetAll).toHaveBeenCalledWith('proposal');
+        });
+    });
+    describe('totals', () => {
+        it('should return total profit_loss of all transactions', () => {
+            expect(mockedProfitTableStore.totals).toEqual({ profit_loss: '-2.09' });
+        });
+    });
     describe('accountSwitcherListener', () => {
         it('should call clearTable, clearDateFilter & fetchNextBatch', () => {
             const spyClearTable = jest.spyOn(mockedProfitTableStore, 'clearTable');
@@ -130,6 +191,50 @@ describe('ProfitTableStore', () => {
             expect(mockedProfitTableStore.data).toEqual([]);
             expect(mockedProfitTableStore.has_loaded_all).toBe(false);
             expect(mockedProfitTableStore.is_loading).toBe(false);
+        });
+    });
+    describe('clearDateFilter', () => {
+        it('should clear data_from and reset date_to to today unix timestamp', () => {
+            // @ts-expect-error TODO: remove the comment after profit-store is migrated to TS
+            mockedProfitTableStore.date_from = 1718236800;
+            mockedProfitTableStore.date_to = 1718236800;
+
+            mockedProfitTableStore.clearDateFilter();
+            expect(mockedProfitTableStore.date_from).toBeNull();
+            expect(mockedProfitTableStore.date_to).toBe(toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix());
+        });
+    });
+    describe('handleDateChange', () => {
+        it('should set filtered_date_range with date_range value, call clearTable & fetchNextBatch with shouldFilterContractTypes value', () => {
+            const spyClearTable = jest.spyOn(mockedProfitTableStore, 'clearTable');
+            const spyFetchNextBatch = jest.spyOn(mockedProfitTableStore, 'fetchNextBatch');
+            mockedProfitTableStore.handleDateChange(
+                {},
+                {
+                    date_range: { duration: 0, label: 'Today' },
+                    shouldFilterContractTypes: true,
+                }
+            );
+
+            expect(mockedProfitTableStore.filtered_date_range).toEqual({ duration: 0, label: 'Today' });
+            expect(spyClearTable).toHaveBeenCalled();
+            expect(spyFetchNextBatch).toBeCalledWith(true);
+
+            mockedProfitTableStore.handleDateChange({});
+            expect(mockedProfitTableStore.filtered_date_range).not.toBeDefined();
+            expect(spyFetchNextBatch).toBeCalledWith(undefined);
+        });
+        it('should set date_from when from is present in date_values', () => {
+            mockedProfitTableStore.handleDateChange({ from: '2024-06-13T00:00:00.000Z' });
+            expect(mockedProfitTableStore.date_from).toBe(1718236800);
+        });
+        it('should set date_to when to is present in date_values', () => {
+            mockedProfitTableStore.handleDateChange({ to: '2024-06-13T00:00:00.000Z' });
+            expect(mockedProfitTableStore.date_to).toBe(1718236800);
+        });
+        it('should set date_from to null when from is missing from date_values and is_batch={true}', () => {
+            mockedProfitTableStore.handleDateChange({ is_batch: true });
+            expect(mockedProfitTableStore.date_from).toBeNull();
         });
     });
 });

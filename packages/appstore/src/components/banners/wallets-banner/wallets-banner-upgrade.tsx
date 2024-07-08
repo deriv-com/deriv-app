@@ -22,7 +22,7 @@ const WalletsBannerUpgrade = observer(() => {
                 </div>
                 <Button
                     className='wallets-banner-upgrade__button'
-                    text={localize('Enable now')}
+                    text={localize("Let's go")}
                     primary
                     large
                     onClick={() => toggleWalletsUpgrade(true)}

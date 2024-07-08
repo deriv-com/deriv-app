@@ -7,7 +7,7 @@ import { TPortfolioPosition } from '@deriv/stores/types';
 import { ContractCardList, ContractCardsSections } from 'AppV2/Components/ContractCard';
 import { ContractTypeFilter, TimeFilter } from 'AppV2/Components/Filter';
 import TotalProfitLoss from 'AppV2/Components/TotalProfitLoss';
-import { filterPositions, getTotalPositionsProfit } from '../../Utils/positions-utils';
+import { filterPositions, getTotalPositionsProfit, TAB_NAME } from '../../Utils/positions-utils';
 import { TReportsStore, useReportsStore } from '../../../../../reports/src/Stores/useReportsStores';
 import useTradeTypeFilter from 'AppV2/Hooks/useTradeTypeFilter';
 import useTimeFilter from 'AppV2/Hooks/useTimeFilter';
@@ -30,16 +30,24 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     const { common, client, portfolio } = useStore();
     const { server_time = undefined } = isClosedTab ? {} : common; // Server time is required only to update cards timers in Open positions
     const { currency } = client;
-    const { active_positions, is_active_empty, onClickCancel, onClickSell, onMount: onOpenTabMount } = portfolio;
     const {
+        active_positions,
+        is_active_empty,
+        is_loading,
+        onClickCancel,
+        onClickSell,
+        onMount: onOpenTabMount,
+    } = portfolio;
+    const {
+        clearTable,
         data,
         fetchNextBatch: fetchMoreClosedPositions,
         handleScroll,
+        handleDateChange,
         is_empty,
         is_loading: isFetchingClosedPositions,
         onMount: onClosedTabMount,
         onUnmount: onClosedTabUnmount,
-        handleDateChange,
     } = useReportsStore().profit_table;
     const closedPositions = React.useMemo(() => data.map(d => ({ contract_info: d })), [data]);
     const positions = React.useMemo(
@@ -53,16 +61,12 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     const shouldShowEmptyMessage = hasNoPositions || noMatchesFound;
     const shouldShowContractCards =
         !!filteredPositions.length && (isClosedTab || (filteredPositions[0]?.contract_info as TContractInfo)?.status);
+    const shouldShowLoading = isClosedTab ? isFetchingClosedPositions && !filteredPositions.length : is_loading;
     const shouldShowTakeProfit = !isClosedTab || !!(timeFilter || customTimeRangeFilter);
 
-    const onScroll = React.useCallback(
-        (e: React.UIEvent<HTMLDivElement>) => {
-            if (isClosedTab) {
-                handleScroll(e);
-            }
-        },
-        [handleScroll, isClosedTab]
-    );
+    const onScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        if (isClosedTab) handleScroll(e, true);
+    };
 
     const contractCards = isClosedTab ? (
         <ContractCardsSections
@@ -82,24 +86,31 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
         />
     );
 
+    const onApplyContractTypeFilter = (filters: string[] | []) => {
+        setContractTypeFilter(filters);
+        if (isClosedTab) {
+            clearTable();
+            fetchMoreClosedPositions(true);
+        }
+    };
+
     React.useEffect(() => {
         if (contractTypeFilter.length) {
             const result = filterPositions(positions, contractTypeFilter);
-            setNoMatchesFound(!result.length);
             setFilteredPositions(result);
-            if (result.length < 5 && isClosedTab) {
-                fetchMoreClosedPositions();
-            }
+            if (!isClosedTab) setNoMatchesFound(!result.length);
         } else {
             setNoMatchesFound(false);
             setFilteredPositions(positions);
         }
-        if (isClosedTab) setNoMatchesFound(!positions.length && !!(timeFilter || customTimeRangeFilter));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        if (isClosedTab)
+            setNoMatchesFound(
+                !positions.length && !!(timeFilter || customTimeRangeFilter || contractTypeFilter.length)
+            );
     }, [isClosedTab, positions, contractTypeFilter, timeFilter, customTimeRangeFilter]);
 
     React.useEffect(() => {
-        isClosedTab ? onClosedTabMount() : onOpenTabMount();
+        isClosedTab ? onClosedTabMount(true) : onOpenTabMount();
 
         return () => {
             isClosedTab && onClosedTabUnmount();
@@ -107,10 +118,10 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (!shouldShowContractCards && !shouldShowEmptyMessage) return <Loading />;
+    if (shouldShowLoading || (!shouldShowContractCards && !shouldShowEmptyMessage)) return <Loading />;
     return (
         <div
-            className={`positions-page__${isClosedTab ? 'closed' : 'open'}`}
+            className={`positions-page__${isClosedTab ? TAB_NAME.CLOSED.toLowerCase() : TAB_NAME.OPEN.toLowerCase()}`}
             onScroll={isClosedTab ? onScroll : undefined}
         >
             {!hasNoPositions && (
@@ -126,8 +137,8 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
                         />
                     )}
                     <ContractTypeFilter
-                        setContractTypeFilter={setContractTypeFilter}
                         contractTypeFilter={contractTypeFilter}
+                        onApplyContractTypeFilter={onApplyContractTypeFilter}
                     />
                 </div>
             )}

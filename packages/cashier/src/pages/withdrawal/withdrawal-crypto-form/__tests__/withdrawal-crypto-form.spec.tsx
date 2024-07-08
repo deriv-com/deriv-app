@@ -1,20 +1,36 @@
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { useCurrentAccountDetails } from '@deriv/hooks';
+import { useCurrentAccountDetails, useGrowthbookIsOn } from '@deriv/hooks';
 import WithdrawalCryptoForm from '../withdrawal-crypto-form';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
+import userEvent from '@testing-library/user-event';
+import { useCryptoEstimations } from '@deriv/api';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useCurrentAccountDetails: jest.fn(() => {
         'icon';
     }),
+    useGrowthbookIsOn: jest.fn().mockReturnValue([]),
+}));
+
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useCryptoEstimations: jest.fn(),
 }));
 
 describe('<WithdrawalCryptoForm />', () => {
     (useCurrentAccountDetails as jest.Mock).mockReturnValue({ icon: 'icon' });
+    (useCryptoEstimations as jest.Mock).mockReturnValue({
+        count_down: 10,
+        crypto_estimations_fee: '0.0023',
+        crypto_estimations_fee_unique_id: 'unique_id',
+        getCryptoEstimations: jest.fn(),
+        server_time: 123456789,
+        setCurrencyCode: jest.fn(),
+    });
     let mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
         mockRootStore = mockStore({
@@ -38,18 +54,22 @@ describe('<WithdrawalCryptoForm />', () => {
                         requestWithdraw: jest.fn(),
                         setBlockchainAddress: jest.fn(),
                         setWithdrawPercentageSelectorResult: jest.fn(),
+                        setCryptoEstimationsFee: jest.fn(),
+                        setCryptoEstimationsFeeUniqueId: jest.fn(),
                     },
                 },
             },
         });
     });
 
+    const mockWithdrawalCryptoForm = () => (
+        <CashierProviders store={mockRootStore}>
+            <WithdrawalCryptoForm />
+        </CashierProviders>
+    );
+
     const renderWithdrawalCryptoForm = () => {
-        return render(
-            <CashierProviders store={mockRootStore}>
-                <WithdrawalCryptoForm />
-            </CashierProviders>
-        );
+        return render(mockWithdrawalCryptoForm());
     };
 
     it('should render arrow left icon when the user focused on the left input', () => {
@@ -163,5 +183,19 @@ describe('<WithdrawalCryptoForm />', () => {
             fireEvent.click(withdraw_button);
         });
         await waitFor(() => expect(mockRootStore.modules.cashier.withdraw.requestWithdraw).toHaveBeenCalled());
+    });
+
+    it('crypto_estimation_fee should be displayed when checkbox is checked', async () => {
+        (useGrowthbookIsOn as jest.Mock).mockReturnValue([true]);
+        const { rerender } = renderWithdrawalCryptoForm();
+        const checkbox = screen.getByLabelText('Priority withdrawal');
+
+        await act(async () => {
+            await userEvent.click(checkbox);
+        });
+        rerender(mockWithdrawalCryptoForm());
+
+        expect(screen.getByText('Amount received:')).toBeInTheDocument();
+        expect(screen.getByText('0.00230000 BTC')).toBeInTheDocument();
     });
 });

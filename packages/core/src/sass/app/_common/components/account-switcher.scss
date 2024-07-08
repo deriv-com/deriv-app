@@ -30,7 +30,7 @@
             left: -9rem;
             width: 9rem;
         }
-        @include mobile {
+        @include mobile-screen {
             width: 14rem;
             height: 4rem;
             top: -0.3rem;
@@ -53,10 +53,6 @@
         z-index: 2;
         background: var(--general-main-1);
 
-        &--wallets {
-            width: 47rem;
-        }
-
         &:before {
             content: '';
             position: absolute;
@@ -70,7 +66,7 @@
             left: -9rem;
             width: 9rem;
         }
-        @include mobile {
+        @include mobile-screen {
             width: 14rem;
             height: 4rem;
             top: -0.3rem;
@@ -80,6 +76,13 @@
             }
             &--is-crypto {
                 width: 100%;
+            }
+        }
+
+        &--wallets {
+            width: 47rem;
+            @include mobile {
+                width: auto;
             }
         }
     }
@@ -139,7 +142,7 @@
             transform: rotate(180deg);
         }
     }
-    @include desktop {
+    @include desktop-screen {
         &:hover:not(.show):not(&--is-disabled) {
             background: var(--state-hover);
 
@@ -148,7 +151,7 @@
             }
         }
     }
-    @include mobile {
+    @include mobile-screen {
         padding: 0 1rem;
         margin-right: -0.8rem;
 
@@ -183,7 +186,7 @@
         &:not(:last-child) {
             margin-right: 1em;
         }
-        @include mobile {
+        @include mobile-screen {
             height: 2.8rem !important;
         }
     }
@@ -237,7 +240,7 @@
     &__wrapper {
         border-radius: $BORDER_RADIUS;
         position: absolute;
-        @include tablet {
+        @include tablet-screen {
             position: unset;
         }
         transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
@@ -266,7 +269,7 @@
             margin: 0.2rem 0.8rem 0.8rem;
             height: 4rem;
         }
-        @include mobile {
+        @include mobile-or-tablet-screen {
             position: relative;
             top: unset;
             left: unset;
@@ -539,7 +542,7 @@
         display: flex;
         align-items: center;
 
-        @include mobile {
+        @include mobile-screen {
             height: 2.8rem !important;
         }
     }
@@ -567,5 +570,11 @@
     }
     &--disabled {
         background-color: var(--border-disabled);
+    }
+}
+
+.dc-modal__container_accounts-switcher {
+    @include tablet-screen {
+        inset-inline-start: 1.6rem;
     }
 }

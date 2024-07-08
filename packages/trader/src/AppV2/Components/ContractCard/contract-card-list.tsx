@@ -52,7 +52,16 @@ const ContractCardList = ({
                         isSellRequested={(position as TPortfolioPosition).is_sell_requested}
                         onCancel={() => id && onClickCancel?.(id)}
                         onClose={() => id && onClickSell?.(id)}
-                        redirectTo={id ? getContractPath(id) : ''}
+                        redirectTo={
+                            id
+                                ? {
+                                      pathname: getContractPath(id),
+                                      state: {
+                                          from_table_row: true,
+                                      },
+                                  }
+                                : ''
+                        }
                         {...rest}
                     />
                 );

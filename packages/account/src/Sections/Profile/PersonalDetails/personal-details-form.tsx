@@ -1,22 +1,21 @@
 import { useState, useRef, useEffect, Fragment } from 'react';
 import clsx from 'clsx';
 import { Formik, Form, FormikHelpers } from 'formik';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { useHistory } from 'react-router';
+import { useDevice } from '@deriv-com/ui';
 import {
     Button,
     Checkbox,
-    DesktopWrapper,
     Dropdown,
     FormSubmitErrorMessage,
     HintBox,
     Input,
     Loading,
-    MobileWrapper,
     SelectNative,
     Text,
 } from '@deriv/components';
 import { GetSettings } from '@deriv/api-types';
-import { AUTH_STATUS_CODES, WS, getBrandWebsiteName, routes, useIsMounted } from '@deriv/shared';
+import { AUTH_STATUS_CODES, WS, getBrandWebsiteName, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import LeaveConfirm from 'Components/leave-confirm';
@@ -30,39 +29,42 @@ import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
+import { useInvalidateQuery } from '@deriv/api';
+import { useStatesList, useResidenceList } from '@deriv/hooks';
 
 type TRestState = {
     show_form: boolean;
     api_error?: string;
 };
 
-export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponentProps>) => {
-    const [is_loading, setIsLoading] = useState(true);
-    const [is_state_loading, setIsStateLoading] = useState(false);
+const PersonalDetailsForm = observer(() => {
+    const { isDesktop } = useDevice();
+    const [is_loading, setIsLoading] = useState(false);
     const [is_btn_loading, setIsBtnLoading] = useState(false);
     const [is_submit_success, setIsSubmitSuccess] = useState(false);
+    const invalidate = useInvalidateQuery();
+    const history = useHistory();
 
     const {
         client,
         notifications,
-        ui,
         common: { is_language_changing },
     } = useStore();
 
     const {
         account_settings,
         account_status,
-        residence_list,
         authentication_status,
         is_eu,
         is_virtual,
-        states_list,
-        fetchStatesList,
-        fetchResidenceList,
-        has_residence,
         current_landing_company,
         updateAccountStatus,
+        residence,
     } = client;
+
+    const { data: residence_list, isLoading: is_loading_residence_list } = useResidenceList();
+
+    const { data: states_list, isLoading: is_loading_state_list } = useStatesList(residence);
 
     const {
         refreshNotifications,
@@ -70,7 +72,6 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
         showPOAAddressMismatchFailureNotification,
     } = notifications;
 
-    const { is_mobile } = ui;
     const has_poa_address_mismatch = account_status?.status?.includes('poa_address_mismatch');
     const [rest_state, setRestState] = useState<TRestState>({
         show_form: true,
@@ -86,29 +87,22 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
         timeout_callback: () => null,
     });
 
-    const isMounted = useIsMounted();
-
     useEffect(() => {
-        if (isMounted()) {
-            const getSettings = async () => {
-                // waits for residence to be populated
+        const init = async () => {
+            try {
+                // Order of API calls is important
                 await WS.wait('get_settings');
-
-                fetchResidenceList?.();
-
-                if (has_residence) {
-                    if (!is_language_changing) {
-                        setIsStateLoading(true);
-                        fetchStatesList().then(() => {
-                            setIsStateLoading(false);
-                        });
-                    }
-                }
-            };
-            getSettings();
+                await invalidate('residence_list');
+                await invalidate('states_list');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        if (is_language_changing) {
+            setIsLoading(true);
+            init();
         }
-        setIsLoading(false);
-    }, [account_settings, is_eu]);
+    }, [invalidate, is_language_changing]);
 
     const onSubmit = async (values: GetSettings, { setStatus, setSubmitting }: FormikHelpers<GetSettings>) => {
         setStatus({ msg: '' });
@@ -138,7 +132,6 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
             }
             // Fetches the status of the account after update
             updateAccountStatus();
-            setIsLoading(false);
             refreshNotifications();
             setIsBtnLoading(false);
             setIsSubmitSuccess(true);
@@ -187,7 +180,7 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
 
     if (api_error) return <LoadErrorMessage error_message={api_error} />;
 
-    if (is_loading || is_state_loading || !residence_list.length) {
+    if (is_loading_state_list || is_loading || is_loading_residence_list) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
@@ -232,7 +225,7 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
                 dirty,
             }) => (
                 <Fragment>
-                    <LeaveConfirm onDirty={is_mobile ? showForm : undefined} />
+                    <LeaveConfirm onDirty={isDesktop ? undefined : showForm} />
                     {show_form && (
                         <Form
                             noValidate
@@ -240,11 +233,11 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
                             onSubmit={handleSubmit}
                             data-testid='dt_account_personal_details_section'
                         >
-                            <FormBody scroll_offset={is_mobile ? '199px' : '80px'}>
+                            <FormBody scroll_offset={isDesktop ? '80px' : '199px'}>
                                 <FormSubHeader title={localize('Details')} />
                                 {!is_virtual && (
                                     <Fragment>
-                                        <DesktopWrapper>
+                                        {isDesktop ? (
                                             <InputGroup className='account-form__fieldset--2-cols'>
                                                 <Input
                                                     data-lpignore='true'
@@ -275,41 +268,42 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
                                                     data-testid='dt_last_name'
                                                 />
                                             </InputGroup>
-                                        </DesktopWrapper>
-                                        <MobileWrapper>
-                                            <fieldset className='account-form__fieldset'>
-                                                <Input
-                                                    data-lpignore='true'
-                                                    type='text'
-                                                    name='first_name'
-                                                    id='first_name_mobile'
-                                                    label={localize('First name*')}
-                                                    value={values.first_name}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    required
-                                                    disabled={isFieldDisabled('first_name')}
-                                                    error={errors.first_name}
-                                                    data-testid='dt_first_name'
-                                                />
-                                            </fieldset>
-                                            <fieldset className='account-form__fieldset'>
-                                                <Input
-                                                    data-lpignore='true'
-                                                    type='text'
-                                                    name='last_name'
-                                                    id='last_name_mobile'
-                                                    label={localize('Last name*')}
-                                                    value={values.last_name}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    required
-                                                    disabled={isFieldDisabled('last_name')}
-                                                    error={errors.last_name}
-                                                    data-testid='dt_last_name'
-                                                />
-                                            </fieldset>
-                                        </MobileWrapper>
+                                        ) : (
+                                            <Fragment>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        name='first_name'
+                                                        id='first_name_mobile'
+                                                        label={localize('First name*')}
+                                                        value={values.first_name}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        disabled={isFieldDisabled('first_name')}
+                                                        error={errors.first_name}
+                                                        data-testid='dt_first_name'
+                                                    />
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        name='last_name'
+                                                        id='last_name_mobile'
+                                                        label={localize('Last name*')}
+                                                        value={values.last_name}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        disabled={isFieldDisabled('last_name')}
+                                                        error={errors.last_name}
+                                                        data-testid='dt_last_name'
+                                                    />
+                                                </fieldset>
+                                            </Fragment>
+                                        )}
                                         {'place_of_birth' in values && (
                                             <fieldset className='account-form__fieldset'>
                                                 <FormSelectField
@@ -411,7 +405,7 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
                                             )}
                                             {'employment_status' in values && (
                                                 <fieldset className='account-form__fieldset'>
-                                                    <DesktopWrapper>
+                                                    {isDesktop ? (
                                                         <Dropdown
                                                             placeholder={localize('Employment status')}
                                                             is_align_text_left
@@ -426,8 +420,7 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
                                                                     : undefined
                                                             }
                                                         />
-                                                    </DesktopWrapper>
-                                                    <MobileWrapper>
+                                                    ) : (
                                                         <SelectNative
                                                             className={'emp-status'}
                                                             placeholder={localize('Please select')}
@@ -445,7 +438,7 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
                                                                 handleChange(e);
                                                             }}
                                                         />
-                                                    </MobileWrapper>
+                                                    )}
                                                 </fieldset>
                                             )}
                                         </Fragment>
@@ -655,7 +648,7 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
                                         className='account-form__footer-note'
                                         size='xxs'
                                         color='prominent'
-                                        align={is_mobile ? 'center' : 'right'}
+                                        align={isDesktop ? 'right' : 'center'}
                                     >
                                         {localize(
                                             'Please make sure your information is correct or it may affect your trading experience.'
@@ -686,4 +679,4 @@ export const PersonalDetailsForm = observer(({ history }: Partial<RouteComponent
     );
 });
 
-export default withRouter(PersonalDetailsForm);
+export default PersonalDetailsForm;

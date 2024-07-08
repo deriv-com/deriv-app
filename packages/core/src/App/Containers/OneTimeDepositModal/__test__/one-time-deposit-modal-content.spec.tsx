@@ -1,65 +1,82 @@
 import React from 'react';
-import { Router } from 'react-router';
 import { render, screen } from '@testing-library/react';
-import { createBrowserHistory } from 'history';
-import { useHasMFAccountDeposited } from '@deriv/hooks';
-import { StoreProvider, mockStore, useStore } from '@deriv/stores';
-import OneTimeDepositModal from '../one-time-deposit-modal';
+import { useDevice } from '@deriv-com/ui';
+import { StoreProvider, mockStore } from '@deriv/stores';
+import { OneTimeDepositModalContent } from '../one-time-deposit-modal-content';
+import userEvent from '@testing-library/user-event';
 
-let mock_store: ReturnType<typeof useStore>;
-
-jest.mock('@deriv/hooks', () => ({
-    useDepositFiatAddress: jest.fn(() => ({
-        data: 'https://www.binary.com',
-        isSuccess: true,
-    })),
-    useHasMFAccountDeposited: jest.fn(),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
-describe('<OneTimeDepositModal />', () => {
-    let modal_root_el: HTMLDivElement;
+jest.mock('@deriv/cashier/src/modules/deposit-fiat/components/deposit-fiat-iframe/deposit-fiat-iframe', () =>
+    jest.fn(() => <div>FiatIframe</div>)
+);
+jest.mock(
+    '@deriv/cashier/src/modules/deposit-crypto/components/deposit-crypto-wallet-address/deposit-crypto-wallet-address',
+    () => jest.fn(() => <div>CryptoWallet</div>)
+);
 
-    beforeAll(() => {
-        modal_root_el = document.createElement('div');
-        modal_root_el.setAttribute('id', 'modal_root');
-        document.body.appendChild(modal_root_el);
-    });
+describe('<OneTimeDepositModalContent />', () => {
+    const mockDefault = mockStore({});
+
+    const wrapper = (mock: ReturnType<typeof mockStore> = mockDefault) => {
+        const Component = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+        return Component;
+    };
 
     beforeEach(() => {
-        mock_store = mockStore({
-            ui: {
-                should_show_one_time_deposit_modal: true,
-                setShouldShowOneTimeDepositModal: jest.fn(),
-                toggleAccountSuccessModal: jest.fn(),
-            },
-            client: {
-                loginid: 'MX12345',
-                updateAccountStatus: jest.fn(),
-            },
+        jest.clearAllMocks();
+    });
+
+    it('should render one time deposit modal content with correct title', () => {
+        render(<OneTimeDepositModalContent />, {
+            wrapper: wrapper(),
         });
+
+        expect(screen.getByText(/Deposit/)).toBeInTheDocument();
     });
 
-    afterAll(() => {
-        document.body.removeChild(modal_root_el);
+    it('should render one time deposit modal content with correct title in responsive mode', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
+
+        render(<OneTimeDepositModalContent />, {
+            wrapper: wrapper(),
+        });
+
+        expect(screen.getByText(/Deposit/)).toBeInTheDocument();
     });
 
-    it('should render one time deposit modal', () => {
-        const history = createBrowserHistory();
-        (useHasMFAccountDeposited as jest.Mock).mockReturnValueOnce({ has_mf_account_deposited: false });
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock_store}>{children}</StoreProvider>
-        );
+    it('should render one time deposit modal content with fiat iframe', () => {
+        render(<OneTimeDepositModalContent />, {
+            wrapper: wrapper(),
+        });
 
-        render(
-            <Router history={history}>
-                <OneTimeDepositModal />
-            </Router>,
-            {
-                wrapper,
-            }
-        );
-        expect(screen.getByText('Deposit')).toBeInTheDocument();
-        expect(screen.getByText(/select a payment method to make a deposit into your account/i)).toBeInTheDocument();
-        expect(screen.getByTestId('dt_deposit_fiat_iframe_iframe')).toBeInTheDocument();
+        expect(screen.getByText(/Select a payment method to make a deposit into your account/)).toBeInTheDocument();
+        expect(screen.getByText(/FiatIframe/)).toBeInTheDocument();
+    });
+
+    it('should render one time deposit modal content with crypto wallet', () => {
+        render(<OneTimeDepositModalContent is_crypto_account />, {
+            wrapper: wrapper(),
+        });
+
+        expect(
+            screen.queryByText(/Select a payment method to make a deposit into your account/)
+        ).not.toBeInTheDocument();
+        expect(screen.getByText(/CryptoWallet/)).toBeInTheDocument();
+    });
+
+    it('should open live chat widget on click', () => {
+        render(<OneTimeDepositModalContent />, {
+            wrapper: wrapper(),
+        });
+
+        const live_chat = screen.getByTestId('dt_live_chat');
+        expect(live_chat).toBeInTheDocument();
+        userEvent.click(live_chat);
     });
 });

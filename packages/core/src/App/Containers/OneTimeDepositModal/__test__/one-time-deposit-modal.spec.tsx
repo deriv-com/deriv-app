@@ -1,145 +1,172 @@
 import React from 'react';
-import { Router } from 'react-router';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { createBrowserHistory } from 'history';
-import { useDepositFiatAddress, useHasMFAccountDeposited } from '@deriv/hooks';
-import { StoreProvider, mockStore, useStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import OneTimeDepositModal from '../one-time-deposit-modal';
-
-let mock_store: ReturnType<typeof useStore>;
+import { useCryptoTransactions, useCurrentCurrencyConfig } from '@deriv/hooks';
 
 jest.mock('@deriv/hooks', () => ({
-    useDepositFiatAddress: jest.fn(() => ({
-        data: 'https://www.binary.com',
-        isSuccess: true,
-    })),
-    useHasMFAccountDeposited: jest.fn(),
+    ...jest.requireActual('@deriv/hooks'),
+    useCurrentCurrencyConfig: jest.fn(() => ({ is_crypto: false })),
+    useCryptoTransactions: jest.fn(() => ({ data: [], has_transactions: false })),
 }));
 
-describe('<OneTimeDepositModal />', () => {
-    let modal_root_el: HTMLDivElement;
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
+}));
 
-    beforeAll(() => {
-        modal_root_el = document.createElement('div');
-        modal_root_el.setAttribute('id', 'modal_root');
-        document.body.appendChild(modal_root_el);
+type TModal = React.FC<{
+    children: React.ReactNode;
+}> & {
+    Body?: React.FC<{
+        children: React.ReactNode;
+    }>;
+    Footer?: React.FC<{
+        children: React.ReactNode;
+    }>;
+};
+
+jest.mock('@deriv/components', () => {
+    const original_module = jest.requireActual('@deriv/components');
+
+    const Modal: TModal = jest.fn(() => {
+        return (
+            <div>
+                <h1>Modal</h1>
+            </div>
+        );
     });
+    Modal.Body = jest.fn(() => <div>Body</div>);
+    Modal.Footer = jest.fn(() => <div>Footer</div>);
+
+    const MobileFullPageModal = jest.fn(() => <div>MobileFullPageModal</div>);
+
+    return {
+        ...original_module,
+        Modal,
+        MobileFullPageModal,
+    };
+});
+
+jest.mock('../one-time-deposit-modal-content', () => ({
+    __esModule: true,
+    default: () => undefined,
+    OneTimeDepositModalContent: () => <div>Content</div>,
+}));
+
+jest.mock('../../Modals/deposit-now-or-later-modal', () => jest.fn(() => <div>DepositNowOrLater</div>));
+jest.mock('../../CryptoTransactionProcessingModal', () => jest.fn(() => <div>Crypto</div>));
+
+describe('<OneTimeDepositModal />', () => {
+    const setIsAccountDeposited = jest.fn();
+    const setShouldShowOneTimeDepositModal = jest.fn();
+    const setShouldShowCryptoTransactionProcessingModal = jest.fn();
+
+    const mockDefault = mockStore({
+        ui: {
+            setShouldShowOneTimeDepositModal,
+            setShouldShowCryptoTransactionProcessingModal,
+        },
+    });
+
+    const wrapper = (mock: ReturnType<typeof mockStore> = mockDefault) => {
+        const Component = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+        return Component;
+    };
 
     beforeEach(() => {
-        mock_store = mockStore({
+        jest.clearAllMocks();
+    });
+
+    it('should render one time deposit modal for desktop', () => {
+        render(<OneTimeDepositModal />, {
+            wrapper: wrapper(),
+        });
+
+        expect(screen.getByText(/Modal/)).toBeInTheDocument();
+    });
+
+    it('should render one time deposit modal for responsive', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
+
+        render(<OneTimeDepositModal />, {
+            wrapper: wrapper(),
+        });
+
+        expect(screen.getByText(/MobileFullPageModal/)).toBeInTheDocument();
+    });
+
+    it('should set is_account_deposited to true if balance more than 0', () => {
+        const mockUseState = jest.spyOn(React, 'useState');
+        (mockUseState as jest.Mock).mockImplementation(initial_value => [initial_value, setIsAccountDeposited]);
+
+        const mock = mockStore({ client: { balance: 10 } });
+
+        render(<OneTimeDepositModal />, {
+            wrapper: wrapper(mock),
+        });
+
+        expect(setIsAccountDeposited).toHaveBeenCalledWith(true);
+    });
+
+    it('should set is_account_deposited to true if is_cr_account && currency_config?.is_crypto && crypto_transactions && has_transactions', () => {
+        const mockUseState = jest.spyOn(React, 'useState');
+        (mockUseState as jest.Mock).mockImplementation(initial_value => [initial_value, setIsAccountDeposited]);
+
+        (useCryptoTransactions as jest.Mock).mockReturnValueOnce({
+            data: [{ transaction_type: 'deposit', status_code: 'SUCCESS', is_deposit: true }],
+            has_transactions: true,
+        });
+        (useCurrentCurrencyConfig as jest.Mock).mockReturnValueOnce({
+            is_crypto: true,
+        });
+
+        const mock = mockStore({
+            client: { is_logged_in: true, is_cr_account: true },
             ui: {
-                should_show_one_time_deposit_modal: true,
-                setShouldShowOneTimeDepositModal: jest.fn(),
-                toggleAccountSuccessModal: jest.fn(),
-            },
-            client: {
-                loginid: 'MX12345',
-                updateAccountStatus: jest.fn(),
+                setShouldShowOneTimeDepositModal,
+                setShouldShowCryptoTransactionProcessingModal,
             },
         });
-    });
 
-    afterAll(() => {
-        document.body.removeChild(modal_root_el);
-    });
-
-    it('should render one time deposit modal', () => {
-        const history = createBrowserHistory();
-        (useHasMFAccountDeposited as jest.Mock).mockReturnValueOnce({ has_mf_account_deposited: false });
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock_store}>{children}</StoreProvider>
-        );
-
-        render(
-            <Router history={history}>
-                <OneTimeDepositModal />
-            </Router>,
-            {
-                wrapper,
-            }
-        );
-        expect(screen.getByText('Deposit')).toBeInTheDocument();
-        expect(screen.getByText(/select a payment method to make a deposit into your account/i)).toBeInTheDocument();
-        expect(screen.getByTestId('dt_deposit_fiat_iframe_iframe')).toBeInTheDocument();
-    });
-
-    it('should render loading component if iframe has not loaded', () => {
-        const history = createBrowserHistory();
-        (useHasMFAccountDeposited as jest.Mock).mockReturnValueOnce({ has_mf_account_deposited: false });
-        (useDepositFiatAddress as jest.Mock).mockReturnValueOnce({
-            data: '',
-            isSuccess: false,
+        render(<OneTimeDepositModal />, {
+            wrapper: wrapper({ ...mockDefault, ...mock }),
         });
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock_store}>{children}</StoreProvider>
-        );
 
-        render(
-            <Router history={history}>
-                <OneTimeDepositModal />
-            </Router>,
-            {
-                wrapper,
-            }
-        );
-        expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
+        expect(setIsAccountDeposited).toHaveBeenCalledWith(true);
+        expect(setShouldShowOneTimeDepositModal).toHaveBeenCalledTimes(0);
+        expect(setShouldShowCryptoTransactionProcessingModal).toHaveBeenCalledTimes(0);
     });
 
-    it('should close modal if user unable to deposit because they have deposited', () => {
-        const history = createBrowserHistory();
-        (useHasMFAccountDeposited as jest.Mock).mockReturnValueOnce({ has_mf_account_deposited: true });
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock_store}>{children}</StoreProvider>
-        );
+    it('should open show-crypto-transaction-processing-modal and close current modal', () => {
+        const mockUseState = jest.spyOn(React, 'useState');
+        (mockUseState as jest.Mock).mockImplementation(initial_value => [initial_value, setIsAccountDeposited]);
 
-        render(
-            <Router history={history}>
-                <OneTimeDepositModal />
-            </Router>,
-            {
-                wrapper,
-            }
-        );
-        expect(mock_store.ui.setShouldShowOneTimeDepositModal).toHaveBeenCalled();
-        expect(mock_store.ui.toggleAccountSuccessModal).toHaveBeenCalled();
-    });
+        (useCryptoTransactions as jest.Mock).mockReturnValueOnce({
+            data: [{ transaction_type: 'deposit', status_code: 'PENDING', is_deposit: true }],
+            has_transactions: true,
+        });
+        (useCurrentCurrencyConfig as jest.Mock).mockReturnValueOnce({
+            is_crypto: true,
+        });
 
-    it('should close modal after cllicking ESC key', () => {
-        const history = createBrowserHistory();
-        (useHasMFAccountDeposited as jest.Mock).mockReturnValueOnce({ has_mf_account_deposited: false });
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock_store}>{children}</StoreProvider>
-        );
-        render(
-            <Router history={history}>
-                <OneTimeDepositModal />
-            </Router>,
-            {
-                wrapper,
-            }
-        );
-        userEvent.keyboard('{esc}');
-        expect(mock_store.ui.setShouldShowOneTimeDepositModal).toHaveBeenCalled();
-        expect(mock_store.ui.toggleAccountSuccessModal).toHaveBeenCalled();
-    });
+        const mock = mockStore({
+            client: { is_logged_in: true, is_cr_account: true },
+            ui: {
+                setShouldShowOneTimeDepositModal,
+                setShouldShowCryptoTransactionProcessingModal,
+            },
+        });
 
-    it('should open live chat widget on click', () => {
-        const history = createBrowserHistory();
-        (useHasMFAccountDeposited as jest.Mock).mockReturnValueOnce({ has_mf_account_deposited: false });
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock_store}>{children}</StoreProvider>
-        );
-        render(
-            <Router history={history}>
-                <OneTimeDepositModal />
-            </Router>,
-            {
-                wrapper,
-            }
-        );
-        const live_chat = screen.getByTestId('dt_live_chat');
-        expect(live_chat).toBeInTheDocument();
-        userEvent.click(live_chat);
+        render(<OneTimeDepositModal />, {
+            wrapper: wrapper(mock),
+        });
+
+        expect(setIsAccountDeposited).toHaveBeenCalledWith(true);
+        expect(setShouldShowOneTimeDepositModal).toHaveBeenCalledWith(false);
+        expect(setShouldShowCryptoTransactionProcessingModal).toHaveBeenCalledWith(true);
     });
 });

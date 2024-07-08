@@ -31,7 +31,7 @@ const OneTimeDepositModal = observer(() => {
 
     // check the user already made a deposit
     React.useEffect(() => {
-        if (balance && Number(balance) > 10000) {
+        if (balance && Number(balance) > 0) {
             setIsAccountDeposited(true);
         }
 
@@ -46,7 +46,16 @@ const OneTimeDepositModal = observer(() => {
                 setShouldShowCryptoTransactionProcessingModal(true);
             }
         }
-    }, [balance, crypto_transactions, currency_config, is_cr_account, has_transactions, setIsAccountDeposited]);
+    }, [
+        balance,
+        crypto_transactions,
+        currency_config,
+        is_cr_account,
+        has_transactions,
+        setIsAccountDeposited,
+        setShouldShowOneTimeDepositModal,
+        setShouldShowCryptoTransactionProcessingModal,
+    ]);
 
     return (
         <React.Fragment>

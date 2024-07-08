@@ -5,17 +5,18 @@ import { useCryptoTransactions, useCurrentCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import DepositNowOrLaterModal from '../Modals/deposit-now-or-later-modal';
 import { OneTimeDepositModalContent } from './one-time-deposit-modal-content';
+import CryptoTransactionProcessingModal from '../CryptoTransactionProcessingModal';
 import './one-time-deposit-modal.scss';
 
 const OneTimeDepositModal = observer(() => {
     const { isDesktop } = useDevice();
-    const store = useStore();
-    const { client, ui } = store;
+    const { client, ui } = useStore();
     const { is_cr_account, is_logged_in, balance } = client;
     const {
         should_show_one_time_deposit_modal,
         setShouldShowOneTimeDepositModal,
         setShouldShowDepositNowOrLaterModal,
+        setShouldShowCryptoTransactionProcessingModal,
     } = ui;
 
     const currency_config = useCurrentCurrencyConfig();
@@ -36,7 +37,14 @@ const OneTimeDepositModal = observer(() => {
 
         // check crypto transactions
         if (is_cr_account && currency_config?.is_crypto && crypto_transactions && has_transactions) {
-            if (crypto_transactions?.some(tx => tx.is_deposit)) setIsAccountDeposited(true);
+            if (crypto_transactions?.some(tx => tx.is_deposit)) {
+                setIsAccountDeposited(true);
+            }
+
+            if (crypto_transactions?.some(tx => tx.is_deposit && tx.status_code === 'PENDING')) {
+                setShouldShowOneTimeDepositModal(false);
+                setShouldShowCryptoTransactionProcessingModal(true);
+            }
         }
     }, [balance, crypto_transactions, currency_config, is_cr_account, has_transactions, setIsAccountDeposited]);
 
@@ -50,6 +58,7 @@ const OneTimeDepositModal = observer(() => {
                     toggleModal={onCloseModal}
                     height='auto'
                     has_close_icon
+                    should_header_stick_body={false}
                 >
                     <Modal.Body className='one-time-deposit-modal__body'>
                         <OneTimeDepositModalContent is_crypto_account={is_crypto_account} />
@@ -68,6 +77,7 @@ const OneTimeDepositModal = observer(() => {
                 </MobileFullPageModal>
             )}
             <DepositNowOrLaterModal />
+            <CryptoTransactionProcessingModal />
         </React.Fragment>
     );
 });

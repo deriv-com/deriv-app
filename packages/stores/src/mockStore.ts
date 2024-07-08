@@ -473,6 +473,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_set_currency_modal_visible: false,
             should_show_deposit_now_or_later_modal: false,
             setShouldShowDepositNowOrLaterModal: jest.fn(),
+            should_show_crypto_transaction_processing_modal: false,
+            setShouldShowCryptoTransactionProcessingModal: jest.fn(),
         },
         traders_hub: {
             getAccount: jest.fn(),

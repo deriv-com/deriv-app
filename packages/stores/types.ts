@@ -817,6 +817,8 @@ type TUiStore = {
     is_set_currency_modal_visible: boolean;
     should_show_deposit_now_or_later_modal: boolean;
     setShouldShowDepositNowOrLaterModal: (value: boolean) => void;
+    should_show_crypto_transaction_processing_modal: boolean;
+    setShouldShowCryptoTransactionProcessingModal: (value: boolean) => void;
 };
 
 type TPortfolioStore = {

@@ -12,9 +12,6 @@ import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import PaymentMethodsList from '../payment-methods-list';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
-    buy_sell_store: {
-        show_advertiser_page: jest.fn(() => true),
-    },
     general_store: {
         active_index: 3,
     },

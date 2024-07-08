@@ -43,9 +43,6 @@ jest.mock('../payment-methods-empty', () => jest.fn(() => <div>PaymentMethodsEmp
 describe('<PaymentMethods />', () => {
     beforeEach(() => {
         mock_store = {
-            buy_sell_store: {
-                show_advertiser_page: jest.fn(() => true),
-            },
             general_store: {
                 active_index: 3,
                 setFormikRef: jest.fn(),

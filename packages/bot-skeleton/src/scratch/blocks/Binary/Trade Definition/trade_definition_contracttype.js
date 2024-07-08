@@ -34,7 +34,7 @@ Blockly.Blocks.trade_definition_contracttype = {
 
         const is_load_event = /^dbot-load/.test(event.group);
 
-        if (Blockly.Events.BLOCK_CHANGE) {
+        if (event.type === Blockly.Events.BLOCK_CHANGE) {
             if (event.name === 'TRADETYPE_LIST') {
                 const trade_type = event.newValue;
                 const contract_type_list = this.getField('TYPE_LIST');

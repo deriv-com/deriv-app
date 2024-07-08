@@ -212,17 +212,13 @@ runs:
       BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
       
       BUNDLE_SIZE_TOKEN="${{ inputs.BUNDLE_SIZE_TOKEN }}"
-      DATADOG_CLIENT_TOKEN="${{ inputs.DATADOG_CLIENT_TOKEN }}"
-      DATADOG_METRICS_URL="https://api.datadoghq.com/api/v1/series"
+      DATADOG_METRICS_URL="https://api.datadoghq.eu/api/v1/series"
       
       # Print out part of the BUNDLE_SIZE_TOKEN to validate its presence
       echo "Length of BUNDLE_SIZE_TOKEN: ${#BUNDLE_SIZE_TOKEN}"
 
-      # Print out part of the DATADOG_CLIENT_TOKEN to validate its presence
-      echo "Length of DATADOG_CLIENT_TOKEN: ${#DATADOG_CLIENT_TOKEN}"
-
-      if [ -z "$DATADOG_CLIENT_TOKEN" ]; then
-        echo "Error: DATADOG_CLIENT_TOKEN is not set."
+      if [ -z "$BUNDLE_SIZE_TOKEN" ]; then
+        echo "Error: BUNDLE_SIZE_TOKEN is not set."
         exit 1
       fi
 
@@ -235,7 +231,7 @@ runs:
         PACKAGE_NAME=$(_jq '.key')
         PACKAGE_SIZE=$(_jq '.value.newSize')
 
-        RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Content-type: application/json" -H "DD-API-KEY: $DATADOG_CLIENT_TOKEN" \
+        RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Content-type: application/json" -H "DD-API-KEY: $BUNDLE_SIZE_TOKEN" \
           -d '{
                 "series": [{
                   "metric": "bundle-sizes.deriv-app.package-size.'$PACKAGE_NAME'",

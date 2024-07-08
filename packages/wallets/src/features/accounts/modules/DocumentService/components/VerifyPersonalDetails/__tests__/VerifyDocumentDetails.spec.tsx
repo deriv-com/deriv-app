@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { useSettings } from '@deriv/api-v2';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { FlowProvider, FlowTextField } from '../../../../../components';
+import { FlowProvider, FormField } from '../../../../../components';
 import VerifyDocumentDetails from '../VerifyDocumentDetails';
 
 jest.mock('@deriv/api-v2', () => ({
@@ -29,7 +29,7 @@ describe('IDVDocumentUploadDetails', () => {
                         test: 'default',
                     }}
                     screens={{
-                        test: <FlowTextField name='test' />,
+                        test: <FormField name='test' />,
                     }}
                 >
                     {() => {
@@ -63,7 +63,7 @@ describe('IDVDocumentUploadDetails', () => {
                         test: 'default',
                     }}
                     screens={{
-                        test: <FlowTextField name='test' />,
+                        test: <FormField name='test' />,
                     }}
                 >
                     {() => {
@@ -102,7 +102,7 @@ describe('IDVDocumentUploadDetails', () => {
                         test: 'default',
                     }}
                     screens={{
-                        onfidoScreen: <FlowTextField name='onfido' />,
+                        onfidoScreen: <FormField name='onfido' />,
                     }}
                 >
                     {() => {
@@ -149,7 +149,7 @@ describe('IDVDocumentUploadDetails', () => {
                         test: 'default',
                     }}
                     screens={{
-                        onfidoScreen: <FlowTextField name='onfido' />,
+                        onfidoScreen: <FormField name='onfido' />,
                     }}
                 >
                     {() => {

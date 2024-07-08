@@ -11,23 +11,23 @@ const PositionsLoader = ({ initial_app_loading, is_closed_tab }: TPositionsLoade
         <div className='loading-dtrader-v2__positions' data-testid='dt_positions_loader'>
             {initial_app_loading && (
                 <div className='skeleton-box__tabs' data-testid='dt_tabs_skeleton'>
-                    {Array.from(new Array(2)).map((_, idx) => {
+                    {[...new Array(2)].map((_, idx) => {
                         return <Skeleton key={idx} width={56} height={22} />;
                     })}
                 </div>
             )}
             <div className='skeleton-box__filters'>
-                {Array.from(new Array(is_closed_tab ? 2 : 1)).map((_, idx) => {
+                {[...new Array(is_closed_tab ? 2 : 1)].map((_, idx) => {
                     return <Skeleton key={idx} width={144} height={32} />;
                 })}
             </div>
             <div className='skeleton-box__total-pnl-or-date'>
-                {Array.from(new Array(is_closed_tab ? 1 : 2)).map((_, idx) => {
+                {[...new Array(is_closed_tab ? 1 : 2)].map((_, idx) => {
                     return <Skeleton key={idx} width={idx === 0 ? 112 : 68} height={22} />;
                 })}
             </div>
             <div className='skeleton-box__contract-cards'>
-                {Array.from(new Array(7)).map((_, idx) => (
+                {[...new Array(7)].map((_, idx) => (
                     <Skeleton key={idx} height={104} />
                 ))}
             </div>

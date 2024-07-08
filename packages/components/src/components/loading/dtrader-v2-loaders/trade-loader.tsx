@@ -5,7 +5,7 @@ const TradeLoader = () => {
     return (
         <div className='loading-dtrader-v2__trade' data-testid='dt_trade_loader'>
             <div className='skeleton-box__trade-types'>
-                {Array.from(new Array(6)).map((_, idx) => (
+                {[...new Array(6)].map((_, idx) => (
                     <Skeleton key={idx} width={88} height={32} />
                 ))}
             </div>
@@ -18,7 +18,7 @@ const TradeLoader = () => {
                     <Skeleton width={96} height={32} />
                 </div>
                 <div className='skeleton-box__trade-params-column'>
-                    {Array.from(new Array(3)).map((_, idx) => (
+                    {[...new Array(3)].map((_, idx) => (
                         <Skeleton key={idx} height={56} />
                     ))}
                 </div>

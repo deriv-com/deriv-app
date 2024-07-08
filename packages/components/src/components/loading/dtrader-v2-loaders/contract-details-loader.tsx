@@ -12,7 +12,7 @@ const ContractDetailsLoader = () => {
             <div className='skeleton-box__details'>
                 <Skeleton width={136} height={24} />
                 <div>
-                    {Array.from(new Array(4)).map((_, idx) => {
+                    {[...new Array(4)].map((_, idx) => {
                         return (
                             <div key={idx} className='skeleton-box__details-row'>
                                 <Skeleton width={88} height={22} />
@@ -29,13 +29,13 @@ const ContractDetailsLoader = () => {
             <div className='skeleton-box__details'>
                 <Skeleton width={136} height={24} />
                 <div>
-                    {Array.from(new Array(2)).map((_, idx) => {
+                    {[...new Array(2)].map((_, idx) => {
                         return (
                             <div key={idx} className='skeleton-box__details-row'>
                                 <Skeleton width={88} height={18} />
                                 <div className='skeleton-box__details-column'>
                                     <Skeleton width={88} height={22} />
-                                    {Array.from(new Array(idx === 0 ? 1 : 2)).map((_, idx) => (
+                                    {[...new Array(idx === 0 ? 1 : 2)].map((_, idx) => (
                                         <Skeleton key={idx} width={72} height={16} />
                                     ))}
                                 </div>

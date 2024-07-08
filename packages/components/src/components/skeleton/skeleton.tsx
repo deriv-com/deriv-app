@@ -26,7 +26,7 @@ const Skeleton = ({
     if (VARIANT.PARAGRAPH && rows) {
         return (
             <div className='skeleton-paragraph' data-testid='dt_skeleton_paragraph' style={{ gap: gap ?? 8 }}>
-                {Array.from(new Array(rows)).map((_, idx) => {
+                {[...new Array(rows)].map((_, idx) => {
                     return (
                         <div
                             key={idx}

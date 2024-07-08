@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Divider, WalletButton, WalletText } from '../../../../../../components/Base';
+import { Divider } from '@deriv-com/ui';
+import { WalletButton, WalletText } from '../../../../../../components/Base';
 import { THooks } from '../../../../../../types';
 import { CryptoTransaction } from '../CryptoTransaction';
 
@@ -26,11 +27,16 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({ transac
                         <React.Fragment key={transaction.id}>
                             <CryptoTransaction
                                 currencyDisplayCode={wallet.currency_config?.code || ''}
+                                currencyDisplayFraction={wallet.currency_config?.fractional_digits || 0}
                                 key={transaction.id}
                                 transaction={transaction}
                             />
                             <Divider
-                                color={index < filteredTransactions.length - 1 && index < 2 ? '#e6e9e9' : '#d6dadb'}
+                                color={
+                                    index < filteredTransactions.length - 1 && index < 2
+                                        ? 'var(--wallets-banner-border-color)'
+                                        : 'var(--general-active)'
+                                }
                             />
                         </React.Fragment>
                     ))}
@@ -54,7 +60,7 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({ transac
             ) : (
                 <React.Fragment>
                     <WalletText size='sm'>No recent transactions.</WalletText>
-                    <Divider color='#d6dadb' /> {/* --color-grey-5 */}
+                    <Divider />
                 </React.Fragment>
             )}
         </React.Fragment>

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Button, Icon, Money, Popover, Table, Text } from '@deriv/components';
-import { epochToMoment, formatMoney, isMobile } from '@deriv/shared';
+import { epochToMoment, formatMoney } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import { getStatus } from '../../constants/transaction-status';
@@ -14,11 +14,12 @@ type TTransactionsCryptoRendererProps = {
 };
 
 const TransactionsCryptoRenderer = observer(({ row: crypto, onTooltipClick }: TTransactionsCryptoRendererProps) => {
-    const { client } = useStore();
+    const { client, ui } = useStore();
     const { transaction_history } = useCashierStore();
     const { cancelCryptoTransaction, showTransactionsCryptoCancelModal, showTransactionsCryptoStatusModal } =
         transaction_history;
     const { currency } = client;
+    const { is_desktop } = ui;
 
     const {
         address_hash,
@@ -37,7 +38,7 @@ const TransactionsCryptoRenderer = observer(({ row: crypto, onTooltipClick }: TT
         ? `${address_hash.substring(0, 4)}....${address_hash.substring(address_hash.length - 4)}`
         : '';
     const formatted_amount = transaction_type === 'withdrawal' ? `-${amount}` : `+${amount}`;
-    const formatted_submit_date = isMobile()
+    const formatted_submit_date = !is_desktop
         ? epochToMoment(submit_date).format('DD MMM YYYY')
         : epochToMoment(submit_date).format('DD MMM YYYY HH:mm:ss [GMT]');
     const formatted_submit_time = epochToMoment(submit_date).format('HH:mm:ss [GMT]');
@@ -70,7 +71,7 @@ const TransactionsCryptoRenderer = observer(({ row: crypto, onTooltipClick }: TT
             <Localize i18n_default_text='Deposit' />
         );
 
-    if (status && isMobile()) {
+    if (status && !is_desktop) {
         return (
             <div>
                 <Table.Row className='transactions-crypto-history__table-row'>

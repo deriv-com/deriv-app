@@ -29,7 +29,7 @@ const Real = observer(() => {
             {should_show_loader && <Loading className='real__loader' />}
             {iframe_url && (
                 <iframe
-                    className='cashier__content'
+                    className='real__iframe'
                     height={iframe_height}
                     src={`${iframe_url}&DarkMode=${is_dark_mode_on ? 'on' : 'off'}`}
                     frameBorder='0'

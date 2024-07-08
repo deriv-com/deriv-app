@@ -3,14 +3,14 @@
         position: relative;
         height: 18rem;
         display: flex;
-        padding: 2.4rem;
+        justify-content: space-between;
         margin-block: 2.4rem;
         overflow: hidden;
         background-color: var(--general-section-1);
         border: 1px solid var(--wallets-banner-border-color);
         border-radius: $BORDER_RADIUS * 4;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             height: 14.2rem;
             padding: 1.6rem;
             border-radius: $BORDER_RADIUS * 2;
@@ -22,6 +22,11 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        padding: 2.4rem;
+
+        @include mobile-or-tablet-screen {
+            padding: unset;
+        }
     }
 
     &-upgrade {
@@ -30,7 +35,7 @@
             justify-content: center;
             gap: 1.6rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 20rem;
             }
         }
@@ -38,20 +43,23 @@
         &__button {
             padding-inline: 6.7rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding-inline: 1.6rem;
                 padding-block: 0.6rem;
             }
         }
 
         &__image {
-            position: absolute;
-            top: 0;
-            right: 8rem;
+            margin-inline-end: 9rem;
 
             @include mobile {
-                top: -2.6rem;
-                right: -5.35rem;
+                margin-top: -2.6rem;
+                margin-inline-end: -5.35rem;
+            }
+
+            @include tablet-screen {
+                margin-top: unset;
+                margin-inline-end: unset;
             }
         }
     }
@@ -61,13 +69,13 @@
             width: 48.6rem;
             justify-content: space-between;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 20rem;
             }
         }
 
         &__description {
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 15.1rem;
             }
         }
@@ -80,7 +88,7 @@
             align-items: center;
             gap: 0.6rem;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 3.2rem;
                 height: 3.2rem;
             }
@@ -108,20 +116,23 @@
             border-radius: 50%;
             background-color: var(--wallets-banner-dot-color);
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 height: 0.5rem;
                 width: 0.5rem;
             }
         }
 
         &__image {
-            position: absolute;
-            top: 0;
-            right: 8rem;
+            margin-inline-end: 9rem;
 
             @include mobile {
-                top: -2.6rem;
-                right: -5.35rem;
+                margin-top: -2.6rem;
+                margin-inline-end: -5.35rem;
+            }
+
+            @include tablet-screen {
+                margin-top: unset;
+                margin-inline-end: unset;
             }
         }
     }
@@ -133,7 +144,7 @@
             gap: 0.8rem;
             z-index: 1;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 width: 17rem;
             }
         }
@@ -143,12 +154,14 @@
         }
 
         &__image {
-            position: absolute;
-            right: 7.5rem;
-            top: 0;
+            margin-inline-end: 7.5rem;
 
             @include mobile {
-                right: -3rem;
+                margin-inline-end: -3rem;
+            }
+
+            @include tablet-screen {
+                margin-inline-end: unset;
             }
         }
     }

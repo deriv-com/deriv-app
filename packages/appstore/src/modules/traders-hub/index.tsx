@@ -180,7 +180,7 @@ const TradersHub = observer(() => {
 
     return (
         <React.Fragment>
-            <Div100vhContainer className='traders-hub--mobile' height_offset='50px' is_disabled={isDesktop}>
+            <Div100vhContainer className='traders-hub--mobile' height_offset='40px' is_disabled={isDesktop}>
                 {can_show_notify && <Notifications />}
                 <div
                     id='traders-hub'

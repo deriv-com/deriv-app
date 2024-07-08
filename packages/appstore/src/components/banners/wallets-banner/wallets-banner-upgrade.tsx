@@ -5,7 +5,7 @@ import { Localize, localize } from '@deriv/translations';
 
 const WalletsBannerUpgrade = observer(() => {
     const { traders_hub, ui } = useStore();
-    const { is_mobile } = ui;
+    const { is_desktop, is_mobile } = ui;
     const { toggleWalletsUpgrade } = traders_hub;
 
     return (
@@ -15,8 +15,8 @@ const WalletsBannerUpgrade = observer(() => {
                     <Localize
                         i18n_default_text='<0>Wallets</0><1> — A smarter way to manage your funds</1>'
                         components={[
-                            <Text key={0} weight='bold' size={is_mobile ? 'xs' : 'm'} />,
-                            <Text key={1} size={is_mobile ? 'xs' : 'm'} />,
+                            <Text key={0} weight='bold' size={is_desktop ? 'm' : 'xs'} />,
+                            <Text key={1} size={is_desktop ? 'm' : 'xs'} />,
                         ]}
                     />
                 </div>
@@ -30,7 +30,7 @@ const WalletsBannerUpgrade = observer(() => {
             </div>
             <Icon
                 icon={`IcAppstoreWalletsUpgradeCoins${is_mobile ? '' : 'Horizontal'}`}
-                width={is_mobile ? 220 : 448}
+                width={is_desktop ? 448 : 220}
                 height={is_mobile ? 220 : '100%'}
                 className='wallets-banner-upgrade__image'
                 data_testid={`dt_wallets_upgrade_coins${is_mobile ? '' : '_horizontal'}`}

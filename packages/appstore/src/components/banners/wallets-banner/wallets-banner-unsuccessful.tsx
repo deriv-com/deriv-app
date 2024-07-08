@@ -5,7 +5,7 @@ import { Localize } from '@deriv/translations';
 
 const WalletBannerUnsuccessful = observer(() => {
     const { traders_hub, ui } = useStore();
-    const { is_mobile } = ui;
+    const { is_desktop, is_mobile } = ui;
     const { toggleWalletsUpgrade } = traders_hub;
 
     return (
@@ -16,8 +16,8 @@ const WalletBannerUnsuccessful = observer(() => {
                     components={[
                         <Text
                             key={0}
-                            line_height={is_mobile ? 's' : 'm'}
-                            size={is_mobile ? 'xs' : 'sm'}
+                            line_height={is_desktop ? 'm' : 's'}
+                            size={is_desktop ? 'sm' : 'xs'}
                             weight='bold'
                         />,
                     ]}
@@ -26,13 +26,13 @@ const WalletBannerUnsuccessful = observer(() => {
                     <Localize
                         i18n_default_text='<0>We’re unable to upgrade you to Wallets at this time and are working to get this fixed as soon as we can. Please </0><1>try again</1><0>.</0>'
                         components={[
-                            <Text key={0} line_height='s' size={is_mobile ? 'xxxs' : 'xs'} />,
+                            <Text key={0} line_height='s' size={is_desktop ? 'xs' : 'xxxs'} />,
                             <Text
                                 key={1}
                                 className='wallets-banner-unsuccessful__clickable-text'
                                 color='red'
                                 line_height='s'
-                                size={is_mobile ? 'xxxs' : 'xs'}
+                                size={is_desktop ? 'xs' : 'xxxs'}
                                 weight='bold'
                                 onClick={() => toggleWalletsUpgrade(true)}
                             />,

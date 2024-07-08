@@ -41,7 +41,7 @@ const EmploymentTaxInfo = ({
     goToNextStep,
     real_account_signup_target,
 }: TEmploymentTaxInfoProps) => {
-    const { isMobile } = useDevice();
+    const { isMobile, isDesktop } = useDevice();
     const scroll_div_ref = useRef(null);
     const { tin_validation_config, mutate } = useTinValidations();
 
@@ -94,11 +94,11 @@ const EmploymentTaxInfo = ({
                                 />
                             </ThemedScrollbars>
                         </Div100vhContainer>
-                        <Modal.Footer has_separator is_bypassed={isMobile}>
+                        <Modal.Footer has_separator is_bypassed={!isDesktop}>
                             <FormSubmitButton
                                 is_disabled={isSubmitting}
                                 label={localize('Next')}
-                                is_absolute={isMobile}
+                                is_absolute={!isDesktop}
                                 has_cancel
                                 cancel_label={localize('Previous')}
                                 onCancel={() => handleCancel(values)}

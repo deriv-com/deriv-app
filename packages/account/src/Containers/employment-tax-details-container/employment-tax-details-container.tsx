@@ -30,7 +30,7 @@ const EmploymentTaxDetailsContainer = ({
     handleChange,
 }: TEmploymentTaxDetailsContainerProps) => {
     const { values, setFieldValue, touched, errors, setValues, validateField } = useFormikContext<FormikValues>();
-    const { isMobile } = useDevice();
+    const { isDesktop } = useDevice();
     const { data: residence_list } = useResidenceList();
 
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = useState(false);
@@ -137,7 +137,7 @@ const EmploymentTaxDetailsContainer = ({
                     label={localize('I do not have tax information')}
                     withTabIndex={0}
                     data-testid='confirm_no_tax_details'
-                    label_font_size={isMobile ? 'xxs' : 'xs'}
+                    label_font_size={!isDesktop ? 'xxs' : 'xs'}
                     label_line_height='m'
                 />
             )}
@@ -176,7 +176,7 @@ const EmploymentTaxDetailsContainer = ({
                 withTabIndex={0}
                 data-testid='tax_identification_confirm'
                 has_error={!!(touched.tax_identification_confirm && errors.tax_identification_confirm)}
-                label_font_size={isMobile ? 'xxs' : 'xs'}
+                label_font_size={!isDesktop ? 'xxs' : 'xs'}
                 label_line_height='m'
                 disabled={is_tax_details_confirm_disabled}
             />

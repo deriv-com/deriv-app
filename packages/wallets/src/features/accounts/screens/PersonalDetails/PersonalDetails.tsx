@@ -2,8 +2,8 @@ import React, { useEffect, useMemo } from 'react';
 import * as Yup from 'yup';
 import { useResidenceList, useSettings } from '@deriv/api-v2';
 import { LegacyChevronDown1pxIcon } from '@deriv/quill-icons';
-import { Dropdown } from '@deriv-com/ui';
-import { FlowTextField, InlineMessage, Loader, useFlow, WalletText } from '../../../../components';
+import { Dropdown, Loader } from '@deriv-com/ui';
+import { FlowTextField, InlineMessage, useFlow, WalletText } from '../../../../components';
 import { accountOpeningReasonList } from './constants';
 import './PersonalDetails.scss';
 

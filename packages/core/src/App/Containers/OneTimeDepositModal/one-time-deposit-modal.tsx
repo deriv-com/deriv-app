@@ -5,7 +5,7 @@ import { useCryptoTransactions, useCurrentCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import DepositNowOrLaterModal from '../Modals/deposit-now-or-later-modal';
 import { OneTimeDepositModalContent } from './one-time-deposit-modal-content';
-import CryptoTransactionProcessingModal from '../CryptoTransactionProcessingModal';
+import CryptoTransactionProcessingModal from '../Modals/crypto-transaction-processing-modal';
 import './one-time-deposit-modal.scss';
 
 const OneTimeDepositModal = observer(() => {

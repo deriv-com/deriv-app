@@ -56,7 +56,7 @@ jest.mock('../one-time-deposit-modal-content', () => ({
 }));
 
 jest.mock('../../Modals/deposit-now-or-later-modal', () => jest.fn(() => <div>DepositNowOrLater</div>));
-jest.mock('../../CryptoTransactionProcessingModal', () => jest.fn(() => <div>Crypto</div>));
+jest.mock('../../Modals/crypto-transaction-processing-modal', () => jest.fn(() => <div>Crypto</div>));
 
 describe('<OneTimeDepositModal />', () => {
     const setIsAccountDeposited = jest.fn();

@@ -189,6 +189,20 @@
     }
 }
 
+.animation__wrapper {
+    .animation {
+        &__button#db-animation {
+            &__run-button {
+                background-color: var(--purchase-main-1);
+            }
+
+            &__stop-button {
+                background-color: var(--button-primary-hover);
+            }
+        }
+    }
+}
+
 .bot-stopped-dialog {
     @include mobile {
         padding: 2rem;

@@ -1,7 +1,8 @@
-import React from 'react';
+import { MutableRefObject } from 'react';
 import * as Yup from 'yup';
 import { TSocketError } from '@deriv/api/types';
-import { deriv_urls, getOSNameWithUAParser } from '@deriv/shared';
+import { getOSNameWithUAParser } from '@deriv/shared';
+import { URLConstants } from '@deriv-com/utils';
 import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { TServerError } from '../../../Types';
@@ -34,7 +35,7 @@ export const getPasskeyRenameValidationSchema = () =>
             .matches(/^[A-Za-z0-9][A-Za-z0-9\s-]*$/, localize('Only letters, numbers, space, and hyphen are allowed.')),
     });
 
-export const clearTimeOut = (timeout_ref: React.MutableRefObject<NodeJS.Timeout | null>) => {
+export const clearTimeOut = (timeout_ref: MutableRefObject<NodeJS.Timeout | null>) => {
     if (timeout_ref.current) clearTimeout(timeout_ref.current);
 };
 
@@ -52,9 +53,12 @@ export const passkeysMenuActionEventTrack = (
 };
 
 export const setPasskeysStatusToCookie = (status: 'available' | 'not_available') => {
-    const domain = /deriv\.(com|dev)/.test(window.location.hostname)
-        ? deriv_urls.DERIV_HOST_NAME
-        : window.location.hostname;
+    let domain = /deriv.com/.test(window.location.hostname) ? URLConstants.derivHost : window.location.hostname;
+
+    if (/deriv.dev/.test(window.location.hostname)) {
+        //set domain for dev environment (FE deployment and login page on qa-box)
+        domain = 'deriv.dev';
+    }
 
     const expirationDate = new Date();
     expirationDate.setFullYear(expirationDate.getFullYear() + 1); // Set to expire in 1 year

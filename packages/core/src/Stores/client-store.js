@@ -33,6 +33,8 @@ import {
     getUrlP2P,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
+import { URLConstants } from '@deriv-com/utils';
+
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
 
 import { requestLogout, WS } from 'Services';
@@ -2716,9 +2718,14 @@ export default class ClientStore extends BaseStore {
                 if (data?.passkeys_list?.length === 0) {
                     this.setShouldShowEffortlessLoginModal(true);
                 } else {
-                    const domain = /deriv\.(com|dev)/.test(window.location.hostname)
-                        ? deriv_urls.DERIV_HOST_NAME
+                    let domain = /deriv.com/.test(window.location.hostname)
+                        ? URLConstants.derivHost
                         : window.location.hostname;
+
+                    if (/deriv.dev/.test(window.location.hostname)) {
+                        //set domain for dev environment (FE deployment and login page on qa-box)
+                        domain = 'deriv.dev';
+                    }
 
                     const expirationDate = new Date();
                     expirationDate.setFullYear(expirationDate.getFullYear() + 1); // Set to expire in 1 year

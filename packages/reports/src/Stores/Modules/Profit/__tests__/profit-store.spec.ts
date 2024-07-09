@@ -105,27 +105,31 @@ describe('ProfitTableStore', () => {
         mockedProfitTableStore = new ProfitTableStore({
             root_store: mockStore({}) as TCoreStores,
         });
-        mockedProfitTableStore.onMount();
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
     });
 
     describe('is_empty', () => {
+        beforeEach(() => {
+            mockedProfitTableStore.onMount();
+        });
+        it('should return false if is_loading={false} but data is non-empty, regardless of is_loading value', () => {
+            expect(mockedProfitTableStore.data).toEqual([multiplier_contract, rise_contract]);
+            expect(mockedProfitTableStore.is_loading).toEqual(false);
+
+            expect(mockedProfitTableStore.is_empty).toBe(false);
+
+            mockedProfitTableStore.is_loading = true;
+
+            expect(mockedProfitTableStore.is_empty).toBe(false);
+        });
         it('should return true if is_loading={false} and data is empty', () => {
             mockedProfitTableStore.is_loading = false;
             mockedProfitTableStore.data = [];
 
             expect(mockedProfitTableStore.is_empty).toBe(true);
-        });
-        it('should return false if is_loading={false} but data is non-empty', () => {
-            expect(mockedProfitTableStore.data).toEqual([multiplier_contract, rise_contract]);
-            expect(mockedProfitTableStore.is_loading).toEqual(false);
-
-            expect(mockedProfitTableStore.is_empty).toBe(false);
-        });
-        it('should return false if is_loading={true} but data is non-empty', () => {
-            expect(mockedProfitTableStore.data).toEqual([multiplier_contract, rise_contract]);
-            mockedProfitTableStore.is_loading = true;
-
-            expect(mockedProfitTableStore.is_empty).toBe(false);
         });
     });
     describe('has_selected_date', () => {
@@ -145,20 +149,20 @@ describe('ProfitTableStore', () => {
     });
     describe('shouldFetchNextBatch', () => {
         it('should return true if has_loaded_all={false} and is_loading={false}', () => {
-            expect(mockedProfitTableStore.is_loading).toBe(false);
-            mockedProfitTableStore.has_loaded_all = false;
+            expect(mockedProfitTableStore.has_loaded_all).toBe(false);
+            mockedProfitTableStore.is_loading = false;
 
             expect(mockedProfitTableStore.shouldFetchNextBatch()).toBe(true);
         });
         it('should return false if has_loaded_all or is_loading are true', () => {
-            expect(mockedProfitTableStore.is_loading).toBe(false);
-            expect(mockedProfitTableStore.has_loaded_all).toBe(true);
+            mockedProfitTableStore.is_loading = false;
+            mockedProfitTableStore.has_loaded_all = true;
 
             expect(mockedProfitTableStore.shouldFetchNextBatch()).toBe(false);
         });
         it('should return true if has_loaded_all or is_loading are true but called with true is_mounting param', () => {
-            expect(mockedProfitTableStore.is_loading).toBe(false);
-            expect(mockedProfitTableStore.has_loaded_all).toBe(true);
+            mockedProfitTableStore.is_loading = false;
+            mockedProfitTableStore.has_loaded_all = true;
 
             expect(mockedProfitTableStore.shouldFetchNextBatch(true)).toBe(true);
         });
@@ -168,23 +172,24 @@ describe('ProfitTableStore', () => {
             const spyWSProfitTable = jest.spyOn(WS, 'profitTable');
             const spyProfitTableResponseHandler = jest.spyOn(mockedProfitTableStore, 'profitTableResponseHandler');
 
-            expect(mockedProfitTableStore.is_loading).toBe(false);
-            mockedProfitTableStore.has_loaded_all = false;
+            expect(mockedProfitTableStore.has_loaded_all).toBe(false);
+            mockedProfitTableStore.is_loading = false;
 
             mockedProfitTableStore.fetchNextBatch();
 
             expect(spyWSProfitTable).toBeCalled();
             await waitFor(() => expect(spyProfitTableResponseHandler).toBeCalled());
         });
-        // it('should not make profitTable call or call profitTableResponseHandler if shouldFetchNextBatch() returns false', () => {
-        //     const spyWSProfitTable = jest.spyOn(WS, 'profitTable');
-        //     const spyProfitTableResponseHandler = jest.spyOn(mockedProfitTableStore, 'profitTableResponseHandler');
+        it('should not make profitTable call or call profitTableResponseHandler if shouldFetchNextBatch() returns false', () => {
+            const spyWSProfitTable = jest.spyOn(WS, 'profitTable');
+            const spyProfitTableResponseHandler = jest.spyOn(mockedProfitTableStore, 'profitTableResponseHandler');
 
-        //     mockedProfitTableStore.fetchNextBatch();
+            expect(mockedProfitTableStore.is_loading).toBe(true);
+            mockedProfitTableStore.fetchNextBatch();
 
-        //     expect(spyWSProfitTable).not.toBeCalled();
-        //     expect(spyProfitTableResponseHandler).not.toBeCalled();
-        // });
+            expect(spyWSProfitTable).not.toBeCalled();
+            expect(spyProfitTableResponseHandler).not.toBeCalled();
+        });
     });
     // describe('profitTableResponseHandler', () => {
     //     it('should call disposeSwitchAccount and unsubscribe from proposal API', () => {
@@ -218,21 +223,21 @@ describe('ProfitTableStore', () => {
     // });
     describe('networkStatusChangeListener', () => {
         it('should set is_loading to false if is_online param value is true while is_loading={false}', () => {
-            expect(mockedProfitTableStore.is_loading).toBe(false);
+            mockedProfitTableStore.is_loading = false;
 
             mockedProfitTableStore.networkStatusChangeListener(true);
 
             expect(mockedProfitTableStore.is_loading).toBe(false);
         });
         it('should set is_loading to true if is_online param value is false while is_loading={false}', () => {
-            expect(mockedProfitTableStore.is_loading).toBe(false);
+            mockedProfitTableStore.is_loading = false;
 
             mockedProfitTableStore.networkStatusChangeListener(false);
 
             expect(mockedProfitTableStore.is_loading).toBe(true);
         });
         it('should set is_loading to true if is_loading={true} regardless of the is_online param', () => {
-            mockedProfitTableStore.is_loading = true;
+            expect(mockedProfitTableStore.is_loading).toBe(true);
 
             mockedProfitTableStore.networkStatusChangeListener(false);
 
@@ -264,8 +269,12 @@ describe('ProfitTableStore', () => {
         });
     });
     describe('totals', () => {
-        it('should return total profit_loss of all transactions', () => {
-            expect(mockedProfitTableStore.totals).toEqual({ profit_loss: '-2.09' });
+        it('should return total profit_loss of all transactions', async () => {
+            mockedProfitTableStore.onMount();
+
+            await waitFor(() => {
+                expect(mockedProfitTableStore.totals).toEqual({ profit_loss: '-2.09' });
+            });
         });
     });
     describe('accountSwitcherListener', () => {
@@ -273,6 +282,7 @@ describe('ProfitTableStore', () => {
             const spyClearTable = jest.spyOn(mockedProfitTableStore, 'clearTable');
             const spyClearDateFilter = jest.spyOn(mockedProfitTableStore, 'clearDateFilter');
             const spyFetchNextBatch = jest.spyOn(mockedProfitTableStore, 'fetchNextBatch');
+
             mockedProfitTableStore.accountSwitcherListener();
 
             expect(spyClearTable).toHaveBeenCalled();
@@ -281,13 +291,17 @@ describe('ProfitTableStore', () => {
         });
     });
     describe('clearTable', () => {
-        it('should clear data, has_loaded_all & is_loading', () => {
-            expect(mockedProfitTableStore.data).toEqual([multiplier_contract, rise_contract]);
+        it('should clear data, has_loaded_all & is_loading', async () => {
+            mockedProfitTableStore.onMount();
 
-            mockedProfitTableStore.clearTable();
-            expect(mockedProfitTableStore.data).toEqual([]);
-            expect(mockedProfitTableStore.has_loaded_all).toBe(false);
-            expect(mockedProfitTableStore.is_loading).toBe(false);
+            await waitFor(() => {
+                expect(mockedProfitTableStore.data).toEqual([multiplier_contract, rise_contract]);
+
+                mockedProfitTableStore.clearTable();
+                expect(mockedProfitTableStore.data).toEqual([]);
+                expect(mockedProfitTableStore.has_loaded_all).toBe(false);
+                expect(mockedProfitTableStore.is_loading).toBe(false);
+            });
         });
     });
     describe('clearDateFilter', () => {

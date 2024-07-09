@@ -9,7 +9,7 @@ import {
     getGrowthRatePercentage,
     toMoment,
 } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { useLocalize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import {
     getOpenPositionsColumnsTemplate,
@@ -171,6 +171,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     } = ui;
     const { server_time } = common;
     const { getContractById } = contract_trade;
+    const { localize } = useLocalize();
 
     const store_props = {
         onClickRemove,
@@ -190,23 +191,23 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     const { isDesktop } = useDevice();
     const previous_active_positions = usePrevious(active_positions);
     const contract_types = [
-        { text: localize('Options'), is_default: !is_multiplier && !is_accumulator },
-        { text: localize('Multipliers'), is_default: is_multiplier },
-        { text: localize('Accumulators'), is_default: is_accumulator },
+        { text: 'Options', is_default: !is_multiplier && !is_accumulator },
+        { text: 'Multipliers', is_default: is_multiplier },
+        { text: 'Accumulators', is_default: is_accumulator },
     ];
     const [contract_type_value, setContractTypeValue] = React.useState(
-        contract_types.find(type => type.is_default)?.text || localize('Options')
+        contract_types.find(type => type.is_default)?.text || 'Options'
     );
     const prev_contract_type_value = usePrevious(contract_type_value);
-    const accumulator_rates = [localize('All growth rates'), '1%', '2%', '3%', '4%', '5%'];
+    const accumulator_rates = ['All growth rates', '1%', '2%', '3%', '4%', '5%'];
     const [accumulator_rate, setAccumulatorRate] = React.useState(accumulator_rates[0]);
     const prev_accumulator_rate = usePrevious(accumulator_rate);
     const is_accumulator_selected = contract_type_value === contract_types[2].text;
     const is_multiplier_selected = contract_type_value === contract_types[1].text;
     const contract_types_list = contract_types
-        .filter(contract_type => contract_type.text !== localize('Accumulators') || !hide_accu_in_dropdown)
-        .map(({ text }) => ({ text, value: text }));
-    const accumulators_rates_list = accumulator_rates.map(value => ({ text: value, value }));
+        .filter(contract_type => contract_type.text !== 'Accumulators' || !hide_accu_in_dropdown)
+        .map(({ text }) => ({ text: localize(text), value: text }));
+    const accumulators_rates_list = accumulator_rates.map(value => ({ text: localize(value), value }));
     const active_positions_filtered = active_positions?.filter(({ contract_info }) => {
         if (contract_info) {
             if (is_multiplier_selected) return isMultiplierContract(contract_info.contract_type || '');

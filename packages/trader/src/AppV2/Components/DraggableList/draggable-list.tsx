@@ -38,31 +38,24 @@ const DraggableList: React.FC<DraggableListProps> = ({ categories, onRightIconCl
 
         const source_items = Array.from(source_category.items);
         const [moved_item] = source_items.splice(result.source.index, 1);
+        const new_category_list = Array.from(category_list);
 
         if (source_category_index === dest_category_index) {
             source_items.splice(result.destination.index, 0, moved_item);
-            const new_category_list = Array.from(category_list);
-            new_category_list[source_category_index] = {
-                ...source_category,
-                items: source_items,
-            };
-            setCategoryList(new_category_list);
         } else {
             const dest_items = Array.from(dest_category.items);
             dest_items.splice(result.destination.index, 0, moved_item);
-
-            const new_category_list = Array.from(category_list);
-            new_category_list[source_category_index] = {
-                ...source_category,
-                items: source_items,
-            };
             new_category_list[dest_category_index] = {
                 ...dest_category,
                 items: dest_items,
             };
-
-            setCategoryList(new_category_list);
         }
+
+        new_category_list[source_category_index] = {
+            ...source_category,
+            items: source_items,
+        };
+        setCategoryList(new_category_list);
     };
 
     React.useEffect(() => {

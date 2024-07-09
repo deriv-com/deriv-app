@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHover } from 'usehooks-ts';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import useDevice from '../../../../../../../hooks/useDevice';
 import DepositCryptoAddress from '../DepositCryptoAddress';
 
@@ -33,6 +34,7 @@ describe('DepositCryptoAddress', () => {
     it('should show copy text when hovering', () => {
         (useHover as jest.Mock).mockReturnValue(true);
         render(<DepositCryptoAddress depositCryptoAddress='1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa' />);
+        userEvent.hover(screen.getByRole('button'));
         expect(screen.getByText('Copy')).toBeInTheDocument();
     });
 });

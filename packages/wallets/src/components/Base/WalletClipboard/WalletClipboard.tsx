@@ -34,7 +34,7 @@ const WalletClipboard = ({ popoverAlignment = 'right', textCopy }: TProps) => {
             as='button'
             onClick={onClick}
             tooltipContainerClassName={isMobile ? 'wallets-clipboard--hidden' : 'wallets-clipboard'}
-            tooltipContent={isCopied ? 'Copied' : 'Copy'}
+            tooltipContent={isCopied ? 'Copied!' : 'Copy'}
             tooltipPosition={popoverAlignment}
         >
             {isCopied ? (

@@ -63,6 +63,8 @@ describe('ProfitTableStore', () => {
     let mockedProfitTableStore: ProfitTableStore;
 
     const default_date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
+    const filtered_contract_types = ['MULTUP', 'MULTDOWN'];
+    const mocked_error = 'Test error';
     const mocked_loginid = 'test_loginid';
     const multiplier_contract = {
         app_id: 16929,
@@ -113,7 +115,7 @@ describe('ProfitTableStore', () => {
                 },
                 modules: {
                     positions: {
-                        filteredContractTypes: ['CALL', 'PUT'],
+                        filteredContractTypes: filtered_contract_types,
                     },
                 },
             }) as TCoreStores,
@@ -205,21 +207,25 @@ describe('ProfitTableStore', () => {
             mockedProfitTableStore.fetchNextBatch(true);
 
             expect(spyWSProfitTable).toBeCalledWith(50, 0, {
-                contract_type: ['CALL', 'PUT'],
+                contract_type: filtered_contract_types,
                 date_to: default_date_to,
             });
         });
     });
-    // describe('profitTableResponseHandler', () => {
-    //     it('should call disposeSwitchAccount and unsubscribe from proposal API', () => {
-    //         const spyDisposeSwitchAccount = jest.spyOn(mockedProfitTableStore, 'disposeSwitchAccount');
-    //         const spyWSForgetAll = jest.spyOn(WS, 'forgetAll');
-    //         mockedProfitTableStore.onUnmount();
+    describe('profitTableResponseHandler', () => {
+        it('should set error if called with response containing error.message and should not set data', () => {
+            mockedProfitTableStore.profitTableResponseHandler({ error: { message: mocked_error } });
 
-    //         expect(spyDisposeSwitchAccount).toHaveBeenCalled();
-    //         expect(spyWSForgetAll).toHaveBeenCalledWith('proposal');
-    //     });
-    // });
+            expect(mockedProfitTableStore.error).toBe(mocked_error);
+            expect(mockedProfitTableStore.data).toHaveLength(0);
+        });
+        it('should set data if called with response containing profit_table.transactions and should not set error', () => {
+            mockedProfitTableStore.profitTableResponseHandler({ profit_table: { transactions: [{}, {}] } });
+
+            expect(mockedProfitTableStore.data).toHaveLength(2);
+            expect(mockedProfitTableStore.error).toBe('');
+        });
+    });
     describe('fetchOnScroll', () => {
         it('should call fetchNextBatch if called with left param value that is < 1500', () => {
             const spyFetchNextBatch = jest.spyOn(mockedProfitTableStore, 'fetchNextBatch');

@@ -17,7 +17,7 @@ type TProps = {
     transaction: THooks.CryptoTransactions;
 };
 
-const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
+const TransactionsPendingRow: React.FC<TProps> = ({ transaction }) => {
     const { data } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const displayCode = useMemo(() => data?.currency_config?.display_code || 'USD', [data]);
@@ -208,4 +208,4 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
     );
 };
 
-export default TransactionsCryptoRow;
+export default TransactionsPendingRow;

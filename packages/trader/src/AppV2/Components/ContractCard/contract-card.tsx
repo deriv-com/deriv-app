@@ -61,13 +61,14 @@ const ContractCard = ({
     const [isCanceling, setIsCanceling] = React.useState(false);
     const [shouldShowButtons, setShouldShowButtons] = React.useState(false);
     const { buy_price, contract_type, display_name, sell_time, shortcode } = contractInfo;
+    const is_high_low = isHighLow({ shortcode });
     const contract_main_title = getTradeTypeName(contract_type ?? '', {
-        isHighLow: isHighLow({ shortcode }),
+        isHighLow: is_high_low,
         showMainTitle: true,
     });
     const currentTick = 'tick_count' in contractInfo && contractInfo.tick_count ? getCurrentTick(contractInfo) : null;
     const tradeTypeName = `${contract_main_title} ${getTradeTypeName(contract_type ?? '', {
-        isHighLow: isHighLow({ shortcode }),
+        isHighLow: is_high_low,
     })}`.trim();
     const symbolName =
         'underlying_symbol' in contractInfo ? getMarketName(contractInfo.underlying_symbol ?? '') : display_name;
@@ -126,7 +127,11 @@ const ContractCard = ({
             >
                 <div className={`${className}__body`}>
                     <div className={`${className}__details`}>
-                        <IconTradeTypes className='trade-type-icon' type={contract_type ?? ''} size={32} />
+                        <IconTradeTypes
+                            className='trade-type-icon'
+                            type={is_high_low ? `${contract_type}_barrier` : contract_type}
+                            size={32}
+                        />
                         <div className={`${className}__title`}>
                             <Text className='trade-type' size='sm'>
                                 {tradeTypeName}

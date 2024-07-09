@@ -1,13 +1,12 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Tab, Tabs } from '@deriv-com/ui';
 import { CFDPlatformsList } from '../../features';
 import useDevice from '../../hooks/useDevice';
-import { TSubscribedBalance } from '../../types';
 import { OptionsAndMultipliersListing } from '../OptionsAndMultipliersListing';
 import './AccountsList.scss';
 
-const AccountsList: FC<TSubscribedBalance> = ({ balance }) => {
+const AccountsList = () => {
     const { isMobile } = useDevice();
     const { t } = useTranslation();
 
@@ -18,7 +17,7 @@ const AccountsList: FC<TSubscribedBalance> = ({ balance }) => {
                     <CFDPlatformsList />
                 </Tab>
                 <Tab className='wallets-accounts-list__tab' title={t('Options')}>
-                    <OptionsAndMultipliersListing balance={balance} />
+                    <OptionsAndMultipliersListing />
                 </Tab>
             </Tabs>
         );
@@ -28,7 +27,7 @@ const AccountsList: FC<TSubscribedBalance> = ({ balance }) => {
         <div className='wallets-accounts-list' data-testid='dt_desktop_accounts_list'>
             <div className='wallets-accounts-list__content'>
                 <CFDPlatformsList />
-                <OptionsAndMultipliersListing balance={balance} />
+                <OptionsAndMultipliersListing />
             </div>
         </div>
     );

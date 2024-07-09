@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
 import useAuthorize from './useAuthorize';
-import useBalance from './useBalance';
 import useCurrencyConfig from './useCurrencyConfig';
-import { displayMoney } from '../utils';
 import useAuthorizedQuery from '../useAuthorizedQuery';
 import { getAccountListWithAuthToken } from '@deriv/utils';
 
@@ -18,8 +16,6 @@ const useDerivAccountsList = () => {
             staleTime: Infinity,
         }
     );
-
-    const { data: balance_data } = useBalance();
     const { getConfig } = useCurrencyConfig();
 
     const account_list = account_list_data?.account_list;
@@ -58,29 +54,9 @@ const useDerivAccountsList = () => {
         });
     }, [account_list_data, account_list, authorize_data?.loginid, getConfig]);
 
-    // Add balance to each account
-    const modified_accounts_with_balance = useMemo(
-        () =>
-            modified_accounts?.map(account => {
-                const balance = balance_data?.accounts?.[account.loginid]?.balance || 0;
-
-                return {
-                    ...account,
-                    /** The balance of the account. */
-                    balance,
-                    /** The balance of the account in currency format. */
-                    display_balance: displayMoney(balance, account.currency_config?.display_code || 'USD', {
-                        fractional_digits: account.currency_config?.fractional_digits,
-                        preferred_language: authorize_data?.preferred_language,
-                    }),
-                };
-            }),
-        [balance_data?.accounts, modified_accounts, authorize_data?.preferred_language]
-    );
-
     return {
         /** The list of accounts for the current user. */
-        data: modified_accounts_with_balance,
+        data: modified_accounts,
         ...rest,
     };
 };

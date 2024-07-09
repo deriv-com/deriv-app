@@ -1,9 +1,11 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { act, fireEvent, render, screen } from '@testing-library/react';
+import WalletsAuthProvider from '../../../../../../../../../AuthProvider';
 import { useWithdrawalCryptoContext } from '../../../../../provider';
 import { validateCryptoInput, validateFiatInput } from '../../../../../utils';
 import WithdrawalCryptoAmountConverter from '../WithdrawalCryptoAmountConverter';
+import { APIProvider } from '@deriv/api-v2';
 
 jest.mock('../../../../../utils', () => ({
     ...jest.requireActual('../../../../../utils'),
@@ -24,17 +26,21 @@ const mockValidateFiatInput = validateFiatInput as jest.Mock;
 
 const wrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
-        <Formik
-            initialErrors={{}}
-            initialValues={{
-                cryptoAddress: '',
-                cryptoAmount: '',
-                fiatAmount: '',
-            }}
-            onSubmit={jest.fn()}
-        >
-            {children}
-        </Formik>
+        <APIProvider>
+            <WalletsAuthProvider>
+                <Formik
+                    initialErrors={{}}
+                    initialValues={{
+                        cryptoAddress: '',
+                        cryptoAmount: '',
+                        fiatAmount: '',
+                    }}
+                    onSubmit={jest.fn()}
+                >
+                    {children}
+                </Formik>
+            </WalletsAuthProvider>
+        </APIProvider>
     );
 };
 

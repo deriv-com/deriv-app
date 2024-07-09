@@ -5,7 +5,7 @@ describe('withdrawalCryptoValidator', () => {
     let mockValue = '2.5';
     let mockIsClientVerified = true;
     let mockCryptoAddress = 'jds93e9f8wefun9w8efrn98wefn09inf0';
-
+    // @ts-expect-error This package is going to be deleted soon :D
     const mockActiveAccount = {
         balance: 10,
         currency: 'BTC',

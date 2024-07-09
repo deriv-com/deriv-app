@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import useAllBalanceSubscription from './hooks/useAllBalanceSubscription';
 import { defineViewportHeight } from './utils/utils';
 import { WalletLanguageSidePanel } from './components';
 import { Router } from './routes';
@@ -8,6 +9,11 @@ import './AppContent.scss';
 const AppContent: React.FC = () => {
     const [isPanelOpen, setIsPanelOpen] = useState(false);
     const { i18n } = useTranslation();
+    const { subscribeToAllBalance } = useAllBalanceSubscription();
+
+    useEffect(() => {
+        return subscribeToAllBalance();
+    }, [subscribeToAllBalance]);
 
     useEffect(() => {
         const handleShortcutKey = (event: globalThis.KeyboardEvent) => {

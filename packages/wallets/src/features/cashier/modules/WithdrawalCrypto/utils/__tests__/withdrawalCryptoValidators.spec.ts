@@ -1,11 +1,10 @@
-import { THooks } from '../../../../../../types';
 import { validateCryptoAddress, validateCryptoInput, validateFiatInput } from '../withdrawalCryptoValidators';
 
 describe('withdrawalCryptoValidator', () => {
     let mockValue: string,
         mockIsClientVerified: boolean,
         mockCryptoAddress: string,
-        mockActiveWallet: THooks.ActiveWalletAccount,
+        mockActiveWallet: Parameters<typeof validateCryptoInput>[0],
         mockFractionalDigits: { crypto: number; fiat: number },
         mockRemainder: number,
         mockMinimumWithdrawal: number;
@@ -167,11 +166,10 @@ describe('withdrawalCryptoValidator', () => {
     });
 
     it('should return `balanceLessThanMinWithdrawalLimit` error', () => {
-        //@ts-expect-error since this is a mock, we only need partial properties of data
         mockActiveWallet = {
             balance: 0.3,
             currency: 'BTC',
-            display_balance: '0.3000000 BTC',
+            displayBalance: '0.3000000 BTC',
         };
         mockValue = '0.2000000';
         mockMinimumWithdrawal = 0.5;

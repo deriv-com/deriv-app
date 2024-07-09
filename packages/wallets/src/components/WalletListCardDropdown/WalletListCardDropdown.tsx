@@ -2,20 +2,21 @@ import React, { ComponentProps, useCallback, useEffect, useMemo, useState } from
 import { Trans, useTranslation } from 'react-i18next';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api-v2';
 import { displayMoney } from '@deriv/api-v2/src/utils';
+import useAllBalanceSubscription from '../../hooks/useAllBalanceSubscription';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
-import { THooks, TSubscribedBalance } from '../../types';
+import { THooks } from '../../types';
 import { WalletDropdown, WalletText } from '../Base';
 import { WalletCurrencyIcon } from '../WalletCurrencyIcon';
 import './WalletListCardDropdown.scss';
 
 type WalletList = ComponentProps<typeof WalletDropdown>['list'] | undefined;
 
-const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
+const WalletListCardDropdown = () => {
     const { data: wallets } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const switchWalletAccount = useWalletAccountSwitcher();
     const { t } = useTranslation();
-    const { data: balanceData } = balance;
+    const { data: balanceData, isLoading: isBalanceLoading } = useAllBalanceSubscription();
 
     const [inputWidth, setInputWidth] = useState('auto');
     const loginId = activeWallet?.loginid;
@@ -46,24 +47,31 @@ const WalletListCardDropdown: React.FC<TSubscribedBalance> = ({ balance }) => {
                             <WalletText size='2xs'>
                                 <Trans defaults={`${wallet.currency} Wallet`} />
                             </WalletText>
-                            <WalletText size='sm' weight='bold'>
-                                <Trans
-                                    defaults={displayMoney?.(
-                                        balanceData?.accounts?.[wallet.loginid]?.balance ?? 0,
-                                        wallet?.currency || '',
-                                        {
-                                            fractional_digits: wallet?.currency_config?.fractional_digits,
-                                        }
-                                    )}
+                            {isBalanceLoading ? (
+                                <div
+                                    className='wallets-skeleton wallets-list-card-dropdown__balance-loader'
+                                    data-testid='dt_wallets_list_card_dropdown_balance_loader'
                                 />
-                            </WalletText>
+                            ) : (
+                                <WalletText size='sm' weight='bold'>
+                                    <Trans
+                                        defaults={displayMoney?.(
+                                            balanceData?.[wallet.loginid]?.balance ?? 0,
+                                            wallet?.currency || '',
+                                            {
+                                                fractional_digits: wallet?.currency_config?.fractional_digits,
+                                            }
+                                        )}
+                                    />
+                                </WalletText>
+                            )}
                         </div>
                     </div>
                 ),
                 text: generateTitleText(wallet),
                 value: wallet.loginid,
             }));
-    }, [balanceData?.accounts, generateTitleText, wallets]);
+    }, [balanceData, generateTitleText, isBalanceLoading, wallets]);
 
     return (
         <div className='wallets-list-card-dropdown'>

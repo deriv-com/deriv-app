@@ -1,6 +1,7 @@
 import React from 'react';
 import * as formik from 'formik';
 import { render, screen } from '@testing-library/react';
+import useAllBalanceSubscription from '../../../../../../../../../hooks/useAllBalanceSubscription';
 import { useWithdrawalCryptoContext } from '../../../../../provider';
 import WithdrawalCryptoPercentageSelector from '../WithdrawalCryptoPercentageSelector';
 
@@ -9,19 +10,32 @@ jest.mock('../../../../../provider', () => ({
     useWithdrawalCryptoContext: jest.fn(),
 }));
 
+jest.mock('../../../../../../../../../hooks/useAllBalanceSubscription', () =>
+    jest.fn(() => ({
+        data: undefined,
+        isLoading: false,
+    }))
+);
+
 const mockUseFormikContext = jest.spyOn(formik, 'useFormikContext') as jest.Mock;
 const mockUseWithdrawalCryptoContext = useWithdrawalCryptoContext as jest.Mock;
+const mockUseAllBalanceSubscription = useAllBalanceSubscription as jest.MockedFunction<
+    typeof useAllBalanceSubscription
+>;
 
 describe('<WithdrawalCryptoPercentageSelector />', () => {
     beforeEach(() => {
+        (mockUseAllBalanceSubscription as jest.Mock).mockReturnValue({
+            data: { CR1: { balance: 10 } },
+        });
         mockUseWithdrawalCryptoContext.mockReturnValue({
             accountLimits: {
                 remainder: 0,
             },
             activeWallet: {
-                balance: 10,
                 currency: 'BTC',
-                display_balance: '10.00000000 BTC',
+                currency_config: { fractional_digits: 8 },
+                loginid: 'CR1',
             },
             cryptoConfig: {
                 minimum_withdrawal: 1,

@@ -21,18 +21,6 @@ jest.mock('../../DerivAppsSection', () => ({
     DerivAppsSection: () => <div>DerivAppsSection</div>,
 }));
 
-const mockBalance = {
-    data: {
-        balance: 100,
-        currency: 'USD',
-    },
-    error: undefined,
-    isIdle: false,
-    isLoading: false,
-    isSubscribed: false,
-    unsubscribe: jest.fn(),
-};
-
 const wrapper = ({ children }: PropsWithChildren) => (
     <APIProvider>
         <AuthProvider>
@@ -46,7 +34,7 @@ describe('OptionsAndMultipliersListing', () => {
         (useActiveLinkedToTradingAccount as jest.Mock).mockReturnValue({
             data: { loginid: 'MX-12345' },
         });
-        render(<OptionsAndMultipliersListing balance={mockBalance} />, { wrapper });
+        render(<OptionsAndMultipliersListing />, { wrapper });
         expect(screen.getByText('DerivAppsSection')).toBeInTheDocument();
         expect(screen.getAllByTestId('dt_wallets_trading_account_card')[0]).toBeInTheDocument();
         expect(screen.getAllByTestId('dt_wallet_icon')[0]).toBeInTheDocument();
@@ -57,7 +45,7 @@ describe('OptionsAndMultipliersListing', () => {
         (useActiveLinkedToTradingAccount as jest.Mock).mockReturnValue({
             data: { loginid: undefined },
         });
-        render(<OptionsAndMultipliersListing balance={mockBalance} />, { wrapper });
+        render(<OptionsAndMultipliersListing />, { wrapper });
         expect(screen.getAllByTestId('dt_wallets_trading_account_card')[0]).toBeDisabled();
         expect(screen.queryByTestId('dt_label_paired_chevron')).not.toBeInTheDocument();
     });

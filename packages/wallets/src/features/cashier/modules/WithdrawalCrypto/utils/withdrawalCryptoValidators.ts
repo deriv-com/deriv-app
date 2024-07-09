@@ -54,7 +54,11 @@ const checkIfInvalidInput = (
 };
 
 const validateCryptoInput = (
-    activeWallet: TWithdrawalCryptoContext['activeWallet'],
+    activeWallet: {
+        balance: number;
+        currency: string;
+        displayBalance: string;
+    },
     fractionalDigits: TWithdrawalCryptoContext['fractionalDigits'],
     isClientVerified: TWithdrawalCryptoContext['isClientVerified'],
     remainder: number,
@@ -75,7 +79,7 @@ const validateCryptoInput = (
 
     if (MIN_WITHDRAWAL_AMOUNT && activeWallet.balance < MIN_WITHDRAWAL_AMOUNT) {
         return helperMessageMapper.balanceLessThanMinWithdrawalLimit(
-            activeWallet.display_balance,
+            activeWallet.displayBalance,
             `${MIN_WITHDRAWAL_AMOUNT.toFixed(fractionalDigits.crypto)} ${activeWallet.currency}`
         );
     }

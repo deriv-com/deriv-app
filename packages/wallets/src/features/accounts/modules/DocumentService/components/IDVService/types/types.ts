@@ -1,4 +1,4 @@
-import { THooks } from '../../../../../../types';
+import { THooks } from '../../../../../../../types';
 
 export type TDocumentTypeItem = {
     additional?: TDocumentTypeItem;

@@ -1,9 +1,8 @@
 import { useMemo } from 'react';
 import { useIdentityDocumentVerificationAdd, usePOI, useResidenceList, useSettings } from '@deriv/api-v2';
-import { statusCodes } from '../../../../constants';
-import { TVerifyPersonalDetailsValues, useVerifyPersonalDetails } from '../VerifyPersonalDetails';
-import { documentNumberExamples } from './contants';
-import { TDocumentTypeItem, TErrorMessageProps, TIDVServiceValues } from './types';
+import { statusCodes } from '../../../../../constants';
+import { TDocumentTypeItem, TErrorMessageProps, TIDVServiceValues } from '../types';
+import { documentNumberExamples } from '../utils';
 
 const statusMessage: Partial<Record<TErrorMessageProps, string>> = {
     expired: 'Your identity document has expired.',
@@ -19,24 +18,13 @@ const useIDVService = () => {
     } = useResidenceList();
     const { data: settings, isLoading: isSettingsLoading } = useSettings();
     const {
+        error,
         isLoading: isIDVSubmitting,
         isSuccess: isIDVSubmissionSuccess,
         submitIDVDocuments,
     } = useIdentityDocumentVerificationAdd();
-    const {
-        error: errorVerifyPersonalDetails,
-        initialFormValues: initialPersonalDetailsValues,
-        isLoading: isVerifyPersonalDetailsLoading,
-        isSubmitted: isPersonalDetailsSubmissionSuccess,
-        submit: submitPersonalDetails,
-    } = useVerifyPersonalDetails();
 
-    const isLoading =
-        isPOIStatusLoading ||
-        isResidenceListLoading ||
-        isSettingsLoading ||
-        isIDVSubmitting ||
-        isVerifyPersonalDetailsLoading;
+    const isLoading = isPOIStatusLoading || isResidenceListLoading || isSettingsLoading || isIDVSubmitting;
 
     const [displayedDocumentsList, availableDocumentOptions] = useMemo(() => {
         const documents: Record<string, TDocumentTypeItem> = {};
@@ -83,37 +71,32 @@ const useIDVService = () => {
     const previousSubmissionErrorStatus =
         status === statusCodes.expired || status === statusCodes.rejected ? statusMessage[status] : null;
 
-    const submit = (values: TIDVServiceValues & TVerifyPersonalDetailsValues) => {
+    const submit = (values: TIDVServiceValues) => {
         submitIDVDocuments({
             document_additional: values.additionalDocumentNumber,
             document_number: values.documentNumber,
             document_type: values.documentType,
             issuing_country: settings.citizen ?? '',
         });
-        submitPersonalDetails<TIDVServiceValues>(values);
     };
 
-    const initialFormValues = useMemo<TIDVServiceValues & TVerifyPersonalDetailsValues>(
-        () => ({
-            documentNumber: '',
-            documentType: '',
-            ...initialPersonalDetailsValues,
-        }),
-        [initialPersonalDetailsValues]
-    );
+    const initialFormValues = {
+        documentNumber: '',
+        documentType: '',
+    };
 
     const documentExamples = useMemo(
         () => (!settings.citizen ? undefined : documentNumberExamples[settings.citizen]),
         [settings.citizen]
     );
 
-    const isSubmitted = isIDVSubmissionSuccess || isPersonalDetailsSubmissionSuccess;
+    const isSubmitted = isIDVSubmissionSuccess;
 
     return {
         availableDocumentOptions,
         displayedDocumentsList,
         documentExamples,
-        errorVerifyPersonalDetails,
+        error: error?.error,
         initialFormValues,
         isLoading,
         isSubmitted,

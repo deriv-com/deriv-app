@@ -1,1 +1,1 @@
-export { default as IDVErrorMessage } from './IDVErrorMessage';
+export { default as ErrorMessage } from './ErrorMessage';

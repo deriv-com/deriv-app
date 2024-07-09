@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import type { TDocumentTypeItem } from './types';
+import type { TDocumentTypeItem } from '../types';
 
 export const getDocumentNumberValidator = (document: TDocumentTypeItem, example: string) => {
     return Yup.string()

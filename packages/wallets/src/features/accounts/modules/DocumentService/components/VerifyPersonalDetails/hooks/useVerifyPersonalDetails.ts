@@ -1,15 +1,16 @@
 import { useMemo, useState } from 'react';
 import { useSettings } from '@deriv/api-v2';
-import { getFormattedDateString } from '../../../../../../utils/utils';
-import type { TVerifyPersonalDetailsValues } from './types';
+import { getFormattedDateString } from '../../../../../../../utils/utils';
+import type { TVerifyPersonalDetailsValues } from '../types';
 
 const useVerifyPersonalDetails = () => {
     const { data: settings, error, isError, isLoading, isSuccess, update } = useSettings();
-    const [hasSubmissionInitiated, setHasSubmissionInitiated] = useState<boolean>(false);
+    const [isSubmissionInitiated, setIsSubmissionInitiated] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
     const initialFormValues = useMemo(
         () => ({
-            areDetailsVerifiedValidator: false,
+            arePersonalDetailsVerified: false,
             dateOfBirth: getFormattedDateString(new Date((settings.date_of_birth ?? 0) * 1000)),
             firstName: settings.first_name,
             lastName: settings.last_name,
@@ -17,7 +18,7 @@ const useVerifyPersonalDetails = () => {
         [settings.date_of_birth, settings.first_name, settings.last_name]
     );
 
-    const submit = <T>(values: T & TVerifyPersonalDetailsValues) => {
+    const submit = (values: TVerifyPersonalDetailsValues) => {
         const isDirty =
             settings.date_of_birth !== values.dateOfBirth ||
             settings.first_name !== values.firstName ||
@@ -29,17 +30,22 @@ const useVerifyPersonalDetails = () => {
                 first_name: values.firstName,
                 last_name: values.lastName,
             });
-            setHasSubmissionInitiated(true);
+            setIsSubmissionInitiated(true);
+        } else {
+            setIsSubmitted(true);
         }
     };
 
-    if (isError) {
-        setHasSubmissionInitiated(false);
+    // hasSubmissionInitiated is used for differentiating initial call's success
+    // from submission call's success as useSetting hook does not provide such difference.
+    if (isSuccess && isSubmissionInitiated) {
+        setIsSubmitted(true);
+        setIsSubmissionInitiated(false);
     }
 
-    // hasSubmissionInitiated is used for differentiating initial calls success
-    // from submission calls success as useSetting hook does not provide such difference.
-    const isSubmitted = isSuccess && hasSubmissionInitiated;
+    if (isError) {
+        setIsSubmissionInitiated(false);
+    }
 
     return { error: error?.error, initialFormValues, isLoading, isSubmitted, submit };
 };

@@ -730,7 +730,6 @@
             height: 100%;
         }
         @include mobile-or-tablet-screen {
-            height: fit-content;
             max-width: 100%;
             overflow: hidden;
         }

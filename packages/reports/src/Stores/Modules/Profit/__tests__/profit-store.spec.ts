@@ -60,6 +60,8 @@ jest.mock('@deriv/shared', () => {
 describe('ProfitTableStore', () => {
     let mockedProfitTableStore: ProfitTableStore;
 
+    const default_date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
+    const mocked_loginid = 'test_loginid';
     const multiplier_contract = {
         app_id: 16929,
         buy_price: 11.29,
@@ -103,7 +105,16 @@ describe('ProfitTableStore', () => {
 
     beforeEach(() => {
         mockedProfitTableStore = new ProfitTableStore({
-            root_store: mockStore({}) as TCoreStores,
+            root_store: mockStore({
+                client: {
+                    loginid: mocked_loginid,
+                },
+                modules: {
+                    positions: {
+                        filteredContractTypes: ['CALL', 'PUT'],
+                    },
+                },
+            }) as TCoreStores,
         });
     });
 
@@ -168,20 +179,17 @@ describe('ProfitTableStore', () => {
         });
     });
     describe('fetchNextBatch', () => {
+        const spyWSProfitTable = jest.spyOn(WS, 'profitTable');
+
         it('should make profitTable call and call profitTableResponseHandler if has_loaded_all={false} & is_loading={false}, or when called with truthy isMounting param', async () => {
-            const spyWSProfitTable = jest.spyOn(WS, 'profitTable');
             const spyProfitTableResponseHandler = jest.spyOn(mockedProfitTableStore, 'profitTableResponseHandler');
 
-            expect(mockedProfitTableStore.has_loaded_all).toBe(false);
-            mockedProfitTableStore.is_loading = false;
-
-            mockedProfitTableStore.fetchNextBatch();
+            mockedProfitTableStore.fetchNextBatch(false, true);
 
             expect(spyWSProfitTable).toBeCalled();
             await waitFor(() => expect(spyProfitTableResponseHandler).toBeCalled());
         });
-        it('should not make profitTable call or call profitTableResponseHandler if shouldFetchNextBatch() returns false', () => {
-            const spyWSProfitTable = jest.spyOn(WS, 'profitTable');
+        it('should not make profitTable call or call profitTableResponseHandler if has_loaded_all or is_loading is true and not called with truthy isMounting param', () => {
             const spyProfitTableResponseHandler = jest.spyOn(mockedProfitTableStore, 'profitTableResponseHandler');
 
             expect(mockedProfitTableStore.is_loading).toBe(true);
@@ -189,6 +197,15 @@ describe('ProfitTableStore', () => {
 
             expect(spyWSProfitTable).not.toBeCalled();
             expect(spyProfitTableResponseHandler).not.toBeCalled();
+        });
+        it('should make profitTable call with contract_type param if called with truthy shouldFilterContractTypes param', () => {
+            mockedProfitTableStore.is_loading = false;
+            mockedProfitTableStore.fetchNextBatch(true);
+
+            expect(spyWSProfitTable).toBeCalledWith(50, 0, {
+                contract_type: ['CALL', 'PUT'],
+                date_to: default_date_to,
+            });
         });
     });
     // describe('profitTableResponseHandler', () => {
@@ -248,16 +265,24 @@ describe('ProfitTableStore', () => {
             expect(mockedProfitTableStore.is_loading).toBe(true);
         });
     });
-    // describe('onMount', () => {
-    //     it('should call disposeSwitchAccount and unsubscribe from proposal API', () => {
-    //         const spyDisposeSwitchAccount = jest.spyOn(mockedProfitTableStore, 'disposeSwitchAccount');
-    //         const spyWSForgetAll = jest.spyOn(WS, 'forgetAll');
-    //         mockedProfitTableStore.onUnmount();
+    describe('onMount', () => {
+        const spyWSWait = jest.spyOn(WS, 'wait');
 
-    //         expect(spyDisposeSwitchAccount).toHaveBeenCalled();
-    //         expect(spyWSForgetAll).toHaveBeenCalledWith('proposal');
-    //     });
-    // });
+        it('should set client_loginid from client-store loginid, wait for authorize API and call fetchNextBatch', async () => {
+            const spyFetchNextBatch = jest.spyOn(mockedProfitTableStore, 'fetchNextBatch');
+            mockedProfitTableStore.onMount();
+
+            expect(mockedProfitTableStore.client_loginid).toBe(mocked_loginid);
+            expect(spyWSWait).toBeCalledWith('authorize');
+            await waitFor(() => expect(spyFetchNextBatch).toBeCalledWith(undefined, true));
+        });
+        it('should call fetchNextBatch with true for shouldFilterContractTypes value when called with true', async () => {
+            const spyFetchNextBatch = jest.spyOn(mockedProfitTableStore, 'fetchNextBatch');
+            mockedProfitTableStore.onMount(true);
+
+            await waitFor(() => expect(spyFetchNextBatch).toBeCalledWith(true, true));
+        });
+    });
     describe('onUnmount', () => {
         it('should call disposeSwitchAccount and unsubscribe from proposal API', () => {
             const spyDisposeSwitchAccount = jest.spyOn(mockedProfitTableStore, 'disposeSwitchAccount');

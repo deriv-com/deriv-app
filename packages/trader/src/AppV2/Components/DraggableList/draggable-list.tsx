@@ -7,18 +7,18 @@ export type DraggableListItem = {
     id: string;
     title: string;
     icon?: React.ReactNode;
-}
+};
 
 export type DraggableListCategory = {
     id: string;
     title?: string;
     items: DraggableListItem[];
-}
+};
 
 export type DraggableListProps = {
     categories: DraggableListCategory[];
     onRightIconClick: (item: DraggableListItem) => void;
-}
+};
 
 const DraggableList: React.FC<DraggableListProps> = ({ categories, onRightIconClick }) => {
     const [category_list, setCategoryList] = useState(categories);

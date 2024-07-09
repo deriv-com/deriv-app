@@ -7,7 +7,7 @@ type DraggableListItemProps = {
     rightIcon?: React.ReactNode;
     onLeftIconClick?: () => void;
     onRightIconClick?: () => void;
-}
+};
 
 const DraggableListItem: React.FC<DraggableListItemProps> = ({
     title,
@@ -22,12 +22,12 @@ const DraggableListItem: React.FC<DraggableListItemProps> = ({
     return (
         <div className='draggable-list-item'>
             <div className='draggable-list-item__left'>
-                <div className='draggable-list-item__left-icon' onClick={onLeftIconClick}>
+                <div className='draggable-list-item__left-icon' data-testid='dt_draggable_list_item_left_icon'  onClick={onLeftIconClick}>
                     {leftIcon || default_left_icon}
                 </div>
                 <div className='draggable-list-item__title'>{title}</div>
             </div>
-            <div className='draggable-list-item__icon' onClick={onRightIconClick}>
+            <div className='draggable-list-item__icon' data-testid='dt_draggable_list_item_icon' onClick={onRightIconClick}>
                 {rightIcon || default_right_icon}
             </div>
         </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, RenderResult } from '@testing-library/react';
+import { screen, render, RenderResult } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import DraggableList, { DraggableListProps, DraggableListCategory } from '../draggable-list';
 
@@ -37,21 +37,22 @@ describe('DraggableList', () => {
         render(<DraggableList categories={categories} onRightIconClick={jest.fn()} {...props} />);
 
     it('renders categories and items correctly', () => {
-        const { getByText } = renderComponent();
+        renderComponent();
 
-        expect(getByText('Category 1')).toBeInTheDocument();
-        expect(getByText('Category 2')).toBeInTheDocument();
-        expect(getByText('Item 1')).toBeInTheDocument();
-        expect(getByText('Item 2')).toBeInTheDocument();
-        expect(getByText('Item 3')).toBeInTheDocument();
-        expect(getByText('Item 4')).toBeInTheDocument();
+        expect(screen.getByText('Category 1')).toBeInTheDocument();
+        expect(screen.getByText('Category 2')).toBeInTheDocument();
+        expect(screen.getByText('Item 1')).toBeInTheDocument();
+        expect(screen.getByText('Item 2')).toBeInTheDocument();
+        expect(screen.getByText('Item 3')).toBeInTheDocument();
+        expect(screen.getByText('Item 4')).toBeInTheDocument();
     });
 
     it('calls onRightIconClick when the right icon of an item is clicked', async () => {
         const handleRightIconClick = jest.fn();
-        const { container } = renderComponent({ onRightIconClick: handleRightIconClick });
 
-        const rightIcons = container.querySelectorAll('.draggable-list-item__icon');
+        renderComponent({ onRightIconClick: handleRightIconClick });
+
+        const rightIcons = screen.getAllByTestId('dt_draggable_list_item_icon');
 
         if (rightIcons[0]) {
             await userEvent.click(rightIcons[0]);

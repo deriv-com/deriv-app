@@ -290,7 +290,7 @@ const CreatePassword = ({
                             )}
                             <Text size='xs' align='center' className='cfd-password-modal__create-password-description'>
                                 <Localize
-                                    i18n_default_text='You can use this password for all your {{platform}} accounts.'
+                                    i18n_default_text='Note: You can use this password for all your {{platform}} accounts.'
                                     values={{
                                         platform: getCFDPlatformLabel(platform),
                                     }}
@@ -347,7 +347,6 @@ const CreatePassword = ({
                             label={localize('Create {{platform}} password', {
                                 platform: getCFDPlatformLabel(platform),
                             })}
-                            is_center={true}
                         />
                     </div>
                 </form>

@@ -730,10 +730,11 @@
             height: 100%;
         }
         @include mobile-or-tablet-screen {
+            height: fit-content;
             max-width: 100%;
             overflow: hidden;
         }
-        position: relative;
+        // position: relative;
         max-width: 68.2rem;
     }
 
@@ -762,7 +763,7 @@
             &--status {
                 height: 100%;
                 width: 100%;
-                position: absolute;
+
                 padding-top: 2.4rem;
             }
         }

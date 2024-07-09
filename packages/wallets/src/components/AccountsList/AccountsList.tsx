@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Tab, Tabs } from '@deriv-com/ui';
+import { Divider, Tab, Tabs } from '@deriv-com/ui';
 import { CFDPlatformsList } from '../../features';
 import useDevice from '../../hooks/useDevice';
 import { OptionsAndMultipliersListing } from '../OptionsAndMultipliersListing';
@@ -15,9 +15,11 @@ const AccountsList = () => {
             <Tabs activeTab='CFDs' className='wallets-accounts-list__tabs' wrapperClassName='wallets-accounts-list'>
                 <Tab className='wallets-accounts-list__tab' title={t('CFDs')}>
                     <CFDPlatformsList />
+                    <Divider color='var(--wallets-banner-border-color)' />
                 </Tab>
                 <Tab className='wallets-accounts-list__tab' title={t('Options')}>
                     <OptionsAndMultipliersListing />
+                    <Divider color='var(--wallets-banner-border-color)' />
                 </Tab>
             </Tabs>
         );
@@ -26,7 +28,9 @@ const AccountsList = () => {
     return (
         <div className='wallets-accounts-list' data-testid='dt_desktop_accounts_list'>
             <div className='wallets-accounts-list__content'>
+                <Divider color='var(--border-divider)' height={2} />
                 <CFDPlatformsList />
+                <Divider color='var(--border-divider)' height={2} />
                 <OptionsAndMultipliersListing />
             </div>
         </div>

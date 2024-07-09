@@ -24,6 +24,7 @@ const useIDVService = () => {
         submitIDVDocuments,
     } = useIdentityDocumentVerificationAdd();
     const {
+        error: errorVerifyPersonalDetails,
         initialFormValues: initialPersonalDetailsValues,
         isLoading: isVerifyPersonalDetailsLoading,
         isSubmitted: isPersonalDetailsSubmissionSuccess,
@@ -112,6 +113,7 @@ const useIDVService = () => {
         availableDocumentOptions,
         displayedDocumentsList,
         documentExamples,
+        errorVerifyPersonalDetails,
         initialFormValues,
         isLoading,
         isSubmitted,

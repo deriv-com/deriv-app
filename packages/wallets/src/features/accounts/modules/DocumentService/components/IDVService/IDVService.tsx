@@ -23,6 +23,7 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
         availableDocumentOptions,
         displayedDocumentsList,
         documentExamples,
+        errorVerifyPersonalDetails,
         initialFormValues,
         isLoading,
         isSubmitted,
@@ -54,12 +55,14 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
         <Formik initialValues={initialFormValues} onSubmit={submit}>
             {({ dirty, handleSubmit, isValid, setFieldValue, values }) => {
                 const document = availableDocumentOptions[values.documentType];
-                const documentNumberExample = values.documentType
-                    ? documentExamples?.[values.documentType].exampleFormat
-                    : '';
-                const additionalDocumentNumberExample = values.documentType
-                    ? documentExamples?.[values.documentType].additionalDocumentExampleFormat
-                    : '';
+                const documentNumberExample =
+                    values.documentType && clientHasDocuments
+                        ? documentExamples?.[values.documentType].exampleFormat
+                        : '';
+                const additionalDocumentNumberExample =
+                    values.documentType && clientHasDocuments
+                        ? documentExamples?.[values.documentType].additionalDocumentExampleFormat
+                        : '';
 
                 return (
                     <ModalStepWrapper
@@ -130,7 +133,7 @@ const IDVService: React.FC<React.PropsWithChildren<TIDVServiceProps>> = ({ onCom
                                     </>
                                 )}
                             </div>
-                            {clientHasDocuments && <VerifyPersonalDetails />}
+                            {clientHasDocuments && <VerifyPersonalDetails error={errorVerifyPersonalDetails} />}
                         </div>
                     </ModalStepWrapper>
                 );

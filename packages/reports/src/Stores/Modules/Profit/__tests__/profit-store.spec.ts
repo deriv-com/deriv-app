@@ -7,6 +7,8 @@ import { waitFor } from '@testing-library/react';
 
 configure({ safeDescriptors: false });
 
+jest.mock('lodash.debounce', () => jest.fn(fn => fn));
+
 jest.mock('@deriv/shared', () => {
     return {
         ...jest.requireActual('@deriv/shared'),
@@ -126,7 +128,7 @@ describe('ProfitTableStore', () => {
         beforeEach(() => {
             mockedProfitTableStore.onMount();
         });
-        it('should return false if is_loading={false} but data is non-empty, regardless of is_loading value', () => {
+        it('should return false if is_loading={false} but data is non-empty regardless of is_loading value', () => {
             expect(mockedProfitTableStore.data).toEqual([multiplier_contract, rise_contract]);
             expect(mockedProfitTableStore.is_loading).toEqual(false);
 
@@ -218,26 +220,46 @@ describe('ProfitTableStore', () => {
     //         expect(spyWSForgetAll).toHaveBeenCalledWith('proposal');
     //     });
     // });
-    // describe('fetchOnScroll', () => {
-    //     it('should call disposeSwitchAccount and unsubscribe from proposal API', () => {
-    //         const spyDisposeSwitchAccount = jest.spyOn(mockedProfitTableStore, 'disposeSwitchAccount');
-    //         const spyWSForgetAll = jest.spyOn(WS, 'forgetAll');
-    //         mockedProfitTableStore.onUnmount();
+    describe('fetchOnScroll', () => {
+        it('should call fetchNextBatch if called with left param value that is < 1500', () => {
+            const spyFetchNextBatch = jest.spyOn(mockedProfitTableStore, 'fetchNextBatch');
 
-    //         expect(spyDisposeSwitchAccount).toHaveBeenCalled();
-    //         expect(spyWSForgetAll).toHaveBeenCalledWith('proposal');
-    //     });
-    // });
-    // describe('handleScroll', () => {
-    //     it('should call disposeSwitchAccount and unsubscribe from proposal API', () => {
-    //         const spyDisposeSwitchAccount = jest.spyOn(mockedProfitTableStore, 'disposeSwitchAccount');
-    //         const spyWSForgetAll = jest.spyOn(WS, 'forgetAll');
-    //         mockedProfitTableStore.onUnmount();
+            mockedProfitTableStore.fetchOnScroll(1100);
 
-    //         expect(spyDisposeSwitchAccount).toHaveBeenCalled();
-    //         expect(spyWSForgetAll).toHaveBeenCalledWith('proposal');
-    //     });
-    // });
+            expect(spyFetchNextBatch).toBeCalled();
+        });
+        it('should call fetchNextBatch with true for shouldFilterContractTypes value when called with true as a second param', () => {
+            const spyFetchNextBatch = jest.spyOn(mockedProfitTableStore, 'fetchNextBatch');
+
+            mockedProfitTableStore.fetchOnScroll(1100, true);
+
+            expect(spyFetchNextBatch).toBeCalledWith(true);
+        });
+        it('should not call fetchNextBatch if called with left param value that is > 1500', () => {
+            const spyFetchNextBatch = jest.spyOn(mockedProfitTableStore, 'fetchNextBatch');
+
+            mockedProfitTableStore.fetchOnScroll(1600);
+
+            expect(spyFetchNextBatch).not.toBeCalled();
+        });
+    });
+    describe('handleScroll', () => {
+        const scroll_values = { scrollTop: 416, scrollHeight: 2061, clientHeight: 588 };
+        const left_to_scroll = scroll_values.scrollHeight - (scroll_values.scrollTop + scroll_values.clientHeight);
+
+        it('should call fetchOnScroll with left_to_scroll value calculated from event.target scroll values', () => {
+            const spyFetchOnScroll = jest.spyOn(mockedProfitTableStore, 'fetchOnScroll');
+            mockedProfitTableStore.handleScroll({ target: scroll_values });
+
+            expect(spyFetchOnScroll).toBeCalledWith(left_to_scroll, undefined);
+        });
+        it('should call fetchOnScroll with true for shouldFilterContractTypes value when called with true', () => {
+            const spyFetchOnScroll = jest.spyOn(mockedProfitTableStore, 'fetchOnScroll');
+            mockedProfitTableStore.handleScroll({ target: scroll_values }, true);
+
+            expect(spyFetchOnScroll).toBeCalledWith(left_to_scroll, true);
+        });
+    });
     describe('networkStatusChangeListener', () => {
         it('should set is_loading to false if is_online param value is true while is_loading={false}', () => {
             mockedProfitTableStore.is_loading = false;

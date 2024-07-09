@@ -19,11 +19,14 @@ import LandscapeBlocker from './Components/Elements/LandscapeBlocker';
 import initDatadog from '../Utils/Datadog';
 import { ThemeProvider } from '@deriv-com/quill-ui';
 import { useGrowthbookIsOn } from '@deriv/hooks';
+import { useTranslations } from '@deriv-com/translations';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const store = useStore();
     const { has_wallet } = store.client;
+    const { current_language } = store.common;
     const { isMobile } = useDevice();
+    const { switchLanguage } = useTranslations();
 
     const [isWebPasskeysFFEnabled, isGBLoaded] = useGrowthbookIsOn({
         featureFlag: 'web_passkeys',
@@ -35,6 +38,10 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
     const { data } = useRemoteConfig(isMounted());
     const { tracking_datadog } = data;
     const is_passkeys_supported = browserSupportsWebAuthn();
+
+    React.useEffect(() => {
+        switchLanguage(current_language);
+    }, [current_language, switchLanguage]);
 
     React.useEffect(() => {
         if (isGBLoaded && isWebPasskeysFFEnabled && isServicePasskeysFFEnabled) {

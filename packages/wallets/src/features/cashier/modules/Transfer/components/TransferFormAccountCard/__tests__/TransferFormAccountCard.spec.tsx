@@ -11,7 +11,6 @@ describe('TransferFormAccountCard', () => {
         account_type: 'type1',
         accountName: 'Test Account',
         displayBalance: '1000 USD',
-        landingCompanyName: 'SVG',
         mt5_group: 'group1',
     };
 
@@ -60,7 +59,6 @@ describe('TransferFormAccountCard', () => {
 
         expect(screen.getByText('Test Account')).toBeInTheDocument();
         expect(screen.getByText('Balance: 1000 USD')).toBeInTheDocument();
-        expect(screen.getByText('SVG')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_wallet_market_icon')).not.toBeInTheDocument();
     });
 
@@ -80,7 +78,6 @@ describe('TransferFormAccountCard', () => {
 
         expect(screen.getByText('Test Account')).toBeInTheDocument();
         expect(screen.getByText('Balance: 1000 USD')).toBeInTheDocument();
-        expect(screen.getByText('SVG')).toBeInTheDocument();
         expect(screen.getByTestId('dt_wallet_market_icon')).toBeInTheDocument();
     });
 
@@ -115,7 +112,6 @@ describe('TransferFormAccountCard', () => {
 
         expect(screen.getByText('Test Account')).toBeInTheDocument();
         expect(screen.getByText('Balance: 1000 USD')).toBeInTheDocument();
-        expect(screen.getByText('SVG')).toBeInTheDocument();
     });
 
     it('should display different layouts for modal and input types', () => {

@@ -38,6 +38,9 @@ describe('ConfirmPhoneNumber', () => {
                     phone_number_verification: '',
                 },
             },
+            ui: {
+                is_redirected_from_email: false,
+            },
         });
     });
 
@@ -64,6 +67,7 @@ describe('ConfirmPhoneNumber', () => {
             sendEmailOTPVerification: mockSendEmailOTPVerification,
         });
         mock_store_data.client.verification_code.phone_number_verification = '123456';
+        mock_store_data.ui.is_redirected_from_email = true;
         renderComponent();
         expect(screen.getByText(/mockedLoading/)).toBeInTheDocument();
         expect(mockSendEmailOTPVerification).toBeCalledTimes(1);
@@ -82,6 +86,7 @@ describe('ConfirmPhoneNumber', () => {
         (useSendOTPVerificationCode as jest.Mock).mockReturnValue({
             is_email_verified: true,
         });
+        mock_store_data.ui.is_redirected_from_email = true;
         renderComponent();
         expect(screen.getByText(/Confirm Phone Number/)).toBeInTheDocument();
     });

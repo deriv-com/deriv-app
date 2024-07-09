@@ -61,7 +61,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     const shouldShowEmptyMessage = hasNoPositions || noMatchesFound;
     const shouldShowContractCards =
         !!filteredPositions.length && (isClosedTab || (filteredPositions[0]?.contract_info as TContractInfo)?.status);
-    const shouldShowLoading = isClosedTab ? isFetchingClosedPositions && !filterPositions.length : is_loading;
+    const shouldShowLoading = isClosedTab ? isFetchingClosedPositions && !filteredPositions.length : is_loading;
     const shouldShowTakeProfit = !isClosedTab || !!(timeFilter || customTimeRangeFilter);
 
     const onScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -95,8 +95,8 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
     };
 
     React.useEffect(() => {
+        const result = filterPositions(positions, contractTypeFilter);
         if (contractTypeFilter.length) {
-            const result = filterPositions(positions, contractTypeFilter);
             setFilteredPositions(result);
             if (!isClosedTab) setNoMatchesFound(!result.length);
         } else {
@@ -104,9 +104,7 @@ const PositionsContent = observer(({ hasButtonsDemo, isClosedTab, setHasButtonsD
             setFilteredPositions(positions);
         }
         if (isClosedTab)
-            setNoMatchesFound(
-                !positions.length && !!(timeFilter || customTimeRangeFilter || contractTypeFilter.length)
-            );
+            setNoMatchesFound(!result.length && !!(timeFilter || customTimeRangeFilter || contractTypeFilter.length));
     }, [isClosedTab, positions, contractTypeFilter, timeFilter, customTimeRangeFilter]);
 
     React.useEffect(() => {

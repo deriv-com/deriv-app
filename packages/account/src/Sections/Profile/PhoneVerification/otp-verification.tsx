@@ -57,6 +57,11 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
         }
     }, [is_phone_number_verified, is_email_verified, setOtpVerification]);
 
+    const clearOtpValue = () => {
+        setOtp('');
+        setPhoneOtpErrorMessage('');
+    };
+
     const handleGetOtpValue = (e: React.ChangeEvent<HTMLInputElement>) => {
         setOtp(e.target.value);
         setPhoneOtpErrorMessage('');
@@ -77,6 +82,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                 setShouldShowPhoneNumberVerifiedModal={setShouldShowPhoneNumberVerifiedModal}
             />
             <DidntGetTheCodeModal
+                clearOtpValue={clearOtpValue}
                 setIsButtonDisabled={setIsButtonDisabled}
                 reInitializeGetSettings={reInitializeGetSettings}
                 requestOnSMS={requestOnSMS}
@@ -129,9 +135,11 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                     buttonCallback={handleVerifyOTP}
                     onChange={handleGetOtpValue}
                     message={phone_otp_error_message}
+                    value={otp}
                     maxLength={6}
                 />
                 <ResendCodeTimer
+                    clearOtpValue={clearOtpValue}
                     is_button_disabled={is_button_disabled}
                     setIsButtonDisabled={setIsButtonDisabled}
                     should_show_resend_code_button={!should_show_phone_number_otp}

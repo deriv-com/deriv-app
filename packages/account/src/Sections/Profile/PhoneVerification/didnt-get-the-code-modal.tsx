@@ -13,6 +13,7 @@ type TDidntGetTheCodeModal = {
     setShouldShowDidntGetTheCodeModal: (value: boolean) => void;
     requestOnSMS: () => void;
     requestOnWhatsApp: () => void;
+    clearOtpValue: () => void;
     is_email_verified: boolean;
     email_otp_error: TSocketError<'phone_number_challenge'> | null;
     setOtpVerification: (value: { show_otp_verification: boolean; phone_verification_type: string }) => void;
@@ -26,6 +27,7 @@ const DidntGetTheCodeModal = ({
     reInitializeGetSettings,
     requestOnSMS,
     requestOnWhatsApp,
+    clearOtpValue,
     phone_verification_type,
     is_email_verified,
     email_otp_error,
@@ -42,6 +44,7 @@ const DidntGetTheCodeModal = ({
     };
 
     const handleResendCode = () => {
+        clearOtpValue();
         setDidntGetACodeButtonDisabled();
         phone_verification_type === VERIFICATION_SERVICES.SMS ? requestOnSMS() : requestOnWhatsApp();
         setOtpVerification({ show_otp_verification: true, phone_verification_type });
@@ -49,6 +52,7 @@ const DidntGetTheCodeModal = ({
     };
 
     const handleChangeOTPVerification = () => {
+        clearOtpValue();
         setDidntGetACodeButtonDisabled();
         const changed_phone_verification_type =
             phone_verification_type === VERIFICATION_SERVICES.SMS
@@ -65,6 +69,7 @@ const DidntGetTheCodeModal = ({
     };
 
     const handleChangePhoneNumber = () => {
+        clearOtpValue();
         setShouldShowDidntGetTheCodeModal(false);
         setOtpVerification({ show_otp_verification: false, phone_verification_type });
     };

@@ -338,16 +338,15 @@ export default class NotificationStore extends BaseStore {
         const malta_account = landing_company_shortcode === 'maltainvest';
         const cr_account = landing_company_shortcode === 'svg';
         const is_website_up = website_status.site_status === 'up';
-        const { verified: is_phone_number_verified, next_email_attempt } = account_settings?.phone_number_verification;
         const has_trustpilot = LocalStore.getObject('notification_messages')[loginid]?.includes(
             this.client_notifications.trustpilot?.key
         );
         const is_next_email_attempt_timer_running = shouldShowPhoneVerificationNotification(
-            next_email_attempt,
+            account_settings?.phone_number_verification?.next_email_attempt,
             current_time
         );
         const show_phone_number_verification_notification =
-            !is_phone_number_verified && !is_next_email_attempt_timer_running;
+            !account_settings?.phone_number_verification?.verified && !is_next_email_attempt_timer_running;
         let has_missing_required_field;
 
         const is_server_down = checkServerMaintenance(website_status);

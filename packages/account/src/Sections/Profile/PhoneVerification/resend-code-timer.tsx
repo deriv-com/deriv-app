@@ -8,11 +8,13 @@ type TResendCodeTimer = {
     should_show_resend_code_button: boolean;
     setIsButtonDisabled: (value: boolean) => void;
     setShouldShowDidntGetTheCodeModal: (value: boolean) => void;
+    clearOtpValue: () => void;
     reInitializeGetSettings: () => void;
 };
 const ResendCodeTimer = ({
     is_button_disabled,
     should_show_resend_code_button,
+    clearOtpValue,
     setIsButtonDisabled,
     setShouldShowDidntGetTheCodeModal,
     reInitializeGetSettings,
@@ -27,6 +29,7 @@ const ResendCodeTimer = ({
 
     const resendCode = () => {
         if (should_show_resend_code_button) {
+            clearOtpValue();
             setIsButtonDisabled(true);
             send();
         } else {

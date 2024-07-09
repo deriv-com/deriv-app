@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { VERIFICATION_SERVICES } from '@deriv/shared';
 
 describe('DidntGetTheCodeModal', () => {
+    const mockClearOtpValue = jest.fn();
     const mockSetShouldShowDidntGetTheCodeModal = jest.fn();
     const mockSetOtpVerification = jest.fn();
     const mockReInitializeGetSettings = jest.fn();
@@ -16,6 +17,7 @@ describe('DidntGetTheCodeModal', () => {
     const renderComponent = (phone_verification_type: string) => {
         render(
             <DidntGetTheCodeModal
+                clearOtpValue={mockClearOtpValue}
                 setIsButtonDisabled={mockSetIsButtonDisabled}
                 reInitializeGetSettings={mockReInitializeGetSettings}
                 should_show_didnt_get_the_code_modal={true}

@@ -25,25 +25,30 @@ const PhoneVerificationPage = observer(() => {
     };
     const { sendEmailOTPVerification, email_otp_error, is_email_verified } = useSendOTPVerificationCode();
 
-    const { client } = useStore();
+    const { client, ui } = useStore();
+    const { is_redirected_from_email, setRedirectFromEmail } = ui;
     const {
         verification_code: { phone_number_verification: phone_number_verification_code },
         is_authorize,
     } = client;
 
     React.useEffect(() => {
-        if (email_otp_error) {
-            setIsLoading(false);
-            setShouldShowVerificationLinkExpiredModal(true);
-        } else if (is_email_verified) {
-            setIsLoading(false);
-            setOtpVerification({
-                show_otp_verification: false,
-                phone_verification_type: '',
-            });
-        } else if (phone_number_verification_code && is_authorize) {
-            setIsLoading(true);
-            sendEmailOTPVerification(phone_number_verification_code);
+        if (is_redirected_from_email) {
+            if (email_otp_error) {
+                setIsLoading(false);
+                setShouldShowVerificationLinkExpiredModal(true);
+                setRedirectFromEmail(false);
+            } else if (is_email_verified) {
+                setIsLoading(false);
+                setOtpVerification({
+                    show_otp_verification: false,
+                    phone_verification_type: '',
+                });
+                setRedirectFromEmail(false);
+            } else if (phone_number_verification_code && is_authorize) {
+                setIsLoading(true);
+                sendEmailOTPVerification(phone_number_verification_code);
+            }
         }
     }, [email_otp_error, is_email_verified, phone_number_verification_code, is_authorize]);
 

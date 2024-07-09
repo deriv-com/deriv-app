@@ -21,4 +21,11 @@
         color: var(--brand-coral, #ff444f);
         text-decoration: none;
     }
+
+    &__tooltip {
+        display: block;
+        &--hidden {
+            display: none;
+        }
+    }
 }

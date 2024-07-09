@@ -32,9 +32,7 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, vari
                         <WalletText size={isDesktop ? 'xs' : 'sm'} weight='bold'>
                             {value}
                         </WalletText>
-                        {variant === 'clipboard' && (
-                            <WalletClipboard popoverAlignment='left' successMessage='' textCopy={value} />
-                        )}
+                        {variant === 'clipboard' && <WalletClipboard popoverAlignment='left' textCopy={value} />}
                         {variant === 'password' && (
                             <Tooltip
                                 as='button'

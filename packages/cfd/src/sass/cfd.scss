@@ -139,12 +139,18 @@
             flex-direction: column;
             width: 100%;
             align-items: center;
-            margin-top: -2.5rem;
+            margin-top: 0;
 
             .dc-icon {
                 margin-left: 1.1rem;
                 flex: none;
             }
+        }
+        &-body {
+            padding-block: 3.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         &-title {
             margin-top: 2.4rem;
@@ -175,7 +181,6 @@
         }
     }
     &-tnc {
-        margin-block-end: 3.2rem;
         &--bottom {
             @include mobile-or-tablet-screen {
                 margin-top: auto;
@@ -471,5 +476,11 @@
         .dc-btn {
             margin: 0.5rem;
         }
+    }
+}
+
+.dc-modal-header {
+    &--cfd-password-modal {
+        box-shadow: 0px -2px 0px 0px #f2f3f4 inset;
     }
 }

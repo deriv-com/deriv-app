@@ -70,6 +70,7 @@ const Draggable: React.FC<TDraggableProps> = ({
         const initialSelfBottom = draggableRef.current?.getBoundingClientRect()?.bottom ?? size.height;
 
         let previousStyle = {};
+        let previousPointerEvent = 'unset';
         const draggableContentBody = draggableRef.current?.querySelector(
             '#draggable-content-body'
         ) as HTMLElement | null;
@@ -78,6 +79,7 @@ const Draggable: React.FC<TDraggableProps> = ({
             const { style } = draggableContentBody;
             if (style && style.pointerEvents !== 'none') {
                 previousStyle = { ...style };
+                previousPointerEvent = style.pointerEvents;
                 style.pointerEvents = 'none';
             }
         }
@@ -177,6 +179,7 @@ const Draggable: React.FC<TDraggableProps> = ({
             isResizing.current = false;
             if (draggableContentBody?.style) {
                 Object.assign(draggableContentBody.style, previousStyle);
+                draggableContentBody.style.pointerEvents = previousPointerEvent ?? 'unset';
             }
             if (boundaryRef) {
                 window.removeEventListener('mousemove', handleMouseMove);

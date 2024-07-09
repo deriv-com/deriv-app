@@ -206,6 +206,7 @@
         transition: unset;
 
         @include mobile-screen {
+            width: 90vw;
             padding: 1.6rem;
         }
     }

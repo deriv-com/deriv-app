@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useDevice } from '@deriv-com/ui';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { OneTimeDepositModalContent } from '../one-time-deposit-modal-content';
-import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),

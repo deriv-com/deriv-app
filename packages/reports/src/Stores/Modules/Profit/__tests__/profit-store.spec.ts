@@ -62,6 +62,8 @@ jest.mock('@deriv/shared', () => {
 describe('ProfitTableStore', () => {
     let mockedProfitTableStore: ProfitTableStore;
 
+    const custom_date_time_string = '2024-06-13T00:00:00.000Z';
+    const custom_timestamp = 1718236800;
     const default_date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     const filtered_contract_types = ['MULTUP', 'MULTDOWN'];
     const mocked_error = 'Test error';
@@ -150,7 +152,7 @@ describe('ProfitTableStore', () => {
     describe('has_selected_date', () => {
         it('should return true if date_from or date_to is truthy', () => {
             expect(mockedProfitTableStore.date_from).toBeNull();
-            expect(mockedProfitTableStore.date_to).toBe(toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix());
+            expect(mockedProfitTableStore.date_to).toBe(default_date_to);
 
             expect(mockedProfitTableStore.has_selected_date).toBe(true);
         });
@@ -360,12 +362,12 @@ describe('ProfitTableStore', () => {
     describe('clearDateFilter', () => {
         it('should clear data_from and reset date_to to today unix timestamp', () => {
             // @ts-expect-error TODO: remove the comment after profit-store is migrated to TS
-            mockedProfitTableStore.date_from = 1718236800;
-            mockedProfitTableStore.date_to = 1718236800;
+            mockedProfitTableStore.date_from = custom_timestamp;
+            mockedProfitTableStore.date_to = custom_timestamp;
 
             mockedProfitTableStore.clearDateFilter();
             expect(mockedProfitTableStore.date_from).toBeNull();
-            expect(mockedProfitTableStore.date_to).toBe(toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix());
+            expect(mockedProfitTableStore.date_to).toBe(default_date_to);
         });
     });
     describe('handleDateChange', () => {
@@ -389,12 +391,12 @@ describe('ProfitTableStore', () => {
             expect(spyFetchNextBatch).toBeCalledWith(undefined);
         });
         it('should set date_from when from is present in date_values', () => {
-            mockedProfitTableStore.handleDateChange({ from: '2024-06-13T00:00:00.000Z' });
-            expect(mockedProfitTableStore.date_from).toBe(1718236800);
+            mockedProfitTableStore.handleDateChange({ from: custom_date_time_string });
+            expect(mockedProfitTableStore.date_from).toBe(custom_timestamp);
         });
         it('should set date_to when to is present in date_values', () => {
-            mockedProfitTableStore.handleDateChange({ to: '2024-06-13T00:00:00.000Z' });
-            expect(mockedProfitTableStore.date_to).toBe(1718236800);
+            mockedProfitTableStore.handleDateChange({ to: custom_date_time_string });
+            expect(mockedProfitTableStore.date_to).toBe(custom_timestamp);
         });
         it('should set date_from to null when from is missing from date_values and is_batch={true}', () => {
             mockedProfitTableStore.handleDateChange({ is_batch: true });

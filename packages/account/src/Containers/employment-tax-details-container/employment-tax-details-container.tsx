@@ -126,7 +126,6 @@ const EmploymentTaxDetailsContainer = ({
                             {
                                 ...values,
                                 confirm_no_tax_details: !values.confirm_no_tax_details,
-                                tax_residence: '',
                                 tax_identification_number: '',
                                 tax_identification_confirm: false,
                             },

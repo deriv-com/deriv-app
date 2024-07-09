@@ -19,10 +19,7 @@ const { addressPermittedSpecialCharacters } = ValidationConstants.messagesHints;
 export const getEmploymentAndTaxValidationSchema = (tin_config: TinValidations) => {
     return Yup.object({
         employment_status: Yup.string().required(localize('Employment status is required.')),
-        tax_residence: Yup.string().when('confirm_no_tax_details', {
-            is: (confirm_no_tax_details: boolean) => confirm_no_tax_details,
-            then: Yup.string().notRequired(),
-        }),
+        tax_residence: Yup.string().required(localize('Tax residence is required.')),
         confirm_no_tax_details: Yup.bool(),
         tax_identification_confirm: Yup.bool().when(
             ['tax_identification_number', 'tax_residence', 'confirm_no_tax_details'],

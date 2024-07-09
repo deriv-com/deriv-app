@@ -139,6 +139,7 @@ describe('getEmploymentAndTaxValidationSchema', () => {
         const valid_values = {
             employment_status: 'Student',
             confirm_no_tax_details: true,
+            tax_residence: 'Germany',
         };
 
         expect(validation_schema.isValidSync(valid_values)).toBeTruthy();

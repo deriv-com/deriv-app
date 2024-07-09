@@ -1,11 +1,19 @@
 import React from 'react';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import { v4 as uuidv4 } from 'uuid';
 import { config, getSavedWorkspaces, load, removeExistingWorkspace, save_types, setColors } from '@deriv/bot-skeleton';
 import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
 import { clearInjectionDiv, tabs_title } from 'Constants/load-modal';
 import { TStrategy } from 'Types';
+import { rudderStackSendSwitchLoadStrategyTabEvent } from '../analytics/rudderstack-bot-builder';
+import {
+    rudderStackSendUploadStrategyCompletedEvent,
+    rudderStackSendUploadStrategyFailedEvent,
+    rudderStackSendUploadStrategyStartEvent,
+} from '../analytics/rudderstack-common-events';
+import { getStrategyType, LOAD_MODAL_TABS } from '../analytics/utils';
 import RootStore from './root-store';
 
 interface ILoadModalStore {
@@ -42,7 +50,7 @@ interface ILoadModalStore {
     onToggleDeleteDialog: (is_delete_modal_open: boolean) => void;
     onZoomInOutClick: (is_zoom_in: string) => void;
     previewRecentStrategy: (workspace_id: string) => void;
-    setActiveTabIndex: (index: number) => void;
+    setActiveTabIndex: (index: number, is_default: boolean) => void;
     setLoadedLocalFile: (loaded_local_file: File | null) => void;
     setDashboardStrategies: (strategies: Array<TStrategy>) => void;
     setRecentStrategies: (recent_strategies: TStrategy[]) => void;
@@ -60,6 +68,7 @@ export default class LoadModalStore implements ILoadModalStore {
     root_store: RootStore;
     core: TStores;
     previewed_strategy_id = '';
+    imported_strategy_type = 'pending';
 
     constructor(root_store: RootStore, core: TStores) {
         makeObservable(this, {
@@ -76,6 +85,7 @@ export default class LoadModalStore implements ILoadModalStore {
             dashboard_strategies: observable,
             selected_strategy_id: observable,
             current_workspace_id: observable,
+            upload_id: observable,
             preview_workspace: computed,
             selected_strategy: computed,
             tab_name: computed,
@@ -87,6 +97,7 @@ export default class LoadModalStore implements ILoadModalStore {
             handleFileChange: action.bound,
             loadFileFromRecent: action.bound,
             loadFileFromLocal: action.bound,
+            imported_strategy_type: observable,
             onActiveIndexChange: action.bound,
             onDriveConnect: action.bound,
             onDriveOpen: action.bound,
@@ -143,6 +154,7 @@ export default class LoadModalStore implements ILoadModalStore {
     is_delete_modal_open = false;
     is_strategy_removed = false;
     current_workspace_id = '';
+    upload_id = '';
 
     get preview_workspace(): Blockly.WorkspaceSvg | null {
         if (this.tab_name === tabs_title.TAB_LOCAL) return this.local_workspace;
@@ -192,6 +204,8 @@ export default class LoadModalStore implements ILoadModalStore {
         event: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent,
         is_body = true
     ): boolean => {
+        this.imported_strategy_type = 'pending';
+        this.upload_id = uuidv4();
         let files;
         if (event.type === 'drop') {
             event.stopPropagation();
@@ -343,6 +357,11 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     onDriveOpen = async () => {
+        const { google_drive } = this.root_store;
+        if (google_drive) {
+            google_drive.upload_id = uuidv4();
+        }
+        rudderStackSendUploadStrategyStartEvent({ upload_provider: 'google_drive', upload_id: google_drive.upload_id });
         const { loadFile } = this.root_store.google_drive;
         const { xml_doc, file_name } = await loadFile();
         await load({
@@ -373,7 +392,7 @@ export default class LoadModalStore implements ILoadModalStore {
             this.local_workspace = null;
         }
 
-        this.setActiveTabIndex(0); // Reset to first tab.
+        this.setActiveTabIndex(0, true); // Reset to first tab.
         this.setLoadedLocalFile(null);
     };
 
@@ -428,8 +447,15 @@ export default class LoadModalStore implements ILoadModalStore {
         this.refreshStrategiesTheme();
     };
 
-    setActiveTabIndex = (index: number): void => {
+    setActiveTabIndex = (index: number, is_default: boolean): void => {
         this.active_index = index;
+        if (!is_default) {
+            const { ui } = this.core;
+            const { is_mobile } = ui;
+            rudderStackSendSwitchLoadStrategyTabEvent({
+                load_strategy_tab: LOAD_MODAL_TABS[index + (is_mobile ? 1 : 0)],
+            });
+        }
     };
 
     setLoadedLocalFile = (loaded_local_file: File | null): void => {
@@ -499,8 +525,12 @@ export default class LoadModalStore implements ILoadModalStore {
     };
 
     readFile = (is_preview: boolean, drop_event: DragEvent, file: File): void => {
+        if (this.upload_id && is_preview) {
+            rudderStackSendUploadStrategyStartEvent({ upload_provider: 'my_computer', upload_id: this.upload_id });
+        }
         const file_name = file?.name.replace(/\.[^/.]+$/, '');
         const reader = new FileReader();
+
         reader.onload = action(async e => {
             const load_options = {
                 block_string: e?.target?.result,
@@ -512,6 +542,7 @@ export default class LoadModalStore implements ILoadModalStore {
                 showIncompatibleStrategyDialog: false,
             };
             const ref = document?.getElementById('load-strategy__blockly-container');
+            const upload_type = getStrategyType(load_options?.block_string ?? '');
             if (is_preview && ref) {
                 this.local_workspace = Blockly.inject(ref, {
                     media: `${__webpack_public_path__}media/`, // eslint-disable-line
@@ -526,13 +557,30 @@ export default class LoadModalStore implements ILoadModalStore {
                 if (load_options.workspace) {
                     (load_options.workspace as any).RTL = isDbotRTL();
                 }
+                this.imported_strategy_type = upload_type;
             } else {
                 load_options.workspace = window.Blockly.derivWorkspace;
                 load_options.file_name = file_name;
             }
-            await load(load_options);
+
+            const result = await load(load_options);
+            if (!is_preview && !result?.error) {
+                rudderStackSendUploadStrategyCompletedEvent({
+                    upload_provider: 'my_computer',
+                    upload_type,
+                    upload_id: this.upload_id,
+                });
+            } else if (!is_preview && result?.error) {
+                rudderStackSendUploadStrategyFailedEvent({
+                    upload_provider: 'my_computer',
+                    upload_id: this.upload_id,
+                    upload_type,
+                    error_message: result.error,
+                });
+            }
             this.is_open_button_loading = false;
         });
+
         reader.readAsText(file);
     };
 }

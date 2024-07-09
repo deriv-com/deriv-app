@@ -2,7 +2,7 @@ import React from 'react';
 import { Analytics, TEvents } from '@deriv-com/analytics';
 import { Button, Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 
 const trackAnalyticsEvent = (
     action: TEvents['ce_tradershub_banner']['action'],
@@ -44,13 +44,9 @@ const WalletsBannerUpgrade = observer(() => {
                         ]}
                     />
                 </div>
-                <Button
-                    className='wallets-banner-upgrade__button'
-                    text={localize("Let's go")}
-                    primary
-                    large
-                    onClick={onWalletsUpgradeHandler}
-                />
+                <Button className='wallets-banner-upgrade__button' primary large onClick={onWalletsUpgradeHandler}>
+                    <Localize i18n_default_text="Let's go" />
+                </Button>
             </div>
             <Icon
                 icon={`IcAppstoreWalletsUpgradeCoins${is_mobile ? '' : 'Horizontal'}`}

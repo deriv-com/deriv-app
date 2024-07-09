@@ -64,6 +64,7 @@ describe('ConfirmPhoneNumber', () => {
             sendEmailOTPVerification: mockSendEmailOTPVerification,
         });
         mock_store_data.client.verification_code.phone_number_verification = '123456';
+        mock_store_data.client.is_authorize = true;
         renderComponent();
         expect(screen.getByText(/mockedLoading/)).toBeInTheDocument();
         expect(mockSendEmailOTPVerification).toBeCalledTimes(1);

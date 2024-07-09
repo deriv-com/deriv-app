@@ -28,6 +28,7 @@ const PhoneVerificationPage = observer(() => {
     const { client } = useStore();
     const {
         verification_code: { phone_number_verification: phone_number_verification_code },
+        is_authorize,
     } = client;
 
     React.useEffect(() => {
@@ -40,11 +41,11 @@ const PhoneVerificationPage = observer(() => {
                 show_otp_verification: false,
                 phone_verification_type: '',
             });
-        } else if (phone_number_verification_code) {
+        } else if (phone_number_verification_code && is_authorize) {
             setIsLoading(true);
             sendEmailOTPVerification(phone_number_verification_code);
         }
-    }, [email_otp_error, is_email_verified, phone_number_verification_code]);
+    }, [email_otp_error, is_email_verified, phone_number_verification_code, is_authorize]);
 
     if (is_loading) {
         return <Loading is_fullscreen={false} />;

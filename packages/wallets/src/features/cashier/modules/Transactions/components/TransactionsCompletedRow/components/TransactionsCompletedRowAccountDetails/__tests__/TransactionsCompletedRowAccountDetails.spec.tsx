@@ -14,7 +14,6 @@ const defaultProps = {
     displayAccountName: 'USD Wallet',
     displayActionType: 'Deposit',
     isDemo: false,
-    landingCompanyName: 'svg' as const,
     mt5Group: 'mocked mt5 group',
 };
 
@@ -40,12 +39,6 @@ describe('TransactionsCompletedRowAccountDetails', () => {
         expect(screen.getByTestId('dt_wallet_market_icon')).toBeInTheDocument();
     });
 
-    it('renders WalletListCardBadge for real account', () => {
-        render(<TransactionsCompletedRowAccountDetails {...defaultProps} />);
-
-        expect(screen.getByTestId('dt_wallet_list_card_badge')).toBeInTheDocument();
-    });
-
     it('does not render WalletListCardBadge for demo account', () => {
         render(<TransactionsCompletedRowAccountDetails {...defaultProps} isDemo={true} />);
 
@@ -55,7 +48,6 @@ describe('TransactionsCompletedRowAccountDetails', () => {
     it('calls getMarketType with correct mt5 group', () => {
         const mt5Props = {
             ...defaultProps,
-            mt5LandingCompanyName: 'svg',
         };
         render(<TransactionsCompletedRowAccountDetails {...mt5Props} />);
 

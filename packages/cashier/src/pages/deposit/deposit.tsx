@@ -25,7 +25,7 @@ const Deposit = observer(() => {
 
     if (is_transactions_crypto_visible) return <TransactionsCryptoHistory />;
 
-    if (!!currency_config && (is_deposit || is_low_risk_cr_eu_real)) {
+    if (currency_config && (is_deposit || is_low_risk_cr_eu_real)) {
         const is_crypto_provider = currency_config.platform.cashier.includes('crypto');
 
         return is_crypto_provider ? <DepositCryptoModule /> : <DepositFiatModule />;

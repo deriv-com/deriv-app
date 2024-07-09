@@ -942,7 +942,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const password_modal = (
         <Modal
-            className='cfd-password-modal'
+            className='cfd-password-modal password_modal'
             has_close_icon
             is_open={should_show_password_modal}
             toggleModal={closeModal}
@@ -963,13 +963,31 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         </Modal>
     );
 
+    const password_modal_mobile = (
+        <MobileDialog
+            has_full_height
+            portal_element_id='modal_root'
+            visible={should_show_password_modal}
+            onClose={closeModal}
+            wrapper_classname='cfd-password-modal password_modal_mobile'
+        >
+            <PasswordModalHeader
+                should_set_trading_password={should_set_trading_password}
+                is_password_reset_error={is_password_reset}
+                platform={platform}
+            />
+
+            {cfd_password_form}
+        </MobileDialog>
+    );
+
     const password_dialog = (
         <MobileDialog
             has_full_height
             portal_element_id='modal_root'
             visible={should_show_password_dialog}
             onClose={closeModal}
-            wrapper_classname='cfd-password-modal'
+            wrapper_classname='cfd-password-modal password_dialog'
         >
             <PasswordModalHeader
                 should_set_trading_password={should_set_trading_password}
@@ -1034,7 +1052,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     return (
         <React.Fragment>
-            {password_modal}
+            {isDesktop ? password_modal : password_modal_mobile}
             {password_dialog}
             <SuccessDialog
                 is_open={should_show_success}

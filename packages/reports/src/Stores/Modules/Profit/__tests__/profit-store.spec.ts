@@ -3,6 +3,7 @@ import { configure } from 'mobx';
 import ProfitTableStore from '../profit-store';
 import { TCoreStores } from '@deriv/stores/types';
 import { toMoment, WS } from '@deriv/shared';
+import { waitFor } from '@testing-library/react';
 
 configure({ safeDescriptors: false });
 
@@ -155,7 +156,103 @@ describe('ProfitTableStore', () => {
 
             expect(mockedProfitTableStore.shouldFetchNextBatch()).toBe(false);
         });
+        it('should return true if has_loaded_all or is_loading are true but called with true is_mounting param', () => {
+            expect(mockedProfitTableStore.is_loading).toBe(false);
+            expect(mockedProfitTableStore.has_loaded_all).toBe(true);
+
+            expect(mockedProfitTableStore.shouldFetchNextBatch(true)).toBe(true);
+        });
     });
+    describe('fetchNextBatch', () => {
+        it('should make profitTable call and call profitTableResponseHandler if has_loaded_all={false} & is_loading={false}, or when called with truthy isMounting param', async () => {
+            const spyWSProfitTable = jest.spyOn(WS, 'profitTable');
+            const spyProfitTableResponseHandler = jest.spyOn(mockedProfitTableStore, 'profitTableResponseHandler');
+
+            expect(mockedProfitTableStore.is_loading).toBe(false);
+            mockedProfitTableStore.has_loaded_all = false;
+
+            mockedProfitTableStore.fetchNextBatch();
+
+            expect(spyWSProfitTable).toBeCalled();
+            await waitFor(() => expect(spyProfitTableResponseHandler).toBeCalled());
+        });
+        // it('should not make profitTable call or call profitTableResponseHandler if shouldFetchNextBatch() returns false', () => {
+        //     const spyWSProfitTable = jest.spyOn(WS, 'profitTable');
+        //     const spyProfitTableResponseHandler = jest.spyOn(mockedProfitTableStore, 'profitTableResponseHandler');
+
+        //     mockedProfitTableStore.fetchNextBatch();
+
+        //     expect(spyWSProfitTable).not.toBeCalled();
+        //     expect(spyProfitTableResponseHandler).not.toBeCalled();
+        // });
+    });
+    // describe('profitTableResponseHandler', () => {
+    //     it('should call disposeSwitchAccount and unsubscribe from proposal API', () => {
+    //         const spyDisposeSwitchAccount = jest.spyOn(mockedProfitTableStore, 'disposeSwitchAccount');
+    //         const spyWSForgetAll = jest.spyOn(WS, 'forgetAll');
+    //         mockedProfitTableStore.onUnmount();
+
+    //         expect(spyDisposeSwitchAccount).toHaveBeenCalled();
+    //         expect(spyWSForgetAll).toHaveBeenCalledWith('proposal');
+    //     });
+    // });
+    // describe('fetchOnScroll', () => {
+    //     it('should call disposeSwitchAccount and unsubscribe from proposal API', () => {
+    //         const spyDisposeSwitchAccount = jest.spyOn(mockedProfitTableStore, 'disposeSwitchAccount');
+    //         const spyWSForgetAll = jest.spyOn(WS, 'forgetAll');
+    //         mockedProfitTableStore.onUnmount();
+
+    //         expect(spyDisposeSwitchAccount).toHaveBeenCalled();
+    //         expect(spyWSForgetAll).toHaveBeenCalledWith('proposal');
+    //     });
+    // });
+    // describe('handleScroll', () => {
+    //     it('should call disposeSwitchAccount and unsubscribe from proposal API', () => {
+    //         const spyDisposeSwitchAccount = jest.spyOn(mockedProfitTableStore, 'disposeSwitchAccount');
+    //         const spyWSForgetAll = jest.spyOn(WS, 'forgetAll');
+    //         mockedProfitTableStore.onUnmount();
+
+    //         expect(spyDisposeSwitchAccount).toHaveBeenCalled();
+    //         expect(spyWSForgetAll).toHaveBeenCalledWith('proposal');
+    //     });
+    // });
+    describe('networkStatusChangeListener', () => {
+        it('should set is_loading to false if is_online param value is true while is_loading={false}', () => {
+            expect(mockedProfitTableStore.is_loading).toBe(false);
+
+            mockedProfitTableStore.networkStatusChangeListener(true);
+
+            expect(mockedProfitTableStore.is_loading).toBe(false);
+        });
+        it('should set is_loading to true if is_online param value is false while is_loading={false}', () => {
+            expect(mockedProfitTableStore.is_loading).toBe(false);
+
+            mockedProfitTableStore.networkStatusChangeListener(false);
+
+            expect(mockedProfitTableStore.is_loading).toBe(true);
+        });
+        it('should set is_loading to true if is_loading={true} regardless of the is_online param', () => {
+            mockedProfitTableStore.is_loading = true;
+
+            mockedProfitTableStore.networkStatusChangeListener(false);
+
+            expect(mockedProfitTableStore.is_loading).toBe(true);
+
+            mockedProfitTableStore.networkStatusChangeListener(true);
+
+            expect(mockedProfitTableStore.is_loading).toBe(true);
+        });
+    });
+    // describe('onMount', () => {
+    //     it('should call disposeSwitchAccount and unsubscribe from proposal API', () => {
+    //         const spyDisposeSwitchAccount = jest.spyOn(mockedProfitTableStore, 'disposeSwitchAccount');
+    //         const spyWSForgetAll = jest.spyOn(WS, 'forgetAll');
+    //         mockedProfitTableStore.onUnmount();
+
+    //         expect(spyDisposeSwitchAccount).toHaveBeenCalled();
+    //         expect(spyWSForgetAll).toHaveBeenCalledWith('proposal');
+    //     });
+    // });
     describe('onUnmount', () => {
         it('should call disposeSwitchAccount and unsubscribe from proposal API', () => {
             const spyDisposeSwitchAccount = jest.spyOn(mockedProfitTableStore, 'disposeSwitchAccount');

@@ -41,7 +41,7 @@ const useVerifyPersonalDetails = () => {
     // from submission calls success as useSetting hook does not provide such difference.
     const isSubmitted = isSuccess && hasSubmissionInitiated;
 
-    return { error, initialFormValues, isLoading, isSubmitted, submit };
+    return { error: error?.error, initialFormValues, isLoading, isSubmitted, submit };
 };
 
 export default useVerifyPersonalDetails;

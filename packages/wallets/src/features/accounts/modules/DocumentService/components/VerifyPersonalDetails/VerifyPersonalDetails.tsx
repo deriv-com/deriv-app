@@ -2,8 +2,10 @@ import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { Field, useFormikContext } from 'formik';
 import moment from 'moment';
+import { TSocketError } from '@deriv/api-v2/types';
 import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import { DatePicker, FormField, InlineMessage, WalletText } from '../../../../../../components';
+import { ErrorMessage } from './components';
 import { TVerifyPersonalDetailsValues } from './types';
 import {
     areDetailsVerifiedValidator,
@@ -13,7 +15,11 @@ import {
 } from './verifyPersonalDetailsValidationSchema';
 import './VerifyPersonalDetails.scss';
 
-const VerifyPersonalDetails = () => {
+type TVerifyPersonalDetailsProps = {
+    error?: TSocketError<'get_settings'>['error'] | TSocketError<'set_settings'>['error'];
+};
+
+const VerifyPersonalDetails: React.FC<TVerifyPersonalDetailsProps> = ({ error }) => {
     const { dirty, errors, setFieldValue, values } = useFormikContext<TVerifyPersonalDetailsValues>();
 
     const dateDisplayFormat = 'DD-MM-YYYY';
@@ -101,6 +107,7 @@ const VerifyPersonalDetails = () => {
                     </WalletText>
                 </label>
             </div>
+            {error && <ErrorMessage error={error?.code} />}
         </div>
     );
 };

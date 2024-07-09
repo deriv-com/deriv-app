@@ -1,20 +1,17 @@
 .wallets-banner {
-    &__container {
-        position: relative;
-        height: 18rem;
-        display: flex;
-        justify-content: space-between;
-        margin-block: 2.4rem;
-        overflow: hidden;
-        background-color: var(--general-section-1);
-        border: 1px solid var(--wallets-banner-border-color);
-        border-radius: $BORDER_RADIUS * 4;
+    position: relative;
+    height: 18rem;
+    padding: 2.4rem;
+    margin-block: 2.4rem;
+    overflow: hidden;
+    background-color: var(--general-section-1);
+    border: 1px solid var(--wallets-banner-border-color);
+    border-radius: $BORDER_RADIUS * 4;
 
-        @include mobile-or-tablet-screen {
-            height: 14.2rem;
-            padding: 1.6rem;
-            border-radius: $BORDER_RADIUS * 2;
-        }
+    @include mobile-or-tablet-screen {
+        height: 14.2rem;
+        padding: 1.6rem;
+        border-radius: $BORDER_RADIUS * 2;
     }
 
     &__content {
@@ -22,11 +19,6 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        padding: 2.4rem;
-
-        @include mobile-or-tablet-screen {
-            padding: unset;
-        }
     }
 
     &-upgrade {
@@ -44,22 +36,7 @@
             padding-inline: 6.7rem;
 
             @include mobile-or-tablet-screen {
-                padding-inline: 1.6rem;
-                padding-block: 0.6rem;
-            }
-        }
-
-        &__image {
-            margin-inline-end: 9rem;
-
-            @include mobile {
-                margin-top: -2.6rem;
-                margin-inline-end: -5.35rem;
-            }
-
-            @include tablet-screen {
-                margin-top: unset;
-                margin-inline-end: unset;
+                padding: 0.6rem 1.6rem;
             }
         }
     }
@@ -121,20 +98,6 @@
                 width: 0.5rem;
             }
         }
-
-        &__image {
-            margin-inline-end: 9rem;
-
-            @include mobile {
-                margin-top: -2.6rem;
-                margin-inline-end: -5.35rem;
-            }
-
-            @include tablet-screen {
-                margin-top: unset;
-                margin-inline-end: unset;
-            }
-        }
     }
 
     &-unsuccessful {
@@ -154,16 +117,33 @@
         }
 
         &__image {
-            margin-inline-end: 7.5rem;
+            position: absolute;
+            inset-inline-end: 8rem;
+            inset-block-start: 0rem;
 
-            @include mobile {
-                margin-inline-end: -3rem;
+            @include mobile-or-tablet-screen {
+                inset-inline-end: -3rem;
             }
 
-            @include tablet-screen {
-                margin-inline-end: unset;
+            @include rtl {
+                -webkit-transform: scaleX(-1);
+                -moz-transform: scaleX(-1);
+                -o-transform: scaleX(-1);
+                transform: scaleX(-1);
             }
         }
+    }
+}
+
+.wallets-banner-upgrade__image,
+.wallets-banner-upgrading__image {
+    position: absolute;
+    inset-inline-end: 8rem;
+    inset-block-start: 0rem;
+
+    @include mobile-or-tablet-screen {
+        inset-inline-end: -4.5rem;
+        inset-block-start: -3rem;
     }
 }
 

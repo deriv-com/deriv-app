@@ -3,13 +3,13 @@ import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 
-const WalletBannerUnsuccessful = observer(() => {
+const WalletsBannerUnsuccessful = observer(() => {
     const { traders_hub, ui } = useStore();
-    const { is_desktop, is_mobile } = ui;
+    const { is_desktop } = ui;
     const { toggleWalletsUpgrade } = traders_hub;
 
     return (
-        <div className='wallets-banner__container wallets-banner-unsuccessful'>
+        <div className='wallets-banner wallets-banner-unsuccessful'>
             <div className='wallets-banner__content wallets-banner-unsuccessful__content'>
                 <Localize
                     i18n_default_text='<0>Setup unsuccessful</0>'
@@ -42,7 +42,7 @@ const WalletBannerUnsuccessful = observer(() => {
             </div>
             <Icon
                 icon='IcAppstoreWalletsUpgradeUnsuccessful'
-                width={is_mobile ? 192 : 272}
+                width={is_desktop ? 272 : 192}
                 height='100%'
                 className='wallets-banner-unsuccessful__image'
                 data_testid='dt_wallets_upgrade_unsuccessful'
@@ -51,4 +51,4 @@ const WalletBannerUnsuccessful = observer(() => {
     );
 });
 
-export default WalletBannerUnsuccessful;
+export default WalletsBannerUnsuccessful;

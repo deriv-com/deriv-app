@@ -274,11 +274,12 @@ const CreatePassword = ({
                         className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body cfd-password-modal__create-password-content'
                         data-testid='dt_create_password'
                     >
-                        <Icon
-                            icon={platform === CFD_PLATFORMS.MT5 ? 'IcMt5OnePassword' : 'IcDxtradeOnePassword'}
-                            width='122'
-                            height='108'
-                        />
+                        {platform === CFD_PLATFORMS.MT5 ? (
+                            <Icon icon={'IcMt5Password'} width='100' height='100' />
+                        ) : (
+                            <Icon icon={'IcDxtradeOnePassword'} width='122' height='108' />
+                        )}
+
                         <Text
                             size='s'
                             align='center'

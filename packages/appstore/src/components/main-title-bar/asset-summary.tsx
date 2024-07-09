@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Popover } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
 import BalanceText from 'Components/elements/text/balance-text';
 import { observer, useStore } from '@deriv/stores';
@@ -19,13 +19,29 @@ const AssetSummary = observer(() => {
     const { isDesktop } = useDevice();
     const { traders_hub, client, common, modules } = useStore();
     const { selected_account_type, is_eu_user, no_CR_account, no_MF_account } = traders_hub;
-    const { is_logging_in, is_switching, default_currency, is_landing_company_loaded, is_mt5_allowed } = client;
+    const {
+        is_logging_in,
+        is_switching,
+        default_currency,
+        is_landing_company_loaded,
+        is_mt5_allowed,
+        is_populating_account_list,
+        is_populating_mt5_account_list,
+        is_populating_dxtrade_account_list,
+        is_populating_ctrader_account_list,
+    } = client;
     const { account_transfer, general_store } = modules.cashier;
     const { is_transfer_confirm } = account_transfer;
     const { is_loading } = general_store;
     const { current_language } = common;
     const { real: platform_real_accounts, demo: platform_demo_account } = usePlatformAccounts();
     const { real: cfd_real_accounts, demo: cfd_demo_accounts } = useCFDAccounts();
+
+    const is_still_waiting_for_loading_accounts =
+        is_populating_account_list ||
+        is_populating_mt5_account_list ||
+        is_populating_dxtrade_account_list ||
+        is_populating_ctrader_account_list;
 
     const platform_real_balance = useTotalAccountBalance(platform_real_accounts);
     const cfd_real_balance = useTotalAccountBalance(cfd_real_accounts);
@@ -42,15 +58,18 @@ const AssetSummary = observer(() => {
     const eu_account = is_eu_user && !no_MF_account;
     const cr_account = !is_eu_user && !no_CR_account;
 
-    const eu_mt5_allowed_total_assets = is_mt5_allowed
-        ? localize('Total assets in your Deriv Apps and Deriv MT5 CFDs demo account.')
-        : localize('Total assets in your account.');
+    const eu_mt5_allowed_total_assets = is_mt5_allowed ? (
+        <Localize i18n_default_text='Total assets in your Deriv Apps and Deriv MT5 CFDs demo account.' />
+    ) : (
+        <Localize i18n_default_text='Total assets in your account.' />
+    );
 
     const should_show_loader =
         ((is_switching || is_logging_in) && (eu_account || cr_account)) ||
         !is_landing_company_loaded ||
         is_loading ||
         is_transfer_confirm ||
+        is_still_waiting_for_loading_accounts ||
         !isRatesLoaded(is_real, total_assets_real_currency, platform_real_accounts, cfd_real_accounts, exchange_rates);
 
     if (should_show_loader) {
@@ -69,13 +88,17 @@ const AssetSummary = observer(() => {
                 <React.Fragment>
                     {isDesktop ? (
                         <Text align='right' key={`asset-summary--key-${current_language}`} size='xs' line_height='s'>
-                            {localize('Total assets')}
+                            <Localize i18n_default_text='Total assets' />
                         </Text>
                     ) : null}
                     <Popover
                         alignment={isDesktop ? 'left' : 'top'}
                         message={
-                            is_eu_user ? eu_mt5_allowed_total_assets : localize('Total assets in all your accounts')
+                            is_eu_user ? (
+                                eu_mt5_allowed_total_assets
+                            ) : (
+                                <Localize i18n_default_text='Total assets in all your accounts' />
+                            )
                         }
                         zIndex={9999}
                         is_bubble_hover_enabled

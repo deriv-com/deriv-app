@@ -1,0 +1,60 @@
+.payout-per-point-mobile {
+    background: var(--general-section-1);
+    width: 100%;
+    border-radius: 4px;
+    display: flex;
+    height: 250px;
+    padding: 8px;
+    margin-top: 8px;
+    flex-direction: column;
+    .payout-per-point-mobile-header {
+        padding: 8px;
+        display: flex;
+        .popover-icon {
+            margin-left: 8px;
+            margin-top: 2px;
+        }
+        .cross-icon {
+            margin-left: auto;
+        }
+    }
+    .selected-value-mobile {
+        background: var(--general-active);
+        color: var() --text-general;
+        width: 100%;
+        border-radius: 4px;
+    }
+    .distance {
+        color: var(--text-general);
+        margin-bottom: 16px;
+    }
+
+    .save-button {
+        width: 100%;
+        border: 1px solid var(--general-main-3);
+        color: var(--text-general);
+        font-weight: bold;
+    }
+
+    .no-select {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    .actions {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .icons {
+            width: 32px;
+            padding-left: 22px;
+            background: var(--general-section-1);
+        }
+        .chevron-up {
+            transform: rotate(180deg);
+        }
+    }
+}

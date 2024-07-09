@@ -1,5 +1,5 @@
 import React from 'react';
-import { Collapsible, Text } from '@deriv/components';
+import { Collapsible, FadeWrapper, PageOverlay, Text } from '@deriv/components';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
 import AllowEqualsMobile from 'Modules/Trading/Containers/allow-equals';
 import {
@@ -30,6 +30,7 @@ import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Localize } from '@deriv/translations';
 import { TRADE_TYPES } from '@deriv/shared';
+import PayoutPerPointMobileInput from '../Elements/PayoutPerPoint/payout-per-point-mobile-input';
 
 type TCollapsibleTradeParams = Pick<
     ReturnType<typeof useTraderStore>,
@@ -207,6 +208,8 @@ const ScreenSmall = observer(({ is_trade_enabled }: { is_trade_enabled: boolean 
         setIsTradeParamsExpanded,
         take_profit,
         last_digit,
+        open_payout_wheelpicker,
+        togglePayoutWheelPicker,
     } = trade_store;
     const is_allow_equal = !!trade_store.is_equal;
 
@@ -242,7 +245,16 @@ const ScreenSmall = observer(({ is_trade_enabled }: { is_trade_enabled: boolean 
             <TradeParamsLoader speed={2} />
         </div>
     ) : (
-        <CollapsibleTradeParams has_allow_equals={has_allow_equals} {...collapsible_trade_params_props} />
+        <>
+            {open_payout_wheelpicker ? (
+                <PayoutPerPointMobileInput
+                    open_payout_wheelpicker={open_payout_wheelpicker}
+                    togglePayoutWheelPicker={togglePayoutWheelPicker}
+                />
+            ) : (
+                <CollapsibleTradeParams has_allow_equals={has_allow_equals} {...collapsible_trade_params_props} />
+            )}
+        </>
     );
 });
 

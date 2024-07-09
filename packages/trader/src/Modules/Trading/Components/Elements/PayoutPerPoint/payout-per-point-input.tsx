@@ -1,29 +1,31 @@
 import React from 'react';
-import WheelPicker from '../Form/WheelPicker';
+import WheelPicker from '../../Form/WheelPicker';
 import { DesktopWrapper, Text } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset';
 import { localize } from '@deriv/translations';
 
-const PayoutPerPoint = ({
+const PayoutPerPointInput = ({
     barriersList,
     onBarrierClick,
     selectedBarrier,
+    tooltipText,
 }: {
     barriersList: string[];
     onBarrierClick: (option: string) => void;
     selectedBarrier: string;
+    tooltipText?: React.ReactNode;
 }) => {
     return (
         <DesktopWrapper>
             <Fieldset
                 className={'trade-container__fieldset'}
                 header={localize('Payout per Point')}
-                header_tooltip={'aisjdiasod sadisajdas daid sadias'}
+                header_tooltip={tooltipText}
             >
                 <WheelPicker options={barriersList} onBarrierClick={onBarrierClick} />
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Text size={'xxs'} line_height='l' color={'default'} align='center' as='p'>
-                        Distance to current spot
+                        {localize('Distance to current spot')}
                     </Text>
                     <Text
                         size={'xxxs'}
@@ -41,4 +43,4 @@ const PayoutPerPoint = ({
     );
 };
 
-export default PayoutPerPoint;
+export default PayoutPerPointInput;

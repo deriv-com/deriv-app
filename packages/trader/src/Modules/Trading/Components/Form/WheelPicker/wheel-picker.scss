@@ -1,9 +1,9 @@
 .wheel-picker {
     background: var(--general-main-1);
     width: 100%;
-    height: 76px;
-    padding: 8px;
-    margin-top: 8px;
+    height: 7.6rem;
+    padding: 0.8rem;
+    margin-top: 0.8rem;
     display: flex;
     .digits {
         display: flex;
@@ -11,7 +11,7 @@
         text-align: center;
         margin: auto;
         overflow: hidden;
-        height: 68px;
+        height: 6.8rem;
         animation: slide 0.3s ease;
     }
     .actions {
@@ -19,19 +19,59 @@
         flex-direction: column;
         justify-content: space-between;
         .icons {
-            width: 32px;
-            padding-left: 22px;
+            width: 3.2rem;
+            padding-left: 2.2rem;
             background: var(--general-section-1);
         }
         .chevron-up {
             transform: rotate(180deg);
         }
     }
-    .digits > p {
-        transition: transform 0.3s ease, font-size 0.3s ease;
-    }
+}
 
-    .selected-value {
-        transition: transform 0.3s ease, font-size 0.3s ease;
+.wheel-picker-mobile {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.1rem;
+    text-align: center;
+    height: 14rem;
+    margin: 0;
+    position: relative;
+    .picker-selected-wrapper {
+        position: absolute;
+        margin: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        pointer-events: none;
+        .picker-selected {
+            width: 100%;
+            background: var(--general-active);
+            height: 3.2rem;
+            border-radius: 0.5rem;
+            position: relative;
+            .currency-label {
+                padding-top: 1.2rem;
+            }
+        }
+    }
+    .picker-viewport {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        .picker-wheel {
+            position: relative;
+            transition-timing-function: ease-in-out;
+            .options {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+            }
+        }
     }
 }

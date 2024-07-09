@@ -1,21 +1,22 @@
 import React from 'react';
 import BarriersList from '../barriers-list';
-import { Icon, MobileDialog, Text, Popover } from '@deriv/components';
+import { Icon, Text, Popover } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset';
 import { Localize, localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { useDevice } from '@deriv-com/ui';
-import PayoutPerPoint from 'Modules/Trading/Components/Elements/payout-per-point';
+import PayoutPerPointInput from 'Modules/Trading/Components/Elements/PayoutPerPoint/payout-per-point-input';
 
 const BarrierSelector = observer(() => {
-    const { barrier_1, onChange, setHoveredBarrier, barrier_choices } = useTraderStore();
+    const { barrier_1, onChange, setHoveredBarrier, barrier_choices, togglePayoutWheelPicker } = useTraderStore();
     const [is_barriers_table_expanded, setIsBarriersTableExpanded] = React.useState(false);
     const [selected_barrier, setSelectedBarrier] = React.useState(barrier_1);
     const { isMobile } = useDevice();
 
     const toggleBarriersTable = () => {
         setIsBarriersTableExpanded(!is_barriers_table_expanded);
+        togglePayoutWheelPicker();
     };
 
     const onBarrierClick = (barrier: string) => {
@@ -40,12 +41,12 @@ const BarrierSelector = observer(() => {
         </div>
     );
 
-    const barriers_header_mobile = (
-        <div className='trade-container__barriers-table__header-wrapper'>
-            <div>{localize('Barriers')}</div>
-            <Popover alignment='bottom' icon='info' zIndex='9999' message={header_tooltip_text} />
-        </div>
-    );
+    // const barriers_header_mobile = (
+    //     <div className='trade-container__barriers-table__header-wrapper'>
+    //         <div>{localize('Barriers')}</div>
+    //         <Popover alignment='bottom' icon='info' zIndex='9999' message={header_tooltip_text} />
+    //     </div>
+    // );
 
     if (isMobile) {
         return (
@@ -58,38 +59,19 @@ const BarrierSelector = observer(() => {
                         {barrier_1}
                     </Text>
                     <Text size='xs' color='less-prominent' align='center'>
-                        {localize('Barrier')}
+                        {localize('Payout per point')}
                     </Text>
                 </div>
-                <MobileDialog
-                    title={barriers_header_mobile}
-                    onClose={toggleBarriersTable}
-                    portal_element_id='modal_root'
-                    wrapper_classname='contracts-modal-list'
-                    visible={is_barriers_table_expanded}
-                    header_classname='trade-container__barriers-table__header'
-                >
-                    <BarriersList
-                        className='trade-container__barriers-table'
-                        header={localize('Barriers')}
-                        barriers_list={barrier_choices}
-                        selected_item={selected_barrier}
-                        show_table={is_barriers_table_expanded}
-                        subheader={localize('Distance to current spot')}
-                        onClick={onBarrierClick}
-                        onClickCross={toggleBarriersTable}
-                        onHover={setHoveredBarrier}
-                    />
-                </MobileDialog>
             </React.Fragment>
         );
     }
 
     return (
         <React.Fragment>
-            <PayoutPerPoint
+            <PayoutPerPointInput
                 barriersList={barrier_choices}
                 onBarrierClick={onBarrierClick}
+                tooltipText={header_tooltip_text}
                 selectedBarrier={selected_barrier}
             />
             <Fieldset

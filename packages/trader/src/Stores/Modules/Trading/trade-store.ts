@@ -276,6 +276,7 @@ export default class TradeStore extends BaseStore {
     has_stop_loss = false;
     has_take_profit = false;
     has_cancellation = false;
+    open_payout_wheelpicker = false;
     commission?: string | number;
     cancellation_price?: number;
     stop_out?: number;
@@ -291,6 +292,7 @@ export default class TradeStore extends BaseStore {
     // Turbos trade params
     long_barriers: TBarriersData = {};
     short_barriers: TBarriersData = {};
+    payout_per_point = '';
 
     // Vanilla trade params
     strike_price_choices: TBarriersData = {};
@@ -366,6 +368,7 @@ export default class TradeStore extends BaseStore {
             barriers: observable,
             basis_list: observable,
             basis: observable,
+            payout_per_point: observable,
             cancellation_duration: observable,
             cancellation_price: observable,
             cancellation_range_list: observable,
@@ -438,6 +441,8 @@ export default class TradeStore extends BaseStore {
             tick_size_barrier_percentage: observable,
             ticks_history_stats: observable,
             trade_types: observable,
+            open_payout_wheelpicker: observable,
+            togglePayoutWheelPicker: action.bound,
             accountSwitcherListener: action.bound,
             barrier_pipsize: computed,
             barriers_flattened: computed,
@@ -1829,6 +1834,12 @@ export default class TradeStore extends BaseStore {
         }
     }
 
+    togglePayoutWheelPicker() {
+        this.open_payout_wheelpicker = !this.open_payout_wheelpicker;
+    }
+    setPayoutWheelPicker(val: string) {
+        this.payout_per_point = val;
+    }
     setIsDigitsWidgetActive(is_active: boolean) {
         this.is_digits_widget_active = is_active;
     }

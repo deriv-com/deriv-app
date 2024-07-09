@@ -2,11 +2,11 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { isMobile } from '@deriv/shared';
 import getRoutesConfig from 'Constants/routes-config';
 import Cashier from '../cashier';
 import { P2PSettingsProvider, mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
+import { routes } from '@deriv/shared';
 
 jest.mock('@deriv/hooks', () => {
     return {
@@ -38,7 +38,6 @@ jest.mock('@deriv/shared', () => {
 
     return {
         ...original_module,
-        isMobile: jest.fn(() => false),
         WS: {
             wait: (...payload: unknown[]) => {
                 return Promise.resolve([...payload]);
@@ -66,11 +65,11 @@ describe('<Cashier />', () => {
         };
     };
 
-    it('should show the loading component if client_tnc_status is not yet loaded or not yet logged in', () => {
+    it('shows the loading component if not yet logged in', () => {
         const mock_root_store = mockStore({
             common: {
                 routeBackInApp: jest.fn(),
-                is_from_derivgo: true,
+                is_from_derivgo: false,
             },
             ui: {
                 is_cashier_visible: false,
@@ -115,20 +114,70 @@ describe('<Cashier />', () => {
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
-    it('should render the component if client_tnc_status is loaded', () => {
+    it('shows the loading component if logged in but account setting is not yet loaded', () => {
         const mock_root_store = mockStore({
             common: {
                 routeBackInApp: jest.fn(),
-                is_from_derivgo: true,
+                is_from_derivgo: false,
+            },
+            ui: {
+                is_cashier_visible: false,
+                toggleCashier: jest.fn(),
+            },
+            client: {
+                is_account_setting_loaded: false,
+                is_logged_in: true,
+                is_logging_in: false,
+                active_accounts: [],
+                is_crypto: jest.fn(),
+            },
+            notifications: {
+                showAccountSwitchToRealNotification: jest.fn(),
+            },
+            modules: {
+                cashier: {
+                    withdraw: {
+                        error: {},
+                    },
+                    general_store: {
+                        is_cashier_onboarding: false,
+                        is_loading: false,
+                        onMountCommon: jest.fn(),
+                        setAccountSwitchListener: jest.fn(),
+                        setCashierTabIndex: jest.fn(),
+                        cashier_route_tab_index: 0,
+                        setActiveTab: jest.fn(),
+                    },
+                    transaction_history: {
+                        is_transactions_crypto_visible: false,
+                    },
+                    payment_agent: {
+                        is_payment_agent_visible: false,
+                    },
+                },
+            },
+        });
+
+        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
+
+        expect(screen.getByText('mockedLoading')).toBeInTheDocument();
+    });
+
+    it('renders the component if logged in and account setting is loaded', () => {
+        const mock_root_store = mockStore({
+            common: {
+                routeBackInApp: jest.fn(),
+                is_from_derivgo: false,
             },
             ui: {
                 is_cashier_visible: true,
+                is_desktop: true,
                 toggleCashier: jest.fn(),
             },
             client: {
                 is_account_setting_loaded: true,
                 is_logged_in: true,
-                is_logging_in: true,
+                is_logging_in: false,
                 active_accounts: [],
                 is_virtual: false,
                 is_crypto: jest.fn(() => true),
@@ -171,65 +220,63 @@ describe('<Cashier />', () => {
         expect(screen.getByRole('link', { name: 'Fiat onramp' })).toBeInTheDocument();
     });
 
-    // TODO: Fix this test case
-    // it('should redirect to trade page if the close button is clicked ', () => {
-    //     const mock_root_store = mockStore({
-    //         common: {
-    //             routeBackInApp: jest.fn(),
-    //             is_from_derivgo: true,
-    //         },
-    //         ui: {
-    //             is_cashier_visible: true,
-    //             toggleCashier: jest.fn(),
-    //         },
-    //         client: {
-    //             is_account_setting_loaded: true,
-    //             is_logged_in: true,
-    //             is_logging_in: false,
-    //             is_crypto: jest.fn(),
-    //         },
-    //         modules: {
-    //             cashier: {
-    //                 withdraw: {
-    //                     error: {},
-    //                 },
-    //                 general_store: {
-    //                     is_cashier_onboarding: false,
-    //                     is_loading: false,
-
-    //                     onMountCommon: jest.fn(),
-    //                     setAccountSwitchListener: jest.fn(),
-    //                     setCashierTabIndex: jest.fn(),
-    //                     cashier_route_tab_index: 0,
-    //                     setActiveTab: jest.fn(),
-    //                 },
-    //                 transaction_history: {
-    //                     is_transactions_crypto_visible: false,
-    //                 },
-    //                 payment_agent: {
-    //                     is_payment_agent_visible: true,
-    //                 },
-    //             },
-    //         },
-    //     });
-
-    //     renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
-
-    //     const close_btn = screen.getByTestId('page_overlay_header_close');
-    //     fireEvent.click(close_btn);
-
-    //     expect(mock_root_store.common!.routeBackInApp).toHaveBeenCalled();
-    //     expect(history.location.pathname).toBe('/');
-    // });
-
-    it('should go to selected route page on desktop', () => {
+    it("redirects to trader's hub page if the close button is clicked", () => {
         const mock_root_store = mockStore({
             common: {
                 routeBackInApp: jest.fn(),
-                is_from_derivgo: true,
+                is_from_derivgo: false,
             },
             ui: {
                 is_cashier_visible: true,
+                toggleCashier: jest.fn(),
+            },
+            client: {
+                is_account_setting_loaded: true,
+                is_logged_in: true,
+                is_logging_in: false,
+                is_crypto: jest.fn(),
+            },
+            modules: {
+                cashier: {
+                    withdraw: {
+                        error: {},
+                    },
+                    general_store: {
+                        is_cashier_onboarding: false,
+                        is_loading: false,
+                        onMountCommon: jest.fn(),
+                        setAccountSwitchListener: jest.fn(),
+                        setCashierTabIndex: jest.fn(),
+                        cashier_route_tab_index: 0,
+                        setActiveTab: jest.fn(),
+                    },
+                    transaction_history: {
+                        is_transactions_crypto_visible: false,
+                    },
+                    payment_agent: {
+                        is_payment_agent_visible: true,
+                    },
+                },
+            },
+        });
+
+        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
+
+        const close_btn = screen.getByTestId('dt_page_overlay_header_close');
+        fireEvent.click(close_btn);
+
+        expect(history.location.pathname).toBe(routes.traders_hub);
+    });
+
+    it('goes to selected route page in Desktop mode', () => {
+        const mock_root_store = mockStore({
+            common: {
+                routeBackInApp: jest.fn(),
+                is_from_derivgo: false,
+            },
+            ui: {
+                is_cashier_visible: true,
+                is_desktop: true,
                 toggleCashier: jest.fn(),
             },
             notifications: {
@@ -274,11 +321,11 @@ describe('<Cashier />', () => {
         expect(history.location.pathname).toBe('/cashier/withdrawal');
     });
 
-    it('should not render the side note if on deposit page', () => {
+    it('does not render the side note if in deposit page', () => {
         const mock_root_store = mockStore({
             common: {
                 routeBackInApp: jest.fn(),
-                is_from_derivgo: true,
+                is_from_derivgo: false,
             },
             ui: {
                 is_cashier_visible: true,
@@ -323,59 +370,5 @@ describe('<Cashier />', () => {
         renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
 
         expect(screen.queryByTestId('vertical_tab_side_note')).not.toBeInTheDocument();
-    });
-
-    it('should show the selected route page on mobile', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
-
-        const mock_root_store = mockStore({
-            common: {
-                routeBackInApp: jest.fn(),
-                is_from_derivgo: true,
-            },
-            ui: {
-                is_cashier_visible: true,
-                toggleCashier: jest.fn(),
-            },
-            notifications: {
-                showAccountSwitchToRealNotification: jest.fn(),
-            },
-            client: {
-                is_account_setting_loaded: true,
-                is_logged_in: true,
-                is_logging_in: false,
-                active_accounts: [],
-                is_crypto: jest.fn(),
-            },
-            modules: {
-                cashier: {
-                    withdraw: {
-                        error: {},
-                    },
-                    general_store: {
-                        is_cashier_onboarding: true,
-                        is_loading: true,
-                        onMountCommon: jest.fn(),
-                        setAccountSwitchListener: jest.fn(),
-                        setCashierTabIndex: jest.fn(),
-                        cashier_route_tab_index: 0,
-                        setActiveTab: jest.fn(),
-                    },
-                    transaction_history: {
-                        is_transactions_crypto_visible: true,
-                    },
-                    payment_agent: {
-                        is_payment_agent_visible: true,
-                    },
-                },
-            },
-        });
-
-        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
-
-        const withdrawal_link = screen.getByRole('link', { name: 'Withdrawal' });
-        fireEvent.click(withdrawal_link);
-
-        expect(history.location.pathname).toBe('/cashier/withdrawal');
     });
 });

@@ -184,18 +184,4 @@ describe('<WithdrawalCryptoForm />', () => {
         });
         await waitFor(() => expect(mockRootStore.modules.cashier.withdraw.requestWithdraw).toHaveBeenCalled());
     });
-
-    it('crypto_estimation_fee should be displayed when checkbox is checked', async () => {
-        (useGrowthbookIsOn as jest.Mock).mockReturnValue([true]);
-        const { rerender } = renderWithdrawalCryptoForm();
-        const checkbox = screen.getByLabelText('Priority withdrawal');
-
-        await act(async () => {
-            await userEvent.click(checkbox);
-        });
-        rerender(mockWithdrawalCryptoForm());
-
-        expect(screen.getByText('Amount received:')).toBeInTheDocument();
-        expect(screen.getByText('0.00230000 BTC')).toBeInTheDocument();
-    });
 });

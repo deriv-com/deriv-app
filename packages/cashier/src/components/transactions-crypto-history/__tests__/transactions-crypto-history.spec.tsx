@@ -30,15 +30,18 @@ describe('<TransactionsCryptoHistory />', () => {
             client: {
                 currency: 'BTC',
             },
+            ui: {
+                is_desktop: true,
+            },
         });
     });
 
-    const renderTransactionsCryptoHistory = () =>
+    const renderTransactionsCryptoHistory = (store = mockRootStore) =>
         render(<TransactionsCryptoHistory />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => <CashierProviders store={store}>{children}</CashierProviders>,
         });
 
-    it('should show "USD recent transactions" and "No current transactions available" messages', () => {
+    it('shows "USD recent transactions" and "No current transactions available" messages', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useSubscription
         mockUseSubscription.mockReturnValue({ subscribe: jest.fn() });
 
@@ -48,7 +51,7 @@ describe('<TransactionsCryptoHistory />', () => {
         expect(screen.getByText('No current transactions available')).toBeInTheDocument();
     });
 
-    it('should trigger onClick callback when the back arrow is clicked', () => {
+    it('triggers onClick callback when the back arrow is clicked', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useSubscription
         mockUseSubscription.mockReturnValue({ subscribe: jest.fn() });
 
@@ -62,7 +65,7 @@ describe('<TransactionsCryptoHistory />', () => {
         );
     });
 
-    it('should show the loader when isLoading is equal "true"', () => {
+    it('shows the loader when isLoading is equal "true"', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useSubscription
         mockUseSubscription.mockReturnValue({
             data: {
@@ -94,7 +97,7 @@ describe('<TransactionsCryptoHistory />', () => {
         expect(loader).toBeInTheDocument();
     });
 
-    it('should show table headers: "Transaction", "Amount", "Address", "Transaction hash", "Time", "Status", "Action"', () => {
+    it('shows table headers: "Transaction", "Amount", "Address", "Transaction hash", "Time", "Status", "Action in Desktop mode"', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useSubscription
         mockUseSubscription.mockReturnValue({
             data: {

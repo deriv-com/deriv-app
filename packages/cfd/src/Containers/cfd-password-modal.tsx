@@ -596,6 +596,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const { show_eu_related_content, is_eu_user, toggleAccountTransferModal } = traders_hub;
     const { is_mt5_migration_modal_enabled, setMT5MigrationModalEnabled, is_mt5_migration_modal_open } = ui;
 
+    console.log('==>', platform);
+
     const {
         account_type,
         disableCFDPasswordModal,
@@ -1053,7 +1055,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     return (
         <React.Fragment>
-            {isDesktop ? password_modal : password_modal_mobile}
+            {platform === CFD_PLATFORMS.MT5 && !isDesktop && password_modal_mobile}
+            {password_modal}
             {password_dialog}
             <SuccessDialog
                 is_open={should_show_success}

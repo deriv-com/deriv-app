@@ -58,7 +58,11 @@
 
     &__create {
         margin: 1.6rem;
-        width: 90vw;
+
+        @include tablet-screen {
+            margin: 1.6rem 0;
+            width: 100%;
+        }
 
         &-container {
             border-top: 2px solid var(--general-section-1);

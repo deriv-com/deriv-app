@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field, Form, FormikValues } from 'formik';
-import { Button, DesktopWrapper, Input, Loading, Text } from '@deriv/components';
+import { Button, Input, Loading, Text } from '@deriv/components';
 import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
 import { isEmptyObject } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
@@ -78,7 +78,7 @@ const EditPaymentMethodForm = () => {
             {({ dirty, handleChange, isSubmitting, errors }: FormikValues) => {
                 return (
                     <React.Fragment>
-                        <DesktopWrapper>
+                        {isDesktop && (
                             <PageReturn
                                 onClick={() => {
                                     if (dirty) {
@@ -92,7 +92,7 @@ const EditPaymentMethodForm = () => {
                                 }}
                                 page_title={localize('Edit payment method')}
                             />
-                        </DesktopWrapper>
+                        )}
                         <Form className='edit-payment-method-form__form'>
                             <div className='edit-payment-method-form__form-wrapper'>
                                 <Field name='choose_payment_method'>

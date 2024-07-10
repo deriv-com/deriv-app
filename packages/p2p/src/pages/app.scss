@@ -10,8 +10,28 @@
     flex-direction: column;
     overflow: hidden;
 
+    @include tablet-screen {
+        padding: 0 8.4rem;
+
+        & .dc-mobile-full-page-modal {
+            & .dc-page-overlay {
+                & .dc-page-overlay__content {
+                    & .dc-mobile-full-page-modal {
+                        width: 60rem;
+                        left: 50%;
+                        transform: translateX(-50%);
+                    }
+                }
+            }
+        }
+    }
+
     & .dc-tabs {
         width: 100%;
+
+        @include tablet-screen {
+            width: 60rem;
+        }
 
         &::-webkit-scrollbar {
             display: none;

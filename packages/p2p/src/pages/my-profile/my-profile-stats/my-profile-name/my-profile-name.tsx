@@ -15,7 +15,7 @@ import { getIconSize, getTextSize } from 'Utils/responsive';
 import MyProfilePrivacy from '../my-profile-privacy';
 
 const MyProfileName = () => {
-    const { isMobile } = useDevice();
+    const { isMobile, isDesktop } = useDevice();
     const { general_store } = useStores();
     const { client } = useStore();
     const {
@@ -51,7 +51,7 @@ const MyProfileName = () => {
                         <Text color='prominent' weight='bold'>
                             {user_nickname}
                         </Text>
-                        <MobileWrapper>
+                        {!isDesktop && (
                             <div className='my-profile-name__row'>
                                 <Text
                                     className='my-profile-name__rating__row'
@@ -68,9 +68,9 @@ const MyProfileName = () => {
                                     )}
                                 </Text>
                             </div>
-                        </MobileWrapper>
+                        )}
                         <div className='my-profile-name__rating'>
-                            <DesktopWrapper>
+                            {isDesktop && (
                                 <Text
                                     className='my-profile-name__rating__row'
                                     color='less-prominent'
@@ -85,7 +85,7 @@ const MyProfileName = () => {
                                         <Localize i18n_default_text='Joined today' />
                                     )}
                                 </Text>
-                            </DesktopWrapper>
+                            )}
                             {rating_average ? (
                                 <React.Fragment>
                                     <div className='my-profile-name__rating__row'>
@@ -131,19 +131,19 @@ const MyProfileName = () => {
                                     </Text>
                                 </div>
                             )}
-                            <DesktopWrapper>
+                            {isDesktop && (
                                 <div className='my-profile-name__rating__row'>
                                     <BlockUserCount />
                                 </div>
-                            </DesktopWrapper>
+                            )}
                         </div>
-                        <MobileWrapper>
+                        {!isDesktop && (
                             <div className='my-profile-name__row'>
                                 <div className='my-profile-name__rating__row'>
                                     <BlockUserCount />
                                 </div>
                             </div>
-                        </MobileWrapper>
+                        )}
                         <div className='my-profile-name__row'>
                             <TradeBadge
                                 is_poa_verified={
@@ -161,9 +161,7 @@ const MyProfileName = () => {
                             />
                         </div>
                     </div>
-                    <DesktopWrapper>
-                        <MyProfilePrivacy />
-                    </DesktopWrapper>
+                    {isDesktop && <MyProfilePrivacy />}
                 </div>
             </div>
         </div>

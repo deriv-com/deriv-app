@@ -114,8 +114,20 @@
         }
 
         &--selector {
-            @include mobile-or-tablet-screen {
+            @include mobile-screen {
                 grid-template-columns: auto 1fr 40px 40px;
+            }
+            @include tablet-screen {
+                grid-template-columns: auto 0.45fr 40px 40px;
+
+                & .search-box {
+                    width: 100%;
+                }
+
+                & .currency-dropdown {
+                    display: flex;
+                    justify-content: flex-end;
+                }
             }
         }
     }

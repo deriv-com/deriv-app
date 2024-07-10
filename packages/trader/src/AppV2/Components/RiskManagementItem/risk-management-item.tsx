@@ -6,6 +6,7 @@ import DealCancellationRemainingTime from '../DealCancellationRemainingTime/deal
 import { observer } from '@deriv/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import { CONTRACT_TYPES, isAccumulatorContract, isValidToCancel } from '@deriv/shared';
+import { FormatUtils } from '@deriv-com/utils';
 
 type RiskManagementItemProps = {
     label: React.ReactNode;
@@ -105,7 +106,7 @@ const RiskManagementItem = observer(
                     {!is_deal_cancellation &&
                         (is_accumulator ? (
                             <Text size='sm'>
-                                {finalValue} {currency}
+                                {FormatUtils.formatMoney(finalValue)} {currency}
                             </Text>
                         ) : (
                             <ToggleSwitch

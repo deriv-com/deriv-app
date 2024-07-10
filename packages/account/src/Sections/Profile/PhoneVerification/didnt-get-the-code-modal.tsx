@@ -120,7 +120,7 @@ const DidntGetTheCodeModal = ({
                         <Text>
                             <Localize i18n_default_text='or' />
                         </Text>
-                        <Button fullWidth variant='tertiary' size='lg' onClick={handleChangePhoneNumber}>
+                        <Button fullWidth variant='tertiary' size='lg' onClick={handleChangePhoneNumber} color='black'>
                             <Text bold>
                                 <Localize i18n_default_text='Change phone number' />
                             </Text>

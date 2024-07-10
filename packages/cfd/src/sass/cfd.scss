@@ -12,10 +12,13 @@
         flex-direction: column;
         align-items: flex-start;
         justify-content: space-between;
-        padding: 0 var(--padding-x) 1.6rem;
+        padding-inline: var(--padding-x);
+        padding-block: 0 1.6rem;
 
         @include mobile-or-tablet-screen {
-            padding: 0;
+            --padding-x: 1.6rem;
+            padding-block: 0;
+            height: 100%;
         }
     }
     &__description {
@@ -67,8 +70,8 @@
         margin: auto;
 
         @include mobile-or-tablet-screen {
-            width: calc(100vw - 4.8rem);
-            max-width: 30rem;
+            width: 100%;
+            max-width: 100%;
         }
     }
     & .mt5-password-field {
@@ -83,8 +86,9 @@
             overflow-y: auto;
             overflow-x: hidden;
             height: 100%;
-            max-height: calc(100vh - 6.4rem);
-            padding: 1rem;
+            max-height: 100%;
+            padding: 0;
+            justify-content: space-between;
         }
     }
     @include tablet-up {
@@ -159,6 +163,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            @include mobile-or-tablet-screen {
+                height: 100%;
+                padding-block-start: 4rem;
+                padding-block-end: 1.6rem;
+            }
         }
         &-description {
             max-width: 100%;
@@ -190,6 +199,9 @@
                 margin-top: auto;
                 margin-bottom: 7.5rem;
             }
+        }
+        @include mobile-or-tablet-screen {
+            margin-top: auto;
         }
     }
     &-info {

@@ -1,6 +1,5 @@
-import { toMoment } from '@deriv/shared';
+import { toMoment, WS } from '@deriv/shared';
 import StatementStore from '../statement-store';
-import { WS } from '@deriv/shared';
 import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({

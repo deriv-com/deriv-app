@@ -1,5 +1,5 @@
 import React from 'react';
-import { EmptyState } from '@deriv/components';
+import { EmptyState } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 
 type TEmailVerificationResendEmptyStateProps = {

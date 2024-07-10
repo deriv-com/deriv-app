@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Button, Icon, Money, Popover, Table, Text } from '@deriv/components';
+import { Button, Icon, Money, Popover, Table, Text } from '@deriv-app/components';
 import { epochToMoment, formatMoney, isMobile } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useStore, observer } from '@deriv/stores';
+import { useStore, observer } from '@deriv-app/stores';
 import { getStatus } from '../../constants/transaction-status';
 import { useCashierStore } from '../../stores/useCashierStores';
 import type { TSocketResponse } from '@deriv/api/types';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
+import { Icon } from '@deriv-app/components';
 
 type TAccountInfoIcon = {
     is_virtual?: boolean;

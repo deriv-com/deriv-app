@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
 import { TDescription, TDescriptionItem } from '../types';

@@ -1,4 +1,4 @@
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import GTM from '../gtm';
 import { mockDBotStore } from 'Stores/useDBotStore';
 import { mock_ws } from 'Utils/mock';

@@ -1,6 +1,6 @@
 import React from 'react';
-import { InlineMessage } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { InlineMessage } from '@deriv-app/components';
+import { observer } from '@deriv-app/stores';
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import { getInlineTextSize } from 'Utils/responsive';

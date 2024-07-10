@@ -1,11 +1,11 @@
 import 'Sass/app/modules/trading-mobile.scss';
-import { Div100vhContainer, Modal, Money, Tabs, ThemedScrollbars, usePreventIOSZoom } from '@deriv/components';
+import { Div100vhContainer, Modal, Money, Tabs, ThemedScrollbars, usePreventIOSZoom } from '@deriv-app/components';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile';
 import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier';
 import DurationMobile from 'Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile';
 import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit';
 import { TTextValueStrings } from 'Types';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import React from 'react';
 import classNames from 'classnames';

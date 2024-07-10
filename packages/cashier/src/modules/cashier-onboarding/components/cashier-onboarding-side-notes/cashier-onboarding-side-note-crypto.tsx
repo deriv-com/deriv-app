@@ -1,7 +1,7 @@
 import React from 'react';
-import { SideNote } from '@deriv/components';
+import { SideNote } from '@deriv-app/components';
 import { useCurrentCurrencyConfig } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { localize } from '@deriv/translations';
 import { useCashierStore } from '../../../../stores/useCashierStores';
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { AccountStatusResponse, GetAccountStatus } from '@deriv/api-types';
-import { Button, Loading } from '@deriv/components';
+import { Button, Loading } from '@deriv-app/components';
 import { WS, getPlatformRedirect, platforms, routes, AUTH_STATUS_CODES } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from '@deriv/translations';
 import Expired from '../../../Components/poa/status/expired';
 import NeedsReview from '../../../Components/poa/status/needs-review';

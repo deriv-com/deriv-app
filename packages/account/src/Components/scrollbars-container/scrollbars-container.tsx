@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import React from 'react';
-import { ThemedScrollbars } from '@deriv/components';
+import { ThemedScrollbars } from '@deriv-app/components';
 import { useDevice } from '@deriv-com/ui';
 
 type TScrollbarsContainer = {

@@ -1,4 +1,4 @@
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { onChangeContractType, onChangeContractTypeList } from '../contract-type';
 import { ContractType } from '../../Helpers/contract-type';
 import { TRADE_TYPES } from '@deriv-app/shared';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Loading, Modal, Text } from '@deriv/components';
+import { Icon, Loading, Modal, Text } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import { getUrlBase, isMobile } from '@deriv-app/shared';
 import 'Sass/app/modules/contract/accumulators-stats.scss';

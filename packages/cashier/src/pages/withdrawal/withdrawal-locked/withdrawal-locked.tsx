@@ -1,9 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Icon, Checklist, Text } from '@deriv/components';
+import { Icon, Checklist, Text } from '@deriv-app/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv-app/shared';
-import { useStore, observer } from '@deriv/stores';
+import { useStore, observer } from '@deriv-app/stores';
 import CashierLocked from '../../../components/cashier-locked';
 import { useCashierStore } from '../../../stores/useCashierStores';
 

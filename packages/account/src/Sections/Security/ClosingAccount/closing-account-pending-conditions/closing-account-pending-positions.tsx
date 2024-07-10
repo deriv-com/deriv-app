@@ -1,6 +1,6 @@
 import React from 'react';
 import { CFD_PLATFORMS, getCFDAccount, getCFDAccountDisplay, getCFDPlatformLabel, getMT5Icon } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from '@deriv/translations';
 import { TCFDPlatform, TDetailsOfDerivXAccount, TDetailsOfMT5Account } from 'Types';
 import ClosingAccountPendingWrapper from './closing-account-pending-wrapper';

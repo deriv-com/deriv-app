@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { formatMoney } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
-import { Text } from '@deriv/components';
+import { observer, useStore } from '@deriv-app/stores';
+import { Text } from '@deriv-app/components';
 import { useP2PExchangeRate, useP2PSettings } from '@deriv-app/hooks';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';

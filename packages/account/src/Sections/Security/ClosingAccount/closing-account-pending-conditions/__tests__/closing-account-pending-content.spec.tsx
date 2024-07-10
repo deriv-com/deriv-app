@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ClosingAccountPendingContent from '../closing-account-pending-content';
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Icon: jest.fn(() => <div>mockedIcon</div>),
 }));
 

@@ -1,4 +1,4 @@
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import { withMockAPIProvider } from '../mocks';
 import useHasP2PSupportedCurrencies from '../useHasP2PSupportedCurrencies';

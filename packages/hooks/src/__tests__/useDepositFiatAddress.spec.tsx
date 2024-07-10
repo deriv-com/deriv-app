@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import useDepositFiatAddress from '../useDepositFiatAddress';
 import { withMockAPIProvider } from '../mocks';
 

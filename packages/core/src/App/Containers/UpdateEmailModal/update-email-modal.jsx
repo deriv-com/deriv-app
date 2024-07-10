@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button, Modal, Text, Icon, Loading } from '@deriv/components';
+import { Button, Modal, Text, Icon, Loading } from '@deriv-app/components';
 import { localize, Localize, getLanguage } from '@deriv/translations';
 import { redirectToLogin } from '@deriv-app/shared';
 import { WS } from 'Services';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 const UpdateEmailModal = observer(() => {
     const { ui, client } = useStore();

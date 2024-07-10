@@ -1,5 +1,5 @@
 import React, { RefObject } from 'react';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import { TFileDropzone } from 'Types';
 import { truncateFileName } from 'Utils/file-uploader';
 

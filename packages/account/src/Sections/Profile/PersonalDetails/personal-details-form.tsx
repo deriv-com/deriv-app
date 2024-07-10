@@ -13,11 +13,11 @@ import {
     Loading,
     SelectNative,
     Text,
-} from '@deriv/components';
+} from '@deriv-app/components';
 import { GetSettings } from '@deriv/api-types';
 import { AUTH_STATUS_CODES, WS, getBrandWebsiteName, routes } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import LeaveConfirm from 'Components/leave-confirm';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';

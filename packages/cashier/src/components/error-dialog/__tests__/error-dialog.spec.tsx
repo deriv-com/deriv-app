@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { routes } from '@deriv-app/shared';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import CashierProviders from '../../../cashier-providers';
 
 const mock_root_store = mockStore({

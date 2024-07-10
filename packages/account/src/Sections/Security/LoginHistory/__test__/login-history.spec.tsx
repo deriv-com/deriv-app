@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render, waitFor } from '@testing-library/react';
 import { WS } from '@deriv-app/shared';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { useDevice } from '@deriv-com/ui';
 import LoginHistory from '../login-history';
 import { getLoginHistoryFormattedData } from '@deriv/utils';
@@ -11,8 +11,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Loading: jest.fn(() => 'mockedLoading'),
 }));
 

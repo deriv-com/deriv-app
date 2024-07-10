@@ -1,5 +1,5 @@
 import React from 'react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { useStores } from 'Stores';
 import { render, screen } from '@testing-library/react';
 import OrderDetails from '../order-details.jsx';

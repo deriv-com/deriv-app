@@ -1,4 +1,4 @@
-import { ButtonLink, Text } from '@deriv/components';
+import { ButtonLink, Text } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import React from 'react';
 

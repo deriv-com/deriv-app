@@ -41,7 +41,7 @@ module.exports = function (env) {
                 'react-router': 'react-router',
                 mobx: 'mobx',
                 '@deriv-app/shared': '@deriv-app/shared',
-                '@deriv/components': '@deriv/components',
+                '@deriv-app/components': '@deriv-app/components',
                 '@deriv/translations': '@deriv/translations',
                 '@deriv-com/analytics': '@deriv-com/analytics',
             },

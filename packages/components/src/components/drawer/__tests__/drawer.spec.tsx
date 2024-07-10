@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import Drawer from '../drawer';
 
 describe('Drawer', () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useIsClientHighRiskForMT5 } from '@deriv-app/hooks';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import AccountWizard from '../account-wizard';
 
 jest.mock('@deriv-app/hooks', () => ({
@@ -13,8 +13,8 @@ const mockUseIsClientHighRiskForMT5 = useIsClientHighRiskForMT5 as jest.MockedFu
     typeof useIsClientHighRiskForMT5
 >;
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Wizard: jest.fn(({ children }) => <div data-testid='dt_wizard'>{children}</div>),
 }));
 

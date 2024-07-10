@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { AppLinkedWithWalletIcon, Text } from '@deriv/components';
+import { AppLinkedWithWalletIcon, Text } from '@deriv-app/components';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useStoreWalletAccountsList } from '@deriv-app/hooks';
 import { Localize } from '@deriv/translations';
 import WalletBadge from 'App/Components/Layout/Header/wallets/wallet-badge';

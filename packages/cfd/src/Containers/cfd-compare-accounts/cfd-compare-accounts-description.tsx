@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Text, Popover } from '@deriv/components';
+import { Text, Popover } from '@deriv-app/components';
 import { TCompareAccountsCard } from 'Components/props.types';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import { localize } from '@deriv/translations';
 import { getJuridisctionDescription, getMarketType } from '../../Helpers/compare-accounts-config';
 import { REGION, CFD_PLATFORMS, MARKET_TYPE_SHORTCODE } from '../../Helpers/cfd-config';

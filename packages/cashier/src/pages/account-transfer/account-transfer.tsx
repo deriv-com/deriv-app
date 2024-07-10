@@ -1,8 +1,8 @@
 import React from 'react';
-import { Loading } from '@deriv/components';
+import { Loading } from '@deriv-app/components';
 import { useCashierLocked } from '@deriv-app/hooks';
 import { WS } from '@deriv-app/shared';
-import { useStore, observer } from '@deriv/stores';
+import { useStore, observer } from '@deriv-app/stores';
 import Error from '../../components/error';
 import NoBalance from '../../components/no-balance';
 import { Virtual } from '../../components/cashier-container';

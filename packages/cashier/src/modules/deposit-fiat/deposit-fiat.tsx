@@ -1,6 +1,6 @@
 import React from 'react';
-import { SideNote } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { SideNote } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from '@deriv/translations';
 import { PageContainer } from '../../components/page-container';
 import { DepositFiatIframe } from './components';

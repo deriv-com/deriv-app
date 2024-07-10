@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import { getFormattedText } from '@deriv-app/shared';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import { roundOffDecimal } from 'Utils/format-value';
 import { useStores } from 'Stores';

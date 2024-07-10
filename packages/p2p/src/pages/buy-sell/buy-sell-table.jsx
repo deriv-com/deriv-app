@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { InfiniteDataList, Loading, Modal, RadioGroup, Table, Text } from '@deriv/components';
+import { InfiniteDataList, Loading, Modal, RadioGroup, Table, Text } from '@deriv-app/components';
 import { isDesktop } from '@deriv-app/shared';
 import { reaction } from 'mobx';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import TableError from 'Components/section-error';
 import { api_error_codes } from 'Constants/api-error-codes';

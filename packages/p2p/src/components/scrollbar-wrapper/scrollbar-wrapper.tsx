@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 
 type TScrollbarWrapper = {
     height?: string;

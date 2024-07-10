@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
-import { Loading } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { Loading } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import ChartModalDesktop from './chart-modal-desktop';
 
 export const ChartModal = observer(() => {

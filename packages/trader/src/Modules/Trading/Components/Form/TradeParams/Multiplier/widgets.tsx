@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Money, Text, Popover } from '@deriv/components';
+import { Money, Text, Popover } from '@deriv-app/components';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import MultiplierAmountModal from 'Modules/Trading/Containers/Multiplier/multiplier-amount-modal';
 import RadioGroupOptionsModal from 'Modules/Trading/Containers/radio-group-options-modal';
 import MultipliersExpiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration';

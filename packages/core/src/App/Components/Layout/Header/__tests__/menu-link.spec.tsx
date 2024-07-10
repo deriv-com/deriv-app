@@ -5,12 +5,12 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useIsRealAccountNeededForCashier } from '@deriv-app/hooks';
 import { getStaticUrl, routes } from '@deriv-app/shared';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
 import { useDevice } from '@deriv-com/ui';
 import MenuLink from 'App/Components/Layout/Header/menu-link';
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Icon: jest.fn(() => <div>Mock Link Icon</div>),
 }));
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useStores } from 'Stores';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
 import AppContent from '../app-content.jsx';
 
 const mocked_store_values = {
@@ -29,8 +29,8 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
     })),
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Tabs: jest.fn(({ children }) => (
         <div>
             Tabs<div>{children}</div>

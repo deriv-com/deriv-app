@@ -3,15 +3,15 @@ import { fireEvent, screen, render } from '@testing-library/react';
 import PaymentAgentContainer from '../payment-agent-container';
 import { isMobile } from '@deriv-app/shared';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
 jest.mock('@deriv-app/shared', () => ({
     ...jest.requireActual('@deriv-app/shared'),
     isMobile: jest.fn(() => false),
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Loading: () => <div>Loading</div>,
 }));
 

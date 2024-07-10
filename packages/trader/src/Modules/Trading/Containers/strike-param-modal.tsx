@@ -1,6 +1,6 @@
 import React from 'react';
 import { Localize, localize } from '@deriv/translations';
-import { Div100vhContainer, Modal, Popover, RadioGroup } from '@deriv/components';
+import { Div100vhContainer, Modal, Popover, RadioGroup } from '@deriv-app/components';
 import { TRADE_TYPES } from '@deriv-app/shared';
 import classNames from 'classnames';
 

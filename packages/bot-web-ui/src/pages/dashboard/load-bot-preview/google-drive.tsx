@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Button, Icon, StaticUrl } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { Button, Icon, StaticUrl } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import {

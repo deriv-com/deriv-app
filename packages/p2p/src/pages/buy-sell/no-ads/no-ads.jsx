@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
-import { Button, Icon, Text } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv-app/components';
 import { useP2PSettings } from '@deriv-app/hooks';
 import { routes } from '@deriv-app/shared';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { document_status_codes, identity_status_codes } from 'Constants/account-status-codes';

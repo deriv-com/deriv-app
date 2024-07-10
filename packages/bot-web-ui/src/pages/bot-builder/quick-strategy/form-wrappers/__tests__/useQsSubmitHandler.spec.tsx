@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik } from 'formik';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';

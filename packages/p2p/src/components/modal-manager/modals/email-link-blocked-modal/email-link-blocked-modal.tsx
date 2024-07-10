@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Modal, Text } from '@deriv/components';
+import { Icon, Modal, Text } from '@deriv-app/components';
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

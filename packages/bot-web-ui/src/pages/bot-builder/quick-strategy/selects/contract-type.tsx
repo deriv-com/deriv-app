@@ -2,9 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { ApiHelpers } from '@deriv/bot-skeleton';
-import { Autocomplete, Text } from '@deriv/components';
-import { TItem } from '@deriv/components/src/components/dropdown-list';
-import { observer, useStore } from '@deriv/stores';
+import { Autocomplete, Text } from '@deriv-app/components';
+import { TItem } from '@deriv-app/components/src/components/dropdown-list';
+import { observer, useStore } from '@deriv-app/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TApiHelpersInstance, TDropdownItems, TFormData } from '../types';
 

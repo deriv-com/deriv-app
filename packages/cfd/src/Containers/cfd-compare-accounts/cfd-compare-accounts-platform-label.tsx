@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import { TCompareAccountsCard } from 'Components/props.types';
 import { getPlatformLabel, getHeaderColor, platformsHeaderLabel } from '../../Helpers/compare-accounts-config';
 

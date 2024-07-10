@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, ProgressBarTracker, Text } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { Icon, ProgressBarTracker, Text } from '@deriv-app/components';
+import { observer } from '@deriv-app/stores';
 import { localize } from '@deriv/translations';
 import { getSetting } from 'Utils/settings';
 import { useDBotStore } from 'Stores/useDBotStore';

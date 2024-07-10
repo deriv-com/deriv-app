@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import Loadable from 'react-loadable';
 import TradeSettingsExtensions from '../trade-settings-extensions';
 import TraderProviders from '../../../trader-providers';

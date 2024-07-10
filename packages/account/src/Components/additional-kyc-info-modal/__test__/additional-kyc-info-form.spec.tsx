@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { AdditionalKycInfoForm } from '../additional-kyc-info-form';
 import userEvent from '@testing-library/user-event';
 import { useSettings } from '@deriv/api';

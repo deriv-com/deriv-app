@@ -6,7 +6,7 @@ import { routes } from '@deriv-app/shared';
 import ErrorComponent from 'App/Components/Elements/Errors';
 import { localize } from '@deriv/translations';
 import ContractReplay from './contract-replay';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 type TContractParams = { contract_id: string };
 type TContract = RouteComponentProps<TContractParams>;

@@ -2,7 +2,7 @@ import React from 'react';
 import * as formik from 'formik';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import OrderTimeSelection from '../order-time-selection';
 

@@ -3,7 +3,7 @@ import { getUrlSmartTrader } from '@deriv-app/shared';
 import MarketUnavailableModal from 'App/Components/Elements/Modals/MarketUnavailableModal';
 import ServicesErrorModal from 'App/Components/Elements/Modals/ServicesErrorModal';
 import AccountVerificationPendingModal from 'App/Components/Elements/Modals/AccountVerificationPendingModal';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const TradeModals = observer(() => {

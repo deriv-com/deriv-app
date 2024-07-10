@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Div100vhContainer, Icon, useOnClickOutside, Text } from '@deriv/components';
+import { Div100vhContainer, Icon, useOnClickOutside, Text } from '@deriv-app/components';
 import { routes, getActivePlatform } from '@deriv-app/shared';
 import { BinaryLink } from 'App/Components/Routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { DataList, DataTable } from '@deriv/components';
+import { DataList, DataTable } from '@deriv-app/components';
 import { getUnsupportedContracts, getContractPath, hasContractStarted } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
@@ -10,7 +10,7 @@ import PlaceholderComponent from '../Components/placeholder-component';
 import { TUnsupportedContractType } from 'Types';
 import { TMobileRowRenderer } from './mobile-row-renderer';
 import { TTotals } from './open-positions';
-import { TPortfolioPosition } from '@deriv/stores/types';
+import { TPortfolioPosition } from '@deriv-app/stores/types';
 
 type TEmptyPlaceholderWrapper = React.PropsWithChildren<{
     is_empty: boolean;

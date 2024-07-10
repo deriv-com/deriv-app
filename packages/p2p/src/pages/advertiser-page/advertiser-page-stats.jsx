@@ -1,7 +1,7 @@
 import React from 'react';
-import { Money, Table, Text } from '@deriv/components';
+import { Money, Table, Text } from '@deriv-app/components';
 import { isMobile } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import './advertiser-page-stats.scss';

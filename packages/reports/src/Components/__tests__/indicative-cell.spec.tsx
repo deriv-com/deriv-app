@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { mockContractInfo } from '@deriv-app/shared';
 import ReportsProviders from '../../reports-providers';
 import IndicativeCell from '../indicative-cell';
@@ -21,8 +21,8 @@ const mockProps = {
     profit: '5.23',
 };
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     DesktopWrapper: jest.fn(({ children }) => children),
 }));
 

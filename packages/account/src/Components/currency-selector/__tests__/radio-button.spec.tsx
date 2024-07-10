@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import RadioButton, { TRadioButton } from '../radio-button';
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
+jest.mock('@deriv-app/components', () => {
+    const original_module = jest.requireActual('@deriv-app/components');
 
     return {
         ...original_module,

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { APIProvider, useMutation } from '@deriv/api';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
 import ClosingAccountReason from '../closing-account-reason';
 
 jest.mock('@deriv/api', () => ({

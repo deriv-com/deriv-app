@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 
 import { CFDAccountCopy } from './cfd-account-copy';
 

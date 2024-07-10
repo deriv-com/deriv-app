@@ -3,7 +3,7 @@ import { act } from 'react-dom/test-utils';
 import { render, screen } from '@testing-library/react';
 import WithdrawalCryptoPriority from '../withdrawal-crypto-priority';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import userEvent from '@testing-library/user-event';
 import { useCryptoEstimations } from '@deriv/api';
 

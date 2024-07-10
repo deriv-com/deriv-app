@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv-app/components';
 import { addComma, toMoment } from '@deriv-app/shared';
 
 import MarkerSpot from './marker-spot.jsx';

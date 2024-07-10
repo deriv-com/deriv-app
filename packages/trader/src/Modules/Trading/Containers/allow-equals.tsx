@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import React from 'react';
-import { Checkbox, Text } from '@deriv/components';
+import { Checkbox, Text } from '@deriv-app/components';
 import { Localize, localize } from '@deriv/translations';
 
 type TAllowEquals = {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useCurrentCurrencyConfig, useHasFiatCurrency } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { localize } from '@deriv/translations';
 import { SwitchToFiatAccountDialog } from '../../../../components/switch-to-fiat-account-dialog';
 import { useCashierStore } from '../../../../stores/useCashierStores';

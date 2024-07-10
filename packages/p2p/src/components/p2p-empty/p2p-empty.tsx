@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon } from '@deriv/components';
+import { Icon } from '@deriv-app/components';
 
 type TP2pEmptyProps = {
     className?: string;

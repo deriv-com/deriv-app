@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import WithdrawalCryptoReceipt from '../withdrawal-crypto-receipt';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
 let mock_last_transaction = {
     address_hash: 'test_hash',

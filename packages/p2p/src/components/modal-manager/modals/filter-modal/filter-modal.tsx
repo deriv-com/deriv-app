@@ -1,6 +1,6 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
-import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal } from '@deriv/components';
+import { observer, useStore } from '@deriv-app/stores';
+import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal } from '@deriv-app/components';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
 import { getListDifference } from 'Utils/helper';

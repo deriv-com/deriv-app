@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { MobileWrapper, Toast } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { MobileWrapper, Toast } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 
 type TToastPopUp = {
     portal_id?: string;

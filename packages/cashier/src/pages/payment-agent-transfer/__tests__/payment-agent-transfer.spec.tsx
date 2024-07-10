@@ -5,10 +5,10 @@ import { createBrowserHistory } from 'history';
 import PaymentAgentTransfer from '../payment-agent-transfer';
 import CashierProviders from '../../../cashier-providers';
 import { useCashierLocked } from '@deriv-app/hooks';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
+jest.mock('@deriv-app/components', () => {
+    const original_module = jest.requireActual('@deriv-app/components');
 
     return {
         ...original_module,

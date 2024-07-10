@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { GetSettings } from '@deriv/api-types';
-import { Checkbox, HintBox, Loading, Text } from '@deriv/components';
+import { Checkbox, HintBox, Loading, Text } from '@deriv-app/components';
 import { Localize, localize } from '@deriv/translations';
 import {
     filterObjProperties,

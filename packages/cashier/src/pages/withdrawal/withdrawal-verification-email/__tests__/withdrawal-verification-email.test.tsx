@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import WithdrawalVerificationEmail from '../withdrawal-verification-email';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import CashierProviders from '../../../../cashier-providers';
 import { useRequest } from '@deriv/api';
 

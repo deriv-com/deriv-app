@@ -1,9 +1,9 @@
 import React from 'react';
-import { Text, Popover } from '@deriv/components';
+import { Text, Popover } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
 import BalanceText from 'Components/elements/text/balance-text';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
 import {

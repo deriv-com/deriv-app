@@ -1,4 +1,4 @@
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import useNeedAuthentication from './useNeedAuthentication';
 import useNeedFinancialAssessment from './useNeedFinancialAssessment';
 import useNeedTNC from './useNeedTNC';

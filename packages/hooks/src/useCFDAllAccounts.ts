@@ -1,4 +1,4 @@
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 
 /** @deprecated Use `useMT5AccountsList` for MT5 accounts and `useDxtradeAccountsList` for Other CFD accounts from `@deriv/api` instead. */
 const useCFDAllAccounts = () => {

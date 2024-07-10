@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
-import { Button, Div100vhContainer, FadeWrapper, Input, Modal, PageOverlay } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { Button, Div100vhContainer, FadeWrapper, Input, Modal, PageOverlay } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 

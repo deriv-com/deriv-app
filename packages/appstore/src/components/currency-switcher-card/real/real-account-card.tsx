@@ -1,12 +1,12 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { Button, Text } from '@deriv/components';
+import { Button, Text } from '@deriv-app/components';
 import { getCurrencyName, routes, isCryptocurrency, startPerformanceEventTimer } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import BalanceText from 'Components/elements/text/balance-text';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
-import { useStore, observer } from '@deriv/stores';
+import { useStore, observer } from '@deriv-app/stores';
 import { IsIconCurrency } from 'Assets/svgs/currency';
 
 const default_balance = { balance: 0, currency: 'USD' };

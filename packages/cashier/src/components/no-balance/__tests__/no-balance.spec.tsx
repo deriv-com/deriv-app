@@ -5,7 +5,7 @@ import { Router } from 'react-router';
 import { routes } from '@deriv-app/shared';
 import NoBalance from '../no-balance';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
 jest.mock('@deriv-app/hooks', () => ({
     ...jest.requireActual('@deriv-app/hooks'),

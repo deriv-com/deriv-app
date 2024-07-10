@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemedScrollbars } from '@deriv/components';
+import { ThemedScrollbars } from '@deriv-app/components';
 import { isMobile } from '@deriv-app/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';

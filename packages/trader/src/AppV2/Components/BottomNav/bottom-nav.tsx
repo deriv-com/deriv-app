@@ -10,7 +10,7 @@ import {
     StandaloneClockThreeRegularIcon,
 } from '@deriv/quill-icons';
 import { Badge } from '@deriv-com/quill-ui';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import BottomNavItem from './bottom-nav-item';
 import { useHistory, useLocation } from 'react-router';
 

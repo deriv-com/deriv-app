@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import { Formik, Form, FormikValues, FormikErrors } from 'formik';
 import { useHistory } from 'react-router-dom';
-import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text, FormSubmitButton } from '@deriv/components';
+import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text, FormSubmitButton } from '@deriv-app/components';
 import {
     getErrorMessages,
     validPassword,

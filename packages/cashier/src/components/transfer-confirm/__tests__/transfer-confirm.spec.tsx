@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import TransferConfirm from '../transfer-confirm';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import CashierProviders from '../../../cashier-providers';
 import { TError } from 'Types';
 

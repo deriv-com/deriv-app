@@ -1,6 +1,6 @@
 import React from 'react';
-import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv-app/components';
+import { observer } from '@deriv-app/stores';
 import { localize, Localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return';
 import { useStores } from 'Stores';

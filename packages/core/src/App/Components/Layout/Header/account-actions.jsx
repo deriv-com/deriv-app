@@ -1,6 +1,6 @@
 import * as PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon, Popover } from '@deriv/components';
+import { Button, Icon, Popover } from '@deriv-app/components';
 import { routes, formatMoney, moduleLoader, isTabletOs } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 import { LoginButton } from './login-button.jsx';

@@ -3,8 +3,8 @@ import { render, screen } from '@testing-library/react';
 import FileUploaderContainer from '../file-uploader-container';
 import { useDevice } from '@deriv-com/ui';
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
+jest.mock('@deriv-app/components', () => {
+    const original_module = jest.requireActual('@deriv-app/components');
     return {
         ...original_module,
         Icon: jest.fn(() => 'mockedIcon'),

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import OrderTable from '../order-table.jsx';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
@@ -23,8 +23,8 @@ jest.mock('Stores', () => ({
 jest.mock('Components/toggle-container/toggle-container', () => jest.fn(() => <div>Toggle</div>));
 jest.mock('Pages/orders/order-table/order-table-content.jsx', () => jest.fn(() => <div>Order Table Content</div>));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     ButtonToggle: jest.fn(() => <div>Toggle Button</div>),
 }));
 

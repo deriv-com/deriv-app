@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useRequest } from '@deriv/api';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 
 const useDepositFiatAddress = () => {
     const { ui } = useStore();

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Div100vhContainer, Modal, Text } from '@deriv/components';
+import { Button, Div100vhContainer, Modal, Text } from '@deriv-app/components';
 import { localize, Localize } from '@deriv/translations';
 import Expiration from './expiration';
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { website_domain, TRADE_FEATURE_FLAGS } from '@deriv-app/shared';
-import { Checkbox, Text } from '@deriv/components';
+import { Checkbox, Text } from '@deriv-app/components';
 
 export const FeatureFlagsSection = observer(() => {
     const { feature_flags } = useStore();

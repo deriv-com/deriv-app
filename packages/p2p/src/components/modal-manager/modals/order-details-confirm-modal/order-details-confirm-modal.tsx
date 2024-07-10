@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, InlineMessage, Modal, Text } from '@deriv/components';
+import { Button, InlineMessage, Modal, Text } from '@deriv-app/components';
 import { formatMoney } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import FormError from 'Components/section-error';
 import FileUploaderComponent from 'Components/file-uploader-component';
 import { Localize, localize } from 'Components/i18next';

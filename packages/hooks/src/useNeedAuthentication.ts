@@ -1,4 +1,4 @@
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 
 const useNeedAuthentication = () => {
     const { client, traders_hub } = useStore();

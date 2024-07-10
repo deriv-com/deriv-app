@@ -1,6 +1,6 @@
 import { toJS } from 'mobx';
 import React from 'react';
-import { Icon, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv-app/components';
 import { capitalizeFirstLetter } from '@deriv-app/shared';
 import { hasNormalizedPaymentMethods, getUniquePaymentAgentSupportedBanks } from './helpers';
 import PaymentAgentDetail from '../payment-agent-detail';

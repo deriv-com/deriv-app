@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import Icon from '../icon';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 
 type TDrawer = {
     anchor?: string;

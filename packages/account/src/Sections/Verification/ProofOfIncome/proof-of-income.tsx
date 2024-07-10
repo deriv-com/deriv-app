@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import DemoMessage from 'Components/demo-message';
 import ProofOfIncomeContainer from './proof-of-income-container';
 

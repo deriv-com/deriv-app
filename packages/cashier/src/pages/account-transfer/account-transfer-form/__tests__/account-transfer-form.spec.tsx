@@ -2,7 +2,7 @@ import React from 'react';
 import { MT5_ACCOUNT_STATUS, isMobile } from '@deriv-app/shared';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { TError } from '../../../../types';
 import AccountTransferForm from '../account-transfer-form';
 import userEvent from '@testing-library/user-event';

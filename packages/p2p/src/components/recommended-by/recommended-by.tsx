@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Popover, Text } from '@deriv/components';
+import { Icon, Popover, Text } from '@deriv-app/components';
 import { isMobile } from '@deriv-app/shared';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

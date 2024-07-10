@@ -1,6 +1,6 @@
 import React from 'react';
-import { MobileFullPageModal } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { MobileFullPageModal } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import { localize } from '@deriv/translations';
 import { StatisticsSummary } from 'Components/run-panel/run-panel';
 import { transaction_elements } from 'Constants/transactions';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs } from '@deriv/components';
+import { Tabs } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import { WS, TContractStore, TContractInfo } from '@deriv-app/shared';
 import { useTraderStore } from 'Stores/useTraderStores';

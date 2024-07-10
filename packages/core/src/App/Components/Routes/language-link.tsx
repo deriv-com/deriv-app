@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { observer, useStore } from '@deriv/stores';
-import { Icon } from '@deriv/components';
+import { observer, useStore } from '@deriv-app/stores';
+import { Icon } from '@deriv-app/components';
 import { TranslationFlag, UNSUPPORTED_LANGUAGES } from '@deriv-app/shared';
 import { getAllowedLanguages, useTranslations } from '@deriv-com/translations';
 

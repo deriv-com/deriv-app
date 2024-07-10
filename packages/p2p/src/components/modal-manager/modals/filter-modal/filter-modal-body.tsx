@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, Icon, ThemedScrollbars, ToggleSwitch } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { Text, Icon, ThemedScrollbars, ToggleSwitch } from '@deriv-app/components';
+import { observer } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { TPaymentMethod } from './filter-modal';

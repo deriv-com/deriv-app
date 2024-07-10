@@ -1,7 +1,7 @@
 import React from 'react';
 import AppContent from './app-content';
 import CashierProviders from './cashier-providers';
-import { P2PSettingsProvider } from '@deriv/stores';
+import { P2PSettingsProvider } from '@deriv-app/stores';
 
 type TProps = { passthrough: { root_store: React.ComponentProps<typeof CashierProviders>['store'] } };
 

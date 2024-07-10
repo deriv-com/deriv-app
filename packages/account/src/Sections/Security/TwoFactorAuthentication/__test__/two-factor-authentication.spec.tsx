@@ -1,6 +1,6 @@
 import React from 'react';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { WS } from '@deriv-app/shared';
 import TwoFactorAuthentication from '../two-factor-authentication';
 
@@ -13,8 +13,8 @@ jest.mock('@deriv-app/shared', () => ({
     },
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Loading: jest.fn(() => 'mockedLoading'),
 }));
 

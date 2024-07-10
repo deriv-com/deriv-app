@@ -7,8 +7,8 @@ const positions_drawer_card = 'PositionsDrawerCard';
 const progress_bar = 'ProgressBar';
 const progress_slider_mobile = 'ProgressSliderMobile';
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     PositionsDrawerCard: jest.fn(() => <>{positions_drawer_card}</>),
     ProgressBar: jest.fn(() => <>{progress_bar}</>),
     ProgressSliderMobile: jest.fn(() => <>ProgressSliderMobile</>),

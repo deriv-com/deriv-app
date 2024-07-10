@@ -10,7 +10,7 @@ import {
     PageOverlay,
     VerticalTab,
     Loading,
-} from '@deriv/components';
+} from '@deriv-app/components';
 import {
     useAuthorize,
     useOnrampVisible,
@@ -24,9 +24,9 @@ import { getSelectedRoute, getStaticUrl, routes, setPerformanceValue, WS } from 
 import ErrorDialog from '../../components/error-dialog';
 import { TRoute } from '../../types';
 import { localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
-import type { TCoreStores } from '@deriv/stores/types';
+import type { TCoreStores } from '@deriv-app/stores/types';
 import './cashier.scss';
 
 type TCashierProps = RouteComponentProps & {

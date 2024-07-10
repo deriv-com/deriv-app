@@ -1,5 +1,5 @@
 import React from 'react';
-import { usePrevious } from '@deriv/components';
+import { usePrevious } from '@deriv-app/components';
 import {
     getDurationPeriod,
     getDurationUnitText,
@@ -7,7 +7,7 @@ import {
     getPlatformRedirect,
     hasContractStarted,
 } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ChartBottomWidgets, ChartTopWidgets } from './contract-replay-widget';
 import ResetContractChartElements from 'Modules/SmartChart/Components/Markers/reset-contract-chart-elements';

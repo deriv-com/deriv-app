@@ -4,10 +4,10 @@ import { formatMoney } from '@deriv-app/shared';
 import { useDevice } from '@deriv-com/ui';
 import AccountLimits from '../account-limits';
 import { BrowserRouter } from 'react-router-dom';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
+jest.mock('@deriv-app/components', () => {
+    const original_module = jest.requireActual('@deriv-app/components');
 
     return {
         ...original_module,

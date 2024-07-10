@@ -4,7 +4,7 @@ import { Router } from 'react-router-dom';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { routes } from '@deriv-app/shared';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import AccountVerificationRequiredModal from '../account-verification-required-modal';
 
 type TModal = React.FC<{
@@ -21,8 +21,8 @@ type TModal = React.FC<{
     }>;
 };
 
-jest.mock('@deriv/stores', () => ({
-    ...jest.requireActual('@deriv/stores'),
+jest.mock('@deriv-app/stores', () => ({
+    ...jest.requireActual('@deriv-app/stores'),
     observer: jest.fn(x => x),
     useStore: jest.fn(() => ({
         ui: {
@@ -36,8 +36,8 @@ jest.mock('@deriv-app/shared', () => ({
     isMobile: jest.fn(() => true),
 }));
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
+jest.mock('@deriv-app/components', () => {
+    const original_module = jest.requireActual('@deriv-app/components');
     const Modal: TModal = jest.fn(({ children, is_open, title, height }) => {
         if (is_open) {
             return (

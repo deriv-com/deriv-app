@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { isMobile } from '@deriv-app/shared';
 import TraderProviders from '../../../../../../../trader-providers';
 import AccumulatorsInfoDisplay from '../accumulators-info-display';
@@ -15,8 +15,8 @@ const mock_connect_props = {
     },
 };
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Popover: jest.fn(({ children, ...props }) => (
         <div className={props.classNameBubble} data-testid={props.alignment}>
             {children}

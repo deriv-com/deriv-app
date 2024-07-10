@@ -1,9 +1,9 @@
 import React from 'react';
 import { getCardLabels, isValidToSell } from '@deriv-app/shared';
-import { Button, Money, Text } from '@deriv/components';
+import { Button, Money, Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { TContractInfo } from '@deriv-app/shared/src/utils/contract/contract-types';
 
 type TAccumSellButton = {

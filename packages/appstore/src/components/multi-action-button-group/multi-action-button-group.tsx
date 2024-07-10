@@ -1,4 +1,4 @@
-import { Button } from '@deriv/components';
+import { Button } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import { Actions } from 'Components/containers/trading-app-card-actions';
 import TradeButton from 'Components/trade-button';

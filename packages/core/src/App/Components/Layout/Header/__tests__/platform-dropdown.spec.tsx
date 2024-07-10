@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { routes } from '@deriv-app/shared';
 import { PlatformDropdown, PlatformBox } from '../platform-dropdown';
 

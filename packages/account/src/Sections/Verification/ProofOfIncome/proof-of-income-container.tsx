@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Loading } from '@deriv/components';
+import { Loading } from '@deriv-app/components';
 import { routes, WS } from '@deriv-app/shared';
 import { AccountStatusResponse } from '@deriv/api-types';
 import ProofOfIncomeForm from './proof-of-income-form';

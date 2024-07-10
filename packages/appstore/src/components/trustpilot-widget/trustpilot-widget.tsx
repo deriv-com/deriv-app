@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDevice } from '@deriv-com/ui';
-import { Icon, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import { TTrustpilotWidgetData } from 'Types';
 import { fetchTrustpilotData } from 'Helpers';

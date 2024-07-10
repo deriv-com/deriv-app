@@ -1,5 +1,5 @@
 import React from 'react';
-import { Clipboard } from '@deriv/components';
+import { Clipboard } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv-app/shared';
 import { TCFDAccountCopy } from './props.types';

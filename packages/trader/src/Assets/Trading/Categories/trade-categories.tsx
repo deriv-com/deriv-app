@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import { TRADE_TYPES } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import AccumulatorTradeDescription from './Description/accumulator-trade-description';

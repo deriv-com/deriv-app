@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Modal, Popover } from '@deriv/components';
+import { Icon, Modal, Popover } from '@deriv-app/components';
 import { localize, Localize } from '@deriv/translations';
 import { deriv_urls, getLegalEntityName } from '@deriv-app/shared';
 

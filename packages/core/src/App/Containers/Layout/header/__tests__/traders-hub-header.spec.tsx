@@ -1,8 +1,8 @@
 import React from 'react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { render, screen } from '@testing-library/react';
 import TradersHubHeader from '../traders-hub-header';
-import { TStores } from '@deriv/stores/types';
+import { TStores } from '@deriv-app/stores/types';
 import { useDevice } from '@deriv-com/ui';
 
 jest.mock('react-router', () => ({
@@ -10,8 +10,8 @@ jest.mock('react-router', () => ({
     useHistory: () => ({ history: {} }),
     useLocation: () => ({ pathname: '/appstore/traders-hub' }),
 }));
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
+jest.mock('@deriv-app/components', () => {
+    const original_module = jest.requireActual('@deriv-app/components');
     return {
         ...original_module,
         Icon: jest.fn(() => 'MockedIcon'),

@@ -4,7 +4,7 @@ import NumberSelector from 'App/Components/Form/number-selector';
 import Fieldset from 'App/Components/Form/fieldset';
 import { getGrowthRatePercentage, isEmptyObject } from '@deriv-app/shared';
 import classNames from 'classnames';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const Accumulator = observer(() => {

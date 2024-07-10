@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
-import { useStore } from '@deriv/stores';
-import { DesktopWrapper, MobileWrapper, StaticUrl } from '@deriv/components';
+import { useStore } from '@deriv-app/stores';
+import { DesktopWrapper, MobileWrapper, StaticUrl } from '@deriv-app/components';
 import { getDecimalPlaces, platforms, routes } from '@deriv-app/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';

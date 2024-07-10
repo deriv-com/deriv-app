@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
-import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text } from '@deriv/components';
+import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text } from '@deriv-app/components';
 import {
     getErrorMessages,
     redirectToLogin,
@@ -13,7 +13,7 @@ import {
 } from '@deriv-app/shared';
 import { getLanguage, localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 const UnlinkPassword = ({
     logoutClient,

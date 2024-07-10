@@ -1,6 +1,6 @@
 import React from 'react';
 import { Rating } from 'react-simple-star-rating';
-import { Icon } from '@deriv/components';
+import { Icon } from '@deriv-app/components';
 
 type TStarRatingProps = {
     className?: string;

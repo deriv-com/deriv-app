@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { APIProvider } from '@deriv/api';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
 import { renderHook } from '@testing-library/react-hooks';
 
 import useExistingCFDAccounts from '../useExistingCFDAccounts';

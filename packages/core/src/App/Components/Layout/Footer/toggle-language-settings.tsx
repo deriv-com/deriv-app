@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { observer, useStore } from '@deriv/stores';
-import { Icon, Modal, Popover, Text } from '@deriv/components';
+import { observer, useStore } from '@deriv-app/stores';
+import { Icon, Modal, Popover, Text } from '@deriv-app/components';
 import { useTranslations } from '@deriv-com/translations';
 import { Localize, localize } from '@deriv/translations'; // [TODO]: Remove this import after integrating Deriv app with new translation lib
 import 'Sass/app/modules/settings.scss';

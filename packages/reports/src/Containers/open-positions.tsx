@@ -1,6 +1,6 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { DataList, usePrevious, SelectNative, Dropdown } from '@deriv/components';
+import { DataList, usePrevious, SelectNative, Dropdown } from '@deriv-app/components';
 import { useDevice } from '@deriv-com/ui';
 import {
     isAccumulatorContract,
@@ -16,7 +16,7 @@ import {
     getAccumulatorOpenPositionsColumnsTemplate,
     getMultiplierOpenPositionsColumnsTemplate,
 } from 'Constants/data-table-constants';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { TColIndex } from 'Types';
 import { OpenPositionsTable } from './open-positions-table';
 import { MobileRowRenderer } from './mobile-row-renderer';

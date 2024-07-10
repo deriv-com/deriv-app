@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useDevice } from '@deriv-com/ui';
-import { observer, useStore } from '@deriv/stores';
-import { Div100vhContainer, Loading, Text } from '@deriv/components';
+import { observer, useStore } from '@deriv-app/stores';
+import { Div100vhContainer, Loading, Text } from '@deriv-app/components';
 import { isEuCountry } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import OrderedPlatformSections from 'Components/ordered-platform-sections';

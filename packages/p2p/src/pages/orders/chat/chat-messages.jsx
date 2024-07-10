@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, ThemedScrollbars, Icon } from '@deriv/components';
+import { Text, ThemedScrollbars, Icon } from '@deriv-app/components';
 import { formatMilliseconds } from '@deriv-app/shared';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import ChatMessageReceipt from 'Pages/orders/chat/chat-message-receipt.jsx';
 import ChatMessageText from 'Pages/orders/chat/chat-message-text.jsx';

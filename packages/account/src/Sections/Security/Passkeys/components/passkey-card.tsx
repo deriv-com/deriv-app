@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dropdown, Icon, Text } from '@deriv/components';
+import { Dropdown, Icon, Text } from '@deriv-app/components';
 import { getLongDate } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 import { TOnPasskeyMenuClick, TPasskey } from '../passkeys';

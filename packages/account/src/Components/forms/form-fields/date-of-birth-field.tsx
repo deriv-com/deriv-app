@@ -3,7 +3,7 @@
 // [TODO] - Remove React after CFD is configured with new JSX transformer
 import React from 'react';
 import { Field, FieldProps } from 'formik';
-import { DateOfBirthPicker } from '@deriv/components';
+import { DateOfBirthPicker } from '@deriv-app/components';
 import { toMoment } from '@deriv-app/shared';
 
 type TDateOfBirthFieldProps = {

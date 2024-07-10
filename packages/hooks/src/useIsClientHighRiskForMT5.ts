@@ -1,4 +1,4 @@
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 
 /**
  * Checks if a client is considered high risk for MT5 trading based on their available trading accounts.

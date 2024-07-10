@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { APIProvider } from '@deriv/api';
-import { P2PSettingsProvider, StoreProvider, mockStore } from '@deriv/stores';
+import { P2PSettingsProvider, StoreProvider, mockStore } from '@deriv-app/stores';
 import AdErrorTooltipModal from '../ad-error-tooltip-modal';
 
 const mock_modal_manager = {

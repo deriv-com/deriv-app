@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Loading, Modal, Text } from '@deriv/components';
+import { Loading, Modal, Text } from '@deriv-app/components';
 import { routes } from '@deriv-app/shared';
 import { useCloseDerivAccount } from '@deriv/api';
 import { Localize } from '@deriv/translations';

@@ -1,10 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Formik, Form, Field, FormikProps, FormikHelpers, FieldProps } from 'formik';
-import { Input, Button } from '@deriv/components';
+import { Input, Button } from '@deriv-app/components';
 import { getPropertyValue, WS } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 type TResponse = {
     error?: {

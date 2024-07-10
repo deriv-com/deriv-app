@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStore, observer } from '@deriv/stores';
+import { useStore, observer } from '@deriv-app/stores';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { millisecondsToTimer } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { getDistanceToServerTime } from 'Utils/server_time';
 import { useStores } from 'Stores';
-import { DesktopWrapper, Icon, MobileWrapper, Table, Text } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileWrapper, Table, Text } from '@deriv-app/components';
 import { formatMoney, routes } from '@deriv-app/shared';
 import { localize } from 'Components/i18next';
 import RatingCellRenderer from 'Components/rating-cell-renderer';

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Analytics } from '@deriv-com/analytics';
 import classNames from 'classnames';
-import { Button, Text } from '@deriv/components';
+import { Button, Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
 import {
     JURISDICTION_MARKET_TYPES,

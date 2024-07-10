@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Button, Icon, MultiStep, SendEmailTemplate } from '@deriv/components';
+import { Text, Button, Icon, MultiStep, SendEmailTemplate } from '@deriv-app/components';
 import { localize, Localize } from '@deriv/translations';
 import { getCFDPlatformLabel, WS } from '@deriv-app/shared';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';

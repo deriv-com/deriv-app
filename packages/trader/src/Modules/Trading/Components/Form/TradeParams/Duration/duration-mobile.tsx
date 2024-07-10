@@ -1,8 +1,8 @@
 import React from 'react';
-import { Tabs, RelativeDatepicker } from '@deriv/components';
+import { Tabs, RelativeDatepicker } from '@deriv-app/components';
 import { getDurationMinMaxValues, toMoment } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import type { TTradeParamsMobile } from 'Modules/Trading/Containers/trade-params-mobile';
 import DurationTicksWidgetMobile from './duration-ticks-widget-mobile';

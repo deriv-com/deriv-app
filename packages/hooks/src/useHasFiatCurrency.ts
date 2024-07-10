@@ -1,4 +1,4 @@
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import useCurrencyConfig from './useCurrencyConfig';
 
 const useHasFiatCurrency = () => {

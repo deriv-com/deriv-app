@@ -1,6 +1,6 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
-import { DesktopWrapper, Modal, Button, Icon, Text, MobileDialog, MobileWrapper } from '@deriv/components';
+import { observer, useStore } from '@deriv-app/stores';
+import { DesktopWrapper, Modal, Button, Icon, Text, MobileDialog, MobileWrapper } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 
 type TCFDPasswordChangeContentProps = {

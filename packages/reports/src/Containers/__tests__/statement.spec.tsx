@@ -3,10 +3,10 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Analytics } from '@deriv-com/analytics';
 import { MemoryRouter } from 'react-router-dom';
-import { TCoreStores } from '@deriv/stores/types';
+import { TCoreStores } from '@deriv-app/stores/types';
 import { formatDate } from '@deriv-app/shared';
 import { useDevice } from '@deriv-com/ui';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { useReportsStore } from 'Stores/useReportsStores';
 import Statement, { getRowAction } from '../statement';
 import ReportsProviders from '../../reports-providers';
@@ -123,8 +123,8 @@ jest.mock('@deriv-app/shared', () => ({
     },
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Clipboard: jest.fn(() => <div>Copy icon</div>),
 }));
 

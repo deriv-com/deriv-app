@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Modal, StaticUrl } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { Button, Modal, StaticUrl } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import { localize, Localize } from '@deriv/translations';
 
 type TCompanyWideLimitExceededModal = {

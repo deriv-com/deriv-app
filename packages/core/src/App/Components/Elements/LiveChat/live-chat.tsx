@@ -1,6 +1,6 @@
 import React from 'react';
-import { Popover, Icon, Text } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { Popover, Icon, Text } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from '@deriv/translations';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
 

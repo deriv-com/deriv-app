@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockStore } from '@deriv/stores';
-import { TCoreStores } from '@deriv/stores/types';
+import { mockStore } from '@deriv-app/stores';
+import { TCoreStores } from '@deriv-app/stores/types';
 import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv-app/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 import TraderProviders from '../../../../../../trader-providers';
@@ -40,8 +40,8 @@ const default_mock_store = {
     },
 };
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Numpad: jest.fn(props => (
         <div>
             <div>{mocked_numpad_component}</div>

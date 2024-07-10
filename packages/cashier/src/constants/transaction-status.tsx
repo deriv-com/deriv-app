@@ -1,5 +1,5 @@
 import React from 'react';
-import { StaticUrl } from '@deriv/components';
+import { StaticUrl } from '@deriv-app/components';
 import { localize, Localize } from '@deriv/translations';
 import type { TSocketResponse } from '@deriv/api/types';
 

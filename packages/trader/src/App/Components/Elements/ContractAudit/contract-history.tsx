@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Money, ThemedScrollbars, Text } from '@deriv/components';
+import { Icon, Money, ThemedScrollbars, Text } from '@deriv-app/components';
 import { isMobile, TContractStore } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import ContractAuditItem from './contract-audit-item';

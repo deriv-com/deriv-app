@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Text, Popover } from '@deriv/components';
+import { Icon, Text, Popover } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import ApiTokenClipboard from './api-token-clipboard';
 

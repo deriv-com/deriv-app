@@ -1,6 +1,6 @@
 import React from 'react';
 import { OauthApps } from '@deriv/api-types';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ConnectedApps from '../connected-apps';
@@ -38,8 +38,8 @@ jest.mock('@deriv-app/shared', () => ({
         },
     },
 }));
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Loading: jest.fn(() => <div>Mocked Loading</div>),
 }));
 jest.mock('../connected-apps-earn-more', () => jest.fn(() => <div>Mocked Earn More</div>));

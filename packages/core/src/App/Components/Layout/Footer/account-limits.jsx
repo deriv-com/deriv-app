@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Icon, Popover } from '@deriv/components';
+import { Icon, Popover } from '@deriv-app/components';
 import { routes } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 

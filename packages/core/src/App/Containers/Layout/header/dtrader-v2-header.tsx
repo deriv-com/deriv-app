@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useLocation } from 'react-router-dom';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Jurisdiction, routes } from '@deriv-app/shared';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';

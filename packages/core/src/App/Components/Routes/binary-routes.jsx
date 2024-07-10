@@ -1,9 +1,9 @@
 import React from 'react';
 import { Switch, Prompt, useLocation } from 'react-router-dom';
-import { Loading } from '@deriv/components';
+import { Loading } from '@deriv-app/components';
 import getRoutesConfig from 'App/Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 const BinaryRoutes = observer(props => {
     const { ui, gtm } = useStore();

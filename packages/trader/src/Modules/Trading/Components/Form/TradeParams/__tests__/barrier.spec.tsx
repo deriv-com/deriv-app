@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockStore } from '@deriv/stores';
-import { TCoreStores } from '@deriv/stores/types';
+import { mockStore } from '@deriv-app/stores';
+import { TCoreStores } from '@deriv-app/stores/types';
 import { isDesktop, isMobile } from '@deriv-app/shared';
 import TraderProviders from '../../../../../../trader-providers';
 import Barrier from '../barrier';
@@ -33,8 +33,8 @@ const mock_default_store = {
     },
 };
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     InputField: jest.fn(() => <div>{mocked_input_field}</div>),
 }));
 jest.mock('@deriv-app/shared', () => ({

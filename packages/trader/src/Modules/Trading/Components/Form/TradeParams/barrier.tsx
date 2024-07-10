@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
-import { DesktopWrapper, Icon, InputField, MobileWrapper, Modal, Text } from '@deriv/components';
+import { DesktopWrapper, Icon, InputField, MobileWrapper, Modal, Text } from '@deriv-app/components';
 import Fieldset from 'App/Components/Form/fieldset';
 import ValueMovement from '../Purchase/value-movement';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { localize } from '@deriv/translations';
 import LabeledQuantityInputMobile from '../LabeledQuantityInputMobile';

@@ -1,9 +1,9 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { Dialog } from '@deriv/components';
+import { Dialog } from '@deriv-app/components';
 import * as multiplier_functions from 'Stores/Modules/Trading/Helpers/multiplier';
 import CancelDeal from '../cancel-deal-mobile';
 import TraderProviders from '../../../../../../trader-providers';
@@ -28,8 +28,8 @@ const deal_cancellation = 'Deal cancellation';
 const check_box_text = "Don't show this again";
 const dialog_text = /Take profit and\/or stop loss are not available/i;
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Dialog: ({ children, ...props }: React.PropsWithChildren<Partial<React.ComponentProps<typeof Dialog>>>) =>
         props.is_visible ? (
             <div>

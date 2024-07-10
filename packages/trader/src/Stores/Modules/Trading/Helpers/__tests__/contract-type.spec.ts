@@ -1,7 +1,7 @@
 import ServerTime from '_common/base/server_time';
 import { ContractType } from '../contract-type';
 import moment from 'moment';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
 jest.mock('@deriv-app/shared', () => ({
     ...jest.requireActual('@deriv-app/shared'),

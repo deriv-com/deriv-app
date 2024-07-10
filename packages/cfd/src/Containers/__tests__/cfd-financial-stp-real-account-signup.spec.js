@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CFDFinancialStpRealAccountSignup from '../cfd-financial-stp-real-account-signup';
 import CFDProviders from '../../cfd-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { getAuthenticationStatusInfo } from '@deriv-app/shared';
 
 jest.mock('@deriv/account', () => ({

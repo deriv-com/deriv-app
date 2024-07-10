@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { EmptyState } from '@deriv/components';
+import { EmptyState } from '@deriv-app/components';
 import FundsProtection from '../funds-protection';
 
 type TProps = {

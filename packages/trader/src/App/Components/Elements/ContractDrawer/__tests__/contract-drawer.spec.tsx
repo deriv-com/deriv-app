@@ -2,7 +2,7 @@ import React from 'react';
 import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
 import { useDevice } from '@deriv-com/ui';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { Router } from 'react-router';
 import { toMoment } from '@deriv-app/shared';
 import ContractDrawer from '../contract-drawer';

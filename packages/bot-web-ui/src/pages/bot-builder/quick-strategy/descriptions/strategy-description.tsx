@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Text } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { Text } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import { TStrategyDescription } from '../types';
 
 const StrategyDescription = observer(({ item, font_size }: TStrategyDescription) => {

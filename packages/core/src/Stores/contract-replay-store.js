@@ -1,6 +1,6 @@
 import { action, observable, makeObservable, override } from 'mobx';
 import { routes, isEmptyObject, isForwardStarting, WS, contractCancelled, contractSold } from '@deriv-app/shared';
-import { Money } from '@deriv/components';
+import { Money } from '@deriv-app/components';
 import { Analytics } from '@deriv-com/analytics';
 import { localize } from '@deriv/translations';
 import ContractStore from './contract-store';

@@ -2,7 +2,7 @@ import { routes } from '@deriv-app/shared';
 import PaymentAgentStore from '../payment-agent-store';
 import { configure } from 'mobx';
 import { TRootStore, TWebSocket } from '../../types';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
 configure({ safeDescriptors: false });
 

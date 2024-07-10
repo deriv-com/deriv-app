@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, LinearProgress, Text } from '@deriv/components';
+import { Button, LinearProgress, Text } from '@deriv-app/components';
 import { isEmptyObject } from '@deriv-app/shared';
 import CloseButton from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';

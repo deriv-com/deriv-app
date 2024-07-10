@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, ThemedScrollbars, ButtonToggle, Dropdown } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { Button, ThemedScrollbars, ButtonToggle, Dropdown } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import { clickAndKeyEventHandler, TRADE_TYPES } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';

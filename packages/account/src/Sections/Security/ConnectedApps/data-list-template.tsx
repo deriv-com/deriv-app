@@ -1,6 +1,6 @@
 import React from 'react';
 import { OauthApps } from '@deriv/api-types';
-import { Button } from '@deriv/components';
+import { Button } from '@deriv-app/components';
 import { toMoment } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import DataListTemplateEntry from './data-list-template-entry';

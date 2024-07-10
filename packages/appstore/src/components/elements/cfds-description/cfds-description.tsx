@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StaticUrl } from '@deriv/components';
+import { Text, StaticUrl } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 
 const CFDsDescription = () => {

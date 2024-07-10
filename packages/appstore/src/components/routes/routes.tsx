@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Loading } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { Loading } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import { useLocalize } from '@deriv/translations';
 import { routes } from '@deriv-app/shared';
 import { Switch } from 'react-router-dom';

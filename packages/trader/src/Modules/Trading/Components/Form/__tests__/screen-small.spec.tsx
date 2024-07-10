@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { TCoreStores } from '@deriv/stores/types';
+import { TCoreStores } from '@deriv-app/stores/types';
 import { TRADE_TYPES } from '@deriv-app/shared';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import TraderProviders from '../../../../../trader-providers';
 import ScreenSmall from '../screen-small';
 
@@ -35,8 +35,8 @@ const default_mock_store = {
     },
 };
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Collapsible: jest.fn(({ onClick, children }) => <div onClick={onClick}>{children}</div>),
 }));
 jest.mock('App/Components/Elements/ContentLoader', () => ({

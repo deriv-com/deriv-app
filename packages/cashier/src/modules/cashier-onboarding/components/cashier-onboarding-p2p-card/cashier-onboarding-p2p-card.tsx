@@ -5,7 +5,7 @@ import {
     useHasP2PSupportedCurrencies,
     useIsP2PEnabled,
 } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
 import { SwitchToFiatAccountDialog } from '../../../../components/switch-to-fiat-account-dialog';

@@ -3,8 +3,8 @@ import { render, screen } from '@testing-library/react';
 import { TRADE_TYPES } from '@deriv-app/shared';
 import IconTradeCategory from '../icon-trade-categories';
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Icon: jest.fn(() => 'MockedIcon'),
 }));
 

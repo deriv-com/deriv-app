@@ -24,7 +24,7 @@ import {
     routes,
     setLimitOrderBarriers,
 } from '@deriv-app/shared';
-import { Money } from '@deriv/components';
+import { Money } from '@deriv-app/components';
 import { Analytics } from '@deriv-com/analytics';
 
 import BaseStore from './base-store';

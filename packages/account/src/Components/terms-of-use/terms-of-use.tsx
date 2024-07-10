@@ -8,9 +8,9 @@ import {
     FormSubmitButton,
     AutoHeightWrapper,
     StaticUrl,
-} from '@deriv/components';
+} from '@deriv-app/components';
 import { useResidenceSelfDeclaration } from '@deriv-app/hooks';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { TBrokerCodes } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 import CheckboxField from './checkbox-field';

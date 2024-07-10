@@ -2,7 +2,7 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import TraderProviders from '../../../../../../../trader-providers';
 import AdvancedDuration from '../advanced-duration';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
 const button_toggle = 'MockedButtonToggle';
 const dropdown = 'MockedDropDown';
@@ -13,8 +13,8 @@ const time_picker = 'MockedTimePicker';
 const expiry_text = 'MockedExpiryText';
 const duration_range_text = 'MockedDurationRangeText';
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     ButtonToggle: jest.fn(() => <div>{button_toggle}</div>),
     Dropdown: jest.fn(() => <div>{dropdown}</div>),
     InputField: jest.fn(() => <div>{input_field}</div>),

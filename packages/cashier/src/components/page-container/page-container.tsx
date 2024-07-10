@@ -1,6 +1,6 @@
 import React from 'react';
-import { Loading, ThemedScrollbars } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { Loading, ThemedScrollbars } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import CashierBreadcrumb from '../cashier-breadcrumb';
 import './page-container.scss';
 

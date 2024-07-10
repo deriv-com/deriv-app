@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import { useFetch, useQuery } from '@deriv/api';
 import useActiveWallet from './useActiveWallet';
 import useCurrencyConfig from './useCurrencyConfig';

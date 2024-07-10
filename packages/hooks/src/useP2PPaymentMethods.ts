@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFetch } from '@deriv/api';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 
 const type_to_icon_mapper = {
     bank: 'IcCashierBankTransfer',

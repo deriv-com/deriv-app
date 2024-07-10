@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Button, Icon, Text } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv-app/components';
 import { BinaryLink } from 'App/Components/Routes';
 import { isEmptyObject, toTitleCase } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 type TActionProps = ReturnType<typeof useStore>['notifications']['notifications'][0]['action'];
 type TNotificationMessage = ReturnType<typeof useStore>['notifications']['notifications'][0];

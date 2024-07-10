@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Modal, Text } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { Button, Modal, Text } from '@deriv-app/components';
+import { observer } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';

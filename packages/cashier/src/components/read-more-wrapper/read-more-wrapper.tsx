@@ -1,4 +1,4 @@
-import { ReadMore } from '@deriv/components';
+import { ReadMore } from '@deriv-app/components';
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { TReactElement } from '../../types';

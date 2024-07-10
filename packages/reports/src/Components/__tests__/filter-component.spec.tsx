@@ -1,12 +1,12 @@
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { render, screen } from '@testing-library/react';
 import FilterComponent from 'Components/filter-component';
 import React from 'react';
 import ReportsProviders from '../../reports-providers';
 
 jest.mock('../Form/CompositeCalendar/composite-calendar', () => jest.fn(() => 'MockedCalender'));
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     FilterDropdown: jest.fn(() => <span>MockedFilterDropdown</span>),
 }));
 

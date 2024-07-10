@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv/stores';
-import { TCoreStores } from '@deriv/stores/types';
+import { mockStore } from '@deriv-app/stores';
+import { TCoreStores } from '@deriv-app/stores/types';
 import AccumulatorsAmountMobile from '../accumulators-amount-mobile';
 import TraderProviders from '../../../../../../../trader-providers';
 

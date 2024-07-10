@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { TCoreStores } from '@deriv/stores/types';
+import { TCoreStores } from '@deriv-app/stores/types';
 import {
     getMultiplierOpenPositionsColumnsTemplate,
     getOpenPositionsColumnsTemplate,

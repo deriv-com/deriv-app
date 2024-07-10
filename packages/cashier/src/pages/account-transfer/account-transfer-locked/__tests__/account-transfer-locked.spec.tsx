@@ -2,11 +2,11 @@ import React from 'react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Checklist } from '@deriv/components';
+import { Checklist } from '@deriv-app/components';
 import { routes } from '@deriv-app/shared';
 import AccountTransferLocked from '../account-transfer-locked';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
 describe('AccountTransferLocked', () => {
     let mockRootStore: ReturnType<typeof mockStore>;

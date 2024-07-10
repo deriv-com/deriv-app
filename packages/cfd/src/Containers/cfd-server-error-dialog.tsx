@@ -1,7 +1,7 @@
 import React from 'react';
-import { Dialog, UnhandledErrorModal } from '@deriv/components';
+import { Dialog, UnhandledErrorModal } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 const CFDServerErrorDialog = observer(() => {

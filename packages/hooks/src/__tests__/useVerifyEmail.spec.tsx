@@ -1,4 +1,4 @@
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { act, renderHook } from '@testing-library/react-hooks';
 import useVerifyEmail from '../useVerifyEmail';
 import { withMockAPIProvider } from '../mocks';

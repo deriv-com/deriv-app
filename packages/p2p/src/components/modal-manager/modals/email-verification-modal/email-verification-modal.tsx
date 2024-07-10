@@ -1,6 +1,6 @@
 /* eslint-disable no-empty-pattern */
 import React from 'react';
-import { Button, Icon, Modal, Text } from '@deriv/components';
+import { Button, Icon, Modal, Text } from '@deriv-app/components';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

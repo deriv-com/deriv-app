@@ -1,7 +1,7 @@
 import React from 'react';
-import { Dialog } from '@deriv/components';
+import { Dialog } from '@deriv-app/components';
 import { localize, Localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 const MT5AccountNeededModal = observer(() => {
     const { client, ui } = useStore();

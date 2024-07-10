@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { isMobile, routes } from '@deriv-app/shared';
 import 'Sass/app/_common/components/app-notification-message.scss';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import Notification, {
     max_display_notifications,
     max_display_notifications_mobile,

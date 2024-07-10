@@ -3,7 +3,7 @@ import { FormikValues } from 'formik';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { getPropertyValue, WS } from '@deriv-app/shared';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
 import { useDevice } from '@deriv-com/ui';
 import ApiToken from '../api-token';
 
@@ -12,8 +12,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Loading: () => <div>Loading</div>,
 }));
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
-import { Modal, Text, Money, Icon } from '@deriv/components';
+import { observer, useStore } from '@deriv-app/stores';
+import { Modal, Text, Money, Icon } from '@deriv-app/components';
 
 const CTraderTransferModal = observer(() => {
     const {

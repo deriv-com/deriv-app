@@ -24,8 +24,8 @@ const mocked_props: React.ComponentProps<typeof VideoPlayer> = {
     src: 'test_src',
 };
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Icon: jest.fn(({ icon }: { icon: string }) => <div>{icon}</div>),
 }));
 

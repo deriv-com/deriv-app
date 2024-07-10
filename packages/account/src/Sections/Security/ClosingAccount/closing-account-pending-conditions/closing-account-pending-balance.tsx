@@ -1,5 +1,5 @@
 import React from 'react';
-import { Money } from '@deriv/components';
+import { Money } from '@deriv-app/components';
 import {
     CFD_PLATFORMS,
     formatMoney,
@@ -8,7 +8,7 @@ import {
     getCFDPlatformLabel,
     getMT5Icon,
 } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from '@deriv/translations';
 import { TCFDPlatform, TDetailsOfDerivXAccount, TDetailsOfMT5Account } from 'Types';
 import ClosingAccountPendingWrapper from './closing-account-pending-wrapper';

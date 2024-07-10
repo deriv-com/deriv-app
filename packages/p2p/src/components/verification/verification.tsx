@@ -1,7 +1,7 @@
 import React from 'react';
-import { Icon, Checklist, Text } from '@deriv/components';
+import { Icon, Checklist, Text } from '@deriv-app/components';
 import { routes } from '@deriv-app/shared';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import Dp2pBlocked from 'Components/dp2p-blocked';
 import { Localize } from 'Components/i18next';
 import { document_status_codes, identity_status_codes } from 'Constants/account-status-codes';

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Div100vhContainer } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { Div100vhContainer } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import MT5MigrationFrontSideContent from './mt5-migration-front-side-content';
 import { useMT5MigrationModalContext } from './mt5-migration-modal-context';
 import MT5MigrationBackSideContent from './mt5-migration-back-side-content';

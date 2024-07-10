@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, within } from '@testing-library/react';
 import AccumulatorsStats, { ROW_SIZES } from '../accumulators-stats';
 import { TraderProviders } from '../../../../../trader-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import userEvent from '@testing-library/user-event';
 import { useDevice } from '@deriv-com/ui';
 

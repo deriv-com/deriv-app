@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Modal, StaticUrl, Text } from '@deriv/components';
+import { Button, Modal, StaticUrl, Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import './url-unavailable-modal.scss';
 
 const UrlUnavailableModal = observer(() => {

@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from 'react';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import CashierStore from './cashier-store';
 
 const CashierStoreContext = createContext<CashierStore | null>(null);

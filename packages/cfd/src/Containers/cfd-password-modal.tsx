@@ -15,7 +15,7 @@ import {
     Text,
     MobileWrapper,
     DesktopWrapper,
-} from '@deriv/components';
+} from '@deriv-app/components';
 import {
     getAuthenticationStatusInfo,
     getCFDPlatformLabel,
@@ -27,7 +27,7 @@ import {
     validMT5Password,
     WS,
 } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize, localize } from '@deriv/translations';
 
 import { TProducts } from '../Components/props.types';

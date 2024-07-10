@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import { Localize, localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
-import { Button, Text } from '@deriv/components';
+import { Button, Text } from '@deriv-app/components';
 import Uploader from './uploader';
 import { setInitialValues, validateFields } from './utils';
 import { ROOT_CLASS, SELFIE_DOCUMENT } from '../constants';

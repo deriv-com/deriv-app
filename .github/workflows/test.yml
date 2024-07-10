@@ -31,7 +31,7 @@ jobs:
       run: npx tsc --project packages/hooks/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/utils
       run: npx tsc --project packages/utils/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv/stores
+    - name: Check TypeScript for @deriv-app/stores
       run: npx tsc --project packages/stores/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/wallets
       run: npx tsc --project packages/wallets/tsconfig.json -noEmit

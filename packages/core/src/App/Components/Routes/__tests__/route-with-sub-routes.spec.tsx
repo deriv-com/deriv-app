@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import RouteWithSubRoutes from '../route-with-sub-routes';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 
 type TMockFunction = {
     path: string;

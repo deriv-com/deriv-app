@@ -1,7 +1,7 @@
 import React from 'react';
 import { APIProvider } from '@deriv/api';
 import { renderHook } from '@testing-library/react-hooks';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import useAuthorize from '../useAuthorize';
 
 jest.mock('@deriv/api', () => ({

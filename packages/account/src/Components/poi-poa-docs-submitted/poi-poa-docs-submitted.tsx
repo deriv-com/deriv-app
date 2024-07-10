@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, Loading } from '@deriv/components';
+import { Button, Icon, Loading } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import { getAuthenticationStatusInfo, Jurisdiction } from '@deriv-app/shared';
 import IconMessageContent from 'Components/icon-message-content';

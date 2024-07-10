@@ -1,6 +1,6 @@
 import React from 'react';
 import { APIProvider, useInfiniteQuery } from '@deriv/api';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useP2PAdvertList from '../useP2PAdvertList';
 

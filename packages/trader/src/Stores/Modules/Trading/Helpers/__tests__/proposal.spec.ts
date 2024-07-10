@@ -1,4 +1,4 @@
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { getProposalInfo, createProposalRequests } from '../proposal';
 
 describe('Proposal', () => {

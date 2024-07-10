@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import ProofOfIdentityContainer from '../proof-of-identity-container';
 import { populateVerificationStatus } from '../../Helpers/verification.js';
 import { identity_status_codes, service_code } from '../proof-of-identity-utils';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 
 jest.mock('@deriv-app/shared', () => ({
     ...jest.requireActual('@deriv-app/shared'),
@@ -14,8 +14,8 @@ jest.mock('@deriv-app/shared', () => ({
     },
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Loading: jest.fn(() => 'mockedLoading'),
 }));
 

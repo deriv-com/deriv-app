@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, StaticUrl, Text } from '@deriv/components';
+import { Button, StaticUrl, Text } from '@deriv-app/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv-app/shared';
 import { withRouter } from 'react-router-dom';

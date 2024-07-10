@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@deriv/components';
+import { Button } from '@deriv-app/components';
 import { Localize } from 'Components/i18next';
 
 type TAdFormControllerProps = {

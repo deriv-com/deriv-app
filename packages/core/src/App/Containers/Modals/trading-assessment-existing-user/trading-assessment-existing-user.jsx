@@ -1,12 +1,12 @@
 import React from 'react';
-import { Modal, MobileDialog } from '@deriv/components';
+import { Modal, MobileDialog } from '@deriv-app/components';
 import { Localize, localize } from '@deriv/translations';
 import TradingAssessmentForm from '@deriv/account/src/Components/trading-assessment/trading-assessment-form';
 import tradingAssessmentConfig from '@deriv/account/src/Configs/trading-assessment-config';
 import RiskToleranceWarningModal from '@deriv/account/src/Components/trading-assessment/risk-tolerance-warning-modal';
 import TradingExperienceModal from '../trading-experience-modal';
 import './trading-assessment-existing-user.scss';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useDevice } from '@deriv-com/ui';
 
 const TradingAssessmentExistingUser = observer(() => {

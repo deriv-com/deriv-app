@@ -1,4 +1,4 @@
-import { Table, Text } from '@deriv/components';
+import { Table, Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import { TLoginHistoryItems } from '../../../Types';
 

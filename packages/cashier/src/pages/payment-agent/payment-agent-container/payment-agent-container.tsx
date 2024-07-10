@@ -1,6 +1,6 @@
 import React from 'react';
-import { DesktopWrapper, Dropdown, Icon, Loading, MobileWrapper, SelectNative, Text } from '@deriv/components';
-import { useStore, observer } from '@deriv/stores';
+import { DesktopWrapper, Dropdown, Icon, Loading, MobileWrapper, SelectNative, Text } from '@deriv-app/components';
+import { useStore, observer } from '@deriv-app/stores';
 import { localize, Localize } from '@deriv/translations';
 import SideNote from 'Components/side-note';
 import MissingPaymentMethodNote from '../missing-payment-method-note';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import AccumulatorsSellButton from '../accumulators-sell-button';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { mockContractInfo } from '@deriv-app/shared';
 import TraderProviders from '../../../../../../../trader-providers';
 

@@ -7,7 +7,7 @@ import {
     FormSubmitButton,
     Text,
     Modal,
-} from '@deriv/components';
+} from '@deriv-app/components';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv-app/shared';
 

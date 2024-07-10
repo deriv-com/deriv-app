@@ -1,6 +1,6 @@
 import { useFetch } from '@deriv/api';
 import { WS } from '@deriv-app/shared';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import { useEffect, useState } from 'react';
 
 const usePaymentAgentTransferVisible = () => {

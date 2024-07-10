@@ -2,7 +2,7 @@ import React from 'react';
 import { APIProvider } from '@deriv/api';
 import useAvailableWallets from '../useAvailableWallets';
 import { renderHook } from '@testing-library/react-hooks';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),

@@ -1,7 +1,7 @@
 import IframeStore from '../iframe-store';
 import { configure } from 'mobx';
 import { TRootStore } from '../../types';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
 configure({ safeDescriptors: false });
 

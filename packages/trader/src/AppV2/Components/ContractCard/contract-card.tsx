@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { CaptionText, Text } from '@deriv-com/quill-ui';
 import { useSwipeable } from 'react-swipeable';
-import { IconTradeTypes, Money } from '@deriv/components';
+import { IconTradeTypes, Money } from '@deriv-app/components';
 import {
     TContractInfo,
     getCardLabels,

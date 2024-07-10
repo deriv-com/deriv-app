@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import TraderProviders from '../../../trader-providers';
 import TradeFooterExtensions from '../trade-footer-extensions';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { RouteComponentProps, Router } from 'react-router-dom';
 import { MemoryHistory, createMemoryHistory } from 'history';
 import { routes } from '@deriv-app/shared';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
 import WalletsBannerUpgrade from '../wallets-banner-upgrade';
 import WalletsBannerUpgrading from '../wallets-banner-upgrading';
 

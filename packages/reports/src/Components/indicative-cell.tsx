@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { ArrowIndicator, Money, ContractCard } from '@deriv/components';
+import { ArrowIndicator, Money, ContractCard } from '@deriv-app/components';
 import { getCardLabels, TContractInfo } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useDevice } from '@deriv-com/ui';
 
 type TIndicativeCell = {

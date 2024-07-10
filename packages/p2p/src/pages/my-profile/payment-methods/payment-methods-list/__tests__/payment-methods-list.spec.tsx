@@ -2,7 +2,7 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { APIProvider } from '@deriv/api';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
 import { useStores } from 'Stores/index';
 import {
     payment_method_info_alipay,
@@ -40,8 +40,8 @@ const mock_p2p_advertiser_payment_methods_hooks = {
     data: undefined,
 };
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     MobileWrapper: jest.fn(({ children }) => children),
 }));
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { ActiveSymbols } from '@deriv/api-types';
 import { getEndTime, isMobile, isDesktop, isCryptoContract, mockContractInfo, toMoment } from '@deriv-app/shared';
 import ContractDrawerCard from '../contract-drawer-card';

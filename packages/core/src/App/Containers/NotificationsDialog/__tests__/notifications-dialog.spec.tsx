@@ -1,12 +1,12 @@
 import React from 'react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { render, screen } from '@testing-library/react';
 import NotificationsDialog from '../notifications-dialog';
 import { useDevice } from '@deriv-com/ui';
 
 jest.mock('react-transition-group', () => ({ CSSTransition: () => 'MockedCSSTransition' }));
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     MobileDialog: () => 'MockedMobileDialog',
 }));
 jest.mock('@deriv-com/ui', () => ({

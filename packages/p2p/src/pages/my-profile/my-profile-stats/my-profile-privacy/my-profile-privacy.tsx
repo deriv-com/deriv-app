@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, ToggleSwitch } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { Text, ToggleSwitch } from '@deriv-app/components';
+import { observer } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { getTextSize } from 'Utils/responsive';

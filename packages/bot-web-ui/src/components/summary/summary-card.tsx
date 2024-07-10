@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { ContractCard, Text } from '@deriv/components';
+import { ContractCard, Text } from '@deriv-app/components';
 import { getCardLabels } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { localize } from '@deriv/translations';
 import ContractCardLoader from 'Components/contract-card-loading';
 import { getContractTypeDisplay } from 'Constants/contract';

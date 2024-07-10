@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Modal } from '@deriv/components';
+import { Button, Modal } from '@deriv-app/components';
 import { localize, Localize } from '@deriv/translations';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
 
 const TransactionsCryptoCancelModal = observer(() => {

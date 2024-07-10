@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import PercentageSelector from '../percentage-selector';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import CashierProviders from '../../../cashier-providers';
 import CryptoFiatConverter from '../../crypto-fiat-converter';
 

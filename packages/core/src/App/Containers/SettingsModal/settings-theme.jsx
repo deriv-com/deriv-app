@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import DarkModeIcon from 'Assets/SvgComponents/settings/img-theme-dark.svg';
 import LightModeIcon from 'Assets/SvgComponents/settings/img-theme-light.svg';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 const ThemeSelectSettings = observer(() => {
     const { ui } = useStore();

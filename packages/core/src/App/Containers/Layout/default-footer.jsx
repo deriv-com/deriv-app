@@ -14,7 +14,7 @@ import NetworkStatus, {
 import LiveChat from 'App/Components/Elements/LiveChat';
 import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
 import ServerTime from '../server-time.jsx';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useRemoteConfig } from '@deriv/api';
 import { useIsMounted } from '@deriv-app/shared';
 

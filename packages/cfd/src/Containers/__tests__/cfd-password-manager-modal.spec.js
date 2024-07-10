@@ -3,10 +3,10 @@ import { screen, render, fireEvent, waitFor, act, cleanup } from '@testing-libra
 import CFDPasswordManagerModal from '../cfd-password-manager-modal';
 import { BrowserRouter } from 'react-router-dom';
 import CFDProviders from '../../cfd-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
+jest.mock('@deriv-app/components', () => {
+    const original_module = jest.requireActual('@deriv-app/components');
     return {
         ...original_module,
         Icon: jest.fn(props => <div data-testid='mocked_icon'>{props.icon}</div>),

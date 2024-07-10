@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { Field, FieldProps, Form, Formik } from 'formik';
 
-import { Button, Dropdown, InlineMessage, Input, Loading, Money, Text } from '@deriv/components';
+import { Button, Dropdown, InlineMessage, Input, Loading, Money, Text } from '@deriv-app/components';
 import {
     getCurrencyDisplayCode,
     getCurrencyName,
@@ -14,7 +14,7 @@ import {
     startPerformanceEventTimer,
     validNumber,
 } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize, localize } from '@deriv/translations';
 
 import AccountPlatformIcon from '../../../components/account-platform-icon';

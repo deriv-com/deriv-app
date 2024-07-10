@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, ButtonLink, StaticUrl, Text } from '@deriv/components';
+import { Button, Icon, ButtonLink, StaticUrl, Text } from '@deriv-app/components';
 import { isMobile } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 import ErrorStore from '../../stores/error-store';

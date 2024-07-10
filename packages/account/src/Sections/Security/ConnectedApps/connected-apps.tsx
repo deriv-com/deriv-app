@@ -1,7 +1,7 @@
 import React from 'react';
 import { OauthApps } from '@deriv/api-types';
-import { Loading } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { Loading } from '@deriv-app/components';
+import { observer } from '@deriv-app/stores';
 import { WS } from '@deriv-app/shared';
 import { useDevice } from '@deriv-com/ui';
 import ErrorComponent from '../../../Components/error-component';

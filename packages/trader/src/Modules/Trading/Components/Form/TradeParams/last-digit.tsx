@@ -3,7 +3,7 @@ import { isDesktop } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import NumberSelector from 'App/Components/Form/number-selector';
 import Fieldset from 'App/Components/Form/fieldset';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TLastDigit = {

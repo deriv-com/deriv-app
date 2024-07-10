@@ -1,7 +1,7 @@
 import React from 'react';
 import MT5MigrationModal from '../mt5-migration-modal';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { CFDStoreProvider } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
 import { MT5MigrationModalContext } from '../mt5-migration-modal-context';

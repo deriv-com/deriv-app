@@ -2,7 +2,7 @@ import React from 'react';
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info';
 import RadioGroupWithInfoMobile from 'Modules/Trading/Components/Form/RadioGroupWithInfoMobile';
 import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { useIsMounted, WS, TRADE_TYPES, CONTRACT_TYPES } from '@deriv-app/shared';
 import { TTradeStore } from 'Types';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal } from '@deriv/components';
+import { Button, Modal } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 
 type TAccountVerificationPendingModalProps = {

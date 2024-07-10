@@ -4,8 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { useDevice } from '@deriv-com/ui';
 import { mockContractInfo } from '@deriv-app/shared';
-import { TPortfolioPosition } from '@deriv/stores/types';
-import { mockStore } from '@deriv/stores';
+import { TPortfolioPosition } from '@deriv-app/stores/types';
+import { mockStore } from '@deriv-app/stores';
 import OpenPositions from '../open-positions';
 import ReportsProviders from '../../reports-providers';
 
@@ -37,8 +37,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     DataList: jest.fn(() => <>{data_list}</>),
 }));
 

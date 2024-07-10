@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
-import { Input, Text, Tooltip } from '@deriv/components';
+import { Input, Text, Tooltip } from '@deriv-app/components';
 import { useP2PAdvertiserPaymentMethods, useP2PExchangeRate } from '@deriv-app/hooks';
 import { getDecimalPlaces, isDesktop, isMobile } from '@deriv-app/shared';
 import { reaction } from 'mobx';

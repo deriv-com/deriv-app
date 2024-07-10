@@ -2,7 +2,7 @@ import React from 'react';
 import { Field } from 'formik';
 import PropTypes from 'prop-types';
 
-import { Autocomplete, Text } from '@deriv/components';
+import { Autocomplete, Text } from '@deriv-app/components';
 import { Localize, localize } from '@deriv/translations';
 
 const SetCitizenshipForm = ({ class_prefix, errors, touched, setFieldValue, citizenship_list }) => (

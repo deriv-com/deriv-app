@@ -1,7 +1,7 @@
 import React from 'react';
 import Loadable from 'react-loadable';
 import { useDevice } from '@deriv-com/ui';
-import { InputField, useOnClickOutside } from '@deriv/components';
+import { InputField, useOnClickOutside } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import { daysFromTodayTo, toMoment } from '@deriv-app/shared';
 import CompositeCalendarMobile from './composite-calendar-mobile';
@@ -9,7 +9,7 @@ import SideList from './side-list';
 import CalendarIcon from './calendar-icon';
 import TwoMonthPicker from './two-month-picker';
 import moment from 'moment';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 type TCompositeCalendar = {
     onChange: (values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean }) => void;

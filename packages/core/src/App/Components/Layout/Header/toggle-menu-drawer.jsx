@@ -3,7 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import { useRemoteConfig } from '@deriv/api';
 import { Analytics } from '@deriv-com/analytics';
-import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
+import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv-app/components';
 import {
     useAccountTransferVisible,
     useAuthorize,
@@ -13,7 +13,7 @@ import {
     useP2PSettings,
 } from '@deriv-app/hooks';
 import { getOSNameWithUAParser, getStaticUrl, routes, useIsMounted, whatsapp_url } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { localize } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';

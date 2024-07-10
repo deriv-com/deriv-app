@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { getCardLabels, getContractPath, toMoment } from '@deriv-app/shared';
-import { TPortfolioPosition } from '@deriv/stores/types';
+import { TPortfolioPosition } from '@deriv-app/stores/types';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';
 import ContractCard from '../contract-card';
 

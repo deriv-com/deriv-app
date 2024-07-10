@@ -1,7 +1,7 @@
 import React from 'react';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 
-import { StaticUrl } from '@deriv/components';
+import { StaticUrl } from '@deriv-app/components';
 import {
     checkServerMaintenance,
     daysSince,

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Clipboard, InlineMessage, Loading, Text } from '@deriv/components';
+import { Button, Clipboard, InlineMessage, Loading, Text } from '@deriv-app/components';
 import { useDepositCryptoAddress } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { localize } from '@deriv/translations';
 import { setPerformanceValue } from '@deriv-app/shared';
 import QRCode from 'qrcode.react';

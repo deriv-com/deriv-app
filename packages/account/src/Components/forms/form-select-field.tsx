@@ -1,5 +1,5 @@
 import { FC, Fragment } from 'react';
-import { Autocomplete, SelectNative } from '@deriv/components';
+import { Autocomplete, SelectNative } from '@deriv-app/components';
 import { Field, FieldProps, FormikErrors } from 'formik';
 import { TGetField } from '../additional-kyc-info-modal/form-config';
 import { TListItem } from 'Types';

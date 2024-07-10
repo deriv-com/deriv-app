@@ -1,7 +1,7 @@
 import { getImageLocation } from '../../../public-path';
 import React from 'react';
 import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
-import { Icon, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv-app/components';
 import { getUrlBase } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
 import TourSteps from './common/tour-steps';

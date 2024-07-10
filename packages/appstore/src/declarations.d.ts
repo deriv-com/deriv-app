@@ -3,7 +3,7 @@ declare module '*.svg' {
     export default content;
 }
 
-declare module '@deriv/components';
+declare module '@deriv-app/components';
 declare module '@deriv-app/shared';
 declare module '@deriv/translations';
 declare module '@deriv/account';

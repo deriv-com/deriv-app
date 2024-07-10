@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
-import { TStores } from '@deriv/stores/types';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { TStores } from '@deriv-app/stores/types';
 import { CFDStoreProvider } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 import { TTradingPlatformAvailableAccount } from 'Components/props.types';
 import { TJurisdictionModalProps } from '../../props.types';

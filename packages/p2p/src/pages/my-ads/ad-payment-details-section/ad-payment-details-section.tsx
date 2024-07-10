@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, FormikValues, useFormikContext } from 'formik';
-import { Text } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { Text } from '@deriv-app/components';
+import { observer } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import AdFormController from 'Pages/my-ads/ad-form-controller';

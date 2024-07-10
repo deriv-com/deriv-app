@@ -1,5 +1,5 @@
 import React from 'react';
-import { Popover } from '@deriv/components';
+import { Popover } from '@deriv-app/components';
 import { isBot } from '@deriv-app/shared';
 
 type TAccountInfoWrapper = {

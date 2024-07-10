@@ -1,4 +1,4 @@
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import { TTradeStore } from 'Types';
 import moment from 'moment';
 

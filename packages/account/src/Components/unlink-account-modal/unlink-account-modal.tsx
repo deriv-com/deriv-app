@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, Text, Icon } from '@deriv/components';
+import { Button, Modal, Text, Icon } from '@deriv-app/components';
 import { localize, Localize } from '@deriv/translations';
 
 type TUnlinkAccountModalProps = {

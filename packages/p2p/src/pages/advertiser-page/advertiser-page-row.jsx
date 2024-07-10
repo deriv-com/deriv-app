@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, Text } from '@deriv/components';
+import { Table, Text } from '@deriv-app/components';
 import { isMobile } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useP2PExchangeRate } from '@deriv-app/hooks';
 import { useStores } from 'Stores';
 import { buy_sell } from 'Constants/buy-sell';

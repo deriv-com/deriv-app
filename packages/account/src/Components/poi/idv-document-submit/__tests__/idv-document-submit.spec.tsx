@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { isDocumentNumberValid } from 'Helpers/utils';
 import IdvDocumentSubmit from '../idv-document-submit';
 import { useDevice } from '@deriv-com/ui';

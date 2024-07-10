@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon, Input, Text, ThemedScrollbars } from '@deriv/components';
+import { Icon, Input, Text, ThemedScrollbars } from '@deriv-app/components';
 import { getPlatformSettings } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { localize } from '@deriv/translations';
 import { help_content_config } from 'Utils/help-content/help-content.config';
 import { useDBotStore } from 'Stores/useDBotStore';

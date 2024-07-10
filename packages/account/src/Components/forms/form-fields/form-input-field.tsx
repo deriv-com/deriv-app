@@ -1,6 +1,6 @@
 import React from 'react';
 import { FieldInputProps, FormikHelpers, FormikState, Field } from 'formik';
-import { Input } from '@deriv/components';
+import { Input } from '@deriv-app/components';
 
 type FormInputFieldProps = {
     name: string;

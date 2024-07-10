@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Field, FieldProps, Formik, Form } from 'formik';
-import { Button, DesktopWrapper, Input, Text } from '@deriv/components';
+import { Button, DesktopWrapper, Input, Text } from '@deriv-app/components';
 import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { localize, Localize } from '@deriv/translations';
 import ErrorDialog from '../../../components/error-dialog';
 import { useCashierStore } from '../../../stores/useCashierStores';

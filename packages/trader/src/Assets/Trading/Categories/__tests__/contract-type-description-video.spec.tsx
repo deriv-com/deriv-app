@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import TraderProviders from '../../../../trader-providers';
 import ContractTypeDescriptionVideo from '../contract-type-description-video';
-import { TCoreStores } from '@deriv/stores/types';
+import { TCoreStores } from '@deriv-app/stores/types';
 import { TRADE_TYPES } from '@deriv-app/shared';
 
 const default_mocked_props = {

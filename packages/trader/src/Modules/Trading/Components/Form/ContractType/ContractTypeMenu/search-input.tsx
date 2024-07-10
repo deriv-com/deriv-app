@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Input } from '@deriv/components';
+import { Icon, Input } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 
 type TSearchInput = {

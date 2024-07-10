@@ -7,7 +7,7 @@ import { APIProvider } from '@deriv/api';
 import { useGetPasskeysList, useRegisterPasskey } from '@deriv-app/hooks';
 import { useDevice } from '@deriv-com/ui';
 import { routes } from '@deriv-app/shared';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
 import Passkeys from '../passkeys';
 import { PasskeysList } from '../components/passkeys-list';
 
@@ -50,8 +50,8 @@ jest.mock('@deriv-app/hooks', () => ({
     useRegisterPasskey: jest.fn(() => ({})),
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Loading: () => <div>MockLoading</div>,
 }));
 

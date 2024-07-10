@@ -16,10 +16,10 @@ import LiveChat from 'App/Components/Elements/LiveChat';
 import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
 import ServerTime from '../server-time.jsx';
 import { routes, useIsMounted, isTabletOs } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import DarkModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-light-theme.svg';
 import LightModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-dark-theme.svg';
-import { Popover } from '@deriv/components';
+import { Popover } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import { useRemoteConfig } from '@deriv/api';
 

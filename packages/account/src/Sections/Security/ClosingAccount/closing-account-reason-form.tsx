@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, Form, Formik, FormikErrors, FieldProps, FormikValues } from 'formik';
-import { Checkbox, FormSubmitButton, Input, Text } from '@deriv/components';
+import { Checkbox, FormSubmitButton, Input, Text } from '@deriv-app/components';
 import { localize, Localize } from '@deriv/translations';
 import { TClosingAccountFormValues } from 'Types';
 import {

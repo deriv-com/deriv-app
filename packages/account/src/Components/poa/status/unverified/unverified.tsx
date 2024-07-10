@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Button, Icon, Text } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import IconMessageContent from '../../../icon-message-content';
 

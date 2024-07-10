@@ -1,7 +1,7 @@
 import React from 'react';
-import { Dialog } from '@deriv/components';
+import { Dialog } from '@deriv-app/components';
 import { useFiatAccountList } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { localize } from '@deriv/translations';
 
 type TProps = {

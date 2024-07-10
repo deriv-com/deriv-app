@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { routes } from '@deriv-app/shared';
 import TogglePositions from '../Components/Elements/TogglePositions/toggle-positions';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 const TradeFooterExtensions = observer((props: RouteComponentProps) => {
     const { location } = props;

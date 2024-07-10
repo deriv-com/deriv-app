@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { localize } from '@deriv/translations';
 import DraggableResizeWrapper from 'Components/draggable/draggable-resize-wrapper';
 import { useDBotStore } from 'Stores/useDBotStore';

@@ -2,11 +2,11 @@ import { useState, Fragment, useCallback, useMemo, useEffect } from 'react';
 import clsx from 'clsx';
 import { Form, Formik, FormikErrors } from 'formik';
 import { Analytics, TEvents } from '@deriv-com/analytics';
-import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, ThemedScrollbars } from '@deriv/components';
+import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, ThemedScrollbars } from '@deriv-app/components';
 import { useDevice } from '@deriv-com/ui';
 import { getIDVNotApplicableOption, removeEmptyPropertiesFromObject } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
-import { useStore, observer } from '@deriv/stores';
+import { useStore, observer } from '@deriv-app/stores';
 import {
     isAdditionalDocumentValid,
     isDocumentNumberValid,

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
-import { Button, Text } from '@deriv/components';
+import { Button, Text } from '@deriv-app/components';
 import { isEmptyObject } from '@deriv-app/shared';
 import { BinaryLink } from 'App/Components/Routes';
 import CloseButton from './close-button.jsx';

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { Icon } from '@deriv-app/components';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';

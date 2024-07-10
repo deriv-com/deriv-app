@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Icon, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv-app/components';
 
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';

@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { DesktopWrapper, MobileWrapper } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import { routes, platforms } from '@deriv-app/shared';
 import { MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import { AccountActionsWallets } from 'App/Components/Layout/Header/wallets/account-actions-wallets';

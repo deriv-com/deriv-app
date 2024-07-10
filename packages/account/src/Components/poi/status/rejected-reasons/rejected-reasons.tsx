@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
+import { Icon } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import IconMessageList from '../../../icon-message-list';
 

@@ -11,7 +11,7 @@ import {
     RadioGroup,
     SelectNative,
     Text,
-} from '@deriv/components';
+} from '@deriv-app/components';
 import { getLegalEntityName, routes, validPhone } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
 import { isFieldImmutable, verifyFields } from '../../Helpers/utils';

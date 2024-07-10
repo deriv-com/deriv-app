@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import Expiration from '../expiration';
 import TraderProviders from '../../../../../../../trader-providers';
 

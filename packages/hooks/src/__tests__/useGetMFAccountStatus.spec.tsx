@@ -1,4 +1,4 @@
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import * as React from 'react';
 import useGetMFAccountStatus from '../useGetMFAccountStatus';

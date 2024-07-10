@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Button, Dropdown, Input, Text } from '@deriv/components';
+import { Button, Dropdown, Input, Text } from '@deriv-app/components';
 import { useLocalStorageData } from '@deriv-app/hooks';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import { useWS } from '@deriv-app/shared';
 import { getLanguage } from '@deriv/translations';
 import './mock-dialog.scss';

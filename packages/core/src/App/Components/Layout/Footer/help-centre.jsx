@@ -1,5 +1,5 @@
 import React from 'react';
-import { Popover, Icon, StaticUrl } from '@deriv/components';
+import { Popover, Icon, StaticUrl } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 
 export const HelpCentre = ({ showPopover }) => (

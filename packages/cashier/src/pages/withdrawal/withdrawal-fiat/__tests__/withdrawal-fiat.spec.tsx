@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import WithdrawalFiat from '../withdrawal-fiat';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
 jest.mock('Components/cashier-container/real', () => jest.fn(() => 'mockedReal'));
 

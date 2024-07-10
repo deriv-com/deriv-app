@@ -21,7 +21,7 @@ import {
 } from '../Sections';
 
 import { TRoute, TRouteConfig } from '../Types';
-import { Loading } from '@deriv/components';
+import { Loading } from '@deriv-app/components';
 // Error Routes
 const Page404 = makeLazyLoader(
     () => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')),

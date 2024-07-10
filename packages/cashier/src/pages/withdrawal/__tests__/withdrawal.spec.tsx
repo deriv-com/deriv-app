@@ -4,7 +4,7 @@ import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import Withdrawal from '../withdrawal';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -29,8 +29,8 @@ jest.mock('../withdrawal-crypto-form', () => jest.fn(() => 'WithdrawalCryptoForm
 jest.mock('../withdrawal-crypto-receipt', () => jest.fn(() => 'WithdrawalCryptoReceipt'));
 jest.mock('Components/transactions-crypto-history', () => jest.fn(() => 'TransactionsCryptoHistory'));
 jest.mock('../withdrawal-verification-email', () => jest.fn(() => 'WithdrawalVerificationEmail'));
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Loading: () => <div>Loading</div>,
 }));
 

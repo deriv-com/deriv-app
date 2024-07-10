@@ -1,6 +1,6 @@
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 
 type TFadeInMessage = {
     is_visible: boolean;

@@ -2,7 +2,7 @@ import { action, computed, makeObservable, observable, reaction, runInAction } f
 import { Buy, ProposalOpenContract } from '@deriv/api-types';
 import { ErrorTypes, MessageTypes, observer, unrecoverable_errors } from '@deriv/bot-skeleton';
 import { isSafari, mobileOSDetect, routes } from '@deriv-app/shared';
-import { TStores } from '@deriv/stores/types';
+import { TStores } from '@deriv-app/stores/types';
 import { localize } from '@deriv/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import { notification_message } from 'Components/bot-notification/bot-notification-utils';

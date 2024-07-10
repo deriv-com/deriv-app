@@ -1,10 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Loading, Button, InfiniteDataList, Div100vhContainer, Text } from '@deriv/components';
+import { Loading, Button, InfiniteDataList, Div100vhContainer, Text } from '@deriv-app/components';
 import { reaction } from 'mobx';
 import { isMobile, routes } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import TableError from 'Components/section-error';
 import P2pEmpty from 'Components/p2p-empty';

@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Analytics } from '@deriv-com/analytics';
 import { routes } from '@deriv-app/shared';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import EffortlessLoginModal from '../effortless-login-modal';
 
 jest.mock('@deriv-app/shared', () => ({

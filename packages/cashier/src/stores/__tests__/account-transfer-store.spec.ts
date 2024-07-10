@@ -1,7 +1,7 @@
 import { configure } from 'mobx';
 
 import { CFD_PLATFORMS, getCurrencies, validNumber } from '@deriv-app/shared';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
 import type { TRootStore, TTransferAccount, TWebSocket } from '../../types';
 import AccountTransferStore from '../account-transfer-store';

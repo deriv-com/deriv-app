@@ -185,7 +185,7 @@ module.exports = function (env) {
                 'react-router': true,
                 'react-router-dom': true,
                 '@deriv-app/shared': true,
-                '@deriv/components': true,
+                '@deriv-app/components': true,
                 '@deriv/translations': true,
                 '@deriv/account': true,
                 '@deriv/cashier': true,

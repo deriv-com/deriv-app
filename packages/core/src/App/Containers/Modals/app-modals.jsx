@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 
 import { useWalletMigration } from '@deriv-app/hooks';
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';

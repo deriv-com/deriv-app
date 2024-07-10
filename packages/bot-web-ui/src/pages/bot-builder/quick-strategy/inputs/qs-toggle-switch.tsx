@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import { Popover, Text, ToggleSwitch } from '@deriv/components';
+import { Popover, Text, ToggleSwitch } from '@deriv-app/components';
 import { TFormData } from '../types';
 import { localize } from '@deriv/translations';
 

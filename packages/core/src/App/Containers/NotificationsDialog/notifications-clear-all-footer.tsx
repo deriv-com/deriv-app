@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Button, Text } from '@deriv/components';
+import { Button, Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 type TNotificationsClearAllFooter = {
     clearNotifications: () => void;

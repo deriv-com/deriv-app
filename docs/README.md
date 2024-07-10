@@ -10,7 +10,7 @@ There are 2 types of dependencies:
 
 1. Reusable code/libraries - These are packages that are meant to be loaded anywhere for use, and they enhance the application and/or development. At the time of writing, this includes:
 
-    - `@deriv/components`
+    - `@deriv-app/components`
     - `@deriv/indicators`
     - `@deriv/publisher`
     - `@deriv-app/shared`

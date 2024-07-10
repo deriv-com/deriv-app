@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDepositLocked } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import TransactionsCryptoHistory from '../../components/transactions-crypto-history';
 import { PageContainer } from '../../components/page-container';
 import { CashierOnboardingModule, DepositCryptoModule, DepositFiatModule } from '../../modules';

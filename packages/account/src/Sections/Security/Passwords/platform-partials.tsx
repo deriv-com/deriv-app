@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, Popover, Text } from '@deriv/components';
+import { Button, Icon, Popover, Text } from '@deriv-app/components';
 import { getPlatformSettings, CFD_PLATFORMS } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 

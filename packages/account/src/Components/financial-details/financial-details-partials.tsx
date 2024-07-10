@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, FormikValues, useFormikContext } from 'formik';
-import { Dropdown, SelectNative } from '@deriv/components';
+import { Dropdown, SelectNative } from '@deriv-app/components';
 import { EMPLOYMENT_VALUES, TEmploymentStatus, shouldHideOccupationField } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Icon, Modal, Text } from '@deriv/components';
+import { Button, Icon, Modal, Text } from '@deriv-app/components';
 import { Localize, localize } from '@deriv/translations';
 import { formatDate, formatTime, isMobile } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 const CooldownWarningModal = observer(() => {
     const { client, ui } = useStore();

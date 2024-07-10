@@ -1,4 +1,4 @@
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import useP2PSettings from './useP2PSettings';
 
 const useHasP2PSupportedCurrencies = () => {

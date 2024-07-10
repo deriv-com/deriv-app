@@ -1,7 +1,7 @@
 import React from 'react';
-import { Loading } from '@deriv/components';
+import { Loading } from '@deriv-app/components';
 import { useCurrentCurrencyConfig } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { PageContainer } from 'Components/page-container';
 import TransactionsCryptoHistory from '../../components/transactions-crypto-history';
 import Error from '../../components/error';

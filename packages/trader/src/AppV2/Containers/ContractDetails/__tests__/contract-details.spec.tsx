@@ -3,7 +3,7 @@ import { act, render, screen, waitFor } from '@testing-library/react';
 import ContractDetails from '../contract-details';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import useOrderDetails from 'AppV2/Hooks/useOrderDetails';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import TraderProviders from '../../../../trader-providers';
 import moment from 'moment';
 import {

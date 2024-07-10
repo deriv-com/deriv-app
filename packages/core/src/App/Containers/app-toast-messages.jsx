@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Div100vhContainer, Toast } from '@deriv/components';
+import { Div100vhContainer, Toast } from '@deriv-app/components';
 import 'Sass/app/_common/components/app-toast-message.scss';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 const AppToastMessages = observer(() => {
     const { ui } = useStore();

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import { Accordion, SideNote, StaticUrl, Text } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { Accordion, SideNote, StaticUrl, Text } from '@deriv-app/components';
+import { useStore } from '@deriv-app/stores';
 import { localize, Localize } from '@deriv/translations';
 import './side-note-faq.scss';
 

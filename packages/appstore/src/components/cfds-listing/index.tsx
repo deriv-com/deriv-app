@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
-import { observer, useStore } from '@deriv/stores';
-import { Loading, Text, StaticUrl } from '@deriv/components';
+import { observer, useStore } from '@deriv-app/stores';
+import { Loading, Text, StaticUrl } from '@deriv-app/components';
 import {
     formatMoney,
     getAuthenticationStatusInfo,

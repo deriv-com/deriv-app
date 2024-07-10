@@ -9,9 +9,9 @@ import {
     Modal,
     Text,
     useCopyToClipboard,
-} from '@deriv/components';
+} from '@deriv-app/components';
 import { websiteUrl } from '@deriv-app/shared';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import SeparatorContainerLine from 'Components/separator-container-line';

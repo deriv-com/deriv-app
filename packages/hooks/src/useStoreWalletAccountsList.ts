@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 
 const currency_to_icon_mapper: Record<string, Record<'light' | 'dark', string>> = {
     Demo: {

@@ -24,8 +24,8 @@ const mocked_default_props: React.ComponentProps<typeof ContractAudit> = {
     is_open: false,
 };
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Tabs: jest.fn(({ onTabItemClick, children }) => <div onClick={() => onTabItemClick(0)}>{children}</div>),
 }));
 jest.mock('../contract-details', () => jest.fn(() => <div>{ContractDetails}</div>));

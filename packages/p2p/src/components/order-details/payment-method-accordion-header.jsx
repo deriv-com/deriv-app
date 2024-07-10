@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import PaymentMethodIcon from 'Components/payment-method-icon';
 import classNames from 'classnames';
 import './payment-method-accordion-header.scss';

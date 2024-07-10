@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ExpansionPanel, Icon } from '@deriv/components';
+import { Button, ExpansionPanel, Icon } from '@deriv-app/components';
 
 export const getIcon = (type: string) => {
     switch (type) {

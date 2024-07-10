@@ -49,7 +49,7 @@ module.exports = function (env) {
                 mobx: 'mobx',
                 '@deriv/p2p': '@deriv/p2p',
                 '@deriv-app/shared': '@deriv-app/shared',
-                '@deriv/components': '@deriv/components',
+                '@deriv-app/components': '@deriv-app/components',
                 '@deriv/translations': '@deriv/translations',
                 '@deriv-com/analytics': '@deriv-com/analytics',
             },

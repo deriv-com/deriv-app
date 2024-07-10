@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field as FormField, FieldProps, Form, Formik } from 'formik';
-import { Input } from '@deriv/components';
+import { Input } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import SearchIcon from './search-icon';
 

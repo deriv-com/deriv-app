@@ -2,7 +2,7 @@ import React from 'react';
 import Item from './contract-type-item';
 import { localize } from '@deriv/translations';
 import { TRADE_TYPES } from '@deriv-app/shared';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import classNames from 'classnames';
 import { TContractType, TContractCategory, TFilteredContractType } from './types';
 

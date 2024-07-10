@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Icon, MobileFullPageModal, ThemedScrollbars } from '@deriv/components';
+import { Icon, MobileFullPageModal, ThemedScrollbars } from '@deriv-app/components';
 import { isMobile, routes } from '@deriv-app/shared';
 import PageReturn from 'Components/page-return';
 import { useStores } from 'Stores';

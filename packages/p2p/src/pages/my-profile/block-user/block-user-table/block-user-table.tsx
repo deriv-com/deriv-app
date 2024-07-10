@@ -1,6 +1,6 @@
 import React from 'react';
-import { InfiniteDataList, Loading, Table, Text } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { InfiniteDataList, Loading, Table, Text } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import BlockUserEmpty from '../block-user-empty';

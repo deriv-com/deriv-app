@@ -1,8 +1,8 @@
 import React from 'react';
 import moment from 'moment';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv/stores';
-import { TCoreStores } from '@deriv/stores/types';
+import { mockStore } from '@deriv-app/stores';
+import { TCoreStores } from '@deriv-app/stores/types';
 import { getCardLabels, mockContractInfo, TRADE_TYPES } from '@deriv-app/shared';
 import { ActiveSymbols } from '@deriv/api-types';
 import PositionsModalCard from '../positions-modal-card';
@@ -81,8 +81,8 @@ jest.mock('App/Components/Routes', () => ({
     ...jest.requireActual('App/Components/Routes'),
     BinaryLink: jest.fn(({ children }) => <div>{children}</div>),
 }));
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     CurrencyBadge: jest.fn(() => <div>{currency_badge}</div>),
     ProgressSliderMobile: jest.fn(() => <div>{progress_slider_mobile}</div>),
 }));

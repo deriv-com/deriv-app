@@ -4,8 +4,8 @@ import { Router } from 'react-router-dom';
 import { History, createMemoryHistory } from 'history';
 import Reports from '../reports';
 import { Analytics } from '@deriv-com/analytics';
-import { StoreProvider, mockStore } from '@deriv/stores';
-import { TStores } from '@deriv/stores/types';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
+import { TStores } from '@deriv-app/stores/types';
 import userEvent from '@testing-library/user-event';
 import ui from '@deriv-com/ui';
 
@@ -30,8 +30,8 @@ const onCloseClick = 'onclose-click';
 const report1Text = 'Report 1';
 const report2Text = 'Report 2';
 const Loading = 'Loading';
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     DesktopWrapper: jest.fn(({ children }) => children),
     MobileWrapper: jest.fn(({ children }) => children),
     Div100vhContainer: jest.fn(({ children }) => children),
@@ -90,8 +90,8 @@ const mock = {
     },
 };
 
-jest.mock('@deriv/stores', () => ({
-    ...jest.requireActual('@deriv/stores'),
+jest.mock('@deriv-app/stores', () => ({
+    ...jest.requireActual('@deriv-app/stores'),
     observer: jest.fn(x => x),
 }));
 

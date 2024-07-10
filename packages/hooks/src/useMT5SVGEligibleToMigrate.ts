@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import { Jurisdiction, getFormattedJurisdictionCode } from '@deriv-app/shared';
 
 const useMT5SVGEligibleToMigrate = () => {

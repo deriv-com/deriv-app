@@ -1,5 +1,5 @@
 import React from 'react';
-import { ProgressBar, ProgressSliderMobile, DataList, ContractCard, PositionsDrawerCard } from '@deriv/components';
+import { ProgressBar, ProgressSliderMobile, DataList, ContractCard, PositionsDrawerCard } from '@deriv-app/components';
 import {
     isAccumulatorContract,
     isMultiplierContract,
@@ -13,7 +13,7 @@ import {
     getCardLabels,
     toMoment,
 } from '@deriv-app/shared';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import { TColIndex } from 'Types';
 import moment from 'moment';
 

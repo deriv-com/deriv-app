@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { Icon, Text, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
+import { Icon, Text, ThemedScrollbars, useOnClickOutside } from '@deriv-app/components';
 import { routes } from '@deriv-app/shared';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { Localize } from '@deriv/translations';
 import { useStoreWalletAccountsList } from '@deriv-app/hooks';
 import { AccountSwitcherWalletList } from './account-switcher-wallet-list';

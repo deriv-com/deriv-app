@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { mockStore, StoreProvider } from '@deriv/stores';
-import { TCoreStores } from '@deriv/stores/types';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { TCoreStores } from '@deriv-app/stores/types';
 import { useStores } from 'Stores/index';
 import useP2PRenderedAdverts from '../use-p2p-rendered-adverts';
 

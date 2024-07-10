@@ -2,8 +2,8 @@ import Routes from './Containers/routes';
 import ResetTradingPassword from './Containers/reset-trading-password';
 import { NetworkStatusToastErrorPopup } from './Containers/toast-popup';
 import { APIProvider } from '@deriv/api';
-import { StoreProvider } from '@deriv/stores';
-import { TCoreStores } from '@deriv/stores/types';
+import { StoreProvider } from '@deriv-app/stores';
+import { TCoreStores } from '@deriv-app/stores/types';
 import { POIProvider } from '@deriv-app/shared';
 
 // TODO: add correct types for WS after implementing them

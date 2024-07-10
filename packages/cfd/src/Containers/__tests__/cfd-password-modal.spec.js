@@ -5,7 +5,7 @@ import { WS, getErrorMessages, validPassword, Jurisdiction, routes } from '@deri
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import CFDPasswordModal from '../cfd-password-modal';
 import CFDProviders from '../../cfd-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
 jest.mock('@deriv/account', () => ({
     SentEmailModal: jest.fn(({ should_show_sent_email_modal }) => (
@@ -13,8 +13,8 @@ jest.mock('@deriv/account', () => ({
     )),
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Icon: jest.fn(({ icon }) => <div>{icon}</div>),
 }));
 

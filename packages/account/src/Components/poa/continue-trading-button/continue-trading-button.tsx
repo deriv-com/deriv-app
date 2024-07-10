@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { ButtonLink, Text } from '@deriv/components';
+import { ButtonLink, Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import { routes } from '@deriv-app/shared/src/utils/routes/routes';
 

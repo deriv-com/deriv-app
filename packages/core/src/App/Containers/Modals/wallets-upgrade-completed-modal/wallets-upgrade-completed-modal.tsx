@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { Button, Icon, MobileDialog, Modal, Text } from '@deriv/components';
+import { Button, Icon, MobileDialog, Modal, Text } from '@deriv-app/components';
 import { routes } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from '@deriv/translations';
 import './wallets-upgrade-completed-modal.scss';
 

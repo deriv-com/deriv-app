@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import useActiveWallet from '../useActiveWallet';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { APIProvider } from '@deriv/api';
 
 jest.mock('@deriv/api', () => ({

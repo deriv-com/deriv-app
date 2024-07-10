@@ -1,6 +1,6 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
-import { Text } from '@deriv/components';
+import { observer, useStore } from '@deriv-app/stores';
+import { Text } from '@deriv-app/components';
 import { redirectToLogin } from '@deriv-app/shared';
 import { getLanguage, Localize, useLocalize } from '@deriv/translations';
 import { getHasDivider } from 'Constants/utils';

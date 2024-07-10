@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { ArrowIndicator, Label, Money, ContractCard, ContractCardSell, Popover } from '@deriv/components';
+import { ArrowIndicator, Label, Money, ContractCard, ContractCardSell, Popover } from '@deriv-app/components';
 import { getCurrencyDisplayCode, getTotalProfit, getGrowthRatePercentage, getCardLabels } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 import ProgressSliderStream from '../Containers/progress-slider-stream';
@@ -10,7 +10,7 @@ import IndicativeCell from '../Components/indicative-cell';
 import MarketSymbolIconRow from '../Components/market-symbol-icon-row';
 import ProfitLossCell from '../Components/profit-loss-cell';
 import CurrencyWrapper from '../Components/currency-wrapper';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import moment from 'moment';
 
 type TPortfolioStore = ReturnType<typeof useStore>['portfolio'];

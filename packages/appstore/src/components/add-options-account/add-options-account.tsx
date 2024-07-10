@@ -1,8 +1,8 @@
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Button, Text } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Button, Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import './add-options-account.scss';
-import { useStore, observer } from '@deriv/stores';
+import { useStore, observer } from '@deriv-app/stores';
 import { isMobile, ContentFlag } from '@deriv-app/shared';
 import { Analytics } from '@deriv-com/analytics';
 

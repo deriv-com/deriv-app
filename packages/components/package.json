@@ -1,5 +1,5 @@
 {
-    "name": "@deriv/components",
+    "name": "@deriv-app/components",
     "version": "1.0.0",
     "description": "deriv components",
     "main": "src/index.ts",
@@ -75,7 +75,7 @@
         "@contentpass/zxcvbn": "^4.4.3",
         "@deriv-com/ui": "^1.28.3",
         "@deriv-app/shared": "^1.0.0",
-        "@deriv/stores": "^1.0.0",
+        "@deriv-app/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",
         "@types/react-virtualized": "^9.21.21",
         "classnames": "^2.2.6",

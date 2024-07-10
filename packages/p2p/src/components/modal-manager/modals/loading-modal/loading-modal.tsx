@@ -1,5 +1,5 @@
 import React from 'react';
-import { Loading, Modal } from '@deriv/components';
+import { Loading, Modal } from '@deriv-app/components';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const LoadingModal = () => {

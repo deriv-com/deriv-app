@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Popover } from '@deriv/components';
+import { Text, Popover } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import TradigPlatformIconProps from '../../Assets/svgs/trading-platform';
 import { TCompareAccountsCard } from 'Components/props.types';

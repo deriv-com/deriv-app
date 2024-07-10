@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -42,8 +42,8 @@ jest.mock('Stores/useDBotStore', () => ({
     useDBotStore: jest.fn(() => mockDbotStore),
 }));
 
-jest.mock('@deriv/stores', () => ({
-    ...jest.requireActual('@deriv/stores'),
+jest.mock('@deriv-app/stores', () => ({
+    ...jest.requireActual('@deriv-app/stores'),
     observer: jest.fn(x => x),
     useStore: jest.fn(() => ({
         ui: {

@@ -14,8 +14,8 @@ import {
     Text,
     useOnClickOutside,
     Loading,
-} from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+} from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import { routes, formatMoney, ContentFlag } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useHasSetCurrency } from '@deriv-app/hooks';

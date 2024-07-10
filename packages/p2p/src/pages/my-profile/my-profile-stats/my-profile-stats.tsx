@@ -1,6 +1,6 @@
 import React from 'react';
-import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv-app/components';
+import { observer } from '@deriv-app/stores';
 import { Localize, localize } from 'Components/i18next';
 import SeparatorContainerLine from 'Components/separator-container-line';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { Button } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import { localize } from '@deriv/translations';
 import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { useDBotStore } from 'Stores/useDBotStore';

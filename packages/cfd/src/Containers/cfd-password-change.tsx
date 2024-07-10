@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
-import { observer, useStore } from '@deriv/stores';
-import { FormSubmitButton, PasswordInput, PasswordMeter, Text } from '@deriv/components';
+import { observer, useStore } from '@deriv-app/stores';
+import { FormSubmitButton, PasswordInput, PasswordMeter, Text } from '@deriv-app/components';
 import { isDesktop, WS, getErrorMessages } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
 import { CATEGORY, CFD_PLATFORMS, PRODUCT } from '../Helpers/cfd-config';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { routes } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
-import { Loading } from '@deriv/components';
+import { Loading } from '@deriv-app/components';
 
 const CFDCompareAccounts = React.lazy(() =>
     import(/* webpackChunkName: "cfd-compare-accounts" */ 'Containers/cfd-compare-accounts')

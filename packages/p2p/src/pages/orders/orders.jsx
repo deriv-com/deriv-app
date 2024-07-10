@@ -1,7 +1,7 @@
 import React from 'react';
-import { useSafeState } from '@deriv/components';
+import { useSafeState } from '@deriv-app/components';
 import { reaction } from 'mobx';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import OrderDetails from 'Components/order-details/order-details.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { ArrowIndicator, Money } from '@deriv/components';
+import { ArrowIndicator, Money } from '@deriv-app/components';
 import ContractInfo from './contract-info';
 
 type TValueMovement = Partial<

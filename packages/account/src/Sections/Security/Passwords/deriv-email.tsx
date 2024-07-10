@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Text, Input } from '@deriv/components';
+import { Button, Text, Input } from '@deriv-app/components';
 import { useVerifyEmail } from '@deriv/api';
 import { toTitleCase } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from '../../../Components/form-sub-header';
 import SentEmailModal from '../../../Components/sent-email-modal';

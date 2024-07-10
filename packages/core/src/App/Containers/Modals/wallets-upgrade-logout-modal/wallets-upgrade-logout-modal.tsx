@@ -1,8 +1,8 @@
 import React from 'react';
 import Cookies from 'js-cookie';
-import { Dialog, Icon, Text } from '@deriv/components';
+import { Dialog, Icon, Text } from '@deriv-app/components';
 import { redirectToLogin, routes } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { getLanguage, localize, Localize } from '@deriv/translations';
 import './wallets-upgrade-logout-modal.scss';
 

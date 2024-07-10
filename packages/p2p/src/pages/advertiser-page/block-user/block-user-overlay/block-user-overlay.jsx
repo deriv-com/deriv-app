@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, Text } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv-app/components';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { observer } from 'mobx-react-lite';

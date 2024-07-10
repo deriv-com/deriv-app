@@ -1,6 +1,6 @@
 import React from 'react';
-import { Modal, RadioGroup, Text } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { Modal, RadioGroup, Text } from '@deriv-app/components';
+import { observer } from '@deriv-app/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
 

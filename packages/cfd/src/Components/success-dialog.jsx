@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
-import { Button, Icon, Modal, Text } from '@deriv/components';
+import { Button, Icon, Modal, Text } from '@deriv-app/components';
 import { localize, Localize } from '@deriv/translations';
 
 const Checkmark = ({ className }) => (

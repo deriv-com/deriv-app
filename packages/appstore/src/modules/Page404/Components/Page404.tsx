@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageError } from '@deriv/components';
+import { PageError } from '@deriv-app/components';
 import { routes, getUrlBase } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 

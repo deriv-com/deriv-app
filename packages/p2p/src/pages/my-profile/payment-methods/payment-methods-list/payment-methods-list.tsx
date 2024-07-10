@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import {
     Button,
     DesktopWrapper,
@@ -8,7 +8,7 @@ import {
     MobileWrapper,
     Text,
     ThemedScrollbars,
-} from '@deriv/components';
+} from '@deriv-app/components';
 import { useP2PAdvertiserPaymentMethods } from '@deriv-app/hooks';
 import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';

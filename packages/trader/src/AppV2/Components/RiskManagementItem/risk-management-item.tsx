@@ -3,7 +3,7 @@ import { ActionSheet, Text, TextField, TextFieldWithSteppers, ToggleSwitch } fro
 import { Localize } from '@deriv/translations';
 import RiskManagementInfoModal from '../RiskManagementInfoModal';
 import DealCancellationRemainingTime from '../DealCancellationRemainingTime/deal-cancellation-remaining-time';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import { CONTRACT_TYPES, isAccumulatorContract, isValidToCancel } from '@deriv-app/shared';
 

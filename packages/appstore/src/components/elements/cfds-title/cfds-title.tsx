@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDevice } from '@deriv-com/ui';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import './cfds-title.scss';
 

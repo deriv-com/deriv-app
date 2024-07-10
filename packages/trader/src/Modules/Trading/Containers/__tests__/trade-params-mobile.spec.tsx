@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import TradeParamsModal, { LastDigitMobile, BarrierMobile } from '../trade-params-mobile';
 import TraderProviders from '../../../../trader-providers';
 
@@ -31,8 +31,8 @@ const amount_error = 'Amount error';
 const duration_mobile = 'Duration Mobile';
 const duration_error = 'Duration error';
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Modal: jest.fn(({ children, height }) => <div data-testid={height}>{children}</div>),
     ThemedScrollbars: jest.fn(({ children }) => <div>{children}</div>),
     Div100vhContainer: jest.fn(({ children }) => <div>{children}</div>),

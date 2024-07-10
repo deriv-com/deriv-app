@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { Text } from '@deriv-app/components';
+import { useStore } from '@deriv-app/stores';
 
 type TCopyAdvertFormTrailingIcon = { label: string };
 

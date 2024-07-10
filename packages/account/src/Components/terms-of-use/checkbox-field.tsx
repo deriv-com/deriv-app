@@ -1,6 +1,6 @@
 import React from 'react';
 import { FieldInputProps } from 'formik';
-import { Checkbox } from '@deriv/components';
+import { Checkbox } from '@deriv-app/components';
 
 type TCheckboxFieldProps = {
     field: FieldInputProps<boolean>;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import { useGetAccountStatus } from '@deriv/api';
 import useP2POrderList from './useP2POrderList';
 

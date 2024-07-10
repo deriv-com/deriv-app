@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Button, DatePicker, Icon, InputField, MobileDialog, Text } from '@deriv/components';
+import { Button, DatePicker, Icon, InputField, MobileDialog, Text } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import { toMoment } from '@deriv-app/shared';
 import { TInputDateRange } from 'Types';

@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
-import { ThemedScrollbars } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { ThemedScrollbars } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import SummaryCard from './summary-card';
 

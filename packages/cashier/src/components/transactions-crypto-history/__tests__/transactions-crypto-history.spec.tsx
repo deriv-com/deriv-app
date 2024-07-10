@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import TransactionsCryptoHistory from '../transactions-crypto-history';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { useSubscription } from '@deriv/api';
 
 jest.mock('@deriv/api', () => ({

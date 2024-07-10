@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field, Form, FormikBag, FormikValues } from 'formik';
-import { Button, Icon, Input, Loading, Text } from '@deriv/components';
+import { Button, Icon, Input, Loading, Text } from '@deriv-app/components';
 import { useP2PAdvertiserPaymentMethods } from '@deriv-app/hooks';
 import { isDesktop } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

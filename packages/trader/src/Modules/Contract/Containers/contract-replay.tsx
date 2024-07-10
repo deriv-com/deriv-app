@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Div100vhContainer, PageOverlay, SwipeableWrapper, FadeWrapper } from '@deriv/components';
+import { Div100vhContainer, PageOverlay, SwipeableWrapper, FadeWrapper } from '@deriv-app/components';
 import {
     getContractTypeFeatureFlag,
     isAccumulatorContract,
@@ -20,7 +20,7 @@ import ChartLoader from 'App/Components/Elements/chart-loader';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import { DigitsWidget, InfoBoxWidget } from './contract-replay-widget';
 import ReplayChart from './replay-chart';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 type TLocationState = { from_table_row: boolean };
 

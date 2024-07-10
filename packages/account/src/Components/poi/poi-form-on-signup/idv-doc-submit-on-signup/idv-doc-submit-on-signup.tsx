@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Formik, FormikValues, FormikHelpers, FormikErrors, Form } from 'formik';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
-import { Button } from '@deriv/components';
+import { Button } from '@deriv-app/components';
 import {
     filterObjProperties,
     toMoment,

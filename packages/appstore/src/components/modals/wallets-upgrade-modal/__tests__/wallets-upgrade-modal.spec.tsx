@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useWalletMigration } from '@deriv-app/hooks';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import WalletsUpgradeModal from '../wallets-upgrade-modal';
 
 const mockStartMigration = jest.fn();
@@ -15,8 +15,8 @@ jest.mock('@deriv-app/hooks', () => ({
     })),
 }));
 
-jest.mock('@deriv/stores', () => ({
-    ...jest.requireActual('@deriv/stores'),
+jest.mock('@deriv-app/stores', () => ({
+    ...jest.requireActual('@deriv-app/stores'),
     observer: jest.fn(x => x),
 }));
 

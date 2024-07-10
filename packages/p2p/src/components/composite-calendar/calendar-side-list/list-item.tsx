@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 
 type TListItem = {
     label: string | React.ReactElement | Array<string>;

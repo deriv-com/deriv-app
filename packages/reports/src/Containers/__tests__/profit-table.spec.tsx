@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import ProfitTable, { getRowAction } from '../profit-table';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { Analytics } from '@deriv-com/analytics';
 import ReportsProviders from '../../reports-providers';
 import { useReportsStore } from 'Stores/useReportsStores';

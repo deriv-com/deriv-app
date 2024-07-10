@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Checkbox, Dropdown, Icon, Text } from '@deriv/components';
+import { Checkbox, Dropdown, Icon, Text } from '@deriv-app/components';
 import { isEmptyObject } from '@deriv-app/shared';
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';

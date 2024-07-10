@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Popover } from '@deriv/components';
+import { Icon, Popover } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 
 const ToggleFullScreen = ({ showPopover }) => {

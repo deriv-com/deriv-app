@@ -1,5 +1,5 @@
 import React from 'react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { render, screen } from '@testing-library/react';

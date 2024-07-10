@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, DataList, Text, PositionsDrawerCard } from '@deriv/components';
+import { Icon, DataList, Text, PositionsDrawerCard } from '@deriv-app/components';
 import {
     routes,
     useNewRowTransition,
@@ -15,7 +15,7 @@ import { localize } from '@deriv/translations';
 import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import { filterByContractType } from './helpers';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 type TUiStore = Pick<
     ReturnType<typeof useStore>['ui'],

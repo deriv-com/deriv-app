@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import { ChartMode, DrawTools, Share, StudyLegend, ToolbarWidget, Views } from './v1';
 
 type TToolbarWidgetsProps = {

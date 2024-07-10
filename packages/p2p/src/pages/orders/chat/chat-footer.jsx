@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Input, Text } from '@deriv/components';
+import { Input, Text } from '@deriv-app/components';
 import { isMobile } from '@deriv-app/shared';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';

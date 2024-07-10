@@ -1,7 +1,7 @@
 import React from 'react';
 import AddOptionsAccount from '../add-options-account';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 
 describe('AddOptionsAccount', () => {
     it('should render correctly', () => {

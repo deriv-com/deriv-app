@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Button, InfiniteDataList, Loading, Table } from '@deriv/components';
+import { Button, InfiniteDataList, Loading, Table } from '@deriv-app/components';
 import { isDesktop, isMobile } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { localize } from 'Components/i18next';
 import ToggleAds from 'Pages/my-ads/toggle-ads.jsx';
 import { useStores } from 'Stores';

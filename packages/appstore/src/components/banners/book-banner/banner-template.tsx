@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import { Analytics } from '@deriv-com/analytics';
 import { SessionStore } from '@deriv-app/shared';
 import { getAllowedLanguages, Localize } from '@deriv/translations';

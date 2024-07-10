@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { getAllowedLanguages, useTranslations } from '@deriv-com/translations';
 import { LanguageLink } from 'App/Components/Routes';
 import { UNSUPPORTED_LANGUAGES } from '@deriv-app/shared';

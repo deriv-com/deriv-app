@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import WarningMessageModal from './warning-close-create-real-account-content';
 import './warning-close-create-real-account-modal.scss';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 const WarningCloseCreateRealAccountModal = observer(() => {
     const { common, ui } = useStore();

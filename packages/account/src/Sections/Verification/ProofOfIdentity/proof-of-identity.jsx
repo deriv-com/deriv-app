@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { AutoHeightWrapper } from '@deriv/components';
+import { AutoHeightWrapper } from '@deriv-app/components';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
 
 const ProofOfIdentity = ({ is_from_external, onStateChange }) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { render, screen } from '@testing-library/react';
 import Routes from '../routes';
 
@@ -10,8 +10,8 @@ jest.mock('Components/Routes', () => ({
     BinaryRoutes: jest.fn(() => 'MockedBinaryRoutesComponent'),
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     PageError: jest.fn(() => 'MockedPageErrorComponent'),
 }));
 

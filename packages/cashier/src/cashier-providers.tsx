@@ -1,6 +1,6 @@
 import React from 'react';
 import { APIProvider } from '@deriv/api';
-import { StoreProvider } from '@deriv/stores';
+import { StoreProvider } from '@deriv-app/stores';
 import { ThemeProvider } from '@deriv/ui';
 import { CashierStoreProvider } from './stores/useCashierStores';
 

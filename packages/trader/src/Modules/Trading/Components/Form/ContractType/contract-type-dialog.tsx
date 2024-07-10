@@ -1,5 +1,5 @@
 import React from 'react';
-import { MobileDialog } from '@deriv/components';
+import { MobileDialog } from '@deriv-app/components';
 import { useDevice } from '@deriv-com/ui';
 import { Header } from './ContractTypeInfo';
 import { localize } from '@deriv/translations';

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { Button, Loading } from '@deriv/components';
+import { Button, Loading } from '@deriv-app/components';
 import { isEmptyObject, WS, getPlatformRedirect, platforms } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { identity_status_codes, service_code } from './proof-of-identity-utils';
 import DemoMessage from '../../../Components/demo-message';
 import ErrorMessage from '../../../Components/error-component';

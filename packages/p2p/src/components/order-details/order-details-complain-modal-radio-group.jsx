@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { RadioGroup } from '@deriv/components';
+import { RadioGroup } from '@deriv-app/components';
 import { isMobile } from '@deriv-app/shared';
 import { localize } from 'Components/i18next';
 import 'Components/order-details/order-details-complain-modal-radio-group.scss';

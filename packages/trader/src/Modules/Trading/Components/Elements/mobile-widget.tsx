@@ -1,10 +1,10 @@
 import React from 'react';
-import { Money } from '@deriv/components';
+import { Money } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import { getExpiryType, getDurationMinMaxValues, getLocalizedBasis } from '@deriv-app/shared';
 import { MultiplierAmountWidget } from 'Modules/Trading/Components/Form/TradeParams/Multiplier/widgets';
 import TradeParamsModal from '../../Containers/trade-params-mobile';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const MobileWidget = observer(() => {

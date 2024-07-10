@@ -2,8 +2,8 @@ import React from 'react';
 import { screen, render, fireEvent, waitFor } from '@testing-library/react';
 import TradingPasswordManager from '../trading-password-manager';
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
+jest.mock('@deriv-app/components', () => {
+    const original_module = jest.requireActual('@deriv-app/components');
     return {
         ...original_module,
         Icon: jest.fn(props => <div data-testid='dt_mocked_icon'>{props.icon}</div>),

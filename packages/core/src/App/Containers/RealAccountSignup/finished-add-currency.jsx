@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { useDevice } from '@deriv-com/ui';
-import { Button, Div100vhContainer, Icon, Text } from '@deriv/components';
+import { Button, Div100vhContainer, Icon, Text } from '@deriv-app/components';
 import { routes } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 

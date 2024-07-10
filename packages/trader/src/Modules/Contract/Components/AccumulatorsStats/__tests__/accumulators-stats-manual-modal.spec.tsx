@@ -14,8 +14,8 @@ type TModal = React.ComponentType<{
     }>;
 };
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
+jest.mock('@deriv-app/components', () => {
+    const original_module = jest.requireActual('@deriv-app/components');
     const Modal: TModal = jest.fn(({ children, is_open, title, toggleModal }) =>
         is_open ? (
             <div data-testid='modal'>

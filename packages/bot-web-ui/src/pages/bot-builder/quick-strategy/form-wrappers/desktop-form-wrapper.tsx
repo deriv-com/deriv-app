@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useFormikContext } from 'formik';
-import { Button, Text, ThemedScrollbars } from '@deriv/components';
-import Icon from '@deriv/components/src/components/icon/icon';
-import { observer } from '@deriv/stores';
+import { Button, Text, ThemedScrollbars } from '@deriv-app/components';
+import Icon from '@deriv-app/components/src/components/icon/icon';
+import { observer } from '@deriv-app/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import {

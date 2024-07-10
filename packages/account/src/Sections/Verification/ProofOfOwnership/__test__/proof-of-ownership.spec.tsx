@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { GetAccountStatus } from '@deriv/api-types';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { ProofOfOwnership } from '../proof-of-ownership';
 import test_data from './test-data';
 

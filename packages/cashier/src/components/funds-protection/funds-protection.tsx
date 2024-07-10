@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRequest } from '@deriv/api';
 import { Localize, localize } from '@deriv/translations';
-import { EmptyState } from '@deriv/components';
+import { EmptyState } from '@deriv-app/components';
 
 const FundsProtection = () => {
     const { mutate, isLoading } = useRequest('tnc_approval', { onSuccess: () => location.reload() });

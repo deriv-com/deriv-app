@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { GetAccountStatus } from '@deriv/api-types';
-import { Loading } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { Loading } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import { AUTH_STATUS_CODES } from '@deriv-app/shared';
 import ProofOfOwnershipForm from './proof-of-ownership-form';
 import { POONotRequired, POOVerified, POORejected, POOSubmitted } from '../../../Components/poo/statuses';

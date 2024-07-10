@@ -3,7 +3,7 @@ import { isMobile } from '@deriv-app/shared';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CFDPersonalDetailsForm from '../cfd-personal-details-form';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { CFDStoreProvider } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import { useLandingCompanyDetails } from '@deriv-app/hooks';
 

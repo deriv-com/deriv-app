@@ -1,7 +1,7 @@
-import { InlineMessage, Modal, Text, PasswordInput, FormSubmitButton } from '@deriv/components';
+import { InlineMessage, Modal, Text, PasswordInput, FormSubmitButton } from '@deriv-app/components';
 import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
 import { CFD_PLATFORMS, WS, validLength, validPassword, getErrorMessages } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize, localize } from '@deriv/translations';
 import React from 'react';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';

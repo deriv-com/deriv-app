@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStore, observer } from '@deriv/stores';
+import { useStore, observer } from '@deriv-app/stores';
 import { Real } from '../../../components/cashier-container';
 import { useCashierStore } from '../../../stores/useCashierStores';
 

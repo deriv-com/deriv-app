@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { AccountActions } from 'App/Components/Layout/Header';
 
 type THeaderAccountActions = {

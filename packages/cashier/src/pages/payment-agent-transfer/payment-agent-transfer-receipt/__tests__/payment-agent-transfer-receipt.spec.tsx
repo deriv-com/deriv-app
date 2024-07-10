@@ -5,7 +5,7 @@ import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { routes } from '@deriv-app/shared';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
 describe('<PaymentAgentTransferReceipt />', () => {
     let history: BrowserHistory, mockRootStore: ReturnType<typeof mockStore>;

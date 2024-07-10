@@ -1,6 +1,6 @@
 import React from 'react';
-import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import VerificationModalContent from './verification-modal-content';
 
 import './verification-modal.scss';

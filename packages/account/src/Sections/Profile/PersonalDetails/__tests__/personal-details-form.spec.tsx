@@ -4,13 +4,13 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { APIProvider } from '@deriv/api';
 import userEvent from '@testing-library/user-event';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import PersonalDetailsForm from '../personal-details-form';
 import { useResidenceList } from '@deriv-app/hooks';
 
 afterAll(cleanup);
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Loading: () => <div>Loading</div>,
 }));
 

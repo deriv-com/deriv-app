@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv-app/components';
 import { localize, Localize } from '@deriv/translations';
 
 const currency_name_map = {

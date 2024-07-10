@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, Tabs, Icon, Loading } from '@deriv/components';
+import { Text, Tabs, Icon, Loading } from '@deriv-app/components';
 import { ContentFlag, makeLazyLoader, moduleLoader } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize, useLocalize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
 import { useWalletMigration } from '@deriv-app/hooks';

@@ -1,7 +1,7 @@
 import { MT5_ACCOUNT_STATUS } from '@deriv-app/shared';
 import useHasMaltaInvestAccount from './useHasMaltaInvestAccount';
 import useGetMFAccountStatus from './useGetMFAccountStatus';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 
 const useMFAccountStatus = () => {
     const {

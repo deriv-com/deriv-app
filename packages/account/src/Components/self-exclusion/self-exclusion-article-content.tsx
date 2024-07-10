@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { getStaticUrl } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
-import { Button, Icon, OpenLiveChatLink, Popup, Text } from '@deriv/components';
+import { Button, Icon, OpenLiveChatLink, Popup, Text } from '@deriv-app/components';
 import SelfExclusionContext from './self-exclusion-context';
 
 type TSelfExclusionArticleItems = Record<'is_eu' | 'is_app_settings', boolean | undefined>;

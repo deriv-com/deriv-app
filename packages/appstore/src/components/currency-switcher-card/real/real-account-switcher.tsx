@@ -1,9 +1,9 @@
 import React from 'react';
 import { getStatusBadgeConfig } from '@deriv/account';
-import { StatusBadge, Text } from '@deriv/components';
+import { StatusBadge, Text } from '@deriv-app/components';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import CurrencySwitcherLoader from 'Components/pre-loader/currency-switcher-loader';
-import { useStore, observer } from '@deriv/stores';
+import { useStore, observer } from '@deriv-app/stores';
 import RealAccountCard from './real-account-card';
 import './real-account-switcher.scss';
 import { IsIconCurrency } from 'Assets/svgs/currency';

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Tabs, ThemedScrollbars } from '@deriv/components';
+import { Tabs, ThemedScrollbars } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import { CURRENCY_TYPE, isDesktop, isMobile } from '@deriv-app/shared';
 import { WS } from 'Services';
@@ -9,7 +9,7 @@ import AddCryptoCurrency from './add-crypto-currency.jsx';
 import AddCurrency from './add-currency.jsx';
 import ChangeAccountCurrency from './change-account-currency.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import 'Sass/add-or-manage.scss';
 import 'Sass/change-account.scss';
 

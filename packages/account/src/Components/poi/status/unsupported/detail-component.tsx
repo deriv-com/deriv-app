@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 //@ts-nocheck [TODO] - Need to fix typescript errors in OnfidoUpload component
 import React from 'react';
-import { Loading, Icon, Text, Button } from '@deriv/components';
+import { Loading, Icon, Text, Button } from '@deriv-app/components';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from '@deriv-app/shared';
 import { UploadComplete } from '../upload-complete/upload-complete';

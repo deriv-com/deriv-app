@@ -1,7 +1,7 @@
 import React from 'react';
 import MT5MigrationAccountIcons from '../mt5-migration-account-icons';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
 
 jest.mock('@deriv-app/hooks', () => ({

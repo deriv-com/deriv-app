@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, ThemedScrollbars, Text } from '@deriv/components';
+import { Icon, ThemedScrollbars, Text } from '@deriv-app/components';
 import { useDevice } from '@deriv-com/ui';
 import DigitForm from './digit-form';
 import { Localize } from '@deriv/translations';

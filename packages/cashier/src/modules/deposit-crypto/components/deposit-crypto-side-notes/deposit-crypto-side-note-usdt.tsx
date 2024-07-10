@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Modal, SideNote, Text } from '@deriv/components';
+import { Modal, SideNote, Text } from '@deriv-app/components';
 import { Localize, localize } from '@deriv/translations';
 
 type TProps = {

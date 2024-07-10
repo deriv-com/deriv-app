@@ -8,9 +8,9 @@ import {
     MobileWrapper,
     Modal,
     Text,
-} from '@deriv/components';
+} from '@deriv-app/components';
 import { useHasMFAccountDeposited } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from '@deriv/translations';
 import DepositFiatIframe from '@deriv/cashier/src/modules/deposit-fiat/components/deposit-fiat-iframe/deposit-fiat-iframe';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';

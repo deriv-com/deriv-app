@@ -2,7 +2,7 @@ import React from 'react';
 import { ActiveSymbols } from '@deriv/api-types';
 import { useDevice } from '@deriv-com/ui';
 import { ChartBarrierStore } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ChartBottomWidgets } from './chart-widgets';
 import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements';

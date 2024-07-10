@@ -2,7 +2,7 @@ import React from 'react';
 import { setTime, toMoment } from '@deriv-app/shared';
 import TimePicker from 'App/Components/Form/TimePicker';
 import { getSelectedTime, getBoundaries } from 'Stores/Modules/Trading/Helpers/end-time';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const TradingTimePicker = observer(() => {

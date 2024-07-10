@@ -1,6 +1,6 @@
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Loading, ThemedScrollbars, VerticalTab } from '@deriv/components';
+import { Loading, ThemedScrollbars, VerticalTab } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import SearchInput from './search-input';
 import NoResultsMessage from './no-results-message';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useGetAccountStatus, useSubscription } from '@deriv/api';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useP2PCompletedOrdersNotification from '../useP2PCompletedOrdersNotification';
 import useIsP2PEnabled from '../useIsP2PEnabled';

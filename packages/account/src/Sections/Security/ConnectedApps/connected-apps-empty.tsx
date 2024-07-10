@@ -1,4 +1,4 @@
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
 import ConnectedAppsInfoBullets from './connected-apps-info-bullets';

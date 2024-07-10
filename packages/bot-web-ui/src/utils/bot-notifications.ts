@@ -1,5 +1,5 @@
 import { platform_name } from '@deriv-app/shared';
-import { TNotificationMessage } from '@deriv/stores/types';
+import { TNotificationMessage } from '@deriv-app/stores/types';
 import { localize } from '@deriv/translations';
 
 export const switch_account_notification = {

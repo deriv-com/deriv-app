@@ -1,9 +1,9 @@
 import React from 'react';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
-import { Div100vhContainer, FadeWrapper, Loading, PageOverlay, SelectNative, VerticalTab } from '@deriv/components';
+import { Div100vhContainer, FadeWrapper, Loading, PageOverlay, SelectNative, VerticalTab } from '@deriv-app/components';
 import { getSelectedRoute } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Analytics } from '@deriv-com/analytics';
 import { useDevice } from '@deriv-com/ui';
 import { TRoute } from 'Types';

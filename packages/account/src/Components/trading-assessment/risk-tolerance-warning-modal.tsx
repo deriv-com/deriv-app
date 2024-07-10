@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, Modal, Text, MobileDialog } from '@deriv/components';
+import { Button, Icon, Modal, Text, MobileDialog } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
 

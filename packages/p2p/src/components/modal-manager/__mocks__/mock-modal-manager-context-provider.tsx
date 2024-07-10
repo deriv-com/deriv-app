@@ -1,6 +1,6 @@
 import React from 'react';
 import { useModalManagerContext } from '../modal-manager-context';
-import { Modal } from '@deriv/components';
+import { Modal } from '@deriv-app/components';
 
 type TMockBuySellModalProps = {
     title?: string;

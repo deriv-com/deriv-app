@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Form, Formik, FormikErrors, FormikHelpers } from 'formik';
-import { Button, HintBox, Text } from '@deriv/components';
+import { Button, HintBox, Text } from '@deriv-app/components';
 import { Localize, localize } from '@deriv/translations';
 import {
     filterObjProperties,
@@ -11,7 +11,7 @@ import {
     toMoment,
     WS,
 } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useDevice } from '@deriv-com/ui';
 import {
     isAdditionalDocumentValid,

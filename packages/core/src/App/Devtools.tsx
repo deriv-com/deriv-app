@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Checkbox, Input } from '@deriv/components';
+import { Button, Checkbox, Input } from '@deriv-app/components';
 import { getAppId, getDebugServiceWorker, getSocketURL } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useFormik } from 'formik';
 import './Devtools.scss';
 

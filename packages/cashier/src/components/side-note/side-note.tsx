@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import { isMobile } from '@deriv-app/shared';
 import './side-note.scss';
@@ -42,7 +42,7 @@ const SideNoteBullet = ({ children, id }: TSideNoteBullet) => (
     </div>
 );
 
-/** @deprecated Use `SideNote` from `@deriv/components` package instead. */
+/** @deprecated Use `SideNote` from `@deriv-app/components` package instead. */
 const SideNote = ({
     children,
     className,

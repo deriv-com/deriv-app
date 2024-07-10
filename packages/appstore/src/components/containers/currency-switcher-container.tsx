@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Icon } from '@deriv/components';
+import { Icon } from '@deriv-app/components';
 import { Jurisdiction } from '@deriv-app/shared';
-import { useStore, observer } from '@deriv/stores';
+import { useStore, observer } from '@deriv-app/stores';
 import CurrencyIcon, { Currency } from 'Assets/svgs/currency';
 import TradingPlatformIcon from 'Assets/svgs/trading-platform';
 import './currency-switcher-container.scss';

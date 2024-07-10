@@ -2,7 +2,7 @@ import React from 'react';
 import { CONTRACT_TYPES } from '@deriv-app/shared';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import PurchaseButton from '../purchase-button';
 import { useDevice } from '@deriv-com/ui';
 
@@ -51,8 +51,8 @@ jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
     useDevice: jest.fn(() => ({ isMobile: false })),
 }));
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     IconTradeTypes: jest.fn(props => <div data-testid={props.type}>TradeIcon</div>),
     Money: jest.fn(() => <div>MoneyComponent</div>),
 }));

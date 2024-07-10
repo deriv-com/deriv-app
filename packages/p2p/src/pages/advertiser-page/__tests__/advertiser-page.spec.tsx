@@ -74,8 +74,8 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
 
 jest.mock('Pages/advertiser-page/advertiser-page-adverts', () => jest.fn(() => <div>adverts</div>));
 jest.mock('Pages/advertiser-page/advertiser-page-stats', () => jest.fn(() => <div>stats</div>));
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Loading: jest.fn(() => <div> loading...</div>),
 }));
 

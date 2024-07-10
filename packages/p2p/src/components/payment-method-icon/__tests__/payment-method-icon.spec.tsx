@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import PaymentMethodIcon from '../payment-method-icon';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 
 jest.mock('@deriv-app/hooks', () => ({
     ...jest.requireActual('@deriv-app/hooks'),

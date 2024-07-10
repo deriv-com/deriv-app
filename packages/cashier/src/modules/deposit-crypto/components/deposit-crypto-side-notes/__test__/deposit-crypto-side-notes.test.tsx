@@ -1,5 +1,5 @@
 import React from 'react';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../../cashier-providers';
 import DepositCryptoSideNotes from '../deposit-crypto-side-notes';

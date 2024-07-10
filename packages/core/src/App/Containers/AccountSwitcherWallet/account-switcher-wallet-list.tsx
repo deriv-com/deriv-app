@@ -1,6 +1,6 @@
 import React from 'react';
 import { AccountSwitcherWalletItem } from './account-switcher-wallet-item';
-import { TStores } from '@deriv/stores/types';
+import { TStores } from '@deriv-app/stores/types';
 import './account-switcher-wallet-list.scss';
 
 type TAccountSwitcherWalletListProps = {

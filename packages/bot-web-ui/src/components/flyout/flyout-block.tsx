@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 type FlyoutBlockProps = {

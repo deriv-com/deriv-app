@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Icon, NewsTicker, Text } from '@deriv/components';
+import { Button, Icon, NewsTicker, Text } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import { TOnRampProvider } from '../../../types';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useCashierStore } from '../../../stores/useCashierStores';
 
 type TOnRampProviderCardProps = {

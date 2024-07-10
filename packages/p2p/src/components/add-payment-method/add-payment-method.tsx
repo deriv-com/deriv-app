@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize } from 'Components/i18next';
-import { DesktopWrapper } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { DesktopWrapper } from '@deriv-app/components';
+import { observer } from '@deriv-app/stores';
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AddPaymentMethodForm from 'Components/add-payment-method-form';

@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { APIProvider } from '@deriv/api';
 import { isDesktop, isMobile } from '@deriv-app/shared';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
 import { useStores } from 'Stores';
 import { TModalManagerContext } from 'Types';
 import CreateAdAddPaymentMethodModal from '../create-ad-add-payment-method-modal';

@@ -1,9 +1,9 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset';
-import { Money, Text, Popover } from '@deriv/components';
+import { Money, Text, Popover } from '@deriv-app/components';
 import classNames from 'classnames';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { isMobile } from '@deriv-app/shared';
 

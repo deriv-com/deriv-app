@@ -4,7 +4,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useCurrentAccountDetails, useGrowthbookIsOn } from '@deriv-app/hooks';
 import WithdrawalCryptoForm from '../withdrawal-crypto-form';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import userEvent from '@testing-library/user-event';
 import { useCryptoEstimations } from '@deriv/api';
 

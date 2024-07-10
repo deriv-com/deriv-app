@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
+import { Icon } from '@deriv-app/components';
 import { capitalizeFirstLetter } from '@deriv-app/shared';
 import { IconProps } from '../icon-types';
 

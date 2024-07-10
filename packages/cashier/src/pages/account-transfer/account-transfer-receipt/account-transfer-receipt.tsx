@@ -2,9 +2,9 @@ import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import classNames from 'classnames';
 
-import { Button, Icon, Modal, Text } from '@deriv/components';
+import { Button, Icon, Modal, Text } from '@deriv-app/components';
 import { getCurrencyDisplayCode, isMobile, routes } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize, localize } from '@deriv/translations';
 
 import AccountPlatformIcon from '../../../components/account-platform-icon';

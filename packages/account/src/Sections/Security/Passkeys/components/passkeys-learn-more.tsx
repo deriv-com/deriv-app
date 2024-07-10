@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
+import { Icon } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import { DerivLightIcInfoPasskeyIcon } from '@deriv/quill-icons';
 import { DescriptionContainer } from './description-container';

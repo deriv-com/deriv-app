@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import { useDevice } from '@deriv-com/ui';
 import { Localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import { getExampleImagesConfig } from '../../../Configs/poa-common-mistake-examples-config';
 import { LegacyLossIcon } from '@deriv/quill-icons';
 import './common-mistake-examples.scss';

@@ -2,7 +2,7 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import TraderProviders from '../../../trader-providers';
 import PopulateHeader from '../populate-header';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { CONTRACT_TYPES } from '@deriv-app/shared';
 
 jest.mock('../../Components/Elements/TogglePositions/toggle-positions-mobile', () =>

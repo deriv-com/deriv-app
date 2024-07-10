@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv-app/components';
 import { clickAndKeyEventHandler } from '@deriv-app/shared';
 
 type THeader = {

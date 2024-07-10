@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react';
-import { InlineMessage } from '@deriv/components';
+import { InlineMessage } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import './poa-address-mismatch-hint-box.scss';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text } from '@deriv/components';
+import { Button, Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import { identity_status_codes } from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
 import DetailComponent from './detail-component';

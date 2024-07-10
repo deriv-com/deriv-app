@@ -3,7 +3,7 @@ import { FormikValues } from 'formik/dist/types';
 import ProofOfAddressForm from '@deriv/account/src/Sections/Verification/ProofOfAddress/proof-of-address-form';
 import IconMessageContent from '@deriv/account/src/Components/icon-message-content';
 import { Localize } from '@deriv/translations';
-import { Button, Text, Icon } from '@deriv/components';
+import { Button, Text, Icon } from '@deriv-app/components';
 
 type TCFDPOA = {
     index: number;

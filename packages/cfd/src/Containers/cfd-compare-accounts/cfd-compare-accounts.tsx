@@ -1,10 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
-import { Text, Icon, PageOverlay, CFDCompareAccountsCarousel } from '@deriv/components';
+import { Text, Icon, PageOverlay, CFDCompareAccountsCarousel } from '@deriv-app/components';
 import { routes } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useDevice } from '@deriv-com/ui';
 import { useIsRtl } from '@deriv-app/hooks';
 import CFDCompareAccountsCard from './cfd-compare-accounts-card';

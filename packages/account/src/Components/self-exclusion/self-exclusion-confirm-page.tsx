@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, StaticUrl, Text } from '@deriv/components';
+import { Button, Icon, StaticUrl, Text } from '@deriv-app/components';
 import { FormikValues, useFormikContext } from 'formik';
 import { formatMoney, toMoment } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';

@@ -1,7 +1,7 @@
 import React from 'react';
 import DemoAccountCard from '../demo-account-card';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 
 describe('DemoAccountCard', () => {
     it('should render correctly', () => {

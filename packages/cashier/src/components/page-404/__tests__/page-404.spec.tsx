@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Page404 from '../page-404';
 
-jest.mock('@deriv/components', () => ({
+jest.mock('@deriv-app/components', () => ({
     __esModule: true,
     PageError: () => <div>Page not found</div>,
 }));

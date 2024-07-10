@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import { PRODUCT } from '../../Helpers/cfd-config';
 import { Localize } from '@deriv/translations';
 import { TCompareAccountsCard } from 'Components/props.types';

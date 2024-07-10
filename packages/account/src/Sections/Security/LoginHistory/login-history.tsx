@@ -1,6 +1,6 @@
 import React from 'react';
-import { Loading, ThemedScrollbars } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { Loading, ThemedScrollbars } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import { WS, useIsMounted } from '@deriv-app/shared';
 import { useDevice } from '@deriv-com/ui';
 import LoadErrorMessage from '../../../Components/load-error-message';

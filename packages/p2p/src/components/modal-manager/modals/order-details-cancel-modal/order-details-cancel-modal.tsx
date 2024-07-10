@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, Text } from '@deriv/components';
+import { Button, Modal, Text } from '@deriv-app/components';
 import { useP2PSettings } from '@deriv-app/hooks';
 import { useIsMounted } from '@deriv-app/shared';
 import { Localize } from 'Components/i18next';

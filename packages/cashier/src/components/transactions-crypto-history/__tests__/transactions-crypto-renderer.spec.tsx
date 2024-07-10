@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { isMobile } from '@deriv-app/shared';
 import TransactionsCryptoRenderer from '../transactions-crypto-renderer';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
 jest.mock('@deriv-app/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv-app/shared/src/utils/screen/responsive'),

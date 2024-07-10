@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import TraderProviders from '../../../trader-providers';
 import TradeHeaderExtensions from '../trade-header-extensions';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import ui from '@deriv-com/ui';
 
 jest.mock('@deriv-app/shared', () => ({

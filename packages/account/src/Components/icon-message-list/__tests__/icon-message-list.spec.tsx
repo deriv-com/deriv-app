@@ -1,12 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Icon } from '@deriv/components';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { Icon } from '@deriv-app/components';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import IconMessageList from '../icon-message-list';
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
+jest.mock('@deriv-app/components', () => {
+    const original_module = jest.requireActual('@deriv-app/components');
     return {
         ...original_module,
         Icon: jest.fn(props => <div data-testid='mocked_icon'>{props.icon}</div>),

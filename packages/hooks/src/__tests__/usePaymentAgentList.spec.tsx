@@ -1,5 +1,5 @@
 import { useFetch } from '@deriv/api';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import usePaymentAgentList from '../usePaymentAgentList';
 import { withMockAPIProvider } from '../mocks';

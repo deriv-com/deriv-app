@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import Info from '../ContractTypeInfo/contract-type-info';
 import { TContractCategory } from '../types';
 import { TRADE_TYPES } from '@deriv-app/shared';
@@ -14,8 +14,8 @@ jest.mock('../../../../Helpers/contract-type', () => ({
     ...jest.requireActual('../../../../Helpers/contract-type'),
     isMajorPairsSymbol: jest.fn(() => true),
 }));
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Dropdown: jest.fn(() => <div>Dropdown</div>),
 }));
 

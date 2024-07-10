@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import { Localize } from 'Components/i18next';
 import './ad-status.scss';
 

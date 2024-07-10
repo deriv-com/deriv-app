@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Button, Text } from '@deriv/components';
+import { Button, Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import FlyoutBlock from './flyout-block';
 

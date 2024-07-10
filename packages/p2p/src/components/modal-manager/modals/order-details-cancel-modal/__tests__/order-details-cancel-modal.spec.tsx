@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { APIProvider } from '@deriv/api';
-import { P2PSettingsProvider } from '@deriv/stores';
+import { P2PSettingsProvider } from '@deriv-app/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { requestWS } from 'Utils/websocket';
 import OrderDetailsCancelModal from '../order-details-cancel-modal';

@@ -1,7 +1,7 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { onChangeCancellationDuration, onToggleCancellation } from 'Stores/Modules/Trading/Helpers/multiplier';
 import CancelDeal from '../cancel-deal';
 import TraderProviders from '../../../../../../../trader-providers';
@@ -16,8 +16,8 @@ jest.mock('Stores/Modules/Trading/Helpers/multiplier', () => ({
     onToggleCancellation: jest.fn(),
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Dropdown: jest.fn(props => (
         <div>
             {dropdown}

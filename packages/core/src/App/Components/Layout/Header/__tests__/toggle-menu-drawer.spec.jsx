@@ -1,14 +1,14 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { P2PSettingsProvider, StoreProvider, mockStore } from '@deriv/stores';
+import { P2PSettingsProvider, StoreProvider, mockStore } from '@deriv-app/stores';
 import ToggleMenuDrawer from '../toggle-menu-drawer';
 
-jest.mock('@deriv/components', () => {
+jest.mock('@deriv-app/components', () => {
     const MobileDrawer = jest.fn(() => <div>Mobile Drawer</div>);
     MobileDrawer.SubMenu = jest.fn(() => <div>SubMenu</div>);
     MobileDrawer.Item = jest.fn(() => <div>Item</div>);
     return {
-        ...jest.requireActual('@deriv/components'),
+        ...jest.requireActual('@deriv-app/components'),
         MobileDrawer,
     };
 });

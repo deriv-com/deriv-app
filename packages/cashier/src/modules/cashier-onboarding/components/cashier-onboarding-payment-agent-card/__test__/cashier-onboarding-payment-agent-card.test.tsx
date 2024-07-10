@@ -1,5 +1,5 @@
 import React from 'react';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../../cashier-providers';
 import CashierOnboardingPaymentAgentCard from '../cashier-onboarding-payment-agent-card';

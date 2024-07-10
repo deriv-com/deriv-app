@@ -1,4 +1,4 @@
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 
 /** A custom hook to get the status of wallet_migration API and to start/reset the migration process
  * This hook is for the legacy WS connection (appstore and core packages)

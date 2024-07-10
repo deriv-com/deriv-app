@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Field, Formik } from 'formik';
-import { Autocomplete, Icon } from '@deriv/components';
+import { Autocomplete, Icon } from '@deriv-app/components';
 import { isMobile } from '@deriv-app/shared';
 import { localize } from 'Components/i18next';
 

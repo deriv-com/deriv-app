@@ -3,13 +3,13 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { usePaymentAgentList } from '@deriv-app/hooks';
-import { FormSubmitButton, Icon, Loading, Text, ThemedScrollbars } from '@deriv/components';
+import { FormSubmitButton, Icon, Loading, Text, ThemedScrollbars } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import { isMobile, reorderCurrencies, routes } from '@deriv-app/shared';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
 import CurrencyProvider from './choose-currency';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import './currency-selector.scss';
 
 const CRYPTO_CURRENCY_TYPE = 'crypto';

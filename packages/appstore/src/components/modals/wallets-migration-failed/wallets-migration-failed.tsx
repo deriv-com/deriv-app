@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, useOnClickOutside, Modal, Button } from '@deriv/components';
-import { useStore, observer } from '@deriv/stores';
+import { Text, useOnClickOutside, Modal, Button } from '@deriv-app/components';
+import { useStore, observer } from '@deriv-app/stores';
 import { Localize } from '@deriv/translations';
 import './wallets-migration-failed.scss';
 

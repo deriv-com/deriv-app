@@ -1,6 +1,6 @@
 import React from 'react';
 import { APIProvider, useRequest } from '@deriv/api';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import LinkExpiredModal from '../link-expired-modal';

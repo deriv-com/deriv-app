@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import SelfExclusionArticle from '../self-exclusion-article';
 import SelfExclusionContext from '../self-exclusion-context';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
 
 jest.mock('Components/self-exclusion/self-exclusion-article-content', () => ({
     ...jest.requireActual('Components/self-exclusion/self-exclusion-article-content'),

@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useRequest } from '@deriv/api';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import useCountdown from './useCountdown';
 
 const RESEND_COUNTDOWN = 60;

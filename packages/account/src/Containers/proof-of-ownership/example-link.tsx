@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import SampleCreditCardModal from '../../Components/sample-credit-card-modal';
 

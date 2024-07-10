@@ -1,7 +1,7 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { FormikValues, useFormikContext } from 'formik';
-import { Button, Text } from '@deriv/components';
+import { Button, Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import SelfExclusionContext from './self-exclusion-context';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode } from '@deriv-app/shared';
 import { useDevice } from '@deriv-com/ui';

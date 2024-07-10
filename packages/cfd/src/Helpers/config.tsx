@@ -1,7 +1,7 @@
 import React from 'react';
 import { QRCode } from 'react-qrcode';
 
-import { Icon, Text, Button } from '@deriv/components';
+import { Icon, Text, Button } from '@deriv-app/components';
 import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
 import {
     getPlatformDXTradeDownloadLink,

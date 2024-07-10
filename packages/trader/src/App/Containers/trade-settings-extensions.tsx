@@ -1,10 +1,10 @@
 import React from 'react';
 import Loadable from 'react-loadable';
-import { UILoader } from '@deriv/components';
+import { UILoader } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import TraderProviders from '../../trader-providers';
-import type { TCoreStores } from '@deriv/stores/types';
+import type { TCoreStores } from '@deriv-app/stores/types';
 
 type TTradeSettingsExtensionsProps = {
     store: TCoreStores;

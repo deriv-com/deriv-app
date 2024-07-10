@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
-import { Div100vhContainer } from '@deriv/components';
+import { Div100vhContainer } from '@deriv-app/components';
 import {
     isEmptyObject,
     getDurationPeriod,
@@ -17,7 +17,7 @@ import ContractAudit from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractDrawerCard from './contract-drawer-card';
 import { SwipeableContractAudit } from './swipeable-components';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useDevice } from '@deriv-com/ui';
 
 type TContractDrawerCardProps = React.ComponentProps<typeof ContractDrawerCard>;

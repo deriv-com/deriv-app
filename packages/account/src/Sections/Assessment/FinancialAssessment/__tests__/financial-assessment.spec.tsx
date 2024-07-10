@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import FinancialAssessment from '../financial-assessment';
 import { WS } from '@deriv-app/shared';
 
@@ -36,8 +36,8 @@ jest.mock('@deriv-app/shared', () => ({
     },
     useWS: () => undefined,
 }));
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
+jest.mock('@deriv-app/components', () => {
+    const original_module = jest.requireActual('@deriv-app/components');
     return {
         ...original_module,
         Loading: jest.fn(() => 'mockedLoading'),

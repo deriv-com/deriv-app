@@ -1,9 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useLocalStorage } from 'usehooks-ts';
-import { Icon, Popover } from '@deriv/components';
+import { Icon, Popover } from '@deriv-app/components';
 import { routes, isTabletOs } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from '@deriv/translations';
 
 const TradersHubOnboarding = observer(() => {

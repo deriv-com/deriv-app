@@ -3,7 +3,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { findRouteByPath, normalizePath } from './helpers';
 import getRoutesConfig from '../../Constants/routes-config';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 type TBinaryLinkProps = Omit<React.HTMLProps<HTMLAnchorElement>, 'title' | 'ref'> &
     React.PropsWithChildren<{

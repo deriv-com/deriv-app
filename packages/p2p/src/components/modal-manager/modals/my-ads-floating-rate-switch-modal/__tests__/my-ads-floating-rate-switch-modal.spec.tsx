@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { APIProvider } from '@deriv/api';
 import { useP2PSettings } from '@deriv-app/hooks';
-import { mockStore, P2PSettingsProvider, StoreProvider } from '@deriv/stores';
+import { mockStore, P2PSettingsProvider, StoreProvider } from '@deriv-app/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores/index';
 import MyAdsFloatingRateSwitchModal from '../my-ads-floating-rate-switch-modal';

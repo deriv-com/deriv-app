@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useP2PNotificationCount from '../useP2PNotificationCount';
 

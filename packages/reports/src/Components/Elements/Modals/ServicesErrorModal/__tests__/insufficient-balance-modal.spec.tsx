@@ -3,7 +3,7 @@ import { screen, render } from '@testing-library/react';
 import InsufficientBalanceModal from '../insufficient-balance-modal';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { routes } from '@deriv-app/shared';
 import userEvent from '@testing-library/user-event';
 
@@ -20,8 +20,8 @@ type TModal = React.FC<{
     }>;
 };
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
+jest.mock('@deriv-app/components', () => {
+    const original_module = jest.requireActual('@deriv-app/components');
     const Modal: TModal = jest.fn(({ children, is_open, title }) => {
         if (is_open) {
             return (

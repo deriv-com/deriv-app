@@ -1,6 +1,6 @@
 import { action, makeObservable, observable, reaction } from 'mobx';
 import { scrollWorkspace } from '@deriv/bot-skeleton';
-import { TStores } from '@deriv/stores/types';
+import { TStores } from '@deriv-app/stores/types';
 import { localize } from '@deriv/translations';
 import RootStore from './root-store';
 

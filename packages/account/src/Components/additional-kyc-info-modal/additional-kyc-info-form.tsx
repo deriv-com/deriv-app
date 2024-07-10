@@ -1,5 +1,5 @@
-import { Button, Loading, Modal, Text } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { Button, Loading, Modal, Text } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from '@deriv/translations';
 import clsx from 'clsx';
 import { Form, Formik } from 'formik';

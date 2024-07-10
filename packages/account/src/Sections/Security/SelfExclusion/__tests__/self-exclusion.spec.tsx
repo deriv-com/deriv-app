@@ -3,7 +3,7 @@ import { act } from 'react-dom/test-utils';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import SelfExclusion from '../self-exclusion';
 import { FormikValues } from 'formik';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { WS } from '@deriv-app/shared';
 import userEvent from '@testing-library/user-event';
 

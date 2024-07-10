@@ -1,5 +1,5 @@
 import React from 'react';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
 import { render, screen } from '@testing-library/react';
 import CashierOnboardingAccountIdentifierMessage from '../cashier-onboarding-account-identifier-message';
 

@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
-import { Money, Text } from '@deriv/components';
+import { Money, Text } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import AccumulatorsProfitLossText from './accumulators-profit-loss-text';
 import { FastMarker } from 'Modules/SmartChart';
 import { getDecimalPlaces } from '@deriv-app/shared';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 
 type TContractInfo = ReturnType<typeof useStore>['portfolio']['all_positions'][number]['contract_info'];
 

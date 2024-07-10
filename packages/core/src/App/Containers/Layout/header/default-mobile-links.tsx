@@ -1,9 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Icon } from '@deriv/components';
+import { Button, Icon } from '@deriv-app/components';
 import { useIsRealAccountNeededForCashier } from '@deriv-app/hooks';
 import { routes } from '@deriv-app/shared';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import { Localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import ShowNotifications from './show-notifications';

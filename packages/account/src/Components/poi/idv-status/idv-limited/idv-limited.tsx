@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text } from '@deriv/components';
+import { Button, Text } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import { DerivLightExclamationPoiIcon } from '@deriv/quill-icons';
 import { POIContext } from '@deriv-app/shared';

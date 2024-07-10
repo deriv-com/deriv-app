@@ -2,7 +2,7 @@ import React from 'react';
 import { MemoryRouter, useHistory } from 'react-router-dom';
 import { routes } from '@deriv-app/shared';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import CompareCFDs from '../cfd-compare-accounts';
 
 jest.mock('@deriv-com/ui', () => ({
@@ -17,8 +17,8 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('../../../Assets/svgs/trading-platform', () => jest.fn(() => <div>Mocked Icon</div>));
 jest.mock('../instruments-icon-with-label', () => jest.fn(() => <div>Mocked Icon With Label</div>));
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     CFDCompareAccountsCarousel: jest.fn(() => <div>Next Button</div>),
 }));
 

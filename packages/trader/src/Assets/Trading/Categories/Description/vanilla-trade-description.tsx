@@ -1,6 +1,6 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 
 const VanillaTradeDescription = ({
     is_vanilla_fx,

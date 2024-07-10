@@ -3,12 +3,12 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { currencySelectorConfig } from '@deriv/account';
 import { website_name, generateValidationFunction } from '@deriv-app/shared';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import CurrencySelector from '@deriv/account/src/Components/currency-selector';
 import LoadingModal from './real-account-signup-loader.jsx';
 import 'Sass/set-currency.scss';
 import 'Sass/change-account.scss';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 const SetCurrency = observer(({ setLoading, onSuccessSetAccountCurrency, onError, is_loading, ...props }) => {
     const { client } = useStore();

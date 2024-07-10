@@ -1,9 +1,9 @@
 import React from 'react';
-import { Div100vhContainer } from '@deriv/components';
+import { Div100vhContainer } from '@deriv-app/components';
 import { isDesktop } from '@deriv-app/shared';
 import ProofOfAddressContainer from '@deriv/account/src/Sections/Verification/ProofOfAddress/proof-of-address-container';
 import ProofOfIdentityContainer from '@deriv/account/src/Sections/Verification/ProofOfIdentity/proof-of-identity-container';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 type TVerificationModalContent = {
     onFinish: () => void;

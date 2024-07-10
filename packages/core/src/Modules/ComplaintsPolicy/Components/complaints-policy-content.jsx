@@ -2,7 +2,7 @@ import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { getLegalEntityName } from '@deriv-app/shared';
 import 'Sass/app/modules/complaints-policy.scss';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
     // * mt5_login_list returns these:

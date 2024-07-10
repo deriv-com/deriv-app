@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, render, screen, waitFor } from '@testing-library/react';
-import { mockStore } from '@deriv/stores';
-import { TCoreStores } from '@deriv/stores/types';
+import { mockStore } from '@deriv-app/stores';
+import { TCoreStores } from '@deriv-app/stores/types';
 import { ActiveSymbols, TradingTimesResponse } from '@deriv/api-types';
 import MarketCountdownTimer from '../market-countdown-timer';
 import TraderProviders from '../../../../trader-providers';

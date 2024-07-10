@@ -3,7 +3,7 @@ import { FormikProps } from 'formik';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useDevice } from '@deriv-com/ui';
 import { useStatesList } from '@deriv-app/hooks';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import AddressDetails, { TAddressDetailFormProps } from '../address-details';
 import userEvent from '@testing-library/user-event';
 import { splitValidationResultTypes } from 'Components/real-account-signup/helpers/utils';
@@ -31,8 +31,8 @@ jest.mock('@deriv-app/hooks', () => ({
     useStatesList: jest.fn(() => ({ data: [], isFetched: true })),
 }));
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
+jest.mock('@deriv-app/components', () => {
+    const original_module = jest.requireActual('@deriv-app/components');
 
     return {
         ...original_module,

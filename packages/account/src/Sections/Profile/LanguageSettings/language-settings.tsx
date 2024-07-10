@@ -1,6 +1,6 @@
 import { Redirect } from 'react-router-dom';
 import { UNSUPPORTED_LANGUAGES, routes } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useTranslations, getAllowedLanguages } from '@deriv-com/translations';
 import FormSubHeader from '../../../Components/form-sub-header';
 import LanguageRadioButton from '../../../Components/language-settings';

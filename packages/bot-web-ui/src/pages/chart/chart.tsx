@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import ToolbarWidgets from './toolbar-widgets';
 import { ChartTitle, SmartChart } from './v1';

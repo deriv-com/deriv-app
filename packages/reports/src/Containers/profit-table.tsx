@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { DataList, DataTable, usePrevious } from '@deriv/components';
+import { DataList, DataTable, usePrevious } from '@deriv-app/components';
 import { extractInfoFromShortcode, formatDate, getContractPath, getUnsupportedContracts } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
@@ -12,7 +12,7 @@ import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message'
 import PlaceholderComponent from '../Components/placeholder-component';
 import { ReportsMeta } from '../Components/reports-meta';
 import { getProfitTableColumnsTemplate } from 'Constants/data-table-constants';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useReportsStore } from 'Stores/useReportsStores';
 import { useDevice } from '@deriv-com/ui';
 

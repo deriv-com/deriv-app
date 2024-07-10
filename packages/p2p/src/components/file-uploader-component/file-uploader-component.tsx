@@ -1,6 +1,6 @@
 import React from 'react';
-import { Icon, Text } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { Icon, Text } from '@deriv-app/components';
+import { useStore } from '@deriv-app/stores';
 import { localize } from 'Components/i18next';
 import FileDropzone from 'Components/file-dropzone';
 

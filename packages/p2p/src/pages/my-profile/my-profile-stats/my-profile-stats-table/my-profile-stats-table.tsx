@@ -1,6 +1,6 @@
 import React from 'react';
-import { Money, Text } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { Money, Text } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { getTextSize } from 'Utils/responsive';

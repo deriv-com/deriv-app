@@ -16,9 +16,9 @@ import {
     SelectNative,
     Text,
     ThemedScrollbars,
-} from '@deriv/components';
+} from '@deriv-app/components';
 import { useStatesList } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { localize, Localize } from '@deriv/translations';
 import { FormInputField } from '../forms/form-fields';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';

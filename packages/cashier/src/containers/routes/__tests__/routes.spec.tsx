@@ -3,12 +3,12 @@ import { render, screen } from '@testing-library/react';
 import Routes from '../routes';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import CashierProviders from '../../../cashier-providers';
 
 jest.mock('../binary-routes', () => jest.fn(() => 'BinaryRoutes'));
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
+jest.mock('@deriv-app/components', () => {
+    const original_module = jest.requireActual('@deriv-app/components');
     return {
         ...original_module,
         PageErrorContainer: jest.fn(() => <div>An error occured</div>),

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, Icon, Counter } from '@deriv/components';
+import { Text, Icon, Counter } from '@deriv-app/components';
 import { useDevice } from '@deriv-com/ui';
 import { BinaryLink } from '../../Routes';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { routes, startPerformanceEventTimer } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { useP2PNotificationCount, useIsRealAccountNeededForCashier } from '@deriv-app/hooks';

@@ -1,6 +1,6 @@
 import React from 'react';
 import debounce from 'lodash.debounce';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { localize } from '@deriv/translations';
 import CashierSearchBox from 'Components/cashier-search-box';
 import { useCashierStore } from '../../../stores/useCashierStores';

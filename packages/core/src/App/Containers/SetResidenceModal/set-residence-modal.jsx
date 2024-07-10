@@ -2,12 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
-import { Button, Dialog, Text } from '@deriv/components';
+import { Button, Dialog, Text } from '@deriv-app/components';
 import { website_name } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
 import SetResidenceForm from './set-residence-form.jsx';
 import 'Sass/app/modules/set-residence.scss';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 
 // TODO: Move some of these functions to helpers since some of them are shared with AccountSignUpModal
 const isResidenceText = (item, values) => item.text.toLowerCase() === values.residence.toLowerCase();

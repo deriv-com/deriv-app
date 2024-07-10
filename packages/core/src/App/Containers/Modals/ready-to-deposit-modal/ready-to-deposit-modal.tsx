@@ -1,7 +1,7 @@
 import React from 'react';
-import { Dialog } from '@deriv/components';
+import { Dialog } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
-import { useStore, observer } from '@deriv/stores';
+import { useStore, observer } from '@deriv-app/stores';
 import './ready-to-deposit-modal.scss';
 
 const ReadyToDepositModal = observer(() => {

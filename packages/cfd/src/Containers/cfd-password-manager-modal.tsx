@@ -12,7 +12,7 @@ import {
     ThemedScrollbars,
     UILoader,
     Text,
-} from '@deriv/components';
+} from '@deriv-app/components';
 import { localize, Localize } from '@deriv/translations';
 import { isMobile, getCFDPlatformLabel } from '@deriv-app/shared';
 import { FormikErrors } from 'formik';
@@ -28,7 +28,7 @@ import {
     TFormValues,
     TPasswordManagerModalFormValues,
 } from './props.types';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { CFD_PLATFORMS } from '../Helpers/cfd-config';
 import { validatePassword } from '../Helpers/constants';

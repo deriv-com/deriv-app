@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { SwipeableNotification } from '@deriv/components';
-import { StoreProvider, mockStore, useStore } from '@deriv/stores';
+import { SwipeableNotification } from '@deriv-app/components';
+import { StoreProvider, mockStore, useStore } from '@deriv-app/stores';
 import { getCardLabels } from '@deriv-app/shared';
 import TradeNotifications from '../trade-notifications';
 
@@ -10,8 +10,8 @@ type TMockedSwipeableNotificationProps = React.ComponentProps<typeof SwipeableNo
     timestamp?: number | null;
 };
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     MobileWrapper: jest.fn(({ children }) => children),
     SwipeableNotification: ({ children, onUnmount, timestamp }: TMockedSwipeableNotificationProps) => {
         if (onUnmount) onUnmount();

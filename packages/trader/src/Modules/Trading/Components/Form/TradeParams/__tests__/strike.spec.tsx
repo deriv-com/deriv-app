@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { useDevice } from '@deriv-com/ui';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { TRADE_TYPES } from '@deriv-app/shared';
 import TraderProviders from '../../../../../../trader-providers';
 import Strike from '../strike';

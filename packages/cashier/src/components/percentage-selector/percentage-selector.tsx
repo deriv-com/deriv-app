@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import { TReactMouseEvent } from '../../types';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useTheme } from '@deriv/ui';
 import Routes from './containers/routes';
 import useUnsafeCashierRouteHandler from './containers/routes/useUnsafeCashierRouteHandler';

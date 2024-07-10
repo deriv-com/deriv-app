@@ -5,7 +5,7 @@ import CashierProviders from '../../../../cashier-providers';
 import { routes } from '@deriv-app/shared';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
 describe('<AccountTransferNoAccount />', () => {
     let mockRootStore: ReturnType<typeof mockStore>;

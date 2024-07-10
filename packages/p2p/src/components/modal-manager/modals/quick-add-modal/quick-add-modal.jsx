@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Button, Icon, MobileFullPageModal, Modal, Text } from '@deriv/components';
+import { Button, Icon, MobileFullPageModal, Modal, Text } from '@deriv-app/components';
 import { useP2PAdvertiserPaymentMethods } from '@deriv-app/hooks';
 import { isMobile } from '@deriv-app/shared';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AddPaymentMethod from 'Components/add-payment-method';

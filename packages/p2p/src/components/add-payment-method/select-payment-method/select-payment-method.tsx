@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, Field, FormikValues } from 'formik';
-import { Autocomplete, Icon, Loading, Text } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { Autocomplete, Icon, Loading, Text } from '@deriv-app/components';
+import { observer } from '@deriv-app/stores';
 import { useStores } from 'Stores';
 import { localize, Localize } from 'Components/i18next';
 import './select-payment-method.scss';

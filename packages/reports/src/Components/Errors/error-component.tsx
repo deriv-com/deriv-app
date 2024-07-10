@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog, PageErrorContainer } from '@deriv/components';
+import { Dialog, PageErrorContainer } from '@deriv-app/components';
 import { routes } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { TErrorComponent } from 'Types';

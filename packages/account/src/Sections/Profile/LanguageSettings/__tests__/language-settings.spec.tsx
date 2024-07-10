@@ -3,7 +3,7 @@ import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { routes } from '@deriv-app/shared';
 import LanguageSettings from '../language-settings';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
 import { useDevice } from '@deriv-com/ui';
 import { useTranslations } from '@deriv-com/translations';
 
@@ -17,8 +17,8 @@ jest.mock('@deriv/translations', () => ({
     getAllowedLanguages: jest.fn(() => ({ lang_1: 'Test Lang 1', lang_2: 'Test Lang 2' })),
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Icon: jest.fn(() => <div>Flag Icon</div>),
 }));
 

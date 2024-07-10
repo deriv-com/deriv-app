@@ -2,15 +2,15 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { isMobile } from '@deriv-app/shared';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores/index';
 import MyProfileStats from '../my-profile-stats';
 
 let mock_store: DeepPartial<ReturnType<typeof useStores>>;
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     MobileWrapper: jest.fn(({ children }) => children),
     MobileFullPageModal: ({ children, pageHeaderReturnFn = mock_store.setActiveTab }) => (
         <div>

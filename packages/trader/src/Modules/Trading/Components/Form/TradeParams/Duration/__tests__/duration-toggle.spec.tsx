@@ -3,9 +3,9 @@ import { screen, render } from '@testing-library/react';
 import DurationToggle from '../duration-toggle';
 import userEvent from '@testing-library/user-event';
 
-jest.mock('@deriv/components', () => {
+jest.mock('@deriv-app/components', () => {
     return {
-        ...jest.requireActual('@deriv/components'),
+        ...jest.requireActual('@deriv-app/components'),
         Icon: jest.fn(() => <div>MockedIcon</div>),
     };
 });

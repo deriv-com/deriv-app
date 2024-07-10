@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Button, Checkbox, Icon, Text } from '@deriv/components';
+import { Button, Checkbox, Icon, Text } from '@deriv-app/components';
 import { isMobile } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
 import ErrorDialog from 'Components/error-dialog';

@@ -3,8 +3,8 @@ import { render, screen } from '@testing-library/react';
 import PaymentAgentCard from '../payment-agent-card';
 import { TPaymentAgent } from '../../../../types';
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     ExpansionPanel: () => <div>ExpansionPanel</div>,
 }));
 

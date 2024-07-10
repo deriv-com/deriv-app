@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { Icon } from '@deriv/components';
+import { Icon } from '@deriv-app/components';
 import IconMessageContent from '../icon-message-content';
 
 jest.mock('@deriv-com/ui', () => ({
@@ -8,8 +8,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
+jest.mock('@deriv-app/components', () => {
+    const original_module = jest.requireActual('@deriv-app/components');
     return {
         ...original_module,
         Icon: jest.fn(() => <div data-testid='mockedIcon' />),

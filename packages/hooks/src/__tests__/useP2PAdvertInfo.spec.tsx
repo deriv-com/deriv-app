@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { APIProvider, useSubscription } from '@deriv/api';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import useP2PAdvertInfo from '../useP2PAdvertInfo';
 
 jest.mock('@deriv/api', () => ({

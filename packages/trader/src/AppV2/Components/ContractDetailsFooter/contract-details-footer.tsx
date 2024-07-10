@@ -1,7 +1,7 @@
 import { Button, TButtonColor, TButtonVariant } from '@deriv-com/quill-ui';
-import { RemainingTime } from '@deriv/components';
+import { RemainingTime } from '@deriv-app/components';
 import { TContractInfo, getCardLabelsV2, isMultiplierContract, isValidToCancel, isValidToSell } from '@deriv-app/shared';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import React from 'react';
 import { observer } from 'mobx-react';
 import { TRegularSizesWithExtraLarge } from '@deriv-com/quill-ui/dist/types';

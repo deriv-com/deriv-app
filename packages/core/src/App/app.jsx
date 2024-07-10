@@ -7,7 +7,7 @@ import { BreakpointProvider } from '@deriv/quill-design';
 import { APIProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
-import { Loading } from '@deriv/components';
+import { Loading } from '@deriv-app/components';
 import {
     POIProvider,
     initFormErrorMessages,
@@ -16,7 +16,7 @@ import {
     setWebsocket,
     useOnLoadTranslation,
 } from '@deriv-app/shared';
-import { StoreProvider, P2PSettingsProvider } from '@deriv/stores';
+import { StoreProvider, P2PSettingsProvider } from '@deriv-app/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
 import { withTranslation, useTranslation } from 'react-i18next';
 import { initializeI18n, TranslationProvider, getInitialLanguage } from '@deriv-com/translations';

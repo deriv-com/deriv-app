@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Icon, Text } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { Button, Icon, Text } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from '@deriv/translations';
 
 const WalletsBannerUpgrade = observer(() => {

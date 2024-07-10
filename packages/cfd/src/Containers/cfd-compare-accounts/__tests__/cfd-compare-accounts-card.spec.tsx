@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { CFD_PLATFORMS } from '@deriv-app/shared';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
 import { render, screen } from '@testing-library/react';
 
 import CFDCompareAccountsCard from '../cfd-compare-accounts-card';

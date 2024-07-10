@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Dialog, Icon, Text } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { Dialog, Icon, Text } from '@deriv-app/components';
+import { useStore } from '@deriv-app/stores';
 import { Localize, localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { removeKeyValue } from 'Utils/settings';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { Icon, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv-app/components';
 import { getDeeplinkUrl, getMobileAppInstallerUrl, getWebtraderUrl } from '../Helpers/constants';
 import './mt5-mobile-redirect-option.scss';
 import { Localize } from '@deriv/translations';

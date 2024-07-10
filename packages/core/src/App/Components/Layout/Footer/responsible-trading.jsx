@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Popover, StaticUrl } from '@deriv/components';
+import { Icon, Popover, StaticUrl } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 
 export const ResponsibleTrading = ({ showPopover }) => (

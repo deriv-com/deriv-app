@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import { AUTH_STATUS_CODES, MT5_ACCOUNT_STATUS, routes } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import { TAuthStatusCodes, TMT5AccountStatus } from '../Types/common.type';

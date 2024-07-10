@@ -2,9 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field } from 'formik';
 
-import { Button, PasswordInput, PasswordMeter, Text } from '@deriv/components';
+import { Button, PasswordInput, PasswordMeter, Text } from '@deriv-app/components';
 import { getErrorMessages, redirectToSignUp } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize, localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 

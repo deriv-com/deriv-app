@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { formatDuration, getDiffDuration } from '@deriv-app/shared';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import DealCancellationRemainingTime from '../deal-cancellation-remaining-time';
 
@@ -11,7 +11,7 @@ jest.mock('@deriv-app/shared', () => ({
     getDiffDuration: jest.fn(),
 }));
 
-jest.mock('@deriv/stores', () => ({
+jest.mock('@deriv-app/stores', () => ({
     observer: jest.fn(component => component),
     useStore: jest.fn(),
 }));

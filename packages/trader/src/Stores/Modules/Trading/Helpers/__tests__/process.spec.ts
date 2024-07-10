@@ -1,5 +1,5 @@
 import { processTradeParams } from '../process';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
 jest.mock('@deriv-app/shared', () => ({
     ...jest.requireActual('@deriv-app/shared'),

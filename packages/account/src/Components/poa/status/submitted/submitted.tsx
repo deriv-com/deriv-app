@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import { isNavigationFromP2P, isNavigationFromDerivGO } from '@deriv-app/shared';
 import ContinueTradingButton from '../../continue-trading-button';

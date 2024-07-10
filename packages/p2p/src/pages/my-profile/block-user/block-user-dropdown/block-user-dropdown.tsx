@@ -1,6 +1,6 @@
 import React from 'react';
-import { DesktopWrapper, Dropdown, Icon, MobileWrapper } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { DesktopWrapper, Dropdown, Icon, MobileWrapper } from '@deriv-app/components';
+import { observer } from '@deriv-app/stores';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Checkbox, Icon, Input, Text, ThemedScrollbars } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { Checkbox, Icon, Input, Text, ThemedScrollbars } from '@deriv-app/components';
+import { useStore } from '@deriv-app/stores';
 import { localize, Localize } from 'Components/i18next';
 
 type TPreferredCountriesModalBodyProps = {

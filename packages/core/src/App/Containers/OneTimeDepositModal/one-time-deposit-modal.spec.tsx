@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createBrowserHistory } from 'history';
 import { useDepositFiatAddress, useHasMFAccountDeposited } from '@deriv-app/hooks';
-import { StoreProvider, mockStore, useStore } from '@deriv/stores';
+import { StoreProvider, mockStore, useStore } from '@deriv-app/stores';
 import OneTimeDepositModal from './one-time-deposit-modal';
 
 let mock_store: ReturnType<typeof useStore>;

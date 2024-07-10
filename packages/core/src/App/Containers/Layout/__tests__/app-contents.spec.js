@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
-import { mockStore, StoreProvider } from '@deriv/stores';
-import { ThemedScrollbars } from '@deriv/components';
+import { mockStore, StoreProvider } from '@deriv-app/stores';
+import { ThemedScrollbars } from '@deriv-app/components';
 import AppContents from '../app-contents';
 
 let child_ref;
@@ -24,8 +24,8 @@ jest.mock('@deriv-app/shared', () => ({
     },
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     ThemedScrollbars: props => <MockComp {...props}>{props.children}</MockComp>,
 }));
 

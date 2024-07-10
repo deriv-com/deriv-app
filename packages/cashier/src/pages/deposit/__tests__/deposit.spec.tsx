@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useDepositLocked } from '@deriv-app/hooks';
 import { ContentFlag } from '@deriv-app/shared';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import CashierProviders from '../../../cashier-providers';
 import Deposit from '../deposit';
 

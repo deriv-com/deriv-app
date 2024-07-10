@@ -5,7 +5,7 @@ import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { isMobile, routes } from '@deriv-app/shared';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
 jest.mock('@deriv-app/shared', () => ({
     ...jest.requireActual('@deriv-app/shared'),

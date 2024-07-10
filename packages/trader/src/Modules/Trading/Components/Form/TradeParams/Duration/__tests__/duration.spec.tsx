@@ -4,9 +4,9 @@ import Duration from '../duration';
 import moment from 'moment';
 import userEvent from '@testing-library/user-event';
 
-jest.mock('@deriv/components', () => {
+jest.mock('@deriv-app/components', () => {
     return {
-        ...jest.requireActual('@deriv/components'),
+        ...jest.requireActual('@deriv-app/components'),
         Dropdown: jest.fn(() => 'MockedDropdown'),
     };
 });

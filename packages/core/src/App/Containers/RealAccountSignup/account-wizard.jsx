@@ -3,10 +3,10 @@ import fromEntries from 'object.fromentries';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv/components';
+import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv-app/components';
 import { WS, getLocation, toMoment, formatIDVFormValues, shouldHideOccupationField } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import AcceptRiskForm from './accept-risk-form.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';

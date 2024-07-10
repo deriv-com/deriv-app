@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field } from 'formik';
-import { Text, RadioGroup } from '@deriv/components';
+import { Text, RadioGroup } from '@deriv-app/components';
 import { TTradingAssessmentForm } from 'Types';
 
 type TradingAssessmentRadioButtonProps = {

@@ -22,8 +22,8 @@ const mockDefaultProps = {
     setCurrentFocus: jest.fn(),
 };
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     MobileDialog: jest.fn(({ children, visible, footer, onClose }) => (
         <div>
             {visible && (

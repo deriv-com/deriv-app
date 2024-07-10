@@ -1,8 +1,8 @@
 import React from 'react';
-import { DataList, Icon, Loading, MobileWrapper, Modal, Table, Text } from '@deriv/components';
+import { DataList, Icon, Loading, MobileWrapper, Modal, Table, Text } from '@deriv-app/components';
 import { isDesktop, isMobile, routes } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useStore, observer } from '@deriv/stores';
+import { useStore, observer } from '@deriv-app/stores';
 import TransactionsCryptoCancelModal from './transactions-crypto-cancel-modal';
 import TransactionsCryptoStatusModal from './transactions-crypto-status-modal';
 import TransactionsCryptoRenderer from './transactions-crypto-renderer';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 
 type TApiTokenTableRowHeader = {
     text: JSX.Element | string;

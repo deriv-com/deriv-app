@@ -5,7 +5,7 @@ import { createBrowserHistory } from 'history';
 import { routes } from '@deriv-app/shared';
 import AccountTransferReceipt from '../account-transfer-receipt';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 
 describe('<AccountTransferReceipt />', () => {
     let mockRootStore: ReturnType<typeof mockStore>;

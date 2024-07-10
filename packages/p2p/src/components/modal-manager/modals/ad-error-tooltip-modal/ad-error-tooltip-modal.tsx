@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Modal, Text, ThemedScrollbars } from '@deriv/components';
+import { Button, Modal, Text, ThemedScrollbars } from '@deriv-app/components';
 import { useP2PSettings } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, Modal, Popover, VerticalTab } from '@deriv/components';
+import { Icon, Modal, Popover, VerticalTab } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import 'Sass/app/modules/settings.scss';
 

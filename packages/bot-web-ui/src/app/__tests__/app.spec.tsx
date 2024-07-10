@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import Bot from '../app';
 
-jest.mock('@deriv/components', () => ({
+jest.mock('@deriv-app/components', () => ({
     Loading: () => <div>Loading...</div>,
 }));
 

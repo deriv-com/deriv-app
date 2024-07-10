@@ -1,11 +1,11 @@
 import React from 'react';
-import { Button, Text } from '@deriv/components';
+import { Button, Text } from '@deriv-app/components';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import BalanceText from 'Components/elements/text/balance-text';
 import './demo-account-card.scss';
 import { Localize, useLocalize } from '@deriv/translations';
 import { usePlatformAccounts } from '@deriv-app/hooks';
-import { useStore, observer } from '@deriv/stores';
+import { useStore, observer } from '@deriv-app/stores';
 
 const DemoAccountCard = observer(() => {
     const { localize } = useLocalize();

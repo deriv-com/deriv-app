@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Icon } from '@deriv/components';
+import { Text, Icon } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 
 /**

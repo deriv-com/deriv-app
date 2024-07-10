@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import CFDServerErrorDialog from '../cfd-server-error-dialog';
 import CFDProviders from '../../cfd-providers';
 

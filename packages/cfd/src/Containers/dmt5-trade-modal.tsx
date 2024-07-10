@@ -1,10 +1,10 @@
 import React from 'react';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { useDevice } from '@deriv-com/ui';
-import { Text, Icon, Money, StatusBadge } from '@deriv/components';
+import { Text, Icon, Money, StatusBadge } from '@deriv-app/components';
 import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { getCFDAccountKey, MT5_ACCOUNT_STATUS } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize, localize } from '@deriv/translations';
 import { CFD_PLATFORMS, MARKET_TYPE, PRODUCT } from '../Helpers/cfd-config';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';

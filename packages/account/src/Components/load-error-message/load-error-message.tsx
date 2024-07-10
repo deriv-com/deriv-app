@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Icon } from '@deriv/components';
+import { Icon } from '@deriv-app/components';
 import IconMessageContent from '../icon-message-content';
 
 type TLoadErrorMessage = {

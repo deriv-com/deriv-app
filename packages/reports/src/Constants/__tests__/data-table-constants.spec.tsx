@@ -50,7 +50,7 @@ jest.mock('Components/market-symbol-icon-row', () => {
     };
 });
 
-jest.mock('@deriv/components', () => ({
+jest.mock('@deriv-app/components', () => ({
     __esModule: true,
     ContractCard: {
         MultiplierCloseActions: ({ contract_info }: { contract_info: { contract_id: string } }) => (

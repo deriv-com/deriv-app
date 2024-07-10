@@ -1,7 +1,7 @@
 import React from 'react';
-import { Dialog } from '@deriv/components';
+import { Dialog } from '@deriv-app/components';
 import { Localize, localize } from '@deriv/translations';
-import { useStore, observer } from '@deriv/stores';
+import { useStore, observer } from '@deriv-app/stores';
 
 const InformationSubmittedModal = observer(() => {
     const { ui } = useStore();

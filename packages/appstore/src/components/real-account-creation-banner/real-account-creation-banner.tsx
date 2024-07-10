@@ -3,8 +3,8 @@ import { useDevice } from '@deriv-com/ui';
 import { getUrlBase, Jurisdiction } from '@deriv-app/shared';
 import { Analytics } from '@deriv-com/analytics';
 import { Localize } from '@deriv/translations';
-import { Text, Button } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { Text, Button } from '@deriv-app/components';
+import { observer, useStore } from '@deriv-app/stores';
 import './real-account-creation-banner.scss';
 
 const RealAccountCreationBanner = observer(() => {

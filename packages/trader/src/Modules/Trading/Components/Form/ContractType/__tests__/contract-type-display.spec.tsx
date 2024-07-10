@@ -3,8 +3,8 @@ import { screen, render } from '@testing-library/react';
 import { isMobile, isDesktop, TRADE_TYPES } from '@deriv-app/shared';
 import Display from '../contract-type-display';
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Icon: () => <div>MockedIcon</div>,
 }));
 jest.mock('@deriv-app/shared', () => ({

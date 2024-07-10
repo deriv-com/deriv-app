@@ -1,9 +1,9 @@
 import React from 'react';
 import BarriersList from '../barriers-list';
-import { Icon, MobileDialog, Text, Popover } from '@deriv/components';
+import { Icon, MobileDialog, Text, Popover } from '@deriv-app/components';
 import Fieldset from 'App/Components/Form/fieldset';
 import { Localize, localize } from '@deriv/translations';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { useDevice } from '@deriv-com/ui';
 

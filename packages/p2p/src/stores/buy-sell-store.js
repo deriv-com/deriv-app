@@ -1,6 +1,6 @@
 import React from 'react';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import { formatMoney, getDecimalPlaces } from '@deriv-app/shared';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';

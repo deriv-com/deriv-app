@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv/stores';
-import { TCoreStores } from '@deriv/stores/types';
+import { mockStore } from '@deriv-app/stores';
+import { TCoreStores } from '@deriv-app/stores/types';
 import { TRADE_TYPES } from '@deriv-app/shared';
 import TraderProviders from '../../../../trader-providers';
 import Contract from '../contract-type';
@@ -35,8 +35,8 @@ jest.mock('../toast-popup', () => ({
     ...jest.requireActual('../toast-popup'),
     ToastPopup: () => <div>ToastPopup component</div>,
 }));
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     usePrevious: () => 'EN',
 }));
 

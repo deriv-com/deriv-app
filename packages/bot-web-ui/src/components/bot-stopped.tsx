@@ -1,6 +1,6 @@
 import React from 'react';
-import { Dialog, Icon, Text } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { Dialog, Icon, Text } from '@deriv-app/components';
+import { observer } from '@deriv-app/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 

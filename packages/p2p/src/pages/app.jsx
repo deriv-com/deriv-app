@@ -1,10 +1,10 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { reaction } from 'mobx';
-import { Loading } from '@deriv/components';
+import { Loading } from '@deriv-app/components';
 import { useP2PCompletedOrdersNotification, useFeatureFlags, useP2PSettings } from '@deriv-app/hooks';
 import { isEmptyObject, routes, WS } from '@deriv-app/shared';
-import { useStore, observer } from '@deriv/stores';
+import { useStore, observer } from '@deriv-app/stores';
 import { getLanguage } from '@deriv/translations';
 import { URLConstants } from '@deriv-com/utils';
 import { init } from 'Utils/server_time';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { MobileWrapper, Money, SwipeableNotification, Text } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { MobileWrapper, Money, SwipeableNotification, Text } from '@deriv-app/components';
+import { useStore } from '@deriv-app/stores';
 import { getCardLabels, getContractPath } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 

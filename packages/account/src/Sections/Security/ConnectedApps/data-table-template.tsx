@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { OauthApps } from '@deriv/api-types';
-import { Button, Text } from '@deriv/components';
+import { Button, Text } from '@deriv-app/components';
 import { toMoment } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import { getConnectedAppsColumnNames, getConnectedAppsScopes } from './template-helper';

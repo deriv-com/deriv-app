@@ -1,6 +1,6 @@
 import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers/positions-helper';
 import React from 'react';
-import { useStore } from '@deriv/stores';
+import { useStore } from '@deriv-app/stores';
 import AccumulatorsProfitLossTooltip from './accumulators-profit-loss-tooltip';
 import ChartMarker from './marker';
 import { TRADE_TYPES } from '@deriv-app/shared';

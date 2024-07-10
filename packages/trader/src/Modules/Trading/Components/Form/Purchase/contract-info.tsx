@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Money, Popover, Text } from '@deriv/components';
+import { Money, Popover, Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, getLocalizedBasis, getGrowthRatePercentage } from '@deriv-app/shared';
 import { useTraderStore } from 'Stores/useTraderStores';

@@ -5,7 +5,7 @@ import { Router } from 'react-router';
 import { isMobile } from '@deriv-app/shared';
 import getRoutesConfig from 'Constants/routes-config';
 import Cashier from '../cashier';
-import { P2PSettingsProvider, mockStore } from '@deriv/stores';
+import { P2PSettingsProvider, mockStore } from '@deriv-app/stores';
 import CashierProviders from '../../../cashier-providers';
 
 jest.mock('@deriv-app/hooks', () => {
@@ -24,8 +24,8 @@ jest.mock('@deriv-app/hooks', () => {
     };
 });
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
+jest.mock('@deriv-app/components', () => {
+    const original_module = jest.requireActual('@deriv-app/components');
 
     return {
         ...original_module,

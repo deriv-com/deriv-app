@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from '@deriv/translations';
 import { ToggleNotifications } from 'App/Components/Layout/Header';
 import { isTabletOs } from '@deriv-app/shared';

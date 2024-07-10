@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Dropdown, useOnClickOutside } from '@deriv/components';
+import { Dropdown, useOnClickOutside } from '@deriv-app/components';
 import { useP2PSettings } from '@deriv-app/hooks';
 import { isMobile } from '@deriv-app/shared';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { CurrencySelector } from 'Pages/buy-sell/currency-selector';

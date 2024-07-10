@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 
 import { GetLimits } from '@deriv/api-types';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import { getCurrencyDisplayCode, getPlatformSettings } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 

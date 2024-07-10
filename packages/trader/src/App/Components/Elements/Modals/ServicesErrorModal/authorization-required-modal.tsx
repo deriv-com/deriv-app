@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal } from '@deriv/components';
+import { Button, Modal } from '@deriv-app/components';
 import { getLanguage, localize } from '@deriv/translations';
 import { redirectToLogin, redirectToSignUp } from '@deriv-app/shared';
 

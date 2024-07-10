@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Text } from '@deriv/components';
+import { Modal, Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import { getUrlBase } from '@deriv-app/shared';
 

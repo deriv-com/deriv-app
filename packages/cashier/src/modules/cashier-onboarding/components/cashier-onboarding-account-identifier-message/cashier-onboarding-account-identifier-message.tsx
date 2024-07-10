@@ -1,7 +1,7 @@
 import React from 'react';
-import { InlineMessage } from '@deriv/components';
+import { InlineMessage } from '@deriv-app/components';
 import { useCurrentCurrencyConfig } from '@deriv-app/hooks';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from '@deriv/translations';
 
 const CashierOnboardingAccountIdentifierMessage: React.FC = observer(() => {

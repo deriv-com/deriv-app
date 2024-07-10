@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import { isMobile } from '@deriv-app/shared';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { getLastOnlineLabel } from 'Utils/adverts';
 
 type TOnlineStatusLabelProps = {

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Modal, Text } from '@deriv/components';
+import { Button, Modal, Text } from '@deriv-app/components';
 import { localize, Localize } from '@deriv/translations';
 import { SentEmailModal } from '@deriv/account';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { WS } from 'Services';
 import { TSocketError, TSocketRequest, TSocketResponse } from '@deriv/api/types';
 

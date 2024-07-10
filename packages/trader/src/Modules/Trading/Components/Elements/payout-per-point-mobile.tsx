@@ -1,8 +1,8 @@
 import React from 'react';
-import { ArrowIndicator, Money, Text, Popover } from '@deriv/components';
+import { ArrowIndicator, Money, Text, Popover } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { getLocalizedBasis } from '@deriv-app/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { TProposalTypeInfo } from 'Types';

@@ -1,8 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import { TIDVErrorStatus, IDV_ERROR_STATUS } from '@deriv-app/shared';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from '@deriv/translations';
 import { DerivLightWaitingPoiIcon } from '@deriv/quill-icons';
 import PoaButton from '../../../poa/poa-button';

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Icon } from '@deriv/components';
+import { Icon } from '@deriv-app/components';
 import { getCardLabels } from '@deriv-app/shared';
 
 type TPositionsResultMobile = {

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { TTradeStore } from 'Types';
 import MultiplierAmountModal from '../multiplier-amount-modal';
 import TraderProviders from '../../../../../trader-providers';

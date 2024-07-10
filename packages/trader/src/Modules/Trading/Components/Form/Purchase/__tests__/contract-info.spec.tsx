@@ -43,8 +43,8 @@ const default_mock_props: React.ComponentProps<typeof ContractInfo> = {
 
 jest.mock('../value-movement', () => jest.fn(() => <div>{value_movement}</div>));
 jest.mock('../cancel-deal-info', () => jest.fn(() => <div>{cancel_deal_info}</div>));
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
+jest.mock('@deriv-app/components', () => ({
+    ...jest.requireActual('@deriv-app/components'),
     Popover: jest.fn(props => <div>{props.message}</div>),
 }));
 jest.mock('@deriv-com/ui', () => ({

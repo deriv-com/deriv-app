@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Field } from 'formik';
-import { Dropdown, Text, SelectNative } from '@deriv/components';
+import { Dropdown, Text, SelectNative } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import { TTradingAssessmentForm, TQuestion } from 'Types';
 import { MAX_QUESTION_TEXT_LENGTH } from '../../Constants/trading-assessment';

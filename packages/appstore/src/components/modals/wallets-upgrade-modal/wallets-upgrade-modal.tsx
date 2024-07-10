@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Stream } from '@cloudflare/stream-react';
-import { Button, Text, Modal } from '@deriv/components';
+import { Button, Text, Modal } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useWalletMigration } from '@deriv-app/hooks';
 import './wallets-upgrade-modal.scss';
 

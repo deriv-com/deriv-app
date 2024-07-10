@@ -5,7 +5,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { routes } from '@deriv-app/shared';
 import WithdrawalLocked from '../withdrawal-locked';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv-app/stores';
 import { GetAccountStatus } from '@deriv/api-types';
 
 type TStatus = Pick<Required<GetAccountStatus>['authentication'], 'identity' | 'document' | 'needs_verification'>;

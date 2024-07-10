@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { CSSTransition } from 'react-transition-group';
-import { HintBox, Text } from '@deriv/components';
+import { HintBox, Text } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 
 type TOnfidoSdkView = {

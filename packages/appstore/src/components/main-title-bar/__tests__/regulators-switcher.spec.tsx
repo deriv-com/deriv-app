@@ -1,7 +1,7 @@
 import React from 'react';
 import RegulatorSwitcher from '../regulators-switcher';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 
 jest.mock('../../pre-loader/regulations-switcher-loader', () => ({
     __esModule: true,

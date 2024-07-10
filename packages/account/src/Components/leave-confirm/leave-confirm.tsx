@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
 import { FormikConsumer } from 'formik';
-import { Button, Icon, Modal } from '@deriv/components';
+import { Button, Icon, Modal } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import IconMessageContent from '../icon-message-content';
 import { useDevice } from '@deriv-com/ui';

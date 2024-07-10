@@ -1,6 +1,6 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
-import { Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader, Button } from '@deriv/components';
+import { observer, useStore } from '@deriv-app/stores';
+import { Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader, Button } from '@deriv-app/components';
 import { localize } from '@deriv/translations';
 import MT5NotificationDescription from './mt5-notification-description';
 

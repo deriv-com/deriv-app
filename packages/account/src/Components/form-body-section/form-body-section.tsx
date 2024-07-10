@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 import { useDevice } from '@deriv-com/ui';
 import { Localize } from '@deriv/translations';
 

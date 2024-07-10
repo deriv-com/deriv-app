@@ -1,7 +1,7 @@
 import React from 'react';
 import { getDurationMinMaxValues } from '@deriv-app/shared';
 import Duration from './duration';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 type TDurationWrapper = {

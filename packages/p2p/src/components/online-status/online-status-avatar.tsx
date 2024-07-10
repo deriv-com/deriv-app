@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { Text } from '@deriv-app/components';
+import { observer } from '@deriv-app/stores';
 import { getShortNickname } from 'Utils/string';
 import OnlineStatusIcon from './online-status-icon';
 

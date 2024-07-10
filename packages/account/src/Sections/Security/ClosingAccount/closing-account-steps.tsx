@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { observer, useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv-app/stores';
 import { Localize } from '@deriv/translations';
-import { Button, StaticUrl, Text } from '@deriv/components';
+import { Button, StaticUrl, Text } from '@deriv-app/components';
 
 type TClosingAccountStepsProps = {
     redirectToReasons: () => void;

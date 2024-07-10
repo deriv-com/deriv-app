@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { getShortNickname } from 'Utils/string';
-import { Text } from '@deriv/components';
+import { Text } from '@deriv-app/components';
 
 type TUserAvatarProps = {
     className?: string;

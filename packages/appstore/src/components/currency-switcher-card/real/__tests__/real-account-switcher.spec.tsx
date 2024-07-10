@@ -1,7 +1,7 @@
 import React from 'react';
 import RealAccountSwitcher from '../real-account-switcher';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { MT5_ACCOUNT_STATUS } from '@deriv-app/shared';
 import { useMFAccountStatus } from '@deriv-app/hooks';
 

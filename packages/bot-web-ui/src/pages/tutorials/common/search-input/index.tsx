@@ -1,6 +1,6 @@
 import React from 'react';
 import debounce from 'lodash.debounce';
-import { observer } from '@deriv/stores';
+import { observer } from '@deriv-app/stores';
 import { localize } from '@deriv/translations';
 import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';

@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { Text } from '@deriv-com/quill-ui';
 import { getCardLabels } from '@deriv-app/shared';
-import { Money } from '@deriv/components';
+import { Money } from '@deriv-app/components';
 import { Localize } from '@deriv/translations';
 
 type TTotalProfitLossProps = {

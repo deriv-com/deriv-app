@@ -2,6 +2,7 @@ import React from 'react';
 import { useDevice } from '@deriv-com/ui';
 import { Button, MobileDialog, Modal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
 import { CryptoTransactionProcessingModalContent } from './crypto-transaction-processing-modal-content';
 import './crypto-transaction-processing-modal.scss';
 
@@ -30,7 +31,7 @@ const CryptoTransactionProcessingModal = observer(() => {
                     <CryptoTransactionProcessingModalContent />
                     <Modal.Footer has_separator>
                         <Button large primary onClick={onCloseModal}>
-                            OK
+                            <Localize i18n_default_text='OK' />
                         </Button>
                     </Modal.Footer>
                 </Modal>
@@ -45,7 +46,7 @@ const CryptoTransactionProcessingModal = observer(() => {
                     footer={
                         <Modal.Footer has_separator>
                             <Button primary large wide onClick={onCloseModal}>
-                                OK
+                                <Localize i18n_default_text='OK' />
                             </Button>
                         </Modal.Footer>
                     }

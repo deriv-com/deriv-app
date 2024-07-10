@@ -14,10 +14,6 @@ export const OneTimeDepositModalContent = observer(({ is_crypto_account = false 
     const { loginid } = client;
     const liveChat = useLiveChat(false, loginid);
 
-    const description_text = is_crypto_account
-        ? 'Need help? Contact us via <1>live chat</1>'
-        : 'Select a payment method to make a deposit into your account.<0 />Need help? Contact us via <1>live chat</1>';
-
     const onLiveChatClick = () => {
         liveChat.widget?.call('maximize');
     };
@@ -33,20 +29,36 @@ export const OneTimeDepositModalContent = observer(({ is_crypto_account = false 
                     <Localize i18n_default_text='Deposit' />
                 </Text>
                 <Text size={!isDesktop ? 'xs' : 's'} align='center'>
-                    <Localize
-                        i18n_default_text={description_text}
-                        components={[
-                            <br key={0} />,
-                            <Text
-                                key={1}
-                                className='one-time-deposit-modal__livechat'
-                                size={!isDesktop ? 'xs' : 's'}
-                                color='loss-danger'
-                                onClick={onLiveChatClick}
-                                data-testid='dt_live_chat'
-                            />,
-                        ]}
-                    />
+                    {is_crypto_account ? (
+                        <Localize
+                            i18n_default_text='Need help? Contact us via <0>live chat</0>'
+                            components={[
+                                <Text
+                                    key={0}
+                                    className='one-time-deposit-modal__livechat'
+                                    size={!isDesktop ? 'xs' : 's'}
+                                    color='loss-danger'
+                                    onClick={onLiveChatClick}
+                                    data-testid='dt_live_chat'
+                                />,
+                            ]}
+                        />
+                    ) : (
+                        <Localize
+                            i18n_default_text='Select a payment method to make a deposit into your account.<0 />Need help? Contact us via <1>live chat</1>'
+                            components={[
+                                <br key={0} />,
+                                <Text
+                                    key={1}
+                                    className='one-time-deposit-modal__livechat'
+                                    size={!isDesktop ? 'xs' : 's'}
+                                    color='loss-danger'
+                                    onClick={onLiveChatClick}
+                                    data-testid='dt_live_chat'
+                                />,
+                            ]}
+                        />
+                    )}
                 </Text>
             </div>
             {is_crypto_account ? <DepositCrypto /> : <DepositFiatIframe />}

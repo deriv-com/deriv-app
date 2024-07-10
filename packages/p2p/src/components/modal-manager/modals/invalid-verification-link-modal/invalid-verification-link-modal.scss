@@ -4,7 +4,7 @@
     flex-direction: column;
     gap: 2.4rem;
 
-    @include mobile {
+    @include mobile-or-tablet-screen {
         padding: 0.8rem 1.6rem;
     }
 
@@ -14,7 +14,7 @@
         &--invalid-token {
             padding-top: 0;
 
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 padding-top: 1.6rem;
             }
         }

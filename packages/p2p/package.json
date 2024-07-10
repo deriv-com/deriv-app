@@ -22,6 +22,7 @@
         "build:travis": "rimraf lib && webpack",
         "serve": "rimraf lib && cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch",
         "start": "rimraf lib && npm run test && npm run serve",
+        "test:jest": "jest --maxWorkers=${JEST_MAX_WORKERS:-'50%'}",
         "deploy": "echo \"No deploy specified\"",
         "deploy:clean": "echo \"No deploy:clean specified\"",
         "deploy:folder": "echo \"No deploy:folder specified\"",
@@ -32,6 +33,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@deriv-com/ui": "^1.28.3",
         "@deriv-com/utils": "^0.0.25",
         "@deriv/api": "^1.0.0",
         "@deriv/api-types": "1.0.172",

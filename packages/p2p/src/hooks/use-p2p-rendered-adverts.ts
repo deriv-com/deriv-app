@@ -1,8 +1,8 @@
 import React from 'react';
 import { useP2PAdvertList } from '@deriv/hooks';
+import { useDevice } from '@deriv-com/ui';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores/index';
-import { useStore } from '@deriv/stores';
 
 type TAdvertList = ReturnType<typeof useP2PAdvertList>['data'];
 
@@ -69,7 +69,6 @@ const getRenderedAdverts = (
  * */
 const useP2PRenderedAdverts = () => {
     const { general_store, buy_sell_store } = useStores();
-    const { ui } = useStore();
     const {
         sort_by,
         should_use_client_limits,
@@ -80,7 +79,7 @@ const useP2PRenderedAdverts = () => {
         search_term,
     } = buy_sell_store;
     const { list_item_limit } = general_store;
-    const { is_mobile } = ui;
+    const { isDesktop } = useDevice();
     const counterparty_type = is_buy ? buy_sell.BUY : buy_sell.SELL;
 
     const { data: items = [], ...rest } = useP2PAdvertList({
@@ -106,8 +105,8 @@ const useP2PRenderedAdverts = () => {
     }, [search_term, items]);
 
     const rendered_adverts = React.useMemo(() => {
-        return getRenderedAdverts(search_term, search_results, is_mobile, filtered_items);
-    }, [search_term, filtered_items, is_mobile, search_results]);
+        return getRenderedAdverts(search_term, search_results, !isDesktop, filtered_items);
+    }, [search_term, filtered_items, !isDesktop, search_results]);
 
     return {
         rendered_adverts,

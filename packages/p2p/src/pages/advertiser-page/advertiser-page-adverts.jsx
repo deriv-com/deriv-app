@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import { InfiniteDataList, Loading, Table, Tabs, Text } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useP2PAdvertiserAdverts } from 'Hooks';
@@ -9,6 +8,7 @@ import { useStores } from 'Stores';
 import P2pEmpty from 'Components/p2p-empty';
 import AdvertiserPageRow from './advertiser-page-row.jsx';
 import './advertiser-page-adverts.scss';
+import { useDevice } from '@deriv-com/ui';
 
 const EmptyAdsMessage = () => (
     <Text weight='bold'>
@@ -17,6 +17,7 @@ const EmptyAdsMessage = () => (
 );
 
 const AdvertiserPageAdverts = () => {
+    const { isDesktop } = useDevice();
     const {
         client: { currency },
     } = useStore();
@@ -33,7 +34,7 @@ const AdvertiserPageAdverts = () => {
             <Tabs
                 active_index={advertiser_page_store.active_index}
                 className='advertiser-page-adverts__tabs'
-                is_full_width={isMobile()}
+                is_full_width={!isDesktop}
                 onTabItemClick={advertiser_page_store.handleTabItemClick}
                 header_fit_content
                 top
@@ -49,7 +50,7 @@ const AdvertiserPageAdverts = () => {
                 <React.Fragment>
                     {adverts.length ? (
                         <Table className='advertiser-page-adverts__table'>
-                            {isDesktop() && (
+                            {isDesktop && (
                                 <Table.Header>
                                     <Table.Row className='advertiser-page-adverts__table-row'>
                                         <Table.Head>{localize('Limits')}</Table.Head>
@@ -79,7 +80,7 @@ const AdvertiserPageAdverts = () => {
                         </Table>
                     ) : (
                         <P2pEmpty
-                            className={classNames('', { 'advertiser-page-empty': isMobile() })}
+                            className={classNames('', { 'advertiser-page-empty': !isDesktop })}
                             icon='IcNoData'
                             title={<EmptyAdsMessage />}
                         />

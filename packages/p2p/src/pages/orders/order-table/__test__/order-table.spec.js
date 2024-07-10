@@ -16,6 +16,7 @@ jest.mock('Stores', () => ({
             date_to: '',
             filtered_date_range: '',
             handleDateChange: jest.fn(),
+            setDateTo: jest.fn(),
         },
     }),
 }));

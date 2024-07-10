@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon, Money, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
@@ -11,13 +12,14 @@ const MyProfileBalance = () => {
     const {
         client: { currency },
     } = useStore();
+    const { isMobile } = useDevice();
     const { showModal } = useModalManagerContext() || {};
 
     return (
         <div className='my-profile-balance'>
             <div className='my-profile-balance__column'>
                 <div className='my-profile-balance__row'>
-                    <Text color='less-prominent' size={getTextSize('xxxs', 'xs')}>
+                    <Text color='less-prominent' size={getTextSize('xxxs', 'xs', isMobile)}>
                         <Localize i18n_default_text='Available Deriv P2P balance' />
                     </Text>
                     <Icon
@@ -30,7 +32,7 @@ const MyProfileBalance = () => {
                                 key: 'MyProfileBalanceModal',
                             })
                         }
-                        size={getIconSize(12, 16)}
+                        size={getIconSize(12, 16, isMobile)}
                     />
                 </div>
                 <Text className='my-profile-balance__amount' color='prominent' size='m' weight='bold'>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { isMobile } from '@deriv/shared';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import RecommendedBy from '../recommended-by';
+import { useDevice } from '@deriv-com/ui';
 
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
     ...jest.requireActual('Components/modal-manager/modal-manager-context'),
@@ -12,9 +12,9 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
     }),
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn().mockReturnValue({ isDesktop: true }),
 }));
 
 describe('<RecommendedBy />', () => {
@@ -40,7 +40,7 @@ describe('<RecommendedBy />', () => {
     });
 
     it('should call showModal function in mobile view', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
+        (useDevice as jest.Mock).mockReturnValue({ isDesktop: false });
         const { showModal } = useModalManagerContext();
 
         render(<RecommendedBy recommended_count={2} recommended_average={50} />);

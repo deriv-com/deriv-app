@@ -3,8 +3,9 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Icon, InlineMessage, Text, ThemedScrollbars } from '@deriv/components';
 import { useP2PSettings } from '@deriv/hooks';
-import { formatMoney, isDesktop, isMobile, routes } from '@deriv/shared';
+import { formatMoney, routes } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { Localize, localize } from 'Components/i18next';
 import { api_error_codes } from 'Constants/api-error-codes';
 import Chat from 'Pages/orders/chat/chat.jsx';
@@ -26,6 +27,7 @@ import { getInlineTextSize } from 'Utils/responsive';
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(() => {
+    const { isDesktop, isMobile } = useDevice();
     const { buy_sell_store, general_store, my_profile_store, order_store, sendbird_store, order_details_store } =
         useStores();
     const {
@@ -151,7 +153,7 @@ const OrderDetails = observer(() => {
             order_store.error_code !== api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS &&
             !order_store.is_verifying_email
         ) {
-            showModal({ key: 'EmailLinkExpiredModal' }, { should_stack_modal: isMobile() });
+            showModal({ key: 'EmailLinkExpiredModal' }, { should_stack_modal: !isDesktop });
         }
 
         if (status_string === 'Expired' && isCurrentModal('EmailLinkExpiredModal', 'OrderDetailsConfirmModal'))
@@ -207,7 +209,7 @@ const OrderDetails = observer(() => {
                         message={localize(
                             "Don't risk your funds with cash transactions. Use bank transfers or e-wallets instead."
                         )}
-                        size={getInlineTextSize('sm', 'xs')}
+                        size={getInlineTextSize('sm', 'xs', isMobile)}
                     />
                 </div>
             )}
@@ -394,7 +396,7 @@ const OrderDetails = observer(() => {
                                             is_readonly
                                             number_of_stars={5}
                                             should_allow_hover_effect={false}
-                                            star_size={isMobile() ? 17 : 20}
+                                            star_size={isMobile ? 17 : 20}
                                         />
                                         <div className='order-details-card__ratings--row'>
                                             {review_details.recommended !== null &&
@@ -428,11 +430,11 @@ const OrderDetails = observer(() => {
                                 </div>
                             </React.Fragment>
                         )}
-                        {should_show_order_footer && isDesktop() && (
+                        {should_show_order_footer && isDesktop && (
                             <SeparatorContainerLine className='order-details-card--line' />
                         )}
                     </ThemedScrollbars>
-                    {should_show_order_footer && isDesktop() && (
+                    {should_show_order_footer && isDesktop && (
                         <OrderDetailsFooter order_information={order_store.order_information} />
                     )}
                 </div>

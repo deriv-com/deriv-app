@@ -5,17 +5,13 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores/index';
 import MyProfileContent from '../my-profile-content';
+import { useDevice } from '@deriv-com/ui';
 
 const mock_modal_manager: DeepPartial<ReturnType<typeof useModalManagerContext>> = {
     showModal: jest.fn(),
 };
 
 let mock_store: DeepPartial<ReturnType<typeof useStores>>;
-
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    MobileWrapper: jest.fn(({ children }) => children),
-}));
 
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
     ...jest.requireActual('Components/modal-manager/modal-manager-context'),
@@ -31,6 +27,11 @@ jest.mock('../../my-profile-form', () => jest.fn(() => <div>MyProfileForm</div>)
 jest.mock('../../my-profile-stats', () => jest.fn(() => <div>MyProfileStats</div>));
 jest.mock('../../payment-methods', () => jest.fn(() => <div>PaymentMethods</div>));
 jest.mock('../../block-user', () => jest.fn(() => <div>BlockUser</div>));
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn().mockReturnValue({ isDesktop: true }),
+}));
 
 describe('<MyProfileContent />', () => {
     beforeEach(() => {
@@ -72,14 +73,16 @@ describe('<MyProfileContent />', () => {
     });
 
     it('should render PaymentMethods if active_tab is PAYMENT_METHODS', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         mock_store.my_profile_store.active_tab = my_profile_tabs.PAYMENT_METHODS;
 
         render(<MyProfileContent />);
 
-        expect(screen.getAllByText('PaymentMethods')).toHaveLength(2);
+        expect(screen.getByText('PaymentMethods')).toBeInTheDocument();
     });
 
     it('should call hideAddPaymentMethodForm and setShouldShowEditPaymentMethodForm when clicking return icon', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         mock_store.my_profile_store.selected_payment_method = '';
         mock_store.my_profile_store.active_tab = my_profile_tabs.PAYMENT_METHODS;
 
@@ -94,6 +97,7 @@ describe('<MyProfileContent />', () => {
     });
 
     it('should call showModal with CancelAddPaymentMethodModal if is_form_modified is true and should_show_add_payment_method_form is true', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         mock_store.my_profile_store.active_tab = my_profile_tabs.PAYMENT_METHODS;
         mock_store.general_store.is_form_modified = true;
         mock_store.my_profile_store.should_show_add_payment_method_form = true;
@@ -108,6 +112,7 @@ describe('<MyProfileContent />', () => {
     });
 
     it('should call showModal with CancelEditPaymentMethodModal if is_form_modified is true and should_show_edit_payment_method_form is true', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         mock_store.my_profile_store.active_tab = my_profile_tabs.PAYMENT_METHODS;
         mock_store.general_store.is_form_modified = true;
         mock_store.my_profile_store.should_show_edit_payment_method_form = true;

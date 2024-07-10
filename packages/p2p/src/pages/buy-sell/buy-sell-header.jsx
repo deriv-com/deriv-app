@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { ButtonToggle, Icon, SearchBox } from '@deriv/components';
 import { useP2PSettings } from '@deriv/hooks';
-import { isDesktop } from '@deriv/shared';
+import { useDevice } from '@deriv-com/ui';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { buy_sell } from 'Constants/buy-sell';
@@ -26,6 +26,7 @@ const getBuySellFilters = () => [
 ];
 
 const BuySellHeader = ({ table_type }) => {
+    const { isDesktop } = useDevice();
     const { buy_sell_store, general_store } = useStores();
     const { p2p_settings } = useP2PSettings();
     const is_currency_selector_visible = p2p_settings?.feature_level >= 2;
@@ -72,7 +73,7 @@ const BuySellHeader = ({ table_type }) => {
                     <SearchBox
                         onClear={onClear}
                         onSearch={onSearch}
-                        placeholder={isDesktop() ? localize('Search by nickname') : localize('Search')}
+                        placeholder={isDesktop ? localize('Search by nickname') : localize('Search')}
                     />
                     <SortDropdown />
                     <div className='buy-sell-header__row--filter'>

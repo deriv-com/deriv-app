@@ -1,5 +1,6 @@
 import React from 'react';
 import { InlineMessage } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
 import { localize } from 'Components/i18next';
 import { getInlineTextSize } from 'Utils/responsive';
 
@@ -9,6 +10,7 @@ type TBuySellModalErrorProps = {
 };
 
 const BuySellModalError = ({ error_message, show_low_balance_message }: TBuySellModalErrorProps) => {
+    const { isMobile } = useDevice();
     if (error_message || show_low_balance_message) {
         return (
             <div className='buy-sell-modal-error'>
@@ -20,7 +22,7 @@ const BuySellModalError = ({ error_message, show_low_balance_message }: TBuySell
                               )
                             : error_message
                     }
-                    size={getInlineTextSize('sm', 'xs')}
+                    size={getInlineTextSize('sm', 'xs', isMobile)}
                     type='error'
                 />
             </div>

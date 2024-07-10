@@ -1,11 +1,13 @@
 import React from 'react';
-import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text, Button } from '@deriv/components';
+import { Icon, MobileFullPageModal, Text, Button } from '@deriv/components';
 import { observer } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
 const PaymentMethodsEmpty = () => {
+    const { isDesktop } = useDevice();
     const { my_profile_store } = useStores();
 
     const payment_method_empty_icon = (
@@ -28,27 +30,24 @@ const PaymentMethodsEmpty = () => {
         </React.Fragment>
     );
 
+    if (isDesktop) {
+        return <div className='payment-methods-empty'>{payment_method_empty_icon}</div>;
+    }
+
     return (
-        <React.Fragment>
-            <DesktopWrapper>
-                <div className='payment-methods-empty'>{payment_method_empty_icon}</div>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <MobileFullPageModal
-                    body_className='payment-methods-list__modal'
-                    height_offset='80px'
-                    is_flex
-                    is_modal_open
-                    onClickClose={() => {
-                        // do nothing
-                    }}
-                    page_header_text={localize('Payment methods')}
-                    pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
-                >
-                    {payment_method_empty_icon}
-                </MobileFullPageModal>
-            </MobileWrapper>
-        </React.Fragment>
+        <MobileFullPageModal
+            body_className='payment-methods-list__modal'
+            height_offset='80px'
+            is_flex
+            is_modal_open
+            onClickClose={() => {
+                // do nothing
+            }}
+            page_header_text={localize('Payment methods')}
+            pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
+        >
+            {payment_method_empty_icon}
+        </MobileFullPageModal>
     );
 };
 

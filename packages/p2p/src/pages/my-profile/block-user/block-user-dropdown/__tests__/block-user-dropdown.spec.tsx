@@ -1,9 +1,15 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useDevice } from '@deriv-com/ui';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import BlockUserDropdown from '../block-user-dropdown';
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn().mockReturnValue({ isDesktop: true }),
+}));
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     my_profile_store: {
@@ -26,12 +32,6 @@ const mock_modal_manager = {
     showModal: jest.fn(),
 };
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    DesktopWrapper: jest.fn(({ children }) => children),
-    MobileWrapper: jest.fn(({ children }) => children),
-}));
-
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
     useStores: jest.fn(() => mock_store),
@@ -51,6 +51,7 @@ describe('<BlockUserDropdown />', () => {
     });
 
     it('should call showModal when clicking on filter icon in mobile', () => {
+        (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         render(<BlockUserDropdown />);
 
         const filterIcon = screen.getByTestId('dt_block_user_filter_icon');

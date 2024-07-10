@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores/index';
 import BlockUserTableError from '../block-user-table-error';
+import { useDevice } from '@deriv-com/ui';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     my_profile_store: {
@@ -16,10 +17,8 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(() => mock_store),
 }));
 
-jest.mock('@deriv/components', () => ({
-    ...jest.requireActual('@deriv/components'),
-    DesktopWrapper: jest.fn(({ children }) => children),
-    MobileWrapper: jest.fn(({ children }) => children),
+jest.mock('@deriv-com/ui', () => ({
+    useDevice: jest.fn(() => ({ isDesktop: false })),
 }));
 
 describe('<BlockUserTableError />', () => {
@@ -27,7 +26,7 @@ describe('<BlockUserTableError />', () => {
         render(<BlockUserTableError error_message='test error' />);
 
         expect(screen.getByText('Blocked advertisers')).toBeInTheDocument();
-        expect(screen.getAllByText('test error')).toHaveLength(2);
+        expect(screen.getByText('test error')).toBeInTheDocument();
     });
 
     it('should call setActiveTab when clicking return icon', () => {

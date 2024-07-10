@@ -1,13 +1,14 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { OnlineStatusAvatar } from 'Components/online-status';
 import { useStores } from 'Stores';
 import { getLastOnlineLabel } from 'Utils/adverts';
 import './chat-header.scss';
+import { useDevice } from '@deriv-com/ui';
 
 const ChatHeaderBody = observer(() => {
+    const { isMobile } = useDevice();
     const { order_store } = useStores();
     const { other_user_details } = order_store.order_information;
     const { is_online, last_online_time, name } = other_user_details;
@@ -25,7 +26,7 @@ const ChatHeaderBody = observer(() => {
                     as='p'
                     className='chat-header-user-timestamp'
                     color='less-prominent'
-                    size={isMobile() ? 'xxs' : 'xs'}
+                    size={isMobile ? 'xxs' : 'xs'}
                 >
                     {getLastOnlineLabel(is_online, last_online_time)}
                 </Text>
@@ -35,7 +36,8 @@ const ChatHeaderBody = observer(() => {
 });
 
 const ChatHeader = () => {
-    if (isMobile()) {
+    const { isDesktop } = useDevice();
+    if (!isDesktop) {
         return null; // Handled in chat-wrapper.jsx
     }
 

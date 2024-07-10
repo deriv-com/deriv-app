@@ -5,6 +5,7 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import { useStores } from 'Stores';
 import FilterModal from '../filter-modal';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 
 const mock_store = {
     buy_sell_store: {
@@ -45,6 +46,11 @@ let mock_modal_manager: Partial<ReturnType<typeof useModalManagerContext>> = {
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
     ...jest.requireActual('Components/modal-manager/modal-manager-context'),
     useModalManagerContext: jest.fn(() => mock_modal_manager),
+}));
+
+jest.mock('@deriv-com/ui', () => ({
+    ...jest.requireActual('@deriv-com/ui'),
+    useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
 const el_modal = document.createElement('div');
@@ -94,10 +100,9 @@ describe('<FilterModal />', () => {
             ...mock_modal_manager,
             useSavedState: jest.fn(() => [['skrill'], mock_fn]),
         };
+
         render(<FilterModal />, {
-            wrapper: ({ children }) => (
-                <StoreProvider store={mockStore({ ui: { is_mobile: true } })}>{children}</StoreProvider>
-            ),
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
         });
         const close_icon = screen.getByTestId('dt_modal_close_icon');
         userEvent.click(close_icon);

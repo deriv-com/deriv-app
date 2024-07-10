@@ -3,15 +3,15 @@ import { Router } from 'react-router';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createBrowserHistory } from 'history';
-import { useCashierLocked, useDepositLocked, useMFAccountStatus } from '@deriv/hooks';
+import { useCashierLocked, useDepositLocked, useMFAccountStatus } from '@deriv-app/hooks';
 import { mockStore } from '@deriv/stores';
 import CashierLocked from '../cashier-locked';
 import CashierProviders from '../../../cashier-providers';
 import { TCoreStores } from '@deriv/stores/types';
 import { MT5_ACCOUNT_STATUS } from '@deriv-app/shared';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useDepositLocked: jest.fn(() => false),
     useCashierLocked: jest.fn(() => false),
     useMFAccountStatus: jest.fn(),

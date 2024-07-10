@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
+import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
 
 const MT5MigrationAccountIcons = () => {
     const {

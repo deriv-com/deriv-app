@@ -6,7 +6,7 @@ import { APIProvider } from '@deriv/api';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import PersonalDetailsForm from '../personal-details-form';
-import { useResidenceList } from '@deriv/hooks';
+import { useResidenceList } from '@deriv-app/hooks';
 
 afterAll(cleanup);
 jest.mock('@deriv/components', () => ({
@@ -28,8 +28,8 @@ const residence_list = [
     },
 ];
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useStatesList: jest.fn(() => ({ data: residence_list, isLoading: false })),
     useResidenceList: jest.fn(() => ({ data: residence_list, isLoading: false })),
 }));

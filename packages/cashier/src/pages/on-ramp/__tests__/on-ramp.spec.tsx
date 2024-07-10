@@ -1,14 +1,14 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile, routes } from '@deriv-app/shared';
-import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
+import { useCashierLocked, useDepositLocked } from '@deriv-app/hooks';
 import OnRamp from '../on-ramp';
 import { mockStore } from '@deriv/stores';
 import type { TOnRampProps } from '../on-ramp';
 import CashierProviders from '../../../cashier-providers';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useDepositLocked: jest.fn(() => false),
 }));
 
@@ -40,8 +40,8 @@ jest.mock('Pages/on-ramp/on-ramp-provider-popup', () => {
     return onRampProviderPopup;
 });
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useDepositLocked: jest.fn(() => false),
     useCashierLocked: jest.fn(() => false),
 }));

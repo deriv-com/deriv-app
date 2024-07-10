@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog } from '@deriv/components';
-import { useFiatAccountList } from '@deriv/hooks';
+import { useFiatAccountList } from '@deriv-app/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 

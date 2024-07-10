@@ -19,8 +19,8 @@ const mock_p2p_advertiser_payment_methods_hooks = {
     data: [] as TPaymentMethod[],
 };
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useP2PAdvertiserPaymentMethods: jest.fn(() => mock_p2p_advertiser_payment_methods_hooks),
 }));
 

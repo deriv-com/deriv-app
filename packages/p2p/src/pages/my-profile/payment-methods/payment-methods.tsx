@@ -1,6 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
+import { useP2PAdvertiserPaymentMethods } from '@deriv-app/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { useStores } from 'Stores';
 import AddPaymentMethod from 'Components/add-payment-method';

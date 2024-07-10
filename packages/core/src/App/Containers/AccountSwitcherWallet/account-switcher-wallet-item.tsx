@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { AppLinkedWithWalletIcon, Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useStoreWalletAccountsList } from '@deriv/hooks';
+import { useStoreWalletAccountsList } from '@deriv-app/hooks';
 import { Localize } from '@deriv/translations';
 import WalletBadge from 'App/Components/Layout/Header/wallets/wallet-badge';
 import './account-switcher-wallet-item.scss';

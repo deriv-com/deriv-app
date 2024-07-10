@@ -3,9 +3,9 @@ import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import userEvent from '@testing-library/user-event';
 import ReadyToVerifyModal from './ready-to-verify-modal';
-import { useHasMFAccountDeposited } from '@deriv/hooks';
+import { useHasMFAccountDeposited } from '@deriv-app/hooks';
 
-jest.mock('@deriv/hooks', () => ({
+jest.mock('@deriv-app/hooks', () => ({
     useHasMFAccountDeposited: jest.fn(),
 }));
 

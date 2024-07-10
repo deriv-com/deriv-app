@@ -2,7 +2,7 @@ import React from 'react';
 import { Field, FieldProps, Formik, FormikProps } from 'formik';
 
 import { Button, InlineMessage, Input, Loading, Text } from '@deriv/components';
-import { useExchangeRate, useGrowthbookIsOn } from '@deriv/hooks';
+import { useExchangeRate, useGrowthbookIsOn } from '@deriv-app/hooks';
 import { CryptoConfig, getCurrencyName } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';

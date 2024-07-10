@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useHasSetCurrency } from '@deriv/hooks';
+import { useHasSetCurrency } from '@deriv-app/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { useHistory } from 'react-router';
 import { PageContainer } from '../../components/page-container';

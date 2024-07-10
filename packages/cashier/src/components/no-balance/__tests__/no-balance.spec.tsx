@@ -7,8 +7,8 @@ import NoBalance from '../no-balance';
 import CashierProviders from '../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useDepositLocked: jest.fn(() => false),
 }));
 

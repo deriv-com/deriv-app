@@ -2,7 +2,7 @@ import React from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
 
 import { DesktopWrapper, Icon, Input, MobileWrapper } from '@deriv/components';
-import { useExchangeRate } from '@deriv/hooks';
+import { useExchangeRate } from '@deriv-app/hooks';
 import { getCurrencyDisplayCode } from '@deriv-app/shared';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';

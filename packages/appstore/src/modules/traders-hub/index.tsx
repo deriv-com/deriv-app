@@ -9,7 +9,7 @@ import ModalManager from 'Components/modals/modal-manager';
 import MainTitleBar from 'Components/main-title-bar';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
-import { useContentFlag, useGrowthbookGetFeatureValue } from '@deriv/hooks';
+import { useContentFlag, useGrowthbookGetFeatureValue } from '@deriv-app/hooks';
 import classNames from 'classnames';
 import './traders-hub.scss';
 

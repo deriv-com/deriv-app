@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Icon } from '@deriv/components';
-import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
+import { useIsRealAccountNeededForCashier } from '@deriv-app/hooks';
 import { routes } from '@deriv-app/shared';
 import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';

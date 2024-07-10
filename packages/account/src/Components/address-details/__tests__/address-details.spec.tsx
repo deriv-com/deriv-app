@@ -2,7 +2,7 @@ import React from 'react';
 import { FormikProps } from 'formik';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useDevice } from '@deriv-com/ui';
-import { useStatesList } from '@deriv/hooks';
+import { useStatesList } from '@deriv-app/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import AddressDetails, { TAddressDetailFormProps } from '../address-details';
 import userEvent from '@testing-library/user-event';
@@ -26,8 +26,8 @@ jest.mock('../../real-account-signup/helpers/utils.ts', () => ({
     })),
 }));
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useStatesList: jest.fn(() => ({ data: [], isFetched: true })),
 }));
 

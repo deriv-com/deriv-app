@@ -3,7 +3,7 @@ import { Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import { TReactMouseEvent } from '../../types';
-import { useExchangeRate } from '@deriv/hooks';
+import { useExchangeRate } from '@deriv-app/hooks';
 
 type TPercentageSelectorProps = {
     amount: number;

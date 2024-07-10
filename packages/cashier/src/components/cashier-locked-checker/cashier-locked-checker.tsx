@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCashierLocked, useCurrentCurrencyConfig, useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
+import { useCashierLocked, useCurrentCurrencyConfig, useDepositLocked, useIsSystemMaintenance } from '@deriv-app/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { PageContainer } from 'Components/page-container';
 import { useCashierStore } from '../../stores/useCashierStores';

@@ -4,7 +4,7 @@ import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Jurisdiction, routes } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
-import { useHasSetCurrency } from '@deriv/hooks';
+import { useHasSetCurrency } from '@deriv-app/hooks';
 import { TActiveAccount } from '@deriv/stores/types';
 import { LabelPairedChevronRightSmRegularIcon, StandaloneDerivIcon } from '@deriv/quill-icons';
 import { Button, Text } from '@deriv-com/quill-ui';

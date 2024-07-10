@@ -25,7 +25,7 @@ import SideNote from '../../../components/side-note';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import { TAccount, TAccountsList, TError, TReactChangeEvent } from '../../../types';
 import AccountTransferReceipt from '../account-transfer-receipt/account-transfer-receipt';
-import { useMFAccountStatus, useExchangeRate } from '@deriv/hooks';
+import { useMFAccountStatus, useExchangeRate } from '@deriv-app/hooks';
 
 import AccountTransferNote from './account-transfer-form-side-note';
 

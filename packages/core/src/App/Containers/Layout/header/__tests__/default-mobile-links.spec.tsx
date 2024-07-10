@@ -6,10 +6,10 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { routes } from '@deriv-app/shared';
 import DefaultMobileLinks from '../default-mobile-links';
-import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
+import { useIsRealAccountNeededForCashier } from '@deriv-app/hooks';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useIsRealAccountNeededForCashier: jest.fn(() => false),
 }));
 jest.mock('App/Components/Routes', () => ({

@@ -1,4 +1,4 @@
-import { useP2PAdvertList } from '@deriv/hooks';
+import { useP2PAdvertList } from '@deriv-app/hooks';
 import { useStores } from 'Stores/index';
 
 /**

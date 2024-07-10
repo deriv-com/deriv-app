@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDepositLocked } from '@deriv/hooks';
+import { useDepositLocked } from '@deriv-app/hooks';
 import { observer, useStore } from '@deriv/stores';
 import TransactionsCryptoHistory from '../../components/transactions-crypto-history';
 import { PageContainer } from '../../components/page-container';

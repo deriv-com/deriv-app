@@ -4,7 +4,7 @@ import { Stream } from '@cloudflare/stream-react';
 import { Button, Text, Modal } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { useWalletMigration } from '@deriv/hooks';
+import { useWalletMigration } from '@deriv-app/hooks';
 import './wallets-upgrade-modal.scss';
 
 const WalletsUpgradeModal = observer(() => {

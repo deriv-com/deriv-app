@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Icon, InlineMessage, Text, ThemedScrollbars } from '@deriv/components';
-import { useP2PSettings } from '@deriv/hooks';
+import { useP2PSettings } from '@deriv-app/hooks';
 import { formatMoney, isDesktop, isMobile, routes } from '@deriv-app/shared';
 import { useStore, observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';

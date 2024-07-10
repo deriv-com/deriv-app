@@ -12,7 +12,7 @@ import {
     usePlatformAccounts,
     useTotalAssetCurrency,
     useExchangeRate,
-} from '@deriv/hooks';
+} from '@deriv-app/hooks';
 import { isRatesLoaded } from '../../helpers';
 
 const AssetSummary = observer(() => {

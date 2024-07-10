@@ -4,7 +4,7 @@ import { ContentFlag, makeLazyLoader, moduleLoader } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, useLocalize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
-import { useWalletMigration } from '@deriv/hooks';
+import { useWalletMigration } from '@deriv-app/hooks';
 import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
 import BookBanner from 'Components/banners/book-banner';
 import AccountTypeDropdown from './account-type-dropdown';

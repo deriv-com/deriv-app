@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import { useStore, observer } from '@deriv/stores';
 import { EmptyState } from '@deriv/components';
-import { useCashierLocked, useDepositLocked, useIsSystemMaintenance, useMFAccountStatus } from '@deriv/hooks';
+import { useCashierLocked, useDepositLocked, useIsSystemMaintenance, useMFAccountStatus } from '@deriv-app/hooks';
 import getMessage from './cashier-locked-provider';
 import './cashier-locked.scss';
 import { MT5_ACCOUNT_STATUS } from '@deriv-app/shared';

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Icon, Table, Text } from '@deriv/components';
 import { isMobile, routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useP2PExchangeRate } from '@deriv/hooks';
+import { useP2PExchangeRate } from '@deriv-app/hooks';
 
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

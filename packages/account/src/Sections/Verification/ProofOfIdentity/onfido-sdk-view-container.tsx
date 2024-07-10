@@ -3,7 +3,7 @@ import { CSSTransition } from 'react-transition-group';
 import { useSettings } from '@deriv/api';
 import { ResidenceList } from '@deriv/api-types';
 import { Loading, ThemedScrollbars } from '@deriv/components';
-import { useNotificationEvent, useServiceToken } from '@deriv/hooks';
+import { useNotificationEvent, useServiceToken } from '@deriv-app/hooks';
 import { observer, useStore } from '@deriv/stores';
 import ErrorMessage from '../../../Components/error-component';
 import MissingPersonalDetails from '../../../Components/poi/missing-personal-details';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { ButtonToggle, Icon, SearchBox } from '@deriv/components';
-import { useP2PSettings } from '@deriv/hooks';
+import { useP2PSettings } from '@deriv-app/hooks';
 import { isDesktop } from '@deriv-app/shared';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';

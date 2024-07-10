@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
+import { useIsClientHighRiskForMT5 } from '@deriv-app/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import AccountWizard from '../account-wizard';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useIsClientHighRiskForMT5: jest.fn(),
 }));
 

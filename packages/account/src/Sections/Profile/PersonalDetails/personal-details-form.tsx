@@ -30,7 +30,7 @@ import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
 import { useInvalidateQuery } from '@deriv/api';
-import { useStatesList, useResidenceList } from '@deriv/hooks';
+import { useStatesList, useResidenceList } from '@deriv-app/hooks';
 
 type TRestState = {
     show_form: boolean;

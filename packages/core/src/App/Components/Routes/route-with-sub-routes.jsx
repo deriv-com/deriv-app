@@ -4,7 +4,7 @@ import { redirectToLogin, removeBranchName, routes, isEmptyObject, default_title
 import { getLanguage } from '@deriv/translations';
 import Page404 from 'Modules/Page404';
 import { observer, useStore } from '@deriv/stores';
-import { useFeatureFlags } from '@deriv/hooks';
+import { useFeatureFlags } from '@deriv-app/hooks';
 
 const RouteWithSubRoutes = observer(route => {
     const { common } = useStore();

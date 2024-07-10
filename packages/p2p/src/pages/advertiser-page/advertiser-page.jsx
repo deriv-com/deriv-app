@@ -4,7 +4,7 @@ import { reaction } from 'mobx';
 import { useP2PAdvertiserAdverts } from 'Hooks';
 import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
-import { useP2PAdvertInfo } from '@deriv/hooks';
+import { useP2PAdvertInfo } from '@deriv-app/hooks';
 import { daysSince, isDesktop, isEmptyObject, isMobile, routes } from '@deriv-app/shared';
 import { observer } from '@deriv/stores';
 

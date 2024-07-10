@@ -7,7 +7,7 @@ import { useStore, observer } from '@deriv/stores';
 import RealAccountCard from './real-account-card';
 import './real-account-switcher.scss';
 import { IsIconCurrency } from 'Assets/svgs/currency';
-import { useMFAccountStatus } from '@deriv/hooks';
+import { useMFAccountStatus } from '@deriv-app/hooks';
 
 const AccountNeedsVerification = observer(() => {
     const mf_account_status = useMFAccountStatus();

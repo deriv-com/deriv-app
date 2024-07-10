@@ -3,7 +3,7 @@ import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
+import { useIsRealAccountNeededForCashier } from '@deriv-app/hooks';
 import { getStaticUrl, routes } from '@deriv-app/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
@@ -14,8 +14,8 @@ jest.mock('@deriv/components', () => ({
     Icon: jest.fn(() => <div>Mock Link Icon</div>),
 }));
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useIsRealAccountNeededForCashier: jest.fn(() => false),
 }));
 

@@ -9,7 +9,7 @@ import {
     Text,
     ThemedScrollbars,
 } from '@deriv/components';
-import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
+import { useP2PAdvertiserPaymentMethods } from '@deriv-app/hooks';
 import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

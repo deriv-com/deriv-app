@@ -9,7 +9,7 @@ import {
     Modal,
     Text,
 } from '@deriv/components';
-import { useHasMFAccountDeposited } from '@deriv/hooks';
+import { useHasMFAccountDeposited } from '@deriv-app/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import DepositFiatIframe from '@deriv/cashier/src/modules/deposit-fiat/components/deposit-fiat-iframe/deposit-fiat-iframe';

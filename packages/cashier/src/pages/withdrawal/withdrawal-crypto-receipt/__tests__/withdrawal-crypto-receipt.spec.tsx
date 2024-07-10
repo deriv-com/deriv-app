@@ -19,9 +19,9 @@ let mock_last_transaction = {
     transaction_fee: '',
 };
 
-jest.mock('@deriv/hooks', () => {
+jest.mock('@deriv-app/hooks', () => {
     return {
-        ...jest.requireActual('@deriv/hooks'),
+        ...jest.requireActual('@deriv-app/hooks'),
         useCryptoTransactions: jest.fn(() => ({
             last_transaction: mock_last_transaction,
         })),

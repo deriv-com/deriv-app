@@ -7,7 +7,7 @@ import TransactionsCryptoCancelModal from './transactions-crypto-cancel-modal';
 import TransactionsCryptoStatusModal from './transactions-crypto-status-modal';
 import TransactionsCryptoRenderer from './transactions-crypto-renderer';
 import { useCashierStore } from '../../stores/useCashierStores';
-import { useCryptoTransactions } from '@deriv/hooks';
+import { useCryptoTransactions } from '@deriv-app/hooks';
 
 const getHeaders = () => [
     { text: localize('Transaction') },

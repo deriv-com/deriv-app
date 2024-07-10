@@ -1,5 +1,5 @@
 import React from 'react';
-import { usePaymentAgentList } from '@deriv/hooks';
+import { usePaymentAgentList } from '@deriv-app/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useCashierStore } from '../../../../stores/useCashierStores';

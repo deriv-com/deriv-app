@@ -1,5 +1,5 @@
 import React from 'react';
-import { useP2PAdvertList } from '@deriv/hooks';
+import { useP2PAdvertList } from '@deriv-app/hooks';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores/index';
 import { useStore } from '@deriv/stores';

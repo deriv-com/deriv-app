@@ -23,7 +23,7 @@ import { isDeepEqual, isDesktop, isMobile } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { useStore } from '@deriv/stores';
-import { useLandingCompanyDetails } from '@deriv/hooks';
+import { useLandingCompanyDetails } from '@deriv-app/hooks';
 
 type TCFDPersonalDetailsFormProps = {
     changeable_fields?: string[];

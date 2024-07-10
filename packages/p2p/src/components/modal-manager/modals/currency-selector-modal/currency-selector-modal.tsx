@@ -1,6 +1,6 @@
 import React from 'react';
 import { MobileFullPageModal } from '@deriv/components';
-import { useP2PSettings } from '@deriv/hooks';
+import { useP2PSettings } from '@deriv-app/hooks';
 import { observer } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

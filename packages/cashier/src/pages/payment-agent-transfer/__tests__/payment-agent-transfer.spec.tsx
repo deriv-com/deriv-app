@@ -4,7 +4,7 @@ import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import PaymentAgentTransfer from '../payment-agent-transfer';
 import CashierProviders from '../../../cashier-providers';
-import { useCashierLocked } from '@deriv/hooks';
+import { useCashierLocked } from '@deriv-app/hooks';
 import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => {
@@ -29,8 +29,8 @@ jest.mock('Pages/payment-agent-transfer/payment-agent-transfer-receipt', () =>
     jest.fn(() => 'mockedPaymentAgentTransferReceipt')
 );
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useCashierLocked: jest.fn(() => false),
 }));
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;

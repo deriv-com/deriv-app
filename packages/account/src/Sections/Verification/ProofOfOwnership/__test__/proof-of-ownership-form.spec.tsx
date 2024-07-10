@@ -15,8 +15,8 @@ type TRenderComponentProps = {
     store: ReturnType<typeof mockStore>;
 };
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useFileUploader: jest.fn(() => ({
         upload: jest.fn(),
     })),

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { useCurrentCurrencyConfig } from '@deriv/hooks';
+import { useCurrentCurrencyConfig } from '@deriv-app/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { PageContainer } from 'Components/page-container';
 import TransactionsCryptoHistory from '../../components/transactions-crypto-history';

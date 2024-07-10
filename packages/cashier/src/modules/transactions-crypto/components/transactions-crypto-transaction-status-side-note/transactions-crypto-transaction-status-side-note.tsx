@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Button, Loading, SideNote, Text } from '@deriv/components';
-import { useCryptoTransactions, useCurrentCurrencyConfig } from '@deriv/hooks';
+import { useCryptoTransactions, useCurrentCurrencyConfig } from '@deriv-app/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import classNames from 'classnames';

@@ -4,7 +4,7 @@ import { Button, Icon, MobileDialog, Text } from '@deriv/components';
 import { routes } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
-import { useStoreWalletAccountsList } from '@deriv/hooks';
+import { useStoreWalletAccountsList } from '@deriv-app/hooks';
 import { observer } from '@deriv/stores';
 import './account-switcher-wallet-mobile.scss';
 

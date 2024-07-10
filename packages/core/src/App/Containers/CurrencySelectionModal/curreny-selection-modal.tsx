@@ -7,7 +7,7 @@ import { observer, useStore } from '@deriv/stores';
 import CurrencyIcon from './currency';
 import { AccountListDetail } from './types';
 import classNames from 'classnames';
-import { useHasSetCurrency, useMFAccountStatus } from '@deriv/hooks';
+import { useHasSetCurrency, useMFAccountStatus } from '@deriv-app/hooks';
 
 type CurrencySelectionModalProps = {
     is_visible: boolean;

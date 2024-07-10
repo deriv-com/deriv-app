@@ -19,7 +19,7 @@ import {
     usePaymentAgentTransferVisible,
     useP2PNotificationCount,
     useP2PSettings,
-} from '@deriv/hooks';
+} from '@deriv-app/hooks';
 import { getSelectedRoute, getStaticUrl, routes, setPerformanceValue, WS } from '@deriv-app/shared';
 import ErrorDialog from '../../components/error-dialog';
 import { TRoute } from '../../types';

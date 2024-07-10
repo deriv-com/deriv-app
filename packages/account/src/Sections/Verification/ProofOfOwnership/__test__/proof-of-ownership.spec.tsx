@@ -8,8 +8,8 @@ import test_data from './test-data';
 type TRequests = DeepRequired<GetAccountStatus>['authentication']['ownership']['requests'];
 type TStatus = DeepRequired<GetAccountStatus>['authentication']['ownership']['status'];
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useFileUploader: jest.fn(() => ({
         upload: jest.fn(),
     })),

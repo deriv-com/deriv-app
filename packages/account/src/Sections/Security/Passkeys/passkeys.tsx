@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import { InlineMessage, Loading } from '@deriv/components';
-import { useGetPasskeysList, useRegisterPasskey, useRenamePasskey } from '@deriv/hooks';
+import { useGetPasskeysList, useRegisterPasskey, useRenamePasskey } from '@deriv-app/hooks';
 import { routes } from '@deriv-app/shared';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';

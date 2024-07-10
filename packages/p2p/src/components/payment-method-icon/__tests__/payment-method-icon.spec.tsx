@@ -3,8 +3,8 @@ import { render, screen } from '@testing-library/react';
 import PaymentMethodIcon from '../payment-method-icon';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useP2PPaymentMethods: jest.fn(() => ({
         data: [
             {

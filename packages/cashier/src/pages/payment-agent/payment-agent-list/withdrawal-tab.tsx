@@ -1,6 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { useVerifyEmail } from '@deriv/hooks';
+import { useVerifyEmail } from '@deriv-app/hooks';
 import { useStore, observer } from '@deriv/stores';
 import EmailVerificationEmptyState from '../../../components/email-verification-empty-state';
 import PaymentAgentContainer from '../payment-agent-container';

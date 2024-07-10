@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
-import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
+import { useIsRealAccountNeededForCashier } from '@deriv-app/hooks';
 import { routes, getStaticUrl } from '@deriv-app/shared';
 import { isExternalLink } from '@deriv/utils';
 import { observer, useStore } from '@deriv/stores';

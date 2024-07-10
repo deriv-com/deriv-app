@@ -6,7 +6,7 @@ import { BinaryLink } from '../../Routes';
 import { observer, useStore } from '@deriv/stores';
 import { routes, startPerformanceEventTimer } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
-import { useP2PNotificationCount, useIsRealAccountNeededForCashier } from '@deriv/hooks';
+import { useP2PNotificationCount, useIsRealAccountNeededForCashier } from '@deriv-app/hooks';
 import { useHistory } from 'react-router';
 import './menu-links.scss';
 

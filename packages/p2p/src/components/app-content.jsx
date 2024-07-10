@@ -4,7 +4,7 @@ import { isAction, reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 
 import { Loading, Tabs } from '@deriv/components';
-import { useIsSystemMaintenance, useP2PNotificationCount } from '@deriv/hooks';
+import { useIsSystemMaintenance, useP2PNotificationCount } from '@deriv-app/hooks';
 import { isMobile } from '@deriv-app/shared';
 import { useStore } from '@deriv/stores';
 

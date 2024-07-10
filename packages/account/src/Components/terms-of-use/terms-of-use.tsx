@@ -9,7 +9,7 @@ import {
     AutoHeightWrapper,
     StaticUrl,
 } from '@deriv/components';
-import { useResidenceSelfDeclaration } from '@deriv/hooks';
+import { useResidenceSelfDeclaration } from '@deriv-app/hooks';
 import { observer } from '@deriv/stores';
 import { TBrokerCodes } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';

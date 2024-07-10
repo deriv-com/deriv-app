@@ -28,8 +28,8 @@ jest.mock('Assets/SvgComponents/header/deriv-rebranding-logo.svg', () => jest.fn
 jest.mock('../../../CurrencySelectionModal', () => jest.fn(() => <div>MockedCurrencySelectionModal</div>));
 jest.mock('../show-notifications', () => jest.fn(() => <div>MockedShowNotifications</div>));
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useFeatureFlags: jest.fn(() => ({})),
     useHasSetCurrency: jest.fn(() => true),
     useIsRealAccountNeededForCashier: jest.fn(() => false),

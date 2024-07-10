@@ -6,7 +6,7 @@ import {
     useHasFiatCurrency,
     useHasP2PSupportedCurrencies,
     useIsP2PEnabled,
-} from '@deriv/hooks';
+} from '@deriv-app/hooks';
 import CashierProviders from '../../../../../cashier-providers';
 import CashierOnboardingP2PCard from '../cashier-onboarding-p2p-card';
 
@@ -30,7 +30,7 @@ jest.mock('@deriv/api', () => ({
     })),
 }));
 
-jest.mock('@deriv/hooks');
+jest.mock('@deriv-app/hooks');
 
 const MockUseCurrentCurrencyConfig = useCurrentCurrencyConfig as jest.MockedFunction<typeof useCurrentCurrencyConfig>;
 const MockUseHasFiatCurrency = useHasFiatCurrency as jest.MockedFunction<typeof useHasFiatCurrency>;

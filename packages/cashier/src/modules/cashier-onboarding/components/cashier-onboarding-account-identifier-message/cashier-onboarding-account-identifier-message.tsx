@@ -1,6 +1,6 @@
 import React from 'react';
 import { InlineMessage } from '@deriv/components';
-import { useCurrentCurrencyConfig } from '@deriv/hooks';
+import { useCurrentCurrencyConfig } from '@deriv-app/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Money, IconTradeTypes, Text } from '@deriv/components';
-import { useMFAccountStatus } from '@deriv/hooks';
+import { useMFAccountStatus } from '@deriv-app/hooks';
 import { useDevice } from '@deriv-com/ui';
 import { useStore } from '@deriv/stores';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info';

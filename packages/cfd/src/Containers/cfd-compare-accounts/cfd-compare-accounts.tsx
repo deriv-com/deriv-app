@@ -6,7 +6,7 @@ import { routes } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
-import { useIsRtl } from '@deriv/hooks';
+import { useIsRtl } from '@deriv-app/hooks';
 import CFDCompareAccountsCard from './cfd-compare-accounts-card';
 import {
     getSortedCFDAvailableAccounts,

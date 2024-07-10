@@ -4,8 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { AccountSwitcherWalletMobile } from '../account-switcher-wallet-mobile';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useWalletAccountsList: jest.fn(() => ({
         data: [{ loginid: 'CR007', dtrade_loginid: 'CR008' }],
     })),

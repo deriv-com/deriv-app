@@ -14,7 +14,7 @@ import {
     isLookBacksContract,
 } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
-import { useFeatureFlags } from '@deriv/hooks';
+import { useFeatureFlags } from '@deriv-app/hooks';
 import { useDevice } from '@deriv-com/ui';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';

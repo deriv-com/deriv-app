@@ -1,6 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { useCashierLocked } from '@deriv/hooks';
+import { useCashierLocked } from '@deriv-app/hooks';
 import { WS } from '@deriv-app/shared';
 import { useStore, observer } from '@deriv/stores';
 import Error from '../../components/error';

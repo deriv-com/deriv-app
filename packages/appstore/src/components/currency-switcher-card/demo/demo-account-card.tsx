@@ -4,7 +4,7 @@ import CurrencySwitcherContainer from 'Components/containers/currency-switcher-c
 import BalanceText from 'Components/elements/text/balance-text';
 import './demo-account-card.scss';
 import { Localize, useLocalize } from '@deriv/translations';
-import { usePlatformAccounts } from '@deriv/hooks';
+import { usePlatformAccounts } from '@deriv-app/hooks';
 import { useStore, observer } from '@deriv/stores';
 
 const DemoAccountCard = observer(() => {

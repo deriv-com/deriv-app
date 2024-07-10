@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
-import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
+import { useP2PAdvertiserPaymentMethods } from '@deriv-app/hooks';
 import { isMobile } from '@deriv-app/shared';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

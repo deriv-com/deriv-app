@@ -6,7 +6,7 @@ import { Analytics } from '@deriv-com/analytics';
 import { ThemedScrollbars } from '@deriv/components';
 import { CookieStorage, TRACKING_STATUS_KEY, platforms, routes, WS } from '@deriv-app/shared';
 import { useStore, observer } from '@deriv/stores';
-import { useFeatureFlags } from '@deriv/hooks';
+import { useFeatureFlags } from '@deriv-app/hooks';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 import { useDevice } from '@deriv-com/ui';
 

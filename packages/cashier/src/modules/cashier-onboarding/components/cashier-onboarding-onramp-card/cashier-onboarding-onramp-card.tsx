@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCurrentCurrencyConfig, useHasCryptoCurrency } from '@deriv/hooks';
+import { useCurrentCurrencyConfig, useHasCryptoCurrency } from '@deriv-app/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useCashierStore } from '../../../../stores/useCashierStores';

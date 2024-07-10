@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router';
 import { observer, useStore } from '@deriv/stores';
-import { useIsSystemMaintenance } from '@deriv/hooks';
+import { useIsSystemMaintenance } from '@deriv-app/hooks';
 import { useStores } from 'Stores';
 import Dp2pBlocked from 'Components/dp2p-blocked';
 import CashierUnderMaintenance from 'Components/cashier-under-maintenance';

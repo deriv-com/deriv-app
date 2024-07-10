@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { useFeatureFlags } from '@deriv/hooks';
+import { useFeatureFlags } from '@deriv-app/hooks';
 import { useReadLocalStorage } from 'usehooks-ts';
 import { makeLazyLoader, moduleLoader, routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';

@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { reaction } from 'mobx';
 import { Loading } from '@deriv/components';
-import { useP2PCompletedOrdersNotification, useFeatureFlags, useP2PSettings } from '@deriv/hooks';
+import { useP2PCompletedOrdersNotification, useFeatureFlags, useP2PSettings } from '@deriv-app/hooks';
 import { isEmptyObject, routes, WS } from '@deriv-app/shared';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';

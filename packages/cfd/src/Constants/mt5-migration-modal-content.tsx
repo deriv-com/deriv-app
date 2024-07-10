@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
+import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
 import { Localize } from '@deriv/translations';
 
 type TMigrationModalDetails = Exclude<

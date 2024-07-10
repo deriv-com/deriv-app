@@ -9,7 +9,7 @@ import {
     MobileWrapper,
     SelectNative,
 } from '@deriv/components';
-import { useFileUploader } from '@deriv/hooks';
+import { useFileUploader } from '@deriv-app/hooks';
 import { localize, Localize } from '@deriv/translations';
 import { isEqualArray, WS } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';

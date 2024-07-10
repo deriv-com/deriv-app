@@ -4,7 +4,7 @@ import { Icon, Text, ThemedScrollbars, useOnClickOutside } from '@deriv/componen
 import { routes } from '@deriv-app/shared';
 import { observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { useStoreWalletAccountsList } from '@deriv/hooks';
+import { useStoreWalletAccountsList } from '@deriv-app/hooks';
 import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
 import './account-switcher-wallet.scss';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { setDecimalPlaces, removeTrailingZeros, percentOf, roundOffDecimal } from 'Utils/format-value';
 import { InputField, Text } from '@deriv/components';
-import { useP2PExchangeRate, useP2PSettings } from '@deriv/hooks';
+import { useP2PExchangeRate, useP2PSettings } from '@deriv-app/hooks';
 import { formatMoney, isMobile, mobileOSDetect } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from 'Components/i18next';

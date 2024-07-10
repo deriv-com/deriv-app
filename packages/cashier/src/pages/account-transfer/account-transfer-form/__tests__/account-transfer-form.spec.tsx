@@ -6,15 +6,15 @@ import { mockStore } from '@deriv/stores';
 import { TError } from '../../../../types';
 import AccountTransferForm from '../account-transfer-form';
 import userEvent from '@testing-library/user-event';
-import { useMFAccountStatus } from '@deriv/hooks';
+import { useMFAccountStatus } from '@deriv-app/hooks';
 
 jest.mock('@deriv-app/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv-app/shared/src/utils/screen/responsive'),
     isMobile: jest.fn(),
 }));
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useMFAccountStatus: jest.fn(),
 }));
 

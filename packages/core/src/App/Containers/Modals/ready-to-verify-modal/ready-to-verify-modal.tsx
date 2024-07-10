@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog, Text } from '@deriv/components';
-import { useHasMFAccountDeposited } from '@deriv/hooks';
+import { useHasMFAccountDeposited } from '@deriv-app/hooks';
 import { Localize, localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import './ready-to-verify-modal.scss';

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Button, Clipboard, Icon, Text } from '@deriv/components';
-import { useCryptoTransactions, useCurrentCurrencyConfig } from '@deriv/hooks';
-import { TModifiedTransaction } from '@deriv/hooks/src/useCryptoTransactions';
+import { useCryptoTransactions, useCurrentCurrencyConfig } from '@deriv-app/hooks';
+import { TModifiedTransaction } from '@deriv-app/hooks/src/useCryptoTransactions';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useCashierStore } from 'Stores/useCashierStores';

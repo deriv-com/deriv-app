@@ -1,6 +1,6 @@
 import React from 'react';
 import { StaticUrl } from '@deriv/components';
-import { useCryptoTransactions } from '@deriv/hooks';
+import { useCryptoTransactions } from '@deriv-app/hooks';
 import { Localize, localize } from '@deriv/translations';
 import moment from 'moment';
 

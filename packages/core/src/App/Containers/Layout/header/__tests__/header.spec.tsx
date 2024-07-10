@@ -5,8 +5,8 @@ import { render, screen } from '@testing-library/react';
 import { routes } from '@deriv-app/shared';
 import Header from '../header';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useStoreWalletAccountsList: jest.fn(() => ({ data: [], has_wallet: false })),
     useFeatureFlags: jest.fn(() => ({})),
 }));

@@ -5,7 +5,7 @@ import { Icon, WalletIcon, Text, AppLinkedWithWalletIcon } from '@deriv/componen
 import { Localize } from '@deriv/translations';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv-app/shared';
 import { useStore, observer } from '@deriv/stores';
-import { useStoreWalletAccountsList, useStoreLinkedWalletsAccounts } from '@deriv/hooks';
+import { useStoreWalletAccountsList, useStoreLinkedWalletsAccounts } from '@deriv-app/hooks';
 import { TStores } from '@deriv/stores/types';
 import { AccountSwitcherWallet, AccountSwitcherWalletMobile } from 'App/Containers/AccountSwitcherWallet';
 import { AccountsInfoLoader } from '../Components/Preloader';

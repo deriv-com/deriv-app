@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
+import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
 import {
     JURISDICTION_MARKET_TYPES,
     getFormattedJurisdictionMarketTypes,

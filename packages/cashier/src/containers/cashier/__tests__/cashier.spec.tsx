@@ -8,9 +8,9 @@ import Cashier from '../cashier';
 import { P2PSettingsProvider, mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 
-jest.mock('@deriv/hooks', () => {
+jest.mock('@deriv-app/hooks', () => {
     return {
-        ...jest.requireActual('@deriv/hooks'),
+        ...jest.requireActual('@deriv-app/hooks'),
         usePaymentAgentTransferVisible: jest.fn(() => ({
             data: true,
             isLoading: false,

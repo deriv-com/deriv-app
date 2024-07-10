@@ -1,7 +1,7 @@
 import { Field, Formik } from 'formik';
 import React from 'react';
 import { FormSubmitButton, Loading, Text, ThemedScrollbars } from '@deriv/components';
-import { usePaymentAgentList } from '@deriv/hooks';
+import { usePaymentAgentList } from '@deriv-app/hooks';
 import { localize } from '@deriv/translations';
 import { reorderCurrencies, routes } from '@deriv-app/shared';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';

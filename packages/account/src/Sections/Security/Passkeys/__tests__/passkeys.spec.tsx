@@ -4,7 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Analytics } from '@deriv-com/analytics';
 import { APIProvider } from '@deriv/api';
-import { useGetPasskeysList, useRegisterPasskey } from '@deriv/hooks';
+import { useGetPasskeysList, useRegisterPasskey } from '@deriv-app/hooks';
 import { useDevice } from '@deriv-com/ui';
 import { routes } from '@deriv-app/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
@@ -44,8 +44,8 @@ jest.mock('react-router-dom', () => ({
     }),
 }));
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useGetPasskeysList: jest.fn(() => ({})),
     useRegisterPasskey: jest.fn(() => ({})),
 }));

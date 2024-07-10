@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Button, Icon, MobileFullPageModal, Modal, Text } from '@deriv/components';
-import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
+import { useP2PAdvertiserPaymentMethods } from '@deriv-app/hooks';
 import { isMobile } from '@deriv-app/shared';
 import { observer } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';

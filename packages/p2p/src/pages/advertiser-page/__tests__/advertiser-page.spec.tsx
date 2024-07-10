@@ -10,9 +10,9 @@ const mock_modal_manager = {
     useRegisterModalProps: jest.fn(),
     is_modal_open: true,
 };
-jest.mock('@deriv/hooks', () => {
+jest.mock('@deriv-app/hooks', () => {
     return {
-        ...jest.requireActual('@deriv/hooks'),
+        ...jest.requireActual('@deriv-app/hooks'),
         useP2PAdvertInfo: jest.fn(() => ({ data: true, isLoading: false, isSuccess: true })),
     };
 });

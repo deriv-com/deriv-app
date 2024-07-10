@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Formik, Form } from 'formik';
 import { Div100vhContainer, ThemedScrollbars } from '@deriv/components';
-import { useP2PSettings } from '@deriv/hooks';
+import { useP2PSettings } from '@deriv-app/hooks';
 import { isMobile } from '@deriv-app/shared';
 import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';

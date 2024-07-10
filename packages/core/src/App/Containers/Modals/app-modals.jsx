@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-import { useWalletMigration } from '@deriv/hooks';
+import { useWalletMigration } from '@deriv-app/hooks';
 import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 

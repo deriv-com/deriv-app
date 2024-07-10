@@ -3,14 +3,14 @@ import MT5MigrationBackSideContent from '../mt5-migration-back-side-content';
 import { render, screen, waitFor } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { CFDStoreProvider } from 'Stores/Modules/CFD/Helpers/useCfdStores';
-import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
+import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
 import userEvent from '@testing-library/user-event';
 import { useMT5MigrationModalContext } from '../mt5-migration-modal-context';
 import { Formik } from 'formik';
 import { WS } from '@deriv-app/shared';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
+jest.mock('@deriv-app/hooks', () => ({
+    ...jest.requireActual('@deriv-app/hooks'),
     useMT5SVGEligibleToMigrate: jest.fn(),
 }));
 

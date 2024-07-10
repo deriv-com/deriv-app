@@ -51,11 +51,11 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
         if (is_phone_number_verified) {
             reInitializeGetSettings();
             setShouldShowPhoneNumberVerifiedModal(true);
-        } else if (is_email_verified) {
+        } else if (is_email_verified && !should_show_phone_number_otp) {
             setVerificationCode(otp, 'phone_number_verification');
             setOtpVerification({ show_otp_verification: false, phone_verification_type: '' });
         }
-    }, [is_phone_number_verified, is_email_verified, setOtpVerification]);
+    }, [is_phone_number_verified, is_email_verified, setOtpVerification, should_show_phone_number_otp]);
 
     const clearOtpValue = () => {
         setOtp('');

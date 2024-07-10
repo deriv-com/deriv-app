@@ -65,23 +65,7 @@ describe('<TransactionsCryptoRenderer />', () => {
     });
 
     it('shows the proper data in Mobile/Tablet mode', () => {
-        mockRootStore = mockStore({
-            modules: {
-                cashier: {
-                    transaction_history: {
-                        cancelCryptoTransaction: jest.fn(),
-                        showTransactionsCryptoCancelModal: jest.fn(),
-                        showTransactionsCryptoStatusModal: jest.fn(),
-                    },
-                },
-            },
-            client: {
-                currency: 'BTC',
-            },
-            ui: {
-                is_desktop: false,
-            },
-        });
+        mockRootStore.ui.is_desktop = false;
 
         renderTransactionsCryptoRenderer();
 
@@ -105,23 +89,7 @@ describe('<TransactionsCryptoRenderer />', () => {
     });
 
     it('shows cancel confirmation modal when user clicks on "Cancel transaction" button in Mobile/Tablet mode', async () => {
-        mockRootStore = mockStore({
-            modules: {
-                cashier: {
-                    transaction_history: {
-                        cancelCryptoTransaction: jest.fn(),
-                        showTransactionsCryptoCancelModal: jest.fn(),
-                        showTransactionsCryptoStatusModal: jest.fn(),
-                    },
-                },
-            },
-            client: {
-                currency: 'BTC',
-            },
-            ui: {
-                is_desktop: false,
-            },
-        });
+        mockRootStore.ui.is_desktop = false;
 
         renderTransactionsCryptoRenderer();
 
@@ -197,23 +165,7 @@ describe('<TransactionsCryptoRenderer />', () => {
     });
 
     it('checks whether the tooltip is clickable for third-party transactions (CoinsPaid) in Mobile/Tablet mode', () => {
-        mockRootStore = mockStore({
-            modules: {
-                cashier: {
-                    transaction_history: {
-                        cancelCryptoTransaction: jest.fn(),
-                        showTransactionsCryptoCancelModal: jest.fn(),
-                        showTransactionsCryptoStatusModal: jest.fn(),
-                    },
-                },
-            },
-            client: {
-                currency: 'BTC',
-            },
-            ui: {
-                is_desktop: false,
-            },
-        });
+        mockRootStore.ui.is_desktop = false;
 
         const tooltip_props = {
             row: {
@@ -245,23 +197,7 @@ describe('<TransactionsCryptoRenderer />', () => {
     });
 
     it('shows transaction status modal when status is clicked in Mobile/Tablet mode', () => {
-        mockRootStore = mockStore({
-            modules: {
-                cashier: {
-                    transaction_history: {
-                        cancelCryptoTransaction: jest.fn(),
-                        showTransactionsCryptoCancelModal: jest.fn(),
-                        showTransactionsCryptoStatusModal: jest.fn(),
-                    },
-                },
-            },
-            client: {
-                currency: 'BTC',
-            },
-            ui: {
-                is_desktop: false,
-            },
-        });
+        mockRootStore.ui.is_desktop = false;
 
         renderTransactionsCryptoRenderer();
 

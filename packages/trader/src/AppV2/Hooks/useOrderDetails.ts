@@ -74,7 +74,7 @@ const transformTurbosData = (data: TContractInfo) => {
         [CARD_LABELS.REFERENCE_ID]: commonFields[CARD_LABELS.REFERENCE_ID],
         [CARD_LABELS.DURATION]: commonFields[CARD_LABELS.DURATION],
         [CARD_LABELS.BARRIER]: data.barrier ?? '',
-        [CARD_LABELS.PAYOUT_PER_POINT]: `${commonFields[CARD_LABELS.PAYOUT_PER_POINT]} ${data.currency}`,
+        [CARD_LABELS.PAYOUT_PER_POINT]: commonFields[CARD_LABELS.PAYOUT_PER_POINT],
         [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
         [CARD_LABELS.TAKE_PROFIT]: data.limit_order?.take_profit?.order_amount
             ? `${data.limit_order.take_profit.order_amount.toFixed(2)} ${data.currency}`
@@ -108,7 +108,7 @@ const transformAccumulatorData = (data: TContractInfo) => {
         ...{
             ...(data.limit_order?.take_profit && {
                 [CARD_LABELS.TAKE_PROFIT]: data.limit_order?.take_profit?.order_amount
-                    ? `${data.limit_order.take_profit.order_amount.toFixed(2)} ${data.currency}`
+                    ? `${data.limit_order.take_profit.order_amount} ${data.currency}`
                     : CARD_LABELS.NOT_SET,
             }),
         },

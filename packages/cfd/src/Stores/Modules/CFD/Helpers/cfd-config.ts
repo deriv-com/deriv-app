@@ -1,4 +1,4 @@
-import { Jurisdiction } from '@deriv/shared';
+import { Jurisdiction } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { TProducts } from 'Components/props.types';
 

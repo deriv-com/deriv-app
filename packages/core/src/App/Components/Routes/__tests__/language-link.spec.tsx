@@ -8,8 +8,8 @@ import { LanguageLink } from '../index';
 
 jest.mock('@deriv-com/translations');
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     TranslationFlag: { VI: () => <div>Tiếng Việt Flag</div> },
 }));
 

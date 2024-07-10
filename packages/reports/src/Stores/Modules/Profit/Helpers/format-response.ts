@@ -1,4 +1,4 @@
-import { formatMoney, toMoment, getSymbolDisplayName, getMarketInformation } from '@deriv/shared';
+import { formatMoney, toMoment, getSymbolDisplayName, getMarketInformation } from '@deriv-app/shared';
 import { ActiveSymbols, ProfitTable } from '@deriv/api-types';
 
 export type TTransaction = NonNullable<NonNullable<ProfitTable>['transactions']>[number];

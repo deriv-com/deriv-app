@@ -1,10 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks';
 import useFileUploader from '../useFileUploader'; // Replace with the actual import path
-import * as fileUtils from '@deriv/shared';
+import * as fileUtils from '@deriv-app/shared';
 
 jest.mock('@binary-com/binary-document-uploader');
 
-jest.mock('@deriv/shared', () => {
+jest.mock('@deriv-app/shared', () => {
     return {
         WS: {
             getSocket: jest.fn().mockReturnValue({}),

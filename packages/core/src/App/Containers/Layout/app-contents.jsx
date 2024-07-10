@@ -4,7 +4,7 @@ import React from 'react';
 import { useLocation, withRouter } from 'react-router';
 import { Analytics } from '@deriv-com/analytics';
 import { ThemedScrollbars } from '@deriv/components';
-import { CookieStorage, TRACKING_STATUS_KEY, platforms, routes, WS } from '@deriv/shared';
+import { CookieStorage, TRACKING_STATUS_KEY, platforms, routes, WS } from '@deriv-app/shared';
 import { useStore, observer } from '@deriv/stores';
 import { useFeatureFlags } from '@deriv/hooks';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';

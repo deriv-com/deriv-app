@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Money, Popover, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getCurrencyDisplayCode, getLocalizedBasis, getGrowthRatePercentage } from '@deriv/shared';
+import { getCurrencyDisplayCode, getLocalizedBasis, getGrowthRatePercentage } from '@deriv-app/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 import CancelDealInfo from './cancel-deal-info';
 import ValueMovement from './value-movement';

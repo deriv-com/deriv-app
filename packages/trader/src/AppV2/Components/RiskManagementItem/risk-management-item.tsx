@@ -5,7 +5,7 @@ import RiskManagementInfoModal from '../RiskManagementInfoModal';
 import DealCancellationRemainingTime from '../DealCancellationRemainingTime/deal-cancellation-remaining-time';
 import { observer } from '@deriv/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
-import { CONTRACT_TYPES, isAccumulatorContract, isValidToCancel } from '@deriv/shared';
+import { CONTRACT_TYPES, isAccumulatorContract, isValidToCancel } from '@deriv-app/shared';
 
 type RiskManagementItemProps = {
     label: React.ReactNode;

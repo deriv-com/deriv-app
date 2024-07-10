@@ -1,13 +1,13 @@
 import React from 'react';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop } from '@deriv-app/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import ToolbarWidgets from '../toolbar-widgets';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     isDesktop: jest.fn(),
 }));
 

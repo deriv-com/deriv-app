@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores/index';
@@ -20,8 +20,8 @@ jest.mock('@deriv/components', () => ({
     ),
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     isMobile: jest.fn(() => true),
 }));
 

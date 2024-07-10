@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
-import { website_domain, TRADE_FEATURE_FLAGS } from '@deriv/shared';
+import { website_domain, TRADE_FEATURE_FLAGS } from '@deriv-app/shared';
 import { Checkbox, Text } from '@deriv/components';
 
 export const FeatureFlagsSection = observer(() => {

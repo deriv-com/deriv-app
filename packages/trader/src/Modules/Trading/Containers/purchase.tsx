@@ -7,7 +7,7 @@ import {
     getContractTypePosition,
     getSupportedContracts,
     getIndicativePrice,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import AccumulatorsSellButton from '../Components/Form/TradeParams/Accumulator/accumulators-sell-button';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset';
 import { useTraderStore } from 'Stores/useTraderStores';

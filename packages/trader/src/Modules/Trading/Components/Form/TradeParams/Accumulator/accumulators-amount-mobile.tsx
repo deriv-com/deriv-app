@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { AMOUNT_MAX_LENGTH, getDecimalPlaces } from '@deriv/shared';
+import { AMOUNT_MAX_LENGTH, getDecimalPlaces } from '@deriv-app/shared';
 import { MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import LabeledQuantityInputMobile from '../../LabeledQuantityInputMobile';

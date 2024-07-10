@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tabs } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { WS, TContractStore, TContractInfo } from '@deriv/shared';
+import { WS, TContractStore, TContractInfo } from '@deriv-app/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 import ContractDetails from './contract-details';
 import ContractHistory from './contract-history';

@@ -2,7 +2,7 @@ import React from 'react';
 import JurisdictionModalFootNote from '../jurisdiction-modal-foot-note';
 import { render, screen } from '@testing-library/react';
 import RootStore from 'Stores/index';
-import { Jurisdiction } from '@deriv/shared';
+import { Jurisdiction } from '@deriv-app/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
 describe('JurisdictionModalFootNote', () => {

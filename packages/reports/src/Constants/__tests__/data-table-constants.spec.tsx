@@ -7,7 +7,7 @@ import {
     getStatementTableColumnsTemplate,
 } from 'Constants/data-table-constants';
 import { render, screen } from '@testing-library/react';
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import { TCellContentProps } from 'Types';
 import moment from 'moment';
 
@@ -16,7 +16,7 @@ jest.mock('@deriv/translations', () => ({
     Localize: jest.fn(text => text),
 }));
 
-jest.mock('@deriv/shared', () => ({
+jest.mock('@deriv-app/shared', () => ({
     isMobile: jest.fn(),
     getCurrencyDisplayCode: jest.fn(currency => currency),
     getTotalProfit: jest.fn(contract_info => {

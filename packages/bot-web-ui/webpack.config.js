@@ -64,7 +64,7 @@ module.exports = function (env) {
                         {
                             loader: 'sass-resources-loader',
                             options: {
-                                resources: require('@deriv/shared/src/styles/index.js'),
+                                resources: require('@deriv-app/shared/src/styles/index.js'),
                             },
                         },
                     ],
@@ -148,7 +148,7 @@ module.exports = function (env) {
                 '@babel/polyfill': '@babel/polyfill',
                 classnames: 'classnames',
                 '@deriv/components': '@deriv/components',
-                '@deriv/shared': '@deriv/shared',
+                '@deriv-app/shared': '@deriv-app/shared',
                 '@deriv/translations': '@deriv/translations',
                 formik: 'formik',
                 react: 'react',

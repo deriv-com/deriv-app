@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRemoteConfig } from '@deriv/api';
 import { useDevice } from '@deriv-com/ui';
-import { useIsMounted } from '@deriv/shared';
+import { useIsMounted } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 import BinaryBotIFrame from 'Modules/BinaryBotIFrame';

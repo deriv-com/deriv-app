@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockContractInfo } from '@deriv/shared';
+import { mockContractInfo } from '@deriv-app/shared';
 import { useDevice } from '@deriv-com/ui';
 import { TPortfolioPosition } from '@deriv/stores/types';
 import { OpenPositionsTable, getRowAction, isPurchaseMissing } from '../open-positions-table';

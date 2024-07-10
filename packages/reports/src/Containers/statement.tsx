@@ -10,7 +10,7 @@ import {
     getUnsupportedContracts,
     isForwardStarting,
     hasForwardContractStarted,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';

@@ -1,7 +1,7 @@
 import { TestWarningModal } from '@deriv/account';
 import { Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { PageError } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 import { TCoreStores } from '@deriv/stores/types';
 

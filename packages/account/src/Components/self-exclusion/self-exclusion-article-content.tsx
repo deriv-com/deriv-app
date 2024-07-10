@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import React from 'react';
-import { getStaticUrl } from '@deriv/shared';
+import { getStaticUrl } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
 import { Button, Icon, OpenLiveChatLink, Popup, Text } from '@deriv/components';
 import SelfExclusionContext from './self-exclusion-context';

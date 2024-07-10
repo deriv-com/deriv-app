@@ -4,7 +4,7 @@ import { Text } from '@deriv-com/quill-ui';
 import { LabelPairedArrowLeftSmBoldIcon } from '@deriv/quill-icons';
 import { Localize } from '@deriv/translations';
 import { useHistory, useLocation } from 'react-router-dom';
-import { isEmptyObject } from '@deriv/shared';
+import { isEmptyObject } from '@deriv-app/shared';
 
 const DTraderContractDetailsHeader = observer(() => {
     const { state } = useLocation();

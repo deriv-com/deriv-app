@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
+import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv-app/shared';
 import DBotStore from '../../../dbot-store';
 import { runGroupedEvents, runIrreversibleEvents } from '../../../utils';
 import { config } from '../../../../constants/config';

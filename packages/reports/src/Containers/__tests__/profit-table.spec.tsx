@@ -6,7 +6,7 @@ import { mockStore } from '@deriv/stores';
 import { Analytics } from '@deriv-com/analytics';
 import ReportsProviders from '../../reports-providers';
 import { useReportsStore } from 'Stores/useReportsStores';
-import { extractInfoFromShortcode, formatDate, getUnsupportedContracts } from '@deriv/shared';
+import { extractInfoFromShortcode, formatDate, getUnsupportedContracts } from '@deriv-app/shared';
 import { useDevice } from '@deriv-com/ui';
 
 const mockData = [
@@ -97,8 +97,8 @@ jest.mock('react-virtualized', () => {
     };
 });
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     WS: {
         forgetAll: jest.fn(),
         wait: jest.fn(),

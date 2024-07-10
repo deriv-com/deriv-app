@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Input, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';

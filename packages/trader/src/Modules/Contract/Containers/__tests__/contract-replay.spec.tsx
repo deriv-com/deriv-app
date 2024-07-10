@@ -38,8 +38,8 @@ jest.mock('@deriv/hooks', () => ({
     useFeatureFlags: jest.fn(() => ({})),
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
 }));
 
 const MockContractReplay = ({ store }: { store?: any }) => {

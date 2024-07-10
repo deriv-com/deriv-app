@@ -29,7 +29,7 @@ const activeSymbols = [
     },
 ];
 
-jest.mock('@deriv/shared', () => {
+jest.mock('@deriv-app/shared', () => {
     const commonRiseFallProperties = {
         barrier_category: 'euro_atm',
         barriers: 0,
@@ -225,7 +225,7 @@ jest.mock('@deriv/shared', () => {
         req_id: 31,
     };
     return {
-        ...jest.requireActual('@deriv/shared'),
+        ...jest.requireActual('@deriv-app/shared'),
         pickDefaultSymbol: jest.fn(() => Promise.resolve(symbol)),
         WS: {
             authorized: {

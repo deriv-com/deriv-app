@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { Analytics } from '@deriv-com/analytics';
 import { useHistory } from 'react-router-dom';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { useStore, observer } from '@deriv/stores';
 
 type TCompareAccount = {

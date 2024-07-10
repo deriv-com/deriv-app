@@ -1,6 +1,6 @@
 import React from 'react';
 import { useInvalidateQuery } from '@deriv/api';
-import { mobileOSDetect, WS } from '@deriv/shared';
+import { mobileOSDetect, WS } from '@deriv-app/shared';
 import { Analytics } from '@deriv-com/analytics';
 
 type TError = { code?: string; name?: string; message: string };

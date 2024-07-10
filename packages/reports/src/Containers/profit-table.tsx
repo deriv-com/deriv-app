@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DataList, DataTable, usePrevious } from '@deriv/components';
-import { extractInfoFromShortcode, formatDate, getContractPath, getUnsupportedContracts } from '@deriv/shared';
+import { extractInfoFromShortcode, formatDate, getContractPath, getUnsupportedContracts } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';

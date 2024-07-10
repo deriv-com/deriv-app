@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { LogTypes } from '@deriv/bot-skeleton';
 import { Text } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
 import { TFormatMessageProps } from '../journal.types';
 

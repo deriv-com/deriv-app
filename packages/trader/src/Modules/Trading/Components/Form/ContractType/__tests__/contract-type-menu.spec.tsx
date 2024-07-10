@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import ContractTypeMenu from '../ContractTypeMenu';
 import ContractTypeWidget from '../contract-type-widget';
 import { mockStore } from '@deriv/stores';
-import { TRADE_TYPES } from '@deriv/shared';
+import { TRADE_TYPES } from '@deriv-app/shared';
 import TraderProviders from '../../../../../../trader-providers';
 import { ActiveSymbols } from '@deriv/api-types';
 

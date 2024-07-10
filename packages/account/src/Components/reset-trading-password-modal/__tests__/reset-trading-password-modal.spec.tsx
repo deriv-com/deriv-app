@@ -3,13 +3,13 @@ import { screen, render, act, fireEvent, waitForElementToBeRemoved, waitFor } fr
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { ResetTradingPasswordModal } from '../reset-trading-password-modal';
-import { WS } from '@deriv/shared';
+import { WS } from '@deriv-app/shared';
 
 const mock_promise = Promise.resolve();
 const mockFn = jest.fn();
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     WS: {
         tradingPlatformPasswordReset: jest.fn(() => mock_promise),
         getAccountStatus: jest.fn(),

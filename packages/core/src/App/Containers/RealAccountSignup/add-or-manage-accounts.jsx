@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Tabs, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { CURRENCY_TYPE, isDesktop, isMobile } from '@deriv/shared';
+import { CURRENCY_TYPE, isDesktop, isMobile } from '@deriv-app/shared';
 import { WS } from 'Services';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
 import AddCurrency from './add-currency.jsx';

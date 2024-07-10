@@ -1,13 +1,13 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import TransactionsCryptoRenderer from '../transactions-crypto-renderer';
 import CashierProviders from '../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
 
-jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
-    ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
+jest.mock('@deriv-app/shared/src/utils/screen/responsive', () => ({
+    ...jest.requireActual('@deriv-app/shared/src/utils/screen/responsive'),
     isMobile: jest.fn(),
 }));
 

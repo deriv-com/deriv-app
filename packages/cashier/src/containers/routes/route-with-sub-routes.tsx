@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Redirect, Route } from 'react-router-dom';
-import { redirectToLogin, routes, removeBranchName, default_title } from '@deriv/shared';
+import { redirectToLogin, routes, removeBranchName, default_title } from '@deriv-app/shared';
 import { getLanguage } from '@deriv/translations';
 import { TRootStore, TRouteConfig, TRoute } from '../../types';
 

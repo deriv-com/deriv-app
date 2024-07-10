@@ -1,5 +1,5 @@
 import { action, observable, makeObservable, computed } from 'mobx';
-import { getDecimalPlaces, isMobile } from '@deriv/shared';
+import { getDecimalPlaces, isMobile } from '@deriv-app/shared';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';

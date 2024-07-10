@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop } from '@deriv-app/shared';
 import TraderProviders from '../../../../../../trader-providers';
 import LastDigit from '../last-digit';
 
@@ -19,8 +19,8 @@ const digit_prediction = 'Last Digit Prediction';
 const last_digit = `Last Digit: ${default_mock_store.modules.trade.last_digit}`;
 
 jest.mock('App/Components/Form/number-selector', () => jest.fn(() => <div>{mocked_number_selector}</div>));
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     isDesktop: jest.fn().mockReturnValue(true),
 }));
 

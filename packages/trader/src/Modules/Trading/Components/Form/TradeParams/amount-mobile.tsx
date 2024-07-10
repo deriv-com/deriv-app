@@ -4,7 +4,7 @@ import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Localize, localize } from '@deriv/translations';
 import { Money, Numpad, Tabs } from '@deriv/components';
-import { getDecimalPlaces, isEmptyObject } from '@deriv/shared';
+import { getDecimalPlaces, isEmptyObject } from '@deriv-app/shared';
 import MinMaxStakeInfo from './min-max-stake-info';
 
 type TAmountMobile = Pick<

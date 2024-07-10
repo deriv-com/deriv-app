@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { address_permitted_special_characters_message } from '@deriv/shared';
+import { address_permitted_special_characters_message } from '@deriv-app/shared';
 
 export const FORM_ERROR_MESSAGES = {
     empty_address: () => localize('This field is required'),

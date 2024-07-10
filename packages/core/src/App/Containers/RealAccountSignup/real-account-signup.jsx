@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { useDevice } from '@deriv-com/ui';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
 import { Button, MobileDialog, Modal, Text, UILoader } from '@deriv/components';
-import { WS, moduleLoader, routes } from '@deriv/shared';
+import { WS, moduleLoader, routes } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import AddCurrency from './add-currency.jsx';

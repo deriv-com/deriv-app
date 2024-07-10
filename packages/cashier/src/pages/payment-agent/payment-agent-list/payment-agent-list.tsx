@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Tabs } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import SideNote from '../../../components/side-note';
 import DepositTab from './deposit-tab';

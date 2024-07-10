@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import TradeTypeTabs from '../trade-type-tabs';
 import { mockStore } from '@deriv/stores';
-import { TRADE_TYPES } from '@deriv/shared';
+import { TRADE_TYPES } from '@deriv-app/shared';
 import TraderProviders from '../../../../../../trader-providers';
 
 describe('Trade Type Tabs', () => {

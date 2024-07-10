@@ -8,8 +8,8 @@ const wrapper = ({ children }: { children: JSX.Element }) => (
     <StoreProvider store={mockStore({ ui: { is_mobile: false } })}>{children}</StoreProvider>
 );
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     compressImageFiles: jest.fn(() => Promise.resolve([{ path: 'hello.pdf' }])),
     readFiles: jest.fn(),
 }));

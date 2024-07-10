@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { getFormattedText } from '@deriv/shared';
+import { getFormattedText } from '@deriv-app/shared';
 import { observer } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { roundOffDecimal } from 'Utils/format-value';

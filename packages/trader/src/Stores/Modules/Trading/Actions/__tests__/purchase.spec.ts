@@ -1,8 +1,8 @@
 import { TBuyRequest } from 'Types';
 import { processPurchase } from '../purchase';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     WS: {
         buy: jest.fn(async (request: TBuyRequest) => ({
             buy: {

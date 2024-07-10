@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { getTimePercentage } from '@deriv/shared';
+import { getTimePercentage } from '@deriv-app/shared';
 import ProgressTicks from './progress-ticks';
 import RemainingTime from '../remaining-time';
 import Text from '../text';

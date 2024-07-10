@@ -12,7 +12,7 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
-import { getLegalEntityName, routes, validPhone } from '@deriv/shared';
+import { getLegalEntityName, routes, validPhone } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
 import { isFieldImmutable, verifyFields } from '../../Helpers/utils';
 import { getEmploymentStatusList } from '../../Sections/Assessment/FinancialAssessment/financial-information-list';

@@ -11,7 +11,7 @@ import {
 } from '@deriv/components';
 import { useFileUploader } from '@deriv/hooks';
 import { localize, Localize } from '@deriv/translations';
-import { isEqualArray, WS } from '@deriv/shared';
+import { isEqualArray, WS } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import FilesDescription from 'Components/file-uploader-container/files-descriptions';
 import FormBody from 'Components/form-body';

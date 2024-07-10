@@ -3,7 +3,7 @@ import React from 'react';
 import { toJS } from 'mobx';
 import { Popover, Text } from '@deriv/components';
 import { TickSpotData } from '@deriv/api-types';
-import { getMarketNamesMap, useIsMounted, isContractElapsed, TContractStore } from '@deriv/shared';
+import { getMarketNamesMap, useIsMounted, isContractElapsed, TContractStore } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import { Bounce, SlideIn } from 'App/Components/Animations';
 import { DigitSpot, LastDigitPrediction } from '../LastDigitPrediction';

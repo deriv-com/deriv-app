@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Dropdown, useOnClickOutside } from '@deriv/components';
 import { useP2PSettings } from '@deriv/hooks';
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import { observer } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';

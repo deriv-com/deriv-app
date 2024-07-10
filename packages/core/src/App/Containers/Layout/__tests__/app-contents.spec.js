@@ -16,8 +16,8 @@ const MockComp = props => {
     );
 };
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     isMobile: jest.fn().mockReturnValue(true),
     WS: {
         wait: jest.fn().mockResolvedValue(true),

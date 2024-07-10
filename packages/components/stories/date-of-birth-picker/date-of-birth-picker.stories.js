@@ -5,7 +5,7 @@ import Wrapper from '../shared/wrapper';
 import DateOfBirthPicker from 'Components/date-of-birth-picker';
 import React from 'react';
 import notes from './README.md';
-import { toMoment } from '@deriv/shared';
+import { toMoment } from '@deriv-app/shared';
 
 storiesOf('DateOfBirthPicker', module)
     .addDecorator(withKnobs)

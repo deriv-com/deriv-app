@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, ThemedScrollbars, ButtonToggle, Dropdown } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { clickAndKeyEventHandler, TRADE_TYPES } from '@deriv/shared';
+import { clickAndKeyEventHandler, TRADE_TYPES } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import TradeCategories from 'Assets/Trading/Categories/trade-categories';

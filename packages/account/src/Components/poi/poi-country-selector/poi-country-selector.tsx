@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik';
 import { Autocomplete, Button, HintBox, Text, SelectNative } from '@deriv/components';
-import { IDV_ERROR_STATUS, TIDVErrorStatus, POIContext } from '@deriv/shared';
+import { IDV_ERROR_STATUS, TIDVErrorStatus, POIContext } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
 import FormFooter from '../../form-footer';
 import { useDevice } from '@deriv-com/ui';

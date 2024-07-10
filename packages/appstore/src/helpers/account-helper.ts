@@ -1,4 +1,4 @@
-import { isCryptocurrency } from '@deriv/shared';
+import { isCryptocurrency } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 
 type TAccountProps = {

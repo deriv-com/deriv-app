@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { getLocalizedBasis, TRADE_TYPES } from '@deriv/shared';
+import { getLocalizedBasis, TRADE_TYPES } from '@deriv-app/shared';
 import ContractInfo from '../contract-info';
 import { useDevice } from '@deriv-com/ui';
 

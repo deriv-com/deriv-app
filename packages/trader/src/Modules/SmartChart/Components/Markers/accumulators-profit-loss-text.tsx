@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { addComma, formatMoney, getCurrencyDisplayCode, isMobile } from '@deriv/shared';
+import { addComma, formatMoney, getCurrencyDisplayCode, isMobile } from '@deriv-app/shared';
 import { FastMarker } from 'Modules/SmartChart';
 import classNames from 'classnames';
 import { TRef } from './accumulators-profit-loss-tooltip';

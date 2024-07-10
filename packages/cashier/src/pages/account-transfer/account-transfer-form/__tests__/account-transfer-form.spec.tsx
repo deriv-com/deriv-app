@@ -1,5 +1,5 @@
 import React from 'react';
-import { MT5_ACCOUNT_STATUS, isMobile } from '@deriv/shared';
+import { MT5_ACCOUNT_STATUS, isMobile } from '@deriv-app/shared';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
@@ -8,8 +8,8 @@ import AccountTransferForm from '../account-transfer-form';
 import userEvent from '@testing-library/user-event';
 import { useMFAccountStatus } from '@deriv/hooks';
 
-jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
-    ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
+jest.mock('@deriv-app/shared/src/utils/screen/responsive', () => ({
+    ...jest.requireActual('@deriv-app/shared/src/utils/screen/responsive'),
     isMobile: jest.fn(),
 }));
 

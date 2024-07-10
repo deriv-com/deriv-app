@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Button, Dialog, PasswordInput, PasswordMeter, Text } from '@deriv/components';
-import { redirectToLogin, validPassword, validLength, getErrorMessages, WS } from '@deriv/shared';
+import { redirectToLogin, validPassword, validLength, getErrorMessages, WS } from '@deriv-app/shared';
 import { getLanguage, localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 

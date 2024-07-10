@@ -3,8 +3,8 @@ import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import ClosingAccountHasPendingConditions from '../closing-account-has-pending-conditions';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     getCFDAccountDisplay: jest.fn(() => 'Financial Demo'),
 }));
 

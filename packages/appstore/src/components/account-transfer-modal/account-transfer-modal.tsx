@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Modal } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { useStore, observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import AccountTransfer from '@deriv/cashier/src/pages/account-transfer';

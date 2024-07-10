@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import PayoutPerPointMobile from '../payout-per-point-mobile';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
+import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv-app/shared';
 import userEvent from '@testing-library/user-event';
 import TraderProviders from '../../../../../trader-providers';
 

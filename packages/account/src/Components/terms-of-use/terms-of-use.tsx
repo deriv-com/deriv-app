@@ -11,7 +11,7 @@ import {
 } from '@deriv/components';
 import { useResidenceSelfDeclaration } from '@deriv/hooks';
 import { observer } from '@deriv/stores';
-import { TBrokerCodes } from '@deriv/shared';
+import { TBrokerCodes } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 import CheckboxField from './checkbox-field';
 import { SharedMessage, BrokerSpecificMessage, Hr } from './terms-of-use-messages';

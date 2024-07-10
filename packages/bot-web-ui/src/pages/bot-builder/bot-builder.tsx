@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useRemoteConfig } from '@deriv/api';
-import { useIsMounted } from '@deriv/shared';
+import { useIsMounted } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';

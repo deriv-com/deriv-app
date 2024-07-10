@@ -19,7 +19,7 @@ import {
     getLocalizedBasis,
     TTradeTypesCategories,
     TRADE_TYPES,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
 import { isSessionAvailable } from './start-date';

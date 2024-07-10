@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Field, Form, FormikValues } from 'formik';
 import { Button, DesktopWrapper, Input, Loading, Text } from '@deriv/components';
 import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
-import { isEmptyObject } from '@deriv/shared';
+import { isEmptyObject } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';

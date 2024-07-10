@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useStores } from 'Stores';
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import OrderDetailsWrapper from '../order-details-wrapper.jsx';
 
 jest.mock('Stores', () => ({
@@ -9,8 +9,8 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(),
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     isMobile: jest.fn(() => false),
 }));
 

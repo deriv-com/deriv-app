@@ -8,7 +8,7 @@ import { mockStore } from '@deriv/stores';
 import CashierLocked from '../cashier-locked';
 import CashierProviders from '../../../cashier-providers';
 import { TCoreStores } from '@deriv/stores/types';
-import { MT5_ACCOUNT_STATUS } from '@deriv/shared';
+import { MT5_ACCOUNT_STATUS } from '@deriv-app/shared';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),

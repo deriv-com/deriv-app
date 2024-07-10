@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 

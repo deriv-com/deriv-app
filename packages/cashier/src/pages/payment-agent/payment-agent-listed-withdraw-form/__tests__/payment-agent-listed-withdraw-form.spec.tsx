@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentListedWithdrawForm from '../payment-agent-listed-withdraw-form';
-import { validNumber } from '@deriv/shared';
+import { validNumber } from '@deriv-app/shared';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
 import { TPaymentAgent } from '../../../../types';
@@ -12,8 +12,8 @@ jest.mock('@deriv/components', () => ({
     Loading: () => <div>Loading</div>,
 }));
 
-jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules', () => ({
-    ...jest.requireActual('@deriv/shared/src/utils/validation/declarative-validation-rules'),
+jest.mock('@deriv-app/shared/src/utils/validation/declarative-validation-rules', () => ({
+    ...jest.requireActual('@deriv-app/shared/src/utils/validation/declarative-validation-rules'),
     validNumber: jest.fn(() => ({ is_ok: true, message: '' })),
 }));
 

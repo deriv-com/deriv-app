@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps, useHistory, withRouter } from 'react-router-dom';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { Jurisdiction, routes } from '@deriv/shared';
+import { Jurisdiction, routes } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useHasSetCurrency } from '@deriv/hooks';
 import { TActiveAccount } from '@deriv/stores/types';

@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Formik, Form, FormikErrors } from 'formik';
 import { Button, Dialog, Text, Input } from '@deriv/components';
-import { validEmail, getErrorMessages } from '@deriv/shared';
+import { validEmail, getErrorMessages } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
 import { ConfirmEmailModal } from '../ConfirmEmailModal/confirm-email-modal';
 import { observer, useStore } from '@deriv/stores';

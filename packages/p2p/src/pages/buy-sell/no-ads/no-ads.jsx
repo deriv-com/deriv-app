@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useHistory } from 'react-router-dom';
 import { Button, Icon, Text } from '@deriv/components';
 import { useP2PSettings } from '@deriv/hooks';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { observer } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

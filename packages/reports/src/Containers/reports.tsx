@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 import { Div100vhContainer, FadeWrapper, Loading, PageOverlay, SelectNative, VerticalTab } from '@deriv/components';
-import { getSelectedRoute } from '@deriv/shared';
+import { getSelectedRoute } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { Analytics } from '@deriv-com/analytics';

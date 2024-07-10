@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Loading, Modal, Text } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { useCloseDerivAccount } from '@deriv/api';
 import { Localize } from '@deriv/translations';
 import { MAX_ALLOWED_REASONS_FOR_CLOSING_ACCOUNT } from 'Constants/closing-account-config';

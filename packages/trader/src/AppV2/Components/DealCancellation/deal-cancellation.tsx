@@ -4,7 +4,7 @@ import { getContractDetailsConfig } from 'AppV2/Utils/contract-details-config';
 import { observer } from '@deriv/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import RiskManagementItem from '../RiskManagementItem';
-import { isValidToCancel, isOpen } from '@deriv/shared';
+import { isValidToCancel, isOpen } from '@deriv-app/shared';
 import CardWrapper from '../CardWrapper';
 
 const DealCancellation = observer(() => {

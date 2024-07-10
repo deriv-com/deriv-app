@@ -5,8 +5,8 @@ import TradeHeaderExtensions from '../trade-header-extensions';
 import { mockStore } from '@deriv/stores';
 import ui from '@deriv-com/ui';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     WS: {
         wait: jest.fn(() => Promise.resolve('authorized')),
     },

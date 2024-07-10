@@ -3,7 +3,7 @@ import Loadable from 'react-loadable';
 import { useDevice } from '@deriv-com/ui';
 import { InputField, useOnClickOutside } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { daysFromTodayTo, toMoment } from '@deriv/shared';
+import { daysFromTodayTo, toMoment } from '@deriv-app/shared';
 import CompositeCalendarMobile from './composite-calendar-mobile';
 import SideList from './side-list';
 import CalendarIcon from './calendar-icon';

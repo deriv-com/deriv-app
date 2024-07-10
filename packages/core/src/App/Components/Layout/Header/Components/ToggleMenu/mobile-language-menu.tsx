@@ -5,7 +5,7 @@ import { observer, useStore } from '@deriv/stores';
 import { getAllowedLanguages } from '@deriv-com/translations';
 import { localize } from '@deriv/translations'; // [TODO:] Remove this once deriv-app is configured to use the new translation lib
 import { LanguageLink } from 'App/Components/Routes';
-import { UNSUPPORTED_LANGUAGES } from '@deriv/shared';
+import { UNSUPPORTED_LANGUAGES } from '@deriv-app/shared';
 
 type TMobileLanguageMenu = {
     expandSubMenu: (prop: boolean) => void;

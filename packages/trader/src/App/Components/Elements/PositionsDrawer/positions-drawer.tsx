@@ -10,7 +10,7 @@ import {
     isTurbosContract,
     isVanillaContract,
     isContractSupportedAndStarted,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import { filterByContractType } from './helpers';

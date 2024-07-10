@@ -1,7 +1,7 @@
 import 'Sass/app/_common/components/platform-switcher.scss';
 
 import { Icon } from '@deriv/components';
-import { getPlatformInformation, getUrlBinaryBot, isMobile } from '@deriv/shared';
+import { getPlatformInformation, getUrlBinaryBot, isMobile } from '@deriv-app/shared';
 
 import { CSSTransition } from 'react-transition-group';
 import { PlatformDropdown } from './platform-dropdown.jsx';

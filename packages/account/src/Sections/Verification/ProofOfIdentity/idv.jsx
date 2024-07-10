@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatIDVError } from '@deriv/shared';
+import { formatIDVError } from '@deriv-app/shared';
 import IdvLimited from '../../../Components/poi/idv-status/idv-limited';
 import IdvSubmitComplete from '../../../Components/poi/idv-status/idv-submit-complete';
 import IdvVerified from '../../../Components/poi/idv-status/idv-verified';

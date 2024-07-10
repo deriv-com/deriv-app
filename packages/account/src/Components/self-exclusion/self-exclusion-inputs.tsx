@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Button, DatePicker, Input, Text } from '@deriv/components';
-import { epochToMoment, toMoment } from '@deriv/shared';
+import { epochToMoment, toMoment } from '@deriv-app/shared';
 import { useDevice } from '@deriv-com/ui';
 import { Localize, localize } from '@deriv/translations';
 import {

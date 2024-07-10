@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { WS, getErrorMessages, validPassword, Jurisdiction, routes } from '@deriv/shared';
+import { WS, getErrorMessages, validPassword, Jurisdiction, routes } from '@deriv-app/shared';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import CFDPasswordModal from '../cfd-password-modal';
 import CFDProviders from '../../cfd-providers';
@@ -18,8 +18,8 @@ jest.mock('@deriv/components', () => ({
     Icon: jest.fn(({ icon }) => <div>{icon}</div>),
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     getErrorMessages: jest.fn().mockReturnValue({
         password_warnings: '',
         password: jest.fn().mockReturnValue('Password should have lower and uppercase English letters with numbers.'),

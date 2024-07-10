@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { Button, DataList, Icon, Text, ThemedScrollbars } from '@deriv/components';
-import { useNewRowTransition } from '@deriv/shared';
+import { useNewRowTransition } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import Download from 'Components/download';

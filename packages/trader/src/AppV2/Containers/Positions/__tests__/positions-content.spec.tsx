@@ -22,8 +22,8 @@ const mediaQueryList = {
 
 window.matchMedia = jest.fn().mockImplementation(() => mediaQueryList);
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     WS: {
         activeSymbols: jest.fn(),
         authorized: {

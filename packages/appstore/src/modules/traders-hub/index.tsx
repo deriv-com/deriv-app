@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
-import { routes, checkServerMaintenance, startPerformanceEventTimer } from '@deriv/shared';
+import { routes, checkServerMaintenance, startPerformanceEventTimer } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, useLocalize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';

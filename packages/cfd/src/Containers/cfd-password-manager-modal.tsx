@@ -14,7 +14,7 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isMobile, getCFDPlatformLabel } from '@deriv/shared';
+import { isMobile, getCFDPlatformLabel } from '@deriv-app/shared';
 import { FormikErrors } from 'formik';
 import CFDStore from '../Stores/Modules/CFD/cfd-store';
 import TradingPasswordManager from './trading-password-manager';

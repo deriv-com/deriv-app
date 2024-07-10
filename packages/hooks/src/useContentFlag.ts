@@ -1,4 +1,4 @@
-import { ContentFlag } from '@deriv/shared';
+import { ContentFlag } from '@deriv-app/shared';
 import { useStore } from '@deriv/stores';
 
 const useContentFlag = () => {

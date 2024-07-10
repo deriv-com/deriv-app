@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { currencySelectorConfig } from '@deriv/account';
-import { website_name, generateValidationFunction } from '@deriv/shared';
+import { website_name, generateValidationFunction } from '@deriv-app/shared';
 import { Text } from '@deriv/components';
 import CurrencySelector from '@deriv/account/src/Components/currency-selector';
 import LoadingModal from './real-account-signup-loader.jsx';

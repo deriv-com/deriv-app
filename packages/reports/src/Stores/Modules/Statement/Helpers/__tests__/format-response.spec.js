@@ -1,5 +1,5 @@
 import { formatStatementTransaction } from '../format-response';
-import { toTitleCase } from '@deriv/shared';
+import { toTitleCase } from '@deriv-app/shared';
 
 describe('formatStatementTransaction', () => {
     const constant = {

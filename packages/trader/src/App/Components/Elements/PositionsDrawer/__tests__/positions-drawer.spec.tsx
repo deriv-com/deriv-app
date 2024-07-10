@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore, useStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { mockContractInfo, CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
+import { mockContractInfo, CONTRACT_TYPES, TRADE_TYPES } from '@deriv-app/shared';
 import PositionsDrawer from '../positions-drawer';
 import TraderProviders from '../../../../../trader-providers';
 

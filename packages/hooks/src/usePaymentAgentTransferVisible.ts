@@ -1,5 +1,5 @@
 import { useFetch } from '@deriv/api';
-import { WS } from '@deriv/shared';
+import { WS } from '@deriv-app/shared';
 import { useStore } from '@deriv/stores';
 import { useEffect, useState } from 'react';
 

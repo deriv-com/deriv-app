@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Div100vhContainer, Text, Button, ThemedScrollbars, Icon } from '@deriv/components';
-import { getOnfidoError } from '@deriv/shared';
+import { getOnfidoError } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import ListItem from './list-item';
 import { useDevice } from '@deriv-com/ui';

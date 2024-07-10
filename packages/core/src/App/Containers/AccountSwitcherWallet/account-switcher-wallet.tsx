@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Icon, Text, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useStoreWalletAccountsList } from '@deriv/hooks';

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { withRouter, useHistory } from 'react-router-dom';
-import { loginUrl, routes, redirectToLogin, SessionStore } from '@deriv/shared';
+import { loginUrl, routes, redirectToLogin, SessionStore } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';

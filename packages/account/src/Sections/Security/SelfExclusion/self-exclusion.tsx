@@ -9,7 +9,7 @@ import {
     validNumber,
     useIsMounted,
     WS,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import DemoMessage from 'Components/demo-message';
 import 'Components/self-exclusion/self-exclusion.scss';

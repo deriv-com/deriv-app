@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Modal, Popover } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { deriv_urls, getLegalEntityName } from '@deriv/shared';
+import { deriv_urls, getLegalEntityName } from '@deriv-app/shared';
 
 const MFRegulatoryInformation = () => (
     <div className='footer-regulatory-information'>

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, ThemedScrollbars, Icon } from '@deriv/components';
-import { formatMilliseconds } from '@deriv/shared';
+import { formatMilliseconds } from '@deriv-app/shared';
 import { observer } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import ChatMessageReceipt from 'Pages/orders/chat/chat-message-receipt.jsx';

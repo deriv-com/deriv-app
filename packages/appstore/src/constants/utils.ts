@@ -1,4 +1,4 @@
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 
 /**
  * This function checks whether the current item should have a border at the bottom 'aka "divider" '.

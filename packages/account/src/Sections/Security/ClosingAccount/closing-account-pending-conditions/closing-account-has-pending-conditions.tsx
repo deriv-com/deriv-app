@@ -1,7 +1,7 @@
 import React from 'react';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Button, Money, ThemedScrollbars } from '@deriv/components';
-import { CFD_PLATFORMS, formatMoney } from '@deriv/shared';
+import { CFD_PLATFORMS, formatMoney } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import {

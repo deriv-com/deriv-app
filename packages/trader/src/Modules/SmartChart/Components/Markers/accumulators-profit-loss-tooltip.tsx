@@ -5,7 +5,7 @@ import { Money, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import AccumulatorsProfitLossText from './accumulators-profit-loss-text';
 import { FastMarker } from 'Modules/SmartChart';
-import { getDecimalPlaces } from '@deriv/shared';
+import { getDecimalPlaces } from '@deriv-app/shared';
 import { useStore } from '@deriv/stores';
 
 type TContractInfo = ReturnType<typeof useStore>['portfolio']['all_positions'][number]['contract_info'];

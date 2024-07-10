@@ -1,6 +1,6 @@
 import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop } from '@deriv-app/shared';
 import ProofOfAddressContainer from '@deriv/account/src/Sections/Verification/ProofOfAddress/proof-of-address-container';
 import ProofOfIdentityContainer from '@deriv/account/src/Sections/Verification/ProofOfIdentity/proof-of-identity-container';
 import { observer, useStore } from '@deriv/stores';

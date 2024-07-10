@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { formatMoney } from '@deriv/shared';
+import { formatMoney } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Text } from '@deriv/components';
 import { useP2PExchangeRate, useP2PSettings } from '@deriv/hooks';

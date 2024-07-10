@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 
 import { Loading, Tabs } from '@deriv/components';
 import { useIsSystemMaintenance, useP2PNotificationCount } from '@deriv/hooks';
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import { useStore } from '@deriv/stores';
 
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

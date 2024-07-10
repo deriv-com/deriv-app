@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
-import { capitalizeFirstLetter } from '@deriv/shared';
+import { capitalizeFirstLetter } from '@deriv-app/shared';
 import { IconProps } from '../types';
 
 // TODO: This probably can be moved somewhere else.

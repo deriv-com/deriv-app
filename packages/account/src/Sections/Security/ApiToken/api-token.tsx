@@ -4,7 +4,7 @@ import { Formik, Form, Field, FormikErrors, FieldProps, FormikHelpers } from 'fo
 import { ApiToken as TApitoken, APITokenResponse as TAPITokenResponse } from '@deriv/api-types';
 import { Timeline, Input, Button, ThemedScrollbars, Loading } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
-import { getPropertyValue, WS } from '@deriv/shared';
+import { getPropertyValue, WS } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { TToken } from 'Types';

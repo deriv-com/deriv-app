@@ -3,7 +3,7 @@ import moment from 'moment';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { getCardLabels, mockContractInfo, TRADE_TYPES } from '@deriv/shared';
+import { getCardLabels, mockContractInfo, TRADE_TYPES } from '@deriv-app/shared';
 import { ActiveSymbols } from '@deriv/api-types';
 import PositionsModalCard from '../positions-modal-card';
 import TraderProviders from '../../../../../trader-providers';
@@ -73,8 +73,8 @@ jest.mock('App/Components/Elements/ContentLoader', () => ({
     ...jest.requireActual('App/Components/Elements/ContentLoader'),
     PositionsCardLoader: jest.fn(() => <div>{positions_card_loader}</div>),
 }));
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     getSymbolDisplayName: jest.fn(() => symbol_display_name),
 }));
 jest.mock('App/Components/Routes', () => ({

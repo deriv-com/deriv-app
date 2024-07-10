@@ -1,6 +1,6 @@
 import React from 'react';
 import { Popover } from '@deriv/components';
-import { isBot } from '@deriv/shared';
+import { isBot } from '@deriv-app/shared';
 
 type TAccountInfoWrapper = {
     is_disabled?: boolean;

@@ -24,7 +24,7 @@ import {
     LocalStore,
     routes,
     unique,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
 
 import { BinaryLink } from 'App/Components/Routes';

@@ -1,7 +1,7 @@
 import debounce from 'lodash.debounce';
 import { requestPreviewProposal } from '../preview-proposal';
 import { mockStore } from '@deriv/stores';
-import { WS } from '@deriv/shared';
+import { WS } from '@deriv-app/shared';
 
 jest.mock('../proposal', () => ({
     createProposalRequests: jest.fn(() => ({ type1: {}, type2: {} })),
@@ -13,8 +13,8 @@ jest.mock('lodash.debounce', () => {
     });
 });
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     WS: {
         subscribeProposal: jest.fn(),
         forget: jest.fn(),

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { addComma } from '@deriv/shared';
+import { addComma } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 
 type TDurationRangeText = {

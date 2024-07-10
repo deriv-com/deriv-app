@@ -1,4 +1,4 @@
-import { isCryptocurrency, getCurrencyDisplayCode } from '@deriv/shared';
+import { isCryptocurrency, getCurrencyDisplayCode } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 
 export const buildCurrenciesList = payout_currencies => {

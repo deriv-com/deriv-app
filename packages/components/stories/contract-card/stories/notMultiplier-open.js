@@ -3,7 +3,7 @@ import Wrapper from '../../shared/wrapper';
 import ContractCard from 'Components/contract-card';
 import { getCardLabels, getContractTypeDisplay } from '../statics/contract';
 import sampleData from '../sample-data/sampleData.json';
-import { toMoment } from '@deriv/shared';
+import { toMoment } from '@deriv-app/shared';
 import '../contract-card.stories.scss';
 
 const Basic = () => {

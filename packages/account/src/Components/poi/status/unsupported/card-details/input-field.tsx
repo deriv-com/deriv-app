@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, FormikValues } from 'formik';
 import { DatePicker, Input } from '@deriv/components';
-import { toMoment } from '@deriv/shared';
+import { toMoment } from '@deriv-app/shared';
 import { ROOT_CLASS } from '../constants';
 
 const InputField = ({ data }: FormikValues) => {

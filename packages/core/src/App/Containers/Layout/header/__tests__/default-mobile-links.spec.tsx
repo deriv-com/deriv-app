@@ -4,7 +4,7 @@ import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import DefaultMobileLinks from '../default-mobile-links';
 import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
 

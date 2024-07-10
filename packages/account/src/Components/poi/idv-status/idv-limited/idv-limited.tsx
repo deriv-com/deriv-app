@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { DerivLightExclamationPoiIcon } from '@deriv/quill-icons';
-import { POIContext } from '@deriv/shared';
+import { POIContext } from '@deriv-app/shared';
 import { submission_status_code } from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
 
 type TIdvLimited = {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Loading } from '@deriv/components';
 import { useDepositFiatAddress } from '@deriv/hooks';
 import { observer } from '@deriv/stores';
-import { setPerformanceValue } from '@deriv/shared';
+import { setPerformanceValue } from '@deriv-app/shared';
 import { ErrorState } from '../../../../components/error-state';
 import './deposit-fiat-iframe.scss';
 

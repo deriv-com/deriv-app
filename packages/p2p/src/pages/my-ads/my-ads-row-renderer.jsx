@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Dropdown, Icon, Popover, ProgressIndicator, Table, Text } from '@deriv/components';
-import { isMobile, formatMoney } from '@deriv/shared';
+import { isMobile, formatMoney } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useP2PExchangeRate, useP2PSettings } from '@deriv/hooks';
 import { Localize, localize } from 'Components/i18next';

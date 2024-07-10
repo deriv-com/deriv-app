@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon } from '@deriv/components';
-import { Jurisdiction } from '@deriv/shared';
+import { Jurisdiction } from '@deriv-app/shared';
 import { useStore, observer } from '@deriv/stores';
 import CurrencyIcon, { Currency } from 'Assets/svgs/currency';
 import TradingPlatformIcon from 'Assets/svgs/trading-platform';

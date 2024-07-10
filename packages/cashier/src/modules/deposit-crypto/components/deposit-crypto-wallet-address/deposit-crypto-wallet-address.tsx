@@ -3,7 +3,7 @@ import { Button, Clipboard, InlineMessage, Loading, Text } from '@deriv/componen
 import { useDepositCryptoAddress } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { setPerformanceValue } from '@deriv/shared';
+import { setPerformanceValue } from '@deriv-app/shared';
 import QRCode from 'qrcode.react';
 import { DepositCryptoDisclaimers } from '../deposit-crypto-disclaimers';
 import './deposit-crypto-wallet-address.scss';

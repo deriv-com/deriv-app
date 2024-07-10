@@ -3,7 +3,7 @@ import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Checklist } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import AccountTransferLocked from '../account-transfer-locked';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';

@@ -3,7 +3,7 @@ import React from 'react';
 import { useStore } from '@deriv/stores';
 import AccumulatorsProfitLossTooltip from './accumulators-profit-loss-tooltip';
 import ChartMarker from './marker';
-import { TRADE_TYPES } from '@deriv/shared';
+import { TRADE_TYPES } from '@deriv-app/shared';
 
 type TPortfolioStore = ReturnType<typeof useStore>['portfolio'];
 

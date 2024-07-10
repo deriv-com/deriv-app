@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import AuthorizationRequiredModal from '../authorization-required-modal';
-import { redirectToLogin, redirectToSignUp } from '@deriv/shared';
+import { redirectToLogin, redirectToSignUp } from '@deriv-app/shared';
 import userEvent from '@testing-library/user-event';
 
 type TModal = React.FC<{
@@ -39,8 +39,8 @@ jest.mock('@deriv/components', () => {
     };
 });
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     redirectToLogin: jest.fn(),
     redirectToSignUp: jest.fn(),
 }));

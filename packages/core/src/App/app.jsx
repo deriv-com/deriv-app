@@ -15,7 +15,7 @@ import {
     setUrlLanguage,
     setWebsocket,
     useOnLoadTranslation,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { StoreProvider, P2PSettingsProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
 import { withTranslation, useTranslation } from 'react-i18next';

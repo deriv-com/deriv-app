@@ -15,7 +15,7 @@ import {
     isTurbosContract,
     isCryptocurrency,
     isVanillaContract,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { BinaryLink } from 'App/Components/Routes';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import PositionsResultMobile from './positions-result-mobile';

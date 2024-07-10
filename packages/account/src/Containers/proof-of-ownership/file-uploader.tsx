@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { FormikErrors, useFormikContext } from 'formik';
 import { Button, Input, Icon } from '@deriv/components';
-import { compressImageFiles } from '@deriv/shared';
+import { compressImageFiles } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { TFile, TPaymentMethod, TProofOfOwnershipFormValue } from 'Types';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { updateAmountChanges } from './duration-utils';
-import { getDurationMinMaxValues, isEmptyObject } from '@deriv/shared';
+import { getDurationMinMaxValues, isEmptyObject } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { TickPicker } from '@deriv/components';
 import { TDurationMobile } from './duration-mobile';

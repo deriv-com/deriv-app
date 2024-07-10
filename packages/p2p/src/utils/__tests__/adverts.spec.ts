@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { toMoment } from '@deriv/shared';
+import { toMoment } from '@deriv-app/shared';
 import {
     generateErrorDialogBody,
     generateErrorDialogTitle,
@@ -8,8 +8,8 @@ import {
 } from '../adverts';
 
 let mock_value: moment.Moment = moment();
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     toMoment: jest.fn(() => mock_value),
 }));
 

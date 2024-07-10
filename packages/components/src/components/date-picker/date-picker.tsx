@@ -1,5 +1,5 @@
 import React from 'react';
-import { addDays, daysFromTodayTo, toMoment, convertDateFormat, getPosition } from '@deriv/shared';
+import { addDays, daysFromTodayTo, toMoment, convertDateFormat, getPosition } from '@deriv-app/shared';
 import Input from './date-picker-input';
 import Calendar from './date-picker-calendar';
 import Native from './date-picker-native';

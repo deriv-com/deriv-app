@@ -4,7 +4,7 @@ declare module '*.svg' {
 }
 
 declare module '@deriv/components';
-declare module '@deriv/shared';
+declare module '@deriv-app/shared';
 declare module '@deriv/account';
 
 declare module '@binary-com/binary-document-uploader';

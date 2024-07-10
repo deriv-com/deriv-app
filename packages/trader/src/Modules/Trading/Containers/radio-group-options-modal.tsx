@@ -2,7 +2,7 @@ import React from 'react';
 import { Div100vhContainer, Modal, usePreventIOSZoom } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { getGrowthRatePercentage, isEmptyObject, TRADE_TYPES } from '@deriv/shared';
+import { getGrowthRatePercentage, isEmptyObject, TRADE_TYPES } from '@deriv-app/shared';
 import MultiplierOptions from 'Modules/Trading/Containers/Multiplier/multiplier-options';
 import RadioGroupWithInfoMobile from 'Modules/Trading/Components/Form/RadioGroupWithInfoMobile';
 import { observer } from '@deriv/stores';

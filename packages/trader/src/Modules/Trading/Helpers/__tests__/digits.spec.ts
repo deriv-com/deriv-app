@@ -1,4 +1,4 @@
-import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
+import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv-app/shared';
 import { isDigitTradeType, isDigitContractType } from '../digits';
 
 describe('isDigitTradeType', () => {

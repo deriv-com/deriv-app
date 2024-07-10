@@ -10,7 +10,7 @@ import {
     Text,
     useCopyToClipboard,
 } from '@deriv/components';
-import { websiteUrl } from '@deriv/shared';
+import { websiteUrl } from '@deriv-app/shared';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

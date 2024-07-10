@@ -15,7 +15,7 @@ import {
     Text,
 } from '@deriv/components';
 import { GetSettings } from '@deriv/api-types';
-import { AUTH_STATUS_CODES, WS, getBrandWebsiteName, routes } from '@deriv/shared';
+import { AUTH_STATUS_CODES, WS, getBrandWebsiteName, routes } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import LeaveConfirm from 'Components/leave-confirm';

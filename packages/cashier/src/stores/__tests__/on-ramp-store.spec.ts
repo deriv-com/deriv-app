@@ -32,8 +32,8 @@ beforeEach(() => {
     banxa_provider = createBanxaProvider(onramp_store);
 });
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     websiteUrl: () => 'https://app.deriv.com/',
 }));
 

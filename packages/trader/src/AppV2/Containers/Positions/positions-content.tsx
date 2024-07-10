@@ -1,5 +1,5 @@
 import React from 'react';
-import { TContractInfo } from '@deriv/shared';
+import { TContractInfo } from '@deriv-app/shared';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { EmptyPositions, TEmptyPositionsProps } from 'AppV2/Components/EmptyPositions';

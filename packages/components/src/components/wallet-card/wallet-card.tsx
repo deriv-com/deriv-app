@@ -5,7 +5,7 @@ import Badge from '../badge';
 import Button from '../button';
 import Icon from '../icon';
 import Text from '../text';
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import { WalletIcon } from '../wallet-icon';
 import './wallet-card.scss';
 

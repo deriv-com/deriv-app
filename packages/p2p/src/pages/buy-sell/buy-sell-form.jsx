@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
 import { Input, Text, Tooltip } from '@deriv/components';
 import { useP2PAdvertiserPaymentMethods, useP2PExchangeRate } from '@deriv/hooks';
-import { getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
+import { getDecimalPlaces, isDesktop, isMobile } from '@deriv-app/shared';
 import { reaction } from 'mobx';
 import { observer, Observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';

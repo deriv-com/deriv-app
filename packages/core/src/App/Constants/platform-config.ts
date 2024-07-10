@@ -1,4 +1,4 @@
-import { getPlatformSettings, routes } from '@deriv/shared';
+import { getPlatformSettings, routes } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 
 type TPlatformConfig = {

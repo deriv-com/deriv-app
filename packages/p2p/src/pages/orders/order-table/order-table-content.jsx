@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Loading, Button, InfiniteDataList, Div100vhContainer, Text } from '@deriv/components';
 import { reaction } from 'mobx';
-import { isMobile, routes } from '@deriv/shared';
+import { isMobile, routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import TableError from 'Components/section-error';

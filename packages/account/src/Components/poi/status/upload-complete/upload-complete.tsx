@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
-import { isNavigationFromP2P, isNavigationFromDerivGO } from '@deriv/shared';
+import { isNavigationFromP2P, isNavigationFromDerivGO } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import PoaButton from '../../../poa/poa-button';
 import { ContinueTradingButton } from '../../../poa/continue-trading-button/continue-trading-button';

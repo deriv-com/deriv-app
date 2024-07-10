@@ -1,11 +1,11 @@
 import React from 'react';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { WS } from '@deriv/shared';
+import { WS } from '@deriv-app/shared';
 import TwoFactorAuthentication from '../two-factor-authentication';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     WS: {
         authorized: {
             accountSecurity: jest.fn().mockResolvedValue({}),

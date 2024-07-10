@@ -1,6 +1,6 @@
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import TogglePositions from '../Components/Elements/TogglePositions/toggle-positions';
 import { observer, useStore } from '@deriv/stores';
 

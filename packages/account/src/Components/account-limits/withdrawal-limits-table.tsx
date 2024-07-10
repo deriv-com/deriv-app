@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { formatMoney } from '@deriv/shared';
+import { formatMoney } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import AccountLimitsTableCell from './account-limits-table-cell';

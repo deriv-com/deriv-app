@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Checkbox, Dropdown, Icon, Text } from '@deriv/components';
-import { isEmptyObject } from '@deriv/shared';
+import { isEmptyObject } from '@deriv-app/shared';
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

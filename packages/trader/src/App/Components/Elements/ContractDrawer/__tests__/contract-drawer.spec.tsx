@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { useDevice } from '@deriv-com/ui';
 import { mockStore } from '@deriv/stores';
 import { Router } from 'react-router';
-import { toMoment } from '@deriv/shared';
+import { toMoment } from '@deriv-app/shared';
 import ContractDrawer from '../contract-drawer';
 import TraderProviders from '../../../../../trader-providers';
 import userEvent from '@testing-library/user-event';
@@ -46,8 +46,8 @@ const default_mock_store = {
     },
 };
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     getEndTime: jest.fn(() => true),
     isUserSold: jest.fn(() => true),
 }));
@@ -58,7 +58,7 @@ jest.mock('@deriv-com/ui', () => ({
 }));
 
 jest.mock('react-transition-group', () => ({
-    ...jest.requireActual('@deriv/shared'),
+    ...jest.requireActual('@deriv-app/shared'),
     CSSTransition: jest.fn(({ children }) => <div>{children}</div>),
 }));
 jest.mock('App/Components/Elements/ContentLoader', () => ({

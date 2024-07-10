@@ -28,7 +28,7 @@ jest.mock('react-router-dom', () => ({
 
 const mockRedirectToLogin = jest.fn();
 
-jest.mock('@deriv/shared', () => ({
+jest.mock('@deriv-app/shared', () => ({
     redirectToLogin: jest.fn(),
     isEmptyObject: (obj: Record<string, any>) => Object.keys(obj).length === 0,
     routes: { index: '/index', is_logged_in: '/login' },

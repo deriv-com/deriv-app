@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import BarriersList from './barriers-list';
 import { InputField, Dropdown, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { clickAndKeyEventHandler, toMoment, TRADE_TYPES } from '@deriv/shared';
+import { clickAndKeyEventHandler, toMoment, TRADE_TYPES } from '@deriv-app/shared';
 import Fieldset from 'App/Components/Form/fieldset';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
 import { observer, useStore } from '@deriv/stores';

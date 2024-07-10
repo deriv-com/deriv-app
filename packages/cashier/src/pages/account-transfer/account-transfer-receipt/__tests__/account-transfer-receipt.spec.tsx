@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import AccountTransferReceipt from '../account-transfer-receipt';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';

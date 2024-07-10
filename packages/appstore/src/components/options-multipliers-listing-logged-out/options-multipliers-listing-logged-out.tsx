@@ -6,7 +6,7 @@ import OptionsDescription from 'Components/elements/options-description';
 import OptionsTitle from 'Components/elements/options-title';
 import { BrandConfig } from 'Constants/platform-config';
 import { getHasDivider } from 'Constants/utils';
-import { isEuCountry, getAppstorePlatforms } from '@deriv/shared';
+import { isEuCountry, getAppstorePlatforms } from '@deriv-app/shared';
 import './options-multipliers-listing-logged-out.scss';
 
 const OptionsAndMultipliersListingLoggedOut = observer(() => {

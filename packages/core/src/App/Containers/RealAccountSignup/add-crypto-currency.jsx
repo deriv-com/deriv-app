@@ -5,7 +5,7 @@ import { useDevice } from '@deriv-com/ui';
 import { FormSubmitButton, Icon, Text, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { reorderCurrencies, website_name } from '@deriv/shared';
+import { reorderCurrencies, website_name } from '@deriv-app/shared';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
 import './currency-selector.scss';
 

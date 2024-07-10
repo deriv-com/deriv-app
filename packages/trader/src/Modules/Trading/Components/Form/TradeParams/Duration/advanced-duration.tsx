@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Dropdown, ButtonToggle, InputField } from '@deriv/components';
-import { getDurationMinMaxValues, getUnitMap, hasIntradayDurationUnit, toMoment } from '@deriv/shared';
+import { getDurationMinMaxValues, getUnitMap, hasIntradayDurationUnit, toMoment } from '@deriv-app/shared';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import TradingDatePicker from '../../DatePicker';
 import TradingTimePicker from '../../TimePicker';

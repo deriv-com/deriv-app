@@ -1,5 +1,5 @@
 import React from 'react';
-import { moduleLoader } from '@deriv/shared';
+import { moduleLoader } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 
 const AppStore = React.lazy(() =>

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Field, FieldProps, Formik, Form } from 'formik';
 import { Button, Icon, Input, Text } from '@deriv/components';
-import { getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv/shared';
+import { getDecimalPlaces, getCurrencyDisplayCode, validNumber, website_name } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';

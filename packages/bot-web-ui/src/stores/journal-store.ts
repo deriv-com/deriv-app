@@ -1,7 +1,7 @@
 import { action, computed, makeObservable, observable, reaction, when } from 'mobx';
 import { LogTypes, MessageTypes } from '@deriv/bot-skeleton';
 import { config } from '@deriv/bot-skeleton/src/constants/config';
-import { formatDate } from '@deriv/shared';
+import { formatDate } from '@deriv-app/shared';
 import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
 import { isCustomJournalMessage } from '../utils/journal-notifications';

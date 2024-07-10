@@ -1,7 +1,7 @@
 import React, { AllHTMLAttributes } from 'react';
 import clsx from 'clsx';
 import { Icon } from '@deriv/components';
-import { getCurrencyDisplayCode } from '@deriv/shared';
+import { getCurrencyDisplayCode } from '@deriv-app/shared';
 import USTPopover from './ust-popover';
 
 type TRadioButtonExtend = {

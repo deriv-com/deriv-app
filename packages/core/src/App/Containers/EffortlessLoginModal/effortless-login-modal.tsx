@@ -5,7 +5,7 @@ import FormFooter from '@deriv/account/src/Components/form-footer';
 import FormBody from '@deriv/account/src/Components/form-body';
 import { Analytics } from '@deriv-com/analytics';
 import { Button, Icon, Text } from '@deriv/components';
-import { getOSNameWithUAParser, routes } from '@deriv/shared';
+import { getOSNameWithUAParser, routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { DerivLightIcInfoPasskeyIcon } from '@deriv/quill-icons';

@@ -1,7 +1,7 @@
 // /* eslint-disable @typescript-eslint/ban-ts-comment */
 // // @ts-nocheck [TODO] - Need to update the types of routes
 
-import { routes, moduleLoader, makeLazyLoader } from '@deriv/shared';
+import { routes, moduleLoader, makeLazyLoader } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import {
     Passkeys,

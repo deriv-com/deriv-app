@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getDesktopDownloadOptions, getMobileDownloadOptions } from '../Helpers/constants';
-import { CFD_PLATFORMS, getCFDPlatformLabel, getPlatformSettings, getUrlBase } from '@deriv/shared';
+import { CFD_PLATFORMS, getCFDPlatformLabel, getPlatformSettings, getUrlBase } from '@deriv-app/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import './mt5-mobile-redirect-option.scss';
 

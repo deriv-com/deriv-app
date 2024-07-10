@@ -3,10 +3,10 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import FinancialAssessment from '../financial-assessment';
-import { WS } from '@deriv/shared';
+import { WS } from '@deriv-app/shared';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     WS: {
         wait: jest.fn(() => Promise.resolve()),
         setSettings: jest.fn(() => Promise.resolve({ error: '' })),

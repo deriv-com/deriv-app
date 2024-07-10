@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { ActiveSymbols } from '@deriv/api-types';
-import { getEndTime, isMobile, isDesktop, isCryptoContract, mockContractInfo, toMoment } from '@deriv/shared';
+import { getEndTime, isMobile, isDesktop, isCryptoContract, mockContractInfo, toMoment } from '@deriv-app/shared';
 import ContractDrawerCard from '../contract-drawer-card';
 import TraderProviders from '../../../../../trader-providers';
 
@@ -44,8 +44,8 @@ const default_mock_store = {
 const symbol_display_name = 'Symbol Display Name';
 const market_closed_contract_overlay = 'Market Closed Contract Overlay';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     getEndTime: jest.fn(() => true),
     getSymbolDisplayName: jest.fn(() => symbol_display_name),
     isCryptoContract: jest.fn(() => false),

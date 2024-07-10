@@ -1,4 +1,4 @@
-import { validPassword, validLength, website_name, getErrorMessages } from '@deriv/shared';
+import { validPassword, validLength, website_name, getErrorMessages } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 
 const validateSignupFields = (values, residence_list) => {

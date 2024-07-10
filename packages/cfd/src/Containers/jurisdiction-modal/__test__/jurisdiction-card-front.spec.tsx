@@ -1,7 +1,7 @@
 import React from 'react';
 import JurisdictionCardFront from '../jurisdiction-card-front';
 import { render, screen } from '@testing-library/react';
-import { Jurisdiction } from '@deriv/shared';
+import { Jurisdiction } from '@deriv-app/shared';
 
 describe('JurisdictionCardFront', () => {
     const p2p_status: 'none' | 'active' | 'temp_ban' | 'perm_ban' = 'active';

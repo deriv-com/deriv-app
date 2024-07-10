@@ -8,7 +8,7 @@ import {
     DBVI_COMPANY_NAMES,
     getFormattedJurisdictionMarketTypes,
     getFormattedJurisdictionCode,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';

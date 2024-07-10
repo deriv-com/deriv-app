@@ -2,7 +2,7 @@ import React from 'react';
 import { OauthApps } from '@deriv/api-types';
 import { Loading } from '@deriv/components';
 import { observer } from '@deriv/stores';
-import { WS } from '@deriv/shared';
+import { WS } from '@deriv-app/shared';
 import { useDevice } from '@deriv-com/ui';
 import ErrorComponent from '../../../Components/error-component';
 import ConnectedAppsKnowMore from './connected-apps-know-more';

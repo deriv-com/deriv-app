@@ -1,5 +1,5 @@
 import React from 'react';
-import { toMoment } from '@deriv/shared';
+import { toMoment } from '@deriv-app/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';

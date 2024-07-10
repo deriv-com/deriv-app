@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Modal, Text } from '@deriv/components';
-import { formatMoney } from '@deriv/shared';
+import { formatMoney } from '@deriv-app/shared';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';

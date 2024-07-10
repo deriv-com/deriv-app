@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Modal, PageOverlay } from '@deriv/components';
-import { Jurisdiction, MT5_ACCOUNT_STATUS, routes } from '@deriv/shared';
+import { Jurisdiction, MT5_ACCOUNT_STATUS, routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getFormattedJurisdictionCode } from '../../Stores/Modules/CFD/Helpers/cfd-config';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';

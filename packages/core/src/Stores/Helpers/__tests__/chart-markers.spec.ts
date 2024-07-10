@@ -1,4 +1,4 @@
-import { TContractInfo, CONTRACT_TYPES } from '@deriv/shared';
+import { TContractInfo, CONTRACT_TYPES } from '@deriv-app/shared';
 import { createTickMarkers, getMarkerContractType, getStartText } from '../chart-markers';
 
 describe('createTickMarkers', () => {

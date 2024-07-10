@@ -1,5 +1,5 @@
 import React from 'react';
-import { setTime, toMoment } from '@deriv/shared';
+import { setTime, toMoment } from '@deriv-app/shared';
 import TimePicker from 'App/Components/Form/TimePicker';
 import { getSelectedTime, getBoundaries } from 'Stores/Modules/Trading/Helpers/end-time';
 import { observer, useStore } from '@deriv/stores';

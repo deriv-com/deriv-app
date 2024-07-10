@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog } from '@deriv/components';
-import { getPlatformSettings } from '@deriv/shared';
+import { getPlatformSettings } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 

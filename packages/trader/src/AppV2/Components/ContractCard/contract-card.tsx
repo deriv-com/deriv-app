@@ -14,7 +14,7 @@ import {
     isMultiplierContract,
     isValidToCancel,
     isValidToSell,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { ContractCardStatusTimer, TContractCardStatusTimerProps } from './contract-card-status-timer';
 import { NavLink } from 'react-router-dom';
 import { TClosedPosition } from 'AppV2/Containers/Positions/positions-content';

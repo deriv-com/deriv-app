@@ -4,7 +4,7 @@ import { NetworkStatusToastErrorPopup } from './Containers/toast-popup';
 import { APIProvider } from '@deriv/api';
 import { StoreProvider } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { POIProvider } from '@deriv/shared';
+import { POIProvider } from '@deriv-app/shared';
 
 // TODO: add correct types for WS after implementing them
 type TAppProps = {

@@ -1,14 +1,14 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { isMobile, isDesktop, TRADE_TYPES } from '@deriv/shared';
+import { isMobile, isDesktop, TRADE_TYPES } from '@deriv-app/shared';
 import Display from '../contract-type-display';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Icon: () => <div>MockedIcon</div>,
 }));
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     isMobile: jest.fn(() => false),
     isDesktop: jest.fn(() => true),
 }));

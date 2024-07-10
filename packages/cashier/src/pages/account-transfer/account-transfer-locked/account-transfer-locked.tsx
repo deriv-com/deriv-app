@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { Icon, Checklist, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';

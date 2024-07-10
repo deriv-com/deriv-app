@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { screen, render } from '@testing-library/react';
-import { TRADE_TYPES } from '@deriv/shared';
+import { TRADE_TYPES } from '@deriv-app/shared';
 import StrikeParamModal from '../strike-param-modal';
 import userEvent from '@testing-library/user-event';
 

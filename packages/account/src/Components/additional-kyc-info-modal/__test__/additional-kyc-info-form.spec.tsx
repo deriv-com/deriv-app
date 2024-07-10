@@ -31,8 +31,8 @@ const mock_settings: Partial<TMockConfig> = {
     },
 };
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     generateValidationFunction: jest.fn(),
 }));
 

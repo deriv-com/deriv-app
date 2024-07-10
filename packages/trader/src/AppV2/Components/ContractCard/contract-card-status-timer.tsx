@@ -3,7 +3,7 @@ import { TPortfolioPosition } from '@deriv/stores/types';
 import { Localize } from '@deriv/translations';
 import { Tag } from '@deriv-com/quill-ui';
 import { LabelPairedStopwatchCaptionRegularIcon } from '@deriv/quill-icons';
-import { getCardLabels } from '@deriv/shared';
+import { getCardLabels } from '@deriv-app/shared';
 import { RemainingTime } from '@deriv/components';
 import { TRootStore } from 'Types';
 

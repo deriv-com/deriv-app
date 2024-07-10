@@ -10,7 +10,7 @@ import {
     isCryptoContract,
     isDesktop,
     toMoment,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { SwipeableContractDrawer } from './swipeable-components';
 import MarketClosedContractOverlay from './market-closed-contract-overlay';
 import { useTraderStore } from 'Stores/useTraderStores';

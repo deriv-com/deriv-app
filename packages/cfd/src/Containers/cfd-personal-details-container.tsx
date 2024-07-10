@@ -3,7 +3,7 @@ import { Div100vhContainer, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { TCFDPersonalDetailsContainerProps } from './props.types';
 import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form';
-import { getPropertyValue, isDesktop, WS } from '@deriv/shared';
+import { getPropertyValue, isDesktop, WS } from '@deriv-app/shared';
 import { GetSettings } from '@deriv/api-types';
 import { observer, useStore } from '@deriv/stores';
 

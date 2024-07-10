@@ -5,8 +5,8 @@ import { populateVerificationStatus } from '../../Helpers/verification.js';
 import { identity_status_codes, service_code } from '../proof-of-identity-utils';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     WS: {
         authorized: {
             getAccountStatus: jest.fn().mockResolvedValue({ get_account_status: 1 }),

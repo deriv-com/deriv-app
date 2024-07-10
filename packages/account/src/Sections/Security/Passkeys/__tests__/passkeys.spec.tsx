@@ -6,7 +6,7 @@ import { Analytics } from '@deriv-com/analytics';
 import { APIProvider } from '@deriv/api';
 import { useGetPasskeysList, useRegisterPasskey } from '@deriv/hooks';
 import { useDevice } from '@deriv-com/ui';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import Passkeys from '../passkeys';
 import { PasskeysList } from '../components/passkeys-list';
@@ -55,8 +55,8 @@ jest.mock('@deriv/components', () => ({
     Loading: () => <div>MockLoading</div>,
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     getOSNameWithUAParser: () => 'test OS',
 }));
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { AppLinkedWithWalletIcon, Text } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useStoreWalletAccountsList } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';

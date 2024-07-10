@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
-import { formatMoney } from '@deriv/shared';
+import { formatMoney } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import './balance-text.scss';
 

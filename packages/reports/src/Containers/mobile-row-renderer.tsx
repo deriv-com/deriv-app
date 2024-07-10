@@ -12,7 +12,7 @@ import {
     getDurationUnitText,
     getCardLabels,
     toMoment,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { useStore } from '@deriv/stores';
 import { TColIndex } from 'Types';
 import moment from 'moment';

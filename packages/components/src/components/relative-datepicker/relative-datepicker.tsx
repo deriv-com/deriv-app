@@ -1,5 +1,5 @@
 import React from 'react';
-import { toMoment, daysFromTodayTo } from '@deriv/shared';
+import { toMoment, daysFromTodayTo } from '@deriv-app/shared';
 import Text from '../text';
 
 type TRelativeDatepickerProps = {

@@ -1,5 +1,5 @@
 import { ServerTime } from '@deriv/bot-skeleton';
-import { LocalStore } from '@deriv/shared';
+import { LocalStore } from '@deriv-app/shared';
 import { mockStore } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';
 import { mock_ws } from 'Utils/mock';

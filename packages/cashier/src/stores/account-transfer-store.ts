@@ -14,7 +14,7 @@ import {
     isEmptyObject,
     routes,
     validNumber,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 
 import AccountTransferGetSelectedError from '../pages/account-transfer/account-transfer-get-selected-error';

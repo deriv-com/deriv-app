@@ -3,7 +3,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import classNames from 'classnames';
 
 import { Button, Icon, Modal, Text } from '@deriv/components';
-import { getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
+import { getCurrencyDisplayCode, isMobile, routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 

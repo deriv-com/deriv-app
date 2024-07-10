@@ -1,7 +1,7 @@
 import { action, computed, IReactionDisposer, makeObservable, observable, reaction } from 'mobx';
 
 import { P2PAdvertiserCreate, P2PAdvertiserInfo } from '@deriv/api-types';
-import { epochToMoment, toMoment } from '@deriv/shared';
+import { epochToMoment, toMoment } from '@deriv-app/shared';
 import { TCoreStores } from '@deriv/stores/types';
 import SendbirdChat, { BaseChannel } from '@sendbird/chat';
 import { GroupChannel, GroupChannelHandler, GroupChannelModule } from '@sendbird/chat/groupChannel';

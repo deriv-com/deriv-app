@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { useLocalize } from '@deriv/translations';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { Switch } from 'react-router-dom';
 import RouteWithSubroutes from './route-with-sub-routes.jsx';
 

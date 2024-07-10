@@ -9,7 +9,7 @@ import {
     Text,
     ThemedScrollbars,
 } from '@deriv/components';
-import { EMPLOYMENT_VALUES, shouldHideOccupationField } from '@deriv/shared';
+import { EMPLOYMENT_VALUES, shouldHideOccupationField } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
 import { TFinancialInformationForm } from 'Types';
 import { observer, useStore } from '@deriv/stores';

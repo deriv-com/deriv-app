@@ -1,11 +1,11 @@
 import React from 'react';
 import { useStores } from 'Stores';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop } from '@deriv-app/shared';
 import { fireEvent, render, screen } from '@testing-library/react';
 import SortDropdown from '../sort-dropdown.jsx';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     isDesktop: jest.fn().mockReturnValue(false),
 }));
 

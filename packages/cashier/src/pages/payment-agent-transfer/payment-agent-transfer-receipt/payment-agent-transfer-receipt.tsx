@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Icon, Text } from '@deriv/components';
-import { routes, formatMoney, getCurrencyDisplayCode, getCurrencyName } from '@deriv/shared';
+import { routes, formatMoney, getCurrencyDisplayCode, getCurrencyName } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { useCashierStore } from '../../../stores/useCashierStores';

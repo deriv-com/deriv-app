@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { isMobile, routes } from '@deriv/shared';
+import { isMobile, routes } from '@deriv-app/shared';
 import 'Sass/app/_common/components/app-notification-message.scss';
 import { observer, useStore } from '@deriv/stores';
 import Notification, {

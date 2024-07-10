@@ -1,5 +1,5 @@
 import { Div100vhContainer, InlineMessage, Modal, PageOverlay, Text, UILoader } from '@deriv/components';
-import { getPlatformSettings } from '@deriv/shared';
+import { getPlatformSettings } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';

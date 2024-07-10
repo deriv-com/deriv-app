@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Field, Formik } from 'formik';
 import { Autocomplete, Icon } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import { localize } from 'Components/i18next';
 
 const CurrencySelector = ({ className, default_value, list, onSelect }) => {

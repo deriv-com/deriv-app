@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { toGMTFormat, toLocalFormat } from '@deriv/shared';
+import { toGMTFormat, toLocalFormat } from '@deriv-app/shared';
 import { Popover } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 

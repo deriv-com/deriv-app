@@ -1,6 +1,6 @@
 import React from 'react';
 import { DataList, DataTable } from '@deriv/components';
-import { getUnsupportedContracts, getContractPath, hasContractStarted } from '@deriv/shared';
+import { getUnsupportedContracts, getContractPath, hasContractStarted } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { useDevice } from '@deriv-com/ui';

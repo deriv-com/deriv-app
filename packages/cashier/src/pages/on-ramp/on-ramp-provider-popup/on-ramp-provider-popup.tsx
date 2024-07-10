@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Button, HintBox, Icon, Loading, Popover, Text, useCopyToClipboard } from '@deriv/components';
-import { getKebabCase, website_name, isMobile } from '@deriv/shared';
+import { getKebabCase, website_name, isMobile } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useCashierStore } from '../../../stores/useCashierStores';

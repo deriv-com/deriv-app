@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { formatDate } from '@deriv/shared';
+import { formatDate } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
 import ApiTokenContext from './api-token-context';

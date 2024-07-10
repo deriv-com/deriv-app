@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { toMoment } from '@deriv/shared';
+import { toMoment } from '@deriv-app/shared';
 import { ActionSheet, Chip, RadioGroup, Text } from '@deriv-com/quill-ui';
 import { Localize } from '@deriv/translations';
 import CustomDateFilterButton from './custom-time-filter-button';

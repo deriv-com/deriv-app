@@ -1,6 +1,6 @@
 import DocumentUploader from '@binary-com/binary-document-uploader';
 import { useMutation } from '@deriv/api';
-import { WS, compressImageFiles, readFiles } from '@deriv/shared';
+import { WS, compressImageFiles, readFiles } from '@deriv-app/shared';
 import { useCallback, useMemo, useState } from 'react';
 
 type TSettingsPayload = Partial<Parameters<ReturnType<typeof useMutation<'document_upload'>>['mutate']>[0]['payload']>;

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Button, Div100vhContainer, Icon, Text } from '@deriv/components';
-import { getCurrencyDisplayCode, isDesktop, isMobile, routes } from '@deriv/shared';
+import { getCurrencyDisplayCode, isDesktop, isMobile, routes } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 
 const SuccessMessage = ({ prev, current }) =>

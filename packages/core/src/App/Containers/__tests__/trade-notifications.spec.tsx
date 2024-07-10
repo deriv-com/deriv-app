@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { SwipeableNotification } from '@deriv/components';
 import { StoreProvider, mockStore, useStore } from '@deriv/stores';
-import { getCardLabels } from '@deriv/shared';
+import { getCardLabels } from '@deriv-app/shared';
 import TradeNotifications from '../trade-notifications';
 
 type TMockedSwipeableNotificationProps = React.ComponentProps<typeof SwipeableNotification> & {

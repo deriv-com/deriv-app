@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { useDevice } from '@deriv-com/ui';
-import { mockContractInfo } from '@deriv/shared';
+import { mockContractInfo } from '@deriv-app/shared';
 import { TPortfolioPosition } from '@deriv/stores/types';
 import { mockStore } from '@deriv/stores';
 import OpenPositions from '../open-positions';

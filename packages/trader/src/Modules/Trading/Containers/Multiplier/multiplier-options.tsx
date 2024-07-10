@@ -4,7 +4,7 @@ import RadioGroupWithInfoMobile from 'Modules/Trading/Components/Form/RadioGroup
 import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { useIsMounted, WS, TRADE_TYPES, CONTRACT_TYPES } from '@deriv/shared';
+import { useIsMounted, WS, TRADE_TYPES, CONTRACT_TYPES } from '@deriv-app/shared';
 import { TTradeStore } from 'Types';
 
 type TMultiplierOptions = {

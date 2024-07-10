@@ -8,7 +8,7 @@ import {
     getAppstorePlatforms,
     getCFDAvailableAccount,
     getAuthenticationStatusInfo,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import BaseStore from './base-store';
 import { isEuCountry } from '_common/utility';

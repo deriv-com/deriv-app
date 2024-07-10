@@ -1,5 +1,5 @@
 import React from 'react';
-import { getDefaultFields, isDesktop } from '@deriv/shared';
+import { getDefaultFields, isDesktop } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { GetSettings } from '@deriv/api-types';
 

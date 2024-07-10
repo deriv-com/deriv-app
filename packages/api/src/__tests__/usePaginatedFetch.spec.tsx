@@ -4,8 +4,8 @@ import { TSocketResponse } from '../../types';
 import APIProvider from '../APIProvider';
 import usePaginatedFetch from '../usePaginatedFetch';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     useWS: () => ({
         send: jest.fn(() =>
             Promise.resolve<TSocketResponse<'p2p_advert_list'>>({

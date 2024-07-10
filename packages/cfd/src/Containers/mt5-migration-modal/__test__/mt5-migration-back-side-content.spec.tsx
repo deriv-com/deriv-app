@@ -7,7 +7,7 @@ import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import userEvent from '@testing-library/user-event';
 import { useMT5MigrationModalContext } from '../mt5-migration-modal-context';
 import { Formik } from 'formik';
-import { WS } from '@deriv/shared';
+import { WS } from '@deriv-app/shared';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -19,8 +19,8 @@ jest.mock('../mt5-migration-modal-context', () => ({
     useMT5MigrationModalContext: jest.fn(),
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     getErrorMessages: jest.fn().mockReturnValue({
         password: jest.fn(),
         password_warnings: '',

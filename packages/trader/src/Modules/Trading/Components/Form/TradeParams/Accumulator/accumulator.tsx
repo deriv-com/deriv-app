@@ -2,7 +2,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import NumberSelector from 'App/Components/Form/number-selector';
 import Fieldset from 'App/Components/Form/fieldset';
-import { getGrowthRatePercentage, isEmptyObject } from '@deriv/shared';
+import { getGrowthRatePercentage, isEmptyObject } from '@deriv-app/shared';
 import classNames from 'classnames';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';

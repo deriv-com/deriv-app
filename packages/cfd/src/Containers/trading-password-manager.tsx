@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, Button, Icon, MultiStep, SendEmailTemplate } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { getCFDPlatformLabel, WS } from '@deriv/shared';
+import { getCFDPlatformLabel, WS } from '@deriv-app/shared';
 import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 import { TChangePassword, TPasswordResetAndTradingPasswordManager } from './props.types';
 import { CATEGORY, CFD_PLATFORMS } from '../Helpers/cfd-config';

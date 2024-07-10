@@ -3,7 +3,7 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import { useLocation } from 'react-router-dom';
 import DefaultHeader from '../default-header';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { useDevice } from '@deriv-com/ui';
 
 jest.mock('@deriv-com/ui', () => ({

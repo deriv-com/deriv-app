@@ -4,7 +4,7 @@ import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../../trader-providers';
 import ContractTypeDescriptionVideo from '../contract-type-description-video';
 import { TCoreStores } from '@deriv/stores/types';
-import { TRADE_TYPES } from '@deriv/shared';
+import { TRADE_TYPES } from '@deriv-app/shared';
 
 const default_mocked_props = {
     selected_contract_type: TRADE_TYPES.VANILLA.CALL,

@@ -5,7 +5,7 @@ import { Money, Text, Popover } from '@deriv/components';
 import classNames from 'classnames';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 
 const AccumulatorsInfoDisplay = observer(() => {
     const { currency, maximum_payout, maximum_ticks } = useTraderStore();

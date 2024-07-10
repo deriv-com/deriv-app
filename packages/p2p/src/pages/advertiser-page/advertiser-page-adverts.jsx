@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { InfiniteDataList, Loading, Table, Tabs, Text } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv-app/shared';
 import { useStore, observer } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useP2PAdvertiserAdverts } from 'Hooks';

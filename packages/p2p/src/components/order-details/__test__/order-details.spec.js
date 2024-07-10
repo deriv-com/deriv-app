@@ -97,8 +97,8 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
     })),
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     isDesktop: jest.fn(() => true),
 }));
 

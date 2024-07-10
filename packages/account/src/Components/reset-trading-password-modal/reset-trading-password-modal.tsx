@@ -10,7 +10,7 @@ import {
     getCFDPlatformLabel,
     CFD_PLATFORMS,
     validMT5Password,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 import { TPlatforms } from '../../Types';
 import './reset-trading-password-modal.scss';

@@ -16,7 +16,7 @@ import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
 import ServerTime from '../server-time.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { useRemoteConfig } from '@deriv/api';
-import { useIsMounted } from '@deriv/shared';
+import { useIsMounted } from '@deriv-app/shared';
 
 const FooterIconSeparator = () => <div className='footer-icon-separator' />;
 

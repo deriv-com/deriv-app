@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActionSheet, DatePicker } from '@deriv-com/quill-ui';
 import moment from 'moment';
-import { toMoment } from '@deriv/shared';
+import { toMoment } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import { DEFAULT_DATE_FORMATTING_CONFIG } from 'AppV2/Utils/positions-utils';
 

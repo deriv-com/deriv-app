@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Button, Icon, MobileWrapper, Modal, Popover, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop } from '@deriv-app/shared';
 import './block-user-count.scss';
 
 const BlockUserCount = () => {

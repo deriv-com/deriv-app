@@ -1,4 +1,4 @@
-import { getTotalProfit, TContractStore } from '@deriv/shared';
+import { getTotalProfit, TContractStore } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 
 export type TContract = {

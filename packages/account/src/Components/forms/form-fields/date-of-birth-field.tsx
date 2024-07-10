@@ -4,7 +4,7 @@
 import React from 'react';
 import { Field, FieldProps } from 'formik';
 import { DateOfBirthPicker } from '@deriv/components';
-import { toMoment } from '@deriv/shared';
+import { toMoment } from '@deriv-app/shared';
 
 type TDateOfBirthFieldProps = {
     name: string;

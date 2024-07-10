@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { Div100vhContainer, Icon, MobileDialog, Modal, SendEmailTemplate, Text, Popover } from '@deriv/components';
-import { getPlatformSettings, CFD_PLATFORMS } from '@deriv/shared';
+import { getPlatformSettings, CFD_PLATFORMS } from '@deriv-app/shared';
 import { useDevice } from '@deriv-com/ui';
 
 type TSentEmailModal = {

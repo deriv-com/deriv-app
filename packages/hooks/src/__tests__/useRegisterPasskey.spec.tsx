@@ -1,7 +1,7 @@
 import React from 'react';
 import { renderHook, act } from '@testing-library/react-hooks';
 import APIProvider from '@deriv/api/src/APIProvider';
-import { WS } from '@deriv/shared';
+import { WS } from '@deriv-app/shared';
 import useRegisterPasskey from '../useRegisterPasskey';
 import { startRegistration } from '@simplewebauthn/browser';
 
@@ -14,8 +14,8 @@ jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useInvalidateQuery: jest.fn(() => mockInvalidate),
 }));
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     WS: {
         send: jest.fn(),
     },

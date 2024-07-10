@@ -5,7 +5,7 @@ import TradeFooterExtensions from '../trade-footer-extensions';
 import { mockStore } from '@deriv/stores';
 import { RouteComponentProps, Router } from 'react-router-dom';
 import { MemoryHistory, createMemoryHistory } from 'history';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),

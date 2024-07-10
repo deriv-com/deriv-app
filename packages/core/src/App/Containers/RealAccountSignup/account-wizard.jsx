@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv/components';
-import { WS, getLocation, toMoment, formatIDVFormValues, shouldHideOccupationField } from '@deriv/shared';
+import { WS, getLocation, toMoment, formatIDVFormValues, shouldHideOccupationField } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import AcceptRiskForm from './accept-risk-form.jsx';

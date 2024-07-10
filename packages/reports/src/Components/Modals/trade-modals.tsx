@@ -1,5 +1,5 @@
 import React from 'react';
-import { getUrlSmartTrader } from '@deriv/shared';
+import { getUrlSmartTrader } from '@deriv-app/shared';
 import MarketUnavailableModal from '../Elements/Modals/MarketUnavailableModal';
 import ServicesErrorModal from '../Elements/Modals/ServicesErrorModal';
 import AccountVerificationPendingModal from '../Elements/Modals/AccountVerificationPendingModal';

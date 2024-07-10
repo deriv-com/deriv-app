@@ -4,7 +4,7 @@ import { reaction } from 'mobx';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useInvalidateQuery } from '@deriv/api';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal, ThemedScrollbars } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { observer } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

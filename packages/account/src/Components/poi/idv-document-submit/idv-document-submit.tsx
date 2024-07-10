@@ -10,7 +10,7 @@ import {
     removeEmptyPropertiesFromObject,
     toMoment,
     WS,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import {

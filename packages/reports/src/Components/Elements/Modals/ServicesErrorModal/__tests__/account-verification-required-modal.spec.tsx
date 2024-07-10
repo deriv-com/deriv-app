@@ -3,7 +3,7 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { useStore } from '@deriv/stores';
 import AccountVerificationRequiredModal from '../account-verification-required-modal';
 
@@ -31,8 +31,8 @@ jest.mock('@deriv/stores', () => ({
     })),
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     isMobile: jest.fn(() => true),
 }));
 

@@ -1,4 +1,4 @@
-import { sequence } from '@deriv/shared';
+import { sequence } from '@deriv-app/shared';
 import { takeField } from '../utils/math';
 
 const calcGain = (q1, q2) => (q2 > q1 ? q2 - q1 : 0);

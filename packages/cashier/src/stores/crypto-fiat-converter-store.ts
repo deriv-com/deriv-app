@@ -1,5 +1,5 @@
 import { action, observable, makeObservable } from 'mobx';
-import { getDecimalPlaces } from '@deriv/shared';
+import { getDecimalPlaces } from '@deriv-app/shared';
 import { TRootStore } from '../types';
 
 export default class CryptoFiatConverterStore {

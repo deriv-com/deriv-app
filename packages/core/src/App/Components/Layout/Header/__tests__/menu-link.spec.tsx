@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
-import { getStaticUrl, routes } from '@deriv/shared';
+import { getStaticUrl, routes } from '@deriv-app/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import MenuLink from 'App/Components/Layout/Header/menu-link';
@@ -19,8 +19,8 @@ jest.mock('@deriv/hooks', () => ({
     useIsRealAccountNeededForCashier: jest.fn(() => false),
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     getStaticUrl: jest.fn(() => 'MockUrl'),
 }));
 

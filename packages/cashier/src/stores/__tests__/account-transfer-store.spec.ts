@@ -1,6 +1,6 @@
 import { configure } from 'mobx';
 
-import { CFD_PLATFORMS, getCurrencies, validNumber } from '@deriv/shared';
+import { CFD_PLATFORMS, getCurrencies, validNumber } from '@deriv-app/shared';
 import { mockStore } from '@deriv/stores';
 
 import type { TRootStore, TTransferAccount, TWebSocket } from '../../types';
@@ -172,8 +172,8 @@ beforeEach(() => {
     account_transfer_store = new AccountTransferStore(WS as TWebSocket, root_store);
 });
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     getCurrencies: jest.fn(),
     getCFDAccountDisplay: jest.fn(),
     validNumber: jest.fn(() => ({ is_ok: true })),

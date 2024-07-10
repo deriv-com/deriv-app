@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
-import { IDV_ERROR_STATUS } from '@deriv/shared';
+import { IDV_ERROR_STATUS } from '@deriv-app/shared';
 import IdvSubmitComplete from '../idv-submit-complete';
 import { StoreProvider, mockStore } from '@deriv/stores';
 

@@ -1,5 +1,5 @@
 import { datadogLogs } from '@datadog/browser-logs';
-import { formatDate, formatTime } from '@deriv/shared';
+import { formatDate, formatTime } from '@deriv-app/shared';
 
 /**
  * Initializes Datadog Logs for production or staging environments, conditionally based on environment variables.

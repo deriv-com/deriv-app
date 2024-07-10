@@ -12,7 +12,7 @@ import {
     isVanillaContract,
     isResetContract,
     isLookBacksContract,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import { useFeatureFlags } from '@deriv/hooks';
 import { useDevice } from '@deriv-com/ui';

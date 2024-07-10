@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormikValues } from 'formik';
 import clsx from 'clsx';
-import { formatMoney, useIsMounted } from '@deriv/shared';
+import { formatMoney, useIsMounted } from '@deriv-app/shared';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
 import { Localize, localize } from '@deriv/translations';

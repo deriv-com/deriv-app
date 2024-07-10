@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { ButtonToggle } from '@deriv/components';
-import { isTurbosContract, isVanillaContract, TRADE_TYPES } from '@deriv/shared';
+import { isTurbosContract, isVanillaContract, TRADE_TYPES } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';

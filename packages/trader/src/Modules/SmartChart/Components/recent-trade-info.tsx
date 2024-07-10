@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
-import { isAccumulatorContract, isDigitContract, isEnded } from '@deriv/shared';
+import { isAccumulatorContract, isDigitContract, isEnded } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
 

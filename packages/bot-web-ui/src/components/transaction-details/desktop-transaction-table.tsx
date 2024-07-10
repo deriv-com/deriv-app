@@ -4,7 +4,7 @@ import ContentLoader from 'react-content-loader';
 import { getContractTypeName } from '@deriv/bot-skeleton';
 import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { Icon, IconTradeTypes, Popover } from '@deriv/components';
-import { convertDateFormat } from '@deriv/shared';
+import { convertDateFormat } from '@deriv-app/shared';
 import { transaction_elements } from 'Constants/transactions';
 import { TColumn, TDesktopTransactionTable, TTableCell } from './transaction-details.types';
 

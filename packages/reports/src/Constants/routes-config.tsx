@@ -1,5 +1,5 @@
 import React from 'react';
-import { routes, makeLazyLoader, moduleLoader } from '@deriv/shared';
+import { routes, makeLazyLoader, moduleLoader } from '@deriv-app/shared';
 import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import type { TRoute, TRouteConfig } from 'Types';

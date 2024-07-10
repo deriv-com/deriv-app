@@ -1,4 +1,4 @@
-import { epochToMoment, toMoment } from '@deriv/shared';
+import { epochToMoment, toMoment } from '@deriv-app/shared';
 
 type TDateToOrFrom = number | null;
 type TPartialFetchTime = boolean | number;

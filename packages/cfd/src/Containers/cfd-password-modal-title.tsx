@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { getCFDPlatformNames, getCFDPlatformLabel, getFormattedJurisdictionCode } from '@deriv/shared';
+import { getCFDPlatformNames, getCFDPlatformLabel, getFormattedJurisdictionCode } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { CATEGORY, CFD_PLATFORMS } from '../Helpers/cfd-config';

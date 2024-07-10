@@ -8,7 +8,7 @@ import {
     getStatementTableColumnsTemplate,
     TKeys,
 } from 'Constants/data-table-constants';
-import { getSupportedContracts, getUnsupportedContracts } from '@deriv/shared';
+import { getSupportedContracts, getUnsupportedContracts } from '@deriv-app/shared';
 
 export type TPassthrough = {
     root_store: TCoreStores;

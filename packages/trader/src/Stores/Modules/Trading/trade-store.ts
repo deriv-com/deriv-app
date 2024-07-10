@@ -35,7 +35,7 @@ import {
     getContractTypesConfig,
     setTradeURLParams,
     getTradeURLParams,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
 import { localize } from '@deriv/translations';

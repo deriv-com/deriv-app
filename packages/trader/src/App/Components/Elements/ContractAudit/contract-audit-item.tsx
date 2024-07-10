@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatDate, formatTime } from '@deriv/shared';
+import { formatDate, formatTime } from '@deriv-app/shared';
 import { Text } from '@deriv/components';
 
 type TContractAuditItem = {

@@ -3,7 +3,7 @@ import React from 'react';
 import { FormSubmitButton, Loading, Text, ThemedScrollbars } from '@deriv/components';
 import { usePaymentAgentList } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
-import { reorderCurrencies, routes } from '@deriv/shared';
+import { reorderCurrencies, routes } from '@deriv-app/shared';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
 import CurrencyProvider from './choose-currency';
 import { observer, useStore } from '@deriv/stores';

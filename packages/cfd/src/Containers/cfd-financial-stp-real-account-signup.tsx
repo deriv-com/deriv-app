@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDevice } from '@deriv-com/ui';
 import { Div100vhContainer } from '@deriv/components';
-import { getAuthenticationStatusInfo, isPOARequiredForMT5 } from '@deriv/shared';
+import { getAuthenticationStatusInfo, isPOARequiredForMT5 } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import type { TCoreStores } from '@deriv/stores/types';
 import CFDPOA from '../Components/cfd-poa';

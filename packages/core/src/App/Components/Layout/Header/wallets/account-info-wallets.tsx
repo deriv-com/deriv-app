@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, WalletIcon, Text, AppLinkedWithWalletIcon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode } from '@deriv-app/shared';
 import { useStore, observer } from '@deriv/stores';
 import { useStoreWalletAccountsList, useStoreLinkedWalletsAccounts } from '@deriv/hooks';
 import { TStores } from '@deriv/stores/types';

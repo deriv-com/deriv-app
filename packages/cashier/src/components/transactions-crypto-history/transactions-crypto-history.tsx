@@ -1,6 +1,6 @@
 import React from 'react';
 import { DataList, Icon, Loading, MobileWrapper, Modal, Table, Text } from '@deriv/components';
-import { isDesktop, isMobile, routes } from '@deriv/shared';
+import { isDesktop, isMobile, routes } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import TransactionsCryptoCancelModal from './transactions-crypto-cancel-modal';

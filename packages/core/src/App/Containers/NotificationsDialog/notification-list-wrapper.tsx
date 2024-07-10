@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { LegacyRef } from 'react';
 import { Text, ThemedScrollbars } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import EmptyNotification from 'App/Components/Elements/Notifications/empty-notification';

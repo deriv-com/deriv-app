@@ -57,7 +57,7 @@ module.exports = function (env) {
                     exclude: /node_modules/,
                     use: [
                         {
-                            loader: '@deriv/shared/src/loaders/react-import-loader.js',
+                            loader: '@deriv-app/shared/src/loaders/react-import-loader.js',
                         },
                         {
                             loader: 'babel-loader',
@@ -95,7 +95,7 @@ module.exports = function (env) {
                             options: {
                                 // Provide path to the file with resources
                                 // eslint-disable-next-line global-require, import/no-dynamic-require
-                                resources: require('@deriv/shared/src/styles/index.js'),
+                                resources: require('@deriv-app/shared/src/styles/index.js'),
                             },
                         },
                     ],

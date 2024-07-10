@@ -10,7 +10,7 @@ import {
     getFormattedJurisdictionMarketTypes,
     getCFDPlatformNames,
     CFD_PLATFORMS,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import MigrationBannerImage from './migration-banner-image';
 import './migration-banner.scss';

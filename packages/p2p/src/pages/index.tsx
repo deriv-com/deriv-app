@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeLazyLoader, moduleLoader } from '@deriv/shared';
+import { makeLazyLoader, moduleLoader } from '@deriv-app/shared';
 import { Loading } from '@deriv/components';
 import './index.scss';
 

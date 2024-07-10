@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { CONTRACT_TYPES, TContractInfo, getCardLabelsV2, mockContractInfo } from '@deriv/shared';
+import { CONTRACT_TYPES, TContractInfo, getCardLabelsV2, mockContractInfo } from '@deriv-app/shared';
 import useOrderDetails from '../useOrderDetails';
 
 jest.mock('@deriv/translations', () => ({
@@ -7,14 +7,14 @@ jest.mock('@deriv/translations', () => ({
     Localize: jest.fn(text => text),
 }));
 
-jest.mock('@deriv/shared', () => ({
+jest.mock('@deriv-app/shared', () => ({
     getDurationPeriod: jest.fn(),
     getDurationUnitText: jest.fn(),
     getGrowthRatePercentage: jest.fn(() => '10'),
     isAccumulatorContract: jest.fn(),
     isResetContract: jest.fn(),
     addComma: jest.fn(),
-    ...jest.requireActual('@deriv/shared'),
+    ...jest.requireActual('@deriv-app/shared'),
 }));
 
 jest.mock('App/Components/Elements/PositionsDrawer/helpers', () => ({

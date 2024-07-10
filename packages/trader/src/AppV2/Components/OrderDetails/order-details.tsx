@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv-com/quill-ui';
 import useOrderDetails from 'AppV2/Hooks/useOrderDetails';
-import { TContractInfo } from '@deriv/shared';
+import { TContractInfo } from '@deriv-app/shared';
 import CardWrapper from 'AppV2/Components/CardWrapper';
 import { Localize } from '@deriv/translations';
 

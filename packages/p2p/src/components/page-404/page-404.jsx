@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageError } from '@deriv/components';
-import { routes, getUrlBase } from '@deriv/shared';
+import { routes, getUrlBase } from '@deriv-app/shared';
 import { localize } from 'Components/i18next';
 
 const Page404 = () => (

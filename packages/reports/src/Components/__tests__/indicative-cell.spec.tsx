@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
-import { mockContractInfo } from '@deriv/shared';
+import { mockContractInfo } from '@deriv-app/shared';
 import ReportsProviders from '../../reports-providers';
 import IndicativeCell from '../indicative-cell';
 
@@ -26,8 +26,8 @@ jest.mock('@deriv/components', () => ({
     DesktopWrapper: jest.fn(({ children }) => children),
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     hasContractEntered: jest.fn().mockReturnValue(true),
     isValidToSell: jest.fn().mockReturnValue(true),
 }));

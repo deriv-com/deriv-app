@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import RiskManagementItem from '../risk-management-item';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
-import { CONTRACT_TYPES } from '@deriv/shared';
+import { CONTRACT_TYPES } from '@deriv-app/shared';
 
 jest.mock('@deriv/translations', () => ({
     Localize: ({ i18n_default_text }: { i18n_default_text: string }) => <span>{i18n_default_text}</span>,

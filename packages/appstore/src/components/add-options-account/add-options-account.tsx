@@ -3,7 +3,7 @@ import { DesktopWrapper, MobileWrapper, Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import './add-options-account.scss';
 import { useStore, observer } from '@deriv/stores';
-import { isMobile, ContentFlag } from '@deriv/shared';
+import { isMobile, ContentFlag } from '@deriv-app/shared';
 import { Analytics } from '@deriv-com/analytics';
 
 const AddOptions = observer(() => {

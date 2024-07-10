@@ -5,7 +5,7 @@ import { useMFAccountStatus } from '@deriv/hooks';
 import { useDevice } from '@deriv-com/ui';
 import { useStore } from '@deriv/stores';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info';
-import { MT5_ACCOUNT_STATUS, getContractTypeDisplay } from '@deriv/shared';
+import { MT5_ACCOUNT_STATUS, getContractTypeDisplay } from '@deriv-app/shared';
 import { TProposalTypeInfo, TTradeStore } from 'Types';
 
 type TPurchaseButton = {

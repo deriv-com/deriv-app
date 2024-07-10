@@ -8,8 +8,8 @@ jest.mock('@deriv/components', () => ({
     Icon: jest.fn(({ icon }) => <div>{icon}</div>),
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     getCFDAccountDisplay: jest.fn(),
 }));
 

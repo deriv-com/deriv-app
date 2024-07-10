@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { mockStore } from '@deriv/stores';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';

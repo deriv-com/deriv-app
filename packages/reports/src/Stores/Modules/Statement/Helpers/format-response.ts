@@ -1,4 +1,4 @@
-import { formatMoney, toTitleCase, toMoment, getMarketInformation, getSymbolDisplayName } from '@deriv/shared';
+import { formatMoney, toTitleCase, toMoment, getMarketInformation, getSymbolDisplayName } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { ActiveSymbols, Statement } from '@deriv/api-types';
 

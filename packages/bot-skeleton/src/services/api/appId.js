@@ -1,5 +1,5 @@
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
-import { getAppId, getSocketURL, website_name } from '@deriv/shared';
+import { getAppId, getSocketURL, website_name } from '@deriv-app/shared';
 import { getLanguage } from '@deriv/translations';
 import APIMiddleware from './api-middleware';
 

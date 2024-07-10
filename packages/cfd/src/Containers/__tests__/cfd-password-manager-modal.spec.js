@@ -13,7 +13,7 @@ jest.mock('@deriv/components', () => {
     };
 });
 
-jest.mock('@deriv/shared/src/services/ws-methods', () => ({
+jest.mock('@deriv-app/shared/src/services/ws-methods', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
     WS: {
@@ -47,8 +47,8 @@ const mock_errors = {
     recent_years_are_easy: () => localize('Recent years are easy to guess'),
 };
 
-jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.ts', () => {
-    const original_module = jest.requireActual('@deriv/shared/src/utils/validation/declarative-validation-rules.ts');
+jest.mock('@deriv-app/shared/src/utils/validation/declarative-validation-rules.ts', () => {
+    const original_module = jest.requireActual('@deriv-app/shared/src/utils/validation/declarative-validation-rules.ts');
     return {
         ...original_module,
         validPassword: jest.fn(() => {

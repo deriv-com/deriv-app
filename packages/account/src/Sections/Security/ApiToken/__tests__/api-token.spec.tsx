@@ -2,7 +2,7 @@ import React from 'react';
 import { FormikValues } from 'formik';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { getPropertyValue, WS } from '@deriv/shared';
+import { getPropertyValue, WS } from '@deriv-app/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 import ApiToken from '../api-token';
@@ -17,12 +17,12 @@ jest.mock('@deriv/components', () => ({
     Loading: () => <div>Loading</div>,
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     getPropertyValue: jest.fn(() => []),
 }));
 
-jest.mock('@deriv/shared/src/services/ws-methods', () => ({
+jest.mock('@deriv-app/shared/src/services/ws-methods', () => ({
     __esModule: true, // this property makes it work,
     default: 'mockedDefaultExport',
     WS: {

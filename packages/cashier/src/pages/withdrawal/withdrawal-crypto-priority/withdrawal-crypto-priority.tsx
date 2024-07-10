@@ -1,6 +1,6 @@
 import { useCryptoEstimations } from '@deriv/api';
 import { Checkbox, Popover, Text } from '@deriv/components';
-import { getDecimalPlaces } from '@deriv/shared';
+import { getDecimalPlaces } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useCashierStore } from 'Stores/useCashierStores';

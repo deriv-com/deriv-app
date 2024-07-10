@@ -4,7 +4,7 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ConnectedApps from '../connected-apps';
-import { WS } from '@deriv/shared';
+import { WS } from '@deriv-app/shared';
 import { getConnectedAppsScopes } from '../template-helper';
 import { useDevice } from '@deriv-com/ui';
 
@@ -30,8 +30,8 @@ const mock_connected_apps: OauthApps = [
         active: 0,
     },
 ];
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     WS: {
         authorized: {
             send: jest.fn(() => ({ oauth_apps: mock_connected_apps })),

@@ -1,4 +1,4 @@
-import { hasInvalidCharacters, isFormattedCardNumber, validFile } from '@deriv/shared';
+import { hasInvalidCharacters, isFormattedCardNumber, validFile } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { CARD_NUMBER, IDENTIFIER_TYPES, MAX_FILE_SIZE } from 'Constants/poo-identifier';
 import { TPaymentMethodIdentifier } from 'Types';

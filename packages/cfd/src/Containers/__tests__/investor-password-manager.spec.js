@@ -3,7 +3,7 @@ import { screen, render, waitFor, fireEvent, act } from '@testing-library/react'
 import InvestorPasswordManager from '../investor-password-manager';
 import { localize } from '@deriv/translations';
 
-jest.mock('@deriv/shared/src/services/ws-methods', () => ({
+jest.mock('@deriv-app/shared/src/services/ws-methods', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
     WS: {
@@ -21,7 +21,7 @@ const mock_errors = {
     recent_years_are_easy: () => localize('Recent years are easy to guess'),
 };
 
-jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.ts', () => ({
+jest.mock('@deriv-app/shared/src/utils/validation/declarative-validation-rules.ts', () => ({
     getErrorMessages: jest.fn(() => ({
         password_warnings: mock_errors,
     })),

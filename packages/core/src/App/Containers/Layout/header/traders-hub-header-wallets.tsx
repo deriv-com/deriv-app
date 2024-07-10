@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Icon, MobileWrapper, Popover, StaticUrl } from '@deriv/components';
-import { routes, platforms, isTabletOs } from '@deriv/shared';
+import { routes, platforms, isTabletOs } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { MenuLinks } from 'App/Components/Layout/Header';

@@ -12,7 +12,7 @@ import {
     platforms,
     routes,
     toMoment,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
 import ServerTime from '_common/base/server_time';

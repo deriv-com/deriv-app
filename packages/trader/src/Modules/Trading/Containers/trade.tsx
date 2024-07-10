@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Div100vhContainer, SwipeableWrapper } from '@deriv/components';
 import { TickSpotData } from '@deriv/api-types';
-import { TRADE_TYPES, isTabletOs } from '@deriv/shared';
+import { TRADE_TYPES, isTabletOs } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import ChartLoader from 'App/Components/Elements/chart-loader';

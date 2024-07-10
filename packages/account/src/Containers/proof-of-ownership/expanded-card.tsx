@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { useFormikContext } from 'formik';
 import { Input, Text } from '@deriv/components';
-import { hasInvalidCharacters } from '@deriv/shared';
+import { hasInvalidCharacters } from '@deriv-app/shared';
 import { IDENTIFIER_TYPES } from '../../Constants/poo-identifier';
 import { isSpecialPaymentMethod } from '../../Helpers/utils';
 import FileUploader from './file-uploader';

@@ -3,8 +3,8 @@ import { ContractType } from '../contract-type';
 import moment from 'moment';
 import { mockStore } from '@deriv/stores';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     WS: {
         contractsFor: jest.fn(() =>
             Promise.resolve({

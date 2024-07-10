@@ -1,7 +1,7 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { useCashierLocked } from '@deriv/hooks';
-import { WS } from '@deriv/shared';
+import { WS } from '@deriv-app/shared';
 import { useStore, observer } from '@deriv/stores';
 import Error from '../../components/error';
 import NoBalance from '../../components/no-balance';

@@ -43,7 +43,7 @@
         "@deriv/deriv-api": "^1.0.15",
         "@deriv/hooks": "^1.0.0",
         "@deriv/p2p": "^0.7.3",
-        "@deriv/shared": "^1.0.0",
+        "@deriv-app/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",
         "@deriv/ui": "^0.6.0",

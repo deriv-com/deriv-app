@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { ArrowIndicator, Money, ContractCard } from '@deriv/components';
-import { getCardLabels, TContractInfo } from '@deriv/shared';
+import { getCardLabels, TContractInfo } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDevice } from '@deriv-com/ui';
 

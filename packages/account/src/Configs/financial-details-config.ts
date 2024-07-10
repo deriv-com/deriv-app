@@ -6,7 +6,7 @@ import {
     TSchema,
     EMPLOYMENT_VALUES,
     TEmploymentStatus,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 
 type TFinancialDetailsConfig = {

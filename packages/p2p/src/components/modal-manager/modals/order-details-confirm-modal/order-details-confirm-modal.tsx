@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, InlineMessage, Modal, Text } from '@deriv/components';
-import { formatMoney } from '@deriv/shared';
+import { formatMoney } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import FormError from 'Components/section-error';
 import FileUploaderComponent from 'Components/file-uploader-component';

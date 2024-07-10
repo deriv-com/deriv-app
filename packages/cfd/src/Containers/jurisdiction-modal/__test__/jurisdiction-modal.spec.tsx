@@ -12,8 +12,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isMobile: false, isDesktop: true })),
 }));
 
-jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
-    ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
+jest.mock('@deriv-app/shared/src/utils/screen/responsive', () => ({
+    ...jest.requireActual('@deriv-app/shared/src/utils/screen/responsive'),
     isMobile: jest.fn(),
     isDesktop: jest.fn(() => true),
 }));

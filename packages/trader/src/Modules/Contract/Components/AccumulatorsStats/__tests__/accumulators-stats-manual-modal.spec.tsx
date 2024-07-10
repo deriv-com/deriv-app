@@ -33,8 +33,8 @@ jest.mock('@deriv/components', () => {
     };
 });
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     getUrlBase: jest.fn(() => 'video_src.mp4'),
 }));
 

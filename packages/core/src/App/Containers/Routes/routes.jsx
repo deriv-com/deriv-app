@@ -3,7 +3,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
-import { urlForLanguage } from '@deriv/shared';
+import { urlForLanguage } from '@deriv-app/shared';
 import { getLanguage } from '@deriv/translations';
 import BinaryRoutes from 'App/Components/Routes';
 import { observer, useStore } from '@deriv/stores';

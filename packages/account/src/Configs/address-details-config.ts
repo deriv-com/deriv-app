@@ -7,7 +7,7 @@ import {
     regex_checks,
     address_permitted_special_characters_message,
     TSchema,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { TUpgradeInfo } from 'Types';
 

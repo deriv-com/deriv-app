@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, MobileFullPageModal, Modal, Text } from '@deriv/components';
-import { isMobile, useIsMounted } from '@deriv/shared';
+import { isMobile, useIsMounted } from '@deriv-app/shared';
 import { localize, Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import FormError from 'Components/section-error';

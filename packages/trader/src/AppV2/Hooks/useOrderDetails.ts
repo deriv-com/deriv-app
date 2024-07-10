@@ -9,7 +9,7 @@ import {
     isAccumulatorContract,
     isResetContract,
     getCardLabelsV2,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { getBarrierValue } from 'App/Components/Elements/PositionsDrawer/helpers';
 
 const CARD_LABELS = getCardLabelsV2();

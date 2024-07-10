@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useVerifyEmail } from '@deriv/api';
 import { Button, Icon, Popover, Text } from '@deriv/components';
-import { getBrandWebsiteName, getPlatformSettings, toTitleCase } from '@deriv/shared';
+import { getBrandWebsiteName, getPlatformSettings, toTitleCase } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 

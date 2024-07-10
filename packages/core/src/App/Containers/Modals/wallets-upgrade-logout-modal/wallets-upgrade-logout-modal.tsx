@@ -1,7 +1,7 @@
 import React from 'react';
 import Cookies from 'js-cookie';
 import { Dialog, Icon, Text } from '@deriv/components';
-import { redirectToLogin, routes } from '@deriv/shared';
+import { redirectToLogin, routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage, localize, Localize } from '@deriv/translations';
 import './wallets-upgrade-logout-modal.scss';

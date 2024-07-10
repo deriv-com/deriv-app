@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
 import { Div100vhContainer, Loading, Text } from '@deriv/components';
-import { isEuCountry } from '@deriv/shared';
+import { isEuCountry } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import OrderedPlatformSections from 'Components/ordered-platform-sections';
 import GetStartedTradingBanner from 'Components/get-started-trading-banner';

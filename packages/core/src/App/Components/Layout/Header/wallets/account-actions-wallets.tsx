@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { routes, isTabletOs } from '@deriv/shared';
+import { routes, isTabletOs } from '@deriv-app/shared';
 import { Button, Icon, Popover } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';

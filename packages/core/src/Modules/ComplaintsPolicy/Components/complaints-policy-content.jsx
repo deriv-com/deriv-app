@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
-import { getLegalEntityName } from '@deriv/shared';
+import { getLegalEntityName } from '@deriv-app/shared';
 import 'Sass/app/modules/complaints-policy.scss';
 import { observer, useStore } from '@deriv/stores';
 

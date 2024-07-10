@@ -1,4 +1,4 @@
-import { platform_name } from '@deriv/shared';
+import { platform_name } from '@deriv-app/shared';
 import { TNotificationMessage } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
 

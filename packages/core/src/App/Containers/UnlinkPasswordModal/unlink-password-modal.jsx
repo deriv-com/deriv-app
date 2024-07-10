@@ -10,7 +10,7 @@ import {
     validPassword,
     validLength,
     getActionFromUrl,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { getLanguage, localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { observer, useStore } from '@deriv/stores';

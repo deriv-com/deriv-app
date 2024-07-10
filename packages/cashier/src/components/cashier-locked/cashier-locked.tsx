@@ -5,7 +5,7 @@ import { EmptyState } from '@deriv/components';
 import { useCashierLocked, useDepositLocked, useIsSystemMaintenance, useMFAccountStatus } from '@deriv/hooks';
 import getMessage from './cashier-locked-provider';
 import './cashier-locked.scss';
-import { MT5_ACCOUNT_STATUS } from '@deriv/shared';
+import { MT5_ACCOUNT_STATUS } from '@deriv-app/shared';
 
 const CashierLocked = observer(() => {
     const {

@@ -6,7 +6,7 @@ import {
     getErrorMessages,
     toMoment,
     validLength,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { shouldShowIdentityInformation } from 'Helpers/utils';
 import { TUpgradeInfo } from 'Types';

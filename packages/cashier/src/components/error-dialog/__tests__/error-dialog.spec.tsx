@@ -3,7 +3,7 @@ import ErrorDialog from '../error-dialog';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 

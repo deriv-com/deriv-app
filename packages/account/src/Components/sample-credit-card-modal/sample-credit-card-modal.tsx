@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getUrlBase } from '@deriv/shared';
+import { getUrlBase } from '@deriv-app/shared';
 
 type TSampleCreditCardModalProps = {
     is_open: boolean;

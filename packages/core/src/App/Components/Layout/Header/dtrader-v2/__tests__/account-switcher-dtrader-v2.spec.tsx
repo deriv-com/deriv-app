@@ -4,7 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { Jurisdiction, CURRENCY_TYPE } from '@deriv/shared';
+import { Jurisdiction, CURRENCY_TYPE } from '@deriv-app/shared';
 import { BROKER_CODE } from '../Utils/account-switcher-dtrader-v2-utils';
 import AccountSwitcherDTraderV2 from '../account-switcher-dtrader-v2';
 

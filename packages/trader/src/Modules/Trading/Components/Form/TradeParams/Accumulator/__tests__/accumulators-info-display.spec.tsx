@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import TraderProviders from '../../../../../../../trader-providers';
 import AccumulatorsInfoDisplay from '../accumulators-info-display';
 
@@ -23,8 +23,8 @@ jest.mock('@deriv/components', () => ({
         </div>
     )),
 }));
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     isMobile: jest.fn(() => false),
 }));
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MobileRowRenderer } from '../mobile-row-renderer';
-import { CONTRACT_TYPES, toMoment } from '@deriv/shared';
+import { CONTRACT_TYPES, toMoment } from '@deriv-app/shared';
 
 const positions_drawer_card = 'PositionsDrawerCard';
 const progress_bar = 'ProgressBar';

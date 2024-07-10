@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import Loadable from 'react-loadable';
 import { DesktopWrapper, InputField, MobileWrapper, useOnClickOutside } from '@deriv/components';
-import { daysFromTodayTo, toMoment } from '@deriv/shared';
+import { daysFromTodayTo, toMoment } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import CalendarIcon from './calendar-icon';

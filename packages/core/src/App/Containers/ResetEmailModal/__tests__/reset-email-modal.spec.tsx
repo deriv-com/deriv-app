@@ -16,8 +16,8 @@ jest.mock('../../ConfirmEmailModal/confirm-email-modal', () => ({
     ),
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     getErrorMessages: jest.fn(() => ({
         email: jest.fn(() => 'Invalid email address.'),
     })),

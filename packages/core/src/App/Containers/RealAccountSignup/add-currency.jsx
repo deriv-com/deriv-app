@@ -5,7 +5,7 @@ import React from 'react';
 import { usePaymentAgentList } from '@deriv/hooks';
 import { FormSubmitButton, Icon, Loading, Text, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isMobile, reorderCurrencies, routes } from '@deriv/shared';
+import { isMobile, reorderCurrencies, routes } from '@deriv-app/shared';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
 import CurrencyProvider from './choose-currency';

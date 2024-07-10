@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Text } from '@deriv/components';
-import { useIsMounted, WS, convertTimeFormat, isMarketClosed, toMoment } from '@deriv/shared';
+import { useIsMounted, WS, convertTimeFormat, isMarketClosed, toMoment } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';

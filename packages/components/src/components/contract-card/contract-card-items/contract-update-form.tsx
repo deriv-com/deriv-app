@@ -9,11 +9,11 @@ import {
     isDeepEqual,
     isMultiplierContract,
     pick,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import Button from '../../button';
 import Money from '../../money';
 import InputWithCheckbox from '../../input-wth-checkbox';
-import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
+import { TContractInfo, TContractStore } from '@deriv-app/shared/src/utils/contract/contract-types';
 import { TGetCardLables, TToastConfig } from '../../types';
 import ArrowIndicator from '../../arrow-indicator';
 import Text from '../../text';

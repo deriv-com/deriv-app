@@ -1,4 +1,4 @@
-import { cloneObject, toMoment } from '@deriv/shared';
+import { cloneObject, toMoment } from '@deriv-app/shared';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS, subscribeWS } from 'Utils/websocket';

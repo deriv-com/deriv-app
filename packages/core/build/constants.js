@@ -41,7 +41,7 @@ const HOISTED_PACKAGES = {
     'react-router-dom': path.resolve(__dirname, '../../../node_modules/react-router-dom'),
     mobx: path.resolve(__dirname, '../../../node_modules/mobx'),
     'mobx-react': path.resolve(__dirname, '../../../node_modules/mobx-react'),
-    '@deriv/shared': path.resolve(__dirname, '../node_modules/@deriv/shared'),
+    '@deriv-app/shared': path.resolve(__dirname, '../node_modules/@deriv-app/shared'),
     '@deriv/components': path.resolve(__dirname, '../node_modules/@deriv/components'),
     '@deriv/translations': path.resolve(__dirname, '../node_modules/@deriv/translations'),
     '@deriv/deriv-charts': path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts'),

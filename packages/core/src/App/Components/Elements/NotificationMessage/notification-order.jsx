@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { Button, Text } from '@deriv/components';
-import { isEmptyObject } from '@deriv/shared';
+import { isEmptyObject } from '@deriv-app/shared';
 import { BinaryLink } from 'App/Components/Routes';
 import CloseButton from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { getCurrencyName } from '@deriv/shared';
+import { getCurrencyName } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import {
     CurrencyBusdIcon,

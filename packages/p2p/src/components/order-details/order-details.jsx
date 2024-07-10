@@ -3,7 +3,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Icon, InlineMessage, Text, ThemedScrollbars } from '@deriv/components';
 import { useP2PSettings } from '@deriv/hooks';
-import { formatMoney, isDesktop, isMobile, routes } from '@deriv/shared';
+import { formatMoney, isDesktop, isMobile, routes } from '@deriv-app/shared';
 import { useStore, observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
 import { api_error_codes } from 'Constants/api-error-codes';

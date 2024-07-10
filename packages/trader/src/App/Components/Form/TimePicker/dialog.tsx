@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { toMoment } from '@deriv/shared';
+import { toMoment } from '@deriv-app/shared';
 
 type TDialogProps = {
     className: string;

@@ -1,6 +1,6 @@
 import { getMultiplierValidationRules, getValidationRules } from '../validation-rules';
 import { TTradeStore } from 'Types';
-import { TRuleOptions } from '@deriv/shared';
+import { TRuleOptions } from '@deriv-app/shared';
 import { isSessionAvailable } from '../../Helpers/start-date';
 
 type TPartialRestParams = [Partial<TRuleOptions<TTradeStore>>, TTradeStore];
@@ -36,8 +36,8 @@ const mocked_rest_barrier_params: TRestParams = [
 ];
 const mocked_rest_time_params: TPartialRestParams = [{ min: 0, max: 10 }, mocked_store];
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     toMoment: jest.fn(() => ({
         start_date: 'start_date',
         clone: jest.fn(() => ({ hour: jest.fn(() => ({ minute: jest.fn() })) })),

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { getDecimalPlaces, platforms, routes } from '@deriv/shared';
+import { getDecimalPlaces, platforms, routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';

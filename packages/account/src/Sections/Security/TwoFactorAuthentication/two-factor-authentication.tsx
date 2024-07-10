@@ -1,5 +1,5 @@
 import React from 'react';
-import { getPropertyValue, WS } from '@deriv/shared';
+import { getPropertyValue, WS } from '@deriv-app/shared';
 import LoadErrorMessage from 'Components/load-error-message';
 import { observer, useStore } from '@deriv/stores';
 import { Loading } from '@deriv/components';

@@ -2,7 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { useLocation } from 'react-router-dom';
 import { Icon, Popover, Loading } from '@deriv/components';
-import { routes, platforms, formatMoney, makeLazyLoader, moduleLoader, isTabletOs } from '@deriv/shared';
+import { routes, platforms, formatMoney, makeLazyLoader, moduleLoader, isTabletOs } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';

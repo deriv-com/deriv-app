@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tabs, RelativeDatepicker } from '@deriv/components';
-import { getDurationMinMaxValues, toMoment } from '@deriv/shared';
+import { getDurationMinMaxValues, toMoment } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';

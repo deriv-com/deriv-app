@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { Modal, FormSubmitButton, Text } from '@deriv/components';
-import { routes, isNavigationFromExternalPlatform } from '@deriv/shared';
+import { routes, isNavigationFromExternalPlatform } from '@deriv-app/shared';
 import { Analytics } from '@deriv-com/analytics';
 import { useStore, observer } from '@deriv/stores';
 

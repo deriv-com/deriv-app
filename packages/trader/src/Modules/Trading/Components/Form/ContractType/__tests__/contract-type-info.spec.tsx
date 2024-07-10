@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
 import Info from '../ContractTypeInfo/contract-type-info';
 import { TContractCategory } from '../types';
-import { TRADE_TYPES } from '@deriv/shared';
+import { TRADE_TYPES } from '@deriv-app/shared';
 import TraderProviders from '../../../../../../trader-providers';
 
 jest.mock('Assets/Trading/Categories/trade-categories-gif', () => jest.fn(() => 'TradeCategoriesGif'));

@@ -1,5 +1,5 @@
 import { Localize } from '@deriv/translations';
-import { TContractInfo } from '@deriv/shared';
+import { TContractInfo } from '@deriv-app/shared';
 import { Text } from '@deriv-com/quill-ui';
 import CardWrapper from 'AppV2/Components/CardWrapper';
 import React from 'react';

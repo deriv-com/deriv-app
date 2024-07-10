@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { isMobile, routes } from '@deriv/shared';
+import { isMobile, routes } from '@deriv-app/shared';
 import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
 import OnRamp from '../on-ramp';
 import { mockStore } from '@deriv/stores';
@@ -20,8 +20,8 @@ jest.mock('@deriv/components', () => {
     };
 });
 
-jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
-    ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
+jest.mock('@deriv-app/shared/src/utils/screen/responsive', () => ({
+    ...jest.requireActual('@deriv-app/shared/src/utils/screen/responsive'),
     isMobile: jest.fn(),
 }));
 

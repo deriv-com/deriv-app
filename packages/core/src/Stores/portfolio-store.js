@@ -23,7 +23,7 @@ import {
     removeBarrier,
     routes,
     setLimitOrderBarriers,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { Money } from '@deriv/components';
 import { Analytics } from '@deriv-com/analytics';
 

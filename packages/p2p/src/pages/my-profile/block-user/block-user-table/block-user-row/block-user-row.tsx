@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { Button, Table, Text } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { observer } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import UserAvatar from 'Components/user/user-avatar';

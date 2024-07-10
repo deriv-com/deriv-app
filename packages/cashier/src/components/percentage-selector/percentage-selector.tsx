@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode, getDecimalPlaces } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import { TReactMouseEvent } from '../../types';
 import { useExchangeRate } from '@deriv/hooks';

@@ -49,8 +49,8 @@ jest.mock('Stores/Modules/Trading/Helpers/preview-proposal', () => ({
             subscription: {},
         }),
 }));
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     WS: {
         forget: jest.fn(),
     },

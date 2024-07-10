@@ -24,7 +24,7 @@ import {
     BARRIER_COLORS,
     getContractStatus,
     setLimitOrderBarriers,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { getChartConfig } from './Helpers/logic';
 import { createChartMarkers, calculateMarker, getAccumulatorMarkers } from './Helpers/chart-markers';
 import BaseStore from './base-store';

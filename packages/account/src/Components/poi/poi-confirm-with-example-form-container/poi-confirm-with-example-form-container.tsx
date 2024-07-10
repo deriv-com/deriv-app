@@ -11,7 +11,7 @@ import {
     removeEmptyPropertiesFromObject,
     toMoment,
     WS,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import FormBody from '../../form-body';
 import LoadErrorMessage from '../../load-error-message';

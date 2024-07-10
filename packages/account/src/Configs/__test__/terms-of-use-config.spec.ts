@@ -1,7 +1,7 @@
 import termsOfUseConfig from '../terms-of-use-config';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     getDefaultFields: jest.fn(),
 }));
 

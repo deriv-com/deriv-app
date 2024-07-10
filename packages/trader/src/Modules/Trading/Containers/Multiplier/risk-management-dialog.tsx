@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { MobileDialog, Button, Div100vhContainer } from '@deriv/components';
-import { isDeepEqual, pick } from '@deriv/shared';
+import { isDeepEqual, pick } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';

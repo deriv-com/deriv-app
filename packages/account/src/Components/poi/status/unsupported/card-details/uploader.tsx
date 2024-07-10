@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { Field, FieldProps, FormikProps, FormikValues } from 'formik';
 import { localize } from '@deriv/translations';
-import { supported_filetypes, max_document_size } from '@deriv/shared';
+import { supported_filetypes, max_document_size } from '@deriv-app/shared';
 import { Button, Icon, Text, FileDropzone } from '@deriv/components';
 import { ROOT_CLASS } from '../constants';
 import { useDevice } from '@deriv-com/ui';

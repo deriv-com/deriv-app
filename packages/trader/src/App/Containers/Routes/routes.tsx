@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter, matchPath, RouteComponentProps } from 'react-router';
 import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import BinaryRoutes from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
 import { observer, useStore } from '@deriv/stores';

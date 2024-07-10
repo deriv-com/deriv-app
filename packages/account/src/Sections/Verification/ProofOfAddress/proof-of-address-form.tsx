@@ -3,7 +3,7 @@ import { Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
 import { useDevice } from '@deriv-com/ui';
 import { Loading, Button, Text, ThemedScrollbars, FormSubmitButton, Modal, HintBox } from '@deriv/components';
 import { useFileUploader } from '@deriv/hooks';
-import { validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv/shared';
+import { validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import FilesDescription from '../../../Components/file-uploader-container/files-descriptions';

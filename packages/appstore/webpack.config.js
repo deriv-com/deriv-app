@@ -88,16 +88,16 @@ module.exports = function (env) {
                     exclude: /node_modules/,
                     use: [
                         {
-                            loader: '@deriv/shared/src/loaders/deriv-trader-loader.js',
+                            loader: '@deriv-app/shared/src/loaders/deriv-trader-loader.js',
                         },
                         {
-                            loader: '@deriv/shared/src/loaders/deriv-account-loader.js',
+                            loader: '@deriv-app/shared/src/loaders/deriv-account-loader.js',
                         },
                         {
-                            loader: '@deriv/shared/src/loaders/deriv-cashier-loader.js',
+                            loader: '@deriv-app/shared/src/loaders/deriv-cashier-loader.js',
                         },
                         {
-                            loader: '@deriv/shared/src/loaders/deriv-cfd-loader.js',
+                            loader: '@deriv-app/shared/src/loaders/deriv-cfd-loader.js',
                         },
                         {
                             loader: 'babel-loader',
@@ -141,7 +141,7 @@ module.exports = function (env) {
                                 // Provide path to the file with resources
                                 resources: [
                                     // eslint-disable-next-line global-require, import/no-dynamic-require
-                                    ...require('@deriv/shared/src/styles/index.js'),
+                                    ...require('@deriv-app/shared/src/styles/index.js'),
                                 ],
                             },
                         },
@@ -184,7 +184,7 @@ module.exports = function (env) {
                 mobx: true,
                 'react-router': true,
                 'react-router-dom': true,
-                '@deriv/shared': true,
+                '@deriv-app/shared': true,
                 '@deriv/components': true,
                 '@deriv/translations': true,
                 '@deriv/account': true,

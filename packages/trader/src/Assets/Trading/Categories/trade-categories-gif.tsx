@@ -10,7 +10,7 @@ import ImageSpread from 'Assets/SvgComponents/trade_explanations/img-spread.svg'
 import ImageTickHighLow from 'Assets/SvgComponents/trade_explanations/img-tick-high-low.svg';
 import ImageTurbos from 'Assets/SvgComponents/trade_explanations/img-turbos.svg';
 import ContractTypeDescriptionVideo from './contract-type-description-video';
-import { TRADE_TYPES } from '@deriv/shared';
+import { TRADE_TYPES } from '@deriv-app/shared';
 
 const TradeCategoriesGIF = ({
     category,

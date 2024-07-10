@@ -1,6 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { WS } from '@deriv/shared';
+import { WS } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import ErrorMessage from '../../../Components/error-component';

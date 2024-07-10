@@ -14,7 +14,7 @@ jest.mock('@deriv/components', () => ({
     Loading: () => <div>Loading</div>,
 }));
 
-jest.mock('@deriv/shared/src/services/ws-methods', () => ({
+jest.mock('@deriv-app/shared/src/services/ws-methods', () => ({
     WS: {
         wait: (...payload: []) => Promise.resolve([...payload]),
     },

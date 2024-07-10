@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, Checklist, Text } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { observer } from '@deriv/stores';
 import Dp2pBlocked from 'Components/dp2p-blocked';
 import { Localize } from 'Components/i18next';

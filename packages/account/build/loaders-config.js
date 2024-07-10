@@ -97,7 +97,7 @@ const css_loaders = [
     {
         loader: 'sass-resources-loader',
         options: {
-            resources: require('@deriv/shared/src/styles/index.js'),
+            resources: require('@deriv-app/shared/src/styles/index.js'),
         },
     },
 ];

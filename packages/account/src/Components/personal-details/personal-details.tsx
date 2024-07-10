@@ -4,7 +4,7 @@ import { Form, Formik, FormikErrors } from 'formik';
 import { Analytics, TEvents } from '@deriv-com/analytics';
 import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, ThemedScrollbars } from '@deriv/components';
 import { useDevice } from '@deriv-com/ui';
-import { getIDVNotApplicableOption, removeEmptyPropertiesFromObject } from '@deriv/shared';
+import { getIDVNotApplicableOption, removeEmptyPropertiesFromObject } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import {

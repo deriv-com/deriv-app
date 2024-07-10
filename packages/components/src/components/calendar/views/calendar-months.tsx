@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { toMoment } from '@deriv/shared';
+import { toMoment } from '@deriv-app/shared';
 import { CommonPropTypes } from './types';
 
 const Months = ({ calendar_date, isPeriodDisabled, selected_date, updateSelected }: CommonPropTypes) => {

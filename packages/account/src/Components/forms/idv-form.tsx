@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { Field, FormikProps, FieldProps, useFormikContext } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
 import { Autocomplete, Input, SelectNative } from '@deriv/components';
-import { formatInput, getIDVNotApplicableOption } from '@deriv/shared';
+import { formatInput, getIDVNotApplicableOption } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import {
     getDocumentData,

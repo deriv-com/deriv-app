@@ -4,7 +4,7 @@ import InsufficientBalanceModal from '../insufficient-balance-modal';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import userEvent from '@testing-library/user-event';
 
 type TModal = React.FC<{

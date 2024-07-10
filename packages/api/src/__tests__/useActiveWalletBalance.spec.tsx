@@ -1,10 +1,10 @@
 import React from 'react';
-import { useWS } from '@deriv/shared';
+import { useWS } from '@deriv-app/shared';
 import { act, renderHook } from '@testing-library/react-hooks';
 import APIProvider from '../APIProvider';
 import useActiveWalletBalance from '../hooks/useActiveWalletBalance';
 
-jest.mock('@deriv/shared');
+jest.mock('@deriv-app/shared');
 
 const mockUseWS = useWS as jest.MockedFunction<typeof useWS>;
 describe('useActiveWalletBalance', () => {

@@ -1,6 +1,6 @@
 import DocumentUploader from '@binary-com/binary-document-uploader';
 import { localize } from '@deriv/translations';
-import { compressImageFiles, readFiles, TSettings } from '@deriv/shared';
+import { compressImageFiles, readFiles, TSettings } from '@deriv-app/shared';
 import { TFile } from 'Types';
 
 type TProcessedFile = TFile & TSettings & { message: string };

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Text, StaticUrl } from '@deriv/components';
-import { ContentFlag, setPerformanceValue } from '@deriv/shared';
+import { ContentFlag, setPerformanceValue } from '@deriv-app/shared';
 import { useStore } from '@deriv/stores';
 import { Localize, useLocalize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';

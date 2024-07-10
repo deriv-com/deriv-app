@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Button, Icon, Text } from '@deriv/components';
 import { BinaryLink } from 'App/Components/Routes';
-import { isEmptyObject, toTitleCase } from '@deriv/shared';
+import { isEmptyObject, toTitleCase } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 
 type TActionProps = ReturnType<typeof useStore>['notifications']['notifications'][0]['action'];

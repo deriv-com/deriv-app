@@ -4,7 +4,7 @@ import { Dropdown } from '@deriv/components';
 import { Analytics } from '@deriv-com/analytics';
 import { getAccountTypes } from 'Constants/platform-config';
 import { useStore, observer } from '@deriv/stores';
-import { startPerformanceEventTimer } from '@deriv/shared';
+import { startPerformanceEventTimer } from '@deriv-app/shared';
 import { TAccountCategory } from 'Types';
 import './account-type-dropdown.scss';
 

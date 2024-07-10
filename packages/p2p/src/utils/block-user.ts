@@ -1,4 +1,4 @@
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import { localize } from 'Components/i18next';
 
 /**

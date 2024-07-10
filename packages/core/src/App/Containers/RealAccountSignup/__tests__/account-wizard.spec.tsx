@@ -34,8 +34,8 @@ jest.mock('../account-wizard-form', () => ({
     ]),
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     WS: {
         send: jest.fn().mockResolvedValue({}),
     },

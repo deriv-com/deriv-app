@@ -1,6 +1,6 @@
 import React from 'react';
 import { Money, Table, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';

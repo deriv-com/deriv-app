@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { getLegalEntityName, Jurisdiction, TBrokerCodes } from '@deriv/shared';
+import { getLegalEntityName, Jurisdiction, TBrokerCodes } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';
 

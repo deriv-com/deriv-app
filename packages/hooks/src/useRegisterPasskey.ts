@@ -2,7 +2,7 @@ import React from 'react';
 import { startRegistration } from '@simplewebauthn/browser';
 import { PublicKeyCredentialCreationOptionsJSON } from '@simplewebauthn/typescript-types';
 import { useInvalidateQuery } from '@deriv/api';
-import { mobileOSDetect, WS } from '@deriv/shared';
+import { mobileOSDetect, WS } from '@deriv-app/shared';
 import { Analytics } from '@deriv-com/analytics';
 
 type TError = { code?: string; name?: string; message: string };

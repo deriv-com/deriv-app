@@ -1,11 +1,11 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { isSafariBrowser, mobileOSDetectAsync } from '@deriv/shared';
+import { isSafariBrowser, mobileOSDetectAsync } from '@deriv-app/shared';
 import MT5MobileRedirectOption from '../mt5-mobile-redirect-option';
 import { getDeeplinkUrl, getMobileAppInstallerURL, getPlatformMt5DownloadLink } from '../../../src/Helpers/constants';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     isDesktop: jest.fn(() => false),
 }));
 

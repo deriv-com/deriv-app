@@ -14,8 +14,8 @@ jest.mock('Utils/websocket', () => ({
     requestWS: jest.fn().mockRejectedValue('Error'),
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     useIsMounted: jest.fn().mockReturnValue(() => true),
 }));
 

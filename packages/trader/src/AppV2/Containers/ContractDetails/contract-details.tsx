@@ -21,7 +21,7 @@ import {
     isValidToSell,
     hasContractEntered,
     isAccumulatorContract,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import classNames from 'classnames';
 import ContractDetailsFooter from 'AppV2/Components/ContractDetailsFooter';
 import { ContractCard } from 'AppV2/Components/ContractCard';

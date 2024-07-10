@@ -1,4 +1,4 @@
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import PaymentAgentStore from '../payment-agent-store';
 import { configure } from 'mobx';
 import { TRootStore, TWebSocket } from '../../types';

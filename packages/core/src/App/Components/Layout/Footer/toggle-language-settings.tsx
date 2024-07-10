@@ -6,7 +6,7 @@ import { useTranslations } from '@deriv-com/translations';
 import { Localize, localize } from '@deriv/translations'; // [TODO]: Remove this import after integrating Deriv app with new translation lib
 import 'Sass/app/modules/settings.scss';
 import LanguageSettings from '../../../Containers/SettingsModal/settings-language';
-import { TranslationFlag } from '@deriv/shared';
+import { TranslationFlag } from '@deriv-app/shared';
 
 const ToggleLanguageSettings = observer(({ showPopover }: { showPopover?: boolean }) => {
     const { common, ui } = useStore();

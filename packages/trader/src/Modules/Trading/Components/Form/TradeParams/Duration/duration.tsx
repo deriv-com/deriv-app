@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import { Dropdown } from '@deriv/components';
-import { toMoment, isVanillaContract } from '@deriv/shared';
+import { toMoment, isVanillaContract } from '@deriv-app/shared';
 import { useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import DurationToggle from './duration-toggle';

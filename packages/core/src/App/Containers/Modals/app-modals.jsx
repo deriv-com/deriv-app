@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 import { useWalletMigration } from '@deriv/hooks';
-import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
+import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';

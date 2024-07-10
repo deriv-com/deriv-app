@@ -9,7 +9,7 @@ import MultipliersExpiration from 'Modules/Trading/Components/Form/TradeParams/M
 import MultipliersExpirationModal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration-modal';
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info';
 import { localize, Localize } from '@deriv/translations';
-import { clickAndKeyEventHandler, getGrowthRatePercentage } from '@deriv/shared';
+import { clickAndKeyEventHandler, getGrowthRatePercentage } from '@deriv-app/shared';
 
 type TAmountWidgetProps = {
     amount: number;

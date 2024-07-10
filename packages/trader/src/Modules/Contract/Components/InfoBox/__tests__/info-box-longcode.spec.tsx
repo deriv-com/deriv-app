@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { mockContractInfo } from '@deriv/shared';
+import { mockContractInfo } from '@deriv-app/shared';
 import InfoBoxLongcode from '../info-box-longcode';
 
 const test_longcode_short = 'test longcode';

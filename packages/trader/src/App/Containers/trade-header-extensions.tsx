@@ -1,6 +1,6 @@
 import React from 'react';
 import { when } from 'mobx';
-import { routes, WS } from '@deriv/shared';
+import { routes, WS } from '@deriv-app/shared';
 import PopulateHeader from './populate-header';
 import { observer, useStore } from '@deriv/stores';
 import TraderProviders from '../../trader-providers';

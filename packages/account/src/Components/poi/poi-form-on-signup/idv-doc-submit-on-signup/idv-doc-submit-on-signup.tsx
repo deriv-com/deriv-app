@@ -7,7 +7,7 @@ import {
     toMoment,
     removeEmptyPropertiesFromObject,
     getIDVNotApplicableOption,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { useTranslations, Localize } from '@deriv-com/translations';
 import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import FormSubHeader from '../../../form-sub-header';

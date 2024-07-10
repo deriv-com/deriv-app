@@ -1,4 +1,4 @@
-import { setCurrencies, getCurrencies, isEmptyObject } from '@deriv/shared';
+import { setCurrencies, getCurrencies, isEmptyObject } from '@deriv-app/shared';
 
 let ws;
 

@@ -4,7 +4,7 @@ import { useStores } from 'Stores';
 import { useHistory } from 'react-router-dom';
 import { Localize, useLocalize } from '@deriv/translations';
 import { Text, Dialog } from '@deriv/components';
-import { isMobile, getAuthenticationStatusInfo, routes, Jurisdiction } from '@deriv/shared';
+import { isMobile, getAuthenticationStatusInfo, routes, Jurisdiction } from '@deriv-app/shared';
 import './failed-verification-modal.scss';
 
 type TFailedVerificationModal = {

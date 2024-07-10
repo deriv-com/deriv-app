@@ -5,8 +5,8 @@ import { TCoreStores } from '@deriv/stores/types';
 import AccumulatorsAmountMobile from '../accumulators-amount-mobile';
 import TraderProviders from '../../../../../../../trader-providers';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     isMobile: jest.fn(() => true),
 }));
 

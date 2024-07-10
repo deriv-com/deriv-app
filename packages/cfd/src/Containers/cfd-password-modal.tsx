@@ -26,7 +26,7 @@ import {
     validPassword,
     validMT5Password,
     WS,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 

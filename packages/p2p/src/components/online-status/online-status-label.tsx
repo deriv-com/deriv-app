@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import { observer } from '@deriv/stores';
 import { getLastOnlineLabel } from 'Utils/adverts';
 

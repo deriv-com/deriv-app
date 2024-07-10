@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockContractInfo, getCardLabels, isValidToSell } from '@deriv/shared';
+import { mockContractInfo, getCardLabels, isValidToSell } from '@deriv-app/shared';
 import moment from 'moment';
 import CardFooter from '../contract-card-footer';
 
@@ -10,8 +10,8 @@ jest.mock('react-transition-group', () => ({
     ...jest.requireActual('react-transition-group'),
     CSSTransition: jest.fn(({ children }) => <div>{children}</div>),
 }));
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     hasContractEntered: jest.fn().mockReturnValue(true),
     isOpen: jest.fn().mockReturnValue(true),
     isValidToSell: jest.fn(),

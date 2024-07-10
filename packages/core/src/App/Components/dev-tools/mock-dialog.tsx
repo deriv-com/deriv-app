@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Button, Dropdown, Input, Text } from '@deriv/components';
 import { useLocalStorageData } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
-import { useWS } from '@deriv/shared';
+import { useWS } from '@deriv-app/shared';
 import { getLanguage } from '@deriv/translations';
 import './mock-dialog.scss';
 

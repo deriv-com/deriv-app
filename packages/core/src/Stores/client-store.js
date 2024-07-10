@@ -31,7 +31,7 @@ import {
     urlForLanguage,
     getAppId,
     getUrlP2P,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { Analytics } from '@deriv-com/analytics';
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
 

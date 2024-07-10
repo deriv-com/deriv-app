@@ -6,7 +6,7 @@ import {
     getEndTime,
     getPlatformRedirect,
     hasContractStarted,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ChartBottomWidgets, ChartTopWidgets } from './contract-replay-widget';

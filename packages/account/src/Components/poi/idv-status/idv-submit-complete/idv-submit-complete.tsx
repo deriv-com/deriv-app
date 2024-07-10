@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Text } from '@deriv/components';
-import { TIDVErrorStatus, IDV_ERROR_STATUS } from '@deriv/shared';
+import { TIDVErrorStatus, IDV_ERROR_STATUS } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { DerivLightWaitingPoiIcon } from '@deriv/quill-icons';

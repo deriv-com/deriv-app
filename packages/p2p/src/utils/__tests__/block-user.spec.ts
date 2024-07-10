@@ -1,7 +1,7 @@
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import { getErrorMessage, getErrorModalTitle, getWidth } from 'Utils/block-user';
 
-jest.mock('@deriv/shared', () => ({
+jest.mock('@deriv-app/shared', () => ({
     isMobile: jest.fn(() => false),
 }));
 

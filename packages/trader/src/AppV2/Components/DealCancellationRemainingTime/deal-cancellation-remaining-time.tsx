@@ -1,6 +1,6 @@
 import { Tag } from '@deriv-com/quill-ui';
 import { RemainingTime } from '@deriv/components';
-import { getCardLabelsV2 } from '@deriv/shared';
+import { getCardLabelsV2 } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import React from 'react';

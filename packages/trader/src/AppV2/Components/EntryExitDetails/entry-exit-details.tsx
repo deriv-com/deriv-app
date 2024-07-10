@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { TContractInfo, addComma, formatDate, formatTime, getEndTime } from '@deriv/shared';
+import { TContractInfo, addComma, formatDate, formatTime, getEndTime } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import EntryExitDetailRow from './entry-exit-details-row';
 import CardWrapper from '../CardWrapper';

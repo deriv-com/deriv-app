@@ -5,7 +5,7 @@ import React from 'react';
 import { Form, Formik, FormikHelpers } from 'formik';
 import DocumentUploader from '@binary-com/binary-document-uploader';
 import { Button } from '@deriv/components';
-import { readFiles, WS, UPLOAD_FILE_TYPE } from '@deriv/shared';
+import { readFiles, WS, UPLOAD_FILE_TYPE } from '@deriv-app/shared';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';

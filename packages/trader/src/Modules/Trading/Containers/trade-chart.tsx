@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActiveSymbols } from '@deriv/api-types';
 import { useDevice } from '@deriv-com/ui';
-import { ChartBarrierStore } from '@deriv/shared';
+import { ChartBarrierStore } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ChartBottomWidgets } from './chart-widgets';

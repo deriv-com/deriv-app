@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Analytics } from '@deriv-com/analytics';
 import Routes from 'Components/routes/routes';

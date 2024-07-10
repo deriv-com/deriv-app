@@ -1,5 +1,5 @@
 import { Buy, BuyContractResponse, BuyContractRequest } from '@deriv/api-types';
-import { WS } from '@deriv/shared';
+import { WS } from '@deriv-app/shared';
 
 type TResponse = BuyContractResponse & {
     echo_req: Buy;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Checkbox, StaticUrl, Text } from '@deriv/components';
-import { DBVI_COMPANY_NAMES } from '@deriv/shared';
+import { DBVI_COMPANY_NAMES } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { TJurisdictionCheckBoxProps } from '../props.types';

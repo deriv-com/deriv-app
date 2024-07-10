@@ -1,6 +1,6 @@
 import React from 'react';
 import { MobileFullPageModal } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import { useStores } from 'Stores';

@@ -3,7 +3,7 @@ import React from 'react';
 import { Field, Form, Formik, FieldProps } from 'formik';
 import { PasswordInput, PasswordMeter, Text, Button, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { getErrorMessages } from '@deriv/shared';
+import { getErrorMessages } from '@deriv-app/shared';
 import { TCFDPasswordSuccessMessage, TInvestorPasswordManager, TPasswordManagerModalFormValues } from './props.types';
 
 const CFDPasswordSuccessMessage = ({ toggleModal, is_investor }: TCFDPasswordSuccessMessage) => (

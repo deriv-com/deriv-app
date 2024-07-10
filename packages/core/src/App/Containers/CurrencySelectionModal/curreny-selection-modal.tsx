@@ -2,7 +2,7 @@ import React from 'react';
 import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { Button, Icon, Modal, Money, StatusBadge, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getCurrencyName, startPerformanceEventTimer } from '@deriv/shared';
+import { getCurrencyName, startPerformanceEventTimer } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import CurrencyIcon from './currency';
 import { AccountListDetail } from './types';

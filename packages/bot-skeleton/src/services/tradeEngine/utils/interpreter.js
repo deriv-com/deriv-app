@@ -1,4 +1,4 @@
-import { cloneThorough, isMultiplierContract } from '@deriv/shared';
+import { cloneThorough, isMultiplierContract } from '@deriv-app/shared';
 import JSInterpreter from '@deriv/js-interpreter';
 import { createScope } from './cliTools';
 import Interface from '../Interface';

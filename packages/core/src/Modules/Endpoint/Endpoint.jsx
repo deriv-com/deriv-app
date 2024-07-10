@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
 import { Button, Checkbox, Input, Text } from '@deriv/components';
-import { getAppId, getDebugServiceWorker, getSocketURL } from '@deriv/shared';
+import { getAppId, getDebugServiceWorker, getSocketURL } from '@deriv-app/shared';
 import { FeatureFlagsSection } from './FeatureFlagsSection';
 
 const InputField = props => {

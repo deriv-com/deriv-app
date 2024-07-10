@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CFD_PLATFORMS } from '@deriv/shared';
+import { CFD_PLATFORMS } from '@deriv-app/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 

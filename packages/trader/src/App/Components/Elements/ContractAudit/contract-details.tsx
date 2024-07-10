@@ -25,7 +25,7 @@ import {
     TContractInfo,
     CONTRACT_TYPES,
     toGMTFormat,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { Analytics } from '@deriv-com/analytics';
 import { getBarrierLabel, getBarrierValue, isDigitType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import ContractAuditItem from './contract-audit-item';

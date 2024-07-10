@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { CSSProperties, HTMLProps } from 'react';
-import { isEmptyObject } from '@deriv/shared';
+import { isEmptyObject } from '@deriv-app/shared';
 
 type TTextProps = Omit<HTMLProps<HTMLElement>, 'size'> & {
     align?: string;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Field as FormField, Formik, Form, FormikValues } from 'formik';
 import debounce from 'lodash.debounce';
 import { Icon, Input } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop } from '@deriv-app/shared';
 import { observer } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';

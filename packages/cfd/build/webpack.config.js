@@ -56,7 +56,7 @@ module.exports = function (env) {
                 'react-router': 'react-router',
                 mobx: 'mobx',
                 'mobx-react': 'mobx-react',
-                '@deriv/shared': '@deriv/shared',
+                '@deriv-app/shared': '@deriv-app/shared',
                 '@deriv/components': '@deriv/components',
                 '@deriv/translations': '@deriv/translations',
                 '@deriv/account': '@deriv/account',

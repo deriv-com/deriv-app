@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
 import { getLanguage, localize } from '@deriv/translations';
-import { redirectToLogin, redirectToSignUp } from '@deriv/shared';
+import { redirectToLogin, redirectToSignUp } from '@deriv-app/shared';
 
 type TAuthorizationRequiredModal = {
     is_visible: boolean;

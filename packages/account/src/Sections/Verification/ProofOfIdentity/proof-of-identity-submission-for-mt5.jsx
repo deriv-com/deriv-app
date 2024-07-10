@@ -8,7 +8,7 @@ import {
     formatIDVError,
     isIDVReportNotAvailable,
     getIDVNotApplicableOption,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { useStore, observer } from '@deriv/stores';
 import Unsupported from '../../../Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view-container';

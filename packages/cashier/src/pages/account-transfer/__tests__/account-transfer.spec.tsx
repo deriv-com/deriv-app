@@ -7,7 +7,7 @@ import AccountTransfer from '../account-transfer';
 import CashierProviders from '../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
 
-jest.mock('@deriv/shared/src/services/ws-methods', () => ({
+jest.mock('@deriv-app/shared/src/services/ws-methods', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
     WS: {

@@ -1,4 +1,4 @@
-import { TContractInfo } from '@deriv/shared';
+import { TContractInfo } from '@deriv-app/shared';
 import ServerTime from '_common/base/server_time';
 
 export const isCancellationExpired = (contract_info: TContractInfo) =>

@@ -9,8 +9,8 @@ jest.mock('@deriv/quill-icons', () => ({
     DerivLightNameDobPoiIcon: () => 'DerivLightNameDobPoiIcon',
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     isDesktop: jest.fn(() => true),
     isMobile: jest.fn(() => false),
     filterObjProperties: jest.fn(() => ({

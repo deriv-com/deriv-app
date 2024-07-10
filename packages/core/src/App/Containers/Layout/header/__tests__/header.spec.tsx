@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import Header from '../header';
 
 jest.mock('@deriv/hooks', () => ({

@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { Text } from '@deriv/components';
-import { redirectToLogin } from '@deriv/shared';
+import { redirectToLogin } from '@deriv-app/shared';
 import { getLanguage, Localize, useLocalize } from '@deriv/translations';
 import { getHasDivider } from 'Constants/utils';
 import ListingContainer from 'Components/containers/listing-container';

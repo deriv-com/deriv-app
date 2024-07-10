@@ -5,7 +5,7 @@ import { FormikValues } from 'formik';
 
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Button, DesktopWrapper, Icon, MobileWrapper, Money, Text } from '@deriv/components';
-import { getCFDPlatformLabel, isMobile, mobileOSDetect } from '@deriv/shared';
+import { getCFDPlatformLabel, isMobile, mobileOSDetect } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 

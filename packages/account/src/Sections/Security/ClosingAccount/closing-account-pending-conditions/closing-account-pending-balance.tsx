@@ -7,7 +7,7 @@ import {
     getCFDAccountDisplay,
     getCFDPlatformLabel,
     getMT5Icon,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { TCFDPlatform, TDetailsOfDerivXAccount, TDetailsOfMT5Account } from 'Types';

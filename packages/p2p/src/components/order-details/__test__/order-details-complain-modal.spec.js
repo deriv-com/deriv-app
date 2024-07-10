@@ -1,13 +1,13 @@
 import React from 'react';
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { requestWS } from 'Utils/websocket';
 import OrderDetailsComplainModal from '../order-details-complain-modal.jsx';
 
 const el_modal = document.createElement('div');
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     isMobile: jest.fn(),
 }));
 

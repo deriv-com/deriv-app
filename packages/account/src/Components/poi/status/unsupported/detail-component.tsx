@@ -3,7 +3,7 @@
 import React from 'react';
 import { Loading, Icon, Text, Button } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { WS } from '@deriv/shared';
+import { WS } from '@deriv-app/shared';
 import { UploadComplete } from '../upload-complete/upload-complete';
 import POIManualUploadFailed from '../../../poi-manual-upload-failed';
 import { API_ERROR_CODES } from '../../../../Constants/api-error-codes';

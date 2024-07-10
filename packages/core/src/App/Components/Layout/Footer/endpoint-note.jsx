@@ -1,5 +1,5 @@
 import React from 'react';
-import { routes } from '@deriv/shared';
+import { routes } from '@deriv-app/shared';
 import { BinaryLink } from '../../Routes';
 
 const EndpointNote = () => {

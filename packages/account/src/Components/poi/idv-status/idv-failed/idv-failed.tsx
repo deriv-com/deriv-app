@@ -12,7 +12,7 @@ import {
     TIDVErrorStatus,
     toMoment,
     WS,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';

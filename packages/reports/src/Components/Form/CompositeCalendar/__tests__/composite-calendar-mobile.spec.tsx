@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import CompositeCalendarMobile from '../composite-calendar-mobile';
-import { toMoment } from '@deriv/shared';
+import { toMoment } from '@deriv-app/shared';
 
 const startDate = 'Start date';
 const endDate = 'End date';

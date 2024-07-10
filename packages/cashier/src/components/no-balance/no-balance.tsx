@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Button, Icon, Text } from '@deriv/components';
 import { useDepositLocked } from '@deriv/hooks';
-import { routes, getCurrencyDisplayCode, startPerformanceEventTimer } from '@deriv/shared';
+import { routes, getCurrencyDisplayCode, startPerformanceEventTimer } from '@deriv-app/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import { useCashierStore } from '../../stores/useCashierStores';

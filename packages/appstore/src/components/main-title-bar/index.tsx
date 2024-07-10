@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Tabs, Icon, Loading } from '@deriv/components';
-import { ContentFlag, makeLazyLoader, moduleLoader } from '@deriv/shared';
+import { ContentFlag, makeLazyLoader, moduleLoader } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, useLocalize } from '@deriv/translations';
 import { useDevice } from '@deriv-com/ui';

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Money } from '@deriv/components';
-import { isDesktop, isMobile, getDecimalPlaces } from '@deriv/shared';
+import { isDesktop, isMobile, getDecimalPlaces } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';

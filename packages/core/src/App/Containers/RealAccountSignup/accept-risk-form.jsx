@@ -9,7 +9,7 @@ import {
     Modal,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv-app/shared';
 
 const AcceptRiskForm = ({ onConfirm, onClose }) => {
     return (

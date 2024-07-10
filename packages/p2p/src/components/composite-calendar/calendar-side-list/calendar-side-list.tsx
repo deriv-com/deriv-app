@@ -1,5 +1,5 @@
 import React from 'react';
-import { toMoment } from '@deriv/shared';
+import { toMoment } from '@deriv-app/shared';
 import ListItem from './list-item';
 
 type TItem = {

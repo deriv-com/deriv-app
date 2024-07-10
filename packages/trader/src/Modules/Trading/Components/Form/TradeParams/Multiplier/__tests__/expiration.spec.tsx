@@ -7,8 +7,8 @@ import TraderProviders from '../../../../../../../trader-providers';
 
 const expiry_date = '28 Nov 2023 at 11:04';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     getDateFromNow: jest.fn(() => '28 Nov 2023'),
 }));
 

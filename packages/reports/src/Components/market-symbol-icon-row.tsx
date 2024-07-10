@@ -1,5 +1,5 @@
 import React from 'react';
-import { TContractInfo, extractInfoFromShortcode, getMarketName, getTradeTypeName, isHighLow } from '@deriv/shared';
+import { TContractInfo, extractInfoFromShortcode, getMarketName, getTradeTypeName, isHighLow } from '@deriv-app/shared';
 import { Icon, Popover, IconTradeTypes } from '@deriv/components';
 import classNames from 'classnames';
 import { formatStatementTransaction } from 'Stores/Modules/Statement/Helpers/format-response';

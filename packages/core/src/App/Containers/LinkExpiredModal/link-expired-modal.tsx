@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import React from 'react';
 import { Dialog, FormSubmitButton, Input, Text } from '@deriv/components';
 import { useVerifyEmail } from '@deriv/hooks';
-import { getErrorMessages, validEmail } from '@deriv/shared';
+import { getErrorMessages, validEmail } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import EmailResent from './email-resent';

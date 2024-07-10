@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import './side-note.scss';
 
 type TSideNoteTitle = {

@@ -1,4 +1,4 @@
-import { isEmptyObject, getPropertyValue, TRADE_TYPES } from '@deriv/shared';
+import { isEmptyObject, getPropertyValue, TRADE_TYPES } from '@deriv-app/shared';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { TTradeStore } from 'Types';
 

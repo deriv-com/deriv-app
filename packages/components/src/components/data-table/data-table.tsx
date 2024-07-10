@@ -12,7 +12,7 @@ import {
     CellMeasurerCache,
     Grid,
 } from 'react-virtualized';
-import { isForwardStartingBuyTransaction } from '@deriv/shared';
+import { isForwardStartingBuyTransaction } from '@deriv-app/shared';
 import TableRow, { TSource } from './table-row';
 import ThemedScrollbars from '../themed-scrollbars';
 import { TTableRowItem } from '../types/common.types';

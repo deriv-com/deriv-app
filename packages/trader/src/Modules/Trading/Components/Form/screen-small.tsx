@@ -29,7 +29,7 @@ import TradeTypeTabs from 'Modules/Trading/Components/Form/TradeParams/trade-typ
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { Localize } from '@deriv/translations';
-import { TRADE_TYPES } from '@deriv/shared';
+import { TRADE_TYPES } from '@deriv-app/shared';
 
 type TCollapsibleTradeParams = Pick<
     ReturnType<typeof useTraderStore>,

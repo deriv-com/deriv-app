@@ -1,7 +1,7 @@
 import React from 'react';
 import { History } from 'history';
 import { Localize, localize } from '@deriv/translations';
-import { formatDate, routes } from '@deriv/shared';
+import { formatDate, routes } from '@deriv-app/shared';
 
 type TProps = {
     cashier_validation: string[] | undefined;

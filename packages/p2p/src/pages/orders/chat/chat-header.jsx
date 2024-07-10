@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import { observer } from 'mobx-react-lite';
 import { OnlineStatusAvatar } from 'Components/online-status';
 import { useStores } from 'Stores';

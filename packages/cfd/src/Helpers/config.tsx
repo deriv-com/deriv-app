@@ -12,7 +12,7 @@ import {
     platformsText,
     CTRADER_URL,
 } from './constants';
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 
 import { TCFDDashboardContainer } from 'Containers/props.types';

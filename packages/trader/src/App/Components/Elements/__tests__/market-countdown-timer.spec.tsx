@@ -38,8 +38,8 @@ const default_mock_store = {
     },
 };
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     WS: {
         tradingTimes: () => ({
             api_initial_load_error: false,

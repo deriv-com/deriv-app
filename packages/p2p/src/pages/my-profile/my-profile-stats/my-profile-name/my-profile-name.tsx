@@ -1,6 +1,6 @@
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
-import { daysSince } from '@deriv/shared';
+import { daysSince } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import BlockUserCount from 'Pages/advertiser-page/block-user/block-user-count';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Text, Input } from '@deriv/components';
 import { useVerifyEmail } from '@deriv/api';
-import { toTitleCase } from '@deriv/shared';
+import { toTitleCase } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from '../../../Components/form-sub-header';

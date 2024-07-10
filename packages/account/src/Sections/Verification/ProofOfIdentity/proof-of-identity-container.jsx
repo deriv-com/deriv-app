@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Button, Loading } from '@deriv/components';
-import { isEmptyObject, WS, getPlatformRedirect, platforms } from '@deriv/shared';
+import { isEmptyObject, WS, getPlatformRedirect, platforms } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { identity_status_codes, service_code } from './proof-of-identity-utils';
 import DemoMessage from '../../../Components/demo-message';

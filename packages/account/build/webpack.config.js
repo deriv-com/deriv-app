@@ -75,7 +75,7 @@ module.exports = function (env) {
                 'react-router': 'react-router',
                 formik: 'formik',
                 classnames: 'classnames',
-                '@deriv/shared': '@deriv/shared',
+                '@deriv-app/shared': '@deriv-app/shared',
                 '@deriv/components': '@deriv/components',
                 '@deriv/translations': '@deriv/translations',
                 '@deriv-com/analytics': '@deriv-com/analytics',

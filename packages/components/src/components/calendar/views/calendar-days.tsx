@@ -9,7 +9,7 @@ import {
     subMonths,
     toMoment,
     padLeft,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { CommonPropTypes } from './types';
 import Popover from '../../popover';
 import { getDaysOfTheWeek, week_headers_abbr } from '../helpers';

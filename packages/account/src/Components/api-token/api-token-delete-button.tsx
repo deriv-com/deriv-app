@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Modal, Text, Popover } from '@deriv/components';
-import { useIsMounted } from '@deriv/shared';
+import { useIsMounted } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import ApiTokenContext from './api-token-context';
 import { TPopoverAlignment, TFormattedToken, TApiContext } from 'Types';

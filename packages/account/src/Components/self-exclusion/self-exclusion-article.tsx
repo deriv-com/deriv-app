@@ -1,7 +1,7 @@
 import React from 'react';
 import { StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { getBrandWebsiteName, getPlatformSettings } from '@deriv/shared';
+import { getBrandWebsiteName, getPlatformSettings } from '@deriv-app/shared';
 import AccountArticle from 'Components/article';
 import SelfExclusionContext from './self-exclusion-context';
 import { observer } from '@deriv/stores';

@@ -5,7 +5,7 @@ import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
 import { expect } from '@jest/globals';
 
-jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules', () => ({
+jest.mock('@deriv-app/shared/src/utils/validation/declarative-validation-rules', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
     validNumber: jest.fn(() => true),

@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Text } from '@deriv-com/quill-ui';
-import { getCardLabels } from '@deriv/shared';
+import { getCardLabels } from '@deriv-app/shared';
 import { Money } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 

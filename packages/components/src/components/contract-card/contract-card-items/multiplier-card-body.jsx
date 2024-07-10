@@ -8,7 +8,7 @@ import {
     getTotalProfit,
     isValidToCancel,
     isValidToSell,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import ContractCardItem from './contract-card-item';
 import ToggleCardDialog from './toggle-card-dialog';
 import Money from '../../money';

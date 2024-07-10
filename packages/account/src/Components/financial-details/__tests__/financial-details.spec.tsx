@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormikValues } from 'formik';
-import { EMPLOYMENT_VALUES } from '@deriv/shared';
+import { EMPLOYMENT_VALUES } from '@deriv-app/shared';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import FinancialDetails from '../financial-details';

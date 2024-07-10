@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import CFDFinancialStpRealAccountSignup from '../cfd-financial-stp-real-account-signup';
 import CFDProviders from '../../cfd-providers';
 import { mockStore } from '@deriv/stores';
-import { getAuthenticationStatusInfo } from '@deriv/shared';
+import { getAuthenticationStatusInfo } from '@deriv-app/shared';
 
 jest.mock('@deriv/account', () => ({
     ...jest.requireActual('@deriv/account'),
@@ -35,8 +35,8 @@ jest.mock('../../Components/cfd-poi', () =>
     ))
 );
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     getAuthenticationStatusInfo: jest.fn().mockReturnValue({}),
 }));
 

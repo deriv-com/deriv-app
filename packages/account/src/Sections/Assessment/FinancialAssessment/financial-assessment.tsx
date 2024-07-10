@@ -6,7 +6,7 @@ import React from 'react';
 import { Formik, FormikHelpers } from 'formik';
 import { useHistory, withRouter } from 'react-router';
 import { FormSubmitErrorMessage, Loading, Button, Dropdown, Modal, Icon, SelectNative, Text } from '@deriv/components';
-import { routes, platforms, WS, shouldHideOccupationField } from '@deriv/shared';
+import { routes, platforms, WS, shouldHideOccupationField } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import LeaveConfirm from 'Components/leave-confirm';

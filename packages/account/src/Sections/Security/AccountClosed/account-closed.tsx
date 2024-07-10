@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { getStaticUrl } from '@deriv/shared';
+import { getStaticUrl } from '@deriv-app/shared';
 
 const AccountClosed = observer(() => {
     const { client } = useStore();

@@ -1,4 +1,4 @@
-import { getExpiryType, getDurationMinMaxValues } from '@deriv/shared';
+import { getExpiryType, getDurationMinMaxValues } from '@deriv-app/shared';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { TTradeStore } from 'Types';
 

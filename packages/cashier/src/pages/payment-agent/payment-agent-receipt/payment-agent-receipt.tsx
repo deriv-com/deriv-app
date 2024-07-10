@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Text } from '@deriv/components';
-import { isMobile, routes } from '@deriv/shared';
+import { isMobile, routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import PaymentAgentDetail from '../payment-agent-detail';

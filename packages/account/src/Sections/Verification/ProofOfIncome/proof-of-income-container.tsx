@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Loading } from '@deriv/components';
-import { routes, WS } from '@deriv/shared';
+import { routes, WS } from '@deriv-app/shared';
 import { AccountStatusResponse } from '@deriv/api-types';
 import ProofOfIncomeForm from './proof-of-income-form';
 import { income_status_codes } from './proof-of-income-utils';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { CFD_PLATFORMS } from '@deriv/shared';
+import { CFD_PLATFORMS } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import ResetTradingPasswordModal from '../Components/reset-trading-password-modal';
 import { TPlatforms } from '../Types';

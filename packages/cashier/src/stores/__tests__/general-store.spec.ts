@@ -1,6 +1,6 @@
 import { configure } from 'mobx';
 import { waitFor } from '@testing-library/react';
-import { routes, ContentFlag } from '@deriv/shared';
+import { routes, ContentFlag } from '@deriv-app/shared';
 import GeneralStore from '../general-store';
 import type { TWebSocket, TRootStore } from '../../types';
 import { mockStore } from '@deriv/stores';

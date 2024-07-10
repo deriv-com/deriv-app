@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import getRoutesConfig from 'Constants/routes-config';
 import Cashier from '../cashier';
 import { P2PSettingsProvider, mockStore } from '@deriv/stores';
@@ -33,8 +33,8 @@ jest.mock('@deriv/components', () => {
     };
 });
 
-jest.mock('@deriv/shared', () => {
-    const original_module = jest.requireActual('@deriv/shared');
+jest.mock('@deriv-app/shared', () => {
+    const original_module = jest.requireActual('@deriv-app/shared');
 
     return {
         ...original_module,

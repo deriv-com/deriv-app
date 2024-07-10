@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { Jurisdiction, JURISDICTION_MARKET_TYPES } from '@deriv/shared';
+import { Jurisdiction, JURISDICTION_MARKET_TYPES } from '@deriv-app/shared';
 import useMT5SVGEligibleToMigrate from '../useMT5SVGEligibleToMigrate';
 
 describe('useMT5SVGEligibleToMigrate', () => {

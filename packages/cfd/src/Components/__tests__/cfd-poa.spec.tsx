@@ -13,8 +13,8 @@ jest.mock('@deriv/account/src/Components/poa/common-mistakes/common-mistake-exam
     jest.fn(() => <div>CommonMistakeExamples</div>)
 );
 jest.mock('@deriv/account/src/Components/leave-confirm', () => jest.fn(() => <div>LeaveConfirm</div>));
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     validPostCode: jest.fn(() => true),
     validLength: jest.fn(() => true),
     validLetterSymbol: jest.fn(() => true),

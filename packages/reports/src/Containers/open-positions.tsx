@@ -8,7 +8,7 @@ import {
     getTotalProfit,
     getGrowthRatePercentage,
     toMoment,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import {

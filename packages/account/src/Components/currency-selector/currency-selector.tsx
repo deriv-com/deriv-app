@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { Field, Formik, FormikHandlers, FormikState } from 'formik';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
-import { reorderCurrencies, getAddressDetailsFields, CURRENCY_TYPE } from '@deriv/shared';
+import { reorderCurrencies, getAddressDetailsFields, CURRENCY_TYPE } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import RadioButton from './radio-button';

@@ -2,7 +2,7 @@ import React from 'react';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
-import { getCFDAccountKey } from '@deriv/shared';
+import { getCFDAccountKey } from '@deriv-app/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, Money, Text, ExpansionPanel, Button } from '@deriv/components';
 import SpecBox from '../Components/specbox';

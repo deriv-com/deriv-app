@@ -10,7 +10,7 @@ import {
     getIDVNotApplicableOption,
     IDV_ERROR_STATUS,
     AUTH_STATUS_CODES,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { getIDVDocuments } from '../Configs/idv-document-config';
 import { TServerError } from '../Types';

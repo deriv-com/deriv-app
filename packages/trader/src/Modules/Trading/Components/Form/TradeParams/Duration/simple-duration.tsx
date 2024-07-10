@@ -1,6 +1,6 @@
 import React from 'react';
 import { ButtonToggle, InputField } from '@deriv/components';
-import { getDurationMinMaxValues, getUnitMap } from '@deriv/shared';
+import { getDurationMinMaxValues, getUnitMap } from '@deriv-app/shared';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import TradingDatePicker from '../../DatePicker';
 import DurationRangeText from './duration-range-text';

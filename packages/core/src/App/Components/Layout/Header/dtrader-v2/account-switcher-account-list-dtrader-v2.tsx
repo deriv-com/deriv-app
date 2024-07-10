@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Money } from '@deriv/components';
 import { Text, Button } from '@deriv-com/quill-ui';
-import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode } from '@deriv-app/shared';
 import { Localize } from '@deriv/translations';
 import {
     getAccountIcon,

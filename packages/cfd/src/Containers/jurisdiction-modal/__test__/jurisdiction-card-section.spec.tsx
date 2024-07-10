@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import JurisdictionCardSection from '../jurisdiction-card-section';
-import { Jurisdiction } from '@deriv/shared';
+import { Jurisdiction } from '@deriv-app/shared';
 
 describe('JurisdictionCardSection', () => {
     type TMockProps = {

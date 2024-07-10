@@ -2,7 +2,7 @@ import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { TranslationFlag } from '@deriv/shared';
+import { TranslationFlag } from '@deriv-app/shared';
 
 const MenuTitle = observer(() => {
     const { client, common, ui } = useStore();

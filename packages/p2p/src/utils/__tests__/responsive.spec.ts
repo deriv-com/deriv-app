@@ -1,7 +1,7 @@
-import { isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv-app/shared';
 import { getTextSize, getIconSize, getInlineTextSize } from '../responsive';
 
-jest.mock('@deriv/shared', () => ({
+jest.mock('@deriv-app/shared', () => ({
     isMobile: jest.fn(() => false),
 }));
 

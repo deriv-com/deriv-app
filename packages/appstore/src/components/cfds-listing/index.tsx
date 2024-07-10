@@ -9,7 +9,7 @@ import {
     makeLazyLoader,
     moduleLoader,
     setPerformanceValue,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { useDevice } from '@deriv-com/ui';
 import { Localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';

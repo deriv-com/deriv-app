@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { toMoment } from '@deriv/shared';
+import { toMoment } from '@deriv-app/shared';
 import Icon from '../icon';
 import Text from '../text';
 

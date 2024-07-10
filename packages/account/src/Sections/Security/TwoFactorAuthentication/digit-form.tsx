@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { Formik, Form, Field, FormikProps, FormikHelpers, FieldProps } from 'formik';
 import { Input, Button } from '@deriv/components';
-import { getPropertyValue, WS } from '@deriv/shared';
+import { getPropertyValue, WS } from '@deriv-app/shared';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 

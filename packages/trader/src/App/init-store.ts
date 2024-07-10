@@ -1,5 +1,5 @@
 import { configure } from 'mobx';
-import { setWebsocket } from '@deriv/shared';
+import { setWebsocket } from '@deriv-app/shared';
 import ServerTime from '_common/base/server_time';
 import { TCoreStores } from '@deriv/stores/types';
 import type { TWebSocket } from 'Types';

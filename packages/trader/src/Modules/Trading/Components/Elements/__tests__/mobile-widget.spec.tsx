@@ -5,8 +5,8 @@ import { TStores } from '@deriv/stores/types';
 import TraderProviders from '../../../../../trader-providers';
 import { mockStore } from '@deriv/stores';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
+jest.mock('@deriv-app/shared', () => ({
+    ...jest.requireActual('@deriv-app/shared'),
     getExpiryType: () => 'tick',
 }));
 

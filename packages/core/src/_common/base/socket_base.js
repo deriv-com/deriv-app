@@ -1,11 +1,11 @@
 const DerivAPIBasic = require('@deriv/deriv-api/dist/DerivAPIBasic');
-const getAppId = require('@deriv/shared').getAppId;
-const getSocketURL = require('@deriv/shared').getSocketURL;
-const cloneObject = require('@deriv/shared').cloneObject;
-const getPropertyValue = require('@deriv/shared').getPropertyValue;
-const State = require('@deriv/shared').State;
+const getAppId = require('@deriv-app/shared').getAppId;
+const getSocketURL = require('@deriv-app/shared').getSocketURL;
+const cloneObject = require('@deriv-app/shared').cloneObject;
+const getPropertyValue = require('@deriv-app/shared').getPropertyValue;
+const State = require('@deriv-app/shared').State;
 const { getLanguage } = require('@deriv/translations');
-const website_name = require('@deriv/shared').website_name;
+const website_name = require('@deriv-app/shared').website_name;
 const SocketCache = require('./socket_cache');
 const APIMiddleware = require('./api_middleware');
 

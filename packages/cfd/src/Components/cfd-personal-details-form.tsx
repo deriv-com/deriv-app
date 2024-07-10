@@ -19,7 +19,7 @@ import {
     Checkbox,
     InlineMessage,
 } from '@deriv/components';
-import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
+import { isDeepEqual, isDesktop, isMobile } from '@deriv-app/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { useStore } from '@deriv/stores';

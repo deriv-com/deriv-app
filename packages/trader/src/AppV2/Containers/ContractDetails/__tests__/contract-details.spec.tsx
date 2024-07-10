@@ -16,7 +16,7 @@ import {
     hasContractEntered,
     isForwardStarting,
     isAccumulatorContract,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import { getContractDetailsConfig } from 'AppV2/Utils/contract-details-config';
 
 jest.mock('AppV2/Hooks/useContractDetails', () => jest.fn());
@@ -81,7 +81,7 @@ jest.mock('AppV2/Components/OrderDetails', () => {
     return OrderDetails;
 });
 
-jest.mock('@deriv/shared', () => ({
+jest.mock('@deriv-app/shared', () => ({
     isValidToSell: jest.fn(),
     isMultiplierContract: jest.fn(),
     isValidToCancel: jest.fn(),

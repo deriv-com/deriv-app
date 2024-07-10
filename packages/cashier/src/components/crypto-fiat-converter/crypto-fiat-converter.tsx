@@ -3,7 +3,7 @@ import { Field, FieldProps, useFormikContext } from 'formik';
 
 import { DesktopWrapper, Icon, Input, MobileWrapper } from '@deriv/components';
 import { useExchangeRate } from '@deriv/hooks';
-import { getCurrencyDisplayCode } from '@deriv/shared';
+import { getCurrencyDisplayCode } from '@deriv-app/shared';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 

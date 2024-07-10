@@ -12,7 +12,7 @@ import {
     mobileOSDetect,
     TContractStore,
     TContractInfo,
-} from '@deriv/shared';
+} from '@deriv-app/shared';
 import ContractAudit from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import ContractDrawerCard from './contract-drawer-card';

@@ -6,7 +6,7 @@ import { RiskToleranceWarningModal, TestWarningModal } from 'Components/trading-
 import { getTradingAssessmentQuestions } from 'Constants/trading-assessment-questions';
 import { Dropdown, SelectNative, Text, FormSubmitButton, Button, Loading } from '@deriv/components';
 import FormFooter from 'Components/form-footer';
-import { routes, WS } from '@deriv/shared';
+import { routes, WS } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useHistory, withRouter } from 'react-router';
 import { Formik, Form } from 'formik';

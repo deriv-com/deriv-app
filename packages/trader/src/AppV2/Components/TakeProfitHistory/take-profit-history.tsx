@@ -1,5 +1,5 @@
 import { Text, CaptionText, Pagination } from '@deriv-com/quill-ui';
-import { formatDate, formatTime, TContractStore } from '@deriv/shared';
+import { formatDate, formatTime, TContractStore } from '@deriv-app/shared';
 import { FormatUtils } from '@deriv-com/utils';
 import CardWrapper from '../CardWrapper';
 import React, { useState } from 'react';

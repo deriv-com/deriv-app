@@ -1,4 +1,4 @@
-import { EMPLOYMENT_VALUES } from '@deriv/shared';
+import { EMPLOYMENT_VALUES } from '@deriv-app/shared';
 import { getFormattedOccupationList, getOccupationList } from '../financial-details-config';
 
 describe('getFormattedOccupationList', () => {

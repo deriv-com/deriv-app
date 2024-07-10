@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDevice } from '@deriv-com/ui';
-import { getUrlBase, Jurisdiction } from '@deriv/shared';
+import { getUrlBase, Jurisdiction } from '@deriv-app/shared';
 import { Analytics } from '@deriv-com/analytics';
 import { Localize } from '@deriv/translations';
 import { Text, Button } from '@deriv/components';

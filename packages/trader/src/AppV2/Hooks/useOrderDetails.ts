@@ -120,11 +120,11 @@ const transformVanillaData = (data: TContractInfo) => {
     const commonFields = getCommonFields(data);
     return {
         [CARD_LABELS.REFERENCE_ID]: commonFields[`${CARD_LABELS.REFERENCE_ID}`],
+        [CARD_LABELS.DURATION]: `${getDurationTime(data) ?? ''} ${getDurationUnitText(getDurationPeriod(data)) ?? ''}`,
         [CARD_LABELS.STRIKE_PRICE]:
             (isResetContract(data.contract_type) ? addComma(data.entry_spot_display_value) : getBarrierValue(data)) ||
             ' - ',
-        [CARD_LABELS.DURATION]: `${getDurationTime(data) ?? ''} ${getDurationUnitText(getDurationPeriod(data)) ?? ''}`,
-        [CARD_LABELS.PAYOUT_PER_POINT]: commonFields[CARD_LABELS.PAYOUT_PER_POINT],
+        [CARD_LABELS.PAYOUT_PER_POINT]: `${commonFields[CARD_LABELS.PAYOUT_PER_POINT]} ${data.currency}`,
         [CARD_LABELS.STAKE]: commonFields[CARD_LABELS.STAKE],
     };
 };

@@ -1031,7 +1031,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             portal_element_id='modal_root'
             visible={should_show_password_dialog}
             onClose={closeModal}
-            wrapper_classname='cfd-password-modal password_dialog'
+            wrapper_classname='cfd-password-modal'
         >
             <PasswordModalHeader
                 should_set_trading_password={should_set_trading_password}

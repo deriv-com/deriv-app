@@ -985,7 +985,9 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const password_modal = (
         <Modal
-            className={classNames('cfd-password-modal', { 'cfd-mt5-password-modal': platform === CFD_PLATFORMS.MT5 })}
+            className={classNames('cfd-password-modal', {
+                'cfd-mt5-password-modal': platform === CFD_PLATFORMS.MT5 && should_set_trading_password,
+            })}
             has_close_icon
             is_open={should_show_password_modal}
             toggleModal={closeModal}

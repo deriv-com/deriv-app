@@ -13,11 +13,11 @@ type TNetworkStatusToast = {
 
 const NetworkStatusToast = ({ status, portal_id, message }: TNetworkStatusToast) => {
     const [is_visible, setIsVisible] = useState(false);
-    const { isDesktop } = useDevice();
+    const { isMobile } = useDevice();
     const new_portal_id = document.getElementById(portal_id);
 
     useEffect(() => {
-        if (!new_portal_id || !message || isDesktop) return;
+        if (!new_portal_id || !message || !isMobile) return;
         if (!is_visible && status !== 'online') {
             setIsVisible(true);
         } else if (is_visible && status === 'online') {
@@ -25,13 +25,13 @@ const NetworkStatusToast = ({ status, portal_id, message }: TNetworkStatusToast)
                 setIsVisible(false);
             }, 1500);
         }
-    }, [isDesktop, is_visible, message, new_portal_id, status]);
+    }, [isMobile, is_visible, message, new_portal_id, status]);
 
-    if (!new_portal_id || !message || isDesktop) return null;
+    if (!new_portal_id || !message || !isMobile) return null;
 
     return createPortal(
         <div className='network-status__container'>
-            <Snackbar hasCloseButton={false} message={message} isVisible={is_visible} actionText='' />
+            <Snackbar hasCloseButton={false} message={message} isVisible={is_visible} />
         </div>,
         new_portal_id
     );

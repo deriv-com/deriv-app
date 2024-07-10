@@ -5,7 +5,7 @@ import NetworkStatusToastPopup from '../network-status-toast-popup';
 
 jest.mock('@deriv-com/ui', () => ({
     ...jest.requireActual('@deriv-com/ui'),
-    useDevice: jest.fn(() => ({ isMobile: true, isDesktop: false })),
+    useDevice: jest.fn(() => ({ isMobile: true })),
 }));
 
 jest.mock('@deriv-com/quill-ui', () => ({
@@ -101,8 +101,12 @@ describe('NetworkStatusToastPopup', () => {
         expect(screen.queryByText(online)).not.toBeInTheDocument();
     });
 
-    it('should not render NetworkStatusToastPopup for desktop', () => {
-        (useDevice as jest.Mock).mockReturnValue({ isMobile: false, isDesktop: true });
+    it('should not render NetworkStatusToastPopup for desktop or tablet', () => {
+        (useDevice as jest.Mock).mockReturnValue({
+            isDesktop: true,
+            isTablet: true,
+            isMobile: false,
+        });
         mock_store.common.network_status.class = offline.toLowerCase();
         mock_store.common.network_status.tooltip = offline;
 

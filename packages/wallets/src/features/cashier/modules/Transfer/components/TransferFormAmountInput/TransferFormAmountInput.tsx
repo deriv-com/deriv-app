@@ -168,6 +168,14 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
         setFieldValue,
     ]);
 
+    const onMaxBtnClickHandler = useCallback(
+        (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            setFieldValue('fromAmount', Number(fromAccount?.balance));
+            e.preventDefault();
+        },
+        [fromAccount?.balance, setFieldValue]
+    );
+
     return (
         <div className='wallets-transfer-form-amount-input'>
             <ATMAmountInput
@@ -192,7 +200,8 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
                 <Button
                     className='wallets-transfer-form-amount-input__max-btn'
                     color='black'
-                    disabled={isAmountInputDisabled && !toAccount}
+                    disabled={!hasFunds}
+                    onClick={onMaxBtnClickHandler}
                     size='sm'
                     variant='outlined'
                 >

@@ -9,6 +9,7 @@ export const redirectToLogin = (is_logged_in: boolean, language: string, has_par
         const l = window.location;
         const redirect_url = has_params ? window.location.href : `${l.protocol}//${l.host}${l.pathname}`;
         sessionStorage.setItem('redirect_url', redirect_url);
+        // console.log('redirect_url', redirect_url);
         setTimeout(() => {
             const new_href = loginUrl({ language });
             window.location.href = new_href;

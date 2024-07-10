@@ -1452,7 +1452,6 @@ export default class ClientStore extends BaseStore {
         // delete walletsOnboarding key after page refresh
         /** will be removed later when header for the wallets is created) */
         localStorage.removeItem('walletsOnboarding');
-
         const search = SessionStore.get('signup_query_param') || window.location.search;
         const search_params = new URLSearchParams(search);
         const redirect_url = search_params?.get('redirect_url');
@@ -1481,15 +1480,14 @@ export default class ClientStore extends BaseStore {
         }
 
         const authorize_response = await this.setUserLogin(login_new_user);
-
         if (search) {
-            if (code_param && action_param) this.setVerificationCode(code_param, action_param);
+            if (code_param && action_param) await this.setVerificationCode(code_param, action_param);
             document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     // timeout is needed to get the token (code) from the URL before we hide it from the URL
                     // and from LiveChat that gets the URL from Window, particularly when initialized via HTML script on mobile
                     history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
-                }, 0);
+                }, 10);
             });
         }
 
@@ -1516,7 +1514,7 @@ export default class ClientStore extends BaseStore {
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
-        if (action_param === 'request_email') {
+        if (action_param === 'request_email' && this.is_logged_in) {
             const request_email_code = code_param ?? LocalStore.get(`verification_code.${action_param}`) ?? '';
             if (request_email_code) {
                 this.setVerificationCode(request_email_code, action_param);
@@ -2124,11 +2122,18 @@ export default class ClientStore extends BaseStore {
                     is_social_signup_provider = true;
                 }
             });
+            // if search_params contains action, request_email as key,value then don't delete code param
+            const is_request_email = search_params.has('action', 'request_email');
 
             this.is_new_session = Object.keys(obj_params).length > 0;
 
             // delete account query params - but keep other query params (e.g. utm)
-            Object.keys(obj_params).forEach(key => search_params.delete(key));
+            Object.keys(obj_params).forEach(key => {
+                if (key === 'code' && is_request_email) {
+                    return;
+                }
+                search_params.delete(key);
+            });
             search_params.delete('state'); // remove unused state= query string
             search_params = search_params?.toString();
             const search_param_without_account = search_params ? `?${search_params}` : '/';
@@ -2209,7 +2214,7 @@ export default class ClientStore extends BaseStore {
         return is_ready_to_process && is_cross_checked;
     }
 
-    setVerificationCode(code, action) {
+    async setVerificationCode(code, action) {
         this.verification_code[action] = code;
         if (code) {
             LocalStore.set(`verification_code.${action}`, code);
@@ -2218,7 +2223,7 @@ export default class ClientStore extends BaseStore {
         }
         if (action === 'signup') {
             // TODO: add await if error handling needs to happen before AccountSignup is initialised
-            this.fetchResidenceList(); // Prefetch for use in account signup process
+            await this.fetchResidenceList(); // Prefetch for use in account signup process
         }
     }
 
@@ -2680,7 +2685,6 @@ export default class ClientStore extends BaseStore {
             if (response?.wallet_migration?.state) this.setWalletMigrationState(response?.wallet_migration?.state);
         } catch (error) {
             // eslint-disable-next-line no-console
-            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
         }
     }
 
@@ -2691,7 +2695,6 @@ export default class ClientStore extends BaseStore {
             this.getWalletMigrationState();
         } catch (error) {
             // eslint-disable-next-line no-console
-            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
         } finally {
             this.setIsWalletMigrationRequestIsInProgress(false);
         }
@@ -2704,7 +2707,6 @@ export default class ClientStore extends BaseStore {
             this.getWalletMigrationState();
         } catch (error) {
             // eslint-disable-next-line no-console
-            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
         } finally {
             this.setIsWalletMigrationRequestIsInProgress(false);
         }
@@ -2774,7 +2776,6 @@ export default class ClientStore extends BaseStore {
             return { key, subscription };
         } catch (error) {
             // eslint-disable-next-line no-console
-            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
             return {};
         }
     };
@@ -2787,7 +2788,6 @@ export default class ClientStore extends BaseStore {
                 delete this.subscriptions?.[name]?.[key];
             } catch (error) {
                 // eslint-disable-next-line no-console
-                console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
             }
         }
     };
@@ -2819,7 +2819,6 @@ export default class ClientStore extends BaseStore {
             },
             error => {
                 // eslint-disable-next-line no-console
-                console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
             }
         );
     };

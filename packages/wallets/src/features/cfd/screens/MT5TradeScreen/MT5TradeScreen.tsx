@@ -128,7 +128,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                                     {platform === mt5Platform ? marketTypeTitle : platformTitle}{' '}
                                     {!activeWalletData?.is_virtual && details?.landing_company_short?.toUpperCase()}
                                 </WalletText>
-                                {activeWalletData?.is_virtual && <WalletListCardBadge isDemo label='virtual' />}
+                                {activeWalletData?.is_virtual && <WalletListCardBadge />}
                             </div>
                             <WalletText color='less-prominent' size='xs'>
                                 {platform !== ctraderPlatform && loginId}

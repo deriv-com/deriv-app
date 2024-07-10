@@ -107,7 +107,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                             <WalletText color={isDemo ? 'system-dark-2-general-text' : 'general'} size='md'>
                                 {activeWallet?.currency} Wallet
                             </WalletText>
-                            {isDemo && <WalletListCardBadge isDemo={isDemo} label='virtual' />}
+                            {isDemo && <WalletListCardBadge />}
                         </div>
                         {isLoading ? (
                             <div className='wallets-skeleton wallets-cashier-header__loader' />

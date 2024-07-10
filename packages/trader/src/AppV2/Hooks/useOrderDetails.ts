@@ -108,7 +108,7 @@ const transformAccumulatorData = (data: TContractInfo) => {
         ...{
             ...(data.limit_order?.take_profit && {
                 [CARD_LABELS.TAKE_PROFIT]: data.limit_order?.take_profit?.order_amount
-                    ? `${data.limit_order.take_profit.order_amount} ${data.currency}`
+                    ? `${data.limit_order.take_profit.order_amount.toFixed(2)} ${data.currency}`
                     : CARD_LABELS.NOT_SET,
             }),
         },

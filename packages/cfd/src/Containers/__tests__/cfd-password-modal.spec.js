@@ -39,6 +39,7 @@ describe('<CFDPasswordModal/>', () => {
     const mockSetCFDSuccessDialog = jest.fn();
     const mockSubmitMt5Password = jest.fn();
     const mockSubmitCFDPasswordFn = jest.fn();
+    const mockSetProductFn = jest.fn();
     const history = createBrowserHistory();
     let modal_root_el;
 
@@ -71,6 +72,7 @@ describe('<CFDPasswordModal/>', () => {
                 getAccountStatus: mockFn,
                 new_account_response: {},
                 jurisdiction_selected_shortcode: Jurisdiction.SVG,
+                setProduct: mockSetProductFn,
             },
         },
     };

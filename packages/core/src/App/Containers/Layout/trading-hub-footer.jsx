@@ -134,14 +134,12 @@ const TradingHubFooter = observer(() => {
                         showPopover={showPopover}
                     />
                 )}
-                {!has_wallet && (
-                    <ToggleLanguageSettings
-                        is_settings_visible={is_language_settings_modal_on}
-                        toggleSettings={toggleLanguageSettingsModal}
-                        lang={current_language}
-                        showPopover={showPopover}
-                    />
-                )}
+                <ToggleLanguageSettings
+                    is_settings_visible={is_language_settings_modal_on}
+                    toggleSettings={toggleLanguageSettingsModal}
+                    lang={current_language}
+                    showPopover={showPopover}
+                />
                 <ToggleFullScreen showPopover={showPopover} />
             </div>
         </footer>

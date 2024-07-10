@@ -191,16 +191,16 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     const { isDesktop } = useDevice();
     const previous_active_positions = usePrevious(active_positions);
     const contract_types = [
-        { text: localize('Options'), value: 'Options', is_default: !is_multiplier && !is_accumulator },
-        { text: localize('Multipliers'), value: 'Multipliers', is_default: is_multiplier },
-        { text: localize('Accumulators'), value: 'Accumulators', is_default: is_accumulator },
+        { text: localize('Options'), value: 'options', is_default: !is_multiplier && !is_accumulator },
+        { text: localize('Multipliers'), value: 'multipliers', is_default: is_multiplier },
+        { text: localize('Accumulators'), value: 'accumulators', is_default: is_accumulator },
     ];
     const [contract_type_value, setContractTypeValue] = React.useState(
-        contract_types.find(type => type.is_default)?.value || 'Options'
+        contract_types.find(type => type.is_default)?.value || 'options'
     );
     const prev_contract_type_value = usePrevious(contract_type_value);
     const accumulator_rates = [
-        { text: localize('All growth rates'), value: 'All growth rates' },
+        { text: localize('All growth rates'), value: 'all growth rates' },
         { text: '1%', value: '1%' },
         { text: '2%', value: '2%' },
         { text: '3%', value: '3%' },
@@ -212,7 +212,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     const is_accumulator_selected = contract_type_value === contract_types[2].value;
     const is_multiplier_selected = contract_type_value === contract_types[1].value;
     const contract_types_list = contract_types
-        .filter(contract_type => contract_type.value !== 'Accumulators' || !hide_accu_in_dropdown)
+        .filter(contract_type => contract_type.value !== 'accumulators' || !hide_accu_in_dropdown)
         .map(({ text, value }) => ({ text, value }));
     const active_positions_filtered = active_positions?.filter(({ contract_info }) => {
         if (contract_info) {

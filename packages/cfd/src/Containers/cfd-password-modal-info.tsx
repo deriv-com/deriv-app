@@ -17,8 +17,7 @@ const CfdPasswordModalInfo = ({ jurisdiction_selected_shortcode, platform, produ
             </div>
             <Text size='xxxs'>
                 <Localize
-                    i18n_default_text='You are adding your {{platform}} {{product}} account under {{company}}, regulated by the British Virgin
-            Islands Financial Services Commission (licence no. SIBA/L/18/1114).'
+                    i18n_default_text='You are adding your {{platform}} {{product}} account under {{company}}, regulated by the British Virgin Islands Financial Services Commission (licence no. SIBA/L/18/1114).'
                     values={{
                         platform,
                         product,

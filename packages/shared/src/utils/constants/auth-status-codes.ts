@@ -5,4 +5,5 @@ export const AUTH_STATUS_CODES = {
     VERIFIED: 'verified',
     EXPIRED: 'expired',
     SUSPECTED: 'suspected',
+    RESUBMIT: 'resubmit',
 } as const;

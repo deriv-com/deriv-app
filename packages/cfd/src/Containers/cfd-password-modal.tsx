@@ -45,6 +45,7 @@ import ChangePasswordConfirmation from './cfd-change-password-confirmation';
 
 import '../sass/cfd.scss';
 import CfdPasswordModalTnc from './cfd-password-modal-tnc';
+import classNames from 'classnames';
 
 export type TCFDPasswordFormValues = { password: string };
 
@@ -130,7 +131,7 @@ const PasswordModalHeader = ({
 
     return (
         <Text styles={style} as={element} line_height='m' weight='bold' size={font_size} align={alignment}>
-            {should_set_trading_password && !is_password_reset_error && (
+            {should_set_trading_password && !is_password_reset_error && platform === CFD_PLATFORMS.MT5 && (
                 <Localize
                     i18n_default_text='Create a {{platform}} password'
                     values={{
@@ -288,14 +289,48 @@ const CreatePassword = ({
                             ) : (
                                 <Icon icon={'IcDxtradeOnePassword'} width='122' height='108' />
                             )}
-                            <Text size='xs' align='center' className='cfd-password-modal__create-password-description'>
-                                <Localize
-                                    i18n_default_text='Note: You can use this password for all your {{platform}} accounts.'
-                                    values={{
-                                        platform: getCFDPlatformLabel(platform),
-                                    }}
-                                />
-                            </Text>
+                            {platform !== CFD_PLATFORMS.MT5 ? (
+                                <>
+                                    <Text
+                                        size='s'
+                                        align='center'
+                                        weight='bold'
+                                        className='cfd-password-modal__create-password-title'
+                                    >
+                                        <Localize
+                                            i18n_default_text='Create a {{platform}} password'
+                                            values={{
+                                                platform: getCFDPlatformLabel(platform),
+                                            }}
+                                        />
+                                    </Text>
+                                    <Text
+                                        size='xs'
+                                        align='center'
+                                        className='cfd-password-modal__create-password-description'
+                                    >
+                                        <Localize
+                                            i18n_default_text='You can use this password for all your {{platform}} accounts.'
+                                            values={{
+                                                platform: getCFDPlatformLabel(platform),
+                                            }}
+                                        />
+                                    </Text>
+                                </>
+                            ) : (
+                                <Text
+                                    size='xs'
+                                    align='center'
+                                    className='cfd-password-modal__create-password-description'
+                                >
+                                    <Localize
+                                        i18n_default_text='Note: You can use this password for all your {{platform}} accounts.'
+                                        values={{
+                                            platform: getCFDPlatformLabel(platform),
+                                        }}
+                                    />
+                                </Text>
+                            )}
                             <div className='input-element'>
                                 <PasswordMeter
                                     input={values.password}
@@ -347,6 +382,7 @@ const CreatePassword = ({
                             label={localize('Create {{platform}} password', {
                                 platform: getCFDPlatformLabel(platform),
                             })}
+                            is_center={platform !== CFD_PLATFORMS.MT5}
                         />
                     </div>
                 </form>
@@ -942,7 +978,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     const password_modal = (
         <Modal
-            className='cfd-password-modal password_modal'
+            className={classNames('cfd-password-modal', { 'cfd-mt5-password-modal': platform === CFD_PLATFORMS.MT5 })}
             has_close_icon
             is_open={should_show_password_modal}
             toggleModal={closeModal}
@@ -969,7 +1005,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             portal_element_id='modal_root'
             visible={should_show_password_modal}
             onClose={closeModal}
-            wrapper_classname='cfd-password-modal password_modal_mobile'
+            wrapper_classname='cfd-password-modal cfd-mt5-password-modal'
             renderTitle={() => (
                 <PasswordModalHeader
                     should_set_trading_password={should_set_trading_password}

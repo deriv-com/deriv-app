@@ -4,15 +4,12 @@
     height: 7.6rem;
     padding: 0.8rem;
     margin-top: 0.8rem;
+    position: relative;
     display: flex;
-    .digits {
-        display: flex;
-        flex-direction: column;
+    .picker-wheel {
         text-align: center;
-        margin: auto;
-        overflow: hidden;
+        width: 100%;
         height: 6.8rem;
-        animation: slide 0.3s ease;
     }
     .actions {
         display: flex;

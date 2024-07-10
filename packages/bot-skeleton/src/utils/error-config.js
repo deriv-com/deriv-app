@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 const generateErrorMessage = (block_type, missing_space = localize('workspace')) => {
     return {

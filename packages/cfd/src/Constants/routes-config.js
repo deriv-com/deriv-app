@@ -1,6 +1,6 @@
 import React from 'react';
 import { routes } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { Loading } from '@deriv-app/components';
 
 const CFDCompareAccounts = React.lazy(() =>

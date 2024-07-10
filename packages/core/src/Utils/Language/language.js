@@ -1,6 +1,6 @@
 import WS from 'Services/ws-methods';
 import { urlForLanguage } from '@deriv-app/shared';
-import { getLanguage, changeLanguage as changeLanguageTranslation } from '@deriv/translations';
+import { getLanguage, changeLanguage as changeLanguageTranslation } from '@deriv-app/translations';
 import * as SocketCache from '_common/base/socket_cache';
 import BinarySocket from '_common/base/socket_base';
 

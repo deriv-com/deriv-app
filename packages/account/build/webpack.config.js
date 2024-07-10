@@ -77,7 +77,7 @@ module.exports = function (env) {
                 classnames: 'classnames',
                 '@deriv-app/shared': '@deriv-app/shared',
                 '@deriv-app/components': '@deriv-app/components',
-                '@deriv/translations': '@deriv/translations',
+                '@deriv-app/translations': '@deriv-app/translations',
                 '@deriv-com/analytics': '@deriv-com/analytics',
                 '@deriv/api': '@deriv/api',
                 '@deriv-app/hooks': '@deriv-app/hooks',

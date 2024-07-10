@@ -25,7 +25,7 @@ import {
     routes,
     unique,
 } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 
 import { BinaryLink } from 'App/Components/Routes';
 import { WS } from 'Services';

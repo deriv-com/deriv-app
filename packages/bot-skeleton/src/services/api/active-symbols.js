@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import PendingPromise from '../../utils/pending-promise';
 import { config } from '../../constants/config';
 

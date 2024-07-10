@@ -84,7 +84,7 @@ module.exports = function () {
                 'react-dom': 'react-dom',
                 'react-dropzone': 'react-dropzone',
                 '@deriv-app/shared': '@deriv-app/shared',
-                '@deriv/translations': '@deriv/translations',
+                '@deriv-app/translations': '@deriv-app/translations',
                 'react-router-dom': 'react-router-dom',
                 'react-swipeable': 'react-swipeable',
                 'react-tiny-popover': 'react-tiny-popover',

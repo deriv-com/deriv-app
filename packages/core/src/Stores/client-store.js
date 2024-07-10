@@ -33,7 +33,7 @@ import {
     getUrlP2P,
 } from '@deriv-app/shared';
 import { Analytics } from '@deriv-com/analytics';
-import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
+import { getLanguage, localize, getRedirectionLanguage } from '@deriv-app/translations';
 
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';

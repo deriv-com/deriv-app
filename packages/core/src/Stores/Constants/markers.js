@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import MarkerLine from '../../Components/markers/marker-line.jsx';
 import MarkerSpotLabel from '../../Components/markers/marker-spot-label.jsx';
 import MarkerSpot from '../../Components/markers/marker-spot.jsx';

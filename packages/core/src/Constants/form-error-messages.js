@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { address_permitted_special_characters_message } from '@deriv-app/shared';
 
 export const FORM_ERROR_MESSAGES = {

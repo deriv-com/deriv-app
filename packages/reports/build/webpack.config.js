@@ -42,7 +42,7 @@ module.exports = function (env) {
                 mobx: 'mobx',
                 '@deriv-app/shared': '@deriv-app/shared',
                 '@deriv-app/components': '@deriv-app/components',
-                '@deriv/translations': '@deriv/translations',
+                '@deriv-app/translations': '@deriv-app/translations',
                 '@deriv-com/analytics': '@deriv-com/analytics',
             },
             /^@deriv\/shared\/.+$/,

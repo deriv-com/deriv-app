@@ -1,5 +1,5 @@
 import { isCryptocurrency, getCurrencyDisplayCode } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 export const buildCurrenciesList = payout_currencies => {
     const fiat = [];

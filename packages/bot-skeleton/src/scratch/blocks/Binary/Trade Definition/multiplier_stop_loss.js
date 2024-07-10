@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { getCurrencyDisplayCode } from '@deriv-app/shared';
 import { config } from '../../../../constants/config';
 

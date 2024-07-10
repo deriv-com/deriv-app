@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { getContractTypeOptions } from '../../../shared';
 
 Blockly.Blocks.purchase = {

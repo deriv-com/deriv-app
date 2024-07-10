@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 Blockly.Blocks.controls_repeat_ext = {
     init() {

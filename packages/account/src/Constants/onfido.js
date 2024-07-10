@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 //TODO: Check if these phrases are required;
 export const getOnfidoPhrases = () => ({

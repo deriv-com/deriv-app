@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render, waitFor, fireEvent, act } from '@testing-library/react';
 import InvestorPasswordManager from '../investor-password-manager';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 jest.mock('@deriv-app/shared/src/services/ws-methods', () => ({
     __esModule: true,

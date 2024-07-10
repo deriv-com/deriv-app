@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { getCurrencyDisplayCode, getDecimalPlaces } from '@deriv-app/shared';
 import DBotStore from '../../../dbot-store';
 import { runIrreversibleEvents, runGroupedEvents } from '../../../utils';

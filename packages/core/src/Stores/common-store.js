@@ -1,6 +1,6 @@
 import * as SocketCache from '_common/base/socket_cache';
 import { action, computed, makeObservable, observable } from 'mobx';
-import { changeLanguage } from '@deriv/translations';
+import { changeLanguage } from '@deriv-app/translations';
 import { getAllowedLanguages } from '@deriv-com/translations';
 import {
     UNSUPPORTED_LANGUAGES,

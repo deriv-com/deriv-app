@@ -43,7 +43,7 @@ module.exports = function (env) {
                 'mobx-react': 'mobx-react',
                 '@deriv-app/shared': '@deriv-app/shared',
                 '@deriv-app/components': '@deriv-app/components',
-                '@deriv/translations': '@deriv/translations',
+                '@deriv-app/translations': '@deriv-app/translations',
                 '@deriv/account': '@deriv/account',
                 '@deriv/deriv-charts': '@deriv/deriv-charts',
                 '@deriv-com/analytics': `@deriv-com/analytics`,

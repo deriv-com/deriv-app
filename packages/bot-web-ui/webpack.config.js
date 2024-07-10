@@ -149,7 +149,7 @@ module.exports = function (env) {
                 classnames: 'classnames',
                 '@deriv-app/components': '@deriv-app/components',
                 '@deriv-app/shared': '@deriv-app/shared',
-                '@deriv/translations': '@deriv/translations',
+                '@deriv-app/translations': '@deriv-app/translations',
                 formik: 'formik',
                 react: 'react',
                 mobx: 'mobx',

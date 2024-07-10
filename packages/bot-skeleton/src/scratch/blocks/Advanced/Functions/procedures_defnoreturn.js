@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { plusIconLight } from '../../images';
 import { isDarkRgbColour } from '../../../utils';
 

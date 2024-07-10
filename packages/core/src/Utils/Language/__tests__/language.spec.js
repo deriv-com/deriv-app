@@ -1,4 +1,4 @@
-import { getAllowedLanguages } from '@deriv/translations';
+import { getAllowedLanguages } from '@deriv-app/translations';
 
 const languages = {
     AR: 'العربية',

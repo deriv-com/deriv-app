@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { minusIconDark } from '../images';
 import { runIrreversibleEvents } from '../../utils';
 

@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { saveAs } from '../shared';
 import BlockConversion from '../backward-compatibility';
 import { config } from '../../constants/config';

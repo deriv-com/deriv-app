@@ -9,7 +9,7 @@ import {
     getCFDAvailableAccount,
     getAuthenticationStatusInfo,
 } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import BaseStore from './base-store';
 import { isEuCountry } from '_common/utility';
 

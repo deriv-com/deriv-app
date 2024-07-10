@@ -1,6 +1,6 @@
 import React from 'react';
 import { InlineMessage, Text } from '@deriv/components';
-import { useCurrentCurrencyConfig } from '@deriv/hooks';
+import { useCryptoConfig, useCurrentCurrencyConfig } from '@deriv/hooks';
 import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -18,15 +18,17 @@ const crypto_currency_to_network_mapper: Record<string, string> = {
 };
 
 const DepositCryptoDisclaimers: React.FC = observer(() => {
-    const { ui } = useStore();
+    const { client, ui } = useStore();
+    const { currency } = client;
     const { is_mobile } = ui;
+    const { data: crypto_config } = useCryptoConfig(currency);
     const currency_config = useCurrentCurrencyConfig();
 
     const minimum_deposit_disclaimer = currency_config?.is_tUSDT ? (
         <Localize
             i18n_default_text='A minimum deposit value of <0>{{minimum_deposit}}</0> {{currency}} is required. Otherwise, a fee is applied.'
             values={{
-                minimum_deposit: formatMoney(currency_config.code, currency_config.minimum_deposit ?? 0, true),
+                minimum_deposit: formatMoney(currency_config.code, crypto_config?.minimum_deposit ?? 0, true),
                 currency: currency_config.display_code,
             }}
             components={[<strong key={0} />]}
@@ -35,7 +37,7 @@ const DepositCryptoDisclaimers: React.FC = observer(() => {
         <Localize
             i18n_default_text='A minimum deposit value of <0>{{minimum_deposit}}</0> {{currency}} is required. Otherwise, the funds will be lost and cannot be recovered.'
             values={{
-                minimum_deposit: formatMoney(currency_config?.code, currency_config?.minimum_deposit ?? 0, true),
+                minimum_deposit: formatMoney(currency_config?.code, crypto_config?.minimum_deposit ?? 0, true),
                 currency: currency_config?.display_code,
             }}
             components={[<strong key={0} />]}
@@ -47,7 +49,7 @@ const DepositCryptoDisclaimers: React.FC = observer(() => {
             <InlineMessage title={localize('To avoid loss of funds:')}>
                 <br />
                 <ul className='deposit-crypto-disclaimers__list'>
-                    {currency_config?.minimum_deposit && <li>{minimum_deposit_disclaimer}</li>}
+                    {crypto_config?.minimum_deposit && <li>{minimum_deposit_disclaimer}</li>}
                     <li>{localize('Do not send other currencies to this address.')}</li>
                     <li>
                         {localize('Make sure to copy your Deriv account address correctly into your crypto wallet.')}

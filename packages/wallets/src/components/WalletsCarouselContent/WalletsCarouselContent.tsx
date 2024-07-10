@@ -247,7 +247,7 @@ const WalletsCarouselContent: React.FC = () => {
                                               activeWallet?.currency || 'USD',
                                               activeWallet
                                           )
-                                        : getBalance(account.loginid, account?.currency || '', account)
+                                        : getBalance(account.loginid, account?.currency || 'USD', account)
                                 }
                                 currency={account.currency || 'USD'}
                                 iconSize='lg'

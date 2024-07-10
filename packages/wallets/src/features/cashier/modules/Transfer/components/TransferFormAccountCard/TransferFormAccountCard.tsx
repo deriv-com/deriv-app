@@ -3,31 +3,23 @@ import classNames from 'classnames';
 import {
     WalletCurrencyCard,
     WalletListCardBadge,
-    WalletsAppLinkedWithWalletIcon,
+    WalletMarketCurrencyIcon,
     WalletText,
 } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
-import { TWalletLandingCompanyName } from '../../../../../../types';
-import { getTradingAppIcon } from '../../../../helpers';
+import { TPlatforms } from '../../../../../../types';
 import type { TAccount } from '../../types';
 import './TransferFormAccountCard.scss';
 
 type TProps = {
     account?: TAccount;
-    activeWallet?: TAccount;
     type?: 'input' | 'modal';
 };
 
-const TransferFormAccountCard: React.FC<TProps> = ({ account, activeWallet, type = 'modal' }) => {
+const TransferFormAccountCard: React.FC<TProps> = ({ account, type = 'modal' }) => {
     const { isMobile } = useDevice();
     const isInput = type === 'input';
     const isModal = type === 'modal';
-    const badgeLabel = account?.demo_account ? 'virtual' : account?.landingCompanyName;
-    const appIcon = getTradingAppIcon(
-        account?.account_type ?? '',
-        activeWallet?.landingCompanyName as TWalletLandingCompanyName,
-        account?.mt5_group
-    );
 
     return (
         <div
@@ -45,16 +37,17 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, activeWallet, type
                             size='sm'
                         />
                     ) : (
-                        <WalletsAppLinkedWithWalletIcon
-                            appIcon={appIcon}
-                            currency={activeWallet?.currency ?? ''}
+                        <WalletMarketCurrencyIcon
+                            currency={account?.currency ?? ''}
                             isDemo={Boolean(account?.demo_account)}
-                            size='small'
+                            marketType={account?.market_type}
+                            platform={account?.account_type as TPlatforms.All}
+                            size='xs'
                         />
                     )}
                 </div>
-                {isInput && isMobile && (
-                    <WalletListCardBadge isDemo={Boolean(account?.demo_account)} label={badgeLabel} />
+                {isInput && isMobile && !!account?.demo_account && (
+                    <WalletListCardBadge isDemo={Boolean(account?.demo_account)} label='virtual' />
                 )}
             </div>
 
@@ -65,9 +58,9 @@ const TransferFormAccountCard: React.FC<TProps> = ({ account, activeWallet, type
                 <WalletText size={isInput ? '2xs' : 'xs'}>Balance: {account?.displayBalance}</WalletText>
             </div>
 
-            {isModal && (
+            {isModal && !!account?.demo_account && (
                 <div className='wallets-transfer-form-account-card__modal-badge'>
-                    <WalletListCardBadge isDemo={Boolean(account?.demo_account)} label={badgeLabel} />
+                    <WalletListCardBadge isDemo={Boolean(account?.demo_account)} label='virtual' />
                 </div>
             )}
         </div>

@@ -180,3 +180,13 @@ Blockly.Block.prototype.hasErrorHighlightedDescendant = function () {
 Blockly.Block.isDynamic = function (block_type) {
     return /^((procedures_)|(variables_)|(math_change$))/.test(block_type);
 };
+
+// TODO: Do not remove this
+// overwriting the doClassValidation_ method to handle
+// dropdown values
+Blockly.FieldDropdown.prototype.doClassValidation_ = function (newValue) {
+    this.text_ = null;
+    const text = this?.selectedOption?.[0];
+    this.setText(text ?? '');
+    return newValue;
+};

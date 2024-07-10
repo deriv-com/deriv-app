@@ -24,11 +24,11 @@ export const VerifyButton = observer(() => {
     const { isMobile } = useDevice();
     const { next_otp_request } = usePhoneNumberVerificationSetTimer();
 
-    const redirectToPhoneVerification = () => {
+    const redirectToPhoneVerification = async () => {
         if (next_otp_request) return;
         setVerificationCode('', 'phone_number_verification');
         setShouldShowPhoneNumberOTP(false);
-        send(true);
+        await send(true);
         history.push(routes.phone_verification);
     };
 

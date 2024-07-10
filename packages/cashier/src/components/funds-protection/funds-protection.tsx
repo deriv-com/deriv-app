@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRequest } from '@deriv/api';
+import { useRequest } from '@deriv-app/api';
 import { Localize, localize } from '@deriv/translations';
 import { EmptyState } from '@deriv-app/components';
 

@@ -6,7 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv-app/stores';
 import { getStatus } from '../../constants/transaction-status';
 import { useCashierStore } from '../../stores/useCashierStores';
-import type { TSocketResponse } from '@deriv/api/types';
+import type { TSocketResponse } from '@deriv-app/api/types';
 
 type TTransactionsCryptoRendererProps = {
     row: NonNullable<TSocketResponse<'cashier_payments'>['cashier_payments']>['crypto'][number];

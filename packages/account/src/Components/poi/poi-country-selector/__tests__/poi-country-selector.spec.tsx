@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { IDV_ERROR_STATUS, POIContext, TPOIContext } from '@deriv-app/shared';
 import CountrySelector from '../poi-country-selector';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv-app/api';
 import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { useDevice } from '@deriv-com/ui';
 
@@ -11,8 +11,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useResidenceList: jest.fn().mockReturnValue({
         data: [
             { value: 'Country 1', text: 'Country 1' },

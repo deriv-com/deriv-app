@@ -3,8 +3,8 @@ import { act, renderHook } from '@testing-library/react-hooks';
 import useVerifyEmail from '../useVerifyEmail';
 import { withMockAPIProvider } from '../mocks';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useRequest: jest.fn(() => ({ mutate: jest.fn() })),
 }));
 

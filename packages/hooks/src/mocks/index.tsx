@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv-app/api';
 import { P2PSettingsProvider, StoreProvider } from '@deriv-app/stores';
 import { TStores } from '@deriv-app/stores/types';
 

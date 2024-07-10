@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Text, Input } from '@deriv-app/components';
-import { useVerifyEmail } from '@deriv/api';
+import { useVerifyEmail } from '@deriv-app/api';
 import { toTitleCase } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
 import { Localize, localize } from '@deriv/translations';

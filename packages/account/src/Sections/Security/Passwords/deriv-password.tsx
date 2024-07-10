@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useVerifyEmail } from '@deriv/api';
+import { useVerifyEmail } from '@deriv-app/api';
 import { Button, Icon, Popover, Text } from '@deriv-app/components';
 import { getBrandWebsiteName, getPlatformSettings, toTitleCase } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';

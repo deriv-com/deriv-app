@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv-app/api';
 import { mockStore, StoreProvider } from '@deriv-app/stores';
 import { renderHook } from '@testing-library/react-hooks';
 
 import useExistingCFDAccounts from '../useExistingCFDAccounts';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useFetch: jest.fn(name => {
         if (name === 'authorize') {
             return {

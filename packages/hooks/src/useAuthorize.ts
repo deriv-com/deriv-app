@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useFetch } from '@deriv/api';
+import { useFetch } from '@deriv-app/api';
 import { useStore } from '@deriv-app/stores';
 
 /** A custom hook that authorize the user with the given token. If no token is given, it will use the current token. */

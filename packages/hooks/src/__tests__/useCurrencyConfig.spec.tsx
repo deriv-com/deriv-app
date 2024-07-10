@@ -1,10 +1,10 @@
-import { useFetch } from '@deriv/api';
+import { useFetch } from '@deriv-app/api';
 import { renderHook } from '@testing-library/react-hooks';
 import useCurrencyConfig from '../useCurrencyConfig';
 import { withMockAPIProvider } from '../mocks';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useFetch: jest.fn(),
 }));
 

@@ -3,11 +3,11 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { AdditionalKycInfoForm } from '../additional-kyc-info-form';
 import userEvent from '@testing-library/user-event';
-import { useSettings } from '@deriv/api';
-import { TSocketError } from '@deriv/api/types';
+import { useSettings } from '@deriv-app/api';
+import { TSocketError } from '@deriv-app/api/types';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useSettings: jest.fn(),
 }));
 

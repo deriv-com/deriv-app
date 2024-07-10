@@ -89,7 +89,7 @@
         "@deriv-com/translations": "1.3.3",
         "@deriv-com/utils": "^0.0.25",
         "@deriv/account": "^1.0.0",
-        "@deriv/api": "^1.0.0",
+        "@deriv-app/api": "^1.0.0",
         "@deriv/api-types": "1.0.172",
         "@deriv-app/components": "^1.0.0",
         "@deriv/deriv-api": "^1.0.15",

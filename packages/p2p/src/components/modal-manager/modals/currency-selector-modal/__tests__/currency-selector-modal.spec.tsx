@@ -1,7 +1,7 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv-app/api';
 import { P2PSettingsProvider } from '@deriv-app/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';

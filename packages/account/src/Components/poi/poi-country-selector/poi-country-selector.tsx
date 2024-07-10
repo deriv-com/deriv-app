@@ -6,7 +6,7 @@ import { IDV_ERROR_STATUS, TIDVErrorStatus, POIContext } from '@deriv-app/shared
 import { Localize, localize } from '@deriv/translations';
 import FormFooter from '../../form-footer';
 import { useDevice } from '@deriv-com/ui';
-import { useResidenceList } from '@deriv/api';
+import { useResidenceList } from '@deriv-app/api';
 
 type TCountrySelector = {
     handleSelectionNext?: () => void;

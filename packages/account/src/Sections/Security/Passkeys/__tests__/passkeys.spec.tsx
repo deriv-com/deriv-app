@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Analytics } from '@deriv-com/analytics';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv-app/api';
 import { useGetPasskeysList, useRegisterPasskey } from '@deriv-app/hooks';
 import { useDevice } from '@deriv-com/ui';
 import { routes } from '@deriv-app/shared';

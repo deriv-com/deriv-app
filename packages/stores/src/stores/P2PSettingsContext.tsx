@@ -1,6 +1,6 @@
 import { createContext } from 'react';
-import { useSubscription } from '@deriv/api';
-import { TSocketAcceptableProps, TSocketResponseData } from '@deriv/api/types';
+import { useSubscription } from '@deriv-app/api';
+import { TSocketAcceptableProps, TSocketResponseData } from '@deriv-app/api/types';
 
 export type TP2PSettings =
     | (TSocketResponseData<'p2p_settings'>['p2p_settings'] & {

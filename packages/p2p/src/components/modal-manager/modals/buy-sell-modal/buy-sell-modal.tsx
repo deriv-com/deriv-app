@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { reaction } from 'mobx';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useInvalidateQuery } from '@deriv/api';
+import { useInvalidateQuery } from '@deriv-app/api';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal, ThemedScrollbars } from '@deriv-app/components';
 import { routes } from '@deriv-app/shared';
 import { observer } from '@deriv-app/stores';

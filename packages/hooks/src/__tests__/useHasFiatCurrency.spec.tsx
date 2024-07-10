@@ -2,10 +2,10 @@ import * as React from 'react';
 import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useHasFiatCurrency from '../useHasFiatCurrency';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv-app/api';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useFetch: jest.fn(() => ({
         data: {
             website_status: {

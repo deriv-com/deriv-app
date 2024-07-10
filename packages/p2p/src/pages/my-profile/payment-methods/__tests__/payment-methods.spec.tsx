@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv-app/api';
 import { mockStore, StoreProvider } from '@deriv-app/stores';
 import { useStores } from 'Stores/index';
 import { payment_method_info_alipay } from 'Pages/my-profile/__mocks__/mock-payment-method-data';

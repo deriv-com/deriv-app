@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderHook, act } from '@testing-library/react-hooks';
-import APIProvider from '@deriv/api/src/APIProvider';
+import APIProvider from '@deriv-app/api/src/APIProvider';
 import { WS } from '@deriv-app/shared';
 import useRegisterPasskey from '../useRegisterPasskey';
 import { startRegistration } from '@simplewebauthn/browser';
@@ -10,8 +10,8 @@ jest.mock('@simplewebauthn/browser', () => ({
     startRegistration: jest.fn(() => Promise.resolve('authenticator_response')),
 }));
 const mockInvalidate = jest.fn();
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useInvalidateQuery: jest.fn(() => mockInvalidate),
 }));
 jest.mock('@deriv-app/shared', () => ({

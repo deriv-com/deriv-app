@@ -6,7 +6,7 @@ import WithdrawalCryptoForm from '../withdrawal-crypto-form';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv-app/stores';
 import userEvent from '@testing-library/user-event';
-import { useCryptoEstimations } from '@deriv/api';
+import { useCryptoEstimations } from '@deriv-app/api';
 
 jest.mock('@deriv-app/hooks', () => ({
     ...jest.requireActual('@deriv-app/hooks'),
@@ -16,8 +16,8 @@ jest.mock('@deriv-app/hooks', () => ({
     useGrowthbookIsOn: jest.fn().mockReturnValue([]),
 }));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useCryptoEstimations: jest.fn(),
 }));
 

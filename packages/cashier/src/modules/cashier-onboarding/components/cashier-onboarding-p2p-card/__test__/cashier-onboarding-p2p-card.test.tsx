@@ -15,8 +15,8 @@ jest.mock('react-router', () => ({
     useHistory: () => ({ push: jest.fn() }),
 }));
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useFetch: jest.fn(() => ({
         data: {
             website_status: {

@@ -1,5 +1,5 @@
-import { useQuery } from '@deriv/api';
-import { TSocketRequestQueryOptions } from '@deriv/api/types';
+import { useQuery } from '@deriv-app/api';
+import { TSocketRequestQueryOptions } from '@deriv-app/api/types';
 
 /** A custom hook that gets the residence list. */
 const useResidenceList = (options?: TSocketRequestQueryOptions<'residence_list'>) => {

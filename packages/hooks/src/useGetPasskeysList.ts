@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Analytics } from '@deriv-com/analytics';
-import { useQuery } from '@deriv/api';
+import { useQuery } from '@deriv-app/api';
 import { getOSNameWithUAParser } from '@deriv-app/shared';
 import { useStore } from '@deriv-app/stores';
 import useAuthorize from './useAuthorize';

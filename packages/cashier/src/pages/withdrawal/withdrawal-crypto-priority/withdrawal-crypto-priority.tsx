@@ -1,4 +1,4 @@
-import { useCryptoEstimations } from '@deriv/api';
+import { useCryptoEstimations } from '@deriv-app/api';
 import { Checkbox, Popover, Text } from '@deriv-app/components';
 import { getDecimalPlaces } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';

@@ -1,11 +1,11 @@
-import { useFetch } from '@deriv/api';
+import { useFetch } from '@deriv-app/api';
 import { mockStore } from '@deriv-app/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import usePaymentAgentTransferVisible from '../usePaymentAgentTransferVisible';
 import { withMockAPIProvider } from '../mocks';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useFetch: jest.fn(),
 }));
 

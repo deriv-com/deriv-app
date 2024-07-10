@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Analytics } from '@deriv-com/analytics';
-import { useRemoteConfig } from '@deriv/api';
+import { useRemoteConfig } from '@deriv-app/api';
 
 const useIsGrowthbookIsLoaded = () => {
     const [isGBLoaded, setIsGBLoaded] = useState(false);

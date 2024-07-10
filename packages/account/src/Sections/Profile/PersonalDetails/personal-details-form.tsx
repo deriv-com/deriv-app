@@ -29,7 +29,7 @@ import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
-import { useInvalidateQuery } from '@deriv/api';
+import { useInvalidateQuery } from '@deriv-app/api';
 import { useStatesList, useResidenceList } from '@deriv-app/hooks';
 
 type TRestState = {

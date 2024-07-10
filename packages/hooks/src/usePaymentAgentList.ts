@@ -1,4 +1,4 @@
-import { useFetch } from '@deriv/api';
+import { useFetch } from '@deriv-app/api';
 import { useStore } from '@deriv-app/stores';
 
 const usePaymentAgentList = (currency?: string) => {

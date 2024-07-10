@@ -3,10 +3,10 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import TransactionsCryptoHistory from '../transactions-crypto-history';
 import CashierProviders from '../../../cashier-providers';
 import { mockStore } from '@deriv-app/stores';
-import { useSubscription } from '@deriv/api';
+import { useSubscription } from '@deriv-app/api';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useSubscription: jest.fn(),
 }));
 

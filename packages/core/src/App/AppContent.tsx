@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRemoteConfig } from '@deriv/api';
+import { useRemoteConfig } from '@deriv-app/api';
 import { useDevice } from '@deriv-com/ui';
 import { useIsMounted } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';

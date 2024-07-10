@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
-import { useRemoteConfig } from '@deriv/api';
+import { useRemoteConfig } from '@deriv-app/api';
 import { Analytics } from '@deriv-com/analytics';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv-app/components';
 import {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useInvalidateQuery } from '@deriv/api';
+import { useInvalidateQuery } from '@deriv-app/api';
 import { mobileOSDetect, WS } from '@deriv-app/shared';
 import { Analytics } from '@deriv-com/analytics';
 

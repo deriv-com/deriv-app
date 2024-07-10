@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { useSubscription } from '@deriv/api';
+import { useSubscription } from '@deriv-app/api';
 import P2PSettingsContext, { TP2PSettings } from '../stores/P2PSettingsContext';
 import { useLocalStorage } from 'usehooks-ts';
 

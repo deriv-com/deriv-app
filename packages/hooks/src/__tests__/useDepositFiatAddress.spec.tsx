@@ -3,8 +3,8 @@ import { mockStore } from '@deriv-app/stores';
 import useDepositFiatAddress from '../useDepositFiatAddress';
 import { withMockAPIProvider } from '../mocks';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useRequest: jest.fn(() => ({ data: { cashier: 'https://example.com' }, mutate: jest.fn })),
 }));
 

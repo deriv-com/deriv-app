@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv-app/api';
 import FundsProtection from '../funds-protection';
 
 describe('FundsProtection component tests', () => {

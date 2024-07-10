@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { useRequest } from '@deriv/api';
+import { useRequest } from '@deriv-app/api';
 import { useStore } from '@deriv-app/stores';
 import useCountdown from './useCountdown';
 

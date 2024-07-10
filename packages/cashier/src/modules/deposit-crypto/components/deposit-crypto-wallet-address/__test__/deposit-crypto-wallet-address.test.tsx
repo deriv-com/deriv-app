@@ -4,8 +4,8 @@ import { render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../../cashier-providers';
 import DepositCryptoWalletAddress from '../deposit-crypto-wallet-address';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useRequest: jest.fn(() => ({
         data: { cashier: { deposit: { address: '0xB921C874e2Da6Bf00616C68F8746b48125A547C0' } } },
         mutate: jest.fn(),

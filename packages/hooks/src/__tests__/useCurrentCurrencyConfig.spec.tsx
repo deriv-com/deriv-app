@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv-app/api';
 import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useCurrentCurrencyConfig from '../useCurrentCurrencyConfig';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useFetch: jest.fn(() => ({
         data: { website_status: { currencies_config: { USD: { type: 'fiat', name: 'US Dollar' } } } },
     })),

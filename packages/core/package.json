@@ -103,7 +103,7 @@
         "@deriv-com/ui": "^1.28.3",
         "@deriv-com/utils": "^0.0.25",
         "@deriv/account": "^1.0.0",
-        "@deriv/api": "^1.0.0",
+        "@deriv-app/api": "^1.0.0",
         "@deriv/appstore": "^0.0.4",
         "@deriv/bot-web-ui": "^1.0.0",
         "@deriv/cashier": "^1.0.0",

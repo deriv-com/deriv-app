@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv-app/api';
 import StoreContext from './storeContext';
 import { FeatureFlagsStore } from './stores';
 import type { TCoreStores, TStores } from '../types';

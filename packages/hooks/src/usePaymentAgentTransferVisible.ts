@@ -1,4 +1,4 @@
-import { useFetch } from '@deriv/api';
+import { useFetch } from '@deriv-app/api';
 import { WS } from '@deriv-app/shared';
 import { useStore } from '@deriv-app/stores';
 import { useEffect, useState } from 'react';

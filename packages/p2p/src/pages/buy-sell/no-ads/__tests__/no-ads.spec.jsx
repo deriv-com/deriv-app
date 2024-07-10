@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBrowserHistory } from 'history';
 import { render, screen } from '@testing-library/react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv-app/api';
 import { P2PSettingsProvider } from '@deriv-app/stores';
 import { Router } from 'react-router';
 import NoAds from '../no-ads';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMutation } from '@deriv/api';
+import { useMutation } from '@deriv-app/api';
 import { CFD_PLATFORMS, getPlatformSettings } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
 import { Localize, localize } from '@deriv/translations';

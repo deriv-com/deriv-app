@@ -1,11 +1,11 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv-app/api';
 import { renderHook } from '@testing-library/react-hooks';
 import { StoreProvider, mockStore } from '@deriv-app/stores';
 import useAuthorize from '../useAuthorize';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useFetch: jest.fn((_, options: Record<'payload', Record<'authorize', string>>) => ({
         data: {
             authorize: {

@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { APIProvider, useFetch } from '@deriv/api';
+import { APIProvider, useFetch } from '@deriv-app/api';
 import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useWalletsList from '../useWalletsList';
 
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useFetch: jest.fn((name: string) => {
         if (name === 'authorize') {
             return {

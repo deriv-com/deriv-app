@@ -4,7 +4,7 @@ import { localize, Localize } from '@deriv/translations';
 import { SentEmailModal } from '@deriv/account';
 import { observer, useStore } from '@deriv-app/stores';
 import { WS } from 'Services';
-import { TSocketError, TSocketRequest, TSocketResponse } from '@deriv/api/types';
+import { TSocketError, TSocketRequest, TSocketResponse } from '@deriv-app/api/types';
 
 type TConfirmEmailModal = {
     changed_email: string;

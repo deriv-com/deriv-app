@@ -1,11 +1,11 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useKycAuthStatus } from '../useKycAuthStatus';
-import { useQuery } from '@deriv/api';
+import { useQuery } from '@deriv-app/api';
 import { StoreProvider, mockStore } from '@deriv-app/stores';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useQuery: jest.fn(),
 }));
 

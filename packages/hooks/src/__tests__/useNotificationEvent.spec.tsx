@@ -1,13 +1,13 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { useMutation } from '@deriv/api';
-import APIProvider from '@deriv/api/src/APIProvider';
+import { useMutation } from '@deriv-app/api';
+import APIProvider from '@deriv-app/api/src/APIProvider';
 import useNotificationEvent from '../useNotificationEvent';
 
 type TNotificationPayload = Parameters<ReturnType<typeof useNotificationEvent>['send']>[0];
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useMutation: jest.fn(),
 }));
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFetch } from '@deriv/api';
+import { useFetch } from '@deriv-app/api';
 import { useStore } from '@deriv-app/stores';
 
 const type_to_icon_mapper = {

@@ -79,7 +79,7 @@ module.exports = function (env) {
                 '@deriv-app/components': '@deriv-app/components',
                 '@deriv-app/translations': '@deriv-app/translations',
                 '@deriv-com/analytics': '@deriv-com/analytics',
-                '@deriv/api': '@deriv/api',
+                '@deriv-app/api': '@deriv-app/api',
                 '@deriv-app/hooks': '@deriv-app/hooks',
                 '@deriv-app/stores': '@deriv-app/stores',
                 '@deriv/utils': '@deriv/utils',

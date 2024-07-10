@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { useSettings } from '@deriv/api';
+import { useSettings } from '@deriv-app/api';
 import { ResidenceList } from '@deriv/api-types';
 import { Loading, ThemedScrollbars } from '@deriv-app/components';
 import { useNotificationEvent, useServiceToken } from '@deriv-app/hooks';

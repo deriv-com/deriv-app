@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv-app/api';
 import { useP2PSettings } from '@deriv-app/hooks';
 import { mockStore, StoreProvider } from '@deriv-app/stores';
 import FloatingRate from '../floating-rate';

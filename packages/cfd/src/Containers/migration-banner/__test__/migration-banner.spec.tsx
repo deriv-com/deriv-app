@@ -5,7 +5,7 @@ import { Analytics } from '@deriv-com/analytics';
 import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { CFDStoreProvider } from '../../../Stores/Modules/CFD/Helpers/useCfdStores';
 import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv-app/api';
 import MigrationBanner from '../migration-banner';
 
 jest.mock('@deriv-app/hooks', () => ({

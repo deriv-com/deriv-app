@@ -2,7 +2,7 @@ import React from 'react';
 import { cleanup, render, waitFor, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
-import { APIProvider } from '@deriv/api';
+import { APIProvider } from '@deriv-app/api';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv-app/stores';
 import PersonalDetailsForm from '../personal-details-form';

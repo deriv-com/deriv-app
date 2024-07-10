@@ -3,10 +3,10 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import WithdrawalVerificationEmail from '../withdrawal-verification-email';
 import { mockStore } from '@deriv-app/stores';
 import CashierProviders from '../../../../cashier-providers';
-import { useRequest } from '@deriv/api';
+import { useRequest } from '@deriv-app/api';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useRequest: jest.fn(),
 }));
 

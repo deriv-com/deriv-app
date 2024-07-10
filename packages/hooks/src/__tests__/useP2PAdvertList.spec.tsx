@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider, useInfiniteQuery } from '@deriv/api';
+import { APIProvider, useInfiniteQuery } from '@deriv-app/api';
 import { StoreProvider, mockStore } from '@deriv-app/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useP2PAdvertList from '../useP2PAdvertList';
@@ -8,8 +8,8 @@ type TWrapper = {
     children: JSX.Element;
 };
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useInfiniteQuery: jest.fn(),
 }));
 

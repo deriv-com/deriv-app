@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useGetAccountStatus, useSubscription } from '@deriv/api';
+import { useGetAccountStatus, useSubscription } from '@deriv-app/api';
 import { mockStore, StoreProvider } from '@deriv-app/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useP2PCompletedOrdersNotification from '../useP2PCompletedOrdersNotification';
@@ -7,8 +7,8 @@ import useIsP2PEnabled from '../useIsP2PEnabled';
 
 jest.mock('../useIsP2PEnabled');
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv-app/api', () => ({
+    ...jest.requireActual('@deriv-app/api'),
     useSubscription: jest.fn(),
     useGetAccountStatus: jest.fn(),
 }));

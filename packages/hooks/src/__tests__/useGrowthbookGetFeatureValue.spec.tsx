@@ -1,9 +1,9 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { Analytics } from '@deriv-com/analytics';
-import { useRemoteConfig } from '@deriv/api';
+import { useRemoteConfig } from '@deriv-app/api';
 import useGrowthbookGetFeatureValue from '../useGrowthbookGetFeatureValue';
 
-jest.mock('@deriv/api');
+jest.mock('@deriv-app/api');
 jest.mock('@tanstack/react-query');
 jest.mock('@deriv-com/analytics');
 

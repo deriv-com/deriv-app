@@ -1,4 +1,4 @@
-import { useQuery } from '@deriv/api';
+import { useQuery } from '@deriv-app/api';
 import { useCallback, useMemo } from 'react';
 
 /** A custom hook to check whether the current mf account has deposited based on status in account_status */

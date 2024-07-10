@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { useFetch, useInvalidateQuery, useRequest } from '@deriv/api';
+import { useFetch, useInvalidateQuery, useRequest } from '@deriv-app/api';
 import { useStore } from '@deriv-app/stores';
 
 type TPayloads = NonNullable<

@@ -54,14 +54,21 @@ describe('useAllBalanceSubscription', () => {
         const mockSubscribe = jest.fn();
         const mockUnsubscribe = jest.fn();
         (mockUseBalanceSubscription as jest.Mock).mockReturnValue({
-            data: {},
+            data: {
+                accounts: {
+                    CRW1: {
+                        balance: 100,
+                        currency: 'USD',
+                    },
+                },
+            },
             isLoading: true,
             isSubscribed: false,
             subscribe: mockSubscribe,
             unsubscribe: mockUnsubscribe,
         });
         (mockAuthorize as jest.Mock).mockReturnValue({
-            isSuccess: false,
+            isSuccess: true,
         });
         const { result } = renderHook(() => useAllBalanceSubscription());
         expect(result.current.data).toBeUndefined();
@@ -95,7 +102,7 @@ describe('useAllBalanceSubscription', () => {
             },
         });
     });
-    it('sets the data when the subsquent responses are recieved from the api', () => {
+    it('sets the data when the subsequent responses are received from the api', () => {
         const mockSubscribe = jest.fn();
         const mockUnsubscribe = jest.fn();
         (mockUseBalanceSubscription as jest.Mock).mockReturnValue({

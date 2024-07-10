@@ -47,7 +47,7 @@ const WalletsCarouselContent: React.FC = () => {
         currency: string,
         wallet?: ReturnType<typeof useActiveWalletAccount>['data']
     ) => {
-        return displayMoney(balanceData?.[loginid]?.balance ?? 0, currency ?? '', {
+        return displayMoney(balanceData?.[loginid]?.balance ?? 0, currency, {
             fractional_digits: wallet?.currency_config?.fractional_digits,
         });
     };

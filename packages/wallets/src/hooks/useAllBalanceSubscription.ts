@@ -31,12 +31,7 @@ const useAllBalanceSubscription = () => {
         subscribe({
             account: 'all',
         });
-        return () => {
-            if (isSubscribed) {
-                unsubscribe();
-            }
-        };
-    }, [isSubscribed, isAuthorizeSuccessful, subscribe, unsubscribe]);
+    }, [isAuthorizeSuccessful, subscribe]);
 
     useEffect(() => {
         if (!isAuthorizeSuccessful || isBalanceLoading || Object.entries(balanceData).length === 0) return;
@@ -62,7 +57,9 @@ const useAllBalanceSubscription = () => {
     return {
         data: balance,
         isLoading: !balance,
+        isSubscribed,
         subscribeToAllBalance,
+        unsubscribeFromAllBalance: unsubscribe,
     };
 };
 

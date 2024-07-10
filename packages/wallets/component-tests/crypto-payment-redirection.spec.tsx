@@ -6,6 +6,7 @@ import { mockCryptoWithdraw } from './mocks/mockCryptoWithdraw';
 import { mockGetAccountTypes } from './mocks/mockGetAccountTypes';
 import { mockProposalOpenContract } from './mocks/mockProposalOpenContract';
 import mockWalletsAuthorize, { DEFAULT_WALLET_ACCOUNTS } from './mocks/mockWalletsAuthorize';
+import { mockAccountList } from './mocks/mockAccountList';
 
 test.describe('Wallets - Crypto withdrawal', () => {
     test.beforeEach(async ({ baseURL, page }) => {
@@ -20,6 +21,7 @@ test.describe('Wallets - Crypto withdrawal', () => {
                 mockCryptoConfig,
                 mockProposalOpenContract,
                 mockBalance,
+                mockAccountList,
             ],
             page,
             state: {

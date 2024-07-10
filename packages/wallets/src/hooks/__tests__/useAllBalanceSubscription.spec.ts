@@ -130,23 +130,4 @@ describe('useAllBalanceSubscription', () => {
             },
         });
     });
-    it('unsubscribes when the component unmounts', () => {
-        const mockSubscribe = jest.fn();
-        const mockUnsubscribe = jest.fn();
-        (mockUseBalanceSubscription as jest.Mock).mockReturnValue({
-            data: {},
-            isLoading: false,
-            isSubscribed: true,
-            subscribe: mockSubscribe,
-            unsubscribe: mockUnsubscribe,
-        });
-        (mockAuthorize as jest.Mock).mockReturnValue({
-            isSuccess: true,
-        });
-        const { result } = renderHook(() => useAllBalanceSubscription());
-        const { subscribeToAllBalance } = result.current;
-        const cleanupFunction = subscribeToAllBalance();
-        cleanupFunction?.();
-        expect(mockUnsubscribe).toHaveBeenCalled();
-    });
 });

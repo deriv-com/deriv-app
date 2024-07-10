@@ -32,7 +32,6 @@ export const usePaymentAgentTransfer = () => {
     const [transferReceipt, setTransferReceipt] = useState(initialReceiptValues);
 
     const validationSchema = getPaymentAgentTransferValidationSchema({
-        // @ts-expect-error This package is going to be deleted soon :D
         balance: Number(activeAccount?.balance),
         currency,
         fractionalDigits: activeAccount?.currency_config?.fractional_digits ?? 2,

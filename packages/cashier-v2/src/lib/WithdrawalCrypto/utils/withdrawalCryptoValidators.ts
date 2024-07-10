@@ -59,7 +59,6 @@ const validateCryptoInput = (
     value: string,
     minimumWithdrawal?: number
 ) => {
-    // @ts-expect-error This package is going to be deleted soon :D
     if (!activeAccount?.balance || !activeAccount?.currency || !fractionalDigits.crypto) return;
 
     const isInvalidInput = checkIfInvalidInput(fractionalDigits.crypto, value);
@@ -68,13 +67,11 @@ const validateCryptoInput = (
 
     const amount = parseFloat(value);
 
-    // @ts-expect-error This package is going to be deleted soon :D
     if (amount > activeAccount.balance) return helperMessageMapper.insufficientFunds;
 
     const MIN_WITHDRAWAL_AMOUNT = minimumWithdrawal;
 
     const MAX_WITHDRAWAL_AMOUNT =
-        // @ts-expect-error This package is going to be deleted soon :D
         !isClientVerified && remainder < activeAccount.balance ? remainder : activeAccount.balance;
 
     if (MIN_WITHDRAWAL_AMOUNT && (amount < MIN_WITHDRAWAL_AMOUNT || amount > MAX_WITHDRAWAL_AMOUNT)) {

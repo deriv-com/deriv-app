@@ -87,7 +87,6 @@ const PaymentAgentWithdrawalProvider: React.FC<React.PropsWithChildren<TPaymentA
 
     const getPaymentAgentWithdrawalValidationSchema: TGetPaymentAgentWithdrawalValidationSchema = useCallback(
         (maxWithdrawal, minWithdrawal) => {
-            // @ts-expect-error This package is going to be deleted soon :D
             const balance = Number(activeAccount?.balance);
             const fractionalDigits = activeAccount?.currency_config?.fractional_digits ?? 2;
 
@@ -103,7 +102,6 @@ const PaymentAgentWithdrawalProvider: React.FC<React.PropsWithChildren<TPaymentA
                       },
                   });
         },
-        // @ts-expect-error This package is going to be deleted soon :D
         [activeAccount?.balance, activeAccount?.currency_config?.fractional_digits, currency, isUnlistedWithdrawal]
     );
 

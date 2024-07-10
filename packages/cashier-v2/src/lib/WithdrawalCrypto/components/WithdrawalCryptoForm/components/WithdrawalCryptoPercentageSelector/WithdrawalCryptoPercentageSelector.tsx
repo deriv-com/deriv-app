@@ -14,13 +14,10 @@ const WithdrawalCryptoPercentageSelector: React.FC = () => {
 
     const getPercentageMessage = (value: string) => {
         const amount = parseFloat(value);
-        // @ts-expect-error This package is going to be deleted soon :D
         if (!activeAccount?.balance || !activeAccount.display_balance) return;
-        // @ts-expect-error This package is going to be deleted soon :D
+
         if (amount <= activeAccount.balance) {
-            // @ts-expect-error This package is going to be deleted soon :D
             const percentage = Math.round((amount * 100) / activeAccount.balance);
-            // @ts-expect-error This package is going to be deleted soon :D
             return `${percentage}% of available balance (${activeAccount.display_balance})`;
         }
     };
@@ -36,10 +33,8 @@ const WithdrawalCryptoPercentageSelector: React.FC = () => {
         ) && !validateFiatInput(fractionalDigits, values.fiatAmount);
 
     const onChangePercentage = (percentage: number) => {
-        // @ts-expect-error This package is going to be deleted soon :D
         if (activeAccount?.balance) {
             const fraction = percentage / 100;
-            // @ts-expect-error This package is going to be deleted soon :D
             const cryptoAmount = (activeAccount.balance * fraction).toFixed(fractionalDigits.crypto);
             const fiatAmount = !validateCryptoInput(
                 activeAccount,
@@ -61,10 +56,8 @@ const WithdrawalCryptoPercentageSelector: React.FC = () => {
     };
 
     const percentageAmount =
-        // @ts-expect-error This package is going to be deleted soon :D
         activeAccount?.balance &&
         !Number.isNaN(parseFloat(values.cryptoAmount)) &&
-        // @ts-expect-error This package is going to be deleted soon :D
         parseFloat(values.cryptoAmount) <= activeAccount.balance
             ? parseFloat(values.cryptoAmount)
             : 0;
@@ -73,7 +66,6 @@ const WithdrawalCryptoPercentageSelector: React.FC = () => {
         <div className={styles['percentage-selector']}>
             <PercentageSelector
                 amount={percentageAmount}
-                // @ts-expect-error This package is going to be deleted soon :D
                 balance={activeAccount?.balance ?? 0}
                 onChangePercentage={onChangePercentage}
             />

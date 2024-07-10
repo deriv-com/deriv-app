@@ -136,6 +136,7 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                     onChange={handleGetOtpValue}
                     message={phone_otp_error_message}
                     value={otp}
+                    type='number'
                     maxLength={6}
                 />
                 <ResendCodeTimer

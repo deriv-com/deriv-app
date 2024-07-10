@@ -21,7 +21,7 @@ import { api_error_codes } from 'Constants/api-error-codes';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
 import { getEligibilityMessage } from 'Utils/adverts';
-import { getErrorMessage, getErrorModalTitle, getWidth } from 'Utils/block-user';
+import { getErrorMessage, getErrorModalTitle } from 'Utils/block-user';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
@@ -206,7 +206,6 @@ const AdvertiserPage = () => {
                                 general_store.setBlockUnblockUserError('');
                                 hideModal();
                             },
-                            width: getWidth(),
                         },
                     });
                 }

@@ -52,9 +52,6 @@ const renderHookWithConfig = (config: Record<string, object>) => {
 describe('useP2PRenderedAdverts', () => {
     it('should return the adverts object from response with type sell when table_type is buy', () => {
         const config = {
-            general_store: {
-                list_item_limit: 50,
-            },
             buy_sell_store: {
                 selected_local_currency: 'USD',
                 selected_payment_method_value: 'Alipay',
@@ -72,9 +69,6 @@ describe('useP2PRenderedAdverts', () => {
     });
     it('should return the adverts object from response with type buy when table_type is sell', () => {
         const config = {
-            general_store: {
-                list_item_limit: 50,
-            },
             buy_sell_store: {
                 selected_local_currency: 'USD',
                 selected_payment_method_value: 'Alipay',
@@ -92,9 +86,6 @@ describe('useP2PRenderedAdverts', () => {
     });
     it('should return the adverts object from response when selected_payment_method_value has a length > 0', () => {
         const config = {
-            general_store: {
-                list_item_limit: 50,
-            },
             buy_sell_store: {
                 selected_local_currency: 'USD',
                 selected_payment_method_value: 'Alipay',
@@ -112,9 +103,6 @@ describe('useP2PRenderedAdverts', () => {
     });
     it('should return the adverts object from response when selected_payment_method_value has a length === 0', () => {
         const config = {
-            general_store: {
-                list_item_limit: 50,
-            },
             buy_sell_store: {
                 selected_local_currency: 'USD',
                 selected_payment_method_value: '',
@@ -132,9 +120,6 @@ describe('useP2PRenderedAdverts', () => {
     });
     it('should return the adverts object from response when selected_local_currency is defined', () => {
         const config = {
-            general_store: {
-                list_item_limit: 50,
-            },
             buy_sell_store: {
                 selected_local_currency: undefined,
                 selected_payment_method_value: 'USD',
@@ -152,9 +137,6 @@ describe('useP2PRenderedAdverts', () => {
     });
     it('should return the adverts object from response when selected_local_currency is undefined', () => {
         const config = {
-            general_store: {
-                list_item_limit: 50,
-            },
             buy_sell_store: {
                 selected_local_currency: undefined,
                 selected_payment_method_value: '',
@@ -172,9 +154,6 @@ describe('useP2PRenderedAdverts', () => {
     });
     it('should return the adverts object from response when should_use_client_limits is true', () => {
         const config = {
-            general_store: {
-                list_item_limit: 50,
-            },
             buy_sell_store: {
                 selected_local_currency: undefined,
                 selected_payment_method_value: '',
@@ -193,9 +172,6 @@ describe('useP2PRenderedAdverts', () => {
     });
     it('should return the adverts object from response when should_use_client_limits is false', () => {
         const config = {
-            general_store: {
-                list_item_limit: 50,
-            },
             buy_sell_store: {
                 selected_local_currency: undefined,
                 selected_payment_method_value: '',
@@ -214,9 +190,6 @@ describe('useP2PRenderedAdverts', () => {
     });
     it('should return the adverts object from response when is_buy is true', () => {
         const config = {
-            general_store: {
-                list_item_limit: 50,
-            },
             buy_sell_store: {
                 selected_local_currency: undefined,
                 selected_payment_method_value: '',
@@ -236,9 +209,6 @@ describe('useP2PRenderedAdverts', () => {
     });
     it('should return the adverts object from response when is_buy is false', () => {
         const config = {
-            general_store: {
-                list_item_limit: 50,
-            },
             buy_sell_store: {
                 selected_local_currency: undefined,
                 selected_payment_method_value: '',
@@ -258,9 +228,6 @@ describe('useP2PRenderedAdverts', () => {
     });
     it('should return the adverts object from response for adverts that match the given search_term', () => {
         const config = {
-            general_store: {
-                list_item_limit: 50,
-            },
             buy_sell_store: {
                 selected_local_currency: undefined,
                 selected_payment_method_value: '',
@@ -282,9 +249,6 @@ describe('useP2PRenderedAdverts', () => {
     it('should return the adverts object from response for adverts that match the given search_term for mobile', () => {
         (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         const config = {
-            general_store: {
-                list_item_limit: 50,
-            },
             buy_sell_store: {
                 selected_local_currency: undefined,
                 selected_payment_method_value: '',
@@ -306,9 +270,6 @@ describe('useP2PRenderedAdverts', () => {
     it('should return the adverts object from response for adverts for mobile when search_term is undefined', () => {
         (useDevice as jest.Mock).mockReturnValueOnce({ isDesktop: false });
         const config = {
-            general_store: {
-                list_item_limit: 50,
-            },
             buy_sell_store: {
                 selected_local_currency: undefined,
                 selected_payment_method_value: '',

@@ -42,6 +42,7 @@ const App = () => {
 
     React.useEffect(() => {
         init();
+        general_store.setListItemLimit(isDesktop ? 10 : 50);
 
         general_store.setExternalStores({ client, common, modules, notifications, ui });
         general_store.setWebsocketInit(WS);

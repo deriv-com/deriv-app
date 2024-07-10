@@ -68,7 +68,8 @@ const getRenderedAdverts = (
  *
  * */
 const useP2PRenderedAdverts = () => {
-    const { general_store, buy_sell_store } = useStores();
+    const { isDesktop } = useDevice();
+    const { buy_sell_store } = useStores();
     const {
         sort_by,
         should_use_client_limits,
@@ -78,8 +79,7 @@ const useP2PRenderedAdverts = () => {
         table_type,
         search_term,
     } = buy_sell_store;
-    const { list_item_limit } = general_store;
-    const { isDesktop } = useDevice();
+    const list_item_limit = isDesktop ? 50 : 10;
     const counterparty_type = is_buy ? buy_sell.BUY : buy_sell.SELL;
 
     const { data: items = [], ...rest } = useP2PAdvertList({
@@ -91,7 +91,7 @@ const useP2PRenderedAdverts = () => {
         ...(selected_local_currency ? { local_currency: selected_local_currency } : {}),
     });
 
-    const has_more_items_to_load = items.length >= general_store.list_item_limit;
+    const has_more_items_to_load = items.length >= list_item_limit;
 
     // Filter out adverts based on the Buy/Sell toggle. If the toggle is set to Buy, only show Sell adverts and vice versa.
     const filtered_items = React.useMemo(() => {

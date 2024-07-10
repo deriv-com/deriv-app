@@ -43,10 +43,3 @@ export const getErrorModalTitle = (is_invalid_advertiser_id: boolean, name: stri
           })
         : localize('Unable to block advertiser');
 };
-
-/**
- * Gets the width of the modal
- *
- * @returns {String} width of the modal
- */
-export const getWidth = (): string => (isMobile() ? '90rem' : '40rem');

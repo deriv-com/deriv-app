@@ -113,7 +113,7 @@ describe('useOrderDetails', () => {
             [CARD_LABELS.REFERENCE_ID]: ['12345 (Buy)', '67890 (Sell)'],
             [CARD_LABELS.STRIKE_PRICE]: ' - ',
             [CARD_LABELS.DURATION]: '5 minutes',
-            [CARD_LABELS.PAYOUT_PER_POINT]: '1',
+            [CARD_LABELS.PAYOUT_PER_POINT]: '1 USD',
             [CARD_LABELS.STAKE]: '100.00 USD',
         });
     });

@@ -64,6 +64,7 @@ const mockWallets = {
         is_USDT: false,
         is_withdrawal_suspended: 0 as const,
         name: 'US Dollar',
+        platform: { cashier: ['doughflow'] as const, ramp: [] },
         stake_default: 0.1,
         transfer_between_accounts: {
             fees: {},
@@ -117,6 +118,7 @@ const mockTrading = {
         is_USDT: false,
         is_withdrawal_suspended: 0 as const,
         name: 'US Dollar',
+        platform: { cashier: ['doughflow'] as const, ramp: [] },
         stake_default: 0.1,
         transfer_between_accounts: {
             fees: {},

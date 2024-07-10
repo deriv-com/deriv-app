@@ -122,7 +122,11 @@ const RiskManagementItem = observer(
                         inputSize='md'
                         disabled={isSheetOpen}
                         textAlignment='center'
-                        value={`${type == 'stop_loss' ? '-' : ''} ${finalValue.toFixed(2)} ${currency}`}
+                        value={`${
+                            type == 'stop_loss'
+                                ? `-${finalValue.toFixed(2)} ${currency}`
+                                : `${finalValue.toFixed(2)} ${currency}`
+                        }`}
                         onClick={() => {
                             clearContractUpdateConfigValues();
                             setStepperValue(finalValue);

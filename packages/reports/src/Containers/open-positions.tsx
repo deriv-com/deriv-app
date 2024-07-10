@@ -9,7 +9,7 @@ import {
     getGrowthRatePercentage,
     toMoment,
 } from '@deriv/shared';
-import { useLocalize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import {
     getOpenPositionsColumnsTemplate,
@@ -171,7 +171,6 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
     } = ui;
     const { server_time } = common;
     const { getContractById } = contract_trade;
-    const { localize } = useLocalize();
 
     const store_props = {
         onClickRemove,

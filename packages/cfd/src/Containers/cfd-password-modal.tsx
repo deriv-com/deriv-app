@@ -596,8 +596,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const { show_eu_related_content, is_eu_user, toggleAccountTransferModal } = traders_hub;
     const { is_mt5_migration_modal_enabled, setMT5MigrationModalEnabled, is_mt5_migration_modal_open } = ui;
 
-    console.log('==>', platform);
-
     const {
         account_type,
         disableCFDPasswordModal,

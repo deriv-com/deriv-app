@@ -65,8 +65,6 @@ export default class AppStore {
 
         const not_allowed_clients_country: { [key: string]: string } = {
             au: 'Australian',
-            no: 'Norwegian',
-            jp: 'Japanese',
             sg: 'Singaporean',
         };
 

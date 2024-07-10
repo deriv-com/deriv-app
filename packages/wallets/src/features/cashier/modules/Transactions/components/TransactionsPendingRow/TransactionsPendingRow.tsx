@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useRef } from 'react';
 import classNames from 'classnames';
 import moment from 'moment';
 import { useHover } from 'usehooks-ts';
-import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv/api-v2';
+import { useActiveWalletAccount, useCancelCryptoTransaction } from '@deriv-app/api-v2';
 import { LegacyClose1pxIcon } from '@deriv/quill-icons';
 import { Divider } from '@deriv-com/ui';
 import { Tooltip, WalletButton, WalletText } from '../../../../../../components/Base';

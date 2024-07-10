@@ -1,15 +1,15 @@
 import React from 'react';
 import { act, waitFor } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
-import { useExchangeRateSubscription, useTransferBetweenAccounts } from '@deriv/api-v2';
+import { useExchangeRateSubscription, useTransferBetweenAccounts } from '@deriv-app/api-v2';
 import TransferProvider, { useTransfer } from '../TransferProvider';
 import { useExtendedTransferAccounts } from '../../hooks';
 import { THooks } from '../../../../hooks/types';
 import { TTransferableAccounts } from '../../types';
 import { TCurrency } from 'src/types';
 
-jest.mock('@deriv/api-v2', () => ({
-    ...jest.requireActual('@deriv/api-v2'),
+jest.mock('@deriv-app/api-v2', () => ({
+    ...jest.requireActual('@deriv-app/api-v2'),
     useExchangeRateSubscription: jest.fn(),
     useTransferBetweenAccounts: jest.fn(),
 }));

@@ -1,5 +1,5 @@
 {
-    "name": "@deriv/api-v2",
+    "name": "@deriv-app/api-v2",
     "private": true,
     "version": "1.0.0",
     "main": "src/index.ts",

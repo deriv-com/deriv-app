@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Field, FieldProps, Form, Formik, FormikProps } from 'formik';
-import { TSocketError } from '@deriv/api-v2/types';
+import { TSocketError } from '@deriv-app/api-v2/types';
 import {
     WalletButton,
     WalletButtonGroup,

@@ -1,8 +1,8 @@
-import { usePOI, useResidenceList } from '@deriv/api-v2';
+import { usePOI, useResidenceList } from '@deriv-app/api-v2';
 import { renderHook } from '@testing-library/react-hooks';
 import useVerificationDocs from '../useVerificationDocs';
 
-jest.mock('@deriv/api-v2', () => ({
+jest.mock('@deriv-app/api-v2', () => ({
     usePOI: jest.fn(),
     useResidenceList: jest.fn(),
 }));

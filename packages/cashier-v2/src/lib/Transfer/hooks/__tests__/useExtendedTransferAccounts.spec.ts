@@ -1,10 +1,10 @@
 import { renderHook, cleanup } from '@testing-library/react-hooks';
-import { useActiveAccount, useCurrencyConfig } from '@deriv/api-v2';
+import { useActiveAccount, useCurrencyConfig } from '@deriv-app/api-v2';
 import useExtendedTransferBetweenAccounts from '../useExtendedTransferAccounts';
 import { THooks } from '../../../../hooks/types';
 
-jest.mock('@deriv/api-v2', () => ({
-    ...jest.requireActual('@deriv/api-v2'),
+jest.mock('@deriv-app/api-v2', () => ({
+    ...jest.requireActual('@deriv-app/api-v2'),
     useActiveAccount: jest.fn(),
     useCurrencyConfig: jest.fn(),
     displayMoney: jest.fn((balance, currency, options) => `${balance}-${currency}-${options.fractional_digits}`),

@@ -1,10 +1,10 @@
 import React from 'react';
-import { useTransferBetweenAccounts } from '@deriv/api-v2';
+import { useTransferBetweenAccounts } from '@deriv-app/api-v2';
 import { render, screen } from '@testing-library/react';
 import AccountTransfer from '../AccountTransfer';
 
-jest.mock('@deriv/api-v2', () => ({
-    ...jest.requireActual('@deriv/api-v2'),
+jest.mock('@deriv-app/api-v2', () => ({
+    ...jest.requireActual('@deriv-app/api-v2'),
     useTransferBetweenAccounts: jest.fn(),
 }));
 

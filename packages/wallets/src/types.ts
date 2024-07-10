@@ -28,7 +28,7 @@ import type {
     useTransactions,
     useTransferBetweenAccounts,
     useWalletAccountsList,
-} from '@deriv/api-v2';
+} from '@deriv-app/api-v2';
 import { IconTypes } from '@deriv/quill-icons';
 
 // eslint-disable-next-line  @typescript-eslint/no-namespace

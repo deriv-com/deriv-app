@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveAccount } from '@deriv/api-v2';
+import { useActiveAccount } from '@deriv-app/api-v2';
 import { Dropdown, Loader, useDevice } from '@deriv-com/ui';
 import ChevronIcon from '../../assets/images/chevron-icon.svg';
 import { PageContainer } from '../../components';

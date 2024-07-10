@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import React, { PropsWithChildren } from 'react';
-import { APIProvider } from '@deriv/api-v2';
+import { APIProvider } from '@deriv-app/api-v2';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import WalletsAuthProvider from '../../../../../../../AuthProvider';
@@ -47,8 +47,8 @@ const ACCOUNTS = [
     },
 ] as NonNullable<TAccount>[];
 
-jest.mock('@deriv/api-v2', () => ({
-    ...jest.requireActual('@deriv/api-v2'),
+jest.mock('@deriv-app/api-v2', () => ({
+    ...jest.requireActual('@deriv-app/api-v2'),
     useBalance: jest.fn(() => ({
         isLoading: false,
     })),

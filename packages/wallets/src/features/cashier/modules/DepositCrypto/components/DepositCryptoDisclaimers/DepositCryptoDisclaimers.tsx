@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveWalletAccount, useCryptoConfig } from '@deriv/api-v2';
+import { useActiveWalletAccount, useCryptoConfig } from '@deriv-app/api-v2';
 import { InlineMessage, WalletText } from '../../../../../../components/Base';
 import './DepositCryptoDisclaimers.scss';
 

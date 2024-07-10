@@ -1,9 +1,9 @@
 import React from 'react';
-import { useCryptoTransactions } from '@deriv/api-v2';
+import { useCryptoTransactions } from '@deriv-app/api-v2';
 import { act, render, screen } from '@testing-library/react';
 import TransactionsPending from '../TransactionsPending';
 
-jest.mock('@deriv/api-v2', () => ({
+jest.mock('@deriv-app/api-v2', () => ({
     useCryptoTransactions: jest.fn(() => ({
         data: [
             {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api-v2';
+import { useActiveWalletAccount } from '@deriv-app/api-v2';
 import { TSubscribedBalance } from '../../types';
 import { WalletCurrencyCard } from '../WalletCurrencyCard';
 import { WalletListCardDetails } from '../WalletListCardDetails';

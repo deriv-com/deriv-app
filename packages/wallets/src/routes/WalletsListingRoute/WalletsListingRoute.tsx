@@ -1,5 +1,5 @@
 import React, { lazy, useEffect } from 'react';
-import { useAuthorize, useBalanceSubscription } from '@deriv/api-v2';
+import { useAuthorize, useBalanceSubscription } from '@deriv-app/api-v2';
 import {
     WalletListHeader,
     WalletsAddMoreCarousel,

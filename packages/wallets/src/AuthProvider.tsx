@@ -1,5 +1,5 @@
 import React, { ComponentProps } from 'react';
-import { AuthProvider } from '@deriv/api-v2';
+import { AuthProvider } from '@deriv-app/api-v2';
 
 const WALLETS_LOGINID_LOCALSTORAGE_KEY = 'active_wallet_loginid';
 

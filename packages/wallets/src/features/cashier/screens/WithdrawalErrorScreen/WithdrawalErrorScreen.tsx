@@ -1,7 +1,7 @@
 import React, { ComponentProps } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount } from '@deriv/api-v2';
-import { TSocketError } from '@deriv/api-v2/types';
+import { useActiveWalletAccount } from '@deriv-app/api-v2';
+import { TSocketError } from '@deriv-app/api-v2/types';
 import { WalletButton, WalletsErrorScreen } from '../../../../components';
 import { CryptoWithdrawalErrorCodes } from '../../../../constants/errorCodes';
 

@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import { useFormikContext } from 'formik';
-import { APIProvider, AuthProvider } from '@deriv/api-v2';
+import { APIProvider, AuthProvider } from '@deriv-app/api-v2';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useWithdrawalCryptoContext, WithdrawalCryptoProvider } from '../../../../../provider';

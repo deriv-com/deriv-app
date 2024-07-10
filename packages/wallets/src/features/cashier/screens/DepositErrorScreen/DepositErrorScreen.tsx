@@ -1,6 +1,6 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api-v2';
-import { TSocketError } from '@deriv/api-v2/types';
+import { useActiveWalletAccount } from '@deriv-app/api-v2';
+import { TSocketError } from '@deriv-app/api-v2/types';
 import { WalletsErrorScreen } from '../../../../components';
 import { CryptoDepositErrorCodes } from '../../../../constants/errorCodes';
 

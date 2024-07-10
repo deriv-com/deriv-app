@@ -1,9 +1,9 @@
 import React from 'react';
-import { useMutation } from '@deriv/api-v2';
+import { useMutation } from '@deriv-app/api-v2';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import FiatOnRampDisclaimer from '../FiatOnRampDisclaimer';
 
-jest.mock('@deriv/api-v2', () => ({
+jest.mock('@deriv-app/api-v2', () => ({
     useMutation: jest.fn(),
 }));
 const mockUseMutation = useMutation as jest.Mock;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMutation } from '@deriv/api-v2';
+import { useMutation } from '@deriv-app/api-v2';
 import { Button, Dialog, Text } from '@deriv-com/ui';
 import { capitalizeFirstLetter } from '../../../../utils';
 import type { TFiatOnRampProvider } from '../../types';

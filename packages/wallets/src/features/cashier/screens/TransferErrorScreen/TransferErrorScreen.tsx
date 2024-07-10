@@ -1,5 +1,5 @@
 import React from 'react';
-import { TSocketError } from '@deriv/api-v2/types';
+import { TSocketError } from '@deriv-app/api-v2/types';
 import { WalletsErrorScreen } from '../../../../components';
 
 type TProps = {

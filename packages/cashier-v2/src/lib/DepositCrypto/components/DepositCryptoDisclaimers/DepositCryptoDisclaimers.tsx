@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveAccount, useCryptoConfig } from '@deriv/api-v2';
+import { useActiveAccount, useCryptoConfig } from '@deriv-app/api-v2';
 import { InlineMessage, Text } from '@deriv-com/ui';
 import styles from './DepositCryptoDisclaimers.module.scss';
 

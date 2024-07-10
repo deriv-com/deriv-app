@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveWalletAccount, useCFDCompareAccounts } from '@deriv/api-v2';
+import { useActiveWalletAccount, useCFDCompareAccounts } from '@deriv-app/api-v2';
 import { CompareAccountsCarousel } from '../../components';
 import CompareAccountsCard from './CompareAccountsCard';
 import CompareAccountsHeader from './CompareAccountsHeader';

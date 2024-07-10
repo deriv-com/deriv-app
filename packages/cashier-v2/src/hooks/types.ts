@@ -11,7 +11,7 @@ import {
     usePaymentAgentList,
     useSortedMT5Accounts,
     useTransferBetweenAccounts,
-} from '@deriv/api-v2';
+} from '@deriv-app/api-v2';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace THooks {

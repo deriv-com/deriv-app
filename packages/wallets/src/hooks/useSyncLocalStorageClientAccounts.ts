@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import moment from 'moment';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
-import { useCreateNewRealAccount, useCreateWallet, useMutation, useSettings } from '@deriv/api-v2';
+import { useCreateNewRealAccount, useCreateWallet, useMutation, useSettings } from '@deriv-app/api-v2';
 import { getAccountsFromLocalStorage } from '@deriv/utils';
 
 type TNewWalletAccount = NonNullable<ReturnType<typeof useCreateWallet>['data']>;

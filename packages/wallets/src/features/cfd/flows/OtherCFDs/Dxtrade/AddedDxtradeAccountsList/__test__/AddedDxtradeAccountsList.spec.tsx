@@ -1,12 +1,12 @@
 import React from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { useDxtradeAccountsList } from '@deriv/api-v2';
+import { useDxtradeAccountsList } from '@deriv-app/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../../../../../../components/ModalProvider';
 import AddedDxtradeAccountsList from '../AddedDxtradeAccountsList';
 
-jest.mock('@deriv/api-v2', () => ({
+jest.mock('@deriv-app/api-v2', () => ({
     useDxtradeAccountsList: jest.fn(),
 }));
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveAccount } from '@deriv/api-v2';
+import { useActiveAccount } from '@deriv-app/api-v2';
 import { IconMarquee } from '../../../../components';
 import { onboardingOnrampIcons } from '../../constants/icons';
 import { CashierOnboardingCard } from '../CashierOnboardingCard';

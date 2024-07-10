@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api-v2';
+import { APIProvider } from '@deriv-app/api-v2';
 import { render, screen } from '@testing-library/react';
 import WalletsAuthProvider from '../../../../../AuthProvider';
 import { FlowProvider } from '../../../../../components';

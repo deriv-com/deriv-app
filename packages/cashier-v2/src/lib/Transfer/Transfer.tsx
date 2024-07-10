@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAccountLimits, useActiveAccount, useCurrencyConfig } from '@deriv/api-v2';
+import { useAccountLimits, useActiveAccount, useCurrencyConfig } from '@deriv-app/api-v2';
 import { Loader, Text } from '@deriv-com/ui';
 import { ErrorDialog } from '../../components';
 import { THooks } from '../../hooks/types';

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import { useAuthorize, useJurisdictionStatus } from '@deriv/api-v2';
+import { useAuthorize, useJurisdictionStatus } from '@deriv-app/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { InlineMessage, WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';

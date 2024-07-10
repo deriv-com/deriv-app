@@ -8,7 +8,7 @@ import {
     useCashierValidation,
     useCryptoConfig,
     useCurrencyConfig,
-} from '@deriv/api-v2';
+} from '@deriv-app/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { WalletsActionScreen } from '../../../../components';
 import getWithdrawalLockedDesc, { getWithdrawalLimitReachedDesc } from './WithdrawalLockedContent';

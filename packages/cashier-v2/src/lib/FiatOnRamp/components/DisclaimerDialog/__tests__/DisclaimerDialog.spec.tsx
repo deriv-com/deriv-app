@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 
 const mockedMutateAsync = jest.fn();
 
-jest.mock('@deriv/api-v2', () => ({
+jest.mock('@deriv-app/api-v2', () => ({
     useMutation: jest.fn(() => ({
         mutateAsync: mockedMutateAsync,
         isLoading: false,

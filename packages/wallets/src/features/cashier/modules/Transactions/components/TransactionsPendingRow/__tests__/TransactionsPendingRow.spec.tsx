@@ -1,11 +1,11 @@
 import React from 'react';
-import { useCancelCryptoTransaction } from '@deriv/api-v2';
+import { useCancelCryptoTransaction } from '@deriv-app/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../../hooks/useDevice';
 import TransactionsCryptoRow from '../TransactionsPendingRow';
 
-jest.mock('@deriv/api-v2', () => ({
+jest.mock('@deriv-app/api-v2', () => ({
     useActiveWalletAccount: jest.fn(() => ({
         data: {
             is_virtual: false,

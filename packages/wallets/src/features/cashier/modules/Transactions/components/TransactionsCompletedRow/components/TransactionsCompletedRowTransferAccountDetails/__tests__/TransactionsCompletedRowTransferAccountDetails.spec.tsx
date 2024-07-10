@@ -1,11 +1,11 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api-v2';
+import { useActiveWalletAccount } from '@deriv-app/api-v2';
 import { render, screen } from '@testing-library/react';
 import { THooks } from '../../../../../../../../../types';
 import { getAccountName } from '../../../../../../../helpers';
 import TransactionsCompletedRowTransferAccountDetails from '../TransactionsCompletedRowTransferAccountDetails';
 
-jest.mock('@deriv/api-v2', () => ({
+jest.mock('@deriv-app/api-v2', () => ({
     useActiveWalletAccount: jest.fn(),
 }));
 

@@ -7,7 +7,7 @@ import {
     useCtraderAccountsList,
     useDxtradeAccountsList,
     useSortedMT5Accounts,
-} from '@deriv/api-v2';
+} from '@deriv-app/api-v2';
 import useDevice from '../../hooks/useDevice';
 import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import { useModal } from '../ModalProvider';

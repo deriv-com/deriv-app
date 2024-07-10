@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { useActiveWalletAccount, useBalance } from '@deriv/api-v2';
+import { useActiveWalletAccount, useBalance } from '@deriv-app/api-v2';
 import { render, screen } from '@testing-library/react';
 import { CashierLocked, WithdrawalLocked } from '../../../modules';
 import WalletWithdrawal from '../WalletWithdrawal';
@@ -36,8 +36,8 @@ jest.mock('@deriv-com/ui', () => ({
 }));
 
 const mockSwitchAccount = jest.fn();
-jest.mock('@deriv/api-v2', () => ({
-    ...jest.requireActual('@deriv/api-v2'),
+jest.mock('@deriv-app/api-v2', () => ({
+    ...jest.requireActual('@deriv-app/api-v2'),
     useActiveWalletAccount: jest.fn(),
     useAuthorize: jest.fn(() => ({ switchAccount: mockSwitchAccount })),
     useBalance: jest.fn(),

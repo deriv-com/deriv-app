@@ -1,12 +1,12 @@
 import React from 'react';
 import { cleanup, render, screen } from '@testing-library/react';
-import { useAccountLimits, useActiveAccount, useCurrencyConfig } from '@deriv/api-v2';
+import { useAccountLimits, useActiveAccount, useCurrencyConfig } from '@deriv-app/api-v2';
 import { THooks } from '../../../hooks/types';
 import { useTransfer } from '../provider';
 import TransferModule from '../Transfer';
 
-jest.mock('@deriv/api-v2', () => ({
-    ...jest.requireActual('@deriv/api-v2'),
+jest.mock('@deriv-app/api-v2', () => ({
+    ...jest.requireActual('@deriv-app/api-v2'),
     useAccountLimits: jest.fn(() => ({})),
     useActiveAccount: jest.fn(() => ({})),
     useCurrencyConfig: jest.fn(() => ({})),

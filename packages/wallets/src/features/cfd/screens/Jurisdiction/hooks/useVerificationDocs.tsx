@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { usePOI, useResidenceList } from '@deriv/api-v2';
+import { usePOI, useResidenceList } from '@deriv-app/api-v2';
 import { JURISDICTION } from '../../../constants';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
 

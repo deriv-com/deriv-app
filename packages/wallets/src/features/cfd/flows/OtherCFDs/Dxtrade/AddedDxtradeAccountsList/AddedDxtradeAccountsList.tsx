@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDxtradeAccountsList } from '@deriv/api-v2';
+import { useDxtradeAccountsList } from '@deriv-app/api-v2';
 import { LabelPairedChevronRightCaptionRegularIcon } from '@deriv/quill-icons';
 import { TradingAccountCard } from '../../../../../../components';
 import { WalletText } from '../../../../../../components/Base';

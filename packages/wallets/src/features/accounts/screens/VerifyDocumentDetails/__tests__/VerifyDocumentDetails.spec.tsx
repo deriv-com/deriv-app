@@ -1,11 +1,11 @@
 import React from 'react';
 import moment from 'moment';
-import { useSettings } from '@deriv/api-v2';
+import { useSettings } from '@deriv-app/api-v2';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { FlowProvider, FlowTextField } from '../../../../../components';
 import VerifyDocumentDetails from '../VerifyDocumentDetails';
 
-jest.mock('@deriv/api-v2', () => ({
+jest.mock('@deriv-app/api-v2', () => ({
     useSettings: jest.fn(),
 }));
 

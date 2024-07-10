@@ -1,10 +1,10 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api-v2';
+import { useActiveWalletAccount } from '@deriv-app/api-v2';
 import { render, screen } from '@testing-library/react';
 import { TSubscribedBalance } from '../../../types';
 import WalletListCardDetails from '../WalletListCardDetails';
 
-jest.mock('@deriv/api-v2', () => ({
+jest.mock('@deriv-app/api-v2', () => ({
     useActiveWalletAccount: jest.fn(() => ({
         data: {
             is_virtual: false,

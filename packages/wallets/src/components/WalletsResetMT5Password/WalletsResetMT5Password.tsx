@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
-import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordReset } from '@deriv/api-v2';
+import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordReset } from '@deriv-app/api-v2';
 import { CFD_PLATFORMS, PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import { TPlatforms } from '../../types';

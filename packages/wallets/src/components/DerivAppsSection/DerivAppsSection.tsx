@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveLinkedToTradingAccount } from '@deriv/api-v2';
+import { useActiveLinkedToTradingAccount } from '@deriv-app/api-v2';
 import { TSubscribedBalance } from '../../types';
 import { DerivAppsGetAccount } from './DerivAppsGetAccount';
 import { DerivAppsTradingAccount } from './DerivAppsTradingAccount';

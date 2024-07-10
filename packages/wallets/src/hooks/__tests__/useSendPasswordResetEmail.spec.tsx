@@ -1,13 +1,13 @@
 import React, { PropsWithChildren } from 'react';
-import { APIProvider } from '@deriv/api-v2';
+import { APIProvider } from '@deriv-app/api-v2';
 import { renderHook } from '@testing-library/react-hooks';
 import WalletsAuthProvider from '../../AuthProvider';
 import useSendPasswordResetEmail from '../useSendPasswordResetEmail';
 
 const mockMutate = jest.fn();
 
-jest.mock('@deriv/api-v2', () => ({
-    ...jest.requireActual('@deriv/api-v2'),
+jest.mock('@deriv-app/api-v2', () => ({
+    ...jest.requireActual('@deriv-app/api-v2'),
     useSettings: jest.fn(() => ({
         data: {
             email: 'test@meme.com',

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useActiveWalletAccount } from '@deriv/api-v2';
-import { displayMoney } from '@deriv/api-v2/src/utils';
+import { useActiveWalletAccount } from '@deriv-app/api-v2';
+import { displayMoney } from '@deriv-app/api-v2/src/utils';
 import { TSubscribedBalance } from '../../types';
 import { AccountsList } from '../AccountsList';
 import { WalletsCarouselContent } from '../WalletsCarouselContent';

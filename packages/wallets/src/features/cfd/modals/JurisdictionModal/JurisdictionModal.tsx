@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
-import { useAvailableMT5Accounts } from '@deriv/api-v2';
+import { useAvailableMT5Accounts } from '@deriv-app/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';

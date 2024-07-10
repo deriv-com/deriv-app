@@ -6,7 +6,7 @@ import {
     usePOA,
     usePOI,
     useSettings,
-} from '@deriv/api-v2';
+} from '@deriv-app/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { ModalStepWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';

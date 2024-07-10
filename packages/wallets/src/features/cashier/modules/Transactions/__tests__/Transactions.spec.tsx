@@ -1,11 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api-v2';
+import { useActiveWalletAccount, useCurrencyConfig } from '@deriv-app/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import useDevice from '../../../../../hooks/useDevice';
 import Transactions from '../Transactions';
 
-jest.mock('@deriv/api-v2', () => ({
+jest.mock('@deriv-app/api-v2', () => ({
     useActiveWalletAccount: jest.fn(),
     useCurrencyConfig: jest.fn(),
 }));

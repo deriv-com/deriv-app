@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
-import { useOnfido, usePOA } from '@deriv/api-v2';
+import { useOnfido, usePOA } from '@deriv-app/api-v2';
 import { InlineMessage } from '../../../../components';
 import { useFlow } from '../../../../components/FlowProvider';
 import { VerifyDocumentDetails } from '../../../accounts';

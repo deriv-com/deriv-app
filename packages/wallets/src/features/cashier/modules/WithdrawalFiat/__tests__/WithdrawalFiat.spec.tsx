@@ -1,9 +1,9 @@
 import React from 'react';
-import { useCashierFiatAddress } from '@deriv/api-v2';
+import { useCashierFiatAddress } from '@deriv-app/api-v2';
 import { fireEvent, render, screen } from '@testing-library/react';
 import WithdrawalFiat from '../WithdrawalFiat';
 
-jest.mock('@deriv/api-v2', () => ({
+jest.mock('@deriv-app/api-v2', () => ({
     useCashierFiatAddress: jest.fn(),
 }));
 

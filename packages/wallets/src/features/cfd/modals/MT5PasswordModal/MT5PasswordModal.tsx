@@ -8,7 +8,7 @@ import {
     useSettings,
     useTradingPlatformPasswordChange,
     useVerifyEmail,
-} from '@deriv/api-v2';
+} from '@deriv-app/api-v2';
 import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';

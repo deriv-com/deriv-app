@@ -9,7 +9,7 @@ jest.mock('../../../hooks/useDevice', () =>
     }))
 );
 
-jest.mock('@deriv/api-v2', () => ({
+jest.mock('@deriv-app/api-v2', () => ({
     useActiveWalletAccount: () => ({ data: { is_virtual: false, loginid: 'real1' } }),
     useWalletAccountsList: () => ({
         data: [

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api-v2';
+import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv-app/api-v2';
 import { PlatformDetails } from '../features/cfd/constants';
 import { TPlatforms } from '../types';
 import { platformPasswordResetRedirectLink } from '../utils/cfd';

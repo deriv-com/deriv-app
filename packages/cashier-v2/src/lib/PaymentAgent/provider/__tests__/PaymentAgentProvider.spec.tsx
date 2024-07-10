@@ -8,8 +8,8 @@ jest.mock('../../../../utils', () => ({
     shuffleArray: jest.fn(array => array),
 }));
 
-jest.mock('@deriv/api-v2', () => ({
-    ...jest.requireActual('@deriv/api-v2'),
+jest.mock('@deriv-app/api-v2', () => ({
+    ...jest.requireActual('@deriv-app/api-v2'),
     usePaymentAgentList: jest.fn(() => ({
         data: mockPaymentAgents,
     })),

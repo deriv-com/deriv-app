@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useCreateWallet } from '@deriv/api-v2';
+import { useCreateWallet } from '@deriv-app/api-v2';
 import { LabelPairedCheckMdFillIcon, LabelPairedPlusMdFillIcon } from '@deriv/quill-icons';
 import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';

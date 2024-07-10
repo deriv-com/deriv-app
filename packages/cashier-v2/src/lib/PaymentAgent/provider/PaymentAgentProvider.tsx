@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import debounce from 'lodash.debounce';
-import { usePaymentAgentList } from '@deriv/api-v2';
+import { usePaymentAgentList } from '@deriv-app/api-v2';
 import type { THooks } from '../../../hooks/types';
 import { shuffleArray } from '../../../utils';
 

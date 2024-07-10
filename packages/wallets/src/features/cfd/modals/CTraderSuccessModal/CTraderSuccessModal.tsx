@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCtraderAccountsList } from '@deriv/api-v2';
+import { useCtraderAccountsList } from '@deriv-app/api-v2';
 import { Loader } from '@deriv-com/ui';
 import { ModalStepWrapper, ModalWrapper } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';

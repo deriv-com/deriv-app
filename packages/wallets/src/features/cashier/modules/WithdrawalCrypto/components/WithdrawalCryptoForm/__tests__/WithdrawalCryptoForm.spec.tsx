@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { APIProvider, AuthProvider, useGrowthbookIsOn } from '@deriv/api-v2';
+import { APIProvider, AuthProvider, useGrowthbookIsOn } from '@deriv-app/api-v2';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useWithdrawalCryptoContext, WithdrawalCryptoProvider } from '../../../provider';
@@ -10,8 +10,8 @@ jest.mock('../../../provider', () => ({
     useWithdrawalCryptoContext: jest.fn().mockReturnValue([]),
 }));
 
-jest.mock('@deriv/api-v2', () => ({
-    ...jest.requireActual('@deriv/api-v2'),
+jest.mock('@deriv-app/api-v2', () => ({
+    ...jest.requireActual('@deriv-app/api-v2'),
     useGrowthbookIsOn: jest.fn(),
 }));
 

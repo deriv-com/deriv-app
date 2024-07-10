@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useMutation } from '@deriv/api-v2';
+import { useMutation } from '@deriv-app/api-v2';
 import { WalletButton, WalletsActionScreen } from '../../../../components';
 //TODO: replace with quill-icons
 import IcResetDemoBalance from '../../../../public/images/ic-demo-reset-balance.svg';

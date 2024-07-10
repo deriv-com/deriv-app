@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Trans } from 'react-i18next';
 import { useActiveWalletAccount } from '@deriv/api-v2';
+import { Localize } from '@deriv-com/translations';
 import { TSubscribedBalance } from '../../types';
 import { WalletText } from '../Base';
 import WalletListCardActions from '../WalletListCardActions/WalletListCardActions';
@@ -24,7 +24,7 @@ const WalletListCardDetails: React.FC<TSubscribedBalance> = ({ balance }) => {
         <div className='wallets-list-details__container'>
             {isDemo ? (
                 <WalletText>
-                    <Trans defaults='USD Demo Wallet' />
+                    <Localize i18n_default_text='USD Demo Wallet' />
                 </WalletText>
             ) : (
                 <WalletListCardDropdown balance={balance} />

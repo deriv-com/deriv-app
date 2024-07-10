@@ -7,6 +7,7 @@ import {
     LabelPairedMinusMdBoldIcon,
     LabelPairedPlusMdBoldIcon,
 } from '@deriv/quill-icons';
+import { Localize } from '@deriv-com/translations';
 import useDevice from '../../hooks/useDevice';
 import { IconButton, WalletButton, WalletText } from '../Base';
 import './WalletListCardActions.scss';
@@ -70,7 +71,7 @@ const WalletListCardActions = () => {
                                 size='lg'
                             />
                             <WalletText size='sm' weight={button.text === 'Deposit' ? 'bold' : 'normal'}>
-                                {button.text}
+                                <Localize i18n_default_text={button.text} />
                             </WalletText>
                         </div>
                     ))}
@@ -91,7 +92,7 @@ const WalletListCardActions = () => {
                     rounded='lg'
                     variant={button.variant}
                 >
-                    {isActive ? button.text : ''}
+                    <Localize i18n_default_text={isActive ? button.text : ''} />
                 </WalletButton>
             ))}
         </div>

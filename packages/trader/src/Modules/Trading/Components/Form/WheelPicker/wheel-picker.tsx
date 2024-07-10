@@ -7,11 +7,11 @@ const defaultOptions = ['0.12', '0.21', '0.22', '0.34', '0.33', '0.38', '0.09', 
 const variants = {
     enter: direction => ({
         x: 0,
-        y: direction === 'down' ? 20 : -20,
+        y: direction === 'down' ? 30 : -30,
         opacity: 0,
         transition: {
             duration: 0.24,
-            ease: [0, 0, 0.2, 1],
+            ease: [0, 0, 0, 1],
         },
     }),
     center: {
@@ -20,16 +20,16 @@ const variants = {
         opacity: 1,
         transition: {
             duration: 0.24,
-            ease: [0, 0, 0.2, 1],
+            ease: [0, 0, 0, 1],
         },
     },
     exit: direction => ({
         x: 0,
-        y: direction === 'down' ? -20 : 20,
+        y: direction === 'down' ? -30 : 30,
         opacity: 0,
         transition: {
             duration: 0.24,
-            ease: [0, 0, 0.2, 1],
+            ease: [0, 0, 0, 1],
         },
     }),
 };
@@ -64,7 +64,6 @@ const WheelPicker = ({ options = defaultOptions, onBarrierClick }) => {
 
     return (
         <div className='wheel-picker'>
-            <AnimatePresence initial={false} custom={direction}>
                 <div className='picker-wheel' key={selectedIndex}>
                     {visibleValues().map((value, index) => (
                         <motion.div
@@ -76,8 +75,8 @@ const WheelPicker = ({ options = defaultOptions, onBarrierClick }) => {
                             exit='exit'
                         >
                             <Text
-                                size={index === 1 ? 's' : 'xs'}
-                                line_height='l'
+                                size={index === 1 ? 'xs' : 'xxs'}
+                                line_height={index === 1 ? 'l' : 'm'}
                                 weight={index === 1 ? 'bolder' : 'bold'}
                                 color={index === 1 ? 'default' : 'disabled-1'}
                                 align='center'
@@ -89,7 +88,6 @@ const WheelPicker = ({ options = defaultOptions, onBarrierClick }) => {
                         </motion.div>
                     ))}
                 </div>
-            </AnimatePresence>
             <div className='actions'>
                 <Button small className='icons' icon={<Icon icon='IcChevronUp' />} onClick={handleIncrease} />
                 <Button

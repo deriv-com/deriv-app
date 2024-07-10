@@ -36,7 +36,6 @@ const defaultOptions = [
     '0.77',
     '0.78',
     '0.79',
-    '80',
 ];
 
 export default function WheelPickerMobile({
@@ -50,7 +49,7 @@ export default function WheelPickerMobile({
     const [optionWidth, setOptionWidth] = useState(0);
 
     const [swipe, setSwipe] = useState({ startY: 0, deltaY: 0, translateY: 0 });
-    const optionRef = useRef(null);
+    const optionRef = useRef<HTMLDivElement>(null);
     const swipeableHandlers = useSwipeable({
         onSwipeStart: () => {
             setSwipe(swipe => ({ ...swipe, startY: swipe.translateY }));
@@ -117,14 +116,14 @@ export default function WheelPickerMobile({
             <div className='picker-selected-wrapper'>
                 <div className='picker-selected'>
                     <Text
-                        size='m'
+                        size='l'
                         weight='bolder'
                         color='default'
                         align='center'
-                        as='p'
+                        as='h1'
                         className='currency-label'
                         style={{
-                            paddingLeft: optionWidth + 40,
+                            paddingLeft: optionWidth + 60,
                         }}
                     >
                         USD

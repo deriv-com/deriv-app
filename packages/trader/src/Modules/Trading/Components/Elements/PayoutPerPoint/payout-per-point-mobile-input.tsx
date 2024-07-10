@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import WheelPickerMobile from '../../Form/WheelPicker/wheel-picker-mobile';
 import './payout-per-point.scss';
 
-const defaultOptions = ['0.12', '0.21', '0.22', '0.34', '0.33', '0.38', '0.09', '0.76', '0.77', '0.78', '0.79', '80'];
+const defaultOptions = ['0.12', '0.21', '0.22', '0.34', '0.33', '0.38', '0.09', '0.76', '0.77', '0.78', '0.79', '0.22'];
 
 const PayoutPerPointMobileInput = ({
     open_payout_wheelpicker,

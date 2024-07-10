@@ -104,7 +104,7 @@ const TransferFormAccountSelection: React.FC<TProps> = ({
                                                 modal.hide();
                                             }}
                                         >
-                                            <TransferFormAccountCard account={account} activeWallet={activeWallet} />
+                                            <TransferFormAccountCard account={account} />
                                         </button>
                                     ))}
                                 </div>

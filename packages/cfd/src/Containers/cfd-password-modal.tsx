@@ -616,7 +616,12 @@ const CFDPasswordForm = observer(
 
 const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalProps) => {
     const { isDesktop } = useDevice();
-    const { client, traders_hub, ui } = useStore();
+    const {
+        client,
+        modules: { cfd },
+        traders_hub,
+        ui,
+    } = useStore();
 
     const {
         email,
@@ -631,6 +636,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     } = client;
     const { show_eu_related_content, is_eu_user, toggleAccountTransferModal } = traders_hub;
     const { is_mt5_migration_modal_enabled, setMT5MigrationModalEnabled, is_mt5_migration_modal_open } = ui;
+    const { setProduct } = cfd;
 
     const {
         account_type,
@@ -764,6 +770,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         updateMT5Status();
         closeDialogs();
         disableCFDPasswordModal();
+        setProduct();
     };
 
     const closeOpenSuccess = () => {

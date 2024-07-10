@@ -101,7 +101,7 @@ describe('LanguageSettings', () => {
 
         renderLanguageSettings();
 
-        expect(screen.queryByText('Select Language')).not.toBeInTheDocument();
+        expect(screen.queryByText('Select language')).not.toBeInTheDocument();
         expect(screen.getByText('Redirect')).toBeInTheDocument();
     });
 });

@@ -1625,6 +1625,10 @@ type TPrivateSocketEndpoints = {
                        */
                       name?: string;
                       /**
+                       * This needs to be removed after updating api-types version
+                       */
+                      product?: 'zero_spread' | 'swap_free' | 'standard';
+                      /**
                        * Legal requirements for the Landing Company
                        */
                       requirements?: {

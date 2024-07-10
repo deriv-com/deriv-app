@@ -29,7 +29,7 @@ const VerificationLinkExpiredModal = ({
     };
 
     const handleSendNewLinkButton = () => {
-        send();
+        send(true);
     };
 
     React.useEffect(() => {

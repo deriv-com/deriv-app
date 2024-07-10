@@ -31,7 +31,7 @@ const ResendCodeTimer = ({
         if (should_show_resend_code_button) {
             clearOtpValue();
             setIsButtonDisabled(true);
-            send();
+            send(true);
         } else {
             setShouldShowDidntGetTheCodeModal(true);
         }

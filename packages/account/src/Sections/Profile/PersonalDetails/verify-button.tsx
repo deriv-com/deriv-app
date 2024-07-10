@@ -28,7 +28,7 @@ export const VerifyButton = observer(() => {
         if (next_otp_request) return;
         setVerificationCode('', 'phone_number_verification');
         setShouldShowPhoneNumberOTP(false);
-        send();
+        send(true);
         history.push(routes.phone_verification);
     };
 

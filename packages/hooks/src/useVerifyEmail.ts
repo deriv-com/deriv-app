@@ -17,10 +17,13 @@ const useVerifyEmail = (
     const [sent_count, setSentCount] = useState(0);
 
     const send = useCallback(
-        (email?: Parameters<ReturnType<typeof useRequest<'verify_email'>>['mutate']>[0]['payload']['verify_email']) => {
+        (
+            is_from_phone_number_verification = false,
+            email?: Parameters<ReturnType<typeof useRequest<'verify_email'>>['mutate']>[0]['payload']['verify_email']
+        ) => {
             const request_email = email ?? client.email;
             if (!request_email) return;
-            if (counter.is_running) return;
+            if (counter.is_running && !is_from_phone_number_verification) return;
 
             counter.reset();
             counter.start();

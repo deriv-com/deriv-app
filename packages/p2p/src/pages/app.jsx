@@ -5,7 +5,7 @@ import { Loading } from '@deriv-app/components';
 import { useP2PCompletedOrdersNotification, useFeatureFlags, useP2PSettings } from '@deriv-app/hooks';
 import { isEmptyObject, routes, WS } from '@deriv-app/shared';
 import { useStore, observer } from '@deriv-app/stores';
-import { getLanguage } from '@deriv/translations';
+import { getLanguage } from '@deriv-app/translations';
 import { URLConstants } from '@deriv-com/utils';
 import { init } from 'Utils/server_time';
 import { waitWS } from 'Utils/websocket';

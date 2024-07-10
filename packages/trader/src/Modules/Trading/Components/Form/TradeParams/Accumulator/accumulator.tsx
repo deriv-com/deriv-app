@@ -1,5 +1,5 @@
 import React from 'react';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import NumberSelector from 'App/Components/Form/number-selector';
 import Fieldset from 'App/Components/Form/fieldset';
 import { getGrowthRatePercentage, isEmptyObject } from '@deriv-app/shared';

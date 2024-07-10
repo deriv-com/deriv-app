@@ -1,6 +1,6 @@
 import React from 'react';
 import { SideNote } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { Link } from 'react-router-dom';
 
 const DepositCryptoSideNoteTryFiatOnRamp: React.FC = () => (

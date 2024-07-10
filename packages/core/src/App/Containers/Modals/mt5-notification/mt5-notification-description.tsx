@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { mt5_community_url } from '@deriv-app/shared';
 
 type TMT5NotificationDescription = {

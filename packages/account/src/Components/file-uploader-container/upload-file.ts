@@ -1,5 +1,5 @@
 import DocumentUploader from '@binary-com/binary-document-uploader';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { compressImageFiles, readFiles, TSettings } from '@deriv-app/shared';
 import { TFile } from 'Types';
 

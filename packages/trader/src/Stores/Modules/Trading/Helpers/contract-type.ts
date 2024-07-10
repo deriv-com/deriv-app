@@ -21,7 +21,7 @@ import {
     TRADE_TYPES,
 } from '@deriv-app/shared';
 import ServerTime from '_common/base/server_time';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { isSessionAvailable } from './start-date';
 import { ContractsFor, ContractsForSymbolResponse, TradingTimes, TradingTimesResponse } from '@deriv/api-types';
 import { TTradeStore } from '../../../../Types/common-prop.type';

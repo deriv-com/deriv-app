@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Modal, Text, MobileDialog } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { useDevice } from '@deriv-com/ui';
 
 type RiskToleranceWarningModalProps = {

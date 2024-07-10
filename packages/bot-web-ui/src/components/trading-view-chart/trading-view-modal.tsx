@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from '@deriv-app/stores';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import DraggableResizeWrapper from 'Components/draggable/draggable-resize-wrapper';
 import TradingViewComponent from 'Components/trading-view-chart/trading-view';
 import { useDBotStore } from 'Stores/useDBotStore';

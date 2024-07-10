@@ -6,7 +6,7 @@ import { Icon, Text } from '@deriv-app/components';
 import { addComma, toMoment } from '@deriv-app/shared';
 
 import MarkerSpot from './marker-spot.jsx';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 const MarkerSpotLabel = ({
     align_label,

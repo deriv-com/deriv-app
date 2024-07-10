@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 // Note: Ensure that the object keys matches BE API's keys. This is simply a mapping for FE templates
 

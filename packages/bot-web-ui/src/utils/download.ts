@@ -1,5 +1,5 @@
 import { LogTypes } from '@deriv/bot-skeleton';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 export type TTransaction = {
     display_name: string;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, Text } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 type TEmptyPortfolioMessage = {
     error?: string;

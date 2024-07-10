@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 
 export const getFatcaDeclaration = () => [
     <Localize i18n_default_text='US citizenship or lawful permanent resident (green card) status' key='1' />,

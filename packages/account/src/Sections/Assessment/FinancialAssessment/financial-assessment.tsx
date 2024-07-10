@@ -8,7 +8,7 @@ import { useHistory, withRouter } from 'react-router';
 import { FormSubmitErrorMessage, Loading, Button, Dropdown, Modal, Icon, SelectNative, Text } from '@deriv-app/components';
 import { routes, platforms, WS, shouldHideOccupationField } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import LeaveConfirm from 'Components/leave-confirm';
 import IconMessageContent from 'Components/icon-message-content';
 import DemoMessage from 'Components/demo-message';

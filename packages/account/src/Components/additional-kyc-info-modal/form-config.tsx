@@ -1,6 +1,6 @@
 import React from 'react';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { generateValidationFunction } from '@deriv-app/shared';
 import { TListItem } from 'Types';
 

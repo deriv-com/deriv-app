@@ -6,7 +6,7 @@ import { Timeline, Input, Button, ThemedScrollbars, Loading } from '@deriv-app/c
 import { useDevice } from '@deriv-com/ui';
 import { getPropertyValue, WS } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { TToken } from 'Types';
 import { ApiTokenContext, ApiTokenArticle, ApiTokenCard, ApiTokenTable } from 'Components/api-token';
 import InlineNoteWithIcon from 'Components/inline-note-with-icon';

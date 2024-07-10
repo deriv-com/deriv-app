@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRequest } from '@deriv-app/api';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { EmptyState } from '@deriv-app/components';
 
 const FundsProtection = () => {

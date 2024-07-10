@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer, useStore } from '@deriv-app/stores';
 import { DesktopWrapper, Modal, Button, Icon, Text, MobileDialog, MobileWrapper } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 
 type TCFDPasswordChangeContentProps = {
     closeModal: () => void;

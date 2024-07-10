@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Dialog } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { getCurrentProductionDomain } from '@deriv-app/shared';
 
 const RedirectNoticeModal = ({ is_logged_in, is_eu, portal_id }) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dialog, Text } from '@deriv-app/components';
 import { useHasMFAccountDeposited } from '@deriv-app/hooks';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { useStore, observer } from '@deriv-app/stores';
 import './ready-to-verify-modal.scss';
 

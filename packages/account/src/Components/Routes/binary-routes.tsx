@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch } from 'react-router-dom';
 
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 
 import getRoutesConfig from '../../Constants/routes-config';
 import { TBinaryRoutes, TRoute } from '../../Types';

@@ -5,7 +5,7 @@ import { Button, InlineMessage, Input, Loading, Text } from '@deriv-app/componen
 import { useExchangeRate, useGrowthbookIsOn } from '@deriv-app/hooks';
 import { CryptoConfig, getCurrencyName } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
 import PercentageSelector from '../../../components/percentage-selector';

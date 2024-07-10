@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { Icon, Popover, Loading } from '@deriv-app/components';
 import { routes, platforms, formatMoney, makeLazyLoader, moduleLoader, isTabletOs } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { useDevice } from '@deriv-com/ui';
 import { MenuLinks } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';

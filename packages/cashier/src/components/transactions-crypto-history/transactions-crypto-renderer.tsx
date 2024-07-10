@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Button, Icon, Money, Popover, Table, Text } from '@deriv-app/components';
 import { epochToMoment, formatMoney, isMobile } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { useStore, observer } from '@deriv-app/stores';
 import { getStatus } from '../../constants/transaction-status';
 import { useCashierStore } from '../../stores/useCashierStores';

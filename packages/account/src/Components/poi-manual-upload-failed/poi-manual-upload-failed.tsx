@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Icon } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import IconMessageContent from '../icon-message-content';
 
 type TPOIManualUploadFailed = {

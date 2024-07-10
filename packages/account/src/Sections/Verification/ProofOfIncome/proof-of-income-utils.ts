@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 export const income_status_codes = {
     NONE: 'none',

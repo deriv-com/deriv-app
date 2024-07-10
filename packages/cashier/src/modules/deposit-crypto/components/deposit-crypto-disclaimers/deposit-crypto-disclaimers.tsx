@@ -3,7 +3,7 @@ import { InlineMessage, Text } from '@deriv-app/components';
 import { useCurrentCurrencyConfig } from '@deriv-app/hooks';
 import { formatMoney } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import './deposit-crypto-disclaimers.scss';
 
 // Check with BE to see if we can get the network name from the API.

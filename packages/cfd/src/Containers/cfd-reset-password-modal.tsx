@@ -2,7 +2,7 @@ import { Formik, FormikHelpers } from 'formik';
 import React from 'react';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv-app/components';
 import { validLength, validPassword, validMT5Password, getErrorMessages, WS, redirectToLogin } from '@deriv-app/shared';
-import { localize, Localize, getLanguage } from '@deriv/translations';
+import { localize, Localize, getLanguage } from '@deriv-app/translations';
 import { getMtCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { TResetPasswordIntent, TCFDResetPasswordModal, TError } from './props.types';
 import { observer, useStore } from '@deriv-app/stores';

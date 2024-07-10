@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import Fieldset from 'App/Components/Form/fieldset';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import { Dropdown } from '@deriv-app/components';

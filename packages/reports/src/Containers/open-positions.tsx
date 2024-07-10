@@ -9,7 +9,7 @@ import {
     getGrowthRatePercentage,
     toMoment,
 } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { Analytics } from '@deriv-com/analytics';
 import {
     getOpenPositionsColumnsTemplate,

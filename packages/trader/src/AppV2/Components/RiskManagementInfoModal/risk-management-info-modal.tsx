@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, SectionMessage, Text } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { LabelPairedCircleInfoSmRegularIcon } from '@deriv/quill-icons';
 
 type RiskManagementInfoModalProps = {

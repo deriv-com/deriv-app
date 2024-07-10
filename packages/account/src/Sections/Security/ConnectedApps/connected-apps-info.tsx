@@ -1,6 +1,6 @@
 import React from 'react';
 import { InlineMessage, Text } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { observer } from '@deriv-app/stores';
 import { useDevice } from '@deriv-com/ui';
 import ConnectedAppsInfoBullets from './connected-apps-info-bullets';

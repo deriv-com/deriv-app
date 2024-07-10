@@ -1,6 +1,6 @@
 import React from 'react';
 import { Badge } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 type TWalletBadge = {
     is_demo: boolean;

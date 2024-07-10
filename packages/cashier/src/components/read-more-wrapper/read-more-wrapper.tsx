@@ -1,6 +1,6 @@
 import { ReadMore } from '@deriv-app/components';
 import React from 'react';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { TReactElement } from '../../types';
 
 type TReadMoreWrapperProps = {

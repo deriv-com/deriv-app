@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { Button, Icon } from '@deriv-app/components';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import { notification_message } from 'Components/bot-notification/bot-notification-utils';
 import { useDBotStore } from 'Stores/useDBotStore';

@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { toMoment } from '@deriv-app/shared';
 import { ActionSheet, Chip, RadioGroup, Text } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import CustomDateFilterButton from './custom-time-filter-button';
 import DateRangePicker from 'AppV2/Components/DatePicker';
 

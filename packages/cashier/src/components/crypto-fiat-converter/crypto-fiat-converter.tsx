@@ -5,7 +5,7 @@ import { DesktopWrapper, Icon, Input, MobileWrapper } from '@deriv-app/component
 import { useExchangeRate } from '@deriv-app/hooks';
 import { getCurrencyDisplayCode } from '@deriv-app/shared';
 import { observer } from '@deriv-app/stores';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 import { useCashierStore } from '../../stores/useCashierStores';
 import { TReactChangeEvent } from '../../types';

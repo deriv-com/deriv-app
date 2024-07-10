@@ -8,7 +8,7 @@ import {
     address_permitted_special_characters_message,
     TSchema,
 } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { TUpgradeInfo } from 'Types';
 
 type TAddressDetailsConfigProps = {

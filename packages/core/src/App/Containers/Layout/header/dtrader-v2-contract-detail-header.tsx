@@ -2,7 +2,7 @@ import React from 'react';
 import { observer, useStore } from '@deriv-app/stores';
 import { Text } from '@deriv-com/quill-ui';
 import { LabelPairedArrowLeftSmBoldIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { useHistory, useLocation } from 'react-router-dom';
 import { isEmptyObject } from '@deriv-app/shared';
 

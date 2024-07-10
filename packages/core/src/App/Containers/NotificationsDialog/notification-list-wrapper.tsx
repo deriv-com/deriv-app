@@ -3,7 +3,7 @@ import React, { LegacyRef } from 'react';
 import { Text, ThemedScrollbars } from '@deriv-app/components';
 import { routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import EmptyNotification from 'App/Components/Elements/Notifications/empty-notification';
 import NotificationsClearAllFooter from './notifications-clear-all-footer';
 import NotificationsList from './notifications-list';

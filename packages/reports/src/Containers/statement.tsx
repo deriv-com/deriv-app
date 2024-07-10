@@ -11,7 +11,7 @@ import {
     isForwardStarting,
     hasForwardContractStarted,
 } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';

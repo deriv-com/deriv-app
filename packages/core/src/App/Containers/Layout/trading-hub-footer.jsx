@@ -20,7 +20,7 @@ import { observer, useStore } from '@deriv-app/stores';
 import DarkModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-light-theme.svg';
 import LightModeToggleIcon from 'Assets/SvgComponents/footer/ic-footer-dark-theme.svg';
 import { Popover } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { useRemoteConfig } from '@deriv-app/api';
 
 const FooterIconSeparator = () => <div className='footer-icon-separator' />;

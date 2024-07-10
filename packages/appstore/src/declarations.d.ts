@@ -5,6 +5,6 @@ declare module '*.svg' {
 
 declare module '@deriv-app/components';
 declare module '@deriv-app/shared';
-declare module '@deriv/translations';
+declare module '@deriv-app/translations';
 declare module '@deriv/account';
 declare module '@deriv/cfd';

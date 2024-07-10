@@ -16,7 +16,7 @@ import {
 } from '@deriv-app/components';
 import { GetSettings } from '@deriv/api-types';
 import { AUTH_STATUS_CODES, WS, getBrandWebsiteName, routes } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { observer, useStore } from '@deriv-app/stores';
 import LeaveConfirm from 'Components/leave-confirm';
 import FormFooter from 'Components/form-footer';

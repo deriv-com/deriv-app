@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { TPasskeyError } from '../passkeys-configs';
 import { TServerError } from '../../../../Types';
 

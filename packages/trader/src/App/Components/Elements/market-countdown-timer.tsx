@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Text } from '@deriv-app/components';
 import { useIsMounted, WS, convertTimeFormat, isMarketClosed, toMoment } from '@deriv-app/shared';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { observer, useStore } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { TradingTimesRequest, TradingTimesResponse } from '@deriv/api-types';

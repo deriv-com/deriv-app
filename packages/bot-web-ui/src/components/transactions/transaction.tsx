@@ -5,7 +5,7 @@ import { getContractTypeName } from '@deriv/bot-skeleton';
 import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { Icon, IconTradeTypes, Money, Popover } from '@deriv-app/components';
 import { convertDateFormat } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { TContractInfo } from 'Components/summary/summary-card.types';
 import { popover_zindex } from 'Constants/z-indexes';
 

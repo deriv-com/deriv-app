@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Money, Icon, ThemedScrollbars, Text } from '@deriv-app/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import {
     addComma,
     epochToMoment,

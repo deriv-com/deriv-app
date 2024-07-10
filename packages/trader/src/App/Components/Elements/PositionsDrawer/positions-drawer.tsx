@@ -11,7 +11,7 @@ import {
     isVanillaContract,
     isContractSupportedAndStarted,
 } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import EmptyPortfolioMessage from '../EmptyPortfolioMessage';
 import { filterByContractType } from './helpers';
 import { useTraderStore } from 'Stores/useTraderStores';

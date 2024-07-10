@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 
 export const API_TOKEN_CARD_DETAILS = [
     {

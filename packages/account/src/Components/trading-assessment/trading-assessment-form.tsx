@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { observer, useStore } from '@deriv-app/stores';
 import { Formik, Form, FormikErrors, FormikHelpers } from 'formik';
 import { Button, Modal, Text } from '@deriv-app/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import TradingAssessmentRadioButton from './trading-assessment-radio-buttons';
 import TradingAssessmentDropdown from './trading-assessment-dropdown';
 import { getTradingAssessmentQuestions } from '../../Constants/trading-assessment-questions';

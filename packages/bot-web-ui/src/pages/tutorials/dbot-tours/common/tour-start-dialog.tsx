@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dialog, Text } from '@deriv-app/components';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from '../../../../stores/useDBotStore';
 import {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { dynamic_leverages } from '../../Constants/dynamic-leverage-content/dynamic-leverage-content';
 import { DynamicLeverageMarketCard } from './dynamic-leverage-market-card';
 

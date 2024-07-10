@@ -28,7 +28,7 @@ import PayoutPerPointMobile from 'Modules/Trading/Components/Elements/payout-per
 import TradeTypeTabs from 'Modules/Trading/Components/Form/TradeParams/trade-type-tabs';
 import { observer } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { TRADE_TYPES } from '@deriv-app/shared';
 
 type TCollapsibleTradeParams = Pick<

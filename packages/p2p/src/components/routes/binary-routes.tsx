@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import getRoutesConfig from 'Constants/routes-config';
 import { TBinaryRoutes, TRoute } from 'Types';
 

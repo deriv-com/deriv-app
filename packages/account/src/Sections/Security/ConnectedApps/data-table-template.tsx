@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { OauthApps } from '@deriv/api-types';
 import { Button, Text } from '@deriv-app/components';
 import { toMoment } from '@deriv-app/shared';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { getConnectedAppsColumnNames, getConnectedAppsScopes } from './template-helper';
 
 type TDataTableTemplate = { connected_apps: OauthApps; handleToggleModal: (app_id: number) => void };

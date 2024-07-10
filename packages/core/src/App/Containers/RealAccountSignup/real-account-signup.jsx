@@ -6,7 +6,7 @@ import { useDevice } from '@deriv-com/ui';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
 import { Button, MobileDialog, Modal, Text, UILoader } from '@deriv-app/components';
 import { WS, moduleLoader, routes } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { observer, useStore } from '@deriv-app/stores';
 import AddCurrency from './add-currency.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';

@@ -2,7 +2,7 @@ import React from 'react';
 import { Checkbox, StaticUrl, Text } from '@deriv-app/components';
 import { DBVI_COMPANY_NAMES } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { TJurisdictionCheckBoxProps } from '../props.types';
 import { JURISDICTION } from '../../Helpers/cfd-config';
 

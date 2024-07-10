@@ -2,7 +2,7 @@ import React from 'react';
 import { ActionSheet, DatePicker } from '@deriv-com/quill-ui';
 import moment from 'moment';
 import { toMoment } from '@deriv-app/shared';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { DEFAULT_DATE_FORMATTING_CONFIG } from 'AppV2/Utils/positions-utils';
 
 type TDateRangePicker = {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { TPortfolioPosition } from '@deriv-app/stores/types';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { Tag } from '@deriv-com/quill-ui';
 import { LabelPairedStopwatchCaptionRegularIcon } from '@deriv/quill-icons';
 import { getCardLabels } from '@deriv-app/shared';

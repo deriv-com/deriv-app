@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import * as Yup from 'yup';
 import { address_permitted_special_characters_message, getLocation, toMoment } from '@deriv-app/shared';
 import { GetSettings, ResidenceList, StatesList } from '@deriv/api-types';

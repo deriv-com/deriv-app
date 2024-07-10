@@ -3,7 +3,7 @@ import moment from 'moment';
 import React from 'react';
 import { DatePicker, Tooltip } from '@deriv-app/components';
 import { isTimeValid, setTime, toMoment, useIsMounted, hasIntradayDurationUnit } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { observer, useStore } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';

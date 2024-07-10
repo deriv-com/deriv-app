@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { Dialog, Icon, Text } from '@deriv-app/components';
 import { redirectToLogin, routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { getLanguage, localize, Localize } from '@deriv/translations';
+import { getLanguage, localize, Localize } from '@deriv-app/translations';
 import './wallets-upgrade-logout-modal.scss';
 
 const WalletsUpgradeLogoutModal = observer(() => {

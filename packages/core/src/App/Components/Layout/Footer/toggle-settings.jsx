@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Modal, Popover, VerticalTab } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import 'Sass/app/modules/settings.scss';
 
 const ModalContent = ({ settings_extension }) => {

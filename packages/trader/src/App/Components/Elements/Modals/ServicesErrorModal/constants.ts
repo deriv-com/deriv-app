@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 export const getTitle = (type?: string) => {
     switch (type) {

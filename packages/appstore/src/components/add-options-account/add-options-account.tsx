@@ -1,6 +1,6 @@
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Button, Text } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import './add-options-account.scss';
 import { useStore, observer } from '@deriv-app/stores';
 import { isMobile, ContentFlag } from '@deriv-app/shared';

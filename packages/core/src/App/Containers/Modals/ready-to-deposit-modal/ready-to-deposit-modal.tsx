@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { useStore, observer } from '@deriv-app/stores';
 import './ready-to-deposit-modal.scss';
 

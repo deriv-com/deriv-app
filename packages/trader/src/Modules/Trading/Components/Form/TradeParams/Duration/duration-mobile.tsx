@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tabs, RelativeDatepicker } from '@deriv-app/components';
 import { getDurationMinMaxValues, toMoment } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { observer } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import type { TTradeParamsMobile } from 'Modules/Trading/Containers/trade-params-mobile';

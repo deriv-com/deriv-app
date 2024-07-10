@@ -34,7 +34,7 @@
         "@deriv-app/components": "^1.0.0",
         "@deriv-app/shared": "^1.0.0",
         "@deriv-app/stores": "^1.0.0",
-        "@deriv/translations": "^1.0.0",
+        "@deriv-app/translations": "^1.0.0",
         "@deriv-app/hooks": "^1.0.0",
         "@deriv/wallets": "^1.0.0",
         "classnames": "^2.2.6",

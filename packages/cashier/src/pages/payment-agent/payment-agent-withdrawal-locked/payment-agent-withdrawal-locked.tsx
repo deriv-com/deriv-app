@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, StaticUrl, Text } from '@deriv-app/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { routes } from '@deriv-app/shared';
 import { withRouter } from 'react-router-dom';
 import Error from 'Components/error';

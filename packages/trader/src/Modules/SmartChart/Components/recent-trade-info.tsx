@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer, useStore } from '@deriv-app/stores';
 import { isAccumulatorContract, isDigitContract, isEnded } from '@deriv-app/shared';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { Text } from '@deriv-app/components';
 
 const RecentTradeInfo = observer(() => {

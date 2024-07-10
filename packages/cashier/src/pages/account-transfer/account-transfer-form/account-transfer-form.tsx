@@ -15,7 +15,7 @@ import {
     validNumber,
 } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 
 import AccountPlatformIcon from '../../../components/account-platform-icon';
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';

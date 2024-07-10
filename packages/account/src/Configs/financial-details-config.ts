@@ -7,7 +7,7 @@ import {
     EMPLOYMENT_VALUES,
     TEmploymentStatus,
 } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 type TFinancialDetailsConfig = {
     real_account_signup_target: string;

@@ -9,7 +9,7 @@ import ErrorMessage from '../../../Components/error-component';
 import Expired from '../../../Components/poi/status/expired';
 import IdvContainer from './idv.jsx';
 import Limited from '../../../Components/poi/status/limited';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import NotRequired from '../../../Components/poi/status/not-required';
 import Onfido from './onfido.jsx';
 import POISubmission from './proof-of-identity-submission.jsx';

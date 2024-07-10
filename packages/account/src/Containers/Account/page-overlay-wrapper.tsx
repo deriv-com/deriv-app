@@ -4,7 +4,7 @@ import { Analytics } from '@deriv-com/analytics';
 import { PageOverlay, VerticalTab } from '@deriv-app/components';
 import { getOSNameWithUAParser, getSelectedRoute, routes as shared_routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import TradingHubLogout from './tradinghub-logout';
 import { TRoute } from '../../Types';
 import { useDevice } from '@deriv-com/ui';

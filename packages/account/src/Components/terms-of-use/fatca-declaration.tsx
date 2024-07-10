@@ -2,7 +2,7 @@ import React from 'react';
 import { FieldInputProps } from 'formik';
 import { Text, Dropdown } from '@deriv-app/components';
 import { useDevice } from '@deriv-com/ui';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { getFatcaDeclaration, getAgreementOptions } from '../../Constants/fatca-declaration';
 import './terms-of-use.scss';
 

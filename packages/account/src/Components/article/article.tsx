@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, Text } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import './article.scss';
 import clsx from 'clsx';
 

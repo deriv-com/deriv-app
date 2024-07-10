@@ -17,7 +17,7 @@ import {
     useOnLoadTranslation,
 } from '@deriv-app/shared';
 import { StoreProvider, P2PSettingsProvider } from '@deriv-app/stores';
-import { getLanguage, initializeTranslations } from '@deriv/translations';
+import { getLanguage, initializeTranslations } from '@deriv-app/translations';
 import { withTranslation, useTranslation } from 'react-i18next';
 import { initializeI18n, TranslationProvider, getInitialLanguage } from '@deriv-com/translations';
 import { CFD_TEXT } from '../Constants/cfd-text';

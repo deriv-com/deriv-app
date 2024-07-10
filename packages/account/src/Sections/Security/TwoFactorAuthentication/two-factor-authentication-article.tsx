@@ -1,5 +1,5 @@
 import React from 'react';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import AccountArticle from 'Components/article';
 
 const TwoFactorAuthenticationArticle = () => (

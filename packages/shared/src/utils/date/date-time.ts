@@ -1,4 +1,4 @@
-import { getLanguage, localize } from '@deriv/translations';
+import { getLanguage, localize } from '@deriv-app/translations';
 import moment from 'moment';
 
 type TExtendedMoment = typeof moment & {

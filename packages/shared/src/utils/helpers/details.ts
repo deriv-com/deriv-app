@@ -1,5 +1,5 @@
 import { epochToMoment, formatMilliseconds, getDiffDuration } from '../date';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import moment from 'moment';
 import { TContractInfo } from '../contract';
 

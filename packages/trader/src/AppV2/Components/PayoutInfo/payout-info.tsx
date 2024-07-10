@@ -1,4 +1,4 @@
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { TContractInfo } from '@deriv-app/shared';
 import { Text } from '@deriv-com/quill-ui';
 import CardWrapper from 'AppV2/Components/CardWrapper';

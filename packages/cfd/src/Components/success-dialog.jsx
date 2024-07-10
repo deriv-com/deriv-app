@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { Button, Icon, Modal, Text } from '@deriv-app/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 
 const Checkmark = ({ className }) => (
     <Icon className={className} icon='IcCheckmarkCircle' custom_color='var(--status-success)' size={24} />

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv-app/components';
 import { PRODUCT } from '../../Helpers/cfd-config';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { TCompareAccountsCard } from 'Components/props.types';
 import CFDCompareAccountsTitleIcon from './cfd-compare-accounts-title-icon';
 import CFDCompareAccountsDescription from './cfd-compare-accounts-description';

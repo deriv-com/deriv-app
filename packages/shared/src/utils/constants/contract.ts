@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 import { shouldShowCancellation, shouldShowExpiration, CONTRACT_TYPES, TRADE_TYPES } from '../contract';
 import { TContractOptions } from '../contract/contract-types';

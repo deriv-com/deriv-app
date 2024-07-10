@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Icon, ProgressBarTracker, Text } from '@deriv-app/components';
 import { observer } from '@deriv-app/stores';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { getSetting } from 'Utils/settings';
 import { useDBotStore } from 'Stores/useDBotStore';
 import TourButton from '../common/tour-button';

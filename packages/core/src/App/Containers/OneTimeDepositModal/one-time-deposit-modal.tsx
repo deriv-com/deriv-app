@@ -11,7 +11,7 @@ import {
 } from '@deriv-app/components';
 import { useHasMFAccountDeposited } from '@deriv-app/hooks';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import DepositFiatIframe from '@deriv/cashier/src/modules/deposit-fiat/components/deposit-fiat-iframe/deposit-fiat-iframe';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
 

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import Loadable from 'react-loadable';
 import { UILoader } from '@deriv-app/components';
 import { urlForLanguage } from '@deriv-app/shared';
-import { getLanguage } from '@deriv/translations';
+import { getLanguage } from '@deriv-app/translations';
 import BinaryRoutes from 'App/Components/Routes';
 import { observer, useStore } from '@deriv-app/stores';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Redirect, Route } from 'react-router-dom';
 import { redirectToLogin, routes, removeBranchName, default_title, isEmptyObject } from '@deriv-app/shared';
-import { getLanguage } from '@deriv/translations';
+import { getLanguage } from '@deriv-app/translations';
 import { TBinaryRoutes, TRoute, TRouteConfig } from 'Types';
 
 type TRouteWithSubRoutesProps = TRouteConfig & TBinaryRoutes;

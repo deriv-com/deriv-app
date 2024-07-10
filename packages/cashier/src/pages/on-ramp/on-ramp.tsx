@@ -2,7 +2,7 @@ import React from 'react';
 import { Loading, Modal, SelectNative, ReadMore, Text } from '@deriv-app/components';
 import { useCashierLocked, useDepositLocked } from '@deriv-app/hooks';
 import { routes, isMobile } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { useStore, observer } from '@deriv-app/stores';
 import CashierLocked from '../../components/cashier-locked';
 import SideNote from '../../components/side-note';

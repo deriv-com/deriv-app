@@ -5,7 +5,7 @@ import RiskManagementItem from '../risk-management-item';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
 import { CONTRACT_TYPES } from '@deriv-app/shared';
 
-jest.mock('@deriv/translations', () => ({
+jest.mock('@deriv-app/translations', () => ({
     Localize: ({ i18n_default_text }: { i18n_default_text: string }) => <span>{i18n_default_text}</span>,
     localize: (text: string) => text,
 }));

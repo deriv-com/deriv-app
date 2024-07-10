@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react';
 import { mockStore, StoreProvider } from '@deriv-app/stores';
 import BinaryRoutes from '../binary-routes';
 
-jest.mock('@deriv/translations', () => ({
+jest.mock('@deriv-app/translations', () => ({
     Localize: jest.fn(({ i18n_default_text }) => <div>{i18n_default_text}</div>),
     localize: jest.fn(text => text),
 }));

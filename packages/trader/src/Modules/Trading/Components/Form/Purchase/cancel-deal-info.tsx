@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Money } from '@deriv-app/components';
 import { isDesktop, isMobile, getDecimalPlaces } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { observer } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { TProposalTypeInfo } from 'Types';

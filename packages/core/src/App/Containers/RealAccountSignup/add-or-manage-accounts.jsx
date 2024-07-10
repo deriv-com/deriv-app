@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Tabs, ThemedScrollbars } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { CURRENCY_TYPE, isDesktop, isMobile } from '@deriv-app/shared';
 import { WS } from 'Services';
 import AddCryptoCurrency from './add-crypto-currency.jsx';

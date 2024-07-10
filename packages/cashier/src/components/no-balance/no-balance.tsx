@@ -3,7 +3,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Button, Icon, Text } from '@deriv-app/components';
 import { useDepositLocked } from '@deriv-app/hooks';
 import { routes, getCurrencyDisplayCode, startPerformanceEventTimer } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { useStore, observer } from '@deriv-app/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
 

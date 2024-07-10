@@ -3,7 +3,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { observer } from '@deriv-app/stores';
 import React from 'react';
 import { Checkbox, Text } from '@deriv-app/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 
 type TAllowEquals = {
     onChange: (e: { target: { name: string; value: number } }) => Promise<void>;

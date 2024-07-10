@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { Button, Icon, Modal, Text } from '@deriv-app/components';
 import { getCurrencyDisplayCode, isMobile, routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 
 import AccountPlatformIcon from '../../../components/account-platform-icon';
 import { useCashierStore } from '../../../stores/useCashierStores';

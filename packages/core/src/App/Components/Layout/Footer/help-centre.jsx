@@ -1,6 +1,6 @@
 import React from 'react';
 import { Popover, Icon, StaticUrl } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 export const HelpCentre = ({ showPopover }) => (
     <StaticUrl href='/help-centre/' id='dt_help_centre' aria-label={localize('Help centre')} className='footer__link'>

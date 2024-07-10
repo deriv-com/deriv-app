@@ -7,7 +7,7 @@ import { Field, FormikProps, FieldProps, useFormikContext } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
 import { Autocomplete, Input, SelectNative } from '@deriv-app/components';
 import { formatInput, getIDVNotApplicableOption } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import {
     getDocumentData,
     preventEmptyClipboardPaste,

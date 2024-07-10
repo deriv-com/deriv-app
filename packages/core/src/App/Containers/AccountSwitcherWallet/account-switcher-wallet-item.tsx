@@ -4,7 +4,7 @@ import { AppLinkedWithWalletIcon, Text } from '@deriv-app/components';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
 import { useStoreWalletAccountsList } from '@deriv-app/hooks';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import WalletBadge from 'App/Components/Layout/Header/wallets/wallet-badge';
 import './account-switcher-wallet-item.scss';
 

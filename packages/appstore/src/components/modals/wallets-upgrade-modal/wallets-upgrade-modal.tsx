@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Stream } from '@cloudflare/stream-react';
 import { Button, Text, Modal } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { observer, useStore } from '@deriv-app/stores';
 import { useWalletMigration } from '@deriv-app/hooks';
 import './wallets-upgrade-modal.scss';

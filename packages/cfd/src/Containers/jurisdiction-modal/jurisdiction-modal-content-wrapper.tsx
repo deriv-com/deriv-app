@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Button, Modal } from '@deriv-app/components';
 import { getAuthenticationStatusInfo, isPOARequiredForMT5 } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { TJurisdictionModalContentWrapperProps } from '../props.types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
 import JurisdictionCheckBox from './jurisdiction-modal-checkbox';

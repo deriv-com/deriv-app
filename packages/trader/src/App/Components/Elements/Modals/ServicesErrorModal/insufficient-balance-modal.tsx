@@ -3,7 +3,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Button, Modal } from '@deriv-app/components';
 import { routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 type TInsufficientBalanceModal = RouteComponentProps & {
     is_virtual?: boolean;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { Modal, FormSubmitButton, Text } from '@deriv-app/components';
 import { routes, isNavigationFromExternalPlatform } from '@deriv-app/shared';
 import { Analytics } from '@deriv-com/analytics';

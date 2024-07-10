@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Text } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { TJurisdictionCardFrontProps } from 'Containers/props.types';
 import JurisdictionCardSection from './jurisdiction-card-section';
 

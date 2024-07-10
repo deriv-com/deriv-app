@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, Form, Formik, FormikErrors, FieldProps, FormikValues } from 'formik';
 import { Checkbox, FormSubmitButton, Input, Text } from '@deriv-app/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { TClosingAccountFormValues } from 'Types';
 import {
     CHARACTER_LIMIT_FOR_CLOSING_ACCOUNT,

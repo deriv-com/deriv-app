@@ -1,5 +1,5 @@
 import React from 'react';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { getLegalEntityName } from '@deriv-app/shared';
 import 'Sass/app/modules/complaints-policy.scss';
 import { observer, useStore } from '@deriv-app/stores';

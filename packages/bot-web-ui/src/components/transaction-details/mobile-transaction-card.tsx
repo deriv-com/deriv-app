@@ -5,7 +5,7 @@ import { getContractTypeName } from '@deriv/bot-skeleton';
 import { isDbotRTL } from '@deriv/bot-skeleton/src/utils/workspace';
 import { Icon, IconTradeTypes, Popover } from '@deriv-app/components';
 import { convertDateFormat } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { TTransaction } from './transaction-details.types';
 
 const PARENT_CLASS = 'transaction-details-modal-mobile';

@@ -4,7 +4,7 @@ import { useLocalStorage } from 'usehooks-ts';
 import { Icon, Popover } from '@deriv-app/components';
 import { routes, isTabletOs } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 
 const TradersHubOnboarding = observer(() => {
     const history = useHistory();

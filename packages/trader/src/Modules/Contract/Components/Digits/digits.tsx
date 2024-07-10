@@ -4,7 +4,7 @@ import { toJS } from 'mobx';
 import { Popover, Text } from '@deriv-app/components';
 import { TickSpotData } from '@deriv/api-types';
 import { getMarketNamesMap, useIsMounted, isContractElapsed, TContractStore } from '@deriv-app/shared';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { Bounce, SlideIn } from 'App/Components/Animations';
 import { DigitSpot, LastDigitPrediction } from '../LastDigitPrediction';
 import 'Sass/app/modules/contract/digits.scss';

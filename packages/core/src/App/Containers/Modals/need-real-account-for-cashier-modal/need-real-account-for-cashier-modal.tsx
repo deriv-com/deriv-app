@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog } from '@deriv-app/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { useStore, observer } from '@deriv-app/stores';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv-app/shared';

@@ -3,7 +3,7 @@ import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Button, Money, ThemedScrollbars } from '@deriv-app/components';
 import { CFD_PLATFORMS, formatMoney } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import {
     TAccounts,
     TDetailsOfDerivAccount,

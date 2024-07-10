@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, Text } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
 
 const MT5MigrationAccountIcons = () => {

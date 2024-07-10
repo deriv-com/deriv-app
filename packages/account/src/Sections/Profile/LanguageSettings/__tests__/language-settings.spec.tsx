@@ -12,8 +12,8 @@ jest.mock('@deriv-com/ui', () => ({
     useDevice: jest.fn(() => ({ isDesktop: true })),
 }));
 
-jest.mock('@deriv/translations', () => ({
-    ...jest.requireActual('@deriv/translations'),
+jest.mock('@deriv-app/translations', () => ({
+    ...jest.requireActual('@deriv-app/translations'),
     getAllowedLanguages: jest.fn(() => ({ lang_1: 'Test Lang 1', lang_2: 'Test Lang 2' })),
 }));
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { Dialog, Text } from '@deriv-app/components';
-import { Localize, getLanguage } from '@deriv/translations';
+import { Localize, getLanguage } from '@deriv-app/translations';
 import { redirectToLogin } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
 

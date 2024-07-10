@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Icon, Popover } from '@deriv-app/components';
 import { observer } from '@deriv-app/stores';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { downloadFile, getSuccessJournalMessage, TTransaction } from 'Utils/download';
 import { useDBotStore } from 'Stores/useDBotStore';
 

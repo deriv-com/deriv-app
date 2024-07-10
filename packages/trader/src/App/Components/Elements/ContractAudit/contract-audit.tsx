@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tabs } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { WS, TContractStore, TContractInfo } from '@deriv-app/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 import ContractDetails from './contract-details';

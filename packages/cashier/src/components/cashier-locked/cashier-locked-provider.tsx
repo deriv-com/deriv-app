@@ -1,6 +1,6 @@
 import React from 'react';
 import { History } from 'history';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { formatDate, routes } from '@deriv-app/shared';
 
 type TProps = {

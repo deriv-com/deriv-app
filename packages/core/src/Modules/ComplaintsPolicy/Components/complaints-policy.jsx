@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { FadeWrapper, PageOverlay, Div100vhContainer, Loading } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import ComplaintsPolicyContent from './complaints-policy-content.jsx';
 import 'Sass/app/modules/complaints-policy.scss';
 import { observer, useStore } from '@deriv-app/stores';

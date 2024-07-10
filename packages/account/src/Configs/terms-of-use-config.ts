@@ -1,6 +1,6 @@
 import React from 'react';
 import { getDefaultFields, isDesktop } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { GetSettings } from '@deriv/api-types';
 
 type TTermsOfConfigSettings = GetSettings & { fatca_declaration?: number };

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Popover } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { observer, useStore } from '@deriv-app/stores';
 
 const NetworkStatus = observer(({ is_mobile }) => {

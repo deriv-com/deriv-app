@@ -1,7 +1,7 @@
 import React from 'react';
 import { EmptyState } from '@deriv-app/components';
 import { useVerifyEmail } from '@deriv-app/hooks';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import EmailVerificationResendEmptyState from './email-verification-resend-empty-state';
 import './email-verification-empty-state.scss';
 

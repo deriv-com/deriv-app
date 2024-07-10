@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { useSwipeable } from 'react-swipeable';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { getTimeSince } from '@deriv-app/shared';
 import Text from '../text';
 

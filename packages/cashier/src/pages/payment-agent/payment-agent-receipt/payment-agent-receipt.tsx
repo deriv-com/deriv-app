@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import { Button, Text } from '@deriv-app/components';
 import { isMobile, routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import PaymentAgentDetail from '../payment-agent-detail';
 import PaymentAgentDisclaimer from '../payment-agent-disclaimer';
 import SideNote from 'Components/side-note';

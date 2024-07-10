@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { Field } from 'formik';
 import { Dropdown, Text, SelectNative } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { TTradingAssessmentForm, TQuestion } from 'Types';
 import { MAX_QUESTION_TEXT_LENGTH } from '../../Constants/trading-assessment';
 import { useDevice } from '@deriv-com/ui';

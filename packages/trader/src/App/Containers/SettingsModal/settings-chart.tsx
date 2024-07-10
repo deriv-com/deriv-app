@@ -1,6 +1,6 @@
 import React from 'react';
 import { Checkbox } from '@deriv-app/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import MediaItem, { MediaHeading, MediaIcon, MediaDescription } from 'App/Components/Elements/Media';
 import { observer, useStore } from '@deriv-app/stores';
 

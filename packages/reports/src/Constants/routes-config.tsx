@@ -1,7 +1,7 @@
 import React from 'react';
 import { routes, makeLazyLoader, moduleLoader } from '@deriv-app/shared';
 import { Loading } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import type { TRoute, TRouteConfig } from 'Types';
 
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));

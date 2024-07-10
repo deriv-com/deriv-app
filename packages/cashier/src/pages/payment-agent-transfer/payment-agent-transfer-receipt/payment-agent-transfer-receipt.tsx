@@ -3,7 +3,7 @@ import { withRouter } from 'react-router';
 import { Button, Icon, Text } from '@deriv-app/components';
 import { routes, formatMoney, getCurrencyDisplayCode, getCurrencyName } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-transfer-receipt.scss';
 import { BrowserHistory } from 'history';

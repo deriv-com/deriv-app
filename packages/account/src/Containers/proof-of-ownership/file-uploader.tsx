@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { FormikErrors, useFormikContext } from 'formik';
 import { Button, Input, Icon } from '@deriv-app/components';
 import { compressImageFiles } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { TFile, TPaymentMethod, TProofOfOwnershipFormValue } from 'Types';
 
 type TFileUploaderProps = {

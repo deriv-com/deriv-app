@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Text } from '@deriv-app/components';
 import { observer } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const NoSearchResult = observer(() => {

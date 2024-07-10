@@ -2,7 +2,7 @@ import React from 'react';
 import { SideNote } from '@deriv-app/components';
 import { useCurrentCurrencyConfig } from '@deriv-app/hooks';
 import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { useCashierStore } from '../../../../stores/useCashierStores';
 
 const CashierOnboardingSideNoteCrypto: React.FC = observer(() => {

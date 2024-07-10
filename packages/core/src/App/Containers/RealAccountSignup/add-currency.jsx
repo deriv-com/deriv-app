@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { usePaymentAgentList } from '@deriv-app/hooks';
 import { FormSubmitButton, Icon, Loading, Text, ThemedScrollbars } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { isMobile, reorderCurrencies, routes } from '@deriv-app/shared';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
 import AddCryptoCurrency from './add-crypto-currency.jsx';

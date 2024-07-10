@@ -13,7 +13,7 @@ import {
     CTRADER_URL,
 } from './constants';
 import { isMobile } from '@deriv-app/shared';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 
 import { TCFDDashboardContainer } from 'Containers/props.types';
 import { CATEGORY, CFD_PLATFORMS } from './cfd-config';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { DesktopWrapper, Modal, PageOverlay, UILoader, MobileWrapper, Text, Dialog } from '@deriv-app/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { observer, useStore } from '@deriv-app/stores';
 import MT5MigrationModalContent from './mt5-migration-modal-content';
 import { MT5MigrationModalContext } from './mt5-migration-modal-context';

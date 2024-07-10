@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import IconMessageContent from 'Components/icon-message-content';
 import { income_status_codes } from 'Sections/Verification/ProofOfIncome/proof-of-income-utils';
 

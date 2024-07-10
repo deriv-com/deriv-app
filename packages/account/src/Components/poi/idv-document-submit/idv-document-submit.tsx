@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { Form, Formik, FormikErrors, FormikHelpers } from 'formik';
 import { Button, HintBox, Text } from '@deriv-app/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import {
     filterObjProperties,
     formatIDVFormValues,

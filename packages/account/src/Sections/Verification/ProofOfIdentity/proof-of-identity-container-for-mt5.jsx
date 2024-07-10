@@ -1,7 +1,7 @@
 import React from 'react';
 import { Loading } from '@deriv-app/components';
 import { WS } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { useStore, observer } from '@deriv-app/stores';
 import ErrorMessage from '../../../Components/error-component';
 import IconWithMessage from '../../../Components/icon-with-message';

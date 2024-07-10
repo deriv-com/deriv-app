@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, Text, Popover } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import ApiTokenClipboard from './api-token-clipboard';
 
 type TApiTokenTableRowTokenCell = {

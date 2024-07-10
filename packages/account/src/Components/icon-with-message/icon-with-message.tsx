@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon, Text, Button } from '@deriv-app/components';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 type TIconWithMessage = {
     icon: string;

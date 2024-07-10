@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { formatDuration, getDiffDuration, getDateFromNow } from '@deriv-app/shared';
 import { Text } from '@deriv-app/components';
 import Fieldset from 'App/Components/Form/fieldset';

@@ -2,7 +2,7 @@ import React from 'react';
 import QRCodeSVG from 'qrcode.react';
 import { ThemedScrollbars, Text, Timeline, Loading, Clipboard } from '@deriv-app/components';
 import TwoFactorAuthenticationArticle from './two-factor-authentication-article';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { useDevice } from '@deriv-com/ui';
 import DigitForm from './digit-form';
 

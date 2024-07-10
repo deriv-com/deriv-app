@@ -120,7 +120,7 @@
         "@deriv-app/shared": "^1.0.0",
         "@deriv-app/stores": "^1.0.0",
         "@deriv/trader": "^3.8.0",
-        "@deriv/translations": "^1.0.0",
+        "@deriv-app/translations": "^1.0.0",
         "@deriv/utils": "^1.0.0",
         "@deriv/wallets": "^1.0.0",
         "@livechat/customer-sdk": "^2.0.4",

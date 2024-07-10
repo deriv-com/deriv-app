@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { routes } from '@deriv-app/shared';
 import ErrorComponent from 'App/Components/Elements/Errors';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import ContractReplay from './contract-replay';
 import { observer, useStore } from '@deriv-app/stores';
 

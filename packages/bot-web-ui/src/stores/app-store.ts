@@ -3,7 +3,7 @@ import { TApiHelpersStore, TDbotStore } from 'src/types/stores.types';
 import { ApiHelpers, DBot, runIrreversibleEvents } from '@deriv/bot-skeleton';
 import { ContentFlag, isEuResidenceWithOnlyVRTC, routes, showDigitalOptionsUnavailableError } from '@deriv-app/shared';
 import { TStores } from '@deriv-app/stores/types';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import RootStore from './root-store';
 
 const Blockly = window.Blockly;

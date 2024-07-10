@@ -3,7 +3,7 @@ import { useDevice } from '@deriv-com/ui';
 
 import { Div100vhContainer, Modal, PageOverlay, UILoader } from '@deriv-app/components';
 import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 

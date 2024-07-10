@@ -13,7 +13,7 @@ import {
     isResetContract,
     isLookBacksContract,
 } from '@deriv-app/shared';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { useFeatureFlags } from '@deriv-app/hooks';
 import { useDevice } from '@deriv-com/ui';
 import ChartLoader from 'App/Components/Elements/chart-loader';

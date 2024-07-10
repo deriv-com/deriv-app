@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { redirectToLogin, isEmptyObject, routes, removeBranchName, default_title } from '@deriv-app/shared';
-import { getLanguage } from '@deriv/translations';
+import { getLanguage } from '@deriv-app/translations';
 
 const RouteWithSubRoutes = route => {
     const renderFactory = props => {

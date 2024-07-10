@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { observer } from '@deriv-app/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Money } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { getExpiryType, getDurationMinMaxValues, getLocalizedBasis } from '@deriv-app/shared';
 import { MultiplierAmountWidget } from 'Modules/Trading/Components/Form/TradeParams/Multiplier/widgets';
 import TradeParamsModal from '../../Containers/trade-params-mobile';

@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv-app/shared';
 import { Icon, Checklist, Text } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { useStore, observer } from '@deriv-app/stores';
 
 const AccountTransferLocked = observer(() => {

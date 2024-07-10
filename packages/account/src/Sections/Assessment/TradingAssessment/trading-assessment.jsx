@@ -1,5 +1,5 @@
 import React from 'react';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
 import { RiskToleranceWarningModal, TestWarningModal } from 'Components/trading-assessment';

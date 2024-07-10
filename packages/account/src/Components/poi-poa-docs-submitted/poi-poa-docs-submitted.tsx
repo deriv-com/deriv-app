@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Loading } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { getAuthenticationStatusInfo, Jurisdiction } from '@deriv-app/shared';
 import IconMessageContent from 'Components/icon-message-content';
 import { GetAccountStatus } from '@deriv/api-types';

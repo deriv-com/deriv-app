@@ -15,7 +15,7 @@ import {
     routes,
     validNumber,
 } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 import AccountTransferGetSelectedError from '../pages/account-transfer/account-transfer-get-selected-error';
 import type { TAccount, TPlatformIcon, TRootStore, TTransferAccount, TWebSocket } from '../types';

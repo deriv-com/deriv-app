@@ -14,7 +14,7 @@ import {
 } from '@deriv-app/hooks';
 import { getOSNameWithUAParser, getStaticUrl, routes, useIsMounted, whatsapp_url } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import getRoutesConfig from 'App/Constants/routes-config';

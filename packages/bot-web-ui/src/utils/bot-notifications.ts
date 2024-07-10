@@ -1,6 +1,6 @@
 import { platform_name } from '@deriv-app/shared';
 import { TNotificationMessage } from '@deriv-app/stores/types';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 export const switch_account_notification = {
     key: 'bot_switch_account',

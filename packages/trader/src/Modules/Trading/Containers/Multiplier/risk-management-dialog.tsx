@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { MobileDialog, Button, Div100vhContainer } from '@deriv-app/components';
 import { isDeepEqual, pick } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { observer } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import StopLoss from 'Modules/Trading/Components/Form/TradeParams/Multiplier/stop-loss';

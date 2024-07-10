@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv-com/quill-ui';
 import { LabelPairedChevronRightSmBoldIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 
 type TCustomDateFilterButton = {
     customTimeRangeFilter?: string;

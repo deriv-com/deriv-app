@@ -3,7 +3,7 @@ import { Button, Clipboard, Icon, Text } from '@deriv-app/components';
 import { useCryptoTransactions, useCurrentCurrencyConfig } from '@deriv-app/hooks';
 import { TModifiedTransaction } from '@deriv-app/hooks/src/useCryptoTransactions';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { useCashierStore } from 'Stores/useCashierStores';
 import { TAccount } from 'Types';
 import { getAccountText } from 'Utils/utility';

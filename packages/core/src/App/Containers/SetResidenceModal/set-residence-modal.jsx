@@ -4,7 +4,7 @@ import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import { Button, Dialog, Text } from '@deriv-app/components';
 import { website_name } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import SetResidenceForm from './set-residence-form.jsx';
 import 'Sass/app/modules/set-residence.scss';
 import { observer, useStore } from '@deriv-app/stores';

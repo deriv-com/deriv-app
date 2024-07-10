@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv-app/components';
 import { useDevice } from '@deriv-com/ui';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { useStore } from '@deriv-app/stores';
 import { getExampleImagesConfig } from '../../../Configs/poa-common-mistake-examples-config';
 import { LegacyLossIcon } from '@deriv/quill-icons';

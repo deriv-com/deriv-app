@@ -6,6 +6,6 @@ declare module '@deriv/cfd';
 declare module '@deriv-app/components';
 declare module '@deriv/appstore';
 declare module '@deriv/p2p';
-declare module '@deriv/translations';
+declare module '@deriv-app/translations';
 declare module '@deriv-app/shared';
 declare module '@deriv/trader';

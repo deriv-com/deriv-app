@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Text } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { useFormikContext } from 'formik';
 import SelfExclusionContext from './self-exclusion-context';
 

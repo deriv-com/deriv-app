@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { DerivLightIcInfoPasskeyIcon } from '@deriv/quill-icons';
 import { DescriptionContainer } from './description-container';
 import { PasskeysStatusLayout, TPasskeysButtonOnClicks } from './passkeys-status-layout';

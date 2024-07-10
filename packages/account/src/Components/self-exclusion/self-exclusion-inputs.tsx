@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { Button, DatePicker, Input, Text } from '@deriv-app/components';
 import { epochToMoment, toMoment } from '@deriv-app/shared';
 import { useDevice } from '@deriv-com/ui';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import {
     Field,
     FormikComputedProps,

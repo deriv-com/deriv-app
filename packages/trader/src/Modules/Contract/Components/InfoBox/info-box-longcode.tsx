@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Text, Modal, Button } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { TContractInfo, isTabletOs } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
 

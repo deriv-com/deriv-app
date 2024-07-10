@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Dialog } from '@deriv-app/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { routes } from '@deriv-app/shared';
 import { useStore, observer } from '@deriv-app/stores';
 import { TError, TReactElement } from '../../types';

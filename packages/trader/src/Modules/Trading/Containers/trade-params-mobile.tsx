@@ -9,7 +9,7 @@ import { observer, useStore } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import React from 'react';
 import classNames from 'classnames';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 type TTradeParamsModal = {
     is_open: boolean;

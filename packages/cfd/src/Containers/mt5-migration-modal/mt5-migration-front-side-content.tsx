@@ -10,7 +10,7 @@ import {
     getFormattedJurisdictionCode,
 } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
 import MT5MigrationAccountIcons from './mt5-migration-account-icons';
 import { useMT5MigrationModalContext } from './mt5-migration-modal-context';

@@ -2,7 +2,7 @@ import React from 'react';
 import { OauthApps } from '@deriv/api-types';
 import { Button } from '@deriv-app/components';
 import { toMoment } from '@deriv-app/shared';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import DataListTemplateEntry from './data-list-template-entry';
 import { getConnectedAppsScopes } from './template-helper';
 

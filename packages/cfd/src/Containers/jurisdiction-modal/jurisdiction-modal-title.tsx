@@ -2,7 +2,7 @@ import React from 'react';
 import { useDevice } from '@deriv-com/ui';
 import { Icon, Text } from '@deriv-app/components';
 import { getMT5Title, getCFDPlatformLabel } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { useDynamicLeverage } from '../dynamic-leverage/dynamic-leverage-context';
 import { TJurisdictionModalTitleProps } from '../props.types';
 import { CFD_PLATFORMS } from '../../Helpers/cfd-config';

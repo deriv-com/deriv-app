@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Form, Formik, FieldProps } from 'formik';
 import { PasswordInput, PasswordMeter, Text, Button, Icon } from '@deriv-app/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { getErrorMessages } from '@deriv-app/shared';
 import { TCFDPasswordSuccessMessage, TInvestorPasswordManager, TPasswordManagerModalFormValues } from './props.types';
 

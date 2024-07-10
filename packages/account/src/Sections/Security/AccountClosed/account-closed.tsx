@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, Text } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { observer, useStore } from '@deriv-app/stores';
 import { getStaticUrl } from '@deriv-app/shared';
 

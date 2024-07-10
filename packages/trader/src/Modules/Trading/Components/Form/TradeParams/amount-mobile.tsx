@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { Money, Numpad, Tabs } from '@deriv-app/components';
 import { getDecimalPlaces, isEmptyObject } from '@deriv-app/shared';
 import MinMaxStakeInfo from './min-max-stake-info';

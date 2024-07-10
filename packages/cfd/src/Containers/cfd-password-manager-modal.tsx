@@ -13,7 +13,7 @@ import {
     UILoader,
     Text,
 } from '@deriv-app/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { isMobile, getCFDPlatformLabel } from '@deriv-app/shared';
 import { FormikErrors } from 'formik';
 import CFDStore from '../Stores/Modules/CFD/cfd-store';

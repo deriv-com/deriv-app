@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 export const getDefaultError = () => ({
     header: localize('Sorry for the interruption'),

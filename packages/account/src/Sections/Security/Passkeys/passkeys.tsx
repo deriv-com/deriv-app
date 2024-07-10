@@ -5,7 +5,7 @@ import { useGetPasskeysList, useRegisterPasskey, useRenamePasskey } from '@deriv
 import { routes } from '@deriv-app/shared';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { PasskeyErrorModal } from './components/passkey-error-modal';
 import { PasskeyReminderModal } from './components/passkey-reminder-modal';
 import { PasskeysStatusContainer } from './components/passkeys-status-container';

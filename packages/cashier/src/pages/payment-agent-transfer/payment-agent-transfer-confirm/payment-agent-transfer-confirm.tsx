@@ -1,7 +1,7 @@
 import React from 'react';
 import { Money } from '@deriv-app/components';
 import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import TransferConfirm from 'Components/transfer-confirm';
 import { useCashierStore } from '../../../stores/useCashierStores';
 

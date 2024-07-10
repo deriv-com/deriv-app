@@ -79,7 +79,7 @@
         "@deriv/deriv-charts": "^2.1.24",
         "@deriv-app/shared": "^1.0.0",
         "@deriv-app/stores": "^1.0.0",
-        "@deriv/translations": "^1.0.0",
+        "@deriv-app/translations": "^1.0.0",
         "@testing-library/user-event": "^13.5.0",
         "@types/react-router-dom": "^5.1.6",
         "classnames": "^2.2.6",

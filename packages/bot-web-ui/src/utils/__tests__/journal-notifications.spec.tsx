@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { render } from '@testing-library/react';
 import { messageWithButton } from 'Components/notify-item';
 import { isCustomJournalMessage } from '../journal-notifications';

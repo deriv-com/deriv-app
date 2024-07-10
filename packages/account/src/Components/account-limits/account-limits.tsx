@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { formatMoney, useIsMounted } from '@deriv-app/shared';
 import { Loading, ThemedScrollbars } from '@deriv-app/components';
 import { useDevice } from '@deriv-com/ui';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { observer, useStore } from '@deriv-app/stores';
 import DemoMessage from '../demo-message';
 import LoadErrorMessage from '../load-error-message';

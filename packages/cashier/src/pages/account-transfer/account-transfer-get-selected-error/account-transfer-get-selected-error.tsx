@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 
 const AccountTransferGetSelectedError = (selected_value?: string, is_from_account = false) => {
     if (is_from_account) {

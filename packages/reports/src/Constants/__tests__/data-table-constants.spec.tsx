@@ -11,7 +11,7 @@ import { isMobile } from '@deriv-app/shared';
 import { TCellContentProps } from 'Types';
 import moment from 'moment';
 
-jest.mock('@deriv/translations', () => ({
+jest.mock('@deriv-app/translations', () => ({
     localize: jest.fn(text => text),
     Localize: jest.fn(text => text),
 }));

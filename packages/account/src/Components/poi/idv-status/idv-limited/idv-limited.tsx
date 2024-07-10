@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Text } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { DerivLightExclamationPoiIcon } from '@deriv/quill-icons';
 import { POIContext } from '@deriv-app/shared';
 import { submission_status_code } from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-utils';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { Div100vhContainer, Icon, MobileDialog, Modal, SendEmailTemplate, Text, Popover } from '@deriv-app/components';
 import { getPlatformSettings, CFD_PLATFORMS } from '@deriv-app/shared';
 import { useDevice } from '@deriv-com/ui';

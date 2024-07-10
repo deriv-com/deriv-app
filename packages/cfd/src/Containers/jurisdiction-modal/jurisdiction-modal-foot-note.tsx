@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv-app/components';
 import { observer, useStore } from '@deriv-app/stores';
 import { getAuthenticationStatusInfo, isMobile, getMT5Title, CFD_PLATFORMS } from '@deriv-app/shared';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { TJurisdictionModalFootNoteProps } from '../props.types';
 import { JURISDICTION } from '../../Helpers/cfd-config';
 

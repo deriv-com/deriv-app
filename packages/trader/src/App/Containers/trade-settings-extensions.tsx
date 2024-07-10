@@ -1,7 +1,7 @@
 import React from 'react';
 import Loadable from 'react-loadable';
 import { UILoader } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { observer, useStore } from '@deriv-app/stores';
 import TraderProviders from '../../trader-providers';
 import type { TCoreStores } from '@deriv-app/stores/types';

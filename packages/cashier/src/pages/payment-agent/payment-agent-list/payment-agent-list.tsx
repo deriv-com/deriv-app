@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Tabs } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { isDesktop } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
 import SideNote from '../../../components/side-note';

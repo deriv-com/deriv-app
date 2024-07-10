@@ -3,7 +3,7 @@ import { AccountStatusResponse, GetAccountStatus } from '@deriv/api-types';
 import { Button, Loading } from '@deriv-app/components';
 import { WS, getPlatformRedirect, platforms, routes, AUTH_STATUS_CODES } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import Expired from '../../../Components/poa/status/expired';
 import NeedsReview from '../../../Components/poa/status/needs-review';
 import NotRequired from '../../../Components/poa/status/not-required';

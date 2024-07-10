@@ -1,4 +1,4 @@
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 
 const getLoginHistoryTableHeaders = () => ({
     date_title: <Localize i18n_default_text='Date and time' />,

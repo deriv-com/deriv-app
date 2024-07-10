@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { CONTRACT_TYPES, TContractInfo, getCardLabelsV2, mockContractInfo } from '@deriv-app/shared';
 import useOrderDetails from '../useOrderDetails';
 
-jest.mock('@deriv/translations', () => ({
+jest.mock('@deriv-app/translations', () => ({
     localize: jest.fn(text => text),
     Localize: jest.fn(text => text),
 }));

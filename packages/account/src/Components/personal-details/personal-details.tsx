@@ -5,7 +5,7 @@ import { Analytics, TEvents } from '@deriv-com/analytics';
 import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, ThemedScrollbars } from '@deriv-app/components';
 import { useDevice } from '@deriv-com/ui';
 import { getIDVNotApplicableOption, removeEmptyPropertiesFromObject } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { useStore, observer } from '@deriv-app/stores';
 import {
     isAdditionalDocumentValid,

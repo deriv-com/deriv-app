@@ -1,5 +1,5 @@
 import { ButtonLink, Text } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import React from 'react';
 
 export const PoiButton = () => (

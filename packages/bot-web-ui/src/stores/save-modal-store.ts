@@ -8,7 +8,7 @@ import {
     save_types,
     saveWorkspaceToRecent,
 } from '@deriv/bot-skeleton';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { MAX_STRATEGIES } from 'Constants/bot-contents';
 import { button_status } from 'Constants/button-status';
 import { TStrategy } from 'Types';

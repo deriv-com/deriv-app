@@ -2,7 +2,7 @@ import { useCryptoEstimations } from '@deriv-app/api';
 import { Checkbox, Popover, Text } from '@deriv-app/components';
 import { getDecimalPlaces } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { useCashierStore } from 'Stores/useCashierStores';
 import React from 'react';
 

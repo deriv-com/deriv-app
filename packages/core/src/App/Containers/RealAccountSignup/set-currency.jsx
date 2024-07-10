@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { currencySelectorConfig } from '@deriv/account';
 import { website_name, generateValidationFunction } from '@deriv-app/shared';
 import { Text } from '@deriv-app/components';

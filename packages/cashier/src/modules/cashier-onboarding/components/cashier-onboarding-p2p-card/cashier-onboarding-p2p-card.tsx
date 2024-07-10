@@ -6,7 +6,7 @@ import {
     useIsP2PEnabled,
 } from '@deriv-app/hooks';
 import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { useHistory } from 'react-router';
 import { SwitchToFiatAccountDialog } from '../../../../components/switch-to-fiat-account-dialog';
 import { useCashierStore } from '../../../../stores/useCashierStores';

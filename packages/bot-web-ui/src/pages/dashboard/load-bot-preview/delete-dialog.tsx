@@ -4,7 +4,7 @@ import LZString from 'lz-string';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { Dialog, Text } from '@deriv-app/components';
 import { observer } from '@deriv-app/stores';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { NOTIFICATION_TYPE } from 'Components/bot-notification/bot-notification-utils';
 import { TStrategy } from 'Types';
 import { useDBotStore } from 'Stores/useDBotStore';

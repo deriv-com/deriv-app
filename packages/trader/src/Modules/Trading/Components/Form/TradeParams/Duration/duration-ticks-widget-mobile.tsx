@@ -3,7 +3,7 @@ import { observer } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { updateAmountChanges } from './duration-utils';
 import { getDurationMinMaxValues, isEmptyObject } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { TickPicker } from '@deriv-app/components';
 import { TDurationMobile } from './duration-mobile';
 

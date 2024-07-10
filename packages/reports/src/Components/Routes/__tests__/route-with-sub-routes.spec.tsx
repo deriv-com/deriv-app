@@ -36,7 +36,7 @@ jest.mock('@deriv-app/shared', () => ({
     default_title: 'Default Title',
 }));
 
-jest.mock('@deriv/translations', () => ({
+jest.mock('@deriv-app/translations', () => ({
     getLanguage: jest.fn().mockReturnValue('EN'),
 }));
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Icon } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 
 /**
  * Content to be displayed in  the side bar

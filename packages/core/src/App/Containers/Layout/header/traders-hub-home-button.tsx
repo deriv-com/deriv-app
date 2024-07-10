@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { Icon, Text } from '@deriv-app/components';
 import { routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 
 const TradersHubHomeButton = observer(() => {
     const { ui } = useStore();

@@ -1,5 +1,5 @@
 import { action, computed, observable, reaction, makeObservable, IReactionDisposer } from 'mobx';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { getKebabCase, isCryptocurrency, routes, websiteUrl } from '@deriv-app/shared';
 import createBanxaProvider from '../pages/on-ramp/on-ramp-providers';
 import BaseStore from './base-store';

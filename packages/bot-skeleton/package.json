@@ -40,7 +40,7 @@
         "@deriv/indicators": "^1.0.0",
         "@deriv/js-interpreter": "^3.0.0",
         "@deriv-app/shared": "^1.0.0",
-        "@deriv/translations": "^1.0.0",
+        "@deriv-app/translations": "^1.0.0",
         "binary-utils": "^4.23.0",
         "file-saver": "^2.0.2",
         "immutable": "^3.8.2",

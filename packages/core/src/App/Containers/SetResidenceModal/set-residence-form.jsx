@@ -3,7 +3,7 @@ import { Field } from 'formik';
 import PropTypes from 'prop-types';
 
 import { Autocomplete, Text } from '@deriv-app/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 
 const SetResidenceForm = ({
     children,

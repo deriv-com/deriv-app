@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { isProduction } from '../config/config';
 /**
  * Returns an object that allows user to skip IDV

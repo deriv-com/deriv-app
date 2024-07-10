@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import { MobileWrapper, Money, SwipeableNotification, Text } from '@deriv-app/components';
 import { useStore } from '@deriv-app/stores';
 import { getCardLabels, getContractPath } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 
 const TradeNotifications = observer(({ show_trade_notifications }: { show_trade_notifications?: boolean }) => {
     const {

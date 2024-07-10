@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Button, HintBox, Icon, Loading, Popover, Text, useCopyToClipboard } from '@deriv-app/components';
 import { getKebabCase, website_name, isMobile } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { observer, useStore } from '@deriv-app/stores';
 import { useCashierStore } from '../../../stores/useCashierStores';
 

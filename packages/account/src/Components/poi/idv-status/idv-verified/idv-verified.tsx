@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { Text } from '@deriv-app/components';
 import { useDevice } from '@deriv-com/ui';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { ContinueTradingButton } from '../../../poa/continue-trading-button/continue-trading-button';
 import { DerivLightApprovedPoiIcon } from '@deriv/quill-icons';
 import PoaButton from '../../../poa/poa-button/poa-button';

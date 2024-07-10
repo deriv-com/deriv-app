@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import { Button, Icon, MobileDialog, Modal, Text } from '@deriv-app/components';
 import { routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import './wallets-upgrade-completed-modal.scss';
 
 const WalletsUpgradeCompletedModal = observer(() => {

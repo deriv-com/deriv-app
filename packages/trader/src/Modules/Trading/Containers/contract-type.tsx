@@ -2,7 +2,7 @@ import React from 'react';
 import { MobileWrapper, usePrevious } from '@deriv-app/components';
 import { getMarketNamesMap, unsupported_contract_types_list } from '@deriv-app/shared';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { ToastPopup } from 'Modules/Trading/Containers/toast-popup';
 import ContractTypeWidget from '../Components/Form/ContractType';
 import { getAvailableContractTypes } from '../Helpers/contract-type';

@@ -5,7 +5,7 @@ import { Field } from 'formik';
 import { Button, PasswordInput, PasswordMeter, Text } from '@deriv-app/components';
 import { getErrorMessages, redirectToSignUp } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { Analytics } from '@deriv-com/analytics';
 
 import SignupSeparatorContainer from '../AccountSignupModal/signup-separator-container.jsx';

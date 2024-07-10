@@ -7,7 +7,7 @@ import {
     toMoment,
     validLength,
 } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { shouldShowIdentityInformation } from 'Helpers/utils';
 import { TUpgradeInfo } from 'Types';
 import { PHONE_NUMBER_LENGTH } from 'Constants/personal-details';

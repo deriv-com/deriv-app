@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import {
     getCancellationPrice,
     getContractUpdateConfig,

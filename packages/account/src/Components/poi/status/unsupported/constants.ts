@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { FormikValues } from 'formik';
 
 export const ROOT_CLASS = 'manual-poi-details';

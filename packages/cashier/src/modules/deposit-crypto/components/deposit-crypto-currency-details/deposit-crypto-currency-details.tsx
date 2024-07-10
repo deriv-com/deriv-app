@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv-app/components';
 import { useCurrentCurrencyConfig } from '@deriv-app/hooks';
 import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 const DepositCryptoCurrencyDetails: React.FC = observer(() => {
     const { ui } = useStore();

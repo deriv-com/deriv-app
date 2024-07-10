@@ -5,7 +5,7 @@ import { Loading, Button, Text, ThemedScrollbars, FormSubmitButton, Modal, HintB
 import { useFileUploader } from '@deriv-app/hooks';
 import { validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import FilesDescription from '../../../Components/file-uploader-container/files-descriptions';
 import FormFooter from '../../../Components/form-footer';
 import FormBody from '../../../Components/form-body';

@@ -14,7 +14,7 @@ import {
     WS,
 } from '@deriv-app/shared';
 import { useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { DerivLightNameDobPoiIcon } from '@deriv/quill-icons';
 import FormBody from '../../../form-body';
 import IDVForm from '../../../forms/idv-form';

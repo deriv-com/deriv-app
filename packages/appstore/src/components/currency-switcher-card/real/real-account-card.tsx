@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import { Button, Text } from '@deriv-app/components';
 import { getCurrencyName, routes, isCryptocurrency, startPerformanceEventTimer } from '@deriv-app/shared';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { Analytics } from '@deriv-com/analytics';
 import BalanceText from 'Components/elements/text/balance-text';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';

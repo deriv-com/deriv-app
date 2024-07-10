@@ -7,7 +7,7 @@ import {
     validMT5Password,
     mobileOSDetectAsync,
 } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { TCFDsPlatformType, TDetailsOfEachMT5Loginid, TMobilePlatforms } from 'Components/props.types';
 import { CFD_PLATFORMS, MOBILE_PLATFORMS, DESKTOP_PLATFORMS, CATEGORY } from './cfd-config';
 import { white_label_links } from './url-config';

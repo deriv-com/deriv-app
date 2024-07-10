@@ -23,7 +23,7 @@ import {
 import { getSelectedRoute, getStaticUrl, routes, setPerformanceValue, WS } from '@deriv-app/shared';
 import ErrorDialog from '../../components/error-dialog';
 import { TRoute } from '../../types';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { observer, useStore } from '@deriv-app/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
 import type { TCoreStores } from '@deriv-app/stores/types';

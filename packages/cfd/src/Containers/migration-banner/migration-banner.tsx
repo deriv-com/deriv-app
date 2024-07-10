@@ -2,7 +2,7 @@ import React from 'react';
 import { Analytics } from '@deriv-com/analytics';
 import classNames from 'classnames';
 import { Button, Text } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { observer, useStore } from '@deriv-app/stores';
 import { useMT5SVGEligibleToMigrate } from '@deriv-app/hooks';
 import {

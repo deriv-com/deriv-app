@@ -3,7 +3,7 @@ import { Button, Text } from '@deriv-app/components';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import BalanceText from 'Components/elements/text/balance-text';
 import './demo-account-card.scss';
-import { Localize, useLocalize } from '@deriv/translations';
+import { Localize, useLocalize } from '@deriv-app/translations';
 import { usePlatformAccounts } from '@deriv-app/hooks';
 import { useStore, observer } from '@deriv-app/stores';
 

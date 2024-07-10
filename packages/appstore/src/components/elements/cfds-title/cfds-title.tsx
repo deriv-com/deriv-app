@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDevice } from '@deriv-com/ui';
 import { Text } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import './cfds-title.scss';
 
 const CFDsTitle = () => {

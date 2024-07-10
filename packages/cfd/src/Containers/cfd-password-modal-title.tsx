@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv-app/components';
 import { getCFDPlatformNames, getCFDPlatformLabel, getFormattedJurisdictionCode } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { CATEGORY, CFD_PLATFORMS } from '../Helpers/cfd-config';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 

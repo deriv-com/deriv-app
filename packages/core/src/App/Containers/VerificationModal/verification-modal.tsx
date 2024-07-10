@@ -4,7 +4,7 @@ import { observer, useStore } from '@deriv-app/stores';
 import VerificationModalContent from './verification-modal-content';
 
 import './verification-modal.scss';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 const VerificationModal = observer(() => {
     const { ui, client } = useStore();

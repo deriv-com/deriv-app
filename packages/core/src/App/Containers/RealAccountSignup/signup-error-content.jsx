@@ -3,7 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { isMobile, getSignupFormFields } from '@deriv-app/shared';
 import { Button, Icon, StaticUrl, Text } from '@deriv-app/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 
 const Heading = ({ code }) => {
     switch (code) {

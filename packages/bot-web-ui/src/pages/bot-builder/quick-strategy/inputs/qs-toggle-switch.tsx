@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { Popover, Text, ToggleSwitch } from '@deriv-app/components';
 import { TFormData } from '../types';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 type TQSToggleSwitch = {
     name: string;

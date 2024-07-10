@@ -1,5 +1,5 @@
 import React from 'react';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { EmptyState } from '@deriv-app/components';
 import FundsProtection from '../funds-protection';
 

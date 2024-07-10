@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, WalletIcon, Text, AppLinkedWithWalletIcon } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv-app/shared';
 import { useStore, observer } from '@deriv-app/stores';
 import { useStoreWalletAccountsList, useStoreLinkedWalletsAccounts } from '@deriv-app/hooks';

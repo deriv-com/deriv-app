@@ -3,7 +3,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Text } from '@deriv-app/components';
 import { isMobile } from '@deriv-app/shared';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { useStore, observer } from '@deriv-app/stores';
 import './virtual.scss';
 

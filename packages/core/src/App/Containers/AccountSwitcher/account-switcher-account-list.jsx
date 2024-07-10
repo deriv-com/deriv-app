@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Icon, Money, Button, Text } from '@deriv-app/components';
 import { formatMoney, getCurrencyName, getCFDAccountDisplay, getCurrencyDisplayCode, isBot } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 
 const AccountList = ({
     balance,

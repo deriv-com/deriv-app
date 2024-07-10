@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Accordion, SideNote, StaticUrl, Text } from '@deriv-app/components';
 import { useStore } from '@deriv-app/stores';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import './side-note-faq.scss';
 
 type TSideNoteFAQProps = {

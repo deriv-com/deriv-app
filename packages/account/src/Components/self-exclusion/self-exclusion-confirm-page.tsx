@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Icon, StaticUrl, Text } from '@deriv-app/components';
 import { FormikValues, useFormikContext } from 'formik';
 import { formatMoney, toMoment } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import SelfExclusionContext from './self-exclusion-context';
 import SelfExclusionConfirmLimits from './self-exclusion-confirm-limits';
 

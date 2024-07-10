@@ -1,7 +1,7 @@
 import React from 'react';
 import { Div100vhContainer, Modal, usePreventIOSZoom } from '@deriv-app/components';
 import { useIsMounted, WS, CONTRACT_TYPES } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile';
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info';

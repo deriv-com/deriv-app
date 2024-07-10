@@ -28,7 +28,7 @@ import {
     WS,
 } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 
 import { TProducts } from '../Components/props.types';
 import SuccessDialog from '../Components/success-dialog.jsx';

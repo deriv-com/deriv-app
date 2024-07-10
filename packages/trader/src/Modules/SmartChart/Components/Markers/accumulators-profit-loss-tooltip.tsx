@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { Money, Text } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import AccumulatorsProfitLossText from './accumulators-profit-loss-text';
 import { FastMarker } from 'Modules/SmartChart';
 import { getDecimalPlaces } from '@deriv-app/shared';

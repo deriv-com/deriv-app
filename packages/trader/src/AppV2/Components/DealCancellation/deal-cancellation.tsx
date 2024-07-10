@@ -1,4 +1,4 @@
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import React from 'react';
 import { getContractDetailsConfig } from 'AppV2/Utils/contract-details-config';
 import { observer } from '@deriv-app/stores';

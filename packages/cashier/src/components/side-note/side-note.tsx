@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { isMobile } from '@deriv-app/shared';
 import './side-note.scss';
 

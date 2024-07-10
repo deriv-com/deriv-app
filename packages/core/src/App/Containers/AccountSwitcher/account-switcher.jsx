@@ -17,7 +17,7 @@ import {
 } from '@deriv-app/components';
 import { observer, useStore } from '@deriv-app/stores';
 import { routes, formatMoney, ContentFlag } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { useHasSetCurrency } from '@deriv-app/hooks';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { BinaryLink } from 'App/Components/Routes';

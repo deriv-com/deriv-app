@@ -4,7 +4,7 @@ import { FormatUtils } from '@deriv-com/utils';
 import CardWrapper from '../CardWrapper';
 import React, { useState } from 'react';
 import clsx from 'classnames';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 
 type TContractHistory = {
     currency?: string;

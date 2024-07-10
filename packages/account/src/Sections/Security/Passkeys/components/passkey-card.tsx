@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dropdown, Icon, Text } from '@deriv-app/components';
 import { getLongDate } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { TOnPasskeyMenuClick, TPasskey } from '../passkeys';
 import { PASSKEY_STATUS_CODES, passkeysMenuActionEventTrack } from '../passkeys-configs';
 

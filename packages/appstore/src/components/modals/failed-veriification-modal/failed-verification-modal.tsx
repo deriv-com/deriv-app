@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { useHistory } from 'react-router-dom';
-import { Localize, useLocalize } from '@deriv/translations';
+import { Localize, useLocalize } from '@deriv-app/translations';
 import { Text, Dialog } from '@deriv-app/components';
 import { isMobile, getAuthenticationStatusInfo, routes, Jurisdiction } from '@deriv-app/shared';
 import './failed-verification-modal.scss';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv-app/stores';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { getCFDAccountKey } from '@deriv-app/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, Money, Text, ExpansionPanel, Button } from '@deriv-app/components';

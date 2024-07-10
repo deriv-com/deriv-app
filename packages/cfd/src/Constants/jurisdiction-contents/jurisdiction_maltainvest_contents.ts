@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { TJurisdictionCardItems } from 'Components/props.types';
 
 export const getJurisdictionMaltainvestContents = (): TJurisdictionCardItems => ({

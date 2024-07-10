@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Modal, Text } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 
 type TConnectedAppsRevokeModalProps = {
     handleRevokeAccess: () => void;

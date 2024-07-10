@@ -1,6 +1,6 @@
 import React from 'react';
 import { Checkbox, RadioGroup, Dialog, Popover, Text } from '@deriv-app/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { onToggleCancellation, onChangeCancellationDuration } from 'Stores/Modules/Trading/Helpers/multiplier';
 import Fieldset from 'App/Components/Form/fieldset';
 import { observer, useStore } from '@deriv-app/stores';

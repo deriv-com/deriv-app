@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Modal, Icon } from '@deriv-app/components';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import './verification-document-submitted.scss';
 import IconMessageContent from '@deriv/account/src/Components/icon-message-content';
 

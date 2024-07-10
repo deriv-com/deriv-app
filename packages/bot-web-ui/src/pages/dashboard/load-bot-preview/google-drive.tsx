@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { Button, Icon, StaticUrl } from '@deriv-app/components';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import {
     rudderStackSendGoogleDriveConnectEvent,

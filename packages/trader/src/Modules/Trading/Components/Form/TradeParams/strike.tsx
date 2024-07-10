@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import BarriersList from './barriers-list';
 import { InputField, Dropdown, Text } from '@deriv-app/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { clickAndKeyEventHandler, toMoment, TRADE_TYPES } from '@deriv-app/shared';
 import Fieldset from 'App/Components/Form/fieldset';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';

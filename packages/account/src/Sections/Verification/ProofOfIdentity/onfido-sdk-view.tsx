@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { CSSTransition } from 'react-transition-group';
 import { HintBox, Text } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 
 type TOnfidoSdkView = {
     is_onfido_disabled: boolean;

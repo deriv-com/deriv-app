@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '../button';
 import Icon from '../icon';
 import Text from '../text';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 
 type TErrorModalContent = {
     error_message?: string;

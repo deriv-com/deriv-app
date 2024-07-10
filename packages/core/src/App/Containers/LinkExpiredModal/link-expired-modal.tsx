@@ -5,7 +5,7 @@ import { Dialog, FormSubmitButton, Input, Text } from '@deriv-app/components';
 import { useVerifyEmail } from '@deriv-app/hooks';
 import { getErrorMessages, validEmail } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import EmailResent from './email-resent';
 
 const LinkExpiredModal = observer(() => {

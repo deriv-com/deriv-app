@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Checkbox, Dropdown, Popover, PopoverMessageCheckbox } from '@deriv-app/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import Fieldset from 'App/Components/Form/fieldset';
 import { onChangeCancellationDuration, onToggleCancellation } from 'Stores/Modules/Trading/Helpers/multiplier';
 import { observer, useStore } from '@deriv-app/stores';

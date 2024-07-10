@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 export const getAddressDetailsFields = () => ({
     address_line_1: localize('First line of address'),

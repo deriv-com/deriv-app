@@ -1,6 +1,6 @@
 import React from 'react';
 import { getStaticUrl, setUrlLanguage } from '@deriv-app/shared';
-import { getLanguage } from '@deriv/translations';
+import { getLanguage } from '@deriv-app/translations';
 
 type TStaticUrl = React.HTMLAttributes<HTMLAnchorElement> & {
     href?: string;

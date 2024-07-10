@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, MobileDialog } from '@deriv-app/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import TradingAssessmentForm from '@deriv/account/src/Components/trading-assessment/trading-assessment-form';
 import tradingAssessmentConfig from '@deriv/account/src/Configs/trading-assessment-config';
 import RiskToleranceWarningModal from '@deriv/account/src/Components/trading-assessment/risk-tolerance-warning-modal';

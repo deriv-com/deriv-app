@@ -1,7 +1,7 @@
 import React from 'react';
 import { Checkbox, Dialog } from '@deriv-app/components';
 import { observer } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import useQsSubmitHandler from '../form-wrappers/useQsSubmitHandler';
 import './loss-threshold-warning-dialog.scss';

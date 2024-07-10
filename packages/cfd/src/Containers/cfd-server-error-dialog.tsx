@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dialog, UnhandledErrorModal } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { observer, useStore } from '@deriv-app/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 

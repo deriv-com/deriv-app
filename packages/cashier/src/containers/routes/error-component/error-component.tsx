@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { PageErrorContainer } from '@deriv-app/components';
 import { routes } from '@deriv-app/shared';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { TCoreStores } from '@deriv-app/stores/types';
 
 type TErrorComponentProps = TCoreStores['common']['error'] & {

@@ -5,7 +5,7 @@ import React from 'react';
 
 import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv-app/components';
 import { WS, getLocation, toMoment, formatIDVFormValues, shouldHideOccupationField } from '@deriv-app/shared';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { observer, useStore } from '@deriv-app/stores';
 import AcceptRiskForm from './accept-risk-form.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';

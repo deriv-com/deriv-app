@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { Text, Icon, PageOverlay, CFDCompareAccountsCarousel } from '@deriv-app/components';
 import { routes } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { observer, useStore } from '@deriv-app/stores';
 import { useDevice } from '@deriv-com/ui';
 import { useIsRtl } from '@deriv-app/hooks';

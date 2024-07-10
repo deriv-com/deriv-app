@@ -1,6 +1,6 @@
 import React from 'react';
 import { Div100vhContainer, Modal, usePreventIOSZoom } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getGrowthRatePercentage, isEmptyObject, TRADE_TYPES } from '@deriv-app/shared';
 import MultiplierOptions from 'Modules/Trading/Containers/Multiplier/multiplier-options';

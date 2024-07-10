@@ -11,7 +11,7 @@ import {
     validLength,
     getActionFromUrl,
 } from '@deriv-app/shared';
-import { getLanguage, localize, Localize } from '@deriv/translations';
+import { getLanguage, localize, Localize } from '@deriv-app/translations';
 import { WS } from 'Services';
 import { observer, useStore } from '@deriv-app/stores';
 

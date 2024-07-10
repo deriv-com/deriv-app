@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { TDurationMobile } from './duration-mobile';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { Numpad } from '@deriv-app/components';
 import DurationRangeText from './duration-range-text';
 import ExpiryText from './expiry-text';

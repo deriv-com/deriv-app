@@ -7,7 +7,7 @@ import { Analytics } from '@deriv-com/analytics';
 import { Button, Icon, Text } from '@deriv-app/components';
 import { getOSNameWithUAParser, routes } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { DerivLightIcInfoPasskeyIcon } from '@deriv/quill-icons';
 import { EffortLessLoginTips } from './effortless-login-tips';
 import { EffortlessLoginDescription } from './effortless-login-description';

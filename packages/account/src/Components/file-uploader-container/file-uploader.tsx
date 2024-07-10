@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { FileDropzone, Icon, Text } from '@deriv-app/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { getSupportedFiles, max_document_size, supported_filetypes } from '@deriv-app/shared';
 import { DropzoneOptions } from 'react-dropzone';
 import { useDevice } from '@deriv-com/ui';

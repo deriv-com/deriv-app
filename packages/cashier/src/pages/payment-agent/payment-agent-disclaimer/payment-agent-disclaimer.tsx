@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { website_name } from '@deriv-app/shared';
 import './payment-agent-disclaimer.scss';
 

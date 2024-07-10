@@ -3,7 +3,7 @@ import { Button, Text, Input } from '@deriv-app/components';
 import { useVerifyEmail } from '@deriv-app/api';
 import { toTitleCase } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import FormSubHeader from '../../../Components/form-sub-header';
 import SentEmailModal from '../../../Components/sent-email-modal';
 import UnlinkAccountModal from '../../../Components/unlink-account-modal';

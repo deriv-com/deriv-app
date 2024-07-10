@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { Text } from '@deriv-app/components';
 import TickSteps from './tick-steps';
 

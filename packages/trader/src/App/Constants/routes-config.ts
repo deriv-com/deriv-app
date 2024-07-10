@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { routes, moduleLoader } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import Trade from 'Modules/Trading';
 import { TRouteConfig } from 'Types';
 

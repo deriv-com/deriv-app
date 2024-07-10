@@ -1,5 +1,5 @@
 import React from 'react';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { observer, useStore } from '@deriv-app/stores';
 import { Modal, Text, Money, Icon } from '@deriv-app/components';
 

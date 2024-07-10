@@ -11,7 +11,7 @@ import {
     IDV_ERROR_STATUS,
     AUTH_STATUS_CODES,
 } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { getIDVDocuments } from '../Configs/idv-document-config';
 import { TServerError } from '../Types';
 import { LANGUAGE_CODES } from '../Constants/onfido';

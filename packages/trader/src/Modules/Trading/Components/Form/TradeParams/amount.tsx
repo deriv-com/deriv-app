@@ -1,6 +1,6 @@
 import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces, TRADE_TYPES } from '@deriv-app/shared';
 import { ButtonToggle, Dropdown, InputField } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import AllowEquals from './allow-equals';
 import Fieldset from 'App/Components/Form/fieldset';
 import Multiplier from './Multiplier/multiplier';

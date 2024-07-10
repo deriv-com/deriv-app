@@ -1,6 +1,6 @@
 import React from 'react';
 import { Popup, StaticUrl } from '@deriv-app/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import AccountLimitsContext from './account-limits-context';
 
 const AccountLimitsOverlay = () => {

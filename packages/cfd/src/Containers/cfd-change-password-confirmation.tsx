@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Formik } from 'formik';
 import { Text, Icon, FormSubmitButton } from '@deriv-app/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { CFD_PLATFORMS, getCFDPlatformLabel } from '@deriv-app/shared';
 import { TCFDChangePasswordConfirmationProps } from './props.types';
 

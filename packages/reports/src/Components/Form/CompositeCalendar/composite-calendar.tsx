@@ -2,7 +2,7 @@ import React from 'react';
 import Loadable from 'react-loadable';
 import { useDevice } from '@deriv-com/ui';
 import { InputField, useOnClickOutside } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { daysFromTodayTo, toMoment } from '@deriv-app/shared';
 import CompositeCalendarMobile from './composite-calendar-mobile';
 import SideList from './side-list';

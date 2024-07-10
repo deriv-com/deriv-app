@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { Modal, MobileDialog, UILoader } from '@deriv-app/components';
 import RegulatorsCompareModalContent from './regulators-compare-modal-content';
 import './regulators-compare-modal.scss';

@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import OnRampStore from '../../stores/on-ramp-store';
 
 const createBanxaProvider = (store: OnRampStore) => ({

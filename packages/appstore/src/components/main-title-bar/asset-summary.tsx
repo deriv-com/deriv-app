@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Popover } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { useDevice } from '@deriv-com/ui';
 import BalanceText from 'Components/elements/text/balance-text';
 import { observer, useStore } from '@deriv-app/stores';

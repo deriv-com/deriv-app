@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Popover, Money, Text } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { observer } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 

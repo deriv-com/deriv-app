@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDomServer from 'react-dom/server';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 const Arg = ({ ...props }) => {
     return React.createElement('arg', props);

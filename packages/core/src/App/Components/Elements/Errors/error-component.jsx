@@ -3,7 +3,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { PageErrorContainer } from '@deriv-app/components';
 import { routes } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 
 const ErrorComponent = ({
     header,

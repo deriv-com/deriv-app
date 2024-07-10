@@ -4,7 +4,7 @@ import { Field, Form, Formik } from 'formik';
 import { config, save_types } from '@deriv/bot-skeleton';
 import { Button, Icon, Input, MobileFullPageModal, Modal, RadioGroup, Text, ThemedScrollbars } from '@deriv-app/components';
 import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { useDBotStore } from '../../../stores/useDBotStore';
 import IconRadio from './icon-radio';
 

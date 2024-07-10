@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActionSheet, Text, TextField, TextFieldWithSteppers, ToggleSwitch } from '@deriv-com/quill-ui';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import RiskManagementInfoModal from '../RiskManagementInfoModal';
 import DealCancellationRemainingTime from '../DealCancellationRemainingTime/deal-cancellation-remaining-time';
 import { observer } from '@deriv-app/stores';

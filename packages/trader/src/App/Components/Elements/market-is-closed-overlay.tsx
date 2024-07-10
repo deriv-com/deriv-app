@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Button, Text, UILoader } from '@deriv-app/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { useStore } from '@deriv-app/stores';
 import { useTraderStore } from '../../../Stores/useTraderStores';
 

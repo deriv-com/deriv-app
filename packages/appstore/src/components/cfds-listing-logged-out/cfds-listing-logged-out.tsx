@@ -2,7 +2,7 @@ import React from 'react';
 import { observer, useStore } from '@deriv-app/stores';
 import { Text } from '@deriv-app/components';
 import { redirectToLogin } from '@deriv-app/shared';
-import { getLanguage, Localize, useLocalize } from '@deriv/translations';
+import { getLanguage, Localize, useLocalize } from '@deriv-app/translations';
 import { getHasDivider } from 'Constants/utils';
 import ListingContainer from 'Components/containers/listing-container';
 import TradingAppCard from 'Components/containers/trading-app-card';

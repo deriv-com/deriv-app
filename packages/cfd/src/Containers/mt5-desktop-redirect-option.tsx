@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Icon, Text } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { getDesktopDownloadOptions, getMobileDownloadOptions } from '../Helpers/constants';
 import { CFD_PLATFORMS, getCFDPlatformLabel, getPlatformSettings, getUrlBase } from '@deriv-app/shared';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';

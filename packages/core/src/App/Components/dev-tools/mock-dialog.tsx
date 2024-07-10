@@ -4,7 +4,7 @@ import { Button, Dropdown, Input, Text } from '@deriv-app/components';
 import { useLocalStorageData } from '@deriv-app/hooks';
 import { useStore } from '@deriv-app/stores';
 import { useWS } from '@deriv-app/shared';
-import { getLanguage } from '@deriv/translations';
+import { getLanguage } from '@deriv-app/translations';
 import './mock-dialog.scss';
 
 type MockServerStatus = 'online' | 'connecting' | 'offline';

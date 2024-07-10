@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Dialog } from '@deriv-app/components';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import BotPreview from './bot-preview';

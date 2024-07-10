@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import { Text } from '@deriv-com/quill-ui';
 import { getCardLabels } from '@deriv-app/shared';
 import { Money } from '@deriv-app/components';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 
 type TTotalProfitLossProps = {
     currency?: string;

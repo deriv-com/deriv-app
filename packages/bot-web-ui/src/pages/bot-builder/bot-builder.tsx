@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useRemoteConfig } from '@deriv-app/api';
 import { useIsMounted } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { botNotification } from 'Components/bot-notification/bot-notification';
 import { notification_message } from 'Components/bot-notification/bot-notification-utils';
 import initDatadogLogs from 'Utils/datadog-logs';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { redirectToLogin, removeBranchName, routes, isEmptyObject, default_title } from '@deriv-app/shared';
-import { getLanguage } from '@deriv/translations';
+import { getLanguage } from '@deriv-app/translations';
 import Page404 from 'Modules/Page404';
 import { observer, useStore } from '@deriv-app/stores';
 import { useFeatureFlags } from '@deriv-app/hooks';

@@ -5,7 +5,7 @@ import Fieldset from 'App/Components/Form/fieldset';
 import ValueMovement from '../Purchase/value-movement';
 import { observer, useStore } from '@deriv-app/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import LabeledQuantityInputMobile from '../LabeledQuantityInputMobile';
 
 type TBarrier = {

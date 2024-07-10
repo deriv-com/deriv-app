@@ -1,7 +1,7 @@
 import React from 'react';
 import { SideNote } from '@deriv-app/components';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 
 const CashierOnboardingSideNoteFiat: React.FC = observer(() => {
     const { common } = useStore();

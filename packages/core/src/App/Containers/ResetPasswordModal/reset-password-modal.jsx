@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Button, Dialog, PasswordInput, PasswordMeter, Text } from '@deriv-app/components';
 import { redirectToLogin, validPassword, validLength, getErrorMessages, WS } from '@deriv-app/shared';
-import { getLanguage, localize, Localize } from '@deriv/translations';
+import { getLanguage, localize, Localize } from '@deriv-app/translations';
 import { observer, useStore } from '@deriv-app/stores';
 
 const ResetPasswordModal = observer(() => {

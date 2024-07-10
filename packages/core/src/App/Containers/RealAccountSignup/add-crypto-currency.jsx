@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useDevice } from '@deriv-com/ui';
 import { FormSubmitButton, Icon, Text, ThemedScrollbars } from '@deriv-app/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { observer, useStore } from '@deriv-app/stores';
 import { reorderCurrencies, website_name } from '@deriv-app/shared';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';

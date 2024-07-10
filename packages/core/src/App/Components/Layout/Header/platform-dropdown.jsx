@@ -4,7 +4,7 @@ import { Div100vhContainer, Icon, useOnClickOutside, Text } from '@deriv-app/com
 import { routes, getActivePlatform } from '@deriv-app/shared';
 import { BinaryLink } from 'App/Components/Routes';
 import 'Sass/app/_common/components/platform-dropdown.scss';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { useHistory } from 'react-router';
 import { useDevice } from '@deriv-com/ui';
 

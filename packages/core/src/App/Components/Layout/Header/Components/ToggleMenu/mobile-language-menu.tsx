@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { MobileDrawer } from '@deriv-app/components';
 import { observer, useStore } from '@deriv-app/stores';
 import { getAllowedLanguages } from '@deriv-com/translations';
-import { localize } from '@deriv/translations'; // [TODO:] Remove this once deriv-app is configured to use the new translation lib
+import { localize } from '@deriv-app/translations'; // [TODO:] Remove this once deriv-app is configured to use the new translation lib
 import { LanguageLink } from 'App/Components/Routes';
 import { UNSUPPORTED_LANGUAGES } from '@deriv-app/shared';
 

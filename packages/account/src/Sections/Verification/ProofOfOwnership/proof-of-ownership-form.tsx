@@ -8,7 +8,7 @@ import { Button } from '@deriv-app/components';
 import { readFiles, WS, UPLOAD_FILE_TYPE } from '@deriv-app/shared';
 import { useDevice } from '@deriv-com/ui';
 import { observer, useStore } from '@deriv-app/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import FormFooter from '../../../Components/form-footer';
 import FormBody from '../../../Components/form-body';
 import FormSubHeader from '../../../Components/form-sub-header';

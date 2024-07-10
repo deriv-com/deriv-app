@@ -20,7 +20,7 @@ import {
     InlineMessage,
 } from '@deriv-app/components';
 import { isDeepEqual, isDesktop, isMobile } from '@deriv-app/shared';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { useStore } from '@deriv-app/stores';
 import { useLandingCompanyDetails } from '@deriv-app/hooks';

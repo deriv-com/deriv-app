@@ -4,7 +4,7 @@ import React from 'react';
 import { FormSubmitButton, Text } from '@deriv-app/components';
 import { isMobile, reorderCurrencies } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
 import './currency-selector.scss';
 

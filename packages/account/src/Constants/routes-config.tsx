@@ -2,7 +2,7 @@
 // // @ts-nocheck [TODO] - Need to update the types of routes
 
 import { routes, moduleLoader, makeLazyLoader } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import {
     Passkeys,
     PersonalDetails,

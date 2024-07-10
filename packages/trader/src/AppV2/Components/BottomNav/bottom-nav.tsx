@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { observer } from 'mobx-react';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { routes } from '@deriv-app/shared';
 import {
     LegacyMarketBasketIndicesIcon,

@@ -3,7 +3,7 @@ import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Icon, Text } from '@deriv-app/components';
 import { getDeeplinkUrl, getMobileAppInstallerUrl, getWebtraderUrl } from '../Helpers/constants';
 import './mt5-mobile-redirect-option.scss';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 
 const MT5MobileRedirectOption = ({ mt5_trade_account }: { mt5_trade_account: DetailsOfEachMT5Loginid }) => {
     const mobileURLSet = async () => {

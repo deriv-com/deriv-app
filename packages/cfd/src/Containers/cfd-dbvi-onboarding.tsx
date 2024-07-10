@@ -3,7 +3,7 @@ import { useDevice } from '@deriv-com/ui';
 import { PoiPoaDocsSubmitted } from '@deriv/account';
 import { AccountStatusResponse } from '@deriv/api-types';
 import { Button, Icon, Loading, MobileDialog, Modal, Text, UILoader } from '@deriv-app/components';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { getAuthenticationStatusInfo, isMobile, WS, isPOARequiredForMT5 } from '@deriv-app/shared';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
 import { observer, useStore } from '@deriv-app/stores';

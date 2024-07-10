@@ -4,7 +4,7 @@ import { getTopUpConfig } from '../Helpers/constants';
 import { Icon, Modal, Button, Money, Text } from '@deriv-app/components';
 import { getCFDPlatformLabel } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import {
     getCTraderCompanies,
     TCTraderCompanies,

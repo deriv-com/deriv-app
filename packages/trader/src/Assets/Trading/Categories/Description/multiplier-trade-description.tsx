@@ -1,5 +1,5 @@
 import React from 'react';
-import { Localize } from '@deriv/translations';
+import { Localize } from '@deriv-app/translations';
 import { Text } from '@deriv-app/components';
 
 const MultiplierTradeDescription = ({

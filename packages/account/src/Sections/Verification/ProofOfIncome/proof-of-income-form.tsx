@@ -10,7 +10,7 @@ import {
     SelectNative,
 } from '@deriv-app/components';
 import { useFileUploader } from '@deriv-app/hooks';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { isEqualArray, WS } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
 import FilesDescription from 'Components/file-uploader-container/files-descriptions';

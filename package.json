@@ -69,7 +69,7 @@
         "bootstrap:dev": "f () { npm ci && lerna link && lerna bootstrap --hoist --strict && lerna link ;}; f",
         "build:publish": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run build:publish $2 ;}; f",
         "build:local": "f () { nx run-many --target=build --projects=@deriv/bot-web-ui,@deriv/trader --parallel=2 ;}; f",
-        "build:travis": "nx run-many --projects=@deriv-app/shared,@deriv-app/components,@deriv/translations,@deriv/cashier,@deriv/account,@deriv/p2p,@deriv/cfd,@deriv/reports --target=build:travis",
+        "build:travis": "nx run-many --projects=@deriv-app/shared,@deriv-app/components,@deriv-app/translations,@deriv/cashier,@deriv/account,@deriv/p2p,@deriv/cfd,@deriv/reports --target=build:travis",
         "build:prod": "export NODE_ENV=staging && npm run build:all && export NODE_ENV=",
         "build:storybook": "cd packages/components && build-storybook --output-dir .out",
         "build:gh-pages": "f () { nx run-many --target=build --projects=@deriv-app/components,@deriv/p2p && nx run-many --target=build --projects=@deriv/cashier,@deriv/account,@deriv/cfd,@deriv/reports && npm run build:local $1 ;}; f",
@@ -92,7 +92,7 @@
         "test:component-ui": "npx playwright test --ui",
         "test:performance": "cd e2e-tests &&  jest -c ./jest.config.js --detectOpenHandles performance",
         "stylelint:fix": "stylelint \"./packages/*/src/**/*.s(a|c)ss\" --fix",
-        "translate": "f () { lerna exec --scope @deriv/translations -- npm run translate ;}; f",
+        "translate": "f () { lerna exec --scope @deriv-app/translations -- npm run translate ;}; f",
         "stylelint-check": "stylelint-config-prettier-check",
         "prepare": "husky install"
     },

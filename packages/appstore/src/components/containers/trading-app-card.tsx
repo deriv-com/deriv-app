@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { Text, StatusBadge } from '@deriv-app/components';
-import { Localize, useLocalize } from '@deriv/translations';
+import { Localize, useLocalize } from '@deriv-app/translations';
 import { Analytics } from '@deriv-com/analytics';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import {

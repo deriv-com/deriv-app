@@ -1,5 +1,5 @@
 import { Jurisdiction } from '@deriv-app/shared';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { TProducts } from 'Components/props.types';
 
 export type TDxCompanies = ReturnType<typeof getDxCompanies>;

@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import { TJurisdictionVerificationItems, TJurisdictionVerificationStatus } from 'Components/props.types';
 
 type TJurisdictionVerificationContents = {

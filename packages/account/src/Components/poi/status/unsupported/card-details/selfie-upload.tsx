@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Form, Formik, FormikProps, FormikValues } from 'formik';
-import { Localize, localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv-app/translations';
 import { useDevice } from '@deriv-com/ui';
 import { Button, Text } from '@deriv-app/components';
 import Uploader from './uploader';

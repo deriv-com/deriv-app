@@ -4,7 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import { Button, DataList, Icon, Text, ThemedScrollbars } from '@deriv-app/components';
 import { useNewRowTransition } from '@deriv-app/shared';
 import { observer, useStore } from '@deriv-app/stores';
-import { localize } from '@deriv/translations';
+import { localize } from '@deriv-app/translations';
 import Download from 'Components/download';
 import { TContractInfo } from 'Components/summary/summary-card.types';
 import { contract_stages } from 'Constants/contract-stage';

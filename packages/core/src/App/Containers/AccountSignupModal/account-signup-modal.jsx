@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { Button, Checkbox, Dialog, Loading, Text } from '@deriv-app/components';
 import { getLocation, SessionStore, setPerformanceValue, shuffleArray } from '@deriv-app/shared';
-import { getLanguage, localize } from '@deriv/translations';
+import { getLanguage, localize } from '@deriv-app/translations';
 import { Analytics } from '@deriv-com/analytics';
 
 import { WS } from 'Services';

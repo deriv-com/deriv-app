@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal, Text, Icon, Loading } from '@deriv-app/components';
-import { localize, Localize, getLanguage } from '@deriv/translations';
+import { localize, Localize, getLanguage } from '@deriv-app/translations';
 import { redirectToLogin } from '@deriv-app/shared';
 import { WS } from 'Services';
 import { observer, useStore } from '@deriv-app/stores';

@@ -8,7 +8,7 @@ import RadioGroupOptionsModal from 'Modules/Trading/Containers/radio-group-optio
 import MultipliersExpiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration';
 import MultipliersExpirationModal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration-modal';
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info';
-import { localize, Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv-app/translations';
 import { clickAndKeyEventHandler, getGrowthRatePercentage } from '@deriv-app/shared';
 
 type TAmountWidgetProps = {

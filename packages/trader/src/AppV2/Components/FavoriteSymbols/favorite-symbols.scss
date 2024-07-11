@@ -3,10 +3,15 @@
         padding: var(--core-spacing-400) 0;
     }
     &--no-fav {
-        display: flex;
+        // display: flex;
+        // flex-direction: column;
+        // justify-content: center;
+        // align-items: center;
+        // margin-block: auto;
         padding: 0 var(--core-spacing-2400);
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        position: absolute;
+        top: calc(45vh - 21px - 24px - 10px);
+        text-align: center;
+        width: 100%;
     }
 }

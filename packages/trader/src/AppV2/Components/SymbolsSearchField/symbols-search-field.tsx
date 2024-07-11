@@ -1,19 +1,24 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Button, SearchField } from '@deriv-com/quill-ui';
 import clsx from 'clsx';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import { useTraderStore } from 'Stores/useTraderStores';
+import { getContractTypesConfig } from '@deriv/shared';
 
 type TSymbolsSearchField = {
     isSearching: boolean;
     setIsSearching: (input: boolean) => void;
     searchValue: string;
     setSearchValue: (input: string) => void;
+    isSearchFieldVisible: boolean;
 };
 const SymbolsSearchField = observer(
-    ({ isSearching, setIsSearching, searchValue, setSearchValue }: TSymbolsSearchField) => {
+    ({ isSearching, setIsSearching, searchValue, setSearchValue, isSearchFieldVisible }: TSymbolsSearchField) => {
         const { ui } = useStore();
         const { is_dark_mode_on } = ui;
+        const { contract_type } = useTraderStore();
+        const contract_name = getContractTypesConfig()[contract_type]?.title;
         const inputRef = useRef<HTMLInputElement | null>(null);
 
         useEffect(() => {
@@ -39,11 +44,12 @@ const SymbolsSearchField = observer(
             <div
                 className={clsx('symbols-search-field--container', {
                     'symbols-search-field--isFocused': isSearching,
+                    'symbols-search-field--isHidden': !isSearchFieldVisible,
                 })}
             >
                 <SearchField
                     inputSize='sm'
-                    placeholder={localize('Search markets on {{trade_type}}')}
+                    placeholder={localize('Search markets on ') + contract_name}
                     variant='fill'
                     ref={inputRef}
                     value={searchValue}

@@ -1,6 +1,6 @@
 import { ActionSheet, Tab } from '@deriv-com/quill-ui';
 import { observer } from '@deriv/stores';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import SymbolsSearchField from '../SymbolsSearchField';
 import MarketCategories from '../MarketCategories';
 import useActiveSymbols from 'AppV2/Hooks/useActiveSymbols';
@@ -20,15 +20,32 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
     const [searchValue, setSearchValue] = useState('');
     const { symbol } = useTraderStore();
 
+    const marketCategoriesRef = useRef<HTMLDivElement | null>(null);
+    const [prevScrollY, setPrevScrollY] = useState(marketCategoriesRef.current?.scrollTop);
+    const [isSearchFieldVisible, setIsSearchFieldVisible] = useState(true);
+
     useEffect(() => {
         setSelectedSymbol(symbol ?? default_symbol);
     }, [symbol, default_symbol]);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = marketCategoriesRef.current?.scrollTop;
+            if (prevScrollY && currentScrollY) setIsSearchFieldVisible(prevScrollY > currentScrollY);
+            setPrevScrollY(currentScrollY);
+        };
+        marketCategoriesRef.current?.addEventListener('scroll', handleScroll);
+        return () => {
+            marketCategoriesRef.current?.removeEventListener('scroll', handleScroll);
+        };
+    }, [prevScrollY]);
 
     return (
         <React.Fragment>
             <ActionSheet.Root isOpen={isOpen}>
                 <ActionSheet.Portal shouldCloseOnDrag fullHeightOnOpen>
                     <SymbolsSearchField
+                        isSearchFieldVisible={isSearchFieldVisible}
                         searchValue={searchValue}
                         setSearchValue={setSearchValue}
                         isSearching={isSearching}
@@ -39,6 +56,12 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
                         size='md'
                         className='active-symbols-list__content'
                         selectedTabIndex={1}
+                        onChangeTab={index => {
+                            if (index !== 1) {
+                                marketCategoriesRef.current?.scrollTo({ top: 0 });
+                            }
+                            setIsSearchFieldVisible(true);
+                        }}
                     >
                         {isSearching ? (
                             <SymbolsSearchResult
@@ -52,6 +75,8 @@ const ActiveSymbolsList = observer(({ isOpen, setIsOpen }: TActiveSymbolsList) =
                                 selectedSymbol={selectedSymbol}
                                 setSelectedSymbol={setSelectedSymbol}
                                 setIsOpen={setIsOpen}
+                                ref={marketCategoriesRef}
+                                isOpen={isOpen}
                             />
                         )}
                     </Tab.Container>

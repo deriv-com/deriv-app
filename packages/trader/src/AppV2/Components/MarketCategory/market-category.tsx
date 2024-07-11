@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { MarketGroup } from 'AppV2/Utils/symbol-categories-utils';
 import { Tab, Text, CaptionText } from '@deriv-com/quill-ui';
 import MarketCategoryItem from '../MarketCategoryItem';
@@ -10,12 +10,27 @@ type TMarketCategory = {
     selectedSymbol: string;
     setSelectedSymbol: (input: string) => void;
     setIsOpen: (input: boolean) => void;
+    isOpen: boolean;
 };
 
-const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen }: TMarketCategory) => {
+const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen, isOpen }: TMarketCategory) => {
+    const itemRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+
+    useEffect(() => {
+        let timer: ReturnType<typeof setTimeout>;
+        if (isOpen && category.market === 'all' && selectedSymbol && itemRefs.current[selectedSymbol]) {
+            timer = setTimeout(() => {
+                itemRefs.current[selectedSymbol]?.scrollIntoView({ block: 'center' });
+            }, 50);
+        }
+        return () => {
+            clearInterval(timer);
+        };
+    }, [isOpen, category.market, selectedSymbol]);
+
     return (
         <React.Fragment>
-            <Tab.Panel key={category.market_display_name} className='market-category-panel'>
+            <Tab.Panel key={category.market_display_name}>
                 {category.market !== 'favorites' ? (
                     Object.entries(category.subgroups).map(([subgroupKey, subgroup]) => (
                         <div key={subgroupKey} className='market-category-content--container'>
@@ -34,8 +49,13 @@ const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen
                                     <div className='market-category-items'>
                                         {submarket.items.map((item: ActiveSymbols[0]) => (
                                             <MarketCategoryItem
-                                                item={item}
                                                 key={item.display_name}
+                                                ref={
+                                                    item.symbol === selectedSymbol
+                                                        ? el => (itemRefs.current[item.symbol] = el)
+                                                        : undefined
+                                                }
+                                                item={item}
                                                 selectedSymbol={selectedSymbol}
                                                 setSelectedSymbol={setSelectedSymbol}
                                                 setIsOpen={setIsOpen}
@@ -47,11 +67,13 @@ const MarketCategory = ({ category, selectedSymbol, setSelectedSymbol, setIsOpen
                         </div>
                     ))
                 ) : (
-                    <FavoriteSymbols
-                        selectedSymbol={selectedSymbol}
-                        setSelectedSymbol={setSelectedSymbol}
-                        setIsOpen={setIsOpen}
-                    />
+                    <div>
+                        <FavoriteSymbols
+                            selectedSymbol={selectedSymbol}
+                            setSelectedSymbol={setSelectedSymbol}
+                            setIsOpen={setIsOpen}
+                        />
+                    </div>
                 )}
             </Tab.Panel>
         </React.Fragment>

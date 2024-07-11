@@ -18,11 +18,15 @@ import AdType from './ad-type.jsx';
 const MyAdsRowDropdown = ({
     className,
     handleBlur,
+    id,
     is_advert_active,
     is_disabled,
     is_nativepicker_visible,
     onSelectMore,
 }) => {
+    const {
+        ui: { is_desktop },
+    } = useStore();
     return (
         <Dropdown
             className={classNames(className, 'my-ads-table__status-more')}
@@ -54,6 +58,7 @@ const MyAdsRowDropdown = ({
                     value: 'delete',
                 },
             ]}
+            list_portal_id={is_desktop ? `my_ads_table_row_${id}` : undefined}
             no_border
             onChange={onSelectMore}
             suffix_icon='IcCashierVerticalEllipsis'
@@ -254,6 +259,7 @@ const MyAdsRowRenderer = observer(({ country_list, row: advert, table_ref }) => 
                         <AdStatus is_active={!!is_advert_active && !general_store.is_barred} />
                     )}
                     <MyAdsRowDropdown
+                        id={id}
                         is_advert_active={is_advert_active}
                         is_disabled={general_store.is_barred}
                         is_nativepicker_visible={false}
@@ -321,7 +327,7 @@ const MyAdsRowRenderer = observer(({ country_list, row: advert, table_ref }) => 
     }
 
     return (
-        <div ref={row_ref}>
+        <div ref={row_ref} id={`my_ads_table_row_${id}`}>
             <Table.Row
                 className={classNames('my-ads-table__row', {
                     'my-ads-table__row-disabled': !is_advert_active,
@@ -417,6 +423,7 @@ const MyAdsRowRenderer = observer(({ country_list, row: advert, table_ref }) => 
                                 'my-ads-table__dropdown-custom': is_custom_dropdown,
                             })}
                             handleBlur={() => setIsAdvertMenuVisible(false)}
+                            id={id}
                             is_advert_active={is_advert_active}
                             is_disabled={general_store.is_barred}
                             is_nativepicker_visible

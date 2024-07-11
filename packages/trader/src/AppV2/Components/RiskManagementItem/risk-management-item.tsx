@@ -5,7 +5,7 @@ import RiskManagementInfoModal from '../RiskManagementInfoModal';
 import DealCancellationRemainingTime from '../DealCancellationRemainingTime/deal-cancellation-remaining-time';
 import { observer } from '@deriv/stores';
 import useContractDetails from 'AppV2/Hooks/useContractDetails';
-import { CONTRACT_TYPES, isAccumulatorContract, isValidToCancel } from '@deriv/shared';
+import { CONTRACT_TYPES, formatMoney, isAccumulatorContract, isValidToCancel } from '@deriv/shared';
 
 type RiskManagementItemProps = {
     label: React.ReactNode;
@@ -116,7 +116,7 @@ const RiskManagementItem = observer(
                         ))}
                     {is_valid_to_cancel && is_deal_cancellation && <DealCancellationRemainingTime />}
                 </div>
-                {!is_accumulator && isToggleOn && (
+                {!is_accumulator && isToggleOn && currency && (
                     <TextField
                         variant='fill'
                         inputSize='md'
@@ -124,8 +124,8 @@ const RiskManagementItem = observer(
                         textAlignment='center'
                         value={`${
                             type == 'stop_loss'
-                                ? `-${finalValue.toFixed(2)} ${currency}`
-                                : `${finalValue.toFixed(2)} ${currency}`
+                                ? `-${formatMoney(currency, finalValue, true)} ${currency}`
+                                : `${formatMoney(currency, finalValue, true)} ${currency}`
                         }`}
                         onClick={() => {
                             clearContractUpdateConfigValues();

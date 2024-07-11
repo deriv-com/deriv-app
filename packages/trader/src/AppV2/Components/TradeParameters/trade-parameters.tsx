@@ -1,8 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
-import { Button, TextField, Text } from '@deriv-com/quill-ui';
-import { LabelPairedPresentationScreenSmRegularIcon } from '@deriv/quill-icons';
-import { Localize } from '@deriv/translations';
+import { TextField, Text } from '@deriv-com/quill-ui';
+import Guide from '../Guide';
 
 type TTradeParameters = {
     is_minimized?: boolean;
@@ -14,13 +13,7 @@ const TradeParameters = ({ is_minimized, trade_parameters_list }: TTradeParamete
         {!is_minimized && (
             <div className='trade-params__title'>
                 <Text>Set your trade</Text>
-                {/* TODO: temporary, until Guide component will be merged */}
-                <Button
-                    color='black'
-                    icon={<LabelPairedPresentationScreenSmRegularIcon />}
-                    label={<Localize i18n_default_text='Guide' />}
-                    variant='secondary'
-                />
+                <Guide has_label />
             </div>
         )}
         <div

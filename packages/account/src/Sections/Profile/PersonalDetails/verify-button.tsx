@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { CaptionText } from '@deriv-com/quill-ui';
 import { observer, useStore } from '@deriv/stores';
@@ -20,16 +20,21 @@ export const VerifyButton = observer(() => {
     const phone_number_verified = phone_number_verification?.verified;
     const history = useHistory();
     //@ts-expect-error remove this comment when types are added in GetSettings api types
-    const { send } = useVerifyEmail('phone_number_verification');
+    const { send, WS } = useVerifyEmail('phone_number_verification');
     const { isMobile } = useDevice();
     const { next_otp_request } = usePhoneNumberVerificationSetTimer();
 
-    const redirectToPhoneVerification = async () => {
+    React.useEffect(() => {
+        if (WS.isSuccess) {
+            history.push(routes.phone_verification);
+        }
+    }, [WS.isSuccess, history]);
+
+    const redirectToPhoneVerification = () => {
         if (next_otp_request) return;
         setVerificationCode('', 'phone_number_verification');
         setShouldShowPhoneNumberOTP(false);
-        await send(true);
-        history.push(routes.phone_verification);
+        send(true);
     };
 
     return (

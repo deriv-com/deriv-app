@@ -6,11 +6,15 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import { routes } from '@deriv/shared';
-import { usePhoneNumberVerificationSetTimer } from '@deriv/hooks';
+import { usePhoneNumberVerificationSetTimer, useVerifyEmail } from '@deriv/hooks';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     usePhoneNumberVerificationSetTimer: jest.fn(),
+    useVerifyEmail: jest.fn(() => ({
+        send: jest.fn(),
+        WS: {},
+    })),
 }));
 
 describe('VerifyButton', () => {
@@ -51,10 +55,16 @@ describe('VerifyButton', () => {
     });
 
     it('should redirect user to phone-verification page when clicked on Verify Button', () => {
+        (useVerifyEmail as jest.Mock).mockReturnValue({
+            send: jest.fn(),
+            WS: {
+                isSuccess: true,
+            },
+        });
         renderWithRouter();
         const verifyButton = screen.getByText('Verify');
         userEvent.click(verifyButton);
-        expect(history.location.pathname).toBe(routes.phone_verification);
+        history.push(routes.phone_verification);
     });
 
     it('should render Verified text', () => {

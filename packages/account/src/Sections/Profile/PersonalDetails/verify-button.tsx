@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { CaptionText } from '@deriv-com/quill-ui';
 import { observer, useStore } from '@deriv/stores';
@@ -24,7 +24,7 @@ export const VerifyButton = observer(() => {
     const { isMobile } = useDevice();
     const { next_otp_request } = usePhoneNumberVerificationSetTimer();
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (WS.isSuccess) {
             history.push(routes.phone_verification);
         }

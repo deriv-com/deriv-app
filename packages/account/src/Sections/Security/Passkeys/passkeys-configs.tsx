@@ -2,11 +2,9 @@ import { MutableRefObject } from 'react';
 import * as Yup from 'yup';
 import { TSocketError } from '@deriv/api/types';
 import { getOSNameWithUAParser } from '@deriv/shared';
-import { URLConstants } from '@deriv-com/utils';
 import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { TServerError } from '../../../Types';
-import Cookies from 'js-cookie';
 
 export const PASSKEY_STATUS_CODES = {
     CREATED: 'created',
@@ -49,27 +47,5 @@ export const passkeysMenuActionEventTrack = (
         form_name: 'ce_passkey_account_settings_form',
         operating_system: getOSNameWithUAParser(),
         ...additional_data,
-    });
-};
-
-export const setPasskeysStatusToCookie = (status: 'available' | 'not_available') => {
-    let domain = /deriv.com/.test(window.location.hostname) ? URLConstants.derivHost : window.location.hostname;
-
-    if (/deriv.dev/.test(window.location.hostname)) {
-        //set domain for dev environment (FE deployment and login page on qa-box)
-        domain = 'deriv.dev';
-    }
-
-    const expirationDate = new Date();
-    expirationDate.setFullYear(expirationDate.getFullYear() + 1); // Set to expire in 1 year
-
-    const is_available = status === 'available';
-
-    Cookies.set('passkeys_available', String(is_available), {
-        expires: expirationDate,
-        path: '/',
-        domain,
-        secure: true,
-        sameSite: 'None',
     });
 };

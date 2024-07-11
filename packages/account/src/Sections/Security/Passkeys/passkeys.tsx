@@ -9,13 +9,7 @@ import { Localize } from '@deriv/translations';
 import { PasskeyErrorModal } from './components/passkey-error-modal';
 import { PasskeyReminderModal } from './components/passkey-reminder-modal';
 import { PasskeysStatusContainer } from './components/passkeys-status-container';
-import {
-    clearTimeOut,
-    PASSKEY_STATUS_CODES,
-    passkeysMenuActionEventTrack,
-    setPasskeysStatusToCookie,
-    TPasskeysStatus,
-} from './passkeys-configs';
+import { clearTimeOut, PASSKEY_STATUS_CODES, passkeysMenuActionEventTrack, TPasskeysStatus } from './passkeys-configs';
 import './passkeys.scss';
 
 export type TPasskey = {
@@ -39,7 +33,7 @@ export type TCurrentManagedPasskey = {
 const Passkeys = observer(() => {
     const { client, common } = useStore();
     const { isMobile } = useDevice();
-    const { is_passkey_supported } = client;
+    const { is_passkey_supported, setPasskeysStatusToCookie } = client;
     const is_network_on = common.network_status.class === 'online';
 
     const error_modal_timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -100,7 +94,7 @@ const Passkeys = observer(() => {
             setPasskeyStatus(PASSKEY_STATUS_CODES.CREATED);
             setPasskeysStatusToCookie('available');
         }
-    }, [is_passkey_registered]);
+    }, [is_passkey_registered, setPasskeysStatusToCookie]);
 
     useEffect(() => {
         if (error) {

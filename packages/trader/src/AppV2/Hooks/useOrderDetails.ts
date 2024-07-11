@@ -12,6 +12,7 @@ import {
     formatMoney,
 } from '@deriv/shared';
 import { getBarrierValue } from 'App/Components/Elements/PositionsDrawer/helpers';
+
 const CARD_LABELS = getCardLabelsV2();
 
 // Contains all key values that are used more than once in different transform objects

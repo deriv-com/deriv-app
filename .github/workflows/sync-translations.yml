@@ -32,7 +32,7 @@ jobs:
       - name: Sync wallets translations
         uses: deriv-com/translations/.github/actions/extract_and_sync_translations@main
         with:
-          PROJECT_NAME: ${{ vars.ACC_R2_PROJECT_NAME }}
+          PROJECT_NAME: deriv-app-wallets
           CROWDIN_BRANCH_NAME: staging
           CROWDIN_PROJECT_ID: ${{ secrets.WALLETS_CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.ACC_CROWDIN_PERSONAL_TOKEN }}

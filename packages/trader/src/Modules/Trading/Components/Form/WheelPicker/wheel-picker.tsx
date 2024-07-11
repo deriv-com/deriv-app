@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Icon, Text } from '@deriv/components';
-import { motion, AnimatePresence } from 'framer-motion';
-
-const defaultOptions = ['0.12', '0.21', '0.22', '0.34', '0.33', '0.38', '0.09', '0.76', '0.77', '0.78', '0.79', '80'];
+import { motion } from 'framer-motion';
 
 const variants = {
-    enter: direction => ({
+    enter: (direction: 'up' | 'down') => ({
         x: 0,
         y: direction === 'down' ? 30 : -30,
         opacity: 0,
@@ -23,7 +21,7 @@ const variants = {
             ease: [0, 0, 0, 1],
         },
     },
-    exit: direction => ({
+    exit: (direction: 'up' | 'down') => ({
         x: 0,
         y: direction === 'down' ? -30 : 30,
         opacity: 0,
@@ -34,11 +32,16 @@ const variants = {
     }),
 };
 
-const WheelPicker = ({ options = defaultOptions, onBarrierClick }) => {
+type WheelPickerType = {
+    onBarrierClick: (id: string) => Promise<void> | void;
+    options: string[];
+};
+
+const WheelPicker = ({ options, onBarrierClick }: WheelPickerType) => {
     const [selectedIndex, setSelectedIndex] = useState(3);
     const [direction, setDirection] = useState('down');
 
-    const handleIndexChange = (newIndex, newDirection) => {
+    const handleIndexChange = (newIndex: number, newDirection: 'up' | 'down') => {
         setDirection(newDirection);
         setSelectedIndex(newIndex);
         onBarrierClick(options[newIndex]);
@@ -64,30 +67,30 @@ const WheelPicker = ({ options = defaultOptions, onBarrierClick }) => {
 
     return (
         <div className='wheel-picker'>
-                <div className='picker-wheel' key={selectedIndex}>
-                    {visibleValues().map((value, index) => (
-                        <motion.div
-                            key={value}
-                            variants={variants}
-                            custom={direction}
-                            initial='enter'
-                            animate='center'
-                            exit='exit'
+            <div className='picker-wheel' key={selectedIndex}>
+                {visibleValues().map((value: string, index: number) => (
+                    <motion.div
+                        key={value}
+                        variants={variants}
+                        custom={direction}
+                        initial='enter'
+                        animate='center'
+                        exit='exit'
+                    >
+                        <Text
+                            size={index === 1 ? 'xs' : 'xxs'}
+                            line_height={index === 1 ? 'l' : 'm'}
+                            weight={index === 1 ? 'bolder' : 'bold'}
+                            color={index === 1 ? 'default' : 'disabled-1'}
+                            align='center'
+                            as='p'
+                            className={index === 1 ? 'selected-value' : ''}
                         >
-                            <Text
-                                size={index === 1 ? 'xs' : 'xxs'}
-                                line_height={index === 1 ? 'l' : 'm'}
-                                weight={index === 1 ? 'bolder' : 'bold'}
-                                color={index === 1 ? 'default' : 'disabled-1'}
-                                align='center'
-                                as='p'
-                                className={index === 1 ? 'selected-value' : ''}
-                            >
-                                {value}
-                            </Text>
-                        </motion.div>
-                    ))}
-                </div>
+                            {value}
+                        </Text>
+                    </motion.div>
+                ))}
+            </div>
             <div className='actions'>
                 <Button small className='icons' icon={<Icon icon='IcChevronUp' />} onClick={handleIncrease} />
                 <Button

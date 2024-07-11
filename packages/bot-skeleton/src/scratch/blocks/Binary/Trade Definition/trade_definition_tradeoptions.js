@@ -244,7 +244,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             }
             this.amount_limits = limits;
             const { max_payout, min_stake } = limits;
-            if (max_payout && min_stake) {
+            if (max_payout && min_stake && this.selected_trade_type !== 'multiplier') {
                 runIrreversibleEvents(() => {
                     this.setFieldValue(
                         localize('(min: {{min_stake}} - max: {{max_payout}})', {

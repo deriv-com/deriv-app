@@ -19,7 +19,7 @@ const LinkExpiredModal = observer(() => {
         initialValues: { email: '' },
         initialStatus: { error_msg: '' },
         validate: values => (!validEmail(values.email) ? { email: getErrorMessages().email() } : {}),
-        onSubmit: values => send(values.email),
+        onSubmit: values => send(false, values.email),
     });
     const {
         errors,

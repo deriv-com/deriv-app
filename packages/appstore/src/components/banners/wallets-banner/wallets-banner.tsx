@@ -8,13 +8,14 @@ import './wallets-banner.scss';
 
 const WalletsBanner = observer(() => {
     const { is_eligible, is_failed, is_in_progress, is_migrating } = useWalletMigration();
+
     const is_upgrading = is_in_progress || is_migrating;
 
-    if (is_eligible) return <WalletsBannerUpgrade is_upgrading={is_upgrading} />;
+    if (is_upgrading) return <WalletsBannerUpgrading />;
 
     if (is_failed) return <WalletsBannerUnsuccessful />;
 
-    if (is_upgrading) return <WalletsBannerUpgrading />;
+    if (is_eligible) return <WalletsBannerUpgrade is_upgrading={is_upgrading} />;
 
     return null;
 });

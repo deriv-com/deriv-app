@@ -23,4 +23,22 @@
             }
         }
     }
+    .section {
+        &__wrapper {
+            background-color: var(--core-color-solid-slate-75);
+            position: relative;
+            padding: var(--core-spacing-400);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: var(--core-spacing-400);
+        }
+        &__chart {
+            border-radius: var(--core-borderRadius-400);
+            background-color: var(--core-color-solid-slate-50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
 }

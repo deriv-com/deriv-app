@@ -1,0 +1,49 @@
+.trade-params {
+    border-radius: var(--core-borderRadius-400);
+    background-color: var(--core-color-solid-slate-50);
+    padding: var(--core-spacing-800);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--core-spacing-800);
+
+    &--minimized {
+        padding: 0px;
+    }
+
+    &__title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__options__wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: var(--core-spacing-400);
+
+        &--minimized {
+            background-color: var(--core-color-solid-slate-50);
+            padding: var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-400) var(--core-spacing-400);
+            align-items: center;
+            flex-direction: row;
+            justify-content: unset;
+            flex-wrap: nowrap;
+            overflow-x: scroll;
+            white-space: nowrap;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    }
+
+    &__option {
+        .input {
+            padding-inline-start: 0;
+        }
+
+        &--minimized {
+            width: 16rem;
+        }
+    }
+}

@@ -16,6 +16,8 @@
     &-selection {
         flex: 1;
         overflow: auto;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
     }
 
     &-item {
@@ -23,6 +25,7 @@
         flex-direction: column;
         align-items: center;
         flex: 1 0 0;
+        height: var(--core-size-2100);
 
         &--active {
             .bottom-nav-item-label {
@@ -31,6 +34,11 @@
             svg {
                 fill: var(--core-color-opacity-coral-600);
             }
+        }
+
+        &-label {
+            font-size: var(--core-fontSize-50);
+            line-height: var(--core-lineHeight-100);
         }
     }
 }

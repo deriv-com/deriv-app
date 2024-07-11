@@ -1,6 +1,6 @@
 import { useState, useEffect, ChangeEvent } from 'react';
 import PhoneVerificationCard from './phone-verification-card';
-import { Button, Snackbar, Text, TextField } from '@deriv-com/quill-ui';
+import { Button, Snackbar, Text, TextFieldAddon } from '@deriv-com/quill-ui';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { usePhoneNumberVerificationSetTimer, useRequestPhoneNumberOTP, useSettings } from '@deriv/hooks';
@@ -30,7 +30,7 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
     const { next_otp_request } = usePhoneNumberVerificationSetTimer(true);
 
     useEffect(() => {
-        setPhoneNumber(account_settings?.phone || '');
+        setPhoneNumber(account_settings?.phone?.replace('+', '') || '');
     }, [account_settings?.phone]);
 
     useEffect(() => {
@@ -46,13 +46,13 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
 
     const handleOnChangePhoneNumber = (e: ChangeEvent<HTMLInputElement>) => {
         setPhoneNumber(e.target.value);
-        validatePhoneNumber(e.target.value, setErrorMessage);
+        validatePhoneNumber(`+${e.target.value}`, setErrorMessage);
     };
 
     const handleSubmit = async (phone_verification_type: string) => {
         setIsButtonLoading(true);
         setPhoneVerificationType(phone_verification_type);
-        const { error } = await setUsersPhoneNumber({ phone: phone_number });
+        const { error } = await setUsersPhoneNumber({ phone: `+${phone_number}` });
 
         if (!error) {
             phone_verification_type === VERIFICATION_SERVICES.SMS ? requestOnSMS() : requestOnWhatsApp();
@@ -67,12 +67,13 @@ const ConfirmPhoneNumber = observer(({ setOtpVerification }: TConfirmPhoneNumber
                 <Localize i18n_default_text='Confirm your phone number' />
             </Text>
             <div className='phone-verification__card--inputfield'>
-                <TextField
+                <TextFieldAddon
                     label={localize('Phone number')}
                     value={phone_number}
                     status={error_message ? 'error' : 'neutral'}
                     message={error_message}
                     onChange={handleOnChangePhoneNumber}
+                    addonLabel='+'
                 />
             </div>
             <div className='phone-verification__card--buttons_container'>

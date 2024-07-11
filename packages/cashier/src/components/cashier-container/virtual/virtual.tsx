@@ -2,18 +2,17 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import './virtual.scss';
 
 const Virtual = observer(() => {
     const {
-        ui: { is_dark_mode_on, toggleAccountsDialog },
+        ui: { is_dark_mode_on, is_desktop, toggleAccountsDialog },
     } = useStore();
 
     return (
-        <div className='cashier__wrapper' data-testid='dt_cashier_wrapper_id'>
+        <div className='cashier__wrapper virtual' data-testid='dt_cashier_wrapper_id'>
             <React.Fragment>
                 <div
                     data-testid={
@@ -31,7 +30,7 @@ const Virtual = observer(() => {
                 </Text>
                 <Text
                     as='p'
-                    size={isMobile() ? 'xxs' : 'xs'}
+                    size={is_desktop ? 'xs' : 'xxs'}
                     line_height='s'
                     align='center'
                     className='cashier__paragraph cashier__text'

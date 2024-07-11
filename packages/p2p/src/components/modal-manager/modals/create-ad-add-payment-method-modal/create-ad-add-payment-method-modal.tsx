@@ -70,22 +70,20 @@ const CreateAdAddPaymentMethodModal = () => {
     }
 
     return (
-        <React.Fragment>
-            <MobileFullPageModal
-                body_className={classNames('create-ad-add-payment-method-modal__body', {
-                    'create-ad-add-payment-method-modal__body--form': selected_payment_method,
-                })}
-                height_offset='80px'
-                is_flex
-                is_modal_open={is_modal_open}
-                onClickClose={onCancel}
-                page_header_className='buy-sell__modal-header'
-                page_header_text={localize('Add payment method')}
-                pageHeaderReturnFn={onCancel}
-            >
-                <AddPaymentMethod should_show_page_return={false} should_show_separated_footer />
-            </MobileFullPageModal>
-        </React.Fragment>
+        <MobileFullPageModal
+            body_className={classNames('create-ad-add-payment-method-modal__body', {
+                'create-ad-add-payment-method-modal__body--form': selected_payment_method,
+            })}
+            height_offset='80px'
+            is_flex
+            is_modal_open={is_modal_open}
+            onClickClose={onCancel}
+            page_header_className='buy-sell__modal-header'
+            page_header_text={localize('Add payment method')}
+            pageHeaderReturnFn={onCancel}
+        >
+            <AddPaymentMethod should_show_page_return={false} should_show_separated_footer />
+        </MobileFullPageModal>
     );
 };
 

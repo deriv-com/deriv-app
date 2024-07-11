@@ -173,81 +173,32 @@ const BuySellModal = () => {
 
     if (isDesktop) {
         return (
-            <React.Fragment>
-                <Modal
-                    className={classNames('buy-sell-modal', {
-                        'buy-sell-modal__form': should_show_add_payment_method_form,
-                    })}
-                    has_return_icon={should_show_add_payment_method_form}
-                    height={is_buy_advert ? 'auto' : '649px'}
-                    is_open={is_modal_open}
-                    onReturn={onReturn}
-                    portalId='modal_root'
-                    title={getModalTitle()}
-                    toggleModal={onCancel}
-                    width='456px'
-                >
-                    {/* Parent height - Modal.Header height - Modal.Footer height */}
-                    <ThemedScrollbars
-                        height={is_buy_advert ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}
-                        refSetter={scroll_ref}
-                    >
-                        <Modal.Body className='buy-sell-modal__layout'>
-                            <BuySellModalError
-                                error_message={error_message}
-                                show_low_balance_message={show_low_balance_message}
-                            />
-                            {should_show_add_payment_method_form ? (
-                                <AddPaymentMethodForm should_show_separated_footer />
-                            ) : (
-                                <BuySellForm
-                                    advert={selected_ad_state}
-                                    has_rate_changed={has_rate_changed}
-                                    handleClose={onCancel}
-                                    handleConfirm={onConfirmClick}
-                                    setIsSubmitDisabled={setIsSubmitDisabled}
-                                    setErrorMessage={setErrorMessage}
-                                    setHasRateChanged={setHasRateChanged}
-                                    setIsMarketRateErrorModalOpen={setIsMarketRateErrorModalOpen}
-                                />
-                            )}
-                        </Modal.Body>
-                    </ThemedScrollbars>
-                    {!should_show_add_payment_method_form && (
-                        <Modal.Footer has_separator>
-                            <BuySellModalFooter
-                                is_submit_disabled={!!is_submit_disabled}
-                                onCancel={onCancel}
-                                onSubmit={onSubmit}
-                            />
-                        </Modal.Footer>
-                    )}
-                </Modal>
-            </React.Fragment>
-        );
-    }
-
-    return (
-        <React.Fragment>
-            <MobileFullPageModal
-                body_className='buy-sell-modal__body'
-                className='buy-sell-modal'
-                height_offset='80px'
-                is_flex
-                is_modal_open={is_modal_open}
-                page_header_className='buy-sell-modal__header'
-                renderPageHeaderElement={<BuySellModalTitle is_buy={is_buy_advert} onReturn={onReturn} />}
-                pageHeaderReturnFn={onCancel}
+            <Modal
+                className={classNames('buy-sell-modal', {
+                    'buy-sell-modal__form': should_show_add_payment_method_form,
+                })}
+                has_return_icon={should_show_add_payment_method_form}
+                height={is_buy_advert ? 'auto' : '649px'}
+                is_open={is_modal_open}
+                onReturn={onReturn}
+                portalId='modal_root'
+                title={getModalTitle()}
+                toggleModal={onCancel}
+                width='456px'
             >
-                <ThemedScrollbars refSetter={scroll_ref}>
-                    <BuySellModalError
-                        error_message={error_message}
-                        show_low_balance_message={show_low_balance_message}
-                    />
-                    {should_show_add_payment_method_form ? (
-                        <AddPaymentMethodForm should_show_separated_footer />
-                    ) : (
-                        <React.Fragment>
+                {/* Parent height - Modal.Header height - Modal.Footer height */}
+                <ThemedScrollbars
+                    height={is_buy_advert ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}
+                    refSetter={scroll_ref}
+                >
+                    <Modal.Body className='buy-sell-modal__layout'>
+                        <BuySellModalError
+                            error_message={error_message}
+                            show_low_balance_message={show_low_balance_message}
+                        />
+                        {should_show_add_payment_method_form ? (
+                            <AddPaymentMethodForm should_show_separated_footer />
+                        ) : (
                             <BuySellForm
                                 advert={selected_ad_state}
                                 has_rate_changed={has_rate_changed}
@@ -258,17 +209,59 @@ const BuySellModal = () => {
                                 setHasRateChanged={setHasRateChanged}
                                 setIsMarketRateErrorModalOpen={setIsMarketRateErrorModalOpen}
                             />
-                            <BuySellFormReceiveAmount />
-                            <BuySellModalFooter
-                                is_submit_disabled={!!is_submit_disabled}
-                                onCancel={onCancel}
-                                onSubmit={onSubmit}
-                            />
-                        </React.Fragment>
-                    )}
+                        )}
+                    </Modal.Body>
                 </ThemedScrollbars>
-            </MobileFullPageModal>
-        </React.Fragment>
+                {!should_show_add_payment_method_form && (
+                    <Modal.Footer has_separator>
+                        <BuySellModalFooter
+                            is_submit_disabled={!!is_submit_disabled}
+                            onCancel={onCancel}
+                            onSubmit={onSubmit}
+                        />
+                    </Modal.Footer>
+                )}
+            </Modal>
+        );
+    }
+
+    return (
+        <MobileFullPageModal
+            body_className='buy-sell-modal__body'
+            className='buy-sell-modal'
+            height_offset='80px'
+            is_flex
+            is_modal_open={is_modal_open}
+            page_header_className='buy-sell-modal__header'
+            renderPageHeaderElement={<BuySellModalTitle is_buy={is_buy_advert} onReturn={onReturn} />}
+            pageHeaderReturnFn={onCancel}
+        >
+            <ThemedScrollbars refSetter={scroll_ref}>
+                <BuySellModalError error_message={error_message} show_low_balance_message={show_low_balance_message} />
+                {should_show_add_payment_method_form ? (
+                    <AddPaymentMethodForm should_show_separated_footer />
+                ) : (
+                    <React.Fragment>
+                        <BuySellForm
+                            advert={selected_ad_state}
+                            has_rate_changed={has_rate_changed}
+                            handleClose={onCancel}
+                            handleConfirm={onConfirmClick}
+                            setIsSubmitDisabled={setIsSubmitDisabled}
+                            setErrorMessage={setErrorMessage}
+                            setHasRateChanged={setHasRateChanged}
+                            setIsMarketRateErrorModalOpen={setIsMarketRateErrorModalOpen}
+                        />
+                        <BuySellFormReceiveAmount />
+                        <BuySellModalFooter
+                            is_submit_disabled={!!is_submit_disabled}
+                            onCancel={onCancel}
+                            onSubmit={onSubmit}
+                        />
+                    </React.Fragment>
+                )}
+            </ThemedScrollbars>
+        </MobileFullPageModal>
     );
 };
 

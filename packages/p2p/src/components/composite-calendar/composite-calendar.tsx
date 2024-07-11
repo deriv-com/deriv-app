@@ -219,14 +219,12 @@ const CompositeCalendar = (props: TCompositeCalendarProps) => {
     }
 
     return (
-        <React.Fragment>
-            <CompositeCalendarMobile
-                duration_list={days_duration_list}
-                current_focus={current_focus}
-                setCurrentFocus={setCurrentFocus}
-                {...props}
-            />
-        </React.Fragment>
+        <CompositeCalendarMobile
+            duration_list={days_duration_list}
+            current_focus={current_focus}
+            setCurrentFocus={setCurrentFocus}
+            {...props}
+        />
     );
 };
 

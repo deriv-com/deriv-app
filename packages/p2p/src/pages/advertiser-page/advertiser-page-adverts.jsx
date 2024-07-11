@@ -2,13 +2,13 @@ import React from 'react';
 import classNames from 'classnames';
 import { InfiniteDataList, Loading, Table, Tabs, Text } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
+import { useDevice } from '@deriv-com/ui';
 import { localize, Localize } from 'Components/i18next';
 import { useP2PAdvertiserAdverts } from 'Hooks';
 import { useStores } from 'Stores';
 import P2pEmpty from 'Components/p2p-empty';
 import AdvertiserPageRow from './advertiser-page-row.jsx';
 import './advertiser-page-adverts.scss';
-import { useDevice } from '@deriv-com/ui';
 
 const EmptyAdsMessage = () => (
     <Text weight='bold'>

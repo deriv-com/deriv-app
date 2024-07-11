@@ -55,8 +55,8 @@ const OrderDetailsConfirmModal = () => {
                 renderTitle={() => (
                     <Text
                         color='prominent'
-                        line-height={isDesktop ? 'xxl' : 'xl'}
-                        size={isDesktop ? 's' : 'xs'}
+                        line-height={isMobile ? 'xl' : 'xxl'}
+                        size={isMobile ? 'xs' : 's'}
                         weight='bold'
                     >
                         <Localize i18n_default_text='Payment confirmation' />
@@ -65,7 +65,7 @@ const OrderDetailsConfirmModal = () => {
                 width='44rem'
             >
                 <Modal.Body className='order-details-confirm-modal__body'>
-                    <Text color='general' line-height='xl' size={isDesktop ? 'xs' : 'xxs'}>
+                    <Text color='general' line-height='xl' size={isMobile ? 'xxs' : 'xs'}>
                         <Localize
                             i18n_default_text="Please make sure that you've paid {{amount}} {{currency}} to {{other_user_name}}, and upload the receipt as proof of your payment"
                             values={{
@@ -78,7 +78,7 @@ const OrderDetailsConfirmModal = () => {
                     <Text
                         color='less-prominent'
                         line-height='xl'
-                        size={isDesktop ? 'xs' : 'xxs'}
+                        size={isMobile ? 'xxs' : 'xs'}
                         as='div'
                         className='order-details-confirm-modal__file_format'
                     >

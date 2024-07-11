@@ -1,9 +1,9 @@
 import React from 'react';
 import { Icon, Popover, Text } from '@deriv/components';
+import { useDevice } from '@deriv-com/ui';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { getTextSize } from 'Utils/responsive';
-import { useDevice } from '@deriv-com/ui';
 
 type TRecommendedByProps = {
     recommended_average?: number;

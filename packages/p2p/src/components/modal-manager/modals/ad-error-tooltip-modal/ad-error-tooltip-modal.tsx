@@ -24,7 +24,7 @@ const AdErrorTooltipModal = ({
     advert_type,
 }: TAdErrorTooltipModal) => {
     const { general_store } = useStores();
-    const { isDesktop } = useDevice();
+    const { isMobile } = useDevice();
     const { hideModal, is_modal_open } = useModalManagerContext();
     const { advertiser_buy_limit, advertiser_sell_limit } = general_store;
 
@@ -104,12 +104,7 @@ const AdErrorTooltipModal = ({
         <Modal className='ad-error-tooltip-modal' is_open={is_modal_open} small has_close_icon={false}>
             <ThemedScrollbars height={'calc(100vh - 8.4rem)'}>
                 <Modal.Body>
-                    <Text
-                        as='div'
-                        color='prominent'
-                        size={!isDesktop ? 'xxs' : 'xs'}
-                        line_height={!isDesktop ? 'l' : 'xl'}
-                    >
+                    <Text as='div' color='prominent' size={isMobile ? 'xxs' : 'xs'} line_height={isMobile ? 'l' : 'xl'}>
                         {visibility_status.length === 1 ? (
                             getAdErrorMessage(visibility_status[0])
                         ) : (

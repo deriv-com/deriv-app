@@ -29,13 +29,13 @@ const FileUploaderComponent = ({
     validation_error_message,
     value,
 }: TFileUploaderComponentProps) => {
-    const { isDesktop } = useDevice();
+    const { isMobile } = useDevice();
 
     const getUploadMessage = React.useCallback(() => {
         return (
             <>
                 <Icon icon='IcCloudUpload' size={50} />
-                <Text as='div' line-height={!isDesktop ? 'xl' : 'l'} size={!isDesktop ? 'xxs' : 'xs'} weight='bold'>
+                <Text as='div' line-height={isMobile ? 'xl' : 'l'} size={isMobile ? 'xxs' : 'xs'} weight='bold'>
                     {upload_message}
                 </Text>
             </>

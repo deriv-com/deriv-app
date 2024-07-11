@@ -83,7 +83,7 @@ const DerivAppsGetAccount: React.FC = () => {
     return (
         <div className='wallets-deriv-apps-section wallets-deriv-apps-section__get-account'>
             <div className='wallets-deriv-apps-section__icon'>
-                <WalletMarketIcon icon='IcWalletOptionsLight' size='lg' />
+                <WalletMarketIcon icon='standard' size='lg' />
             </div>
             <div className='wallets-deriv-apps-section__get-content'>
                 <div className='wallets-deriv-apps-section__details'>

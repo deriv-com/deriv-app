@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 
 type TProps = {
     is_upgrading: boolean;
@@ -27,12 +27,11 @@ const WalletsBannerUpgrade: React.FC<TProps> = observer(({ is_upgrading }) => {
                 <Button
                     className='wallets-banner-upgrade__button'
                     is_disabled={is_upgrading}
+                    text={localize("Let's go")}
                     primary
                     large
                     onClick={() => toggleWalletsUpgrade(true)}
-                >
-                    <Localize i18n_default_text="Let's go" />
-                </Button>
+                />
             </div>
             <Icon
                 icon={`IcAppstoreWalletsUpgradeCoins${is_mobile ? '' : 'Horizontal'}`}

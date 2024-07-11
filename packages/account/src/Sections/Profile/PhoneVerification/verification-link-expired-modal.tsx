@@ -18,7 +18,7 @@ const VerificationLinkExpiredModal = ({
 }: TVerificationLinkExpiredModal) => {
     const history = useHistory();
     //@ts-expect-error ignore this until we add it in GetSettings api types
-    const { send, WS } = useVerifyEmail('phone_number_verification');
+    const { sendPhoneNumberVerifyEmail, WS } = useVerifyEmail('phone_number_verification');
     const { next_otp_request } = usePhoneNumberVerificationSetTimer();
     const { invalidate } = useSettings();
     const { isMobile } = useDevice();
@@ -29,7 +29,7 @@ const VerificationLinkExpiredModal = ({
     };
 
     const handleSendNewLinkButton = () => {
-        send(true);
+        sendPhoneNumberVerifyEmail();
     };
 
     React.useEffect(() => {

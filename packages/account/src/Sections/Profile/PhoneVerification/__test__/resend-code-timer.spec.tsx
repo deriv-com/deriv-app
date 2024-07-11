@@ -8,7 +8,7 @@ import { usePhoneNumberVerificationSetTimer, useVerifyEmail } from '@deriv/hooks
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useVerifyEmail: jest.fn(() => ({
-        send: jest.fn(),
+        sendPhoneNumberVerifyEmail: jest.fn(),
         WS: {
             isSuccess: false,
         },
@@ -28,7 +28,10 @@ jest.mock('@deriv/hooks', () => ({
 
 describe('ConfirmPhoneNumber', () => {
     beforeEach(() => {
-        (useVerifyEmail as jest.Mock).mockReturnValue({ send: jest.fn(), WS: { isSuccess: false } });
+        (useVerifyEmail as jest.Mock).mockReturnValue({
+            sendPhoneNumberVerifyEmail: jest.fn(),
+            WS: { isSuccess: false },
+        });
     });
 
     afterEach(() => {
@@ -73,7 +76,7 @@ describe('ConfirmPhoneNumber', () => {
     it('should trigger mockSend when send button is clicked', () => {
         const mockSend = jest.fn();
         (useVerifyEmail as jest.Mock).mockReturnValue({
-            send: mockSend,
+            sendPhoneNumberVerifyEmail: mockSend,
             WS: { isSuccess: false },
         });
         renderComponent();

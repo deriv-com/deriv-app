@@ -44,8 +44,8 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
 
     useEffect(() => {
         setIsButtonDisabled(true);
-        invalidate('get_settings').then(() => setIsButtonDisabled(false));
-    }, [invalidate]);
+        reInitializeGetSettings();
+    }, [reInitializeGetSettings]);
 
     useEffect(() => {
         if (is_phone_number_verified) {

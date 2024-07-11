@@ -12,7 +12,7 @@ jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     usePhoneNumberVerificationSetTimer: jest.fn(),
     useVerifyEmail: jest.fn(() => ({
-        send: jest.fn(),
+        sendPhoneNumberVerifyEmail: jest.fn(),
         WS: {},
     })),
 }));
@@ -56,7 +56,7 @@ describe('VerifyButton', () => {
 
     it('should redirect user to phone-verification page when clicked on Verify Button', () => {
         (useVerifyEmail as jest.Mock).mockReturnValue({
-            send: jest.fn(),
+            sendPhoneNumberVerifyEmail: jest.fn(),
             WS: {
                 isSuccess: true,
             },

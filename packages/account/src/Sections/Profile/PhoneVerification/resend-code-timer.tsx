@@ -20,7 +20,7 @@ const ResendCodeTimer = ({
     reInitializeGetSettings,
 }: TResendCodeTimer) => {
     // @ts-expect-error this for now
-    const { send, WS, error } = useVerifyEmail('phone_number_verification');
+    const { sendPhoneNumberVerifyEmail, WS, error } = useVerifyEmail('phone_number_verification');
     const { next_otp_request } = usePhoneNumberVerificationSetTimer();
 
     React.useEffect(() => {
@@ -31,7 +31,7 @@ const ResendCodeTimer = ({
         if (should_show_resend_code_button) {
             clearOtpValue();
             setIsButtonDisabled(true);
-            send(true);
+            sendPhoneNumberVerifyEmail();
         } else {
             setShouldShowDidntGetTheCodeModal(true);
         }

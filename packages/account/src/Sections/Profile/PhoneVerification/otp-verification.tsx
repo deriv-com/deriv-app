@@ -81,19 +81,21 @@ const OTPVerification = observer(({ phone_verification_type, setOtpVerification 
                 should_show_phone_number_verified_modal={should_show_phone_number_verified_modal}
                 setShouldShowPhoneNumberVerifiedModal={setShouldShowPhoneNumberVerifiedModal}
             />
-            <DidntGetTheCodeModal
-                clearOtpValue={clearOtpValue}
-                setIsButtonDisabled={setIsButtonDisabled}
-                reInitializeGetSettings={reInitializeGetSettings}
-                requestOnSMS={requestOnSMS}
-                requestOnWhatsApp={requestOnWhatsApp}
-                email_otp_error={email_otp_error}
-                is_email_verified={is_email_verified}
-                should_show_didnt_get_the_code_modal={should_show_didnt_get_the_code_modal}
-                setShouldShowDidntGetTheCodeModal={setShouldShowDidntGetTheCodeModal}
-                phone_verification_type={phone_verification_type}
-                setOtpVerification={setOtpVerification}
-            />
+            {should_show_phone_number_otp && (
+                <DidntGetTheCodeModal
+                    clearOtpValue={clearOtpValue}
+                    setIsButtonDisabled={setIsButtonDisabled}
+                    reInitializeGetSettings={reInitializeGetSettings}
+                    requestOnSMS={requestOnSMS}
+                    requestOnWhatsApp={requestOnWhatsApp}
+                    email_otp_error={email_otp_error}
+                    is_email_verified={is_email_verified}
+                    should_show_didnt_get_the_code_modal={should_show_didnt_get_the_code_modal}
+                    setShouldShowDidntGetTheCodeModal={setShouldShowDidntGetTheCodeModal}
+                    phone_verification_type={phone_verification_type}
+                    setOtpVerification={setOtpVerification}
+                />
+            )}
             <Text bold>
                 {should_show_phone_number_otp ? (
                     <Localize i18n_default_text='Verify your number' />

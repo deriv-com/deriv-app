@@ -8,6 +8,7 @@ import { Button, MobileDialog, Modal, Text, UILoader } from '@deriv/components';
 import { WS, moduleLoader, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
+import { useGrowthbookGetFeatureValue } from '@deriv/hooks';
 import AddCurrency from './add-currency.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import ChooseCurrency from './choose-currency.jsx';
@@ -263,6 +264,11 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         },
     ]);
 
+    const [direct_deposit_flow] = useGrowthbookGetFeatureValue({
+        featureFlag: 'direct-deposit-flow',
+        defaultValue: false,
+    });
+
     const [assessment_decline, setAssessmentDecline] = React.useState(false);
 
     const trackEvent = React.useCallback(
@@ -315,7 +321,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
 
     const closeModalthenOpenDepositModal = () => {
         closeRealAccountSignup();
-        setShouldShowOneTimeDepositModal(true);
+        if (direct_deposit_flow) setShouldShowOneTimeDepositModal(true);
     };
 
     const showStatusDialog = curr => {

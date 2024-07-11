@@ -123,7 +123,7 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function (x = 0, y = 0, blocks_to_clean
         let column_index = 0;
 
         root_blocks.forEach((block, index) => {
-            block?.svgGroup_?.setAttribute('data-testid', block?.category_);
+            block?.svgGroup_?.setAttribute('data-testid', block?.type);
             if (index === (column_index + 1) * blocks_per_column) {
                 original_cursor_y = y;
                 column_index++;

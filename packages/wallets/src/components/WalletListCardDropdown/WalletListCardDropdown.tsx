@@ -55,9 +55,9 @@ const WalletListCardDropdown = () => {
                             ) : (
                                 <WalletText size='sm' weight='bold'>
                                     <Trans
-                                        defaults={displayMoney?.(
-                                            balanceData?.[wallet.loginid]?.balance ?? 0,
-                                            wallet?.currency || '',
+                                        defaults={displayMoney(
+                                            balanceData?.[wallet.loginid]?.balance,
+                                            wallet?.currency,
                                             {
                                                 fractional_digits: wallet?.currency_config?.fractional_digits,
                                             }

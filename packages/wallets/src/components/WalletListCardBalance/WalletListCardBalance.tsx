@@ -24,7 +24,7 @@ const WalletListCardBalance = () => {
                 />
             ) : (
                 <WalletText align='right' size='xl' weight='bold'>
-                    {displayMoney?.(balance ?? 0, activeWallet?.currency ?? '', {
+                    {displayMoney(balance, activeWallet?.currency, {
                         fractional_digits: activeWallet?.currency_config?.fractional_digits,
                     })}
                 </WalletText>

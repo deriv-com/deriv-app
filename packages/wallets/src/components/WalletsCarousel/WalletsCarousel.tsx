@@ -17,7 +17,7 @@ const WalletsCarousel = () => {
     const displayedBalance = useMemo(() => {
         if (isBalanceLoading) return;
 
-        return displayMoney?.(balanceData?.[activeWallet?.loginid ?? '']?.balance ?? 0, activeWallet?.currency || '', {
+        return displayMoney(balanceData?.[activeWallet?.loginid ?? '']?.balance, activeWallet?.currency, {
             fractional_digits: activeWallet?.currency_config?.fractional_digits,
         });
     }, [

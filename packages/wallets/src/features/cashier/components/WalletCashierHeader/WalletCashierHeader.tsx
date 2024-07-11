@@ -108,9 +108,9 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                             />
                         ) : (
                             <WalletText color={isDemo ? 'white' : 'general'} size='xl' weight='bold'>
-                                {displayMoney?.(
-                                    balanceData?.[activeWallet?.loginid ?? '']?.balance ?? 0,
-                                    activeWallet?.currency || '',
+                                {displayMoney(
+                                    balanceData?.[activeWallet?.loginid ?? '']?.balance,
+                                    activeWallet?.currency,
                                     {
                                         fractional_digits: activeWallet?.currency_config?.fractional_digits,
                                     }

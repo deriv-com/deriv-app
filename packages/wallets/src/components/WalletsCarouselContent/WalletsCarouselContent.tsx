@@ -44,10 +44,10 @@ const WalletsCarouselContent: React.FC = () => {
 
     const getBalance = (
         loginid: string,
-        currency: string,
+        currency?: string,
         wallet?: ReturnType<typeof useActiveWalletAccount>['data']
     ) => {
-        return displayMoney(balanceData?.[loginid]?.balance ?? 0, currency, {
+        return displayMoney(balanceData?.[loginid]?.balance, currency, {
             fractional_digits: wallet?.currency_config?.fractional_digits,
         });
     };
@@ -242,12 +242,8 @@ const WalletsCarouselContent: React.FC = () => {
                             <WalletCard
                                 balance={
                                     account.loginid === activeWallet?.loginid
-                                        ? getBalance(
-                                              activeWallet?.loginid,
-                                              activeWallet?.currency || 'USD',
-                                              activeWallet
-                                          )
-                                        : getBalance(account.loginid, account?.currency || 'USD', account)
+                                        ? getBalance(activeWallet?.loginid, activeWallet?.currency, activeWallet)
+                                        : getBalance(account.loginid, account?.currency, account)
                                 }
                                 currency={account.currency || 'USD'}
                                 iconSize='lg'

@@ -21,38 +21,38 @@ const useAllBalanceSubscription = () => {
         subscribe,
         unsubscribe,
     } = useBalanceSubscription();
-    const { isSuccess: isAuthorizeSuccessful } = useAuthorize();
+    const { isSuccess: isAuthorizeSuccess } = useAuthorize();
     useEffect(() => {
         return balanceStore.subscribe(setBalance); // subscribe setBalance to the balance store and return the cleanup function
     }, []);
 
     const subscribeToAllBalance = useCallback(() => {
-        if (!isAuthorizeSuccessful) return;
+        if (!isAuthorizeSuccess) return;
         subscribe({
             account: 'all',
         });
-    }, [isAuthorizeSuccessful, subscribe]);
+    }, [isAuthorizeSuccess, subscribe]);
 
     useEffect(() => {
-        if (!isAuthorizeSuccessful || isBalanceLoading || Object.entries(balanceData).length === 0) return;
-        const existingData = balanceStore.get();
-        let newData = balanceData.accounts;
+        if (!isAuthorizeSuccess || isBalanceLoading || Object.entries(balanceData).length === 0) return; // don't update the balance if the user is not authorized, the balance is loading, or the balance data is empty (i.e. before the call to subscribe is made).
+        const oldBalance = balanceStore.get();
+        let newBalance = balanceData.accounts;
         if (!balanceData.accounts && balanceData.balance !== undefined && balanceData.loginid && balanceData.currency) {
             const { balance, currency, loginid } = balanceData;
-            newData = {
-                ...existingData,
+            newBalance = {
+                ...oldBalance,
                 [loginid]: {
                     balance,
                     converted_amount: balance,
                     currency,
-                    demo_account: existingData?.[loginid]?.demo_account ?? 0,
-                    status: existingData?.[loginid]?.status ?? 0,
-                    type: existingData?.[loginid]?.type ?? 'deriv',
+                    demo_account: oldBalance?.[loginid]?.demo_account ?? 0,
+                    status: oldBalance?.[loginid]?.status ?? 0,
+                    type: oldBalance?.[loginid]?.type ?? 'deriv',
                 },
             };
         }
-        balanceStore.set(newData);
-    }, [balanceData, isBalanceLoading, isAuthorizeSuccessful]);
+        balanceStore.set(newBalance);
+    }, [balanceData, isBalanceLoading, isAuthorizeSuccess]);
 
     return {
         data: balance,

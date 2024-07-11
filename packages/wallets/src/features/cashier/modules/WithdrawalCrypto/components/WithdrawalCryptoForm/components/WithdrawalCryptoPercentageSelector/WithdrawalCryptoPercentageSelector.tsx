@@ -16,8 +16,8 @@ const WithdrawalCryptoPercentageSelector: React.FC = () => {
     const { data: balanceData } = useAllBalanceSubscription();
     const activeWalletBalance = balanceData?.[activeWallet?.loginid ?? '']?.balance ?? 0;
     const activeWalletDisplayBalance = displayMoney(
-        balanceData?.[activeWallet?.loginid ?? '']?.balance ?? 0,
-        activeWallet?.currency ?? '',
+        balanceData?.[activeWallet?.loginid ?? '']?.balance,
+        activeWallet?.currency,
         {
             fractional_digits: activeWallet?.currency_config?.fractional_digits,
         }

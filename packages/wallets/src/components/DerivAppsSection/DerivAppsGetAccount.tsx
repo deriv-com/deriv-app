@@ -63,8 +63,8 @@ const DerivAppsGetAccount: React.FC = () => {
     useEffect(() => {
         if (isAccountCreationSuccess) {
             const displayBalance = displayMoney(
-                balanceData?.[activeWallet?.loginid ?? '']?.balance ?? 0,
-                activeWallet?.currency ?? '',
+                balanceData?.[activeWallet?.loginid ?? '']?.balance,
+                activeWallet?.currency,
                 {
                     fractional_digits: activeWallet?.currency_config?.fractional_digits,
                 }

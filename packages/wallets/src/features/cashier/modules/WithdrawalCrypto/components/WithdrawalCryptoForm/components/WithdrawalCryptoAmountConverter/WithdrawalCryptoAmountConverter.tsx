@@ -25,7 +25,7 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
     const { errors, setValues } = useFormikContext<TWithdrawalForm>();
     const { data: balanceData } = useAllBalanceSubscription();
     const balance = balanceData?.[activeWallet?.loginid ?? '']?.balance ?? 0;
-    const displayBalance = displayMoney(balance, activeWallet?.currency ?? '', {
+    const displayBalance = displayMoney(balance, activeWallet?.currency, {
         fractional_digits: activeWallet?.currency_config?.fractional_digits,
     });
 

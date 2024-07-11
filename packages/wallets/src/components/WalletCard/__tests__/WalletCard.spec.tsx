@@ -105,7 +105,6 @@ describe('WalletCard', () => {
 
     it('should show balance loader when balance is loading', () => {
         (mockUseAllBalanceSubscription as jest.Mock).mockReturnValue({
-            data: undefined,
             isLoading: true,
         });
         render(

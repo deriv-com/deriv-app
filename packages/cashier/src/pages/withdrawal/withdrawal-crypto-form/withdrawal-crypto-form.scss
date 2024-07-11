@@ -25,7 +25,7 @@
     .crypto-fiat-converter {
         grid-gap: 2.4rem;
 
-        @include mobile {
+        @include mobile-or-tablet-screen {
             grid-gap: 0.8rem;
         }
     }

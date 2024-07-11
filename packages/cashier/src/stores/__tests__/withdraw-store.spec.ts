@@ -1,4 +1,4 @@
-import { isMobile, validNumber } from '@deriv/shared';
+import { validNumber } from '@deriv/shared';
 import WithdrawStore from '../withdraw-store';
 import { configure } from 'mobx';
 import { TWebSocket, TRootStore } from '../../types';
@@ -8,8 +8,6 @@ configure({ safeDescriptors: false });
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    getMinWithdrawal: jest.fn(() => 100),
-    isMobile: jest.fn(() => false),
     validNumber: jest.fn(() => {
         return { is_ok: true };
     }),
@@ -308,12 +306,12 @@ describe('WithdrawStore', () => {
     it('should return an error if balance is less than the minimum withdrawal amount', () => {
         const { setConverterFromError } = withdraw_store.root_store.modules.cashier.crypto_fiat_converter;
 
+        root_store.ui.is_desktop = false;
         withdraw_store.crypto_config = { currencies_config: { USD: { minimum_withdrawal: 2000 } } };
-        (isMobile as jest.Mock).mockReturnValueOnce(true);
         withdraw_store.validateWithdrawFromAmount();
         expect(setConverterFromError).toHaveBeenCalled();
 
-        (isMobile as jest.Mock).mockReturnValueOnce(false);
+        root_store.ui.is_desktop = true;
         withdraw_store.validateWithdrawFromAmount();
         expect(setConverterFromError).toHaveBeenCalledWith(
             'Your balance (1,000.00 USD) is less than the current minimum withdrawal allowed (2,000.00 USD). Please top up your account to continue with your withdrawal.'

@@ -158,7 +158,7 @@ const WithdrawalCryptoReceipt = observer(() => {
                 <Localize i18n_default_text='Your withdrawal will be processed within 24 hours' />
             </Text>
             <div className='withdrawal-crypto-receipt__detail'>
-                {is_desktop && <Status last_transaction={last_transaction} />}
+                {<Status last_transaction={last_transaction} />}
                 <Text
                     as='p'
                     color='profit-success'
@@ -175,7 +175,6 @@ const WithdrawalCryptoReceipt = observer(() => {
                         }}
                     />
                 </Text>
-                {is_mobile && <Status last_transaction={last_transaction} />}
                 <AccountInformation account={account} is_mobile={is_mobile} />
                 <Icon className='withdrawal-crypto-receipt__icon' icon='IcArrowDown' size={30} />
                 <WalletInformation account={account} blockchain_address={blockchain_address} is_mobile={is_mobile} />

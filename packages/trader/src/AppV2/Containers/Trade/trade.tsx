@@ -1,11 +1,12 @@
 import React from 'react';
-import { Dropdown } from '@deriv/components';
+import { Dropdown, Loading } from '@deriv/components';
 import { Chip, Text } from '@deriv-com/quill-ui';
 import BottomNav from 'AppV2/Components/BottomNav';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { getAvailableContractTypes } from 'Modules/Trading/Helpers/contract-type';
 import { TRADE_TYPES, unsupported_contract_types_list } from '@deriv/shared';
 import { observer } from 'mobx-react';
+import Guide from 'AppV2/Components/Guide';
 
 const Trade = observer(() => {
     const { active_symbols, contract_type, contract_types_list, onMount, onChange, onUnmount, symbol } =
@@ -32,14 +33,6 @@ const Trade = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onSymbolSelect = (value: string) => {
-        onChange({
-            target: {
-                name: 'symbol',
-                value,
-            },
-        });
-    };
     const onTradeTypeSelect = (e: React.MouseEvent<HTMLButtonElement>) => {
         const value = trade_types.find(({ text }) => text === (e.target as HTMLButtonElement).textContent)?.value;
         onChange({
@@ -52,16 +45,28 @@ const Trade = observer(() => {
 
     return (
         <BottomNav>
-            <div className='trade__trade-types'>
-                {trade_types.map(({ text, value }) => (
-                    <Chip.Selectable key={value} onChipSelect={onTradeTypeSelect} selected={value === contract_type}>
-                        <Text size='sm'>{text}</Text>
-                    </Chip.Selectable>
-                ))}
-            </div>
-            <div className='trade__assets'>
-                <Dropdown list={symbols} name='symbol' onChange={onChange} value={symbol} />
-            </div>
+            {symbols.length && trade_types.length ? (
+                <React.Fragment>
+                    <div className='trade__trade-types'>
+                        {trade_types.map(({ text, value }) => (
+                            <Chip.Selectable
+                                key={value}
+                                onChipSelect={onTradeTypeSelect}
+                                selected={value === contract_type}
+                            >
+                                <Text size='sm'>{text}</Text>
+                            </Chip.Selectable>
+                        ))}
+                    </div>
+                    <div className='trade__assets'>
+                        <Dropdown list={symbols} name='symbol' onChange={onChange} value={symbol} />
+                    </div>
+                    <Guide has_label />
+                    <Guide />
+                </React.Fragment>
+            ) : (
+                <Loading.DTraderV2 />
+            )}
         </BottomNav>
     );
 });

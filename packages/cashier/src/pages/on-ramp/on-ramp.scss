@@ -112,7 +112,7 @@
                 padding: 1.2rem;
                 margin: 1.6rem;
                 background-color: var(--general-section-2);
-                @include mobile {
+                @include mobile-or-tablet-screen {
                     margin: 1.6rem 0.8rem;
                     width: calc(100% - 1.6rem);
                     display: flex;
@@ -129,7 +129,7 @@
                     cursor: pointer;
                     width: 26.5rem;
                     background: unset;
-                    @include mobile {
+                    @include mobile-or-tablet-screen {
                         width: calc(100% - 2rem);
                         overflow-x: scroll !important;
                         &::-webkit-scrollbar {
@@ -177,7 +177,7 @@
             margin-top: 2.4rem;
 
             @include mobile {
-                margin-bottom: 4rem;
+                margin-bottom: 2.4rem;
             }
         }
         &-no-deposit-address {
@@ -192,7 +192,7 @@
             }
         }
         & .dc-hint-box {
-            @include mobile {
+            @include mobile-or-tablet-screen {
                 &__icon {
                     align-self: start;
                 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Loading, Modal, SelectNative, ReadMore, Text } from '@deriv/components';
 import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
-import { routes, isMobile } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import CashierLocked from '../../components/cashier-locked';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { isMobile, routes } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
 import OnRamp from '../on-ramp';
 import { mockStore } from '@deriv/stores';
@@ -19,11 +19,6 @@ jest.mock('@deriv/components', () => {
         ReadMore: () => <div>ReadMore</div>,
     };
 });
-
-jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
-    ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
-    isMobile: jest.fn(),
-}));
 
 jest.mock('Components/cashier-locked', () => {
     const cashierLocked = () => <div>CashierLocked</div>;
@@ -258,7 +253,6 @@ describe('<OnRamp />', () => {
     });
 
     it('should show "What is Fiat onramp?" message and render <ReadMore /> component in Mobile mode', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
         const mock = mockStore({
             client: {
                 account_status: { status: [] },
@@ -269,6 +263,9 @@ describe('<OnRamp />', () => {
                     },
                 ],
             },
+            ui: {
+                is_desktop: false,
+            },
             modules: { cashier: cashier_mock },
         });
         render(mockOnRamp(mock));
@@ -278,7 +275,6 @@ describe('<OnRamp />', () => {
     });
 
     it('should have proper menu options in Mobile mode', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
         const mock = mockStore({
             client: {
                 account_status: { status: [] },
@@ -288,6 +284,9 @@ describe('<OnRamp />', () => {
                         sub_account_type: 'financial_stp',
                     },
                 ],
+            },
+            ui: {
+                is_desktop: false,
             },
             modules: { cashier: cashier_mock },
         });
@@ -301,7 +300,6 @@ describe('<OnRamp />', () => {
     });
 
     it('should trigger "routeTo" callback when the user chooses a different from "Fiat onramp" option in Mobile mode', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
         props.menu_options = [
             {
                 label: 'Deposit',
@@ -325,6 +323,9 @@ describe('<OnRamp />', () => {
                         sub_account_type: 'financial_stp',
                     },
                 ],
+            },
+            ui: {
+                is_desktop: false,
             },
             modules: { cashier: cashier_mock },
         });

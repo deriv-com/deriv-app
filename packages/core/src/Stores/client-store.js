@@ -1452,6 +1452,7 @@ export default class ClientStore extends BaseStore {
         // delete walletsOnboarding key after page refresh
         /** will be removed later when header for the wallets is created) */
         localStorage.removeItem('walletsOnboarding');
+
         const search = SessionStore.get('signup_query_param') || window.location.search;
         const search_params = new URLSearchParams(search);
         const redirect_url = search_params?.get('redirect_url');
@@ -1480,17 +1481,22 @@ export default class ClientStore extends BaseStore {
         }
 
         const authorize_response = await this.setUserLogin(login_new_user);
-        if (search) {
-            if (code_param && action_param) await this.setVerificationCode(code_param, action_param);
-            document.addEventListener('DOMContentLoaded', () => {
-                setTimeout(() => {
-                    // timeout is needed to get the token (code) from the URL before we hide it from the URL
-                    // and from LiveChat that gets the URL from Window, particularly when initialized via HTML script on mobile
-                    history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
-                }, 10);
-            });
-        }
 
+        if (search) {
+            // we need to store redirect url before it gets deleted
+            // it gets deleted bcz redirect.jsx runs after history.replaceState so the redirecturl gets updated with the url that has no code
+            // putting is_logged_in does not work bcz its not updated even when user logs in
+            // we a condn in if block such that this if bloacks only runs when user hits that redirect url
+            if (code_param && action_param) {
+                this.setVerificationCode(code_param, action_param);
+                // sessionStorage.setItem('request_email', code_param);
+            }
+            setTimeout(() => {
+                // timeout is needed to get the token (code) from the URL before we hide it from the URL
+                // and from LiveChat that gets the URL from Window, particularly when initialized via HTML script on mobile
+                history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
+            }, 0);
+        }
         this.setDeviceData();
 
         // On case of invalid token, no need to continue with additional api calls.
@@ -1583,6 +1589,10 @@ export default class ClientStore extends BaseStore {
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
 
         if (this.is_logged_in) {
+            // if (redirect_action_param === 'request_email' && redirect_code_param) {
+            //     console.log('REPLACE CALLED', redirect_action_param, redirect_code_param, this.is_logged_in);
+            //     history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
+            // }
             this.getWalletMigrationState();
 
             await WS.mt5LoginList().then(this.responseMt5LoginList);
@@ -2214,7 +2224,7 @@ export default class ClientStore extends BaseStore {
         return is_ready_to_process && is_cross_checked;
     }
 
-    async setVerificationCode(code, action) {
+    setVerificationCode(code, action) {
         this.verification_code[action] = code;
         if (code) {
             LocalStore.set(`verification_code.${action}`, code);
@@ -2223,7 +2233,7 @@ export default class ClientStore extends BaseStore {
         }
         if (action === 'signup') {
             // TODO: add await if error handling needs to happen before AccountSignup is initialised
-            await this.fetchResidenceList(); // Prefetch for use in account signup process
+            this.fetchResidenceList(); // Prefetch for use in account signup process
         }
     }
 
@@ -2685,6 +2695,7 @@ export default class ClientStore extends BaseStore {
             if (response?.wallet_migration?.state) this.setWalletMigrationState(response?.wallet_migration?.state);
         } catch (error) {
             // eslint-disable-next-line no-console
+            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
         }
     }
 
@@ -2695,6 +2706,7 @@ export default class ClientStore extends BaseStore {
             this.getWalletMigrationState();
         } catch (error) {
             // eslint-disable-next-line no-console
+            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
         } finally {
             this.setIsWalletMigrationRequestIsInProgress(false);
         }
@@ -2707,6 +2719,7 @@ export default class ClientStore extends BaseStore {
             this.getWalletMigrationState();
         } catch (error) {
             // eslint-disable-next-line no-console
+            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
         } finally {
             this.setIsWalletMigrationRequestIsInProgress(false);
         }
@@ -2776,6 +2789,7 @@ export default class ClientStore extends BaseStore {
             return { key, subscription };
         } catch (error) {
             // eslint-disable-next-line no-console
+            console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
             return {};
         }
     };
@@ -2788,6 +2802,7 @@ export default class ClientStore extends BaseStore {
                 delete this.subscriptions?.[name]?.[key];
             } catch (error) {
                 // eslint-disable-next-line no-console
+                console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
             }
         }
     };
@@ -2819,6 +2834,7 @@ export default class ClientStore extends BaseStore {
             },
             error => {
                 // eslint-disable-next-line no-console
+                console.log(`Something wrong: code = ${error?.error?.code}, message = ${error?.error?.message}`);
             }
         );
     };

@@ -28,7 +28,8 @@ const Redirect = observer(() => {
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
     const action_param = url_params.get('action');
-    const code_param = url_params.get('code') || verification_code[action_param];
+    const code_param =
+        url_params.get('code') || verification_code[action_param] || sessionStorage.getItem('request_email');
     const ext_platform_url = url_params.get('ext_platform_url');
 
     const redirectToExternalPlatform = url => {
@@ -68,6 +69,7 @@ const Redirect = observer(() => {
                 redirected_to_route = true;
             } else {
                 toggleResetEmailModal(true);
+                sessionStorage.removeItem('request_email');
             }
             break;
         }

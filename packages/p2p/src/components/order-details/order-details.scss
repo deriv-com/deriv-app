@@ -42,7 +42,6 @@ $card-width: 456px;
 
     @include tablet-up {
         border-radius: 4px;
-        border: 8px solid var(--general-section-1);
         width: $card-width;
     }
 

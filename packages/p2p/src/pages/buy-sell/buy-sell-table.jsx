@@ -29,7 +29,7 @@ const BuySellRowRendererComponent = row_props => {
 const BuySellRowRenderer = observer(BuySellRowRendererComponent);
 
 const BuySellTable = ({ onScroll }) => {
-    const { isDesktop } = useDevice();
+    const { isDesktop, isTablet } = useDevice();
     const { buy_sell_store, general_store } = useStores();
     const {
         client: { currency },
@@ -78,7 +78,7 @@ const BuySellTable = ({ onScroll }) => {
                         is_open={buy_sell_store.is_sort_dropdown_open}
                         height='10rem'
                         toggleModal={() => buy_sell_store.setIsSortDropdownOpen(false)}
-                        width='80vw'
+                        width={isTablet ? '44rem' : '80vw'}
                     >
                         <RadioGroup
                             name='reason'

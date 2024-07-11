@@ -8,9 +8,9 @@ import { useStores } from 'Stores';
 const BlockUserFilterModal = () => {
     const { my_profile_store } = useStores();
     const { is_modal_open, hideModal } = useModalManagerContext();
-    const { isDesktop } = useDevice();
+    const { isDesktop, isTablet } = useDevice();
     return (
-        <Modal is_open={is_modal_open} height='10rem' toggleModal={hideModal} width='80vw'>
+        <Modal is_open={is_modal_open} height='10rem' toggleModal={hideModal} width={isTablet ? '44rem' : '80vw'}>
             <RadioGroup
                 className='sort-radiogroup'
                 name='block-user-filter-modal'

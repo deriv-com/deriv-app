@@ -14,12 +14,23 @@
         padding: 0 8.4rem;
 
         & .dc-mobile-full-page-modal {
+            width: 60rem;
             & .dc-page-overlay {
+                & .dc-page-overlay__header {
+                    &-wrapper {
+                        width: 60rem;
+                    }
+                }
                 & .dc-page-overlay__content {
                     & .dc-mobile-full-page-modal {
                         width: 60rem;
                         left: 50%;
                         transform: translateX(-50%);
+                        @include rtl {
+                            left: auto;
+                            right: 50%; /* For RTL layout */
+                            transform: translateX(50%);
+                        }
                     }
                 }
             }

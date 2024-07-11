@@ -39,7 +39,7 @@ const BuySellRowAction = ({
                     is_disabled={general_store.is_barred}
                     onClick={onClick}
                     primary
-                    small={!isDesktop}
+                    small={isDesktop}
                 >
                     <Localize
                         i18n_default_text='Buy {{ account_currency }}'
@@ -52,7 +52,13 @@ const BuySellRowAction = ({
         }
 
         return (
-            <Button is_disabled={general_store.is_barred} onClick={onClick} primary small={!isDesktop}>
+            <Button
+                is_disabled={general_store.is_barred}
+                onClick={onClick}
+                primary
+                small={isDesktop}
+                className={className}
+            >
                 <Localize
                     i18n_default_text='Sell {{ account_currency }}'
                     values={{
@@ -64,7 +70,7 @@ const BuySellRowAction = ({
     }
 
     return (
-        <Button onClick={() => onUnavailableClick(eligibility_status)} secondary small={!isDesktop}>
+        <Button onClick={() => onUnavailableClick(eligibility_status)} secondary small={isDesktop}>
             <Localize i18n_default_text='Unavailable' />
         </Button>
     );

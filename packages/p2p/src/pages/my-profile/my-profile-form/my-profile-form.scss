@@ -29,7 +29,7 @@
             }
         }
 
-        @include mobile-or-tablet-screen {
+        @include mobile-screen {
             margin: 0 1vw;
             width: 96vw;
 
@@ -73,14 +73,19 @@
             left: 0;
         }
 
-        @include tablet-up {
-            bottom: 36px;
+        @include tablet-screen {
+            width: 100%;
+            bottom: 8.2rem;
             padding: 1.6rem 2.4rem;
         }
 
         &-button {
-            @include mobile-or-tablet-screen {
+            @include mobile-screen {
                 width: 93vw;
+            }
+
+            @include tablet-screen {
+                width: 100%;
             }
         }
     }
